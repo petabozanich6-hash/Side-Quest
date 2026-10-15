@@ -4163,7 +4163,7 @@
     },
     {
       "code": "DA-11A-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4178,7 +4178,7 @@
     },
     {
       "code": "DA-11A-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4193,7 +4193,7 @@
     },
     {
       "code": "DA-11A-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4208,7 +4208,7 @@
     },
     {
       "code": "DA-11A-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4223,7 +4223,7 @@
     },
     {
       "code": "DA-11C-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4238,7 +4238,7 @@
     },
     {
       "code": "DA-11C-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4253,7 +4253,7 @@
     },
     {
       "code": "DA-11C-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4268,7 +4268,7 @@
     },
     {
       "code": "DA-11C-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4283,7 +4283,7 @@
     },
     {
       "code": "DA-11P-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4298,7 +4298,7 @@
     },
     {
       "code": "DA-11P-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4313,7 +4313,7 @@
     },
     {
       "code": "DA-11P-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4328,7 +4328,7 @@
     },
     {
       "code": "DA-11P-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4343,7 +4343,7 @@
     },
     {
       "code": "DA-12A-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4358,7 +4358,7 @@
     },
     {
       "code": "DA-12A-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4373,7 +4373,7 @@
     },
     {
       "code": "DA-12A-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4388,7 +4388,7 @@
     },
     {
       "code": "DA-12C-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4403,7 +4403,7 @@
     },
     {
       "code": "DA-12C-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4418,7 +4418,7 @@
     },
     {
       "code": "DA-12C-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4433,7 +4433,7 @@
     },
     {
       "code": "DA-12P-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4448,7 +4448,7 @@
     },
     {
       "code": "DA-12P-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4463,7 +4463,7 @@
     },
     {
       "code": "DA-12P-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4613,7 +4613,7 @@
     },
     {
       "code": "DR-11M-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4628,7 +4628,7 @@
     },
     {
       "code": "DR-11M-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4643,7 +4643,7 @@
     },
     {
       "code": "DR-11M-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4658,7 +4658,7 @@
     },
     {
       "code": "DR-11P-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4673,7 +4673,7 @@
     },
     {
       "code": "DR-11P-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4688,7 +4688,7 @@
     },
     {
       "code": "DR-11P-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4703,7 +4703,7 @@
     },
     {
       "code": "DR-11R-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4718,7 +4718,7 @@
     },
     {
       "code": "DR-11R-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4733,7 +4733,7 @@
     },
     {
       "code": "DR-11R-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4748,7 +4748,7 @@
     },
     {
       "code": "DR-12M-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4763,7 +4763,7 @@
     },
     {
       "code": "DR-12M-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4778,7 +4778,7 @@
     },
     {
       "code": "DR-12M-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4793,7 +4793,7 @@
     },
     {
       "code": "DR-12P-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4808,7 +4808,7 @@
     },
     {
       "code": "DR-12P-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4823,7 +4823,7 @@
     },
     {
       "code": "DR-12P-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4838,7 +4838,7 @@
     },
     {
       "code": "DR-12R-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4853,7 +4853,7 @@
     },
     {
       "code": "DR-12R-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -4868,7 +4868,7 @@
     },
     {
       "code": "DR-12R-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5018,7 +5018,7 @@
     },
     {
       "code": "MU1-11C-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5033,7 +5033,7 @@
     },
     {
       "code": "MU1-11C-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5048,7 +5048,7 @@
     },
     {
       "code": "MU1-11L-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5063,7 +5063,7 @@
     },
     {
       "code": "MU1-11L-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5078,7 +5078,7 @@
     },
     {
       "code": "MU1-11P-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5093,7 +5093,7 @@
     },
     {
       "code": "MU1-11P-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5108,7 +5108,7 @@
     },
     {
       "code": "MU1-12C-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5123,7 +5123,7 @@
     },
     {
       "code": "MU1-12C-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5138,7 +5138,7 @@
     },
     {
       "code": "MU1-12L-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5153,7 +5153,7 @@
     },
     {
       "code": "MU1-12L-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5168,7 +5168,7 @@
     },
     {
       "code": "MU1-12P-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5183,7 +5183,7 @@
     },
     {
       "code": "MU1-12P-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5198,7 +5198,7 @@
     },
     {
       "code": "MU2-11C-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5213,7 +5213,7 @@
     },
     {
       "code": "MU2-11C-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5228,7 +5228,7 @@
     },
     {
       "code": "MU2-11L-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5243,7 +5243,7 @@
     },
     {
       "code": "MU2-11L-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5258,7 +5258,7 @@
     },
     {
       "code": "MU2-11P-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5273,7 +5273,7 @@
     },
     {
       "code": "MU2-11P-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5288,7 +5288,7 @@
     },
     {
       "code": "MU2-12C-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5303,7 +5303,7 @@
     },
     {
       "code": "MU2-12C-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5318,7 +5318,7 @@
     },
     {
       "code": "MU2-12L-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5333,7 +5333,7 @@
     },
     {
       "code": "MU2-12L-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5348,7 +5348,7 @@
     },
     {
       "code": "MU2-12P-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5363,7 +5363,7 @@
     },
     {
       "code": "MU2-12P-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5513,7 +5513,7 @@
     },
     {
       "code": "MUE-12C-01",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5528,7 +5528,7 @@
     },
     {
       "code": "MUE-12C-02",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5543,7 +5543,7 @@
     },
     {
       "code": "MUE-12L-01",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5558,7 +5558,7 @@
     },
     {
       "code": "MUE-12L-02",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5573,7 +5573,7 @@
     },
     {
       "code": "MUE-12M-01",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5588,7 +5588,7 @@
     },
     {
       "code": "MUE-12M-02",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5603,7 +5603,7 @@
     },
     {
       "code": "MUE-12P-01",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -5618,7 +5618,7 @@
     },
     {
       "code": "MUE-12P-02",
-      "stage_hint": "ES1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6383,7 +6383,7 @@
     },
     {
       "code": "EE1-11-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6398,7 +6398,7 @@
     },
     {
       "code": "EE1-11-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6413,7 +6413,7 @@
     },
     {
       "code": "EE1-11-03",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6428,7 +6428,7 @@
     },
     {
       "code": "EE1-11-04",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6443,7 +6443,7 @@
     },
     {
       "code": "EE1-11-05",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6458,7 +6458,7 @@
     },
     {
       "code": "EE1-11-06",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6473,7 +6473,7 @@
     },
     {
       "code": "EE1-12-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6488,7 +6488,7 @@
     },
     {
       "code": "EE1-12-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6503,7 +6503,7 @@
     },
     {
       "code": "EE1-12-03",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6518,7 +6518,7 @@
     },
     {
       "code": "EE1-12-04",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6533,7 +6533,7 @@
     },
     {
       "code": "EE1-12-05",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6548,7 +6548,7 @@
     },
     {
       "code": "EE1-12-06",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6563,7 +6563,7 @@
     },
     {
       "code": "EE2-12-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6578,7 +6578,7 @@
     },
     {
       "code": "EE2-12-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6593,7 +6593,7 @@
     },
     {
       "code": "EE2-12-03",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6608,7 +6608,7 @@
     },
     {
       "code": "EE2-12-04",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6623,7 +6623,7 @@
     },
     {
       "code": "EE2-12-05",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -6638,7 +6638,7 @@
     },
     {
       "code": "EE2-12-06",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -10771,7 +10771,7 @@
     },
     {
       "code": "MAO-WM-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-advanced-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11056,7 +11056,7 @@
     },
     {
       "code": "MAO-WM-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11071,7 +11071,7 @@
     },
     {
       "code": "ME1-11-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11086,7 +11086,7 @@
     },
     {
       "code": "ME1-11-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11101,7 +11101,7 @@
     },
     {
       "code": "ME1-11-03",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11116,7 +11116,7 @@
     },
     {
       "code": "ME1-11-04",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11131,7 +11131,7 @@
     },
     {
       "code": "ME1-11-05",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11146,7 +11146,7 @@
     },
     {
       "code": "ME1-12-01",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11161,7 +11161,7 @@
     },
     {
       "code": "ME1-12-02",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11176,7 +11176,7 @@
     },
     {
       "code": "ME1-12-03",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11191,7 +11191,7 @@
     },
     {
       "code": "ME1-12-04",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11206,7 +11206,7 @@
     },
     {
       "code": "ME1-12-05",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11221,7 +11221,7 @@
     },
     {
       "code": "ME1-12-06",
-      "stage_hint": "S1",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11236,7 +11236,7 @@
     },
     {
       "code": "MAO-WM-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11251,7 +11251,7 @@
     },
     {
       "code": "ME2-12-01",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11266,7 +11266,7 @@
     },
     {
       "code": "ME2-12-02",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11281,7 +11281,7 @@
     },
     {
       "code": "ME2-12-03",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11296,7 +11296,7 @@
     },
     {
       "code": "ME2-12-04",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -11311,7 +11311,7 @@
     },
     {
       "code": "ME2-12-05",
-      "stage_hint": "S2",
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -12174,7 +12174,7 @@
     },
     {
       "code": "MAO-WM-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-standard-11-12-2024/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13358,7 +13358,7 @@
     },
     {
       "code": "BI-11WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13373,7 +13373,7 @@
     },
     {
       "code": "BI-11WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13388,7 +13388,7 @@
     },
     {
       "code": "BI-11WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13403,7 +13403,7 @@
     },
     {
       "code": "BI-11WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13418,7 +13418,7 @@
     },
     {
       "code": "BI-11WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13433,7 +13433,7 @@
     },
     {
       "code": "BI-11WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13448,7 +13448,7 @@
     },
     {
       "code": "BI-11WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13523,7 +13523,7 @@
     },
     {
       "code": "BI-12WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13538,7 +13538,7 @@
     },
     {
       "code": "BI-12WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13553,7 +13553,7 @@
     },
     {
       "code": "BI-12WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13568,7 +13568,7 @@
     },
     {
       "code": "BI-12WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13583,7 +13583,7 @@
     },
     {
       "code": "BI-12WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13598,7 +13598,7 @@
     },
     {
       "code": "BI-12WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13613,7 +13613,7 @@
     },
     {
       "code": "BI-12WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13673,7 +13673,7 @@
     },
     {
       "code": "CH-11WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13688,7 +13688,7 @@
     },
     {
       "code": "CH-11WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13703,7 +13703,7 @@
     },
     {
       "code": "CH-11WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13718,7 +13718,7 @@
     },
     {
       "code": "CH-11WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13733,7 +13733,7 @@
     },
     {
       "code": "CH-11WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13748,7 +13748,7 @@
     },
     {
       "code": "CH-11WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13763,7 +13763,7 @@
     },
     {
       "code": "CH-11WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13838,7 +13838,7 @@
     },
     {
       "code": "CH-12WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13853,7 +13853,7 @@
     },
     {
       "code": "CH-12WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13868,7 +13868,7 @@
     },
     {
       "code": "CH-12WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13883,7 +13883,7 @@
     },
     {
       "code": "CH-12WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13898,7 +13898,7 @@
     },
     {
       "code": "CH-12WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13913,7 +13913,7 @@
     },
     {
       "code": "CH-12WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13928,7 +13928,7 @@
     },
     {
       "code": "CH-12WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -13988,7 +13988,7 @@
     },
     {
       "code": "EES-11WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14003,7 +14003,7 @@
     },
     {
       "code": "EES-11WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14018,7 +14018,7 @@
     },
     {
       "code": "EES-11WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14033,7 +14033,7 @@
     },
     {
       "code": "EES-11WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14048,7 +14048,7 @@
     },
     {
       "code": "EES-11WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14063,7 +14063,7 @@
     },
     {
       "code": "EES-11WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14078,7 +14078,7 @@
     },
     {
       "code": "EES-11WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14153,7 +14153,7 @@
     },
     {
       "code": "EES-12WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14168,7 +14168,7 @@
     },
     {
       "code": "EES-12WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14183,7 +14183,7 @@
     },
     {
       "code": "EES-12WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14198,7 +14198,7 @@
     },
     {
       "code": "EES-12WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14213,7 +14213,7 @@
     },
     {
       "code": "EES-12WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14228,7 +14228,7 @@
     },
     {
       "code": "EES-12WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14243,7 +14243,7 @@
     },
     {
       "code": "EES-12WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14303,7 +14303,7 @@
     },
     {
       "code": "PY-11WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14318,7 +14318,7 @@
     },
     {
       "code": "PY-11WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14333,7 +14333,7 @@
     },
     {
       "code": "PY-11WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14348,7 +14348,7 @@
     },
     {
       "code": "PY-11WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14363,7 +14363,7 @@
     },
     {
       "code": "PY-11WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14378,7 +14378,7 @@
     },
     {
       "code": "PY-11WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14393,7 +14393,7 @@
     },
     {
       "code": "PY-11WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14468,7 +14468,7 @@
     },
     {
       "code": "PY-12WS-01",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14483,7 +14483,7 @@
     },
     {
       "code": "PY-12WS-02",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14498,7 +14498,7 @@
     },
     {
       "code": "PY-12WS-03",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14513,7 +14513,7 @@
     },
     {
       "code": "PY-12WS-04",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14528,7 +14528,7 @@
     },
     {
       "code": "PY-12WS-05",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14543,7 +14543,7 @@
     },
     {
       "code": "PY-12WS-06",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -14558,7 +14558,7 @@
     },
     {
       "code": "PY-12WS-07",
-      "stage_hint": null,
+      "stage_hint": "S6",
       "page_stage_context": "S6",
       "official_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
       "identifier_kind": "nesa_syllabus_outcome",
@@ -17454,13 +17454,13 @@
   ],
   "failures": [
     {
-      "syllabus": "Agriculture Life Skills 11–12 (2026)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-life-skills-11-12-2026/outcomes",
+      "syllabus": "Ancient History Life Skills 11–12 (2024)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Ancient History Life Skills 11–12 (2024)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes",
+      "syllabus": "Agriculture Life Skills 11–12 (2026)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-life-skills-11-12-2026/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17514,13 +17514,13 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes"
     },
     {
-      "syllabus": "Geography Life Skills 11–12 (2022)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
+      "syllabus": "Health and Movement Science Life Skills 11–12 (2023)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
-      "syllabus": "Health and Movement Science Life Skills 11–12 (2023)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes",
+      "syllabus": "Geography Life Skills 11–12 (2022)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
       "reason": "No outcome identifiers extracted"
     },
     {
@@ -17554,19 +17554,14 @@
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/mathematics/numeracy-stage-6-cec-2021/outcomes"
     },
     {
-      "syllabus": "Physical World Science Life Skills 11–12 (2025)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/science/physical-world-science-life-skills-11-12-2025/outcomes",
-      "reason": "No outcome identifiers extracted"
-    },
-    {
       "syllabus": "Photography, Video and Digital Imaging Stage 6 (CEC) (2000)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/outcomes"
     },
     {
-      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
-      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
-      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
+      "syllabus": "Physical World Science Life Skills 11–12 (2025)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/physical-world-science-life-skills-11-12-2025/outcomes",
+      "reason": "No outcome identifiers extracted"
     },
     {
       "syllabus": "Visual Design Stage 6 (CEC) (2000)",
@@ -17577,6 +17572,11 @@
       "syllabus": "Work Studies Stage 6 (CEC) (2012)",
       "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-studies-stage-6-cec-2012/outcomes",
       "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/hsie/work-studies-stage-6-cec-2012/outcomes"
+    },
+    {
+      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
+      "reason": "Error: HTTP 404 https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes"
     }
   ],
   "summary": {
