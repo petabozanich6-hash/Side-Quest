@@ -1,4 +1,5 @@
-import { sign, verify } from "hono/jwt";
+import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
+import { loadPlatformSettings } from "./platformSettings";
 import { trialEndFrom } from "./entitlements";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 
@@ -15,7 +16,6 @@ import {
 import type { App, AuthUser, Env, Guards } from "./types";
 import { nowIso, newId, parseJson } from "./types";
 
-const TOKEN_DAYS = 30;
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 const FILE_PREFIX = "sidequest";
 const SAFE_FILE_TYPES = [
@@ -87,8 +87,7 @@ const guessTheme = (stage?: string) =>
         ? "secondary"
         : "senior";
 
-const makeToken = (env: Env, sub: string, role: "parent" | "child", familyId: string) =>
-  sign({ sub, role, family_id: familyId, exp: Math.floor(Date.now() / 1000) + TOKEN_DAYS * 86400 }, env.JWT_SECRET);
+const makeToken = (env: Env, sub: string, role: "parent" | "child", familyId: string) => issueToken(env, sub, role, familyId);
 
 function levelForXp(xp: number) {
   let tier: (typeof LEVEL_TIERS)[number] = LEVEL_TIERS[0];
@@ -194,17 +193,8 @@ async function safeAll<T>(fn: () => Promise<{ results?: T[] }>, fallback: T[] = 
 }
 
 async function getAuthUserFromToken(env: Env, token: string): Promise<AuthUser | null> {
-  let payload: any;
-  try {
-    payload = await verify(token, env.JWT_SECRET, "HS256");
-  } catch {
-    return null;
-  }
-  if (!payload?.sub || (payload.role !== "parent" && payload.role !== "child")) return null;
-  const table = payload.role === "parent" ? "users" : "students";
-  const row = await env.DB.prepare(`SELECT id, family_id, name${payload.role === "child" ? ", credential_version" : ""} FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser & { credential_version?: number }>();
-  if (!row || (payload.role === "child" && Number(payload.cv ?? 0) !== Number(row.credential_version ?? 0))) return null;
-  return { ...row, role: payload.role };
+  const auth = await authenticateToken(env, token);
+  return auth.ok ? auth.user : null;
 }
 
 async function fetchGoogleTokenInfo(idToken: string) {
@@ -218,6 +208,7 @@ async function upsertGoogleUser(env: Env, email: string, name: string, picture?:
     .bind(email)
     .first<Record<string, unknown>>();
   if (existing) {
+    if ((await familyState(env.DB, String(existing.family_id))).status === "suspended") return { blocked: SUSPENDED_MESSAGE, status: 403 as const };
     await env.DB.prepare("UPDATE users SET name = ?, picture = ?, oauth_provider = 'google' WHERE id = ?")
       .bind(name, picture ?? null, existing.id)
       .run();
@@ -226,6 +217,7 @@ async function upsertGoogleUser(env: Env, email: string, name: string, picture?:
     return { token: await makeToken(env, String(existing.id), "parent", String(existing.family_id)), user };
   }
 
+  if (!(await loadPlatformSettings(env.DB)).features.registrationsOpen) return { blocked: "New sign-ups are paused for now. Please try again soon.", status: 503 as const };
   const familyId = newId();
   const userId = newId();
   const ts = nowIso();
@@ -260,7 +252,8 @@ export function registerFamily(app: App, g: Guards) {
     if (!email) return c.json({ detail: "Google account email missing" }, 401);
 
     const name = String(googleUser.name || email.split("@")[0]).trim();
-    return c.json(await upsertGoogleUser(c.env, email, name, googleUser.picture || null));
+    const result = await upsertGoogleUser(c.env, email, name, googleUser.picture || null);
+    return "blocked" in result ? c.json({ detail: result.blocked }, result.status) : c.json(result);
   });
 
   app.post("/api/auth/google/callback", async (c) => {
@@ -301,7 +294,8 @@ export function registerFamily(app: App, g: Guards) {
     const email = String(googleUser.email || "").trim().toLowerCase();
     if (!email) return c.json({ detail: "Google account email missing" }, 401);
     const name = String(googleUser.name || email.split("@")[0]).trim();
-    return c.json(await upsertGoogleUser(c.env, email, name, googleUser.picture || null));
+    const result = await upsertGoogleUser(c.env, email, name, googleUser.picture || null);
+    return "blocked" in result ? c.json({ detail: result.blocked }, result.status) : c.json(result);
   });
 
   app.post("/api/auth/session", (c) =>

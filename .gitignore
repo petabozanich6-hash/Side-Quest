@@ -26,6 +26,7 @@ lesson-excellence/.work/
 
 .dev.vars
 wrangler.e2e.jsonc
+wrangler.hq-e2e.jsonc
 e2e-shots/
 ci-logs/
 

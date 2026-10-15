@@ -66,36 +66,6 @@ const resOut = (r: any) => ({ ...r, approved: !!r.approved, shared: !!r.shared }
 const cheerOut = (r: any) => ({ ...r, seen: !!r.seen });
 
 export function registerCore(app: App, auth: MiddlewareHandler, parent: MiddlewareHandler) {
-  // Platform-wide statistics are visible only to the verified INTERNAL family owner.
-  // The client-side sidebar is cosmetic; this database check is the security boundary.
-  app.get("/api/owner/command-centre", auth, parent, async (c) => {
-    const u = c.get("user");
-    const db = c.env.DB;
-    const owner = await db.prepare("SELECT id FROM families WHERE id = ? AND owner_id = ? AND plan = 'INTERNAL'")
-      .bind(u.family_id, u.id).first();
-    if (!owner) return c.json({ detail: "Not authorised" }, 403);
-    const count = async (sql: string) => Number((await db.prepare(sql).first<{ n: number }>())?.n ?? 0);
-    const { results: rawPlans } = await db.prepare(
-      "SELECT plan, COUNT(*) AS n FROM families GROUP BY plan ORDER BY plan"
-    ).all<{ plan: string; n: number }>();
-    const byPlan: Record<string, number> = {};
-    for (const r of rawPlans) byPlan[r.plan] = Number(r.n);
-    const paidPlans = ["ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL"];
-    const paid = paidPlans.reduce((n, key) => n + (byPlan[key] || 0), 0);
-    const [families, parentUsers, students, last7Days, last30Days] = await Promise.all([
-      count("SELECT COUNT(*) AS n FROM families"),
-      count("SELECT COUNT(*) AS n FROM users"),
-      count("SELECT COUNT(*) AS n FROM students"),
-      count("SELECT COUNT(*) AS n FROM families WHERE created_at >= datetime('now', '-7 days')"),
-      count("SELECT COUNT(*) AS n FROM families WHERE created_at >= datetime('now', '-30 days')"),
-    ]);
-    return c.json({ families, parent_users: parentUsers, children: students,
-      owner_families: byPlan.INTERNAL || 0, free_previews: byPlan.FREE_PREVIEW || 0,
-      paid_families: paid, by_plan: byPlan, new_families_7d: last7Days,
-      new_families_30d: last30Days, measured_at: new Date().toISOString(),
-      revenue: null, revenue_note: "Revenue requires reconciled Stripe financial data; not inferred from plan counts." });
-  });
-
   // ---------- Dashboards ----------
   app.get("/api/dashboard/parent", auth, parent, async (c) => {
     const fid = c.get("user").family_id;

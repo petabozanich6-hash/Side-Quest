@@ -13,6 +13,7 @@ Families will build or bring their own lessons, assign activities to children, r
 - `worker/migrations/` — historical **database migration chain**, including large retired prewritten curriculum seeds. **Keep these migration files unchanged until a tested replacement/baseline strategy is approved.** Removing them may break fresh database setup or migration history for existing databases.
 - `wrangler.jsonc` — Worker deploy configuration, D1 binding and static frontend settings.
 - `docs/CLOUDFLARE_MIGRATION.md` — existing platform hosting/migration notes.
+- `docs/OWNER_HQ.md` — the owner-only command centre (Owner HQ): what it does, how it is protected, and the approval-gated steps to turn it on.
 
 The 2026 prewritten curriculum project has been **cancelled**. Its independent `lesson-bank/`, `lesson-excellence/`, old authoring/checking scripts, stage plans, drafts, lesson reviews and inventory exports are removed from the *current working tree*. They are still recoverable through Git history. Their deletion does **not** delete historical database rows or rewrite commit history.
 
