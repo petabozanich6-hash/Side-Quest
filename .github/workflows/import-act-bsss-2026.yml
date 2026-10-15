@@ -1,0 +1,51 @@
+name: Import ACT 2026 official BSSS course register
+on:
+  pull_request:
+    paths:
+      - worker/scripts/import-act-bsss-2026.py
+      - worker/test/actBsss2026.test.py
+      - .github/workflows/import-act-bsss-2026.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  source-verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PDF table extraction dependency
+        run: pip install pdfplumber==0.11.7
+      - name: Test ACT official BSSS course classifications
+        run: python worker/test/actBsss2026.test.py
+      - name: Parse every 2026 ACT BSSS source PDF course (requires 113 / 113)
+        run: python worker/scripts/import-act-bsss-2026.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: act-bsss-2026-source-review
+          path: worker/src/data/act-bsss-2026-courses-review.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Commit ACT authority review only to draft branch
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/act-bsss-2026-courses-review.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Data: ACT BSSS 2026 official 113 course titles and A/T/M/V/H classifications"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:$TARGET_BRANCH"; then exit 0; fi
+            git fetch origin "$TARGET_BRANCH"
+            git rebase "origin/$TARGET_BRANCH" || { git rebase --abort; exit 1; }
+            sleep 2
+          done
+          exit 1
