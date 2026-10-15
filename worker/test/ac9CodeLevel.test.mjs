@@ -11,6 +11,9 @@ test("Auslan and other language sequences have digits before the actual year ban
   assert.equal(ac9Level("AC9L1AU8EC01"), 8);
   assert.equal(ac9Level("AC9L2AU4C01"), 4);
   assert.equal(ac9Level("AC9L2AUFC01"), 0);
+  assert.equal(ac9Level("AC9LITF01"), 0);
+  assert.equal(ac9Level("ACL9LCG8U04"), 8);
+  assert.equal(ac9Level("ACL9LL10E01"), 10);
 });
 test("unknown identifiers must not be converted into fabricated levels", () => {
   assert.equal(ac9Level("ENG-S4"), null);
