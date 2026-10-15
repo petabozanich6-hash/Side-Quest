@@ -4,6 +4,7 @@
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
   "observability": { "enabled": true },
+  "vars": { "STRIPE_LIVE_ENABLED": "true" },
   "build": {
     "command": "node worker/scripts/guard-build-branch.mjs && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
   },
