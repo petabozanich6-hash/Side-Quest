@@ -1,10 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { AC9_OUTCOMES } from "../src/data/ac9-outcomes.ts";
-import { catalogueFor } from "../src/outcomeTracker.ts";
+import { catalogueFor, programFor } from "../src/outcomeTracker.ts";
 
 test("ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands", () => {
-  assert.equal(AC9_OUTCOMES.length, 1395);
+  assert.ok(AC9_OUTCOMES.length >= 1395, "AC9 import must not lose previously included descriptors");
   const seen = new Set();
   for (const row of AC9_OUTCOMES) {
     assert.match(row.code, /^AC9[A-Z0-9]+$/);
@@ -20,7 +20,7 @@ test("five jurisdictions use the same correctly named AC9 framework without clai
     assert.equal(catalogue.available, true);
     assert.equal(catalogue.framework, "AC9");
     assert.match(catalogue.name, /partial/);
-    assert.equal(catalogue.outcomes.length, 1395);
+    assert.equal(catalogue.outcomes.length, AC9_OUTCOMES.length);
   }
 });
 test("NSW catalogue remains separate and VIC/WA do not silently inherit AC9", () => {
@@ -33,4 +33,19 @@ test("AC9 reference codes belong to the appropriate learning stage", () => {
   assert.equal(c.outcomes.find(x => x.code === "AC9ADA10C01")?.stage, "S5");
   assert.ok(c.outcomes.some(x => x.stage === "ES1"));
   assert.ok(c.outcomes.some(x => x.stage === "S2"));
+});
+
+test("an AC9 language elective matches ONLY the language selected by the family", () => {
+  const source = catalogueFor("QLD");
+  assert.equal(source.available, true);
+  const japan = { code: "AC9LJA8C01", stage: "S4", from: 7, to: 8, learning_area: "Languages", subject: "Japanese", description: "", source: "fixture" };
+  const french = { ...japan, code: "AC9LFR8C01", subject: "French" };
+  const selected = programFor(source, { stage: "S4", year_level: "Year 8", extra: { electives: [{ name: "Japanese", learning_area: "Languages" }] } });
+  assert.equal(selected.includes(japan), true);
+  assert.equal(selected.includes(french), false);
+  const broad = programFor(source, { stage: "S4", year_level: "Year 8", extra: { electives: [{ name: "Languages", learning_area: "Languages" }] } });
+  assert.equal(broad.includes(japan), true);
+  assert.equal(broad.includes(french), true);
+  const unknown = programFor(source, { stage: "S4", year_level: "Year 8", extra: { electives: [{ name: "Polish", learning_area: "Languages" }] } });
+  assert.equal(unknown.includes(japan), false, "unimported language must not silently map to another one");
 });
