@@ -25,9 +25,11 @@ test("five jurisdictions use the same correctly named AC9 framework without clai
     assert.equal(catalogue.outcomes.length, AC9_OUTCOMES.length);
   }
 });
-test("NSW catalogue remains separate and VIC/WA do not silently inherit AC9", () => {
+test("NSW and VCAA state catalogues remain distinct, WA is not imported", () => {
   assert.equal(catalogueFor("NSW").framework, "NSW");
-  for (const j of ["VIC", "WA"]) assert.equal(catalogueFor(j).available, false);
+  assert.equal(catalogueFor("VIC").framework, "VIC");
+  assert.equal(catalogueFor("VIC").outcomes.length, 3723);
+  assert.equal(catalogueFor("WA").available, false);
 });
 test("AC9 reference codes belong to the appropriate learning stage", () => {
   const c = catalogueFor("QLD");
