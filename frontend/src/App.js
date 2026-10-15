@@ -11,6 +11,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChildLogin from "./pages/ChildLogin";
 import GetApp from "./pages/GetApp";
+import KidsOnly from "./pages/KidsOnly";
+import { isKidsHost } from "./lib/pwa";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
@@ -68,6 +70,8 @@ function Guard({ role, children }) {
 function Router() {
   const loc = useLocation();
   if (loc.hash?.includes("session_id=")) return <AuthCallback />;
+  // SQ Kids (the kids' address) has no parent pages at all: grown-ups are pointed to the main site.
+  if (isKidsHost() && /^\/(login|register|forgot-password|reset-password|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />

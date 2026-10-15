@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import QRCode from "qrcode";
 import { Check, Copy, Download } from "lucide-react";
-import { deviceKind, isKidsDevice, setKidsDevice, useInstallPrompt, useKidsManifest } from "../lib/pwa";
+import { deviceKind, isKidsDevice, isKidsHost, kidsHostReachable, kidsOrigin, parentOrigin, setKidsDevice, useInstallPrompt, useKidsManifest } from "../lib/pwa";
 import { AndroidSteps, IosSteps } from "../components/shared/InstallApp";
 
 const GREEN = "#1F3B2D";
@@ -12,25 +12,34 @@ const GREEN = "#1F3B2D";
  * - Phone or tablet: the right install steps for that device (or the browser's own Install button).
  * - Computer: a QR code that opens this same page on the phone, plus a link to copy or send.
  * - ?for=child: the kids' app for a child's own device, which opens straight to the child sign-in.
+ *   When the kids' address (kids.sidequestlearning.app) is live, SQ Kids is installed from there, so it is a fully
+ *   separate app (own icon, own sign-in) that can sit next to the parent app on one phone.
  */
 export default function GetApp() {
   const [params] = useSearchParams();
-  const kids = params.get("for") === "child";
+  const onKidsHost = isKidsHost();
+  const kids = params.get("for") === "child" || onKidsHost;
   useKidsManifest(kids);
+  const [kidsLive, setKidsLive] = useState(false);
+  useEffect(() => { if (kids && !onKidsHost) kidsHostReachable().then(setKidsLive); }, [kids, onKidsHost]);
+  // SQ Kids as its own app: installed from the kids' address.
+  const separate = onKidsHost || kidsLive;
   const prompt = useInstallPrompt();
-  // The browser's one-tap install prompt was prepared for the parent app, so the kids' app uses the menu steps instead.
-  const canInstall = prompt.canInstall && !kids;
+  // On the parent site the browser's one-tap install prompt is for the parent app, so the kids' app uses the menu steps.
+  const canInstall = prompt.canInstall && (!kids || onKidsHost);
   const { install, installed } = prompt;
   const [kind] = useState(deviceKind);
   const [qr, setQr] = useState("");
   const navigate = useNavigate();
   const [kidsDevice, setKidsDeviceState] = useState(isKidsDevice);
   const [copied, setCopied] = useState(false);
-  const link = `${window.location.origin}/get-app${kids ? "?for=child" : ""}`;
+  const link = kids && kidsLive ? `${kidsOrigin()}/get-app`
+    : onKidsHost ? `${window.location.origin}/get-app`
+    : `${window.location.origin}/get-app${kids ? "?for=child" : ""}`;
 
   useEffect(() => {
     if (kind !== "desktop") return;
-    QRCode.toDataURL(`${link}${kids ? "&" : "?"}source=qr`, { width: 480, margin: 1, errorCorrectionLevel: "M", color: { dark: GREEN, light: "#FFFFFF" } })
+    QRCode.toDataURL(`${link}${link.includes("?") ? "&" : "?"}source=qr`, { width: 480, margin: 1, errorCorrectionLevel: "M", color: { dark: GREEN, light: "#FFFFFF" } })
       .then(setQr).catch(() => setQr(""));
   }, [kind, link, kids]);
 
@@ -44,8 +53,10 @@ export default function GetApp() {
         <div className="flex items-center gap-3">
           <img src="/icons/icon-192.png" alt="" className="h-14 w-14 rounded-2xl shadow-sm" />
           <div className="min-w-0">
-            <h1 className="font-display text-2xl sm:text-3xl font-bold" style={{ color: GREEN }} data-testid="get-app-title">{kids ? "Set up Side-Quest on your child's device" : "Get the Side-Quest app"}</h1>
-            <p className="text-sm text-stone-600">{kids && installed
+            <h1 className="font-display text-2xl sm:text-3xl font-bold" style={{ color: GREEN }} data-testid="get-app-title">{separate ? "Set up SQ Kids on your child's device" : kids ? "Set up Side-Quest on your child's device" : "Get the Side-Quest app"}</h1>
+            <p className="text-sm text-stone-600">{separate
+              ? "SQ Kids is a separate app just for children, with its own icon and their own sign-in (username and PIN). Grown-ups keep the Side-Quest app, even on the same phone."
+              : kids && installed
               ? "Your child can use the Side-Quest app that's already here."
               : kids
               ? "Install this on your child's phone or tablet. The app (\"SQ Kids\") opens straight to their own sign-in with their username and PIN, so they never see the parent pages."
@@ -53,7 +64,26 @@ export default function GetApp() {
           </div>
         </div>
 
-        {installed && kids ? (
+        {installed && onKidsHost ? (
+          <div className="paper-card p-5" data-testid="get-app-installed">
+            <p className="font-semibold" style={{ color: GREEN }}>SQ Kids is already installed on this device.</p>
+            <Link to="/child-login" className="mt-3 inline-block text-sm font-semibold underline" style={{ color: "#4A5D3A" }}>Go to sign-in</Link>
+          </div>
+        ) : kids && kidsLive && kind !== "desktop" ? (
+          // On the parent site (browser or the parent app) on a phone: SQ Kids is installed from its own address.
+          <section className="paper-card p-5 sm:p-6 space-y-3" data-testid="get-app-open-kids">
+            <h2 className="font-display text-xl font-bold" style={{ color: GREEN }}>Install SQ Kids</h2>
+            <p className="text-sm text-stone-700">Tap below. It opens the SQ Kids page{installed ? " in your browser" : ""}, with the steps to add it to this {kind === "ios" ? "iPhone or iPad" : "device"}.</p>
+            <a href={link} target={installed ? "_blank" : undefined} rel="noopener" className="block w-full text-center rounded-xl px-4 py-3 font-semibold text-white" style={{ backgroundColor: "#4A5D3A" }} data-testid="open-kids-setup">Open SQ Kids setup</a>
+            {installed && (
+              <details className="text-sm text-stone-700">
+                <summary className="cursor-pointer font-semibold">Or: make this Side-Quest app open to the child sign-in instead</summary>
+                <p className="mt-2">One app for everyone: it opens to your child's sign-in, and you sign in from "Are you a parent? Sign in here".</p>
+                <button type="button" onClick={() => { setKidsDevice(true); navigate("/child-login", { replace: true }); }} className="mt-2 rounded-xl px-4 py-2 text-sm font-semibold border bg-white" style={{ color: GREEN, borderColor: "#D4C8A8" }} data-testid="use-for-child">Open to my child's sign-in</button>
+              </details>
+            )}
+          </section>
+        ) : installed && kids ? (
           // Opened inside the Side-Quest app already on this device (common on Android, where links open the installed
           // app): one device shared by parent and child doesn't need a second app; this one can open to the child sign-in.
           <section className="paper-card p-5 sm:p-6 space-y-3" data-testid="get-app-shared-device">
@@ -118,7 +148,7 @@ export default function GetApp() {
             ) : (
               <>
                 <h2 className="font-display text-xl font-bold mb-4" style={{ color: GREEN }}>{kind === "ios" ? "Add to the Home Screen" : "Install on this device"}</h2>
-                {kind === "ios" ? <IosSteps /> : <AndroidSteps />}
+                {kind === "ios" ? <IosSteps app={separate ? "SQ Kids" : "Side-Quest"} /> : <AndroidSteps app={separate ? "SQ Kids" : "Side-Quest"} />}
               </>
             )}
           </section>
@@ -131,22 +161,24 @@ export default function GetApp() {
         )}
         <p className="text-center text-sm">
           {kids
-            ? <Link to="/get-app" className="font-semibold underline" style={{ color: "#4A5D3A" }} data-testid="get-app-switch">Installing on your own phone instead?</Link>
+            ? onKidsHost
+              ? <a href={`${parentOrigin()}/get-app`} className="font-semibold underline" style={{ color: "#4A5D3A" }} data-testid="get-app-switch">Grown-ups: get the Side-Quest app instead</a>
+              : <Link to="/get-app" className="font-semibold underline" style={{ color: "#4A5D3A" }} data-testid="get-app-switch">Installing on your own phone instead?</Link>
             : <Link to="/get-app?for=child" className="font-semibold underline" style={{ color: "#4A5D3A" }} data-testid="get-app-switch">Setting up your child's own device? Get the kids' version</Link>}
         </p>
 
         <details className="paper-card p-5">
           <summary className="cursor-pointer font-semibold" style={{ color: GREEN }}>Steps for other devices</summary>
           <h3 className="mt-4 mb-2 text-sm font-bold" style={{ color: GREEN }}>iPhone and iPad</h3>
-          <IosSteps />
+          <IosSteps app={separate ? "SQ Kids" : "Side-Quest"} />
           <h3 className="mt-5 mb-2 text-sm font-bold" style={{ color: GREEN }}>Android</h3>
-          <AndroidSteps />
+          <AndroidSteps app={separate ? "SQ Kids" : "Side-Quest"} />
           <h3 className="mt-5 mb-2 text-sm font-bold" style={{ color: GREEN }}>Computer</h3>
           <p className="text-sm text-stone-700">In Chrome or Edge, click the install icon at the right of the address bar. Other browsers work fine as a normal website.</p>
         </details>
 
         <p className="text-center text-sm">
-          <Link to="/" className="font-semibold underline" style={{ color: "#4A5D3A" }}>Back to Side-Quest</Link>
+          <Link to={onKidsHost ? "/child-login" : "/"} className="font-semibold underline" style={{ color: "#4A5D3A" }}>{onKidsHost ? "Back to sign-in" : "Back to Side-Quest"}</Link>
         </p>
       </div>
     </div>

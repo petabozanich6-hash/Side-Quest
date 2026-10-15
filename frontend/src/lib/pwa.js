@@ -25,6 +25,48 @@ export const deviceKind = () => (isIos() ? "ios" : isAndroid() ? "android" : "de
 // opened from its icon (start_url carries ?source=kids-app). Installed iPhone apps keep their own storage, so the flag
 // is set inside the installed app itself.
 const KIDS_FLAG = "sq_kids_device";
+
+// The kids' app has its own address (kids.sidequestlearning.app; kids.localhost when testing). A separate address makes
+// it a truly separate app on the device: its own icon, its own sign-in and its own saved lessons, so a parent signed in
+// to Side-Quest and a child signed in to SQ Kids can share one phone. Same Worker, same API, same database.
+export const isKidsHost = () => typeof window !== "undefined" && /^kids\./i.test(window.location.hostname);
+const PARENT_HOSTS = ["sidequestlearning.app", "www.sidequestlearning.app"];
+/** The kids' app address for this site, or null where there is none (staging, previews). */
+export function kidsOrigin() {
+  if (typeof window === "undefined") return null;
+  const { protocol, hostname, port } = window.location;
+  if (isKidsHost()) return window.location.origin;
+  if (PARENT_HOSTS.includes(hostname)) return "https://kids.sidequestlearning.app";
+  if (hostname === "localhost") return `${protocol}//kids.localhost${port ? ":" + port : ""}`;
+  return null;
+}
+/** The parent site's address, for links out of the kids' app. */
+export function parentOrigin() {
+  if (typeof window === "undefined") return "";
+  if (!isKidsHost()) return window.location.origin;
+  const { protocol, hostname, port } = window.location;
+  return `${protocol}//${hostname.replace(/^kids\./i, "")}${port ? ":" + port : ""}`;
+}
+/** True when the kids' address is set up and answering (so links can send families there). */
+let kidsLive = null;
+export function kidsHostReachable() {
+  const origin = kidsOrigin();
+  if (!origin || isKidsHost()) return Promise.resolve(false);
+  if (!kidsLive) {
+    kidsLive = Promise.race([
+      fetch(`${origin}/api/health`, { mode: "cors", cache: "no-store" }).then((r) => r.ok).catch(() => false),
+      new Promise((resolve) => setTimeout(() => resolve(false), 4000)),
+    ]);
+  }
+  return kidsLive;
+}
+/** On the kids' address, the page installs the kids' app (before React starts). */
+export function applyKidsHostManifest() {
+  if (!isKidsHost()) return;
+  document.querySelector('link[rel="manifest"]')?.setAttribute("href", "/manifest-kids.webmanifest");
+  document.querySelector('meta[name="apple-mobile-web-app-title"]')?.setAttribute("content", "SQ Kids");
+  document.title = "SQ Kids | Side-Quest Learning";
+}
 export function rememberKidsDevice() {
   try {
     const p = new URLSearchParams(window.location.search);
@@ -33,13 +75,13 @@ export function rememberKidsDevice() {
 }
 /** One device shared by parent and child: make this app open to the child sign-in (or back to the front page). */
 export function setKidsDevice(on) { try { if (on) localStorage.setItem(KIDS_FLAG, "1"); else localStorage.removeItem(KIDS_FLAG); } catch { /* storage blocked */ } }
-export const isKidsDevice = () => { try { return localStorage.getItem(KIDS_FLAG) === "1"; } catch { return false; } };
+export const isKidsDevice = () => { if (isKidsHost()) return true; try { return localStorage.getItem(KIDS_FLAG) === "1"; } catch { return false; } };
 
 /** Points the page's manifest at the kids' app while `kids` is true, so installing from here gives the kids' app. */
 export function useKidsManifest(kids) {
   useEffect(() => {
     const link = document.querySelector('link[rel="manifest"]');
-    if (!link || !kids) return undefined;
+    if (!link || !kids || isKidsHost()) return undefined;
     const before = link.getAttribute("href");
     link.setAttribute("href", "/manifest-kids.webmanifest");
     const title = document.querySelector('meta[name="apple-mobile-web-app-title"]');
