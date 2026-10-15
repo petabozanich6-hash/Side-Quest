@@ -48,6 +48,11 @@ export type Env = {
   STRIPE_WEBHOOK_SECRET?: string;
   /** Must be exactly "true" before a live Stripe key is accepted. Leave unset until live payments are approved. */
   STRIPE_LIVE_ENABLED?: string;
+  /** Live Stripe Price IDs (ordinary configuration; not credentials). Each must be in the live Stripe account. */
+  STRIPE_LIVE_PRICE_WEEKLY?: string;
+  STRIPE_LIVE_PRICE_FORTNIGHTLY?: string;
+  STRIPE_LIVE_PRICE_MONTHLY?: string;
+  STRIPE_LIVE_PRICE_YEARLY?: string;
   /** Optional https origin used for Stripe redirect URLs (defaults to the request origin). */
   APP_URL?: string;
 };
