@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extractIndex, extractCodes, inferStageFromCode } from "../scripts/import-nesa-review.mjs";
+import { extractIndex, extractCodes, inferStageFromCode, expectedStages } from "../scripts/import-nesa-review.mjs";
 
 test("NESA inventory keeps current, future, legacy and life-skills versions separate", () => {
   const url = "https://curriculum.nsw.edu.au/stages/secondary";
@@ -48,4 +48,12 @@ test("NSW year and stage are derived from published identifiers, not the most re
   assert.equal(inferStageFromCode("ENX1-U1-01", "English Extension 11–12 (2024)"), "S6");
   assert.equal(inferStageFromCode("MAEX2-01", "Mathematics Extension 2 11–12 (2024)"), "S6");
   assert.equal(inferStageFromCode("UNCLEAR-NAME-01"), null);
+});
+
+test("NSW syllabus stage coverage flags K–10 omissions before mapping", () => {
+  assert.deepEqual(expectedStages("English K–10 (2022)"), ["ES1","S1","S2","S3","S4","S5"]);
+  assert.deepEqual(expectedStages("Science 7–10 (2023)"), ["S4","S5"]);
+  assert.deepEqual(expectedStages("Technology 7–8 (2023)"), ["S4"]);
+  assert.deepEqual(expectedStages("English Advanced 11–12 (2024)"), ["S6"]);
+  assert.deepEqual(expectedStages("Ceramics Stage 6 (CEC) (2000)"), ["S6"]);
 });
