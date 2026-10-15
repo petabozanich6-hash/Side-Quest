@@ -435,3 +435,21 @@ test("review mappings can only add codes from the family's own framework", async
   const codes = db.raw.prepare("SELECT DISTINCT outcome_code c FROM outcome_evidence WHERE student_id = ?").all(kid).map((r) => r.c);
   assert.deepEqual(codes, [RN], "AC9 and invented codes never become evidence for a NSW family");
 });
+
+test("lessons keep only codes from the family's own catalogue (AC9 states can link AC9 codes)", async () => {
+  const db = makeDb();
+  const qld = family(db, { jurisdiction: "QLD" });
+  const nsw = family(db);
+  const vic = family(db, { jurisdiction: "VIC" });
+  const q = await makeLesson(db, qld, "Q", ["AC9M3N01", RN, "MADE-UP-1"]);
+  const n = await makeLesson(db, nsw, "N", ["AC9M3N01", RN]);
+  const v = await makeLesson(db, vic, "V", ["AC9M3N01", RN]);
+  assert.deepEqual(q.outcome_codes, ["AC9M3N01"]);
+  assert.deepEqual(n.outcome_codes, [RN]);
+  assert.deepEqual(v.outcome_codes, [], "no verified Victorian catalogue: nothing is attached rather than borrowing another framework");
+  const kid = child(db, qld);
+  const w = await doLesson(db, qld, kid, q, 1);
+  await review(db, qld, w.sub, 1, "demonstrated", [{ code: "AC9M3N01", mark: "shown" }]);
+  const t = await ot.trackerFor(db, qld, kid, { now: D(2) });
+  assert.equal(statusOf(t, "AC9M3N01").status, "developing", "QLD lesson evidence reaches the tracker");
+});

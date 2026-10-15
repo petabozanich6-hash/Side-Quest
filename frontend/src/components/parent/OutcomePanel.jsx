@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { Target, Plus, X } from "lucide-react";
 import { api } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
-import { usesNswOutcomes } from "../../data/australianCurriculum";
+import { usesNswOutcomes, hasVerifiedCodes } from "../../data/australianCurriculum";
 
 // Curriculum outcomes this lesson contributes to. Suggestions are picked from the outcome list Side-Quest holds
 // (today the NSW syllabus) and are always the parent's call. A lesson contributes to an outcome; it never "completes" one.
@@ -14,14 +14,30 @@ export default function OutcomePanel({ lesson, onSaved }) {
   const codes = lesson.outcome_codes || [];
   const { user } = useAuth();
   const nsw = usesNswOutcomes(user?.jurisdiction);
+  const verified = hasVerifiedCodes(user?.jurisdiction);
+  const [manual, setManual] = useState("");
+  const addManual = async () => {
+    const code = manual.trim();
+    if (!code || codes.includes(code)) return;
+    if (await save([...codes, code])) {
+      setManual("");
+      // The server keeps only official codes from your curriculum; tell the parent if it was dropped.
+    }
+  };
 
   // Outcomes are referenced by official code only; the wording stays with the curriculum authority.
   const save = async (next) => {
+    const wanted = next[next.length - 1];
     const old = new Set(codes);
     const kept = (lesson.curriculum_refs || []).filter(x => !old.has(String(x).split(":")[0].trim()));
     const refs = [...next, ...kept].slice(0, 10);
     setBusy(true);
-    try { const { data } = await api.put(`/lessons/${lesson.id}`, { ...lesson, outcome_codes: next, curriculum_refs: refs }); onSaved(data); return true; }
+    try {
+      const { data } = await api.put(`/lessons/${lesson.id}`, { ...lesson, outcome_codes: next, curriculum_refs: refs });
+      onSaved(data);
+      if (wanted && next.length > codes.length && !(data.outcome_codes || []).includes(wanted)) { toast.error(`${wanted} isn't an official outcome code in your curriculum, so it wasn't linked.`); return false; }
+      return true;
+    }
     catch (e) { toast.error(e.response?.data?.detail || "Could not save the outcomes"); return false; }
     finally { setBusy(false); }
   };
@@ -57,6 +73,14 @@ export default function OutcomePanel({ lesson, onSaved }) {
         </div>
       )}
       <p className="text-xs text-slate-500" data-testid="outcome-note">{!nsw ? `Side-Quest doesn't hold the ${user?.jurisdiction} curriculum outcome list yet, so outcome matching is off for your family rather than suggesting NSW outcomes that don't apply. Record outcomes from your own curriculum in the lesson's curriculum references.` : note || "Suggestions come from the outcome list Side-Quest holds, which is currently the NSW syllabus (other states and territories are not loaded yet). A lesson contributes to an outcome; it does not complete it. Please check against your own state or territory's requirements."} Linked outcomes appear when you review your child's work.</p>
+      {verified && (
+        <div className="flex flex-wrap items-center gap-2" data-testid="outcome-manual">
+          <input value={manual} onChange={e => setManual(e.target.value.toUpperCase().replace(/\s+/g, ""))} placeholder={nsw ? "e.g. MA2-RN-01" : "e.g. AC9M3N01"} aria-label="Outcome code" className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-mono w-44" data-testid="outcome-manual-code" />
+          <button type="button" disabled={busy || !manual.trim()} onClick={addManual} className="rounded-full border border-slate-900 px-3 py-1.5 text-sm font-semibold disabled:opacity-50" data-testid="outcome-manual-add">Link code</button>
+          <a href={nsw ? "https://curriculum.nsw.edu.au/" : "https://v9.australiancurriculum.edu.au/"} target="_blank" rel="noopener noreferrer" className="text-xs underline text-slate-600">Look up codes and wording</a>
+        </div>
+      )}
+      {!verified && <p className="text-xs text-slate-600" data-testid="outcome-unavailable">Side-Quest doesn't hold a verified outcome list for your state or territory yet, so no codes are attached. Your lessons and evidence are still recorded.</p>}
     </section>
   );
 }
