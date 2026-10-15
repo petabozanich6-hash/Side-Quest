@@ -4,7 +4,7 @@ import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
 import { hashSecret, verifySecret } from "./auth";
-import { loginBlocked, recordLoginFailure, clearLoginFailures } from "./loginThrottle";
+import { loginBlocked, recordLoginFailure, clearLoginFailures, ensureAuthSchema } from "./loginThrottle";
 import { registerCore } from "./core";
 import { trialEndFrom } from "./entitlements";
 import { checkCanAddChild } from "./lessonBuilder";
@@ -29,6 +29,8 @@ const app: App = new Hono<{ Bindings: Env; Variables: Vars }>();
 const TOKEN_DAYS = 30;
 
 app.use("/api/*", cors());
+// Sign-in security schema (migration 0058) is ensured at runtime too, so a deploy can never precede it.
+app.use("/api/*", async (c, next) => { if (c.env.DB) await ensureAuthSchema(c.env.DB); await next(); });
 
 // Private staging gate. Off unless STAGING_KEY is set (it is never set in production).
 // Visit /api/staging-access?key=<STAGING_KEY> once in a browser to receive the access cookie.

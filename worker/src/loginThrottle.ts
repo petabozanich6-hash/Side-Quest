@@ -53,3 +53,20 @@ export async function clearLoginFailures(db: D1Database, kind: "child" | "parent
   const { accountKey } = await keys(kind, account, "");
   await db.prepare("DELETE FROM login_attempts WHERE key = ?").bind(accountKey).run();
 }
+
+let authSchemaReady = false;
+/**
+ * Deploys don't run migrations, so the sign-in security schema (migration 0058) is also ensured here, once per
+ * Worker instance. Additive only: a column defaulting to 0 (every child keeps signing in) and a counters table.
+ */
+export async function ensureAuthSchema(db: D1Database) {
+  if (authSchemaReady) return;
+  try {
+    await db.prepare("SELECT credential_version FROM students LIMIT 1").first();
+  } catch {
+    try { await db.prepare("ALTER TABLE students ADD COLUMN credential_version INTEGER NOT NULL DEFAULT 0").run(); }
+    catch (e) { if (!/duplicate column/i.test(e instanceof Error ? e.message : String(e))) throw e; }
+  }
+  await db.prepare("CREATE TABLE IF NOT EXISTS login_attempts (key TEXT PRIMARY KEY, window_started INTEGER NOT NULL, attempts INTEGER NOT NULL DEFAULT 0)").run();
+  authSchemaReady = true;
+}
