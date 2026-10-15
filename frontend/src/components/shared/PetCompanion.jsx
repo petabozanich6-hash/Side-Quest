@@ -64,7 +64,6 @@ export default function PetCompanion({ stageKey, stageTitle }) {
 
   useEffect(() => {
     if (aid) api.get(`/assignments/${aid}`).then((r) => setLesson(r.data?.lesson || {})).catch(() => {});
-    else setLesson({});
     api.get("/pet").then((r) => { if (!r.data?.needs_pet) setPet(r.data); }).catch(() => {});
   }, [aid]);
 
