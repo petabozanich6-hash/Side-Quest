@@ -28,13 +28,14 @@ for(const name of languages){
   }
 }
 export const VIC_SUBJECT_SOURCES=list.map(([learning_area,subject,path,pathway])=>({learning_area,subject,url:BASE+path,pathway:pathway||null}));
-const known = new Map(JSON.parse(readFileSync(fileURLToPath(new URL("../src/data/vic-review-import.json",import.meta.url)),"utf8")).candidates.map(x=>[x.code,x]));
+
 async function get(url){
   const r=await fetch(url,{headers:{accept:"text/html","user-agent":"SideQuestCurriculumResearch/1.0"},signal:AbortSignal.timeout(25000)});
   if(!r.ok)throw Error("HTTP "+r.status+" "+url);
   return await r.text();
 }
 async function main(){
+  const known = new Map(JSON.parse(readFileSync(fileURLToPath(new URL("../src/data/vic-review-import.json",import.meta.url)),"utf8")).candidates.map(x=>[x.code,x]));
   const failures=[],results=[],assigned=new Map();
   let i=0;
   await Promise.all(Array.from({length:4},async()=>{
