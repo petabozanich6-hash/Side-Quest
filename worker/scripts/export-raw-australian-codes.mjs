@@ -20,6 +20,7 @@ const datasets=[
   {name:'ac9-outcomes.ts',decl:'AC9_OUTCOMES',authority:'ACARA',kind:'content_description',jurisdictions:['NSW','VIC','QLD','WA','SA','TAS','ACT','NT'],status:'verified_national_reference_not_automatically_state_adopted'},
   {name:'vic-source-ids.ts',decl:'VIC_SOURCE_VERIFIED_IDS',authority:'VCAA',kind:'content_description',jurisdictions:['VIC'],status:'verified_partial_versioned_reference'},
   {name:'vic1-languages-review.json',field:'records',authority:'VCAA',kind:'content_description_candidate',jurisdictions:['VIC'],status:'review_only_sequence_and_band_not_verified'},
+  {name:'nsw-outcomes.ts',decl:'NSW_OUTCOMES_SEED',authority:'NESA',kind:'legacy_seed_outcome_code',jurisdictions:['NSW'],status:'legacy_seed_not_verified_against_current_syllabuses'},
   {name:'nesa-review-import.json',field:'candidates',authority:'NESA',kind:'syllabus_outcome_candidate',jurisdictions:['NSW'],status:'review_only_version_stage_coverage_incomplete'},
   {name:'nesa-current-2026.ts',decl:'NESA_2026_DIRECT_OUTCOME_CODES',authority:'NESA',kind:'syllabus_outcome',jurisdictions:['NSW'],status:'verified_partial_current_list'},
   {name:'tasc-2026-course-codes.json',field:'courses',authority:'TASC',kind:'senior_course_code',jurisdictions:['TAS'],status:'verified_current_2026_accredited_course_list'},
