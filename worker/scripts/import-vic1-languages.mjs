@@ -39,6 +39,11 @@ export function extractLegacyCodes(html,source){
   const map=new Map();
   let band=null, sequence="unresolved";
   for(const line of sections){
+    // VCAA v1 presents F–10 and 7–10 pathways on the same HTML page. A heading
+    // changes the active sequence; otherwise codes would all remain "unresolved".
+    // Only read explicit sequence headings, never infer them from a code suffix.
+    const seq = /(?:^|\s)(F\s*[–-]\s*10|7\s*[–-]\s*10)\s+Sequence\b/i.exec(line);
+    if(seq){sequence = seq[1].replace(/\s/g,"").replace(/-/g,"–").toUpperCase(); band=null;}
     const matches=[...line.matchAll(/(?:Foundation\s+to\s+Level\s*2|Levels?\s*(?:3\s+and\s+4|5\s+and\s+6|7\s+and\s+8|9\s+and\s+10|7\s+to\s+10))\s+Content\s+Descriptions/gi)];
     if(matches.length)band=matches[0][0].replace(/\s+Content\s+Descriptions$/i,"");
     else if(/^.*Achievement\s+standards?\s*$/i.test(line))band=null;
