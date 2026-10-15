@@ -97,7 +97,7 @@ app.get("/api", (c) =>
 app.get("/api/health", (c) => c.json({ status: "alive" }));
 // Announcement and maintenance notices for every visitor (only switched-on notices, plain text).
 app.get("/api/platform/notices", async (c) => {
-  c.header("Cache-Control", "public, max-age=30");
+  c.header("Cache-Control", "no-store");
   try { return c.json(await publicNotices(c.env.DB)); } catch { return c.json({ announcement: null, maintenance: null, registrations_open: true }); }
 });
 

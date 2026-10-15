@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Trash2, ChevronRight } from "lucide-react";
 import { GROUPS, PAGES } from "../legal/legalContent";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
+import { useAuth } from "../../context/AuthContext";
 
 export default function TrustSupport() {
   const [showDelete, setShowDelete] = useState(false);
+  const { user } = useAuth();
   return (
     <div className="max-w-4xl mx-auto px-6 py-10" data-testid="trust-support-hub">
       <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>Trust &amp; Support</h1>
@@ -40,6 +42,16 @@ export default function TrustSupport() {
           </section>
         ))}
       </div>
+      <section className="mt-10" data-testid="your-account">
+        <h2 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>Your account</h2>
+        <p className="text-sm text-stone-500 mb-2">Support may ask for this id. It is not a password and is safe to share with Side-Quest support.</p>
+        <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-white px-4 py-3" style={{ border: "1px solid #D4C8A8" }}>
+          <span className="text-sm text-stone-600">Account ID</span>
+          <code className="text-sm break-all" data-testid="account-id">{user?.id}</code>
+          <button type="button" className="text-xs font-semibold underline" style={{ color: "#4A5D3A" }}
+            onClick={() => navigator.clipboard?.writeText(user?.id || "").catch(() => {})}>Copy</button>
+        </div>
+      </section>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
     </div>
   );

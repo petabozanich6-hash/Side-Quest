@@ -13,7 +13,14 @@ import ChildLogin from "./pages/ChildLogin";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
-import CommandCentre from "./pages/parent/CommandCentre";
+import HqShell from "./pages/parent/hq/HqShell";
+import HqOverview from "./pages/parent/hq/HqOverview";
+import HqCustomers from "./pages/parent/hq/HqCustomers";
+import HqCustomer from "./pages/parent/hq/HqCustomer";
+import HqSettings from "./pages/parent/hq/HqSettings";
+import HqAudit from "./pages/parent/hq/HqAudit";
+import HqSecurity from "./pages/parent/hq/HqSecurity";
+import PlatformNotices from "./components/shared/PlatformNotices";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
@@ -81,7 +88,14 @@ function Router() {
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="plan" element={<UpgradePage />} />
-        <Route path="command-centre" element={<CommandCentre />} />
+        <Route path="command-centre" element={<HqShell />}>
+          <Route index element={<HqOverview />} />
+          <Route path="customers" element={<HqCustomers />} />
+          <Route path="customers/:id" element={<HqCustomer />} />
+          <Route path="settings" element={<HqSettings />} />
+          <Route path="audit" element={<HqAudit />} />
+          <Route path="security" element={<HqSecurity />} />
+        </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
         <Route path="lessons/drafts" element={<LessonDrafts />} />
@@ -123,6 +137,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Toaster richColors position="top-right" />
+        <PlatformNotices />
         <Router />
       </BrowserRouter>
     </AuthProvider>
