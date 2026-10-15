@@ -36,3 +36,7 @@ Parent Hub → **Children** → "Set up Side-Quest on your child's own phone or 
 (`/child-login?source=kids-app`); on that device the front page forwards to the child sign-in, and signing out returns
 there. Installing from the child sign-in page also gives the kids' app. Older iPhones (before iOS 16.4) may open the page
 the app was added from instead; adding it from the child sign-in page avoids that.
+
+One device shared by parent and child: if the kids' link opens inside the Side-Quest app already installed (usual on
+Android), the page offers "Open to my child's sign-in on this device" instead of a second app. The parent still signs in
+from "Are you a parent? Sign in here", and Get the app → "Open to the front page again" switches it back.

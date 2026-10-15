@@ -31,6 +31,8 @@ export function rememberKidsDevice() {
     if (p.get("source") === "kids-app") localStorage.setItem(KIDS_FLAG, "1");
   } catch { /* storage blocked */ }
 }
+/** One device shared by parent and child: make this app open to the child sign-in (or back to the front page). */
+export function setKidsDevice(on) { try { if (on) localStorage.setItem(KIDS_FLAG, "1"); else localStorage.removeItem(KIDS_FLAG); } catch { /* storage blocked */ } }
 export const isKidsDevice = () => { try { return localStorage.getItem(KIDS_FLAG) === "1"; } catch { return false; } };
 
 /** Points the page's manifest at the kids' app while `kids` is true, so installing from here gives the kids' app. */
