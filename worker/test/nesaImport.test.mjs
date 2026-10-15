@@ -45,5 +45,7 @@ test("NSW year and stage are derived from published identifiers, not the most re
   assert.equal(inferStageFromCode("CA1-DAN-01"), "S1");
   assert.equal(inferStageFromCode("MA4-INT-C-01"), "S4");
   assert.equal(inferStageFromCode("MAO-WM-01"), null);
+  assert.equal(inferStageFromCode("ENX1-U1-01", "English Extension 11–12 (2024)"), "S6");
+  assert.equal(inferStageFromCode("MAEX2-01", "Mathematics Extension 2 11–12 (2024)"), "S6");
   assert.equal(inferStageFromCode("UNCLEAR-NAME-01"), null);
 });
