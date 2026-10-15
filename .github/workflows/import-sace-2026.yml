@@ -1,11 +1,10 @@
 name: Import official SACE and NTCET subject codes for 2026
+# Official SACE subject codes were source-imported and are now on the draft branch.
+# Re-fetch manually only when the SACE Board updates subject code tables;
+# checked-in data and importer tests remain part of normal CI.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-sace-2026.mjs
-      - worker/test/sace2026.test.mjs
-      - .github/workflows/import-sace-2026.yml
   workflow_dispatch:
+
 permissions:
   contents: write
 jobs:
