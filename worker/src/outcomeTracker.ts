@@ -53,7 +53,7 @@ const NSW_CATALOGUE: Catalogue = {
   available: true,
   framework: "NSW",
   name: "NSW syllabuses (NESA)",
-  version: `nsw-seed-v${NSW_OUTCOMES_SEED_VERSION}`,
+  version: `nsw-seed-v${NSW_OUTCOMES_SEED_VERSION}+nesa-2026-current-direct-PARTIAL`,
   outcomes: NSW_OUTCOMES.map((o) => ({ code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source })),
   byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source }])),
 };
