@@ -1,0 +1,51 @@
+name: Discover official Victorian curriculum version 2 identifiers
+# Source-code-only review. State curriculum Version 1 remains necessary for
+# EAL/selected languages, A-D and transition years. No tracker publication.
+on:
+  pull_request:
+    paths:
+      - worker/scripts/import-vic-review.mjs
+      - worker/test/vicImport.test.mjs
+      - .github/workflows/import-vic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test official VCAA identifier extraction
+        run: node --test worker/test/vicImport.test.mjs
+      - name: Index official VCAA curriculum v2 level pages
+        run: node worker/scripts/import-vic-review.mjs
+      - name: Attach source-linked review candidates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vic-vc2-source-review
+          path: worker/src/data/vic-review-import.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Commit review data to the unmerged PR branch only
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898208+github-actions[bot]@users.noreply.github.com"
+          git add worker/src/data/vic-review-import.json
+          if git diff --cached --quiet; then
+            echo "No candidate changes"
+          else
+            git commit -m "Data(review only): candidate VCAA v2 curriculum identifiers"
+            git push origin "HEAD:$TARGET_BRANCH"
+          fi
