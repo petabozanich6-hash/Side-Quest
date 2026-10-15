@@ -1,10 +1,7 @@
 name: Discover Queensland senior subject and elective catalogue
+# GitHub-hosted runners receive HTTP 403 for QCAA pages; parser fixtures
+# still run in ordinary CI, but bulk data import requires authorised access.
 on:
-  pull_request:
-    paths:
-      - worker/scripts/import-qcaa-senior.mjs
-      - worker/test/qcaaSenior.test.mjs
-      - .github/workflows/import-qcaa-senior.yml
   workflow_dispatch:
 permissions:
   contents: write
