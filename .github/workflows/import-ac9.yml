@@ -31,7 +31,7 @@ jobs:
           CURRICULUM_REPORT_PATH: curriculum-coverage-report.json
         run: node worker/scripts/audit-catalogue.mjs --require-all-eight
       - name: Test the generated catalogue and language elective filtering
-        run: node --experimental-strip-types --test worker/test/ac9Catalogue.test.mjs worker/test/ac9CodeLevel.test.mjs
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/ac9Catalogue.test.mjs worker/test/ac9CodeLevel.test.mjs
       - name: Attach generated data and audit for review
         uses: actions/upload-artifact@v4
         with:
