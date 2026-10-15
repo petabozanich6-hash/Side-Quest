@@ -19,6 +19,21 @@ The current NSW seed uses identifiers such as `ENe-OLC-01` and omits official En
 
 **Do not blindly rewrite saved child outcome evidence IDs:** new NESA editions and old code forms need source-edition-scoped identifiers plus explicit reviewed aliases/migrations. A case-normalisation pass must not equate unrelated code systems. Build a complete official syllabus index and per-version NESA outcomes import first, including Life Skills and senior extensions/electives; verify expected counts against authority syllabus pages.
 
+## NSW source discovery and staged integration (16 October 2026)
+
+- Official primary, secondary and senior syllabus listings discovered **258 distinct linked entries** (including a small number of cross-page or general references which still need reconciliation). Each is tagged with its URL, listing status, publication year where published, kind (including CEC, Life Skills, Extension and VET) and relevant stage index.
+- **90** listed modern syllabus pages had a direct outcomes URL. Across those, **885 code candidates** were extracted with their precise official URLs and syllabus edition. **25 pages failed or returned no code**, and legacy NESA material hosted elsewhere remains largely unextracted. This is an incomplete source audit, not a complete NSW dataset.
+- Of those extracted, **396 distinct current-listed, stage-resolved code identifiers** were compiled into `nesa-current-2026.ts` and added **without rewriting the existing 137-code seed or historical evidence**. The helper deduplicates genuinely shared outcomes across syllabus versions (for example MAO-WM-01 across multiple senior Mathematics courses).
+- Current, outgoing and future syllabus versions are not conflated; **future-only codes are not enabled simply because the syllabus is published**.
+- The source audit flags missing K–10 stages. The NESA website's rendered outcome pages may only show selected stages, so a reachable outcomes page does not prove complete course coverage.
+- Year 11/12 course identifiers must derive their Stage 6 association from the syllabus context: numbers in *Extension 1* and *Extension 2* codes do not mean Stage 1 or Stage 2.
+- `outcomeTracker.ts` now narrows selected Stage 6 English Advanced/Standard and Mathematics pathways by course, rather than attributing all relevant learning-area codes to a child.
+- **The NSW catalogue remains partial**. Complete legacy syllabuses, missing stages, Life Skills and senior language/VET pathways still need authoritative import, per-edition checks and careful review of code aliases.
+
+## WA state-specific sources and access issue
+
+Official SCSA provides JSON curriculum downloads (with genuine identifiers such as WA3ELYA3 and language-specific ACL... codes) at https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads . The source importer `worker/scripts/import-wa-review.mjs` and fixture tests are committed, but **the live download returned HTTP 403 to GitHub Actions**. The WA catalogue is **NOT imported**. The importer can be run manually when legitimate source files/site access are available. Do not substitute AC9 as proof of Western Australian curriculum equivalence. Published WA curriculum versions are transitional (some areas revised for implementation 2025/2026, Languages and Arts familiarisation 2026), so verify each subject's applicable year/edition.
+
 ## Confirmed gaps in main (historical baseline)
 
 - `worker/src/data/jurisdictions.ts` advertises only NSW as `codes: "verified"`; VIC, QLD, WA, SA, TAS, ACT, NT are `none`.
