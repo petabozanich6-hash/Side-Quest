@@ -9,10 +9,13 @@
  * - Icons, pet art and other images are stale-while-revalidate.
  * Bump VERSION to clear old caches.
  */
-const VERSION = "sq-v1";
+// v2: the offline page is cached at /offline. Cloudflare redirects /offline.html -> /offline, and browsers refuse to
+// show a cached redirect for a page visit, so the old /offline.html copy never appeared.
+const VERSION = "sq-v2";
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
-const PRECACHE = ["/offline.html", "/icons/icon-192.png", "/manifest.webmanifest"];
+const OFFLINE_PAGE = "/offline";
+const PRECACHE = [OFFLINE_PAGE, "/icons/icon-192.png", "/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(SHELL).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
@@ -43,7 +46,7 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith("/api/")) return;              // private and live: never cached
 
   if (req.mode === "navigate") {
-    event.respondWith(fetch(req).catch(async () => (await caches.match("/offline.html")) || Response.error()));
+    event.respondWith(fetch(req).catch(async () => (await caches.match(OFFLINE_PAGE)) || Response.error()));
     return;
   }
 

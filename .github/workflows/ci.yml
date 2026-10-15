@@ -60,6 +60,15 @@ jobs:
           [ -f /tmp/pw/node_modules/playwright/index.mjs ] || { mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm i playwright@1.49.1 2>&1 | tail -1 && npx playwright install --with-deps chromium 2>&1 | tail -2; }
           cd "$GITHUB_WORKSPACE"
           PW_PATH=/tmp/pw/node_modules/playwright/index.mjs timeout 600 node worker/test/e2e/owner-hq.mjs 2>&1 | tee ci-logs/e2e-owner-hq.log
+      - name: Installable app end-to-end (Get the app page, QR code, offline page)
+        id: e2e_app
+        continue-on-error: true
+        if: steps.build.outcome == 'success'
+        run: |
+          set -o pipefail
+          [ -f /tmp/pw/node_modules/playwright/index.mjs ] || { mkdir -p /tmp/pw && cd /tmp/pw && npm init -y >/dev/null && npm i playwright@1.49.1 2>&1 | tail -1 && npx playwright install --with-deps chromium 2>&1 | tail -2; }
+          cd "$GITHUB_WORKSPACE"
+          PW_PATH=/tmp/pw/node_modules/playwright/index.mjs timeout 300 node worker/test/e2e/install-app.mjs 2>&1 | tee ci-logs/e2e-install-app.log
       - name: Summary
         if: always()
         run: |
@@ -70,6 +79,7 @@ jobs:
             echo "build=${{ steps.build.outcome }}"
             echo "e2e=${{ steps.e2e.outcome }}"
             echo "e2e_owner_hq=${{ steps.e2e_hq.outcome }}"
+            echo "e2e_install_app=${{ steps.e2e_app.outcome }}"
           } | tee ci-logs/summary.txt
       - name: Publish logs to branch ci-results (logs only, no code)
         if: always() && github.event_name != 'pull_request'
