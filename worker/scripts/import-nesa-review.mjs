@@ -54,14 +54,16 @@ const CODE = /^([A-Z]{2,9}[A-Z0-9]*-(?:[A-Z0-9]{1,10}-)?\d{1,3}[A-Z]?)(?=\s|$)/;
  * NESA's HTML often prints several stage tabs before the outcome codes,
  * so "nearest preceding Stage 2" would incorrectly classify all outcomes as S2.
  */
-export function inferStageFromCode(code) {
+export function inferStageFromCode(code, syllabusTitle = "") {
+  // Senior subject names take precedence over Extension 1 / 2 outcome suffixes.
+  if (/(?:11\s*[-–]\s*12|Stage\s*6)/i.test(syllabusTitle)) return "S6";
   const legacyOrNew = /^[A-Z]{2,6}?([eE1-5])-/i.exec(code);
   if (legacyOrNew) return /^[eE]$/.test(legacyOrNew[1]) ? "ES1" : "S" + legacyOrNew[1];
   if (/(?:11|12)-/.test(code)) return "S6";
   return null;
 }
 
-export function extractCodes(html, source) {
+export function extractCodes(html, source, syllabusTitle = "") {
   // Discard scripts/style: hidden framework payloads may contain navigation links
   // rather than the selected syllabus's outcome list.
   const t = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
@@ -81,7 +83,7 @@ export function extractCodes(html, source) {
     const match = CODE.exec(line);
     if (!match || seen.has(match[1])) continue;
     seen.add(match[1]);
-    codes.push({ code: match[1], stage_hint: inferStageFromCode(match[1]), page_stage_context: stage, official_outcomes_url: source, identifier_kind: "nesa_syllabus_outcome", status: "extracted_pending_completeness_check" });
+    codes.push({ code: match[1], stage_hint: inferStageFromCode(match[1], syllabusTitle), page_stage_context: stage, official_outcomes_url: source, identifier_kind: "nesa_syllabus_outcome", status: "extracted_pending_completeness_check" });
   }
   return codes;
 }
@@ -127,7 +129,7 @@ async function main() {
       const index = nextIndex++;
       const row = eligible[index];
       try {
-        const codes = extractCodes(await get(row.outcomes_url), row.outcomes_url);
+        const codes = extractCodes(await get(row.outcomes_url), row.outcomes_url, row.title);
         row.candidate_code_count = codes.length;
         for (const c of codes) candidates.push({ ...c, syllabus_title: row.title, syllabus_path: row.syllabus_path, version_year: row.version_year, listed_as: row.listed_as, source_stages: row.source_stages });
         if (!codes.length) failures.push({ syllabus: row.title, url: row.outcomes_url, reason: "No outcome identifiers extracted" });
