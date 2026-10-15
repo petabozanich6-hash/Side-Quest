@@ -19,6 +19,8 @@ function tsArray(name,decl){
 const datasets=[
   {name:'ac9-outcomes.ts',decl:'AC9_OUTCOMES',authority:'ACARA',kind:'content_description',jurisdictions:['NSW','VIC','QLD','WA','SA','TAS','ACT','NT'],status:'verified_national_reference_not_automatically_state_adopted'},
   {name:'vic-source-ids.ts',decl:'VIC_SOURCE_VERIFIED_IDS',authority:'VCAA',kind:'content_description',jurisdictions:['VIC'],status:'verified_partial_versioned_reference'},
+  {name:'vic1-languages-review.json',field:'records',authority:'VCAA',kind:'content_description_candidate',jurisdictions:['VIC'],status:'review_only_sequence_and_band_not_verified'},
+  {name:'nesa-review-import.json',field:'candidates',authority:'NESA',kind:'syllabus_outcome_candidate',jurisdictions:['NSW'],status:'review_only_version_stage_coverage_incomplete'},
   {name:'nesa-current-2026.ts',decl:'NESA_2026_DIRECT_OUTCOME_CODES',authority:'NESA',kind:'syllabus_outcome',jurisdictions:['NSW'],status:'verified_partial_current_list'},
   {name:'tasc-2026-course-codes.json',field:'courses',authority:'TASC',kind:'senior_course_code',jurisdictions:['TAS'],status:'verified_current_2026_accredited_course_list'},
   {name:'sace-2026-subject-review.json',field:'subject_codes',authority:'SACE',kind:'senior_subject_code',jurisdictions:['SA','NT'],status:'verified_partial_subject_table'},
@@ -30,13 +32,14 @@ for(const d of datasets){
   for(const row of rows){
     const code=row.code;
     if(typeof code!=='string'||!code.trim()) throw Error('Blank code in '+d.name);
-    const source_url=row.source_url||row.official_url||row.url||null;
+    const source_url=row.source_url||row.official_url||row.official_outcomes_url||row.url||null;
     const output={
       code,authority:d.authority,identifier_kind:d.kind,
       applicable_jurisdictions:d.jurisdictions,
       verification_status:d.status,
       source_file:d.name,source_url,
       ...row,
+      verification_status:d.status,
       // Preserve the exported record's explicit kind; do not let source rows override it.
       identifier_kind:d.kind,
     };
