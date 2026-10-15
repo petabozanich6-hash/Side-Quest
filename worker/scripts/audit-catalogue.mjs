@@ -37,15 +37,15 @@ if (strict) {
   if (languageSubjects.length < 8) failures.push("Languages subject/pathway coverage unresolved; only " + languageSubjects.length + " distinct subjects");
 }
 const summary = {
-  generated_at: new Date().toISOString(), source: "Checked-in ACARA MRAC/2024/04 and NSW NESA seed v3",
+  generated_at: new Date().toISOString(), source: "Checked-in ACARA MRAC/2024/04 and NSW NESA seed v3; additional verified imports reported separately",
   ac9: { total: ac9.length, by_learning_area: byArea, language_subjects: languageSubjects },
   nsw: { seed_identifiers: nsw.length, status: "PARTIAL — per-syllabus elective/senior manifest not yet verified" },
   jurisdictions: {
-    NSW: "PARTIAL NSW syllabus seed", VIC: "MISSING Victorian v2 verified catalogue",
+    NSW: "PARTIAL NSW syllabus seed", VIC: "PARTIAL VCAA VC2 and VC1 EAL imports; VC1 Languages and senior pathways remain incomplete",
     WA: "MISSING Western Australian state catalogue",
-    QLD: "PARTIAL AC9 reference; senior QCE missing", SA: "PARTIAL AC9 reference; senior SACE missing",
-    TAS: "PARTIAL AC9 reference; senior TASC missing", ACT: "PARTIAL AC9 reference; senior BSSS missing",
-    NT: "PARTIAL AC9 reference; senior NTCET missing",
+    QLD: "PARTIAL AC9 reference; senior QCE missing", SA: "PARTIAL AC9 reference; 427 SACE senior subject codes imported, VET/external gaps remain",
+    TAS: "PARTIAL AC9 reference; 164 TASC 2026 accredited course IDs imported, VET gaps remain", ACT: "PARTIAL AC9 reference; senior BSSS missing",
+    NT: "PARTIAL AC9 reference; SACE subject codes imported, NTCET-specific and VET gaps remain",
   }, complete: false, failures
 };
 console.log(JSON.stringify(summary, null, 2));
