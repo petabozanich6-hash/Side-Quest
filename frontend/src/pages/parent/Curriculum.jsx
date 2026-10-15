@@ -138,6 +138,7 @@ export default function Curriculum() {
   const { user } = useAuth();
   const place = jurisdictionFor(user?.jurisdiction);
   const nsw = usesNswOutcomes(user?.jurisdiction);
+  const vic = user?.jurisdiction === "VIC";
   return (
     <div className="p-4 sm:p-6 lg:p-10 space-y-9 max-w-7xl mx-auto" data-testid="curriculum-page">
       <header className="space-y-4">
@@ -170,7 +171,11 @@ export default function Curriculum() {
         <p className="mt-3 text-sm leading-relaxed text-stone-600" data-testid="curriculum-outcome-note">
           {nsw
             ? "Automatic outcome suggestions and the learning plan writer use the NSW syllabus outcome list. They are suggestions for you to check, not official confirmation."
-            : `Side-Quest doesn't hold the ${place ? place.code : "local"} outcome list yet, so automatic outcome suggestions and the learning plan writer are switched off for your family rather than showing NSW outcomes that don't apply. Record outcomes yourself from your official curriculum above.`}
+            : vic
+              ? "Side-Quest now holds source-backed Victorian curriculum code references (F–10 v2 and v1 EAL), and these can be linked to records. The catalogue remains partial, and automatic AI lesson matching is not yet enabled for Victoria."
+              : place?.code === "WA"
+                ? "Western Australia's official state curriculum downloads are not yet imported, so automatic outcome suggestions are off rather than showing incorrect interstate codes."
+                : "Side-Quest holds verified Australian Curriculum v9 content-description reference codes for this jurisdiction, but automatic lesson matching and the learning-plan writer are not yet connected to them. Check your jurisdiction's implementation rules."}
         </p>
       </section>
 
