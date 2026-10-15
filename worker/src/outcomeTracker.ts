@@ -206,6 +206,8 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
     const keys = SUBJECT_KEYS.filter((re) => re.test(c.name));
     const key = keys.length === 1 ? keys[0] : null;
     const ac9Name = ac9 && key ? AC9_KEY_SUBJECT.find(([re]) => re.test(c.name))?.[1] : undefined;
+    const normalised = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const languagePathwayHints = ac9 && area === "Languages" ? ["firstlanguage", "secondlanguage", "backgroundlanguage", "f10sequence", "710sequence"].filter((hint) => normalised(c.name).includes(hint)) : [];
     const language = ac9 && area === "Languages" ? languageSubject(c.name) : null;
     const namedLanguageUnmapped = ac9 && area === "Languages" && !language && !broadLanguages(c.name);
     return {
@@ -214,7 +216,7 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
         if (o.learning_area !== area) return false;
         if (area === "Languages" && ac9) {
           if (namedLanguageUnmapped) return false;
-          return !language || subjectText(o).toLowerCase().includes(language.toLowerCase());
+          return (!language || subjectText(o).toLowerCase().includes(language.toLowerCase())) && languagePathwayHints.every((hint) => normalised(subjectText(o) + " " + String(o.pathway || "")).includes(hint));
         }
         return !key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)));
       },
