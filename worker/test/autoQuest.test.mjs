@@ -260,3 +260,21 @@ test("rejecting keeps the parent's lesson; reopening allows re-planning", async 
   assert.equal(again.proposals[0].status, "rejected", "re-planning respects the decision");
   assert.equal((await aq.reopenProposal(db, fam, g.proposal.id, NOW)).proposal.status, "proposed");
 });
+
+test("Auto-Quest plans only within the child's program from their profile", async () => {
+  const db = makeDb();
+  const fam = family(db, { jurisdiction: "QLD" });
+  const id = `aqk${++k}`;
+  db.raw.prepare("INSERT INTO students (id,family_id,name,username,pin_hash,stage,year_level,created_at,extra) VALUES (?,?,?,?,?,?,?,?,?)")
+    .run(id, fam, "Ari", `ari${id}`, "x", "S5", "9", NOW.toISOString(), JSON.stringify({ electives: [{ name: "Mathematics", learning_area: "Mathematics" }, { name: "History", learning_area: "HSIE" }] }));
+  slot(db, fam, id, 1, "Mathematics");
+  slot(db, fam, id, 2, "History");
+  slot(db, fam, id, 3, "Music");
+  const r = await plan(db, fam, id);
+  const cat = ot.catalogueFor("QLD");
+  const [m, h, mu] = r.proposals;
+  assert.ok(m.outcome_codes.length && m.outcome_codes.every((c) => { const o = cat.byCode.get(c); return o.learning_area === "Mathematics" && o.from <= 9 && o.to >= 9; }), "Year 9 maths only");
+  assert.ok(h.outcome_codes.every((c) => cat.byCode.get(c).subject === "History 7-10"), "History, not Geography or Civics");
+  assert.equal(mu.action, "needs_parent_plan");
+  assert.match(mu.reason, /isn't one of the subjects on this child's profile/);
+});

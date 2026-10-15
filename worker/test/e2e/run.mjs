@@ -1170,6 +1170,38 @@ await step("Q. Auto-Quest: plan the week from the timetable, approve a reused le
   await ctx.close();
 });
 
+await step("R. the Outcome Tracker follows the child's level and subjects from their profile, and subjects can be edited", async () => {
+  const em = `program-${stamp}@example.com`;
+  const reg = await api("POST", "/auth/register", null, { name: "Program Fam", email: em, password: pw, jurisdiction: "NSW" });
+  const pt = reg.json.token;
+  const fam = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${fam}';`);
+  const core = [["English", "English"], ["Mathematics", "Mathematics"], ["Science", "Science"], ["History", "HSIE"]].map(([name, learning_area]) => ({ code: name.slice(0, 4).toUpperCase() + "-S5", name, learning_area }));
+  const ch = await api("POST", "/students", pt, { name: "Rory", username: `pr${stamp}`.slice(0, 14), pin: "1357", stage: "S5", year_level: "9", electives: core });
+  ok(ch.status === 200, "child " + ch.status);
+  let t = await api("GET", `/outcomes/students/${ch.json.id}`, pt);
+  const areas = () => [...new Set(t.json.outcomes.filter((o) => o.in_stage).map((o) => o.learning_area))].sort().join(",");
+  ok(areas() === "English,HSIE,Mathematics,Science", "tracker areas " + areas());
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const rp = await ctx.newPage();
+  await rp.goto(BASE + "/login");
+  await rp.fill('[data-testid=login-email]', em); await rp.fill('[data-testid=login-password]', pw);
+  await rp.click('[data-testid=login-submit]'); await rp.waitForURL("**/parent");
+  await rp.goto(BASE + `/parent/outcomes/${ch.json.id}`);
+  const banner = await (await rp.waitForSelector("[data-testid=tracker-program]")).textContent();
+  ok(banner.includes("Year 9") && banner.includes("History"), "program banner: " + banner);
+  await rp.goto(BASE + "/parent/children");
+  await rp.click(`[data-testid=edit-${ch.json.id}]`);
+  await rp.waitForSelector("[data-testid=edit-subjects]");
+  await rp.selectOption("[data-testid=subject-add-select]", { label: "Music" });
+  await rp.click("[data-testid=subject-add]");
+  await rp.click("[data-testid=edit-save]");
+  await rp.waitForSelector("[data-testid=edit-dialog]", { state: "detached" });
+  t = await api("GET", `/outcomes/students/${ch.json.id}`, pt);
+  ok(areas() === "Creative Arts,English,HSIE,Mathematics,Science", "after adding Music: " + areas());
+  await ctx.close();
+});
+
 await step("L. users cannot grant themselves a paid plan", async () => {
   const r = await api("PUT", "/account/plan", parentToken, { plan: "ACTIVE_MONTHLY" });
   ok(r.status === 404 || r.status === 405, "plan update route exists: " + r.status);

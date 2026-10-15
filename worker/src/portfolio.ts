@@ -340,6 +340,7 @@ export function progressSnapshot(tracker: any, fw: Framework | null, stage: stri
     available: true,
     as_at,
     framework: tracker.framework?.name || null,
+    program: tracker.program || null,
     note: tracker.note,
     status_labels: STATUS_LABELS,
     gap_labels: GAP_LABELS,
