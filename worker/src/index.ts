@@ -4,6 +4,7 @@ import { cors } from "hono/cors";
 import { sign, verify } from "hono/jwt";
 import type { MiddlewareHandler } from "hono";
 import { hashSecret, verifySecret } from "./auth";
+import { loginBlocked, recordLoginFailure, clearLoginFailures } from "./loginThrottle";
 import { registerCore } from "./core";
 import { trialEndFrom } from "./entitlements";
 import { checkCanAddChild } from "./lessonBuilder";
@@ -62,6 +63,11 @@ const newId = () => crypto.randomUUID();
 
 async function makeToken(env: Env, sub: string, role: string, familyId: string) {
   const exp = Math.floor(Date.now() / 1000) + TOKEN_DAYS * 86400;
+  if (role === "child") {
+    const s = await env.DB.prepare("SELECT credential_version FROM students WHERE id = ? AND family_id = ?").bind(sub, familyId).first<{ credential_version: number }>();
+    if (!s) throw new Error("Child not found");
+    return sign({ sub, role, family_id: familyId, cv: Number(s.credential_version ?? 0), exp }, env.JWT_SECRET);
+  }
   return sign({ sub, role, family_id: familyId, exp }, env.JWT_SECRET);
 }
 
@@ -79,10 +85,13 @@ const requireAuth: MiddlewareHandler<{ Bindings: Env; Variables: Vars }> = async
     return c.json({ detail: "Invalid authentication token" }, 401);
   }
   const table = role === "parent" ? "users" : "students";
-  const row = await c.env.DB.prepare(`SELECT id, family_id, name FROM ${table} WHERE id = ?`)
+  const row = await c.env.DB.prepare(`SELECT id, family_id, name${role === "child" ? ", credential_version" : ""} FROM ${table} WHERE id = ?`)
     .bind(payload.sub)
     .first<{ id: string; family_id: string; name: string }>();
   if (!row) return c.json({ detail: "User not found" }, 401);
+  // Child sessions die when the parent changes the PIN. Tokens issued before credential versions existed carry no
+  // "cv" and count as version 0, so existing sessions survive this deploy but not the next PIN change.
+  if (role === "child" && Number(payload.cv ?? 0) !== Number((row as any).credential_version ?? 0)) return c.json({ detail: "Session expired. Please sign in again." }, 401);
   c.set("user", { ...row, role });
   await next();
 };
@@ -146,12 +155,16 @@ app.post("/api/auth/login", async (c) => {
   const b = await c.req.json().catch(() => ({}));
   const email = String(b.email || "").trim().toLowerCase();
   const password = String(b.password || "");
+  const ip = c.req.header("CF-Connecting-IP") || "";
+  if (await loginBlocked(c.env.DB, "parent", email, ip)) return c.json({ detail: "Too many sign-in attempts. Please wait 15 minutes and try again." }, 429);
   const user = await c.env.DB.prepare(
     "SELECT id, family_id, email, name, password_hash FROM users WHERE email = ?"
   ).bind(email).first<any>();
   if (!user || !(await verifySecret(password, user.password_hash))) {
+    await recordLoginFailure(c.env.DB, "parent", email, ip);
     return c.json({ detail: "Invalid email or password" }, 401);
   }
+  await clearLoginFailures(c.env.DB, "parent", email);
   const token = await makeToken(c.env, user.id, "parent", user.family_id);
   const { password_hash, ...safe } = user;
   const jurisdiction = await jurisdictionOrNull(c.env.DB, user.family_id);
@@ -162,10 +175,14 @@ app.post("/api/auth/child-login", async (c) => {
   const b = await c.req.json().catch(() => ({}));
   const username = String(b.username || "").trim().toLowerCase();
   const pin = String(b.pin || "");
+  const ip = c.req.header("CF-Connecting-IP") || "";
+  if (await loginBlocked(c.env.DB, "child", username, ip)) return c.json({ detail: "Too many sign-in attempts. Please ask a parent, or wait 15 minutes and try again." }, 429);
   const s = await c.env.DB.prepare("SELECT * FROM students WHERE username = ?").bind(username).first<any>();
   if (!s || !(await verifySecret(pin, s.pin_hash))) {
+    await recordLoginFailure(c.env.DB, "child", username, ip);
     return c.json({ detail: "Invalid username or PIN" }, 401);
   }
+  await clearLoginFailures(c.env.DB, "child", username);
   const token = await makeToken(c.env, s.id, "child", s.family_id);
   const { pin_hash, pin_enc, ...safe } = s;
   return c.json({ token, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });

@@ -44,7 +44,7 @@ const sql = (q) => { const r = wr(["d1", "execute", "DB", "--local", "--command"
 const server = spawn("npx", ["wrangler", "dev", "--config", "wrangler.e2e.jsonc", "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] });
 let slog = "";
 server.stdout.on("data", (d) => (slog += d)); server.stderr.on("data", (d) => (slog += d));
-const stop = () => { try { server.kill("SIGTERM"); } catch {} };
+const stop = () => { try { writeFileSync(`${SHOTS}/server.log`, slog.slice(-400000)); } catch {} try { server.kill("SIGTERM"); } catch {} };
 process.on("exit", stop);
 for (let i = 0; i < 90; i++) {
   try { const r = await fetch(`${BASE}/api/health`); if (r.ok) break; } catch {}
@@ -73,6 +73,113 @@ const pageErrors = [];
 page.on("pageerror", (e) => pageErrors.push(String(e).slice(0, 300)));
 
 let parentToken, lessonId, assignmentId, childToken, submissionId, xp0 = 0;
+
+
+// ---- Multi-family and sibling isolation regression tests (real Worker + real D1)
+await step("security: family isolation, sibling privacy, PIN revocation and throttling", async () => {
+  const tag = Date.now().toString(36);
+  async function family(n) {
+    const r = await api("POST", "/auth/register", null, {
+      email: `security-${n}-${tag}@example.com`, name: `Parent ${n}`,
+      password: "SecurityPass123!", jurisdiction: "NSW"
+    });
+    ok(r.status === 200 && r.json?.token, `registration ${n}: ${r.status}`);
+    return r.json.token;
+  }
+  async function child(parent, name) {
+    const username = `sec${name.toLowerCase()}${tag}`;
+    const r = await api("POST", "/students", parent, { name, username, pin: "7392", stage: "S2" });
+    // Trial families can add only one child; seed the second sibling directly in this isolated test DB.
+    if (r.status === 402 && name === "Bravo") {
+      const siblingId = crypto.randomUUID();
+      sql(`INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, credential_version)
+        SELECT '${siblingId}', family_id, 'Bravo', '${username}', pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, 0 FROM students WHERE username = 'sec alpha-placeholder'`.replace("sec alpha-placeholder", `secalpha${tag}`));
+      r.status = 200; r.json = { id: siblingId };
+    }
+    ok(r.status === 200 && r.json?.id, `create ${name}: ${r.status}`);
+    const login = await api("POST", "/auth/child-login", null, { username, pin: "7392" });
+    ok(login.status === 200 && login.json?.token, `login ${name}: ${login.status}`);
+    return { id: r.json.id, username, token: login.json.token };
+  }
+  const a = await family("a"), b = await family("b");
+  const a1 = await child(a, "Alpha"), a2 = await child(a, "Bravo"), b1 = await child(b, "Charlie");
+  const collision = await api("POST", "/students", b, { name: "Wrong family", username: a1.username, pin: "7392", stage: "S2" });
+  ok(collision.status === 400 || collision.status === 409, `duplicate username unexpectedly accepted: ${collision.status}`);
+  const samePinOtherFamily = await api("POST", "/auth/child-login", null, { username: b1.username, pin: "7392" });
+  ok(samePinOtherFamily.status === 200 && samePinOtherFamily.json?.student?.id === b1.id,
+    "identical PINs did not resolve to their own unique child accounts");
+
+  async function denied(label, method, path, token, body) {
+    const r = await api(method, path, token, body);
+    ok([403, 404].includes(r.status), `${label} unexpectedly returned ${r.status}`);
+  }
+  await denied("parent B cannot view A's child", "GET", `/students/${a1.id}`, b);
+  await denied("parent B cannot view A's overview", "GET", `/students/${a1.id}/overview`, b);
+  await denied("child B cannot view A's child", "GET", `/students/${a1.id}`, b1.token);
+  await denied("child A cannot view sibling", "GET", `/students/${a2.id}`, a1.token);
+  await denied("parent B cannot change A's PIN", "PUT", `/students/${a1.id}/pin`, b, { pin: "2222" });
+  await denied("parent B cannot change A's profile", "PUT", `/students/${a1.id}`, b, { name: "Tampered" });
+  await denied("parent B cannot delete A's profile", "DELETE", `/students/${a1.id}`, b);
+  await denied("parent B cannot create calendar event for A's child", "POST", "/calendar", b, { title: "Private", date: "2026-11-01", student_id: a1.id });
+  // Family-owned academic records must reject foreign student IDs and never appear in other family listings.
+  await denied("parent B cannot add reading log for A's child", "POST", "/reading-log", b, { student_id: a1.id, title: "Foreign", read_date: "2026-11-01" });
+  await denied("parent B cannot add life evidence for A's child", "POST", "/life-evidence", b, { student_id: a1.id, title: "Foreign", description: "Unauthorized" });
+  await denied("parent B cannot create learning plan for A's child", "POST", "/learning-plans", b, { student_id: a1.id, title: "Foreign", period_start: "2026-11-01", period_end: "2026-11-30" });
+  const fd = new FormData();
+  fd.append("file", new Blob(["family A private file"], { type: "image/png" }), "private.png");
+  const uploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a}` }, body: fd });
+  const upload = await uploadResponse.json().catch(() => ({}));
+  ok(uploadResponse.status === 200 && upload.id, `test file upload failed: ${uploadResponse.status}`);
+  const foreignFile = await api("GET", `/files/${upload.id}`, b);
+  ok(foreignFile.status === 404, `foreign family downloaded A's file: ${foreignFile.status}`);
+  const foreignChildFile = await api("GET", `/files/${upload.id}`, b1.token);
+  ok(foreignChildFile.status === 404, `foreign child downloaded A's file: ${foreignChildFile.status}`);
+  const missingFile = await api("GET", `/files/${upload.id}`);
+  ok(missingFile.status === 401, "unauthenticated file downloaded");
+  const childUpload = new FormData();
+  childUpload.append("file", new Blob(["child A private image"], { type: "image/png" }), "child-work.png");
+  const childUploadResponse = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${a1.token}` }, body: childUpload });
+  const childFile = await childUploadResponse.json().catch(() => ({}));
+  ok(childUploadResponse.status === 200 && childFile.id, "child file fixture upload failed");
+  const siblingFile = await api("GET", `/files/${childFile.id}`, a2.token);
+  ok(siblingFile.status === 200, `same-family file access unexpectedly blocked: ${siblingFile.status}`);
+  const parentFile = await api("GET", `/files/${childFile.id}`, a);
+  ok(parentFile.status === 200, `parent cannot access own child's upload: ${parentFile.status}`);
+  const ownFile = await api("GET", `/files/${childFile.id}`, a1.token);
+  ok(ownFile.status === 200, `child cannot access own upload: ${ownFile.status}`);
+  const foreignPortfolio = await api("GET", `/portfolio?student_id=${a1.id}`, b);
+  ok([403, 404].includes(foreignPortfolio.status), `foreign family portfolio returned ${foreignPortfolio.status}`);
+  const foreignReading = await api("GET", `/reading-log?student_id=${a1.id}`, b);
+  ok(foreignReading.status === 200 && Array.isArray(foreignReading.json) && foreignReading.json.length === 0, "foreign family reading records leaked");
+  const foreignEvidence = await api("GET", `/life-evidence?student_id=${a1.id}`, b);
+  ok(foreignEvidence.status === 200 && Array.isArray(foreignEvidence.json) && foreignEvidence.json.length === 0, "foreign family life evidence leaked");
+  const newPin = await api("PUT", `/students/${a1.id}/pin`, a, { pin: "9876" });
+  ok(newPin.status === 200, "PIN change failed");
+  const oldSession = await api("GET", "/auth/me", a1.token);
+  ok(oldSession.status === 401, `old child token still valid: ${oldSession.status}`);
+  const oldPin = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "7392" });
+  ok(oldPin.status === 401, "old PIN still valid");
+  const relogin = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "9876" });
+  ok(relogin.status === 200, "new PIN login failed");
+  const profileUpdate = await api("PUT", `/students/${a2.id}`, a, { pin: "6677" });
+  ok(profileUpdate.status === 200, "profile PIN edit failed");
+  const siblingOld = await api("GET", "/auth/me", a2.token);
+  ok(siblingOld.status === 401, "old token survived profile PIN edit");
+  for (let i = 0; i < 8; i++) {
+    await api("POST", "/auth/child-login", null, { username: `guess${tag}`, pin: "0000" });
+  }
+  const blocked = await api("POST", "/auth/child-login", null, { username: `guess${tag}`, pin: "0000" });
+  ok(blocked.status === 429, `guessing not throttled: ${blocked.status}`);
+  // Only failures count: a child signing in again and again on a shared device is never locked out.
+  for (let i = 0; i < 10; i++) {
+    const again = await api("POST", "/auth/child-login", null, { username: a1.username, pin: "9876" });
+    ok(again.status === 200, `successful child sign-in #${i + 1} was throttled: ${again.status}`);
+  }
+  // Parent password guessing is throttled too, without locking out other parents.
+  for (let i = 0; i < 8; i++) await api("POST", "/auth/login", null, { email: `nobody-${tag}@example.com`, password: "wrong-password" });
+  const parentBlocked = await api("POST", "/auth/login", null, { email: `nobody-${tag}@example.com`, password: "wrong-password" });
+  ok(parentBlocked.status === 429, `parent guessing not throttled: ${parentBlocked.status}`);
+});
 
 await step("landing page loads and has no NSW-only marketing", async () => {
   await page.goto(BASE + "/"); await page.waitForLoadState("networkidle");

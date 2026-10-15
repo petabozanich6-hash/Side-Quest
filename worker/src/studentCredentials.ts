@@ -35,7 +35,7 @@ async function pinKey(env: Env) {
   );
 }
 
-async function encryptPin(env: Env, studentId: string, pin: string) {
+export async function encryptPin(env: Env, studentId: string, pin: string) {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const ct = new Uint8Array(
     await crypto.subtle.encrypt({ name: "AES-GCM", iv, additionalData: enc.encode(studentId) }, await pinKey(env), enc.encode(pin))
@@ -72,7 +72,7 @@ export function registerStudentCredentials(app: App, g: Guards) {
       const student = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?")
         .bind(sid, c.get("user").family_id).first();
       if (!student) return c.json({ detail: "Not found" }, 404);
-      await c.env.DB.prepare("UPDATE students SET pin_hash = ?, pin_enc = ? WHERE id = ? AND family_id = ?")
+      await c.env.DB.prepare("UPDATE students SET pin_hash = ?, pin_enc = ?, credential_version = credential_version + 1 WHERE id = ? AND family_id = ?")
         .bind(await hashSecret(pin), await encryptPin(c.env, sid, pin), sid, c.get("user").family_id).run();
       return c.json({ ok: true });
     } catch (error) {

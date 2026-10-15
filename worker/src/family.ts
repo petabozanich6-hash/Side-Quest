@@ -201,8 +201,9 @@ async function getAuthUserFromToken(env: Env, token: string): Promise<AuthUser |
   }
   if (!payload?.sub || (payload.role !== "parent" && payload.role !== "child")) return null;
   const table = payload.role === "parent" ? "users" : "students";
-  const row = await env.DB.prepare(`SELECT id, family_id, name FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser>();
-  return row ? { ...row, role: payload.role } : null;
+  const row = await env.DB.prepare(`SELECT id, family_id, name${payload.role === "child" ? ", credential_version" : ""} FROM ${table} WHERE id = ?`).bind(payload.sub).first<AuthUser & { credential_version?: number }>();
+  if (!row || (payload.role === "child" && (typeof payload.cv !== "number" || row.credential_version !== payload.cv))) return null;
+  return { ...row, role: payload.role };
 }
 
 async function fetchGoogleTokenInfo(idToken: string) {
@@ -449,11 +450,13 @@ export function registerFamily(app: App, g: Guards) {
   });
 
   app.get("/api/students/:sid", g.auth, async (c) => {
+    const actor = c.get("user");
+    if (actor.role === "child" && actor.id !== c.req.param("sid")) return c.json({ detail: "Not found" }, 404);
     const student = studentOut(
       await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE id = ? AND family_id = ?`)
-        .bind(c.req.param("sid"), c.get("user").family_id)
+        .bind(c.req.param("sid"), actor.family_id)
         .first<StudentRow>(),
-      c.get("user").role === "parent"
+      actor.role === "parent"
     );
     return student ? c.json(student) : c.json({ detail: "Not found" }, 404);
   });
@@ -494,7 +497,12 @@ export function registerFamily(app: App, g: Guards) {
     if ("theme" in body) updates.theme = body.theme === null || body.theme === "" ? null : String(body.theme);
     if ("interests" in body) updates.interests = JSON.stringify(Array.isArray(body.interests) ? body.interests : []);
     if ("notes" in body) updates.notes = body.notes === null || body.notes === "" ? null : String(body.notes);
-    if ("pin" in body && String(body.pin || "")) updates.pin_hash = await hashSecret(String(body.pin));
+    if ("pin" in body && String(body.pin || "")) {
+      const pin = String(body.pin);
+      if (pin.length < 4 || pin.length > 32) return c.json({ detail: "PIN must contain 4–32 characters" }, 400);
+      updates.pin_hash = await hashSecret(pin);
+      updates.credential_version = Number(existing.credential_version ?? 0) + 1;
+    }
     if ("stage" in body && !("theme" in body)) updates.theme = guessTheme(nextStage);
     if ("name" in updates && !String(updates.name || "").trim()) return c.json({ detail: "Name is required" }, 400);
 
