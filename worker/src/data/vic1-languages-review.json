@@ -16245,15 +16245,6 @@
   ],
   "source_results": [
     {
-      "language": "Classical Greek",
-      "phase": 3,
-      "sequence": "mixed",
-      "learner_pathway": null,
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/classical-greek/curriculum/f-10?layout=1",
-      "kind": "vc1_languages_code_candidate",
-      "code_count": 30
-    },
-    {
       "language": "Framework for Classical Languages",
       "phase": 3,
       "sequence": "mixed",
@@ -16272,13 +16263,13 @@
       "code_count": 119
     },
     {
-      "language": "Hindi",
+      "language": "Classical Greek",
       "phase": 3,
       "sequence": "mixed",
       "learner_pathway": null,
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/hindi/curriculum/f-10?layout=1",
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/classical-greek/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
-      "code_count": 126
+      "code_count": 30
     },
     {
       "language": "Latin",
@@ -16299,20 +16290,20 @@
       "code_count": 119
     },
     {
+      "language": "Hindi",
+      "phase": 3,
+      "sequence": "mixed",
+      "learner_pathway": null,
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/hindi/curriculum/f-10?layout=1",
+      "kind": "vc1_languages_code_candidate",
+      "code_count": 126
+    },
+    {
       "language": "Roman Alphabet Languages",
       "phase": 3,
       "sequence": "mixed",
       "learner_pathway": null,
       "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/roman-alphabet-languages/curriculum/f-10?layout=1",
-      "kind": "vc1_languages_code_candidate",
-      "code_count": 119
-    },
-    {
-      "language": "Vietnamese",
-      "phase": 3,
-      "sequence": "mixed",
-      "learner_pathway": null,
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/vietnamese/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
       "code_count": 119
     },
@@ -16326,11 +16317,29 @@
       "code_count": 119
     },
     {
+      "language": "Vietnamese",
+      "phase": 3,
+      "sequence": "mixed",
+      "learner_pathway": null,
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/vietnamese/curriculum/f-10?layout=1",
+      "kind": "vc1_languages_code_candidate",
+      "code_count": 119
+    },
+    {
       "language": "Auslan",
       "phase": 4,
       "sequence": "mixed",
       "learner_pathway": "first-language-learner",
       "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/auslan/first-language-learner/curriculum/f-10?layout=1",
+      "kind": "vc1_languages_code_candidate",
+      "code_count": 126
+    },
+    {
+      "language": "Auslan",
+      "phase": 4,
+      "sequence": "mixed",
+      "learner_pathway": "second-language-learner",
+      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/auslan/second-language-learner/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
       "code_count": 126
     },
@@ -16351,15 +16360,6 @@
       "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/chinese/first-language-learner/curriculum/f-10?layout=1",
       "kind": "vc1_languages_code_candidate",
       "code_count": 38
-    },
-    {
-      "language": "Auslan",
-      "phase": 4,
-      "sequence": "mixed",
-      "learner_pathway": "second-language-learner",
-      "url": "https://victoriancurriculum.vcaa.vic.edu.au/languages/auslan/second-language-learner/curriculum/f-10?layout=1",
-      "kind": "vc1_languages_code_candidate",
-      "code_count": 126
     },
     {
       "language": "Victorian Aboriginal Languages",
