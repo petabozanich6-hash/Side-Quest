@@ -12,12 +12,16 @@ export default function HqCustomer() {
   const { id } = useParams();
   const { data: c, error, loading, reload } = useAdmin(`/customers/${encodeURIComponent(id)}`);
   const [dialog, setDialog] = useState(null);
+  const [giftDays, setGiftDays] = useState(7);
   if (loading && !c) return <p role="status" className="text-stone-600">Loading…</p>;
   if (error && !c) return <><Alert>{error}</Alert><Link to="/parent/command-centre/customers" className="underline text-sm">Back to customers</Link></>;
   const isAdminFamily = c.parents.some((p) => p.admin);
   const act = (path, body, message) => adminApi.post(`/customers/${encodeURIComponent(c.id)}/${path}`, body).then(() => { toast.success(message); reload(); });
 
   const dialogs = {
+    gift: { title: `Gift ${giftDays} extra preview days?`, typed: "GIFT", tone: "primary", confirmLabel: `Gift ${giftDays} days`,
+      body: "This gives the family extra days of the limited free preview (not a paid membership). Gifts are capped at 35 days total from registration. No Stripe subscription, payment or child record is changed.",
+      onConfirm: ({ reason, confirm }) => act("gift-preview", { reason, confirm, days: giftDays }, `${giftDays} preview days gifted`) },
     suspend: { title: "Suspend this family?", typed: "SUSPEND", confirmLabel: "Suspend family",
       body: "Every parent and child in this family is signed out and cannot sign in until you restore the family. Their data is kept and billing is not changed in Stripe.",
       onConfirm: ({ reason, confirm }) => act("suspend", { reason, confirm }, "Family suspended") },
@@ -50,6 +54,16 @@ export default function HqCustomer() {
               ? <Button onClick={() => setDialog("restore")} data-testid="hq-restore">Restore</Button>
               : <Button tone="danger" onClick={() => setDialog("suspend")} data-testid="hq-suspend">Suspend</Button>}
             <Button tone="plain" onClick={() => setDialog("signout")} data-testid="hq-signout">Sign out everywhere</Button>
+            {c.status === "active" && c.billing.plan === "FREE_PREVIEW" && !c.billing.stripe_subscription_id && !c.billing.subscription_status && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <label className="text-xs font-semibold text-stone-700">Bonus days
+                  <select value={giftDays} onChange={(e) => setGiftDays(Number(e.target.value))} className="ml-2 rounded-lg border border-stone-300 p-2">
+                    <option value={1}>1 day</option><option value={7}>7 days</option><option value={14}>14 days</option>
+                  </select>
+                </label>
+                <Button tone="plain" onClick={() => setDialog("gift")} data-testid="hq-gift-preview">Gift preview days</Button>
+              </div>
+            )}
           </>
         )}
       </div>

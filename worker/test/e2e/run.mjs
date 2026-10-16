@@ -35,9 +35,9 @@ writeFileSync(`${ROOT}/wrangler.e2e.jsonc`, JSON.stringify({
   r2_buckets: [{ binding: "BUCKET", bucket_name: "e2e-files" }],
   d1_databases: [{ binding: "DB", database_name: "e2e", database_id: "00000000-0000-0000-0000-000000000000", migrations_dir: "./worker/migrations" }],
 }));
-const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
+const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
-if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(0,12000), (mig.stdout || "").slice(0,12000));
+if(mig.status !== 0) console.error("D1 migration diagnostics:", { exitStatus: mig.status, signal: mig.signal, spawnError: mig.error?.message }, "STDERR TAIL:", (mig.stderr || "").slice(-18000), "STDOUT TAIL:", (mig.stdout || "").slice(-18000));
 console.log((mig.stdout || "").slice(-600), (mig.stderr || "").slice(-600));
 ok(mig.status === 0, "local migrations failed");
 const sql = (q) => { const r = wr(["d1", "execute", "DB", "--local", "--command", q]); if (r.status !== 0) throw new Error("sql failed: " + (r.stderr || r.stdout).slice(-300)); return r.stdout; };
@@ -104,6 +104,12 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   }
   const a = await family("a"), b = await family("b");
   const a1 = await child(a, "Alpha"), a2 = await child(a, "Bravo"), b1 = await child(b, "Charlie");
+  // Cross-family security tests require a full-access fixture to reach resource-specific guards.
+  // Otherwise the free-preview paywall returns 402 before testing another family's access.
+  for (const token of [a, b]) {
+    const familyId = JSON.parse(Buffer.from(token.split(".")[1], "base64url").toString()).family_id;
+    sql("UPDATE families SET plan='INTERNAL' WHERE id='" + familyId + "'");
+  }
   const collision = await api("POST", "/students", b, { name: "Wrong family", username: a1.username, pin: "7392", stage: "S2" });
   ok(collision.status === 400 || collision.status === 409, `duplicate username unexpectedly accepted: ${collision.status}`);
   const samePinOtherFamily = await api("POST", "/auth/child-login", null, { username: b1.username, pin: "7392" });
@@ -434,14 +440,22 @@ await step("parent can permanently delete an unassigned draft without losing oth
   ok((await api("GET", `/lessons/${lessonId}`, parentToken)).status === 200, "unrelated lesson was removed");
 });
 
+// From here, test full membership tools on this disposable local account, after verifying preview caps.
+// No real subscription is touched and no public endpoint can assign an INTERNAL plan.
+const workflowFamilyId = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
+ sql("UPDATE families SET plan='INTERNAL' WHERE id='" + workflowFamilyId + "'");
 await step("E. parent assigns the lesson to the child through the UI", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.click(`[data-testid=assign-${lessonId}]`);
   const kids = await api("GET", "/students", parentToken);
   await page.check(`[data-testid=sch-student-${kids.json[0].id}]`);
   await page.click('[data-testid=sch-submit]');
-  await page.waitForSelector("text=Scheduled", { timeout: 15000 });
-  const as = await api("GET", "/assignments", parentToken);
+  // Confirm persistence, rather than a transient toast whose wording may vary.
+  let as = await api("GET", "/assignments", parentToken);
+  for (let i = 0; i < 30 && (!Array.isArray(as.json) || as.json.length !== 1); i++) {
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    as = await api("GET", "/assignments", parentToken);
+  }
   ok(as.json.length === 1, "assignment not created"); assignmentId = as.json[0].id;
   const dup = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
   ok(dup.status === 409, "duplicate active assignment allowed");
@@ -777,12 +791,15 @@ await step("K. another family cannot see or touch this family's records", async 
 });
 
 await step("AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI", async () => {
+  sql("UPDATE families SET plan='FREE_PREVIEW' WHERE id='" + workflowFamilyId + "'");
+  try {
   const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
   ok(r.status === 402 && r.json.code === "UPGRADE_REQUIRED", `expected 402, got ${r.status}`);
   const st = await api("GET", "/ai/status", parentToken);
   ok(st.json.allowed === false, "free preview shown as allowed");
   const n = await api("GET", "/lessons", parentToken);
   ok(!n.json.some(l => l.ai_generated), "AI lesson exists for a free family");
+  } finally { sql("UPDATE families SET plan='INTERNAL' WHERE id='" + workflowFamilyId + "'"); }
 });
 
 await step("assignments page: change dates and cancel an unstarted assignment", async () => {
@@ -1253,7 +1270,7 @@ await step("L. users cannot grant themselves a paid plan", async () => {
 
 await step("M. expired preview: cannot create or assign, but nothing is lost", async () => {
   const fam = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
-  sql(`UPDATE families SET trial_started_at='2020-01-01T00:00:00Z', trial_ends_at='2020-01-08T00:00:00Z' WHERE id='${fam}';`);
+  sql(`UPDATE families SET plan='FREE_PREVIEW', trial_started_at='2020-01-01T00:00:00Z', trial_ends_at='2020-01-08T00:00:00Z' WHERE id='${fam}';`);
   const p = await api("GET", "/account/plan", parentToken);
   ok(p.json.effective_plan === "PREVIEW_EXPIRED", "not expired: " + p.json.effective_plan);
   ok((await api("POST", "/lessons", parentToken, { title: "after", status: "draft" })).status === 402, "can create after expiry");

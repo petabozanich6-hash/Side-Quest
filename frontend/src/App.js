@@ -53,6 +53,7 @@ import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
 import SiteSearch from "./pages/shared/SiteSearch";
 import HqFeedback from "./pages/parent/hq/HqFeedback";
 import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
+import HqHoard from "./pages/parent/hq/HqHoard";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -111,6 +112,7 @@ function Router() {
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
           <Route path="announcements" element={<HqAnnouncements />} />
+          <Route path="dragon-hoard" element={<HqHoard />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />

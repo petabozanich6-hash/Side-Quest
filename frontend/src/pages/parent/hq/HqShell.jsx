@@ -9,6 +9,7 @@ const TABS = [
   { to: "/parent/command-centre/customers", label: "Customers", testid: "hq-tab-customers" },
   { to: "/parent/command-centre/feedback", label: "Feedback inbox", testid: "hq-tab-feedback" },
   { to: "/parent/command-centre/announcements", label: "Special emails", testid: "hq-tab-announcements" },
+  { to: "/parent/command-centre/dragon-hoard", label: "Dragon’s Hoard", testid: "hq-tab-dragon-hoard" },
   { to: "/parent/command-centre/settings", label: "Settings", testid: "hq-tab-settings" },
   { to: "/parent/command-centre/audit", label: "Audit log", testid: "hq-tab-audit" },
   { to: "/parent/command-centre/security", label: "Security", testid: "hq-tab-security" },

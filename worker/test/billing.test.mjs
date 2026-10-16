@@ -464,6 +464,33 @@ test("checkout: server picks price, family and redirect; client values are ignor
   assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }, { STRIPE_SECRET_KEY: "" }))).status, 503);
 });
 
+test("checkout only accepts active, same-mode SideQuest Hoard codes and never forwards arbitrary Stripe codes", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1");
+  db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES ('u1','f1','p@example.com','P',?)").run(NOW.toISOString());
+  const insert = db.raw.prepare(
+    "INSERT INTO dragon_hoard_offers (id,mode,code,label,percent_off,duration_months,max_redemptions,expires_at,stripe_coupon_id,stripe_promotion_id,active,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+  );
+  insert.run("offer1", "test", "DRAGON20", "Dragon day", 20, 1, 10, new Date(Date.now() + 86400000).toISOString(), "coupon_sq1", "promo_sq1", 1, NOW.toISOString());
+  insert.run("offer2", "live", "LIVECODE", "Other mode", 20, 1, 10, new Date(Date.now() + 86400000).toISOString(), "coupon_sq2", "promo_live", 1, NOW.toISOString());
+  const calls = [];
+  const fake = async (url, init) => {
+    calls.push({ url, body: decodeURIComponent(init.body || "") });
+    if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_hoard" }));
+    return new Response(JSON.stringify({ id: "cs_hoard", url: "https://checkout.stripe.com/c/pay/cs_hoard" }));
+  };
+  const h = routes(fake);
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "monthly", promo_code: "SECRETWRONG", discounts: [{ promotion_code: "promo_evil" }] }))).status, 400);
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "monthly", promo_code: "LIVECODE" }))).status, 400);
+  assert.equal(calls.length, 0, "invalid or cross-mode codes must never contact Stripe");
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "monthly", promo_code: "dragon20", discounts: [{ promotion_code: "promo_evil" }] }))).status, 200);
+  const checkout = calls.find((x) => x.url.endsWith("/checkout/sessions")).body;
+  assert.ok(checkout.includes("discounts[0][promotion_code]=promo_sq1"), checkout);
+  assert.ok(!checkout.includes("promo_evil") && !checkout.includes("allow_promotion_codes"), "No arbitrary Stripe codes or open promo field");
+  db.raw.prepare("UPDATE dragon_hoard_offers SET active = 0 WHERE id = 'offer1'").run();
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly", promo_code: "DRAGON20" }))).status, 400);
+});
+
 test("live checkout replaces a confirmed stale sandbox customer, preserving family data", async () => {
   const db = makeDb();
   seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_sandbox_old" });
