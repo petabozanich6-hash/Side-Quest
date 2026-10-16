@@ -63,16 +63,40 @@ function allocate(student, areas, days, startTime, weekStart, existing) {
   }
   const dayOrder = [...days].sort((a, b) => a - b);
   const byDay = Object.fromEntries(dayOrder.map(d => [d, []]));
-  // Spread multiple instances of one subject evenly rather than bunching them.
+  // Distribute lessons by both subject recurrence and available daily capacity.
+  // Prefer different subjects within a day; large subjects recur across the week.
+  const minutesOn = day => byDay[day].reduce((n, x) => n + x.minutes, 0);
+  const heavy = subject => /english|literacy|mathematics|maths|numeracy|science/i.test(subject);
+  slots.sort((a, b) => weightFor(b.title) - weightFor(a.title) || b.minutes - a.minutes);
   for (const slot of slots) {
-    const order = [...dayOrder].sort((a, b) => {
-      const ma = byDay[a].reduce((n, x) => n + x.minutes, 0);
-      const mb = byDay[b].reduce((n, x) => n + x.minutes, 0);
-      const sa = byDay[a].filter(x => x.title === slot.title).length;
-      const sb = byDay[b].filter(x => x.title === slot.title).length;
-      return (sa * daily + ma) - (sb * daily + mb);
-    });
-    byDay[order[0]].push(slot);
+    const candidates = dayOrder.map(day => {
+      const todays = byDay[day];
+      const used = minutesOn(day);
+      const same = todays.filter(x => x.title === slot.title).length;
+      const alreadyHeavy = todays.filter(x => heavy(x.title)).length;
+      const fits = used + slot.minutes <= daily;
+      // A second subject session on a day is strongly discouraged. Give days
+      // with less total instruction and fewer intensive blocks priority.
+      const score = (fits ? 0 : 100000) + same * 5000 +
+        (heavy(slot.title) ? alreadyHeavy * 150 : 0) +
+        (used / daily) * 1000 + todays.length * 40;
+      return { day, score };
+    }).sort((a, b) => a.score - b.score || a.day - b.day);
+    const best = candidates[0];
+    if (best && best.score < 100000) byDay[best.day].push(slot);
+    // Do not silently cram excess lessons into a full day.
+  }
+  // Alternate intensive and lighter blocks where possible.
+  for (const day of dayOrder) {
+    const planned = byDay[day];
+    const intensive = planned.filter(x => heavy(x.title));
+    const lighter = planned.filter(x => !heavy(x.title));
+    const balanced = [];
+    while (intensive.length || lighter.length) {
+      if (intensive.length) balanced.push(intensive.shift());
+      if (lighter.length) balanced.push(lighter.shift());
+    }
+    byDay[day] = balanced;
   }
   const [h, m] = startTime.split(":").map(Number);
   const result = [];
