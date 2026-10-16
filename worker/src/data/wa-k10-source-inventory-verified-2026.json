@@ -1,0 +1,51 @@
+{
+  "authority": "Western Australia SCSA",
+  "jurisdiction": "WA",
+  "source_index": "https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads",
+  "inventory_checked": "2026-10-16",
+  "status": "confirmed_official_source_links_only",
+  "completeness": "partial",
+  "note": "These are confirmed direct SCSA downloads with authority-published last-updated dates, NOT collected learning outcome counts. Remaining 13+ JSON routes still require source inventory and full extraction; 403/network restrictions do not imply nonexistent content. Never mark as complete.",
+  "source_files": [
+    {
+      "learning_area": "English",
+      "subject": "English",
+      "year_range": "P-10",
+      "published_updated": "2025-03-12",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Mathematics",
+      "subject": "Mathematics",
+      "year_range": "P-10",
+      "published_updated": "2026-02-12",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Noongar",
+      "year_range": "P-10",
+      "published_updated": "2024-05-16",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270376/aboriginal-languages-noongar.json",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Technologies",
+      "subject": "Design and Technologies",
+      "year_range": "P-10",
+      "published_updated": "2026-02-12",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0003/1270380/design-and-technologies.json",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Technologies",
+      "subject": "Digital Technologies",
+      "year_range": "P-10",
+      "published_updated": "2026-02-12",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json",
+      "import_status": "pending_full_verified_import"
+    }
+  ]
+}
