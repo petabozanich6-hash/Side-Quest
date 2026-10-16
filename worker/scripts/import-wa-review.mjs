@@ -58,6 +58,13 @@ export function flattenWaJson(doc, source) {
         add(match[1],year,subject,path,"wa_ablewa_content_description");
       }
     }
+    // Science ABLEWA uses source-embedded ACSSU / ACSHE / ACSISO codes.
+    // Only use explicit code-bearing textContents nodes with blank wa_code.
+    if (v.wa_code === "" && typeof v.markdown === "string" && /Science/i.test(String(subject))) {
+      for (const match of v.markdown.matchAll(/\\((AC(?:SSU|SHE|SISO)\\d{3}[a-d])\\)/g)) {
+        add(match[1],year,subject,path,"wa_ablewa_content_description");
+      }
+    }
     // WA ABLEWA Digital Technologies records have no wa_code: the official
     // descriptor identifier is embedded in the content's markdown instead.
     // Restrict extraction to content-description nodes with an explicitly
