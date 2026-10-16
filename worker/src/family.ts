@@ -662,7 +662,7 @@ export function registerFamily(app: App, g: Guards) {
     const sum = await c.env.DB.prepare("SELECT COALESCE(SUM(size),0) total FROM files WHERE family_id = ? AND is_deleted = 0")
       .bind(c.get("user").family_id).first<{ total: number }>();
     if (Number(sum?.total || 0) + file.size > MAX_FAMILY_STORAGE_BYTES)
-      return c.json({ detail: "Your family has reached the 250 MB file allowance. Remove old uploads before adding more.", code: "STORAGE_LIMIT" }, 413);
+      return c.json({ detail: "Your family has reached the 250 MB file allowance. Please contact support to review your stored attachments.", code: "STORAGE_LIMIT" }, 413);
     const contentType = file.type || "application/octet-stream";
     const isSafeType =
       SAFE_FILE_TYPES.includes(contentType as (typeof SAFE_FILE_TYPES)[number])
