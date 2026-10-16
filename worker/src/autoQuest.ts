@@ -268,7 +268,9 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
   for (const d of decisions) {
     const existing = await db.prepare("SELECT * FROM auto_quest_proposals WHERE family_id = ? AND calendar_event_id = ?").bind(familyId, d.slotId).first();
     // Decided proposals and AI drafts already made are kept exactly as they are: re-planning never loses work.
-    if (existing && (existing.status !== "proposed" || existing.generated)) continue;
+    // Keep any explicit parent-selected lesson or AI draft when a different
+    // slot on the same date triggers replanning.
+    if (existing && (existing.status !== "proposed" || existing.generated || existing.lesson_id)) continue;
     const vals = [d.date, d.learningArea || null, d.action, d.purpose || null, JSON.stringify(d.eligibleOutcomeCodes), cat.available ? cat.framework : null, d.lessonId || null, d.reason, ts];
     if (existing) {
       await db.prepare("UPDATE auto_quest_proposals SET date = ?, learning_area = ?, action = ?, purpose = ?, outcome_codes = ?, framework = ?, lesson_id = ?, reason = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(...vals, existing.id, familyId).run();
@@ -372,7 +374,15 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
   // Link only if the exact target is still empty; a race must never overwrite it.
   const link = await db.prepare("UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id = ? WHERE id = ? AND family_id = ? AND student_id = ? AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL")
     .bind(assignmentId, p.lesson_id, ev.id, familyId, p.student_id).run();
-  if (!link.meta.changes) return bad(409, "This timetable slot was filled before the assignment could be linked. Review the existing assignment before trying again.", "SLOT_TAKEN");
+  if (!link.meta.changes) {
+    // An assignment newly created during the race must never remain active
+    // and unscheduled. Revocation preserves the audit trail without deleting
+    // any pre-existing assignment or work.
+    if (a.ok) await db.prepare(`UPDATE assignments SET status = 'revoked' WHERE id = ? AND family_id = ? AND status = 'not_started'
+      AND NOT EXISTS (SELECT 1 FROM calendar_events WHERE family_id = ? AND linked_assignment_id = ?)`)
+      .bind(assignmentId, familyId, familyId, assignmentId).run();
+    return bad(409, "This timetable slot was filled before the assignment could be linked. Refresh the slot before trying again.", "SLOT_TAKEN");
+  }
   const ts = now.toISOString();
   await db.prepare("UPDATE auto_quest_proposals SET status = 'assigned', assignment_id = ?, decided_by = ?, decided_at = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(assignmentId, parentId, ts, ts, id, familyId).run();
   return { ok: true, proposal: proposalOut(await ownProposal(db, familyId, id), await lessonMap(db, familyId, [p.lesson_id])) };
