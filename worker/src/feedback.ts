@@ -74,8 +74,15 @@ export function registerFeedback(app: App, guards: Guards) {
     const result = await c.env.DB.prepare(
       "SELECT COUNT(*) n FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE p.family_id=? AND p.user_id=? AND r.parent_read_at IS NULL",
     ).bind(u.family_id,u.id).first<{n:number}>();
+    // Show the parent which unread thread to open, without exposing message
+    // contents or another account's feedback. This powers a transient dashboard alert.
+    const latest = Number(result?.n || 0) > 0
+      ? await c.env.DB.prepare(
+          "SELECT p.id AS feedback_id,p.subject,r.created_at AS replied_at FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE p.family_id=? AND p.user_id=? AND r.parent_read_at IS NULL ORDER BY r.created_at DESC,r.id DESC LIMIT 1"
+        ).bind(u.family_id,u.id).first<{feedback_id:string;subject:string;replied_at:string}>()
+      : null;
     c.header("Cache-Control","no-store");
-    return c.json({unread:Number(result?.n || 0)});
+    return c.json({unread:Number(result?.n || 0),latest:latest||null});
   });
 
   // Acknowledgement is scoped to the exact submitting account, never just a guessed feedback ID.
