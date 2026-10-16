@@ -37,10 +37,10 @@ test("WA Languages JSON uses published content-description notations, not arbitr
 test("WA ABLEWA markdown identifiers are extracted only from empty-wa_code descriptions", () => {
   const source={url:"https://k10outline.scsa.wa.edu.au/test/mathematics.json",name:"Mathematics"};
   const doc=[{year:"a",subject:"Mathematics",strands:[{textContents:[
-    {wa_code:"",markdown:"<p>Respond to objects (ACMNA001a)</p>"},
-    {wa_code:"",markdown:"<p>Respond to routine events (ACMMG007a)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Respond to objects (ACMNA001a)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Respond to routine events (ACMMG007a)</p>"},
     {wa_code:"WA3MNAUN7",markdown:"<p>Example (ACMNA999a) should not be read</p>"}
-  ]}],examples:[{wa_code:"",markdown:"Not an outcome (ACMNA888a)"}]}];
+  ]}],examples:[{sub_strand_id:12,wa_code:"",markdown:"Not an outcome (ACMNA888a)"}]}];
   const rows=flattenWaJson(doc,source);
   assert.deepEqual(rows.map(x=>x.code),["ACMNA001a","ACMMG007a","WA3MNAUN7"]);
   assert.equal(rows[0].identifier_kind,"wa_ablewa_content_description");
@@ -50,11 +50,11 @@ test("WA ABLEWA markdown identifiers are extracted only from empty-wa_code descr
 test("WA ABLEWA Digital Technologies extracts VCDT codes from content descriptions only", () => {
   const source={url:"https://k10outline.scsa.wa.edu.au/test/digital-technologies.json",name:"Digital Technologies"};
   const doc=[{year:"a",subject:"Digital Technologies",strands:[{subStrands:[{textContents:[
-    {wa_code:"",markdown:"<p>React to digital systems (VCDTDS001)</p>"},
-    {wa_code:"",markdown:"<p>Represent data (VCDTDI002)</p>"},
-    {wa_code:"",markdown:"<p>Follow steps (VCDTCD003)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>React to digital systems (VCDTDS001)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Represent data (VCDTDI002)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Follow steps (VCDTCD003)</p>"},
     {wa_code:"WAPDIGDS1",markdown:"<p>Example mentions (VCDTDS099)</p>"}
-  ]}]}],examples:[{wa_code:"",markdown:"(VCDTCD100)"}]}];
+  ]}]}],examples:[{sub_strand_id:12,wa_code:"",markdown:"(VCDTCD100)"}]}];
   const rows=flattenWaJson(doc,source);
   assert.deepEqual(rows.map(x=>x.code),["VCDTDS001","VCDTDI002","VCDTCD003","WAPDIGDS1"]);
   assert.ok(rows.slice(0,3).every(x=>x.identifier_kind==="wa_ablewa_content_description"));
@@ -64,11 +64,11 @@ test("WA ABLEWA Digital Technologies extracts VCDT codes from content descriptio
 test("WA ABLEWA Science source-embedded identifiers are extracted without examples", () => {
   const source={url:"https://k10outline.scsa.wa.edu.au/test/science.json",name:"Science"};
   const doc=[{year:"a",subject:"Science",strands:[{textContents:[
-    {wa_code:"",markdown:"<p>Living things (ACSSU002a)</p>"},
-    {wa_code:"",markdown:"<p>Inquiry (ACSISO014a)</p>"},
-    {wa_code:"",markdown:"<p>Human endeavour (ACSHE013a)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Living things (ACSSU002a)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Inquiry (ACSISO014a)</p>"},
+    {sub_strand_id:12,wa_code:"",markdown:"<p>Human endeavour (ACSHE013a)</p>"},
     {wa_code:"WAPSSUB1",markdown:"<p>Example (ACSSU999a)</p>"}
-  ]}],examples:[{wa_code:"",markdown:"(ACSSU888a)"}]}];
+  ]}],examples:[{sub_strand_id:12,wa_code:"",markdown:"(ACSSU888a)"}]}];
   const rows=flattenWaJson(doc,source);
   assert.deepEqual(rows.map(x=>x.code),["ACSSU002a","ACSISO014a","ACSHE013a","WAPSSUB1"]);
 });
