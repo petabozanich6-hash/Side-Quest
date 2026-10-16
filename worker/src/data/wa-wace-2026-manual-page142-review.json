@@ -1,0 +1,535 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 154,
+  "source_print_page": 142,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "Transcribed from official Appendix 3 Table 12, page 142; codes only, not outcomes. Year 12 ATAR column is examinable course code. Check year applicability separately.",
+  "records": [
+    {
+      "subject": "Geography",
+      "identifier": "GEO",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "AEGEO",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "ATGEO",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "A1GEO",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "A2GEO",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "GEGEO",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "GTGEO",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "G1GEO",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Geography",
+      "identifier": "G2GEO",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "German: Background Language",
+      "identifier": "GBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "German: Background Language",
+      "identifier": "AEGBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "German: Background Language",
+      "identifier": "ATGBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "German: Background Language",
+      "identifier": "A1GBL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "German: Background Language",
+      "identifier": "A2GBL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "GSL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "AEGSL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "ATGSL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "A1GSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "A2GSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "GEGSL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "GTGSL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "G1GSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "German: Second Language",
+      "identifier": "G2GSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "HEA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "AEHEA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "ATHEA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "A1HEA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "A2HEA",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "GEHEA",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "GTHEA",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "G1HEA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Health Studies",
+      "identifier": "G2HEA",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Health, Physical and Outdoor Education",
+      "identifier": "HPO",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Health, Physical and Outdoor Education",
+      "identifier": "FEHPO",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_year11_course"
+    },
+    {
+      "subject": "Health, Physical and Outdoor Education",
+      "identifier": "FTHPO",
+      "identifier_kind": "course_code",
+      "course_kind": "Foundation_year12_course"
+    },
+    {
+      "subject": "Health, Physical and Outdoor Education",
+      "identifier": "F1HPO",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Health, Physical and Outdoor Education",
+      "identifier": "F2HPO",
+      "identifier_kind": "unit_code",
+      "course_kind": "Foundation"
+    },
+    {
+      "subject": "Hindi: Background Language",
+      "identifier": "HBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Hindi: Background Language",
+      "identifier": "AEHBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Hindi: Background Language",
+      "identifier": "ATHBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Hindi: Background Language",
+      "identifier": "A1HBL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Hindi: Background Language",
+      "identifier": "A2HBL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Hindi: Second Language",
+      "identifier": "HDI",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Hindi: Second Language",
+      "identifier": "AEHDI",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Hindi: Second Language",
+      "identifier": "ATHDI",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Hindi: Second Language",
+      "identifier": "A1HDI",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Hindi: Second Language",
+      "identifier": "A2HDI",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "HBY",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "AEHBY",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "ATHBY",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "A1HBY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "A2HBY",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "GEHBY",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "GTHBY",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "G1HBY",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Human Biology",
+      "identifier": "G2HBY",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Humanities and Social Sciences in Action",
+      "identifier": "HAS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Humanities and Social Sciences in Action",
+      "identifier": "GEHAS",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "Humanities and Social Sciences in Action",
+      "identifier": "GTHAS",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "Humanities and Social Sciences in Action",
+      "identifier": "G1HAS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Humanities and Social Sciences in Action",
+      "identifier": "G2HAS",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Indonesian: Background Language",
+      "identifier": "INB",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Indonesian: Background Language",
+      "identifier": "AEINB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Indonesian: Background Language",
+      "identifier": "ATINB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Indonesian: Background Language",
+      "identifier": "A1INB",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Indonesian: Background Language",
+      "identifier": "A2INB",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "IND",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "AEIND",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "ATIND",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "A1IND",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "A2IND",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "GEIND",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "GTIND",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "G1IND",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Indonesian: Second Language",
+      "identifier": "G2IND",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Italian: Background Language",
+      "identifier": "ITB",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Italian: Background Language",
+      "identifier": "AEITB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Italian: Background Language",
+      "identifier": "ATITB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Italian: Background Language",
+      "identifier": "A1ITB",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Italian: Background Language",
+      "identifier": "A2ITB",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "ISL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "AEISL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11_course"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "ATISL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_course"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "A1ISL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "A2ISL",
+      "identifier_kind": "unit_code",
+      "course_kind": "ATAR"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "GEISL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year11_course"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "GTISL",
+      "identifier_kind": "course_code",
+      "course_kind": "General_year12_course"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "G1ISL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    },
+    {
+      "subject": "Italian: Second Language",
+      "identifier": "G2ISL",
+      "identifier_kind": "unit_code",
+      "course_kind": "General"
+    }
+  ]
+}
