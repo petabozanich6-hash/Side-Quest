@@ -306,7 +306,7 @@ test("state catalogues are isolated; switching states preserves historical evide
   const kid = child(db, fam);
   const t = await ot.trackerFor(db, fam, kid, { now: D(2) });
   assert.equal(t.available, false, "VCAA source module is missing: never provide inferred outcomes");
-  assert.equal(t.framework, "VIC");
+  assert.equal(t.framework?.key, "VIC");
   const wrongStateCode = await ot.confirmOutcome(db, fam, `u-${fam}`, kid, RN, {}, D(2));
   assert.ok(!wrongStateCode.ok, "reject an NSW outcome in a Victorian family");
   const none = await ot.trackerFor(db, family(db, { jurisdiction: null }), child(db, `fam${n}`), { now: D(2) });
