@@ -150,3 +150,23 @@ test("announcement HTML escapes owner-entered markup and preserves lines",()=>{
   assert.ok(email.html.includes("Safe message<br/>"));
   assert.ok(!email.html.includes("onerror="));
 });
+
+
+test("required-verification accounts are excluded from previews and queued delivery",async()=>{
+  const h=harness(),owner=await h.ownerSetup(),pending=await h.register("pending-confirmation");
+  const sent=[];
+  h.env.EMAIL={send:async message=>{sent.push(message);return {messageId:"test"};}};
+  h.db.raw.prepare("UPDATE users SET email_verification_required_at=? WHERE id=?").run(new Date().toISOString(),pending.id);
+  let r=await h.call("/admin/announcements",{token:owner.token});
+  assert.equal(r.status,200);
+  assert.equal(r.data.service_recipients,1,"only grandfathered owner is eligible");
+  const d=draft("service",1);
+  r=await h.call("/admin/announcements",{method:"POST",token:owner.token,body:d});
+  assert.equal(r.status,201,JSON.stringify(r.data));
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM announcement_recipients").get().n,1);
+  // A recipient whose verification becomes required AFTER queueing must also be skipped.
+  h.db.raw.prepare("UPDATE users SET email_verification_required_at=? WHERE id=?").run(new Date().toISOString(),owner.id);
+  await processAnnouncementBatch(h.env);
+  assert.equal(sent.length,0);
+  assert.equal(h.db.raw.prepare("SELECT status FROM announcement_recipients WHERE user_id=?").get(owner.id).status,"skipped");
+});
