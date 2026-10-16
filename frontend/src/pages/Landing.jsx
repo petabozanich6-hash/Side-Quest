@@ -138,7 +138,7 @@ export default function Landing() {
           <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Print a lesson or record hands-on learning when you want to step away from the screen." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
           <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP and grow their pocket pets as they learn. Families can also opt into seasonal surprises — a little fun along the way." tint="#C77B5B"/>
-          <div className="mt-6 paper-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="homepage-homeschool-compass">
+          <div className="col-span-full mt-2 paper-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="homepage-homeschool-compass">
             <div className="flex items-start gap-4">
               <div className="shrink-0 h-11 w-11 rounded-xl grid place-items-center" style={{backgroundColor:"#E8E2D1", color:"#1F3B2D"}}><Compass size={22} aria-hidden="true"/></div>
               <div>
