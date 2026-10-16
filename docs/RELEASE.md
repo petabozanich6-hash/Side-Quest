@@ -5,6 +5,8 @@ binding `DB`). Check the binding on the live Worker, not just the name: `npx wra
 
 ## How deploys work
 
+- **R2 file binding**: production `wrangler.jsonc` binds `BUCKET` to the existing `sidequest-files` R2 bucket in the same account. Owner HQ reports R2 configured only if this binding reaches the Worker. New uploaded files require a paid membership. Staging deliberately does not bind production R2. If a deploy reports an unknown bucket, confirm the real Cloudflare bucket name before changing production configuration.
+- **Workers AI cost tracking**: migration `0063_ai_cost_usage.sql` (and runtime additive schema) tracks individual model calls, token counts, and estimated USD inference cost from the deployment onward. Neither prompts nor student data are stored. Rates reflect Cloudflare's publicly posted model pricing as checked 16 October 2026; adjust in `worker/src/aiCost.ts` if pricing changes. The estimate is before daily free allocation, taxes and billing adjustments, and excludes prior usage and R2/Workers costs. For actual charged amounts, use Cloudflare's Billing and Workers AI dashboard.
 - **Code**: Cloudflare Workers Builds deploys `main` on every push (`npx wrangler deploy`). Deploying never changes the
   database schema; the Worker also creates any missing *additive* tables/columns at runtime, so a deploy cannot break
   if a migration is late.
