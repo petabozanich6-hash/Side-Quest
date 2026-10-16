@@ -27,6 +27,7 @@ import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
 import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
+import { meterWorkersAi } from "./aiCost";
 import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
@@ -264,7 +265,7 @@ export default {
   fetch: async (req: Request, env: Env, ctx: ExecutionContext) => {
     if (!new URL(req.url).pathname.startsWith("/api/") || !env.DB) return app.fetch(req, env, ctx);
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
-    return app.fetch(req, await applyPlatformSettings(env), ctx);
+    return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env)), ctx);
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

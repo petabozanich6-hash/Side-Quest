@@ -8,6 +8,7 @@
  */
 import { ACTIVE_PLANS, effectivePlan, type Plan } from "./entitlements";
 import { aiRequestsLast24h, type PlatformSettings } from "./platformSettings";
+import { aiCostSummary } from "./aiCost";
 import type { Env } from "./types";
 
 const DAY = 86400000;
@@ -80,6 +81,8 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
     n(db, "SELECT COUNT(*) n FROM ai_usage WHERE created_at >= ? AND status = 'failed'", iso(t - DAY)),
   ]);
   const aiFamilies7 = await n(db, "SELECT COUNT(DISTINCT family_id) n FROM ai_usage WHERE created_at >= ?", iso(t - 7 * DAY));
+  // Inference-by-inference USD estimate; not an invoice and not derived from request counts.
+  const aiCost = await aiCostSummary(db, now).catch(() => ({ configured: false as const, note: "AI inference usage metering is temporarily unavailable. Check Cloudflare for billing." }));
 
   // ---- storage
   const files = await n(db, "SELECT COUNT(*) n FROM files WHERE is_deleted = 0");
@@ -123,12 +126,12 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
         : { configured: false, note: "Stripe is not configured on this Worker." },
       revenue: { configured: false, note: "Revenue needs reconciled Stripe financial reports; it is never estimated from member counts." },
     },
-    ai: aiConfigured || ai7 > 0
+    ai: aiConfigured || ai7 > 0 || (aiCost.configured && !!aiCost.tracking_started_at)
       ? {
           configured: aiConfigured, enabled: settings.features.aiEnabled,
           requests_24h: ai24, requests_7d: ai7, failed_24h: aiFailed24, families_using_7d: aiFamilies7,
           platform_cap_24h: settings.costSafeguards.aiDailyPlatformCap, by_kind_30d: kinds,
-          cost: { configured: false, note: "Workers AI cost is billed by Cloudflare; see the Cloudflare dashboard. Request counts are shown instead." },
+          cost: aiCost,
         }
       : { configured: false, note: "Workers AI is not bound to this Worker." },
     storage: env.BUCKET
