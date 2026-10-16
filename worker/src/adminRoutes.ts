@@ -507,6 +507,7 @@ export function createAdminRoutes() {
       idempotency_key:safeIdempotencyKey,expected_recipients:safeRecipientCount
     });
     if("error" in result)return c.json({detail:result.error},409);
+    if(typeof result.id!=="string")return c.json({detail:"Could not confirm the announcement queue."},500);
     if(!result.existing)await writeAudit(c.env.DB,{
       ...actor(c),action:"announcement.queued",targetType:"announcement",targetId:result.id,
       detail:{kind:v.kind,recipient_count:result.count}
