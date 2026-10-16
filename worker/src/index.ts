@@ -168,7 +168,10 @@ app.post("/api/auth/login", async (c) => {
   const token = await makeToken(c.env, user.id, "parent", user.family_id);
   const { password_hash, ...safe } = user;
   const jurisdiction = await jurisdictionOrNull(c.env.DB, user.family_id);
-  return c.json({ token, user: { ...safe, role: "parent", jurisdiction } });
+  // /auth/me already exposes this navigation hint; a fresh sign-in must too,
+  // otherwise Owner HQ stays hidden until the page is manually refreshed.
+  const owner = await isPlatformOwner(c.env.DB, user.id);
+  return c.json({ token, user: { ...safe, role: "parent", jurisdiction, ...(owner ? { is_platform_owner: true } : {}) } });
 });
 
 app.post("/api/auth/child-login", async (c) => {
