@@ -1,0 +1,501 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 155,
+  "source_print_page": 143,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "Direct transcription of Appendix 3 Table 12 printed page 143; course/unit identifiers not outcomes. MDT pathways use suffixed identifiers.",
+  "records": [
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "JSL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "AEJSL",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "ATJSL",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "A1JSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "A2JSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "GEJSL",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year11"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "GTJSL",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year12"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "G1JSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Japanese: Second Language",
+      "identifier": "G2JSL",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Korean: Background Language",
+      "identifier": "KOB",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Korean: Background Language",
+      "identifier": "AEKOB",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Korean: Background Language",
+      "identifier": "ATKOB",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Korean: Background Language",
+      "identifier": "A1KOB",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Korean: Background Language",
+      "identifier": "A2KOB",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Korean: Second Language",
+      "identifier": "KOR",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Korean: Second Language",
+      "identifier": "AEKOR",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Korean: Second Language",
+      "identifier": "ATKOR",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Korean: Second Language",
+      "identifier": "A1KOR",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Korean: Second Language",
+      "identifier": "A2KOR",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Literature",
+      "identifier": "LIT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Literature",
+      "identifier": "AELIT",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Literature",
+      "identifier": "ATLIT",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Literature",
+      "identifier": "A1LIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Literature",
+      "identifier": "A2LIT",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "MMS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "AEMMS",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "ATMMS",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "A1MMS",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "A2MMS",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "GEMMS",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year11"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "GTMMS",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year12"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "G1MMS",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Marine and Maritime Studies",
+      "identifier": "G2MMS",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "MAT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "FEMAT",
+      "identifier_kind": "course_code",
+      "course_kind": "F_year11"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "FTMAT",
+      "identifier_kind": "course_code",
+      "course_kind": "F_year12"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "F1MAT",
+      "identifier_kind": "unit_code",
+      "course_kind": "F"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "F2MAT",
+      "identifier_kind": "unit_code",
+      "course_kind": "F"
+    },
+    {
+      "subject": "Mathematics Applications",
+      "identifier": "MAA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Mathematics Applications",
+      "identifier": "AEMAA",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Mathematics Applications",
+      "identifier": "ATMAA",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Mathematics Applications",
+      "identifier": "A1MAA",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Mathematics Applications",
+      "identifier": "A2MAA",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Mathematics Essential",
+      "identifier": "MAE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Mathematics Essential",
+      "identifier": "GEMAE",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year11"
+    },
+    {
+      "subject": "Mathematics Essential",
+      "identifier": "GTMAE",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year12"
+    },
+    {
+      "subject": "Mathematics Essential",
+      "identifier": "G1MAE",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Mathematics Essential",
+      "identifier": "G2MAE",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Mathematics Methods",
+      "identifier": "MAM",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Mathematics Methods",
+      "identifier": "AEMAM",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Mathematics Methods",
+      "identifier": "ATMAM",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Mathematics Methods",
+      "identifier": "A1MAM",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Mathematics Methods",
+      "identifier": "A2MAM",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Mathematics Specialist",
+      "identifier": "MAS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Mathematics Specialist",
+      "identifier": "AEMAS",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Mathematics Specialist",
+      "identifier": "ATMAS",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Mathematics Specialist",
+      "identifier": "A1MAS",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Mathematics Specialist",
+      "identifier": "A2MAS",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "MDT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "AEMDTM",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "A1MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "A2MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "GEMDTM",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year11"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "G1MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "G2MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Materials Design and Technology (Metal)",
+      "identifier": "GTMDTM",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year12"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "AEMDTT",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "A1MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "A2MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "GEMDTT",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year11"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "G1MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "G2MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Materials Design and Technology (Textiles)",
+      "identifier": "GTMDTT",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year12"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "AEMDTW",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year11"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "A1MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "A2MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "A"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "GEMDTW",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year11"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "G1MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "G2MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "G"
+    },
+    {
+      "subject": "Materials Design and Technology (Wood)",
+      "identifier": "GTMDTW",
+      "identifier_kind": "course_code",
+      "course_kind": "G_year12"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "ATMDTM",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "ATMDTT",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "ATMDTW",
+      "identifier_kind": "course_code",
+      "course_kind": "A_year12"
+    }
+  ]
+}
