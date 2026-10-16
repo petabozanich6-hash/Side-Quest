@@ -142,6 +142,10 @@ The indexed text of an original 2007 Sport, Lifestyle and Recreation Stage 6 CEC
 
 The newer SLR review file contains 28 unique outcome labels, retaining all 18 labels from the previous SLR candidate file and adding ten. **No duplicates or removals within the expanded file.** Replacing the old 18 with 28 changes the prior nine-CEC snapshot from **103 to 113 syllabus-scoped outcome records**, *not* 131; never sum both overlapping SLR files. This revised 113 is **provisional review coverage**, pending SLR primary PDF verification and verification of other legacy records. See `curriculum-audits/nsw-cec-slr-expanded-reconciliation-2026.json`. Nothing promoted to parent tracking.
 
+### Visual Design CEC independent code corroboration (16 October 2026)
+
+The 10 recorded Visual Design Stage 6 CEC (2000) labels (`DM1`–`DM6`, `CH1`–`CH4`) are independently reproduced in a NSW Department of Education school's 2023/24 HSC scope-and-sequence: https://manilla-c.schools.nsw.gov.au/content/dam/doe/sws/schools/m/manilla-c/scope-and-sequence/2024/STAGE_6_HSC_Scope_and_Secquence_Visual_DEsign.pdf . Updated `worker/src/data/nsw-creative-arts-cec-2000-outcome-codes-review.json` with this corroborating URL. NESA's 2000 course remains listed as current: https://curriculum.nsw.edu.au/learning-areas/creative-arts . **This corroborates the labels but does not independently verify the original 34-page NESA PDF's full outcomes table**, so parent release is still blocked. No new unique identifiers this batch.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
