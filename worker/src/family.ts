@@ -17,6 +17,8 @@ import type { App, AuthUser, Env, Guards } from "./types";
 import { nowIso, newId, parseJson } from "./types";
 
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+// A paid family shares one bounded R2 allowance. Free preview accounts cannot upload.
+const MAX_FAMILY_STORAGE_BYTES = 250 * 1024 * 1024;
 const FILE_PREFIX = "sidequest";
 const SAFE_FILE_TYPES = [
   "application/pdf",
@@ -657,6 +659,10 @@ export function registerFamily(app: App, g: Guards) {
     const file = form.get("file");
     if (!(file instanceof File)) return c.json({ detail: "No file uploaded" }, 400);
     if (file.size > MAX_UPLOAD_BYTES) return c.json({ detail: "File too large (max 50MB)" }, 413);
+    const sum = await c.env.DB.prepare("SELECT COALESCE(SUM(size),0) total FROM files WHERE family_id = ? AND is_deleted = 0")
+      .bind(c.get("user").family_id).first<{ total: number }>();
+    if (Number(sum?.total || 0) + file.size > MAX_FAMILY_STORAGE_BYTES)
+      return c.json({ detail: "Your family has reached the 250 MB file allowance. Please contact support to review your stored attachments.", code: "STORAGE_LIMIT" }, 413);
     const contentType = file.type || "application/octet-stream";
     const isSafeType =
       SAFE_FILE_TYPES.includes(contentType as (typeof SAFE_FILE_TYPES)[number])

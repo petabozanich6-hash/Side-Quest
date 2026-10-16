@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { api } from "../../lib/api";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -36,11 +37,30 @@ const nav = [
 export default function ParentLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [planState, setPlanState] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
+  const paidPlans = ["ACTIVE_WEEKLY","ACTIVE_FORTNIGHTLY","ACTIVE_MONTHLY","ACTIVE_ANNUAL","PAST_DUE","INTERNAL"];
+  const hasMembership = planState && paidPlans.includes(planState.effective_plan);
+  const route = location.pathname;
+  const paidNotice = route.startsWith("/parent/life-learning") ? "Life-learning evidence and AI outcome mapping need Family Membership." :
+    route.startsWith("/parent/resources") ? "Saving and managing resources and video suggestions need Family Membership." :
+    route.startsWith("/parent/calendar") ? "Creating calendar events and weekly timetables need Family Membership. Existing events stay visible." :
+    route.startsWith("/parent/word-hoard") ? "Adding new Word Hoard words needs Family Membership. Previously saved practice remains available." :
+    route.startsWith("/parent/outcomes") ? "Your automatically recorded progress remains visible. Manually confirming or managing outcome evidence needs Family Membership." :
+    route.startsWith("/parent/evidence") ? "The free preview includes a summary and one detailed sample. Full exports and new evidence notes need Family Membership." :
+    route.startsWith("/parent/learning-plans") ? "The free preview includes one basic learning plan. More plans and AI planning need Family Membership." :
+    (route.startsWith("/parent/lessons/make") || route.startsWith("/parent/lessons/drafts")) ? "AI lesson drafting and AI refinements need Family Membership. You can still build your free-preview lessons by hand." : "";
   const doLogout = async () => { await logout(); navigate("/"); };
+  useEffect(() => {
+    if (!user?.id || !paidNotice) return;
+    let alive = true;
+    api.get("/account/plan").then(r => { if (alive) setPlanState(r.data); }).catch(() => { if (alive) setPlanState(null); });
+    return () => { alive = false; };
+  }, [user?.id, location.pathname, paidNotice]);
   useEffect(() => {
     const shortcut = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -94,6 +114,7 @@ export default function ParentLayout() {
         <div className="px-4 sm:px-8 pt-3 flex justify-end"><button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button></div>
         <HelpAlertBar />
         <JurisdictionGate />
+        {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
         <Outlet />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
