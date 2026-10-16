@@ -158,6 +158,10 @@ Expanded actual Queensland outcome/objective collection beyond course titles: **
 
 Captured **15 verified numbered QCAA General senior syllabus objectives** from original authority PDF page images: Food & Nutrition **8**, 2025 v1.3 January 2026, PDF page 7 / printed page 4, https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_food_25_syll.pdf ; Digital Solutions **7**, 2025 v1.4 February 2026, PDF page 6 / printed page 3, https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_digital_solutions_25_syll.pdf . Review-only dataset: `worker/src/data/qld-qcaa-food-digital-2025-objectives-review.json`. The records have syllabus-scoped objective ordinals (not official unique alphanumeric identifiers). These are complete *overall syllabus objective lists* for these two published editions, **not full unit-subject-matter, assessment, standards or all-QCE coverage**. Neither dataset is enabled in the Outcome Tracker. No merge or deployment.
 
+### Queensland Biology and Physics objectives — direct QCAA PDF verification (16 October 2026)
+
+Added **12** source-verified numbered objectives to `worker/src/data/qld-qcaa-biology-physics-2025-objectives-review.json`: Biology (6) and Physics (6). Both are General senior **2025 v1.3 January 2026**. PDF page index 6 / printed syllabus page 4 was checked visually and against the published text: Biology https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf ; Physics https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_physics_25_syll.pdf . These subjects share six *titles* (also similar to Psychology); each record retains its own subject, version and objective number. **This is 12 subject-scoped references, not 12 unique objective wordings or official alphanumeric codes.** Unit-level subject matter and national completeness are unresolved. Review-only; no runtime activation.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
