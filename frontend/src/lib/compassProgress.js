@@ -58,7 +58,7 @@ export function compassRegistrationSummary(progress, jurisdiction, now = new Dat
   const expiryDays = compassDaysUntil(expiry, today);
   const deadlineDays = compassDaysUntil(renewalDeadline, today);
   const result = {
-    label: COMPASS_REGISTRATION_STATUS_LABELS[status] || "Not recorded",
+    label: jurisdiction === "SA" && status === "approved" ? "Exemption approved (parent-reported)" : (COMPASS_REGISTRATION_STATUS_LABELS[status] || "Not recorded"),
     status,
     expiryDate: expiry ? compassPrettyDate(expiry) : null,
     approvedDate: progress?.approved_on ? compassPrettyDate(progress.approved_on) : null,
@@ -83,7 +83,7 @@ export function compassRegistrationSummary(progress, jurisdiction, now = new Dat
   } else if (status === "renewal_due") {
     result.tone = "amber";
     result.reminder = "You've marked a renewal as underway. Keep the official acknowledgement and check the registration expiry date.";
-  } else if (status === "approved" && expiryDays === null) {
+  } else if (status === "approved" && expiryDays === null && ["NSW", "ACT", "NT", "SA"].includes(jurisdiction)) {
     result.tone = "amber";
     result.reminder = "Add the expiry date shown on your official registration certificate to see renewal warnings.";
   } else if (status === "submitted") {
