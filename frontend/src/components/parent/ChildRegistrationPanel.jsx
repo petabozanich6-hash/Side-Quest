@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CalendarClock, CheckCircle2, ChevronRight, Compass, Info, ShieldAlert } from "lucide-react";
 import { api, apiErrorMessage } from "../../lib/api";
 import { compassRegistrationSummary } from "../../lib/compassProgress";
+import { compassGuideFor } from "../../data/homeschoolCompass";
 
 const COLOURS = {
   red: "border-rose-300 bg-rose-50 text-rose-900",
@@ -35,6 +36,7 @@ export default function ChildRegistrationPanel({ studentId, studentName }) {
   }, [studentId]);
 
   const summary = compassRegistrationSummary(record, jurisdiction);
+  const guide = compassGuideFor(jurisdiction);
   const link = "/parent/homeschool-compass?child=" + encodeURIComponent(studentId);
 
   return (
@@ -80,6 +82,7 @@ export default function ChildRegistrationPanel({ studentId, studentName }) {
             <CalendarClock size={18} className="shrink-0 text-emerald-800" aria-hidden="true"/>
             <span><strong>ACT renewal submission deadline:</strong> {summary.renewalDeadline}. Based on your recorded expiry date and the ACT's three-calendar-month rule.</span>
           </div>}
+          {guide?.renewal && <div className="rounded-xl border border-stone-200 bg-white p-3 text-sm text-stone-700" data-testid="child-registration-state-guidance"><p className="font-bold text-emerald-950 text-xs uppercase tracking-wide mb-1">{guide.name}: ongoing requirements</p><p className="leading-relaxed">{guide.renewal}</p></div>}
           <p className="text-xs text-stone-500">All statuses and dates are reported by the parent and are not verified by the government. Reminders appear on-screen only. For official renewal requirements, open the <Link to={link} className="font-semibold underline text-emerald-800">Homeschooling Compass</Link>.</p>
         </>}
     </section>
