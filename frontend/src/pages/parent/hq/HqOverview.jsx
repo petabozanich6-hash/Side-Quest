@@ -93,7 +93,27 @@ export default function HqOverview() {
                     {(o.ai.cost.unpriced_calls_30d > 0) && <Row label="Calls without a price · 30 days">{o.ai.cost.unpriced_calls_30d}</Row>}
                   </dl>
                   <p className="text-xs text-stone-600">{o.ai.cost.tracking_started_at ? "Tracking began " + fmtDate(o.ai.cost.tracking_started_at) + "." : "Tracking starts with the next AI model call after deployment."} {o.ai.cost.note}</p>
+                  {o.ai.aud ? (
+                    <p className="text-xs text-stone-700" data-testid="hq-ai-aud">About A${(o.ai.cost.estimated_gross_30d_usd * o.ai.aud.rate).toFixed(2)} over 30 days at {o.ai.aud.rate.toFixed(4)} AUD per USD ({o.ai.aud.source}, {o.ai.aud.date}).</p>
+                  ) : <p className="text-xs text-stone-500" data-testid="hq-ai-aud">AUD figure unavailable: the exchange-rate source couldn't be reached. USD figures above are unaffected.</p>}
                   <a href={o.ai.cost.pricing_source} target="_blank" rel="noopener noreferrer" className="inline-block text-xs underline font-bold text-emerald-900">Cloudflare model pricing (checked {o.ai.cost.model_price_updated}) ↗</a>
+                  {o.ai.breakdown_30d?.rows?.length > 0 && (
+                    <div className="overflow-x-auto" data-testid="hq-ai-breakdown">
+                      <p className="text-xs text-stone-700 mt-2">Lesson drafts tracked · 30 days: {o.ai.breakdown_30d.generations.count}{o.ai.breakdown_30d.generations.avg_calls != null ? `, about ${o.ai.breakdown_30d.generations.avg_calls} model calls, ${usd(o.ai.breakdown_30d.generations.avg_usd || 0)} USD and ${Math.round((o.ai.breakdown_30d.generations.avg_ms || 0) / 1000)} s each` : ""}.</p>
+                      <table className="text-xs w-full mt-1">
+                        <thead><tr className="text-left text-stone-500"><th className="pr-2">Task</th><th className="pr-2">Model</th><th className="pr-2">Calls</th><th className="pr-2">Failed</th><th className="pr-2">Fallbacks</th><th className="pr-2">Avg time</th><th>USD</th></tr></thead>
+                        <tbody>{o.ai.breakdown_30d.rows.map((r) => (
+                          <tr key={r.task + r.model} className="border-t border-stone-100"><td className="pr-2">{r.task.replace(/_/g, " ")}</td><td className="pr-2">{r.model.replace(/^@cf\//, "")}</td><td className="pr-2">{r.calls}</td><td className="pr-2">{r.failed}{r.timeouts ? ` (${r.timeouts} timed out)` : ""}</td><td className="pr-2">{r.fallbacks}</td><td className="pr-2">{r.avg_ms != null ? `${(r.avg_ms / 1000).toFixed(1)} s` : "—"}</td><td>{usd(r.estimated_usd)}</td></tr>
+                        ))}</tbody>
+                      </table>
+                    </div>
+                  )}
+                  {o.ai.routing && (
+                    <p className="text-xs text-stone-600" data-testid="hq-ai-routing">
+                      Model routing: {o.ai.routing.enabled ? "on" : "off"}{o.ai.routing.enabled && Object.keys(o.ai.routing.routes).length ? ` (${Object.entries(o.ai.routing.routes).map(([t, m]) => `${t.replace(/_/g, " ")} → ${m.replace(/^@cf\//, "")}`).join("; ")})` : ""}. Faster lesson pipeline: {o.ai.routing.fast_pipeline ? "on" : "off"}. Main model: {o.ai.routing.default_model.replace(/^@cf\//, "")}.
+                      {o.ai.routing.problems.length > 0 && <span className="block text-rose-800">{o.ai.routing.problems.join(" ")}</span>}
+                    </p>
+                  )}
                 </> : <NotConfigured note={o.ai.cost?.note || "AI cost metering not available."} />}
               </div>
             </>

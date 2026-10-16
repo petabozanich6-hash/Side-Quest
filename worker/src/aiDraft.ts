@@ -655,7 +655,7 @@ export const FAST_POOL = 18;
 /** Stages a parent sees while a lesson is written (real milestones, reported as each one starts). */
 export type GenPhase = "design" | "frame" | "teaching" | "practice" | "checking" | "outcomes" | "saving";
 export const GEN_PHASES: GenPhase[] = ["design", "frame", "teaching", "practice", "checking", "outcomes", "saving"];
-export type Pipeline = { fast?: boolean; onPhase?: (phase: GenPhase) => Promise<void> | void };
+export type Pipeline = { fast?: boolean; onPhase?: (phase: GenPhase) => Promise<void> | void; onDesign?: (design: any) => void };
 
 export function taskForStage(name: string): AiTask {
   if (name === "design") return "lesson_design";
@@ -724,11 +724,9 @@ export async function generateStaged(
   const exs: any[] = (design.worked_examples || []).filter((w: any) => w && w.problem).slice(0, 8);
   if (!seq.length || !exs.length) return null;
   design.sequence = seq; design.worked_examples = exs;
+  pipeline.onDesign?.(design);
 
-  const frame = await step("frame", () => go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]));
-  if (!frame) return null;
-  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
-
+  const teach = async (texts: any[]): Promise<[any[], any[]]> => {
   let sections: any[] = [];
   let examples: any[] = [];
   if (compact) {
@@ -753,7 +751,6 @@ export async function generateStaged(
       "Each example needs 5–9 explicit steps showing what to do and WHY, a checked final answer, and should increase in difficulty.",
       'JSON ONLY: {"worked_examples":[{"title":string,"problem":string,"steps":[string],"answer":string,"visual":optional},...]}', VISUAL_FORMAT,
     ].filter(Boolean).join("\n");
-    await pipeline.onPhase?.("teaching");
     const grouped = await pool<any>([
       ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
       ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
@@ -777,13 +774,35 @@ export async function generateStaged(
       unpack("worked_examples", eChunks, sChunks.length),
     ]);
   } else {
-    await pipeline.onPhase?.("teaching");
     const results = await pool<any>([
       ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
       ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
     ], poolSize);
     sections = results.slice(0, seq.length);
     examples = results.slice(seq.length);
+  }
+  return [sections, examples];
+  };
+  // Fast pipeline: a subject that rarely uses readings starts its teaching alongside the frame. The prompts are
+  // exactly the ones it would get anyway (they only differ when the frame returns readings); if the frame
+  // does return readings, the teaching is written again with them, as before, so nothing is lost.
+  const readingsLikely = !!spec.source || /english|literacy|human|hass|history|geograph|civic|social|arts?\b|language/i.test(spec.area || "");
+  const speculate = pipeline.fast === true && !readingsLikely;
+  await pipeline.onPhase?.("frame");
+  const framing = go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]);
+  let early: Promise<[any[], any[]]> | null = null;
+  if (speculate) { await pipeline.onPhase?.("teaching"); early = teach([]); early.catch(() => { /* surfaced when awaited */ }); }
+  const frame = await framing;
+  if (!frame) { if (early) await early.catch(() => null); return null; }
+  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
+  let sections: any[];
+  let examples: any[];
+  if (early && !texts.length) {
+    [sections, examples] = await early;
+  } else {
+    if (early) await early.catch(() => null); // written without the readings: replaced below
+    if (!speculate) await pipeline.onPhase?.("teaching");
+    [sections, examples] = await teach(texts);
   }
   examples.forEach(r => { if (r && Array.isArray(r.steps) && !r.answer) r.answer = String(r.steps[r.steps.length - 1] ?? ""); });
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
@@ -902,15 +921,18 @@ export async function draftLessonWithAi(
   const matchOutcomes = (d: Draft) => matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, d, { model, gatewayId: opts.gatewayId, generation }).catch(() => null);
   let earlyOutcomes: ReturnType<typeof matchOutcomes> | null = null;
   try {
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, { fast: opts.fast === true, onPhase: phase });
+    // Fast pipeline: outcome matching only reads the title, objectives, key words, section headings and worked
+    // example titles, which the design step settles, so it starts then instead of after everything else.
+    const onDesign = opts.fast === true && wantsOutcomes
+      ? (d: any) => { earlyOutcomes = matchOutcomes({ title: d.title, objectives: d.objectives, key_words: d.key_words, learning_area: spec.area, year_level: spec.year,
+          stage: clip(request.stage, 10) || stageFor(spec.year), sections: (d.sequence || []).map((x: any) => ({ heading: x.heading })), worked_examples: (d.worked_examples || []).map((w: any) => ({ title: w.title, problem: w.problem })) } as any); }
+      : undefined;
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, { fast: opts.fast === true, onPhase: phase, onDesign });
     if (raw) {
       await phase("checking");
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);
       const fix = issues.filter((i) => i.repair || i.hard);
-      // Fast pipeline: outcome matching reads the title, objectives and section headings, which a repair
-      // leaves alone, so it runs alongside the repair instead of after it.
-      if (opts.fast === true && fix.length && wantsOutcomes) earlyOutcomes = matchOutcomes(draft);
       if (fix.length) {
         // One targeted repair: only the weak parts are rewritten, with the problems named.
         const keys = [...new Set(fix.flatMap((i) => i.keys))];

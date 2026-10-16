@@ -1188,7 +1188,8 @@ test("fast pipeline: same lesson, every section and worked example in one wave, 
   const slow = await run(false), quick = await run(true);
   const teaching = GARDEN.sections.length + GARDEN.worked_examples.length;
   assert.ok(slow.peak <= 4);
-  assert.equal(quick.peak, Math.min(teaching, aid.FAST_POOL), "one wave for all teaching requests");
+  // One wave: every section and example, plus the frame (maths needs no readings) and outcome matching.
+  assert.ok(quick.peak >= teaching + 1, `peak ${quick.peak}`);
   for (const k of ["sections", "worked_examples", "guided_practice", "activities", "questions"]) {
     assert.deepEqual(quick.r.lesson[k], slow.r.lesson[k], `the fast path writes the same ${k}`);
   }
@@ -1200,4 +1201,21 @@ test("fast pipeline: same lesson, every section and worked example in one wave, 
   // Every call is tagged with its task and one generation id (for routing and the cost ledger).
   assert.ok(quick.metas.every((m) => m && m.task && m.generation === quick.metas[0].generation));
   assert.ok(quick.metas.some((m) => m.task === "lesson_section") && quick.metas.some((m) => m.task === "lesson_example"));
+});
+
+test("fast pipeline: when the frame does return readings, the teaching is rewritten with them", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const reading = { title: "Garden notice", kind: "text", content: "Seedlings are watered every morning." };
+  const ai = stub((model, input) => {
+    const u = input.messages.at(-1).content;
+    if (u.includes("STAGE 2:")) return { response: JSON.stringify({ introduction: GARDEN.introduction, consolidation: GARDEN.consolidation, texts: [reading] }), usage: {} };
+    return stagedFor()(model, input);
+  });
+  const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions", learning_area: "Mathematics" }, fast: true }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  const sectionPrompts = ai.calls.map((c) => c[1].messages.at(-1).content).filter((u) => /STAGE 3, SECTION \d+ OF/.test(u));
+  assert.equal(sectionPrompts.length, GARDEN.sections.length * 2, "speculative pass, then the real one");
+  const used = sectionPrompts.filter((u) => u.includes("Seedlings are watered every morning."));
+  assert.equal(used.length, GARDEN.sections.length, "the kept sections were written with the reading");
 });
