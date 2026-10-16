@@ -1,0 +1,868 @@
+{
+  "created_at": "2026-10-16T00:48:53.960Z",
+  "complete": false,
+  "authority_source_validation_run": false,
+  "applicability_of_ac9": "requires edition and jurisdiction review",
+  "shared_national_catalogue": {
+    "file": "ac9-outcomes.ts",
+    "status": "present_typescript",
+    "bytes": 900412,
+    "verified_identifiers": null,
+    "note": "TS catalogues require their dedicated importer audits; file presence is not a record count"
+  },
+  "jurisdictions": {
+    "NSW": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "nesa-current-2026.ts",
+          "status": "present_typescript",
+          "bytes": 172512,
+          "verified_identifiers": null,
+          "note": "TS catalogues require their dedicated importer audits; file presence is not a record count"
+        },
+        {
+          "file": "nesa-review-import.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "candidates",
+          "source_summary": {
+            "syllabus_versions": 258,
+            "direct_outcomes_pages": 90,
+            "candidate_outcomes": 1435,
+            "pages_with_no_codes_or_error": 9,
+            "missing_stage_syllabus_versions": 37,
+            "senior": 193
+          },
+          "records": 1435,
+          "distinct_identifiers": 1430,
+          "identifier_kinds": {
+            "nesa_syllabus_outcome": 1435
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "nsw-2025-geography-history-electives-official-outcomes.json",
+          "status": "present_review",
+          "source_status": "official_page_verified_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 40,
+          "distinct_identifiers": 40,
+          "identifier_kinds": {
+            "syllabus_outcome": 40
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "outcome_or_content_candidate",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "nsw-law-aboriginal-studies-2027-source-outcomes-review.json",
+          "status": "present_review",
+          "source_status": "official_outcomes_page_ids_review_for_existing_overlap",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 33,
+          "distinct_identifiers": 33,
+          "identifier_kinds": {
+            "syllabus_outcome": 33
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "nsw-outcomes.ts",
+          "status": "present_typescript",
+          "bytes": 33851,
+          "verified_identifiers": null,
+          "note": "TS catalogues require their dedicated importer audits; file presence is not a record count"
+        },
+        {
+          "file": "nsw-stage2-maths.ts",
+          "status": "present_typescript",
+          "bytes": 1787,
+          "verified_identifiers": null,
+          "note": "TS catalogues require their dedicated importer audits; file presence is not a record count"
+        },
+        {
+          "file": "nsw-stage6-2024-life-skills-verified-outcomes.json",
+          "status": "present_review",
+          "source_status": "source_verified_per_three_official_outcome_pages",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 42,
+          "distinct_identifiers": 42,
+          "identifier_kinds": {
+            "syllabus_outcome": 42
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "outcome_or_content_candidate",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "nsw-stage6-ancient-geography-lifeskills-outcomes-verified.json",
+          "status": "present_review",
+          "source_status": "source_verified_specific_syllabus_outcome_lists",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 26,
+          "distinct_identifiers": 26,
+          "identifier_kinds": {
+            "syllabus_outcome": 26
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "outcome_or_content_candidate",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "nsw-work-education-2025-outcomes-source-review.json",
+          "status": "present_review",
+          "source_status": "source_page_transcribed_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 22,
+          "distinct_identifiers": 22,
+          "identifier_kinds": {
+            "syllabus_outcome": 22
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 9,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "VIC": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "vic-review-import.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "candidates",
+          "source_summary": {
+            "requested_level_pages": 15,
+            "successes": 15,
+            "failures": 0,
+            "distinct_codes": 2927
+          },
+          "records": 2927,
+          "distinct_identifiers": 2927,
+          "identifier_kinds": {
+            "vc2_candidate_content_description": 2927
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "vic-source-ids.ts",
+          "status": "present_typescript",
+          "bytes": 2658660,
+          "verified_identifiers": null,
+          "note": "TS catalogues require their dedicated importer audits; file presence is not a record count"
+        },
+        {
+          "file": "vic-subject-review.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "code_mappings",
+          "source_summary": {
+            "official_subject_routes": 53,
+            "successful_routes": 53,
+            "failed_or_empty_routes": 0,
+            "distinct_codes_on_level_pages": 2927,
+            "classified_candidates": 2927,
+            "ambiguous_codes": 43,
+            "unmapped_codes": 0
+          },
+          "records": 2927,
+          "distinct_identifiers": 2927,
+          "identifier_kinds": {
+            "unspecified": 2927
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "vic1-eal-review.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "identifiers",
+          "source_summary": {
+            "total_records": 796,
+            "unique_identifiers": 796,
+            "paths_complete": 3,
+            "problems": 0
+          },
+          "records": 796,
+          "distinct_identifiers": 796,
+          "identifier_kinds": {
+            "vc1_eal_content_description": 796
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "vic1-languages-review.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "records",
+          "source_summary": {
+            "target_pages": 14,
+            "pages_with_codes": 13,
+            "total_source_records": 1249,
+            "unique_codes": 1249,
+            "failed_or_thin_pages": 1
+          },
+          "records": 1249,
+          "distinct_identifiers": 1249,
+          "identifier_kinds": {
+            "vc1_content_description_candidate": 1249
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 5,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "QLD": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "qcaa-senior-a-z-subject-inventory-2026-review.json",
+          "status": "present_review",
+          "source_status": "official_A_to_Z_syllabus_title_inventory_not_outcome_codes",
+          "record_container": "subjects",
+          "source_summary": null,
+          "records": 78,
+          "distinct_identifiers": 0,
+          "identifier_kinds": {
+            "official_subject_title": 78
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "source_or_subject_inventory",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "qcaa-senior-see-short-courses-2026-review.json",
+          "status": "present_review",
+          "source_status": "authority_verified_course_title_inventory_only",
+          "record_container": "subjects",
+          "source_summary": null,
+          "records": 18,
+          "distinct_identifiers": 0,
+          "identifier_kinds": {
+            "subject_title": 18
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 2,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "WA": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "wa-ablewa-digital-technologies-stages-a-d-source-codes.json",
+          "status": "present_review",
+          "source_status": "directly_source_observed_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 12,
+          "distinct_identifiers": 12,
+          "identifier_kinds": {
+            "source_embedded_content_description": 12
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-english-stage-a-additional-review.json",
+          "status": "present_review",
+          "source_status": "source_observed_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 6,
+          "distinct_identifiers": 6,
+          "identifier_kinds": {
+            "content_description": 6
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-english-stage-a-literature-literacy-review.json",
+          "status": "present_review",
+          "source_status": "source_observed_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 16,
+          "distinct_identifiers": 16,
+          "identifier_kinds": {
+            "content_description": 16
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-english-stage-b-source-observed-review.json",
+          "status": "present_review",
+          "source_status": "source_observed_partial_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 23,
+          "distinct_identifiers": 23,
+          "identifier_kinds": {
+            "content_description": 23
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-hpe-literal-source-review.json",
+          "status": "present_review",
+          "source_status": "source_observed_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 17,
+          "distinct_identifiers": 17,
+          "identifier_kinds": {
+            "content_description": 17
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-mathematics-stage-a-verified.json",
+          "status": "present_review",
+          "source_status": "unverified_pattern_generated_quarantined",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 12,
+          "distinct_identifiers": 12,
+          "identifier_kinds": {
+            "content_description": 12
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-mathematics-stage-b-verified.json",
+          "status": "present_review",
+          "source_status": "unverified_pattern_generated_quarantined",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 12,
+          "distinct_identifiers": 12,
+          "identifier_kinds": {
+            "content_description": 12
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-mathematics-stage-c-verified.json",
+          "status": "present_review",
+          "source_status": "unverified_pattern_generated_quarantined",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 12,
+          "distinct_identifiers": 12,
+          "identifier_kinds": {
+            "content_description": 12
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-mathematics-stage-d-verified.json",
+          "status": "present_review",
+          "source_status": "unverified_pattern_generated_quarantined",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 12,
+          "distinct_identifiers": 12,
+          "identifier_kinds": {
+            "content_description": 12
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-ablewa-science-stages-a-d-review.json",
+          "status": "present_review",
+          "source_status": "source_review_needs_independent_full_match",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 36,
+          "distinct_identifiers": 36,
+          "identifier_kinds": {
+            "source_embedded_content_description": 36
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-digital-technologies-2026-source-observed-partial.json",
+          "status": "present_review",
+          "source_status": "source_observed_partial_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 21,
+          "distinct_identifiers": 21,
+          "identifier_kinds": {
+            "content_description": 21
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-digital-technologies-year10-literal-review.json",
+          "status": "present_review",
+          "source_status": "literal_official_wa_code_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 6,
+          "distinct_identifiers": 6,
+          "identifier_kinds": {
+            "content_description": 6
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-k10-official-json-verified-sample-2026.json",
+          "status": "present_review",
+          "source_status": "source_verified_non_exhaustive",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 52,
+          "distinct_identifiers": 52,
+          "identifier_kinds": {
+            "content_description": 52
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-k10-source-inventory-verified-2026.json",
+          "status": "present_review",
+          "source_status": "all_19_official_json_download_links_inventoried",
+          "record_container": null,
+          "source_summary": null,
+          "records": null,
+          "distinct_identifiers": 0,
+          "identifier_kinds": {},
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "source_or_subject_inventory",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-science-preprimary-source-verified-partial.json",
+          "status": "present_review",
+          "source_status": "literal_source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 6,
+          "distinct_identifiers": 6,
+          "identifier_kinds": {
+            "content_description": 6
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-interstate-languages-table14-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 150,
+          "distinct_identifiers": 150,
+          "identifier_kinds": {
+            "subject_code": 31,
+            "course_code": 59,
+            "unit_code": 60
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page139-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 84,
+          "distinct_identifiers": 84,
+          "identifier_kinds": {
+            "subject_code": 12,
+            "course_code": 36,
+            "unit_code": 36
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page140-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 65,
+          "distinct_identifiers": 65,
+          "identifier_kinds": {
+            "subject_code": 9,
+            "course_code": 28,
+            "unit_code": 28
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page141-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 98,
+          "distinct_identifiers": 98,
+          "identifier_kinds": {
+            "subject_code": 10,
+            "course_code": 44,
+            "unit_code": 44
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page142-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 89,
+          "distinct_identifiers": 89,
+          "identifier_kinds": {
+            "subject_code": 13,
+            "course_code": 38,
+            "unit_code": 38
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page143-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 83,
+          "distinct_identifiers": 83,
+          "identifier_kinds": {
+            "subject_code": 11,
+            "course_code": 36,
+            "unit_code": 36
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page144-punjabi-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 10,
+          "distinct_identifiers": 10,
+          "identifier_kinds": {
+            "subject_code": 2,
+            "course_code": 4,
+            "unit_code": 4
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page144-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 91,
+          "distinct_identifiers": 91,
+          "identifier_kinds": {
+            "subject_code": 12,
+            "course_code": 39,
+            "unit_code": 40
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-manual-page145-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_partial",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 19,
+          "distinct_identifiers": 19,
+          "identifier_kinds": {
+            "subject_code": 3,
+            "course_code": 8,
+            "unit_code": 8
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-preliminary-table15-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 48,
+          "distinct_identifiers": 48,
+          "identifier_kinds": {
+            "subject_code": 8,
+            "unit_code": 40
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        },
+        {
+          "file": "wa-wace-2026-vet-table13-review.json",
+          "status": "present_review",
+          "source_status": "source_verified_review_only",
+          "record_container": "records",
+          "source_summary": null,
+          "records": 87,
+          "distinct_identifiers": 80,
+          "identifier_kinds": {
+            "vet_industry_course_code": 10,
+            "vet_course_unit_code": 77
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 26,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "SA": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "sace-2026-subject-review.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "subject_codes",
+          "source_summary": {
+            "listed_subject_pages": 91,
+            "pages_with_codes": 91,
+            "distinct_subject_codes": 427,
+            "modified_codes": 62,
+            "stage1": 234,
+            "stage2": 193,
+            "failed_or_code_less_pages": 0
+          },
+          "records": 427,
+          "distinct_identifiers": 427,
+          "identifier_kinds": {
+            "senior_subject_code": 427
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 1,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "TAS": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "tasc-2026-course-codes.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "courses",
+          "source_summary": {
+            "declared": 164,
+            "verified_course_codes": 164,
+            "errors": 0,
+            "by_level": {
+              "1": 20,
+              "2": 60,
+              "3": 48,
+              "4": 4,
+              "Pre": 32
+            }
+          },
+          "records": 164,
+          "distinct_identifiers": 164,
+          "identifier_kinds": {
+            "senior_course_code": 164
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "authority_data",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 1,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "ACT": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "act-bsss-2026-courses-review.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "courses",
+          "source_summary": {
+            "declared_unique_courses": 113,
+            "parsed_distinct_entries": 113,
+            "rejected_populated_cells": 0,
+            "considered_cells": 113,
+            "classification_counts": {
+              "A": 91,
+              "H": 10,
+              "M": 84,
+              "T": 83,
+              "V": 29
+            },
+            "classification_control_counts_match": false
+          },
+          "records": 113,
+          "distinct_identifiers": 0,
+          "identifier_kinds": {
+            "senior_course_title_and_classification": 113
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 1,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    },
+    "NT": {
+      "status": "INCOMPLETE",
+      "dataset_files": [
+        {
+          "file": "sace-2026-subject-review.json",
+          "status": "present_review",
+          "source_status": null,
+          "record_container": "subject_codes",
+          "source_summary": {
+            "listed_subject_pages": 91,
+            "pages_with_codes": 91,
+            "distinct_subject_codes": 427,
+            "modified_codes": 62,
+            "stage1": 234,
+            "stage2": 193,
+            "failed_or_code_less_pages": 0
+          },
+          "records": 427,
+          "distinct_identifiers": 427,
+          "identifier_kinds": {
+            "senior_subject_code": 427
+          },
+          "count_warning": "Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",
+          "category": "review_mixed",
+          "verified_identifiers": null,
+          "note": "Counts are source/review records; NOT certified outcomes or exhaustive coverage"
+        }
+      ],
+      "files_present": 1,
+      "files_missing": 0,
+      "verified_complete_subject_matrix": false
+    }
+  }
+}
