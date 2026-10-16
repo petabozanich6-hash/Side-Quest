@@ -1,0 +1,379 @@
+{
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "collected_on": "2026-10-16",
+  "status": "official_page_verified_review_only",
+  "record_count": 40,
+  "not_current_in_2026": true,
+  "excluded_adjustment_identifiers": [
+    "GEE4-ADJ-01",
+    "HIE4-ADJ-01"
+  ],
+  "source_urls": [
+    "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes",
+    "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+  ],
+  "notes": "All listed outcome codes on two NESA 2025 elective syllabus outcome pages, excluding stage-4 adjustment notices; 2028 implementation. Distinct codes may overlap other repository imports; deduplicate by edition and official source.",
+  "records": [
+    {
+      "identifier": "GEE5-DFC-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-PRI-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-PAT-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-PER-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-RES-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-GIE-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-TAP-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEE5-COM-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-DFC-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-DFC-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-PRI-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-PRI-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-PAT-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-PER-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-RES-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-RES-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-RES-03",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-GIE-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-TAP-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-TAP-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-COM-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "GEELS-SAF-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIE5-APP-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIE5-NAR-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIE5-CPP-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIE5-SOU-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIE5-INQ-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIE5-COM-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10",
+      "stage": "5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-CON-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-APP-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-APP-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-NAR-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-CPP-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-CPP-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-SOU-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-INQ-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-INQ-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-INQ-03",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-COM-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "HIELS-COM-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "History Elective 7–10 Life Skills",
+      "stage": "4/5",
+      "syllabus_year": 2025,
+      "implementation_from": 2028,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes"
+    }
+  ]
+}
