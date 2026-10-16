@@ -18,6 +18,7 @@ export default function UpgradePage() {
   const [plan, setPlan] = useState(null);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
+  const [promoCode, setPromoCode] = useState("");
   const [params] = useSearchParams();
   const checkout = params.get("checkout");
 
@@ -88,19 +89,24 @@ export default function UpgradePage() {
         <section data-testid="billing-options">
           <h2 className="font-display text-lg font-bold mb-1" style={{color:"#1F3B2D"}}>Choose how often to pay</h2>
           <p className="text-sm text-stone-600 mb-4">Every option includes the same Family Membership, with no per-child or per-subject charges. Membership renews at the selected interval until you cancel.</p>
+          <div className="paper-card p-4 mb-4 space-y-2" data-testid="plan-promo-scroll">
+            <label htmlFor="sidequest-promo-code" className="block text-sm font-bold" style={{color:"#1F3B2D"}}>🐉 Have a Dragon’s Hoard discount scroll?</label>
+            <input id="sidequest-promo-code" maxLength={24} autoComplete="off" value={promoCode} onChange={(e) => setPromoCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} placeholder="Enter your code (optional)" className="block w-full rounded-xl border border-stone-300 bg-white p-3 text-sm" data-testid="plan-promo-code" />
+            <p className="text-xs text-stone-600">Your scroll will be checked against SideQuest’s active offers when you choose a plan. Stripe confirms the final discounted amount before you pay. Offers apply to the first invoice only.</p>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {billing.options.map((o) => (
               <div key={o.interval} className="paper-card p-4 flex flex-col gap-2" data-testid={`plan-${o.interval}`}>
                 <div className="text-xs font-bold uppercase tracking-wider text-stone-500">{o.label}</div>
                 <div><span className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{money(o.amount_cents)}</span> <span className="text-sm text-stone-600">{o.currency} {o.every}</span></div>
                 <p className="text-xs text-stone-500">Billed {money(o.amount_cents)} {o.every} until you cancel. Same Family Membership on every option.</p>
-                <button type="button" className={`${BTN} mt-auto`} style={BTN_STYLE} disabled={!!busy} onClick={() => go("/billing/checkout", { interval: o.interval }, o.interval)} data-testid={`choose-${o.interval}`}>
+                <button type="button" className={`${BTN} mt-auto`} style={BTN_STYLE} disabled={!!busy} onClick={() => go("/billing/checkout", { interval: o.interval, ...(promoCode ? { promo_code: promoCode } : {}) }, o.interval)} data-testid={`choose-${o.interval}`}>
                   {busy === o.interval ? "Opening checkout…" : `Choose ${o.label.toLowerCase()}`}
                 </button>
               </div>
             ))}
           </div>
-          <p className="text-xs text-stone-500 mt-2">Have a Dragon’s Hoard promo code? Enter it at Stripe Checkout before paying. Eligible codes are checked by Stripe, and your final amount is shown before you authorise payment. No trial is added at checkout; the free preview needs no card.</p>
+          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. You can only redeem active SideQuest discount scrolls. No additional trial is added at checkout; the seven-day preview needs no card.</p>
         </section>
       )}
 
