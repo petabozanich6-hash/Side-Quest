@@ -97,6 +97,10 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
       <p><strong>{proposal.learning_area || event.title}</strong> · {event.date} {event.start_time || ""}</p>
       <p className="text-slate-700">{proposal.reason}</p>
       {proposal.outcome_codes?.length > 0 && <p className="text-xs text-slate-600">Learning outcomes: {proposal.outcome_codes.join(", ")}</p>}
+      {proposal.status === "proposed" && !proposal.lesson && <button type="button" disabled={busy}
+        onClick={() => run("plan")} className="text-xs underline disabled:opacity-50" data-testid="slot-replan">
+        Replan this lesson idea
+      </button>}
       {proposal.status !== "proposed" ? <div className="space-y-2">
         <p className="font-semibold text-teal-900">Status: {proposal.status}.</p>
         {(proposal.status === "rejected" || proposal.status === "assigned") &&
