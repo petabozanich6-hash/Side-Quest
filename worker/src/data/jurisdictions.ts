@@ -1,7 +1,7 @@
 // Which curriculum framework applies to a family, by the state or territory the parent chose.
 // NSW holds a NESA syllabus outcome seed. Five other jurisdictions can use the verified ACARA v9
 // content-description REFERENCE catalogue; this is not a certification of local compliance.
-// VIC now has a source-backed VC2 plus 2026-current VC1 EAL reference; several other VC1 languages and senior courses remain missing.\n// WA still requires an accessible state-specific official catalogue. Never invent identifiers.
+// VIC data are quarantined until the source-generated catalogue is restored and verified; do not advertise coverage.\n// WA still requires an accessible state-specific official catalogue. Never invent identifiers.
 
 export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT";
 
@@ -32,7 +32,7 @@ export const FRAMEWORKS: Record<JurisdictionCode, Framework> = {
   },
   VIC: {
     jurisdiction: "VIC", jurisdiction_name: "Victoria", name: "Victorian Curriculum F–10 Version 2.0", short: "Victorian Curriculum 2.0",
-    url: "https://f10.vcaa.vic.edu.au/", codes: "reference", level_kind: "year",
+    url: "https://f10.vcaa.vic.edu.au/", codes: "none", level_kind: "year",
     learning_areas: {
       primary: ["English", "Mathematics", "Science", "Humanities", "Health and Physical Education", "The Arts", "Technologies", "Languages"],
       secondary: ["English", "Mathematics", "Science", "Humanities", "Health and Physical Education", "The Arts", "Technologies", "Languages"],
