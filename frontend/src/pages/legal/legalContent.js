@@ -53,7 +53,7 @@ export const PAGES = {
         "To meet my legal obligations.",
       ] },
       { h: "I do not sell your information", p: "I do not sell or rent personal information, and I do not use children's information for advertising or marketing profiles. I will not use your information for an unrelated purpose unless you consent or the law allows it." },
-      { h: "AI features", p: "Some features use AI to give short hints, suggest links between activities and learning outcomes, or draft lesson ideas. These run on Cloudflare's platform. I aim to send only the text needed for the task and to leave out names and other identifying details. AI output is a suggestion only and a parent reviews it. See the AI Use page for more." },
+      { h: "AI features", p: "Paid features use AI for optional child hints, lesson drafts, learning-plan support and suggestions about connections between activities and learning outcomes. These run on Cloudflare's platform. I aim to send only the text needed for the task and to leave out names and other identifying details. AI output is a suggestion only and a parent reviews it. See the AI Use page for more." },
       { h: "Who I share information with", p: "I share information only with service providers who help run Side-Quest, and only as needed for them to do that work." },
       { h: "Service providers", items: [
         "Cloudflare: hosting, network security, the database, file storage, AI features, transactional email delivery and routing for the support address.",
@@ -133,7 +133,7 @@ export const PAGES = {
     sections: [
       { h: "In short", items: [
         "Side-Quest is a planning and record-keeping tool for home educating families.",
-        "It is not a school, a teacher, a curriculum provider or an education authority.",
+        "Side-Quest provides planning tools and learning activities, but is not an accredited school, registered teacher or official education authority.",
         "You remain responsible for your child's education and for meeting the requirements that apply where you live.",
         "Always check anything important, including outcome links, against official sources.",
       ] },
@@ -141,10 +141,10 @@ export const PAGES = {
       { h: "What Side-Quest is not", items: [
         "A registered school, teacher or accredited education provider.",
         "An approving body, regulator or assessment authority.",
-        "A source of official curriculum, legal, regulatory or professional advice.",
+        "An authoritative source of curriculum requirements, legal, regulatory or professional advice. Official syllabuses and rules remain with the relevant government body.",
       ] },
       { h: "Home education requirements", p: "Side-Quest is designed for home-educating families throughout Australia. Registration, curriculum, assessment and record-keeping rules differ between states and territories, and the relevant authority in your jurisdiction sets those requirements. Explore the official resources linked in the Curriculum page and confirm your obligations directly with your local authority. Side-Quest does not guarantee acceptance of any generated program, record or report." },
-      { h: "Curriculum and learning outcomes", p: "Curriculum content and learning outcomes vary across Australian jurisdictions. Side-Quest's planning and evidence tools can be used anywhere in Australia, but automated outcome suggestions and certain stage-based templates currently rely on a NSW-specific reference list. They are not validated as matches for other state or territory curricula. Any suggested code is only a prompt for parent review, not official confirmation of achievement or compliance. Check it against your jurisdiction's current official curriculum before including it in reports. Side-Quest is not affiliated with or endorsed by an Australian education authority." },
+      { h: "Curriculum and learning outcomes", p: "Curriculum content and outcomes vary across Australian jurisdictions. Side-Quest is expanding its reference catalogue, but it does not yet include every subject, elective and outcome code in each state or territory. Some older automated suggestions and templates were NSW-based. A suggested code is a prompt for parent review, never official confirmation of achievement, registration or compliance. Check official sources before relying on records. Side-Quest is not endorsed by any education authority." },
       { h: "Progress, rewards and assessment", p: "Progress bars, achievements, points and pet rewards are there to motivate children and give you a snapshot. They are not formal assessments, grades or measures of ability, and should not be used as the only evidence of how your child is going. You know your child best." },
       { h: "AI-generated content", p: "Hints, suggestions and draft lessons created with AI may contain mistakes, gaps or unsuitable ideas. A parent should review them before use. AI does not judge your child's work or make educational decisions. See the AI Use page for more." },
       { h: "No guarantee of results", p: "I cannot promise that using Side-Quest will improve your child's learning, results or progress, or lead to any particular outcome. Every child learns differently." },
@@ -161,16 +161,17 @@ export const PAGES = {
     summary: "Where AI helps, where it doesn't, and why a parent always stays in charge.",
     sections: [
       { h: "In short", items: [
-        "AI in Side-Quest is a helper for parents and a gentle nudge for children. It is never the teacher.",
+        "AI is an optional Family Membership helper for lesson drafts, learning-plan assistance, child hints and some outcome suggestions. It is never the teacher.",
         "AI can be wrong, so a parent reviews anything that matters.",
         "AI does not grade, assess or make decisions about your child.",
         "I aim to send AI only what it needs for the task, without names or identifying details.",
         "Parents can switch AI lesson hints off for individual children. The parent AI Lesson Builder runs only when you request it.",
       ] },
       { h: "Where AI is used", items: [
-        "Pet hints: when a child is stuck during a lesson, their learning pet can offer a short, encouraging nudge in the right direction.",
-        "Lesson building: parents can describe a topic and ask AI to draft the teaching, practice and questions for a lesson. The parent checks and edits the draft before assigning it.",
-        "Outcome links: AI may suggest matches from an existing NSW-based outcome list. Those suggestions are not mapped to other jurisdictions and must be checked by a parent against their own official curriculum.",
+        "Pet hints: with Family Membership and parent permission, a child who is stuck can ask for a short lesson-specific hint.",
+        "Lesson building: with Family Membership, parents can ask AI for teaching, practice and questions, then review or revise before assigning content.",
+        "Outcome links: some automatic suggestions rely on older NSW-based data. The wider Australian catalogue is being expanded and verified; review any match against your own official curriculum.",
+        "Other paid AI tools: parents can request learning-plan suggestions or help describing everyday learning evidence. Check the suggested links; AI does not confirm achievement or compliance.",
       ] },
       { h: "How pet hints work", p: "Pet hints are designed to guide, not to hand over the answer. A hint appears only when a child asks for help or gets stuck. It is a short prompt based on the question the child is working on. Hints are generated automatically, so a parent isn't reviewing each one as it appears. Because of this, I recommend sitting with younger children and checking in on how hints are going. If a hint is wrong, confusing or unsuitable, please tell me through Report a Problem." },
       { h: "How lesson building works", p: "When you ask AI to build a lesson, it drafts content from the topic, year level and details you provide. Nothing is added to your child's area until a parent has seen it and chosen to use it. You are the editor. Check facts, difficulty, wording and suitability for your child, and change or discard anything that isn't right." },
