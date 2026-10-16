@@ -1,0 +1,19 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only",
+  "finding": "A previously recorded official legacy NESA PDF URL for Photography, Video and Digital Imaging redirects to the NESA home page rather than serving the 51-page syllabus. Its presence in search indexing must not be mistaken for direct PDF validation.",
+  "cases": [
+    {
+      "syllabus": "Photography, Video and Digital Imaging CEC (2000)",
+      "legacy_pdf": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?CVID=&MOD=AJPERES",
+      "direct_open_result": "redirects_to_https://www.nsw.gov.au/education-and-training/nesa",
+      "official_live_overview": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-video-and-digital-imaging-stage-6-cec-2000/overview",
+      "official_legacy_page": "https://test.educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/stage-6-creative-arts/photography-video-and-digital-imaging/",
+      "published_document_length_pages": 51,
+      "source_verification": "blocked_direct_pdf_inspection",
+      "next_action": "Obtain PDF using official curriculum download service or NESA-provided document; inspect Section 7.1 outcome table; reconcile 11 review labels."
+    }
+  ],
+  "new_outcome_codes_verified": 0,
+  "live_tracker_eligible": false
+}
