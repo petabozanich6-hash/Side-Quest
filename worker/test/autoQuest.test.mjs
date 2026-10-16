@@ -257,6 +257,25 @@ test("approval after another tab fills a slot does not overwrite its assignment"
   assert.equal(db.raw.prepare("SELECT linked_lesson_id FROM calendar_events WHERE id = ?").get(slotId).linked_lesson_id, "another-lesson");
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ?").get(fam).n, 0);
 });
+
+test("one open assignment cannot silently fill multiple calendar slots", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const ev1 = slot(db, fam, sid, 1, "Mathematics");
+  const ev2 = slot(db, fam, sid, 2, "Mathematics");
+  const proposals = (await plan(db, fam, sid)).proposals;
+  const saved = await lesson(db, fam, "One activity", [S2_MATHS[0]]);
+  await aq.setProposalLesson(db, fam, proposals[0].id, saved.id, NOW);
+  await aq.setProposalLesson(db, fam, proposals[1].id, saved.id, NOW);
+  const first = await aq.approveProposal(db, fam, `u-${fam}`, proposals[0].id, {}, NOW);
+  assert.ok(first.ok);
+  const second = await aq.approveProposal(db, fam, `u-${fam}`, proposals[1].id, {}, NOW);
+  assert.equal(second.code, "ALREADY_SCHEDULED");
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ?").get(ev1).linked_assignment_id, first.proposal.assignment_id);
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ?").get(ev2).linked_assignment_id, null);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND status != 'revoked'").get(fam).n, 1);
+});
+
 test("reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught", async () => {
   const db = makeDb();
   const fam = family(db); const sid = kid(db, fam);
