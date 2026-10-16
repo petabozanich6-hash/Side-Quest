@@ -57,6 +57,10 @@ Captured **16 source-linked unit-outcome references** in `worker/src/data/vic-vc
 
 Stored **14 individually observed VCE unit/outcome headings**, comprising 10 Drama and 4 Theatre Studies references, in `worker/src/data/vic-vce-drama-theatre-verified-unit-outcome-review.json`. Source: VCAA official 2025-accredited teaching-and-learning pages https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/drama/teaching-and-learning and https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/teaching-and-learning-0 . This is a **verified subset**, not all outcomes for either study. VCAA unit/outcome ordinal references are not invented official alphanumeric codes. Original failed download links still require separate resolution. No runtime data changed.
 
+### Follow-up collected: VCE science outcome references (16 October 2026)
+
+Added **17 individually checked unit/outcome references** to `worker/src/data/vic-vce-sciences-unit-outcomes-review.json` — Biology 6, Chemistry 8, Psychology 3. These are **selected verified headings only**, not the full set of outcomes for the subjects, and not alphanumeric curriculum codes. Official pages: https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/biology/teaching-and-learning ; https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/chemistry/teaching-and-learning ; https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/psychology/teaching-and-learning . Keep review-only and do not count toward a completed national syllabus inventory.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
