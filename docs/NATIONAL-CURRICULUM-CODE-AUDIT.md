@@ -154,6 +154,10 @@ Directly opening the previously recorded NESA Photography, Video and Digital Ima
 
 Expanded actual Queensland outcome/objective collection beyond course titles: **six numbered syllabus objectives (1–6)** for Psychology General senior syllabus **2025 v1.3 (January 2026)**, visually inspected against the original authority PDF (PDF page 7, printed page 4). Source https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf ; dataset `worker/src/data/qld-qcaa-psychology-2025-objectives-review.json`. These are **ordinal syllabus objectives**, not alphanumeric outcomes or a complete inventory of unit-specific subject matter. Each has an edition-scoped identity for eventual parent tracking. This is **6 additional primary-source verified QLD review records**; QCE coverage otherwise incomplete and not enabled in runtime. Do not conflate QCAA objectives with AC9 content descriptions or the earlier syllabus-title-only inventories.
 
+### Queensland Food & Nutrition and Digital Solutions — 15 primary-source objectives (16 October 2026)
+
+Captured **15 verified numbered QCAA General senior syllabus objectives** from original authority PDF page images: Food & Nutrition **8**, 2025 v1.3 January 2026, PDF page 7 / printed page 4, https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_food_25_syll.pdf ; Digital Solutions **7**, 2025 v1.4 February 2026, PDF page 6 / printed page 3, https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_digital_solutions_25_syll.pdf . Review-only dataset: `worker/src/data/qld-qcaa-food-digital-2025-objectives-review.json`. The records have syllabus-scoped objective ordinals (not official unique alphanumeric identifiers). These are complete *overall syllabus objective lists* for these two published editions, **not full unit-subject-matter, assessment, standards or all-QCE coverage**. Neither dataset is enabled in the Outcome Tracker. No merge or deployment.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
