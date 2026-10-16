@@ -58,7 +58,6 @@ export default function Landing() {
           <span className="inline-flex max-w-full items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wide sm:tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
             <Sparkles size={13}/> Made for homeschool families across Australia
           </span>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold tracking-wide shadow-sm" style={{backgroundColor:"#FFF1D6",borderColor:"#D4A574",color:"#735025"}} role="status" data-testid="coming-soon-badge"><Sparkles size={14}/> Look out for our app coming soon!</div>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
             <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Less time planning.</span>
             <span className="block text-4xl sm:text-5xl md:text-5xl lg:text-6xl italic mt-2" style={{color:"#4A5D3A"}}>More time learning together.</span>
@@ -139,6 +138,21 @@ export default function Landing() {
           <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Print a lesson or record hands-on learning when you want to step away from the screen." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
           <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP and grow their pocket pets as they learn. Families can also opt into seasonal surprises — a little fun along the way." tint="#C77B5B"/>
+          <div className="mt-6 paper-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="homepage-homeschool-compass">
+            <div className="flex items-start gap-4">
+              <div className="shrink-0 h-11 w-11 rounded-xl grid place-items-center" style={{backgroundColor:"#E8E2D1", color:"#1F3B2D"}}><Compass size={22} aria-hidden="true"/></div>
+              <div>
+                <h3 className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Meet your Homeschooling Compass</h3>
+                <p className="mt-1 text-sm leading-relaxed text-stone-600 max-w-3xl">
+                  Lost in the registration paperwork maze? Find step-by-step guidance and official links for your state or territory, plus a place to track each child's registration status and renewal dates.
+                </p>
+                <p className="mt-1 text-xs text-stone-500">Side-Quest helps you organise the journey; applications and approvals remain with the relevant government authority.</p>
+              </div>
+            </div>
+            <Link to="/register" className="inline-flex items-center justify-center gap-2 shrink-0 rounded-full px-5 py-2.5 text-sm font-bold hover:opacity-90 transition" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="homepage-compass-cta">
+              Explore Side-Quest <ArrowRight size={16}/>
+            </Link>
+          </div>
         </div>
       </section>
 
