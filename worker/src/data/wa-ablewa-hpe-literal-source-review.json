@@ -1,0 +1,131 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum ABLEWA",
+  "subject": "Health and Physical Education",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json",
+  "verified_date": "2026-10-16",
+  "status": "source_observed_review_only",
+  "coverage_note": "All 14 Stage A entries individually located in source wa_code fields. First three Stage B identifiers included; Stage B and later stages incomplete.",
+  "records": [
+    {
+      "identifier": "VCHPEP001",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP002",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP003",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP004",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP005",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP006",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP007",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM008",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM009",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM010",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM011",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM012",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM013",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEM014",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP015",
+      "level": "ABLEWA Stage B",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP016",
+      "level": "ABLEWA Stage B",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    },
+    {
+      "identifier": "VCHPEP017",
+      "level": "ABLEWA Stage B",
+      "identifier_kind": "content_description",
+      "source_field": "wa_code",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json"
+    }
+  ]
+}
