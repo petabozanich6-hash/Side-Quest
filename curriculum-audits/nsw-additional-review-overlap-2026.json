@@ -1,0 +1,43 @@
+{
+  "checked_on": "2026-10-16",
+  "baseline": "worker/src/data/nesa-review-import.json",
+  "baseline_candidate_records": 1435,
+  "match_rule": "exact identifier to candidates[].code (not full edition/source equivalence)",
+  "groups": [
+    {
+      "file": "worker/src/data/nsw-2025-geography-history-electives-official-outcomes.json",
+      "records": 40,
+      "present_in_baseline": 40,
+      "absent_from_baseline": 0
+    },
+    {
+      "file": "worker/src/data/nsw-law-aboriginal-studies-2027-source-outcomes-review.json",
+      "records": 33,
+      "present_in_baseline": 33,
+      "absent_from_baseline": 0
+    },
+    {
+      "file": "worker/src/data/nsw-work-education-2025-outcomes-source-review.json",
+      "records": 22,
+      "present_in_baseline": 22,
+      "absent_from_baseline": 0
+    },
+    {
+      "file": "worker/src/data/nsw-stage6-2024-life-skills-verified-outcomes.json",
+      "records": 42,
+      "present_in_baseline": 42,
+      "absent_from_baseline": 0
+    },
+    {
+      "file": "worker/src/data/nsw-stage6-ancient-geography-lifeskills-outcomes-verified.json",
+      "records": 26,
+      "present_in_baseline": 26,
+      "absent_from_baseline": 0
+    }
+  ],
+  "total_records_checked": 163,
+  "novel_code_strings": 0,
+  "important_limitation": "Overlaps only with existing baseline, not a claim of per-page completeness or independently re-fetched source verification.",
+  "national_completeness": false,
+  "status": "review_only"
+}
