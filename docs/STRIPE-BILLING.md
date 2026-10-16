@@ -1,4 +1,8 @@
-# Stripe subscriptions (sandbox)
+# Stripe subscriptions
+
+> **Status (2026-10-16):** live payments are **on** in production (`STRIPE_LIVE_ENABLED = "true"` in
+> `wrangler.jsonc`, live price ids in `PRICES.live`). Staging must keep sandbox keys only. The setup steps
+> below are written for the sandbox; repeat them in live mode for production.
 
 Code: `worker/src/billing.ts` (checkout, portal, webhook), `worker/src/entitlements.ts` (plans),
 `frontend/src/pages/parent/Upgrade.jsx` (`/parent/plan`), migration `worker/migrations/0053_stripe_billing.sql`,
@@ -20,7 +24,13 @@ period end, then `CANCELLED`. Nothing is ever deleted when access ends. `INTERNA
 changed by Stripe and cannot start checkout; test with a newly registered family.
 
 Sandbox vs live is decided by the key: `sk_test_`/`rk_test_` uses the sandbox prices in `billing.ts`. A live key is
-refused unless `STRIPE_LIVE_ENABLED=true` **and** live prices are added to `PRICES.live` (currently empty).
+refused unless `STRIPE_LIVE_ENABLED=true` **and** all four live prices are set (`PRICES.live`, or the
+`STRIPE_LIVE_PRICE_*` variables, which take precedence).
+
+Safeguards: checkout asks Stripe for the customer's subscriptions and refuses a second live one (the family row can lag
+the webhook); a repeat click reuses the open checkout page and pages for another plan are expired. The 5-minute cron
+re-reads subscriptions whose period has ended and that haven't synced for an hour (missed webhooks). Account
+deletion is refused while a subscription will still renew, and fails closed if Stripe can't be reached.
 
 ## 1. Apply the database migration
 
@@ -37,7 +47,7 @@ Or `npx wrangler secret put <NAME>` (add `--config wrangler.staging.jsonc` for s
 | `STRIPE_SECRET_KEY` | `sk_test_...` or a restricted `rk_test_...` | Developers → API keys. Restricted key needs: Customers write, Checkout Sessions write, Customer portal write, Subscriptions read. To create/retire Dragon's Hoard campaigns also allow Prices read, Coupons write and Promotion Codes write. Prices are read so coupons apply only to SideQuest subscription products, never another product sharing the Stripe account. |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` | Shown on the webhook destination after step 3 ("Signing secret"). |
 
-Optional plain variable: `APP_URL=https://sidequestlearning.app`. Do **not** set `STRIPE_LIVE_ENABLED`.
+Optional plain variable: `APP_URL=https://sidequestlearning.app`. On staging, do **not** set `STRIPE_LIVE_ENABLED`.
 
 ## 3. Webhook endpoint
 
@@ -79,7 +89,12 @@ Register a fresh parent (it starts on the 7-day preview, no card). On **Your pla
 - **Declined at checkout:** `4000 0000 0000 9995` → Checkout shows the error, plan unchanged.
 - **Duplicates:** In Stripe, resend any delivered event → returns 200, nothing changes.
 
-## Before live payments
+## Live payments checklist (already switched on; keep for re-verification)
+
+Check the amounts on each live price in the Stripe dashboard match `LIVE_PRICE_DETAILS` in `billing.ts`
+(A$3 weekly, A$6 fortnightly, A$13 monthly, A$130 yearly) — the upgrade page shows those numbers, Stripe charges
+the price's own amount.
+
 
 1. Explicit approval to go live.
 2. Create live products/prices; add their ids to `PRICES.live` in `worker/src/billing.ts`.
