@@ -7,3 +7,10 @@ test("privacy policy prioritises private in-app feedback with email fallback",()
   assert.match(copy,/If you cannot sign in or that tool fails, email support@sidequestlearning\.app/);
   assert.doesNotMatch(copy,/\{ h: "Contact", p: "Side-Quest, support@sidequestlearning\.app" \}/);
 });
+
+test("branded email footer points signed-in families to the private feedback tool",()=>{
+  const email=readFileSync(new URL("../src/email.ts",import.meta.url),"utf8");
+  assert.match(email,/Need help\? Signed in\? Use/);
+  assert.match(email,/SITE_URL}\/parent\/feedback/);
+  assert.match(email,/If you cannot access it, reply or email/);
+});
