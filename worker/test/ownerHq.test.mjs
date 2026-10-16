@@ -561,6 +561,101 @@ test("feedback: parent submissions inherit trusted account/family identifiers, s
   assert.equal(r.status,400,"invalid statuses rejected");
 });
 
+
+test("owner feedback replies are private, auditable, unread until viewed, and work after preview expiry",async()=>{
+  const {h,owner}=await ownerSetup();
+  const alice=await h.register("alice-replies@example.com","Alice");
+  const bob=await h.register("bob-replies@example.com","Bob");
+  const c=await h.addChild(alice,"reply_child1");
+  const report={category:"problem",subject:"My calendar is stuck",message:"The timetable screen says it cannot save. Please help!"};
+  const made=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:report});
+  assert.equal(made.status,201,JSON.stringify(made.json));
+  const id=made.json.id;
+  let r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.status,200);assert.equal(r.json.unread,0);
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:alice.token,body:{message:"Forged"}});
+  assert.equal(r.status,404,"only platform owners can reply");
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{message:"Needs passkey"}});
+  assert.equal(r.status,401,"owners need passkey step-up");
+  await stepUp(h,owner);
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,origin:"https://bad.example",body:{message:"Cross origin"}});
+  assert.equal(r.status,403,"CSRF protection still applies");
+  for (const message of ["", "x", "x".repeat(2001)]) {
+    r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{message}});
+    assert.equal(r.status,400);
+  }
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{message:"hello",status:"something_invalid"}});
+  assert.equal(r.status,400);
+  const exact="Thanks for telling me about the timetable. This has been fixed. Please try again.";
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{
+    message:exact,status:"resolved",family_id:bob.familyId,user_id:bob.id,email:bob.email
+  }});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  assert.equal(r.json.delivered_in_app,true);
+  assert.equal(r.json.email_notification_sent,false,"no false success when email is unavailable");
+  assert.equal(r.json.status,"resolved");
+  const replyId=r.json.id;
+  const raw=h.db.raw.prepare("SELECT r.*,p.family_id,p.user_id FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE r.id=?").get(replyId);
+  assert.equal(raw.family_id,alice.familyId,"trusted parent routing, never request-supplied ids");
+  assert.equal(raw.user_id,alice.id);
+  assert.equal(raw.parent_read_at,null);
+  assert.equal(raw.body,exact);
+  const audit=h.db.raw.prepare("SELECT detail_json FROM admin_audit_log WHERE action='feedback.reply' AND target_id=?").get(id);
+  assert.ok(audit,"send must produce audit metadata");
+  assert.ok(!audit.detail_json.includes(exact),"no message body in admin audit");
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.reports[0].status,"resolved");
+  assert.equal(r.json.reports[0].replies[0].body,exact);
+  assert.equal(r.json.reports[0].unread_replies,1);
+  assert.equal(r.json.reports[0].owner_note,undefined);
+  r=await h.req("/feedback",{token:bob.token,admin:false});
+  assert.equal(r.status,200);assert.equal(r.json.reports.length,0,"other families cannot view");
+  r=await h.req("/feedback/unread-count",{token:bob.token,admin:false});
+  assert.equal(r.json.unread,0);
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.json.unread,1);
+  r=await h.req("/feedback/unread-count",{token:c.token,admin:false});
+  assert.equal(r.status,403,"children cannot see parent replies");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:bob.token,admin:false});
+  assert.equal(r.status,404,"other families cannot mark these read");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:c.token,admin:false});
+  assert.equal(r.status,403,"children cannot mark parent messages read");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.json.unread,0);
+  r=await h.req("/admin/feedback/"+id+"/replies",{token:owner.token});
+  assert.equal(r.status,200);
+  assert.ok(r.json.replies[0].parent_read_at);
+  h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED',trial_ends_at=? WHERE id=?").run("2020-01-01T00:00:00.000Z",alice.familyId);
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200,"expired parents retain message history");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:alice.token,admin:false});
+  assert.equal(r.status,200,"free/expired parent can acknowledge replies");
+});
+
+test("feedback reply email only notifies the real submitting parent and never includes private message text",async()=>{
+  const {h,owner}=await ownerSetup();
+  const alice=await h.register("email-alice@example.com","Alice");
+  const bob=await h.register("email-bob@example.com","Bob");
+  const sent=[];
+  h.env.EMAIL={send:async x=>{sent.push(x);return {messageId:"test-message"}}};
+  const report=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,
+    body:{category:"idea",subject:"More maths games please",message:"Could you add activities for maths?"}});
+  assert.equal(report.status,201);
+  await stepUp(h,owner);
+  const phrase="CONFIDENTIAL FEEDBACK REPLY";
+  const r=await h.req("/admin/feedback/"+report.json.id+"/replies",{method:"POST",token:owner.token,body:{message:phrase,email:bob.email}});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  assert.equal(r.json.email_notification_sent,true);
+  assert.equal(sent.length,1);
+  assert.deepEqual(sent[0].to,alice.email);
+  assert.ok(!JSON.stringify(sent).includes(phrase));
+  assert.ok(!JSON.stringify(sent).includes("More maths games please"));
+  assert.ok(!JSON.stringify(sent).includes(bob.email));
+});
+
 test("feedback: input validation and rate limiting stop spam without creating extra reports", async () => {
   const h = harness();
   const alice = await h.register("rate-feedback@example.com","Alice");
