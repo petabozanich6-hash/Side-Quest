@@ -124,6 +124,11 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
             ))}
           </div>
         )}
+        {!publicView && page.group === "support" && (
+          <Link to="/parent/feedback" className="mt-6 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold" style={{backgroundColor:"#1F3B2D",color:"#F5EFE0"}} data-testid="legal-feedback-link">
+            <Mail size={16}/> Open Ideas & Feedback in Parent Hub
+          </Link>
+        )}
         {mail && (
           <a href={`mailto:${mail[0]}?subject=${encodeURIComponent(mail[1])}`} className="mt-8 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold" style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }} data-testid="legal-mail-btn">
             <Mail size={16} /> Email us
