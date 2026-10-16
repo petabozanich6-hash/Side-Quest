@@ -130,6 +130,10 @@ Persisted an explicit `scoped_identifier` for all eight `N6-` Numeracy Stage 6 C
 
 Re-read all **103** legacy CEC review records across seven source files. **103/103** have a persisted syllabus-scoped identifier; **0** duplicate scoped keys; **103/103** provide a source URL. Report: `curriculum-audits/nsw-cec-tracking-integrity-check-2026.json`. These checks establish *schema integrity*, **not** source authenticity, complete syllabus enumeration, authority edition match or suitability for live parent tracking. Verification tiers remain separately labelled: official NESA guides, indexed PDF requiring page recheck, school reproduced outcomes, third-party mirror, and incomplete candidate sets. **None is promoted to the live tracker by this change.**
 
+### Parent release verification gates for nine NSW legacy CEC syllabuses (16 October 2026)
+
+Created `curriculum-audits/nsw-cec-parent-release-gates.json` for the nine syllabus groups and 103 previously collected review records. Each group remains `release_eligible: false` while primary syllabus completeness, exact original document provenance, edition/cohort applicability, collision-safe identity, parent display/licensing, family isolation and legacy evidence preservation are checked. This is a release checklist, **not a new outcome import**. Further web lookup in this continuation did not independently substantiate additional primary-source codes; 0 newly verified outcomes claimed. Continue extracting the remaining incomplete official syllabus tables before changing release eligibility.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
