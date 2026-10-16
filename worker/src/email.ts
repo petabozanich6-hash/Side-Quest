@@ -126,7 +126,10 @@ export function layout(o: LayoutOpts) {
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:580px;">
 
 <tr><td bgcolor="${C.forest}" style="background:${C.forest};border-radius:18px 18px 0 0;padding:26px 30px 22px;">
-<div style="font-family:${SERIF};font-size:13px;letter-spacing:3px;text-transform:uppercase;color:${C.tan};">&#128009;&nbsp; Side-Quest Learning</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+<td valign="middle" style="padding:0 14px 0 0;"><img src="${SITE_URL}/icons/icon-192.png" width="56" height="56" alt="Side-Quest Learning logo" style="display:block;width:56px;height:56px;border:0;border-radius:12px;outline:none;text-decoration:none;"/></td>
+<td valign="middle" style="font-family:${SANS};font-size:17px;line-height:1.3;font-weight:bold;letter-spacing:1px;color:${C.paper};">Side-Quest Learning</td>
+</tr></table>
 <div style="font-family:${SERIF};font-style:italic;font-size:26px;line-height:1.2;color:${C.tan};margin-top:14px;">${esc(o.kicker || "Your next quest starts here.")}</div>
 </td></tr>
 <tr><td bgcolor="${C.moss}" style="background:${C.moss};font-size:0;line-height:0;height:4px;">&nbsp;</td></tr>
