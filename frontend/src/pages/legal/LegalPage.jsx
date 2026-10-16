@@ -14,6 +14,7 @@ const SUBJECTS = {
 // Help & FAQ: these headings are theme labels, not questions.
 const HELP_GROUPS = new Set([
   "The basics",
+  "Setting up camp",
   "Pets, hints and rewards",
   "Lessons and learning",
   "Signing in",
