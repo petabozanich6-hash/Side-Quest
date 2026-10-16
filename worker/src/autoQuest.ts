@@ -357,7 +357,7 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
     const up = await lb.updateLesson(db, familyId, row.id, { ...lesson, status: "ready" }, now);
     if (!up.ok) return up;
   }
-  const ev = await db.prepare("SELECT id, student_id, date, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first<any>();
+  const ev = await db.prepare("SELECT id, student_id, date, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first();
   // Check the exact timetable slot before creating an assignment. This avoids
   // leaving orphaned assignments if another tab or parent filled the slot first.
   if (!ev || ev.student_id !== p.student_id || ev.date !== p.date ||
@@ -407,7 +407,7 @@ export async function reopenProposal(db: DB, familyId: string, id: string, now: 
     // Revoking an assignment frees its slot without discarding the proposal.
     // A parent may plan the slot again only if the slot is now genuinely empty.
     const ev = await db.prepare("SELECT student_id, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?")
-      .bind(p.calendar_event_id, familyId).first<any>();
+      .bind(p.calendar_event_id, familyId).first();
     if (!ev || ev.student_id !== p.student_id || ev.linked_assignment_id || ev.linked_lesson_id)
       return bad(409, "This slot still contains assigned work. Revoke that assignment before planning it again.", "SLOT_TAKEN");
   } else if (p.status !== "rejected") return bad(409, "Only skipped or freed timetable slots can be reopened.");
