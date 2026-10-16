@@ -1,0 +1,55 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "subject": "Science",
+  "year_level": "Pre-primary",
+  "framework": "Western Australian Curriculum",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json",
+  "review_date": "2026-10-16",
+  "status": "literal_source_verified_partial",
+  "notes": "Six identifiers independently read from explicit wa_code fields in the official SCSA Science JSON. Not all Pre-primary content descriptions.",
+  "records": [
+    {
+      "identifier": "WAPSSUB1",
+      "identifier_kind": "content_description",
+      "year_level": "Pre-primary",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "WAPSSUC1",
+      "identifier_kind": "content_description",
+      "year_level": "Pre-primary",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "WAPSSUE1",
+      "identifier_kind": "content_description",
+      "year_level": "Pre-primary",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "WAPSSUP1",
+      "identifier_kind": "content_description",
+      "year_level": "Pre-primary",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "WAPSSIQ1",
+      "identifier_kind": "content_description",
+      "year_level": "Pre-primary",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "WAPSSIPL1",
+      "identifier_kind": "content_description",
+      "year_level": "Pre-primary",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    }
+  ]
+}
