@@ -46,6 +46,7 @@ export function requirementsFor(jurisdiction, stage) {
   if (jurisdiction === "NT") return {
     required: [], choices: [], verified: false,
     source: "https://nt.gov.au/learning/primary-and-secondary-students/home-education",
+    detailed_subjects_url: "https://nt.gov.au/__data/assets/word_doc/0007/1639843/subjects-and-content-descriptions-transition-to-year-10-.DOCX",
     explanation: "Northern Territory home education requires an approved curriculum and a suitable program. The current official page directs Transition–Year 10 families to its subject-selection and program-planning document. An older NT application form illustrates eight learning areas and subject choices in Years 9–10, but its indicative hours and elective shading are not verified as current binding rules. For Years 11–12 the current guidance requires 25 hours of educational learning per week. Side-Quest cannot yet state a dependable subject-by-year or minimum elective number here.",
   };
   if (jurisdiction === "QLD") return {
@@ -119,6 +120,7 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
       {jurisdiction === "NSW" && result.verified && !result.choices.length && <p className="text-xs mt-3">Optional: Languages. You can combine several learning areas in a project while recording the relevant learning.</p>}
       <div className="mt-4 flex flex-wrap gap-4 text-sm">
         {result.source && <a className="font-semibold underline text-emerald-800" href={result.source} target="_blank" rel="noopener noreferrer">Read official requirements ↗</a>}
+        {result.detailed_subjects_url && <a className="font-semibold underline text-emerald-800" href={result.detailed_subjects_url} target="_blank" rel="noopener noreferrer">NT Transition–Year 10 subject guide (Word document) ↗</a>}
         <Link to="/parent/children" className="font-semibold underline text-emerald-800">Review child's stage and subjects</Link>
         <span className="text-stone-600">Learning-plan creation is a separate paid Side-Quest service.</span>
       </div>
