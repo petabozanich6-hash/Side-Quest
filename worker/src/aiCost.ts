@@ -19,6 +19,8 @@ export const RATES_USD_PER_MILLION: Record<string, { input: number; output: numb
   "@cf/meta/llama-3.1-8b-instruct-fp8-fast": { input: 0.045, output: 0.384 },
   "@cf/meta/llama-3.2-1b-instruct": { input: 0.027, output: 0.201 },
   "@cf/meta/llama-3.2-3b-instruct": { input: 0.051, output: 0.335 },
+  "@cf/qwen/qwen3-30b-a3b-fp8": { input: 0.051, output: 0.335 },
+  "@cf/openai/gpt-oss-20b": { input: 0.200, output: 0.300 },
 };
 
 /** Additive runtime fallback; deployment does not automatically apply SQL migrations. */
@@ -91,7 +93,10 @@ export function estimateGrossUsd(model: string, input: number | null, output: nu
 }
 
 /** Wrapper returns raw AI responses unchanged; failed metering must never break a family's lesson. */
-export function meterWorkersAi(env: Env): Env {
+/** Production calls send cost telemetry to waitUntil, outside the lesson's critical path.
+ * A missing execution context (unit tests) retains awaited, deterministic logging.
+ */
+export function meterWorkersAi(env: Env, ctx?: Pick<ExecutionContext, "waitUntil">): Env {
   if (!env.AI || !env.DB) return env;
   const original = env.AI;
   return {
@@ -105,17 +110,21 @@ export function meterWorkersAi(env: Env): Env {
           ok = true;
           return raw;
         } finally {
-          try {
-            const counts = ok ? tokenCounts(input, raw) : { input: null, output: null, basis: "unknown" };
-            const gross = ok ? estimateGrossUsd(model, counts.input, counts.output) : null;
-            await ensureAiCostSchema(env.DB);
-            await env.DB.prepare(
-              "INSERT INTO ai_inference_costs (id, model, input_tokens, output_tokens, token_basis, estimated_usd, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-            ).bind(crypto.randomUUID(), String(model).slice(0, 140), counts.input, counts.output, counts.basis, gross, ok ? "completed" : "failed", new Date().toISOString()).run();
-          } catch {
-            // User operations must succeed even if telemetry is temporarily unavailable.
-            console.warn("Workers AI cost metering unavailable");
-          }
+          // Never save lesson or learner content in cost telemetry.
+          const logCost = async () => {
+            try {
+              const counts = ok ? tokenCounts(input, raw) : { input: null, output: null, basis: "unknown" };
+              const gross = ok ? estimateGrossUsd(model, counts.input, counts.output) : null;
+              await ensureAiCostSchema(env.DB);
+              await env.DB.prepare(
+                "INSERT INTO ai_inference_costs (id, model, input_tokens, output_tokens, token_basis, estimated_usd, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+              ).bind(crypto.randomUUID(), String(model).slice(0, 140), counts.input, counts.output, counts.basis, gross, ok ? "completed" : "failed", new Date().toISOString()).run();
+            } catch {
+              console.warn("Workers AI cost metering unavailable");
+            }
+          };
+          if (ctx) ctx.waitUntil(logCost());
+          else await logCost();
         }
       },
     },
