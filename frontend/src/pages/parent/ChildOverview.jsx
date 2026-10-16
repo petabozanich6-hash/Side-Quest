@@ -60,8 +60,8 @@ export default function ChildOverview() {
         </div>
       </header>
 
-      <OutcomeSummaryCard studentId={sid} />
       <ChildRegistrationPanel studentId={sid} studentName={s.name} />
+      <OutcomeSummaryCard studentId={sid} />
 
       {data.pet && (
         <section className="paper-card p-6 flex flex-wrap items-center justify-between gap-4" data-testid="pet-care-panel">
