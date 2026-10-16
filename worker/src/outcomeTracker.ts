@@ -14,6 +14,9 @@
 import { NSW_OUTCOMES, NSW_LA_LINKS, NSW_SOURCE_LINKS } from "./data/curriculum";
 import { NSW_OUTCOMES_SEED_VERSION } from "./data/nsw-outcomes";
 import { AC9_OUTCOMES } from "./data/ac9-outcomes";
+import { VIC_SOURCE_VERIFIED_IDS } from "./data/vic-source-ids";
+import { WA_CODES, WA_SOURCE_URL } from "./data/wa-codes";
+import { summaryFor } from "./data/outcomeSummaries";
 import { FRAMEWORKS, getFamilyJurisdiction, yearLabel, type JurisdictionCode } from "./data/jurisdictions";
 import type { App, Guards } from "./types";
 
@@ -21,7 +24,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- catalogue (which outcomes exist)
 
-export type CatalogueOutcome = { code: string; description: string; learning_area: string; stage: string; source: string; subject?: string; strand?: string; from?: number; to?: number };
+export type CatalogueOutcome = { code: string; description: string; learning_area: string; learning_areas?: string[]; stage: string; source: string; subject?: string; subjects?: string[]; strand?: string; pathway?: string; pathways?: string[]; levels?: string[]; status?: string; official_url?: string; from?: number; to?: number };
 export type Catalogue = {
   available: true;
   framework: string; // key stored on every record, e.g. "NSW"
@@ -40,28 +43,51 @@ const AC9_URL = "https://v9.australiancurriculum.edu.au/";
  * strand and level, and where to read the official wording. All structural facts, never outcome text.
  */
 export function outcomeInfo(o: CatalogueOutcome | undefined | null) {
-  if (!o) return { source_title: "", strand: "", level_label: "", official_url: "" };
+  if (!o) return { source_title: "", strand: "", level_label: "", official_url: "", summary: "" };
+  return { ...outcomeContext(o), summary: summaryFor(o.code) };
+}
+function outcomeContext(o: CatalogueOutcome) {
+  if (o.source.startsWith("VCAA")) {
+    const level = o.stage.startsWith("EAL-") ? "EAL Level " + o.stage.slice(4)
+      : o.stage.startsWith("FL") ? "Foundation Level " + o.stage.slice(2)
+      : o.from != null ? o.from === o.to ? (o.from === 0 ? "Foundation" : "Year " + o.from) : "Years " + (o.from === 0 ? "F" : o.from) + "–" + o.to
+      : "Refer to source";
+    return { source_title: o.source + " · " + (o.subject || o.learning_area),
+      strand: o.pathway || "", level_label: level,
+      official_url: o.official_url || "https://f10.vcaa.vic.edu.au/" };
+  }
+  if (o.source.startsWith("SCSA")) {
+    const level = o.from == null ? (o.levels || []).map((l) => l.replace(/^ABLEWA-/, "ABLEWA Stage ")).join(", ")
+      : o.from === o.to ? (o.from === 0 ? "Pre-primary" : `Year ${o.from}`) : `${o.from === 0 ? "Pre-primary to Year " : "Years " + o.from + "–"}${o.to}`;
+    return { source_title: `Western Australian Curriculum (SCSA) · ${o.subject || o.learning_area}`, strand: o.strand || "", level_label: level, official_url: o.official_url || WA_SOURCE_URL };
+  }
   if (o.from != null) {
     const level = o.from === o.to ? (o.from === 0 ? "Foundation" : `Year ${o.from}`) : `Years ${o.from === 0 ? "F" : o.from}–${o.to}`;
     return { source_title: `Australian Curriculum v9 · ${String(o.subject || o.learning_area).replace(/ (F-6|7-10)$/, "")}`, strand: (o as any).strand || "", level_label: level, official_url: AC9_URL };
   }
-  const url = (NSW_LA_LINKS as Record<string, string>)[o.learning_area] || (NSW_SOURCE_LINKS as Record<string, { url: string }>)[o.stage]?.url || "https://curriculum.nsw.edu.au/";
-  return { source_title: o.source || "NSW syllabus (NESA)", strand: "", level_label: STAGE_LABEL[o.stage] || o.stage, official_url: url };
+  const url = o.official_url || (NSW_LA_LINKS as Record<string, string>)[o.learning_area] || (NSW_SOURCE_LINKS as Record<string, { url: string }>)[o.stage]?.url || "https://curriculum.nsw.edu.au/";
+  const stages = o.levels?.length ? o.levels : [o.stage];
+  const level = stages.map((st) => STAGE_LABEL[st] || st).join(" and ") + (o.pathway === "Life Skills" ? " (Life Skills)" : "");
+  return { source_title: o.source || "NSW syllabus (NESA)", strand: o.pathway || "", level_label: level, official_url: url };
 }
 
 const NSW_CATALOGUE: Catalogue = {
   available: true,
   framework: "NSW",
   name: "NSW syllabuses (NESA)",
-  version: `nsw-seed-v${NSW_OUTCOMES_SEED_VERSION}`,
-  outcomes: NSW_OUTCOMES.map((o) => ({ code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source })),
-  byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source }])),
+  version: `nsw-seed-v${NSW_OUTCOMES_SEED_VERSION}+nesa-2026-current-direct-PARTIAL`,
+  outcomes: NSW_OUTCOMES.map(nswOutcome),
+  byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, nswOutcome(o)])),
 };
+function nswOutcome(o: (typeof NSW_OUTCOMES)[number]): CatalogueOutcome {
+  return { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source,
+    levels: o.levels, pathway: o.pathway, status: o.status, official_url: o.official_url };
+}
 
 /**
  * Australian Curriculum v9 reference catalogue (not jurisdictional compliance certification).
  * ACARA publishes core curriculum descriptions under CC BY 4.0; sourced from
- * the reviewed MRAC/2024/04 export. The imported list excludes Languages.
+ * the reviewed MRAC/2024/04 export, INCLUDING all Languages and pathways.
  * States/territories can vary by implementation dates and local requirements.
  */
 const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
@@ -74,6 +100,7 @@ const ac9Rows: CatalogueOutcome[] = AC9_OUTCOMES.map(o => {
     stage,
     subject: o.subject,
     strand: o.strand,
+    pathway: o.pathway,
     from: o.from,
     to: o.to,
     source: "ACARA Australian Curriculum v9.0 content description (CC BY 4.0; MRAC/2024/04)",
@@ -83,13 +110,54 @@ const AC9_CATALOGUE: Catalogue = {
   available: true,
   framework: "AC9",
   name: "Australian Curriculum v9 reference — partial, not jurisdictional compliance",
-  version: "AC9-MRAC-2024-04-partial-no-languages",
+  version: "AC9-MRAC-2024-04-all-eight-F10-reference",
   outcomes: ac9Rows,
   byCode: new Map(ac9Rows.map(o => [o.code, o])),
+};
+
+/** Source-backed Victorian reference. V2 and in-2026-still-current EAL V1 are
+ * kept as distinct curriculum versions. Some published V2 language subjects
+ * still require VC1 in 2026; programFor excludes those unless explicitly chosen.
+ * This source-based subset is NOT complete for all Victorian subject editions,
+ * senior qualifications, disability levels or vocational pathways.
+ */
+const vicRows: CatalogueOutcome[] = VIC_SOURCE_VERIFIED_IDS.map((o) => ({
+  code: o.code, description: "", learning_area: o.learning_area,
+  stage: o.stage || "", source: o.source, subject: o.subject, learning_areas:o.learning_areas,
+  subjects: o.subjects, pathway: o.pathway || undefined,
+  pathways: o.pathways, levels: o.levels, status: o.status,
+  official_url: o.source_url,
+  ...(o.from != null ? {from:o.from} : {}),
+  ...(o.to != null ? {to:o.to} : {}),
+}));
+const VIC_CATALOGUE: Catalogue = {
+  available: true, framework: "VIC",
+  name: "VCAA Victorian F–10 v2 and 2026-current v1 EAL (partial reference)",
+  version: "VCAA-v2-source-backed+v1-EAL-2026-PARTIAL",
+  outcomes: vicRows,
+  byCode: new Map(vicRows.map((o) => [o.code,o])),
+};
+/** Western Australian Curriculum K-10 (SCSA): codes and structure only, matched by school year like AC9.
+ * ABLEWA stages A-D are only included when a parent sets that stage as the child's level. */
+const waRows: CatalogueOutcome[] = WA_CODES.map((o) => {
+  const stage = o.from == null ? o.levels[0] : o.to === 0 ? "ES1" : "S" + Math.ceil(o.to! / 2);
+  return { code: o.code, description: "", learning_area: o.learning_area, subject: o.subject, strand: o.strand,
+    pathway: o.pathway || undefined, levels: o.levels, stage, official_url: WA_SOURCE_URL,
+    source: "SCSA Western Australian Curriculum K-10 (codes only)",
+    ...(o.from != null ? { from: o.from, to: o.to } : {}) };
+});
+const WA_CATALOGUE: Catalogue = {
+  available: true, framework: "WA",
+  name: "Western Australian Curriculum Pre-primary to Year 10 (SCSA)",
+  version: "SCSA-K10-outline-2026-10",
+  outcomes: waRows,
+  byCode: new Map(waRows.map((o) => [o.code, o])),
 };
 /** AC9 is a reference list for these jurisdictions, NOT a declaration of complete official compliance. */
 const CATALOGUES: Partial<Record<JurisdictionCode, Catalogue>> = {
   NSW: NSW_CATALOGUE,
+  ...(vicRows.length ? { VIC: VIC_CATALOGUE } : {}),
+  WA: WA_CATALOGUE,
   QLD: AC9_CATALOGUE,
   SA: AC9_CATALOGUE,
   TAS: AC9_CATALOGUE,
@@ -153,6 +221,9 @@ const stageOfYear = (y: number) => Object.entries(STAGE_YEARS).find(([, [a, b]])
 
 // Course learning areas (as saved on the child) -> catalogue learning areas.
 const NSW_AREA: Record<string, string> = { Technology: "TAS", Technologies: "TAS" };
+const VIC_AREA: Record<string,string> = { HSIE:"Humanities", "Creative Arts":"The Arts",
+  PDHPE:"Health and Physical Education", TAS:"Technologies", Technology:"Technologies",
+  "Humanities and Social Sciences":"Humanities", Languages:"Languages", EAL:"English" };
 const AC9_AREA: Record<string, string> = {
   English: "English", Mathematics: "Mathematics", Science: "Science", HSIE: "Humanities and Social Sciences",
   PDHPE: "Health and Physical Education", "Creative Arts": "The Arts", TAS: "Technologies", Technology: "Technologies", Technologies: "Technologies",
@@ -162,6 +233,20 @@ const AC9_AREA: Record<string, string> = {
 const SUBJECT_KEYS: RegExp[] = [/histor/i, /geograph/i, /commerce|business|econom/i, /civic/i, /aboriginal/i, /music/i, /drama/i, /dance/i,
   /visual art/i, /media/i, /software|information|digital|computing|coding/i, /food|textile|design|industrial|agricultur|graphic|engineer/i, /physical activity|sport/i];
 const AC9_KEY_SUBJECT: [RegExp, string][] = [[/software|information|digital|computing|coding/i, "digital technologies"], [/food|textile|design|industrial|agricultur|graphic|engineer/i, "design and technologies"]];
+/** AC9 Languages are distinct subjects/pathways: a child's chosen language must not silently match every language.
+ * A broad "Languages" course can intentionally cover the area; a named subject must match its official subject.
+ * Unknown named languages return no outcomes until their verified source identifiers are imported.
+ */
+const LANGUAGE_NAMES = ["Arabic", "Auslan", "Chinese", "Classical Greek", "French", "German", "Hindi",
+  "Indonesian", "Italian", "Japanese", "Korean", "Latin", "Modern Greek", "Spanish", "Turkish",
+  "Vietnamese", "Aboriginal Languages", "Torres Strait Islander Languages", "Classical Languages",
+  "Framework for Aboriginal Languages and Torres Strait Islander Languages", "Framework for Classical Languages", "Noongar", "Tamil"];
+const languageSubject = (name: string) => {
+  const lower = name.trim().toLowerCase();
+  return LANGUAGE_NAMES.find((x) => { const stem = x.toLowerCase(); return lower === stem || (lower.startsWith(stem) && " (,:/-".includes(lower.charAt(stem.length))); }) || null;
+};
+const broadLanguages = (name: string) => /^(languages?|foreign languages?|language studies)$/i.test(name.trim());
+
 export function programFor(cat: Catalogue, student: { stage?: string | null; year_level?: string | null; extra?: unknown }): Program {
   const extra = json<any>(student.extra, {}) || {};
   const stage = String(student.stage || "");
@@ -170,8 +255,13 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
   const courses = (Array.isArray(extra.electives) ? extra.electives : [])
     .filter((c: any) => c && typeof c === "object" && (c.name || c.learning_area))
     .map((c: any) => ({ name: clip(c.name, 120), learning_area: clip(c.learning_area, 80) }));
-  const ac9 = cat.framework === "AC9";
-  const toArea = (a: string) => (ac9 ? AC9_AREA[a] || a : NSW_AREA[a] || a);
+  const wa = cat.framework === "WA";
+  // WA follows the same year-by-year and subject matching as AC9 (its codes carry school years and subjects).
+  const ac9 = cat.framework === "AC9" || wa;
+  const vic = cat.framework === "VIC";
+  const lifeSkills = extra.life_skills === true || courses.some((c: { name: string }) => /life skills/i.test(c.name))
+    || Object.values(levels).some((v) => /life skills/i.test(String(v)));
+  const toArea = (a: string) => ac9 ? AC9_AREA[a] || a : vic ? VIC_AREA[a] || a : NSW_AREA[a] || a;
   const levelFor = (area: string) => {
     const l = levels[area];
     if (!l) return { stage, year };
@@ -180,24 +270,102 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
   };
   const atLevel = (o: CatalogueOutcome) => {
     const lv = levelFor(o.learning_area);
+    if (vic) {
+      // EAL levels are linguistic progression levels, NOT mainstream school
+      // year numbers. Only include them when the parent has selected an EAL level.
+      if(o.stage.startsWith("EAL-")){
+        const specified = String(levels[o.learning_area] || levels.EAL || student.year_level || "").trim().toUpperCase();
+        const match = /^(?:EAL[- ]?|LEVEL )?(AL|A1|A2|BL|B1|B2|B3|CL|C1|C2|C3|C4)$/.exec(specified);
+        return Boolean(match && o.stage === "EAL-" + match[1]);
+      }
+      // In 2026 these published V2 subjects are not automatically current.
+      if(o.status==="PUBLISHED_V2_BUT_V1_APPLIES_2026" && String(extra.curriculum_version || "")!=="VC2")return false;
+      const special=String(levels[o.learning_area] || student.year_level || "").toUpperCase()
+        .match(/^(?:FOUNDATION LEVEL |FL)([A-D])$/)?.[1];
+      if(special)return o.levels?.includes("FL"+special)===true;
+      if(lv.year!=null)return o.levels?.includes(lv.year===0?"Foundation":String(lv.year))===true;
+      return o.stage===lv.stage;
+    }
+    if (wa) {
+      // ABLEWA (students with disability) stages A-D are chosen explicitly, never inferred from a school year.
+      const ablewa = /^(?:ABLEWA[- ]?(?:STAGE )?|STAGE )([A-D])$/i.exec(String(levels[o.learning_area] || student.year_level || "").trim())?.[1];
+      if (ablewa) return o.levels?.includes("ABLEWA-" + ablewa.toUpperCase()) === true;
+      if (o.from == null) return false;
+    }
     if (ac9 && lv.year != null && o.from != null && o.to != null) return lv.year >= o.from && lv.year <= o.to;
+    if (!ac9) {
+      // NSW: a syllabus NESA lists as upcoming, outgoing or unclassified stays browsable but is not part of the
+      // default 2026 program; Life Skills outcomes only appear for a child on a Life Skills pathway.
+      if (o.status && o.status !== "current") return false;
+      if (o.pathway === "Life Skills" && !lifeSkills) return false;
+      return (o.levels?.length ? o.levels : [o.stage]).includes(lv.stage);
+    }
     return o.stage === lv.stage;
   };
   // What an outcome's own subject text is: AC9 subject ("History 7-10"), NSW syllabus ("NSW History 7-10 Syllabus").
-  const subjectText = (o: CatalogueOutcome) => (ac9 ? o.subject || "" : o.source || "");
+  // WA keeps History, Geography, Civics and Economics as strands of one HASS subject, so its strand counts too.
+  const subjectText = (o: CatalogueOutcome) => (wa ? `${o.subject || ""} ${o.strand || ""}` : ac9 || vic ? o.subject || "" : o.source || "");
   const matchers = courses.map((c: { name: string; learning_area: string }) => {
     const area = toArea(c.learning_area);
     // Several keywords ("Creative Arts (Visual Arts + Music)") or none = the whole area.
     const keys = SUBJECT_KEYS.filter((re) => re.test(c.name));
     const key = keys.length === 1 ? keys[0] : null;
     const ac9Name = ac9 && key ? AC9_KEY_SUBJECT.find(([re]) => re.test(c.name))?.[1] : undefined;
+    // Stage 6 course choices are specific syllabuses: English Advanced must not
+    // silently include English Standard, and Extension 1/2 are distinct courses.
+    // Only restrict names with an exact known NESA course specialization.
+    const seniorCourse = !ac9 && stage === "S6"
+      ? /^(English\s+(?:Advanced|Standard|Studies|EAL\/?D|Extension)|Mathematics\s+(?:Advanced|Standard|Extension\s*[12]))\b/i.exec(c.name)?.[1]
+      : undefined;
+    const normalised = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const languagePathwayHints = ac9 && area === "Languages" ? ["firstlanguage", "secondlanguage", "backgroundlanguage", "f10sequence", "710sequence"].filter((hint) => normalised(c.name).includes(hint)) : [];
+    const language = ac9 && area === "Languages" ? languageSubject(c.name) : null;
+    const namedLanguageUnmapped = ac9 && area === "Languages" && !language && !broadLanguages(c.name);
     return {
       name: c.name,
-      test: (o: CatalogueOutcome) => o.learning_area === area && (!key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)))),
+      test: (o: CatalogueOutcome) => {
+        if (vic ? !(o.learning_areas?.length ? o.learning_areas : [o.learning_area]).includes(area) : o.learning_area !== area) return false;
+        if (vic) {
+          const text = (v: string) => v.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+          const name=text(c.name), areaName=text(area);
+          const names=(o.subjects?.length?o.subjects:[o.subject||""]).map(text);
+          const selectedEal = /^(eal|english as an additional language)(?: |$)/.test(name);
+          if(o.stage.startsWith("EAL-"))return selectedEal;
+          if(selectedEal)return false;
+          // A generic Languages category is not an actual selected language.
+          if(area==="Languages" && /^(languages?|foreign languages?|language studies)$/.test(name)) return false;
+          const broad = name===areaName || name===text(c.learning_area);
+          const matched=broad || names.some(n=>name===n || name.startsWith(n+" "));
+          if(!matched)return false;
+          const pathway=text((o.pathways||[]).join(" "));
+          if(/(?:^| )7 ?10(?: sequence)?(?: |$)/.test(name) && !/7 ?10/.test(pathway))return false;
+          if(/(?:^| )f ?10(?: sequence)?(?: |$)/.test(name) && !/f ?10/.test(pathway))return false;
+          return true;
+        }
+        if (area === "Languages" && ac9) {
+          if (namedLanguageUnmapped) return false;
+          return (!language || subjectText(o).toLowerCase().includes(language.toLowerCase())) && languagePathwayHints.every((hint) => normalised(subjectText(o) + " " + String(o.pathway || "")).includes(hint));
+        }
+        if (seniorCourse) {
+          const norm = (v: string) => v.toLowerCase().replace(/[^a-z0-9]/g, "");
+          return norm(subjectText(o)).includes(norm(seniorCourse));
+        }
+        // NSW Languages: one syllabus per kind of language; any other named or generic language uses Modern Languages.
+        if (!ac9 && area === "Languages") {
+          const kind = /aboriginal/i.test(c.name) ? /Aboriginal Languages/ : /auslan/i.test(c.name) ? /Auslan/
+            : /latin|classical|ancient greek/i.test(c.name) ? /Classical Languages/ : /Modern Languages/;
+          return kind.test(subjectText(o));
+        }
+        // NSW elective courses (History Elective, Geography Elective) are separate syllabuses from the mandatory ones.
+        if (!ac9 && /\belective\b/i.test(subjectText(o)) !== /\belective\b/i.test(c.name)) return false;
+        return !key || (ac9Name ? String(wa ? o.subject : subjectText(o)).toLowerCase() === ac9Name : key.test(subjectText(o)));
+      },
     };
   });
   const subjectOf = (o: CatalogueOutcome) => {
     if (!atLevel(o)) return null;
+    // EAL content is only assigned to a family explicitly studying EAL.
+    if(vic && o.stage.startsWith("EAL-") && !matchers.some((m: { test: (outcome: CatalogueOutcome) => boolean }) => m.test(o)))return null;
     if (!matchers.length) return o.learning_area;
     return matchers.find((m: { test: (o: CatalogueOutcome) => boolean }) => m.test(o))?.name || null;
   };
