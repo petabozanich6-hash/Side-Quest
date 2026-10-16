@@ -58,6 +58,15 @@ export function flattenWaJson(doc, source) {
         add(match[1],year,subject,path,"wa_ablewa_content_description");
       }
     }
+    // WA ABLEWA Digital Technologies records have no wa_code: the official
+    // descriptor identifier is embedded in the content's markdown instead.
+    // Restrict extraction to content-description nodes with an explicitly
+    // empty wa_code, and only the VCDTDS / VCDTDI / VCDTCD code families.
+    if (v.wa_code === "" && typeof v.markdown === "string" && /Digital Technologies/i.test(String(subject))) {
+      for (const match of v.markdown.matchAll(/\\((VCDT(?:DS|DI|CD)\\d{3})\\)/g)) {
+        add(match[1], year, subject, path, "wa_ablewa_content_description");
+      }
+    }
     if (Array.isArray(v.notations) && /content description/i.test(String(v.label??""))) {
       for(const code of v.notations) if(typeof code==="string") add(code,year,subject,path,"wa_content_description");
     }
