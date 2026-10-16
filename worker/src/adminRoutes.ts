@@ -32,6 +32,7 @@ import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
+import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
 type AdminContext = Context<{ Bindings: Env; Variables: AdminVars }>;
@@ -457,6 +458,67 @@ export function createAdminRoutes() {
     } catch { /* the on-site reply is always delivered */ }
     return c.json({ok:true,id:replyId,feedback_id:report.id,status:status??report.status,
       created_at:when,email_notification_sent:emailSent,delivered_in_app:true},201);
+  });
+
+
+  // Owner-only, passkey-protected special email announcements.
+  // Mailing list sources are private registered parent accounts ONLY; the owner
+  // cannot supply an arbitrary recipient address or list through these endpoints.
+  admin.get("/announcements", requirePermission("settings.read"), async c=>{
+    await ensureAnnouncementSchema(c.env.DB);
+    const now=new Date();
+    return c.json({
+      email_configured:!!c.env.EMAIL,
+      service_recipients:await audienceCount(c.env.DB,"service",now),
+      opted_in_recipients:await audienceCount(c.env.DB,"optional",now),
+      broadcasts:await listAnnouncements(c.env.DB),
+    });
+  });
+  admin.post("/announcements/preview",requirePermission("settings.read"),async c=>{
+    const body=await readJson(c),v=validateAnnouncement(body);
+    if(!v.ok)return c.json({detail:v.detail},400);
+    await ensureAnnouncementSchema(c.env.DB);
+    return c.json({
+      kind:v.kind,subject:v.subject,body:v.body,
+      recipients:await audienceCount(c.env.DB,v.kind),
+      email_configured:!!c.env.EMAIL,
+      confirmation:"SEND "+await audienceCount(c.env.DB,v.kind)+" PARENTS",
+    });
+  });
+  admin.post("/announcements",requirePermission("settings.write"),async c=>{
+    const body=await readJson(c),v=validateAnnouncement(body);
+    if(!v.ok)return c.json({detail:v.detail},400);
+    if(!c.env.EMAIL)return c.json({detail:"Outgoing email is not configured on this Cloudflare Worker. Nothing was sent."},503);
+    if(typeof body.idempotency_key!=="string" || !/^[a-fA-F0-9-]{36}$/.test(body.idempotency_key))
+      return c.json({detail:"Refresh the composer and confirm sending again."},400);
+    if(typeof body.expected_recipients!=="number" || !Number.isInteger(body.expected_recipients))
+      return c.json({detail:"Preview the recipient count again."},400);
+    if(body.confirmation!=="SEND "+body.expected_recipients+" PARENTS")
+      return c.json({detail:"Type the exact confirmation phrase shown in the preview."},400);
+    if(v.kind==="service" && body.non_promotional_confirmed!==true)
+      return c.json({detail:"Confirm that a service notice contains no advertising or promotional content."},400);
+    if(v.kind==="optional" && body.consent_confirmed!==true)
+      return c.json({detail:"Confirm that optional news goes only to parents who have opted in."},400);
+    await ensureAnnouncementSchema(c.env.DB);
+    const result=await queueAnnouncement(c.env.DB,c.get("user").id,{
+      kind:v.kind,subject:v.subject,body:v.body,
+      idempotency_key:body.idempotency_key,expected_recipients:body.expected_recipients
+    });
+    if("error" in result)return c.json({detail:result.error},409);
+    if(!result.existing)await writeAudit(c.env.DB,{
+      ...actor(c),action:"announcement.queued",targetType:"announcement",targetId:result.id,
+      detail:{kind:v.kind,recipient_count:result.count}
+    });
+    return c.json({queued:true,id:result.id,already_queued:result.existing,delivery:"Paced in batches via Cloudflare cron."},result.existing?200:201);
+  });
+  admin.post("/announcements/:id/cancel",requirePermission("settings.write"),async c=>{
+    await ensureAnnouncementSchema(c.env.DB);
+    const id=c.req.param("id");
+    if(!/^[a-fA-F0-9-]{36}$/.test(id))return c.json({detail:"Unknown announcement"},404);
+    const cancelled=await cancelAnnouncement(c.env.DB,id);
+    if(!cancelled)return c.json({detail:"This announcement is already complete or cancelled."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"announcement.cancelled",targetType:"announcement",targetId:id});
+    return c.json({cancelled:true});
   });
 
   admin.all("*", (c) => notFound(c));
