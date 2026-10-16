@@ -123,6 +123,6 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
         <span className="text-stone-600">Learning-plan creation is a separate paid Side-Quest service.</span>
       </div>
     </div>
-    <p className="text-xs text-stone-600">This checklist is a guide to planning, not evidence that a registration application meets the rules. Senior courses, exemptions, age eligibility, implementation dates and special pathways may require individual advice. Confirm details with {guide?.authority || "your registration authority"}.</p>
+    <p className="text-xs text-stone-600">Choices ticked here are illustrative only and are not saved. Your child profile remains the place to save subject selections. This checklist is a guide to planning, not evidence that a registration application meets the rules. Senior courses, exemptions, age eligibility, implementation dates and special pathways may require individual advice. Confirm details with {guide?.authority || "your registration authority"}.</p>
   </section>;
 }
