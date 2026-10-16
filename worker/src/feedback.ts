@@ -19,9 +19,16 @@ export const FEEDBACK_SCHEMA: readonly string[] = [
   "CREATE INDEX IF NOT EXISTS idx_parent_feedback_replies_thread ON parent_feedback_replies(feedback_id,created_at,id)",
   "CREATE INDEX IF NOT EXISTS idx_parent_feedback_replies_unread ON parent_feedback_replies(feedback_id,parent_read_at)",
 ];
+/**
+ * Creating a NEW support request must never depend on the optional reply/notification
+ * tables. Those tables can lag behind a production deploy and are not needed to send feedback.
+ */
+export async function ensureFeedbackBaseSchema(db: D1Database) {
+  for (const statement of FEEDBACK_SCHEMA.slice(0, 4)) await db.prepare(statement).run();
+}
 export async function ensureFeedbackSchema(db: D1Database) {
-  // Remote migrations are not run by production deploys, so runtime DDL remains idempotent.
-  for (const statement of FEEDBACK_SCHEMA) await db.prepare(statement).run();
+  await ensureFeedbackBaseSchema(db);
+  for (const statement of FEEDBACK_SCHEMA.slice(4)) await db.prepare(statement).run();
 }
 const ownRow = (r: any) => ({
   id: r.id, category: r.category, subject: r.subject, message: r.message, page_hint: r.page_hint,
@@ -45,26 +52,42 @@ async function ownerAlert(env: Env, id: string, category: string) {
 
 export function registerFeedback(app: App, guards: Guards) {
   app.get("/api/feedback", guards.auth, guards.parent, async (c) => {
-    await ensureFeedbackSchema(c.env.DB);
-    const { results } = await c.env.DB.prepare(
-      "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50",
-    ).bind(c.get("user").family_id, c.get("user").id).all();
+    await ensureFeedbackBaseSchema(c.env.DB);
+    // Compatibility fallback: never prevent parents from seeing or sending feedback
+    // just because the newly deployed reply table is not yet available.
+    let results: any[] = [];
+    try {
+      await ensureFeedbackSchema(c.env.DB);
+      const r = await c.env.DB.prepare(
+        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50"
+      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
+      results = r.results ?? [];
+    } catch {
+      const r = await c.env.DB.prepare(
+        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50"
+      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
+      results = r.results ?? [];
+    }
     // One batched, family-and-parent-scoped query. Internal notes and other users' replies never leave the server.
     const reports = (results ?? []).map(ownRow);
     if (reports.length) {
-      // Only pull replies for reports actually returned. In particular, an old
-      // report with a NEW reply must not be hidden behind the latest 50 reports.
-      const ids = reports.map((r: any) => r.id);
-      const placeholders = ids.map(() => "?").join(",");
-      const { results: replies } = await c.env.DB.prepare(
-        "SELECT r.id,r.feedback_id,r.body,r.created_at,r.parent_read_at FROM parent_feedback_replies r JOIN parent_feedback p ON p.id = r.feedback_id WHERE p.family_id = ? AND p.user_id = ? AND r.feedback_id IN (" + placeholders + ") ORDER BY r.created_at ASC,r.id ASC LIMIT 5000"
-      ).bind(c.get("user").family_id,c.get("user").id,...ids).all<any>();
-      const byId = new Map(reports.map((r: any) => [r.id,r]));
-      for (const reply of replies ?? []) {
-        const report: any = byId.get(reply.feedback_id);
-        if (!report) continue;
-        report.replies.push({ id:reply.id, body:reply.body, created_at:reply.created_at, read_at:reply.parent_read_at });
-        if (!reply.parent_read_at) report.unread_replies++;
+      try {
+        // Only pull replies for reports actually returned. In particular, an old
+        // report with a NEW reply must not be hidden behind the latest 50 reports.
+        const ids = reports.map((r: any) => r.id);
+        const placeholders = ids.map(() => "?").join(",");
+        const { results: replies } = await c.env.DB.prepare(
+          "SELECT r.id,r.feedback_id,r.body,r.created_at,r.parent_read_at FROM parent_feedback_replies r JOIN parent_feedback p ON p.id = r.feedback_id WHERE p.family_id = ? AND p.user_id = ? AND r.feedback_id IN (" + placeholders + ") ORDER BY r.created_at ASC,r.id ASC LIMIT 5000"
+        ).bind(c.get("user").family_id,c.get("user").id,...ids).all<any>();
+        const byId = new Map(reports.map((r: any) => [r.id,r]));
+        for (const reply of replies ?? []) {
+          const report: any = byId.get(reply.feedback_id);
+          if (!report) continue;
+          report.replies.push({ id:reply.id, body:reply.body, created_at:reply.created_at, read_at:reply.parent_read_at });
+          if (!reply.parent_read_at) report.unread_replies++;
+        }
+      } catch {
+        // Existing feedback records remain readable when reply storage is unavailable.
       }
     }
     c.header("Cache-Control", "no-store");
@@ -73,7 +96,8 @@ export function registerFeedback(app: App, guards: Guards) {
 
   // Small count endpoint for parent-side unread badge. Works on every plan, including expired previews.
   app.get("/api/feedback/unread-count", guards.auth, guards.parent, async (c) => {
-    await ensureFeedbackSchema(c.env.DB);
+    try {
+      await ensureFeedbackSchema(c.env.DB);
     const u = c.get("user");
     const result = await c.env.DB.prepare(
       "SELECT COUNT(*) n FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE p.family_id=? AND p.user_id=? AND r.parent_read_at IS NULL",
@@ -87,6 +111,10 @@ export function registerFeedback(app: App, guards: Guards) {
       : null;
     c.header("Cache-Control","no-store");
     return c.json({unread:Number(result?.n || 0),latest:latest||null});
+    } catch {
+      c.header("Cache-Control","no-store");
+      return c.json({unread:0,latest:null,notification_unavailable:true});
+    }
   });
 
   // Acknowledgement is scoped to the exact submitting account, never just a guessed feedback ID.
@@ -114,7 +142,7 @@ export function registerFeedback(app: App, guards: Guards) {
       return c.json({ detail: "Describe it in 10 to 4000 characters." }, 400);
     if (b.page_hint !== undefined && (typeof b.page_hint !== "string" || b.page_hint.length > 160))
       return c.json({ detail: "Page or feature name is too long." }, 400);
-    await ensureFeedbackSchema(c.env.DB);
+    await ensureFeedbackBaseSchema(c.env.DB);
     const user = c.get("user");
     const limit = await hitRateLimit(c.env.DB, "feedback:" + user.id, 5, 600);
     if (!limit.ok) { c.header("Retry-After", String(limit.retryAfter)); return c.json({ detail: "You've sent several reports. Please try again in a few minutes." }, 429); }
