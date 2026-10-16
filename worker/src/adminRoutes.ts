@@ -30,6 +30,8 @@ import {
 import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
+import { billingConfig } from "./billing";
+import { createHoardOffer, disableHoardOffer, giftPreviewDays, listHoardOffers } from "./dragonHoard";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
@@ -313,6 +315,66 @@ export function createAdminRoutes() {
     await recordSecurityEvent(c.env.DB, target!.id, null, "signed_out_everywhere", "by administrator");
     await writeAudit(c.env.DB, { ...actor(c), action: "customer.sign_out_everywhere", targetType: "family", targetId: target!.id, detail: { reason, auth_version: version } });
     return c.json({ ok: true });
+  });
+
+
+  // ---------------------------------------------- The Dragon's Hoard
+  // These routes inherit Owner role, CSRF, passkey step-up, per-user limits and an audit trail.
+  // Stripe discounts always stay in the Stripe mode (test/live) they were issued under.
+  admin.get("/hoard", requirePermission("settings.read"), async (c) => {
+    const cfg = billingConfig(c.env);
+    const offers = await listHoardOffers(c.env.DB);
+    return c.json({
+      billing_configured: cfg.ok,
+      mode: cfg.ok ? cfg.mode : null,
+      note: cfg.ok ? null : "Stripe checkout isn't configured. Discount scrolls cannot be created yet.",
+      offers,
+    });
+  });
+
+  admin.post("/hoard", requirePermission("settings.write"), async (c) => {
+    const body = await readJson(c);
+    if (body.confirm !== "CREATE") return c.json({ detail: "Type CREATE to approve this Stripe discount." }, 400);
+    try {
+      const result = await createHoardOffer(c.env.DB, c.env, body, c.get("user").id);
+      if (!result.ok) return c.json({ detail: result.detail }, result.status);
+      await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_created", targetType: "hoard_offer", targetId: result.id, detail: { code: result.code, mode: result.mode } });
+      return c.json(result, 201);
+    } catch {
+      // Do not log the Stripe key, customer information or a full outbound request.
+      return c.json({ detail: "Stripe could not create this scroll. Confirm Coupons and Promotion Codes write permissions, then retry." }, 502);
+    }
+  });
+
+  admin.post("/hoard/:id/retire", requirePermission("settings.write"), async (c) => {
+    const body = await readJson(c);
+    if (body.confirm !== "RETIRE") return c.json({ detail: "Type RETIRE to disable the code." }, 400);
+    const reason = reasonFrom(body);
+    if (!reason) return c.json({ detail: "Give a reason (5–500 characters)." }, 400);
+    try {
+      const result = await disableHoardOffer(c.env.DB, c.env, c.req.param("id"));
+      if (!result.ok) return c.json({ detail: result.detail }, result.status);
+      await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_retired", targetType: "hoard_offer", targetId: c.req.param("id"), detail: { code: result.code, mode: result.mode, reason } });
+      return c.json({ ok: true });
+    } catch {
+      return c.json({ detail: "Stripe could not disable this discount. Nothing was retired in HQ; check Stripe and retry." }, 502);
+    }
+  });
+
+  admin.post("/customers/:id/gift-preview", requirePermission("settings.write"), async (c) => {
+    const { target, error } = await loadTarget(c);
+    if (error) return error;
+    if (target!.status !== "active") return c.json({ detail: "A suspended family cannot receive gifts." }, 409);
+    const body = await readJson(c);
+    if (body.confirm !== "GIFT") return c.json({ detail: "Type GIFT to confirm this preview extension." }, 400);
+    const reason = reasonFrom(body);
+    if (!reason) return c.json({ detail: "Give a reason (5–500 characters)." }, 400);
+    const days = Number(body.days);
+    if (![1, 7, 14].includes(days) || !Number.isInteger(body.days)) return c.json({ detail: "Choose 1, 7 or 14 bonus days." }, 400);
+    const result = await giftPreviewDays(c.env.DB, target!.id, days);
+    if (!result.ok) return c.json({ detail: result.detail }, result.status);
+    await writeAudit(c.env.DB, { ...actor(c), action: "hoard.preview_gift", targetType: "family", targetId: target!.id, detail: { days, ends_at: result.ends_at, reason } });
+    return c.json(result);
   });
 
   // ---------------------------------------------------------------- settings
