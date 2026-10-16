@@ -35,6 +35,15 @@ export default function ParentFeedback() {
     } catch (e) { setError(apiErrorMessage(e,"Could not mark the reply read")); }
   };
   useEffect(() => { load(); }, []);
+  // Opening a reply from the dashboard/email should land on the actual
+  // response, not at the long feedback submission form above the history.
+  useEffect(() => {
+    if (!expandedId) return undefined;
+    const timer = window.setTimeout(() => {
+      document.getElementById("feedback-thread-" + expandedId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [expandedId]);
   useEffect(() => { const thread=params.get("thread"); if(thread && reports.some(r=>r.id===thread) && expandedId!==thread) openThread(thread); },[reports.length,params.get("thread")]);
   const submit = async (e) => {
     e.preventDefault();
@@ -100,7 +109,7 @@ export default function ParentFeedback() {
             <p className="text-xs text-stone-500 capitalize mt-1">{r.category} · {new Date(r.created_at).toLocaleDateString("en-AU")}</p>
             <p className="text-sm mt-2 whitespace-pre-wrap break-words text-stone-700">{r.message}</p>
             <button type="button" onClick={()=>openThread(r.id)} className="mt-3 flex items-center gap-2 text-sm font-semibold text-emerald-900 underline underline-offset-2" aria-expanded={expandedId===r.id} data-testid={"parent-feedback-toggle-"+r.id}><Mail size={15}/>{r.replies?.length?("Side-Quest replies ("+r.replies.length+")"):"Reply updates"}<ChevronDown size={14} className={expandedId===r.id?"rotate-180":""}/></button>
-            {expandedId===r.id&&<div className="mt-3 space-y-3 border-t border-stone-200 pt-3" data-testid={"parent-feedback-thread-"+r.id}>{!r.replies?.length?<p className="text-xs text-stone-500">No replies yet. You'll see the Side-Quest team's messages here when they respond.</p>:(r.replies||[]).map(m=><div key={m.id} className="rounded-xl bg-emerald-50 border border-emerald-200 p-4"><div className="text-xs font-bold text-emerald-950">Side-Quest team · {new Date(m.created_at).toLocaleString("en-AU")}</div><p className="text-sm mt-2 whitespace-pre-wrap break-words text-stone-800">{m.body}</p></div>)}</div>}
+            {expandedId===r.id&&<div id={"feedback-thread-"+r.id} className="mt-3 space-y-3 border-t border-stone-200 pt-3 scroll-mt-24" role="region" aria-label={"Side-Quest replies about "+r.subject} data-testid={"parent-feedback-thread-"+r.id}>{!r.replies?.length?<p className="text-xs text-stone-500">No replies yet. You'll see the Side-Quest team's messages here when they respond.</p>:(r.replies||[]).map(m=><div key={m.id} className="rounded-xl bg-emerald-50 border border-emerald-200 p-4"><div className="text-xs font-bold text-emerald-950">Side-Quest team · {new Date(m.created_at).toLocaleString("en-AU")}</div><p className="text-sm mt-2 whitespace-pre-wrap break-words text-stone-800">{m.body}</p></div>)}</div>}
           </div>)}</div>}
         <p className="text-xs text-stone-500">For account and privacy policies, visit <Link to="/parent/trust" className="underline font-semibold">Trust & Support</Link>.</p>
       </section>
