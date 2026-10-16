@@ -1,0 +1,447 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only",
+  "scope": "nine NSW CEC syllabuses from seven files",
+  "dataset_records": 103,
+  "distinct_scoped_outcomes": 103,
+  "distinct_bare_labels": 50,
+  "reused_bare_labels": 29,
+  "numeracy_missing_scoped_identifier_field": 8,
+  "source_units": [
+    {
+      "file": "worker/src/data/nsw-numeracy-cec-2021-verified-outcomes-review.json",
+      "subject": "Numeracy Stage 6 CEC",
+      "edition": 2021,
+      "identifiers": [
+        "N6-1.1",
+        "N6-1.2",
+        "N6-1.3",
+        "N6-2.1",
+        "N6-2.2",
+        "N6-2.3",
+        "N6-3.1",
+        "N6-3.2"
+      ],
+      "count": 8,
+      "source_status": "official_guide"
+    },
+    {
+      "file": "worker/src/data/nsw-exploring-early-childhood-cec-2007-outcomes-review.json",
+      "subject": "Exploring Early Childhood Stage 6 CEC",
+      "edition": 2007,
+      "identifiers": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "3.1",
+        "4.1",
+        "4.2",
+        "4.3"
+      ],
+      "count": 14,
+      "source_status": "source_indexed_pending_pdf_recheck"
+    },
+    {
+      "file": "worker/src/data/nsw-marine-studies-cec-2012-numbered-outcomes-review.json",
+      "subject": "Marine Studies Stage 6 CEC",
+      "edition": 2012,
+      "identifiers": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "2.1",
+        "2.2",
+        "2.3",
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "4.1",
+        "4.2",
+        "5.1",
+        "5.2",
+        "5.3",
+        "5.4"
+      ],
+      "count": 18,
+      "source_status": "third_party_syllabus_mirror"
+    },
+    {
+      "file": "worker/src/data/nsw-computing-applications-cec-2012-numbered-outcomes-review.json",
+      "subject": "Computing Applications Stage 6 CEC",
+      "edition": 2012,
+      "identifiers": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "2.1",
+        "2.2",
+        "2.3",
+        "3.1",
+        "3.2",
+        "3.3",
+        "4.1",
+        "4.2",
+        "4.3",
+        "5.1"
+      ],
+      "count": 13,
+      "source_status": "school_corrob_pending_primary"
+    },
+    {
+      "file": "worker/src/data/nsw-slr-cec-2007-observed-outcome-candidates.json",
+      "subject": "Sport Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "identifiers": [
+        "1.1",
+        "1.3",
+        "1.4",
+        "1.5",
+        "2.1",
+        "2.2",
+        "2.4",
+        "2.5",
+        "3.1",
+        "3.2",
+        "3.4",
+        "3.5",
+        "3.6",
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5"
+      ],
+      "count": 18,
+      "source_status": "school_candidates_incomplete"
+    },
+    {
+      "file": "worker/src/data/nsw-creative-arts-cec-2000-outcome-codes-review.json",
+      "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+      "edition": 2000,
+      "identifiers": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "CH1",
+        "CH2",
+        "CH3",
+        "CH4",
+        "CH5"
+      ],
+      "count": 11,
+      "source_status": "source_indexed_pending_pdf_recheck"
+    },
+    {
+      "file": "worker/src/data/nsw-creative-arts-cec-2000-outcome-codes-review.json",
+      "subject": "Visual Design Stage 6 CEC",
+      "edition": 2000,
+      "identifiers": [
+        "DM1",
+        "DM2",
+        "DM3",
+        "DM4",
+        "DM5",
+        "DM6",
+        "CH1",
+        "CH2",
+        "CH3",
+        "CH4"
+      ],
+      "count": 10,
+      "source_status": "source_indexed_pending_pdf_recheck"
+    },
+    {
+      "file": "worker/src/data/nsw-ceramics-cec-2000-outcomes-review.json",
+      "subject": "Ceramics Stage 6 CEC",
+      "edition": 2000,
+      "identifiers": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "CH1",
+        "CH2",
+        "CH3",
+        "CH4",
+        "CH5"
+      ],
+      "count": 11,
+      "source_status": "school_corrob_pending_primary"
+    }
+  ],
+  "collisions": [
+    {
+      "code": "1.1",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "1.2",
+      "occurrences": 3,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "1.3",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "1.4",
+      "occurrences": 3,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "1.5",
+      "occurrences": 3,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "2.1",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "2.2",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "2.3",
+      "occurrences": 3,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "2.4",
+      "occurrences": 2,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "2.5",
+      "occurrences": 2,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "3.1",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "4.1",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "4.2",
+      "occurrences": 4,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "4.3",
+      "occurrences": 3,
+      "subjects": [
+        "Exploring Early Childhood Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "3.2",
+      "occurrences": 3,
+      "subjects": [
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "3.3",
+      "occurrences": 2,
+      "subjects": [
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "3.4",
+      "occurrences": 2,
+      "subjects": [
+        "Marine Studies Stage 6 CEC",
+        "Sport Lifestyle and Recreation Studies Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "5.1",
+      "occurrences": 2,
+      "subjects": [
+        "Marine Studies Stage 6 CEC",
+        "Computing Applications Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "M1",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "M2",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "M3",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "M4",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "M5",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "M6",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "CH1",
+      "occurrences": 3,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Visual Design Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "CH2",
+      "occurrences": 3,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Visual Design Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "CH3",
+      "occurrences": 3,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Visual Design Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "CH4",
+      "occurrences": 3,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Visual Design Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    },
+    {
+      "code": "CH5",
+      "occurrences": 2,
+      "subjects": [
+        "Photography, Video and Digital Imaging Stage 6 CEC",
+        "Ceramics Stage 6 CEC"
+      ]
+    }
+  ],
+  "interpretation": "Track by authority+subject+edition+outcome identifier, not by bare label; none of these count as parent-ready without original document release gates.",
+  "complete_nationally": false
+}
