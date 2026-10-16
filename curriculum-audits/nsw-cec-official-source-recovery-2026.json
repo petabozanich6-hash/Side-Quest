@@ -1,0 +1,41 @@
+{
+  "checked_on": "2026-10-16",
+  "scope": "four of nine failed NSW CEC outcomes URLs",
+  "records": [
+    {
+      "syllabus": "Marine Studies Stage 6 (CEC) (2012)",
+      "failed_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/outcomes",
+      "replacement_official_page": "https://educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/tas/marine-studies",
+      "recovery": "Official NESA legacy syllabus page links its PDF and Word syllabus; outcomes require extraction and validation.",
+      "status": "official_alternative_landing_page_located_identifiers_pending"
+    },
+    {
+      "syllabus": "Sport, Lifestyle and Recreation Studies Stage 6 (CEC) (2007)",
+      "failed_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/outcomes",
+      "replacement_official_page": "https://educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/pdhpe/sport-lifestyle-recreation-studies",
+      "recovery": "Official legacy NESA page lists syllabus PDF and Word; code extraction pending.",
+      "status": "official_alternative_landing_page_located_identifiers_pending"
+    },
+    {
+      "syllabus": "Work Studies Stage 6 (CEC) (2012)",
+      "failed_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-studies-stage-6-cec-2012/outcomes",
+      "replacement_official_page": "https://educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/hsie/work-studies",
+      "recovery": "Official NESA legacy course page provides syllabus resources; code extraction pending.",
+      "status": "official_alternative_landing_page_located_identifiers_pending"
+    },
+    {
+      "syllabus": "Exploring Early Childhood Stage 6 (CEC) (2007)",
+      "failed_outcomes_url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/exploring-early-childhood-stage-6-cec-2007/outcomes",
+      "replacement_official_pdf": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/9466f2c0-454f-4b31-9565-667112bc252b/explorearlychild_cec_syl.pdf?CVID=&MOD=AJPERES",
+      "recovery": "Official legacy NESA PDF indexed with numeric outcome labels 1.1, 1.2, 1.3 etc.; do not infer full range. Exact identifiers pending PDF enumeration.",
+      "status": "official_source_pdf_located_identifiers_pending"
+    }
+  ],
+  "source_verified_code_count": 0,
+  "review_only": true,
+  "remaining_failed_cec_routes": 5,
+  "notes": [
+    "Legacy NESA official pages may still carry the complete syllabuses when modern /outcomes routes return 404.",
+    "These are valid source-recovery leads only, not outcome code imports."
+  ]
+}
