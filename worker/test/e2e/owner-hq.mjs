@@ -157,6 +157,22 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
   } finally { await parentCtx.close(); }
 });
 
+
+await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
+  await page.click("[data-testid=hq-tab-announcements]");
+  await page.waitForSelector("[data-testid=hq-announcements]");
+  const parentCount=await api("GET","/admin/announcements",owner.token);
+  ok(parentCount.status===200,"owner should see broadcast counts");
+  ok(parentCount.json.service_recipients>=2,"registered families not included");
+  await page.fill("[data-testid=hq-announcement-subject]","Important Side-Quest notice");
+  await page.fill("[data-testid=hq-announcement-body]","Side-Quest will be undergoing routine maintenance. Your saved lessons will remain safe.");
+  await page.click("[data-testid=hq-announcement-preview]");
+  await page.waitForSelector("[data-testid=hq-announcement-send-confirm]");
+  ok(await page.isDisabled("[data-testid=hq-announcement-send]"),"send should be disabled before confirmation and EMAIL binding");
+  ok((await api("GET","/admin/announcements",user.token)).status===404,"ordinary parent can read Owner HQ announcements");
+  const preference=await api("GET","/announcements/preferences",user.token);
+  ok(preference.status===200 && preference.json.optional_announcements===false,"parent optional consent must be off by default");
+});
 await step("HQ layout fits phone, tablet and desktop without sideways scrolling", async () => {
   for (const [w, h, name] of [[375, 812, "phone"], [768, 1024, "tablet"], [1280, 900, "desktop"]]) {
     await page.setViewportSize({ width: w, height: h });
