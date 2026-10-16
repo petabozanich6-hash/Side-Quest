@@ -59,8 +59,10 @@ function outcomeContext(o: CatalogueOutcome) {
     const level = o.from === o.to ? (o.from === 0 ? "Foundation" : `Year ${o.from}`) : `Years ${o.from === 0 ? "F" : o.from}–${o.to}`;
     return { source_title: `Australian Curriculum v9 · ${String(o.subject || o.learning_area).replace(/ (F-6|7-10)$/, "")}`, strand: (o as any).strand || "", level_label: level, official_url: AC9_URL };
   }
-  const url = (NSW_LA_LINKS as Record<string, string>)[o.learning_area] || (NSW_SOURCE_LINKS as Record<string, { url: string }>)[o.stage]?.url || "https://curriculum.nsw.edu.au/";
-  return { source_title: o.source || "NSW syllabus (NESA)", strand: "", level_label: STAGE_LABEL[o.stage] || o.stage, official_url: url };
+  const url = o.official_url || (NSW_LA_LINKS as Record<string, string>)[o.learning_area] || (NSW_SOURCE_LINKS as Record<string, { url: string }>)[o.stage]?.url || "https://curriculum.nsw.edu.au/";
+  const stages = o.levels?.length ? o.levels : [o.stage];
+  const level = stages.map((st) => STAGE_LABEL[st] || st).join(" and ") + (o.pathway === "Life Skills" ? " (Life Skills)" : "");
+  return { source_title: o.source || "NSW syllabus (NESA)", strand: o.pathway || "", level_label: level, official_url: url };
 }
 
 const NSW_CATALOGUE: Catalogue = {
@@ -68,9 +70,13 @@ const NSW_CATALOGUE: Catalogue = {
   framework: "NSW",
   name: "NSW syllabuses (NESA)",
   version: `nsw-seed-v${NSW_OUTCOMES_SEED_VERSION}+nesa-2026-current-direct-PARTIAL`,
-  outcomes: NSW_OUTCOMES.map((o) => ({ code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source })),
-  byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source }])),
+  outcomes: NSW_OUTCOMES.map(nswOutcome),
+  byCode: new Map(NSW_OUTCOMES.map((o) => [o.code, nswOutcome(o)])),
 };
+function nswOutcome(o: (typeof NSW_OUTCOMES)[number]): CatalogueOutcome {
+  return { code: o.code, description: "", learning_area: o.learning_area, stage: o.stage, source: o.source,
+    levels: o.levels, pathway: o.pathway, status: o.status, official_url: o.official_url };
+}
 
 /**
  * Australian Curriculum v9 reference catalogue (not jurisdictional compliance certification).
@@ -228,6 +234,8 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
     .map((c: any) => ({ name: clip(c.name, 120), learning_area: clip(c.learning_area, 80) }));
   const ac9 = cat.framework === "AC9";
   const vic = cat.framework === "VIC";
+  const lifeSkills = extra.life_skills === true || courses.some((c: { name: string }) => /life skills/i.test(c.name))
+    || Object.values(levels).some((v) => /life skills/i.test(String(v)));
   const toArea = (a: string) => ac9 ? AC9_AREA[a] || a : vic ? VIC_AREA[a] || a : NSW_AREA[a] || a;
   const levelFor = (area: string) => {
     const l = levels[area];
@@ -254,6 +262,13 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
       return o.stage===lv.stage;
     }
     if (ac9 && lv.year != null && o.from != null && o.to != null) return lv.year >= o.from && lv.year <= o.to;
+    if (!ac9) {
+      // NSW: a syllabus NESA lists as upcoming, outgoing or unclassified stays browsable but is not part of the
+      // default 2026 program; Life Skills outcomes only appear for a child on a Life Skills pathway.
+      if (o.status && o.status !== "current") return false;
+      if (o.pathway === "Life Skills" && !lifeSkills) return false;
+      return (o.levels?.length ? o.levels : [o.stage]).includes(lv.stage);
+    }
     return o.stage === lv.stage;
   };
   // What an outcome's own subject text is: AC9 subject ("History 7-10"), NSW syllabus ("NSW History 7-10 Syllabus").
@@ -303,6 +318,14 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
           const norm = (v: string) => v.toLowerCase().replace(/[^a-z0-9]/g, "");
           return norm(subjectText(o)).includes(norm(seniorCourse));
         }
+        // NSW Languages: one syllabus per kind of language; any other named or generic language uses Modern Languages.
+        if (!ac9 && area === "Languages") {
+          const kind = /aboriginal/i.test(c.name) ? /Aboriginal Languages/ : /auslan/i.test(c.name) ? /Auslan/
+            : /latin|classical|ancient greek/i.test(c.name) ? /Classical Languages/ : /Modern Languages/;
+          return kind.test(subjectText(o));
+        }
+        // NSW elective courses (History Elective, Geography Elective) are separate syllabuses from the mandatory ones.
+        if (!ac9 && /\belective\b/i.test(subjectText(o)) !== /\belective\b/i.test(c.name)) return false;
         return !key || (ac9Name ? subjectText(o).toLowerCase() === ac9Name : key.test(subjectText(o)));
       },
     };

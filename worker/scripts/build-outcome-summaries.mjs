@@ -15,7 +15,7 @@ for (const file of readdirSync(dir).filter((f) => f.endsWith(".json")).sort()) {
   const batch = JSON.parse(readFileSync(join(dir, file), "utf8"));
   for (const [code, summary] of Object.entries(batch)) {
     const text = String(summary ?? "").trim();
-    if (!/^[A-Za-z0-9][A-Za-z0-9.\-_/]*$/.test(code)) problems.push(`${file}: odd code ${code}`);
+    if (!/^[A-Za-z0-9][A-Za-z0-9.\-_/:]*$/.test(code)) problems.push(`${file}: odd code ${code}`);
     if (!text) problems.push(`${file}: ${code} has no summary`);
     if (text.length > 220) problems.push(`${file}: ${code} summary is too long (${text.length})`);
     if (merged[code] && merged[code] !== text) problems.push(`${file}: ${code} summarised twice differently`);

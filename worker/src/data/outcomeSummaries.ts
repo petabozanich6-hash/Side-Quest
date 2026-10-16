@@ -5,5 +5,10 @@
 import summaries from "./outcome-summaries.json" with { type: "json" };
 
 const MAP = summaries as Record<string, string>;
-export const summaryFor = (code: unknown): string => MAP[String(code ?? "").trim()] || "";
+// Older Side-Quest records spell some NESA codes with a lower-case stage letter ("ENe-OLC-01" for "ENE-OLC-01").
+const UPPER = new Map(Object.entries(MAP).map(([k, v]) => [k.toUpperCase(), v]));
+export const summaryFor = (code: unknown): string => {
+  const c = String(code ?? "").trim();
+  return MAP[c] || UPPER.get(c.toUpperCase()) || "";
+};
 export const summaryCount = () => Object.keys(MAP).length;

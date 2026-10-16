@@ -1,5 +1,6 @@
 import { NSW_OUTCOMES_SEED } from "./nsw-outcomes";
 import { NESA_2026_DIRECT_OUTCOME_CODES } from "./nesa-current-2026";
+import { NSW_K10_CODES } from "./nsw-k10-codes";
 import { SOURCE, STAGE2_MATHS_OUTCOMES, VERIFIED, WORKING_MATHEMATICALLY } from "./nsw-stage2-maths";
 
 export type CurriculumOutcome = {
@@ -9,6 +10,13 @@ export type CurriculumOutcome = {
   learning_area: string;
   description: string;
   source: string;
+  /** Every stage the outcome applies to (Life Skills outcomes span Stages 4-5). */
+  levels?: string[];
+  /** "Life Skills" for NESA Life Skills outcomes. */
+  pathway?: string;
+  /** NESA listing: current | upcoming | outgoing | not_classified. */
+  status?: string;
+  official_url?: string;
 };
 
 export const NSW_STAGES = [
@@ -167,3 +175,38 @@ for (const row of NESA_2026_DIRECT_OUTCOME_CODES) {
   });
 }
 
+// Every NSW K-10 outcome code found on NESA's digital syllabuses and the official documents for older syllabuses
+// still in use (codes only, see nsw-k10-codes.ts). Codes already in the seed are matched case-insensitively
+// ("ENe-OLC-01" is NESA's "ENE-OLC-01") and only gain the structural fields, so no child's evidence is orphaned.
+const NSW_BY_UPPER = new Map<string, CurriculumOutcome>();
+for (const o of NSW_OUTCOMES) {
+  const twin = NSW_BY_UPPER.get(o.code.toUpperCase());
+  // The seed's "ENe-OLC-01" and the NESA import's "ENE-OLC-01" are the same outcome: keep the official spelling in
+  // children's programs; the seed spelling still resolves for any evidence already recorded against it.
+  if (twin) (twin.code === twin.code.toUpperCase() ? o : twin).status = "duplicate";
+  if (!twin || o.code === o.code.toUpperCase()) NSW_BY_UPPER.set(o.code.toUpperCase(), o);
+}
+for (const row of NSW_K10_CODES) {
+  const fields = {
+    levels: row.stages,
+    pathway: row.life_skills ? "Life Skills" : undefined,
+    status: row.status,
+    official_url: row.source_url,
+  };
+  const known = NSW_BY_UPPER.get(row.code.toUpperCase());
+  if (known) {
+    Object.assign(known, fields);
+    continue;
+  }
+  const added: CurriculumOutcome = {
+    id: row.code,
+    code: row.code,
+    stage: row.stages[0],
+    learning_area: row.learning_area,
+    description: "",
+    source: `NESA: ${row.syllabus}`,
+    ...fields,
+  };
+  NSW_OUTCOMES.push(added);
+  NSW_BY_UPPER.set(row.code.toUpperCase(), added);
+}

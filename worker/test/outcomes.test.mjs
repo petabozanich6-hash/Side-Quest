@@ -474,10 +474,13 @@ test("Mason's case: Year 7 with History, Languages and Technology gets cards for
   const t = await ot.trackerFor(db, fam, sid, { now: NOW });
   assert.deepEqual(t.areas.map((a) => a.subject), ["English", "Mathematics", "Science", "History", "Languages (100 hours over Years 7-8)", "Technology"]);
   const hist = t.areas.find((a) => a.subject === "History");
-  assert.equal(hist.total, 2, "HT4-1 and HT4-2 only");
+  const histCodes = t.outcomes.filter((o) => o.in_stage && o.subject === "History").map((o) => o.code);
+  assert.equal(hist.total, histCodes.length);
+  assert.ok(histCodes.length >= 2 && histCodes.every((c) => /^HT4-/.test(c)), "Stage 4 History only: no History Elective, Geography or Life Skills");
   assert.ok(!t.outcomes.some((o) => o.code === "GE4-1"), "no Geography outcome for a History student");
   const lang = t.areas.find((a) => a.subject.startsWith("Languages"));
-  assert.equal(lang.total, 0); assert.equal(lang.unsupported, true); assert.match(lang.note, /doesn't hold verified/);
+  const langCodes = t.outcomes.filter((o) => o.in_stage && o.subject === lang.subject).map((o) => o.code);
+  assert.ok(lang.total >= 1 && langCodes.every((c) => /^ML4-/.test(c)), "a generic Languages course uses the NSW Modern Languages K-10 syllabus");
   assert.ok(t.areas.find((a) => a.subject === "Technology").total >= 1, "verified NESA additions may expand the subject catalogue");
   const tm = t.outcomes.find((o) => o.code === "TM4-1");
   assert.equal(tm.subject, "Technology"); assert.equal(tm.level_label, "Stage 4"); assert.match(tm.source_title, /Technology Mandatory/);
@@ -527,8 +530,9 @@ test("a per-subject level on the profile moves just that subject", async () => {
   const t = await ot.trackerFor(db, fam, sid, { now: NOW });
   const nsw = ot.catalogueFor("NSW");
   const prog = t.outcomes.filter((o) => o.in_stage).map((o) => nsw.byCode.get(o.code));
-  assert.ok(prog.filter((o) => o.learning_area === "Mathematics").every((o) => o.stage === "S3"));
-  assert.ok(prog.filter((o) => o.learning_area === "English").every((o) => o.stage === "S2"));
+  const stagesOf = (o) => (o.levels?.length ? o.levels : [o.stage]);
+  assert.ok(prog.filter((o) => o.learning_area === "Mathematics").every((o) => stagesOf(o).includes("S3")));
+  assert.ok(prog.filter((o) => o.learning_area === "English").every((o) => stagesOf(o).includes("S2")));
 });
 
 test("a chosen subject is never filled with another subject's outcomes", async () => {
