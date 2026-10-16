@@ -195,10 +195,61 @@ export async function applyMissedDay(db: DB, familyId: string, input: any) {
       return fail(409, "The proposed timetable has changed. Preview again.", "PLAN_CHANGED");
     moves.push(found);
   }
-  // Conditional SQL guards prevent moving work from a stale or occupied slot.
-  // A batch is atomic in Cloudflare D1.
+  // Validate every source and destination inside the same D1 transaction as the
+  // updates. A stale preview must throw, rolling back the entire batch.
   const statements: D1PreparedStatement[] = [];
   for (const move of moves) {
+    statements.push(db.prepare(`SELECT CASE WHEN EXISTS (
+      SELECT 1 FROM calendar_events src JOIN calendar_events dest
+        ON dest.id = ? AND dest.family_id = ?
+      WHERE src.id = ? AND src.family_id = ?
+        AND src.linked_assignment_id = ?
+        AND dest.linked_assignment_id IS NULL AND dest.linked_lesson_id IS NULL
+    ) THEN 1 ELSE json_extract('STALE_RESCHEDULE_PLAN', '
+      WHERE id = ? AND family_id = ? AND linked_assignment_id = ?
+        AND EXISTS (SELECT 1 FROM calendar_events dest WHERE dest.id = ? AND dest.family_id = ?
+        AND dest.linked_assignment_id IS NULL AND dest.linked_lesson_id IS NULL)`)
+      .bind(move.from_slot_id, familyId, move.assignment_id, move.to_slot_id, familyId));
+    statements.push(db.prepare(`UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id =
+      (SELECT lesson_id FROM assignments WHERE id = ? AND family_id = ?)
+      WHERE id = ? AND family_id = ? AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL
+        AND EXISTS (SELECT 1 FROM calendar_events src WHERE src.id = ? AND src.family_id = ?
+        AND src.linked_assignment_id IS NULL)`)
+      .bind(move.assignment_id, move.assignment_id, familyId, move.to_slot_id, familyId, move.from_slot_id, familyId));
+    statements.push(db.prepare("UPDATE assignments SET scheduled_date = ?, updated_at = ? WHERE id = ? AND family_id = ?")
+      .bind(move.to_date, new Date().toISOString(), move.assignment_id, familyId));
+  }
+  await db.batch(statements);
+  return { ok: true, moved: moves.length };
+}
+
+export function registerTimetable(app: App, g: Guards) {
+  const send = (c: any, r: any) => c.json({ detail: r.detail, ...(r.code ? { code: r.code } : {}) }, r.status);
+  app.get("/api/timetable/status", g.auth, g.parent, async (c) => c.json({ allowed: await timetableAllowed(c.env.DB, c.get("user").family_id) }));
+  app.get("/api/timetable/slots", g.auth, g.parent, async (c) => {
+    const fid = c.get("user").family_id;
+    if (!(await timetableAllowed(c.env.DB, fid))) return send(c, paywall());
+    return c.json(await listSlots(c.env.DB, fid, { student_id: c.req.query("student_id") || undefined, from: c.req.query("from") || undefined, to: c.req.query("to") || undefined, open: c.req.query("open") === "1" }));
+  });
+  app.post("/api/timetable/week", g.auth, g.parent, async (c) => {
+    const r = await saveWeek(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ created: r.created, skipped: r.skipped }) : send(c, r);
+  });
+  app.post("/api/timetable/reschedule/preview", g.auth, g.parent, async (c) => {
+    const r = await planMissedDay(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ plan: r.plan, unplaced: r.unplaced }) : send(c, r);
+  });
+  app.post("/api/timetable/reschedule/apply", g.auth, g.parent, async (c) => {
+    const r = await applyMissedDay(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ moved: r.moved }) : send(c, r);
+  });
+  app.post("/api/assignments/:id/place", g.auth, g.parent, async (c) => {
+    const r = await placeAssignment(c.env.DB, c.get("user").family_id, c.req.param("id"), await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ placed: r.placed, reason: r.reason ?? null, learning_area: r.learning_area }) : send(c, r);
+  });
+}
+) END AS valid`)
+      .bind(move.to_slot_id, familyId, move.from_slot_id, familyId, move.assignment_id));
     statements.push(db.prepare(`UPDATE calendar_events SET linked_assignment_id = NULL, linked_lesson_id = NULL
       WHERE id = ? AND family_id = ? AND linked_assignment_id = ?
         AND EXISTS (SELECT 1 FROM calendar_events dest WHERE dest.id = ? AND dest.family_id = ?
