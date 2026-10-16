@@ -112,12 +112,14 @@ export async function processAnnouncementBatch(env:Env,max=12,now=new Date()) {
     await env.DB.prepare("UPDATE announcement_broadcasts SET status='sending' WHERE id=? AND status='queued'").bind(r.broadcast_id).run();
     try{
       const pref=await env.DB.prepare(
-        "SELECT p.opted_in,p.unsubscribe_token,COALESCE(fs.status,'active') family_status "+
+        "SELECT p.opted_in,p.unsubscribe_token,COALESCE(fs.status,'active') family_status,f.plan,f.trial_ends_at "+
         "FROM users u JOIN families f ON f.id=u.family_id "+
         "LEFT JOIN family_admin_state fs ON fs.family_id=f.id "+
         "LEFT JOIN announcement_email_preferences p ON p.user_id=u.id WHERE u.id=? AND lower(u.email)=?"
       ).bind(r.user_id,r.email).first<any>();
-      if(!pref||pref.family_status!=="active"||(r.kind==="optional"&&Number(pref.opted_in)!==1)) {
+      if(!pref || pref.family_status!=="active" || pref.plan==="CANCELLED" || pref.plan==="PREVIEW_EXPIRED" ||
+        (pref.plan==="FREE_PREVIEW" && pref.trial_ends_at && pref.trial_ends_at<=new Date().toISOString()) ||
+        (r.kind==="optional"&&Number(pref.opted_in)!==1)) {
         await env.DB.prepare("UPDATE announcement_recipients SET status='skipped' WHERE broadcast_id=? AND user_id=?")
           .bind(r.broadcast_id,r.user_id).run();
       }else {
