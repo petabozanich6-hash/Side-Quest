@@ -126,7 +126,7 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
             ))}
           </div>
         )}
-        {!publicView && (page.group === "support" || page.group === "privacy" || page.contact === "problem") && (
+        {!publicView && (page.group === "support" || page.group === "privacy" || page.group === "legal" || page.group === "trust" || page.contact === "problem") && (
           <Link to="/parent/feedback" className="mt-6 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold" style={{backgroundColor:"#1F3B2D",color:"#F5EFE0"}} data-testid="legal-feedback-link">
             <Mail size={16}/> Send a message through Ideas & Feedback
           </Link>
