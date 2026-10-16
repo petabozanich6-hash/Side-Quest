@@ -33,7 +33,7 @@ export type LifeEvidenceAnalysis = {
   additional_evidence_suggested: string;
   /** "ai" = Workers AI mapping (paid); "basic" = free keyword suggestions. */
   source?: "ai" | "basic";
-  framework?: { jurisdiction: string; name: string; short: string; url: string; codes: "verified" | "none" };
+  framework?: { jurisdiction: string; name: string; short: string; url: string; codes: "verified" | "reference" | "none" };
 };
 
 // Basic rules are written with NSW key learning area names; this maps them onto another framework's area names.
