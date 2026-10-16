@@ -31,7 +31,7 @@ import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
-import { sendEmail, SITE_URL, esc } from "./email";
+import { sendEmail, SITE_URL, layout, p, button } from "./email";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
 type AdminContext = Context<{ Bindings: Env; Variables: AdminVars }>;
@@ -443,7 +443,15 @@ export function createAdminRoutes() {
         emailSent=await sendEmail(c.env,{
           to:report.email,subject:"Side-Quest has replied to your feedback",
           text:"You have a new reply from Side-Quest. Sign in to your Parent Hub to read it:\n"+url+"\n\nThis is a notification only. Your message stays private in your Side-Quest account.",
-          html:'<p>You have a new reply from Side-Quest.</p><p><a href="'+esc(url)+'">Sign in to your Parent Hub to read it</a></p><p>This email contains no private feedback content.</p>',
+          html:layout({
+            preheader:"The Side-Quest team has replied to your feedback. Your message is waiting in the Parent Hub.",
+            kicker:"The quest board has news.",
+            heading:"Side-Quest has reported back!",
+            body:p("There's a new reply from the Side-Quest team in your private Parent Hub.") +
+              button("Read your message",url) +
+              p("Sign in to read your reply. For your privacy, the message itself is not included in this email."),
+            reason:"You're receiving this because you sent feedback to Side-Quest and the team has replied.",
+          }),
         });
       }
     } catch { /* the on-site reply is always delivered */ }
