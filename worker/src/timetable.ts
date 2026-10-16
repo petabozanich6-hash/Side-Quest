@@ -72,8 +72,19 @@ export async function saveWeek(db: DB, familyId: string, input: any, now = new D
   }
   let created = 0, skipped = 0;
   for (const r of rows) {
-    const clash = await db.prepare(`SELECT id FROM calendar_events WHERE family_id = ? AND student_id = ? AND date = ? AND start_time = ? AND ${SLOT_SQL}`)
-      .bind(familyId, r.student_id, r.date, r.start_time).first();
+    // Check real interval overlap across ALL calendar event types (including parent-added commitments).
+    // An identical start-time comparison allows two lessons to overlap when their starts differ.
+    const start = Number(r.start_time.slice(0, 2)) * 60 + Number(r.start_time.slice(3));
+    if (start + r.duration_minutes > 1440) return fail(400, "A lesson cannot run past midnight.");
+    const sameDay = (await db.prepare(
+      "SELECT start_time, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date = ? AND start_time IS NOT NULL"
+    ).bind(familyId, r.student_id, r.date).all<any>()).results ?? [];
+    const clash = sameDay.some((event: any) => {
+      if (!TIME.test(String(event.start_time ?? ""))) return false;
+      const eventStart = Number(event.start_time.slice(0, 2)) * 60 + Number(event.start_time.slice(3));
+      const eventEnd = eventStart + Math.max(1, Number(event.duration_minutes) || 1);
+      return start < eventEnd && eventStart < start + r.duration_minutes;
+    });
     if (clash) { skipped++; continue; }
     await db.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'timetable', ?, ?)",
