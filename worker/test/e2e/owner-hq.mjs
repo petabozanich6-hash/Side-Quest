@@ -35,7 +35,7 @@ writeFileSync(`${ROOT}/${CONFIG}`, JSON.stringify({
   assets: { directory: "./frontend/build", not_found_handling: "single-page-application", run_worker_first: ["/api/*"] },
   d1_databases: [{ binding: "DB", database_name: "e2e-hq", database_id: "00000000-0000-0000-0000-000000000001", migrations_dir: "./worker/migrations" }],
 }));
-const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
+const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", env: { ...process.env, CI: "true" }, input: "y\n" });
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
 if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(0,12000), (mig.stdout || "").slice(0,12000));
 ok(mig.status === 0, "local migrations failed: " + (mig.stderr || mig.stdout).slice(-600));
