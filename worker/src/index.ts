@@ -20,6 +20,7 @@ import { registerOutcomes } from "./outcomeTracker";
 import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
 import { registerHomeschoolCompass } from "./homeschoolCompass";
+import { registerFeedback } from "./feedback";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
@@ -238,6 +239,7 @@ registerOutcomes(app, guards);
 registerAutoQuest(app, guards);
 registerTimetable(app, guards);
 registerHomeschoolCompass(app, guards);
+registerFeedback(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
 // Unhandled errors: record the method, route pattern and error class only (no ids, bodies or messages).
