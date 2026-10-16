@@ -1,0 +1,980 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE interstate language course offerings",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page_zero_based": [
+    158,
+    159
+  ],
+  "source_print_pages": [
+    147,
+    148
+  ],
+  "source_table": "Appendix 3 Table 14",
+  "verification_date": "2026-10-16",
+  "status": "source_verified_review_only",
+  "notes": "31 interstate language rows. provider_state indicates source state for WA course offering, not standalone import into other state outcome catalogues. '-' year offerings omitted. Not learning outcomes.",
+  "records": [
+    {
+      "subject": "Arabic",
+      "provider_state": "NSW",
+      "identifier": "ARB",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Arabic",
+      "provider_state": "NSW",
+      "identifier": "AEARB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Arabic",
+      "provider_state": "NSW",
+      "identifier": "A1ARB",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Arabic",
+      "provider_state": "NSW",
+      "identifier": "A2ARB",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Armenian",
+      "provider_state": "NSW",
+      "identifier": "ARM",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Armenian",
+      "provider_state": "NSW",
+      "identifier": "AEARM",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Armenian",
+      "provider_state": "NSW",
+      "identifier": "A1ARM",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Armenian",
+      "provider_state": "NSW",
+      "identifier": "A2ARM",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Armenian",
+      "provider_state": "NSW",
+      "identifier": "ATARM",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Chinese: Background Language (Chinese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "CBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Chinese: Background Language (Chinese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "AECBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Chinese: Background Language (Chinese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "A1CBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Chinese: Background Language (Chinese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "A2CBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Chinese: Background Language (Chinese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "ATCBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Croatian",
+      "provider_state": "NSW",
+      "identifier": "CRO",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Croatian",
+      "provider_state": "NSW",
+      "identifier": "AECRO",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Croatian",
+      "provider_state": "NSW",
+      "identifier": "A1CRO",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Croatian",
+      "provider_state": "NSW",
+      "identifier": "A2CRO",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Croatian",
+      "provider_state": "NSW",
+      "identifier": "ATCRO",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Filipino",
+      "provider_state": "NSW",
+      "identifier": "FIL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Filipino",
+      "provider_state": "NSW",
+      "identifier": "AEFIL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Filipino",
+      "provider_state": "NSW",
+      "identifier": "A1FIL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Filipino",
+      "provider_state": "NSW",
+      "identifier": "A2FIL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Filipino",
+      "provider_state": "NSW",
+      "identifier": "ATFIL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Japanese: Background Language (Japanese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "JBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Japanese: Background Language (Japanese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "AEJBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Japanese: Background Language (Japanese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "A1JBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Japanese: Background Language (Japanese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "A2JBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Japanese: Background Language (Japanese in Context NSW)",
+      "provider_state": "NSW",
+      "identifier": "ATJBL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Latin",
+      "provider_state": "NSW",
+      "identifier": "LAT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Latin",
+      "provider_state": "NSW",
+      "identifier": "AELAT",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Latin",
+      "provider_state": "NSW",
+      "identifier": "A1LAT",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Latin",
+      "provider_state": "NSW",
+      "identifier": "A2LAT",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Serbian",
+      "provider_state": "NSW",
+      "identifier": "SER",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Serbian",
+      "provider_state": "NSW",
+      "identifier": "AESER",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Serbian",
+      "provider_state": "NSW",
+      "identifier": "A1SER",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Serbian",
+      "provider_state": "NSW",
+      "identifier": "A2SER",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Serbian",
+      "provider_state": "NSW",
+      "identifier": "ATSER",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Swedish",
+      "provider_state": "NSW",
+      "identifier": "SWE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Swedish",
+      "provider_state": "NSW",
+      "identifier": "AESWE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Swedish",
+      "provider_state": "NSW",
+      "identifier": "A1SWE",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Swedish",
+      "provider_state": "NSW",
+      "identifier": "A2SWE",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Swedish",
+      "provider_state": "NSW",
+      "identifier": "ATSWE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Hungarian",
+      "provider_state": "SA",
+      "identifier": "HUN",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Hungarian",
+      "provider_state": "SA",
+      "identifier": "AEHUN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Hungarian",
+      "provider_state": "SA",
+      "identifier": "A1HUN",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Hungarian",
+      "provider_state": "SA",
+      "identifier": "A2HUN",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Hungarian",
+      "provider_state": "SA",
+      "identifier": "ATHUN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Modern Greek",
+      "provider_state": "SA",
+      "identifier": "GRE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Modern Greek",
+      "provider_state": "SA",
+      "identifier": "AEGRE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Modern Greek",
+      "provider_state": "SA",
+      "identifier": "A1GRE",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Modern Greek",
+      "provider_state": "SA",
+      "identifier": "A2GRE",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Modern Greek",
+      "provider_state": "SA",
+      "identifier": "ATGRE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Khmer",
+      "provider_state": "SA",
+      "identifier": "KHM",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Khmer",
+      "provider_state": "SA",
+      "identifier": "AEKHM",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Khmer",
+      "provider_state": "SA",
+      "identifier": "A1KHM",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Khmer",
+      "provider_state": "SA",
+      "identifier": "A2KHM",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Khmer",
+      "provider_state": "SA",
+      "identifier": "ATKHM",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Nepali",
+      "provider_state": "SA",
+      "identifier": "NEP",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Nepali",
+      "provider_state": "SA",
+      "identifier": "AENEP",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Nepali",
+      "provider_state": "SA",
+      "identifier": "A1NEP",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Nepali",
+      "provider_state": "SA",
+      "identifier": "A2NEP",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Nepali",
+      "provider_state": "SA",
+      "identifier": "ATNEP",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Polish",
+      "provider_state": "SA",
+      "identifier": "POL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Polish",
+      "provider_state": "SA",
+      "identifier": "AEPOL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Polish",
+      "provider_state": "SA",
+      "identifier": "A1POL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Polish",
+      "provider_state": "SA",
+      "identifier": "A2POL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Polish",
+      "provider_state": "SA",
+      "identifier": "ATPOL",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Spanish",
+      "provider_state": "SA",
+      "identifier": "SPA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Spanish",
+      "provider_state": "SA",
+      "identifier": "AESPA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Spanish",
+      "provider_state": "SA",
+      "identifier": "A1SPA",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Spanish",
+      "provider_state": "SA",
+      "identifier": "A2SPA",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Spanish",
+      "provider_state": "SA",
+      "identifier": "ATSPA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Arabic",
+      "provider_state": "VIC",
+      "identifier": "ARA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Arabic",
+      "provider_state": "VIC",
+      "identifier": "ATARA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Auslan",
+      "provider_state": "VIC",
+      "identifier": "AUS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Auslan",
+      "provider_state": "VIC",
+      "identifier": "AEAUS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Auslan",
+      "provider_state": "VIC",
+      "identifier": "A1AUS",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Auslan",
+      "provider_state": "VIC",
+      "identifier": "A2AUS",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Auslan",
+      "provider_state": "VIC",
+      "identifier": "ATAUS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Bengali",
+      "provider_state": "VIC",
+      "identifier": "BEN",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Bengali",
+      "provider_state": "VIC",
+      "identifier": "AEBEN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Bengali",
+      "provider_state": "VIC",
+      "identifier": "A1BEN",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Bengali",
+      "provider_state": "VIC",
+      "identifier": "A2BEN",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Bengali",
+      "provider_state": "VIC",
+      "identifier": "ATBEN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Bosnian",
+      "provider_state": "VIC",
+      "identifier": "BOS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Bosnian",
+      "provider_state": "VIC",
+      "identifier": "AEBOS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Bosnian",
+      "provider_state": "VIC",
+      "identifier": "A1BOS",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Bosnian",
+      "provider_state": "VIC",
+      "identifier": "A2BOS",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Bosnian",
+      "provider_state": "VIC",
+      "identifier": "ATBOS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Chin Hakha",
+      "provider_state": "VIC",
+      "identifier": "CHA",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Chin Hakha",
+      "provider_state": "VIC",
+      "identifier": "AECHA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Chin Hakha",
+      "provider_state": "VIC",
+      "identifier": "A1CHA",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Chin Hakha",
+      "provider_state": "VIC",
+      "identifier": "A2CHA",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Chin Hakha",
+      "provider_state": "VIC",
+      "identifier": "ATCHA",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Dutch",
+      "provider_state": "VIC",
+      "identifier": "DUT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Dutch",
+      "provider_state": "VIC",
+      "identifier": "AEDUT",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Dutch",
+      "provider_state": "VIC",
+      "identifier": "A1DUT",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Dutch",
+      "provider_state": "VIC",
+      "identifier": "A2DUT",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Dutch",
+      "provider_state": "VIC",
+      "identifier": "ATDUT",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Hebrew",
+      "provider_state": "VIC",
+      "identifier": "HEB",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Hebrew",
+      "provider_state": "VIC",
+      "identifier": "AEHEB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Hebrew",
+      "provider_state": "VIC",
+      "identifier": "A1HEB",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Hebrew",
+      "provider_state": "VIC",
+      "identifier": "A2HEB",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Hebrew",
+      "provider_state": "VIC",
+      "identifier": "ATHEB",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Karen",
+      "provider_state": "VIC",
+      "identifier": "KAR",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Karen",
+      "provider_state": "VIC",
+      "identifier": "AEKAR",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Karen",
+      "provider_state": "VIC",
+      "identifier": "A1KAR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Karen",
+      "provider_state": "VIC",
+      "identifier": "A2KAR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Karen",
+      "provider_state": "VIC",
+      "identifier": "ATKAR",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Macedonian",
+      "provider_state": "VIC",
+      "identifier": "MAC",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Macedonian",
+      "provider_state": "VIC",
+      "identifier": "AEMAC",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Macedonian",
+      "provider_state": "VIC",
+      "identifier": "A1MAC",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Macedonian",
+      "provider_state": "VIC",
+      "identifier": "A2MAC",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Macedonian",
+      "provider_state": "VIC",
+      "identifier": "ATMAC",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Persian",
+      "provider_state": "VIC",
+      "identifier": "PER",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Persian",
+      "provider_state": "VIC",
+      "identifier": "AEPER",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Persian",
+      "provider_state": "VIC",
+      "identifier": "A1PER",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Persian",
+      "provider_state": "VIC",
+      "identifier": "A2PER",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Persian",
+      "provider_state": "VIC",
+      "identifier": "ATPER",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Portuguese",
+      "provider_state": "VIC",
+      "identifier": "POR",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Portuguese",
+      "provider_state": "VIC",
+      "identifier": "AEPOR",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Portuguese",
+      "provider_state": "VIC",
+      "identifier": "A1POR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Portuguese",
+      "provider_state": "VIC",
+      "identifier": "A2POR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Portuguese",
+      "provider_state": "VIC",
+      "identifier": "ATPOR",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Romanian",
+      "provider_state": "VIC",
+      "identifier": "ROM",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Romanian",
+      "provider_state": "VIC",
+      "identifier": "AEROM",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Romanian",
+      "provider_state": "VIC",
+      "identifier": "A1ROM",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Romanian",
+      "provider_state": "VIC",
+      "identifier": "A2ROM",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Romanian",
+      "provider_state": "VIC",
+      "identifier": "ATROM",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Russian",
+      "provider_state": "VIC",
+      "identifier": "RUS",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Russian",
+      "provider_state": "VIC",
+      "identifier": "AERUS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Russian",
+      "provider_state": "VIC",
+      "identifier": "A1RUS",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Russian",
+      "provider_state": "VIC",
+      "identifier": "A2RUS",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Russian",
+      "provider_state": "VIC",
+      "identifier": "ATRUS",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Sinhala",
+      "provider_state": "VIC",
+      "identifier": "SIN",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Sinhala",
+      "provider_state": "VIC",
+      "identifier": "AESIN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Sinhala",
+      "provider_state": "VIC",
+      "identifier": "A1SIN",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Sinhala",
+      "provider_state": "VIC",
+      "identifier": "A2SIN",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Sinhala",
+      "provider_state": "VIC",
+      "identifier": "ATSIN",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Turkish",
+      "provider_state": "VIC",
+      "identifier": "TUR",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Turkish",
+      "provider_state": "VIC",
+      "identifier": "AETUR",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Turkish",
+      "provider_state": "VIC",
+      "identifier": "A1TUR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Turkish",
+      "provider_state": "VIC",
+      "identifier": "A2TUR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Turkish",
+      "provider_state": "VIC",
+      "identifier": "ATTUR",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    },
+    {
+      "subject": "Vietnamese",
+      "provider_state": "VIC",
+      "identifier": "VIE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Vietnamese",
+      "provider_state": "VIC",
+      "identifier": "AEVIE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year11"
+    },
+    {
+      "subject": "Vietnamese",
+      "provider_state": "VIC",
+      "identifier": "A1VIE",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Vietnamese",
+      "provider_state": "VIC",
+      "identifier": "A2VIE",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Vietnamese",
+      "provider_state": "VIC",
+      "identifier": "ATVIE",
+      "identifier_kind": "course_code",
+      "course_kind": "ATAR_year12_examinable"
+    }
+  ]
+}
