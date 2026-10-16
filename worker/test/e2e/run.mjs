@@ -1253,10 +1253,13 @@ await step("R. the Outcome Tracker follows the child's level and subjects from t
   await rp.click("[data-testid=edit-save]");
   await rp.waitForSelector("[data-testid=edit-dialog]", { state: "detached" });
   t = await api("GET", `/outcomes/students/${ch.json.id}`, pt);
-  // The only Stage 5 Creative Arts outcome held is Visual Arts, so Music is shown as not tracked, not as Visual Arts.
-  ok(areas() === "English,HSIE,Mathematics,Science", "after adding Music: " + areas());
+  // Expanded NESA syllabus now contains source-backed Music outcomes.
+  ok(["English","HSIE","Mathematics","Science"].every((area)=>areas().includes(area)), "after adding Music: " + areas());
   ok(t.json.areas.map((a) => a.subject).join(",") === "English,Mathematics,Science,History,Music", "cards after adding Music: " + t.json.areas.map((a) => a.subject));
-  ok(t.json.areas.find((a) => a.subject === "Music").unsupported === true, "Music should be flagged as not tracked");
+  const musicCard=t.json.areas.find((a) => a.subject === "Music");
+  ok(Boolean(musicCard), "selected Music elective missing its own card");
+  const musicMapped=t.json.outcomes.filter((row)=>row.in_stage && row.subject === "Music");
+  ok(musicMapped.every((row)=>/Music/i.test(row.source_title || "") && !/Visual Arts/i.test(row.source_title || "")), "Music mistakenly receives Visual Arts outcomes");
   await ctx.close();
 });
 
