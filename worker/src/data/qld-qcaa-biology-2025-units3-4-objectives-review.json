@@ -1,0 +1,313 @@
+{
+  "checked_on": "2026-10-16",
+  "authority": "QCAA",
+  "jurisdiction": "QLD",
+  "status": "review_only",
+  "record_count": 12,
+  "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+  "units": [
+    {
+      "unit": 3,
+      "title": "Biodiversity and the interconnectedness of life",
+      "page": 29,
+      "topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ]
+    },
+    {
+      "unit": 4,
+      "title": "Heredity and continuity of life",
+      "page": 34,
+      "topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ]
+    }
+  ],
+  "complete_for_unit_objective_number_lists": true,
+  "complete_for_unit_subject_matter": false,
+  "notes": [
+    "Direct PDF page image and text checked for printed page 29 (PDF page index 31) and printed page 34 (PDF index 36).",
+    "Six objectives per unit; full statements are contextual to their respective topics and are available in original QCAA PDF.",
+    "These scoped references are not globally unique alphanumeric codes; detailed subject-matter bullet statements remain outstanding."
+  ],
+  "records": [
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 3,
+      "unit_title": "Biodiversity and the interconnectedness of life",
+      "objective_number": 1,
+      "identifier": "1",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:3:objective:1",
+      "action": "Describe ideas and findings",
+      "context_topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 31,
+      "printed_syllabus_page": 29,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 3,
+      "unit_title": "Biodiversity and the interconnectedness of life",
+      "objective_number": 2,
+      "identifier": "2",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:3:objective:2",
+      "action": "Apply understanding",
+      "context_topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 31,
+      "printed_syllabus_page": 29,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 3,
+      "unit_title": "Biodiversity and the interconnectedness of life",
+      "objective_number": 3,
+      "identifier": "3",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:3:objective:3",
+      "action": "Analyse data",
+      "context_topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 31,
+      "printed_syllabus_page": 29,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 3,
+      "unit_title": "Biodiversity and the interconnectedness of life",
+      "objective_number": 4,
+      "identifier": "4",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:3:objective:4",
+      "action": "Interpret evidence",
+      "context_topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 31,
+      "printed_syllabus_page": 29,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 3,
+      "unit_title": "Biodiversity and the interconnectedness of life",
+      "objective_number": 5,
+      "identifier": "5",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:3:objective:5",
+      "action": "Evaluate processes, claims and conclusions",
+      "context_topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 31,
+      "printed_syllabus_page": 29,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 3,
+      "unit_title": "Biodiversity and the interconnectedness of life",
+      "objective_number": 6,
+      "identifier": "6",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:3:objective:6",
+      "action": "Investigate phenomena",
+      "context_topics": [
+        "Biodiversity and populations",
+        "Functioning ecosystems and succession"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 31,
+      "printed_syllabus_page": 29,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 4,
+      "unit_title": "Heredity and continuity of life",
+      "objective_number": 1,
+      "identifier": "1",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:4:objective:1",
+      "action": "Describe ideas and findings",
+      "context_topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 36,
+      "printed_syllabus_page": 34,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 4,
+      "unit_title": "Heredity and continuity of life",
+      "objective_number": 2,
+      "identifier": "2",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:4:objective:2",
+      "action": "Apply understanding",
+      "context_topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 36,
+      "printed_syllabus_page": 34,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 4,
+      "unit_title": "Heredity and continuity of life",
+      "objective_number": 3,
+      "identifier": "3",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:4:objective:3",
+      "action": "Analyse data",
+      "context_topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 36,
+      "printed_syllabus_page": 34,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 4,
+      "unit_title": "Heredity and continuity of life",
+      "objective_number": 4,
+      "identifier": "4",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:4:objective:4",
+      "action": "Interpret evidence",
+      "context_topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 36,
+      "printed_syllabus_page": 34,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 4,
+      "unit_title": "Heredity and continuity of life",
+      "objective_number": 5,
+      "identifier": "5",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:4:objective:5",
+      "action": "Evaluate processes, claims and conclusions",
+      "context_topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 36,
+      "printed_syllabus_page": 34,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 4,
+      "unit_title": "Heredity and continuity of life",
+      "objective_number": 6,
+      "identifier": "6",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:4:objective:6",
+      "action": "Investigate phenomena",
+      "context_topics": [
+        "Genetics and heredity",
+        "Continuity of life on Earth"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "pdf_page_zero_based": 36,
+      "printed_syllabus_page": 34,
+      "verification_status": "official_qcaa_pdf_page_image_checked",
+      "runtime_enabled": false
+    }
+  ]
+}
