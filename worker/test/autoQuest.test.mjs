@@ -60,6 +60,20 @@ test("same subject on the same day gets a separate proposal unless that exact sl
   assert.deepEqual(proposed[1].eligibleOutcomeCodes, ["NEXT"]);
 });
 
+test("six weekly sessions can use different practice tasks for the same unachieved outcome", () => {
+  const only = { ...base,
+    slots: Array.from({ length: 6 }, (_, i) => ({ id: "weekly-" + i,
+      date: `2026-10-${String(19 + i).padStart(2, "0")}`, student_id: "child-a", title: "Mathematics", event_type: "timetable" })),
+    lessons: [], assignments: [],
+    allowedOutcomeCodes: ["NEXT"], outcomes: [{ code: "NEXT", learning_area: "Mathematics" }]
+  };
+  const result = planAutoQuest(only);
+  assert.equal(result.length, 6);
+  assert.ok(result.every(p => p.action === "needs_generation" && p.eligibleOutcomeCodes[0] === "NEXT"),
+    "the same unfinished outcome must not make later sessions impossible");
+  assert.equal(result.filter(p => p.purpose === "consolidate").length, 6);
+});
+
 test("multiple sessions reinforce an outcome without claiming it is achieved", () => {
   const entries = Array.from({ length: 4 }, (_, i) => ({
     ...base.slots[0], id: "maths-" + i, date: `2026-10-${String(19 + i).padStart(2, "0")}`
