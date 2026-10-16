@@ -1,0 +1,241 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only",
+  "all_subjects_complete": false,
+  "new_code_string_claim": "unreconciled",
+  "note": "Exact observed identifiers for two Stage 6 CEC syllabuses. The two subjects share CH1-CH4 strings; subject-scoped identity is mandatory. Ceramics not yet extracted.",
+  "datasets": [
+    {
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+      "syllabus_edition": 2000,
+      "review_only": true,
+      "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+      "source_type": "official NESA PDF, indexed Section 7.1 outcome table",
+      "records": [
+        {
+          "identifier": "M1",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:M1",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "M2",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:M2",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "M3",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:M3",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "M4",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:M4",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "M5",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:M5",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "M6",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:M6",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "CH1",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:CH1",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "CH2",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:CH2",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "CH3",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:CH3",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "CH4",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:CH4",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        },
+        {
+          "identifier": "CH5",
+          "scoped_identifier": "NSW:NESA:Photography, Video and Digital Imaging:CEC:2000:CH5",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Photography, Video and Digital Imaging Stage 6 CEC",
+          "source_url": "https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES",
+          "verification_status": "indexed_official_nesa_syllabus_table_requires_pdf_recheck"
+        }
+      ]
+    },
+    {
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "subject": "Visual Design Stage 6 CEC",
+      "syllabus_edition": 2000,
+      "review_only": true,
+      "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+      "source_type": "NSW public-school-hosted original syllabus PDF, indexed Section 7.1 outcome table; link currently returns 404 on live open",
+      "records": [
+        {
+          "identifier": "DM1",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:DM1",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "DM2",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:DM2",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "DM3",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:DM3",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "DM4",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:DM4",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "DM5",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:DM5",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "DM6",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:DM6",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "CH1",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:CH1",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "CH2",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:CH2",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "CH3",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:CH3",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        },
+        {
+          "identifier": "CH4",
+          "scoped_identifier": "NSW:NESA:Visual Design:CEC:2000:CH4",
+          "identifier_kind": "syllabus_outcome",
+          "stage": 6,
+          "syllabus_edition": 2000,
+          "subject": "Visual Design Stage 6 CEC",
+          "source_url": "https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf",
+          "verification_status": "indexed_official_original_syllabus_school_mirror_requires_primary_recheck"
+        }
+      ]
+    }
+  ]
+}
