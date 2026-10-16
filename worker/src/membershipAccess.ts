@@ -51,6 +51,7 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
   // The only non-paid learning workflows allowed during the seven days.
   if (verb === "POST" && p === "/api/learning-plans") return "single_preview_plan";
   if (verb === "POST" && (p === "/api/reading-log" || p === "/api/reading-submissions" ||
+    /^\/api\/lessons\/[^/]+\/evidence$/.test(p) ||
     /^\/api\/learning-plans\/[^/]+\/(build|generate)$/.test(p)
   )) return "preview";
 
