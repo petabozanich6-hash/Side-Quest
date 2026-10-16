@@ -1,5 +1,23 @@
 # Nationwide curriculum identifier coverage — verified source audit (16 October 2026)
 
+## Interrupted Work-mode verification checkpoint — reconciliation pending (16 October 2026)
+
+The interrupted Work-mode session reported **1,664 structured NSW records** and **1,038 Victorian outcome references** each matched to their recorded source locations. It clarified that Victoria had **92 distinct source documents**, not 95 (the latter counted repeated/shared document links). **These figures are a handoff checkpoint, not yet independently reproduced by the committed verification artifacts**; they must not silently supersede the older numbers elsewhere in this document or be described as a complete curriculum import.
+
+| Control | Handoff checkpoint | Last identified committed control | Required reconciliation |
+|---|---:|---:|---|
+| NSW source-verified structured records | 1,664 | `curriculum-audits/nesa-card-verification.json`: 1,435/1,435 matched on 81 pages | Identify the 229 additional source/record pairs; compare page URLs, exact IDs, editions and overlapping subject-specific review files. Report duplicates and future-only records separately. |
+| Victorian outcome references | 1,038 | Earlier VC2, VC1 EAL and transitional Languages collections use different identifier kinds and counts | Locate the exact 1,038-record reference manifest; distinguish document references from unique identifiers and from VC2/VC1 catalogue totals. |
+| Victorian unique source documents | 92 | Historical checkpoint: 95 links | Deduplicate canonical document URLs and SHA/source identities; preserve references to shared documents without counting each link as a new document. |
+
+Outstanding follow-up from the interrupted session:
+- **VIC English / EAL:** extract identifiers and edition/pathway mappings presented in tables, not only linear paragraph text; record table coordinates/page provenance. Do not classify ordinary English and EAL as interchangeable.
+- **VIC Drama / Theatre Studies:** official downloadable source links were broken; retain original URLs and failure responses, seek current official replacement/archived edition references, and mark unresolved records as pending instead of inventing codes.
+- **NSW unresolved references:** reconcile unmatched or inaccessible official syllabus pages against the latest official syllabus inventory; account for stage gaps, senior elective/Life Skills pages, version changes and duplicate source/code pairs.
+- Re-run verification using **committed, reproducible manifests** before changing the headline counts or claiming the audit is complete. Track `source_url`, `source_edition`, `identifier_kind`, exact `identifier`, verification method/date, status, and source-document identity.
+- Keep all newly collected or uncertain records **review-only**: do not regenerate runtime catalogues, merge/deploy this PR, alter historic child evidence or present national coverage as complete.
+
+
 **Status: inventory and implementation design; NOT a completed dataset.** Do not describe Side-Quest as having all codes until automated coverage checks pass. This audit intentionally does not invent identifiers.
 
 ## Latest executed collection and verification (16 October 2026)
