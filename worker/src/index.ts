@@ -32,6 +32,7 @@ import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./pl
 import { meterWorkersAi } from "./aiCost";
 import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
+import { sendParentVerification, redeemParentVerification, resendParentVerification } from "./emailVerification";
 import { handleInbound } from "./inbound";
 import type { InboundMessage } from "./inbound";
 
@@ -114,11 +115,13 @@ app.post("/api/auth/register", async (c) => {
   const email = String(b.email || "").trim().toLowerCase();
   const password = String(b.password || "");
   const name = String(b.name || "").trim();
-  if (!email.includes("@") || password.length < 8 || !name) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254 || password.length < 8 || !name) {
     return c.json({ detail: "Valid email, name and a password of 8+ characters are required" }, 400);
   }
   if (!normJurisdiction(b.jurisdiction)) return c.json({ detail: "Please choose your state or territory", code: "JURISDICTION_REQUIRED" }, 400);
   if (await registrationsClosed(c.env.DB)) return c.json({ detail: "New sign-ups are paused for now. Please try again soon.", code: "REGISTRATIONS_CLOSED" }, 503);
+  const verificationRequired = c.env.EMAIL_VERIFICATION_REQUIRED === "true";
+  if (verificationRequired && !c.env.EMAIL) return c.json({ detail: "Registration is temporarily unavailable while email delivery is being restored." }, 503);
   const exists = await c.env.DB.prepare("SELECT id FROM users WHERE email = ?").bind(email).first();
   if (exists) return c.json({ detail: "Email already registered" }, 400);
 
@@ -130,12 +133,21 @@ app.post("/api/auth/register", async (c) => {
     c.env.DB.prepare("INSERT INTO families (id, name, owner_id, created_at, plan, trial_started_at, trial_ends_at) VALUES (?, ?, ?, ?, 'FREE_PREVIEW', ?, ?)")
       .bind(familyId, familyName, userId, ts, ts, trialEndFrom(ts)),
     c.env.DB.prepare(
-      "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
-    ).bind(userId, familyId, email, await hashSecret(password), name, ts),
+      verificationRequired
+        ? "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at, email_verification_required_at) VALUES (?, ?, ?, ?, ?, 1, ?, ?)"
+        : "INSERT INTO users (id, family_id, email, password_hash, name, is_owner, created_at) VALUES (?, ?, ?, ?, ?, 1, ?)"
+    ).bind(...(verificationRequired
+      ? [userId, familyId, email, await hashSecret(password), name, ts, ts]
+      : [userId, familyId, email, await hashSecret(password), name, ts])),
   ]);
   const jurisdiction = normJurisdiction(b.jurisdiction);
   if (jurisdiction) {
     try { await setFamilyJurisdiction(c.env.DB, familyId, jurisdiction); } catch { /* the parent can set it later */ }
+  }
+  if (verificationRequired) {
+    const sent = await sendParentVerification(c.env, userId, email, name);
+    // No session token or preview privileges before email ownership is proved.
+    return c.json({ verification_required: true, email, email_sent: sent });
   }
   const token = await makeToken(c.env, userId, "parent", familyId);
 
@@ -164,6 +176,25 @@ app.post("/api/auth/login", async (c) => {
     return c.json({ detail: "Invalid email or password" }, 401);
   }
   await clearLoginFailures(c.env.DB, "parent", email);
+  {
+    // All marked accounts require proof, even if new registrations are ungated.
+    // During migration rollout, the old schema must still permit legacy login.
+    let verification: { email_verified_at: string | null; email_verification_required_at: string | null } | null = null;
+    try {
+      verification = await c.env.DB.prepare(
+        "SELECT email_verified_at, email_verification_required_at FROM users WHERE id = ?"
+      ).bind(user.id).first<{email_verified_at: string | null; email_verification_required_at: string | null}>();
+    } catch (error) {
+      const missingColumn = /no such column: email_verification_required_at/i.test(String(error));
+      if (!missingColumn || c.env.EMAIL_VERIFICATION_REQUIRED === "true") {
+        return c.json({ detail: "Email verification is temporarily unavailable. Please try again.", code: "VERIFICATION_UNAVAILABLE" }, 503);
+      }
+      // New gated users cannot predate migration 0069; old sign-ins remain safe.
+    }
+    if (verification?.email_verification_required_at && !verification.email_verified_at) {
+      return c.json({ detail: "Please confirm your email before signing in.", code: "EMAIL_VERIFICATION_REQUIRED" }, 403);
+    }
+  }
   if (await suspended(c.env.DB, user.family_id)) return c.json({ detail: SUSPENDED_MESSAGE, code: "ACCOUNT_SUSPENDED" }, 403);
   const token = await makeToken(c.env, user.id, "parent", user.family_id);
   const { password_hash, ...safe } = user;
@@ -172,6 +203,24 @@ app.post("/api/auth/login", async (c) => {
   // otherwise Owner HQ stays hidden until the page is manually refreshed.
   const owner = await isPlatformOwner(c.env.DB, user.id);
   return c.json({ token, user: { ...safe, role: "parent", jurisdiction, ...(owner ? { is_platform_owner: true } : {}) } });
+});
+
+// Proof comes from a one-time token sent only to the address, not the browser.
+app.post("/api/auth/verify-email", async (c) => {
+  const b = await c.req.json().catch(() => ({}));
+  const valid = await redeemParentVerification(c.env, String(b.token || ""));
+  if (!valid) return c.json({ detail: "This confirmation link has expired or has already been used." }, 400);
+  return c.json({ ok: true });
+});
+
+// Pending families cannot log in, so resend is public and throttled.
+app.post("/api/auth/verify-email/resend", async (c) => {
+  const b = await c.req.json().catch(() => ({}));
+  const email = String(b.email || "").trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) {
+    return c.json({ detail: "Enter a valid email address." }, 400);
+  }
+  return c.json(await resendParentVerification(c.env, email, c.req.header("CF-Connecting-IP") || ""));
 });
 
 app.post("/api/auth/child-login", async (c) => {

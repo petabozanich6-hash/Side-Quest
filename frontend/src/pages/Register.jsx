@@ -14,6 +14,8 @@ export default function Register() {
   const [pick, setPick] = useState("");
   const [other, setOther] = useState("");
   const [loading, setLoading] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState("");
+  const [resendBusy, setResendBusy] = useState(false);
   const { setSession } = useAuth();
   const nav = useNavigate();
 
@@ -26,6 +28,11 @@ export default function Register() {
     setLoading(true);
     try {
       const { data } = await api.post("/auth/register", form);
+      if (data.verification_required) {
+        setPendingEmail(data.email || form.email);
+        toast.success(data.email_sent ? "Confirmation email sent" : "Account created — use Resend to request your confirmation email");
+        return;
+      }
       setSession(data.token, { ...data.user, role: "parent" });
       try {
         await api.put("/me/child-label", { label }, { headers: { Authorization: `Bearer ${data.token}` } });
@@ -39,6 +46,25 @@ export default function Register() {
     finally { setLoading(false); }
   };
   const upd = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+
+  if (pendingEmail) return (
+    <div className="min-h-screen flex justify-center items-center p-6" style={{ background: "#F5EFE0" }}>
+      <div className="paper-card max-w-lg p-8 space-y-4" data-testid="email-verification-pending">
+        <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>🐉 One little quest left!</h1>
+        <p>Check <strong>{pendingEmail}</strong> for a SideQuest confirmation link. Your seven-day preview won't start until you confirm your email.</p>
+        <p className="text-sm text-stone-600">Check your spam folder too. Links last 48 hours, and you can request another if one doesn't arrive.</p>
+        <button className="rounded-full px-5 py-3 font-bold text-white disabled:opacity-50" style={{background:"#4A5D3A"}} disabled={resendBusy}
+          onClick={async () => {
+            setResendBusy(true);
+            try { await api.post("/auth/verify-email/resend", { email: pendingEmail }); toast.success("If the email is awaiting confirmation, a new link is on its way."); }
+            catch { toast.error("Could not resend right now. Please try later."); }
+            finally { setResendBusy(false); }
+          }}>{resendBusy ? "Sending…" : "Resend confirmation email"}</button>
+        <p className="text-sm"><Link to="/login" className="underline font-semibold">Already confirmed? Sign in</Link></p>
+        <p className="text-sm"><button className="underline" onClick={() => setPendingEmail("")}>Wrong email? Register again with the correct address</button></p>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 relative overflow-hidden">
