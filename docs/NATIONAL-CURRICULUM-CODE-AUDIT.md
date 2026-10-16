@@ -36,6 +36,10 @@ Side-Quest now holds **every Foundation/Kindergarten/Pre-primary to Year 10 outc
 - 299 NSW summaries were too close to NESA's wording (a 7+ word run in common, or mostly the same words). All of them were reworded. A scratch check compares every NSW summary with the official text and now finds none.
 - The new 46 seed-only summaries are in `worker/data/outcome-summaries/nsw-seed.json`. They cover the 32 non-official codes (the 30 below plus `MA2-RWN-01` and `MA2-RWN-02`) and the 14 Stage 6 seed codes (`EN11-1` etc.).
 
+### Victorian and WA summaries checked for close copies (16 October 2026)
+
+The VIC and WA summaries were checked the same way as the NSW ones. A summary counts as a close copy if it shares a run of 7 or more words with the official text, or a run of 5 or more words that makes up most of the summary. 239 VIC summaries were reworded: 230 on the first pass and 9 on a second pass. 131 WA summaries were reworded: 128 on the first pass and 3 on a second pass. The check now finds no close copies in NSW, VIC or WA. The official text used for the comparison stays in scratch files and is never committed. AC9 summaries were not checked, because ACARA publishes that text under CC BY 4.0.
+
 ### Proposal (not done; needs the owner's OK): retire the 30 non-official NSW seed codes
 
 These seed codes are not NESA codes. Children's evidence may already be recorded against them, so they must not just be deleted. The proposal:
