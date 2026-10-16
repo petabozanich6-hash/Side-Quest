@@ -178,6 +178,10 @@ Added **six numbered QCAA Biology 2025 v1.3 Unit 1 objectives** (Cells and multi
 
 Added **6** Unit 2 numbered objectives (Maintaining the internal environment) from **Biology General 2025 v1.3 (January 2026)** to `worker/src/data/qld-qcaa-biology-2025-unit2-objectives-review.json`. Directly checked the complete numbered list on printed page **25** / PDF zero-based page **27**: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Each source-scoped record distinguishes QCAA, syllabus edition, Biology, Unit 2 and objective ordinal; unit topics Homeostasis and Infectious disease and epidemiology retained. **These six unit objectives do not constitute all Unit 2 subject-matter statements**, or coverage of Biology Units 3–4. Review-only; no parent runtime integration, merge or deployment.
 
+### Queensland Biology Units 3 and 4 completed objective lists (16 October 2026)
+
+Captured **12 unit-specific objective references**: Unit 3 (Biodiversity and the interconnectedness of life) objectives 1–6, and Unit 4 (Heredity and continuity of life) objectives 1–6. Verified via **original QCAA Biology 2025 v1.3 January 2026 PDF page images**, printed pages **29** and **34** respectively: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . New review file: `worker/src/data/qld-qcaa-biology-2025-units3-4-objectives-review.json`. Combined with the earlier overall six objectives and Unit 1 and 2 six-objective lists, Biology now has **30 review records (6 syllabus + 24 unit objectives)**, covering all four *objective-number lists*. This is **not** exhaustive Biology content coverage: unit subject-matter statements and assessment conditions require separate structured extraction before complete parent tracking can be claimed. All records are review-only, no merge or deployment.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
