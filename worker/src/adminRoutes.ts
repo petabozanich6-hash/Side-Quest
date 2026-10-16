@@ -352,7 +352,7 @@ export function createAdminRoutes() {
     const reason = reasonFrom(body);
     if (!reason) return c.json({ detail: "Give a reason (5–500 characters)." }, 400);
     try {
-      const result = await disableHoardOffer(c.env.DB, c.env, c.req.param("id"));
+      const result = await disableHoardOffer(c.env.DB, c.env, c.req.param("id") ?? "");
       if (!result.ok) return c.json({ detail: result.detail }, result.status);
       await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_retired", targetType: "hoard_offer", targetId: c.req.param("id"), detail: { code: result.code, mode: result.mode, reason } });
       return c.json({ ok: true });
@@ -577,7 +577,7 @@ export function createAdminRoutes() {
   });
   admin.post("/announcements/:id/cancel",requirePermission("settings.write"),async c=>{
     await ensureAnnouncementSchema(c.env.DB);
-    const id=c.req.param("id");
+    const id=c.req.param("id") ?? "";
     if(!/^[a-fA-F0-9-]{36}$/.test(id))return c.json({detail:"Unknown announcement"},404);
     const cancelled=await cancelAnnouncement(c.env.DB,id);
     if(!cancelled)return c.json({detail:"This announcement is already complete or cancelled."},409);
