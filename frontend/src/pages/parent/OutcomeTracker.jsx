@@ -204,7 +204,8 @@ export default function OutcomeTracker() {
                         <span className="font-mono text-xs font-bold text-stone-700">{o.code}</span>
                         <span className="text-[11px] text-stone-500">{o.subject || o.learning_area}{o.level_label ? ` · ${o.level_label}` : ""}{!o.in_stage ? " · outside this program" : ""}</span>
                       </div>
-                      <p className="text-sm text-stone-700 mt-0.5" data-testid={`outcome-source-${o.code}`}>
+                      {o.summary && <p className="text-sm text-stone-800 mt-0.5" data-testid={`outcome-summary-${o.code}`}>{o.summary}</p>}
+                      <p className="text-xs text-stone-600 mt-0.5" data-testid={`outcome-source-${o.code}`}>
                         {[o.source_title, o.strand].filter(Boolean).join(" · ")}
                       </p>
                       <p className="text-xs text-stone-500 mt-1">

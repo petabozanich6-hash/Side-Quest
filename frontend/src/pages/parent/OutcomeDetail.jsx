@@ -195,6 +195,7 @@ export default function OutcomeDetail() {
           <span>{d.outcome.learning_area}</span><span>· {d.student.name}</span>
         </div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold leading-snug" style={{ color: "#1F3B2D" }}>{d.outcome.code}</h1>
+        {d.outcome.summary && <p className="text-base text-stone-800" data-testid="detail-summary">{d.outcome.summary} <span className="text-xs text-stone-500">(Side-Quest's plain-English summary)</span></p>}
         <p className="text-sm text-stone-700" data-testid="detail-source">
           {[d.outcome.source_title, d.outcome.strand, d.outcome.level_label].filter(Boolean).join(" · ")}
           {d.outcome.official_url && <> · <a href={d.outcome.official_url} target="_blank" rel="noopener noreferrer" className="font-semibold underline text-emerald-900">Read the official wording ↗</a></>}

@@ -15,6 +15,7 @@ import { NSW_OUTCOMES, NSW_LA_LINKS, NSW_SOURCE_LINKS } from "./data/curriculum"
 import { NSW_OUTCOMES_SEED_VERSION } from "./data/nsw-outcomes";
 import { AC9_OUTCOMES } from "./data/ac9-outcomes";
 import { VIC_SOURCE_VERIFIED_IDS } from "./data/vic-source-ids";
+import { summaryFor } from "./data/outcomeSummaries";
 import { FRAMEWORKS, getFamilyJurisdiction, yearLabel, type JurisdictionCode } from "./data/jurisdictions";
 import type { App, Guards } from "./types";
 
@@ -41,7 +42,10 @@ const AC9_URL = "https://v9.australiancurriculum.edu.au/";
  * strand and level, and where to read the official wording. All structural facts, never outcome text.
  */
 export function outcomeInfo(o: CatalogueOutcome | undefined | null) {
-  if (!o) return { source_title: "", strand: "", level_label: "", official_url: "" };
+  if (!o) return { source_title: "", strand: "", level_label: "", official_url: "", summary: "" };
+  return { ...outcomeContext(o), summary: summaryFor(o.code) };
+}
+function outcomeContext(o: CatalogueOutcome) {
   if (o.source.startsWith("VCAA")) {
     const level = o.stage.startsWith("EAL-") ? "EAL Level " + o.stage.slice(4)
       : o.stage.startsWith("FL") ? "Foundation Level " + o.stage.slice(2)
