@@ -3,8 +3,8 @@
  * TASC codes identify courses; SACE/NTCET codes identify subject+credit variants.
  * These are NEVER passed into the Outcome Tracker's mastery code pool.
  */
-import tascData from "./tasc-2026-course-codes.json";
-import saceData from "./sace-2026-subject-review.json";
+import tascData from "./tasc-2026-course-codes.json" with { type: "json" };
+import saceData from "./sace-2026-subject-review.json" with { type: "json" };
 import type { JurisdictionCode } from "./jurisdictions";
 
 export type SeniorCourseRecord = {
