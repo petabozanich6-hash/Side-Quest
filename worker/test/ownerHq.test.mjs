@@ -693,6 +693,33 @@ test("dashboard reply alert surfaces older unread threads buried behind 50 newer
   assert.equal(r.json.unread,0);assert.equal(r.json.latest,null);
 });
 
+
+test("feedback submissions survive missing or unavailable optional reply/notification storage",async()=>{
+  const h=harness();
+  const alice=await h.register("feedback-compat@example.com","Alice");
+  const existingDb=h.env.DB;
+  // Simulate production where optional newer reply queries/DDL cannot run.
+  h.env.DB={...existingDb,prepare(sql){
+    if(/parent_feedback_replies/i.test(sql))throw new Error("no such table: parent_feedback_replies");
+    if(/^CREATE (TABLE|INDEX).*parent_feedback/i.test(sql))throw new Error("DDL disabled for feedback");
+    return existingDb.prepare(sql);
+  }};
+  let r=await h.req("/feedback",{method:"POST",token:alice.token,admin:false,body:{
+    category:"problem",subject:"Can't send feedback",message:"The feedback send button should still store the report."
+  }});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  const id=r.json.id;
+  assert.ok(h.db.raw.prepare("SELECT 1 FROM parent_feedback WHERE id=?").get(id),"submission must be persisted");
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200,JSON.stringify(r.json));
+  assert.equal(r.json.reports[0].id,id,"history cannot depend on reply tables");
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.unread,0);
+  assert.equal(r.json.notification_unavailable,true,"report an outage without breaking parent feedback");
+  h.env.DB=existingDb;
+});
+
 test("feedback: input validation and rate limiting stop spam without creating extra reports", async () => {
   const h = harness();
   const alice = await h.register("rate-feedback@example.com","Alice");
