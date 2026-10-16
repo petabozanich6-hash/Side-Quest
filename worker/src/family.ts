@@ -52,6 +52,7 @@ import type { LearningPrefs } from "./aiRequest";
 type StudentExtra = {
   subject_levels?: Record<string, string>;
   electives?: Array<Record<string, unknown>>;
+  compass_areas?: string[];
   stage_name?: string;
   band?: string;
   prefs?: LearningPrefs;
@@ -109,6 +110,12 @@ export function studentExtraFromBody(body: Record<string, unknown>, stage: strin
   const next: StudentExtra = { ...existing };
   if ("subject_levels" in body) next.subject_levels = isRecord(body.subject_levels) ? (body.subject_levels as Record<string, string>) : {};
   if ("electives" in body) next.electives = Array.isArray(body.electives) ? (body.electives as Array<Record<string, unknown>>) : [];
+  if ("compass_areas" in body) {
+    const allowed = new Set(["Creative Arts", "PDHPE", "Languages", "Technology"]);
+    const incoming = body.compass_areas;
+    if (!Array.isArray(incoming) || incoming.some(v => typeof v !== "string" || !allowed.has(v))) throw new Error("Invalid Compass subject selection");
+    next.compass_areas = [...new Set(incoming as string[])];
+  }
   if ("prefs" in body) next.prefs = cleanPrefs(body.prefs);
   if ("ai_help" in body) next.ai_help = body.ai_help !== false;
   next.subject_levels ??= existing?.subject_levels ?? {};
@@ -137,6 +144,7 @@ export function studentOut(row: StudentRow | null, withPrefs = false) {
     interests: parseJson(row.interests, [] as string[]),
     notes: row.notes,
     electives: extra.electives ?? [],
+    compass_areas: extra.compass_areas ?? [],
     ...(withPrefs ? { prefs: extra.prefs ?? {}, ai_help: extra.ai_help !== false } : {}),
     created_at: row.created_at,
   };
@@ -477,6 +485,7 @@ export function registerFamily(app: App, g: Guards) {
 
     const nextStage = String(body.stage || existing.stage || "");
     if (!stageMeta(nextStage)) return c.json({ detail: "Invalid stage" }, 400);
+    if ("compass_areas" in body && (!Array.isArray(body.compass_areas) || body.compass_areas.some((v: unknown) => !["Creative Arts", "PDHPE", "Languages", "Technology"].includes(String(v))))) return c.json({ detail: "Invalid Compass selections" }, 400);
     const nextExtra = studentExtraFromBody(body, nextStage, parseJson(existing.extra || null, {} as StudentExtra));
     const updates: Record<string, unknown> = {
       extra: JSON.stringify(nextExtra),
