@@ -30,6 +30,12 @@ jobs:
         run: |
           set -o pipefail
           npm run test:worker 2>&1 | tee ci-logs/test.log
+      - name: Database audit unit tests (no production access)
+        id: db_audit
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run test:db-audit 2>&1 | tee ci-logs/db-audit.log
       - name: Worker TypeScript check
         id: typecheck
         continue-on-error: true
@@ -90,6 +96,7 @@ jobs:
           {
             echo "install=${{ steps.install.outcome }}"
             echo "test=${{ steps.test.outcome }}"
+            echo "db_audit=${{ steps.db_audit.outcome }}"
             echo "typecheck=${{ steps.typecheck.outcome }}"
             echo "print_tests=${{ steps.print_tests.outcome }}"
             echo "build=${{ steps.build.outcome }}"
