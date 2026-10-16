@@ -1,7 +1,7 @@
 // DRAFT COPY - review before launch.
 export const CONTACT_EMAIL = "support@sidequestlearning.app";
 export const PRIVACY_EMAIL = "support@sidequestlearning.app";
-export const LAST_UPDATED = "14 October 2026";
+export const LAST_UPDATED = "16 October 2026";
 
 export const GROUPS = [
   { id: "legal", title: "Legal", blurb: "The rules and the fine print, in plain language." },
@@ -17,7 +17,7 @@ export const PAGES = {
     sections: [
       { h: "In short", items: [
         "Side-Quest is a home learning hub built by a parent for their own children, and shared with other families.",
-        "I collect only what is needed to run your family's account and learning features.",
+        "I collect information needed to provide learning features, subscription status and account-service messages, including private feedback replies.",
         "I do not sell personal information and there is no advertising for children.",
         "You can see, correct or delete your family's information at any time.",
       ] },
@@ -27,7 +27,7 @@ export const PAGES = {
         "Account details: your name, your email address and your sign-in credentials. Your email address is also used to help you get back into your account if you forget your password.",
         "Settings and preferences you choose in the parent hub.",
         "Records you create: lesson plans, learning plans, calendar entries, resources you save and notes.",
-        "Messages you send me by email or through the contact and request pages.",
+        "Messages you send through in-app Ideas & Feedback or by email, along with replies I send to your account.",
       ] },
       { h: "Information I collect about children", items: [
         "Profile details a parent enters: first name or nickname, year level and avatar or pet choices.",
@@ -47,8 +47,8 @@ export const PAGES = {
         "To create and run your account and your children's learning spaces.",
         "To show progress, build learning plans and keep records you can use for home education reporting.",
         "To provide features such as lessons, the reading log, life learning records and rewards.",
-        "To help you and your children get back into their accounts if a password or PIN is forgotten.",
-        "To provide help and support, and to respond to requests and complaints.",
+        "To help with password and PIN recovery, send important account-service emails (including preview ending notices), and explain optional membership choices.",
+        "To provide support through private in-app feedback threads, send replies and respond to requests and complaints.",
         "To keep Side-Quest secure, prevent misuse and fix faults.",
         "To meet my legal obligations.",
       ] },
@@ -56,8 +56,8 @@ export const PAGES = {
       { h: "AI features", p: "Some features use AI to give short hints, suggest links between activities and learning outcomes, or draft lesson ideas. These run on Cloudflare's platform. I aim to send only the text needed for the task and to leave out names and other identifying details. AI output is a suggestion only and a parent reviews it. See the AI Use page for more." },
       { h: "Who I share information with", p: "I share information only with service providers who help run Side-Quest, and only as needed for them to do that work." },
       { h: "Service providers", items: [
-        "Cloudflare: hosting, network security, the database, file storage, AI features and the email routing for the support address.",
-        "Google (Gmail and YouTube): support messages are forwarded to my Gmail inbox. The YouTube Data API is used to find public educational video suggestions; the videos themselves are hosted by YouTube.",
+        "Cloudflare: hosting, network security, the database, file storage, AI features, transactional email delivery and routing for the support address.",
+        "Google (Gmail and YouTube): support emails reach my Gmail inbox; private in-app feedback conversations remain inside Side-Quest. The YouTube Data API helps find public educational videos hosted by YouTube.",
          "Stripe: when you choose a paid Family Membership, Stripe handles checkout, subscription billing and the customer billing portal. I do not collect or store your full payment card details.",
         "I do not use third-party advertising services or add separate analytics trackers.",
       ] },
@@ -116,7 +116,7 @@ export const PAGES = {
       ] },
       { h: "AI features", p: "Some features use AI to suggest hints, outcome links and lesson ideas. AI can be wrong. Suggestions are for you to review and are not advice, a grade or an official assessment. Please do not enter more personal information into AI features than is needed. See the AI Use page for details." },
       { h: "Learning content and curriculum", p: "Lessons, learning outcomes and mappings are provided as a guide. I do not guarantee they are complete, current or accepted by any education authority. You are responsible for meeting the home education requirements that apply to your family. See the Educational Disclaimer." },
-      { h: "Free preview and Family Membership", p: "New families can explore a limited seven-day free preview without providing a payment card. The preview supports one child profile, up to two lessons and two active assignments. Family Membership is an optional, automatically renewing paid subscription at A$3 weekly, A$6 fortnightly, A$13 monthly or A$130 yearly. Each billing schedule includes the same paid features, subject to the disclosed fair-use limits. Subscriptions begin only when you choose a plan and authorise payment through Stripe. You can cancel through Your Plan > Manage billing. Cancellation takes effect at the end of the current paid period, and access continues until then. Prices and terms are shown again at checkout before you pay." },
+      { h: "Free preview and Family Membership", p: "New families receive a limited seven-day free preview with no payment card and no automatic charge. It allows one child, two manually created lessons, two active assignments, a basic learning plan and limited records; advanced AI, uploads, offline lessons and full exports require membership. After seven days, existing family records remain viewable, children can finish previously assigned lessons and parents can review that work; creating new learning requires Family Membership. Membership is optional and auto-renews only after you authorise Stripe checkout: A$3 weekly, A$6 fortnightly, A$13 monthly or A$130 yearly. Paid features are the same across schedules, subject to fair-use limits. You can cancel via Your Plan → Manage billing; access continues to the current paid period's end. Prices and terms appear at checkout." },
       { h: "Availability, changes and backups", p: "I aim to keep Side-Quest running, but it is run by one person, so I cannot promise it will always be available, error free or kept forever. I may change, pause or remove features, or close the service, with notice where I reasonably can. Please keep your own copies of anything important, such as photos and records you need for reporting." },
       { h: "Suspending or ending access", p: "You can stop using Side-Quest and delete your account at any time from the Trust & Support page. I may suspend or end an account if these terms are breached, if it puts others at risk, or if I close the service. When an account is deleted, its data is removed as described in the Privacy Policy." },
       { h: "Intellectual property", p: "The Side-Quest name, design, code, artwork and original lesson content belong to me or are used with permission. You may use them through the service for your own family's learning, but not copy or redistribute them. Other resources you link to or save remain the property of their owners." },
@@ -201,8 +201,8 @@ export const PAGES = {
     summary: "Send a message to base camp. A real person is on the other end.",
     sections: [
       { h: "Hello from base camp", p: "Side-Quest is made by one parent who is also homeschooling, usually somewhere between a maths lesson and a snack break. Anything you send goes straight to the Side-Quest inbox and I read every message myself." },
-      { h: "Send a message", p: "Email support@sidequestlearning.app. Questions, ideas, bugs, a lesson you wish existed, a quest that went sideways: all welcome." },
-      { h: "How long will I wait?", p: "I'll reply as soon as I can, usually within a few days. It might take a little longer when it's busy at home or during school holidays. If something is urgent, email isn't the fastest route." },
+      { h: "Send a message", p: "The easiest route while signed in is Parent Hub → Ideas & Feedback. Choose an idea, problem or other feedback and send it straight to Side-Quest HQ. I can reply in your thread, and the Parent Hub highlights unread responses. If you cannot get into your account, email support@sidequestlearning.app." },
+      { h: "How long will I wait?", p: "I'll reply as soon as I reasonably can; this is still a one-person project, not a staffed support desk. In-app replies show on your dashboard when unread, but I can't promise a response time. For sign-in issues use support@sidequestlearning.app." },
       { h: "Good things to send", items: [
         "Questions about how something works.",
         "Ideas for new lessons, pets or features.",
@@ -218,25 +218,27 @@ export const PAGES = {
       { h: "Pack light", p: "Please don't email passwords, your child's PIN, home addresses, ID numbers, health details or photos of children. I will never ask you for a password or PIN. If someone claiming to be Side-Quest does, don't share it and let me know." },
       { h: "Grown-ups only, please", p: "This inbox is for parents and guardians. If your child has a question or a great idea, they can tell you and you can send it along. I'd love to hear it." },
       { h: "For real emergencies", p: "I can't respond to emergencies. If someone is in danger, call 000. If something in Side-Quest worries you, stop using it and let me know." },
-      { h: "Other paths", p: "For data, complaint or account deletion requests, the Account & privacy requests pages will get you there fastest. If a lesson or fact is wrong or out of date, use Request a Correction." },
+      { h: "Other paths", p: "For learning tools, start with Homeschooling Compass and Your Plan. For account data, complaints or deletion requests, use the Account & privacy requests pages. Use Ideas & Feedback for suggestions, technical problems and corrections; email is available if you can't sign in." },
     ],
   },
   "help": {
     group: "support", title: "Help & FAQ",
     summary: "Your quest guide: quick answers for parents, and a few for adventurers.",
     sections: [
-      { h: "Welcome to the Side-Quest family", p: "Every homeschooling family does things a little differently. These answers will help you find your way around Side-Quest, from making your first lesson to keeping learning records and managing your membership. If something is missing, get in touch through Contact Us." },
+      { h: "Welcome to the Side-Quest family", p: "Side-Quest has grown! Beyond lessons and progress records, you can now explore Homeschooling Compass, an Outcome Tracker, child and parent installable apps, and offline lessons with Family Membership. The answers below explain what's included in the free preview, what needs membership and where to send questions." },
 
       { h: "The basics" , p: "First things first: what Side-Quest is, and who it's for." },
       { h: "What is Side-Quest?", p: "Think of it as your family\'s homeschooling home base. You can plan and create lessons, assign them to your children, review their work, and keep progress and learning records together. Each child gets their own space with lessons and a pocket pet to cheer them on." },
       { h: "Is Side-Quest a school or a curriculum?", p: "No. It's a planning and record-keeping tool that supports your teaching. It doesn't replace it, and it isn't a school, a teacher or an education authority. You stay in charge of your child's education." },
       { h: "Who is it for?", p: "Side-Quest is for home-educating parents and guardians aged 18 or over throughout Australia, and their children. Parents plan, teach and keep records; children learn in their own supervised space. Visit Curriculum for your state's or territory's official registration and syllabus resources." },
-      { h: "Who makes it?", p: "Side-Quest was started by an Australian homeschooling parent for their own children. It is still independently run, and real people read support messages, though replies may take a little time." },
-      { h: "Is Side-Quest free?", p: "You can explore Side-Quest with a seven-day free preview — no payment card needed. It includes one child, up to two lessons and two active assignments. To keep creating after that, choose an optional Family Membership: A$3 per week, A$6 every two weeks, A$13 per month or A$130 per year. Each option includes the same paid features, with fair-use limits on AI. You are never charged unless you choose a plan and authorise payment." },
+      { h: "Who makes it?", p: "Side-Quest was created and is independently operated by one Australian homeschooling parent. I personally read support and feedback, and I can reply in your in-app feedback thread as well as by email. Please allow time for responses." },
+      { h: "Is Side-Quest free?", p: "Side-Quest has a limited seven-day free preview, not a permanent free learning plan. No card or automatic charge. It includes one child, two manually created lessons, two active assignments, a basic learning plan, reading logs, Homeschooling Compass and access to curriculum reference links. After seven days, existing learning records remain viewable and assigned lessons can still be completed and reviewed, but new learning creation requires an optional Family Membership." },
       { h: "How much does Family Membership cost?", p: "Choose the payment schedule that suits your family: A$3 weekly, A$6 every two weeks, A$13 monthly or A$130 yearly. Each option includes the same features, with no charge per child or subject. AI drafting and other heavy-use features have fair-use limits. The price and renewal frequency are shown before you confirm payment." },
       { h: "How do I cancel a membership?", p: "Sign in to your parent account, open Your Plan, and choose Manage billing. Stripe will let you cancel the subscription. You can cancel at any time, and your Family Membership access continues until the end of the current paid period. Your learning records are retained so you can still refer to them, even when paid editing features are no longer available." },
       { h: "Will my card be charged after the free preview?", p: "No. The seven-day free preview doesn't ask for a card and never converts to a paid membership automatically. You only pay if you choose a Family Membership and authorise the checkout yourself." },
-      { h: "What do I need to use it?", p: "A parent account and a device with a web browser. Children don't need an email address. They sign in with the username and PIN you set up for them." },
+      { h: "What happens at the end of my seven days?", p: "New learning creation stops automatically at the exact expiry time. Nobody is charged, and existing family records are not deleted. Your child can finish lessons already assigned, and you can review those submissions. You can still use Homeschooling Compass, official curriculum links, account settings and Ideas & Feedback. You may subscribe whenever you choose." },
+      { h: "What do I need to use it?", p: "A parent account and a modern browser with internet access for initial sign-in. You can also install Side-Quest on a supported device as an app without an app-store purchase. Children have a separate SQ Kids sign-in with a username and parent-created PIN; their offline lesson access is a Family Membership feature." },
+      { h: "Can we use Side-Quest as an app or offline?", p: "Yes. Side-Quest and the separate SQ Kids learning space can be installed as web apps where your device supports it; see Get the App for instructions and the QR code. With Family Membership, children can save assigned lessons on their own device and work without internet, then send completed work once online. Initial setup and some features still need internet." },
 
       { h: "Setting up camp", items: [
         "Add a child: go to Children in the sidebar and choose to add a new child profile. You can use a first name or nickname.",
@@ -246,33 +248,35 @@ export const PAGES = {
       ] },
       { h: "Can I add more than one child?", p: "The free preview includes one child. A Family Membership supports up to 20 child profiles under the same family subscription, with no per-child fee. Each gets a separate profile, username, PIN, year level and pet." },
       { h: "My children are in different year levels", p: "That's fine. The year level is part of each child's profile, so you can set it for each child separately." },
+      { h: "Where do I find registration guidance?", p: "Open Homeschooling Compass for your family's state or territory. It links to official application and renewal information and lets you track your progress. Side-Quest does not apply for registration or guarantee approval; follow the government authority's latest instructions." },
       { h: "Should I use my child's real name?", p: "A first name or nickname is plenty. Please avoid full names, and avoid putting other personal details in profiles or notes." },
       { h: "How do I choose a good PIN?", p: "Pick something your child can remember but that isn't used for anything else, like a phone, a bank card or a door code. Please don't email it to me. I'll never ask for it." },
       { h: "Can another grown-up use my account?", p: "A Family Membership covers your children under one family account; it does not create separate parent logins. Keep your own password private. If another adult helps with learning, avoid sharing sign-in details and contact support if you need advice on the current account options." },
 
       { h: "Pets, hints and rewards" , p: "The fun part of the quest." },
-      { h: "What's a learning pet?", p: "Each child has a pet that goes along on the quest. Your child can pick their pet and avatar, and the pet is there to cheer them on. If your child gets stuck during a lesson, their pet can offer a short nudge in the right direction." },
-      { h: "What if my child is stuck?", p: "The pet gives a hint, not the answer. Hints are made with AI, so they're not checked by a person as they appear, and they can occasionally be off. If you can, sit with younger children, and tell me if a hint ever seems wrong or confusing." },
-      { h: "Does my child have to use the hints?", p: "No. A hint only appears when a child asks for help or gets stuck, so they can try the question themselves first. Let them know they can always come and ask you instead." },
-      { h: "Can my child chat with the pet or with AI?", p: "No. The pet only gives short hints about the lesson question. There is no open chat, and children can't type messages to anyone through Side-Quest." },
+      { h: "What's a learning pet?", p: "Every child can pick a pocket pet that grows along with their learning. Completing work earns XP and rewards; there are also optional seasonal surprises. Guided AI help with lesson questions is available only with an active Family Membership." },
+      { h: "What if my child is stuck?", p: "With Family Membership and child AI help enabled, a pet can offer a short lesson-related hint, never a guaranteed correct answer. Children can still ask you for help; AI hints are optional and should be checked if they seem wrong." },
+      { h: "Does my child have to use the hints?", p: "No. AI help is optional, available with Family Membership and controlled by the parent. Children can work through manually created or assigned lessons without asking the pet for hints." },
+      { h: "Can my child chat with the pet or with AI?", p: "No open-ended chat or messaging to strangers is provided to children. Family Membership may provide guided, lesson-specific AI assistance. Messages to Side-Quest HQ are sent by parents through Ideas & Feedback, not from the child's learning space." },
       { h: "What are achievements and pet rewards?", p: "They're there to keep learning fun and motivating, and to give you a snapshot of how things are going. They're not grades or formal assessments, so please don't treat them as the only evidence of how your child is doing." },
 
       { h: "Lessons and learning" , p: "Finding, building and tracking the learning." },
       { h: "How do I create a lesson?", p: "Go to My lessons and choose I\'ll build it myself to write a lesson. With Family Membership, choose Make a lesson for me and describe the topic in your own words. AI creates a first draft with teaching, practice and questions. Check and edit it before you mark it ready and assign it to your child. You can save and reuse lessons you create for your own family." },
       { h: "Can I trust an AI-drafted lesson?", p: "Treat it like a draft from a helpful friend. Check the facts, the difficulty and the wording, and change or delete anything that isn't right before your child sees it." },
       { h: "A lesson or fact is wrong or out of date", p: "Use Request a Correction and tell me which lesson, what's wrong and what it should say. I'll check it and fix it where I can." },
-      { h: "Where do I see how they're going?", p: "The Dashboard and each child's overview show progress, evidence and reading. You'll also find achievements and rewards there." },
+      { h: "Where do I see how they're going?", p: "Start with Parent Hub, where work awaiting your review appears. Each child's progress, submitted work, reading records, Evidence Backpack and Outcome Tracker provide more detail. Outcomes are evidence-management aids, not official assessment or compliance certification." },
       { h: "Reading log, word hoard and life learning", items: [
         "Reading log: keep track of what your child has been reading.",
         "Word hoard: collect new and interesting words along the way.",
         "Life learning: record the learning that happens outside of lessons, like cooking, building, or a trip to the park.",
         "Evidence Backpack: keep approved lesson work and learning notes in one place. Please only upload what you need, and avoid anything with other people's children in it.",
       ] },
-      { h: "What is the Evidence Backpack?", p: "It brings together work you have reviewed and accepted, plus notes from everyday learning such as projects or excursions. Open Evidence Backpack from the parent menu to find learning records, add notes and print or download a portfolio. You decide what is suitable for your own state or territory reporting requirements." },
+      { h: "What is the Evidence Backpack?", p: "The Evidence Backpack organises completed work and learning evidence. The seven-day preview shows a summary and one detailed sample. Family Membership adds full evidence records, uploads and portfolio exports. Keep your own copies of important records; Side-Quest does not certify your reporting requirements." },
+      { h: "What does the Outcome Tracker actually cover?", p: "It helps organise learning evidence against curriculum outcomes, but the catalogue is still being expanded, verified and corrected across all eight Australian jurisdictions. Not every subject, elective and outcome is available yet. Check all codes against the official curriculum; Side-Quest does not certify compliance." },
       { h: "What should I upload as evidence?", p: "Work samples and photos that show learning, like a finished page, a project or a drawing. Please avoid other people's children, full home addresses, ID numbers and health details. Photos and work samples are not sent to AI." },
-      { h: "What are curriculum outcomes?", p: "Outcomes describe what children are expected to learn or demonstrate. Each state or territory sets the curriculum framework relevant to its families, and the Curriculum page links to official sources. Some automated outcome suggestions in Side-Quest still come from an existing NSW-based data set, so don't assume they match your own jurisdiction. Check suggested codes yourself before using them in your records." },
+      { h: "What are curriculum outcomes?", p: "Curriculum outcomes describe skills, knowledge or achievement expectations. Side-Quest is expanding and verifying its outcome catalogue across Australian states and territories; some outcome codes, subjects and electives are still missing, and older automated mappings may be NSW-based. Always compare codes and coverage with your official state or territory curriculum before relying on the tracker." },
       { h: "Can I use it for my home education reporting?", p: "The Evidence Backpack and learning records can help you organise information for reporting or review. Your local education authority decides what it requires and what it accepts; Side-Quest does not certify compliance. Check the official guidance for your state or territory in the Curriculum page and keep any records you are required to provide. See the Educational Disclaimer." },
-      { h: "Does Side-Quest work in my state or territory?", p: "Yes! Side-Quest welcomes home-educating families across Australia. The lesson builder, child learning space, family planner and Evidence Backpack are not tied to one state. Open Curriculum to find official resources for each of the eight jurisdictions. Automated outcome matches and some older stage-based tools are not yet tailored to every jurisdiction, so always check local requirements." },
+      { h: "Does Side-Quest work in my state or territory?", p: "Families across Australia can use Side-Quest for learning organisation, child assignments, registration guidance and records. Homeschooling Compass links to jurisdiction-specific official resources. However, not every state's subjects, electives or outcome codes are complete in the tracker yet; some automated mappings and planning tools are still being expanded. Please check your authority's current requirements." },
 
       { h: "Signing in" , p: "Getting back into camp." },
       { h: "I forgot my password", p: "On the main sign-in page, choose \"Forgot password?\" and follow the steps. If it doesn't work for you, email me at support@sidequestlearning.app from the address on your account and I'll help. I'll never ask for your password or your child's PIN." },
@@ -296,20 +300,20 @@ export const PAGES = {
       { h: "I'm not happy with how my information was handled", p: "Use the Privacy Complaint page or email me. I'll look into it and reply in writing. You can also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
 
       { h: "When things go wrong" , p: "Bugs, glitches and feedback." },
-      { h: "Something's broken", p: "Tell me through Report a Problem. What you were trying to do, what you expected, what happened, and the device or browser you used all help me find it quickly." },
+      { h: "Something's broken", p: "Open Ideas & Feedback in Parent Hub and choose Problems. Describe what happened, which device or browser you used and what you expected. I can reply in the same in-app conversation, and you'll see a dashboard notice when I have reported back. Email support@sidequestlearning.app if you can't sign in." },
       { h: "A hint or lesson looks wrong or unsuitable", p: "Stop using it and tell me through Report a Problem. AI can make mistakes, and I want to know when it does so I can fix it." },
-      { h: "Can I suggest a lesson, a pet or a feature?", p: "Please do! Ideas are welcome on the Contact Us page. I read every message, though I can't promise to build everything." },
+      { h: "Can I suggest a lesson, a pet or a feature?", p: "Absolutely. Open Ideas & Feedback in your Parent Hub, choose Ideas, and send your suggestion. I can reply directly in the same thread, and a notice on your dashboard appears when there's an unread response." },
       { h: "Will my work be lost if Side-Quest changes?", p: "I do my best to keep it running, but it's run by one person, so I can't promise it'll always be available. Features may change or be removed. Please keep your own copies of anything important, like photos and records you need for reporting." },
       { h: "Is there anything urgent I should know?", p: "I can't respond to emergencies. If someone is in danger, call 000." },
 
-      { h: "Still stuck?", p: "Head to the Contact Us page and send a message to base camp. I read every one, and I'll reply as soon as I can, usually within a few days." },
+      { h: "Still stuck?", p: "Visit Ideas & Feedback from Parent Hub to send a message straight to Side-Quest HQ; replies come back to your thread with a dashboard alert. If you cannot sign in, email support@sidequestlearning.app. I read your messages personally, but responses may take a few days." },
     ],
   },
   "report-problem": {
     group: "support", title: "Report a Problem", contact: "problem",
     summary: "Found a bug, a wrong hint or something that just isn't right? Send it to base camp.",
     sections: [
-      { h: "Spotted something odd?", p: "Every good quest has the odd glitch, and I'd rather hear about it than have you quietly work around it. Tell me what happened and I'll look into it. Reports go straight to the Side-Quest inbox and I read every one myself." },
+      { h: "Spotted something odd?", p: "Every good quest has the odd glitch. When you're signed in, open Parent Hub → Ideas & Feedback → Problems. That sends your report directly to my Side-Quest HQ inbox, attached to the right family account. I can reply in the thread; the dashboard tells you when I have reported back. For sign-in problems, email support@sidequestlearning.app." },
       { h: "What to include", items: [
         "What you were trying to do, for example finishing a lesson or adding a child.",
         "What you expected to happen, and what happened instead.",
@@ -334,7 +338,7 @@ export const PAGES = {
         "I can't promise how quickly something will be fixed, or that every report will lead to a change, but each one helps make Side-Quest better.",
         "Please keep your own copies of anything important in the meantime, like photos and records you need for reporting.",
       ] },
-      { h: "Not a bug?", p: "For questions about how something works, the Help & FAQ page might have the answer. For ideas or general messages, use Contact Us. For wrong or out of date lessons and facts, use Request a Correction. For data or deletion requests, or a privacy complaint, use the Account & privacy requests pages." },
+      { h: "Not a bug?", p: "Questions, new features and corrections can also be sent through Ideas & Feedback. For account access, data and privacy complaints, use the Account & privacy requests section. For official homeschool rules, check your relevant state or territory education authority." },
       { h: "Grown-ups only, please", p: "This is for parents and guardians. If your child spots a problem, they can tell you and you can send it along." },
       { h: "For real emergencies", p: "I can't respond to emergencies. If someone is in danger, call 000." },
     ],
@@ -412,8 +416,8 @@ export const PAGES = {
         "What it should say, if you know.",
         "A link to your state or territory's official curriculum, if you have one.",
       ] },
-      { h: "Send a message to base camp", p: "Email support@sidequestlearning.app with \"Request a Correction\" in the subject line. If it's about a child's work, use their first name or nickname only. A screenshot can help, but please crop or blur names and faces first. Please don't include passwords, PINs or photos of children, and I will never ask you for them." },
-      { h: "What happens next", p: "Every message reaches me. I'll reply as soon as I can, usually within a few days, and let you know when the map has been fixed. If I think it's right as it is, I'll explain why rather than leaving you without an answer. I can't promise it will be quick, because I'm squeezing this quest in around family life." },
+      { h: "Send a message to base camp", p: "The fastest way when signed in is Parent Hub → Ideas & Feedback, with the page, lesson or code you're concerned about. I can respond in the same conversation and your dashboard will let you know. Alternatively email support@sidequestlearning.app with 'Request a Correction' in the subject. Never include passwords, PINs, government IDs or photos of children." },
+      { h: "What happens next", p: "I'll review the details and, when I reply in Side-Quest, you'll see a dashboard alert linking to that message. I may ask questions or explain why a suggested change isn't suitable. Curriculum coverage is still being expanded and corrections are not an official endorsement or guarantee of completeness." },
       { h: "A word of caution from the trail", p: "Side-Quest helps you organise your own teaching and evidence; it is not an official education authority. For reporting and registration, rely on the guidance and curriculum published by your state or territory. See the Educational Disclaimer and Curriculum page." },
       { h: "Wrong path?", items: [
         "Something is broken: use Report a Problem.",
@@ -561,7 +565,7 @@ export const PAGES = {
       { h: "Links to other websites", p: "Some lessons and resources link to outside websites, videos or books. Those aren't part of Side-Quest, and I don't control them or what they collect. Their own terms and privacy policies apply once you click through. Preview links before sharing them with your child, and see the Educational Disclaimer." },
       { h: "If I change providers", p: "Providers may change as Side-Quest grows, or if a better or safer option comes along. If a change affects how your information is handled, I'll update this page and the Privacy Policy, and let families know if it's an important change." },
       { h: "Your information and the providers", p: "If you delete a child profile or your account, I delete the related information from Side-Quest's systems. Cloudflare may keep short-term backups and technical logs for a limited time before they're removed. Emails you've sent me are kept in my support inbox as long as needed to deal with your request. See the Privacy Policy for the full detail." },
-      { h: "Questions?", p: "If you'd like to know more about who handles your information, or something here doesn't look right, email support@sidequestlearning.app. If the wording is out of date, use Request a Correction." },
+      { h: "Questions?", p: "Questions about providers or data handling? In Parent Hub use Ideas & Feedback, or email support@sidequestlearning.app if you cannot sign in. Use Privacy Complaint for concerns about your own personal information." },
     ],
   },
   "safety": {
@@ -571,8 +575,8 @@ export const PAGES = {
       { h: "The short version", items: [
         "A parent sets up and manages every child profile.",
         "Children only reach their own area, with a username and PIN, not an email address.",
-        "There are no ads, no public profiles, no messaging between users and no open chat.",
-        "AI is limited to short lesson hints, and a parent reviews anything it drafts.",
+        "There are no ads, public profiles, child-to-child messaging or unrestricted AI chat. Parents can communicate privately with Side-Quest HQ.",
+        "Guided child AI help is bounded to lessons and limited to Family Membership; parents review lesson drafts.",
         "Parents stay in charge, and safety works best as a team effort between us.",
       ] },
       { h: "Parent in charge", p: "Children can only reach content within their own profile, which a parent creates and manages. A parent chooses the username and PIN, decides what gets uploaded, can change a child's PIN at any time, and can delete a child profile or the whole account. Nothing in a child's area is public." },
@@ -585,7 +589,7 @@ export const PAGES = {
       ] },
       { h: "Signing in", p: "Children don't need an email address. They sign in with the username and PIN their parent sets, and can only reach their own area. Parent accounts are protected by sign-in. Please use a PIN that isn't used anywhere else, like a phone, bank card or door code, and a strong, unique password for your own account." },
       { h: "PIN requests", p: "If a child forgets their PIN, they can send a prompt to their own parent's dashboard. It only reaches the parent who set up their profile. It is not a message between users, it carries no typed text from the child, and it does not let children contact anyone else. The parent decides whether to set a new PIN." },
-      { h: "AI and children", p: "Pet hints are short, tied to the lesson question, and only appear when a child asks for help or gets stuck. Children can't type free messages to AI. Hints are generated automatically and AI can make mistakes, so I suggest sitting with younger children and telling me if a hint ever seems wrong or unsuitable. Lessons drafted by AI don't reach a child until a parent has reviewed them and chosen to use them. See the AI Use & Limitations page." },
+      { h: "AI and children", p: "Children are given only bounded, lesson-related AI assistance when Family Membership is active and a parent permits it; they do not have unrestricted AI chat. AI may be wrong. Parents should check lessons and child experiences. Signed-in parents can send feedback to Side-Quest HQ and receive a private response; that is not child-to-child messaging." },
       { h: "Protecting information", p: "Data travels over encrypted connections (HTTPS), children's areas are protected by their PIN, and passwords and PINs are stored in a protected form. I restrict access to the site and keep an eye on logs for problems. How I Handle Data and the Privacy Policy explain what I hold, who can see it and how long I keep it." },
       { h: "Things I ask of parents", items: [
         "Supervise your children's use, especially younger ones, and check in on how hints are going.",
