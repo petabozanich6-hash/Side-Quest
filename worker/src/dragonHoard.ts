@@ -47,6 +47,19 @@ export async function listHoardOffers(db: D1Database) {
   return results ?? [];
 }
 
+/** Resolve only unexpired, active SideQuest Hoard codes in this exact Stripe mode.
+ * Returns a Stripe promotion ID from server storage; untrusted clients never choose coupon IDs.
+ */
+export async function resolveHoardDiscount(db: D1Database, mode: Mode, raw: string): Promise<string | null> {
+  const code = raw.trim().toUpperCase();
+  if (!/^[A-Z0-9]{4,24}$/.test(code)) return null;
+  await ensureHoardSchema(db);
+  const offer = await db.prepare(
+    "SELECT stripe_promotion_id FROM dragon_hoard_offers WHERE mode = ? AND code = ? AND active = 1 AND expires_at > ?"
+  ).bind(mode, code, nowIso()).first<{ stripe_promotion_id: string }>();
+  return offer?.stripe_promotion_id ?? null;
+}
+
 export function validateHoardOffer(input: Record<string, unknown>) {
   const code = typeof input.code === "string" ? input.code.trim().toUpperCase() : "";
   const label = typeof input.label === "string" ? input.label.trim() : "";
