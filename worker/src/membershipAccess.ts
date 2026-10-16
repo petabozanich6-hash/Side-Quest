@@ -20,13 +20,14 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
   const verb = method.toUpperCase();
   const p = path.replace(/\/+$/, "") || "/";
   // Advanced functions. Deletions of existing user data intentionally remain available.
+  if (verb === "GET" && (p === "/api/audit" || p === "/api/auto-quest/preview")) return "paid";
   if (verb === "POST" && (
     p === "/api/programs" || p === "/api/units" ||
     p === "/api/files/upload" || p === "/api/evidence-notes" ||
     p === "/api/resources" || p === "/api/resources/suggest" || p === "/api/resources/verify-link" ||
     p === "/api/life-evidence" || p === "/api/life-evidence/analyse" ||
     p === "/api/auto-quest/plan" || p === "/api/timetable/week" ||
-    p === "/api/word-bank/words" ||
+    p === "/api/word-bank/words" || p === "/api/word-bank/try" ||
     p === "/api/ai/lesson-draft" || p === "/api/ai/lesson-refine" ||
     p === "/api/ai/series-plan" || p === "/api/ai/batches" ||
     p === "/api/calendar"
