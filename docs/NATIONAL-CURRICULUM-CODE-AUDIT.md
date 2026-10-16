@@ -150,6 +150,10 @@ The 10 recorded Visual Design Stage 6 CEC (2000) labels (`DM1`–`DM6`, `CH1`–
 
 Directly opening the previously recorded NESA Photography, Video and Digital Imaging (2000) syllabus PDF URL redirects to the NESA home page, **not a PDF**. The legacy authority page indicates a 51-page syllabus and the currently published overview confirms the course. Machine-readable access record: `curriculum-audits/nsw-cec-primary-document-access-2026.json`. The 11 indexed outcome identifiers remain **review-only pending actual document inspection**. Search engine PDF indexing is not equivalent to authority source verification. **0 new codes** this check. Obtain via the official curriculum download facility or other permitted NESA document provision, compare the original outcomes table and source edition, then reconsider release eligibility.
 
+### Queensland QCAA General Psychology 2025 — primary PDF objectives (16 October 2026)
+
+Expanded actual Queensland outcome/objective collection beyond course titles: **six numbered syllabus objectives (1–6)** for Psychology General senior syllabus **2025 v1.3 (January 2026)**, visually inspected against the original authority PDF (PDF page 7, printed page 4). Source https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf ; dataset `worker/src/data/qld-qcaa-psychology-2025-objectives-review.json`. These are **ordinal syllabus objectives**, not alphanumeric outcomes or a complete inventory of unit-specific subject matter. Each has an edition-scoped identity for eventual parent tracking. This is **6 additional primary-source verified QLD review records**; QCE coverage otherwise incomplete and not enabled in runtime. Do not conflate QCAA objectives with AC9 content descriptions or the earlier syllabus-title-only inventories.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
