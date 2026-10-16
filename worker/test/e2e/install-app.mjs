@@ -229,7 +229,8 @@ await step("one phone, two apps: the parent stays signed in to Side-Quest while 
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.android, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
   await loginParent(p);
-  await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
+  const parentSessionToken = await p.evaluate(() => localStorage.getItem("sq_token"));
+  ok(!!parentSessionToken, "parent login returned no session token");
   const k = await ctx.newPage();
   await k.goto(KIDS + "/child-login");
   await k.fill("[data-testid=child-login-username]", kidUser);
@@ -238,7 +239,7 @@ await step("one phone, two apps: the parent stays signed in to Side-Quest while 
   await k.waitForURL((u) => u.pathname === "/child");
   await p.reload();
   await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
-  ok(await p.evaluate(() => localStorage.getItem("sq_token")) === fam.token, "the parent's sign-in was replaced");
+  ok(await p.evaluate(() => localStorage.getItem("sq_token")) === parentSessionToken, "the parent's sign-in was replaced");
   await k.click("[data-testid=child-logout]");
   await k.waitForURL((u) => u.pathname === "/child-login");
   await p.reload();
