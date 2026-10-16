@@ -24,3 +24,10 @@ test("the tracker returns the summary with each outcome", () => {
   assert.match(outcomeInfo(o).summary, /fraction/i);
   assert.equal(summaryFor("NOT-A-CODE"), "");
 });
+
+test("every Victorian code found on the VCAA pages has a summary", async () => {
+  const { VIC_SOURCE_VERIFIED_IDS } = await import("../src/data/vic-source-ids.ts");
+  // VC2CCPACP3 is listed in the import but does not appear on any VCAA page we could read.
+  const missing = VIC_SOURCE_VERIFIED_IDS.map((o) => o.code.trim()).filter((c) => !summaryFor(c) && c !== "VC2CCPACP3");
+  assert.deepEqual(missing, []);
+});
