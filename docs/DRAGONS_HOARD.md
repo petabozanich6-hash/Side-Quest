@@ -17,7 +17,7 @@ The first release includes Stripe promotional discount scrolls and manually gift
 
 ## Helping Hand — preview days
 
-The Owner can open a customer's HQ page and choose **Gift 7 preview days**. It requires entering `GIFT` and a reason (5–500 characters), which is written to the admin audit log. This adjusts `families.trial_ends_at` only; it **does not provide Family Membership features**. The backend also allows 1- or 14-day gifts for future use, but the first interface offers seven days.
+The Owner can open a customer's HQ page and choose **Gift 7 preview days**. It requires entering `GIFT` and a reason (5–500 characters), which is written to the admin audit log. This adjusts `families.trial_ends_at` only; it **does not provide Family Membership features**. The interface lets you select a 1-, 7- or 14-day gift.
 
 Gifts are permitted only to active, non-admin families whose stored plan is `FREE_PREVIEW` and who have no Stripe subscription/status; extensions are capped at 35 days from the original trial start and compare-and-swap on the previous trial end to avoid concurrent overwrites. A paid plan, internal owner family, or suspended family cannot be gifted preview days.
 
