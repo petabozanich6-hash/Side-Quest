@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-10-16",
+  "purpose": "National curriculum identifier collection only; Claude integrates later",
+  "completeness": false,
+  "jurisdictions": [
+    {
+      "code": "NSW",
+      "authority": [
+        "NESA"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "nesa-review-import.json: 1,435 edition-specific source records across K–12; 81 rendered pages verified; 9 page failures and 37 stage gaps remain; runtime catalogue unchanged",
+        "required": [
+          "every current/outgoing K-10 syllabus",
+          "all mandatory and elective subjects",
+          "Life Skills and stage-specific identifiers"
+        ]
+      },
+      "senior": {
+        "status": "partial",
+        "required": [
+          "all Stage 6 subjects, extensions, Life Skills, VET, historical transition versions"
+        ]
+      }
+    },
+    {
+      "code": "VIC",
+      "authority": [
+        "VCAA"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "vic-source-ids.ts",
+        "required": [
+          "VC1 transitional Languages",
+          "all language pathways",
+          "levels A-D",
+          "full VC2 version transition checks"
+        ]
+      },
+      "senior": {
+        "status": "missing",
+        "required": [
+          "VCE studies and outcomes",
+          "VCE VM",
+          "VCE VET",
+          "language pathways"
+        ]
+      }
+    },
+    {
+      "code": "QLD",
+      "authority": [
+        "QCAA",
+        "ACARA"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "ac9-outcomes.ts",
+        "required": [
+          "verify all 8 national learning areas and state implementation",
+          "all subjects and languages"
+        ]
+      },
+      "senior": {
+        "status": "missing",
+        "required": [
+          "all General, Applied, Short Courses",
+          "senior syllabus objectives and codes where published",
+          "VET"
+        ]
+      }
+    },
+    {
+      "code": "WA",
+      "authority": [
+        "SCSA"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "wa-k10-source-inventory-verified-2026.json; 19 official JSON URLs",
+        "required": [
+          "bulk import and independently verify 19 sources",
+          "all subject versions and ABLEWA stages"
+        ]
+      },
+      "senior": {
+        "status": "partial_review",
+        "existing": "WACE Appendix 3 Table 12-15 review files",
+        "required": [
+          "reconcile every course/unit record",
+          "WACE VET, ATAR, General, Foundation, Preliminary and electives"
+        ]
+      }
+    },
+    {
+      "code": "SA",
+      "authority": [
+        "ACARA",
+        "SACE Board"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "ac9-outcomes.ts",
+        "required": [
+          "verify SA adoption and all applicable year groups and electives"
+        ]
+      },
+      "senior": {
+        "status": "partial",
+        "existing": "sace-2026-subject-review.json",
+        "required": [
+          "all Stage 1/2 subjects, outcomes/performance standards when numbered",
+          "modified subjects, VET, external courses"
+        ]
+      }
+    },
+    {
+      "code": "TAS",
+      "authority": [
+        "ACARA",
+        "TASC"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "ac9-outcomes.ts",
+        "required": [
+          "verify TAS adoption, all subjects/pathways"
+        ]
+      },
+      "senior": {
+        "status": "partial",
+        "existing": "tasc-2026-course-codes.json",
+        "required": [
+          "all TASC course outcome/criteria identifiers where published",
+          "VET and specialist pathways"
+        ]
+      }
+    },
+    {
+      "code": "ACT",
+      "authority": [
+        "ACARA",
+        "ACT BSSS"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "ac9-outcomes.ts",
+        "required": [
+          "ACT implementation and all subjects"
+        ]
+      },
+      "senior": {
+        "status": "partial_review",
+        "required": [
+          "all BSSS frameworks, A/T/M/V/H and school-accredited courses",
+          "outcome codes where officially defined"
+        ],
+        "existing": "act-bsss-2026-courses-review.json: 113 names/classifications; V classification count 29 differs from overview 28; no outcome codes"
+      }
+    },
+    {
+      "code": "NT",
+      "authority": [
+        "ACARA",
+        "SACE Board",
+        "NTCET"
+      ],
+      "k10": {
+        "status": "partial",
+        "existing": "ac9-outcomes.ts",
+        "required": [
+          "NT curriculum adoption and locally specific pathways"
+        ]
+      },
+      "senior": {
+        "status": "partial",
+        "existing": "sace-2026-subject-review.json",
+        "required": [
+          "NTCET-specific courses, all SACE shared subjects, modified pathways, VET and external studies"
+        ]
+      }
+    }
+  ],
+  "verification_rules": [
+    "Separate content descriptions/outcomes from senior course and unit identifiers",
+    "Every imported code must have authoritative source URL and relevant framework version",
+    "Unverified/pattern-inferred records are review-only",
+    "No jurisdiction marked complete without exhaustive authority-source subject and year matrix",
+    "Do not merge or deploy this research branch"
+  ]
+}

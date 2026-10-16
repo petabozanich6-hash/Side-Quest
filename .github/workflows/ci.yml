@@ -42,6 +42,8 @@ jobs:
         run: |
           set -o pipefail
           npm run test:support-copy 2>&1 | tee ci-logs/support-copy.log
+      - name: Senior curriculum source checks
+        run: node --test worker/test/seniorCatalogueAudit.test.mjs
       - name: Worker TypeScript check
         id: typecheck
         continue-on-error: true

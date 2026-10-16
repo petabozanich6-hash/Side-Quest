@@ -1,0 +1,577 @@
+{
+  "checked_at": "2026-10-16T00:48:15.567Z",
+  "method": "Exact identifier match to rendered NESA outcome-card id and data-kontent-item-id attributes",
+  "complete_curriculum": false,
+  "source_pages": 81,
+  "records": 1435,
+  "matched": 1435,
+  "results": [
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/creative-arts-k-6-2024/outcomes",
+      "sha256": "3cf57df186f9efa0ab353c64e2b50976d72fa548c9f9f4de963d7c6ff3f06801",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-11-12-2025/outcomes",
+      "sha256": "3830097a5bfea56958175717d396b309e3c0e102bd72eb7f7b850186c62f475e",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-7-10-2023/outcomes",
+      "sha256": "e12ecab6cafdb9e93ebfe517a8b6ee9aa4a6252b3ca7886b7b9b2dfcac5eda9e",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-life-skills-11-12-2025/outcomes",
+      "sha256": "3a2c0cd71f4c48fd4ba53cbdf447725000dce5cca3c2b83ae9cee18ba57217e3",
+      "expected_records": 13,
+      "matched": 13,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-11-12-2025/outcomes",
+      "sha256": "f95ffb54b3d22c0b03f33203a315d733bc20a259667b472d3784e4b39c212d92",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-7-10-2023/outcomes",
+      "sha256": "5ac389846f1a5ce2a3904b7b22ec40e37058ba0b82520ad2da1358797f75de45",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "sha256": "e0c2e38f2b6f0f17afaa59f59e917606b9a1c336161352b3ee1aa10274e4dbc3",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-1-11-12-2025/outcomes",
+      "sha256": "fcc5400e055f65dda159fe90cc359ee7a98b0744aa4f68da663a535fd8b53910",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes",
+      "sha256": "90e291da7bb359370859a1787cef959195f33d26a1ac9b14135816fde5582328",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-7-10-2024/outcomes",
+      "sha256": "63f3ac6725d5931fbd7d03f14888ba8b3f57b43eaa0266f94e540e3af2a060dd",
+      "expected_records": 17,
+      "matched": 17,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-extension-11-12-2025/outcomes",
+      "sha256": "505b0ef994773fdfbb2d79d75c4932efe0ae678eabd0661e15cc3032bfcdfad5",
+      "expected_records": 8,
+      "matched": 8,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "sha256": "dd88d6cb7381dcb669afdb80981a6d3c6316de83a668cb816b65c6a068004a93",
+      "expected_records": 8,
+      "matched": 8,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-film-and-digital-media-7-10-2025/outcomes",
+      "sha256": "474f3d2e45e5dac2fb657ac990fe418e25670369803e9ad238bbc4fa4c71deeb",
+      "expected_records": 14,
+      "matched": 14,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-and-motion-design-7-10-2025/outcomes",
+      "sha256": "ca683c9b43ab3c6ac2683a31df1aa6e0557058b48b9dcc99d29bd6b1f5c861e2",
+      "expected_records": 14,
+      "matched": 14,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-arts-7-10-2024/outcomes",
+      "sha256": "f8fea07327dc3bf0364009b8f6fcd06d99cfc14ac9e38a2a3fec918c69ff9482",
+      "expected_records": 20,
+      "matched": 20,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-advanced-11-12-2024/outcomes",
+      "sha256": "722c13f4e6999b7ff5b067dfe48cee68accc9b7d85c1de7fda4e2120a306784b",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-eald-11-12-2024/outcomes",
+      "sha256": "3d9d976b2d89a10449e97745716dfef76b976962e7427b6306e4a2f4e3341456",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-extension-11-12-2024/outcomes",
+      "sha256": "1fd10122f5879cdf3437de1b03fbc3bbc73b7857a0522c41a66aaff0b96f216f",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes",
+      "sha256": "eb5b5a81ced3762868d869ca2729c4cb551b3a42090bfe770f59c636e722d541",
+      "expected_records": 31,
+      "matched": 31,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-life-skills-11-12-2024/outcomes",
+      "sha256": "4b0d833f1a2ef1e6fe5f8796f68facc6a234c99973cd0d9edf0da44b7c51733a",
+      "expected_records": 11,
+      "matched": 11,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-standard-11-12-2024/outcomes",
+      "sha256": "d04ecee9685d8f72a0dd10675ff755252cab8657d5200eaff76e3dd4a3d74d73",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/english/english-studies-11-12-2024/outcomes",
+      "sha256": "2ec20b7893d86e691e6ba02e63c771065f7030108f9b3662ce0b606c72f408ae",
+      "expected_records": 10,
+      "matched": 10,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes",
+      "sha256": "0c20833aaa3f84ada102a53cab030dd906b6c9a871c18e2542569d3665b62222",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-11-12-2024/outcomes",
+      "sha256": "218f82068aa38017b653c0dd47bb125d7e3639893431eb99f42072c9b0e245a0",
+      "expected_records": 15,
+      "matched": 15,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes",
+      "sha256": "c9f7c8f9c1df3d31f33171eb75fab4816d24e0501c29e8bda6a05178d0696195",
+      "expected_records": 14,
+      "matched": 14,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/commerce-7-10-2024/outcomes",
+      "sha256": "f1748dd29537e54adc87de462dafb08f6cab3cf979f1e1a3ae4c3e0ac072a654",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/economics-11-12-2025/outcomes",
+      "sha256": "dda66c974d5fb84f5e604f5dc859bed3edb5485c699df94c64d73887d9ed2af2",
+      "expected_records": 20,
+      "matched": 20,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-11-12-2022/outcomes",
+      "sha256": "87825c11f85180a55f0bdca62294d957bdb8fa8b18a2575da01d69edbafea4c4",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-7-10-2024/outcomes",
+      "sha256": "06dd1315a6db6046d9d855541437b01f8a98c87e005769f90fff55aff93d1eaf",
+      "expected_records": 26,
+      "matched": 26,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes",
+      "sha256": "46de7ff2bce17fc189f78745b4a1f8ce10942f84d38fc545f55abc7711f9c343",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes",
+      "sha256": "05849e53dcd0d61029dc8fa2ba598f48adcf3a124cd8557eebb3f5f6f017cfa3",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-7-10-2024/outcomes",
+      "sha256": "0663b25a44a8738d2f92413e522ef91ce81d7ba13b43a476636d3e4052e3f10b",
+      "expected_records": 31,
+      "matched": 31,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes",
+      "sha256": "dce8880d4ae9f5c8161d634992eea8d72ec736c349d7c13d4aef002fb503cc69",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/history-extension-11-12-2024/outcomes",
+      "sha256": "1321d411e6d5d638d0d8c2b3db55abc73c8a048aaa2c699e95d1227d5cac776c",
+      "expected_records": 4,
+      "matched": 4,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/hsie-k-6-2024/outcomes",
+      "sha256": "696ffe03351c427339c19f20284568ee46587a2eedbb11dd7e71b4e5036e5258",
+      "expected_records": 9,
+      "matched": 9,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes",
+      "sha256": "f83eb453a23ee1803f824952bd74be048e5beb9e5d5dd044809de082363c023a",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/legal-studies-11-12-2025/outcomes",
+      "sha256": "afb5132907d068813aad7f109bd6419c04d0e94fca9d4485d11484d1373e21a5",
+      "expected_records": 16,
+      "matched": 16,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/modern-history-11-12-2024/outcomes",
+      "sha256": "23737f63431d266b558c2642534ff179eabc7c03a1ffe869e490a3d1dfa6a9ab",
+      "expected_records": 15,
+      "matched": 15,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/modern-history-ls-11-12-2024/outcomes",
+      "sha256": "02f3e29b61efa0f115d6b7a57cbe8dda48b388279b3fd2367c5f398cf5f16173",
+      "expected_records": 14,
+      "matched": 14,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes",
+      "sha256": "b26ff05eb9f1ac9ea7992166cab4a0389dfd57b855e7691931c8f1eccda1c2e0",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/languages/aboriginal-languages-k-10-2022/outcomes",
+      "sha256": "2606fe04f69b1300476e17ad2aa5be204f18314181577b3d8701541280a2af44",
+      "expected_records": 15,
+      "matched": 15,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/languages/auslan-k-10-2023/outcomes",
+      "sha256": "42e3576405188a92e8dc2417844308814202b6cb04da782039ec27b2d0958e02",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/languages/classical-languages-k-10-2022/outcomes",
+      "sha256": "a4c2103355c201a55c991e7bab48099002ce87bcc07872eff2b4e551b69fd2b0",
+      "expected_records": 7,
+      "matched": 7,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/languages/modern-languages-k-10-2022/outcomes",
+      "sha256": "012b453655d4c1b6063631ab24319fef3cdf8ef3dae13ad017e79c55ebebb428",
+      "expected_records": 9,
+      "matched": 9,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-advanced-11-12-2024/outcomes",
+      "sha256": "081bcec160715d262635412b21af2c57427d460fd2a13afc3fd2b867d2704347",
+      "expected_records": 19,
+      "matched": 19,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-1-11-12-2024/outcomes",
+      "sha256": "a5b72e77c178231f9c1183d40721a9fb8998a511770928651cb935fdd2034638",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-extension-2-11-12-2024/outcomes",
+      "sha256": "8553af14190fb0ae77be4a2199938e6cc529bd16189404008b9ac2f0b365ae8a",
+      "expected_records": 6,
+      "matched": 6,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-k-10-2022/outcomes",
+      "sha256": "c2119eaea57b0b5c4dce4f1b2179341e59daeb657ad33d1f793788f66dbea610",
+      "expected_records": 53,
+      "matched": 53,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-life-skills-11-12-2024/outcomes",
+      "sha256": "2ac91ef82832d16fd7b330d76d657f902d3b5620af49633395c57fb2775fa408",
+      "expected_records": 17,
+      "matched": 17,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/mathematics/mathematics-standard-11-12-2024/outcomes",
+      "sha256": "69f1b333644dfc5f66a2ed5f88a34b65f5a0489eac09dd4dbb3dbae4a71c11bc",
+      "expected_records": 9,
+      "matched": 9,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/child-studies-7-10-2025/outcomes",
+      "sha256": "6cd03e2fd42fee06d7f95883ba98fdd434e7f099eecc4dfc750f3814cb7172fa",
+      "expected_records": 14,
+      "matched": 14,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-11-12-2023/outcomes",
+      "sha256": "fc6555dfad1bec6bbf09bc81b839cba0c46c95b43bd91d8d8ba61f98124ebd26",
+      "expected_records": 20,
+      "matched": 20,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes",
+      "sha256": "0594380474a130cc203b68f9f3c931cb64c986adaa7f9563f1e80cbbe0f4a915",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-7-10-2024/outcomes",
+      "sha256": "fa846802694536f25fd2ac0c93074d51f440a3e1fe6f05b28b43c8a6f55c1b25",
+      "expected_records": 28,
+      "matched": 28,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/pdhpe-k-6-2024/outcomes",
+      "sha256": "fbdd4282812d0c0936fea312b00897ac23e27cfd8ec099db55a5351994c9a6dc",
+      "expected_records": 13,
+      "matched": 13,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/physical-activity-and-sports-science-7-10-2025/outcomes",
+      "sha256": "c3141e561feeb934ca6caeec61ca48df4a8786d2792f9e1100b1eb8761a74811",
+      "expected_records": 24,
+      "matched": 24,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-11-12-2025/outcomes",
+      "sha256": "25cd6bae57eedcb51207dc565853432f927196b66b202f13bb35903b64eb68c9",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/biology-life-skills-11-12-2025/outcomes",
+      "sha256": "52e48a156a8d3f8a943bebfad7a1a7a217e46cf2a2cd7c55ed69b2e314bb65d9",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/chemical-world-science-life-skills-11-12-2025/outcomes",
+      "sha256": "589da90ef4119e8e093224b846ec35f7a636056846171d847b71dba17c4ed9cc",
+      "expected_records": 17,
+      "matched": 17,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/chemistry-11-12-2025/outcomes",
+      "sha256": "546b025e4f13c0ef5a655848e71e6ccade9a14719943826e729ac3751ac31290",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-11-12-2025/outcomes",
+      "sha256": "0bf1efce9012e6e166c506fd6d8bb1246ffb883617a970766388cbd0199d9b4d",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/earth-and-environmental-science-life-skills-11-12-2025/outcomes",
+      "sha256": "7926a8fc119ee4754e16163002d8345dcc5f7ce232d09b0885a60f579d5c59fd",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/physical-world-science-life-skills-11-12-2025/outcomes",
+      "sha256": "9f38df668ba5f912cb873c0a1760186211c3af6bb8a68765426c302a2efc9b3e",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/physics-11-12-2025/outcomes",
+      "sha256": "40b36b400a3306f2ae16ed71274477c5c3b8032963dfd146c3e1115499c2b213",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/science-7-10-2023/outcomes",
+      "sha256": "ca4ac61e28cf455b3cae1ed327c200fa835cd71acc4bbfb2779de95a778e9d25",
+      "expected_records": 57,
+      "matched": 57,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/science/science-and-technology-k-6-2024/outcomes",
+      "sha256": "da7ec314af6afb0583fbdf82c0e9aec749dc96a92c2944bbbee8bf5ddffc251e",
+      "expected_records": 12,
+      "matched": 12,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-11-12-2026/outcomes",
+      "sha256": "e55bbc7898c9dbffd7270636f3af89467aadd019ee444c97dcc17c98b0756f65",
+      "expected_records": 14,
+      "matched": 14,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-life-skills-11-12-2026/outcomes",
+      "sha256": "a21417164b409c462dd94385ac5df5e2489496627ef58114fedec873cb709ca0",
+      "expected_records": 16,
+      "matched": 16,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-technology-7-10-2024/outcomes",
+      "sha256": "dbb33a7bfbfd442a7b3dfe393d15af5e240d18c96a9eb3243537ae37fb9a0757",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/aquatic-technology-7-10-2024/outcomes",
+      "sha256": "2a33d7e175abb04a4a1fcaad5fe64ed4288e3d5312eb91d838272240319dfeec",
+      "expected_records": 21,
+      "matched": 21,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/communication-technology-7-10-2025/outcomes",
+      "sha256": "7f30beefb325bf224f8ef801a6321e4facce70181959150b7417b2cf7f3c93fe",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-7-10-2022/outcomes",
+      "sha256": "ca3aa1f3ea73f222adc4a95bdc55fdecae5d7e8626322888c240adf74e339c2f",
+      "expected_records": 20,
+      "matched": 20,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-life-skills-11-12-2022/outcomes",
+      "sha256": "bf125628ef87238ff42f309a4c15210899d7b0d8c7412834abfbb5982d14b8ea",
+      "expected_records": 13,
+      "matched": 13,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/design-innovation-technology-7-10-2025/outcomes",
+      "sha256": "7e308161b3c1114715121ec94db79977f96ba182bc4cb0dee6712f0fa2584017",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/engineering-technology-7-10-2024/outcomes",
+      "sha256": "62935c8a6414b0388e36b712ae643cb52181c42a605ce387503dc1d846944012",
+      "expected_records": 20,
+      "matched": 20,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/enterprise-computing-11-12-2022/outcomes",
+      "sha256": "769731f54018f774d2578f63f358ecffce369755477582f5331f7393da9cc917",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/food-technology-7-10-2025/outcomes",
+      "sha256": "d187715c5f4476a624ac2475141f6fca4155c68b03fbc102fddb871c72bf2402",
+      "expected_records": 19,
+      "matched": 19,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/industrial-technology-7-10-2025/outcomes",
+      "sha256": "36670a05270ba228b8d23bdb90f865361f4109c6c67e82424b076854c91bf4c2",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/software-engineering-11-12-2022/outcomes",
+      "sha256": "346ae590777c8fa6fb7327c33de82fc1189aa3f9d6bc3042686d4288522e30ed",
+      "expected_records": 18,
+      "matched": 18,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/technology-7-8-2023/outcomes",
+      "sha256": "22555bfd5ed31c5dd722f07e546760b5ec268005bedf5ae244f25562d016b5d8",
+      "expected_records": 19,
+      "matched": 19,
+      "missing": []
+    },
+    {
+      "url": "https://curriculum.nsw.edu.au/learning-areas/tas/textiles-technology-7-10-2025/outcomes",
+      "sha256": "2dfec2f77ad5693f74793169fcc7a6011f67b13b94fe65ede7cb29100a7f14d1",
+      "expected_records": 22,
+      "matched": 22,
+      "missing": []
+    }
+  ]
+}
