@@ -422,7 +422,7 @@ test("invoice subscription id is found on old and new API shapes", () => {
 // Route test without the Worker runtime: capture handlers and call them with a minimal context.
 function routes(fetchImpl) {
   const h = {};
-  const app = { post: (path, ...fns) => { h[path] = fns[fns.length - 1]; } };
+  const app = { post: (path, ...fns) => { h[path] = fns[fns.length - 1]; }, get: (path, ...fns) => { h[path] = fns[fns.length - 1]; } };
   b.registerBilling(app, { auth: null, parent: null }, fetchImpl);
   return h;
 }
