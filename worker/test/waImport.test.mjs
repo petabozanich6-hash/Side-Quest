@@ -45,3 +45,17 @@ test("WA ABLEWA markdown identifiers are extracted only from empty-wa_code descr
   assert.deepEqual(rows.map(x=>x.code),["ACMNA001a","ACMMG007a","WA3MNAUN7"]);
   assert.equal(rows[0].identifier_kind,"wa_ablewa_content_description");
 });
+
+
+test("WA ABLEWA Digital Technologies extracts VCDT codes from content descriptions only", () => {
+  const source={url:"https://k10outline.scsa.wa.edu.au/test/digital-technologies.json",name:"Digital Technologies"};
+  const doc=[{year:"a",subject:"Digital Technologies",strands:[{subStrands:[{textContents:[
+    {wa_code:"",markdown:"<p>React to digital systems (VCDTDS001)</p>"},
+    {wa_code:"",markdown:"<p>Represent data (VCDTDI002)</p>"},
+    {wa_code:"",markdown:"<p>Follow steps (VCDTCD003)</p>"},
+    {wa_code:"WAPDIGDS1",markdown:"<p>Example mentions (VCDTDS099)</p>"}
+  ]}]}],examples:[{wa_code:"",markdown:"(VCDTCD100)"}]}];
+  const rows=flattenWaJson(doc,source);
+  assert.deepEqual(rows.map(x=>x.code),["VCDTDS001","VCDTDI002","VCDTCD003","WAPDIGDS1"]);
+  assert.ok(rows.slice(0,3).every(x=>x.identifier_kind==="wa_ablewa_content_description"));
+});
