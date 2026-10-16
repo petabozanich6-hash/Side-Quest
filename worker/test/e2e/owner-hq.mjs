@@ -102,14 +102,16 @@ await step("the promotion script refuses without a match, then promotes the Owne
 });
 
 let cdp;
+let ownerBrowserToken;
 await step("Owner adds a passkey (password re-check) and unlocks HQ with it", async () => {
   cdp = await ctx.newCDPSession(page);
   await cdp.send("WebAuthn.enable");
   await cdp.send("WebAuthn.addVirtualAuthenticator", { options: { protocol: "ctap2", transport: "internal", hasResidentKey: true, hasUserVerification: true, isUserVerified: true, automaticPresenceSimulation: true } });
   await signIn(page, owner.token);
+  ownerBrowserToken = await page.evaluate(() => localStorage.getItem("sq_token"));
   await page.click("[data-testid=nav-command-centre]");
   await page.waitForSelector("[data-testid=hq-enrol]");
-  ok((await api("GET", "/admin/overview", owner.token)).status === 401, "overview open before step-up");
+  ok((await api("GET", "/admin/overview", ownerBrowserToken)).status === 401, "overview open before step-up");
   await page.fill("[data-testid=hq-password]", "wrong-password");
   await page.click("[data-testid=hq-add-passkey]");
   await page.waitForSelector("text=That password is not right.");
@@ -171,7 +173,7 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
   await page.click("[data-testid=hq-tab-announcements]");
   await page.waitForSelector("[data-testid=hq-announcements]");
-  const parentCount=await api("GET","/admin/announcements",owner.token);
+  const parentCount=await api("GET","/admin/announcements",ownerBrowserToken);
   ok(parentCount.status===200,"owner should see broadcast counts");
   ok(parentCount.json.service_recipients>=2,"registered families not included");
   await page.fill("[data-testid=hq-announcement-subject]","Important Side-Quest notice");
