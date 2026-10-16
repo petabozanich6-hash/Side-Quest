@@ -24,7 +24,7 @@ test("outcomeFrom gives the code and the parent's judgement, never syllabus word
   assert.equal(legacy.learning_area, "English");
   assert.equal(legacy.status, "working_towards", "an old accepted:true approval is practice, not understanding shown");
   assert.equal(legacy.description, "", "NESA wording is not republished");
-  const stored = outcomeFrom({ code: "EN2-OLC-01", description: "Communicates effectively by using interpersonal conventions and language to extend and elaborate ideas for social and learning interactions", mark: "shown" }, "S2");
+  const stored = outcomeFrom({ code: "EN2-OLC-01", description: "Wording that an old record stored next to a catalogued outcome code", mark: "shown" }, "S2");
   assert.equal(stored.status, "shown");
   assert.equal(stored.description, "", "wording stored on an old record is not sent back out");
   assert.equal(outcomeFrom({ code: "EN2-OLC-01", accepted: false }, "S2").status, "working_towards");

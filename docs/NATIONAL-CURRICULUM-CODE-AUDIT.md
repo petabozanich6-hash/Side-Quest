@@ -28,6 +28,59 @@ Side-Quest now holds **every Foundation/Kindergarten/Pre-primary to Year 10 outc
 - WA's per-year content often reuses one code across a band (for example Arts F–2), so a code can cover several years.
 - Senior secondary (Years 11–12) course outcomes and VET units are **not** part of this F–10 pass.
 
+### NESA wording removed from the original NSW seed (16 October 2026)
+
+- `worker/src/data/nsw-outcomes.ts` and `nsw-stage2-maths.ts` now hold codes and structure only. In the NSW catalogue, each of those codes is now described by its Side-Quest summary. Matching, plan writing and AI prompts keep working on those summaries.
+- Older saved records that still contain NESA wording are still caught and blanked before anything is shown or sent. This works from one-way fingerprints in `nsw-seed-wording-fingerprints.ts` (156 entries), so the wording itself is no longer kept.
+- The wording is still in git history. Rewriting history is not planned.
+- 299 NSW summaries were too close to NESA's wording (a 7+ word run in common, or mostly the same words). All of them were reworded. A scratch check compares every NSW summary with the official text and now finds none.
+- The new 46 seed-only summaries are in `worker/data/outcome-summaries/nsw-seed.json`. They cover the 32 non-official codes (the 30 below plus `MA2-RWN-01` and `MA2-RWN-02`) and the 14 Stage 6 seed codes (`EN11-1` etc.).
+
+### Proposal (not done; needs the owner's OK): retire the 30 non-official NSW seed codes
+
+These seed codes are not NESA codes. Children's evidence may already be recorded against them, so they must not just be deleted. The proposal:
+
+1. Mark each one `status: "retired"` with a `replaced_by` official code. Retired codes stay readable and still show on records that use them, but are no longer added to any child's program.
+2. On the tracker and portfolio, show a retired code as "older Side-Quest code, now `<official code>`".
+3. Optionally, later, move evidence across to the official code with a one-off migration. This runs only with explicit approval and after a D1 Time Travel restore point.
+
+Suggested replacements are a starting point. Entries marked "check" need someone to compare them against the syllabus before use.
+
+| Seed code | Suggested official code |
+|---|---|
+| PHe-1 | PDe-1 |
+| VAe-1 | CAE-VIS-01 |
+| MUe-1 | CAE-MUS-01 |
+| MA1-MR-01 | MA1-FG-01 (check) |
+| PH1-1 | a PD1 outcome (check) |
+| VA1-1 | CA1-VIS-01 |
+| ST2-7PW-T | no direct match in the 2023 Science and Technology syllabus (check) |
+| PH2-1 | a PD2 outcome (check) |
+| VA2-1 | CA2-VIS-01 |
+| MU2-1 | CA2-MUS-01 |
+| MA3-RWN-01 | MA3-RN-01 |
+| MA3-RWN-02 | MA3-RN-02 |
+| MA3-PF-01 | MA3-RQF-02 (check) |
+| ST3-8PW-ST | no direct match (check) |
+| PH3-1 | a PD3 outcome (check) |
+| VA3-1 | CA3-VIS-01 |
+| MU3-1 | CA3-MUS-01 |
+| MA4-ARI-C-01 | MA4-INT-C-01 |
+| MA4-EQL-C-01 | MA4-EQU-C-01 |
+| SC4-LW-04 | SC4-LIV-01 or SC4-CLS-01 (check) |
+| SC4-CW-01 | SC4-SOL-01 |
+| SC4-PW-01 | SC4-FOR-01 |
+| SC4-ES-01 | SC4-OTU-01 (check) |
+| VA4-1 | VA4-AMP-01 |
+| TM4-1 | TE4-DES-01 |
+| MA5-NUM-C-01 | no direct match in Mathematics K–10 Stage 5 (check) |
+| SC5-LW-04 | SC5-GEV-01 or SC5-DIS-01 (check) |
+| SC5-CW-01 | SC5-RXN-01 (check) |
+| SC5-PW-01 | SC5-WAM-01 (check) |
+| VA5-1 | VA5-AMP-01 |
+
+`MA2-RWN-01` and `MA2-RWN-02` are also non-official, but they are already replaced in the catalogue by the Stage 2 list (`MA2-RN-01`, `MA2-RN-02`).
+
 
 ## Interrupted Work-mode verification checkpoint — reconciliation pending (16 October 2026)
 

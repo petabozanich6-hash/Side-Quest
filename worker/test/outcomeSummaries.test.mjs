@@ -92,3 +92,23 @@ test("WA programs follow the child's school year, chosen subjects and ABLEWA sta
   assert.ok(wa.outcomes.filter((o) => o.subject === "Music" && o.from <= 8 && o.to >= 8).every(y8.includes));
   assert.ok(!wa.outcomes.filter((o) => o.subject === "Drama").some(y8.includes));
 });
+
+test("the original NSW seed list holds no NESA wording, only codes described in Side-Quest's words", async () => {
+  const { NSW_OUTCOMES_SEED } = await import("../src/data/nsw-outcomes.ts");
+  const { STAGE2_MATHS_CODES } = await import("../src/data/nsw-stage2-maths.ts");
+  const { NSW_OUTCOMES } = await import("../src/data/curriculum.ts");
+  const { NSW_SEED_WORDING_FINGERPRINTS } = await import("../src/data/nsw-seed-wording-fingerprints.ts");
+  const { wordingFingerprint } = await import("../src/data/wordingFingerprint.ts");
+  const { isOfficialWording } = await import("../src/syllabusText.ts");
+  assert.ok(NSW_OUTCOMES_SEED.length > 100);
+  assert.ok(NSW_OUTCOMES_SEED.every((o) => !("description" in o)), "seed rows carry no description");
+  const fps = new Set(NSW_SEED_WORDING_FINGERPRINTS);
+  const seedCodes = new Set([...NSW_OUTCOMES_SEED.map((o) => o.code), ...STAGE2_MATHS_CODES]);
+  for (const o of NSW_OUTCOMES.filter((x) => seedCodes.has(x.code))) {
+    assert.equal(o.description, summaryFor(o.code), `${o.code} is described by its summary`);
+    assert.ok(o.description, `${o.code} has a summary`);
+    assert.ok(!fps.has(wordingFingerprint(o.description)), `${o.code} summary is not the old wording`);
+    assert.equal(isOfficialWording(o.description), false, `${o.code} summary is not hidden as official wording`);
+  }
+  assert.equal(wordingFingerprint("Side-Quest test sentence, for a stable fingerprint!"), wordingFingerprint("side quest TEST sentence for a stable fingerprint"));
+});

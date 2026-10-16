@@ -1,7 +1,8 @@
 import { NSW_OUTCOMES_SEED } from "./nsw-outcomes";
 import { NESA_2026_DIRECT_OUTCOME_CODES } from "./nesa-current-2026";
 import { NSW_K10_CODES } from "./nsw-k10-codes";
-import { SOURCE, STAGE2_MATHS_OUTCOMES, VERIFIED, WORKING_MATHEMATICALLY } from "./nsw-stage2-maths";
+import { SOURCE, STAGE2_MATHS_CODES, VERIFIED, WORKING_MATHEMATICALLY } from "./nsw-stage2-maths";
+import { summaryFor } from "./outcomeSummaries";
 
 export type CurriculumOutcome = {
   id: string;
@@ -142,17 +143,20 @@ export const NSW_SECONDARY_PATTERN = {
 
 export const STAGE2_MATHS_METADATA = { verified: VERIFIED, source: SOURCE, working_mathematically: WORKING_MATHEMATICALLY } as const;
 
+// The original seed list keeps its place in matching and plan writing, now described in Side-Quest's own words
+// (outcome-summaries.json) instead of NESA's wording.
 export const NSW_OUTCOMES: CurriculumOutcome[] = [
   ...NSW_OUTCOMES_SEED.filter((item) => !(item.stage === "S2" && item.learning_area === "Mathematics")).map((item, index) => ({
     id: item.code || `outcome-${index}`,
     ...item,
+    description: summaryFor(item.code),
   })),
-  ...Object.entries(STAGE2_MATHS_OUTCOMES).map(([code, description]) => ({
+  ...STAGE2_MATHS_CODES.map((code) => ({
     id: code,
     code,
     stage: "S2",
     learning_area: "Mathematics",
-    description,
+    description: summaryFor(code),
     source: SOURCE,
   })),
 ];

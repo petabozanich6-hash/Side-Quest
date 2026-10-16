@@ -1,26 +1,35 @@
 // Side-Quest shows official curriculum outcome CODES only. Parents follow a link to the curriculum authority for the
-// wording. Syllabus wording is still used privately (for matching and AI prompts) but must never be sent back out.
+// wording. Side-Quest no longer stores NESA wording at all; AC9 wording (CC BY) is still used privately for matching.
 //
 // Older records can still hold wording: lessons saved "CODE: description" in curriculum_refs, life learning mappings
 // carried the outcome description, and review mappings could carry it too. Everything that leaves the API goes
 // through these helpers so that stored wording is never republished, without rewriting anyone's saved records.
+// NSW wording is recognised by fingerprint (nsw-seed-wording-fingerprints.ts), so the text itself is not kept.
 import { NSW_OUTCOMES } from "./data/curriculum";
 import { AC9_OUTCOMES } from "./data/ac9-outcomes";
+import { NSW_SEED_WORDING_FINGERPRINTS } from "./data/nsw-seed-wording-fingerprints";
+import { squashWording as squash, wordingFingerprint } from "./data/wordingFingerprint";
 
-const KNOWN = new Map<string, string>();
-for (const o of NSW_OUTCOMES as { code: string; description: string }[]) KNOWN.set(o.code, o.description || "");
-for (const o of AC9_OUTCOMES) KNOWN.set(o.code, o.description || "");
-
-const squash = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-const OFFICIAL_WORDING = new Set([...KNOWN.values()].filter((d) => d.length >= 20).map(squash));
+const KNOWN = new Set<string>([...NSW_OUTCOMES.map((o) => o.code), ...AC9_OUTCOMES.map((o) => o.code)]);
+const OFFICIAL_WORDING = new Set(AC9_OUTCOMES.map((o) => o.description || "").filter((d) => d.length >= 20).map(squash));
+const NSW_FINGERPRINTS = new Set(NSW_SEED_WORDING_FINGERPRINTS);
 
 export const isKnownOutcomeCode = (code: unknown) => KNOWN.has(String(code ?? "").trim());
 
+/** Whole text, and each part of it between separators ("CODE: wording; more"), as fingerprints to look up. */
+const parts = (raw: string) => {
+  const out = new Set([raw]);
+  for (const p of raw.split(/[\n;•|]|:\s|\.\s|\s[—–-]\s/)) if (squash(p).length >= 20) out.add(p);
+  return [...out];
+};
+
 /** True when the text is (or contains) the official wording of a catalogued outcome. */
 export function isOfficialWording(text: unknown): boolean {
-  const t = squash(String(text ?? ""));
+  const raw = String(text ?? "");
+  const t = squash(raw);
   if (t.length < 20) return false;
   if (OFFICIAL_WORDING.has(t)) return true;
+  if (parts(raw).some((p) => NSW_FINGERPRINTS.has(wordingFingerprint(p)))) return true;
   for (const w of OFFICIAL_WORDING) if (w.length >= 40 && t.includes(w)) return true;
   return false;
 }
