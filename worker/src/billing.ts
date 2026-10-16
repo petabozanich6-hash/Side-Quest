@@ -11,6 +11,7 @@
 import { ACTIVE_PLANS, PAST_DUE_GRACE_DAYS } from "./entitlements";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
+import { resolveHoardDiscount } from "./dragonHoard";
 import type { Plan } from "./entitlements";
 import type { App, Env, Guards } from "./types";
 
@@ -427,7 +428,8 @@ function appOrigin(env: Env, reqUrl: string): string {
 export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: Fetch) {
   const notConfigured = (reason: string) => ({ detail: "Membership checkout is not available yet.", code: "BILLING_NOT_CONFIGURED", reason });
 
-  // Start a subscription. Body: { interval: "weekly" | "fortnightly" | "monthly" | "yearly" }. Nothing else is read.
+  // Start a subscription. Body: { interval: "weekly" | "fortnightly" | "monthly" | "yearly", promo_code?: string }.
+  // Promotion IDs come exclusively from active, mode-scoped Dragon\u2019s Hoard records on the server.
   app.post("/api/billing/checkout", auth, parent, async (c) => {
     const cfg = billingConfig(c.env);
     if (!cfg.ok) return c.json(notConfigured(cfg.reason), 503);
@@ -435,6 +437,11 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
     const interval = String((body as any)?.interval || "") as Interval;
     const price = INTERVALS.includes(interval) ? cfg.prices[interval] : undefined;
     if (!price) return c.json({ detail: "Choose weekly, fortnightly, monthly or yearly." }, 400);
+    const incomingCode = (body as any)?.promo_code;
+    if (incomingCode != null && (typeof incomingCode !== "string" || incomingCode.length > 24)) {
+      return c.json({ detail: "Enter a valid Dragon\u2019s Hoard code." }, 400);
+    }
+    const promoCode = typeof incomingCode === "string" ? incomingCode.trim().toUpperCase() : "";
 
     const u = c.get("user");
     const fam = await c.env.DB.prepare("SELECT id, plan, stripe_customer_id, subscription_status FROM families WHERE id = ?").bind(u.family_id).first<any>();
@@ -444,6 +451,12 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
     }
     if (GRANT_STATES.has(String(fam.subscription_status || "")) || ACTIVE_PLANS.includes(fam.plan)) {
       return c.json({ detail: "You already have a Family Membership. Use Manage billing to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
+    }
+
+    let promotionId: string | null = null;
+    if (promoCode) {
+      promotionId = await resolveHoardDiscount(c.env.DB, cfg.mode, promoCode);
+      if (!promotionId) return c.json({ detail: "This Dragon\u2019s Hoard code is invalid, inactive or expired." }, 400);
     }
 
     try {
@@ -481,13 +494,13 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
         customer,
         client_reference_id: u.family_id,
         line_items: [{ price: price.price, quantity: 1 }],
-        // Discounts are chosen, capped and expired by Stripe itself. No client-provided price or coupon ids.
-        allow_promotion_codes: true,
+        // Only owner-issued Hoard offers are eligible, while Stripe enforces actual redemption limits.
+        ...(promotionId ? { discounts: [{ promotion_code: promotionId }] } : {}),
         metadata: { family_id: u.family_id, interval },
         subscription_data: { metadata: { family_id: u.family_id, interval } },
         success_url: `${origin}/parent/plan?checkout=success`,
         cancel_url: `${origin}/parent/plan?checkout=cancelled`,
-      }, { idempotencyKey: `sq-checkout-${u.family_id}-${interval}-${Math.floor(Date.now() / 60000)}`, fetchImpl });
+      }, { idempotencyKey: `sq-checkout-${u.family_id}-${interval}-${promotionId ?? "none"}-${Math.floor(Date.now() / 60000)}`, fetchImpl });
       return c.json({ url: session.url });
     } catch (e: any) {
       console.error("billing checkout failed", e?.message);
