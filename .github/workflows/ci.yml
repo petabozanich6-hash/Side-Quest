@@ -36,6 +36,12 @@ jobs:
         run: |
           set -o pipefail
           npm run test:db-audit 2>&1 | tee ci-logs/db-audit.log
+      - name: Trust and Support copy regression
+        id: support_copy
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          npm run test:support-copy 2>&1 | tee ci-logs/support-copy.log
       - name: Worker TypeScript check
         id: typecheck
         continue-on-error: true
@@ -97,6 +103,7 @@ jobs:
             echo "install=${{ steps.install.outcome }}"
             echo "test=${{ steps.test.outcome }}"
             echo "db_audit=${{ steps.db_audit.outcome }}"
+            echo "support_copy=${{ steps.support_copy.outcome }}"
             echo "typecheck=${{ steps.typecheck.outcome }}"
             echo "print_tests=${{ steps.print_tests.outcome }}"
             echo "build=${{ steps.build.outcome }}"

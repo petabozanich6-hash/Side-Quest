@@ -21,7 +21,7 @@ export const PAGES = {
         "I do not sell personal information and there is no advertising for children.",
         "You can see, correct or delete your family's information at any time.",
       ] },
-      { h: "Who I am", p: "Side-Quest Learning (sidequestlearning.app) is operated in Australia by a homeschooling parent. It began as a tool for my own children and grew into a service for other families. In this policy, \"Side-Quest\", \"I\", \"me\" and \"my\" mean the operator of sidequestlearning.app. You can contact me at support@sidequestlearning.app." },
+      { h: "Who I am", p: "Side-Quest Learning (sidequestlearning.app) is operated in Australia by a homeschooling parent. It began as a tool for my own children and grew into a service for other families. In this policy, \"Side-Quest\", \"I\", \"me\" and \"my\" mean the operator of sidequestlearning.app. If you're signed in, the quickest way to contact me is Parent Hub → Ideas, feedback & problems. If you cannot sign in or that service is unavailable, email support@sidequestlearning.app." },
       { h: "About this policy", p: "This policy explains how I handle personal information and the safeguards I use. I aim to comply with applicable Australian privacy laws, including the Privacy Act 1988 (Cth) where it applies. It covers the Side-Quest website and app, including the parent hub and child area." },
       { h: "Information I collect from parents", items: [
         "Account details: your name, your email address and your sign-in credentials. Your email address is also used to help you get back into your account if you forget your password.",
@@ -76,9 +76,9 @@ export const PAGES = {
       { h: "Data breaches", p: "If a data breach is likely to cause serious harm, I will act quickly to contain it and will tell affected families, and the Office of the Australian Information Commissioner where required." },
       { h: "Accessing and correcting your information", p: "You can ask to see the personal information I hold about you and your children, and ask me to correct anything that is wrong, incomplete or out of date. You can also edit most details yourself in the parent hub. To see your information, use the Request Your Data page. To correct information you cannot edit yourself, use Parent Hub → Ideas & Feedback → Problems. If you cannot sign in or the feedback tool fails, email support@sidequestlearning.app with \"Correct my information\" in the subject line. I will confirm your identity first and aim to respond within 30 days. There is no charge for making a request." },
       { h: "Deleting your information", p: "You can delete your account at any time from the Trust & Support page or the sidebar. This removes your account and your children's profiles and learning records." },
-      { h: "Complaints", p: "If you are unhappy with how your information has been handled, use the Privacy Complaint page or email support@sidequestlearning.app and I will look into it and reply in writing. You may also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
+      { h: "Complaints", p: "If you are unhappy with how your information has been handled, use the Privacy Complaint page or Parent Hub → Ideas, feedback & problems so I can reply privately there. If you cannot sign in or the form is unavailable, email support@sidequestlearning.app. I will look into the complaint and reply in writing. You may also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
       { h: "Changes to this policy", p: "I may update this policy as Side-Quest grows, including its learning apps, AI capabilities, billing and account messages, or if law changes. The date at the top shows when it was last updated. If I make an important change I will let families know through the app or by email." },
-      { h: "Contact", p: "Side-Quest, support@sidequestlearning.app" },
+      { h: "Contact", p: "Signed-in families can contact me privately through Parent Hub → Ideas, feedback & problems, with replies appearing on their dashboard. If you cannot sign in or that tool fails, email support@sidequestlearning.app." },
     ],
   },
   "terms": {
@@ -125,7 +125,7 @@ export const PAGES = {
       { h: "Limits on my responsibility", p: "Side-Quest is provided as is. To the extent the law allows, I am not liable for loss or damage arising from your use of the service, including lost data, interruptions, inaccurate content, or decisions you make based on it. Nothing in these terms excludes or limits any right or remedy that you have under the Australian Consumer Law or other law that cannot be excluded." },
       { h: "Changes to these terms", p: "I may update these terms from time to time. The date at the top shows the latest version. If I make an important change I will let you know through the app or by email. Continuing to use Side-Quest after a change means you accept it." },
       { h: "Governing law", p: "These terms are governed by the laws of Australia. If any part is found unenforceable, the rest still applies." },
-      { h: "Contact", p: "Side-Quest, support@sidequestlearning.app" },
+      { h: "Contact", p: "For signed-in support, use Parent Hub → Ideas, feedback & problems so I can reply privately in your thread. If you cannot sign in or the feature is unavailable, email support@sidequestlearning.app." },
     ],
   },
   "disclaimer": {
@@ -154,7 +154,7 @@ export const PAGES = {
       { h: "Other resources and links", p: "Side-Quest may link to books, videos, websites and other resources made by others. I do not control or endorse them and cannot guarantee that they are accurate, appropriate or still available. Preview anything before sharing it with your child." },
       { h: "Parent supervision", p: "Parents and guardians remain responsible for supervising children, reviewing any content, and deciding what is right for their family." },
       { h: "Changes and corrections", p: "Side-Quest is an independently run service, and its content may change as the platform develops. If you spot something wrong or out of date, please tell me through Request a Correction so I can fix it." },
-      { h: "Contact", p: "Side-Quest, support@sidequestlearning.app" },
+      { h: "Contact", p: "For signed-in support, use Parent Hub → Ideas, feedback & problems so I can reply privately in your thread. If you cannot sign in or the feature is unavailable, email support@sidequestlearning.app." },
     ],
   },
   "ai-use": {

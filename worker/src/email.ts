@@ -141,7 +141,7 @@ ${o.body}
 
 <tr><td bgcolor="${C.paper}" style="background:${C.paper};border-left:1px solid ${C.line};border-right:1px solid ${C.line};padding:0 30px 26px;">
 ${divider}
-<p style="margin:0;font-family:${SANS};font-size:12px;line-height:1.6;color:${C.stone};">${o.reason} Need help? Reply to this email or write to <a href="mailto:${SUPPORT_EMAIL}" style="color:${C.moss};">${SUPPORT_EMAIL}</a>.</p>
+<p style="margin:0;font-family:${SANS};font-size:12px;line-height:1.6;color:${C.stone};">${o.reason} Need help? Signed in? Use <a href="${SITE_URL}/parent/feedback" style="color:${C.moss};">Ideas &amp; Feedback</a> for private replies. If you cannot access it, reply or email <a href="mailto:${SUPPORT_EMAIL}" style="color:${C.moss};">${SUPPORT_EMAIL}</a>.</p>
 </td></tr>
 
 <tr><td bgcolor="${C.forest}" style="background:${C.forest};border-radius:0 0 18px 18px;padding:18px 30px;">
@@ -179,7 +179,7 @@ During your preview you can add one child, create up to two lessons and have two
 
 And please don't feel you need to set everything up on day one. One child, one lesson, one little win. That's a perfectly good beginning.
 
-If you have a question, an idea or something isn't working, just reply to this email or write to ${SUPPORT_EMAIL}. We'd love to hear from you.
+If you have a question, an idea or something isn't working, use Ideas & Feedback in your Parent Hub: ${SITE_URL}/parent/feedback. If you cannot sign in or that feature is unavailable, reply to this email or write to ${SUPPORT_EMAIL}.
 
 We're glad you've joined us. Happy questing!
 Side-Quest Learning

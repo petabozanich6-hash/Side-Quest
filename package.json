@@ -15,7 +15,8 @@
     "db:migrate:prod": "wrangler d1 migrations list DB --remote && wrangler d1 migrations apply DB --remote",
     "db:backup": "node worker/scripts/backup-d1.mjs",
     "db:audit": "node worker/scripts/audit-d1-schema.mjs",
-    "test:db-audit": "node --test worker/test/schemaAudit.test.mjs"
+    "test:db-audit": "node --test worker/test/schemaAudit.test.mjs",
+    "test:support-copy": "node --test worker/test/supportCopy.test.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
