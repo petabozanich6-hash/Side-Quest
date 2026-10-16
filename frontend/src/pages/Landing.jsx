@@ -132,10 +132,10 @@ export default function Landing() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           <Feature icon={Users} title="Your family, one home base" desc="Set up child profiles, plan their learning and keep each child’s work organised privately in your family account." tint="#4A5D3A"/>
           <Feature icon={Sparkles} title="AI Lesson Builder" desc="Have a topic in mind? Let Side-Quest draft the explanations, examples, activities and questions. You check and adjust the lesson instead of starting from a blank page. Included with Family Membership." tint="#C77B5B"/>
-          <Feature icon={Camera} title="Evidence Backpack" desc="Gather the work you’ve reviewed, everyday learning notes and progress records in one place. Print or export a portfolio when you need to show the learning journey." tint="#6B8A5B"/>
-          <Feature icon={CalendarDays} title="A plan you can actually change" desc="Use the family calendar to organise lessons, outings and everyday plans. Change the schedule when life changes — because it will." tint="#C8893B"/>
+          <Feature icon={Camera} title="Evidence Backpack" desc="Your free preview shows a summary and one detailed entry. Family Membership unlocks full records, everyday learning evidence and portfolio exports." tint="#6B8A5B"/>
+          <Feature icon={CalendarDays} title="A plan you can actually change" desc="Family Membership includes the editable family calendar, weekly timetables and Auto-Quest planning. Change the schedule when life changes — because it will." tint="#C8893B"/>
           <Feature icon={BookOpen} title="Progress and learning records" desc="See completed work, review progress and organise evidence for your family's learning journey. Find your state's official curriculum and registration resources in the Curriculum hub." tint="#4A5D3A"/>
-          <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Print a lesson or record hands-on learning when you want to step away from the screen." tint="#D4A574"/>
+          <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Family Membership adds life-learning evidence, file attachments and offline lesson access." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
           <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP and grow their pocket pets as they learn. Families can also opt into seasonal surprises — a little fun along the way." tint="#C77B5B"/>
           <div className="col-span-full mt-2 paper-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="homepage-homeschool-compass">
@@ -180,6 +180,40 @@ export default function Landing() {
         </div>
       </section>
 
+      <section className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 pb-4" aria-labelledby="trial-comparison-heading" data-testid="homepage-free-versus-paid">
+        <div className="text-center mb-8">
+          <h2 id="trial-comparison-heading" className="font-display text-3xl md:text-4xl font-bold" style={{color:"#1F3B2D"}}>What's free, and what's included with membership?</h2>
+          <p className="mt-3 text-sm text-stone-600 max-w-2xl mx-auto">No surprises and no goblin-sized fine print. Here's exactly where the free adventure ends and the extras begin.</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-5">
+          <div className="paper-card p-6 sm:p-7 space-y-4">
+            <div><div className="font-script text-2xl" style={{color:"#C77B5B"}}>A little taste of the quest</div><h3 className="font-display text-2xl font-bold mt-1" style={{color:"#1F3B2D"}}>Free preview · 7 days</h3><p className="text-sm text-stone-600 mt-2">No payment details, no automatic charge.</p></div>
+            <ul className="space-y-2 text-sm leading-relaxed text-stone-800 list-disc pl-5">
+              <li>One child profile, their learning space, pocket pet and XP</li>
+              <li>Make and edit two manual lessons, with two active assignments at a time</li>
+              <li>Review your child's work and see automatic learning progress</li>
+              <li>One basic learning plan, plus reading logs during the preview</li>
+              <li>Homeschooling Compass, official links, curriculum reference and search</li>
+              <li>Evidence Backpack summary with one detailed sample</li>
+            </ul>
+            <p className="text-xs text-stone-600 border-t pt-3" style={{borderColor:"#D4C8A8"}}>When the seven days end, your records are kept and remain viewable. Existing assignments can be finished and reviewed; creating new learning needs membership. Registration guidance and the feedback form remain available.</p>
+          </div>
+          <div className="paper-card p-6 sm:p-7 space-y-4" style={{border:"2px solid #6B8A5B"}}>
+            <div><div className="font-script text-2xl" style={{color:"#4A5D3A"}}>The whole enchanted toolbox</div><h3 className="font-display text-2xl font-bold mt-1" style={{color:"#1F3B2D"}}>Family Membership</h3><p className="text-sm text-stone-600 mt-2">One family payment. Every advanced tool included.</p></div>
+            <ul className="space-y-2 text-sm leading-relaxed text-stone-800 list-disc pl-5">
+              <li>Up to 20 children, 5,000 lessons and 5,000 active assignments*</li>
+              <li>AI lesson drafts, AI editing and guided child assistance*</li>
+              <li>Advanced learning plans, manual calendar, timetables and Auto-Quest</li>
+              <li>Full Evidence Backpack, life-learning records and outcome evidence management</li>
+              <li>Resource tools, Word Hoard authoring and file uploads*</li>
+              <li>Offline learning for children and full portfolio exports</li>
+            </ul>
+            <p className="text-xs text-stone-600 border-t pt-3" style={{borderColor:"#D4C8A8"}}>*Family-wide fair-use limits apply to AI and records. Active uploaded file storage is limited to 250 MB per family. Every payment option unlocks the same membership.</p>
+            <Link to="/register" className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold" style={{backgroundColor:"#1F3B2D",color:"#F5EFE0"}}>Start with your free preview <ArrowRight size={16}/></Link>
+          </div>
+        </div>
+      </section>
+
       <section className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 py-14" aria-labelledby="membership-heading">
         <div className="text-center mb-8">
           <span className="font-script text-2xl" style={{color:"#C77B5B"}}>One family, one membership</span>
@@ -214,8 +248,8 @@ export default function Landing() {
               <h3 className="font-display text-3xl md:text-4xl font-bold mt-1" style={{color:"#F5EFE0"}}>A pocket pet that grows with every lesson.</h3>
               <p className="mt-3 text-sm md:text-base leading-relaxed max-w-xl" style={{color:"#E8E2D1"}}>
                 Children choose a goblin, dragon, fox, owl or turtle, and watch it grow from an egg.
-                Submit work to earn XP. Each level unlocks a new look. When they feel stuck, their companion
-                offers kind, specific nudges — never the answer.
+                Submit work to earn XP. Each level unlocks a new look. With Family Membership, their companion
+                can offer guided AI help when they feel stuck — never the answer.
               </p>
               <div className="mt-4 flex items-center gap-2 text-xs" style={{color:"#D4A574"}}>
                 <span className="font-mono">EGG → HATCHLING → YOUNGLING → COMPANION → HERO → LEGEND</span>
