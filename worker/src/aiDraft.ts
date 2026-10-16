@@ -622,10 +622,12 @@ export function parseReply(out: unknown): StageRun | null {
 /** What the draft cost, using Cloudflare's published rates for the default model (US cents). Null when the model is not the default. */
 export function generationReport(st: GenStats, model: string) {
   const est = model === DEFAULT_MODEL ? Math.round(((st.input_tokens * 0.293 + st.output_tokens * 2.253) / 1e6) * 10000) / 100 : null;
-  return { calls: st.calls, stages: st.stages, input_tokens: st.input_tokens, output_tokens: st.output_tokens, est_cost_us_cents: est };
+  return { calls: st.calls, stages: st.stages, input_tokens: st.input_tokens, output_tokens: st.output_tokens, est_cost_us_cents: est,
+    elapsed_ms: st.elapsed_ms ?? null, stage_timings_ms: st.stage_timings_ms ?? [] };
 }
 
-export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[]; failed?: string };
+export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[]; failed?: string;
+  elapsed_ms?: number; stage_timings_ms?: { stage: string; ms: number }[] };
 
 /** The parent answer key is assembled from the items themselves, so it always agrees with the lesson. */
 export function buildAnswerKey(l: any): string {
@@ -663,14 +665,17 @@ export async function generateStaged(
   call: (messages: { role: string; content: string }[], maxTokens: number) => Promise<unknown>,
   spec: Spec,
   stats: GenStats,
-  flags: string[]
+  flags: string[],
+  compact = false
 ): Promise<Record<string, any> | null> {
   const sys = { role: "system", content: stageSystem() };
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
     let best: StageRun | null = null;
     let lastWhy = "";
     for (let attempt = 0; attempt < 2; attempt++) {
+      const started = Date.now();
       const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens);
+      (stats.stage_timings_ms ??= []).push({ stage: name, ms: Date.now() - started });
       stats.calls++;
       stats.input_tokens += Number(raw?.usage?.prompt_tokens) || 0;
       stats.output_tokens += Number(raw?.usage?.completion_tokens) || 0;
@@ -699,13 +704,61 @@ export async function generateStaged(
   if (!frame) return null;
   const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
 
-  const results = await pool<any>([
-    ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
-    ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
-  ]);
-  results.forEach((r) => { if (r && Array.isArray(r.steps) && !r.answer) r.answer = String(r.steps[r.steps.length - 1] ?? ""); });
-  const sections = results.slice(0, seq.length);
-  const examples = results.slice(seq.length);
+  let sections: any[] = [];
+  let examples: any[] = [];
+  if (compact) {
+    // Two teaching sections/examples per call instead of one per call. The complete
+    // original prompts remain the fallback when an experimental group is unusable.
+    const chunks = (items: any[]) => Array.from({ length: Math.ceil(items.length / 2) }, (_, k) =>
+      items.slice(k * 2, k * 2 + 2).map((_, j) => k * 2 + j));
+    const sChunks = chunks(seq), eChunks = chunks(exs);
+    const sPrompt = (ids: number[]) => [
+      `STAGE 3, GROUPED TEACHING: write exactly ${ids.length} separate teaching sections, one for each specification below. Keep each section focused on ONE different idea.`,
+      ...contextBlock(spec), `WHOLE LESSON: ${designBrief(design)}`,
+      texts.length ? `READINGS: ${JSON.stringify(texts)}` : "", standardExcerpt(spec.delivery),
+      ...ids.map(i => `SECTION ${i + 1}: heading "${seq[i].heading}". Idea: ${seq[i].idea}. Method: ${seq[i].how}. Key points: ${(seq[i].key_points || []).join("; ")}. Earlier learning: ${seq.slice(0, i).map((x: any) => x.idea).join("; ") || "start with prior knowledge"}.`),
+      "Write 250–380 words EACH in short paragraphs. Introduce, explain, model with real details, say WHY, correct misconceptions and link ahead. Do not mix sections or repeat content.",
+      'JSON ONLY: {"sections":[{"heading":string,"body":string,"visual":optional},...]}', VISUAL_FORMAT,
+    ].filter(Boolean).join("\n");
+    const ePrompt = (ids: number[]) => [
+      `STAGE 3, GROUPED WORKED EXAMPLES: write exactly ${ids.length} distinct worked examples, in the stated order.`,
+      ...contextBlock(spec), `WHOLE LESSON: ${designBrief(design)}`,
+      texts.length ? `READINGS: ${JSON.stringify(texts)}` : "",
+      ...ids.map(i => `EXAMPLE ${i + 1}: title "${exs[i].title}". Use EXACT problem "${exs[i].problem}". Skill: ${exs[i].skill}.`),
+      "Each example needs 5–9 explicit steps showing what to do and WHY, a checked final answer, and should increase in difficulty.",
+      'JSON ONLY: {"worked_examples":[{"title":string,"problem":string,"steps":[string],"answer":string,"visual":optional},...]}', VISUAL_FORMAT,
+    ].filter(Boolean).join("\n");
+    const grouped = await pool<any>([
+      ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
+      ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
+    ]);
+    const unpack = async (type: "sections" | "worked_examples", chunksToRead: number[][], offset: number) => {
+      const resolved = await Promise.all(chunksToRead.map(async (ids, k) => {
+        const items = grouped[offset + k]?.[type];
+        const valid = Array.isArray(items) && items.length === ids.length && items.every((v: any) =>
+          type === "sections" ? hasKeys(v, ["heading", "body"]) : hasKeys(v, ["problem", "steps", "answer"]));
+        if (valid) return items;
+        // If a bundled call was truncated or invalid, retain the proven individual path.
+        flags.push("The grouped teaching request needed an individual retry; the original lesson checks still apply.");
+        return Promise.all(ids.map(i => type === "sections"
+          ? go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])
+          : go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])));
+      }));
+      return resolved.flat();
+    };
+    [sections, examples] = await Promise.all([
+      unpack("sections", sChunks, 0),
+      unpack("worked_examples", eChunks, sChunks.length),
+    ]);
+  } else {
+    const results = await pool<any>([
+      ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
+      ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
+    ]);
+    sections = results.slice(0, seq.length);
+    examples = results.slice(seq.length);
+  }
+  examples.forEach(r => { if (r && Array.isArray(r.steps) && !r.answer) r.answer = String(r.steps[r.steps.length - 1] ?? ""); });
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
   const taught = { sections, worked_examples: examples, texts };
 
@@ -727,7 +780,7 @@ export async function generateStaged(
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; request: AiRequest },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; request: AiRequest },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -790,7 +843,8 @@ export async function draftLessonWithAi(
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   const model = opts.model || DEFAULT_MODEL;
 
-  const stats: GenStats = { calls: 0, input_tokens: 0, output_tokens: 0, stages: [] };
+  const generationStarted = Date.now();
+  const stats: GenStats = { calls: 0, input_tokens: 0, output_tokens: 0, stages: [], stage_timings_ms: [] };
   const stageFlags: string[] = [];
   const call = (messages: { role: string; content: string }[], maxTokens: number) =>
     ai.run(model, { messages, max_tokens: maxTokens, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
@@ -798,7 +852,7 @@ export async function draftLessonWithAi(
   let draft: Draft | null = null;
   let issues: Issue[] = [];
   try {
-    raw = await generateStaged(call, spec, stats, stageFlags);
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true);
     if (raw) {
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);
@@ -860,6 +914,7 @@ export async function draftLessonWithAi(
     return created;
   }
   await mark("ok");
+  stats.elapsed_ms = Date.now() - generationStarted;
   return { ok: true, lesson: created.lesson, usage: await aiUsage(db, familyId, now), warnings: [...extraWarnings, ...flags], model, assumptions: r.assumptions, generation: generationReport(stats, model), outcomes };
 }
 

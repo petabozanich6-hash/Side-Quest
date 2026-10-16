@@ -45,6 +45,26 @@ test("all model calls are logged without retaining messages, responses, family i
   assert.equal(sum.invoiced,false,"never claim an actual Cloudflare invoice");
 });
 
+test("the production waitUntil path never delays the AI response for cost writes", async () => {
+  const db = makeDb();
+  const jobs = [];
+  const ctx = { waitUntil: promise => { jobs.push(promise); } };
+  const env = meterWorkersAi({
+    DB: db, JWT_SECRET: "test",
+    AI: { run: async () => ({ response: "Ready", usage: { prompt_tokens: 20, completion_tokens: 10 } }) },
+  }, ctx);
+  const response = await env.AI.run("@cf/qwen/qwen3-30b-a3b-fp8", { messages: [{ role: "user", content: "child detail must not be logged" }] });
+  assert.equal(response.response, "Ready");
+  assert.equal(jobs.length, 1);
+  await Promise.all(jobs);
+  const rows = db.raw.prepare("SELECT * FROM ai_inference_costs").all();
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].model, "@cf/qwen/qwen3-30b-a3b-fp8");
+  assert.equal(rows[0].status, "completed");
+  assert.ok(!JSON.stringify(rows).includes("child detail"));
+  assert.deepEqual(RATES_USD_PER_MILLION["@cf/openai/gpt-oss-20b"], { input: 0.2, output: 0.3 });
+});
+
 test("when a provider doesn't return usage, approximation is labelled and unknown prices remain unpriced",async()=>{
   const db=makeDb();
   const original=meterWorkersAi({DB:db,JWT_SECRET:"test",AI:{run:async()=>({response:"Generated answer here."})}});

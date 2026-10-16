@@ -160,7 +160,7 @@ export async function dismissBatch(db: DB, familyId: string, id: string, now: Da
 export async function draftBatchItem(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; batchId: string; index: number },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; batchId: string; index: number },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; reused: boolean; [k: string]: any }>> {
   const { familyId, batchId, index } = opts;
@@ -183,7 +183,7 @@ export async function draftBatchItem(
 
   const req = parse(batch.request, {});
   const r = await draftLessonWithAi(db, ai, {
-    familyId, userId: opts.userId, model: opts.model, gatewayId: opts.gatewayId,
+    familyId, userId: opts.userId, model: opts.model, gatewayId: opts.gatewayId, compact: opts.compact,
     request: {
       request: req.request, student_id: batch.student_id || undefined, link_outcomes: req.link_outcomes !== false,
       series: { index, titles: items.map((i: any) => i.title), goals: items.map((i: any) => i.goal) },

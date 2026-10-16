@@ -147,7 +147,7 @@ export default function LessonReview() {
         <LessonPrintActions lessonId={id} compact studentTestId="review-print-student" parentTestId="review-print-parent" />
       </div>
       {info.generation?.calls > 0 && (
-        <p className="text-xs text-slate-500" data-testid="gen-report">Written in {info.generation.stages.filter(x => x !== "repair").length} steps ({info.generation.stages.includes("repair") ? "plus one correction" : "no corrections needed"}){info.generation.est_cost_us_cents != null ? `, an AI cost of about ${info.generation.est_cost_us_cents} US cents` : ""}.</p>
+        <p className="text-xs text-slate-500" data-testid="gen-report">Written in {info.generation.stages.filter(x => x !== "repair").length} steps ({info.generation.stages.includes("repair") ? "plus one correction" : "no corrections needed"}){Number.isFinite(info.generation.elapsed_ms) ? ` in ${(info.generation.elapsed_ms / 1000).toFixed(1)} seconds` : ""}{info.generation.est_cost_us_cents != null ? `, an AI cost of about ${info.generation.est_cost_us_cents} US cents` : ""}.</p>
       )}
       {lesson.ai_generated && lesson.status !== "ready" && (
         <p className="rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-sm text-violet-900" data-testid="ai-banner">

@@ -320,7 +320,7 @@ export default {
   fetch: async (req: Request, env: Env, ctx: ExecutionContext) => {
     if (!new URL(req.url).pathname.startsWith("/api/") || !env.DB) return app.fetch(req, env, ctx);
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
-    return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env)), ctx);
+    return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env), ctx), ctx);
   },
   scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
     // The two independent mail queues must not prevent each other running.
