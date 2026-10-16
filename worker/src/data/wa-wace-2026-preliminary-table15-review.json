@@ -1,0 +1,295 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE 2026 Preliminary",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page_zero_based": 159,
+  "source_print_page": 148,
+  "source_table": "Appendix 3 Table 15",
+  "verification_date": "2026-10-16",
+  "status": "source_verified_review_only",
+  "scope_note": "All eight Preliminary course offerings printed in Table 15. Subject codes overlap other WACE course types. These are NOT learning outcomes. MDT has three unit-context suffixes.",
+  "records": [
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "BME",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "P1BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "P2BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "P3BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Business Management and Enterprise",
+      "identifier": "P4BME",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "English",
+      "identifier": "ENG",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "English",
+      "identifier": "P1ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "English",
+      "identifier": "P2ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "English",
+      "identifier": "P3ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "English",
+      "identifier": "P4ENG",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "FST",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "P1FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "P2FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "P3FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Food Science and Technology",
+      "identifier": "P4FST",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Health and Physical Education",
+      "identifier": "HPE",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Health and Physical Education",
+      "identifier": "P1HPE",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Health and Physical Education",
+      "identifier": "P2HPE",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Health and Physical Education",
+      "identifier": "P3HPE",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Health and Physical Education",
+      "identifier": "P4HPE",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "MDT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P1MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P2MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P3MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P4MDTM",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P1MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P2MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P3MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P4MDTT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P1MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P2MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P3MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Materials Design and Technology",
+      "identifier": "P4MDTW",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "MAT",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "P1MAT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "P2MAT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "P3MAT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Mathematics",
+      "identifier": "P4MAT",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "REL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "P1REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "P2REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "P3REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Religion and Life",
+      "identifier": "P4REL",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "VAR",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "P1VAR",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "P2VAR",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "P3VAR",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "P4VAR",
+      "identifier_kind": "unit_code",
+      "course_kind": "Preliminary"
+    }
+  ]
+}
