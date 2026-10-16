@@ -30,3 +30,26 @@ Source: [SCSA WACE Manual April 2026, Appendix 3, Table 12, printed pp. 139–14
 4. Independent machine audit: compare page images to records, validate duplicate/code-kind rules, then integrate alongside jurisdiction catalogues.
 
 **Safety:** Do not merge or deploy this review data without verification, especially while PR #158 is still draft.
+
+
+## Additional official SCSA appendix collection (16 October 2026)
+
+Three further **review-only** datasets from the 2026 WACE Manual, Appendix 3:
+
+| Table | File | Source-relationship records |
+| --- | --- | ---: |
+| Table 13, p.146 — VET industry-specific | `wa-wace-2026-vet-table13-review.json` | 87 (80 distinct identifiers; 10 industries and 44 qualification rows) |
+| Table 14, pp.147–148 — Interstate Languages | `wa-wace-2026-interstate-languages-table14-review.json` | 150 (31 language offerings) |
+| Table 15, p.148 — Preliminary | `wa-wace-2026-preliminary-table15-review.json` | 48 (8 subjects and 40 units) |
+
+**Accumulated WA review entries: 824 (539 existing + 285 new), BEFORE deduplication and independent record-by-record revalidation.** This is not a count of unique official identifiers and does not represent 824 outcomes.
+
+Source URL: https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf
+
+### Critical validation notes
+
+- Table 13: SCSA deliberately reuses several `VE...` and `VT...` codes across qualifications with overlapping competency units. Preserve qualification associations, not just a deduplicated code list.
+- Table 14: interstate language provider state (NSW/SA/VIC) is the provider for a **WA WACE course offering**. Do not recategorise these records as NSW, SA or VIC syllabus outcomes.
+- Table 15: Preliminary `P1...` through `P4...` are unit identifiers and must not enter outcome mastery tracking.
+- Manually compare all earlier page 139–145 review batches against PDF page images and official 2026 course-code spreadsheets. Some originally generated course/unit code variants need independent checking; **none of these review files is approved for production use**.
+- SCSA maintains downloadable current course and course-unit summaries at https://senior-secondary.scsa.wa.edu.au/syllabus-and-support-materials/course-codes and current VET summaries at https://senior-secondary.scsa.wa.edu.au/syllabus-and-support-materials/vet-industry-specific . These authoritative exports should be preferred for final independent reconciliation.
