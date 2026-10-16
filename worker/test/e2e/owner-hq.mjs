@@ -65,7 +65,16 @@ const owner = await reg(ownerEmail, "Owner Person");
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 page = await ctx.newPage();
-const signIn = async (p, token) => { await p.goto(BASE + "/"); await p.evaluate((t) => localStorage.setItem("sq_token", t), token); await p.goto(BASE + "/parent"); await p.waitForSelector("[data-testid=parent-sidebar]"); };
+// Authenticate using the real parent login form. Seeding local storage after the
+// app mounts races its initial anonymous auth check and can log out a test user.
+const signIn = async (p, token) => {
+  const email = token === owner.token ? ownerEmail : userEmail;
+  await p.goto(BASE + "/login");
+  await p.fill("[data-testid=login-email]", email);
+  await p.fill("[data-testid=login-password]", PW);
+  await p.click("[data-testid=login-submit]");
+  await p.waitForSelector("[data-testid=parent-sidebar]");
+};
 
 await step("an ordinary parent never sees or reaches Owner HQ (UI and API)", async () => {
   await signIn(page, user.token);
