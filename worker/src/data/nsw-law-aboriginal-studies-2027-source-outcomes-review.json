@@ -1,0 +1,313 @@
+{
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "collected_on": "2026-10-16",
+  "status": "official_outcomes_page_ids_review_for_existing_overlap",
+  "complete_for_specified_outcome_pages": true,
+  "complete_for_nsw": false,
+  "notes": [
+    "These 33 literal outcome identifiers are visible on the official NESA outcome pages, not generated from patterns.",
+    "All are future syllabus implementations starting 2027; do not substitute for outgoing 2026 codes.",
+    "AST4-ADJ-01 is instructional adjustment metadata, not a Stage 4 mastery outcome: deliberately excluded.",
+    "Stage 4 may use adjusted Stage 5 Aboriginal Studies outcomes; preserve cross-stage applicability rather than manufacturing Stage 4 equivalents."
+  ],
+  "records": [
+    {
+      "identifier": "LAC-LS-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-03",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-04",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-05",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-06",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-07",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-08",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-09",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-10",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-11",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "LAC-LS-12",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Law and the Community Life Skills",
+      "stage": "Stage 6",
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes"
+    },
+    {
+      "identifier": "AST5-IDE-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-IDE-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-CUL-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-FCA-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-SAA-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-ROL-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-REL-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-DAT-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "AST5-INF-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10",
+      "stage": "Stage 5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-IDE-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-IDE-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-CUL-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-FCA-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-SAA-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-ROL-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-REL-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-REL-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-DAT-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-DAT-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-INF-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    },
+    {
+      "identifier": "ASTLS-INF-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Aboriginal Studies 7–10 Life Skills",
+      "stage": "Stage 4/5",
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes"
+    }
+  ]
+}
