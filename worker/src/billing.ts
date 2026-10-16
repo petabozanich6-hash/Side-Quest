@@ -583,3 +583,42 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
     }
   });
 }
+
+// ---------------------------------------------------------------- account deletion guard
+
+export type DeletionBlock = { status: 409 | 503; detail: string; code: string };
+
+const NOT_RENEWING = new Set(["canceled", "incomplete_expired"]);
+const renews = (s: any) => !NOT_RENEWING.has(String(s?.status || "")) && !(s?.cancel_at_period_end || s?.cancel_at);
+
+/**
+ * Erasing a family must never leave a Stripe subscription that keeps charging a card nobody can
+ * manage any more. Asks Stripe for the customer's subscriptions; fails closed when Stripe can't answer.
+ * Returns null when deletion may go ahead.
+ */
+export async function deletionBillingBlock(db: DB, env: Env, familyId: string, fetchImpl?: Fetch): Promise<DeletionBlock | null> {
+  let row: { stripe_customer_id: string | null; subscription_status: string | null; cancel_at_period_end: number | null } | null = null;
+  try {
+    row = await db.prepare("SELECT stripe_customer_id, subscription_status, cancel_at_period_end FROM families WHERE id = ?")
+      .bind(familyId).first<any>();
+  } catch {
+    return null; // billing columns (migration 0053) not applied: no Stripe customer can exist
+  }
+  if (!row?.stripe_customer_id) return null;
+  const renewing: DeletionBlock = {
+    status: 409,
+    code: "SUBSCRIPTION_RENEWING",
+    detail: "Your Family Membership is still set to renew. Cancel it in Manage billing first (you keep access until the paid period ends), then delete your account.",
+  };
+  const localRenews = () => renews({ status: row!.subscription_status || "canceled", cancel_at_period_end: row!.cancel_at_period_end });
+  const cfg = billingConfig(env);
+  if (!cfg.ok) return localRenews() ? renewing : null;
+  try {
+    const list = await stripeCall(cfg.key, "GET", "subscriptions", { customer: row.stripe_customer_id, status: "all", limit: 100 }, { fetchImpl });
+    return (list?.data || []).some(renews) ? renewing : null;
+  } catch (e) {
+    // A customer id from the other Stripe mode doesn't exist here; fall back to what the webhook recorded.
+    if (e instanceof StripeError && e.status === 404) return localRenews() ? renewing : null;
+    return { status: 503, code: "BILLING_UNAVAILABLE", detail: "We couldn't check your membership with our payment provider, so nothing was deleted. Please try again shortly." };
+  }
+}

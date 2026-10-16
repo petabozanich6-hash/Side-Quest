@@ -528,3 +528,26 @@ test("webhook route rejects unsigned requests", async () => {
   assert.equal((await h["/api/billing/webhook"](c)).status, 400);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM stripe_events").get().n, 0);
 });
+
+test("account deletion: blocked while any Stripe subscription still renews; fails closed when Stripe is down", async () => {
+  const db = makeDb();
+  const env = { STRIPE_SECRET_KEY: "sk_test_dummy" };
+  seedFamily(db, "f1", "ACTIVE_MONTHLY", { stripe_customer_id: "cus_1", subscription_status: "active" });
+  seedFamily(db, "f2");
+  const listing = (subs, status = 200) => async (url) => {
+    assert.match(url, /subscriptions\?customer=cus_1&status=all/);
+    return new Response(JSON.stringify(status === 200 ? { data: subs } : { error: { message: "down" } }), { status });
+  };
+  assert.equal(await b.deletionBillingBlock(db, env, "f2", listing([])), null, "no Stripe customer: nothing to check");
+  assert.equal((await b.deletionBillingBlock(db, env, "f1", listing([sub()])))?.code, "SUBSCRIPTION_RENEWING");
+  assert.equal((await b.deletionBillingBlock(db, env, "f1", listing([sub({ status: "past_due" })])))?.status, 409);
+  assert.equal(await b.deletionBillingBlock(db, env, "f1", listing([sub({ cancel: true })])), null, "set to end: allowed");
+  assert.equal(await b.deletionBillingBlock(db, env, "f1", listing([sub({ status: "canceled" })])), null);
+  assert.equal((await b.deletionBillingBlock(db, env, "f1", listing([sub({ status: "canceled" }), sub({ id: "sub_2" })])))?.code, "SUBSCRIPTION_RENEWING", "a second, forgotten subscription still blocks");
+  assert.equal((await b.deletionBillingBlock(db, env, "f1", listing([], 500)))?.status, 503, "Stripe error: nothing deleted");
+  // Customer unknown in this Stripe mode, or billing switched off: fall back to the webhook's record.
+  assert.equal((await b.deletionBillingBlock(db, env, "f1", listing([], 404)))?.status, 409);
+  assert.equal((await b.deletionBillingBlock(db, {}, "f1"))?.status, 409);
+  db.raw.prepare("UPDATE families SET cancel_at_period_end = 1 WHERE id = 'f1'").run();
+  assert.equal(await b.deletionBillingBlock(db, {}, "f1"), null);
+});

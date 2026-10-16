@@ -11,6 +11,7 @@ export default function DeleteAccountDialog({ onClose }) {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [needsCancel, setNeedsCancel] = useState(false);
 
   const ready = password.length > 0 && confirm.trim() === "DELETE" && !busy;
 
@@ -25,6 +26,7 @@ export default function DeleteAccountDialog({ onClose }) {
       navigate("/");
     } catch (err) {
       const detail = err?.response?.data?.detail;
+      setNeedsCancel(err?.response?.data?.code === "SUBSCRIPTION_RENEWING");
       setError(typeof detail === "string" ? detail : "Something went wrong. Nothing was deleted.");
       setBusy(false);
     }
@@ -47,7 +49,8 @@ export default function DeleteAccountDialog({ onClose }) {
           <li>Reading logs, life learning and evidence</li>
           <li>All uploaded files and calendar events</li>
         </ul>
-        <p className="text-sm font-bold mb-4" style={{color:"#9B2C2C"}}>This cannot be undone. Your children will no longer be able to sign in.</p>
+        <p className="text-sm font-bold mb-2" style={{color:"#9B2C2C"}}>This cannot be undone. Your children will no longer be able to sign in.</p>
+        <p className="text-sm text-stone-700 mb-4">If you have a Family Membership that will renew, cancel it in Manage billing first. A membership already set to end doesn&apos;t stop you deleting.</p>
 
         <label className="block text-xs font-bold text-stone-600 mb-1">Your password</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"
@@ -57,7 +60,16 @@ export default function DeleteAccountDialog({ onClose }) {
         <input type="text" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="off"
           className="w-full rounded-xl border px-3 py-2 text-sm mb-3" style={{borderColor:"#D4C8A8"}} data-testid="delete-account-confirm"/>
 
-        {error && <div className="text-sm mb-3" style={{color:"#9B2C2C"}} data-testid="delete-account-error">{error}</div>}
+        {error && (
+          <div className="text-sm mb-3" style={{color:"#9B2C2C"}} data-testid="delete-account-error">
+            {error}
+            {needsCancel && (
+              <button type="button" onClick={() => { onClose(); navigate("/parent/plan"); }} className="block mt-1 font-bold underline" data-testid="delete-account-manage-billing">
+                Go to Manage billing
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="flex gap-2 justify-end">
           <button type="button" onClick={onClose} className="rounded-xl px-4 py-2 text-sm font-semibold text-stone-700 hover:bg-white">Cancel</button>

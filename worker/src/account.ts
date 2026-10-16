@@ -1,5 +1,7 @@
 import type { App, Guards } from "./types";
 import { verifySecret } from "./auth";
+import { deletionBillingBlock } from "./billing";
+import type { Fetch } from "./billing";
 
 // Tables that are never swept by family/student id.
 const SKIP_TABLES = new Set(["users", "families", "students", "outcomes", "app_config", "d1_migrations"]);
@@ -90,7 +92,7 @@ async function purgeFamily(db: D1Database, bucket: R2Bucket | undefined, familyI
   return report;
 }
 
-export function registerAccount(app: App, g: Guards) {
+export function registerAccount(app: App, g: Guards, fetchImpl?: Fetch) {
   app.post("/api/auth/delete-account", g.auth, g.parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     if (String(b.confirm ?? "").trim() !== "DELETE") return c.json({ detail: "Type DELETE to confirm" }, 400);
@@ -107,9 +109,20 @@ export function registerAccount(app: App, g: Guards) {
     const others = await db.prepare("SELECT COUNT(*) n FROM users WHERE family_id = ? AND id != ?")
       .bind(record.family_id, record.id).first<{ n: number }>();
     if (others?.n) {
-      await db.prepare("DELETE FROM users WHERE id = ?").bind(record.id).run();
+      // The family and its membership stay with the other parent; hand over ownership if needed.
+      await db.batch([
+        db.prepare("DELETE FROM users WHERE id = ?").bind(record.id),
+        db.prepare(
+          "UPDATE users SET is_owner = 1 WHERE id = (SELECT id FROM users WHERE family_id = ? ORDER BY created_at, id LIMIT 1) AND NOT EXISTS (SELECT 1 FROM users WHERE family_id = ? AND is_owner = 1)"
+        ).bind(record.family_id, record.family_id),
+        db.prepare("UPDATE families SET owner_id = (SELECT id FROM users WHERE family_id = ? AND is_owner = 1 ORDER BY created_at, id LIMIT 1) WHERE id = ? AND owner_id = ?")
+          .bind(record.family_id, record.family_id, record.id),
+      ]);
       return c.json({ ok: true, family_deleted: false });
     }
+
+    const block = await deletionBillingBlock(db, c.env, record.family_id, fetchImpl);
+    if (block) return c.json({ detail: block.detail, code: block.code }, block.status);
 
     const report = await purgeFamily(db, c.env.BUCKET, record.family_id, record.id);
     return c.json({ ok: true, family_deleted: true, deleted: report });
