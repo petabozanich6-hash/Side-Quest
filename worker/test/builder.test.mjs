@@ -231,6 +231,46 @@ const stagedFor = (over = {}) => (model, input) => {
 const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : stagedFor()(...a); } }; };
 const req = (family, ai, extra = {}) => ({ familyId: family, userId: "u1", request: { topic: "Fractions", ...extra }, ...extra.opts });
 
+test("opt-in compact drafting halves teaching model calls without skipping the quality gate", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const paired = stub((model, input) => {
+    const prompt = input.messages.at(-1).content;
+    if (prompt.includes("STAGE 3, GROUPED TEACHING")) {
+      const ids = [...prompt.matchAll(/^SECTION (\d+):/gm)].map(x => Number(x[1]) - 1);
+      return { response: JSON.stringify({ sections: ids.map(i => GARDEN.sections[i]) }), usage: { prompt_tokens: 500, completion_tokens: 800 } };
+    }
+    if (prompt.includes("STAGE 3, GROUPED WORKED EXAMPLES")) {
+      const ids = [...prompt.matchAll(/^EXAMPLE (\d+):/gm)].map(x => Number(x[1]) - 1);
+      return { response: JSON.stringify({ worked_examples: ids.map(i => GARDEN.worked_examples[i]) }), usage: { prompt_tokens: 500, completion_tokens: 800 } };
+    }
+    return stagedFor()(model, input);
+  });
+  const result = await aid.draftLessonWithAi(db, paired, { familyId: fam, userId: "u", request: { topic: "Fractions", learning_area: "Mathematics" }, compact: true }, NOW);
+  assert.ok(result.ok, JSON.stringify(result));
+  assert.equal(result.lesson.status, "draft");
+  assert.equal(result.lesson.sections.length, GARDEN.sections.length);
+  assert.equal(result.lesson.worked_examples.length, GARDEN.worked_examples.length);
+  assert.ok(paired.calls.length < 13, String(paired.calls.length));
+  assert.ok(result.generation.stage_timings_ms.length > 0);
+  assert.ok(result.generation.elapsed_ms >= 0);
+  assert.ok(!result.warnings.some(w => /grouped teaching request/.test(w)));
+});
+
+test("compact group parse failure falls back to independently validated sections", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const ai = stub((model, input) => {
+    const prompt = input.messages.at(-1).content;
+    if (prompt.includes("STAGE 3, GROUPED")) return { response: JSON.stringify({ sections: [], worked_examples: [] }) };
+    return stagedFor()(model, input);
+  });
+  const result = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions" }, compact: true }, NOW);
+  assert.ok(result.ok, JSON.stringify(result));
+  assert.ok(result.warnings.some(w => /individual retry/.test(w)));
+  assert.equal(result.lesson.status, "draft");
+});
+
 test("AI drafting: free preview, expired and cancelled are blocked before any AI call", async () => {
   for (const [plan, trialStart] of [["FREE_PREVIEW"], ["FREE_PREVIEW", "2026-09-01T00:00:00Z"], ["CANCELLED"]]) {
     const db = makeDb();
