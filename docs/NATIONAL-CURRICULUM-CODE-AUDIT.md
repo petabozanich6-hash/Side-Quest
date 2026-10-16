@@ -49,6 +49,10 @@ Sources and machine-readable evidence:
 
 The 18 excluded `-ADJ-` identifiers remain listed in `collection-followup-report.json` as adjustment notices. Historical child evidence and active outcome catalogues were not rewritten.
 
+### Follow-up collected: VCE English/EAL table outcomes (16 October 2026)
+
+Captured **16 source-linked unit-outcome references** in `worker/src/data/vic-vce-english-eal-unit-outcomes-review.json`: Units 1–4, Outcomes 1–2, separately for English and EAL (8 per pathway). The current official VCAA planning page presents these as side-by-side outcome-statement tables: https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/english-and-english-additional-language/planning . Units 1–2 apply from 2023, Units 3–4 from 2024. These are **unit/outcome references**, not invented globally unique alphanumeric identifiers. The source's pathway-specific statements are not conflated. No runtime changes, no merge, no national completeness claim. This does **not** resolve the separate 1,038-reference / 92-document verification checkpoint until its manifest is located.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
