@@ -73,27 +73,37 @@ function printShell(lesson, view, body) {
     lesson.duration_minutes ? String(lesson.duration_minutes) + " min" : ""].filter(Boolean);
   return '<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">' +
     "<title>" + escape(lesson.title || "Side-Quest lesson") + " — " + (parent ? "Parent guide" : "Student workbook") + "</title>" +
-    '<style>@page{size:auto;margin:15mm}body{font:15px/1.5 Arial,sans-serif;color:#18382b;max-width:780px;margin:24px auto;padding:0 16px}' +
-    'h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:24px 0 7px;break-after:avoid}h3{font-size:16px;margin:12px 0 6px}' +
-    'p,li{white-space:normal;overflow-wrap:anywhere}p{margin:6px 0 10px}li{margin:4px 0}section{margin:12px 0}' +
-    '.meta{color:#475569}.edition{font-weight:bold;color:#365a45;text-transform:uppercase;font-size:12px;letter-spacing:.08em}' +
-    '.name{display:flex;gap:20px;margin:14px 0}.name span{border-bottom:1px solid #555;flex:1;padding:6px 0}' +
-    '.answer-space{margin:5px 0 15px}.writing-line{height:27px;border-bottom:1px solid #aaa}' +
-    '.question{margin:12px 0;break-inside:avoid}.answer{background:#f1f5f1;border-left:3px solid #56755f;padding:7px 10px;margin:6px 0}' +
-    '.visual-description svg{display:block;width:100%;height:auto;max-height:380px}.print-note{border:1px solid #b8c7bd;padding:10px;margin:12px 0}.choices{list-style:none;padding-left:9px}' +
-    '.choices li{margin:5px 0}.break{break-before:page}.visual-description{border:1px solid #d2d8d4;padding:9px;margin:10px 0}' +
-    '.print-actions{margin:0 0 16px;display:flex;gap:10px}.print-actions button{background:#18382b;color:white;border:0;border-radius:6px;padding:9px 14px;cursor:pointer}' +
-    'a{color:#18382b}section,figure,.question{break-inside:avoid-page}' +
-    '@media print{body{margin:0;padding:0;max-width:none}.print-actions{display:none}h1,h2,h3{break-after:avoid}.break{break-before:page}}' +
+    '<style>' +
+    '@page{size:A4;margin:14mm}' +
+    'body{font:15px/1.55 Arial,sans-serif;color:#243a2d;background:white;max-width:780px;margin:24px auto;padding:0 16px}' +
+    '.sq-head{border-top:5px solid #1F3B2D;border-bottom:2px solid #D4C8A8;padding:16px 0 20px;margin-bottom:22px;break-inside:avoid}' +
+    '.brand{display:flex;align-items:center;gap:12px}.brand img{width:52px;height:52px;border-radius:12px;object-fit:contain}' +
+    '.brand-title{font-weight:bold;color:#1F3B2D;font-size:14px}.brand-sub{color:#4A5D3A;font-size:11px;letter-spacing:.06em}' +
+    '.edition{font-weight:bold;color:#9A563F;text-transform:uppercase;font-size:11px;letter-spacing:.11em;margin-top:3px}' +
+    'h1{font-size:27px;line-height:1.22;color:#1F3B2D;margin:16px 0 4px}h2{font-size:19px;color:#1F3B2D;margin:25px 0 11px;border-left:4px solid #C77B5B;border-bottom:1px solid #C8D3BF;padding:0 0 7px 12px;break-after:avoid}' +
+    'h3{font-size:16px;color:#1F3B2D;margin:14px 0 6px}p,li{white-space:normal;overflow-wrap:anywhere}p{margin:6px 0 10px}li{margin:4px 0}' +
+    'section{margin:13px 0}.meta{color:#54634D;font-size:13px}.name{display:flex;gap:20px;margin:16px 0;font-size:13px}.name span{border-bottom:1px solid #617963;flex:1;padding:6px 0}' +
+    '.answer-space{margin:6px 0 15px}.writing-line{height:27px;border-bottom:1px solid #8A9B86}' +
+    '.question{margin:12px 0;break-inside:avoid-page}.answer{background:#EFF3EA;border-left:3px solid #4A6D5A;padding:8px 11px;margin:8px 0;color:#1F3B2D}' +
+    '.print-note{border:1px solid #D4C8A8;border-left:4px solid #C77B5B;padding:10px;margin:16px 0;border-radius:3px}' +
+    '.choices{list-style:none;padding-left:9px}.choices li{margin:5px 0}.break{break-before:page}' +
+    '.visual-description{border:1px solid #D4C8A8;border-radius:7px;padding:10px;margin:12px 0;background:#FFFEFA}' +
+    '.visual-description svg{display:block;width:100%;height:auto;max-height:380px}' +
+    '.print-actions{margin:0 0 16px;display:flex;gap:10px}.print-actions button{background:#1F3B2D;color:white;border:0;border-radius:18px;padding:10px 16px;cursor:pointer;font-weight:bold}' +
+    '.sq-foot{border-top:1px solid #D4C8A8;padding-top:12px;margin-top:30px;color:#54634D;font-size:12px}' +
+    'a{color:#1F3B2D}section,figure{break-inside:avoid-page}' +
+    '@media print{body{margin:0;padding:0;max-width:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}.print-actions{display:none}h1,h2,h3{break-after:avoid-page}.brand img{width:44px;height:44px}.break{break-before:page}p,li{orphans:2;widows:2}}' +
     '</style></head><body><div class="print-actions"><button onclick="window.print()">Print or save as PDF</button></div>' +
-    '<header><div class="edition">' + (parent ? "Parent teaching and answer pack" : "Student paper workbook") + "</div>" +
-    "<h1>" + escape(lesson.title || "Side-Quest lesson") + "</h1><p class=\"meta\">" + escape(meta.join(" · ")) + "</p>" +
-    (parent ? "" : '<div class="name"><span>Name:</span><span>Date:</span></div>') +
-    "</header>" + body +
+    '<header class="sq-head"><div class="brand"><img src="/icons/icon-192.png" alt="Side-Quest Learning">' +
+    '<div><div class="brand-title">Side-Quest Learning</div><div class="brand-sub">Learn · Explore · Grow</div>' +
+    '<div class="edition">' + (parent ? "Parent teaching and answer pack" : "Student paper workbook") + "</div></div></div>" +
+    "<h1>" + escape(lesson.title || "Side-Quest lesson") + '</h1><p class="meta">' + escape(meta.join(" · ")) + "</p>" +
+    (parent ? "" : '<div class="name"><span>Name:</span><span>Date:</span></div>') + "</header>" + body +
     (parent ? "" : '<section class="print-note"><b>Hand in:</b> Give your finished pages to your parent, or photograph them and upload them as lesson evidence when online.</section>') +
-    "</body></html>";
+    '<footer class="sq-foot">✦ Side-Quest Learning · ' +
+    (parent ? "Parent teaching copy — keep with your family learning records." : "Every quest is a chance to learn something new.") +
+    "</footer></body></html>";
 }
-
 function choiceQuestion(q, index, view = "student") {
   if (!q || typeof q !== "object") return "";
   const parent = view === "parent";
