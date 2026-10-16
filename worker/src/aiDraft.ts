@@ -19,7 +19,7 @@ type DB = D1Database;
 export type AiBinding = { run(model: string, input: Record<string, unknown>, options?: Record<string, unknown>): Promise<any> };
 
 export const DEFAULT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
-export const AI_LIMITS = { perDay: 10, perMonth: 60 };
+export const AI_LIMITS = { perDay: 10, perMonth: 60, failedPerDay: 12 };
 
 export type AiRequest = {
   topic?: unknown; learning_area?: unknown; year_level?: unknown; stage?: unknown; goal?: unknown; duration_minutes?: unknown;
@@ -862,13 +862,28 @@ export async function draftLessonWithAi(
     original: clip(request.request, 600) || undefined, curriculumContext, series,
   };
 
+  // A reservation still 'pending' after 15 minutes belongs to a Worker that stopped mid-draft: release it.
+  await db.prepare("UPDATE ai_usage SET status = 'failed' WHERE family_id = ? AND kind = 'lesson_draft' AND status = 'pending' AND created_at < ?")
+    .bind(familyId, new Date(now.getTime() - 15 * 60_000).toISOString()).run();
   const usage = await aiUsage(db, familyId, now);
   if (!usage.unlimited && usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
   if (!usage.unlimited && usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
+  // Failed drafts don't use the allowance, but they still cost: stop a run of failures from looping.
+  const dayAgo = new Date(now.getTime() - 86400000).toISOString();
+  if (!usage.unlimited) {
+    const failed = Number((await db.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id = ? AND kind = 'lesson_draft' AND status = 'failed' AND created_at >= ?").bind(familyId, dayAgo).first<{ n: number }>())?.n ?? 0);
+    if (failed >= AI_LIMITS.failedPerDay) return lb.fail(429, "Several AI drafts couldn't be finished today, so we've paused AI drafting until tomorrow. You can still build lessons by hand.", "AI_FAILURES");
+  }
 
-  // Reserve the slot first so parallel requests cannot exceed the limit by much; free it if the call fails.
+  // Reserve the slot atomically, so parallel requests can never go over the allowance; freed if the draft fails.
   const usageId = crypto.randomUUID();
-  await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'lesson_draft', 'pending', ?)").bind(usageId, familyId, userId, now.toISOString()).run();
+  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
+  const counted = "SELECT COUNT(*) FROM ai_usage WHERE family_id = ? AND kind = 'lesson_draft' AND status != 'failed' AND created_at >= ?";
+  const reserved = usage.unlimited
+    ? await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'lesson_draft', 'pending', ?)").bind(usageId, familyId, userId, now.toISOString()).run()
+    : await db.prepare(`INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) SELECT ?, ?, ?, 'lesson_draft', 'pending', ? WHERE (${counted}) < ? AND (${counted}) < ?`)
+      .bind(usageId, familyId, userId, now.toISOString(), familyId, dayAgo, AI_LIMITS.perDay, familyId, monthStart, AI_LIMITS.perMonth).run();
+  if (!reserved.meta?.changes) return lb.fail(429, `You have used your AI drafts for now. Try again later, or build by hand.`, "AI_QUOTA");
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   const model = opts.model || DEFAULT_MODEL;
 
