@@ -208,3 +208,36 @@ test("timetable refuses overlapping blocks and preserves existing appointments",
   assert.equal((await save([block(day(0), "23:45", 45)])).status, 400);
   assert.equal((await h.slots(f, sid)).length, 2);
 });
+
+test("reschedule preview respects completed lessons, family isolation and free subject slots", async () => {
+  const h = harness();
+  const parent = await h.family("reschedule@example.com");
+  const sid = await h.child(parent, "schedulechild");
+  const other = await h.family("stranger@example.com");
+  const otherSid = await h.child(other, "strangerchild");
+  const maths = await h.lesson(parent, "Fractions", "Mathematics");
+  const assignment = await h.assign(parent, sid, maths);
+  await h.req("/timetable/week", { method: "POST", token: parent.token, body: {
+    week_start: MON, blocks: [
+      { student_id: sid, title: "Mathematics", date: day(0), start_time: "09:00", duration_minutes: 45 },
+      { student_id: sid, title: "Mathematics", date: day(2), start_time: "09:00", duration_minutes: 45 },
+    ]
+  } });
+  await h.req(`/assignments/${assignment}/place`, { method: "POST", token: parent.token,
+    body: { from: MON, count: 1 } });
+  const input = { student_id: sid, date: day(0) };
+  const preview = await h.req("/timetable/reschedule/preview", { method: "POST", token: parent.token, body: input });
+  assert.equal(preview.status, 200, JSON.stringify(preview.json));
+  assert.equal(preview.json.plan.length, 1);
+  assert.equal(preview.json.plan[0].to_date, day(2));
+  assert.equal((await h.req("/timetable/reschedule/preview", { method: "POST", token: other.token, body: input })).status, 404);
+  assert.equal((await h.req("/timetable/reschedule/preview", { method: "POST", token: parent.token, body: {student_id: otherSid,date: day(0)} })).status, 404);
+  const apply = await h.req("/timetable/reschedule/apply", { method: "POST", token: parent.token,
+    body: {...input, moves: preview.json.plan.map(p=>({from_slot_id:p.from_slot_id,to_slot_id:p.to_slot_id}))} });
+  assert.equal(apply.status, 200, JSON.stringify(apply.json));
+  const slots = await h.slots(parent, sid);
+  assert.equal(slots.find(s=>s.date===day(0)).linked_assignment_id, null);
+  assert.equal(slots.find(s=>s.date===day(2)).linked_assignment_id, assignment);
+  const second = await h.req("/timetable/reschedule/preview", { method: "POST", token: parent.token, body: input });
+  assert.deepEqual(second.json.plan, [], "moving again must not duplicate work");
+});
