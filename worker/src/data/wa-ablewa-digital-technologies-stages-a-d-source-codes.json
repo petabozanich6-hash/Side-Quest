@@ -1,0 +1,108 @@
+{
+  "authority": "Western Australia SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum ABLEWA",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json",
+  "verified_date": "2026-10-16",
+  "status": "directly_source_observed_review_only",
+  "complete_within_source": "Stages A-D each show exactly three source-embedded content descriptions in the downloaded Digital Technologies JSON",
+  "warning": "Identifiers use VCDT Victorian-style prefixes but appear literally as bracketed content codes in WA's published ABLEWA content. wa_code field is blank; do not conflate with WA-specific code system. Their current applicability still needs edition audit.",
+  "records": [
+    {
+      "identifier": "VCDTDS001",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage A",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDI002",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage A",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTCD003",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage A",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDS004",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage B",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDI005",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage B",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTCD006",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage B",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDS007",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage C",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDI008",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage C",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTCD009",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage C",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDS010",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage D",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTDI011",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage D",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "VCDTCD012",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Digital Technologies",
+      "level": "ABLEWA Stage D",
+      "source_field": "strands[].subStrands[].textContents[].markdown",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    }
+  ]
+}
