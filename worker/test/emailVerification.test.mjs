@@ -57,6 +57,24 @@ test("new signups fail closed without an email sender and create no family", asy
   assert.equal(h.DB.raw.prepare("SELECT COUNT(*) n FROM families").get().n,0);
 });
 
+test("legacy sign-in stays available while migration 0069 is pending; activation fails closed", async () => {
+  const h = fixture(false);
+  await h.call("/auth/register",{...register,email:"legacy-schema@example.com"});
+  const original = h.env.DB;
+  h.env.DB = {
+    ...original,
+    prepare(sql) {
+      if (sql.includes("SELECT email_verified_at, email_verification_required_at")) {
+        throw new Error("D1_ERROR: no such column: email_verification_required_at");
+      }
+      return original.prepare(sql);
+    },
+  };
+  assert.equal((await h.call("/auth/login",{email:"legacy-schema@example.com",password})).status,200);
+  h.env.EMAIL_VERIFICATION_REQUIRED = "true";
+  assert.equal((await h.call("/auth/login",{email:"legacy-schema@example.com",password})).status,503);
+});
+
 test("legacy family can still sign in with verification enabled; pending user can resend without logging in", async () => {
   const h=fixture(false);
   const legacy=await h.call("/auth/register",{...register,email:"older@example.com"});
