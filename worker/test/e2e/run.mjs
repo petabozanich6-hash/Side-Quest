@@ -102,6 +102,12 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
     return { id: r.json.id, username, token: login.json.token };
   }
   const a = await family("a"), b = await family("b");
+  // Paying members, so every request reaches the ownership checks this step tests (free-preview requests to paid
+  // features stop at the membership check with 402 first, whoever's records they name).
+  for (const t of [a, b]) {
+    const fam = JSON.parse(Buffer.from(t.split(".")[1], "base64url").toString()).family_id;
+    sql(`UPDATE families SET plan='ACTIVE_MONTHLY', plan_period_end='${new Date(Date.now() + 40 * 86400000).toISOString()}' WHERE id='${fam}';`);
+  }
   const a1 = await child(a, "Alpha"), a2 = await child(a, "Bravo"), b1 = await child(b, "Charlie");
   const collision = await api("POST", "/students", b, { name: "Wrong family", username: a1.username, pin: "7392", stage: "S2" });
   ok(collision.status === 400 || collision.status === 409, `duplicate username unexpectedly accepted: ${collision.status}`);
@@ -121,6 +127,12 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
   await denied("parent B cannot change A's profile", "PUT", `/students/${a1.id}`, b, { name: "Tampered" });
   await denied("parent B cannot delete A's profile", "DELETE", `/students/${a1.id}`, b);
   await denied("parent B cannot create calendar event for A's child", "POST", "/calendar", b, { title: "Private", date: "2026-11-01", student_id: a1.id });
+  // A free-preview family is stopped by the membership check before any ownership check, with the same answer
+  // whether the child exists or not, so the paywall reveals nothing about other families.
+  const free = await family("c");
+  const realChild = await api("POST", "/calendar", free, { title: "Private", date: "2026-11-01", student_id: a1.id });
+  const noChild = await api("POST", "/calendar", free, { title: "Private", date: "2026-11-01", student_id: crypto.randomUUID() });
+  ok(realChild.status === 402 && noChild.status === 402 && JSON.stringify(realChild.json) === JSON.stringify(noChild.json), `paywall answer differs for a real child: ${realChild.status} vs ${noChild.status}`);
   // Family-owned academic records must reject foreign student IDs and never appear in other family listings.
   await denied("parent B cannot add reading log for A's child", "POST", "/reading-log", b, { student_id: a1.id, title: "Foreign", read_date: "2026-11-01" });
   await denied("parent B cannot add life evidence for A's child", "POST", "/life-evidence", b, { student_id: a1.id, title: "Foreign", description: "Unauthorized" });
@@ -442,6 +454,9 @@ await step("E. parent assigns the lesson to the child through the UI", async () 
   await page.waitForSelector("text=Scheduled", { timeout: 15000 });
   const as = await api("GET", "/assignments", parentToken);
   ok(as.json.length === 1, "assignment not created"); assignmentId = as.json[0].id;
+  // Free preview: the chosen day is kept on the assignment; the family calendar is a membership feature.
+  ok(/^\d{4}-\d{2}-\d{2}$/.test(as.json[0].scheduled_date || ""), "day not saved on the assignment: " + as.json[0].scheduled_date);
+  ok(!badResponses.some((x) => / 402 POST \/api\/calendar/.test(x)), "the assign window still tried to add a calendar entry: " + badResponses.join("; "));
   const dup = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
   ok(dup.status === 409, "duplicate active assignment allowed");
 });
@@ -510,6 +525,14 @@ async function seek(p, selector) {
   throw new Error("never reached " + selector);
 }
 
+// Some learning tools are Family Membership features (worker membershipAccess.ts). The main family is a free
+// preview so the preview limits are tested; it becomes a paying member only around the steps that need one.
+const mainPlan = (paid) => {
+  const fam = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
+  sql(paid ? `UPDATE families SET plan='ACTIVE_MONTHLY', plan_period_end='${new Date(Date.now() + 40 * 86400000).toISOString()}' WHERE id='${fam}';`
+    : `UPDATE families SET plan='FREE_PREVIEW', plan_period_end=NULL WHERE id='${fam}';`);
+};
+mainPlan(true); // opening a lesson adds its spelling words to the Word Hoard (a membership feature); uploads too
 await step("G. child opens the lesson: sees real content, no answer keys anywhere in the response", async () => {
   await cpage.goto(`${BASE}/child/lesson/${assignmentId}`);
   await cpage.waitForSelector('[data-testid=lesson-title]', { timeout: 15000 });
@@ -775,6 +798,7 @@ await step("K. another family cannot see or touch this family's records", async 
   ok((await api("POST", "/students", t2, { name: "B", username: `b${stamp}`.slice(0, 14), pin: "1234", stage: "S1" })).status === 200, "INTERNAL child 2");
 });
 
+mainPlan(false); // back to the free preview: AI drafting must be blocked
 await step("AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI", async () => {
   const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
   ok(r.status === 402 && r.json.code === "UPGRADE_REQUIRED", `expected 402, got ${r.status}`);
@@ -803,6 +827,7 @@ await step("assignments page: change dates and cancel an unstarted assignment", 
   ok((await api("DELETE", "/assignments/" + assignmentId, parentToken)).status === 409, "started work could be cancelled");
 });
 
+mainPlan(true); // evidence notes: membership feature
 await step("evidence: add a parent note, search it, export CSV with a date range", async () => {
   await page.goto(BASE + "/parent/evidence"); await page.waitForSelector("[data-testid=evidence-notes]");
   await page.fill("[data-testid=note-title]", "Museum excursion");
@@ -822,6 +847,7 @@ await step("evidence: add a parent note, search it, export CSV with a date range
   ok(other.json.length === 1, "note count");
 });
 
+mainPlan(false); // the free preview again (the expired-preview step below relies on it)
 await step("rich lesson: the Year 3 garden addition lesson teaches in the child's lesson page and keeps the parent guide and answers hidden", async () => {
   const GARDEN = JSON.parse(readFileSync(resolve(ROOT, "frontend/src/data/exampleLesson.json"), "utf8"));
   const reg = await api("POST", "/auth/register", null, { name: "Garden Fam", email: `garden-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
@@ -1180,7 +1206,9 @@ await step("Q. Auto-Quest: plan the week from the timetable, approve a reused le
   ok(again.json.proposals.length === 1 && again.json.proposals[0].status === "assigned", "re-plan changed a decision");
   const ct = (await api("POST", "/auth/child-login", null, { username: `aq${stamp}`.slice(0, 14), pin: "2468" })).json.token;
   ok((await api("POST", "/auto-quest/plan", ct, { student_id: ch.json.id, from: d, to: d })).status === 403, "child reached Auto-Quest");
-  ok((await api("POST", "/auto-quest/plan", parentToken, { student_id: ch.json.id, from: d, to: d })).status === 404, "another family planned for this child");
+  // The other family is a free preview: refused at the membership check (402, the same whoever's child it names) or,
+  // as a member, by the ownership check (404). Either way it can't plan for this child.
+  ok([402, 404].includes((await api("POST", "/auto-quest/plan", parentToken, { student_id: ch.json.id, from: d, to: d })).status), "another family planned for this child");
   await ctx.close();
 });
 

@@ -178,9 +178,9 @@ await step("free-preview family: timetable shows the membership message; assigni
   const fp = await fctx.newPage();
   await login(fp, freeEmail);
   await fp.goto(BASE + "/parent/calendar");
-  await fp.click("[data-testid=generate-timetable-btn]");
-  await fp.waitForSelector("[data-testid=timetable-upsell]");
-  ok(await fp.locator("[data-testid=tt-generate]").count() === 0, "free family can generate a timetable");
+  // Calendar planning is a membership feature: the page explains it instead of offering buttons that would fail.
+  await fp.waitForSelector("[data-testid=calendar-upsell]");
+  ok(await fp.locator("[data-testid=generate-timetable-btn]").count() === 0 && await fp.locator("[data-testid=add-event-btn]").count() === 0, "free family is offered calendar tools that need a membership");
   await fp.goto(BASE + "/parent/lessons");
   await fp.click(`[data-testid=assign-${freeLesson}]`);
   await fp.check(`[data-testid=sch-student-${freeKid.id}]`);

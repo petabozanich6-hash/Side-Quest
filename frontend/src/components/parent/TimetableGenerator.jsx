@@ -97,6 +97,9 @@ function allocate(student, areas, days, startTime, weekStart, existing) {
 
 export default function TimetableGenerator({ students, events, onClose, onDone }) {
   const [selected, setSelected] = useState(students.map(s => s.id));
+  // Children can finish loading after the window opens: tick them then, unless the parent has already chosen.
+  const [touched, setTouched] = useState(false);
+  useEffect(() => { if (!touched) setSelected(students.map(s => s.id)); }, [students, touched]);
   const [days, setDays] = useState([1, 2, 3, 4, 5]);
   const [weekStart, setWeekStart] = useState(nextMonday());
   const [startTime, setStartTime] = useState("09:00");
@@ -172,7 +175,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
       {allowed !== false && <>
       <p className="text-sm">Curriculum: <strong>{jurisdiction?.name || jurisdiction?.jurisdiction || (loading ? "Loading…" : "Not selected")}</strong></p>
       <div className="space-y-2">{students.map(s=><label key={s.id} className="flex gap-3 items-center rounded-lg border p-3">
-        <input type="checkbox" checked={selected.includes(s.id)} onChange={e=>{setSelected(v=>e.target.checked?[...v,s.id]:v.filter(id=>id!==s.id));setDraft(null);}} />
+        <input type="checkbox" checked={selected.includes(s.id)} onChange={e=>{setTouched(true);setSelected(v=>e.target.checked?[...v,s.id]:v.filter(id=>id!==s.id));setDraft(null);}} />
         <span className="font-semibold">{s.name}</span><span className="text-xs text-slate-600">{s.year_level ? "Year " + s.year_level : s.stage}</span>
       </label>)}</div>
       <div><p className="text-sm font-semibold mb-2">Which days will you teach?</p><div className="flex flex-wrap gap-3">{DAYS.map((name,d)=><label key={d} className="flex gap-1 items-center text-sm"><input type="checkbox" checked={days.includes(d)} onChange={e=>{setDays(v=>e.target.checked?[...v,d]:v.filter(x=>x!==d));setDraft(null);}} />{name}</label>)}</div></div>

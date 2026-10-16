@@ -488,7 +488,6 @@ export function createAdminRoutes() {
   admin.post("/announcements",requirePermission("settings.write"),async c=>{
     const body=await readJson(c),v=validateAnnouncement(body);
     if(!v.ok)return c.json({detail:v.detail},400);
-    if(!c.env.EMAIL)return c.json({detail:"Outgoing email is not configured on this Cloudflare Worker. Nothing was sent."},503);
     if(typeof body.idempotency_key!=="string" || !/^[a-fA-F0-9-]{36}$/.test(body.idempotency_key))
       return c.json({detail:"Refresh the composer and confirm sending again."},400);
     if(typeof body.expected_recipients!=="number" || !Number.isInteger(body.expected_recipients))
@@ -499,6 +498,8 @@ export function createAdminRoutes() {
       return c.json({detail:"Confirm that a service notice contains no advertising or promotional content."},400);
     if(v.kind==="optional" && body.consent_confirmed!==true)
       return c.json({detail:"Confirm that optional news goes only to parents who have opted in."},400);
+    // Checked after the request itself, so a mistyped confirmation gets its own message; still fails closed.
+    if(!c.env.EMAIL)return c.json({detail:"Outgoing email is not configured on this Cloudflare Worker. Nothing was sent."},503);
     await ensureAnnouncementSchema(c.env.DB);
     const result=await queueAnnouncement(c.env.DB,c.get("user").id,{
       kind:v.kind,subject:v.subject,body:v.body,
@@ -513,7 +514,7 @@ export function createAdminRoutes() {
   });
   admin.post("/announcements/:id/cancel",requirePermission("settings.write"),async c=>{
     await ensureAnnouncementSchema(c.env.DB);
-    const id=c.req.param("id");
+    const id=c.req.param("id")??"";
     if(!/^[a-fA-F0-9-]{36}$/.test(id))return c.json({detail:"Unknown announcement"},404);
     const cancelled=await cancelAnnouncement(c.env.DB,id);
     if(!cancelled)return c.json({detail:"This announcement is already complete or cancelled."},409);

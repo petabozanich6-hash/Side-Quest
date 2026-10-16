@@ -17,6 +17,8 @@ const sameSubject = (slot, area) => !!area && areaKey(slot) === areaKey(area);
  * Assign a lesson to children and put it in their week.
  * Family Membership: by default it fills each child's next free timetable slot of the lesson's subject (or a slot the
  * parent picks). Otherwise, or by choice, the parent picks the day(s) as before, or leaves it unscheduled.
+ * Free preview: calendar entries are a membership feature (worker membershipAccess.ts), so the chosen day is saved
+ * on the assignment itself (it shows on the Assignments page and the child's quests), with no calendar entry.
  */
 export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], defaultStudents = [], onClose, onDone }) {
   const [lessonId, setLessonId] = useState(fixed?.id || "");
@@ -94,6 +96,11 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
     try {
       for (const sid of picked) {
         const aid = await assignmentFor(sid);
+        if (mode === "days" && !timetable) {
+          // Free preview: keep the day on the assignment (no calendar entry, which needs a membership).
+          if (aid) await api.put(`/assignments/${aid}`, { scheduled_date: start });
+          continue;
+        }
         if (mode === "days") { await scheduleOnDays(sid, dates); continue; }
         if (mode === "none" || !aid) continue;
         const body = mode === "pick" ? { slot_ids: [slotId] } : { count: sessions };
@@ -104,7 +111,9 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
           notes.push(`${students.find((s) => s.id === sid)?.name || "Child"}: no free ${area || "matching"} slot, so it's on ${start}`);
         }
       }
-      const what = mode === "none" ? "Assigned (not scheduled yet)" : mode === "days"
+      const what = mode === "none" ? "Assigned (not scheduled yet)" : mode === "days" && !timetable
+        ? `Scheduled for ${parse(start).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" })} for ${picked.length} child${picked.length === 1 ? "" : "ren"}`
+        : mode === "days"
         ? `Scheduled ${dates.length} day${dates.length === 1 ? "" : "s"} for ${picked.length} child${picked.length === 1 ? "" : "ren"}`
         : `Scheduled in the timetable for ${picked.length} child${picked.length === 1 ? "" : "ren"}`;
       toast.success(notes.length ? `${what}. ${notes.join("; ")}.` : what);
@@ -194,7 +203,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
               <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">{mode === "slot" ? "If no free slot: day" : "Day (or start)"}</label>
               <input type="date" value={start} onChange={e => setStart(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="sch-start"/>
             </div>
-            {mode === "days" && (
+            {mode === "days" && timetable && (
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">Last day (optional)</label>
                 <input type="date" value={end} min={start} onChange={e => setEnd(e.target.value)} className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" data-testid="sch-end"/>
@@ -214,12 +223,15 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
           </div>
         )}
 
-        {mode === "days" && (
+        {mode === "days" && !timetable && (
+          <p className="text-xs text-slate-500 mb-4" data-testid="sch-summary">The lesson is planned for {start}. It shows on the Assignments page and in your child's quests. Adding it to the family calendar is part of the Family Membership.</p>
+        )}
+        {mode === "days" && timetable && (
           <p className="text-xs text-slate-500 mb-4" data-testid="sch-summary">
             {dates.length === 0 ? "No days selected." : dates.length === 1 ? `One entry on ${dates[0]}.` : `${dates.length} separate daily entries, ${dates[0]} to ${dates[dates.length - 1]}.`}
           </p>
         )}
-        {!timetable && <p className="text-xs text-slate-500 mb-4" data-testid="sch-timetable-upsell">With a Family Membership, lessons go straight into your child's timetable.</p>}
+        {!timetable && <p className="text-xs text-slate-500 mb-4" data-testid="sch-timetable-upsell">With a Family Membership, lessons go straight into your child's timetable and the family calendar.</p>}
 
         <button onClick={submit} disabled={busy} className="w-full rounded-full bg-slate-900 py-2.5 text-sm font-semibold text-white disabled:opacity-50" data-testid="sch-submit">{busy ? "Scheduling…" : mode === "none" ? "Assign" : "Assign and schedule"}</button>
       </div>

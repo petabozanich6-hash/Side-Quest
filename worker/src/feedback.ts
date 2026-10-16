@@ -160,7 +160,7 @@ export function registerFeedback(app: App, guards: Guards) {
     // time a parent presses Send. Provision the base table only on fresh installs.
     const save = () => c.env.DB.prepare(
       "INSERT INTO parent_feedback (id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,'new','',NULL,?,?)"
-    ).bind(id,user.family_id,user.id,b.category,b.subject.trim(),b.message.trim(),(b.page_hint || "").trim(),now,now).run();
+    ).bind(id,user.family_id,user.id,b.category,String(b.subject).trim(),String(b.message).trim(),String(b.page_hint || "").trim(),now,now).run();
     try { await save(); } catch (err) {
       if (!/no such table.*parent_feedback/i.test(String(err))) throw err;
       await ensureFeedbackBaseSchema(c.env.DB);

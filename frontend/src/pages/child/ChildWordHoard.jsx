@@ -60,7 +60,9 @@ export default function ChildWordHoard() {
       setNewWords("");
       load();
     } catch (error) {
-      toast.error(error?.response?.data?.detail || "Could not add words");
+      toast.error(error?.response?.data?.code === "UPGRADE_REQUIRED"
+        ? "Adding your own words isn't switched on yet. Ask your grown-up about it!"
+        : error?.response?.data?.detail || "Could not add words");
     }
   };
 

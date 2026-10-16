@@ -43,6 +43,9 @@ export default function CalendarPage() {
   const [filter, setFilter] = useState("");
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
+  // Calendar planning (events, timetable, Auto-Quest) is a Family Membership feature (worker membershipAccess.ts).
+  const [member, setMember] = useState(null);
+  useEffect(() => { api.get("/timetable/status").then(r => setMember(!!r.data?.allowed)).catch(() => setMember(false)); }, []);
   const load = () => api.get("/calendar").then(r => setEvents(r.data));
   useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))); }, []);
   useEffect(() => {
@@ -128,12 +131,21 @@ export default function CalendarPage() {
             <option value="">All children</option>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
+          {member !== false && <>
           <button onClick={()=>setAutoQuestOpen(true)} className="rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300 px-4 py-2 text-sm font-semibold" data-testid="autoquest-open-btn">⚔️ Auto-Quest</button>
           <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Weekly timetable</button>
-          <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
-          <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+          </>}
+          <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> {member === false ? "Assign a lesson" : "Schedule lesson"}</button>
+          {member !== false && <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>}
         </div>
       </div>
+      {member === false && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="calendar-upsell">
+          <strong>Calendar planning is part of the Family Membership.</strong> During the free preview you can still assign lessons with a day:
+          they show on the Assignments page and in your child's quests. Members add events, plan a weekly timetable and use Auto-Quest.{" "}
+          <a href="/parent/plan" className="font-semibold underline">See the Family Membership</a>
+        </div>
+      )}
 
       {students.length > 0 && (
         <div className="flex flex-wrap gap-3 text-xs">
