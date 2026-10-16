@@ -88,7 +88,7 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
       <div className="mt-4 flex flex-wrap gap-4 text-sm">
         {result.source && <a className="font-semibold underline text-emerald-800" href={result.source} target="_blank" rel="noopener noreferrer">Read official requirements ↗</a>}
         <Link to="/parent/children" className="font-semibold underline text-emerald-800">Review child's stage and subjects</Link>
-        <Link to="/parent/learning-plans" className="font-semibold underline text-emerald-800">Build a learning plan</Link>
+        <span className="text-stone-600">Learning-plan creation is a separate paid Side-Quest service.</span>
       </div>
     </div>
     <p className="text-xs text-stone-600">This checklist is a guide to planning, not evidence that a registration application meets the rules. Senior courses, exemptions, age eligibility, implementation dates and special pathways may require individual advice. Confirm details with {guide?.authority || "your registration authority"}.</p>
