@@ -370,7 +370,7 @@ export function createAdminRoutes() {
     const reason = reasonFrom(body);
     if (!reason) return c.json({ detail: "Give a reason (5–500 characters)." }, 400);
     const days = Number(body.days);
-    if (![1, 7, 14].includes(days) || !Number.isInteger(body.days)) return c.json({ detail: "Choose 1, 7 or 14 bonus days." }, 400);
+    if (![1, 7, 14].includes(days) || typeof body.days !== "number" || !Number.isInteger(body.days)) return c.json({ detail: "Choose 1, 7 or 14 bonus days." }, 400);
     const result = await giftPreviewDays(c.env.DB, target!.id, days);
     if (!result.ok) return c.json({ detail: result.detail }, result.status);
     await writeAudit(c.env.DB, { ...actor(c), action: "hoard.preview_gift", targetType: "family", targetId: target!.id, detail: { days, ends_at: result.ends_at, reason } });
