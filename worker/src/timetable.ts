@@ -106,7 +106,7 @@ export async function placeAssignment(db: DB, familyId: string, assignmentId: st
   Promise<Result<{ placed: any[]; reason?: string; learning_area: string }>> {
   if (!(await timetableAllowed(db, familyId))) return paywall();
   const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND family_id = ?").bind(assignmentId, familyId).first<any>();
-  if (!a) return fail(404, "Assignment not found");
+  if (!a || a.status === "revoked") return fail(404, "Assignment not found");
   if (lb.DONE_STATUSES.includes(a.status) || a.status === "submitted") return fail(409, "This lesson is already handed in or finished.", "ALREADY_DONE");
   const lesson = await db.prepare("SELECT title, learning_area, stage FROM lessons WHERE id = ?").bind(a.lesson_id).first<any>();
   const child = await db.prepare("SELECT stage FROM students WHERE id = ?").bind(a.student_id).first<any>();

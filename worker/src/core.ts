@@ -316,7 +316,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     let sql = "SELECT * FROM assignments WHERE family_id = ?";
     const b: any[] = [u.family_id];
-    if (u.role === "child") { sql += " AND student_id = ?"; b.push(u.id); }
+    if (u.role === "child") { sql += " AND student_id = ? AND status != 'revoked'"; b.push(u.id); }
     else if (c.req.query("student_id")) { sql += " AND student_id = ?"; b.push(c.req.query("student_id")); }
     if (c.req.query("status")) { sql += " AND status = ?"; b.push(c.req.query("status")); }
     sql += " ORDER BY created_at DESC LIMIT 500";
@@ -376,7 +376,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     let sql = "SELECT * FROM assignments WHERE id = ? AND family_id = ?";
     const b: any[] = [c.req.param("id"), u.family_id];
-    if (u.role === "child") { sql += " AND student_id = ?"; b.push(u.id); }
+    if (u.role === "child") { sql += " AND student_id = ? AND status != 'revoked'"; b.push(u.id); }
     const a: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!a) return c.json({ detail: "Not found" }, 404);
     const live = a.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
@@ -399,7 +399,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const status = c.req.query("status") || "";
     if (!status) return c.json({ detail: "status is required" }, 400);
     if (!ASSIGNMENT_STATUSES.includes(status)) return c.json({ detail: "Unknown status" }, 400);
-    let sql = "UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND family_id = ?";
+    let sql = "UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND family_id = ? AND status != 'revoked'";
     const b: any[] = [status, nowIso(), c.req.param("id"), u.family_id];
     if (u.role === "child") {
       // A child can open, work on, or ask for help with their own unfinished work. Submitting goes through
@@ -574,7 +574,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
     }
     if (b.linked_assignment_id) {
-      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ?").bind(String(b.linked_assignment_id), c.get("user").family_id).first();
+      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ? AND status != 'revoked'").bind(String(b.linked_assignment_id), c.get("user").family_id).first();
       if (!assignment) return c.json({ detail: "Assignment not found" }, 404);
     }
     const id = newId();

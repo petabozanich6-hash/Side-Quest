@@ -60,7 +60,7 @@ export const countChildren = (db: DB, familyId: string) =>
 export const countActiveAssignments = (db: DB, familyId: string) =>
   count(
     db,
-    "SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND status NOT IN ('accepted','demonstrated','completed')",
+    "SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND status NOT IN ('accepted','demonstrated','completed','revoked')",
     familyId
   );
 
@@ -555,7 +555,7 @@ const DONE_SQL = DONE_STATUSES.map((x) => `'${x}'`).join(",");
 /** Whether this child already has this lesson: "open" (not finished), "done" (finished before) or null. */
 export async function priorAssignment(db: DB, familyId: string, studentId: string, lessonId: string): Promise<"open" | "done" | null> {
   const r = await db.prepare(
-    `SELECT MAX(CASE WHEN status NOT IN (${DONE_SQL}) THEN 1 ELSE 0 END) AS open, COUNT(*) AS n FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ?`
+    `SELECT MAX(CASE WHEN status NOT IN (${DONE_SQL}) THEN 1 ELSE 0 END) AS open, COUNT(*) AS n FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status != 'revoked'`
   ).bind(familyId, studentId, lessonId).first<{ open: number | null; n: number }>();
   if (!r?.n) return null;
   return r.open ? "open" : "done";
@@ -566,7 +566,7 @@ export async function lessonAssignees(db: DB, familyId: string, lessonId?: strin
   const { results } = await db.prepare(
     `SELECT a.id, a.lesson_id, a.student_id, a.status, a.created_at, s.name AS student_name
      FROM assignments a JOIN students s ON s.id = a.student_id AND s.family_id = a.family_id
-     WHERE a.family_id = ?${lessonId ? " AND a.lesson_id = ?" : ""} ORDER BY a.created_at`
+     WHERE a.family_id = ? AND a.status != 'revoked'${lessonId ? " AND a.lesson_id = ?" : ""} ORDER BY a.created_at`
   ).bind(...(lessonId ? [familyId, lessonId] : [familyId])).all<any>();
   const out = new Map<string, any[]>();
   for (const r of results || []) {
@@ -613,7 +613,7 @@ export async function assignLesson(
     .prepare(
       `INSERT INTO assignments (id, family_id, student_id, lesson_id, due_date, scheduled_date, support_level, parent_notes, status, lesson_snapshot, lesson_version, created_at)
        SELECT ?, ?, ?, ?, ?, ?, ?, ?, 'not_started', ?, ?, ?
-       WHERE NOT EXISTS (SELECT 1 FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ?${input.again === true ? ` AND status NOT IN (${DONE_SQL})` : ""})`
+       WHERE NOT EXISTS (SELECT 1 FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status != 'revoked'${input.again === true ? ` AND status NOT IN (${DONE_SQL})` : ""})`
     )
     .bind(id, familyId, input.student_id, input.lesson_id, input.due_date ?? null, input.scheduled_date ?? null, input.support_level || "green", input.parent_notes ?? null, snapshot, lesson.version ?? 1, nowIso(now),
       familyId, input.student_id, input.lesson_id)
@@ -628,7 +628,7 @@ const mcQuestions = (lesson: any): any[] => (Array.isArray(lesson?.quiz) ? lesso
 const neededFor = (total: number, passMark: number) => Math.ceil(total * passMark - 1e-9);
 
 async function assignmentForChild(db: DB, user: { id: string; family_id: string }, assignmentId: unknown) {
-  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ?").bind(String(assignmentId ?? ""), user.id, user.family_id).first<any>();
+  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(String(assignmentId ?? ""), user.id, user.family_id).first<any>();
   if (!a) return { a: null, lesson: null };
   const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first<any>();
   return { a, lesson: assignmentLesson(a, live) };
@@ -657,10 +657,11 @@ export async function checkQuiz(
   const total = qs.length;
   const needed = neededFor(total, Number(lesson?.pass_mark) || 0.9);
   const attempt = (await count(db, "SELECT COUNT(*) n FROM quiz_results WHERE assignment_id = ? AND child_id = ?", a.id, user.id)) + 1;
-  await db
-    .prepare("INSERT INTO quiz_results (id, family_id, lesson_id, child_id, assignment_id, score, total, results, completed_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
-    .bind(newId(), user.family_id, a.lesson_id, user.id, a.id, score, total, JSON.stringify(results.map((r) => ({ question_index: r.question_index, is_correct: r.is_correct }))), nowIso(now))
+  const inserted = await db
+    .prepare("INSERT INTO quiz_results (id, family_id, lesson_id, child_id, assignment_id, score, total, results, completed_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status != 'revoked')")
+    .bind(newId(), user.family_id, a.lesson_id, user.id, a.id, score, total, JSON.stringify(results.map((r) => ({ question_index: r.question_index, is_correct: r.is_correct }))), nowIso(now), a.id)
     .run();
+  if (!inserted.meta.changes) return fail(409, "This assignment has been revoked.", "REVOKED");
   await safely("quiz", () => trackAssignmentQuiz(db, user.family_id, a.id, now));
   return { ok: true, score, total, needed, passed: score >= needed, attempt, results };
 }
@@ -704,14 +705,15 @@ export async function quizPassed(db: DB, user: { id: string }, a: any, lesson: a
 
 /** Saves a child's work in progress. Small and bounded; never changes status to submitted. */
 export async function saveDraft(db: DB, user: { id: string; family_id: string }, assignmentId: string, draft: unknown, now: Date = new Date()): Promise<Result<{ saved_at: string }>> {
-  const a = await db.prepare("SELECT id, status FROM assignments WHERE id = ? AND student_id = ? AND family_id = ?").bind(assignmentId, user.id, user.family_id).first<any>();
+  const a = await db.prepare("SELECT id, status FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(assignmentId, user.id, user.family_id).first<any>();
   if (!a) return fail(404, "Assignment not found");
   if (DONE_STATUSES.includes(a.status) || a.status === "submitted") return fail(409, "This lesson has already been handed in.", "ALREADY_SUBMITTED");
   if (!draft || typeof draft !== "object" || Array.isArray(draft)) return fail(400, "Nothing to save");
   const json = JSON.stringify(draft);
   if (new TextEncoder().encode(json).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
   const ts = nowIso(now);
-  await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ?").bind(json, ts, a.id).run();
+  const saved = await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated')").bind(json, ts, a.id).run();
+  if (!saved.meta.changes) return fail(409, "This assignment is no longer available for editing.", "ASSIGNMENT_CHANGED");
   return { ok: true, saved_at: ts };
 }
 
@@ -723,7 +725,7 @@ export async function submitWork(
   body: { assignment_id?: string; response_text?: string | null; reflection?: string | null; file_ids?: string[]; needs_help?: boolean },
   now: Date = new Date()
 ): Promise<Result<{ id: string; status: string; assignment_id: string; submitted_at: string; xp_gained: number }>> {
-  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ?").bind(body.assignment_id ?? "", user.id, user.family_id).first<any>();
+  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(body.assignment_id ?? "", user.id, user.family_id).first<any>();
   if (!a) return fail(404, "Assignment not found");
   if (DONE_STATUSES.includes(a.status)) return fail(409, "This lesson has already been reviewed and finished.", "ALREADY_DONE");
   if (a.status === "submitted") return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
@@ -745,15 +747,15 @@ export async function submitWork(
   const status = needsHelp ? "awaiting_help" : "submitted";
   const id = newId();
   const ts = nowIso(now);
-  await db.batch([
-    db.prepare("UPDATE assignments SET draft = NULL WHERE id = ?").bind(a.id),
+  const writes = await db.batch([
     db
       .prepare(
-        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated'))"
       )
-      .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts),
-    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ?").bind(status, ts, a.id),
+      .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts, a.id),
+    db.prepare("UPDATE assignments SET draft = NULL, status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(status, ts, a.id, id),
   ]);
+  if (!writes[0].meta.changes) return fail(409, "This assignment is no longer available for hand-in.", "ASSIGNMENT_CHANGED");
   if (!needsHelp) await recordPetEvent(db as any, user.id, { kind: "lesson_done" }, now);
   await safely("hand-in", () => trackSubmission(db, user.family_id, id, now));
   return { ok: true, id, status, assignment_id: a.id, submitted_at: ts, xp_gained: 0 };
@@ -790,7 +792,7 @@ export async function reviewSubmission(
     db
       .prepare("UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?")
       .bind(String(body.feedback_text ?? "").slice(0, 4000), status, body.next_step ?? null, JSON.stringify(mappings), ts, parentId, sub.id),
-    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ?").bind(status, ts, sub.assignment_id),
+    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'").bind(status, ts, sub.assignment_id),
   ]);
   let xp = 0;
   const amount = XP_FOR_REVIEW[status] ?? 0;

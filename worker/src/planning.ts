@@ -24,6 +24,7 @@ async function hasProgress(db: DB, a: any): Promise<boolean> {
 export async function updateAssignment(db: DB, familyId: string, id: string, input: any): Promise<Result<{ assignment: any }>> {
   const a = await ownAssignment(db, familyId, id);
   if (!a) return fail(404, "Assignment not found");
+  if (a.status === "revoked") return fail(409, "This assignment has been revoked.", "REVOKED");
   if (lb.DONE_STATUSES.includes(a.status)) return fail(409, "This lesson is finished, so it can't be changed.", "ALREADY_DONE");
   const sets: string[] = [];
   const b: unknown[] = [];
@@ -62,16 +63,24 @@ export async function reassignAssignment(db: DB, familyId: string, id: string, s
   return { ok: true, assignment: await ownAssignment(db, familyId, id).then((r: any) => { delete r.lesson_snapshot; delete r.draft; return r; }) };
 }
 
-/** Remove a not-yet-started assignment (and its planner entries). Started work is never deleted. */
+/** Revoke without deleting the lesson, drafts, submissions, quiz results or evidence. */
 export async function cancelAssignment(db: DB, familyId: string, id: string): Promise<Result<{}>> {
   const a = await ownAssignment(db, familyId, id);
   if (!a) return fail(404, "Assignment not found");
-  if (await hasProgress(db, a)) return fail(409, "This child has already started it. Their work is kept, so it can't be cancelled.", "STARTED");
-  // Timetable slots are emptied, never deleted; other planner entries for this lesson go.
-  await emptySlotsFor(db, familyId, id);
-  await db.prepare(`DELETE FROM calendar_events WHERE linked_assignment_id = ? AND family_id = ? AND NOT ${SLOT_SQL}`).bind(id, familyId).run();
-  await db.prepare("DELETE FROM assignments WHERE id = ? AND family_id = ?").bind(id, familyId).run();
-  return { ok: true };
+  if (lb.DONE_STATUSES.includes(a.status)) return fail(409, "Completed work stays in your child's history.", "ALREADY_DONE");
+  // Keep this conditional inside the same transaction as planner cleanup: a concurrent review wins safely.
+  const active = "status NOT IN ('accepted','completed','demonstrated','revoked')";
+  const revoked = "EXISTS (SELECT 1 FROM assignments WHERE id = ? AND family_id = ? AND status = 'revoked')";
+  await db.batch([
+    db.prepare(`UPDATE assignments SET status = 'revoked', updated_at = ? WHERE id = ? AND family_id = ? AND ${active}`)
+      .bind(new Date().toISOString(), id, familyId),
+    db.prepare(`UPDATE calendar_events SET linked_assignment_id = NULL, linked_lesson_id = NULL WHERE linked_assignment_id = ? AND family_id = ? AND ${SLOT_SQL} AND status = 'scheduled' AND ${revoked}`)
+      .bind(id, familyId, id, familyId),
+    db.prepare(`DELETE FROM calendar_events WHERE linked_assignment_id = ? AND family_id = ? AND NOT COALESCE(${SLOT_SQL}, 0) AND status = 'scheduled' AND ${revoked}`)
+      .bind(id, familyId, id, familyId),
+  ]);
+  const current = await ownAssignment(db, familyId, id);
+  return current?.status === "revoked" ? { ok: true } : fail(409, "This assignment has just been completed. Refresh to see its history.", "ALREADY_DONE");
 }
 
 // ---------------------------------------------------------------- evidence notes (not tied to a lesson)

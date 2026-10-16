@@ -836,10 +836,22 @@ await step("assignments page: change dates and cancel an unstarted assignment", 
   await page.fill("[data-testid=asg-date-planned]", "2026-11-03");
   await page.click("[data-testid=asg-save-dates]");
   await page.waitForFunction(async ([i]) => { const t = localStorage.getItem("sq_token"); const r = await fetch("/api/assignments/" + i, { headers: { Authorization: "Bearer " + t } }); return (await r.json()).scheduled_date === "2026-11-03"; }, [id]);
+  ok((await api("DELETE", "/assignments/" + id, childToken)).status === 403, "child revoked assignment");
+  ok((await api("PUT", `/assignments/${id}/draft`, childToken, { answer: "keep my work" })).status === 200, "draft save failed");
+  await page.reload(); await page.waitForSelector(`[data-testid=asg-cancel-${id}]`);
+  page.once("dialog", (d) => d.dismiss());
+  await page.click(`[data-testid=asg-cancel-${id}]`);
+  ok((await api("GET", "/assignments/" + id, parentToken)).json.status === "in_progress", "dismiss revoked work");
   page.once("dialog", (d) => d.accept());
   await page.click(`[data-testid=asg-cancel-${id}]`);
   await page.waitForSelector(`[data-testid=asg-${id}]`, { state: "detached" });
-  ok((await api("GET", "/assignments/" + id, parentToken)).status === 404, "cancelled assignment still exists");
+  ok((await api("GET", "/assignments/" + id, parentToken)).json.status === "revoked", "revoked history missing");
+  ok((await api("GET", "/assignments/" + id, childToken)).status === 404, "child can open revoked work");
+  ok(!(await api("GET", "/assignments", childToken)).json.some(a => a.id === id), "revoked work in child list");
+  ok((await api("PUT", `/assignments/${id}/draft`, childToken, { answer: "late" })).status === 404, "child can save revoked work");
+  await page.selectOption("[data-testid=asg-show]", "all");
+  await page.waitForSelector(`[data-testid=asg-${id}]`);
+  ok((await page.textContent(`[data-testid=asg-${id}]`)).includes("Revoked"), "parent history label missing");
   // the finished one cannot be cancelled
   ok((await api("DELETE", "/assignments/" + assignmentId, parentToken)).status === 409, "started work could be cancelled");
 });

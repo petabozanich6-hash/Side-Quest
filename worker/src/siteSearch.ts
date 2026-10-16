@@ -67,7 +67,7 @@ async function runFamilySearch(db: D1Database, familyId: string, term: string, t
 }
 
 async function childAssignments(db: D1Database, familyId: string, studentId: string, term: string): Promise<Item[]> {
-  const sql = "SELECT a.id,COALESCE(json_extract(a.lesson_snapshot,'$.title'),l.title,'Assigned lesson') AS title, 'My lesson · ' || replace(a.status,'_',' ') AS description FROM assignments a LEFT JOIN lessons l ON l.id=a.lesson_id AND (l.family_id=a.family_id OR l.family_id IS NULL) WHERE a.family_id=? AND a.student_id=? AND instr(lower(COALESCE(json_extract(a.lesson_snapshot,'$.title'),l.title,'')),?)>0 ORDER BY a.created_at DESC LIMIT ?";
+  const sql = "SELECT a.id,COALESCE(json_extract(a.lesson_snapshot,'$.title'),l.title,'Assigned lesson') AS title, 'My lesson · ' || replace(a.status,'_',' ') AS description FROM assignments a LEFT JOIN lessons l ON l.id=a.lesson_id AND (l.family_id=a.family_id OR l.family_id IS NULL) WHERE a.status != 'revoked' AND a.family_id=? AND a.student_id=? AND instr(lower(COALESCE(json_extract(a.lesson_snapshot,'$.title'),l.title,'')),?)>0 ORDER BY a.created_at DESC LIMIT ?";
   const { results } = await db.prepare(sql).bind(familyId, studentId, term, MAX_PER_TYPE).all<Row>();
   return (results ?? []).map(r => ({ id:r.id, type:"assignments", title:String(r.title || "Assigned lesson"), description:String(r.description || ""), url:"/child/lesson/"+encodeURIComponent(r.id) }));
 }

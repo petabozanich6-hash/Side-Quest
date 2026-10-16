@@ -426,7 +426,7 @@ test("owner can keep building and refining AI lessons beyond customer fair-use l
 // ---------------------------------------------------------------- assignment management + evidence notes
 import * as pl from "../src/planning.ts";
 
-test("assignments: move dates, reassign and cancel only before work starts; other families blocked", async () => {
+test("assignments: move dates, reassign before work starts and revoke unfinished work; other families blocked", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
   const k1 = child(db, fam), k2 = child(db, fam);
@@ -444,14 +444,14 @@ test("assignments: move dates, reassign and cancel only before work starts; othe
   // a child from another family can't be targeted
   const stranger = child(db, other);
   assert.equal((await pl.reassignAssignment(db, fam, a.id, stranger)).status, 404);
-  // started work cannot be reassigned or cancelled
+  // started work cannot be reassigned, but can be revoked
   db.raw.prepare("UPDATE assignments SET status='in_progress' WHERE id=?").run(a.id);
-  assert.equal((await pl.cancelAssignment(db, fam, a.id)).code, "STARTED");
+  assert.ok((await pl.cancelAssignment(db, fam, a.id)).ok);
   assert.equal((await pl.reassignAssignment(db, fam, a.id, k1)).code, "STARTED");
   // untouched ones can be cancelled
   const b = (await lb.assignLesson(db, fam, { student_id: k1, lesson_id: l.id }, NOW)).assignment;
   assert.ok((await pl.cancelAssignment(db, fam, b.id)).ok);
-  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE id=?").get(b.id).n, 0);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE id=?").get(b.id).n, 1);
 });
 
 test("evidence notes: family-scoped, searchable, date filtered; expired preview keeps reading but cannot add", async () => {
@@ -1168,3 +1168,78 @@ test("state or territory: codes are validated, and families outside NSW never ge
   assert.ok(n.ok && n.suggestions.length >= 1);
 });
 
+
+test("revocation preserves lesson, saved work, quiz and submission history; permits a fresh assignment", async () => {
+  const db = makeDb(), fam = seed(db, { plan: "INTERNAL" }), sid = child(db, fam);
+  const l = await mk(db, fam), user = { id: sid, family_id: fam };
+  const a = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).assignment;
+  await lb.saveDraft(db, user, a.id, { answer: "my work" }, NOW);
+  await lb.checkQuiz(db, user, a.id, ["2"], NOW);
+  const sub = await lb.submitWork(db, user, { assignment_id: a.id, response_text: "preserve me" }, NOW);
+  assert.ok(sub.ok);
+  const lessonBefore = db.raw.prepare("SELECT * FROM lessons WHERE id=?").get(l.id);
+  const quizBefore = db.raw.prepare("SELECT * FROM quiz_results WHERE assignment_id=?").all(a.id);
+  const subBefore = db.raw.prepare("SELECT * FROM submissions WHERE id=?").get(sub.id);
+  for (const [id, type, status] of [["slot", "timetable", "scheduled"], ["planned", "lesson", "scheduled"], ["past", "lesson", "completed"]]) {
+    db.raw.prepare("INSERT INTO calendar_events (id,family_id,student_id,title,date,event_type,status,linked_assignment_id,linked_lesson_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)")
+      .run(id, fam, sid, "Mathematics", "2026-10-14", type, status, a.id, l.id, NOW.toISOString());
+  }
+  assert.ok((await pl.cancelAssignment(db, fam, a.id)).ok);
+  assert.ok((await pl.cancelAssignment(db, fam, a.id)).ok, "repeated revocation is safe");
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(a.id).status, "revoked");
+  assert.deepEqual(db.raw.prepare("SELECT * FROM lessons WHERE id=?").get(l.id), lessonBefore);
+  assert.deepEqual(db.raw.prepare("SELECT * FROM quiz_results WHERE assignment_id=?").all(a.id), quizBefore);
+  assert.deepEqual(db.raw.prepare("SELECT * FROM submissions WHERE id=?").get(sub.id), subBefore);
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id='slot'").get().linked_assignment_id, null);
+  assert.equal(db.raw.prepare("SELECT id FROM calendar_events WHERE id='planned'").get(), undefined);
+  assert.ok(db.raw.prepare("SELECT id FROM calendar_events WHERE id='past'").get());
+  assert.equal(await lb.countActiveAssignments(db, fam), 0);
+  assert.equal(await lb.priorAssignment(db, fam, sid, l.id), null);
+  assert.equal((await lb.lessonAssignees(db, fam, l.id)).size, 0);
+  assert.equal((await lb.saveDraft(db, user, a.id, { answer: "late" }, NOW)).status, 404);
+  assert.equal((await lb.submitWork(db, user, { assignment_id: a.id }, NOW)).status, 404);
+  assert.equal((await lb.checkQuiz(db, user, a.id, ["2"], NOW)).status, 404);
+  assert.equal((await lb.checkPractice(db, user, a.id, {})).status, 404);
+  assert.equal((await pl.updateAssignment(db, fam, a.id, { due_date: null })).code, "REVOKED");
+  assert.ok((await lb.reviewSubmission(db, fam, "parent", sub.id, { status: "needs_revision" }, NOW)).ok);
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(a.id).status, "revoked", "review cannot reopen revoked work");
+  assert.ok((await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).ok);
+});
+
+test("every unfinished state can be revoked; completed assignments and drafts remain intact", async () => {
+  const db = makeDb(), fam = seed(db, { plan: "INTERNAL" }), sid = child(db, fam);
+  const l = await mk(db, fam);
+  for (const status of ["not_started", "opened", "in_progress", "awaiting_help", "submitted", "needs_revision", "needs_more_practice", ...lb.DONE_STATUSES]) {
+    db.raw.prepare("INSERT INTO assignments (id,family_id,student_id,lesson_id,status,draft,created_at) VALUES (?,?,?,?,?,?,?)")
+      .run(status, fam, sid, l.id, status, '{"answer":"keep"}', NOW.toISOString());
+    const before = db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(status);
+    const result = await pl.cancelAssignment(db, fam, status);
+    const after = db.raw.prepare("SELECT * FROM assignments WHERE id=?").get(status);
+    if (lb.DONE_STATUSES.includes(status)) { assert.equal(result.code, "ALREADY_DONE"); assert.deepEqual(after, before); }
+    else { assert.ok(result.ok); assert.equal(after.status, "revoked"); assert.equal(after.draft, before.draft); }
+  }
+});
+
+test("revocation racing a hand-in or completed review cannot lose work or reopen the assignment", async () => {
+  const db = makeDb(), fam = seed(db, { plan: "INTERNAL" }), sid = child(db, fam);
+  const l = await mk(db, fam, { quiz: [] });
+  const a = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).assignment;
+  await lb.saveDraft(db, { id: sid, family_id: fam }, a.id, { answer: "keep" }, NOW);
+  const batch = db.batch;
+  db.batch = async statements => {
+    db.batch = batch;
+    await pl.cancelAssignment(db, fam, a.id);
+    return batch(statements);
+  };
+  assert.equal((await lb.submitWork(db, { id: sid, family_id: fam }, { assignment_id: a.id }, NOW)).code, "ASSIGNMENT_CHANGED");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM submissions WHERE assignment_id=?").get(a.id).n, 0);
+  assert.equal(db.raw.prepare("SELECT draft FROM assignments WHERE id=?").get(a.id).draft, '{"answer":"keep"}');
+  const b = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).assignment;
+  db.batch = async statements => {
+    db.batch = batch;
+    db.raw.prepare("UPDATE assignments SET status='completed' WHERE id=?").run(b.id);
+    return batch(statements);
+  };
+  assert.equal((await pl.cancelAssignment(db, fam, b.id)).code, "ALREADY_DONE");
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(b.id).status, "completed");
+});
