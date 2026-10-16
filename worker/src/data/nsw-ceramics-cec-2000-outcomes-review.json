@@ -1,0 +1,154 @@
+{
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "checked_on": "2026-10-16",
+  "record_count": 11,
+  "subject": "Ceramics Stage 6 CEC",
+  "edition": 2000,
+  "official_overview": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/overview",
+  "source_documents": [
+    "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+    "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf"
+  ],
+  "review_only": true,
+  "notes": [
+    "6 Making and 5 Critical and Historical Studies outcomes appear together in NSW Department of Education schools' course outcomes tables.",
+    "Primary original NESA 2000 PDF outcome table still requires direct edition-level reconciliation prior to promotion.",
+    "M1 etc and CH1 etc can occur in other NSW creative arts CEC syllabuses, thus scope by subject and edition.",
+    "Comparison against modern NESA import does not by itself establish a new unique outcome if other legacy review datasets use the same string."
+  ],
+  "records": [
+    {
+      "identifier": "M1",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:M1",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "M2",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:M2",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "M3",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:M3",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "M4",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:M4",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "M5",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:M5",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "M6",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:M6",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "CH1",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:CH1",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "CH2",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:CH2",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "CH3",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:CH3",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "CH4",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:CH4",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    },
+    {
+      "identifier": "CH5",
+      "scoped_identifier": "NSW:NESA:Ceramics CEC:2000:CH5",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ceramics Stage 6 CEC",
+      "stage": 6,
+      "edition": 2000,
+      "source_url": "https://picton-h.schools.nsw.gov.au/content/dam/doe/sws/schools/p/picton-h/2025-everything/2025-assess-booklets/11_2025_assess_booklet_draft_v3.pdf",
+      "corroborating_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/nepean-h/Year%2011%20Assessment%20Handbook%202025.pdf",
+      "verification_status": "exact_outcome_label_reproduced_in_two_NSW_department_of_education_schools",
+      "status": "review_only_pending_primary_document_comparison"
+    }
+  ]
+}
