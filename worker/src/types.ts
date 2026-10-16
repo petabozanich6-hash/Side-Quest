@@ -18,6 +18,8 @@ export type Env = {
   JWT_SECRET: string;
   /** Optional R2 bucket for file uploads (bind as BUCKET). */
   BUCKET?: R2Bucket;
+  /** Opt-in verification for new parent signups, only after migration 0069 and email delivery are ready. */
+  EMAIL_VERIFICATION_REQUIRED?: string;
   /** Optional Cloudflare Email Service binding for outgoing email. */
   EMAIL?: EmailBinding;
   /** Optional Cloudflare Workers AI binding (bind as AI). Paid-plan lesson drafting only. */
