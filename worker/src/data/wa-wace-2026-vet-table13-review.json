@@ -1,0 +1,527 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE VET industry specific",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page_zero_based": 157,
+  "source_print_page": 146,
+  "source_table": "Appendix 3 Table 13",
+  "verification_date": "2026-10-16",
+  "status": "source_verified_review_only",
+  "notes": "All 10 industry-specific course codes and qualification-associated course unit codes. Some qualifications deliberately share identifiers; keep one association per qualification. Do not treat as nationally accredited training package qualification IDs or learning outcomes.",
+  "records": [
+    {
+      "subject": "Automotive",
+      "identifier": "VAU",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate I in Automotive Vocational Preparation",
+      "identifier": "VEVAU",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate II in Automotive Body Repair Technology",
+      "identifier": "VEVAUB",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate II in Automotive Body Repair Technology",
+      "identifier": "VTVAUB",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate II in Automotive Vocational Preparation",
+      "identifier": "VEVAUP",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate II in Automotive Vocational Preparation",
+      "identifier": "VTVAUP",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate II in Automotive Servicing Technology",
+      "identifier": "VEVAUV",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Automotive",
+      "qualification": "Certificate II in Automotive Servicing Technology",
+      "identifier": "VTVAUV",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "identifier": "VBF",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate I in Workplace Skills",
+      "identifier": "VEVBF",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate II in Workplace Skills",
+      "identifier": "VEVBFB",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate II in Workplace Skills",
+      "identifier": "VTVBFB",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate III in Business",
+      "identifier": "VEVBFS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate III in Business",
+      "identifier": "VTVBFS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate I in Basic Financial Literacy",
+      "identifier": "VEVBFF",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate II in Financial Services",
+      "identifier": "VEVBFN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Business and Financial Services",
+      "qualification": "Certificate II in Financial Services",
+      "identifier": "VTVBFN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "identifier": "VCS",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate II in Community Services",
+      "identifier": "VEVCSS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate II in Community Services",
+      "identifier": "VTVCSS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate III in Early Childhood Education and Care",
+      "identifier": "VEVCSC",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate III in Early Childhood Education and Care",
+      "identifier": "VTVCSC",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate III in School Based Education Support",
+      "identifier": "VEVCSE",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate III in School Based Education Support",
+      "identifier": "VTVCSE",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate II in Health Support Services",
+      "identifier": "VEVCSH",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Community Services and Health",
+      "qualification": "Certificate II in Health Support Services",
+      "identifier": "VTVCSH",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "identifier": "VCO",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate I in Construction",
+      "identifier": "VEVCO",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Building and Construction (Pathway - Trades)",
+      "identifier": "VEVCO",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Building and Construction (Pathway - Trades)",
+      "identifier": "VTVCO",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Plumbing",
+      "identifier": "VEVCOP",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Plumbing",
+      "identifier": "VTVCOP",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Building and Construction Technical Support",
+      "identifier": "VEVCON",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Building and Construction Technical Support",
+      "identifier": "VTVCON",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate I in Resources and Infrastructure Operations",
+      "identifier": "VEVCOR",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Civil Construction",
+      "identifier": "VEVCOR",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Civil Construction",
+      "identifier": "VTVCOR",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Data and Voice Communications",
+      "identifier": "VEVCOD",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Data and Voice Communications",
+      "identifier": "VTVCOD",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Electrotechnology - Career Start",
+      "identifier": "VEVCOE",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Construction Industries",
+      "qualification": "Certificate II in Electrotechnology - Career Start",
+      "identifier": "VTVCOE",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "identifier": "VCI",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate II in Music",
+      "identifier": "VEVCI",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate II in Music",
+      "identifier": "VTVCI",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate III in Music",
+      "identifier": "VEVCIT",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate III in Music",
+      "identifier": "VTVCIT",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate I in Aboriginal and/or Torres Strait Islander Cultural Arts",
+      "identifier": "VEVCIC",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate II in Visual Arts",
+      "identifier": "VEVCIV",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate II in Visual Arts",
+      "identifier": "VTVCIV",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate III in Visual Arts",
+      "identifier": "VEVCIA",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate III in Visual Arts",
+      "identifier": "VTVCIA",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate II in Creative Industries",
+      "identifier": "VEVCIN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate II in Creative Industries",
+      "identifier": "VTVCIN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate III in Screen and Media",
+      "identifier": "VEVCID",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Creative Industries",
+      "qualification": "Certificate III in Screen and Media",
+      "identifier": "VTVCID",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Engineering",
+      "identifier": "VEN",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Engineering",
+      "qualification": "Certificate I in Engineering",
+      "identifier": "VEVEN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Engineering",
+      "qualification": "Certificate II in Engineering Pathways",
+      "identifier": "VEVENV",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Engineering",
+      "qualification": "Certificate II in Engineering Pathways",
+      "identifier": "VTVENV",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Engineering",
+      "qualification": "Certificate II in Engineering",
+      "identifier": "VEVEN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Engineering",
+      "qualification": "Certificate II in Engineering",
+      "identifier": "VTVEN",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "identifier": "VHT",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate I in Hospitality",
+      "identifier": "VEVHT",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate II in Hospitality",
+      "identifier": "VEVHTF",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate II in Hospitality",
+      "identifier": "VTVHTF",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate II in Cookery",
+      "identifier": "VEVHTK",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate II in Cookery",
+      "identifier": "VTVHTK",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate I Tourism (Australian Indigenous Culture)",
+      "identifier": "VEVHTO",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate II in Tourism",
+      "identifier": "VEVHTU",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Hospitality and Tourism",
+      "qualification": "Certificate II in Tourism",
+      "identifier": "VTVHTU",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Information and Communications Technology",
+      "identifier": "VIT",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Information and Communications Technology",
+      "qualification": "Certificate II in Applied Digital Technologies",
+      "identifier": "VEVITG",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Information and Communications Technology",
+      "qualification": "Certificate II in Applied Digital Technologies",
+      "identifier": "VTVITG",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Information and Communications Technology",
+      "qualification": "Certificate III in Information Technology",
+      "identifier": "VEVITS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Information and Communications Technology",
+      "qualification": "Certificate III in Information Technology",
+      "identifier": "VTVITS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Primary Industries",
+      "identifier": "VPI",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Primary Industries",
+      "qualification": "Certificate I in Agriculture",
+      "identifier": "VEVPIF",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Primary Industries",
+      "qualification": "Certificate II in Agriculture",
+      "identifier": "VEVPIA",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Primary Industries",
+      "qualification": "Certificate II in Agriculture",
+      "identifier": "VTVPIA",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Primary Industries",
+      "qualification": "Certificate II in Rural Operations",
+      "identifier": "VEVPIA",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Primary Industries",
+      "qualification": "Certificate II in Rural Operations",
+      "identifier": "VTVPIA",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Sport and Recreation",
+      "identifier": "VSR",
+      "identifier_kind": "vet_industry_course_code"
+    },
+    {
+      "subject": "Sport and Recreation",
+      "qualification": "Certificate I in Sport and Recreation",
+      "identifier": "VEVSR",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Sport and Recreation",
+      "qualification": "Certificate II in Sport and Recreation",
+      "identifier": "VEVSRS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Sport and Recreation",
+      "qualification": "Certificate II in Sport and Recreation",
+      "identifier": "VTVSRS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Sport and Recreation",
+      "qualification": "Certificate II in Sport Coaching",
+      "identifier": "VEVSRS",
+      "identifier_kind": "vet_course_unit_code"
+    },
+    {
+      "subject": "Sport and Recreation",
+      "qualification": "Certificate II in Sport Coaching",
+      "identifier": "VTVSRS",
+      "identifier_kind": "vet_course_unit_code"
+    }
+  ]
+}
