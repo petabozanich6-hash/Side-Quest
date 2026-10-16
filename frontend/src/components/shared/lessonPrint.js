@@ -21,15 +21,48 @@ const answer = (value) => value == null || value === "" ? "" :
 const bullets = (values) => list(values).length ?
   "<ul>" + list(values).map((item) => "<li>" + text(typeof item === "object" ? item.label || item.code || item.title || "" : item) + "</li>").join("") + "</ul>" : "";
 
+// Render lesson diagrams without copying scripts, event handlers or external resources
+// from SVG strings into the new print window.
+function safePrintableSvg(markup) {
+  if (!markup || typeof DOMParser === "undefined") return "";
+  const doc = new DOMParser().parseFromString(String(markup), "image/svg+xml");
+  const root = doc.documentElement;
+  if (!root || root.localName !== "svg") return "";
+  const elements = new Set(["svg", "g", "path", "circle", "ellipse", "rect", "line",
+    "polyline", "polygon", "text", "tspan", "defs", "clipPath", "linearGradient",
+    "radialGradient", "stop", "marker", "title", "desc"]);
+  const attributes = new Set(["xmlns", "viewBox", "width", "height", "x", "y", "x1", "y1", "x2", "y2",
+    "cx", "cy", "r", "rx", "ry", "d", "points", "stroke", "stroke-width", "stroke-linecap",
+    "stroke-linejoin", "stroke-dasharray", "stroke-opacity", "fill", "fill-opacity",
+    "opacity", "transform", "text-anchor", "font-size", "font-weight", "font-family",
+    "letter-spacing", "id", "offset", "stop-color", "stop-opacity", "clip-path",
+    "marker-end", "marker-start", "gradientUnits", "gradientTransform", "spreadMethod"]);
+  const clean = (node) => {
+    if (node.nodeType === 3) return;
+    if (node.nodeType !== 1 || !elements.has(node.localName)) { node.remove(); return; }
+    Array.from(node.attributes).forEach((attr) => {
+      const value = attr.value || "";
+      if (!attributes.has(attr.name) ||
+          /(?:javascript:|data:|https?:|@import|expression\s*\()/i.test(value) ||
+          (/(url\s*\()/i.test(value) && !/^url\(#[A-Za-z0-9_-]+\)$/.test(value.trim()))) {
+        node.removeAttribute(attr.name);
+      }
+    });
+    Array.from(node.childNodes).forEach(clean);
+  };
+  clean(root);
+  return root.outerHTML;
+}
+
 function printableVisuals(values) {
   return list(values).map((visual) => {
     if (!visual || typeof visual !== "object") return "";
     if (visual.episode) return section(visual.episode.title || "Illustration", visual.episode.transcript);
-    // Authored SVGs are validated on import. Avoid embedding untrusted markup in the print document.
-    // A textual description still makes the activity understandable on paper.
-    return visual.alt || visual.caption ?
-      '<figure class="visual-description"><p><b>Visual:</b> ' + text(visual.alt || visual.caption) + "</p>" +
-      (visual.caption && visual.caption !== visual.alt ? "<figcaption>" + text(visual.caption) + "</figcaption>" : "") +
+    const graphic = safePrintableSvg(visual.svg);
+    return graphic || visual.alt || visual.caption ?
+      '<figure class="visual-description">' + graphic +
+      (visual.alt ? '<p><b>Visual:</b> ' + text(visual.alt) + "</p>" : "") +
+      (visual.caption ? "<figcaption>" + text(visual.caption) + "</figcaption>" : "") +
       "</figure>" : "";
   }).join("");
 }
@@ -47,7 +80,7 @@ function printShell(lesson, view, body) {
     '.name{display:flex;gap:20px;margin:14px 0}.name span{border-bottom:1px solid #555;flex:1;padding:6px 0}' +
     '.answer-space{margin:5px 0 15px}.writing-line{height:27px;border-bottom:1px solid #aaa}' +
     '.question{margin:12px 0;break-inside:avoid}.answer{background:#f1f5f1;border-left:3px solid #56755f;padding:7px 10px;margin:6px 0}' +
-    '.print-note{border:1px solid #b8c7bd;padding:10px;margin:12px 0}.choices{list-style:none;padding-left:9px}' +
+    '.visual-description svg{display:block;width:100%;height:auto;max-height:380px}.print-note{border:1px solid #b8c7bd;padding:10px;margin:12px 0}.choices{list-style:none;padding-left:9px}' +
     '.choices li{margin:5px 0}.break{break-before:page}.visual-description{border:1px solid #d2d8d4;padding:9px;margin:10px 0}' +
     '.print-actions{margin:0 0 16px;display:flex;gap:10px}.print-actions button{background:#18382b;color:white;border:0;border-radius:6px;padding:9px 14px;cursor:pointer}' +
     'a{color:#18382b}section,figure,.question{break-inside:avoid-page}' +
