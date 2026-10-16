@@ -21,7 +21,8 @@ test("jurisdiction codes normalise and every state has a framework", () => {
   assert.equal(Object.keys(FRAMEWORKS).length, 8);
   assert.equal(frameworkFor("NSW").codes, "verified");
   assert.equal(frameworkFor("VIC").codes, "none");
-  for (const j of ["QLD", "WA", "SA", "TAS", "ACT", "NT"]) assert.equal(frameworkFor(j).codes, "reference", j);
+  assert.equal(frameworkFor("WA").codes, "none", "WA state-specific catalogue remains unavailable");
+  for (const j of ["QLD", "SA", "TAS", "ACT", "NT"]) assert.equal(frameworkFor(j).codes, "reference", j);
 });
 
 test("family jurisdiction is stored and read back", async () => {
