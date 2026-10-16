@@ -115,7 +115,7 @@ app.post("/api/auth/register", async (c) => {
   const email = String(b.email || "").trim().toLowerCase();
   const password = String(b.password || "");
   const name = String(b.name || "").trim();
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(email) || email.length > 254 || password.length < 8 || !name) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254 || password.length < 8 || !name) {
     return c.json({ detail: "Valid email, name and a password of 8+ characters are required" }, 400);
   }
   if (!normJurisdiction(b.jurisdiction)) return c.json({ detail: "Please choose your state or territory", code: "JURISDICTION_REQUIRED" }, 400);
@@ -207,7 +207,7 @@ app.post("/api/auth/verify-email", async (c) => {
 app.post("/api/auth/verify-email/resend", async (c) => {
   const b = await c.req.json().catch(() => ({}));
   const email = String(b.email || "").trim().toLowerCase();
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(email) || email.length > 254) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) {
     return c.json({ detail: "Enter a valid email address." }, 400);
   }
   return c.json(await resendParentVerification(c.env, email, c.req.header("CF-Connecting-IP") || ""));
