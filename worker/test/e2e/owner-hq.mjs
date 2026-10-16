@@ -264,6 +264,12 @@ await step("settings: announcement reaches everyone; switching AI off needs a se
   await page.fill("[data-testid=hq-announcement-message]", "Welcome to term 4!");
   await page.click("[data-testid=hq-save-announcement]");
   await page.waitForSelector("text=Announcement saved");
+  // Ensure we actually change the feature switch: a new installation may start with AI off.
+  if (!(await page.isChecked("[data-testid=hq-feature-ai]"))) {
+    await page.check("[data-testid=hq-feature-ai]");
+    await page.click("[data-testid=hq-save-features]");
+    await page.waitForSelector("text=Feature switches saved");
+  }
   await page.uncheck("[data-testid=hq-feature-ai]");
   await page.click("[data-testid=hq-save-features]");
   await page.waitForSelector("[data-testid=hq-confirm-high-impact]");
