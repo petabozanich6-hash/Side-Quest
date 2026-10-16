@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS dragon_hoard_offers (
   code TEXT NOT NULL,
   label TEXT NOT NULL,
   percent_off INTEGER NOT NULL CHECK (percent_off BETWEEN 5 AND 50),
-  duration_months INTEGER NOT NULL CHECK (duration_months BETWEEN 1 AND 3),
+  duration_months INTEGER NOT NULL CHECK (duration_months = 1),
   max_redemptions INTEGER NOT NULL CHECK (max_redemptions BETWEEN 1 AND 500),
   expires_at TEXT NOT NULL,
   stripe_coupon_id TEXT NOT NULL,
