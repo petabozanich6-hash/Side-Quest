@@ -99,10 +99,53 @@ export default function ReadingLog() {
 
   const printLog = () => {
     const w = window.open("", "_blank");
-    const header = `<html><head><title>Reading Log</title><style>body{font-family:Georgia,serif;max-width:900px;margin:40px auto;padding:0 20px}h1{font-size:24px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{border:1px solid #ccc;padding:8px;text-align:left;font-size:12px;vertical-align:top}th{background:#f5efe0}</style></head><body>`;
-    const rows = entries.map(e => `<tr><td>${e.read_date}</td><td>${e.student?.name||""}</td><td><strong>${e.title}</strong>${e.author ? ` — ${e.author}` : ""}${e.verified_by_parent ? " (verified by parent)" : ""}</td><td>${e.book_type}</td><td>${e.reading_mode.replace(/_/g,' ')}</td><td>${e.duration_minutes||""}</td><td>${e.pages_read||e.pages||""}</td><td>${e.comprehension_notes||""}</td></tr>`).join("");
-    w.document.write(`${header}<h1>Reading Log</h1><p>Entries: ${entries.length} · Unique books: ${stats?.unique_books||0} · Total minutes: ${stats?.total_minutes||0} · Total pages: ${stats?.total_pages||0}</p><table><thead><tr><th>Date</th><th>Student</th><th>Book</th><th>Type</th><th>Mode</th><th>Min</th><th>Pages</th><th>Comprehension notes</th></tr></thead><tbody>${rows}</tbody></table></body></html>`);
-    w.document.close(); w.print();
+    if (!w) { toast.error("Please allow pop-ups to print your reading log."); return; }
+    const escapePrint = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[char]));
+    const rows = entries.map((e) => `<tr>
+      <td>${escapePrint(e.read_date)}</td>
+      <td>${escapePrint(e.student?.name || studentName(e.student_id))}</td>
+      <td><strong>${escapePrint(e.title)}</strong>${e.author ? `<br><span class="muted">by ${escapePrint(e.author)}</span>` : ""}${e.verified_by_parent ? '<br><span class="verified">✓ Parent verified</span>' : ""}</td>
+      <td>${escapePrint(e.book_type)}</td><td>${escapePrint((e.reading_mode || "").replace(/_/g, " "))}</td>
+      <td>${escapePrint(e.duration_minutes)}</td><td>${escapePrint(e.pages_read || e.pages || "")}</td>
+      <td class="notes">${escapePrint(e.comprehension_notes)}</td>
+    </tr>`).join("");
+    const html = `<!doctype html><html lang="en-AU"><head><meta charset="utf-8"><title>Reading Log · Side-Quest</title>
+    <style>
+      @page { size: A4 landscape; margin: 13mm; }
+      * { box-sizing: border-box; }
+      body { font: 12px/1.5 Arial, sans-serif; color: #243a2d; background: white; margin: 20px auto; max-width: 1100px; padding: 0 18px; }
+      header { border-top: 5px solid #1F3B2D; border-bottom: 2px solid #D4C8A8; padding: 12px 0 14px; margin-bottom: 14px; }
+      .kicker { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; font-weight: 800; color: #9A563F; }
+      h1 { color: #1F3B2D; font-size: 26px; margin: 3px 0; }
+      .subtitle, .muted { color: #54634D; }
+      .stats { display: flex; flex-wrap: wrap; gap: 7px; margin: 14px 0; }
+      .stat { border: 1px solid #B7C7B0; border-radius: 6px; padding: 6px 10px; min-width: 110px; }
+      .stat strong { display: block; color: #1F3B2D; font-size: 17px; }
+      table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+      th, td { border: 1px solid #B7C7B0; padding: 7px 6px; vertical-align: top; text-align: left; overflow-wrap: anywhere; }
+      th { background: #EFF3EA; color: #1F3B2D; font-size: 10px; text-transform: uppercase; letter-spacing: .04em; }
+      th:nth-child(1) { width: 10%; } th:nth-child(2) { width: 11%; } th:nth-child(3) { width: 18%; }
+      th:nth-child(4) { width: 10%; } th:nth-child(5) { width: 11%; } th:nth-child(6) { width: 6%; }
+      th:nth-child(7) { width: 7%; } th:nth-child(8) { width: 27%; }
+      thead { display: table-header-group; } tr { break-inside: avoid; }
+      .notes { white-space: pre-wrap; } .verified { font-size: 10px; font-weight: bold; }
+      footer { border-top: 1px solid #D4C8A8; margin-top: 18px; padding-top: 8px; font-size: 10px; color: #54634D; }
+      @media print { body { margin: 0; padding: 0; } th { background: #f3f3f3; } .stat { border-color: #999; } }
+    </style></head><body>
+    <header><div class="kicker">SIDE-QUEST LEARNING · THE READING HOARD</div>
+    <h1>Every page counts 📖</h1><div class="subtitle">Reading log · Family learning portfolio</div></header>
+    <div class="stats"><div class="stat"><strong>${entries.length}</strong>Reading entries</div>
+    <div class="stat"><strong>${Number(stats?.unique_books || 0)}</strong>Unique books</div>
+    <div class="stat"><strong>${Number(stats?.total_minutes || 0)}</strong>Minutes reading</div>
+    <div class="stat"><strong>${Number(stats?.total_pages || 0)}</strong>Pages explored</div></div>
+    <table><thead><tr><th>Date</th><th>Learner</th><th>Book &amp; author</th><th>Type</th><th>Reading mode</th><th>Min</th><th>Pages</th><th>Comprehension &amp; reflections</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="8">No reading entries for this selection yet.</td></tr>'}</tbody></table>
+    <footer>Side-Quest · Learning happens everywhere · Parent-maintained reading record</footer>
+    </body></html>`;
+    w.document.open(); w.document.write(html); w.document.close();
+    w.focus(); w.print();
   };
 
   return (
