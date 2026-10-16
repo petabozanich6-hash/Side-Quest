@@ -1,3 +1,4 @@
+import { gatewayOptions, withMeta } from "./aiRouting";
 // Paid-plan AI learning plans, written for the family's own state or territory (families.jurisdiction).
 // Cloudflare Workers AI, same binding, model and gateway as lesson drafting. Three model calls run in parallel
 // (plan frame + learning areas in two halves), plus at most one repair call for areas the model left out.
@@ -120,7 +121,7 @@ function areasShape(areas: string[], codes: Record<string, { code: string; descr
 }
 
 async function ask(ai: AiBinding, model: string, gatewayId: string | undefined, system: string, user: string, maxTokens: number) {
-  const out = await ai.run(model, { messages: [{ role: "system", content: system }, { role: "user", content: user }], max_tokens: maxTokens, temperature: 0.4 }, gatewayId ? { gateway: { id: gatewayId } } : undefined);
+  const out = await ai.run(model, { messages: [{ role: "system", content: system }, { role: "user", content: user }], max_tokens: maxTokens, temperature: 0.4 }, withMeta(gatewayOptions(gatewayId), { task: "learning_plan" }));
   return extractJson(out) as any;
 }
 

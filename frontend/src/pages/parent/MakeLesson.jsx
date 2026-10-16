@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Sparkles, Hammer, FileText, ArrowLeft, Loader2 } from "lucide-react";
+import { Sparkles, Hammer, FileText, ArrowLeft, Loader2, Check } from "lucide-react";
+import PetArt from "../../components/shared/PetArt";
 import { api } from "../../lib/api";
 import { newId, runBatch } from "../../lib/batchRunner";
 
@@ -10,16 +11,77 @@ const EXAMPLES = [
   "Create four science lessons about the solar system for my Year 5 child next week.",
 ];
 const SERIES = /(?<!year\s)\b(two|three|four|five|six|[2-6])\s+(?:[\w-]+\s+){0,4}?lessons?\b/i;
-const STEPS = ["Planning what to teach and in what order…", "Writing the explanations and worked examples…", "Writing the practice, activities and quiz…", "Checking the answers and the teaching…"];
+// The real stages the server reports while it writes a lesson (worker/src/aiDraft.ts GEN_PHASES).
+const PHASES = [
+  { key: "design", label: "Planning what to teach and in what order", flavour: "The dragon is sketching the quest map." },
+  { key: "frame", label: "Writing the introduction and readings", flavour: "The dragon is setting the scene." },
+  { key: "teaching", label: "Writing the explanations and worked examples", flavour: "The dragon is writing each explanation, one idea at a time." },
+  { key: "practice", label: "Writing the practice, activities and quiz", flavour: "The gremlins are building the practice and the quiz." },
+  { key: "checking", label: "Checking the answers and the teaching", flavour: "The gremlins are checking every answer and sum." },
+  { key: "outcomes", label: "Linking curriculum outcomes", flavour: "The gremlins are matching the lesson to the curriculum." },
+  { key: "saving", label: "Saving your lesson", flavour: "Into the hoard it goes." },
+];
 
+/** Simple waiting message, for steps that don't report stages (planning a set of lessons). */
 function Progress({ label }) {
   const [sec, setSec] = useState(0);
   useEffect(() => { const t = setInterval(() => setSec(s => s + 1), 1000); return () => clearInterval(t); }, []);
   return (
     <div className="rounded-xl border border-violet-200 bg-violet-50 p-4" role="status" data-testid="make-progress">
       <p className="font-semibold text-violet-900 flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> {label}</p>
-      <p className="text-sm text-slate-700 mt-1">{STEPS[Math.min(STEPS.length - 1, Math.floor(sec / 18))]}</p>
-      <p className="text-xs text-slate-500 mt-1">This usually takes one to three minutes ({sec}s so far). Please keep this page open.</p>
+      <p className="text-xs text-slate-500 mt-1">{sec}s so far. Please keep this page open.</p>
+    </div>
+  );
+}
+
+/**
+ * Real progress for one lesson: polls the server for the stage it has reached. If the connection to the
+ * main request drops, this keeps watching the same request and opens the lesson when it is ready.
+ */
+function LiveProgress({ requestId, watching, onDone, onStopped }) {
+  const [view, setView] = useState(null);
+  const [sec, setSec] = useState(0);
+  useEffect(() => { const t = setInterval(() => setSec(s => s + 1), 1000); return () => clearInterval(t); }, []);
+  useEffect(() => {
+    let live = true;
+    let timer;
+    const poll = async () => {
+      try {
+        const { data } = await api.get("/ai/lesson-draft/status", { params: { request_id: requestId } });
+        if (!live) return;
+        setView(data);
+        // While the main request is alive it opens the lesson (with its warnings); polling only takes over when it was lost.
+        if (watching && data.status === "done" && data.lesson_id) { onDone(data.lesson_id); return; }
+        if (watching && (data.status === "failed" || data.status === "interrupted")) { onStopped(data); return; }
+      } catch { /* keep trying: the connection may be coming back */ }
+      if (live) timer = setTimeout(poll, 2500);
+    };
+    timer = setTimeout(poll, 1200);
+    return () => { live = false; clearTimeout(timer); };
+  }, [requestId, watching, onDone, onStopped]);
+  const step = view?.step || 0;
+  const current = PHASES[Math.max(0, step - 1)];
+  return (
+    <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3" role="status" aria-live="polite" data-testid="make-progress">
+      <div className="flex items-center gap-3">
+        <PetArt species={step >= 4 ? "goblin" : "dragon"} stage="youngling" size={56} aria-hidden="true" />
+        <div>
+          <p className="font-semibold text-violet-900 flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> {watching ? "Still writing your lesson…" : "Writing your lesson…"}</p>
+          <p className="text-sm text-slate-700" data-testid="make-progress-flavour">{step ? current.flavour : "Waking the dragon…"}</p>
+        </div>
+      </div>
+      <ol className="space-y-1 text-sm" data-testid="make-progress-steps">
+        {PHASES.map((p, i) => {
+          const state = i + 1 < step ? "done" : i + 1 === step ? "now" : "todo";
+          return (
+            <li key={p.key} className={`flex items-center gap-2 ${state === "todo" ? "text-slate-400" : "text-slate-800"}`} data-testid={`make-step-${p.key}`} data-state={state}>
+              {state === "done" ? <Check size={14} className="text-emerald-700" aria-label="done" /> : state === "now" ? <Loader2 size={14} className="animate-spin text-violet-700" aria-label="in progress" /> : <span className="inline-block w-3.5 h-3.5 rounded-full border border-slate-300" aria-hidden="true" />}
+              {p.label}
+            </li>
+          );
+        })}
+      </ol>
+      <p className="text-xs text-slate-500">{sec}s so far. {watching ? "Your connection dropped, but the lesson is still being written; it will open here when it's ready. Your allowance is only used once." : "This usually takes one to three minutes. You can keep this page open; the lesson is kept if your connection drops."}</p>
     </div>
   );
 }
@@ -38,6 +100,8 @@ export default function MakeLesson() {
   const [outline, setOutline] = useState(null); // multi-lesson plan awaiting confirmation
   const [linkOutcomes, setLinkOutcomes] = useState(true);
   const [jurisdiction, setJurisdiction] = useState(null);
+  const [requestId, setRequestId] = useState(null); // the lesson being written (for real progress)
+  const [watching, setWatching] = useState(false); // the main request was lost; following progress only
   const leaving = useRef(false);
   const batchId = useRef(null); // one set per "Write all", even if the button is pressed twice
 
@@ -66,13 +130,34 @@ export default function MakeLesson() {
       finally { setBusy(""); }
       return;
     }
-    setBusy("one");
+    if (busy) return; // one request at a time
+    setBusy("one"); setWatching(false);
+    // One id per press: the server writes (and charges) it once, even if it arrives twice.
+    const id = newId();
+    setRequestId(id);
     try {
-      const r = await api.post("/ai/lesson-draft", body());
+      const r = await api.post("/ai/lesson-draft", body({ request_id: id }));
       leaving.current = true;
       nav(`/parent/lessons/${r.data.lesson.id}/review`, { state: { assumptions: { ...r.data.assumptions, child: child?.name }, warnings: r.data.warnings, generation: r.data.generation, studentId: student || undefined } });
-    } catch (e) { fail(e); setBusy(""); }
+    } catch (e) {
+      // The server answered: show its reason. No answer, a gateway timeout, or "already being written"
+      // means the lesson may still be on its way, so keep watching the same request instead.
+      const res = e.response;
+      const lost = !res || ([502, 503, 504, 520, 522, 524].includes(res.status) && !res.data?.code) || res.data?.code === "IN_PROGRESS";
+      if (lost) { setWatching(true); return; }
+      fail(e); setBusy(""); setRequestId(null);
+    }
   };
+  const openLesson = useCallback((lessonId) => {
+    leaving.current = true;
+    nav(`/parent/lessons/${lessonId}/review`, { state: { assumptions: { child: child?.name }, warnings: [], studentId: student || undefined } });
+  }, [nav, child?.name, student]);
+  const stopped = useCallback((v) => {
+    setErr(v.status === "interrupted"
+      ? "The lesson stopped part-way (the connection was lost). Nothing was used from your allowance. Please try again."
+      : v.error || "The lesson couldn't be written. Nothing was used from your allowance. Please try again.");
+    setBusy(""); setWatching(false); setRequestId(null);
+  }, []);
 
   // A set of lessons is created on the server first, so every lesson stays reachable however the parent moves
   // around (open one, edit, assign, leave, refresh). Lessons are then written one by one in the background.
@@ -153,7 +238,8 @@ export default function MakeLesson() {
               </div>
             )}
           </div>
-          {busy ? <Progress label={busy === "plan" ? "Planning your lessons…" : "Writing your lesson…"} /> : (
+          {busy === "one" && requestId ? <LiveProgress requestId={requestId} watching={watching} onDone={openLesson} onStopped={stopped} />
+            : busy ? <Progress label={busy === "plan" ? "Planning your lessons…" : "Writing your lesson…"} /> : (
             <>
             {jurisdiction === "NSW" ? (
               <label className="flex items-start gap-2 text-sm text-slate-700 mb-3"><input type="checkbox" className="mt-1" checked={linkOutcomes} onChange={e => setLinkOutcomes(e.target.checked)} data-testid="mk-outcomes" /><span>Suggest relevant NSW syllabus outcome codes <span className="text-slate-500">(from Side-Quest's verified list; review each suggestion before using it)</span></span></label>

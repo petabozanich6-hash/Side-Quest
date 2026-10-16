@@ -1,5 +1,6 @@
 # Side-Quest execution record
 
+> **Historical record (14 October 2026) — not current release status.** This document is retained for development history. Side-Quest is now publicly available, live Stripe payments are enabled, and PR #205 security/billing/assignment fixes have landed on `main`. PR #206 AI performance changes were merged into a feature branch and are being integrated to `main` separately; do not assume they are deployed. Refer to `docs/RELEASE.md`, `docs/STRIPE-BILLING.md` and `docs/AI-PERFORMANCE-ROLLOUT.md` for current deployment and rollout requirements. The tables below are historical, not launch gates.\n\n
 **Last updated:** 14 October 2026. **Authoritative development branch:** `dev/sidequest-execution`. **Recovery checkpoint:** `checkpoint/pre-cleanup-2026-10-13` (preserve). This is the single project execution document. The code and confirmed tests outrank any stale statement below.
 
 ## Current mission — Australia-wide parent-to-child homeschooling platform

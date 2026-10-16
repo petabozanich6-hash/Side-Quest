@@ -324,7 +324,8 @@ export default {
   // Feature switches and the platform AI limit are applied to the bindings before any route runs (platformSettings.ts).
   fetch: async (req: Request, env: Env, ctx: ExecutionContext) => {
     if (!new URL(req.url).pathname.startsWith("/api/") || !env.DB) return app.fetch(req, env, ctx);
-    try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
+    // Still metered (which also removes Side-Quest's call tags before Workers AI sees them).
+    try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, meterWorkersAi(env, ctx), ctx); }
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env), ctx), ctx);
   },
   scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {

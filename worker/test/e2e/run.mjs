@@ -479,6 +479,40 @@ await step("E2. My lessons shows who has the lesson, and the assign dialog won't
   ok(as.json.filter((a) => a.lesson_id === lessonId && a.student_id === kid.id).length === 1, "assignment duplicated");
 });
 
+await step("E3. Make a lesson shows the real stages and still opens the lesson when the connection drops", async () => {
+  // The local Worker has no AI binding, so the two AI endpoints are played by the browser: the main request
+  // is dropped (as on a flaky connection) and the status endpoint reports the server's real stages.
+  const phases = ["design", "frame", "teaching", "practice", "checking", "saving"];
+  let polls = 0;
+  let requestId = null;
+  await page.route("**/api/ai/lesson-draft", async (route) => {
+    requestId = JSON.parse(route.request().postData() || "{}").request_id;
+    await new Promise((r) => setTimeout(r, 1500));
+    await route.abort("connectionreset");
+  });
+  await page.route("**/api/ai/lesson-draft/status**", async (route) => {
+    const p = phases[Math.min(polls++, phases.length - 1)];
+    const done = polls > phases.length + 1;
+    await route.fulfill({ contentType: "application/json", body: JSON.stringify(done
+      ? { status: "done", phase: "saving", step: 7, steps: 7, lesson_id: lessonId, error: null, elapsed_ms: 60000 }
+      : { status: "running", phase: p, step: ["design", "frame", "teaching", "practice", "checking", "outcomes", "saving"].indexOf(p) + 1, steps: 7, lesson_id: null, error: null, elapsed_ms: polls * 2500 }) });
+  });
+  try {
+    await page.goto(BASE + "/parent/lessons/make");
+    await page.fill("[data-testid=mk-text]", "Create a one-hour Year 3 maths lesson about addition.");
+    const kidSel = await page.$("[data-testid=mk-child]");
+    if (kidSel) { const opts = await page.$$eval("[data-testid=mk-child] option", (o) => o.map((x) => x.value).filter(Boolean)); if (opts[0]) await page.selectOption("[data-testid=mk-child]", opts[0]); }
+    await page.click("[data-testid=mk-go]");
+    await page.waitForSelector("[data-testid=make-step-teaching][data-state=now], [data-testid=make-step-teaching][data-state=done]", { timeout: 30000 });
+    ok(/^[A-Za-z0-9_-]{8,64}$/.test(requestId || ""), "no request id sent: " + requestId);
+    ok(await page.isDisabled("[data-testid=mk-text]"), "the form can be resubmitted while a lesson is being written");
+    await page.waitForURL(`**/parent/lessons/${lessonId}/review`, { timeout: 45000 });
+  } finally {
+    await page.unroute("**/api/ai/lesson-draft");
+    await page.unroute("**/api/ai/lesson-draft/status**");
+  }
+});
+
 // ---- child
 const cctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
 cpage = await cctx.newPage();

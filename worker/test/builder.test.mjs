@@ -1168,3 +1168,62 @@ test("state or territory: codes are validated, and families outside NSW never ge
   assert.ok(n.ok && n.suggestions.length >= 1);
 });
 
+
+test("fast pipeline: same lesson, every section and worked example in one wave, real phases in order", async () => {
+  const run = async (fast) => {
+    const db = makeDb();
+    const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+    let inFlight = 0, peak = 0;
+    const ai = stub(async (model, input) => {
+      inFlight++; peak = Math.max(peak, inFlight);
+      await new Promise((r) => setTimeout(r, 15));
+      inFlight--;
+      return stagedFor()(model, input);
+    });
+    const phases = [];
+    const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions", learning_area: "Mathematics" }, fast, onPhase: (p) => { phases.push(p); } }, NOW);
+    assert.ok(r.ok, JSON.stringify(r));
+    return { r, peak, phases, metas: ai.calls.map((c) => c[2]?.sq) };
+  };
+  const slow = await run(false), quick = await run(true);
+  const teaching = GARDEN.sections.length + GARDEN.worked_examples.length;
+  assert.ok(slow.peak <= 4);
+  // One wave: every section and example, plus the frame (maths needs no readings) and outcome matching.
+  assert.ok(quick.peak >= teaching + 1, `peak ${quick.peak}`);
+  for (const k of ["sections", "worked_examples", "guided_practice", "activities", "questions"]) {
+    assert.deepEqual(quick.r.lesson[k], slow.r.lesson[k], `the fast path writes the same ${k}`);
+  }
+  // Quiz options are shuffled on purpose; compare questions, options and the right answer.
+  const quiz = (x) => x.r.lesson.quiz.map((q) => [q.question, [...q.options].sort(), q.options[q.correct_index]]);
+  assert.deepEqual(quiz(quick), quiz(slow));
+  assert.deepEqual(quick.phases.slice(0, 5), ["design", "frame", "teaching", "practice", "checking"]);
+  assert.equal(quick.phases.at(-1), "saving");
+  // Every call is tagged with its task and one generation id (for routing and the cost ledger).
+  assert.ok(quick.metas.every((m) => m && m.task && m.generation === quick.metas[0].generation));
+  assert.ok(quick.metas.some((m) => m.task === "lesson_section") && quick.metas.some((m) => m.task === "lesson_example"));
+});
+
+test("fast pipeline: when the frame does return readings, the teaching is rewritten with them", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const reading = { title: "Garden notice", kind: "text", content: "Seedlings are watered every morning." };
+  const ai = stub((model, input) => {
+    const u = input.messages.at(-1).content;
+    if (u.includes("STAGE 2:")) return { response: JSON.stringify({ introduction: GARDEN.introduction, consolidation: GARDEN.consolidation, texts: [reading] }), usage: {} };
+    return stagedFor()(model, input);
+  });
+  const r = await aid.draftLessonWithAi(db, ai, { familyId: fam, userId: "u", request: { topic: "Fractions", learning_area: "Mathematics" }, fast: true }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  const sectionPrompts = ai.calls.map((c) => c[1].messages.at(-1).content).filter((u) => /STAGE 3, SECTION \d+ OF/.test(u));
+  assert.equal(sectionPrompts.length, GARDEN.sections.length * 2, "speculative pass, then the real one");
+  const used = sectionPrompts.filter((u) => u.includes("Seedlings are watered every morning."));
+  assert.equal(used.length, GARDEN.sections.length, "the kept sections were written with the reading");
+});
+
+test("replies from reasoning models: the thinking is ignored and the JSON after it is read", () => {
+  const r = aid.parseReply({ response: '<think>Maybe {"title": "wrong"} ... let me plan.</think>\n{"title":"Right","sections":[]}' });
+  assert.equal(r.value.title, "Right");
+  assert.equal(r.salvaged, false);
+  assert.equal(aid.parseReply({ choices: [{ message: { content: '{"title":"Chat shape"}' } }] }).value.title, "Chat shape");
+  assert.equal(aid.stripThinking("plan plan </think>{\"a\":1}"), '{"a":1}', "an unclosed opening tag still drops the reasoning");
+});

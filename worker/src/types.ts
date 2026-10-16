@@ -31,6 +31,14 @@ export type Env = {
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */
   AI_COMPACT_GENERATION?: string;
+  /** "true" applies AI_MODEL_ROUTES (aiRouting.ts). Off by default. */
+  AI_ROUTING_ENABLED?: string;
+  /** JSON object of AI task to allow-listed model, e.g. {"outcome_match":"@cf/qwen/qwen3-30b-a3b-fp8"}. */
+  AI_MODEL_ROUTES?: string;
+  /** "true" runs lesson stages with more parallelism and a per-call timeout. Off by default. */
+  AI_FAST_PIPELINE?: string;
+  /** Optional per-call Workers AI timeout in milliseconds (5000-600000). */
+  AI_CALL_TIMEOUT_MS?: string;
   HELP_PER_CHILD_DAY?: string;
   HELP_PER_FAMILY_DAY?: string;
   HELP_PER_FAMILY_MONTH?: string;
