@@ -481,6 +481,8 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
         customer,
         client_reference_id: u.family_id,
         line_items: [{ price: price.price, quantity: 1 }],
+        // Discounts are chosen, capped and expired by Stripe itself. No client-provided price or coupon ids.
+        allow_promotion_codes: true,
         metadata: { family_id: u.family_id, interval },
         subscription_data: { metadata: { family_id: u.family_id, interval } },
         success_url: `${origin}/parent/plan?checkout=success`,
