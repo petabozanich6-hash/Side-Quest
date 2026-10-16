@@ -183,3 +183,28 @@ test("slots from the older one-week generator are used too, without rewriting th
   assert.deepEqual(p.json.placed.map((x) => x.id), ["old1"]);
   assert.equal(h.db.raw.prepare("SELECT event_type FROM calendar_events WHERE id = 'old1'").get().event_type, "lesson");
 });
+
+test("timetable refuses overlapping blocks and preserves existing appointments", async () => {
+  const h = harness();
+  const f = await h.family("overlap@example.com");
+  const sid = await h.child(f, "overlapkid");
+  const block = (date, time, minutes = 45) => ({
+    student_id: sid, title: "Mathematics", date, start_time: time, duration_minutes: minutes
+  });
+  const save = (blocks) => h.req("/timetable/week", {
+    method: "POST", token: f.token, body: { week_start: MON, blocks }
+  });
+  assert.deepEqual((await save([block(day(0), "09:00", 60), block(day(0), "09:30", 45)])).json,
+    { created: 1, skipped: 1 }, "overlap within same requested timetable");
+  assert.deepEqual((await save([block(day(0), "09:15", 30)])).json,
+    { created: 0, skipped: 1 }, "overlap despite different start times");
+  assert.deepEqual((await save([block(day(0), "10:00", 45)])).json,
+    { created: 1, skipped: 0 }, "touching endpoints are allowed");
+
+  h.db.raw.prepare("INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, created_at) VALUES ('appointment1', ?, ?, 'Dentist', ?, '11:00', 40, 'appointment', ?)")
+    .run(f.fid, sid, day(0), NOW.toISOString());
+  assert.deepEqual((await save([block(day(0), "11:20", 45)])).json,
+    { created: 0, skipped: 1 }, "parent appointments take precedence");
+  assert.equal((await save([block(day(0), "23:45", 45)])).status, 400);
+  assert.equal((await h.slots(f, sid)).length, 2);
+});
