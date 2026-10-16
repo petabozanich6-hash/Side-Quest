@@ -1,0 +1,96 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum ABLEWA",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+  "source_node": "Mathematics ABLEWA Stage C textContents",
+  "source_verified_date": "2026-10-16",
+  "status": "source_verified_review_only",
+  "notes": "Codes transcribed from literal parenthesized source JSON identifiers, 12 per stage; not a complete WA Mathematics curriculum or all ABLEWA learning areas.",
+  "records": [
+    {
+      "identifier": "ACMNA001c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMNA002c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMNA003c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMNA289c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMNA004c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMNA005c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMMG006c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMMG007c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMMG008c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMMG009c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMMG010c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    },
+    {
+      "identifier": "ACMSP011c",
+      "identifier_kind": "content_description",
+      "subject": "Mathematics",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json"
+    }
+  ]
+}
