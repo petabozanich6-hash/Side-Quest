@@ -226,7 +226,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   });
   app.post("/api/ai/batches/:id/items/:index/draft", auth, parent, async (c) => {
     const u = c.get("user");
-    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, batchId: c.req.param("id"), index: Number(c.req.param("index")) });
+    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", batchId: c.req.param("id"), index: Number(c.req.param("index")) });
     return r.ok ? c.json({ lesson: r.lesson, reused: r.reused, usage: r.usage, warnings: r.warnings, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
   });
   app.post("/api/ai/batches/:id/dismiss", auth, parent, async (c) => {
