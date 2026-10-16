@@ -97,8 +97,6 @@ export default function HqHoard() {
                 <label className="text-sm font-semibold">Duration
                   <select value={form.duration_months} onChange={(e) => patch("duration_months", Number(e.target.value))} className={inputClass}>
                     <option value={1}>First invoice only</option>
-                    <option value={2}>First 2 months</option>
-                    <option value={3}>First 3 months</option>
                   </select>
                 </label>
                 <label className="text-sm font-semibold">Maximum redemptions
@@ -108,7 +106,7 @@ export default function HqHoard() {
                   <input type="datetime-local" required value={form.expires_at} onChange={(e) => patch("expires_at", e.target.value)} className={inputClass}/>
                 </label>
               </div>
-              <p className="text-xs text-stone-600">Offers are limited to first-time Stripe transactions and cannot stack with another code. Maximum discount 50%; minimum 1 redemption. Repeating offers end after the selected number of months, regardless of the subscriber's billing interval.</p>
+              <p className="text-xs text-stone-600">Offers are limited to first-time Stripe transactions and cannot stack with another code. Maximum discount 50%; minimum 1 redemption. The discount applies to the first invoice only, so annual plans cannot be discounted for multiple periods.</p>
               <label className="flex gap-2 items-start text-sm text-stone-700">
                 <input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1" />
                 <span>I have checked the amount, end date and redemption limit. Create this campaign in <strong>{currentMode === "test" ? "Stripe test mode" : "Stripe live mode"}</strong>.</span>
@@ -137,7 +135,7 @@ export default function HqHoard() {
                       <code className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-1.5 font-bold text-stone-900">{o.code}</code>
                       <Button tone="plain" onClick={() => navigator.clipboard?.writeText(o.code)}>Copy code</Button>
                     </div>
-                    <p className="text-sm text-stone-700">{o.percent_off}% off · {o.duration_months === 1 ? "first invoice" : "first " + o.duration_months + " months"} · maximum {o.max_redemptions} redemptions · expires {fmtDay(o.expires_at)}</p>
+                    <p className="text-sm text-stone-700">{o.percent_off}% off · first invoice · maximum {o.max_redemptions} redemptions · expires {fmtDay(o.expires_at)}</p>
                     {o.active && !expired && o.mode === currentMode && <Button tone="plain" onClick={() => setRetiring(o)}>Retire scroll</Button>}
                   </div>
                 );
