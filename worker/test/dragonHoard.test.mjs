@@ -38,6 +38,7 @@ test("Stripe handles coupon and redemption caps, and retiring a code disables it
   const original = globalThis.fetch;
   globalThis.fetch = async (url, init) => {
     calls.push({ url, body: String(init?.body || ""), method: init?.method });
+    if (url.includes("/prices/")) return new Response(JSON.stringify({ id: url.split("/").at(-1), product: "prod_SideQuest1" }), { status: 200 });
     if (url.endsWith("/coupons")) return new Response(JSON.stringify({ id: "sqhoard_test_foundingdragon" }), { status: 200 });
     if (url.endsWith("/promotion_codes")) return new Response(JSON.stringify({ id: "promo_a1" }), { status: 200 });
     if (url.endsWith("/promotion_codes/promo_a1")) return new Response(JSON.stringify({ id: "promo_a1", active: false }), { status: 200 });
@@ -51,7 +52,8 @@ test("Stripe handles coupon and redemption caps, and retiring a code disables it
     assert.equal(rows.length, 1);
     assert.equal(rows[0].mode, "test");
     assert.equal(rows[0].code, "FOUNDINGDRAGON");
-    assert.ok(calls.some((c) => c.url.endsWith("/coupons") && c.body.includes("duration=once") && !c.body.includes("duration_in_months")));
+    assert.equal(calls.filter((c) => c.url.includes("/prices/")).length, 4, "all SideQuest billing prices must be resolved");
+    assert.ok(calls.some((c) => c.url.endsWith("/coupons") && c.body.includes("duration=once") && c.body.includes("applies_to%5Bproducts%5D%5B0%5D=prod_SideQuest1") && !c.body.includes("duration_in_months")));
     assert.ok(calls.some((c) => c.url.endsWith("/promotion_codes") && c.body.includes("max_redemptions=25") && c.body.includes("first_time_transaction")));
     assert.equal((await createHoardOffer(db, env, offer(), "owner1")).status, 409);
     assert.equal((await disableHoardOffer(db, { STRIPE_SECRET_KEY: "sk_live_fake", STRIPE_LIVE_ENABLED: "true" }, made.id)).status, 409);
