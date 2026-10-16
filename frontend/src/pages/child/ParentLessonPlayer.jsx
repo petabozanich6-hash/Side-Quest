@@ -6,6 +6,7 @@ import { isNetworkError, queueDraft, queueQuiz, queueSubmission, queuedQuiz, rem
 import QuestQuiz from "../../components/shared/QuestQuiz";
 import PracticeItem from "../../components/shared/PracticeItem";
 import LessonVisual from "../../components/shared/LessonVisual";
+import { openPaperLesson } from "../../components/shared/lessonPrint";
 import { englishVoices, getVoicePrefs, readAloud, setVoicePrefs, stopSpeaking } from "../../lib/voice";
 
 const BTN = { backgroundColor: "#1F3B2D", color: "#F5EFE0" };
@@ -530,6 +531,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
       <header className={card}>
         <div className="text-xs font-mono uppercase text-stone-500">{[l.learning_area, l.duration_minutes && `${l.duration_minutes} min`].filter(Boolean).join(" · ")}</div>
         <h1 className="font-display text-3xl font-bold" style={INK} data-testid="lesson-title">{l.title}</h1>
+        <button type="button" onClick={() => { if (!openPaperLesson(l, { type: "built" })) toast.error("Allow pop-ups to print your workbook"); }} className="mt-3 rounded-full border px-4 py-2 text-sm font-bold" style={{ borderColor: "#D4C8A8" }} data-testid="built-lesson-print">🖨️ Print student workbook</button>
         {l.child_mission && <p className="font-display text-lg" style={INK}>{l.child_mission}</p>}
       </header>
 
