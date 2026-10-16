@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Send, BookOpen, Camera, Heart } from "lucide-react";
 import PetArt from "../../components/shared/PetArt";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
+import ChildRegistrationPanel from "../../components/parent/ChildRegistrationPanel";
 
 const EMOJIS = ["🙌", "⭐", "🌟", "💛", "🌱", "🎉", "✨", "💪", "🦊", "📚"];
 
@@ -59,6 +60,7 @@ export default function ChildOverview() {
         </div>
       </header>
 
+      <ChildRegistrationPanel studentId={sid} studentName={s.name} />
       <OutcomeSummaryCard studentId={sid} />
 
       {data.pet && (

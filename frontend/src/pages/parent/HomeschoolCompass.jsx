@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { api, apiErrorMessage } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import { COMPASS_REVIEWED_ON, compassGuideFor, COMPASS_STEP_IDS } from "../../data/homeschoolCompass";
-import { BookOpen, CalendarDays, CheckCircle2, Circle, ClipboardCheck, Compass, ExternalLink, FileCheck2, Info, MapPinned, ShieldCheck, Users, AlertTriangle, Save } from "lucide-react";
+import { COMPASS_BRIEF, compassStepHelp } from "../../data/compassStepHelp";
+import { compassDaysUntil, compassPrettyDate, compassRegistrationSummary, compassSubtractMonths, compassToday } from "../../lib/compassProgress";
+import { BookOpen, CalendarDays, CheckCircle2, Circle, ClipboardCheck, Compass, ExternalLink, FileCheck2, Info, MapPinned, ShieldCheck, Users, AlertTriangle, Save, ChevronDown, ListChecks } from "lucide-react";
 
 const STATUSES = [
   ["not_started", "Thinking about it"],
@@ -15,18 +17,7 @@ const STATUSES = [
   ["renewal_due", "Renewal underway"],
 ];
 const EMPTY = { completed_steps: [], registration_status: "not_started", submitted_on: "", approved_on: "", expires_on: "", notes: "" };
-const prettyDate = (date) => {
-  if (!date) return "";
-  return new Intl.DateTimeFormat("en-AU", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(date + "T00:00:00Z"));
-};
-const lessMonths = (iso, months) => {
-  if (!iso) return null;
-  const [y, m, d] = iso.split("-").map(Number);
-  const base = new Date(Date.UTC(y, m - months - 1, 1));
-  const max = new Date(Date.UTC(base.getUTCFullYear(), base.getUTCMonth() + 1, 0)).getUTCDate();
-  base.setUTCDate(Math.min(d, max));
-  return base.toISOString().slice(0, 10);
-};
+const prettyDate = compassPrettyDate;
 const RowLink = ({ to, icon: Icon, label, desc }) => (
   <Link to={to} className="rounded-xl border border-stone-200 bg-white p-4 flex items-start gap-3 hover:border-emerald-700 hover:shadow-sm transition">
     <Icon size={20} className="text-emerald-800 shrink-0 mt-0.5" aria-hidden="true"/>
@@ -42,6 +33,7 @@ const External = ({ item }) => (
 
 export default function HomeschoolCompass() {
   const { user } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [jurisdiction, setJurisdiction] = useState(user?.jurisdiction || "");
@@ -51,6 +43,7 @@ export default function HomeschoolCompass() {
   const [form, setForm] = useState(EMPTY);
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [expandedStep, setExpandedStep] = useState("understand");
 
   useEffect(() => {
     let live = true;
@@ -62,8 +55,10 @@ export default function HomeschoolCompass() {
       setStudents(list);
       setProgress(map);
       setJurisdiction(tracker.data.jurisdiction);
-      const first = list[0]?.id || "";
+      const fromProfile = searchParams.get("child");
+      const first = list.some(s => s.id === fromProfile) ? fromProfile : (list[0]?.id || "");
       setStudentId(first);
+      setExpandedStep(COMPASS_STEP_IDS.find(id => !(map[first]?.completed_steps || []).includes(id)) || COMPASS_STEP_IDS[0]);
       setForm(map[first] ? { ...map[first], submitted_on: map[first].submitted_on || "", approved_on: map[first].approved_on || "", expires_on: map[first].expires_on || "" } : { ...EMPTY });
       setDirty(false);
       setLoading(false);
@@ -79,17 +74,19 @@ export default function HomeschoolCompass() {
   const currentStudent = students.find(s => s.id === studentId);
   const completed = form.completed_steps || [];
   const percentage = Math.round(completed.length / COMPASS_STEP_IDS.length * 100);
-  const deadline = useMemo(() => jurisdiction === "ACT" && form.expires_on ? lessMonths(form.expires_on, 3) : null, [jurisdiction, form.expires_on]);
-  const daysUntil = (iso) => iso ? Math.ceil((new Date(iso + "T00:00:00Z").getTime() - Date.now()) / 86400000) : null;
-  const daysToExpiry = daysUntil(form.expires_on);
-  const daysToActRenewal = daysUntil(deadline);
+  const deadline = useMemo(() => jurisdiction === "ACT" && form.expires_on ? compassSubtractMonths(form.expires_on, 3) : null, [jurisdiction, form.expires_on]);
+  const summary = compassRegistrationSummary(form, jurisdiction);
+  const daysToExpiry = summary.expiryDays;
+  const daysToActRenewal = compassDaysUntil(deadline, compassToday(jurisdiction));
 
   const changeStudent = (id) => {
     if (dirty && !window.confirm("You have unsaved changes. Switch children without saving?")) return;
     setStudentId(id);
+    setSearchParams({ child: id }, { replace: true });
     const p = progress[id];
     setForm(p ? { ...p, submitted_on: p.submitted_on || "", approved_on: p.approved_on || "", expires_on: p.expires_on || "" } : { ...EMPTY });
     setDirty(false);
+    setExpandedStep(COMPASS_STEP_IDS.find(key => !(p?.completed_steps || []).includes(key)) || COMPASS_STEP_IDS[0]);
   };
   const patch = (newValues) => { setForm(v => ({ ...v, ...newValues })); setDirty(true); };
   const toggle = (id) => patch({ completed_steps: completed.includes(id) ? completed.filter(x => x !== id) : [...completed, id] });
@@ -154,16 +151,51 @@ export default function HomeschoolCompass() {
                 <div className="flex justify-between text-xs font-bold"><span>{completed.length} of {COMPASS_STEP_IDS.length} steps checked off for {currentStudent?.name}</span><span>{percentage}%</span></div>
                 <div className="h-2.5 bg-stone-200 rounded-full overflow-hidden" role="progressbar" aria-label="Registration checklist progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percentage}><div className="h-full bg-emerald-700 rounded-full transition-all" style={{width: percentage+"%"}}/></div>
               </div>
-              <ol className="space-y-3">
-                {guide.steps.map((step, i) => <li key={step.id} className="rounded-xl border border-stone-200 bg-white p-4">
-                  <label className="flex gap-3 cursor-pointer">
-                    <input type="checkbox" className="mt-1 h-4 w-4 accent-emerald-800" checked={completed.includes(step.id)} onChange={() => toggle(step.id)} data-testid={"compass-step-"+step.id} aria-label={"Mark "+step.title+" complete"}/>
-                    <span className="min-w-0 flex-1"><span className="flex items-center gap-2 font-semibold text-stone-900 text-sm">{completed.includes(step.id) ? <CheckCircle2 size={16} className="text-emerald-700"/> : <Circle size={16} className="text-stone-400"/>}{i+1}. {step.title}</span><span className="block mt-2 text-sm leading-relaxed text-stone-600">{step.detail}</span></span>
-                  </label>
-                  {(step.id === "program" || step.id === "apply" || step.id === "maintain") && <div className="mt-3 ml-7 text-xs">
-                    {step.id === "program" ? <Link to="/parent/learning-plans" className="font-semibold text-emerald-800 underline">Open Side-Quest learning plans</Link> : step.id === "apply" ? <a href={(guide.links.find(l=>l.category==="Apply") || guide.links[0]).url} target="_blank" rel="noopener noreferrer" className="font-semibold text-emerald-800 underline">Open official application <ExternalLink size={12} className="inline"/></a> : <Link to="/parent/evidence" className="font-semibold text-emerald-800 underline">Open Evidence Backpack</Link>}
-                  </div>}
-                </li>)}
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-emerald-50 border border-emerald-100 p-3">
+                <div className="text-sm text-emerald-950 flex gap-2 items-start"><ListChecks size={18} className="mt-0.5 shrink-0"/><span><strong>Open a step to see exactly what to do.</strong> The checkbox simply records your progress; it does not submit an application or confirm government approval.</span></div>
+                <button type="button" onClick={save} disabled={!dirty || saving} className="rounded-full text-xs font-bold px-4 py-2 text-white disabled:opacity-50 shrink-0" style={{backgroundColor:"#1F3B2D"}} data-testid="compass-save-checklist">{saving ? "Saving…" : dirty ? "Save checklist changes" : "Checklist saved"}</button>
+              </div>
+              <ol className="space-y-3" data-testid="compass-steps">
+                {guide.steps.map((step, i) => {
+                  const help = compassStepHelp(jurisdiction, step.id);
+                  const open = expandedStep === step.id;
+                  const resource = guide.links[help?.link ?? 0] || guide.links[0];
+                  const domId = "compass-step-detail-" + step.id;
+                  return <li key={step.id} className={"rounded-xl border overflow-hidden bg-white " + (completed.includes(step.id) ? "border-emerald-300" : "border-stone-200")} data-testid={"compass-step-row-"+step.id}>
+                    <div className="flex items-center gap-3 p-4">
+                      <label className="flex gap-2 items-center shrink-0 cursor-pointer" title="Mark this step complete">
+                        <input type="checkbox" className="h-5 w-5 accent-emerald-800" checked={completed.includes(step.id)} onChange={() => toggle(step.id)} data-testid={"compass-step-"+step.id} aria-label={"Mark "+step.title+" complete"}/>
+                        <span className="sr-only">Mark step {i+1} complete</span>
+                      </label>
+                      <button type="button" aria-expanded={open} aria-controls={domId} onClick={() => setExpandedStep(v => v === step.id ? null : step.id)} className="flex-1 min-w-0 flex items-center justify-between gap-2 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 rounded-md" data-testid={"compass-open-step-"+step.id}>
+                        <span className="min-w-0">
+                          <span className="font-semibold text-stone-900 text-sm flex gap-2 items-center">{completed.includes(step.id) && <CheckCircle2 size={17} className="text-emerald-700 shrink-0"/>}{i+1}. {step.title}</span>
+                          <span className="block text-xs text-stone-600 mt-1 leading-relaxed">{COMPASS_BRIEF[step.id] || "See what this step involves."}</span>
+                        </span>
+                        <span className="shrink-0 text-xs font-semibold text-emerald-800 flex items-center gap-1">{open ? "Close guide" : "Open guide"} <ChevronDown size={18} className={"transition-transform "+(open?"rotate-180":"")}/></span>
+                      </button>
+                    </div>
+                    {open && <div id={domId} className="border-t border-stone-200 bg-stone-50 p-4 sm:p-5 space-y-4" data-testid={"compass-instructions-"+step.id}>
+                      <div>
+                        <h3 className="text-sm font-bold text-emerald-950">What this step actually means</h3>
+                        <p className="mt-1.5 text-sm leading-relaxed text-stone-700">{help?.meaning || step.detail}</p>
+                      </div>
+                      {help?.actions?.length > 0 && <div>
+                        <h3 className="text-sm font-bold text-emerald-950">Do this, in order</h3>
+                        <ol className="list-decimal space-y-2.5 mt-3 ml-5 text-sm text-stone-700 leading-relaxed">
+                          {help.actions.map((action, index) => <li key={index} className="pl-1">{action}</li>)}
+                        </ol>
+                      </div>}
+                      {help?.careful && <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 flex items-start gap-2 text-sm text-amber-950"><AlertTriangle size={16} className="mt-0.5 shrink-0"/><span><strong>Keep in mind: </strong>{help.careful}</span></div>}
+                      {help?.completeWhen && <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 flex items-start gap-2 text-sm text-emerald-950"><CheckCircle2 size={17} className="mt-0.5 shrink-0"/><span><strong>You're ready to tick this off when: </strong>{help.completeWhen}</span></div>}
+                      <div className="flex gap-3 flex-wrap items-center">
+                        {resource && <a href={resource.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-emerald-800 bg-white text-emerald-900 text-xs font-bold px-4 py-2 hover:bg-emerald-50">Read official {resource.category.toLowerCase()} guidance <ExternalLink size={13}/></a>}
+                        {step.id === "program" && <Link to="/parent/learning-plans" className="text-xs text-emerald-800 font-semibold underline">Open Side-Quest learning plans</Link>}
+                        {step.id === "maintain" && <Link to="/parent/evidence" className="text-xs text-emerald-800 font-semibold underline">Open Evidence Backpack</Link>}
+                      </div>
+                    </div>}
+                  </li>;
+                })}
               </ol>
               <div className="border-t border-stone-200 pt-4 space-y-4">
                 <h3 className="font-display text-lg font-bold text-emerald-950">Track your registration</h3>
