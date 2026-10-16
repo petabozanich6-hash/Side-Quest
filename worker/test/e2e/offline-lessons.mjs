@@ -36,7 +36,7 @@ writeFileSync(`${ROOT}/${CONFIG}`, JSON.stringify({
 }));
 const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", env: { ...process.env, CI: "true" }, input: "y\n" });
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
-if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(0,12000), (mig.stdout || "").slice(0,12000));
+if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(-12000), (mig.stdout || "").slice(-12000));
 ok(mig.status === 0, "local migrations failed");
 let server = null;
 const up = async () => {
