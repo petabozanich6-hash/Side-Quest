@@ -61,6 +61,10 @@ Stored **14 individually observed VCE unit/outcome headings**, comprising 10 Dra
 
 Added **17 individually checked unit/outcome references** to `worker/src/data/vic-vce-sciences-unit-outcomes-review.json` — Biology 6, Chemistry 8, Psychology 3. These are **selected verified headings only**, not the full set of outcomes for the subjects, and not alphanumeric curriculum codes. Official pages: https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/biology/teaching-and-learning ; https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/chemistry/teaching-and-learning ; https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/psychology/teaching-and-learning . Keep review-only and do not count toward a completed national syllabus inventory.
 
+### Follow-up collected: NSW 2025 Drama and Music Life Skills official outcomes (16 October 2026)
+
+Verified and retained **20 literal NESA syllabus outcome IDs**: **12 Drama Life Skills 11–12** (`worker/src/data/nsw-drama-life-skills-2025-official-outcomes-review.json`) and **8 Music Life Skills 11–12** (`worker/src/data/nsw-music-life-skills-2025-official-outcomes-review.json`). Full outcome identifier lists on the two specified official source pages were checked: https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes and https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes . Both 2025 syllabus editions begin staged implementation **in 2027**, so they are not automatically active in 2026. Their codes may already occur in the broader NESA import; **do not add 20 to unique NSW code totals without edition/source-pair deduplication**. These are real official alphanumeric outcome identifiers, unlike VCE ordinal outcome references. No runtime modification.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
