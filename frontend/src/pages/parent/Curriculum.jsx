@@ -193,7 +193,7 @@ export default function Curriculum() {
             : vic
               ? "Side-Quest now holds source-backed Victorian curriculum code references (F–10 v2 and v1 EAL), and these can be linked to records. The catalogue remains partial, and automatic AI lesson matching is not yet enabled for Victoria."
               : place?.code === "WA"
-                ? "Western Australia's official state curriculum downloads are not yet imported, so automatic outcome suggestions are off rather than showing incorrect interstate codes."
+                ? "Side-Quest holds the Western Australian Curriculum (SCSA) codes for Pre-primary to Year 10, including ABLEWA, each with a short plain-English summary, and these can be linked to records. Automatic AI lesson matching is not yet enabled for Western Australia."
                 : "Side-Quest holds verified Australian Curriculum v9 content-description reference codes for this jurisdiction, but automatic lesson matching and the learning-plan writer are not yet connected to them. Check your jurisdiction's implementation rules."}
         </p>
       </section>

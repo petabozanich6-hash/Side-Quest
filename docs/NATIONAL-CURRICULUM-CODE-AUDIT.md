@@ -1,5 +1,34 @@
 # Nationwide curriculum identifier coverage — verified source audit (16 October 2026)
 
+## Foundation to Year 10 outcome codes with parent summaries (16 October 2026)
+
+Side-Quest now holds **every Foundation/Kindergarten/Pre-primary to Year 10 outcome or content-description code it could read from the official sources**, for every subject, each with a short summary in Side-Quest's own words so a parent can tell what the code means. The parent sees the code, the summary, the subject/strand/level and a link to the official wording.
+
+| Catalogue | Used by | Codes | Source |
+|---|---|---:|---|
+| Australian Curriculum v9 (ACARA) | QLD, SA, TAS, ACT, NT | 2,678 incl. Languages | ACARA machine-readable export (CC BY 4.0) |
+| VCAA Victorian Curriculum F–10 v2 + v1 EAL | VIC | 3,723 (3,722 summarised) | f10.vcaa.vic.edu.au pages |
+| NESA syllabuses K–10 | NSW | 1,803 official codes added to the existing list | curriculum.nsw.edu.au digital syllabuses, plus nsw.gov.au Word/PDF for older syllabuses still in use |
+| SCSA Western Australian Curriculum | WA | 3,158 incl. ABLEWA stages A–D and 10 languages | k10outline.scsa.wa.edu.au outline downloads (JSON) |
+
+**Copyright approach.** Only codes, structure (subject, strand, years/stage, pathway, status) and Side-Quest-written summaries are committed. No official outcome wording is stored or republished; each code links to the official page instead. Summaries live in `worker/data/outcome-summaries/*.json` and are merged by `worker/scripts/build-outcome-summaries.mjs` into `worker/src/data/outcome-summaries.json` (11,361 codes). Codes-only data files: `worker/src/data/nsw-k10-codes.ts`, `worker/src/data/wa-codes.ts`. Tests (`worker/test/outcomeSummaries.test.mjs`) fail if any catalogue code lacks a summary, if a summary copies the official AC9 text, or if a codes file gains a description field.
+
+**How codes reach a child's program.**
+- WA uses the same year-by-year and subject matching as AC9. ABLEWA stages are only used when the parent picks the stage (for example "ABLEWA B") as the child's level. History, Geography, Civics and Economics are strands of one WA HASS subject, so a History course picks up the History strand.
+- NSW: only syllabuses NESA lists as current are in the default 2026 program. Upcoming, outgoing or unclassified ones stay browsable. Life Skills outcomes only appear for a child on a Life Skills pathway. Elective syllabuses (History/Geography Elective) only match courses named as electives.
+- NSW Languages courses map to Aboriginal Languages, Auslan, Classical Languages or (by default) Modern Languages.
+
+**Known gaps and oddities (not invented around).**
+- VIC `VC2CCPACP3` is listed in the import but appears on no VCAA page we could read, so it has no summary.
+- NSW: 30 codes in the older hand-made seed list are not official NESA codes, for example `PHe-1`, `VAe-1`, `MUe-1`, `MA1-MR-01`, `ST2-7PW-T`, `MA3-RWN-01`, `SC4-LW-04` and `VA5-1`. They are left in place so existing child records keep working, but they should be reviewed and retired. The legacy seed (`worker/src/data/nsw-outcomes.ts`) also still contains NESA wording. Replacing that wording with summaries is a follow-up.
+- NSW: the outgoing Dance, Drama and Music 2003 syllabuses and VET were not imported. Older 2003/2004 numbered outcomes are namespaced (for example `VA2003:4.1` and `PDM2004:5.1`) so they cannot collide.
+- NSW case twins (for example seed `ENe-OLC-01` and NESA `ENE-OLC-01`) are both kept; the non-official spelling is marked `duplicate` so it is not counted twice. Summaries are looked up case-insensitively.
+- AC9 export: `AC9SF03` is filed under Science, and the `AC9L1AU2C04` row is missing (merged into C03) in ACARA's export.
+- WA: SCSA publishes Tamil content without codes, so those 21 rows use namespaced Side-Quest keys (`TAMIL-WA:socialising-1` etc.). A few codes are kept exactly as SCSA prints them, even where they look like typos or combinations: `ACLTC011`, `ACLITU017-ACLITU018`, `ACLKOU126127128`. A stray "(" before seven Japanese codes was removed.
+- WA's per-year content often reuses one code across a band (for example Arts F–2), so a code can cover several years.
+- Senior secondary (Years 11–12) course outcomes and VET units are **not** part of this F–10 pass.
+
+
 ## Interrupted Work-mode verification checkpoint — reconciliation pending (16 October 2026)
 
 The interrupted Work-mode session reported **1,664 structured NSW records** and **1,038 Victorian outcome references** each matched to their recorded source locations. It clarified that Victoria had **92 distinct source documents**, not 95 (the latter counted repeated/shared document links). **These figures are a handoff checkpoint, not yet independently reproduced by the committed verification artifacts**; they must not silently supersede the older numbers elsewhere in this document or be described as a complete curriculum import.

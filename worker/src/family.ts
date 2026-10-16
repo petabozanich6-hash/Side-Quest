@@ -374,7 +374,7 @@ export function registerFamily(app: App, g: Guards) {
         code:o.code, learning_area:o.learning_area, subject:o.subject || null,
         subjects:o.subjects || null, pathway:o.pathway || null,
         stage:o.stage, status:o.status || "source_verified",
-        identifier_kind:catalogue.framework==="AC9" ? "content_description" : "curriculum_outcome_or_description",
+        identifier_kind:(catalogue.framework==="AC9"||catalogue.framework==="WA") ? "content_description" : "curriculum_outcome_or_description",
         source:outcomeInfo(o).source_title, official_url:outcomeInfo(o).official_url,
       })),
     });

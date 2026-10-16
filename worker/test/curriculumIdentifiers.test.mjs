@@ -1,3 +1,4 @@
+import { catalogueFor } from "../src/outcomeTracker.ts";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
@@ -49,10 +50,13 @@ test("Curriculum code index is authenticated, paginated and bound to the actual 
   assert.ok(legacyQld.data.some(x=>x.code.startsWith("AC9M")));
   assert.ok(legacyQld.data.every(x=>x.code.startsWith("AC9")||x.code.startsWith("ACL9")));
   assert.equal((await h.req("/curriculum/outcomes",null)).status,401, "outcome list requires family identity");
-  const blocked=await h.req("/curriculum/identifiers",wa);
-  assert.equal(blocked.data.available,false);
-  assert.deepEqual(blocked.data.identifiers,[]);
-  assert.deepEqual((await h.req("/curriculum/outcomes",wa)).data,[], "WA missing source is not filled with NSW outcomes");
+  const w=await h.req("/curriculum/identifiers?limit=5&jurisdiction=NSW",wa);
+  assert.equal(w.data.framework,"WA","WA families get the SCSA catalogue, never another state's");
+  assert.ok(w.data.total>=3100);
+  const waCodes=new Set(catalogueFor("WA").outcomes.map(x=>x.code));
+  assert.ok(w.data.identifiers.length===5 && w.data.identifiers.every(x=>waCodes.has(x.code)));
+  const legacyWa=(await h.req("/curriculum/outcomes",wa)).data;
+  assert.ok(legacyWa.every(x=>waCodes.has(x.code)), "WA is never filled with NSW outcomes");
 });
 
 test("Official senior course IDs cannot be used as outcomes or queried across state accounts",async()=>{

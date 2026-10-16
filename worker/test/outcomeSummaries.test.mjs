@@ -56,3 +56,39 @@ test("NSW Life Skills and not-yet-current syllabuses stay out of a child's defau
   const ht = nsw.byCode.get("HT4-1");
   assert.match(outcomeInfo(ht).official_url, /^https:\/\/www\.nsw\.gov\.au\//);
 });
+
+test("every WA Pre-primary to Year 10 code from SCSA has a summary and is in the WA catalogue", async () => {
+  const { WA_CODES } = await import("../src/data/wa-codes.ts");
+  const wa = catalogueFor("WA");
+  assert.equal(wa.available, true);
+  assert.equal(wa.framework, "WA");
+  assert.ok(WA_CODES.length >= 3100);
+  assert.deepEqual(WA_CODES.filter((r) => !summaryFor(r.code)).map((r) => r.code), []);
+  assert.deepEqual(WA_CODES.filter((r) => !wa.byCode.has(r.code)).map((r) => r.code), []);
+  assert.ok(WA_CODES.every((r) => !("description" in r)), "codes only, no SCSA wording");
+  const info = outcomeInfo(wa.byCode.get("WA3MNAUN1"));
+  assert.match(info.source_title, /Western Australian Curriculum/);
+  assert.equal(info.level_label, "Year 3");
+  assert.match(info.official_url, /^https:\/\/k10outline\.scsa\.wa\.edu\.au\//);
+});
+
+test("WA programs follow the child's school year, chosen subjects and ABLEWA stage", async () => {
+  const { programFor } = await import("../src/outcomeTracker.ts");
+  const wa = catalogueFor("WA");
+  const y3 = programFor(wa, { stage: "S2", year_level: "3", extra: "{}" });
+  assert.ok(y3.includes(wa.byCode.get("WA3MNAUN1")), "Year 3 maths for a Year 3 child");
+  assert.ok(!y3.includes(wa.byCode.get("WA4MNAUN1")), "not Year 4 maths");
+  assert.ok(!wa.outcomes.filter((o) => o.levels?.some((l) => l.startsWith("ABLEWA-"))).some(y3.includes), "ABLEWA only when chosen");
+  const abl = programFor(wa, { stage: "S1", year_level: "1", extra: JSON.stringify({ subject_levels: { Mathematics: "ABLEWA B" } }) });
+  assert.ok(abl.includes(wa.byCode.get("ACMNA001b")));
+  assert.ok(!abl.includes(wa.byCode.get("WA1MNAUN1")));
+  const y8 = programFor(wa, { stage: "S4", year_level: "8", extra: JSON.stringify({ electives: [
+    { name: "History", learning_area: "HSIE" }, { name: "French", learning_area: "Languages" }, { name: "Music", learning_area: "Creative Arts" }] }) });
+  assert.ok(y8.includes(wa.byCode.get("WA8HAKUH1")), "History strand of HASS");
+  assert.ok(!y8.includes(wa.byCode.get("WA8HAKUG1")), "not Geography");
+  const french = wa.outcomes.filter((o) => o.subject === "French" && o.from <= 8 && o.to >= 8);
+  assert.ok(french.length && french.every(y8.includes), "French for a French course");
+  assert.ok(!wa.outcomes.filter((o) => o.subject === "Japanese").some(y8.includes), "no other languages");
+  assert.ok(wa.outcomes.filter((o) => o.subject === "Music" && o.from <= 8 && o.to >= 8).every(y8.includes));
+  assert.ok(!wa.outcomes.filter((o) => o.subject === "Drama").some(y8.includes));
+});
