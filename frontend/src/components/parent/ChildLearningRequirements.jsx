@@ -38,6 +38,17 @@ export function requirementsFor(jurisdiction, stage) {
     required: VIC_AREAS, choices: [], verified: true, source: SA_SOURCE,
     explanation: "South Australian home education programs must address all eight Australian Curriculum learning areas. The department does not require one specific teaching method or commercial curriculum. There is no fixed additional elective-subject number in this guidance; senior pathways need separate consideration.",
   };
+  if (jurisdiction === "WA") return {
+    required: [], choices: [], verified: true,
+    source: "https://www.education.wa.edu.au/develop-an-education-program",
+    explanation: "Western Australia does not prescribe a separate compulsory-subject checklist or a fixed number of elective subjects for home educators. The program should suit the child, and moderators consider its consistency with the WA Curriculum. Its eight learning areas are useful references, not automatically eight compulsory standalone lessons.",
+  };
+  if (jurisdiction === "TAS") return {
+    required: ["Literacy", "Numeracy", "A broad range of learning areas suited to the child"],
+    choices: [], verified: true,
+    source: "https://oer.tas.gov.au/wp-content/uploads/2023/10/Understanding-the-Standards-Sept-2023-FINAL-2.pdf",
+    explanation: "Tasmania's standards include literacy, numeracy and a suitable range of other learning areas. They do not require all eight Australian Curriculum areas or a fixed number of elective subjects. Programs also address wellbeing, interpersonal skills and other applicable standards.",
+  };
   return {
     required: [], choices: [], verified: false, source: null,
     explanation: "Your state or territory has its own home education rules. Side-Quest has not verified an exhaustive stage-specific compulsory-subject checklist here, so we will not label particular subjects mandatory. Use the official registration and curriculum links below to confirm your plan.",
@@ -83,7 +94,7 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
         <h3 className="font-bold text-emerald-950 mt-4 mb-2">{jurisdiction === "VIC" ? "Eight learning areas to address" : "Mandatory learning areas"}</h3>
         <ul className="grid sm:grid-cols-2 gap-2">{result.required.map(s => <li key={s} className="text-sm flex items-start gap-2"><span aria-hidden="true" className="text-emerald-700">✓</span>{s}</li>)}</ul>
       </> : <p className="text-sm font-semibold mt-3 text-amber-900">This jurisdiction or stage needs an authority-verified mandatory/choice breakdown.</p>}
-      {result.verified && result.choices.length === 0 && <p className="text-xs text-stone-600 mt-3">No minimum number of additional elective learning areas is specified in this guide. Additional interests and subjects can still be included.</p>}
+      {result.verified && result.choices.length === 0 && <p className="text-xs text-stone-600 mt-3">No fixed minimum number of additional elective subjects is specified in the cited home education guidance. Other learning opportunities can still be included.</p>}
       {result.choices.length > 0 && <>
         <h3 className="font-bold text-emerald-950 mt-4">Select at least {result.chooseCount} additional learning areas</h3>
         <p className="text-xs text-stone-600 mb-2">{result.choicesNote}</p>
