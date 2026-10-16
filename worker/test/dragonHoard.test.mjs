@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { makeDb } from "./fakeD1.mjs";
-import { HOARD_SCHEMA, validateHoardOffer, createHoardOffer, disableHoardOffer, listHoardOffers, giftPreviewDays } from "../src/dragonHoard.ts";
+import { HOARD_SCHEMA, validateHoardOffer, createHoardOffer, disableHoardOffer, listHoardOffers, giftPreviewDays, previewHoardDiscount } from "../src/dragonHoard.ts";
 
 const offer = () => ({
   code: "FOUNDINGDRAGON", label: "Founding Dragon", percent_off: 20,
@@ -60,6 +60,56 @@ test("Stripe handles coupon and redemption caps, and retiring a code disables it
     assert.equal((await disableHoardOffer(db, env, made.id)).ok, true);
     assert.equal((await listHoardOffers(db))[0].active, 0);
     assert.equal((await disableHoardOffer(db, env, made.id)).status, 409);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("discount preview reads live Stripe status and never creates or redeems codes", async () => {
+  const db = makeDb();
+  await listHoardOffers(db);
+  const end = new Date(Date.now() + 7 * 86400_000).toISOString();
+  db.raw.prepare("INSERT INTO dragon_hoard_offers (id,mode,code,label,percent_off,duration_months,max_redemptions,expires_at,stripe_coupon_id,stripe_promotion_id,active,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)")
+    .run("sq-offer", "test", "REAL10", "Proof", 10, 1, 2, end, "coupon_id", "promo_id", 1, new Date().toISOString());
+  db.raw.prepare("INSERT INTO dragon_hoard_terms (offer_id,duration_type) VALUES (?,?)").run("sq-offer", "month3");
+  const urls = [];
+  let uses = 0;
+  const fake = async (url, init) => {
+    urls.push({ url, method: init.method });
+    if (url.endsWith("/promotion_codes/promo_id")) return new Response(JSON.stringify({ id: "promo_id", active: true, times_redeemed: uses, max_redemptions: 2 }));
+    if (url.endsWith("/coupons/coupon_id")) return new Response(JSON.stringify({ id: "coupon_id", valid: true, percent_off: 10, duration: "repeating", duration_in_months: 3 }));
+    throw new Error("unexpected Stripe endpoint " + url);
+  };
+  const env = { STRIPE_SECRET_KEY: "sk_test_fake" };
+  const good = await previewHoardDiscount(db, env, "real10", fake);
+  assert.deepEqual(good, { valid: true, code: "REAL10", percent_off: 10, duration_type: "month3" });
+  assert.ok(urls.every((x) => x.method === "GET"), "preview must never write to Stripe");
+  const count = urls.length;
+  assert.equal((await previewHoardDiscount(db, env, "wrong", fake)).valid, false);
+  assert.equal(urls.length, count, "unknown codes should not contact Stripe");
+  uses = 2;
+  assert.equal((await previewHoardDiscount(db, env, "REAL10", fake)).valid, false, "redeemed-out promo shown as valid");
+  db.raw.prepare("UPDATE dragon_hoard_offers SET active = 0 WHERE id = 'sq-offer'").run();
+  assert.equal((await previewHoardDiscount(db, env, "REAL10", fake)).valid, false, "retired offer shown as valid");
+});
+
+test("monthly-duration offers create bounded repeating Stripe coupons and retain their terms", async () => {
+  const db = makeDb();
+  const calls = [];
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    calls.push({ url, body: String(init.body || "") });
+    if (url.includes("/prices/")) return new Response(JSON.stringify({ product: "prod_SideQuest1" }));
+    if (url.endsWith("/coupons")) return new Response(JSON.stringify({ id: "coupon_3m" }));
+    if (url.endsWith("/promotion_codes")) return new Response(JSON.stringify({ id: "promo_3m" }));
+    throw Error("unexpected Stripe path");
+  };
+  try {
+    const made = await createHoardOffer(db, { STRIPE_SECRET_KEY: "sk_test_fake" }, { ...offer(), code: "THREEMONTHS", duration_type: "month3" }, "owner");
+    assert.equal(made.ok, true);
+    assert.equal((await listHoardOffers(db))[0].duration_type, "month3");
+    const coupon = calls.find((x) => x.url.endsWith("/coupons")).body;
+    assert.ok(coupon.includes("duration=repeating") && coupon.includes("duration_in_months=3"), coupon);
   } finally {
     globalThis.fetch = original;
   }
