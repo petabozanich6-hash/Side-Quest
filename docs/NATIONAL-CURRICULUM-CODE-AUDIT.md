@@ -126,6 +126,10 @@ Reconciled all seven review files spanning the nine previously inaccessible syll
 
 Persisted an explicit `scoped_identifier` for all eight `N6-` Numeracy Stage 6 CEC (2021) outcomes in `worker/src/data/nsw-numeracy-cec-2021-verified-outcomes-review.json`. Previously, the nine-CEC reconciliation computed compound identities dynamically for Numeracy while the source file had no persistent key. Each key now follows `NSW:NESA:Numeracy Stage 6 CEC:2021:<outcome>`; human-facing official identifiers remain unchanged. This resolves a **data schema consistency issue** only. No new outcomes, no runtime integration, no claim that all 103 CEC outcomes are independently primary-source certified.
 
+### NSW CEC tracking integrity control (16 October 2026)
+
+Re-read all **103** legacy CEC review records across seven source files. **103/103** have a persisted syllabus-scoped identifier; **0** duplicate scoped keys; **103/103** provide a source URL. Report: `curriculum-audits/nsw-cec-tracking-integrity-check-2026.json`. These checks establish *schema integrity*, **not** source authenticity, complete syllabus enumeration, authority edition match or suitability for live parent tracking. Verification tiers remain separately labelled: official NESA guides, indexed PDF requiring page recheck, school reproduced outcomes, third-party mirror, and incomplete candidate sets. **None is promoted to the live tracker by this change.**
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
