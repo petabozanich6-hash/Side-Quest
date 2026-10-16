@@ -1,0 +1,109 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 157,
+  "source_print_page": 145,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "Appendix 3 final page 145; Tamil Second Language Year 12 examinable code is ATPML in the printed manual (different stem from AETML). Preserved literally, flagged for verification; do not silently normalize.",
+  "records": [
+    {
+      "subject": "Tamil: Background Language",
+      "identifier": "TBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Tamil: Background Language",
+      "identifier": "AETBL",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Tamil: Background Language",
+      "identifier": "ATTBL",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Tamil: Background Language",
+      "identifier": "A1TBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Tamil: Background Language",
+      "identifier": "A2TBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Tamil: Second Language",
+      "identifier": "TML",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Tamil: Second Language",
+      "identifier": "AETML",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Tamil: Second Language",
+      "identifier": "ATPML",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Tamil: Second Language",
+      "identifier": "A1TML",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Tamil: Second Language",
+      "identifier": "A2TML",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "VAR",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "AEVAR",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "ATVAR",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "A1VAR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "A2VAR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "GEVAR",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "GTVAR",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "G1VAR",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Visual Arts",
+      "identifier": "G2VAR",
+      "identifier_kind": "unit_code"
+    }
+  ]
+}
