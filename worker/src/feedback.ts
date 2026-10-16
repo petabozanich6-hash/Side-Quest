@@ -67,7 +67,7 @@ export function registerFeedback(app: App, guards: Guards) {
     const id = newId(), now = nowIso();
     await c.env.DB.prepare(
       "INSERT INTO parent_feedback (id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,'new','',NULL,?,?)",
-    ).bind(id, user.family_id, user.id, b.category, b.subject.trim(), b.message.trim(), (b.page_hint || "").trim(), now, now).run();
+    ).bind(id, user.family_id, user.id, b.category, b.subject.trim(), b.message.trim(), (typeof b.page_hint === "string" ? b.page_hint.trim() : ""), now, now).run();
     // A failed or unconfigured email never undoes the durable, private HQ submission.
     try { await ownerAlert(c.env, id, b.category); } catch { /* optional */ }
     return c.json({ id, status: "new", created_at: now }, 201);
