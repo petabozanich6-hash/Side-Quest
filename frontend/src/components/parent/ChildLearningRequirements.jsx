@@ -95,7 +95,7 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
     {age && <p className="text-xs text-stone-600">Age {age} does not automatically determine the appropriate learning stage. Parents can plan with their child's needs and discuss the proposed level with the registering authority.</p>}
     <div className="rounded-xl bg-stone-50 border border-stone-200 p-4">
       <p className="text-sm leading-relaxed">{result.explanation}</p>
-      {result.verified ? <>
+      {result.verified && result.required.length > 0 ? <>
         <h3 className="font-bold text-emerald-950 mt-4 mb-2">{jurisdiction === "VIC" ? "Eight learning areas to address" : "Mandatory learning areas"}</h3>
         <ul className="grid sm:grid-cols-2 gap-2">{result.required.map(s => <li key={s} className="text-sm flex items-start gap-2"><span aria-hidden="true" className="text-emerald-700">✓</span>{s}</li>)}</ul>
       </> : <p className="text-sm font-semibold mt-3 text-amber-900">This jurisdiction or stage needs an authority-verified mandatory/choice breakdown.</p>}
