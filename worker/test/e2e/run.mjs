@@ -35,8 +35,10 @@ writeFileSync(`${ROOT}/wrangler.e2e.jsonc`, JSON.stringify({
   r2_buckets: [{ binding: "BUCKET", bucket_name: "e2e-files" }],
   d1_databases: [{ binding: "DB", database_name: "e2e", database_id: "00000000-0000-0000-0000-000000000000", migrations_dir: "./worker/migrations" }],
 }));
-const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 120000 });
+console.log("Starting isolated local D1 migrations (2-minute subprocess timeout)...");
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
+console.log("Local D1 migration process exited:", mig.status, mig.signal || "", mig.error?.message || "");
 if(mig.status !== 0) console.error("D1 migration diagnostics:", { exitStatus: mig.status, signal: mig.signal, spawnError: mig.error?.message }, "STDERR TAIL:", (mig.stderr || "").slice(-18000), "STDOUT TAIL:", (mig.stdout || "").slice(-18000));
 console.log((mig.stdout || "").slice(-600), (mig.stderr || "").slice(-600));
 ok(mig.status === 0, "local migrations failed");
