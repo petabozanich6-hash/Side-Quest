@@ -65,6 +65,15 @@ Added **17 individually checked unit/outcome references** to `worker/src/data/vi
 
 Verified and retained **20 literal NESA syllabus outcome IDs**: **12 Drama Life Skills 11–12** (`worker/src/data/nsw-drama-life-skills-2025-official-outcomes-review.json`) and **8 Music Life Skills 11–12** (`worker/src/data/nsw-music-life-skills-2025-official-outcomes-review.json`). Full outcome identifier lists on the two specified official source pages were checked: https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes and https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes . Both 2025 syllabus editions begin staged implementation **in 2027**, so they are not automatically active in 2026. Their codes may already occur in the broader NESA import; **do not add 20 to unique NSW code totals without edition/source-pair deduplication**. These are real official alphanumeric outcome identifiers, unlike VCE ordinal outcome references. No runtime modification.
 
+### Follow-up collected: NSW Dance Life Skills and Music 2 (16 October 2026)
+
+Retained **25 source-checked NSW 2025 syllabus outcome code records** in two separate review-only datasets:
+
+- `worker/src/data/nsw-dance-life-skills-2025-official-outcomes-review.json`: **13** Dance Life Skills 11–12 literal codes, official source https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-life-skills-11-12-2025/outcomes .
+- `worker/src/data/nsw-music-2-2025-official-outcomes-review.json`: **12** Music 2 11–12 literal codes (6 Year 11 + 6 Year 12), official source https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes .
+
+Both syllabuses first implement in 2027 (Music 2 first new-syllabus HSC examination 2028). These files are verifiable **page-level lists**; they are **not necessarily 25 novel identifiers** relative to `nesa-review-import.json`. Compare exact code, source URL and syllabus edition before updating the NSW distinct-ID count. Do not publish these future-only identifiers into current 2026 mappings, rewrite past evidence, or merge/deploy.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
