@@ -85,18 +85,17 @@ await step("security: family isolation, sibling privacy, PIN revocation and thro
       password: "SecurityPass123!", jurisdiction: "NSW"
     });
     ok(r.status === 200 && r.json?.token, `registration ${n}: ${r.status}`);
+    // Paid test fixture: ownership checks must return 403/404, never 402 for
+    // a missing subscription. This operates on disposable local D1 only.
+    const id = JSON.parse(Buffer.from(r.json.token.split(".")[1], "base64url").toString()).family_id;
+    sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${id}';`);
     return r.json.token;
   }
   async function child(parent, name) {
     const username = `sec${name.toLowerCase()}${tag}`;
     const r = await api("POST", "/students", parent, { name, username, pin: "7392", stage: "S2" });
-    // Trial families can add only one child; seed the second sibling directly in this isolated test DB.
-    if (r.status === 402 && name === "Bravo") {
-      const siblingId = crypto.randomUUID();
-      sql(`INSERT INTO students (id, family_id, name, username, pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, credential_version)
-        SELECT '${siblingId}', family_id, 'Bravo', '${username}', pin_hash, birth_year, stage, year_level, theme, interests, notes, created_at, extra, 0 FROM students WHERE username = 'sec alpha-placeholder'`.replace("sec alpha-placeholder", `secalpha${tag}`));
-      r.status = 200; r.json = { id: siblingId };
-    }
+    // Paid member must be able to create a second real child; don't bypass
+    // authentication by inserting a synthetic sibling directly into SQL.
     ok(r.status === 200 && r.json?.id, `create ${name}: ${r.status}`);
     const login = await api("POST", "/auth/child-login", null, { username, pin: "7392" });
     ok(login.status === 200 && login.json?.token, `login ${name}: ${login.status}`);
@@ -233,6 +232,16 @@ await step("A. new family registers through the UI", async () => {
   ok(plan.json.effective_plan === "FREE_PREVIEW", "not on free preview: " + JSON.stringify(plan.json));
   ok(plan.json.billing && plan.json.billing.enabled === false, "billing off without Stripe secrets: " + JSON.stringify(plan.json.billing));
   await shot("parent-home");
+});
+
+// The registration scenario above verifies FREE_PREVIEW. Upgrade the disposable
+// family in local D1 before the full paid workflow, with no Stripe checkout or
+// real account changes. Dedicated free-preview tests below stay on free plans.
+await step("test fixture: activate paid membership for the full learning workflow", async () => {
+  const familyId = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='ACTIVE_MONTHLY' WHERE id='${familyId}';`);
+  const current = await api("GET", "/account/plan", parentToken);
+  ok(current.json.effective_plan === "ACTIVE_MONTHLY", "test family was not given paid access");
 });
 
 await step("public homepage explains the full product and honest membership pricing", async () => {
@@ -776,12 +785,16 @@ await step("K. another family cannot see or touch this family's records", async 
   ok((await api("POST", "/students", t2, { name: "B", username: `b${stamp}`.slice(0, 14), pin: "1234", stage: "S1" })).status === 200, "INTERNAL child 2");
 });
 
-await step("AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI", async () => {
-  const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
+await step("AI drafting: a separate free preview family is blocked by the server", async () => {
+  const reg = await api("POST", "/auth/register", null, { name: "Preview Family", email: `preview-ai-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
+  ok(reg.status === 200 && reg.json?.token, "preview family registration failed");
+  const t = reg.json.token;
+  ok((await api("GET", "/account/plan", t)).json.effective_plan === "FREE_PREVIEW", "new family not on free preview");
+  const r = await api("POST", "/ai/lesson-draft", t, { topic: "Fractions" });
   ok(r.status === 402 && r.json.code === "UPGRADE_REQUIRED", `expected 402, got ${r.status}`);
-  const st = await api("GET", "/ai/status", parentToken);
+  const st = await api("GET", "/ai/status", t);
   ok(st.json.allowed === false, "free preview shown as allowed");
-  const n = await api("GET", "/lessons", parentToken);
+  const n = await api("GET", "/lessons", t);
   ok(!n.json.some(l => l.ai_generated), "AI lesson exists for a free family");
 });
 
@@ -1253,7 +1266,9 @@ await step("L. users cannot grant themselves a paid plan", async () => {
 
 await step("M. expired preview: cannot create or assign, but nothing is lost", async () => {
   const fam = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
-  sql(`UPDATE families SET trial_started_at='2020-01-01T00:00:00Z', trial_ends_at='2020-01-08T00:00:00Z' WHERE id='${fam}';`);
+  // Return the local paid fixture to a free preview before simulating expiry.
+  // This also checks that work already saved is preserved on downgrade.
+  sql(`UPDATE families SET plan='FREE_PREVIEW', plan_period_end=NULL, trial_started_at='2020-01-01T00:00:00Z', trial_ends_at='2020-01-08T00:00:00Z' WHERE id='${fam}';`);
   const p = await api("GET", "/account/plan", parentToken);
   ok(p.json.effective_plan === "PREVIEW_EXPIRED", "not expired: " + p.json.effective_plan);
   ok((await api("POST", "/lessons", parentToken, { title: "after", status: "draft" })).status === 402, "can create after expiry");
