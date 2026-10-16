@@ -67,6 +67,7 @@ export default function UpgradePage() {
         {billing.mode === "test" && <p className="mt-2 inline-block rounded bg-amber-100 px-2 py-1 text-xs font-bold text-amber-900" data-testid="billing-test-mode">Test mode: no real payments are taken</p>}
       </header>
 
+      {preview && plan.preview_gift && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="preview-gift-notice"><strong>🐉 A little something from the Dragon’s Hoard!</strong> You’ve been gifted {plan.preview_gift.days} extra preview day{plan.preview_gift.days === 1 ? "" : "s"}. Your free preview now runs until {day(plan.preview_gift.ends_at)}. All the usual preview limits still apply.</div>}
       {checkout === "success" && !paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirming">Thanks! We are confirming your payment with Stripe. This usually takes a few seconds.</div>}
       {checkout === "success" && paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirmed">Your Family Membership is active. Welcome!</div>}
       {checkout === "cancelled" && <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">Checkout was cancelled. Nothing was charged.</div>}
