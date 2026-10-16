@@ -60,6 +60,41 @@ export async function resolveHoardDiscount(db: D1Database, mode: Mode, raw: stri
   return offer?.stripe_promotion_id ?? null;
 }
 
+/**
+ * Read-only parent preview. Local HQ data alone is insufficient: Stripe may have
+ * retired a code or exhausted its redemption cap since it was issued.
+ * Never returns Stripe identifiers or the owner's internal campaign metadata.
+ * A verified preview is informational; Stripe still decides final eligibility.
+ */
+export async function previewHoardDiscount(
+  db: D1Database, env: Env, raw: string,
+  fetchImpl?: typeof fetch,
+): Promise<{ valid: boolean; code?: string; percent_off?: number; first_invoice_only?: true; message?: string }> {
+  const unavailable = { valid: false, message: "This code isn't currently available. Check the spelling or try another." };
+  const code = raw.trim().toUpperCase();
+  if (!/^[A-Z0-9]{4,24}$/.test(code)) return unavailable;
+  const cfg = billingConfig(env);
+  if (!cfg.ok) return { valid: false, message: "Discount codes cannot be checked right now." };
+  await ensureHoardSchema(db);
+  const offer = await db.prepare(
+    "SELECT stripe_coupon_id, stripe_promotion_id, percent_off FROM dragon_hoard_offers WHERE mode = ? AND code = ? AND active = 1 AND expires_at > ?"
+  ).bind(cfg.mode, code, nowIso()).first<Pick<HoardOffer, "stripe_coupon_id" | "stripe_promotion_id" | "percent_off">>();
+  if (!offer) return unavailable;
+
+  // Stripe is authoritative for invalidated, expired and fully redeemed promotions.
+  // No coupon redemption or Checkout Session is created by checking a code.
+  const opts = { fetchImpl };
+  const promo = await stripeCall(cfg.key, "GET", "promotion_codes/" + encodeURIComponent(offer.stripe_promotion_id), {}, opts);
+  const seconds = Math.floor(Date.now() / 1000);
+  if (promo?.active !== true || (promo.expires_at && promo.expires_at <= seconds) ||
+      (promo.max_redemptions != null && Number(promo.times_redeemed || 0) >= promo.max_redemptions)) return unavailable;
+
+  const coupon = await stripeCall(cfg.key, "GET", "coupons/" + encodeURIComponent(offer.stripe_coupon_id), {}, opts);
+  if (!coupon || coupon.id !== offer.stripe_coupon_id || coupon.valid === false ||
+      coupon.percent_off !== offer.percent_off || (coupon.duration && coupon.duration !== "once")) return unavailable;
+  return { valid: true, code, percent_off: offer.percent_off, first_invoice_only: true };
+}
+
 export function validateHoardOffer(input: Record<string, unknown>) {
   const code = typeof input.code === "string" ? input.code.trim().toUpperCase() : "";
   const label = typeof input.label === "string" ? input.label.trim() : "";
