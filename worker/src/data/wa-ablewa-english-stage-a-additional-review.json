@@ -1,0 +1,55 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum ABLEWA",
+  "subject": "English",
+  "level": "ABLEWA Stage A",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+  "verification_date": "2026-10-16",
+  "status": "source_observed_review_only",
+  "notes": "Six literal English ABLEWA Stage A wa_code anchors independently observed in SCSA source JSON. Excludes six Stage A codes already listed in WA K-10 initial sample. Not full English Stage A coverage.",
+  "records": [
+    {
+      "identifier": "ACELA1431a",
+      "identifier_kind": "content_description",
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "identifier": "ACELA1758a",
+      "identifier_kind": "content_description",
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "identifier": "ACELA1432a",
+      "identifier_kind": "content_description",
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "identifier": "ACELA1438a",
+      "identifier_kind": "content_description",
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "identifier": "ACELA1426a",
+      "identifier_kind": "content_description",
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "identifier": "ACELA1428a",
+      "identifier_kind": "content_description",
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    }
+  ]
+}
