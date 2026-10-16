@@ -90,6 +90,10 @@ Located official NESA *alternative source materials* for **four of nine** modern
 
 Located official NESA legacy syllabuses for the **remaining five** modern CEC `/outcomes` 404 cases: Ceramics 2000, Computing Applications 2012, Numeracy 2021, Photography/Video/Digital Imaging 2000, and Visual Design 2000. See `curriculum-audits/nsw-cec-remaining-five-source-recovery-2026.json` for official landing/PDF URLs and source types. With the prior four recovered sources, all **9/9** failed modern route cases now have official alternative source leads. **0 additional syllabus outcome codes extracted this batch**; the full nine-source legacy outcome enumeration, exact kind/edition identification and cross-syllabus deduplication remain pending. Do not count recovered syllabus documents as code coverage.
 
+### NSW Stage 6 Numeracy CEC — eight genuinely absent identifiers recovered (16 October 2026)
+
+Unlike the duplicated Creative Arts and other review sets, **eight literal Numeracy CEC (2021) syllabus outcomes were absent** from every `candidates[].code` in the 1,435-record `nesa-review-import.json`: `N6-1.1`, `N6-1.2`, `N6-1.3`, `N6-2.1`, `N6-2.2`, `N6-2.3`, `N6-3.1`, `N6-3.2`. Official NESA Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, lists all eight: https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES (corroborated by the Module 2 guide, p. 9). Saved as `worker/src/data/nsw-numeracy-cec-2021-verified-outcomes-review.json`. **This is eight newly discovered baseline-missing code strings, not yet a complete NSW catalogue or reconciliation with the interrupted 1,664 checkpoint.** Keep review-only; NESA syllabus edition is 2021 and implementation began Year 11 in 2022, Year 12 in 2023. No runtime integration.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
