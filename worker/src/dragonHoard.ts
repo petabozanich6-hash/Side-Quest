@@ -3,7 +3,7 @@
  * Never writes a paid plan. Stripe is the authority for coupon eligibility and redemption caps.
  * Promotions are scoped to the exact Stripe environment that created them.
  */
-import { billingConfig, stripeCall, type Mode } from "./billing";
+import { billingConfig, stripeCall, type Mode, type Fetch } from "./billing";
 import type { Env } from "./types";
 import { newId, nowIso } from "./types";
 
@@ -72,7 +72,7 @@ export async function resolveHoardDiscount(db: D1Database, mode: Mode, raw: stri
  */
 export async function previewHoardDiscount(
   db: D1Database, env: Env, raw: string,
-  fetchImpl?: typeof fetch,
+  fetchImpl?: Fetch,
 ): Promise<{ valid: boolean; code?: string; percent_off?: number; duration_type?: string; message?: string }> {
   const unavailable = { valid: false, message: "This code isn't currently available. Check the spelling or try another." };
   const code = raw.trim().toUpperCase();
