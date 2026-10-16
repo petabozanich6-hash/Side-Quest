@@ -47,14 +47,18 @@ export function registerFeedback(app: App, guards: Guards) {
   app.get("/api/feedback", guards.auth, guards.parent, async (c) => {
     await ensureFeedbackSchema(c.env.DB);
     const { results } = await c.env.DB.prepare(
-      "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50",
+      "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50",
     ).bind(c.get("user").family_id, c.get("user").id).all();
     // One batched, family-and-parent-scoped query. Internal notes and other users' replies never leave the server.
     const reports = (results ?? []).map(ownRow);
     if (reports.length) {
+      // Only pull replies for reports actually returned. In particular, an old
+      // report with a NEW reply must not be hidden behind the latest 50 reports.
+      const ids = reports.map((r: any) => r.id);
+      const placeholders = ids.map(() => "?").join(",");
       const { results: replies } = await c.env.DB.prepare(
-        "SELECT r.id,r.feedback_id,r.body,r.created_at,r.parent_read_at FROM parent_feedback_replies r JOIN parent_feedback p ON p.id = r.feedback_id WHERE p.family_id = ? AND p.user_id = ? ORDER BY r.created_at ASC,r.id ASC LIMIT 500"
-      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
+        "SELECT r.id,r.feedback_id,r.body,r.created_at,r.parent_read_at FROM parent_feedback_replies r JOIN parent_feedback p ON p.id = r.feedback_id WHERE p.family_id = ? AND p.user_id = ? AND r.feedback_id IN (" + placeholders + ") ORDER BY r.created_at ASC,r.id ASC LIMIT 5000"
+      ).bind(c.get("user").family_id,c.get("user").id,...ids).all<any>();
       const byId = new Map(reports.map((r: any) => [r.id,r]));
       for (const reply of replies ?? []) {
         const report: any = byId.get(reply.feedback_id);
