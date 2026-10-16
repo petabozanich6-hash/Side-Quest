@@ -18,6 +18,9 @@ export default function HqCustomer() {
   const act = (path, body, message) => adminApi.post(`/customers/${encodeURIComponent(c.id)}/${path}`, body).then(() => { toast.success(message); reload(); });
 
   const dialogs = {
+    gift: { title: "Gift seven extra preview days?", typed: "GIFT", tone: "primary", confirmLabel: "Gift 7 days",
+      body: "This gives the family seven more days of the limited free preview (not a paid membership). Gifts are capped at 35 days total from registration. No Stripe subscription, payment or child record is changed.",
+      onConfirm: ({ reason, confirm }) => act("gift-preview", { reason, confirm, days: 7 }, "Seven preview days gifted") },
     suspend: { title: "Suspend this family?", typed: "SUSPEND", confirmLabel: "Suspend family",
       body: "Every parent and child in this family is signed out and cannot sign in until you restore the family. Their data is kept and billing is not changed in Stripe.",
       onConfirm: ({ reason, confirm }) => act("suspend", { reason, confirm }, "Family suspended") },
@@ -50,6 +53,7 @@ export default function HqCustomer() {
               ? <Button onClick={() => setDialog("restore")} data-testid="hq-restore">Restore</Button>
               : <Button tone="danger" onClick={() => setDialog("suspend")} data-testid="hq-suspend">Suspend</Button>}
             <Button tone="plain" onClick={() => setDialog("signout")} data-testid="hq-signout">Sign out everywhere</Button>
+            {c.status === "active" && c.billing.plan === "FREE_PREVIEW" && !c.billing.stripe_subscription_id && !c.billing.subscription_status && <Button tone="plain" onClick={() => setDialog("gift")} data-testid="hq-gift-preview">Gift 7 preview days</Button>}
           </>
         )}
       </div>
