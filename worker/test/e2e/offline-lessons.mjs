@@ -40,19 +40,32 @@ if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || 
 ok(mig.status === 0, "local migrations failed");
 let server = null;
 const up = async () => {
-  server = spawn("npx", ["wrangler", "dev", "--config", CONFIG, "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: "ignore" });
+  server = spawn("npx", ["wrangler", "dev", "--config", CONFIG, "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: "ignore", detached: process.platform !== "win32" });
   for (let i = 0; i < 90; i++) {
     try { if ((await fetch(`${NODE_BASE}/api/health`)).ok) return; } catch { /* starting */ }
     await new Promise((r) => setTimeout(r, 1000));
   }
   throw new Error("server did not start");
 };
-const down = async () => {
-  server.kill("SIGTERM");
-  for (let i = 0; i < 40; i++) { try { await fetch(`${NODE_BASE}/api/health`); await new Promise((r) => setTimeout(r, 500)); } catch { return; } }
-  throw new Error("server did not stop");
+// npx -> wrangler -> workerd form a process tree. Stopping only the npx PID
+// can leave workerd serving requests, invalidating the simulated no-signal test.
+const stopServer = (signal = "SIGTERM") => {
+  if (!server?.pid) return;
+  try {
+    if (process.platform === "win32") server.kill(signal);
+    else process.kill(-server.pid, signal); // detached process group, local test only
+  } catch (err) { if (err?.code !== "ESRCH") throw err; }
 };
-process.on("exit", () => { try { server?.kill("SIGTERM"); } catch { /* ignore */ } });
+const down = async () => {
+  stopServer();
+  for (let i = 0; i < 40; i++) {
+    try { await fetch(`${NODE_BASE}/api/health`, { signal: AbortSignal.timeout(2000) }); }
+    catch { return; }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  throw new Error("local Worker still serving requests after simulated network drop");
+};
+process.on("exit", () => { try { stopServer(); } catch { /* best effort */ } });
 await up();
 
 const api = async (method, path, token, body) => {

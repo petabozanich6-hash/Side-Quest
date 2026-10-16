@@ -42,8 +42,18 @@ const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, 
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
 if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(0,12000), (mig.stdout || "").slice(0,12000));
 ok(mig.status === 0, "local migrations failed");
-const server = spawn("npx", ["wrangler", "dev", "--config", CONFIG, "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: "ignore" });
-process.on("exit", () => { try { server.kill("SIGTERM"); } catch { /* ignore */ } });
+// npm/npx starts a child process which in turn launches workerd. Killing only the
+// npx PID leaves the Worker serving requests, so an "offline" test stays online.
+// A detached Unix process group gives this local test server its own process tree.
+const server = spawn("npx", ["wrangler", "dev", "--config", CONFIG, "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: "ignore", detached: process.platform !== "win32" });
+const stopServer = (signal = "SIGTERM") => {
+  if (!server.pid) return;
+  try {
+    if (process.platform === "win32") server.kill(signal);
+    else process.kill(-server.pid, signal);
+  } catch (err) { if (err?.code !== "ESRCH") throw err; }
+};
+process.on("exit", () => { try { stopServer(); } catch { /* best effort */ } });
 for (let i = 0; i < 90; i++) {
   try { if ((await fetch(`${NODE_BASE}/api/health`)).ok) break; } catch { /* starting */ }
   await new Promise((r) => setTimeout(r, 1000));
@@ -257,8 +267,14 @@ await step("when the network drops, a page visit shows Side-Quest's offline page
   await p.waitForFunction(() => !!navigator.serviceWorker.controller);
   // Chromium's offline emulation doesn't cover the service worker's own fetches, so cut the network for real:
   // stop the server, exactly what a phone with no signal sees.
-  server.kill("SIGTERM");
-  for (let i = 0; i < 30; i++) { try { await fetch(`${NODE_BASE}/api/health`); await new Promise((r) => setTimeout(r, 500)); } catch { break; } }
+  stopServer();
+  let stopped = false;
+  for (let i = 0; i < 30; i++) {
+    try { await fetch(`${NODE_BASE}/api/health`, { signal: AbortSignal.timeout(2000) }); }
+    catch { stopped = true; break; }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  ok(stopped, "the local Worker was still running after the simulated network drop");
   await p.goto(BASE + "/parent").catch(() => {});
   ok(/You're offline/.test(await p.textContent("body")), "offline page not shown: " + (await p.textContent("body")).slice(0, 120));
   await p.screenshot({ path: `${SHOTS}/offline.png` });
