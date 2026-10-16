@@ -39,6 +39,9 @@ export default function CalendarPage() {
   const [dayOpen, setDayOpen] = useState(null);
   const [editing, setEditing] = useState(null);
   const [removingDay, setRemovingDay] = useState(false);
+  const [rescheduling, setRescheduling] = useState(false);
+  const [reschedulePreview, setReschedulePreview] = useState(null);
+  const [rescheduleChild, setRescheduleChild] = useState("");
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState("");
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
@@ -99,6 +102,29 @@ export default function CalendarPage() {
     finally { setSaving(false); }
   };
 
+  const previewReschedule = async () => {
+    if (!rescheduleChild || !dayOpen) return toast.error("Choose the child whose day needs rescheduling.");
+    setRescheduling(true);
+    try {
+      const { data } = await api.post("/timetable/reschedule/preview", { student_id: rescheduleChild, date: dayOpen });
+      setReschedulePreview(data);
+    } catch (err) { toast.error(apiErrorMessage(err, "Could not find new lesson slots")); }
+    finally { setRescheduling(false); }
+  };
+  const applyReschedule = async () => {
+    if (!reschedulePreview?.plan?.length || rescheduling) return;
+    setRescheduling(true);
+    try {
+      const { data } = await api.post("/timetable/reschedule/apply", {
+        student_id: rescheduleChild, date: dayOpen,
+        moves: reschedulePreview.plan.map(p => ({ from_slot_id: p.from_slot_id, to_slot_id: p.to_slot_id }))
+      });
+      toast.success(`Rescheduled ${data.moved} lesson${data.moved === 1 ? "" : "s"}.`);
+      setReschedulePreview(null);
+      await load();
+    } catch (err) { toast.error(apiErrorMessage(err, "Could not reschedule lessons; preview again")); setReschedulePreview(null); }
+    finally { setRescheduling(false); }
+  };
   const clearDay = async () => {
     const selected = dayList.filter(e => !!e.id);
     if (!selected.length || !window.confirm(`Remove all ${selected.length} calendar entries scheduled for ${dayOpen}? Assigned lessons and portfolio evidence will be kept.`)) return;
@@ -189,6 +215,20 @@ export default function CalendarPage() {
           <div onClick={e=>e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-6 max-h-[80vh] overflow-y-auto" data-testid="day-modal">
             <div className="flex items-center justify-between mb-4"><h2 className="font-display text-lg font-bold">{dayOpen}</h2><button type="button" onClick={()=>setDayOpen(null)} aria-label="Close day"><X size={18}/></button></div>
             <div className="flex justify-between items-center gap-2 mb-3"><span className="text-xs text-slate-500">{dayList.length} scheduled entries</span><button type="button" disabled={!dayList.length || removingDay} onClick={clearDay} className="rounded-full border border-red-300 text-red-700 px-3 py-1.5 text-xs disabled:opacity-50">{removingDay ? "Clearing…" : "Clear scheduled day"}</button></div>
+            <div className="mb-4 rounded-xl border border-teal-200 p-3 space-y-2">
+              <p className="font-semibold text-sm">Reschedule My Day</p>
+              <p className="text-xs text-slate-600">Move unfinished assigned lessons into upcoming free subject slots. Completed lessons stay put.</p>
+              <select aria-label="Child to reschedule" value={rescheduleChild} onChange={e => {setRescheduleChild(e.target.value);setReschedulePreview(null);}} className="w-full border rounded p-2 text-sm">
+                <option value="">Choose a child</option>
+                {students.map(child => <option key={child.id} value={child.id}>{child.name}</option>)}
+              </select>
+              <button type="button" disabled={!rescheduleChild || rescheduling} onClick={previewReschedule} className="rounded-full bg-teal-800 text-white px-4 py-2 text-sm disabled:opacity-50">Find available days</button>
+              {reschedulePreview && <div className="space-y-2 text-sm">
+                {reschedulePreview.plan.length ? reschedulePreview.plan.map(p => <p key={p.from_slot_id}>{p.title}: {p.from_date} → {p.to_date} at {p.to_time}</p>) : <p>No matching free slots found in the next four weeks.</p>}
+                {!!reschedulePreview.unplaced?.length && <p className="text-amber-800">{reschedulePreview.unplaced.length} lesson(s) could not be placed and will remain on their original day.</p>}
+                {!!reschedulePreview.plan.length && <button type="button" disabled={rescheduling} onClick={applyReschedule} className="rounded-full bg-slate-900 text-white px-4 py-2 disabled:opacity-50">Confirm new dates</button>}
+              </div>}
+            </div>
             <div className="space-y-2">
               {dayList.map(e => (
                 <div key={e.id} className="flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
