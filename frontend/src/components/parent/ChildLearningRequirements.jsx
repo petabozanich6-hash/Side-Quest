@@ -98,7 +98,7 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
       {result.verified && result.required.length > 0 ? <>
         <h3 className="font-bold text-emerald-950 mt-4 mb-2">{jurisdiction === "VIC" ? "Eight learning areas to address" : "Mandatory learning areas"}</h3>
         <ul className="grid sm:grid-cols-2 gap-2">{result.required.map(s => <li key={s} className="text-sm flex items-start gap-2"><span aria-hidden="true" className="text-emerald-700">✓</span>{s}</li>)}</ul>
-      </> : <p className="text-sm font-semibold mt-3 text-amber-900">This jurisdiction or stage needs an authority-verified mandatory/choice breakdown.</p>}
+      </> : result.verified ? <p className="text-sm font-semibold mt-3 text-emerald-950">No fixed compulsory subject list is mandated in the cited home education guidance.</p> : <p className="text-sm font-semibold mt-3 text-amber-900">This jurisdiction or stage needs an authority-verified mandatory/choice breakdown.</p>}
       {result.verified && result.choices.length === 0 && <p className="text-xs text-stone-600 mt-3">No fixed minimum number of additional elective subjects is specified in the cited home education guidance. Other learning opportunities can still be included.</p>}
       {result.choices.length > 0 && <>
         <h3 className="font-bold text-emerald-950 mt-4">Select at least {result.chooseCount} additional learning areas</h3>
