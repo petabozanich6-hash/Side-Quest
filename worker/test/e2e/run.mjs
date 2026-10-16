@@ -35,8 +35,10 @@ writeFileSync(`${ROOT}/wrangler.e2e.jsonc`, JSON.stringify({
   r2_buckets: [{ binding: "BUCKET", bucket_name: "e2e-files" }],
   d1_databases: [{ binding: "DB", database_name: "e2e", database_id: "00000000-0000-0000-0000-000000000000", migrations_dir: "./worker/migrations" }],
 }));
-const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 120000 });
+console.log("Starting isolated local D1 migrations (2-minute subprocess timeout)...");
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
+console.log("Local D1 migration process exited:", mig.status, mig.signal || "", mig.error?.message || "");
 if(mig.status !== 0) console.error("D1 migration diagnostics:", { exitStatus: mig.status, signal: mig.signal, spawnError: mig.error?.message }, "STDERR TAIL:", (mig.stderr || "").slice(-18000), "STDOUT TAIL:", (mig.stdout || "").slice(-18000));
 console.log((mig.stdout || "").slice(-600), (mig.stderr || "").slice(-600));
 ok(mig.status === 0, "local migrations failed");
@@ -47,12 +49,22 @@ let slog = "";
 server.stdout.on("data", (d) => (slog += d)); server.stderr.on("data", (d) => (slog += d));
 const stop = () => { try { writeFileSync(`${SHOTS}/server.log`, slog.slice(-400000)); } catch {} try { server.kill("SIGTERM"); } catch {} };
 process.on("exit", stop);
+console.log("Starting local Wrangler server; checking /api/health...");
+let healthy = false;
 for (let i = 0; i < 90; i++) {
-  try { const r = await fetch(`${BASE}/api/health`); if (r.ok) break; } catch {}
+  if (server.exitCode !== null) throw new Error("Wrangler server exited early: " + slog.slice(-3000));
+  try {
+    const r = await fetch(`${BASE}/api/health`, { signal: AbortSignal.timeout(3000) });
+    if (r.ok) { healthy = true; break; }
+    if (i % 10 === 0) console.log("Health returned", r.status, "attempt", i + 1);
+  } catch (err) {
+    if (i % 10 === 0) console.log("Waiting for local server", i + 1, String(err?.message || err).slice(0, 160));
+  }
   await new Promise((r) => setTimeout(r, 1000));
-  if (i === 89) { console.log(slog.slice(-2000)); throw new Error("server did not start"); }
 }
-console.log("server up");
+if (!healthy) throw new Error("Local server did not become healthy: " + slog.slice(-3000));
+console.log("server up; launching Chromium...");
+
 
 // ---- helpers
 const api = async (method, path, token, body) => {
@@ -66,7 +78,9 @@ const stamp = Date.now();
 const email1 = `family1-${stamp}@example.com`, pw = "Passw0rd-e2e!";
 const kid = { name: "Mia", username: `mia${stamp}`.slice(0, 16), pin: "4321" };
 
-const browser = await chromium.launch();
+console.log("Launching Chromium browser...");
+const browser = await chromium.launch({ timeout: 30000 });
+console.log("Chromium launched successfully");
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 page = await ctx.newPage();
 watch("parent", page);

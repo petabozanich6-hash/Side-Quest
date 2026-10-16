@@ -12,6 +12,8 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    # Bound the whole job, including browser dependency setup and post-job cleanup.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -122,6 +124,16 @@ jobs:
         run: |
           mkdir -p /tmp/res && cp -r ci-logs/. /tmp/res/ && [ -d e2e-shots ] && cp -r e2e-shots /tmp/res/ || true
           for f in /tmp/res/*.log; do tail -c 200000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"; done
+      # Keep failed PR diagnostics accessible instead of waiting for branch-only publishing.
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event_name == 'pull_request'
+        with:
+          name: pr-ci-logs
+          path: |
+            ci-logs/*.log
+            ci-logs/summary.txt
+          retention-days: 3
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: always() && github.event_name != 'pull_request'
         with:

@@ -72,8 +72,19 @@ export async function saveWeek(db: DB, familyId: string, input: any, now = new D
   }
   let created = 0, skipped = 0;
   for (const r of rows) {
-    const clash = await db.prepare(`SELECT id FROM calendar_events WHERE family_id = ? AND student_id = ? AND date = ? AND start_time = ? AND ${SLOT_SQL}`)
-      .bind(familyId, r.student_id, r.date, r.start_time).first();
+    // Check real interval overlap across ALL calendar event types (including parent-added commitments).
+    // An identical start-time comparison allows two lessons to overlap when their starts differ.
+    const start = Number(r.start_time.slice(0, 2)) * 60 + Number(r.start_time.slice(3));
+    if (start + r.duration_minutes > 1440) return fail(400, "A lesson cannot run past midnight.");
+    const sameDay = (await db.prepare(
+      "SELECT start_time, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date = ? AND start_time IS NOT NULL"
+    ).bind(familyId, r.student_id, r.date).all<any>()).results ?? [];
+    const clash = sameDay.some((event: any) => {
+      if (!TIME.test(String(event.start_time ?? ""))) return false;
+      const eventStart = Number(event.start_time.slice(0, 2)) * 60 + Number(event.start_time.slice(3));
+      const eventEnd = eventStart + Math.max(1, Number(event.duration_minutes) || 1);
+      return start < eventEnd && eventStart < start + r.duration_minutes;
+    });
     if (clash) { skipped++; continue; }
     await db.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'timetable', ?, ?)",
@@ -142,6 +153,73 @@ export async function emptySlotsFor(db: DB, familyId: string, assignmentId: stri
     .bind(familyId, assignmentId).run();
 }
 
+/** Preview moving unfinished filled timetable slots from a disrupted day.
+ * Plans only into already-free slots of the same subject, never inventing a new school day. */
+export async function planMissedDay(db: DB, familyId: string, input: any) {
+  if (!(await timetableAllowed(db, familyId))) return paywall();
+  const studentId = String(input?.student_id || "");
+  const date = input?.date;
+  if (!validDate(date)) return fail(400, "Choose the day to reschedule.");
+  const student = await db.prepare("SELECT id, stage FROM students WHERE id = ? AND family_id = ?")
+    .bind(studentId, familyId).first<any>();
+  if (!student) return fail(404, "Child not found");
+  const futureUntil = addDays(date, 28);
+  const current = await listSlots(db, familyId, { student_id: studentId, from: date, to: date });
+  const future = await listSlots(db, familyId, { student_id: studentId, from: addDays(date, 1), to: futureUntil, open: true });
+  const plan: any[] = [], unplaced: any[] = [];
+  const used = new Set<string>();
+  for (const slot of current.filter((s: any) => !!s.linked_assignment_id)) {
+    const a = await db.prepare("SELECT status FROM assignments WHERE id = ? AND family_id = ? AND student_id = ?")
+      .bind(slot.linked_assignment_id, familyId, studentId).first<any>();
+    if (!a || lb.DONE_STATUSES.includes(a.status) || a.status === "submitted") continue;
+    const candidate = future.find((s: any) => !used.has(s.id) && sameSubject(s.title, slot.title, student.stage || "") && Number(s.duration_minutes) >= Number(slot.duration_minutes));
+    if (!candidate) { unplaced.push({ from_slot_id: slot.id, title: slot.title }); continue; }
+    used.add(candidate.id);
+    plan.push({ from_slot_id: slot.id, to_slot_id: candidate.id, assignment_id: slot.linked_assignment_id,
+      title: slot.title, from_date: slot.date, to_date: candidate.date, to_time: candidate.start_time });
+  }
+  return { ok: true, plan, unplaced };
+}
+
+/** Apply a fresh preview only when all source/target records remain unchanged. */
+export async function applyMissedDay(db: DB, familyId: string, input: any) {
+  const preview = await planMissedDay(db, familyId, input);
+  if (!preview.ok) return preview;
+  const requested = Array.isArray(input?.moves) ? input.moves : [];
+  if (!requested.length) return fail(400, "No lessons selected to move.");
+  const planned = new Map(preview.plan.map((p: any) => [p.from_slot_id + ":" + p.to_slot_id, p]));
+  const moves: any[] = [];
+  for (const move of requested) {
+    const found = planned.get(String(move?.from_slot_id) + ":" + String(move?.to_slot_id));
+    if (!found || moves.some(m => m.from_slot_id === found.from_slot_id || m.to_slot_id === found.to_slot_id))
+      return fail(409, "The proposed timetable has changed. Preview again.", "PLAN_CHANGED");
+    moves.push(found);
+  }
+  // Conditional validation and updates run within one D1 batch.
+  const statements: D1PreparedStatement[] = [];
+  for (const move of moves) {
+    statements.push(db.prepare(`SELECT CASE WHEN EXISTS (
+      SELECT 1 FROM calendar_events src JOIN calendar_events dest
+        ON dest.id = ? AND dest.family_id = ?
+      WHERE src.id = ? AND src.family_id = ?
+        AND src.linked_assignment_id = ?
+        AND dest.linked_assignment_id IS NULL AND dest.linked_lesson_id IS NULL
+    ) THEN 1 ELSE json_extract('STALE_RESCHEDULE_PLAN', '$') END AS valid`)
+      .bind(move.to_slot_id, familyId, move.from_slot_id, familyId, move.assignment_id));
+    statements.push(db.prepare(`UPDATE calendar_events SET linked_assignment_id = NULL, linked_lesson_id = NULL
+      WHERE id = ? AND family_id = ? AND linked_assignment_id = ?`)
+      .bind(move.from_slot_id, familyId, move.assignment_id));
+    statements.push(db.prepare(`UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id =
+      (SELECT lesson_id FROM assignments WHERE id = ? AND family_id = ?)
+      WHERE id = ? AND family_id = ? AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL`)
+      .bind(move.assignment_id, move.assignment_id, familyId, move.to_slot_id, familyId));
+    statements.push(db.prepare("UPDATE assignments SET scheduled_date = ?, updated_at = ? WHERE id = ? AND family_id = ?")
+      .bind(move.to_date, new Date().toISOString(), move.assignment_id, familyId));
+  }
+  await db.batch(statements);
+  return { ok: true, moved: moves.length };
+}
+
 export function registerTimetable(app: App, g: Guards) {
   const send = (c: any, r: any) => c.json({ detail: r.detail, ...(r.code ? { code: r.code } : {}) }, r.status);
   app.get("/api/timetable/status", g.auth, g.parent, async (c) => c.json({ allowed: await timetableAllowed(c.env.DB, c.get("user").family_id) }));
@@ -153,6 +231,14 @@ export function registerTimetable(app: App, g: Guards) {
   app.post("/api/timetable/week", g.auth, g.parent, async (c) => {
     const r = await saveWeek(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
     return r.ok ? c.json({ created: r.created, skipped: r.skipped }) : send(c, r);
+  });
+  app.post("/api/timetable/reschedule/preview", g.auth, g.parent, async (c) => {
+    const r = await planMissedDay(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ plan: r.plan, unplaced: r.unplaced }) : send(c, r);
+  });
+  app.post("/api/timetable/reschedule/apply", g.auth, g.parent, async (c) => {
+    const r = await applyMissedDay(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
+    return r.ok && "moved" in r ? c.json({ moved: r.moved }) : send(c, r);
   });
   app.post("/api/assignments/:id/place", g.auth, g.parent, async (c) => {
     const r = await placeAssignment(c.env.DB, c.get("user").family_id, c.req.param("id"), await c.req.json().catch(() => ({})));

@@ -43,9 +43,10 @@ function curriculumAreas(student, jurisdiction) {
     : ["English", "Mathematics", "Science", "Humanities and Social Sciences", "Health and Physical Education", "The Arts", "Technologies", "Languages"];
   return [...new Set(stateAreas.length ? stateAreas : defaults)];
 }
-function allocate(student, areas, days, startTime, weekStart, existing) {
+function allocate(student, areas, days, startTime, weekStart, existing, dailyOverride) {
   // Teaching-time guidance, not an assertion about any jurisdiction's minimum.
-  const daily = secondary(student) ? 270 : ["ES1", "S1"].includes(student.stage) ? 150 : 210;
+  const defaultDaily = secondary(student) ? 270 : ["ES1", "S1"].includes(student.stage) ? 150 : 210;
+  const daily = dailyOverride || defaultDaily;
   const minBlock = secondary(student) ? 35 : 25;
   const maxBlock = secondary(student) ? 65 : 50;
   const totalMinutes = daily * days.length;
@@ -63,16 +64,45 @@ function allocate(student, areas, days, startTime, weekStart, existing) {
   }
   const dayOrder = [...days].sort((a, b) => a - b);
   const byDay = Object.fromEntries(dayOrder.map(d => [d, []]));
-  // Spread multiple instances of one subject evenly rather than bunching them.
+  // Distribute lessons by both subject recurrence and available daily capacity.
+  // Prefer different subjects within a day; large subjects recur across the week.
+  const minutesOn = day => byDay[day].reduce((n, x) => n + x.minutes, 0);
+  const heavy = subject => /english|literacy|mathematics|maths|numeracy|science/i.test(subject);
+  slots.sort((a, b) => weightFor(b.title) - weightFor(a.title) || b.minutes - a.minutes);
   for (const slot of slots) {
-    const order = [...dayOrder].sort((a, b) => {
-      const ma = byDay[a].reduce((n, x) => n + x.minutes, 0);
-      const mb = byDay[b].reduce((n, x) => n + x.minutes, 0);
-      const sa = byDay[a].filter(x => x.title === slot.title).length;
-      const sb = byDay[b].filter(x => x.title === slot.title).length;
-      return (sa * daily + ma) - (sb * daily + mb);
-    });
-    byDay[order[0]].push(slot);
+    const candidates = dayOrder.map(day => {
+      const todays = byDay[day];
+      const date = dateInWeek(weekStart, day);
+      // Include existing timed lessons and commitments in the day's capacity.
+      // A scheduled event is not free instructional time.
+      const committed = existing.filter(e => e.student_id === student.id && e.date === date)
+        .reduce((minutes, e) => minutes + Math.max(0, Number(e.duration_minutes) || 0), 0);
+      const used = minutesOn(day) + committed;
+      const same = todays.filter(x => x.title === slot.title).length;
+      const alreadyHeavy = todays.filter(x => heavy(x.title)).length;
+      const fits = used + slot.minutes <= daily;
+      // A second subject session on a day is strongly discouraged. Give days
+      // with less total instruction and fewer intensive blocks priority.
+      const score = (fits ? 0 : 100000) + same * 5000 +
+        (heavy(slot.title) ? alreadyHeavy * 150 : 0) +
+        (used / daily) * 1000 + todays.length * 40;
+      return { day, score };
+    }).sort((a, b) => a.score - b.score || a.day - b.day);
+    const best = candidates[0];
+    if (best && best.score < 100000) byDay[best.day].push(slot);
+    // Do not silently cram excess lessons into a full day.
+  }
+  // Alternate intensive and lighter blocks where possible.
+  for (const day of dayOrder) {
+    const planned = byDay[day];
+    const intensive = planned.filter(x => heavy(x.title));
+    const lighter = planned.filter(x => !heavy(x.title));
+    const balanced = [];
+    while (intensive.length || lighter.length) {
+      if (intensive.length) balanced.push(intensive.shift());
+      if (lighter.length) balanced.push(lighter.shift());
+    }
+    byDay[day] = balanced;
   }
   const [h, m] = startTime.split(":").map(Number);
   const result = [];
@@ -83,12 +113,21 @@ function allocate(student, areas, days, startTime, weekStart, existing) {
       // Short break after every two learning blocks.
       if (i && i % 2 === 0) cursor += 15;
       if (cursor + slot.minutes > 1440) break;
-      const time = String(Math.floor(cursor / 60)).padStart(2, "0") + ":" + String(cursor % 60).padStart(2, "0");
-      if (!existing.some(e => e.student_id === student.id && e.date === date && e.start_time === time)) {
-        result.push({ key: student.id + "-" + day + "-" + i, student_id: student.id, title: slot.title,
-          date, start_time: time, duration_minutes: slot.minutes, event_type: "lesson",
-          notes: "Suggested by Side-Quest using family curriculum areas, year level and learning days. Parent reviewed." });
+      // Find the next genuinely free interval, not merely a different start time.
+      // Respect existing events and appointments, plus blocks proposed earlier in this preview.
+      const occupied = [...existing, ...result]
+        .filter(e => e.student_id === student.id && e.date === date && e.start_time)
+        .map(e => ({ from: Number(e.start_time.slice(0, 2)) * 60 + Number(e.start_time.slice(3)),
+          length: Math.max(1, Number(e.duration_minutes) || 1) }))
+        .sort((a, b) => a.from - b.from);
+      for (const block of occupied) {
+        if (cursor < block.from + block.length && block.from < cursor + slot.minutes) cursor = block.from + block.length;
       }
+      if (cursor + slot.minutes > 1440) continue;
+      const time = String(Math.floor(cursor / 60)).padStart(2, "0") + ":" + String(cursor % 60).padStart(2, "0");
+      result.push({ key: student.id + "-" + day + "-" + i, student_id: student.id, title: slot.title,
+        date, start_time: time, duration_minutes: slot.minutes, event_type: "lesson",
+        notes: "Suggested by Side-Quest using family curriculum areas, year level and learning days. Parent reviewed." });
       cursor += slot.minutes;
     }
   }
@@ -100,6 +139,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
   const [days, setDays] = useState([1, 2, 3, 4, 5]);
   const [weekStart, setWeekStart] = useState(nextMonday());
   const [startTime, setStartTime] = useState("09:00");
+  const [dailyMinutes, setDailyMinutes] = useState(180);
   const [jurisdiction, setJurisdiction] = useState(null);
   const [draft, setDraft] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -121,7 +161,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
     if (!jurisdiction?.jurisdiction) return toast.error("Set your family's state or territory before generating a timetable.");
     if (!selected.length || !days.length) return toast.error("Select at least one child and one learning day.");
     if (!weekStart || !/^\d{2}:\d{2}$/.test(startTime)) return toast.error("Choose a valid week and start time.");
-    const proposed = plan.flatMap(({ child, areas }) => allocate(child, areas, days, startTime, weekStart, events));
+    const proposed = plan.flatMap(({ child, areas }) => allocate(child, areas, days, startTime, weekStart, events, dailyMinutes));
     setDraft(proposed);
     if (!proposed.length) toast.message("No new entries proposed; matching dates or times are already scheduled.");
   };
@@ -180,6 +220,16 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
         <label className="text-sm">Week starting<input type="date" data-testid="tt-week" className="block w-full border rounded p-2 mt-1" value={weekStart} onChange={e=>{setWeekStart(e.target.value);setDraft(null);}} /></label>
         <label className="text-sm">Learning day starts<input type="time" className="block w-full border rounded p-2 mt-1" value={startTime} onChange={e=>{setStartTime(e.target.value);setDraft(null);}} /></label>
       </div>
+      <label className="block text-sm font-semibold">Target lesson time per learning day
+        <select className="block w-full border rounded p-2 mt-1" value={dailyMinutes} onChange={e=>{setDailyMinutes(Number(e.target.value));setDraft(null);}} data-testid="tt-daily-load">
+          <option value={90}>Light day · 1½ hours</option>
+          <option value={120}>Gentle day · 2 hours</option>
+          <option value={180}>Balanced day · 3 hours</option>
+          <option value={240}>Full day · 4 hours</option>
+          <option value={300}>Extended day · 5 hours</option>
+        </select>
+        <span className="block text-xs font-normal text-slate-500 mt-1">Suggested lesson time only; adjust to suit your child. Breaks are additional.</span>
+      </label>
       {plan.length>0 && <p className="text-xs text-slate-500">Curriculum areas are selected automatically: {plan.map(x=>x.child.name + " (" + x.areas.join(", ") + ")").join("; ")}.</p>}
       <div className="flex flex-wrap gap-2">
         <button type="button" disabled={loading||!jurisdiction?.jurisdiction||allowed===null} onClick={makeDraft} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50" data-testid="tt-generate">Generate this week</button>
