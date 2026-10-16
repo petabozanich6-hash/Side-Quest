@@ -305,10 +305,8 @@ test("state catalogues are isolated; switching states preserves historical evide
   const fam = family(db, { jurisdiction: "VIC" });
   const kid = child(db, fam);
   const t = await ot.trackerFor(db, fam, kid, { now: D(2) });
-  assert.equal(t.available, true, "VCAA is a separate, source-backed partial catalogue");
-  assert.equal(t.framework.key, "VIC");
-  assert.ok(t.outcomes.every((row) => row.code.startsWith("VC2") || row.code.startsWith("VCEAL")));
-  assert.ok(!t.outcomes.some((row) => row.code === RN), "NSW identifiers must never leak to Victoria");
+  assert.equal(t.available, false, "VCAA source module is missing: never provide inferred outcomes");
+  assert.equal(t.framework, "VIC");
   const wrongStateCode = await ot.confirmOutcome(db, fam, `u-${fam}`, kid, RN, {}, D(2));
   assert.ok(!wrongStateCode.ok, "reject an NSW outcome in a Victorian family");
   const none = await ot.trackerFor(db, family(db, { jurisdiction: null }), child(db, `fam${n}`), { now: D(2) });
