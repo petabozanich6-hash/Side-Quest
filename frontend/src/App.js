@@ -10,6 +10,9 @@ import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChildLogin from "./pages/ChildLogin";
+import GetApp from "./pages/GetApp";
+import KidsOnly from "./pages/KidsOnly";
+import { isKidsHost } from "./lib/pwa";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
@@ -32,6 +35,7 @@ import LessonPrint from "./pages/parent/LessonPrint";
 import UpgradePage from "./pages/parent/Upgrade";
 import AssignmentsPage from "./pages/parent/Assignments";
 import ResourcesPage from "./pages/parent/Resources";
+import HomeschoolCompass from "./pages/parent/HomeschoolCompass";
 import EvidencePage from "./pages/parent/Evidence";
 import CalendarPage from "./pages/parent/CalendarPage";
 import AuditPage from "./pages/parent/Audit";
@@ -44,6 +48,11 @@ import OutcomeTrackerPage from "./pages/parent/OutcomeTracker";
 import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
+import ParentFeedback from "./pages/parent/ParentFeedback";
+import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
+import SiteSearch from "./pages/shared/SiteSearch";
+import HqFeedback from "./pages/parent/hq/HqFeedback";
+import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -67,6 +76,8 @@ function Guard({ role, children }) {
 function Router() {
   const loc = useLocation();
   if (loc.hash?.includes("session_id=")) return <AuthCallback />;
+  // SQ Kids (the kids' address) has no parent pages at all: grown-ups are pointed to the main site.
+  if (isKidsHost() && /^\/(login|register|forgot-password|reset-password|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
@@ -77,9 +88,11 @@ function Router() {
       <Route path="/child-login" element={<ChildLogin />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
       <Route path="/legal/:slug" element={<LegalPage publicView />} />
+      <Route path="/get-app" element={<GetApp />} />
       <Route path="/print/lesson/:id" element={<Guard role="parent"><LessonPrint /></Guard>} />
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />
+        <Route path="search" element={<SiteSearch mode="parent" />} />
         <Route path="children" element={<ChildrenPage />} />
         <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
@@ -88,6 +101,7 @@ function Router() {
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="plan" element={<UpgradePage />} />
+        <Route path="email-preferences" element={<AnnouncementPreferences />} />
         <Route path="command-centre" element={<HqShell />}>
           <Route index element={<HqOverview />} />
           <Route path="customers" element={<HqCustomers />} />
@@ -95,6 +109,8 @@ function Router() {
           <Route path="settings" element={<HqSettings />} />
           <Route path="audit" element={<HqAudit />} />
           <Route path="security" element={<HqSecurity />} />
+          <Route path="feedback" element={<HqFeedback />} />
+          <Route path="announcements" element={<HqAnnouncements />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
@@ -105,6 +121,7 @@ function Router() {
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
+        <Route path="homeschool-compass" element={<HomeschoolCompass />} />
         <Route path="evidence" element={<EvidencePage />} />
         <Route path="calendar" element={<CalendarPage />} />
         <Route path="audit" element={<AuditPage />} />
@@ -114,10 +131,12 @@ function Router() {
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
         <Route path="trust" element={<TrustSupport />} />
+        <Route path="feedback" element={<ParentFeedback />} />
         <Route path="trust/:slug" element={<LegalPage />} />
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
+        <Route path="search" element={<SiteSearch mode="child" />} />
         <Route path="lesson/:aid" element={<ChildLessonRouter />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
         <Route path="archive" element={<ChildLessonArchive />} />

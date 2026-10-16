@@ -359,6 +359,11 @@ export default function ChildrenPage() {
         </div>
         <button onClick={() => setOpen(true)} className="rounded-full px-4 py-2 text-sm font-bold flex items-center gap-1.5" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-student-btn"><Plus size={14}/> Add student</button>
       </div>
+      <Link to="/get-app?for=child" className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 hover:shadow-sm" style={{border:"1px solid #D4C8A8"}} data-testid="kids-app-link">
+        <span><span className="block text-sm font-bold" style={{color:"#1F3B2D"}}>📱 Set up Side-Quest on your child's own phone or tablet</span>
+          <span className="block text-xs text-stone-500">Installs the kids' app, which opens straight to their sign-in (username and PIN).</span></span>
+        <span aria-hidden className="text-stone-400">›</span>
+      </Link>
 
       <HelpRequests students={students} onView={setCreds} />
 
@@ -396,6 +401,7 @@ export default function ChildrenPage() {
           <form onClick={e=>e.stopPropagation()} onSubmit={submit} className="w-full max-w-2xl paper-card p-6 my-8" data-testid="add-student-form">
             <div className="flex items-center justify-between mb-4"><h2 className="font-display text-2xl font-bold" style={{color:"#1F3B2D"}}>Add student</h2><button type="button" onClick={() => setOpen(false)} data-testid="close-form"><X size={18}/></button></div>
             <div className="space-y-3">
+              <p className="text-sm rounded-xl bg-emerald-50 border border-emerald-200 p-3">Unsure which subjects or stage your child needs? <Link to="/parent/homeschool-compass" onClick={() => setOpen(false)} className="font-bold underline text-emerald-900">Use the Homeschooling Compass requirements finder</Link> before choosing their learning program.</p>
               <F label="Calendar colour"><input type="color" value={form.calendar_colour} onChange={e=>setForm({...form,calendar_colour:e.target.value})} aria-label="Calendar colour for new child" data-testid="new-child-colour" className="h-10 w-20 rounded border border-stone-300"/></F>
                <F label="Name"><input required value={form.name} onChange={e=>setForm({...form, name: e.target.value})} className="input" data-testid="f-name"/></F>
               <F label="Username (for sign in)"><input required value={form.username} onChange={e=>setForm({...form, username: e.target.value})} className="input" data-testid="f-username"/></F>

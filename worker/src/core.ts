@@ -140,7 +140,10 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     }
     const pet = await db.prepare("SELECT xp FROM pets WHERE student_id = ?").bind(u.id).first<{ xp: number }>().catch(() => null);
     for (const a of pending) delete a.draft;
+    // Offline lessons (saved on the child's device) are a Family Membership feature.
+    const offlineAllowed = (await lb.getEntitlement(db, u.family_id)).limits.offlineLessons;
     return c.json({
+      offline_allowed: offlineAllowed,
       student: { ...studentOut(student), role: "child" },
       completed,
       waiting,
@@ -530,11 +533,12 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   // ---------- Calendar ----------
   app.get("/api/calendar", auth, async (c) => {
     const u = c.get("user");
-    let sql = "SELECT * FROM calendar_events WHERE family_id = ?";
+    // lesson_title: the lesson sitting in a timetable slot (the slot's own title is its subject).
+    let sql = "SELECT e.*, l.title AS lesson_title FROM calendar_events e LEFT JOIN lessons l ON l.id = e.linked_lesson_id WHERE e.family_id = ?";
     const b: any[] = [u.family_id];
-    if (u.role === "child") { sql += " AND (student_id = ? OR student_id IS NULL)"; b.push(u.id); }
-    else if (c.req.query("student_id")) { sql += " AND student_id = ?"; b.push(c.req.query("student_id")); }
-    sql += " ORDER BY date ASC LIMIT 1000";
+    if (u.role === "child") { sql += " AND (e.student_id = ? OR e.student_id IS NULL)"; b.push(u.id); }
+    else if (c.req.query("student_id")) { sql += " AND e.student_id = ?"; b.push(c.req.query("student_id")); }
+    sql += " ORDER BY e.date ASC, e.start_time ASC LIMIT 1000";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     return c.json(results);
   });

@@ -70,7 +70,7 @@ export default function UpgradePage() {
       {checkout === "success" && paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirmed">Your Family Membership is active. Welcome!</div>}
       {checkout === "cancelled" && <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">Checkout was cancelled. Nothing was charged.</div>}
       {eff === "PAST_DUE" && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">Your last payment did not go through. Please update your card in Manage billing{plan.period_end ? ` before ${day(plan.period_end)}` : ""} to keep full access.</div>}
-      {expired && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">{eff === "CANCELLED" ? "Your membership has ended." : "Your free preview has ended."} Everything you made is kept and your children's progress is safe. Creating and assigning lessons needs a Family Membership.</div>}
+      {expired && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">{eff === "CANCELLED" ? "Your membership has ended." : "Your free preview has ended."} Your family account and saved records are kept. Existing lessons and records remain viewable, children may finish assigned lessons and parents can review that work. New learning records, lessons and assignments need a Family Membership.</div>}
       {error && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900" role="alert">{error}</div>}
 
       {paid && (
@@ -116,18 +116,33 @@ export default function UpgradePage() {
         <table className="w-full text-sm">
           <thead><tr className="text-left text-xs uppercase tracking-wider text-stone-500"><th className="p-3"></th><th className="p-3 text-center">Free preview (7 days)</th><th className="p-3 text-center">Family Membership</th></tr></thead>
           <tbody>
-            {row("Children", ["1", "Up to 20 (no extra fee)"])}
-            {row("Lessons you create", ["2", "Up to 5,000*"])}
+            {row("Family child profiles", ["1", "Up to 20 (no extra fee)"])}
+            {row("Manually created lessons", ["2", "Up to 5,000*"])}
             {row("Active assignments", ["2", "Up to 5,000*"])}
-            {row("Child dashboard, XP and pet", ["Yes", "Yes"])}
-            {row("Parent review and Evidence Backpack", ["Yes", "Yes"])}
-            {row("Full portfolio export", ["1 sample entry", "Full"])}
+            {row("Children complete lessons; parents review work", ["Yes", "Yes"])}
+            {row("Pocket pets, XP and achievements", ["Yes", "Yes"])}
+            {row("Homeschooling Compass, registration checklist and official links", ["Yes", "Yes"])}
+            {row("Basic learning plan templates", ["1", "As many as needed*"])}
+            {row("Reading log entries", ["During the 7 days", "Yes"])}
+            {row("Evidence Backpack", ["Summary + 1 detailed sample", "Full portfolio and exports"])}
+            {row("Curriculum and outcome reference", ["View reference and automatic progress", "Advanced outcome evidence and confirmations"])}
+            {row("Manual calendar, timetable, Auto-Quest planning", ["No", "Yes"])}
+            {row("Life learning records and detailed evidence notes", ["No", "Yes"])}
+            {row("Resource library, video suggestions and Word Hoard authoring", ["No", "Yes"])}
+            {row("File uploads and attachments", ["No", "Up to 250 MB per family*"])}
             {row("AI lesson drafting", ["No", "10 drafts/day, 60/month"])}
             {row("AI lesson changes", ["No", "20/day, 120/month"])}
+            {row("AI learning plans, outcome help and child AI assistance", ["No", "Fair-use limits apply"])}
+            {row("Offline lessons in SQ Kids", ["No", "Yes"])}
           </tbody>
         </table>
       </div>
-      <p className="text-xs text-stone-500">*These are generous family-wide limits. AI drafting and changes have the allowances listed above. Prices are in AUD; all payment options include the same features.</p>
+      <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-950 space-y-2" data-testid="after-preview-explained">
+          <h2 className="font-display text-lg font-bold">When your seven days are up</h2>
+          <p>There is no automatic charge and no card required to begin. Your family account and learning records stay yours. You can still see saved work, finish lessons already assigned and review submitted work, but you cannot create new lessons, reading entries or learning records without Family Membership.</p>
+          <p>Registration guidance, Homeschooling Compass, account management and the feedback form remain accessible.</p>
+        </div>
+        <p className="text-xs text-stone-500">*Paid family-wide caps are fair-use safeguards, not extra fees. Uploaded files have a 50 MB per-file cap and 250 MB total active storage per family. AI requests have separate fair-use limits. Prices are in AUD.</p>
 
       <div className="text-sm text-stone-600">
         Used so far: {usage.children} of {plan.limits.maxChildren} children · {usage.lessons} lessons · {usage.active_assignments ?? usage.activeAssignments} active assignments.

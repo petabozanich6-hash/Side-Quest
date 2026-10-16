@@ -27,6 +27,9 @@ lesson-excellence/.work/
 .dev.vars
 wrangler.e2e.jsonc
 wrangler.hq-e2e.jsonc
+wrangler.app-e2e.jsonc
+wrangler.offline-e2e.jsonc
+wrangler.kids-signin-e2e.jsonc
 e2e-shots/
 ci-logs/
 
@@ -34,3 +37,4 @@ ci-logs/
 backup-*.sql
 backups/
 *.sqlite
+wrangler.timetable-e2e.jsonc

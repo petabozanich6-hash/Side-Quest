@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { api } from "../../lib/api";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Mail, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -12,7 +13,9 @@ import JurisdictionGate from "../../components/parent/JurisdictionPicker";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
+  { to: "/parent/search", icon: Search, label: "Search Side-Quest", testid: "nav-search" },
   { to: "/parent/children", icon: Users, label: "Children", testid: "nav-children" },
+  { to: "/parent/homeschool-compass", icon: Compass, label: "Homeschooling Compass", testid: "nav-homeschool-compass" },
   { to: "/parent/curriculum", icon: GraduationCap, label: "Curriculum", testid: "nav-curriculum" },
   { to: "/parent/outcomes", icon: MapIcon, label: "Outcome tracker", testid: "nav-outcomes" },
   { to: "/parent/lessons", icon: BookOpen, label: "My lessons", testid: "nav-lessons" },
@@ -28,16 +31,62 @@ const nav = [
   { to: "/parent/audit", icon: ShieldAlert, label: "Audit", testid: "nav-audit" },
   { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
   { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
+  { to: "/parent/feedback", icon: MessageSquare, label: "Ideas & Feedback", testid: "nav-feedback" },
+  { to: "/parent/email-preferences", icon: Mail, label: "Email preferences", testid: "nav-email-preferences" },
 ];
 
 export default function ParentLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [planState, setPlanState] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [unreadReplies,setUnreadReplies] = useState(0);
+  const [latestUnreadReply,setLatestUnreadReply] = useState(null);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
+  const paidPlans = ["ACTIVE_WEEKLY","ACTIVE_FORTNIGHTLY","ACTIVE_MONTHLY","ACTIVE_ANNUAL","PAST_DUE","INTERNAL"];
+  const hasMembership = planState && paidPlans.includes(planState.effective_plan);
+  const route = location.pathname;
+  const paidNotice = route.startsWith("/parent/life-learning") ? "Life-learning evidence and AI outcome mapping need Family Membership." :
+    route.startsWith("/parent/resources") ? "Saving and managing resources and video suggestions need Family Membership." :
+    route.startsWith("/parent/calendar") ? "Creating calendar events and weekly timetables need Family Membership. Existing events stay visible." :
+    route.startsWith("/parent/word-hoard") ? "Adding new Word Hoard words needs Family Membership. Previously saved practice remains available." :
+    route.startsWith("/parent/outcomes") ? "Your automatically recorded progress remains visible. Manually confirming or managing outcome evidence needs Family Membership." :
+    route.startsWith("/parent/evidence") ? "The free preview includes a summary and one detailed sample. Full exports and new evidence notes need Family Membership." :
+    route.startsWith("/parent/learning-plans") ? "The free preview includes one basic learning plan. More plans and AI planning need Family Membership." :
+    (route.startsWith("/parent/lessons/make") || route.startsWith("/parent/lessons/drafts")) ? "AI lesson drafting and AI refinements need Family Membership. You can still build your free-preview lessons by hand." : "";
   const doLogout = async () => { await logout(); navigate("/"); };
+  useEffect(() => {
+    if (!user?.id || !paidNotice) return;
+    let alive = true;
+    api.get("/account/plan").then(r => { if (alive) setPlanState(r.data); }).catch(() => { if (alive) setPlanState(null); });
+    return () => { alive = false; };
+  }, [user?.id, location.pathname, paidNotice]);
+  useEffect(() => {
+    if (!user?.id) { setUnreadReplies(0); setLatestUnreadReply(null); return undefined; }
+    let alive = true;
+    const refresh = () => api.get("/feedback/unread-count").then(r => {
+      if (!alive) return;
+      const unread = Number(r.data?.unread || 0);
+      setUnreadReplies(unread);
+      setLatestUnreadReply(unread > 0 ? r.data?.latest || null : null);
+    }).catch(()=>{});
+    refresh();
+    const timer = setInterval(refresh,60000);
+    window.addEventListener("sidequest-feedback-replies-updated",refresh);
+    return () => {alive=false;clearInterval(timer);window.removeEventListener("sidequest-feedback-replies-updated",refresh);};
+  },[user?.id,location.pathname]);
+  useEffect(() => {
+    const shortcut = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault(); navigate("/parent/search"); setMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", shortcut);
+    return () => window.removeEventListener("keydown", shortcut);
+  }, [navigate]);
   return (
     <div className="parent-shell flex relative">
       {menuOpen && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setMenuOpen(false)} data-testid="menu-overlay" />}
@@ -55,7 +104,7 @@ export default function ParentLayout() {
             <NavLink key={n.to} to={n.to} end={n.end} data-testid={n.testid} onClick={() => setMenuOpen(false)}
               className={({isActive}) => `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "" : "text-stone-700 hover:bg-white/80"}`}
               style={({isActive}) => isActive ? {backgroundColor:"#1F3B2D", color:"#F5EFE0"} : {}}>
-              <n.icon size={16} /> {n.label}
+              <n.icon size={16} /> <span className="flex-1">{n.label}</span>{n.to==="/parent/feedback"&&unreadReplies>0&&<span className="rounded-full bg-amber-100 text-amber-950 text-xs font-bold px-2 py-0.5" data-testid="parent-feedback-nav-unread" aria-label={unreadReplies+" unread messages"}>{unreadReplies}</span>}
             </NavLink>
           ))}
         </nav>
@@ -79,9 +128,12 @@ export default function ParentLayout() {
           <button onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} className="p-1" data-testid="menu-toggle">{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
+        <div className="px-4 sm:px-8 pt-3 flex justify-end"><button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button></div>
+        {unreadReplies>0 && route!=="/parent/feedback" && route!=="/parent" && <Link to="/parent/feedback" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
         <HelpAlertBar />
         <JurisdictionGate />
-        <Outlet />
+        {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
+        <Outlet context={{ unreadFeedbackReplies: unreadReplies, latestUnreadFeedbackReply: latestUnreadReply }} />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
       <HelpPopup />

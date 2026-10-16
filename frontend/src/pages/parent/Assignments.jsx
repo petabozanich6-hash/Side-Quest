@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
+import LessonPrintActions from "../../components/parent/LessonPrintActions";
 
 const STATUS = {
   not_started: ["Not started", "bg-slate-100 text-slate-700"],
@@ -16,6 +17,8 @@ const STATUS = {
 const DONE = ["accepted", "completed", "demonstrated"];
 
 export default function AssignmentsPage() {
+  const [searchParams] = useSearchParams();
+  const focused = searchParams.get("focus");
   const [rows, setRows] = useState([]);
   const [students, setStudents] = useState([]);
   const [child, setChild] = useState("");
@@ -24,6 +27,13 @@ export default function AssignmentsPage() {
   const [loading, setLoading] = useState(true);
   const load = () => api.get("/assignments").then(r => setRows(r.data || [])).finally(() => setLoading(false));
   useEffect(() => { load(); api.get("/students").then(r => setStudents(r.data)).catch(() => {}); }, []);
+  useEffect(() => {
+    if (!focused) return;
+    setShow("all"); setChild("");
+    if (!rows.some(r => r.id === focused)) return;
+    const raf = requestAnimationFrame(() => document.getElementById("search-assignment-"+focused)?.scrollIntoView({ behavior:"smooth", block:"center" }));
+    return () => cancelAnimationFrame(raf);
+  },[focused,rows]);
   const name = (id) => students.find(s => s.id === id)?.name || "Child";
 
   const act = async (fn, msg) => {
@@ -62,13 +72,16 @@ export default function AssignmentsPage() {
             const [label, cls] = STATUS[a.status] || [a.status, "bg-slate-100 text-slate-700"];
             const started = a.status !== "not_started";
             return (
-              <div key={a.id} className="rounded-xl border border-slate-200 bg-white p-4" data-testid={`asg-${a.id}`}>
+              <div id={"search-assignment-"+a.id} key={a.id} className={"rounded-xl border bg-white p-4 "+(focused===a.id?"border-emerald-600 ring-2 ring-emerald-300":"border-slate-200")} data-testid={`asg-${a.id}`}>
                 <div className="flex flex-wrap items-center gap-2 justify-between">
                   <div>
                     <p className="font-semibold text-slate-900">{a.lesson?.title || "Lesson"}</p>
                     <p className="text-xs text-slate-600">{name(a.student_id)}{a.scheduled_date ? ` · planned ${a.scheduled_date}` : ""}{a.due_date ? ` · due ${a.due_date}` : ""}</p>
                   </div>
                   <span className={`rounded-full px-3 py-1 text-xs font-semibold ${cls}`}>{label}</span>
+                </div>
+                <div className="mt-3 border-t border-dashed border-stone-200 pt-3">
+                  <LessonPrintActions lessonId={a.lesson_id || a.lesson?.id} compact />
                 </div>
                 {!DONE.includes(a.status) && (
                   <div className="mt-3 flex flex-wrap gap-2">

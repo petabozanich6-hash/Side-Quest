@@ -4,6 +4,7 @@ import { api } from "../lib/api";
 import QuestVisual from "../components/shared/QuestVisual";
 import PrintableResource from "../components/shared/PrintableResource";
 import LessonText from "../components/shared/LessonText";
+import { openPaperLesson } from "../components/shared/lessonPrint";
 
 const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 
@@ -85,6 +86,10 @@ export default function LessonDetail() {
         </Link>
 
         <h1 className="text-3xl font-bold mt-4">{lesson.title}</h1>
+        <div className="flex flex-wrap gap-2 mt-4" data-testid="library-print-actions">
+          <button type="button" onClick={() => { if (!openPaperLesson(lesson, { view: "student" })) window.alert("Allow pop-ups to print the workbook"); }} className="rounded-full bg-green-900 text-white px-4 py-2 text-sm font-semibold">🖨️ Print student workbook</button>
+          <button type="button" onClick={() => { if (!openPaperLesson(lesson, { view: "parent" })) window.alert("Allow pop-ups to print the guide"); }} className="rounded-full border px-4 py-2 text-sm font-semibold">🖨️ Print parent guide &amp; answers</button>
+        </div>
 
         <p className="text-slate-600 mt-2">
           {lesson.stage} · {lesson.learning_area} · {lesson.year_level} ·{" "}

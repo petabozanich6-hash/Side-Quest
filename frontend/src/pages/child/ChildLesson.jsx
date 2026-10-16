@@ -23,7 +23,7 @@ import QuestQuiz from "../../components/shared/QuestQuiz";
 import TeachStep from "../../components/shared/QuestTeach";
 import QuestVisual from "../../components/shared/QuestVisual";
 import PrintableResource from "../../components/shared/PrintableResource";
-import { lessonPrintHtml } from "../../components/shared/lessonPrint";
+import { openPaperLesson } from "../../components/shared/lessonPrint";
 import SpellingSegment from "../../components/shared/SpellingSegment";
 import {
   RevealCards,
@@ -354,13 +354,7 @@ export default function ChildLesson() {
   };
 
   const printLesson = () => {
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) {
-      toast.error("Allow pop-ups for this site to open the printable lesson");
-      return;
-    }
-    printWindow.document.write(lessonPrintHtml(a.lesson));
-    printWindow.document.close();
+    if (!openPaperLesson(a.lesson)) toast.error("Allow pop-ups for this site to open the printable lesson");
   };
 
   if (!a) {
@@ -1019,6 +1013,7 @@ export default function ChildLesson() {
 
       <header className="paper-card p-6 relative overflow-hidden">
         <QuestBanner lesson={l} />
+        <button type="button" onClick={printLesson} className="mt-2 rounded-full border px-4 py-2 text-sm font-bold" style={{ borderColor: "#D4C8A8" }} data-testid="print-lesson-top"><Printer size={14} className="inline mr-1" /> Print student workbook</button>
 
         <div className="text-xs font-mono text-stone-500">
           {l.stage} · {l.learning_area}

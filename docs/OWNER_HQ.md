@@ -7,8 +7,9 @@ It replaces the first "Command Centre" page, which treated any family on the `IN
 
 | Area      | What you can do                                                                                                                                                          |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Overview  | Families, parents, children, new families (7/30 days, 14-day chart), plans, Stripe status, AI requests and failures, storage, server errors and a "needs attention" list. Anything not measured says **Not configured** (revenue, active users, AI cost) instead of a made-up number. |
+| Overview  | Families, parents, children, new families (7/30 days, 14-day chart), plans, Stripe status, AI requests and failures, storage, server errors and a "needs attention" list. Unmeasured billing and user statistics still say **Not configured** (revenue, active users). Workers AI now has a privacy-safe per-inference token ledger with a **clearly labelled USD gross estimate**, not an invoice or a guess from request counts. Cloudflare remains authoritative for charges. |
 | Customers | Search families by parent email or family id. A family's page shows account details and **counts only**: never children's names, lessons, answers, evidence, notes or files. Suspend, restore and "sign out everywhere", each with a reason. |
+| Feedback inbox | Review parent reports, ideas and problems, keep private internal notes, and **reply to the submitting parent directly** with editable quick-response templates. Parents see the reply in their own Feedback history and get an unread badge. Email sends a content-free sign-in notification when EMAIL is available; in-app delivery works without email. Owner replies and status changes stay audited. |
 | Settings  | Announcement banner, maintenance notice, feature switches (new sign-ups, AI, YouTube suggestions) and the platform-wide daily AI limit. Changes that could cost money or shut people out ask for a second confirmation. |
 | Audit log | Every administrative change, newest first.                                                                                                                               |
 | Security  | Your passkeys (keep at least two).                                                                                                                                       |
@@ -74,3 +75,12 @@ Nothing here has been done yet. In order:
 - Staging: set `ADMIN_ORIGINS` to the staging workers.dev origin so HQ changes are accepted there.
 - Tests: `worker/test/ownerHq.test.mjs` (real migrations on SQLite, real WebAuthn verification with a software
   passkey) and `worker/test/e2e/owner-hq.mjs` (browser, virtual authenticator, phone/tablet/desktop).
+
+
+## Replying to parent feedback
+
+The Owner opens **Owner HQ → Feedback inbox**, selects a submission and can choose an editable quick reply (Thanks!, It's fixed, Looking into it, Need more detail) or write a personal response. **Send reply to parent** saves a private message associated with the original feedback's submitting parent, with an optional status update. The account and email destination are read from the original server-side record; arbitrary destination information is never accepted from the browser.
+
+Parents see an unread badge in their Parent Hub and can open the **Ideas & Feedback** section to read and acknowledge responses. This works for free previews and lapsed members as well as active subscriptions. Other families, siblings and different parent accounts cannot see the replies. Internal owner notes remain private and are never in parent replies or outgoing email.
+
+If the Cloudflare Email Service binding is configured, a content-free email invites the parent to sign in to read their message. A missing or failed email does not undo the in-app reply, and Owner HQ reports that email was not sent. Message text is not included in the email or the administrative audit log. Table `parent_feedback_replies` is created by additive migration `0064_parent_feedback_replies.sql` or at runtime when the endpoints are first called.

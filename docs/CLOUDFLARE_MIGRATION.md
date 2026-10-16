@@ -60,7 +60,7 @@ pet species, plan builder rules) lives in `worker/src/data/*.ts`. The lesson lib
 - **Google sign-in** (`/auth/google`, `/auth/google/callback`): implemented with `fetch` to Google; needs the
   `GOOGLE_OAUTH_CLIENT_ID` (+ `GOOGLE_OAUTH_CLIENT_SECRET`) secrets. The UI does not currently render a Google button.
   The old hard-coded Render redirect URI was replaced with a same-origin check.
-- **File uploads**: stored in R2 (`BUCKET` binding). The binding is commented out in `wrangler.jsonc` (instructions inline); until it is enabled `POST /api/files/upload` and `GET /api/files/:id` return 501.
+- **File uploads**: stored in R2 through production `BUCKET` binding (`sidequest-files` in `wrangler.jsonc`). The bucket must exist in the same Cloudflare account. The Parent Hub shows the upload status from the live Worker binding; paid membership is required to create uploads. Staging intentionally has no R2 binding. When R2 is not bound the upload and download endpoints return 501.
 - **LLM calls**: none were present in the backend (pet help was already a fixed message); life-evidence mapping
   suggestions are keyword based.
 - **Startup seeding** (owner account from `OWNER_PASSWORD`, outcome reseed) is replaced by migrations/static data;

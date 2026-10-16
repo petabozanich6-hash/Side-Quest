@@ -6,7 +6,7 @@ import { hashSecret, verifySecret } from "./auth";
 import { loginBlocked, recordLoginFailure, clearLoginFailures, ensureAuthSchema } from "./loginThrottle";
 import { registerCore } from "./core";
 import { trialEndFrom } from "./entitlements";
-import { checkCanAddChild } from "./lessonBuilder";
+import { checkCanAddChild, getEntitlement } from "./lessonBuilder";
 import { registerFamily, studentOut, studentExtraFromBody, STUDENT_SELECT } from "./family";
 import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
@@ -18,10 +18,18 @@ import { registerHelpRequests } from "./helpRequests";
 import { registerBilling } from "./billing";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerAutoQuest } from "./autoQuest";
+import { registerTimetable } from "./timetable";
+import { registerHomeschoolCompass } from "./homeschoolCompass";
+import { registerSiteSearch } from "./siteSearch";
+import { registerMembershipAccess } from "./membershipAccess";
+import { registerFeedback } from "./feedback";
+import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
+import { processTrialReminders } from "./trialReminders";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
 import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
+import { meterWorkersAi } from "./aiCost";
 import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
 import { handleInbound } from "./inbound";
@@ -178,7 +186,9 @@ app.post("/api/auth/child-login", async (c) => {
   if (await suspended(c.env.DB, s.family_id)) return c.json({ detail: SUSPENDED_MESSAGE, code: "ACCOUNT_SUSPENDED" }, 403);
   const token = await makeToken(c.env, s.id, "child", s.family_id);
   const { pin_hash, pin_enc, ...safe } = s;
-  return c.json({ token, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
+  // Offline sign-in on the child's device is a Family Membership feature.
+  const offlineAllowed = await getEntitlement(c.env.DB, s.family_id).then((e) => e.limits.offlineLessons).catch(() => false);
+  return c.json({ token, offline_allowed: offlineAllowed, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
 });
 
 app.get("/api/auth/me", requireAuth, async (c) => {
@@ -219,6 +229,8 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   return c.json(studentOut(created, true));
 });
 
+// Membership write restrictions run before every module route, including direct API calls.
+registerMembershipAccess(app);
 registerCore(app, requireAuth, requireParent);
 const guards: Guards = { auth: requireAuth, parent: requireParent, child: requireChild };
 registerFamily(app, guards);
@@ -232,6 +244,11 @@ registerHelpRequests(app, guards);
 registerBilling(app, guards);
 registerOutcomes(app, guards);
 registerAutoQuest(app, guards);
+registerTimetable(app, guards);
+registerHomeschoolCompass(app, guards);
+registerSiteSearch(app, guards);
+registerFeedback(app, guards);
+registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
 // Unhandled errors: record the method, route pattern and error class only (no ids, bodies or messages).
@@ -251,7 +268,12 @@ export default {
   fetch: async (req: Request, env: Env, ctx: ExecutionContext) => {
     if (!new URL(req.url).pathname.startsWith("/api/") || !env.DB) return app.fetch(req, env, ctx);
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
-    return app.fetch(req, await applyPlatformSettings(env), ctx);
+    return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env)), ctx);
+  },
+  scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
+    // The two independent mail queues must not prevent each other running.
+    try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
+    try { await processTrialReminders(env); } catch (e) { console.error("trial reminder cron failed", e); }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

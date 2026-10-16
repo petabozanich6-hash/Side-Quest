@@ -3,6 +3,8 @@ import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 
 /**
+ * Weekly timetable (Family Membership). One week at a time: each block becomes a timetable SLOT for a subject, and
+ * lessons the parent assigns fill the child's next free slot of that subject (worker/src/timetable.ts).
  * Family calendar planner. Curriculum areas come from the chosen jurisdiction;
  * durations and frequency are suggested, NOT represented as legally mandated hours.
  * Nothing is written before the parent reviews and approves each calendar entry.
@@ -82,7 +84,7 @@ function allocate(student, areas, days, startTime, weekStart, existing) {
       if (i && i % 2 === 0) cursor += 15;
       if (cursor + slot.minutes > 1440) break;
       const time = String(Math.floor(cursor / 60)).padStart(2, "0") + ":" + String(cursor % 60).padStart(2, "0");
-      if (!existing.some(e => e.student_id === student.id && e.date === date && (e.title === slot.title || e.start_time === time))) {
+      if (!existing.some(e => e.student_id === student.id && e.date === date && e.start_time === time)) {
         result.push({ key: student.id + "-" + day + "-" + i, student_id: student.id, title: slot.title,
           date, start_time: time, duration_minutes: slot.minutes, event_type: "lesson",
           notes: "Suggested by Side-Quest using family curriculum areas, year level and learning days. Parent reviewed." });
@@ -102,7 +104,9 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
   const [draft, setDraft] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [allowed, setAllowed] = useState(null); // Family Membership feature
   useEffect(() => {
+    api.get("/timetable/status").then(r => setAllowed(!!r.data?.allowed)).catch(() => setAllowed(false));
     api.get("/family/jurisdiction")
       .then(r => setJurisdiction(r.data))
       .catch(() => toast.error("Could not load your family's state or territory."))
@@ -124,27 +128,48 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
   const save = async () => {
     if (!draft?.length || saving) return;
     setSaving(true);
-    let count = 0;
     try {
-      for (const item of draft) {
-        const { key, ...event } = item;
-        await api.post("/calendar", event);
-        count++;
-      }
-      toast.success("Added " + count + " scheduled lessons.");
+      const blocks = draft.map(({ student_id, title, date, start_time, duration_minutes }) => ({ student_id, title, date, start_time, duration_minutes: Number(duration_minutes) }));
+      const { data } = await api.post("/timetable/week", { week_start: weekStart, blocks });
+      toast.success(`Timetable saved: ${data.created} slot${data.created === 1 ? "" : "s"}${data.skipped ? ` (${data.skipped} already there)` : ""}. Lessons you assign now fill these slots.`);
       onDone(); onClose();
     } catch (err) {
-      toast.error(count + " entries saved. " + apiErrorMessage(err, "The remaining entries could not be saved"));
-      onDone(); setDraft(null);
+      toast.error(apiErrorMessage(err, "The timetable could not be saved"));
     } finally { setSaving(false); }
+  };
+
+  // Copy the week before this one (same subjects, days and times), for the selected children.
+  const repeatLastWeek = async () => {
+    const prevStart = (() => { const d = new Date(weekStart + "T12:00:00"); d.setDate(d.getDate() - 7); return localISO(d); })();
+    const prevEnd = (() => { const d = new Date(weekStart + "T12:00:00"); d.setDate(d.getDate() - 1); return localISO(d); })();
+    try {
+      const copies = [];
+      for (const sid of selected) {
+        const { data } = await api.get("/timetable/slots", { params: { student_id: sid, from: prevStart, to: prevEnd } });
+        for (const s of data || []) {
+          const d = new Date(s.date + "T12:00:00"); d.setDate(d.getDate() + 7);
+          copies.push({ key: s.id, student_id: sid, title: s.title, date: localISO(d), start_time: s.start_time || startTime, duration_minutes: s.duration_minutes || 45 });
+        }
+      }
+      setDraft(copies);
+      if (!copies.length) toast.message("There's no timetable in the week before this one to copy. Generate one instead.");
+    } catch (err) { toast.error(apiErrorMessage(err, "Could not read last week's timetable")); }
   };
   return <div className="fixed inset-0 z-50 bg-slate-900/60 p-4 overflow-y-auto flex items-start justify-center" onClick={onClose}>
     <div className="mt-6 mb-6 max-w-3xl w-full bg-white rounded-2xl p-6 space-y-5 shadow-xl" onClick={e=>e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Automatic timetable generator">
       <div className="flex justify-between items-start gap-4"><div>
-        <h2 className="text-2xl font-bold">Generate a learning timetable</h2>
-        <p className="text-sm text-slate-600 mt-1">Choose your learning days; Side-Quest proposes a balanced timetable from your family's curriculum and each child's level. No learning plan required.</p>
+        <h2 className="text-2xl font-bold">Weekly timetable</h2>
+        <p className="text-sm text-slate-600 mt-1">Plan one week at a time. Each block is a slot for a subject; when you assign a lesson it fills your child's next free slot of that subject.</p>
         <p className="text-xs text-slate-500 mt-2">These are planning suggestions, not legally required subject-hour allocations. Review and edit before saving.</p>
       </div><button type="button" onClick={onClose} aria-label="Close" className="text-xl">×</button></div>
+      {allowed === false && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="timetable-upsell">
+          <p className="font-semibold">Timetables are part of the Family Membership.</p>
+          <p className="mt-1">Members plan each week in a few clicks, and assigned lessons drop straight into the right slot. You can still assign lessons and choose a day yourself.</p>
+          <a href="/parent/plan" className="mt-2 inline-block font-semibold underline">See the Family Membership</a>
+        </div>
+      )}
+      {allowed !== false && <>
       <p className="text-sm">Curriculum: <strong>{jurisdiction?.name || jurisdiction?.jurisdiction || (loading ? "Loading…" : "Not selected")}</strong></p>
       <div className="space-y-2">{students.map(s=><label key={s.id} className="flex gap-3 items-center rounded-lg border p-3">
         <input type="checkbox" checked={selected.includes(s.id)} onChange={e=>{setSelected(v=>e.target.checked?[...v,s.id]:v.filter(id=>id!==s.id));setDraft(null);}} />
@@ -152,13 +177,16 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
       </label>)}</div>
       <div><p className="text-sm font-semibold mb-2">Which days will you teach?</p><div className="flex flex-wrap gap-3">{DAYS.map((name,d)=><label key={d} className="flex gap-1 items-center text-sm"><input type="checkbox" checked={days.includes(d)} onChange={e=>{setDays(v=>e.target.checked?[...v,d]:v.filter(x=>x!==d));setDraft(null);}} />{name}</label>)}</div></div>
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="text-sm">Week commencing<input type="date" className="block w-full border rounded p-2 mt-1" value={weekStart} onChange={e=>{setWeekStart(e.target.value);setDraft(null);}} /></label>
+        <label className="text-sm">Week starting<input type="date" data-testid="tt-week" className="block w-full border rounded p-2 mt-1" value={weekStart} onChange={e=>{setWeekStart(e.target.value);setDraft(null);}} /></label>
         <label className="text-sm">Learning day starts<input type="time" className="block w-full border rounded p-2 mt-1" value={startTime} onChange={e=>{setStartTime(e.target.value);setDraft(null);}} /></label>
       </div>
       {plan.length>0 && <p className="text-xs text-slate-500">Curriculum areas are selected automatically: {plan.map(x=>x.child.name + " (" + x.areas.join(", ") + ")").join("; ")}.</p>}
-      <button type="button" disabled={loading||!jurisdiction?.jurisdiction} onClick={makeDraft} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50">Generate preview</button>
+      <div className="flex flex-wrap gap-2">
+        <button type="button" disabled={loading||!jurisdiction?.jurisdiction||allowed===null} onClick={makeDraft} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50" data-testid="tt-generate">Generate this week</button>
+        <button type="button" disabled={allowed===null||!selected.length} onClick={repeatLastWeek} className="rounded-full border border-emerald-800 text-emerald-900 px-5 py-2 font-semibold disabled:opacity-50" data-testid="tt-repeat">Repeat last week</button>
+      </div>
       {draft && <div className="space-y-3">
-        <p className="font-semibold">{draft.length} new learning blocks suggested (existing entries are skipped)</p>
+        <p className="font-semibold" data-testid="tt-count">{draft.length} timetable slots for the week of {weekStart} (times already taken are skipped)</p>
         <div className="max-h-64 overflow-auto border rounded-lg divide-y">{draft.map((d,i)=><div className="p-2 text-sm flex flex-wrap items-center gap-2" key={d.key}>
           <span className="w-32">{students.find(s=>s.id===d.student_id)?.name}</span>
           <input aria-label="Subject" className="flex-1 min-w-24 border rounded p-1" value={d.title} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,title:e.target.value}:x))} />
@@ -167,9 +195,10 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
           <input type="date" aria-label="Date" value={d.date} onChange={e=>setDraft(old=>old.map((x,k)=>k===i?{...x,date:e.target.value}:x))} />
           <button type="button" className="text-rose-700" onClick={()=>setDraft(old=>old.filter((_,k)=>k!==i))}>Remove</button>
         </div>)}</div>
-        <p className="text-xs text-slate-500">Calendar entries do not create or assign lessons automatically. No previous work will be removed.</p>
-        <button type="button" disabled={saving||!draft.length} onClick={save} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50">{saving?"Saving…":"Add approved timetable to calendar"}</button>
+        <p className="text-xs text-slate-500">Slots are empty until you assign lessons. Nothing already in your calendar is removed or changed.</p>
+        <button type="button" disabled={saving||!draft.length} onClick={save} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50" data-testid="tt-save">{saving?"Saving…":"Save this week's timetable"}</button>
       </div>}
+      </>}
     </div>
   </div>;
 }

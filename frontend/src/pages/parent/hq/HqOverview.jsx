@@ -2,6 +2,11 @@ import React from "react";
 import { Alert, Button, Card, fmtBytes, fmtDate, GREEN, NotConfigured, PLAN_LABELS, Row, Stat } from "./ui";
 import { useAdmin } from "./useAdmin";
 
+const usd = (n) => {
+  const v = Number(n || 0);
+  return v > 0 && v < 0.0001 ? "< $0.0001" : "$" + v.toFixed(4);
+};
+
 const KIND_LABELS = { lesson_draft: "Lesson drafts", lesson_refine: "Lesson changes", series_plan: "Lesson series plans", outcome_match: "Outcome matching", help: "Child help hints", life_map: "Life-learning mapping", yt_search: "Video searches", plan: "Learning plans" };
 
 /** 14 days of new families as plain bars (no chart library). */
@@ -75,13 +80,28 @@ export default function HqOverview() {
                 <Row label="AI switch">{o.ai.enabled ? "On" : "Off"}</Row>
                 {Object.entries(o.ai.by_kind_30d || {}).map(([k, v]) => <Row key={k} label={`${KIND_LABELS[k] || k} · 30 days`}>{v.requests}{v.failed ? ` (${v.failed} failed)` : ""}</Row>)}
               </dl>
-              <div className="mt-2"><NotConfigured note={o.ai.cost.note} /></div>
+              <div className="mt-4 pt-4 border-t border-stone-200 space-y-2" data-testid="hq-ai-costs">
+                <h3 className="text-sm font-bold" style={{color:GREEN}}>Estimated Workers AI inference cost</h3>
+                {o.ai.cost?.configured ? <>
+                  <dl>
+                    <Row label="Gross estimate · 24 hours">{usd(o.ai.cost.estimated_gross_24h_usd)} USD</Row>
+                    <Row label="Gross estimate · 30 days">{usd(o.ai.cost.estimated_gross_30d_usd)} USD</Row>
+                    <Row label="Gross estimate · since tracking began">{usd(o.ai.cost.estimated_gross_all_time_usd)} USD</Row>
+                    <Row label="AI model calls · 30 days">{o.ai.cost.tracked_calls_30d}</Row>
+                    <Row label="Provider token counts · 30 days">{o.ai.cost.reported_tokens_30d}</Row>
+                    <Row label="Approximate token counts · 30 days">{o.ai.cost.approximate_tokens_30d}</Row>
+                    {(o.ai.cost.unpriced_calls_30d > 0) && <Row label="Calls without a price · 30 days">{o.ai.cost.unpriced_calls_30d}</Row>}
+                  </dl>
+                  <p className="text-xs text-stone-600">{o.ai.cost.tracking_started_at ? "Tracking began " + fmtDate(o.ai.cost.tracking_started_at) + "." : "Tracking starts with the next AI model call after deployment."} {o.ai.cost.note}</p>
+                  <a href={o.ai.cost.pricing_source} target="_blank" rel="noopener noreferrer" className="inline-block text-xs underline font-bold text-emerald-900">Cloudflare model pricing (checked {o.ai.cost.model_price_updated}) ↗</a>
+                </> : <NotConfigured note={o.ai.cost?.note || "AI cost metering not available."} />}
+              </div>
             </>
           )}
         </Card>
 
         <Card title="Storage and health" testid="hq-health">
-          {o.storage.configured ? <dl><Row label="Files">{o.storage.files}</Row><Row label="Stored">{fmtBytes(o.storage.bytes)}</Row></dl> : <NotConfigured note={o.storage.note} />}
+          {o.storage.configured ? <dl><Row label="Files">{o.storage.files}</Row><Row label="Stored">{fmtBytes(o.storage.bytes)}</Row><Row label="R2 binding">BUCKET connected</Row></dl> : <NotConfigured note={o.storage.note} />}
           <dl className="mt-3">
             <Row label="Server errors · 24 hours">{o.health.errors_24h}</Row>
             <Row label="Server errors · 7 days">{o.health.errors_7d}</Row>

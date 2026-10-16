@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2 } from "lucide-react";
+import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight, ScrollText, BookMarked, Printer } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
@@ -31,16 +31,34 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 );
 
 export default function ParentDashboard() {
+  const { unreadFeedbackReplies: parentUnread = 0, latestUnreadFeedbackReply: parentLatest = null } = useOutletContext() || {};
+  // Independently refresh when this page opens: a stale sidebar badge must not
+  // hide a fresh Owner reply on the actual dashboard.
+  const [feedbackNotice,setFeedbackNotice] = useState(null);
+  const unreadFeedbackReplies = feedbackNotice?.unread ?? parentUnread;
+  const latestUnreadFeedbackReply = feedbackNotice?.latest ?? parentLatest;
   const [data, setData] = useState(null);
   const [waiting, setWaiting] = useState([]);
   const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [plan, setPlan] = useState(null);
   const [drafts, setDrafts] = useState(null);
+  useEffect(() => {
+    let live=true;
+    const refresh=()=>api.get("/feedback/unread-count").then(({data})=>{
+      if(live) setFeedbackNotice({unread:Number(data?.unread||0),latest:data?.latest||null});
+    }).catch(()=>{});
+    refresh();
+    const onFocus=()=>refresh();
+    window.addEventListener("focus",onFocus);
+    window.addEventListener("sidequest-feedback-replies-updated",onFocus);
+    const timer=window.setInterval(refresh,60000);
+    return ()=>{live=false;window.removeEventListener("focus",onFocus);window.removeEventListener("sidequest-feedback-replies-updated",onFocus);window.clearInterval(timer);};
+  },[]);
 
   const load = () => {
     api.get("/dashboard/parent").then(r => setData(r.data));
-    api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status))));
+    api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status)))).catch(() => {});
     api.get("/reading-submissions/pending").then(r => setReadingPending(r.data || [])).catch(() => setReadingPending([]));
   };
   useEffect(() => {
@@ -48,9 +66,24 @@ export default function ParentDashboard() {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
     api.get("/ai/batches?open=1").then(r => setDrafts(r.data)).catch(() => setDrafts(null));
   }, []);
+  useEffect(() => {
+    // Refresh when returning to the parent dashboard after a child submits work
+    // from another device. Do not poll the full submissions list constantly.
+    const onFocus = () => load();
+    const onVisible = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
   if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
 
   const pendingTotal = waiting.length + readingPending.length;
+  const nextSubmitted = waiting[0] || null;
+  const nextReading = readingPending[0] || null;
+  const nextReadingStudent = nextReading ? data.students.find(s => s.id === nextReading.student_id) : null;
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-8 relative" data-testid="parent-dashboard">
@@ -66,6 +99,74 @@ export default function ParentDashboard() {
           </p>
         </div>
       </header>
+
+      {/* Only while a free preview has less than 24 hours left. Not persistent for members. */}
+      {plan?.effective_plan === "FREE_PREVIEW" && (() => {
+        const left = Date.parse(plan.trial_ends_at) - Date.now();
+        if (!Number.isFinite(left) || left <= 0 || left > 24 * 60 * 60 * 1000) return null;
+        return (
+          <section className="relative z-10 rounded-2xl border border-amber-300 bg-amber-50 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="dashboard-trial-ending" role="status">
+            <div>
+              <h2 className="font-display text-xl font-bold text-emerald-950">Your free preview is nearly over 🐉</h2>
+              <p className="mt-1 text-sm text-stone-700">Less than 24 hours left to create new learning in your preview. Your saved lessons and records stay safe, and there is no automatic payment.</p>
+            </div>
+            <Link to="/parent/plan" className="shrink-0 inline-flex justify-center rounded-full bg-emerald-950 text-white px-5 py-3 text-sm font-bold">See your plan</Link>
+          </section>
+        );
+      })()}
+
+      {/* Only present when the authenticated parent has an unread owner reply.
+          The server records it as read when the parent opens the matching thread. */}
+      {unreadFeedbackReplies > 0 && (
+        <section className="relative z-10 rounded-2xl border-2 border-amber-400 bg-amber-50 p-5 sm:p-7 shadow-lg" role="status" aria-live="polite" data-testid="dashboard-feedback-reply-alert">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="shrink-0 grid place-items-center rounded-2xl bg-emerald-950 p-3 text-amber-100" aria-hidden="true"><MailCheck size={30}/></div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-900">New message from the Side-Quest team</p>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold mt-1 text-emerald-950">Side-Quest has reported back!</h2>
+              <p className="mt-2 text-sm sm:text-base text-stone-800 leading-relaxed">
+                {latestUnreadFeedbackReply?.subject
+                  ? <>We've replied to your feedback about <strong className="break-words">{latestUnreadFeedbackReply.subject}</strong>.</>
+                  : "We've replied to your feedback."}
+                {unreadFeedbackReplies > 1 && <> You have <strong>{unreadFeedbackReplies} unread replies</strong> to catch up on.</>}
+              </p>
+            </div>
+            <Link to={latestUnreadFeedbackReply?.feedback_id ? "/parent/feedback?thread=" + encodeURIComponent(latestUnreadFeedbackReply.feedback_id) : "/parent/feedback"}
+              className="shrink-0 inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-emerald-950 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-950"
+              data-testid="dashboard-feedback-open-reply">Read your message <ArrowRight size={17}/></Link>
+          </div>
+          <p className="mt-3 text-xs text-stone-600">This notice disappears automatically after you've read your reply.</p>
+        </section>
+      )}
+
+      {/* Show only while a child actually has work awaiting review.
+          Opening the review without making a decision does not dismiss it. */}
+      {pendingTotal > 0 && (
+        <section className="relative z-10 rounded-2xl border-2 border-amber-400 bg-amber-50 p-5 sm:p-7 shadow-lg"
+          role="status" aria-live="polite" data-testid="dashboard-child-work-alert">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="shrink-0 grid place-items-center rounded-2xl bg-emerald-950 p-3 text-amber-100" aria-hidden="true"><ScrollText size={30}/></div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-900">New work from your adventurer</p>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold mt-1 text-emerald-950">Your adventurer has reported back!</h2>
+              <p className="mt-2 text-sm sm:text-base text-stone-800 leading-relaxed">
+                {nextSubmitted
+                  ? <><strong>{nextSubmitted.student?.name || "Your child"}</strong> has sent <strong>{nextSubmitted.lesson?.title || "a lesson"}</strong> for your review.</>
+                  : <><strong>{nextReadingStudent?.name || "Your child"}</strong> has submitted a reading entry{nextReading?.title ? <> for <strong>{nextReading.title}</strong></> : null}.</>}
+                {pendingTotal > 1 && <> There are <strong>{pendingTotal} items</strong> waiting for your review.</>}
+              </p>
+            </div>
+            {nextSubmitted
+              ? <button type="button" onClick={() => setOpenId(nextSubmitted.id)}
+                  className="shrink-0 inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-emerald-950 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-950"
+                  data-testid="dashboard-child-work-review">Review their work <ArrowRight size={17}/></button>
+              : <Link to="/parent/reading-log"
+                  className="shrink-0 inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-emerald-950 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-950"
+                  data-testid="dashboard-child-reading-review">Review reading <BookMarked size={17}/></Link>}
+          </div>
+          <p className="mt-3 text-xs text-stone-600">This notice clears when the work is approved or returned, and reappears if more work needs your attention.</p>
+        </section>
+      )}
 
       {(() => {
         const kids = data.students.length;
@@ -155,11 +256,14 @@ export default function ParentDashboard() {
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Let AI draft a lesson with Family Membership, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
+          <Quick to="/parent/lessons" icon={Printer} label="Print a lesson" desc="Printable student workbooks and parent teaching guides, straight from My lessons" tint="#4A5D3A" testid="quick-print-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Seasonal surprises" desc="Choose the optional seasonal touches your family wants in your children’s pet rooms" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>
+          <Quick to="/parent/homeschool-compass" icon={Compass} label="Homeschooling Compass" desc="State-specific registration steps, official resources and renewal planning" tint="#1F3B2D" testid="quick-homeschool-compass"/>
           <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="Organise what you plan to teach and keep it alongside your records" tint="#1F3B2D" testid="quick-plan"/>
           <Quick to="/parent/reading-log" icon={BookOpen} label="Add to reading log" desc="Track every book, chapter and audiobook for records" tint="#C8893B" testid="quick-reading"/>
+          <Quick to="/parent/feedback" icon={MessageSquare} label="Send ideas or feedback" desc="Problems, suggestions or thoughts? Send them directly to the Side-Quest team" tint="#C77B5B" testid="quick-feedback"/>
           <Quick to="/parent/evidence" icon={Camera} label="Evidence Backpack" desc="See reviewed work, life learning and portfolio records for each child" tint="#4A5D3A" testid="quick-evidence"/>
         </div>
       </section>

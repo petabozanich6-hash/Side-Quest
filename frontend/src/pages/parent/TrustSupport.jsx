@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Trash2, ChevronRight } from "lucide-react";
+import { Trash2, ChevronRight, MessageSquare } from "lucide-react";
 import { GROUPS, PAGES } from "../legal/legalContent";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import { useAuth } from "../../context/AuthContext";
@@ -11,7 +11,18 @@ export default function TrustSupport() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-10" data-testid="trust-support-hub">
       <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>Trust &amp; Support</h1>
-      <p className="mt-2 text-stone-600">Policies, help and the tools to manage your family's information.</p>
+      <p className="mt-2 text-stone-600">Clear answers about the free preview, membership, children's learning, privacy, and how to reach me.</p>
+      <Link to="/parent/feedback" className="mt-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 hover:border-emerald-700" data-testid="trust-feedback-link"><MessageSquare size={21} className="shrink-0 text-emerald-800 mt-0.5"/><span><span className="block text-base font-bold text-emerald-950">Report a problem, share an idea or give feedback</span><span className="text-sm text-stone-700 block mt-1">Send a private message directly to Side-Quest HQ. I can reply in your feedback thread; an unread reply appears on your dashboard.</span></span><ChevronRight size={17} className="ml-auto text-emerald-800 shrink-0"/></Link>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <Link to="/parent/plan" className="rounded-2xl bg-white border p-4 hover:shadow-sm" style={{borderColor:"#D4C8A8"}}>
+          <strong className="block text-emerald-950">Your preview and membership</strong>
+          <span className="block text-sm text-stone-600 mt-1">See your expiry date, what's included and what stays accessible afterward.</span>
+        </Link>
+        <Link to="/parent/homeschool-compass" className="rounded-2xl bg-white border p-4 hover:shadow-sm" style={{borderColor:"#D4C8A8"}}>
+          <strong className="block text-emerald-950">Homeschooling Compass</strong>
+          <span className="block text-sm text-stone-600 mt-1">Find registration guidance and official resources for your state or territory.</span>
+        </Link>
+      </div>
       <div className="mt-8 space-y-8">
         {GROUPS.map((g) => (
           <section key={g.id}>

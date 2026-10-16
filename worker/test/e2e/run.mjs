@@ -37,6 +37,7 @@ writeFileSync(`${ROOT}/wrangler.e2e.jsonc`, JSON.stringify({
 }));
 const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
+if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(0,12000), (mig.stdout || "").slice(0,12000));
 console.log((mig.stdout || "").slice(-600), (mig.stderr || "").slice(-600));
 ok(mig.status === 0, "local migrations failed");
 const sql = (q) => { const r = wr(["d1", "execute", "DB", "--local", "--command", q]); if (r.status !== 0) throw new Error("sql failed: " + (r.stderr || r.stdout).slice(-300)); return r.stdout; };
@@ -637,7 +638,18 @@ await step("H. child hands the work in", async () => {
 await step("I. parent sees it waiting, reviews it (with the answer key) and approves", async () => {
   await page.goto(BASE + "/parent");
   await page.waitForSelector(`[data-testid=waiting-${submissionId}]`, { timeout: 15000 });
-  await page.click(`[data-testid=open-${submissionId}]`);
+  await page.waitForSelector("[data-testid=dashboard-child-work-alert]", {timeout:15000});
+  const notice=await page.textContent("[data-testid=dashboard-child-work-alert]");
+  ok(notice.includes("Your adventurer has reported back!"),"new work notice absent");
+  ok(notice.includes("Mia"),"child name should appear in dashboard alert");
+  // Opening is not the same as reviewing. Closing the review must NOT clear the banner.
+  await page.click("[data-testid=dashboard-child-work-review]");
+  await page.waitForSelector('[data-testid=review-modal]');
+  await page.locator('[data-testid=review-modal] button').first().click();
+  await page.waitForSelector('[data-testid=review-modal]', {state:"detached"});
+  ok((await page.locator("[data-testid=dashboard-child-work-alert]").count())===1,
+    "alert was dismissed without completing review");
+  await page.click("[data-testid=dashboard-child-work-review]");
   await page.waitForSelector('[data-testid=review-modal]');
   const m = await page.textContent('[data-testid=review-modal]');
   ok(m.includes("Four quarters"), "answers not shown to parent");
@@ -646,6 +658,9 @@ await step("I. parent sees it waiting, reviews it (with the answer key) and appr
   await page.fill('[data-testid=feedback-text]', "Lovely folding, Mia!");
   await page.click('[data-testid=approve-btn]');
   await page.waitForSelector(`[data-testid=waiting-${submissionId}]`, { state: "detached", timeout: 15000 });
+  await page.waitForSelector("[data-testid=dashboard-child-work-alert]", {state:"detached",timeout:15000});
+  ok((await page.locator("[data-testid=dashboard-child-work-alert]").count())===0,
+    "completed review left a persistent alert");
 });
 
 await step("J. XP, progress and evidence update; XP is awarded exactly once", async () => {
@@ -894,6 +909,13 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   ok(w > 950, "builder is still a narrow column: " + w);
   await page.waitForSelector("[data-testid=builder-preview]");
   await page.screenshot({ path: `${SHOTS}/builder-split-desktop.png` });
+  ok(await page.isVisible("[data-testid=builder-paper-print]"), "editing screen has visible paper print options");
+  await page.goto(BASE + "/parent/lessons");
+  await page.waitForSelector(`[data-testid=lesson-${les.json.id}]`);
+  ok(await page.isVisible(`[data-testid=print-student-${les.json.id}]`), "lesson card missing student print");
+  ok(await page.isVisible(`[data-testid=print-parent-${les.json.id}]`), "lesson card missing parent print");
+  ok((await page.locator(`[data-testid=print-parent-${les.json.id}]`).getAttribute("href")).endsWith("?answers=1"), "parent print action must open answer edition");
+
 
   // Zero-burden flow: server routes are honest without AI; the one-box page, review page and print page work.
   for (const [path, body] of [["/ai/lesson-refine", { lesson_id: les.json.id, instruction: "Make it easier" }], ["/ai/series-plan", { request: "four science lessons about the solar system" }]]) {
@@ -927,6 +949,8 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await page.waitForSelector("[data-testid=review-actions]");
   const rv = await page.textContent("[data-testid=lesson-document]");
   ok(rv.includes("Worked examples") && rv.includes("Hook (0 to 5 min)") && rv.includes("Answer:"), "review shows teaching, guide and answers to the parent");
+  ok(await page.isVisible("[data-testid=review-print-parent]"), "review missing parent print control");
+  ok(await page.isVisible("[data-testid=r-print-parent]"), "review toolbar missing parent print control");
   for (const t of ["r-assign", "r-refine", "r-edit", "r-later", "r-print"]) ok(await page.isVisible(`[data-testid=${t}]`), "missing button " + t);
   await page.click("[data-testid=r-refine]");
   await page.click("[data-testid=refine-chip] >> nth=0");
@@ -935,6 +959,12 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await page.screenshot({ path: `${SHOTS}/review-desktop.png`, fullPage: true });
   await page.goto(BASE + `/print/lesson/${les.json.id}`);
   await page.waitForSelector("[data-testid=print-page]");
+  ok(await page.isVisible("[data-testid=print-student-tab]"), "student print tab missing");
+  ok(await page.isVisible("[data-testid=print-parent-tab]"), "parent print tab missing");
+  ok((await page.locator("[data-testid=lesson-document] img").getAttribute("src")) === "/icons/icon-192.png", "branded print logo missing");
+  const printHeadingColour = await page.locator("[data-testid=lesson-document] h1").evaluate(el => getComputedStyle(el).color);
+  ok(printHeadingColour === "rgb(31, 59, 45)", "print title is not Side-Quest forest green");
+
   const ws = await page.textContent("[data-testid=lesson-document]");
   ok(ws.includes("Name:") && !ws.includes("Hook (0 to 5 min)") && !ws.includes("Sam forgot to regroup") && !ws.includes("63. Tens: 30") && !ws.includes("If your child finds regrouping hard"), "printed worksheet has no answers or parent guide");
   await page.screenshot({ path: `${SHOTS}/print-worksheet.png`, fullPage: true });

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
+import { Compass, Search, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
 import { api } from "../../lib/api";
+import { flushOutbox, pendingCount } from "../../lib/offline";
+import { isKidsDevice } from "../../lib/pwa";
 import PetPicker from "./PetPicker";
 import PetCompanion from "../../components/shared/PetCompanion";
 import ChildInbox from "../../components/child/ChildInbox";
@@ -26,9 +28,29 @@ export default function ChildLayout() {
     api.get("/pet").then(r => { setNeedsPet(!!r.data.needs_pet); setChecked(true); }).catch(()=>setChecked(true));
   }, []);
 
+  // Work done offline is sent when the app opens and whenever the device comes back online.
+  useEffect(() => {
+    if (!user?.id) return undefined;
+    const send = () => { if (navigator.onLine) flushOutbox(user.id); };
+    send();
+    window.addEventListener("online", send);
+    return () => window.removeEventListener("online", send);
+  }, [user?.id]);
+
   if (checked && needsPet) return <PetPicker onDone={()=>setNeedsPet(false)}/>;
 
-  const doLogout = async () => { await logout(); nav("/"); };
+  const doLogout = async () => {
+    // On a child's own device (the kids' app) signing out keeps their saved quests and unsent work for next time.
+    if (isKidsDevice()) { await logout({ keepOffline: true }); nav("/child-login"); return; }
+    // Elsewhere signing out deletes this device's saved lessons, so check nothing is still waiting to be sent.
+    if (user?.id) {
+      if (navigator.onLine) await flushOutbox(user.id);
+      const left = await pendingCount(user.id);
+      if (left > 0 && !window.confirm(`You have work that hasn't been sent yet (no internet). If you sign out now it will be lost.\n\nSign out anyway?`)) return;
+    }
+    // On a child's own device (the kids' app), signing out returns to the child sign-in.
+    await logout(); nav(isKidsDevice() ? "/child-login" : "/");
+  };
 
   return (
     <div className={`min-h-screen ${theme.shell}`} data-testid="child-shell" data-theme={user?.theme}>
@@ -42,6 +64,7 @@ export default function ChildLayout() {
             </div>
           </div>
           <nav className="flex items-center gap-1 text-sm max-w-full overflow-x-auto whitespace-nowrap pb-1 sm:pb-0" aria-label="Main">
+            <Link to="/child/search" className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-nav-search"><Search size={14} className="inline mr-1"/> Search</Link>
             <Link to="/child" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-home"><Home size={14} className="inline mr-1"/> Home</Link>
             <Link to="/child/archive" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/archive" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/archive" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}}><FolderOpen size={14} className="inline mr-1"/> Archive</Link>
             <Link to="/child/portfolio" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/portfolio" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/portfolio" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-portfolio"><FolderOpen size={14} className="inline mr-1"/> Portfolio</Link>

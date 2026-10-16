@@ -19,6 +19,8 @@ import type { App, AuthUser, Env, Guards } from "./types";
 import { nowIso, newId, parseJson } from "./types";
 
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+// A paid family shares one bounded R2 allowance. Free preview accounts cannot upload.
+const MAX_FAMILY_STORAGE_BYTES = 250 * 1024 * 1024;
 const FILE_PREFIX = "sidequest";
 const SAFE_FILE_TYPES = [
   "application/pdf",
@@ -52,6 +54,7 @@ import type { LearningPrefs } from "./aiRequest";
 type StudentExtra = {
   subject_levels?: Record<string, string>;
   electives?: Array<Record<string, unknown>>;
+  compass_areas?: string[];
   stage_name?: string;
   band?: string;
   prefs?: LearningPrefs;
@@ -109,6 +112,12 @@ export function studentExtraFromBody(body: Record<string, unknown>, stage: strin
   const next: StudentExtra = { ...existing };
   if ("subject_levels" in body) next.subject_levels = isRecord(body.subject_levels) ? (body.subject_levels as Record<string, string>) : {};
   if ("electives" in body) next.electives = Array.isArray(body.electives) ? (body.electives as Array<Record<string, unknown>>) : [];
+  if ("compass_areas" in body) {
+    const allowed = new Set(["Creative Arts", "PDHPE", "Languages", "Technology"]);
+    const incoming = body.compass_areas;
+    if (!Array.isArray(incoming) || incoming.some(v => typeof v !== "string" || !allowed.has(v))) throw new Error("Invalid Compass subject selection");
+    next.compass_areas = [...new Set(incoming as string[])];
+  }
   if ("prefs" in body) next.prefs = cleanPrefs(body.prefs);
   if ("ai_help" in body) next.ai_help = body.ai_help !== false;
   next.subject_levels ??= existing?.subject_levels ?? {};
@@ -137,6 +146,7 @@ export function studentOut(row: StudentRow | null, withPrefs = false) {
     interests: parseJson(row.interests, [] as string[]),
     notes: row.notes,
     electives: extra.electives ?? [],
+    compass_areas: extra.compass_areas ?? [],
     ...(withPrefs ? { prefs: extra.prefs ?? {}, ai_help: extra.ai_help !== false } : {}),
     created_at: row.created_at,
   };
@@ -531,6 +541,18 @@ export function registerFamily(app: App, g: Guards) {
 
     const nextStage = String(body.stage || existing.stage || "");
     if (!stageMeta(nextStage)) return c.json({ detail: "Invalid stage" }, 400);
+    if ("compass_areas" in body) {
+      const values = body.compass_areas;
+      const permitted = new Set(["Creative Arts", "PDHPE", "Languages", "Technology"]);
+      if (!Array.isArray(values) || values.some((v: unknown) => typeof v !== "string" || !permitted.has(v)) ||
+          new Set(values).size !== values.length || (values.length !== 0 && values.length < 2)) {
+        return c.json({ detail: "Choose at least two different valid learning areas, or clear all selections" }, 400);
+      }
+      const family = await c.env.DB.prepare("SELECT jurisdiction FROM families WHERE id = ?").bind(c.get("user").family_id).first<{ jurisdiction?: string }>();
+      if (family?.jurisdiction !== "NSW" || !["S4", "S5"].includes(nextStage)) {
+        return c.json({ detail: "Compass area selections are only supported for NSW Stages 4–5" }, 400);
+      }
+    }
     const nextExtra = studentExtraFromBody(body, nextStage, parseJson(existing.extra || null, {} as StudentExtra));
     const updates: Record<string, unknown> = {
       extra: JSON.stringify(nextExtra),
@@ -713,6 +735,10 @@ export function registerFamily(app: App, g: Guards) {
     const file = form.get("file");
     if (!(file instanceof File)) return c.json({ detail: "No file uploaded" }, 400);
     if (file.size > MAX_UPLOAD_BYTES) return c.json({ detail: "File too large (max 50MB)" }, 413);
+    const sum = await c.env.DB.prepare("SELECT COALESCE(SUM(size),0) total FROM files WHERE family_id = ? AND is_deleted = 0")
+      .bind(c.get("user").family_id).first<{ total: number }>();
+    if (Number(sum?.total || 0) + file.size > MAX_FAMILY_STORAGE_BYTES)
+      return c.json({ detail: "Your family has reached the 250 MB file allowance. Please contact support to review your stored attachments.", code: "STORAGE_LIMIT" }, 413);
     const contentType = file.type || "application/octet-stream";
     const isSafeType =
       SAFE_FILE_TYPES.includes(contentType as (typeof SAFE_FILE_TYPES)[number])

@@ -1,0 +1,44 @@
+{
+  "id": "/kids",
+  "name": "Side-Quest Kids",
+  "short_name": "SQ Kids",
+  "description": "Side-Quest for children: opens straight to the child sign-in.",
+  "start_url": "/child-login?source=kids-app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#FEF5E0",
+  "theme_color": "#C77B5B",
+  "lang": "en-AU",
+  "categories": [
+    "education",
+    "kids",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/icons/kids-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/kids-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/kids-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/kids-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

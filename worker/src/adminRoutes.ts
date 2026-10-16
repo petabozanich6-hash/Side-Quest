@@ -30,6 +30,9 @@ import {
 import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
+import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
+import { sendEmail, SITE_URL, layout, p, button } from "./email";
+import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
 type AdminContext = Context<{ Bindings: Env; Variables: AdminVars }>;
@@ -349,6 +352,175 @@ export function createAdminRoutes() {
       return { ...r, detail };
     });
     return c.json({ entries: rows.slice(0, limit), has_more: rows.length > limit, page });
+  });
+
+  // --------------------------------------- family feedback: owner-only inbox
+  // Step-up, Owner role, CSRF, rate limits and admin permissions are all enforced above.
+  admin.get("/feedback/unread-count", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const r = await c.env.DB.prepare("SELECT COUNT(*) n FROM parent_feedback WHERE seen_at IS NULL").first<{n:number}>();
+    return c.json({ unread: Number(r?.n || 0) });
+  });
+
+  admin.get("/feedback", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const status = c.req.query("status") || "";
+    const category = c.req.query("category") || "";
+    if (status && !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
+    if (category && !(FEEDBACK_CATEGORIES as readonly string[]).includes(category)) return c.json({ detail: "Invalid category" }, 400);
+    const page = Number(c.req.query("page") || "1");
+    if (!Number.isInteger(page) || page < 1 || page > 10000) return c.json({ detail: "Invalid page" }, 400);
+    const { results } = await c.env.DB.prepare(
+      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
+    ).bind(status,status,category,category,(page - 1)*50).all();
+    const rows=results || [];
+    return c.json({ items: rows.slice(0,50), has_more: rows.length > 50, page });
+  });
+
+  admin.put("/feedback/:id", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const row = await c.env.DB.prepare("SELECT id,family_id,status,seen_at FROM parent_feedback WHERE id = ?")
+      .bind(c.req.param("id")).first<{id:string;family_id:string;status:string;seen_at:string|null}>();
+    if (!row) return c.json({ detail: "Feedback not found" }, 404);
+    const body = await readJson(c);
+    const status = body.status === undefined ? row.status : body.status;
+    if (typeof status !== "string" || !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
+    if (body.owner_note !== undefined && (typeof body.owner_note !== "string" || body.owner_note.length > 2000))
+      return c.json({ detail: "Internal note must be 2000 characters or fewer" }, 400);
+    const ownerNote = body.owner_note === undefined ? null : String(body.owner_note).trim();
+    const when = nowIso();
+    await c.env.DB.prepare(
+      "UPDATE parent_feedback SET status=?, owner_note=COALESCE(?,owner_note), seen_at=COALESCE(seen_at,?), updated_at=? WHERE id=?",
+    ).bind(status,ownerNote,when,when,row.id).run();
+    // Audit metadata only: no private parent report text in administrative log.
+    await writeAudit(c.env.DB,{...actor(c),action:"feedback.update",targetType:"feedback",targetId:row.id,detail:{from:row.status,to:status,notes_updated:ownerNote!==null}});
+    return c.json({ok:true,id:row.id,status,seen_at:row.seen_at || when});
+  });
+
+  // A private reply is persisted first. Optional email only alerts the correct submitting parent
+  // to sign in; it never contains the report, reply, names, or other customer data.
+  admin.get("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind(c.req.param("id")).first();
+    if(!exists) return c.json({detail:"Feedback not found"},404);
+    const {results}=await c.env.DB.prepare(
+      "SELECT id,body,created_at,parent_read_at FROM parent_feedback_replies WHERE feedback_id=? ORDER BY created_at ASC,id ASC LIMIT 100",
+    ).bind(c.req.param("id")).all();
+    return c.json({replies:results||[]});
+  });
+
+  admin.post("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const b=await readJson(c);
+    if(typeof b.message !== "string" || b.message.trim().length<2 || b.message.trim().length>2000)
+      return c.json({detail:"Write a reply of 2 to 2000 characters."},400);
+    const status=b.status===undefined?undefined:b.status;
+    if(status!==undefined && (typeof status!=="string" || !(FEEDBACK_STATUSES as readonly string[]).includes(status)))
+      return c.json({detail:"Invalid feedback status"},400);
+    const report=await c.env.DB.prepare(
+      "SELECT p.id,p.family_id,p.user_id,p.status,u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id WHERE p.id=?"
+    ).bind(c.req.param("id")).first<{id:string;family_id:string;user_id:string;status:string;email:string}>();
+    if(!report)return c.json({detail:"Feedback not found"},404);
+    const replyId=crypto.randomUUID(), when=nowIso(), body=b.message.trim();
+    // The owner cannot reroute the reply by supplying a target email, family id or user id.
+    const replies=(await c.env.DB.prepare("SELECT COUNT(*) n FROM parent_feedback_replies WHERE feedback_id=?")
+      .bind(report.id).first<{n:number}>())?.n||0;
+    if(Number(replies)>=100)return c.json({detail:"This feedback thread has reached its reply limit."},409);
+    await c.env.DB.batch([
+      c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)")
+        .bind(replyId,report.id,c.get("user").id,body,when),
+      c.env.DB.prepare("UPDATE parent_feedback SET status=COALESCE(?,status),seen_at=COALESCE(seen_at,?),updated_at=? WHERE id=?")
+        .bind(status??null,when,when,report.id),
+    ]);
+    // Keep the audit trail content-free, like other Owner HQ operations.
+    try {
+      await writeAudit(c.env.DB,{...actor(c),action:"feedback.reply",targetType:"feedback",targetId:report.id,
+        detail:{reply_id:replyId, status:status??report.status}});
+    } catch { console.warn("feedback reply audit could not be recorded"); }
+    let emailSent=false;
+    try {
+      if(typeof report.email==="string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(report.email)) {
+        const url=SITE_URL+"/parent/feedback?thread="+encodeURIComponent(report.id);
+        emailSent=await sendEmail(c.env,{
+          to:report.email,subject:"Side-Quest has replied to your feedback",
+          text:"You have a new reply from Side-Quest. Sign in to your Parent Hub to read it:\n"+url+"\n\nThis is a notification only. Your message stays private in your Side-Quest account.",
+          html:layout({
+            preheader:"The Side-Quest team has replied to your feedback. Your message is waiting in the Parent Hub.",
+            kicker:"The quest board has news.",
+            heading:"Side-Quest has reported back!",
+            body:p("There's a new reply from the Side-Quest team in your private Parent Hub.") +
+              button("Read your message",url) +
+              p("Sign in to read your reply. For your privacy, the message itself is not included in this email."),
+            reason:"You're receiving this because you sent feedback to Side-Quest and the team has replied.",
+          }),
+        });
+      }
+    } catch { /* the on-site reply is always delivered */ }
+    return c.json({ok:true,id:replyId,feedback_id:report.id,status:status??report.status,
+      created_at:when,email_notification_sent:emailSent,delivered_in_app:true},201);
+  });
+
+
+  // Owner-only, passkey-protected special email announcements.
+  // Mailing list sources are private registered parent accounts ONLY; the owner
+  // cannot supply an arbitrary recipient address or list through these endpoints.
+  admin.get("/announcements", requirePermission("settings.read"), async c=>{
+    await ensureAnnouncementSchema(c.env.DB);
+    const now=new Date();
+    return c.json({
+      email_configured:!!c.env.EMAIL,
+      service_recipients:await audienceCount(c.env.DB,"service",now),
+      opted_in_recipients:await audienceCount(c.env.DB,"optional",now),
+      broadcasts:await listAnnouncements(c.env.DB),
+    });
+  });
+  admin.post("/announcements/preview",requirePermission("settings.read"),async c=>{
+    const body=await readJson(c),v=validateAnnouncement(body);
+    if(!v.ok)return c.json({detail:v.detail},400);
+    await ensureAnnouncementSchema(c.env.DB);
+    return c.json({
+      kind:v.kind,subject:v.subject,body:v.body,
+      recipients:await audienceCount(c.env.DB,v.kind),
+      email_configured:!!c.env.EMAIL,
+      confirmation:"SEND "+await audienceCount(c.env.DB,v.kind)+" PARENTS",
+    });
+  });
+  admin.post("/announcements",requirePermission("settings.write"),async c=>{
+    const body=await readJson(c),v=validateAnnouncement(body);
+    if(!v.ok)return c.json({detail:v.detail},400);
+    if(typeof body.idempotency_key!=="string" || !/^[a-fA-F0-9-]{36}$/.test(body.idempotency_key))
+      return c.json({detail:"Refresh the composer and confirm sending again."},400);
+    if(typeof body.expected_recipients!=="number" || !Number.isInteger(body.expected_recipients))
+      return c.json({detail:"Preview the recipient count again."},400);
+    if(body.confirmation!=="SEND "+body.expected_recipients+" PARENTS")
+      return c.json({detail:"Type the exact confirmation phrase shown in the preview."},400);
+    if(v.kind==="service" && body.non_promotional_confirmed!==true)
+      return c.json({detail:"Confirm that a service notice contains no advertising or promotional content."},400);
+    if(v.kind==="optional" && body.consent_confirmed!==true)
+      return c.json({detail:"Confirm that optional news goes only to parents who have opted in."},400);
+    if(!c.env.EMAIL)return c.json({detail:"Outgoing email is not configured on this Cloudflare Worker. Nothing was sent."},503);
+    const safeIdempotencyKey=body.idempotency_key as string;
+    const safeRecipientCount=body.expected_recipients as number;
+    await ensureAnnouncementSchema(c.env.DB);
+    const result=await queueAnnouncement(c.env.DB,c.get("user").id,{
+      kind:v.kind,subject:v.subject,body:v.body,
+      idempotency_key:safeIdempotencyKey,expected_recipients:safeRecipientCount
+    });
+    if("error" in result)return c.json({detail:result.error},409);
+    if(!result.existing)await writeAudit(c.env.DB,{
+      ...actor(c),action:"announcement.queued",targetType:"announcement",targetId:result.id,
+      detail:{kind:v.kind,recipient_count:result.count}
+    });
+    return c.json({queued:true,id:result.id,already_queued:result.existing,delivery:"Paced in batches via Cloudflare cron."},result.existing?200:201);
+  });
+  admin.post("/announcements/:id/cancel",requirePermission("settings.write"),async c=>{
+    await ensureAnnouncementSchema(c.env.DB);
+    const id=c.req.param("id");
+    if(!/^[a-fA-F0-9-]{36}$/.test(id))return c.json({detail:"Unknown announcement"},404);
+    const cancelled=await cancelAnnouncement(c.env.DB,id);
+    if(!cancelled)return c.json({detail:"This announcement is already complete or cancelled."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"announcement.cancelled",targetType:"announcement",targetId:id});
+    return c.json({cancelled:true});
   });
 
   admin.all("*", (c) => notFound(c));

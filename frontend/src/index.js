@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@/index.css";
 import App from "@/App";
-import { registerServiceWorker } from "@/lib/pwa";
+import { registerServiceWorker, rememberKidsDevice, applyKidsHostManifest } from "@/lib/pwa";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,6 +14,8 @@ const queryClient = new QueryClient({
   },
 });
 
+applyKidsHostManifest();
+rememberKidsDevice();
 registerServiceWorker();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

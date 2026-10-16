@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { api, fileUrl } from "../../lib/api";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, Sparkles, Loader2, Check, Upload, Trees, Camera, FileText, MapPin, ExternalLink } from "lucide-react";
 import { Fern, Leaf as LeafGraphic } from "../../components/shared/Botanical";
@@ -13,6 +14,8 @@ const EXAMPLES = [
 ];
 
 export default function LifeLearningPage() {
+  const [searchParams] = useSearchParams();
+  const focused = searchParams.get("focus");
   const [items, setItems] = useState([]);
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
@@ -64,6 +67,10 @@ export default function LifeLearningPage() {
       load();
     } catch { toast.error("Failed"); }
   };
+
+  useEffect(() => {
+    if (focused && items.some(x => x.id === focused)) api.get("/life-evidence/"+encodeURIComponent(focused)).then(({data}) => {setActive(data);setAnalysis(data.ai_mappings?.length ? { mappings:data.ai_mappings,summary:data.ai_summary,activity_type:data.ai_activity_type,additional_evidence_suggested:data.ai_additional,saved:true }:null);}).catch(()=>{});
+  },[focused,items]);
 
   const openItem = async (id) => {
     const { data } = await api.get(`/life-evidence/${id}`);

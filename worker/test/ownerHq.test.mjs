@@ -480,3 +480,282 @@ test("owner promotion: checks, masked output and guarded one-time SQL", () => {
   assert.equal(audit[0].action, "owner.promote");
   assert.equal(audit[0].actor_user_id, null);
 });
+
+// ------------------------------------------------------------ offline lessons are a paid feature
+
+test("offline lessons: only Family Membership (and complimentary) families get offline_allowed", async () => {
+  const h = harness();
+  const parent = await h.register("offline-plan@example.com");
+  await h.addChild(parent, "offkid");
+  const check = async () => {
+    const login = await h.req("/auth/child-login", { method: "POST", admin: false, body: { username: "offkid", pin: "4321" } });
+    const dash = await h.req("/dashboard/child", { token: login.json.token });
+    assert.equal(dash.status, 200);
+    assert.equal(login.json.offline_allowed, dash.json.offline_allowed, "sign-in and home page must agree");
+    return login.json.offline_allowed;
+  };
+  assert.equal(await check(), false, "free preview");
+  const setPlan = (plan, end) => h.db.raw.prepare("UPDATE families SET plan = ?, plan_period_end = ? WHERE id = ?").run(plan, end, parent.familyId);
+  setPlan("ACTIVE_MONTHLY", new Date(Date.now() + 20 * 86400000).toISOString());
+  assert.equal(await check(), true, "paying member");
+  setPlan("INTERNAL", null);
+  assert.equal(await check(), true, "complimentary");
+  setPlan("CANCELLED", new Date(Date.now() - 86400000).toISOString());
+  assert.equal(await check(), false, "membership ended");
+  setPlan("FREE_PREVIEW", null);
+  h.db.raw.prepare("UPDATE families SET trial_ends_at = ? WHERE id = ?").run(new Date(Date.now() - 86400000).toISOString(), parent.familyId);
+  assert.equal(await check(), false, "preview ended");
+});
+
+
+// ---------------------------------------------------------------- parent feedback + Owner HQ inbox
+test("feedback: parent submissions inherit trusted account/family identifiers, stay private and require Owner step-up", async () => {
+  const { h, owner } = await ownerSetup();
+  const alice = await h.register("alice-feedback@example.com","Alice");
+  const bob = await h.register("bob-feedback@example.com","Bob");
+  const child = await h.addChild(alice,"feedback_kid1");
+  const report = { category: "idea", subject: "Give us an offline reading chart", message: "It would be lovely to track our reading without a connection.", page_hint: "Reading log", family_id: bob.familyId, user_id: bob.id, status: "resolved", owner_note: "fake" };
+
+  let r = await h.req("/feedback", { method: "POST", token: alice.token, admin: false, body: report });
+  assert.equal(r.status, 201, JSON.stringify(r.json));
+  const id = r.json.id;
+  const row = h.db.raw.prepare("SELECT * FROM parent_feedback WHERE id = ?").get(id);
+  assert.equal(row.family_id, alice.familyId, "supplied family ID is ignored");
+  assert.equal(row.user_id, alice.id, "supplied account ID is ignored");
+  assert.equal(row.status, "new", "parents cannot assign owner status");
+  assert.equal(row.owner_note, "", "parents cannot forge internal notes");
+  assert.equal(row.category, "idea");
+  assert.equal(row.page_hint, "Reading log");
+
+  r = await h.req("/feedback", { token: alice.token, admin: false });
+  assert.equal(r.status, 200);assert.equal(r.json.reports.length,1);
+  assert.equal(r.json.reports[0].owner_note,undefined);
+  r = await h.req("/feedback", { token: bob.token, admin: false });
+  assert.equal(r.status, 200);assert.equal(r.json.reports.length,0);
+  r = await h.req("/feedback", { token: child.token, admin: false });
+  assert.equal(r.status, 403,"child cannot read parent feedback");
+  r = await h.req("/feedback", { method:"POST", token: child.token, admin:false, body:report });
+  assert.equal(r.status,403,"child cannot submit parent feedback");
+  r = await h.req("/admin/feedback", { token: alice.token });
+  assert.equal(r.status,404,"ordinary parent never sees owner inbox");
+  r = await h.req("/admin/feedback", { token:owner.token });
+  assert.equal(r.status,401,"owner must unlock passkey before reading");
+  await stepUp(h,owner);
+  r = await h.req("/admin/feedback/unread-count",{token:owner.token});
+  assert.equal(r.status,200);assert.equal(r.json.unread,1);
+  r = await h.req("/admin/feedback",{token:owner.token});
+  assert.equal(r.status,200);assert.equal(r.json.items.length,1);
+  assert.equal(r.json.items[0].parent_email,alice.email);
+  assert.equal(r.json.items[0].family_id,alice.familyId);
+  r = await h.req("/admin/feedback/"+id,{method:"PUT",token:owner.token,body:{status:"reviewing",owner_note:"Needs an investigation"}});
+  assert.equal(r.status,200,JSON.stringify(r.json));
+  r = await h.req("/admin/feedback/unread-count",{token:owner.token});
+  assert.equal(r.json.unread,0);
+  r = await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.json.reports[0].status,"reviewing");
+  assert.equal(r.json.reports[0].owner_note,undefined);
+  assert.equal(h.db.raw.prepare("SELECT owner_note FROM parent_feedback WHERE id=?").get(id).owner_note,"Needs an investigation");
+  r = await h.req("/admin/feedback/"+id,{method:"PUT",token:owner.token,origin:"https://bad.example",body:{status:"resolved"}});
+  assert.equal(r.status,403,"cross-origin writes remain blocked");
+  r = await h.req("/admin/feedback/"+id,{method:"PUT",token:owner.token,body:{status:"invented"}});
+  assert.equal(r.status,400,"invalid statuses rejected");
+});
+
+
+test("owner feedback replies are private, auditable, unread until viewed, and work after preview expiry",async()=>{
+  const {h,owner}=await ownerSetup();
+  const alice=await h.register("alice-replies@example.com","Alice");
+  const bob=await h.register("bob-replies@example.com","Bob");
+  const c=await h.addChild(alice,"reply_child1");
+  const report={category:"problem",subject:"My calendar is stuck",message:"The timetable screen says it cannot save. Please help!"};
+  const made=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:report});
+  assert.equal(made.status,201,JSON.stringify(made.json));
+  const id=made.json.id;
+  let r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.status,200);assert.equal(r.json.unread,0);
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:alice.token,body:{message:"Forged"}});
+  assert.equal(r.status,404,"only platform owners can reply");
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{message:"Needs passkey"}});
+  assert.equal(r.status,401,"owners need passkey step-up");
+  await stepUp(h,owner);
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,origin:"https://bad.example",body:{message:"Cross origin"}});
+  assert.equal(r.status,403,"CSRF protection still applies");
+  for (const message of ["", "x", "x".repeat(2001)]) {
+    r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{message}});
+    assert.equal(r.status,400);
+  }
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{message:"hello",status:"something_invalid"}});
+  assert.equal(r.status,400);
+  const exact="Thanks for telling me about the timetable. This has been fixed. Please try again.";
+  r=await h.req("/admin/feedback/"+id+"/replies",{method:"POST",token:owner.token,body:{
+    message:exact,status:"resolved",family_id:bob.familyId,user_id:bob.id,email:bob.email
+  }});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  assert.equal(r.json.delivered_in_app,true);
+  assert.equal(r.json.email_notification_sent,false,"no false success when email is unavailable");
+  assert.equal(r.json.status,"resolved");
+  const replyId=r.json.id;
+  const raw=h.db.raw.prepare("SELECT r.*,p.family_id,p.user_id FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE r.id=?").get(replyId);
+  assert.equal(raw.family_id,alice.familyId,"trusted parent routing, never request-supplied ids");
+  assert.equal(raw.user_id,alice.id);
+  assert.equal(raw.parent_read_at,null);
+  assert.equal(raw.body,exact);
+  const audit=h.db.raw.prepare("SELECT detail_json FROM admin_audit_log WHERE action='feedback.reply' AND target_id=?").get(id);
+  assert.ok(audit,"send must produce audit metadata");
+  assert.ok(!audit.detail_json.includes(exact),"no message body in admin audit");
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.reports[0].status,"resolved");
+  assert.equal(r.json.reports[0].replies[0].body,exact);
+  assert.equal(r.json.reports[0].unread_replies,1);
+  assert.equal(r.json.reports[0].owner_note,undefined);
+  r=await h.req("/feedback",{token:bob.token,admin:false});
+  assert.equal(r.status,200);assert.equal(r.json.reports.length,0,"other families cannot view");
+  r=await h.req("/feedback/unread-count",{token:bob.token,admin:false});
+  assert.equal(r.json.unread,0);
+  assert.equal(r.json.latest,null,"other families get no reply details");
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.json.unread,1);
+  assert.equal(r.json.latest.feedback_id,id,"dashboard links to the actual unread thread");
+  assert.equal(r.json.latest.subject,"My calendar is stuck");
+  assert.ok(r.json.latest.replied_at);
+  assert.equal(r.json.latest.body,undefined,"notification never includes reply text");
+  r=await h.req("/feedback/unread-count",{token:c.token,admin:false});
+  assert.equal(r.status,403,"children cannot see parent replies");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:bob.token,admin:false});
+  assert.equal(r.status,404,"other families cannot mark these read");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:c.token,admin:false});
+  assert.equal(r.status,403,"children cannot mark parent messages read");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.json.unread,0);
+  assert.equal(r.json.latest,null,"notification vanishes after parent reads reply");
+  r=await h.req("/admin/feedback/"+id+"/replies",{token:owner.token});
+  assert.equal(r.status,200);
+  assert.ok(r.json.replies[0].parent_read_at);
+  h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED',trial_ends_at=? WHERE id=?").run("2020-01-01T00:00:00.000Z",alice.familyId);
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200,"expired parents retain message history");
+  r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:alice.token,admin:false});
+  assert.equal(r.status,200,"free/expired parent can acknowledge replies");
+});
+
+test("branded Owner HQ feedback email includes the real Side-Quest logo without private content",async()=>{
+  const h=harness();
+  const parent=await h.register("branded-hq-test@example.com","Parent");
+  const mail=[];
+  h.env.EMAIL={send:async obj=>{mail.push(obj);return {messageId:"test"}}};
+  h.env.OWNER_NOTIFICATION_EMAIL="test-owner@example.com";
+  const secret="TOP-SECRET-FAMILY-DETAILS";
+  const r=await h.req("/feedback",{method:"POST",token:parent.token,admin:false,body:{
+    category:"feedback",subject:"Feature feedback",message:"This is private: "+secret
+  }});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  assert.equal(mail.length,1);
+  assert.equal(mail[0].to,"test-owner@example.com");
+  assert.ok(mail[0].html.includes("/icons/icon-192.png"),"email contains publicly hosted Side-Quest logo");
+  assert.ok(mail[0].html.includes("Side-Quest Learning logo"),"logo includes alternative text");
+  assert.ok(!JSON.stringify(mail[0]).includes(secret),"private feedback content remains in Owner HQ");
+});
+
+test("feedback reply email only notifies the real submitting parent and never includes private message text",async()=>{
+  const {h,owner}=await ownerSetup();
+  const alice=await h.register("email-alice@example.com","Alice");
+  const bob=await h.register("email-bob@example.com","Bob");
+  const sent=[];
+  h.env.EMAIL={send:async x=>{sent.push(x);return {messageId:"test-message"}}};
+  const report=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,
+    body:{category:"idea",subject:"More maths games please",message:"Could you add activities for maths?"}});
+  assert.equal(report.status,201);
+  await stepUp(h,owner);
+  const phrase="CONFIDENTIAL FEEDBACK REPLY";
+  const r=await h.req("/admin/feedback/"+report.json.id+"/replies",{method:"POST",token:owner.token,body:{message:phrase,email:bob.email}});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  assert.equal(r.json.email_notification_sent,true);
+  assert.equal(sent.length,1);
+  assert.deepEqual(sent[0].to,alice.email);
+  assert.ok(sent[0].html.includes("/icons/icon-192.png"),"parent reply email carries Side-Quest logo");
+  assert.ok(sent[0].html.includes("Side-Quest has reported back!"));
+  assert.ok(!JSON.stringify(sent).includes(phrase));
+  assert.ok(!JSON.stringify(sent).includes("More maths games please"));
+  assert.ok(!JSON.stringify(sent).includes(bob.email));
+});
+
+test("dashboard reply alert surfaces older unread threads buried behind 50 newer submissions",async()=>{
+  const h=harness();
+  const alice=await h.register("older-feedback@example.com","Alice");
+  const bob=await h.register("other-feedback@example.com","Bob");
+  const insert=h.db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES(?,?,?,'idea',?,'Please consider the suggestion here.','','new','',NULL,?,?)");
+  for(let i=0;i<55;i++){
+    const date=new Date(Date.UTC(2026,9,1+i)).toISOString();
+    insert.run("old-feedback-"+i,alice.familyId,alice.id,"Feedback item "+i,date,date);
+  }
+  const old="old-feedback-0";
+  h.db.raw.prepare("INSERT INTO parent_feedback_replies(id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES(?,?,?,'Please try the fix.',NULL,?)")
+    .run("old-reply",old,bob.id,new Date().toISOString());
+  let r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.unread,1);
+  assert.equal(r.json.latest.feedback_id,old);
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.reports.length,50);
+  assert.equal(r.json.reports[0].id,old,"old item with unread reply is promoted above newer items");
+  assert.equal(r.json.reports[0].replies[0].body,"Please try the fix.");
+  r=await h.req("/feedback",{token:bob.token,admin:false});
+  assert.equal(r.status,200);assert.equal(r.json.reports.length,0);
+  r=await h.req("/feedback/unread-count",{token:bob.token,admin:false});
+  assert.equal(r.json.unread,0);assert.equal(r.json.latest,null);
+  r=await h.req("/feedback/"+old+"/replies/read",{method:"POST",token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.json.unread,0);assert.equal(r.json.latest,null);
+});
+
+
+test("feedback submissions survive missing or unavailable optional reply/notification storage",async()=>{
+  const h=harness();
+  const alice=await h.register("feedback-compat@example.com","Alice");
+  const existingDb=h.env.DB;
+  // Simulate production where optional newer reply queries/DDL cannot run.
+  h.env.DB={...existingDb,prepare(sql){
+    if(/parent_feedback_replies/i.test(sql))throw new Error("no such table: parent_feedback_replies");
+    if(/^CREATE (TABLE|INDEX).*parent_feedback/i.test(sql))throw new Error("DDL disabled for feedback");
+    return existingDb.prepare(sql);
+  }};
+  let r=await h.req("/feedback",{method:"POST",token:alice.token,admin:false,body:{
+    category:"problem",subject:"Can't send feedback",message:"The feedback send button should still store the report."
+  }});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  const id=r.json.id;
+  assert.ok(h.db.raw.prepare("SELECT 1 FROM parent_feedback WHERE id=?").get(id),"submission must be persisted");
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200,JSON.stringify(r.json));
+  assert.equal(r.json.reports[0].id,id,"history cannot depend on reply tables");
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.unread,0);
+  assert.equal(r.json.notification_unavailable,true,"report an outage without breaking parent feedback");
+  h.env.DB=existingDb;
+});
+
+test("feedback: input validation and rate limiting stop spam without creating extra reports", async () => {
+  const h = harness();
+  const alice = await h.register("rate-feedback@example.com","Alice");
+  const good = {category:"problem",subject:"Something is not saving",message:"I save a lesson and it stays on the old version."};
+  for (const body of [
+    {...good,category:"arbitrary"},{...good,subject:"bad"},{...good,message:"too short"},
+    {...good,page_hint:"x".repeat(161)}, {...good,user_id:"stolen",message:"A".repeat(4001)},
+  ]) {
+    const r=await h.req("/feedback",{method:"POST",token:alice.token,admin:false,body});
+    assert.equal(r.status,400,JSON.stringify(r.json));
+  }
+  for(let i=0;i<5;i++){
+    const r=await h.req("/feedback",{method:"POST",token:alice.token,admin:false,body:good});
+    assert.equal(r.status,201,JSON.stringify(r.json));
+  }
+  const blocked=await h.req("/feedback",{method:"POST",token:alice.token,admin:false,body:good});
+  assert.equal(blocked.status,429);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM parent_feedback WHERE user_id=?").get(alice.id).n,5);
+});

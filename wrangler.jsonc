@@ -4,6 +4,8 @@
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
   "observability": { "enabled": true },
+  // Pace special Owner HQ emails: up to 12 recipients every five minutes.
+  "triggers": { "crons": ["*/5 * * * *"] },
   "vars": { "STRIPE_LIVE_ENABLED": "true" },
   "build": {
     "command": "node worker/scripts/guard-build-branch.mjs && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
@@ -30,12 +32,9 @@
   // Workers AI has a free daily allowance and is billed per use beyond it; check your Cloudflare plan.
   // Optional vars: AI_MODEL (default @cf/meta/llama-3.3-70b-instruct-fp8-fast), AI_GATEWAY_ID (route via an AI Gateway).
   "ai": { "binding": "AI" },
-  // Optional file uploads (evidence photos / work samples). Until this is enabled,
-  // POST /api/files/upload returns 501. To enable:
-  //   1. npx wrangler r2 bucket create sidequest-files
-  //   2. uncomment the block below
-  //   3. npm run deploy
-  // "r2_buckets": [
-  //   { "binding": "BUCKET", "bucket_name": "sidequest-files" }
-  // ]
+  // R2 storage for family files (paid membership). Match BUCKET in worker/src/types.ts.
+  // The bucket must exist in the same Cloudflare account as this Worker.
+  "r2_buckets": [
+    { "binding": "BUCKET", "bucket_name": "sidequest-files" }
+  ]
 }

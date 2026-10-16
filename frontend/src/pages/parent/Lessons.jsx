@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Plus, Search, Copy, Archive, ArchiveRestore, Pencil, Send, X, Trash2 } from "lucide-react";
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
+import LessonPrintActions from "../../components/parent/LessonPrintActions";
 
 export default function LessonsPage() {
   const nav = useNavigate();
@@ -109,6 +110,10 @@ export default function LessonsPage() {
             <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
             {l.duration_minutes ? <p className="text-xs text-slate-500 mt-1">{l.duration_minutes} minutes</p> : null}
             <p className="mt-2 text-sm text-slate-600 line-clamp-3">{(l.objectives || [])[0] || ""}</p>
+            <div className="mt-4 border-t border-dashed border-[#D4C8A8] pt-3">
+              <p className="text-xs font-bold mb-2 text-[#4A5D3A]">🖨️ Take this lesson onto paper</p>
+              <LessonPrintActions lessonId={l.id} compact />
+            </div>
             <div className="mt-auto pt-4 flex items-center gap-2 flex-wrap">
               {!showArchived && <Link to={`/parent/lessons/${l.id}/edit`} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`edit-${l.id}`}><Pencil size={12} /> Edit</Link>}
               {!showArchived && <button onClick={() => act(async () => { const r = await api.post(`/lessons/${l.id}/duplicate`); nav(`/parent/lessons/${r.data.id}/edit`); }, "Copied. You are editing the copy.")} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`dup-${l.id}`}><Copy size={12} /> Duplicate</button>}
