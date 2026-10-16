@@ -6,10 +6,10 @@ The first release includes Stripe promotional discount scrolls and manually gift
 
 ## Discount scrolls
 
-- The Owner can create an alphanumeric promotional code, name, percentage (5–50%), discount duration (first invoice or first 2/3 months), maximum number of redemptions (1–500) and expiry (within 366 days).
+- The Owner can create an alphanumeric promotional code, name, percentage (5–50%), discount duration (first invoice only), maximum number of redemptions (1–500) and expiry (within 366 days).
 - Creation uses the **currently configured Stripe environment** (test or live) and calls Stripe to create a coupon and promotion code. Stripe — not D1 and not the browser — enforces whether the code is active, eligible, expired or used up. Codes are restricted to first-time transactions.
 - Parent **Your plan** page sends families to Stripe Checkout, where they may enter a promo code. Stripe displays the discounted total before checkout confirmation. The user cannot supply a price, discount identifier or entitlement via the app API. Checkout returns never grant access: the verified Stripe webhook remains the authority.
-- All existing Stripe Checkout prices and intervals stay unchanged. A promotional code discounts that checkout price; it does not change the base plan price in HQ.
+- All existing Stripe Checkout prices and intervals stay unchanged. A promotional code discounts the first checkout invoice (including annual checkout if selected); it does not change the base plan price in HQ. Multi-month discounts are deferred until they can be restricted safely by billing interval.
 - HQ shows each code's local creation metadata. For authoritative live redemption totals, invoice amounts and discounts, consult the **matching Stripe environment**. The HQ's active count is a count of unexpired, non-retired codes, **not redemptions**.
 - Retiring a code deactivates it in Stripe, blocking future redemptions. Already-applied subscription discounts retain their terms. A disabled or expired code is not automatically reusable.
 - Stripe restricted API keys must permit **Coupons write**, **Promotion Codes write**, and the existing Checkout permissions. If these permissions are missing, campaign creation fails without creating an HQ row. Network failures can leave a Stripe coupon or code that requires checking in the Stripe dashboard before retrying.
