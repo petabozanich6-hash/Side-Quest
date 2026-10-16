@@ -37,7 +37,7 @@ writeFileSync(`${ROOT}/wrangler.e2e.jsonc`, JSON.stringify({
 }));
 const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", "wrangler.e2e.jsonc", "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
 const mig = wr(["d1", "migrations", "apply", "DB", "--local"]);
-if(mig.status !== 0) console.error("D1 migration error output:", (mig.stderr || "").slice(0,12000), (mig.stdout || "").slice(0,12000));
+if(mig.status !== 0) console.error("D1 migration diagnostics:", { exitStatus: mig.status, signal: mig.signal, spawnError: mig.error?.message }, "STDERR TAIL:", (mig.stderr || "").slice(-18000), "STDOUT TAIL:", (mig.stdout || "").slice(-18000));
 console.log((mig.stdout || "").slice(-600), (mig.stderr || "").slice(-600));
 ok(mig.status === 0, "local migrations failed");
 const sql = (q) => { const r = wr(["d1", "execute", "DB", "--local", "--command", q]); if (r.status !== 0) throw new Error("sql failed: " + (r.stderr || r.stdout).slice(-300)); return r.stdout; };
