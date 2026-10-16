@@ -61,6 +61,10 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
         const { data } = await api.post(`/auto-quest/proposals/${proposal.id}/generate`);
         setProposal(data); setSelected(data.lesson?.id || ""); setReviewed(false);
         toast.success("Draft created. Review it before assigning.");
+      } else if (action === "reopen") {
+        const { data } = await api.post(`/auto-quest/proposals/${proposal.id}/reopen`);
+        setProposal(data); setSelected(data.lesson?.id || ""); setReviewed(false);
+        toast.success("This timetable slot is ready for another quest.");
       } else if (action === "approve") {
         const draft = proposal.lesson?.status !== "ready";
         if (draft && !reviewed) { toast.error("Review the draft first."); return; }
@@ -93,7 +97,11 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
       <p><strong>{proposal.learning_area || event.title}</strong> · {event.date} {event.start_time || ""}</p>
       <p className="text-slate-700">{proposal.reason}</p>
       {proposal.outcome_codes?.length > 0 && <p className="text-xs text-slate-600">Learning outcomes: {proposal.outcome_codes.join(", ")}</p>}
-      {proposal.status !== "proposed" ? <p className="font-semibold text-teal-900">Status: {proposal.status}. Refresh the calendar to see any existing assignment.</p> : <>
+      {proposal.status !== "proposed" ? <div className="space-y-2">
+        <p className="font-semibold text-teal-900">Status: {proposal.status}.</p>
+        {(proposal.status === "rejected" || proposal.status === "assigned") &&
+          <button type="button" disabled={busy} onClick={() => run("reopen")} className="rounded-full border border-teal-700 px-3 py-2 disabled:opacity-50" data-testid="slot-reopen">Plan another quest in this free slot</button>}
+      </div> : <>
         {proposal.lesson && <p>Selected: <Link target="_blank" rel="noopener noreferrer" className="underline font-semibold" to={`/parent/lessons/${proposal.lesson.id}/edit`}>{proposal.lesson.title}</Link>{draft && <span className="ml-1 text-amber-800">(Draft)</span>}</p>}
         <label className="block font-semibold text-xs">Or choose a ready lesson from your library
           <select className="input mt-1" value={selected} onChange={e=>setSelected(e.target.value)} data-testid="slot-lesson">
