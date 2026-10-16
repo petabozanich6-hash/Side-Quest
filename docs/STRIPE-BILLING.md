@@ -34,7 +34,7 @@ Or `npx wrangler secret put <NAME>` (add `--config wrangler.staging.jsonc` for s
 
 | Secret | Value | Where in Stripe (Sandbox mode on) |
 | --- | --- | --- |
-| `STRIPE_SECRET_KEY` | `sk_test_...` or a restricted `rk_test_...` | Developers → API keys. Restricted key needs: Customers write, Checkout Sessions write, Customer portal write, Subscriptions read. To create/retire Dragon's Hoard campaigns also allow Coupons write and Promotion Codes write. |
+| `STRIPE_SECRET_KEY` | `sk_test_...` or a restricted `rk_test_...` | Developers → API keys. Restricted key needs: Customers write, Checkout Sessions write, Customer portal write, Subscriptions read. To create/retire Dragon's Hoard campaigns also allow Prices read, Coupons write and Promotion Codes write. Prices are read so coupons apply only to SideQuest subscription products, never another product sharing the Stripe account. |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` | Shown on the webhook destination after step 3 ("Signing secret"). |
 
 Optional plain variable: `APP_URL=https://sidequestlearning.app`. Do **not** set `STRIPE_LIVE_ENABLED`.
