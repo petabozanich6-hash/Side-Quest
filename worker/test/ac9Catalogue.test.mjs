@@ -27,8 +27,7 @@ test("five jurisdictions use the same correctly named AC9 framework without clai
 });
 test("NSW, VCAA and SCSA state catalogues remain distinct", () => {
   assert.equal(catalogueFor("NSW").framework, "NSW");
-  assert.equal(catalogueFor("VIC").framework, "VIC");
-  assert.equal(catalogueFor("VIC").outcomes.length, 3723);
+  assert.equal(catalogueFor("VIC").available, false, "missing Victoria source data must fail closed");
   assert.equal(catalogueFor("WA").framework, "WA");
 });
 test("AC9 reference codes belong to the appropriate learning stage", () => {
