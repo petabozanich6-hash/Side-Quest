@@ -6,7 +6,7 @@ import { HOARD_SCHEMA, validateHoardOffer, createHoardOffer, disableHoardOffer, 
 
 const offer = () => ({
   code: "FOUNDINGDRAGON", label: "Founding Dragon", percent_off: 20,
-  duration_months: 3, max_redemptions: 25,
+  duration_months: 1, max_redemptions: 25,
   expires_at: new Date(Date.now() + 30 * 86400_000).toISOString(),
 });
 
@@ -25,7 +25,7 @@ test("Hoard rejects unsafe or overly generous discounts", () => {
   assert.equal(validateHoardOffer(offer()).ok, true);
   for (const bad of [
     { code: "X!" }, { percent_off: 100 }, { percent_off: "20" },
-    { duration_months: 100 }, { max_redemptions: 501 },
+    { duration_months: 3 }, { duration_months: 100 }, { max_redemptions: 501 },
     { expires_at: "2020-01-01" }, { label: "<script>" },
   ]) {
     assert.equal(validateHoardOffer({ ...offer(), ...bad }).ok, false, JSON.stringify(bad));
@@ -51,7 +51,7 @@ test("Stripe handles coupon and redemption caps, and retiring a code disables it
     assert.equal(rows.length, 1);
     assert.equal(rows[0].mode, "test");
     assert.equal(rows[0].code, "FOUNDINGDRAGON");
-    assert.ok(calls.some((c) => c.url.endsWith("/coupons") && c.body.includes("duration_in_months=3")));
+    assert.ok(calls.some((c) => c.url.endsWith("/coupons") && c.body.includes("duration=once") && !c.body.includes("duration_in_months")));
     assert.ok(calls.some((c) => c.url.endsWith("/promotion_codes") && c.body.includes("max_redemptions=25") && c.body.includes("first_time_transaction")));
     assert.equal((await createHoardOffer(db, env, offer(), "owner1")).status, 409);
     assert.equal((await disableHoardOffer(db, { STRIPE_SECRET_KEY: "sk_live_fake", STRIPE_LIVE_ENABLED: "true" }, made.id)).status, 409);
