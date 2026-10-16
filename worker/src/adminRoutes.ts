@@ -515,7 +515,7 @@ export function createAdminRoutes() {
   });
   admin.post("/announcements/:id/cancel",requirePermission("settings.write"),async c=>{
     await ensureAnnouncementSchema(c.env.DB);
-    const id=c.req.param("id");
+    const id=c.req.param("id")??"";
     if(!/^[a-fA-F0-9-]{36}$/.test(id))return c.json({detail:"Unknown announcement"},404);
     const cancelled=await cancelAnnouncement(c.env.DB,id);
     if(!cancelled)return c.json({detail:"This announcement is already complete or cancelled."},409);
