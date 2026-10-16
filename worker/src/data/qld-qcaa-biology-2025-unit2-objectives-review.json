@@ -1,0 +1,158 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only",
+  "record_count": 6,
+  "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+  "source_pdf_page_zero_based": 27,
+  "printed_syllabus_page": 25,
+  "subject": "Biology",
+  "unit": 2,
+  "unit_title": "Maintaining the internal environment",
+  "unit_objective_list_complete": true,
+  "unit_subject_matter_extracted": false,
+  "notes": [
+    "All six numbered Unit 2 objectives occur on printed syllabus page 25 (PDF zero-based page 27).",
+    "Topic names are Homeostasis and Infectious disease and epidemiology.",
+    "Full unit subject-matter bullet outcomes are not included; no claim of comprehensive unit tracking."
+  ],
+  "records": [
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 2,
+      "unit_title": "Maintaining the internal environment",
+      "objective_number": 1,
+      "identifier": "1",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:2:objective:1",
+      "objective_action": "Describe",
+      "topics": [
+        "Homeostasis",
+        "Infectious disease and epidemiology"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "source_pdf_page_zero_based": 27,
+      "printed_syllabus_page": 25,
+      "verification_status": "official_pdf_unit_objective_list_directly_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 2,
+      "unit_title": "Maintaining the internal environment",
+      "objective_number": 2,
+      "identifier": "2",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:2:objective:2",
+      "objective_action": "Apply understanding",
+      "topics": [
+        "Homeostasis",
+        "Infectious disease and epidemiology"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "source_pdf_page_zero_based": 27,
+      "printed_syllabus_page": 25,
+      "verification_status": "official_pdf_unit_objective_list_directly_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 2,
+      "unit_title": "Maintaining the internal environment",
+      "objective_number": 3,
+      "identifier": "3",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:2:objective:3",
+      "objective_action": "Analyse data",
+      "topics": [
+        "Homeostasis",
+        "Infectious disease and epidemiology"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "source_pdf_page_zero_based": 27,
+      "printed_syllabus_page": 25,
+      "verification_status": "official_pdf_unit_objective_list_directly_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 2,
+      "unit_title": "Maintaining the internal environment",
+      "objective_number": 4,
+      "identifier": "4",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:2:objective:4",
+      "objective_action": "Interpret evidence",
+      "topics": [
+        "Homeostasis",
+        "Infectious disease and epidemiology"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "source_pdf_page_zero_based": 27,
+      "printed_syllabus_page": 25,
+      "verification_status": "official_pdf_unit_objective_list_directly_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 2,
+      "unit_title": "Maintaining the internal environment",
+      "objective_number": 5,
+      "identifier": "5",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:2:objective:5",
+      "objective_action": "Evaluate processes, claims and conclusions",
+      "topics": [
+        "Homeostasis",
+        "Infectious disease and epidemiology"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "source_pdf_page_zero_based": 27,
+      "printed_syllabus_page": 25,
+      "verification_status": "official_pdf_unit_objective_list_directly_checked",
+      "runtime_enabled": false
+    },
+    {
+      "authority": "QCAA",
+      "jurisdiction": "QLD",
+      "framework": "QCE General",
+      "subject": "Biology",
+      "syllabus_edition": "2025 v1.3 January 2026",
+      "unit": 2,
+      "unit_title": "Maintaining the internal environment",
+      "objective_number": 6,
+      "identifier": "6",
+      "identifier_kind": "unit_objective_number",
+      "scoped_identifier": "QLD:QCAA:Biology:General:2025:unit:2:objective:6",
+      "objective_action": "Investigate phenomena",
+      "topics": [
+        "Homeostasis",
+        "Infectious disease and epidemiology"
+      ],
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf",
+      "source_pdf_page_zero_based": 27,
+      "printed_syllabus_page": 25,
+      "verification_status": "official_pdf_unit_objective_list_directly_checked",
+      "runtime_enabled": false
+    }
+  ]
+}
