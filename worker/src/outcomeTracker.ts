@@ -156,7 +156,7 @@ const WA_CATALOGUE: Catalogue = {
 /** AC9 is a reference list for these jurisdictions, NOT a declaration of complete official compliance. */
 const CATALOGUES: Partial<Record<JurisdictionCode, Catalogue>> = {
   NSW: NSW_CATALOGUE,
-  VIC: VIC_CATALOGUE,
+  ...(vicRows.length ? { VIC: VIC_CATALOGUE } : {}),
   WA: WA_CATALOGUE,
   QLD: AC9_CATALOGUE,
   SA: AC9_CATALOGUE,
