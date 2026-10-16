@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send } from "lucide-react";
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
+import LessonPrintActions from "../../components/parent/LessonPrintActions";
 import ParentLessonPlayer from "../child/ParentLessonPlayer";
 import exampleLesson from "../../data/exampleLesson.json";
 import exampleY7 from "../../data/referenceYear7Integers.json";
@@ -211,7 +212,12 @@ export default function LessonBuilder() {
         ) : <Link to="/parent/lessons" onClick={guard} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>}
         <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : "Build a lesson myself"}</h1>
         <p className="text-sm text-slate-600 mt-1"><>Write the lesson in your own words. Save a draft any time. Prefer not to write it? <Link className="underline font-semibold" to="/parent/lessons/make">Let Side-Quest make it for you</Link>. To see how complete lessons look: <Link className="underline" to="/parent/lessons/new?example=1">Year 3 parent-guided example</Link> · <Link className="underline" to="/parent/lessons/new?example=y7">Year 7 independent example</Link>.</></p>
-        {plan && plan.effective_plan === "FREE_PREVIEW" && (
+        {lessonId && <div className="mt-4 rounded-xl border border-[#D4C8A8] bg-[#FBF7EA] p-3 space-y-2" data-testid="builder-paper-print">
+          <p className="text-sm font-bold text-[#1F3B2D]">🖨️ Want a paper lesson instead?</p>
+          {dirty && <p className="text-xs text-amber-800">Save your latest edits before printing. Printing uses the last saved version.</p>}
+          <LessonPrintActions lessonId={lessonId} compact />
+        </div>}
+                {plan && plan.effective_plan === "FREE_PREVIEW" && (
           <p className="mt-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900" data-testid="preview-banner">
             Free preview: {plan.usage.lessons} of {plan.limits.maxLessons} lessons used. Preview ends {new Date(plan.trial_ends_at).toLocaleDateString()}.
           </p>

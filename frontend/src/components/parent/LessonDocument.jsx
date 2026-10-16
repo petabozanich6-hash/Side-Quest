@@ -6,20 +6,50 @@ import LessonVisual from "../shared/LessonVisual";
 //   view="student": a clean worksheet with writing lines and no answers
 const list = (v) => (Array.isArray(v) ? v.filter(Boolean) : []);
 const Para = ({ children }) => <p className="whitespace-pre-line leading-relaxed text-[15px] text-slate-800">{children}</p>;
-const H = ({ children }) => <h2 className="mt-6 mb-2 font-display text-xl font-bold text-slate-900 border-b border-slate-300 pb-1 break-after-avoid">{children}</h2>;
-const Lines = ({ n = 2 }) => <div className="mt-1 mb-3">{Array.from({ length: n }).map((_, i) => <div key={i} className="h-7 border-b border-slate-400" />)}</div>;
-const Ans = ({ children }) => <p className="mt-1 rounded bg-emerald-50 border border-emerald-200 px-2 py-1 text-sm text-emerald-900 whitespace-pre-line"><b>Answer:</b> {children}</p>;
+const H = ({ children }) => <h2 className="sq-paper-heading mt-6 mb-3 font-display text-xl font-bold text-[#1F3B2D] border-b border-[#C8D3BF] pb-2 break-after-avoid">{children}</h2>;
+const Lines = ({ n = 2 }) => <div className="sq-paper-writing-lines mt-1 mb-3">{Array.from({ length: n }).map((_, i) => <div key={i} className="h-7 border-b border-slate-400" />)}</div>;
+const Ans = ({ children }) => <p className="mt-2 rounded-lg bg-[#EFF3EA] border-l-[3px] border-[#4A6D5A] px-3 py-2 text-sm text-[#1F3B2D] whitespace-pre-line"><b>Answer:</b> {children}</p>;
 
 export default function LessonDocument({ lesson: l, view = "parent" }) {
   const parent = view === "parent";
   const student = view === "student";
   const sections = list(l.sections);
   return (
-    <article className="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 print:border-0 print:p-0 print:rounded-none" data-testid="lesson-document">
-      <header>
-        <h1 className="font-display text-3xl font-bold text-slate-900">{l.title}</h1>
-        <p className="text-sm text-slate-600 mt-1">{[l.learning_area, l.year_level, l.duration_minutes ? `about ${l.duration_minutes} minutes` : "", l.delivery === "independent" ? "independent" : "parent-guided"].filter(Boolean).join(" · ")}</p>
-        {student && <p className="mt-3 text-sm">Name: <span className="inline-block w-64 border-b border-slate-500 align-bottom">&nbsp;</span> &nbsp; Date: <span className="inline-block w-32 border-b border-slate-500 align-bottom">&nbsp;</span></p>}
+    <article className="sq-lesson-paper max-w-3xl mx-auto bg-white rounded-2xl border border-[#D4C8A8] p-6 sm:p-8 print:border-0 print:p-0 print:rounded-none" data-testid="lesson-document">
+      <style>{`
+        @page { size: A4; margin: 14mm; }
+        .sq-lesson-paper { color: #243a2d; }
+        .sq-lesson-paper .sq-paper-heading { border-left: 4px solid #C77B5B; padding-left: 12px; color: #1F3B2D; }
+        .sq-lesson-paper .sq-paper-header { border-top: 5px solid #1F3B2D; border-bottom: 2px solid #D4C8A8; padding: 16px 0 20px; margin-bottom: 20px; }
+        .sq-lesson-paper .sq-paper-kicker { font: 700 11px/1.5 system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.11em; color: #9A563F; }
+        .sq-lesson-paper .sq-paper-icon { width: 52px; height: 52px; border-radius: 12px; object-fit: contain; flex-shrink: 0; }
+        .sq-lesson-paper .sq-paper-title { color: #1F3B2D; }
+        .sq-lesson-paper .sq-paper-meta { color: #54634D; }
+        .sq-lesson-paper .sq-paper-footer { border-top: 1px solid #D4C8A8; color: #54634D; margin-top: 32px; padding-top: 12px; font-size: 12px; }
+        .sq-lesson-paper .sq-paper-writing-lines > div { border-color: #8A9B86; }
+        .sq-lesson-paper .sq-paper-header, .sq-lesson-paper .sq-paper-heading { break-inside: avoid; }
+        @media print {
+          .sq-lesson-paper { background: white !important; box-shadow: none !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+          .sq-lesson-paper .sq-paper-header { padding-top: 12px; }
+          .sq-lesson-paper .sq-paper-heading { break-after: avoid-page; }
+          .sq-lesson-paper .sq-paper-icon { width: 44px; height: 44px; }
+          .sq-lesson-paper p, .sq-lesson-paper li { orphans: 2; widows: 2; }
+        }
+      `}</style>
+      <header className="sq-paper-header">
+        <div className="flex items-center gap-3">
+          <img src="/icons/icon-192.png" alt="Side-Quest Learning" className="sq-paper-icon" />
+          <div>
+            <p className="sq-paper-kicker">Side-Quest Learning · {student ? "My quest workbook" : "Parent's quest guide"}</p>
+            <p className="text-xs font-semibold text-[#4A5D3A]">Learn • Explore • Grow</p>
+          </div>
+        </div>
+        <h1 className="sq-paper-title font-display text-3xl font-bold mt-4">{l.title}</h1>
+        <p className="sq-paper-meta text-sm mt-1">{[l.learning_area, l.year_level, l.duration_minutes ? `about ${l.duration_minutes} minutes` : "", l.delivery === "independent" ? "independent" : "parent-guided"].filter(Boolean).join(" · ")}</p>
+        {student && <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+          <label>Name: <span className="inline-block border-b border-[#617963] w-[70%]">&nbsp;</span></label>
+          <label>Date: <span className="inline-block border-b border-[#617963] w-[70%]">&nbsp;</span></label>
+        </div>}
       </header>
 
       {parent && list(l.curriculum_refs).length > 0 && <><H>Curriculum links</H><ul className="list-disc pl-5 text-[15px]">{list(l.curriculum_refs).map((c, i) => <li key={i}>{c}</li>)}</ul></>}
@@ -124,6 +154,7 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
       {l.extension && <><H>Challenge</H><Para>{l.extension}</Para></>}
       {parent && list(l.evidence_suggestions).length > 0 && <><H>Evidence you could keep</H><ul className="list-disc pl-5 text-[15px]">{l.evidence_suggestions.map((e, i) => <li key={i}>{e}</li>)}</ul></>}
       {parent && l.answer_key && <><H>Answer key</H><Para>{l.answer_key}</Para></>}
+      <footer className="sq-paper-footer">✦ Side-Quest Learning · {student ? "Every quest is a chance to learn something new." : "Parent teaching copy — keep with your family learning records."}</footer>
     </article>
   );
 }
