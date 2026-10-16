@@ -52,8 +52,9 @@ export async function reassignAssignment(db: DB, familyId: string, id: string, s
   const s = await db.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?").bind(String(studentId ?? ""), familyId).first();
   if (!s) return fail(404, "Child not found");
   if (a.student_id === s.id) return fail(400, "That child already has it.");
-  const dup = await db.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed')").bind(familyId, s.id, a.lesson_id).first<{ n: number }>();
-  if (Number(dup?.n ?? 0) > 0) return fail(409, "That child already has this lesson assigned.", "ALREADY_ASSIGNED");
+  const prior = await lb.priorAssignment(db, familyId, String(s.id), a.lesson_id);
+  if (prior === "open") return fail(409, "That child already has this lesson assigned.", "ALREADY_ASSIGNED");
+  if (prior === "done") return fail(409, "That child has already finished this lesson.", "ALREADY_COMPLETED");
   await db.prepare("UPDATE assignments SET student_id = ? WHERE id = ? AND family_id = ?").bind(s.id, id, familyId).run();
   // Timetable slots belong to the first child's timetable: empty them. Other planner entries move with the lesson.
   await emptySlotsFor(db, familyId, id);

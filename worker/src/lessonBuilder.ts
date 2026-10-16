@@ -443,10 +443,12 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
   }
   sql += " ORDER BY updated_at DESC, created_at DESC LIMIT 1000";
   const { results } = await db.prepare(sql).bind(...b).all<any>();
+  const assignees = await lessonAssignees(db, familyId);
   return (results || []).map((r: any) => {
     const l: any = lessonOut(r);
     delete l.explicit_teaching;
     delete l.worked_example;
+    l.assigned_to = assignees.get(r.id) || [];
     return l;
   });
 }
@@ -548,10 +550,42 @@ export async function deleteLesson(db: DB, familyId: string, id: string, now: Da
 
 // ---------------------------------------------------------------- assignments
 
+const DONE_SQL = DONE_STATUSES.map((x) => `'${x}'`).join(",");
+
+/** Whether this child already has this lesson: "open" (not finished), "done" (finished before) or null. */
+export async function priorAssignment(db: DB, familyId: string, studentId: string, lessonId: string): Promise<"open" | "done" | null> {
+  const r = await db.prepare(
+    `SELECT MAX(CASE WHEN status NOT IN (${DONE_SQL}) THEN 1 ELSE 0 END) AS open, COUNT(*) AS n FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ?`
+  ).bind(familyId, studentId, lessonId).first<{ open: number | null; n: number }>();
+  if (!r?.n) return null;
+  return r.open ? "open" : "done";
+}
+
+/** Who each lesson is assigned to, for the lesson library. Never includes another family's rows. */
+export async function lessonAssignees(db: DB, familyId: string, lessonId?: string) {
+  const { results } = await db.prepare(
+    `SELECT a.id, a.lesson_id, a.student_id, a.status, a.created_at, s.name AS student_name
+     FROM assignments a JOIN students s ON s.id = a.student_id AND s.family_id = a.family_id
+     WHERE a.family_id = ?${lessonId ? " AND a.lesson_id = ?" : ""} ORDER BY a.created_at`
+  ).bind(...(lessonId ? [familyId, lessonId] : [familyId])).all<any>();
+  const out = new Map<string, any[]>();
+  for (const r of results || []) {
+    // One entry per child: the open assignment if there is one, otherwise the latest finished one.
+    const list = out.get(r.lesson_id) || [];
+    const done = DONE_STATUSES.includes(r.status);
+    const i = list.findIndex((x) => x.student_id === r.student_id);
+    const entry = { student_id: r.student_id, student_name: r.student_name, assignment_id: r.id, status: r.status, done };
+    if (i < 0) list.push(entry);
+    else if (!done || list[i].done) list[i] = entry;
+    out.set(r.lesson_id, list);
+  }
+  return out;
+}
+
 export async function assignLesson(
   db: DB,
   familyId: string,
-  input: { student_id?: string; lesson_id?: string; due_date?: string | null; scheduled_date?: string | null; support_level?: string; parent_notes?: string | null },
+  input: { student_id?: string; lesson_id?: string; due_date?: string | null; scheduled_date?: string | null; support_level?: string; parent_notes?: string | null; again?: boolean },
   now: Date = new Date()
 ): Promise<Result<{ assignment: any }>> {
   if (!input.student_id || !input.lesson_id) return fail(400, "student_id and lesson_id are required");
@@ -561,25 +595,30 @@ export async function assignLesson(
   if (!lesson) return fail(404, "Lesson not found");
   if (lesson.archived_at) return fail(409, "This lesson is archived. Restore it before assigning.", "ARCHIVED");
   if (lesson.status !== "ready") return fail(409, "Save this lesson to your library (mark it ready) before assigning it.", "NOT_READY");
-  const dup = await count(
-    db,
-    "SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed')",
-    familyId, input.student_id, input.lesson_id
-  );
-  if (dup > 0) return fail(409, "This lesson is already assigned to this child and not finished yet.", "ALREADY_ASSIGNED");
   const { limits } = await getEntitlement(db, familyId, now);
   if (!limits.canAssign) return paywall("Your free preview has ended. Your children's progress is kept; upgrade to assign more lessons.");
   if ((await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
     return paywall(`The free preview includes ${limits.maxActiveAssignments} active assignments. ${UPGRADE_MESSAGE}`);
   }
+  const prior = await priorAssignment(db, familyId, input.student_id, input.lesson_id);
+  if (prior === "open") return fail(409, "This lesson is already assigned to this child and not finished yet.", "ALREADY_ASSIGNED");
+  if (prior === "done" && input.again !== true) {
+    return fail(409, "This child has already finished this lesson. Choose \"assign again\" if you want them to repeat it.", "ALREADY_COMPLETED");
+  }
   const id = newId();
   const snapshot = JSON.stringify(lessonOut(lesson));
-  await db
+  // Atomic: two clicks or tabs at once can't both create one (an open copy always blocks; any copy
+  // blocks unless the parent asked to repeat a finished lesson).
+  const ins = await db
     .prepare(
-      "INSERT INTO assignments (id, family_id, student_id, lesson_id, due_date, scheduled_date, support_level, parent_notes, status, lesson_snapshot, lesson_version, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'not_started', ?, ?, ?)"
+      `INSERT INTO assignments (id, family_id, student_id, lesson_id, due_date, scheduled_date, support_level, parent_notes, status, lesson_snapshot, lesson_version, created_at)
+       SELECT ?, ?, ?, ?, ?, ?, ?, ?, 'not_started', ?, ?, ?
+       WHERE NOT EXISTS (SELECT 1 FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ?${input.again === true ? ` AND status NOT IN (${DONE_SQL})` : ""})`
     )
-    .bind(id, familyId, input.student_id, input.lesson_id, input.due_date ?? null, input.scheduled_date ?? null, input.support_level || "green", input.parent_notes ?? null, snapshot, lesson.version ?? 1, nowIso(now))
+    .bind(id, familyId, input.student_id, input.lesson_id, input.due_date ?? null, input.scheduled_date ?? null, input.support_level || "green", input.parent_notes ?? null, snapshot, lesson.version ?? 1, nowIso(now),
+      familyId, input.student_id, input.lesson_id)
     .run();
+  if (!ins.meta?.changes) return fail(409, "This lesson is already assigned to this child.", "ALREADY_ASSIGNED");
   return { ok: true, assignment: await db.prepare("SELECT id, family_id, student_id, lesson_id, due_date, scheduled_date, support_level, parent_notes, status, lesson_version, created_at FROM assignments WHERE id = ?").bind(id).first() };
 }
 

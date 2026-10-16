@@ -32,12 +32,13 @@ export default function LessonsPage() {
   useEffect(() => {
     api.get("/students").then(r => setStudents(r.data)).catch(() => {});
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
-    api.get("/assignments").then(r => {
-      const m = {};
-      (r.data || []).forEach(a => { (m[a.student_id] = m[a.student_id] || new Set()).add(a.lesson_id); });
-      setAssignedTo(m);
-    }).catch(() => {});
   }, []);
+  // Who has each lesson comes with the library itself (one entry per child).
+  useEffect(() => {
+    const m = {};
+    lessons.forEach(l => (l.assigned_to || []).forEach(a => { (m[a.student_id] = m[a.student_id] || new Set()).add(l.id); }));
+    setAssignedTo(m);
+  }, [lessons]);
 
   const act = async (fn, okMsg) => {
     try { await fn(); if (okMsg) toast.success(okMsg); load(); api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {}); }
@@ -110,6 +111,20 @@ export default function LessonsPage() {
             <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">{l.title}</h3>
             {l.duration_minutes ? <p className="text-xs text-slate-500 mt-1">{l.duration_minutes} minutes</p> : null}
             <p className="mt-2 text-sm text-slate-600 line-clamp-3">{(l.objectives || [])[0] || ""}</p>
+            <div className="mt-3 text-xs text-slate-600" data-testid={`assigned-to-${l.id}`}>
+              {(l.assigned_to || []).length === 0 ? (
+                <span className="text-slate-400">Not assigned to anyone yet</span>
+              ) : (
+                <div className="flex flex-wrap items-center gap-1">
+                  <span className="font-semibold text-slate-700">Assigned to:</span>
+                  {l.assigned_to.map(a => (
+                    <span key={a.student_id} className={`rounded-full border px-2 py-0.5 ${a.done ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-amber-200 bg-amber-50 text-amber-900"}`} data-testid={`assignee-${l.id}-${a.student_id}`}>
+                      {a.student_name} · {a.done ? "finished" : a.status === "not_started" ? "not started" : a.status === "submitted" ? "waiting for review" : "in progress"}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
             <div className="mt-4 border-t border-dashed border-[#D4C8A8] pt-3">
               <p className="text-xs font-bold mb-2 text-[#4A5D3A]">🖨️ Take this lesson onto paper</p>
               <LessonPrintActions lessonId={l.id} compact />
@@ -161,7 +176,7 @@ export default function LessonsPage() {
         )}
       </div>
 
-      {assignOpen && <ScheduleModal lesson={assignOpen} students={students} onClose={() => setAssignOpen(null)} onDone={() => api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {})} />}
+      {assignOpen && <ScheduleModal lesson={assignOpen} students={students} onClose={() => setAssignOpen(null)} onDone={() => { load(); api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {}); }} />}
     </div>
   );
 }

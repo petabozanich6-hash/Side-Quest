@@ -323,6 +323,14 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return c.json(results);
   });
 
+  // Who already has this lesson, so the assign dialog can stop duplicates before they're sent.
+  app.get("/api/lessons/:id/assignees", auth, parent, async (c) => {
+    const fid = c.get("user").family_id;
+    const lesson = await c.env.DB.prepare("SELECT id FROM lessons WHERE id = ? AND family_id = ?").bind(c.req.param("id"), fid).first();
+    if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
+    return c.json((await lb.lessonAssignees(c.env.DB, fid, c.req.param("id"))).get(c.req.param("id")) || []);
+  });
+
   app.post("/api/assignments", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     const r = await lb.assignLesson(c.env.DB, c.get("user").family_id, b);

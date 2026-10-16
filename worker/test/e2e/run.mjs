@@ -461,6 +461,24 @@ await step("E. parent assigns the lesson to the child through the UI", async () 
   ok(dup.status === 409, "duplicate active assignment allowed");
 });
 
+await step("E2. My lessons shows who has the lesson, and the assign dialog won't assign it twice", async () => {
+  const kids = await api("GET", "/students", parentToken);
+  const kid = kids.json[0];
+  await page.goto(BASE + "/parent/lessons");
+  await page.waitForSelector(`[data-testid=assignee-${lessonId}-${kid.id}]`, { timeout: 10000 });
+  ok((await page.textContent(`[data-testid=assigned-to-${lessonId}]`)).includes(kid.name), "child's name not shown on the lesson");
+  await page.click(`[data-testid=assign-${lessonId}]`);
+  await page.waitForSelector(`[data-testid=sch-already-${kid.id}]`, { timeout: 10000 });
+  ok(!(await page.isChecked(`[data-testid=sch-student-${kid.id}]`)), "already-assigned child pre-ticked");
+  if (await page.$("[data-testid=sch-mode-none]")) {
+    await page.check("[data-testid=sch-mode-none]");
+    ok(await page.isDisabled(`[data-testid=sch-student-${kid.id}]`), "already-assigned child can be assigned again");
+  }
+  await page.click('[data-testid=schedule-modal] button[aria-label=Close]');
+  const as = await api("GET", "/assignments", parentToken);
+  ok(as.json.filter((a) => a.lesson_id === lessonId && a.student_id === kid.id).length === 1, "assignment duplicated");
+});
+
 // ---- child
 const cctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
 cpage = await cctx.newPage();
@@ -804,7 +822,9 @@ await step("AI drafting: free preview is blocked by the server and the builder s
 
 await step("assignments page: change dates and cancel an unstarted assignment", async () => {
   const kids = await api("GET", "/students", parentToken);
-  const made = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
+  const plain = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
+  ok(plain.status === 409 && plain.json.code === "ALREADY_COMPLETED", "finished lesson re-assigned without asking: " + plain.status);
+  const made = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId, again: true });
   ok(made.status === 200, "could not assign again after finishing: " + made.status);
   const id = made.json.id;
   await page.goto(BASE + "/parent/assignments"); await page.waitForSelector(`[data-testid=asg-${id}]`);
