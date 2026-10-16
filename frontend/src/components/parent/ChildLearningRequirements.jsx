@@ -38,6 +38,11 @@ export function requirementsFor(jurisdiction, stage) {
     required: VIC_AREAS, choices: [], verified: true, source: SA_SOURCE,
     explanation: "South Australian home education programs must address all eight Australian Curriculum learning areas. The department does not require one specific teaching method or commercial curriculum. There is no fixed additional elective-subject number in this guidance; senior pathways need separate consideration.",
   };
+  if (jurisdiction === "QLD") return {
+    required: [], choices: [], verified: true,
+    source: "https://education.qld.gov.au/schools-and-educators/other-education/Pages/registration.aspx",
+    explanation: "Queensland home education has no mandated list of individual subjects or minimum elective count. Parents develop a high-quality program appropriate to their child; Australian Curriculum-based and thematic examples are optional, not mandatory templates.",
+  };
   if (jurisdiction === "WA") return {
     required: [], choices: [], verified: true,
     source: "https://www.education.wa.edu.au/develop-an-education-program",
