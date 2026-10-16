@@ -13,7 +13,8 @@ const offer = () => ({
 test("Hoard schema is additive, idempotent and appears in migration 0067", async () => {
   const db = makeDb();
   for (const sql of HOARD_SCHEMA) {
-    assert.ok(readFileSync(new URL("../migrations/0067_dragons_hoard.sql", import.meta.url), "utf8").includes(sql.replace(/\s+/g, " ").slice(0, 40).trim().split(" (")[0]));
+    const migrations = ["0067_dragons_hoard.sql", "0068_dragon_hoard_terms.sql"].map((name) => readFileSync(new URL("../migrations/" + name, import.meta.url), "utf8")).join("\n");
+    assert.ok(migrations.includes(sql.replace(/\s+/g, " ").slice(0, 40).trim().split(" (")[0]));
   }
   const before = await listHoardOffers(db);
   assert.deepEqual(before, []);
