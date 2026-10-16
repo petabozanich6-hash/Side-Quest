@@ -177,10 +177,20 @@ app.post("/api/auth/login", async (c) => {
   }
   await clearLoginFailures(c.env.DB, "parent", email);
   {
-    // Always block marked unverified users, even if new registrations are temporarily ungated.
-    const verification = await c.env.DB.prepare(
-      "SELECT email_verified_at, email_verification_required_at FROM users WHERE id = ?"
-    ).bind(user.id).first<{email_verified_at: string | null; email_verification_required_at: string | null}>();
+    // All marked accounts require proof, even if new registrations are ungated.
+    // During migration rollout, the old schema must still permit legacy login.
+    let verification: { email_verified_at: string | null; email_verification_required_at: string | null } | null = null;
+    try {
+      verification = await c.env.DB.prepare(
+        "SELECT email_verified_at, email_verification_required_at FROM users WHERE id = ?"
+      ).bind(user.id).first<{email_verified_at: string | null; email_verification_required_at: string | null}>();
+    } catch (error) {
+      const missingColumn = /no such column: email_verification_required_at/i.test(String(error));
+      if (!missingColumn || c.env.EMAIL_VERIFICATION_REQUIRED === "true") {
+        return c.json({ detail: "Email verification is temporarily unavailable. Please try again.", code: "VERIFICATION_UNAVAILABLE" }, 503);
+      }
+      // New gated users cannot predate migration 0069; old sign-ins remain safe.
+    }
     if (verification?.email_verification_required_at && !verification.email_verified_at) {
       return c.json({ detail: "Please confirm your email before signing in.", code: "EMAIL_VERIFICATION_REQUIRED" }, 403);
     }
