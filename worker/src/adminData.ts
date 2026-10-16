@@ -126,7 +126,7 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
         : { configured: false, note: "Stripe is not configured on this Worker." },
       revenue: { configured: false, note: "Revenue needs reconciled Stripe financial reports; it is never estimated from member counts." },
     },
-    ai: aiConfigured || ai7 > 0
+    ai: aiConfigured || ai7 > 0 || (aiCost.configured && !!aiCost.tracking_started_at)
       ? {
           configured: aiConfigured, enabled: settings.features.aiEnabled,
           requests_24h: ai24, requests_7d: ai7, failed_24h: aiFailed24, families_using_7d: aiFamilies7,
