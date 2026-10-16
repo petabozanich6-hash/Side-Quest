@@ -369,6 +369,10 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
   if (a.ok) assignmentId = a.assignment.id;
   else if (a.code === "ALREADY_ASSIGNED") {
     const open = await db.prepare("SELECT id FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed','revoked') ORDER BY created_at DESC LIMIT 1").bind(familyId, p.student_id, p.lesson_id).first();
+    if (!open) return bad(409, "This lesson is already assigned. Refresh assignments before continuing.", "ALREADY_ASSIGNED");
+    const otherSlot = await db.prepare("SELECT id FROM calendar_events WHERE family_id = ? AND linked_assignment_id = ? AND id != ? LIMIT 1")
+      .bind(familyId, open.id, ev.id).first();
+    if (otherSlot) return bad(409, "This lesson is already in another timetable slot. Choose a different activity for this session.", "ALREADY_SCHEDULED");
     assignmentId = open.id;
   } else return a;
   // (again: the parent approved this proposal, and revision deliberately repeats a finished lesson.)
@@ -384,6 +388,9 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
       .bind(assignmentId, familyId, familyId, assignmentId).run();
     return bad(409, "This timetable slot was filled before the assignment could be linked. Refresh the slot before trying again.", "SLOT_TAKEN");
   }
+  // An existing unscheduled assignment can be placed here without a duplicate.
+  if (!a.ok) await db.prepare("UPDATE assignments SET scheduled_date = ? WHERE id = ? AND family_id = ?")
+    .bind(p.date, assignmentId, familyId).run();
   const ts = now.toISOString();
   await db.prepare("UPDATE auto_quest_proposals SET status = 'assigned', assignment_id = ?, decided_by = ?, decided_at = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(assignmentId, parentId, ts, ts, id, familyId).run();
   return { ok: true, proposal: proposalOut(await ownProposal(db, familyId, id), await lessonMap(db, familyId, [p.lesson_id])) };
