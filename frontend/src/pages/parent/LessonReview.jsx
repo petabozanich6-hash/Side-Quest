@@ -5,6 +5,7 @@ import { ArrowLeft, CheckCircle2, Sparkles, Pencil, Bookmark, Printer } from "lu
 import { api } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 import LessonDocument from "../../components/parent/LessonDocument";
+import LessonPrintActions from "../../components/parent/LessonPrintActions";
 import VideoSuggestions from "../../components/parent/VideoSuggestions";
 import OutcomePanel from "../../components/parent/OutcomePanel";
 import { BatchNav, draftsPath } from "./LessonDrafts";
@@ -141,6 +142,10 @@ export default function LessonReview() {
           {" "}Not what you meant? Use <b>Ask AI to change something</b>.
         </p>
       </div>
+      <div className="rounded-2xl border border-[#D4C8A8] bg-white p-4 space-y-2" data-testid="review-paper-options">
+        <p className="text-sm font-bold text-[#1F3B2D]">Prefer paper? Print this lesson without assigning it first.</p>
+        <LessonPrintActions lessonId={id} compact studentTestId="review-print-student" parentTestId="review-print-parent" />
+      </div>
       {info.generation?.calls > 0 && (
         <p className="text-xs text-slate-500" data-testid="gen-report">Written in {info.generation.stages.filter(x => x !== "repair").length} steps ({info.generation.stages.includes("repair") ? "plus one correction" : "no corrections needed"}){info.generation.est_cost_us_cents != null ? `, an AI cost of about ${info.generation.est_cost_us_cents} US cents` : ""}.</p>
       )}
@@ -160,7 +165,7 @@ export default function LessonReview() {
         <button onClick={() => setRefine(r => !r)} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
         <button onClick={() => nav(`/parent/lessons/${id}/edit${batchId ? `?batch=${batchId}` : ""}`)} className={`${btn} border border-slate-900 bg-white`} data-testid="r-edit"><Pencil size={16} /> Edit Manually</button>
         <button onClick={() => { toast.success(batchId ? "Kept as a draft with the rest of this set" : "Saved in your lessons as a draft"); nav(home); }} className={`${btn} border border-slate-400 bg-white`} data-testid="r-later"><Bookmark size={16} /> Save for Later</button>
-        <a href={`/print/lesson/${id}`} target="_blank" rel="noreferrer" className={`${btn} border border-slate-400 bg-white`} data-testid="r-print"><Printer size={16} /> Printable version</a>
+        <LessonPrintActions lessonId={id} compact studentTestId="r-print" parentTestId="r-print-parent" />
       </div>
 
       {refine && <RefinePanel key={id} lessonId={id} onApplied={l => { setLesson(l); }} onClose={() => setRefine(false)} />}
