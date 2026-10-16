@@ -1,0 +1,24 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only",
+  "previous_nine_cec_snapshot": 103,
+  "previous_slr_count": 18,
+  "expanded_slr_count": 28,
+  "additional_slr_identifiers": [
+    "1.2",
+    "1.6",
+    "2.3",
+    "3.3",
+    "3.7",
+    "5.1",
+    "5.2",
+    "5.3",
+    "5.4",
+    "5.5"
+  ],
+  "old_slr_identifiers_removed": [],
+  "duplicate_identifiers_within_expanded_slr": 0,
+  "revised_nine_cec_scoped_count_if_slr_replaces_old": 113,
+  "warning": "The old 18 and new 28 SLR files overlap and MUST NOT both be summed. Revised count is conditional on 28-item review being accepted; original PDF page verification remains outstanding.",
+  "parent_ready": false
+}
