@@ -1,0 +1,44 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only_source_recovery",
+  "remaining_five_source_leads_found": 5,
+  "outcome_codes_verified": 0,
+  "notes": [
+    "Official legacy documents found for all five remaining dead modern CEC /outcomes routes.",
+    "Source existence does not mean all numbered learning outcomes have been extracted.",
+    "Do not merge or mark NSW Stage 6 completeness true."
+  ],
+  "entries": [
+    {
+      "syllabus": "Ceramics Stage 6 CEC (2000)",
+      "official_source": "https://educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/stage-6-creative-arts/ceramics",
+      "source_type": "official NESA legacy syllabus landing page with PDF and Word",
+      "codes_extracted": 0
+    },
+    {
+      "syllabus": "Computing Applications Stage 6 CEC (2012)",
+      "official_source": "https://www.educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/tas/computing-applications",
+      "source_type": "official NESA legacy syllabus landing page with PDF and Word",
+      "codes_extracted": 0
+    },
+    {
+      "syllabus": "Numeracy Stage 6 CEC (2021)",
+      "official_source": "https://educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/stage-6-mathematics/numeracy-cec",
+      "official_pdf": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/c6af8328-1926-4f25-b048-654ef473d382/numeracy-stage-6-syllabus-2021-pdf.pdf?MOD=AJPERES",
+      "source_type": "official NESA legacy 74-page syllabus",
+      "codes_extracted": 0
+    },
+    {
+      "syllabus": "Photography, Video and Digital Imaging Stage 6 CEC (2000)",
+      "official_source": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?CVID=&MOD=AJPERES",
+      "source_type": "official NESA syllabus PDF",
+      "codes_extracted": 0
+    },
+    {
+      "syllabus": "Visual Design Stage 6 CEC (2000)",
+      "official_source": "https://c.educationstandards.nsw.edu.au/wps/portal/nesa/11-12/stage-6-learning-areas/stage-6-creative-arts/visual-design/",
+      "source_type": "official NESA legacy syllabus landing page with PDF and Word",
+      "codes_extracted": 0
+    }
+  ]
+}
