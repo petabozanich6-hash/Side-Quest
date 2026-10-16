@@ -90,7 +90,9 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
     .map((slot): QuestDecision => {
       const area = areaOf(slot.title);
       const base = { slotId: slot.id, date: slot.date, learningArea: area };
-      const assigned = mine.find((a) => a.id === slot.linked_assignment_id || (a.scheduled_date === slot.date && !!lessonById.get(a.lesson_id) && normalize(lessonArea(lessonById.get(a.lesson_id)!)) === normalize(area)));
+      const assigned = mine.find((a) => !!slot.linked_assignment_id && a.id === slot.linked_assignment_id);
+      // A different lesson of the same subject on this date does NOT occupy this slot.
+      // Only the slot's actual linked assignment counts as assigned.
       if (assigned) return { ...base, action: "already_assigned", lessonId: assigned.lesson_id, reason: "Already assigned for this day; left as it is.", eligibleOutcomeCodes: [] };
       if (!input.catalogueAvailable) return { ...base, action: "needs_parent_plan", reason: "Side-Quest has no verified outcome list for your curriculum, so it won't guess outcome codes. Choose a lesson yourself.", eligibleOutcomeCodes: [] };
 
@@ -115,9 +117,16 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       else if (fresh.length) { purpose = "teach"; codes = fresh.slice(0, 2); }
       else if (stale.length) { purpose = "revise"; codes = stale.slice(0, 1); }
       else {
-        // Nothing new: a developing outcome may get a second practice session in this plan, never a third.
-        const again = pool.filter((c) => !inFlight.has(c) && ["introduced", "developing"].includes(status(c)) && (plannedTimes.get(c) || 0) < 2);
-        if (again.length) { purpose = "consolidate"; codes = again.slice(0, 1); }
+        // Outcomes being taught are not mastered. When every fresh outcome has a
+        // lesson planned or in progress, the remaining sessions can reinforce it
+        // with a DIFFERENT activity. Never reuse the same open assignment.
+        // Limit automatic repetition so the parent can choose extensions later.
+        const practice = pool
+          .filter((c) => (inFlight.has(c) || plannedCodes.has(c)) &&
+            ["not_started", "introduced", "developing"].includes(status(c)) &&
+            (plannedTimes.get(c) || 0) < 3)
+          .sort((a, b) => (plannedTimes.get(a) || 0) - (plannedTimes.get(b) || 0) || a.localeCompare(b));
+        if (practice.length) { purpose = "consolidate"; codes = practice.slice(0, 1); }
       }
       if (!purpose && input.outcomes && !input.outcomes.some((o) => normalize(o.learning_area) === normalize(area))) {
         return { ...base, action: "needs_parent_plan", reason: `${area} isn't one of the subjects on this child's profile at their level, so Auto-Quest won't pick outcomes for it. Add the subject on the Children page, or plan this session yourself.`, eligibleOutcomeCodes: [] };
@@ -134,7 +143,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
         .filter((l) => purpose === "revise" || !finished.has(l.id))
         .sort((a, b) => Number(b.status === "ready") - Number(a.status === "ready"));
       const why = purpose === "revise" ? `Revision: ${target} was demonstrated but hasn't been revisited for ${revisitAfter}+ days.`
-        : purpose === "consolidate" ? `Consolidation: ${codes.join(", ")} ${codes.length > 1 ? "are" : "is"} still developing.`
+        : purpose === "consolidate" ? `Practice and consolidation: ${codes.join(", ")} ${codes.length > 1 ? "are" : "is"} still being learned; assigning a lesson does not mean an outcome is achieved.`
           : `New learning: ${codes.join(", ")} not started yet.`;
       if (reusable.length) {
         const l = reusable[0];
@@ -345,7 +354,12 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
     const up = await lb.updateLesson(db, familyId, row.id, { ...lesson, status: "ready" }, now);
     if (!up.ok) return up;
   }
-  const ev = await db.prepare("SELECT id, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first();
+  const ev = await db.prepare("SELECT id, student_id, date, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first<any>();
+  // Check the exact timetable slot before creating an assignment. This avoids
+  // leaving orphaned assignments if another tab or parent filled the slot first.
+  if (!ev || ev.student_id !== p.student_id || ev.date !== p.date ||
+      ev.linked_assignment_id || ev.linked_lesson_id)
+    return bad(409, "This timetable slot has changed or already has an assignment. Refresh the calendar before assigning.", "SLOT_TAKEN");
   const why = p.purpose === "revise" ? `Revision (Auto-Quest): revisiting ${json<string[]>(p.outcome_codes, []).join(", ")}.` : null;
   const a = await lb.assignLesson(db, familyId, { student_id: p.student_id, lesson_id: p.lesson_id, scheduled_date: p.date, parent_notes: why, again: true }, now);
   let assignmentId: string;
@@ -355,10 +369,10 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
     assignmentId = open.id;
   } else return a;
   // (again: the parent approved this proposal, and revision deliberately repeats a finished lesson.)
-  // Never override a slot the parent already linked to something else.
-  if (ev && !ev.linked_assignment_id) {
-    await db.prepare("UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id = COALESCE(linked_lesson_id, ?) WHERE id = ? AND family_id = ? AND linked_assignment_id IS NULL").bind(assignmentId, p.lesson_id, ev.id, familyId).run();
-  }
+  // Link only if the exact target is still empty; a race must never overwrite it.
+  const link = await db.prepare("UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id = ? WHERE id = ? AND family_id = ? AND student_id = ? AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL")
+    .bind(assignmentId, p.lesson_id, ev.id, familyId, p.student_id).run();
+  if (!link.meta.changes) return bad(409, "This timetable slot was filled before the assignment could be linked. Review the existing assignment before trying again.", "SLOT_TAKEN");
   const ts = now.toISOString();
   await db.prepare("UPDATE auto_quest_proposals SET status = 'assigned', assignment_id = ?, decided_by = ?, decided_at = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(assignmentId, parentId, ts, ts, id, familyId).run();
   return { ok: true, proposal: proposalOut(await ownProposal(db, familyId, id), await lessonMap(db, familyId, [p.lesson_id])) };
