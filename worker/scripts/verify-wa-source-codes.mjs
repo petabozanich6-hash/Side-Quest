@@ -20,7 +20,7 @@ export function verifyWaSource(sourceDoc, review) {
     }
     if (node.wa_code === "" && typeof node.markdown === "string" && 
         (typeof node.sub_strand_id === "number" || typeof node.sub_strand_id === "string")) {
-      for(const m of node.markdown.matchAll(/\\(([A-Z]{2,12}[A-Za-z0-9-]{2,28})\\)/g))
+      for(const m of node.markdown.matchAll(/\(([A-Z]{2,12}[A-Za-z0-9-]{2,28})\)/g))
         push(m[1],y,s,"description_markdown");
     }
     for(const [key,value] of Object.entries(node))
