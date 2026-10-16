@@ -1,0 +1,113 @@
+{
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "checked_on": "2026-10-16",
+  "status": "official_page_verified_review_only",
+  "complete_for_specified_page": true,
+  "complete_for_nsw": false,
+  "record_count": 8,
+  "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+  "notes": [
+    "Eight exact identifiers checked on NESA Music Life Skills 2025 Outcomes page.",
+    "2027 implementation; do not enable for 2026 automatically.",
+    "Overlap with existing NSW source data must be reconciled before unique national counts."
+  ],
+  "records": [
+    {
+      "identifier": "MU-LSP-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LSP-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LSL-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LSL-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LSC-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LSC-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LS-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "MU-LS-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Music Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    }
+  ]
+}
