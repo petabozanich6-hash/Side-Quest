@@ -49,8 +49,10 @@ import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
 import ParentFeedback from "./pages/parent/ParentFeedback";
+import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
 import SiteSearch from "./pages/shared/SiteSearch";
 import HqFeedback from "./pages/parent/hq/HqFeedback";
+import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -99,6 +101,7 @@ function Router() {
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
         <Route path="plan" element={<UpgradePage />} />
+        <Route path="email-preferences" element={<AnnouncementPreferences />} />
         <Route path="command-centre" element={<HqShell />}>
           <Route index element={<HqOverview />} />
           <Route path="customers" element={<HqCustomers />} />
@@ -107,6 +110,7 @@ function Router() {
           <Route path="audit" element={<HqAudit />} />
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
+          <Route path="announcements" element={<HqAnnouncements />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
