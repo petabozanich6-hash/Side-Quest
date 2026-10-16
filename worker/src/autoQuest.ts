@@ -402,8 +402,16 @@ export async function rejectProposal(db: DB, familyId: string, parentId: string,
 export async function reopenProposal(db: DB, familyId: string, id: string, now: Date = new Date()): Promise<R<{ proposal: any }>> {
   const p = await ownProposal(db, familyId, id);
   if (!p) return bad(404, "Proposal not found");
-  if (p.status !== "rejected") return bad(409, "Only a rejected proposal can be reopened.");
-  await db.prepare("UPDATE auto_quest_proposals SET status = 'proposed', decided_by = NULL, decided_at = NULL, decision_note = NULL, updated_at = ? WHERE id = ? AND family_id = ?").bind(now.toISOString(), id, familyId).run();
+  if (p.status === "assigned") {
+    // Revoking an assignment frees its slot without discarding the proposal.
+    // A parent may plan the slot again only if the slot is now genuinely empty.
+    const ev = await db.prepare("SELECT student_id, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?")
+      .bind(p.calendar_event_id, familyId).first<any>();
+    if (!ev || ev.student_id !== p.student_id || ev.linked_assignment_id || ev.linked_lesson_id)
+      return bad(409, "This slot still contains assigned work. Revoke that assignment before planning it again.", "SLOT_TAKEN");
+  } else if (p.status !== "rejected") return bad(409, "Only skipped or freed timetable slots can be reopened.");
+  await db.prepare("UPDATE auto_quest_proposals SET status = 'proposed', assignment_id = NULL, decided_by = NULL, decided_at = NULL, decision_note = NULL, updated_at = ? WHERE id = ? AND family_id = ?")
+    .bind(now.toISOString(), id, familyId).run();
   return { ok: true, proposal: proposalOut(await ownProposal(db, familyId, id), await lessonMap(db, familyId, [p.lesson_id])) };
 }
 
