@@ -1,0 +1,201 @@
+{
+  "checked_on": "2026-10-16",
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "status": "candidate_review_only_not_complete",
+  "record_count": 18,
+  "official_current_syllabus_url": "https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/overview",
+  "source_documents": [
+    "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+    "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/narooma-h/Documents/Current_Year/2025-2026_Year_12_HSC_Assessment_Guide_V2.pdf"
+  ],
+  "notes": [
+    "18 distinct outcome numbers found within two NSW public-school documents for the 2007 SLR CEC course.",
+    "These are only observed numbers, not the complete syllabus outcome table.",
+    "Reconcile against NESA's original 55-page syllabus before promoting to verified code catalogue.",
+    "Existing erroneous /outcomes route omitted 'and' from official syllabus slug; corrected overview stored.",
+    "Ordinal identifiers must be scoped by subject and edition."
+  ],
+  "records": [
+    {
+      "identifier": "1.1",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:1.1",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "1.3",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:1.3",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "1.4",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:1.4",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "1.5",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:1.5",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "2.1",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:2.1",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "2.2",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:2.2",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "2.4",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:2.4",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "2.5",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:2.5",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "3.1",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:3.1",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "3.2",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:3.2",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "3.4",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:3.4",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "3.5",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:3.5",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "3.6",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:3.6",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "4.1",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:4.1",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "4.2",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:4.2",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "4.3",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:4.3",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "4.4",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:4.4",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    },
+    {
+      "identifier": "4.5",
+      "scoped_identifier": "NSW:NESA:Sport Lifestyle and Recreation CEC:2007:4.5",
+      "identifier_kind": "numbered_syllabus_outcome",
+      "subject": "Sport, Lifestyle and Recreation Studies Stage 6 CEC",
+      "edition": 2007,
+      "source_url": "https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf",
+      "verification_level": "secondary_department_school_schedule",
+      "status": "candidate_requires_primary_syllabus_verification"
+    }
+  ]
+}
