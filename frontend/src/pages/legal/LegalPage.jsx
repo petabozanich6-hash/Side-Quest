@@ -14,6 +14,7 @@ const SUBJECTS = {
 // Help & FAQ: these headings are theme labels, not questions.
 const HELP_GROUPS = new Set([
   "The basics",
+  "Setting up camp",
   "Pets, hints and rewards",
   "Lessons and learning",
   "Signing in",
@@ -84,6 +85,7 @@ function HelpSections({ sections }) {
             <div key={`${s.h}-${i}`} className="pt-6">
               <h2 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>{s.h}</h2>
               {s.p && <p className="mt-0.5 text-sm text-stone-600">{s.p}</p>}
+              {s.items && <div className="mt-2"><SectionBody s={s} /></div>}
             </div>
           );
         }
