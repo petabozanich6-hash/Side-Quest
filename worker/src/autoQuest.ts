@@ -117,14 +117,15 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       else if (fresh.length) { purpose = "teach"; codes = fresh.slice(0, 2); }
       else if (stale.length) { purpose = "revise"; codes = stale.slice(0, 1); }
       else {
-        // Outcomes being taught are not mastered. When every fresh outcome has a
-        // lesson planned or in progress, the remaining sessions can reinforce it
-        // with a DIFFERENT activity. Never reuse the same open assignment.
-        // Limit automatic repetition so the parent can choose extensions later.
+        // Outcomes being taught are not mastered. A weekly timetable can have
+        // several sessions in one learning area even when just one code remains
+        // in progress. Offer a fresh practice ACTIVITY for each open slot,
+        // balancing codes by the number of sessions already proposed. Never
+        // automatically reassign the same open lesson to multiple slots.
+        // No AI cost or assignment occurs until the parent explicitly chooses.
         const practice = pool
           .filter((c) => (inFlight.has(c) || plannedCodes.has(c)) &&
-            ["not_started", "introduced", "developing"].includes(status(c)) &&
-            (plannedTimes.get(c) || 0) < 3)
+            ["not_started", "introduced", "developing"].includes(status(c)))
           .sort((a, b) => (plannedTimes.get(a) || 0) - (plannedTimes.get(b) || 0) || a.localeCompare(b));
         if (practice.length) { purpose = "consolidate"; codes = practice.slice(0, 1); }
       }
