@@ -53,3 +53,17 @@ Source URL: https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE
 - Table 15: Preliminary `P1...` through `P4...` are unit identifiers and must not enter outcome mastery tracking.
 - Manually compare all earlier page 139–145 review batches against PDF page images and official 2026 course-code spreadsheets. Some originally generated course/unit code variants need independent checking; **none of these review files is approved for production use**.
 - SCSA maintains downloadable current course and course-unit summaries at https://senior-secondary.scsa.wa.edu.au/syllabus-and-support-materials/course-codes and current VET summaries at https://senior-secondary.scsa.wa.edu.au/syllabus-and-support-materials/vet-industry-specific . These authoritative exports should be preferred for final independent reconciliation.
+
+
+## WA Pre-primary–Year 10 official JSON identifier discovery (16 October 2026)
+
+**Breakthrough:** Official SCSA JSON files were readable through the published [Outline Downloads index](https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads), despite previous HTTP 403 responses to the hosted GitHub runner. **52 directly observed literal source identifiers** are stored in `worker/src/data/wa-k10-official-json-verified-sample-2026.json`. This is a small independently source-observed sample, **not** complete subject or year coverage.
+
+Confirmed official source files:
+- [English JSON](https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json) (includes ABLEWA Stage A source tags).
+- [Humanities and Social Sciences JSON](https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270385/hass.json).
+- [Mathematics JSON](https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json) (WA-specific `WAP...`, `WA1...` through `WA10...` codes).
+
+**Important discovery for importer QA:** Within official source JSON, some content-description records have an empty `wa_code` but an identifier written inside HTML in the `markdown` field, especially ABLEWA/older descriptors (for example `ACMNA001a`). The current `import-wa-review.mjs` ignores markdown and therefore will undercount some official published identifiers. A separately reviewed markdown-code extraction rule and fixture tests are needed; avoid blindly extracting all capitalised strings or HTML content. The existing 52-code sample is independent of any programmatic importer execution.
+
+SCSA's source index offers **both XLSX and JSON** exports, with different update dates by area and older language sequences. Per-file edition / effective-year metadata must be retained; do not treat every download as effective in the same calendar year. Before integration Claude should confirm the import parser's output against the full downloadable source inventory and compare the 2026 applicable curriculum versions to the [SCSA implementation notice](https://www.scsa.wa.edu.au/kto6-circulars/edition-1-february-2026).
