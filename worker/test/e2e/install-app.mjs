@@ -122,7 +122,17 @@ const napi = async (method, path, token, body) => {
   return { status: r.status, json };
 };
 const stamp = Date.now();
-const fam = (await napi("POST", "/auth/register", null, { email: `kids-${stamp}@example.com`, password: "Passw0rd-kids!", name: "Parent", jurisdiction: "NSW" })).json;
+const familyEmail = `kids-${stamp}@example.com`;
+const familyPassword = "Passw0rd-kids!";
+const fam = (await napi("POST", "/auth/register", null, { email: familyEmail, password: familyPassword, name: "Parent", jurisdiction: "NSW" })).json;
+const loginParent = async (p) => {
+  // A real login avoids racing the app's anonymous /auth/me startup request.
+  await p.goto(BASE + "/login");
+  await p.fill("[data-testid=login-email]", familyEmail);
+  await p.fill("[data-testid=login-password]", familyPassword);
+  await p.click("[data-testid=login-submit]");
+  await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
+};
 const kidUser = `kidapp${stamp}`.slice(0, 16);
 await napi("POST", "/students", fam.token, { name: "Kid", username: kidUser, pin: "4321", stage: "S2" });
 await napi("POST", "/pet", (await napi("POST", "/auth/child-login", null, { username: kidUser, pin: "4321" })).json.token, { species: "fox", name: "Rusty" });
@@ -218,10 +228,9 @@ await step("SQ Kids address: opens to the child sign-in, installs the kids' app 
 await step("one phone, two apps: the parent stays signed in to Side-Quest while the child signs in to SQ Kids", async () => {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, userAgent: UA.android, isMobile: true, hasTouch: true });
   const p = await ctx.newPage();
-  await p.goto(BASE + "/");
-  await p.evaluate((t) => localStorage.setItem("sq_token", t), fam.token);
-  await p.goto(BASE + "/parent");
-  await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
+  await loginParent(p);
+  const parentSessionToken = await p.evaluate(() => localStorage.getItem("sq_token"));
+  ok(!!parentSessionToken, "parent login returned no session token");
   const k = await ctx.newPage();
   await k.goto(KIDS + "/child-login");
   await k.fill("[data-testid=child-login-username]", kidUser);
@@ -230,7 +239,7 @@ await step("one phone, two apps: the parent stays signed in to Side-Quest while 
   await k.waitForURL((u) => u.pathname === "/child");
   await p.reload();
   await p.waitForSelector("[data-testid=parent-sidebar]", { state: "attached" });
-  ok(await p.evaluate(() => localStorage.getItem("sq_token")) === fam.token, "the parent's sign-in was replaced");
+  ok(await p.evaluate(() => localStorage.getItem("sq_token")) === parentSessionToken, "the parent's sign-in was replaced");
   await k.click("[data-testid=child-logout]");
   await k.waitForURL((u) => u.pathname === "/child-login");
   await p.reload();
@@ -250,8 +259,7 @@ await step("an ordinary browser is unaffected: the home page still shows the fro
 await step("the Parent Hub Children page links to setting up a child's device", async () => {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const p = await ctx.newPage();
-  await p.goto(BASE + "/");
-  await p.evaluate((t) => localStorage.setItem("sq_token", t), fam.token);
+  await loginParent(p);
   await p.goto(BASE + "/parent/children");
   await p.click("[data-testid=kids-app-link]");
   await p.waitForURL((u) => u.pathname === "/get-app" && u.search.includes("for=child"));

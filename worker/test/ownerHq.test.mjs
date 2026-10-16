@@ -129,6 +129,13 @@ test("authz: everyone but the Owner gets 404 from every admin endpoint, includin
 test("authz: the Owner sees the HQ link; tokens from before Owner HQ must sign in again; no CORS on admin", async () => {
   const { h, owner } = await ownerSetup();
   assert.equal((await h.req("/auth/me", { token: owner.token })).json.is_platform_owner, true);
+  const freshOwnerLogin = await h.login(owner.email);
+  assert.equal(freshOwnerLogin.status, 200);
+  assert.equal(freshOwnerLogin.json.user.is_platform_owner, true, "Owner HQ navigation must show immediately on login");
+  const ordinary = await h.register("hq-ordinary-login@example.com");
+  const ordinaryLogin = await h.login(ordinary.email);
+  assert.equal(ordinaryLogin.status, 200);
+  assert.equal(ordinaryLogin.json.user.is_platform_owner, undefined, "ordinary parents must not see Owner navigation");
   const me = await h.req("/admin/me", { token: owner.token });
   assert.equal(me.status, 200);
   assert.deepEqual(me.json.roles, ["owner"]);

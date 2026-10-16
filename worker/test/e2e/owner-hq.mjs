@@ -65,7 +65,16 @@ const owner = await reg(ownerEmail, "Owner Person");
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 page = await ctx.newPage();
-const signIn = async (p, token) => { await p.goto(BASE + "/"); await p.evaluate((t) => localStorage.setItem("sq_token", t), token); await p.goto(BASE + "/parent"); await p.waitForSelector("[data-testid=parent-sidebar]"); };
+// Authenticate using the real parent login form. Seeding local storage after the
+// app mounts races its initial anonymous auth check and can log out a test user.
+const signIn = async (p, token) => {
+  const email = token === owner.token ? ownerEmail : userEmail;
+  await p.goto(BASE + "/login");
+  await p.fill("[data-testid=login-email]", email);
+  await p.fill("[data-testid=login-password]", PW);
+  await p.click("[data-testid=login-submit]");
+  await p.waitForSelector("[data-testid=parent-sidebar]");
+};
 
 await step("an ordinary parent never sees or reaches Owner HQ (UI and API)", async () => {
   await signIn(page, user.token);
@@ -93,14 +102,16 @@ await step("the promotion script refuses without a match, then promotes the Owne
 });
 
 let cdp;
+let ownerBrowserToken;
 await step("Owner adds a passkey (password re-check) and unlocks HQ with it", async () => {
   cdp = await ctx.newCDPSession(page);
   await cdp.send("WebAuthn.enable");
   await cdp.send("WebAuthn.addVirtualAuthenticator", { options: { protocol: "ctap2", transport: "internal", hasResidentKey: true, hasUserVerification: true, isUserVerified: true, automaticPresenceSimulation: true } });
   await signIn(page, owner.token);
+  ownerBrowserToken = await page.evaluate(() => localStorage.getItem("sq_token"));
   await page.click("[data-testid=nav-command-centre]");
   await page.waitForSelector("[data-testid=hq-enrol]");
-  ok((await api("GET", "/admin/overview", owner.token)).status === 401, "overview open before step-up");
+  ok((await api("GET", "/admin/overview", ownerBrowserToken)).status === 401, "overview open before step-up");
   await page.fill("[data-testid=hq-password]", "wrong-password");
   await page.click("[data-testid=hq-add-passkey]");
   await page.waitForSelector("text=That password is not right.");
@@ -159,10 +170,45 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 });
 
 
+await step("Dragon's Hoard appears and gifting preview days reaches the parent", async () => {
+  await page.click("[data-testid=hq-tab-dragon-hoard]");
+  await page.waitForSelector("[data-testid=hq-dragon-hoard]");
+  await page.waitForSelector("[data-testid=hoard-create]", { timeout: 15000 });
+  await page.waitForSelector("[data-testid=hoard-gifts]", { timeout: 15000 });
+  const before = await api("GET", "/account/plan", user.token);
+  ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");
+  await page.click("[data-testid=hq-tab-customers]");
+  await page.fill("[data-testid=hq-customer-search]", userEmail);
+  await page.keyboard.press("Enter");
+  await page.waitForSelector("[data-testid=hq-customer-row]");
+  await page.click("[data-testid=hq-customer-row]");
+  await page.waitForSelector("[data-testid=hq-gift-preview]");
+  await page.click("[data-testid=hq-gift-preview]");
+  await page.fill("[data-testid=confirm-reason]", "Synthetic E2E launch-readiness gift");
+  ok(await page.isDisabled("[data-testid=confirm-submit]"), "gift permitted without GIFT confirmation");
+  await page.fill("[data-testid=confirm-word]", "GIFT");
+  await page.click("[data-testid=confirm-submit]");
+  await page.locator('[role="dialog"]').waitFor({ state: "detached" });
+  const after = await api("GET", "/account/plan", user.token);
+  ok(after.status === 200, "family plan unreadable after preview gift");
+  ok(Date.parse(after.json.trial_ends_at) - Date.parse(before.json.trial_ends_at) === 7 * 86400000, "preview gift did not add seven days");
+  ok(after.json.preview_gift?.days === 7, "gift notification missing from family plan");
+  const parentCtx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  try {
+    const parentPage = await parentCtx.newPage();
+    await signIn(parentPage, user.token);
+    await parentPage.goto(BASE + "/parent/plan");
+    await parentPage.waitForSelector("[data-testid=preview-gift-notice]");
+    const notice = await parentPage.textContent("[data-testid=preview-gift-notice]");
+    ok(notice.includes("7 extra preview days"), "Helping Hand not explained to family");
+    ok(!notice.includes("Synthetic E2E"), "private gift reason leaked to parent");
+  } finally { await parentCtx.close(); }
+});
+
 await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
   await page.click("[data-testid=hq-tab-announcements]");
   await page.waitForSelector("[data-testid=hq-announcements]");
-  const parentCount=await api("GET","/admin/announcements",owner.token);
+  const parentCount=await api("GET","/admin/announcements",ownerBrowserToken);
   ok(parentCount.status===200,"owner should see broadcast counts");
   ok(parentCount.json.service_recipients>=2,"registered families not included");
   await page.fill("[data-testid=hq-announcement-subject]","Important Side-Quest notice");
