@@ -146,6 +146,10 @@ The newer SLR review file contains 28 unique outcome labels, retaining all 18 la
 
 The 10 recorded Visual Design Stage 6 CEC (2000) labels (`DM1`–`DM6`, `CH1`–`CH4`) are independently reproduced in a NSW Department of Education school's 2023/24 HSC scope-and-sequence: https://manilla-c.schools.nsw.gov.au/content/dam/doe/sws/schools/m/manilla-c/scope-and-sequence/2024/STAGE_6_HSC_Scope_and_Secquence_Visual_DEsign.pdf . Updated `worker/src/data/nsw-creative-arts-cec-2000-outcome-codes-review.json` with this corroborating URL. NESA's 2000 course remains listed as current: https://curriculum.nsw.edu.au/learning-areas/creative-arts . **This corroborates the labels but does not independently verify the original 34-page NESA PDF's full outcomes table**, so parent release is still blocked. No new unique identifiers this batch.
 
+### Primary document access regression: Photography CEC (16 October 2026)
+
+Directly opening the previously recorded NESA Photography, Video and Digital Imaging (2000) syllabus PDF URL redirects to the NESA home page, **not a PDF**. The legacy authority page indicates a 51-page syllabus and the currently published overview confirms the course. Machine-readable access record: `curriculum-audits/nsw-cec-primary-document-access-2026.json`. The 11 indexed outcome identifiers remain **review-only pending actual document inspection**. Search engine PDF indexing is not equivalent to authority source verification. **0 new codes** this check. Obtain via the official curriculum download facility or other permitted NESA document provision, compare the original outcomes table and source edition, then reconsider release eligibility.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
