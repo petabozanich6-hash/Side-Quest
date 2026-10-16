@@ -179,6 +179,8 @@ export type SyncDecision =
   | { action: "update"; fields: Record<string, string | number | null>; plan_changed: boolean };
 
 const GRANT_STATES = new Set(["active", "trialing", "past_due"]);
+// Subscriptions that are, or can still become, a paying membership.
+const LIVE_SUB_STATES = new Set(["active", "trialing", "past_due", "unpaid", "paused"]);
 const ENDED_STATES = new Set(["canceled", "unpaid", "incomplete_expired", "paused"]);
 const secIso = (s: unknown): string | null => (typeof s === "number" && s > 0 ? new Date(s * 1000).toISOString() : null);
 const idOf = (v: any): string | null => (typeof v === "string" ? v : v && typeof v.id === "string" ? v.id : null);
@@ -501,6 +503,24 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
         const again = await c.env.DB.prepare("SELECT stripe_customer_id FROM families WHERE id = ?").bind(u.family_id).first<{ stripe_customer_id: string }>();
         customer = again?.stripe_customer_id || created.id;
       }
+      // Stripe is the source of truth: the webhook for an earlier purchase may not have arrived yet.
+      const existingSubs = await stripeCall(cfg.key, "GET", "subscriptions", { customer, status: "all", limit: 100 }, { fetchImpl });
+      if ((existingSubs?.data || []).some((s: any) => LIVE_SUB_STATES.has(String(s?.status || "")))) {
+        return c.json({ detail: "You already have a Family Membership. Use Manage billing to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
+      }
+      // Only one checkout should be payable at a time. Reuse an open page for the same choice (a double
+      // click) and close the rest (another tab or plan). Best effort: a failure here never blocks checkout.
+      const promoKey = promotionId ?? "none";
+      try {
+        const open = await stripeCall(cfg.key, "GET", "checkout/sessions", { customer, status: "open", limit: 100 }, { fetchImpl });
+        for (const s of open?.data || []) {
+          if (!s?.id) continue;
+          if (s.url && s.metadata?.interval === interval && s.metadata?.promo === promoKey) return c.json({ url: s.url });
+          await stripeCall(cfg.key, "POST", `checkout/sessions/${encodeURIComponent(s.id)}/expire`, {}, { fetchImpl });
+        }
+      } catch (e: any) {
+        console.error("billing checkout: could not close earlier checkout pages", e?.message);
+      }
       const origin = appOrigin(c.env, c.req.url);
       const session = await stripeCall(cfg.key, "POST", "checkout/sessions", {
         mode: "subscription",
@@ -509,7 +529,7 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
         line_items: [{ price: price.price, quantity: 1 }],
         // Only owner-issued Hoard offers are eligible, while Stripe enforces actual redemption limits.
         ...(promotionId ? { discounts: [{ promotion_code: promotionId }] } : {}),
-        metadata: { family_id: u.family_id, interval },
+        metadata: { family_id: u.family_id, interval, promo: promoKey },
         subscription_data: { metadata: { family_id: u.family_id, interval } },
         success_url: `${origin}/parent/plan?checkout=success`,
         cancel_url: `${origin}/parent/plan?checkout=cancelled`,

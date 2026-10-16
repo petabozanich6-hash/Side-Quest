@@ -500,6 +500,7 @@ test("live checkout replaces a confirmed stale sandbox customer, preserving fami
     calls.push({ url, init });
     if (url.endsWith("/customers/cus_sandbox_old")) return new Response(JSON.stringify({ error: { message: "No such customer" } }), { status: 404 });
     if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_live_new" }));
+    if (/\/(subscriptions|checkout\/sessions)\?customer=cus_live_new/.test(url)) return new Response(JSON.stringify({ data: [] }));
     if (url.endsWith("/checkout/sessions")) return new Response(JSON.stringify({ id: "cs_live_1", url: "https://checkout.stripe.com/c/pay/cs_live_1" }));
     throw Error("unexpected Stripe request " + url);
   };
@@ -550,4 +551,37 @@ test("account deletion: blocked while any Stripe subscription still renews; fail
   assert.equal((await b.deletionBillingBlock(db, {}, "f1"))?.status, 409);
   db.raw.prepare("UPDATE families SET cancel_at_period_end = 1 WHERE id = 'f1'").run();
   assert.equal(await b.deletionBillingBlock(db, {}, "f1"), null);
+});
+
+test("checkout: Stripe's own subscription list blocks a second membership; open pages are reused or closed", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_1" });
+  let subs = [];
+  let open = [];
+  const calls = [];
+  const f = async (url, init) => {
+    calls.push({ url, method: init.method });
+    if (/\/subscriptions\?/.test(url)) return new Response(JSON.stringify({ data: subs }));
+    if (/\/checkout\/sessions\?/.test(url)) return new Response(JSON.stringify({ data: open }));
+    if (url.endsWith("/expire")) return new Response(JSON.stringify({ id: "x", status: "expired" }));
+    if (url.endsWith("/checkout/sessions")) return new Response(JSON.stringify({ id: "cs_new", url: "https://checkout.stripe.com/new" }));
+    throw Error("unexpected " + url);
+  };
+  const h = routes(f);
+  // Paid a moment ago, webhook not here yet: the family row still says Free.
+  subs = [sub({ status: "active" })];
+  const dup = await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }));
+  assert.equal(dup.status, 409);
+  assert.equal(dup.data.code, "ALREADY_SUBSCRIBED");
+  assert.ok(!calls.some((c) => c.url.endsWith("/checkout/sessions")), "no new checkout page");
+
+  subs = [sub({ status: "canceled" })];
+  open = [{ id: "cs_same", url: "https://checkout.stripe.com/same", metadata: { interval: "weekly", promo: "none" } }];
+  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }))).data.url, "https://checkout.stripe.com/same", "double click reuses the page");
+
+  calls.length = 0;
+  open = [{ id: "cs_other", url: "https://checkout.stripe.com/other", metadata: { interval: "monthly", promo: "none" } }];
+  const r = await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }));
+  assert.equal(r.data.url, "https://checkout.stripe.com/new");
+  assert.ok(calls.some((c) => c.url.endsWith("/checkout/sessions/cs_other/expire") && c.method === "POST"), "the other plan's page is closed");
 });
