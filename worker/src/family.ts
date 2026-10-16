@@ -485,7 +485,18 @@ export function registerFamily(app: App, g: Guards) {
 
     const nextStage = String(body.stage || existing.stage || "");
     if (!stageMeta(nextStage)) return c.json({ detail: "Invalid stage" }, 400);
-    if ("compass_areas" in body && (!Array.isArray(body.compass_areas) || body.compass_areas.some((v: unknown) => !["Creative Arts", "PDHPE", "Languages", "Technology"].includes(String(v))))) return c.json({ detail: "Invalid Compass selections" }, 400);
+    if ("compass_areas" in body) {
+      const values = body.compass_areas;
+      const permitted = new Set(["Creative Arts", "PDHPE", "Languages", "Technology"]);
+      if (!Array.isArray(values) || values.some((v: unknown) => typeof v !== "string" || !permitted.has(v)) ||
+          new Set(values).size !== values.length || (values.length !== 0 && values.length < 2)) {
+        return c.json({ detail: "Choose at least two different valid learning areas, or clear all selections" }, 400);
+      }
+      const family = await c.env.DB.prepare("SELECT jurisdiction FROM families WHERE id = ?").bind(c.get("user").family_id).first<{ jurisdiction?: string }>();
+      if (family?.jurisdiction !== "NSW" || !["S4", "S5"].includes(nextStage)) {
+        return c.json({ detail: "Compass area selections are only supported for NSW Stages 4–5" }, 400);
+      }
+    }
     const nextExtra = studentExtraFromBody(body, nextStage, parseJson(existing.extra || null, {} as StudentExtra));
     const updates: Record<string, unknown> = {
       extra: JSON.stringify(nextExtra),
