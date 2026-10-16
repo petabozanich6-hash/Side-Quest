@@ -174,6 +174,10 @@ Added **six** subject-scoped numbered syllabus objectives from **QCAA Earth & En
 
 Added **six numbered QCAA Biology 2025 v1.3 Unit 1 objectives** (Cells and multicellular organisms), directly checked against official QCAA PDF page index 22 / printed page 20: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Dataset `worker/src/data/qld-qcaa-biology-2025-unit1-objectives-review.json`. Each has a composite identifier `QLD:QCAA:Biology:General:2025:unit:1:objective:<n>`, distinct from the six *overall syllabus* objective references previously collected for Biology. The six unit objectives are complete for Unit 1's ordinal list, but this is **not a complete representation of Unit 1 subject matter, Units 2–4, or all Queensland Biology learning requirements**. Review-only; no live tracking or merge.
 
+### Queensland Biology Unit 2 — six source-verified unit objectives (16 October 2026)
+
+Added **6** Unit 2 numbered objectives (Maintaining the internal environment) from **Biology General 2025 v1.3 (January 2026)** to `worker/src/data/qld-qcaa-biology-2025-unit2-objectives-review.json`. Directly checked the complete numbered list on printed page **25** / PDF zero-based page **27**: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Each source-scoped record distinguishes QCAA, syllabus edition, Biology, Unit 2 and objective ordinal; unit topics Homeostasis and Infectious disease and epidemiology retained. **These six unit objectives do not constitute all Unit 2 subject-matter statements**, or coverage of Biology Units 3–4. Review-only; no parent runtime integration, merge or deployment.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
