@@ -1,0 +1,161 @@
+{
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "status": "official_page_verified_review_only",
+  "checked_on": "2026-10-16",
+  "complete_for_specified_page": true,
+  "complete_for_nsw": false,
+  "record_count": 12,
+  "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+  "notes": [
+    "Literal official outcome identifiers checked against NESA's 2025 Drama Life Skills 11–12 Outcomes page.",
+    "Future implementation 2027, do not enable automatically for 2026 cohorts.",
+    "May overlap existing NESA importer; deduplicate by identifier, edition, source URL before counting as new unique identifiers."
+  ],
+  "records": [
+    {
+      "identifier": "DR-LSM-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSM-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSM-03",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSM-04",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSM-05",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSP-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSP-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSP-03",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSR-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LSR-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LS-01",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    },
+    {
+      "identifier": "DR-LS-02",
+      "authority": "NESA",
+      "jurisdiction": "NSW",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Drama Life Skills 11–12",
+      "stage": 6,
+      "syllabus_edition": 2025,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes",
+      "verification_status": "literal_identifier_visible_on_official_outcomes_page"
+    }
+  ]
+}
