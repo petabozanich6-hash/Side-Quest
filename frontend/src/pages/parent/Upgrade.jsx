@@ -100,7 +100,7 @@ export default function UpgradePage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. No trial is added at checkout; the 7-day free preview needs no card. You choose and authorise a paid plan yourself.</p>
+          <p className="text-xs text-stone-500 mt-2">Have a Dragon’s Hoard promo code? Enter it at Stripe Checkout before paying. Eligible codes are checked by Stripe, and your final amount is shown before you authorise payment. No trial is added at checkout; the free preview needs no card.</p>
         </section>
       )}
 
