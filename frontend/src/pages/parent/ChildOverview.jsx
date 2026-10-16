@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Send, BookOpen, Camera, Heart } from "lucide-react";
 import PetArt from "../../components/shared/PetArt";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
+import ChildRegistrationPanel from "../../components/parent/ChildRegistrationPanel";
 
 const EMOJIS = ["🙌", "⭐", "🌟", "💛", "🌱", "🎉", "✨", "💪", "🦊", "📚"];
 
@@ -60,6 +61,7 @@ export default function ChildOverview() {
       </header>
 
       <OutcomeSummaryCard studentId={sid} />
+      <ChildRegistrationPanel studentId={sid} studentName={s.name} />
 
       {data.pet && (
         <section className="paper-card p-6 flex flex-wrap items-center justify-between gap-4" data-testid="pet-care-panel">
