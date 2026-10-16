@@ -138,6 +138,10 @@ Created `curriculum-audits/nsw-cec-parent-release-gates.json` for the nine sylla
 
 The indexed text of an original 2007 Sport, Lifestyle and Recreation Stage 6 CEC syllabus reproduces the Section 7.1 table with **28 outcome numbers**: group 1 (1.1–1.6), group 2 (2.1–2.5), group 3 (3.1–3.7), group 4 (4.1–4.5) and group 5 (5.1–5.5). The earlier 18 school-document candidates omit **ten**: `1.2`, `1.6`, `2.3`, `3.3`, `3.7`, `5.1`, `5.2`, `5.3`, `5.4`, `5.5`. Added `worker/src/data/nsw-slr-cec-2007-outcomes-full-indexed-review.json`, containing all 28 with exact scoped keys and prior-overlap flags. Search-indexed original syllabus PDF: https://goulburn-h.schools.nsw.gov.au/content/dam/doe/sws/schools/g/goulburn-h/localcontent/slr_syllabus.pdf ; official syllabus overview: https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/overview . **The PDF URL currently returns HTTP 404 on direct access**; independent page-image/authority-edition check is pending. Earlier nine-CEC integrity report covered the original 103 records and is a historical snapshot, not automatically updated to include the ten additional SLR numbers. No runtime release or completion claim.
 
+### NSW CEC reconciled count after SLR expansion (16 October 2026)
+
+The newer SLR review file contains 28 unique outcome labels, retaining all 18 labels from the previous SLR candidate file and adding ten. **No duplicates or removals within the expanded file.** Replacing the old 18 with 28 changes the prior nine-CEC snapshot from **103 to 113 syllabus-scoped outcome records**, *not* 131; never sum both overlapping SLR files. This revised 113 is **provisional review coverage**, pending SLR primary PDF verification and verification of other legacy records. See `curriculum-audits/nsw-cec-slr-expanded-reconciliation-2026.json`. Nothing promoted to parent tracking.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
