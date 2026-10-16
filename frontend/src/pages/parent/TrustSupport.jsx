@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Trash2, ChevronRight } from "lucide-react";
+import { Trash2, ChevronRight, MessageSquare } from "lucide-react";
 import { GROUPS, PAGES } from "../legal/legalContent";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import { useAuth } from "../../context/AuthContext";
@@ -12,6 +12,7 @@ export default function TrustSupport() {
     <div className="max-w-4xl mx-auto px-6 py-10" data-testid="trust-support-hub">
       <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>Trust &amp; Support</h1>
       <p className="mt-2 text-stone-600">Policies, help and the tools to manage your family's information.</p>
+      <Link to="/parent/feedback" className="mt-6 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 hover:border-emerald-700" data-testid="trust-feedback-link"><MessageSquare size={21} className="shrink-0 text-emerald-800 mt-0.5"/><span><span className="block text-base font-bold text-emerald-950">Report a problem, share an idea or give feedback</span><span className="text-sm text-stone-700 block mt-1">Send a message straight to the Side-Quest team. Your account details are linked automatically.</span></span><ChevronRight size={17} className="ml-auto text-emerald-800 shrink-0"/></Link>
       <div className="mt-8 space-y-8">
         {GROUPS.map((g) => (
           <section key={g.id}>

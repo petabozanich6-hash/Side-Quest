@@ -48,6 +48,8 @@ import OutcomeTrackerPage from "./pages/parent/OutcomeTracker";
 import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
+import ParentFeedback from "./pages/parent/ParentFeedback";
+import HqFeedback from "./pages/parent/hq/HqFeedback";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -102,6 +104,7 @@ function Router() {
           <Route path="settings" element={<HqSettings />} />
           <Route path="audit" element={<HqAudit />} />
           <Route path="security" element={<HqSecurity />} />
+          <Route path="feedback" element={<HqFeedback />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
@@ -122,6 +125,7 @@ function Router() {
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
         <Route path="trust" element={<TrustSupport />} />
+        <Route path="feedback" element={<ParentFeedback />} />
         <Route path="trust/:slug" element={<LegalPage />} />
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>

@@ -30,6 +30,7 @@ import {
 import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
+import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
 type AdminContext = Context<{ Bindings: Env; Variables: AdminVars }>;
@@ -349,6 +350,49 @@ export function createAdminRoutes() {
       return { ...r, detail };
     });
     return c.json({ entries: rows.slice(0, limit), has_more: rows.length > limit, page });
+  });
+
+  // --------------------------------------- family feedback: owner-only inbox
+  // Step-up, Owner role, CSRF, rate limits and admin permissions are all enforced above.
+  admin.get("/feedback/unread-count", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const r = await c.env.DB.prepare("SELECT COUNT(*) n FROM parent_feedback WHERE seen_at IS NULL").first<{n:number}>();
+    return c.json({ unread: Number(r?.n || 0) });
+  });
+
+  admin.get("/feedback", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const status = c.req.query("status") || "";
+    const category = c.req.query("category") || "";
+    if (status && !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
+    if (category && !(FEEDBACK_CATEGORIES as readonly string[]).includes(category)) return c.json({ detail: "Invalid category" }, 400);
+    const page = Number(c.req.query("page") || "1");
+    if (!Number.isInteger(page) || page < 1 || page > 10000) return c.json({ detail: "Invalid page" }, 400);
+    const { results } = await c.env.DB.prepare(
+      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
+    ).bind(status,status,category,category,(page - 1)*50).all();
+    const rows=results || [];
+    return c.json({ items: rows.slice(0,50), has_more: rows.length > 50, page });
+  });
+
+  admin.put("/feedback/:id", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const row = await c.env.DB.prepare("SELECT id,family_id,status,seen_at FROM parent_feedback WHERE id = ?")
+      .bind(c.req.param("id")).first<{id:string;family_id:string;status:string;seen_at:string|null}>();
+    if (!row) return c.json({ detail: "Feedback not found" }, 404);
+    const body = await readJson(c);
+    const status = body.status === undefined ? row.status : body.status;
+    if (typeof status !== "string" || !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
+    if (body.owner_note !== undefined && (typeof body.owner_note !== "string" || body.owner_note.length > 2000))
+      return c.json({ detail: "Internal note must be 2000 characters or fewer" }, 400);
+    const ownerNote = body.owner_note === undefined ? null : String(body.owner_note).trim();
+    const when = nowIso();
+    await c.env.DB.prepare(
+      "UPDATE parent_feedback SET status=?, owner_note=COALESCE(?,owner_note), seen_at=COALESCE(seen_at,?), updated_at=? WHERE id=?",
+    ).bind(status,ownerNote,when,when,row.id).run();
+    // Audit metadata only: no private parent report text in administrative log.
+    await writeAudit(c.env.DB,{...actor(c),action:"feedback.update",targetType:"feedback",targetId:row.id,detail:{from:row.status,to:status,notes_updated:ownerNote!==null}});
+    return c.json({ok:true,id:row.id,status,seen_at:row.seen_at || when});
   });
 
   admin.all("*", (c) => notFound(c));

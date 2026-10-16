@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Navigate, NavLink, Outlet } from "react-router-dom";
-import { Crown, KeyRound, Lock } from "lucide-react";
+import { Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
+import { Bell, Crown, KeyRound, Lock } from "lucide-react";
 import { adminApi, enrolPasskey, errorCode, errorText, stepUpWithPasskey } from "../../../lib/adminApi";
 import { Alert, Button, GREEN } from "./ui";
 
 const TABS = [
   { to: "/parent/command-centre", label: "Overview", end: true, testid: "hq-tab-overview" },
   { to: "/parent/command-centre/customers", label: "Customers", testid: "hq-tab-customers" },
+  { to: "/parent/command-centre/feedback", label: "Feedback inbox", testid: "hq-tab-feedback" },
   { to: "/parent/command-centre/settings", label: "Settings", testid: "hq-tab-settings" },
   { to: "/parent/command-centre/audit", label: "Audit log", testid: "hq-tab-audit" },
   { to: "/parent/command-centre/security", label: "Security", testid: "hq-tab-security" },
@@ -22,6 +23,8 @@ export default function HqShell() {
   const [busy, setBusy] = useState(false);
   const [password, setPassword] = useState("");
   const [label, setLabel] = useState("This device");
+  const [unreadFeedback, setUnreadFeedback] = useState(0);
+  const location = useLocation();
 
   const check = useCallback(async () => {
     setError("");
@@ -35,6 +38,16 @@ export default function HqShell() {
     }
   }, []);
   useEffect(() => { check(); }, [check]);
+
+  // The owner sees a new-message indicator without revealing the contents before passkey step-up.
+  useEffect(() => {
+    if (state.phase !== "open") { setUnreadFeedback(0); return undefined; }
+    let current = true;
+    const refresh = () => adminApi.get("/feedback/unread-count").then(r => { if (current) setUnreadFeedback(r.unread || 0); }).catch(() => {});
+    refresh();
+    const timer = setInterval(refresh, 60000);
+    return () => { current = false; clearInterval(timer); };
+  }, [state.phase, location.pathname]);
 
   // Re-check when the 15-minute step-up runs out.
   useEffect(() => {
@@ -109,7 +122,7 @@ export default function HqShell() {
           <NavLink key={t.to} to={t.to} end={t.end} data-testid={t.testid}
             className={({ isActive }) => `whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold ${isActive ? "text-white" : "text-stone-700 bg-white/70"}`}
             style={({ isActive }) => (isActive ? { backgroundColor: GREEN } : { border: "1px solid #D4C8A8" })}>
-            {t.label}
+            {t.label}{t.testid === "hq-tab-feedback" && unreadFeedback > 0 && <span aria-label={`${unreadFeedback} unread feedback submissions`} className="inline-flex items-center gap-1 ml-2 bg-amber-100 text-amber-950 rounded-full px-2 py-0.5 text-xs font-bold"><Bell size={11}/>{unreadFeedback}</span>}
           </NavLink>
         ))}
       </nav>
