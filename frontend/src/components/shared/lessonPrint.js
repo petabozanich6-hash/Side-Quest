@@ -225,7 +225,7 @@ export function builtLessonPrintHtml(lesson, options = {}) {
       section("Instructions", activity.instructions, view) + printableVisuals(activity.visual) +
       list(activity.tasks).map((task, j) => choiceQuestion(task, j, view)).join("") + "</section>").join("") +
     choiceSet("Show what you know", lesson.questions, view) +
-    choiceSet("Quick quiz", lesson.quiz.map((q) => ({ ...q, question: q.question || q.prompt })), view) +
+    choiceSet("Quick quiz", list(lesson.quiz).map((q) => ({ ...q, question: q.question || q.prompt })), view) +
     resourcesPaper(lesson, view) +
     section("Wrap-up", lesson.consolidation, view) +
     section("Challenge", lesson.extension, view) +
