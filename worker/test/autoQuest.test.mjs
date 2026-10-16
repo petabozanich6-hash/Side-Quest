@@ -46,6 +46,44 @@ test("family/child isolation: only chosen child's timetable slots are planned", 
   assert.equal(result.length, 2);
 });
 
+
+test("same subject on the same day gets a separate proposal unless that exact slot is linked", () => {
+  const assigned = { id: "a1", student_id: "child-a", lesson_id: "lesson-next", scheduled_date: "2026-10-19", status: "not_started" };
+  const slots = [{ ...base.slots[0], linked_assignment_id: "a1" },
+    { ...base.slots[1], date: "2026-10-19", id: "second-maths", linked_assignment_id: null }];
+  const proposed = planAutoQuest({ ...base, slots, assignments: [assigned],
+    allowedOutcomeCodes: ["NEXT"], outcomes: [{ code: "NEXT", learning_area: "Mathematics" }] });
+  assert.equal(proposed[0].action, "already_assigned");
+  assert.notEqual(proposed[1].action, "already_assigned", "a same-day subject assignment cannot take up another free slot");
+  assert.equal(proposed[1].action, "needs_generation", "an in-flight outcome may still receive a distinct practice task");
+  assert.equal(proposed[1].purpose, "consolidate");
+  assert.deepEqual(proposed[1].eligibleOutcomeCodes, ["NEXT"]);
+});
+
+test("six weekly sessions can use different practice tasks for the same unachieved outcome", () => {
+  const only = { ...base,
+    slots: Array.from({ length: 6 }, (_, i) => ({ id: "weekly-" + i,
+      date: `2026-10-${String(19 + i).padStart(2, "0")}`, student_id: "child-a", title: "Mathematics", event_type: "timetable" })),
+    lessons: [], assignments: [],
+    allowedOutcomeCodes: ["NEXT"], outcomes: [{ code: "NEXT", learning_area: "Mathematics" }]
+  };
+  const result = planAutoQuest(only);
+  assert.equal(result.length, 6);
+  assert.ok(result.every(p => p.action === "needs_generation" && p.eligibleOutcomeCodes[0] === "NEXT"),
+    "the same unfinished outcome must not make later sessions impossible");
+  assert.equal(result.filter(p => p.purpose === "consolidate").length, 6);
+});
+
+test("multiple sessions reinforce an outcome without claiming it is achieved", () => {
+  const entries = Array.from({ length: 4 }, (_, i) => ({
+    ...base.slots[0], id: "maths-" + i, date: `2026-10-${String(19 + i).padStart(2, "0")}`
+  }));
+  const result = planAutoQuest({ ...base, slots: entries, lessons: [base.lessons[1]] });
+  assert.ok(result.slice(0, 3).every(p => p.action !== "needs_parent_plan"));
+  assert.ok(result.some(p => p.purpose === "consolidate"));
+  assert.ok(result.some(p => /assigning a lesson does not mean an outcome is achieved/.test(p.reason)));
+});
+
 // ---------------------------------------------------------------- integration: real migrations, real queries
 import { readFileSync } from "node:fs";
 import { makeDb } from "./fakeD1.mjs";
@@ -174,6 +212,70 @@ test("approval: drafts need the parent's review; assignment lands on the slot's 
   assert.equal(linked.action, "already_assigned"); assert.equal(linked.status, "assigned");
 });
 
+
+test("calendar-slot approval refuses a slot filled after planning without making a new assignment", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const slotId = slot(db, fam, sid, 2, "Mathematics");
+  const proposed = await plan(db, fam, sid);
+  const lessonForSlot = await lesson(db, fam, "Place value", [S2_MATHS[0]]);
+  const chosen = await aq.setProposalLesson(db, fam, proposed.proposals[0].id, lessonForSlot.id, NOW);
+  assert.ok(chosen.ok);
+  db.raw.prepare("UPDATE calendar_events SET linked_assignment_id = ? WHERE id = ?").run("taken-by-another-tab", slotId);
+  const result = await aq.approveProposal(db, fam, `u-${fam}`, proposed.proposals[0].id, {}, NOW);
+  assert.equal(result.code, "SLOT_TAKEN");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ?").get(fam).n, 0,
+    "no assignment can be created if the target slot is already occupied");
+});
+
+
+test("replanning another calendar slot keeps the parent's previously selected lesson", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  slot(db, fam, sid, 1, "Mathematics");
+  slot(db, fam, sid, 1, "English");
+  const planned = await plan(db, fam, sid);
+  const maths = planned.proposals.find(p => p.learning_area === "Mathematics");
+  const selected = await lesson(db, fam, "Parent-picked maths", [S2_MATHS[0]]);
+  const pick = await aq.setProposalLesson(db, fam, maths.id, selected.id, NOW);
+  assert.ok(pick.ok);
+  const again = await plan(db, fam, sid);
+  const kept = again.proposals.find(p => p.id === maths.id);
+  assert.equal(kept.lesson.id, selected.id, "replanning after opening another slot must not lose the choice");
+});
+
+test("approval after another tab fills a slot does not overwrite its assignment", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const slotId = slot(db, fam, sid, 1, "Mathematics");
+  const planned = await plan(db, fam, sid);
+  const selected = await lesson(db, fam, "Maths", [S2_MATHS[0]]);
+  await aq.setProposalLesson(db, fam, planned.proposals[0].id, selected.id, NOW);
+  db.raw.prepare("UPDATE calendar_events SET linked_lesson_id = ? WHERE id = ?").run("another-lesson", slotId);
+  const result = await aq.approveProposal(db, fam, `u-${fam}`, planned.proposals[0].id, {}, NOW);
+  assert.equal(result.code, "SLOT_TAKEN");
+  assert.equal(db.raw.prepare("SELECT linked_lesson_id FROM calendar_events WHERE id = ?").get(slotId).linked_lesson_id, "another-lesson");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ?").get(fam).n, 0);
+});
+
+test("one open assignment cannot silently fill multiple calendar slots", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const ev1 = slot(db, fam, sid, 1, "Mathematics");
+  const ev2 = slot(db, fam, sid, 2, "Mathematics");
+  const proposals = (await plan(db, fam, sid)).proposals;
+  const saved = await lesson(db, fam, "One activity", [S2_MATHS[0]]);
+  await aq.setProposalLesson(db, fam, proposals[0].id, saved.id, NOW);
+  await aq.setProposalLesson(db, fam, proposals[1].id, saved.id, NOW);
+  const first = await aq.approveProposal(db, fam, `u-${fam}`, proposals[0].id, {}, NOW);
+  assert.ok(first.ok);
+  const second = await aq.approveProposal(db, fam, `u-${fam}`, proposals[1].id, {}, NOW);
+  assert.equal(second.code, "ALREADY_SCHEDULED");
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ?").get(ev1).linked_assignment_id, first.proposal.assignment_id);
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ?").get(ev2).linked_assignment_id, null);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND status != 'revoked'").get(fam).n, 1);
+});
+
 test("reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught", async () => {
   const db = makeDb();
   const fam = family(db); const sid = kid(db, fam);
@@ -259,6 +361,26 @@ test("rejecting keeps the parent's lesson; reopening allows re-planning", async 
   const again = await plan(db, fam, sid);
   assert.equal(again.proposals[0].status, "rejected", "re-planning respects the decision");
   assert.equal((await aq.reopenProposal(db, fam, g.proposal.id, NOW)).proposal.status, "proposed");
+});
+
+
+test("after revocation a previously assigned timetable slot can be planned again", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const ev = slot(db, fam, sid, 1, "Mathematics");
+  const p = (await plan(db, fam, sid)).proposals[0];
+  const saved = await lesson(db, fam, "Maths skill", [S2_MATHS[0]]);
+  await aq.setProposalLesson(db, fam, p.id, saved.id, NOW);
+  const assigned = await aq.approveProposal(db, fam, `u-${fam}`, p.id, {}, NOW);
+  assert.ok(assigned.ok, JSON.stringify(assigned));
+  assert.equal((await aq.reopenProposal(db, fam, p.id, NOW)).code, "SLOT_TAKEN",
+    "an occupied slot must never become available for another task");
+  db.raw.prepare("UPDATE assignments SET status = 'revoked' WHERE id = ?").run(assigned.proposal.assignment_id);
+  db.raw.prepare("UPDATE calendar_events SET linked_assignment_id = NULL, linked_lesson_id = NULL WHERE id = ?").run(ev);
+  const reopened = await aq.reopenProposal(db, fam, p.id, NOW);
+  assert.equal(reopened.proposal.status, "proposed");
+  assert.equal(reopened.proposal.assignment_id, null);
+  assert.equal(reopened.proposal.lesson.id, saved.id, "the reviewed saved lesson stays in the parent's library");
 });
 
 test("Auto-Quest plans only within the child's program from their profile", async () => {

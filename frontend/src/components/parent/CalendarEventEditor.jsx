@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
+import CalendarSlotQuest from "./CalendarSlotQuest";
 
 export default function CalendarEventEditor({ event, students, lessons, onClose, onSaved }) {
   const [form, setForm] = useState({
@@ -11,6 +12,12 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
   });
   const [busy, setBusy] = useState(false);
   const [assignment, setAssignment] = useState(null);
+  const isTimetableSlot = event.event_type === "timetable" ||
+    (event.event_type === "lesson" && /^Suggested by Side-Quest/.test(event.notes || ""));
+  const isFreeSlot = isTimetableSlot && event.student_id && !event.linked_lesson_id && !event.linked_assignment_id;
+  const unsavedSlotChanges = ["title", "date", "start_time", "student_id", "event_type", "linked_lesson_id", "duration_minutes"]
+    .some(key => String(form[key] ?? "") !== String(event[key] ?? ""));
+
   useEffect(() => {
     if (!event.linked_assignment_id) return;
     api.get(`/assignments/${event.linked_assignment_id}`).then(r => setAssignment(r.data)).catch(() => {});
@@ -72,6 +79,10 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
       <label className="block text-sm font-semibold">Event type<select className="input mt-1" value={form.event_type} onChange={e=>set("event_type",e.target.value)}>{["lesson","assignment","assessment","project","excursion","co-op","tutor","holiday","parent-review"].map(t=><option key={t} value={t}>{t}</option>)}</select></label>
       <label className="block text-sm font-semibold">Linked lesson<select className="input mt-1" value={form.linked_lesson_id} onChange={e=>set("linked_lesson_id",e.target.value)}><option value="">None</option>{lessons.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}{event.linked_lesson_id && !lessons.some(l=>l.id===event.linked_lesson_id) && <option value={event.linked_lesson_id}>Previously linked lesson</option>}</select></label>
       <label className="block text-sm font-semibold">Notes<textarea className="input mt-1" rows={2} value={form.notes} onChange={e=>set("notes",e.target.value)}/></label>
+      {isFreeSlot && (unsavedSlotChanges
+        ? <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">Save your changes to the slot before generating or assigning its quest.</p>
+        : <CalendarSlotQuest event={event} onAssigned={() => { onSaved(); onClose(); }} />
+      )}
       <p className="text-xs text-slate-600">Rescheduling changes the calendar, not completed lesson evidence. Changing a linked lesson unlinks the old assignment; it does not erase work.</p>
       <div className="flex justify-between flex-wrap gap-2 pt-2"><button type="button" disabled={busy} onClick={remove} className="border border-red-300 text-red-700 rounded-full px-4 py-2">Remove scheduled entry</button><button disabled={busy} type="submit" className="bg-teal-800 text-white rounded-full px-6 py-2">{busy?"Saving…":"Save changes"}</button></div>
     </form>
