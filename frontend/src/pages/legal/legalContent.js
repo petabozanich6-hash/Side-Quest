@@ -200,8 +200,8 @@ export const PAGES = {
     group: "support", title: "Contact Us", contact: "general",
     summary: "Send a message to base camp. A real person is on the other end.",
     sections: [
-      { h: "Hello from base camp", p: "Side-Quest is made by one parent who is also homeschooling, usually somewhere between a maths lesson and a snack break. Anything you send goes straight to the Side-Quest inbox and I read every message myself." },
-      { h: "Send a message", p: "The easiest route while signed in is Parent Hub → Ideas & Feedback. Choose an idea, problem or other feedback and send it straight to Side-Quest HQ. I can reply in your thread, and the Parent Hub highlights unread responses. If you cannot get into your account, email support@sidequestlearning.app." },
+      { h: "Hello from base camp", p: "Side-Quest is made by one parent who is also homeschooling, usually somewhere between a maths lesson and a snack break. Messages submitted through Parent Hub → Ideas & Feedback reach my private Side-Quest HQ inbox, where I read them myself." },
+      { h: "Send a message", p: "The easiest route while signed in is Parent Hub → Ideas & Feedback. Choose an idea, problem or other feedback and send it straight to Side-Quest HQ. I can reply in your thread, and the Parent Hub highlights unread responses. If you cannot sign in or the form fails, use the fallback address in the Privacy Policy." },
       { h: "How long will I wait?", p: "I read messages personally and reply as soon as reasonably possible. Replies to feedback appear in your message thread and unread updates appear on your dashboard; I cannot promise a specific response time." },
       { h: "Good things to send", items: [
         "Questions about how something works.",
@@ -210,12 +210,12 @@ export const PAGES = {
         "Trouble signing in or a missing child profile.",
       ] },
       { h: "Make it a quick quest", items: [
-        "Email from the address on your Side-Quest account so I can find you.",
+        "Send the message from your signed-in Parent Hub so it is linked to your family account.",
         "Tell me what you were trying to do and what happened.",
         "Let me know your device and browser if something isn't working.",
         "Use your child's first name or nickname only.",
       ] },
-      { h: "Pack light", p: "Please don't email passwords, your child's PIN, home addresses, ID numbers, health details or photos of children. I will never ask you for a password or PIN. If someone claiming to be Side-Quest does, don't share it and let me know." },
+      { h: "Pack light", p: "Never send passwords, your child's PIN, home addresses, ID numbers, health details or photos of children in a support message. I will never ask you for a password or PIN. If someone claiming to be Side-Quest does, don't share it and let me know." },
       { h: "Grown-ups only, please", p: "This inbox is for parents and guardians. If your child has a question or a great idea, they can tell you and you can send it along. I'd love to hear it." },
       { h: "For real emergencies", p: "I can't respond to emergencies. If someone is in danger, call 000. If something in Side-Quest worries you, stop using it and let me know." },
       { h: "Other paths", p: "For learning tools, start with Homeschooling Compass and Your Plan. For account data, complaints or deletion requests, use the Account & privacy requests pages. Use Ideas & Feedback for suggestions, technical problems and corrections; email is available if you can't sign in." },
@@ -314,7 +314,7 @@ export const PAGES = {
     group: "support", title: "Report a Problem", contact: "problem",
     summary: "Found a bug, a wrong hint or something that just isn't right? Send it to base camp.",
     sections: [
-      { h: "Spotted something odd?", p: "Every good quest has the odd glitch. When you're signed in, open Parent Hub → Ideas & Feedback → Problems. That sends your report directly to my Side-Quest HQ inbox, attached to the right family account. I can reply in the thread; the dashboard tells you when I have reported back. For sign-in problems, email support@sidequestlearning.app." },
+      { h: "Spotted something odd?", p: "Every good quest has the odd glitch. When you're signed in, open Parent Hub → Ideas & Feedback → Problems. That sends your report directly to my Side-Quest HQ inbox, attached to the right family account. I can reply in the thread; the dashboard tells you when I have reported back. If you cannot sign in, use the fallback contact in the Privacy Policy." },
       { h: "What to include", items: [
         "What you were trying to do, for example finishing a lesson or adding a child.",
         "What you expected to happen, and what happened instead.",
@@ -370,7 +370,7 @@ export const PAGES = {
         "If you're asking about a child, use their first name or nickname only.",
       ] },
       { h: "Pack light", p: "Please don't send your password, your child's PIN, ID documents, home addresses, health details or photos of children with your request. I will never ask you for a password or PIN. If someone claiming to be Side-Quest does, don't share it and let me know." },
-      { h: "Checking it's really you", p: "Before I share anything, I need to be sure it's the right person asking, because this is your family's private information. Sending your request from your account email is usually enough. If something doesn't match, I may ask you a simple question or two that only the account holder would know. I'll only ask for what's needed to confirm who you are." },
+      { h: "Checking it's really you", p: "Before I share anything, I need to be sure it's the right person asking, because this is your family's private information. Submitting your request while signed in helps identify the correct family; I may still need to verify your identity. If something doesn't match, I may ask you a simple question or two that only the account holder would know. I'll only ask for what's needed to confirm who you are." },
       { h: "What happens next", items: [
         "I'll reply to confirm I've got your request and, if needed, check who you are.",
         "I aim to respond within 30 days. I'll often be quicker, but I'm one person, so it can take longer when it's busy at home or in school holidays.",
@@ -451,7 +451,7 @@ export const PAGES = {
         "If it involves a child, use their first name or nickname only.",
       ] },
       { h: "Pack light", p: "Please don't include passwords, your child's PIN, ID documents, home addresses, health details or photos of children in your complaint. If I need something more, I'll tell you exactly what and why. I will never ask you for a password or PIN. If someone claiming to be Side-Quest does, don't share it and let me know." },
-      { h: "Checking it's really you", p: "Because a complaint can involve your family's private information, I'll need to be sure it's the right person writing before I share details or change anything. Writing from your account email is usually enough. If something doesn't match, I may ask a simple question or two that only the account holder would know." },
+      { h: "Checking it's really you", p: "Because a complaint can involve your family's private information, I'll need to be sure it's the right person writing before I share details or change anything. Submitting the complaint while signed in helps identify your family account but may not be enough to verify identity. If something doesn't match, I may ask a simple question or two that only the account holder would know." },
       { h: "What happens next", items: [
         "I'll reply to confirm I've got your complaint, as soon as I can and usually within a few days.",
         "I'll look into what happened, which may include checking logs and records and asking you for more detail.",
