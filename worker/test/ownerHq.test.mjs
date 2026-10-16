@@ -364,6 +364,10 @@ test("Dragon's Hoard is Owner-only, passkey protected, and free-preview gifts ar
   const changes = h.db.raw.prepare("SELECT action, detail_json FROM admin_audit_log WHERE target_id = ?").all(family.familyId);
   assert.equal(changes.length, 1);
   assert.equal(changes[0].action, "hoard.preview_gift");
+  const familyPlan = await h.req("/account/plan", { token: family.token });
+  assert.equal(familyPlan.status, 200);
+  assert.equal(familyPlan.json.preview_gift.days, 7);
+  assert.ok(!JSON.stringify(familyPlan.json.preview_gift).includes("Need a little more time"), "Owner's private reason cannot leak to families");
   assert.equal(JSON.parse(changes[0].detail_json).days, 7);
   assert.equal((await h.req("/admin/customers/" + owner.familyId + "/gift-preview", { method: "POST", token: owner.token, body: { confirm: "GIFT", days: 7, reason: "My account" } })).status, 409);
 });
