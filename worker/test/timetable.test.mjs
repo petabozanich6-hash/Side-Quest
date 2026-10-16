@@ -246,3 +246,24 @@ test("reschedule preview respects completed lessons, family isolation and free s
   assert.equal((await h.slots(parent, sid)).filter(x=>x.linked_assignment_id===assignment).length, 1,
     "reapplying must not duplicate assignment placement");
 });
+
+test("parent revocation keeps lesson history, empties timetable slot, and permits reassigning", async () => {
+  const h = harness();
+  const parent = await h.family("revoketimetable@example.com");
+  const sid = await h.child(parent, "revokekid");
+  const lesson = await h.lesson(parent, "Fractions recap", "Mathematics");
+  const aid = await h.assign(parent, sid, lesson);
+  await h.req("/timetable/week", { method: "POST", token: parent.token, body: week(sid) });
+  const placed = await h.req(`/assignments/${aid}/place`, { method: "POST", token: parent.token, body: {from: MON} });
+  assert.equal(placed.status, 200);
+  const revoke = await h.req(`/assignments/${aid}`, { method: "DELETE", token: parent.token });
+  assert.equal(revoke.status, 200, JSON.stringify(revoke.json));
+  const a = h.db.raw.prepare("SELECT status, lesson_id FROM assignments WHERE id = ?").get(aid);
+  assert.equal(a.status, "revoked");
+  assert.equal(a.lesson_id, lesson, "history must preserve original lesson");
+  assert.equal((await h.slots(parent, sid)).some(s=>s.linked_assignment_id === aid), false);
+  const reassigned = await h.req("/assignments", { method:"POST", token:parent.token,
+    body:{ student_id:sid, lesson_id:lesson } });
+  assert.equal(reassigned.status, 200, JSON.stringify(reassigned.json));
+  assert.notEqual(reassigned.json.id, aid);
+});
