@@ -1,0 +1,427 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum",
+  "source_index": "https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads",
+  "verified_on": "2026-10-16",
+  "status": "source_verified_non_exhaustive",
+  "source_note": "Literal identifiers observed in official source JSON via browser; deliberately limited sample, not all descriptors. ABLEWA stage A and 2026 Mathematics sources require version applicability validation.",
+  "records": [
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier": "ACELA1430a",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier": "ACELA1435a",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier": "ACELA1434a",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier": "ACELA1786a",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier": "ACELA1433a",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier": "ACELA1440a",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "Pre-primary",
+      "identifier": "WAPMNAP1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "1",
+      "identifier": "WA1MNAC1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "1",
+      "identifier": "WA1MMGTW1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "1",
+      "identifier": "WA1MMGN1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "1",
+      "identifier": "WA1MPSS1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "2",
+      "identifier": "WA2MMGN1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "2",
+      "identifier": "WA2MPSS1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "3",
+      "identifier": "WA3MNAUN7",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "3",
+      "identifier": "WA3MMGN1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "3",
+      "identifier": "WA3MPSS1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "4",
+      "identifier": "WA4MNAC1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "4",
+      "identifier": "WA4MNAF1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "4",
+      "identifier": "WA4MPSS1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "5",
+      "identifier": "WA5MNAUN1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "5",
+      "identifier": "WA5MNAC1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "5",
+      "identifier": "WA5MNAF1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "5",
+      "identifier": "WA5MMGTH1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "6",
+      "identifier": "WA6MNAF1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "6",
+      "identifier": "WA6MMGTH1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "6",
+      "identifier": "WA6MMGN1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "6",
+      "identifier": "WA6MMGM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "6",
+      "identifier": "WA6MPSP2",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "6",
+      "identifier": "WA6MPSS3",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "7",
+      "identifier": "WA7MNAC1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "7",
+      "identifier": "WA7MNAA1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "7",
+      "identifier": "WA7MNAM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "7",
+      "identifier": "WA7MMGM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "7",
+      "identifier": "WA7MPSM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "8",
+      "identifier": "WA8MNAUN4",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "8",
+      "identifier": "WA8MNAC1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "8",
+      "identifier": "WA8MNAA1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "8",
+      "identifier": "WA8MNAM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "8",
+      "identifier": "WA8MMGM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "8",
+      "identifier": "WA8MPSM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "9",
+      "identifier": "WA9MNALP4",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "9",
+      "identifier": "WA9MNAM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "9",
+      "identifier": "WA9MMGM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "9",
+      "identifier": "WA9MPSM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MNAA1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MNALE2",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MNALP1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MNALP2",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MNAM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MMGM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MPSP5",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    },
+    {
+      "subject": "Mathematics",
+      "level": "10",
+      "identifier": "WA10MPSM1",
+      "identifier_kind": "content_description",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "status": "verified_literal_source_code"
+    }
+  ]
+}
