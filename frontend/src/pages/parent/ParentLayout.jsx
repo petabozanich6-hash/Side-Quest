@@ -41,6 +41,7 @@ export default function ParentLayout() {
   const [planState, setPlanState] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [unreadReplies,setUnreadReplies] = useState(0);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
   const paidPlans = ["ACTIVE_WEEKLY","ACTIVE_FORTNIGHTLY","ACTIVE_MONTHLY","ACTIVE_ANNUAL","PAST_DUE","INTERNAL"];
@@ -61,6 +62,17 @@ export default function ParentLayout() {
     api.get("/account/plan").then(r => { if (alive) setPlanState(r.data); }).catch(() => { if (alive) setPlanState(null); });
     return () => { alive = false; };
   }, [user?.id, location.pathname, paidNotice]);
+  useEffect(() => {
+    if (!user?.id) { setUnreadReplies(0); return undefined; }
+    let alive = true;
+    const refresh = () => api.get("/feedback/unread-count").then(r => {
+      if(alive) setUnreadReplies(Number(r.data?.unread || 0));
+    }).catch(()=>{});
+    refresh();
+    const timer = setInterval(refresh,60000);
+    window.addEventListener("sidequest-feedback-replies-updated",refresh);
+    return () => {alive=false;clearInterval(timer);window.removeEventListener("sidequest-feedback-replies-updated",refresh);};
+  },[user?.id]);
   useEffect(() => {
     const shortcut = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -87,7 +99,7 @@ export default function ParentLayout() {
             <NavLink key={n.to} to={n.to} end={n.end} data-testid={n.testid} onClick={() => setMenuOpen(false)}
               className={({isActive}) => `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "" : "text-stone-700 hover:bg-white/80"}`}
               style={({isActive}) => isActive ? {backgroundColor:"#1F3B2D", color:"#F5EFE0"} : {}}>
-              <n.icon size={16} /> {n.label}
+              <n.icon size={16} /> <span className="flex-1">{n.label}</span>{n.to==="/parent/feedback"&&unreadReplies>0&&<span className="rounded-full bg-amber-100 text-amber-950 text-xs font-bold px-2 py-0.5" data-testid="parent-feedback-nav-unread" aria-label={unreadReplies+" unread messages"}>{unreadReplies}</span>}
             </NavLink>
           ))}
         </nav>
@@ -112,6 +124,7 @@ export default function ParentLayout() {
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
         <div className="px-4 sm:px-8 pt-3 flex justify-end"><button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button></div>
+        {unreadReplies>0 && route!=="/parent/feedback" && <Link to="/parent/feedback?thread=inbox" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
         <HelpAlertBar />
         <JurisdictionGate />
         {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
