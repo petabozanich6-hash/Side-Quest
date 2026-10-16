@@ -1,0 +1,161 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum",
+  "subject": "Digital Technologies",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json",
+  "source_index": "https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads",
+  "source_last_updated": "2026-02-12",
+  "collected_on": "2026-10-16",
+  "status": "source_observed_partial_review_only",
+  "scope": "21 literal wa_code fields observed within official 2026 JSON. Not all years or descriptions; no codes inferred.",
+  "records": [
+    {
+      "identifier": "WAPDIGDR1",
+      "year_level": "Pre-primary",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WAPDIGPS1",
+      "year_level": "Pre-primary",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WAPDIGDTDE1",
+      "year_level": "Pre-primary",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WAPDIGDTPI1",
+      "year_level": "Pre-primary",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA1DIGDS1",
+      "year_level": "Year 1",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA1DIGDR1",
+      "year_level": "Year 1",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA2DIGDS1",
+      "year_level": "Year 2",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA2DIGDR1",
+      "year_level": "Year 2",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA3DIGDS1",
+      "year_level": "Year 3",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA3DIGDR1",
+      "year_level": "Year 3",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA3DIGDTDE1",
+      "year_level": "Year 3",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA4DIGDTID1",
+      "year_level": "Year 4",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA4DIGDTDE1",
+      "year_level": "Year 4",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA7DIGDTID1",
+      "year_level": "Year 7",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA7DIGDTDE1",
+      "year_level": "Year 7",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA8DIGDS1",
+      "year_level": "Year 8",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA8DIGDS2",
+      "year_level": "Year 8",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA8DIGDR1",
+      "year_level": "Year 8",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA8DIGDTDE1",
+      "year_level": "Year 8",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA9DIGDR1",
+      "year_level": "Year 9",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA9DIGDTDE1",
+      "year_level": "Year 9",
+      "identifier_kind": "content_description",
+      "subject": "Digital Technologies",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    }
+  ]
+}
