@@ -7,7 +7,7 @@ import type { App, Guards, Env } from "./types";
 import { esc, layout, p, button, sendEmail, SITE_URL, SUPPORT_EMAIL } from "./email";
 
 export type AnnouncementKind = "service" | "optional";
-const active = "COALESCE(fs.status,'active')='active' AND f.plan NOT IN ('CANCELLED','PREVIEW_EXPIRED') AND (f.plan!='FREE_PREVIEW' OR f.trial_ends_at IS NULL OR f.trial_ends_at>?) AND u.email LIKE '%@%.%' AND u.email NOT LIKE '% %'";
+const active = "COALESCE(fs.status,'active')='active' AND f.plan NOT IN ('CANCELLED','PREVIEW_EXPIRED') AND (f.plan!='FREE_PREVIEW' OR f.trial_ends_at IS NULL OR f.trial_ends_at>?) AND u.email LIKE '%@%.%' AND u.email NOT LIKE '% %' AND (u.email_verification_required_at IS NULL OR u.email_verified_at IS NOT NULL)";
 const source = " FROM users u JOIN families f ON f.id=u.family_id LEFT JOIN family_admin_state fs ON fs.family_id=f.id LEFT JOIN announcement_email_preferences ap ON ap.user_id=u.id WHERE "+active;
 const ddl = [
   "CREATE TABLE IF NOT EXISTS announcement_email_preferences (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,opted_in INTEGER NOT NULL DEFAULT 0,opted_in_at TEXT,consent_source TEXT,unsubscribe_token TEXT NOT NULL UNIQUE,updated_at TEXT NOT NULL)",
@@ -112,12 +112,12 @@ export async function processAnnouncementBatch(env:Env,max=12,now=new Date()) {
     await env.DB.prepare("UPDATE announcement_broadcasts SET status='sending' WHERE id=? AND status='queued'").bind(r.broadcast_id).run();
     try{
       const pref=await env.DB.prepare(
-        "SELECT p.opted_in,p.unsubscribe_token,COALESCE(fs.status,'active') family_status,f.plan,f.trial_ends_at "+
+        "SELECT p.opted_in,p.unsubscribe_token,COALESCE(fs.status,'active') family_status,f.plan,f.trial_ends_at,u.email_verification_required_at,u.email_verified_at "+
         "FROM users u JOIN families f ON f.id=u.family_id "+
         "LEFT JOIN family_admin_state fs ON fs.family_id=f.id "+
         "LEFT JOIN announcement_email_preferences p ON p.user_id=u.id WHERE u.id=? AND lower(u.email)=?"
       ).bind(r.user_id,r.email).first<any>();
-      if(!pref || pref.family_status!=="active" || pref.plan==="CANCELLED" || pref.plan==="PREVIEW_EXPIRED" ||
+      if(!pref || pref.family_status!=="active" || (pref.email_verification_required_at && !pref.email_verified_at) || pref.plan==="CANCELLED" || pref.plan==="PREVIEW_EXPIRED" ||
         (pref.plan==="FREE_PREVIEW" && pref.trial_ends_at && pref.trial_ends_at<=new Date().toISOString()) ||
         (r.kind==="optional"&&Number(pref.opted_in)!==1)) {
         await env.DB.prepare("UPDATE announcement_recipients SET status='skipped' WHERE broadcast_id=? AND user_id=?")
