@@ -1,0 +1,61 @@
+{
+  "checked_on": "2026-10-16",
+  "status": "review_only",
+  "scope": "103 outcome records from nine NSW legacy CEC syllabus routes, including Photography and Visual Design in one source file",
+  "checks": {
+    "records": 103,
+    "records_with_scoped_identifier": 103,
+    "duplicate_scoped_identifiers": 0,
+    "records_with_source_url": 103,
+    "records_missing_source_url": 0
+  },
+  "groups": [
+    {
+      "subject": "Numeracy",
+      "count": 8,
+      "verification": "official_nesa_guide"
+    },
+    {
+      "subject": "Exploring Early Childhood",
+      "count": 14,
+      "verification": "indexed_official_pdf_pending_page_recheck"
+    },
+    {
+      "subject": "Marine Studies",
+      "count": 18,
+      "verification": "third_party_original_syllabus_mirror_pending_official_reconciliation"
+    },
+    {
+      "subject": "Computing Applications",
+      "count": 13,
+      "verification": "school_corroborated_pending_original_syllabus"
+    },
+    {
+      "subject": "Sport Lifestyle and Recreation",
+      "count": 18,
+      "verification": "candidate_incomplete"
+    },
+    {
+      "subject": "Photography Video Digital Imaging",
+      "count": 11,
+      "verification": "indexed_nesa_pdf_pending_recheck"
+    },
+    {
+      "subject": "Visual Design",
+      "count": 10,
+      "verification": "school_mirror_pdf_pending_primary_recheck"
+    },
+    {
+      "subject": "Ceramics",
+      "count": 11,
+      "verification": "school_corroborated_pending_original_syllabus"
+    }
+  ],
+  "readiness": "NOT_PARENT_READY",
+  "notes": [
+    "All scoped keys and URLs present in the seven data files.",
+    "Source URL presence is not source verification.",
+    "No full syllabus completeness or 2026 applicability check has been established across all nine CECs.",
+    "Do not merge review-only records into parent mastery catalogue until documentary checks complete."
+  ]
+}
