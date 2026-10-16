@@ -170,6 +170,41 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 });
 
 
+await step("Dragon's Hoard appears and gifting preview days reaches the parent", async () => {
+  await page.click("[data-testid=hq-tab-dragon-hoard]");
+  await page.waitForSelector("[data-testid=hq-dragon-hoard]");
+  ok(await page.locator("[data-testid=hoard-create]").count() === 1, "discount scroll form missing");
+  ok(await page.locator("[data-testid=hoard-gifts]").count() === 1, "Helping Hand missing");
+  const before = await api("GET", "/account/plan", user.token);
+  ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");
+  await page.click("[data-testid=hq-tab-customers]");
+  await page.fill("[data-testid=hq-customer-search]", userEmail);
+  await page.keyboard.press("Enter");
+  await page.waitForSelector("[data-testid=hq-customer-row]");
+  await page.click("[data-testid=hq-customer-row]");
+  await page.waitForSelector("[data-testid=hq-gift-preview]");
+  await page.click("[data-testid=hq-gift-preview]");
+  await page.fill("[data-testid=confirm-reason]", "Synthetic E2E launch-readiness gift");
+  ok(await page.isDisabled("[data-testid=confirm-submit]"), "gift permitted without GIFT confirmation");
+  await page.fill("[data-testid=confirm-word]", "GIFT");
+  await page.click("[data-testid=confirm-submit]");
+  await page.locator('[role="dialog"]').waitFor({ state: "detached" });
+  const after = await api("GET", "/account/plan", user.token);
+  ok(after.status === 200, "family plan unreadable after preview gift");
+  ok(Date.parse(after.json.trial_ends_at) - Date.parse(before.json.trial_ends_at) === 7 * 86400000, "preview gift did not add seven days");
+  ok(after.json.preview_gift?.days === 7, "gift notification missing from family plan");
+  const parentCtx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  try {
+    const parentPage = await parentCtx.newPage();
+    await signIn(parentPage, user.token);
+    await parentPage.goto(BASE + "/parent/plan");
+    await parentPage.waitForSelector("[data-testid=preview-gift-notice]");
+    const notice = await parentPage.textContent("[data-testid=preview-gift-notice]");
+    ok(notice.includes("7 extra preview days"), "Helping Hand not explained to family");
+    ok(!notice.includes("Synthetic E2E"), "private gift reason leaked to parent");
+  } finally { await parentCtx.close(); }
+});
+
 await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
   await page.click("[data-testid=hq-tab-announcements]");
   await page.waitForSelector("[data-testid=hq-announcements]");
