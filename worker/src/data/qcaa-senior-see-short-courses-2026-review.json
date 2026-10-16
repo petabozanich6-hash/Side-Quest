@@ -1,0 +1,119 @@
+{
+  "authority": "QCAA",
+  "jurisdiction": "QLD",
+  "framework": "QCE senior syllabus subject inventory",
+  "source_url": "https://www.qcaa.qld.edu.au/senior/certificates-and-qualifications/qce-qcia-handbook/4-qld-curriculum/4.1-syllabuses",
+  "checked_on": "2026-10-16",
+  "status": "authority_verified_course_title_inventory_only",
+  "notes": "QCAA handbook explicitly lists Senior External Examination (SEE) subject titles and four Short Courses. No numbered learning-outcome codes claimed. Borrowed SEE syllabuses must retain originating authority when source imported.",
+  "subjects": [
+    {
+      "subject": "Arabic",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Chinese",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "English",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "General Mathematics",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Indonesian",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Korean",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Latin",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Modern Greek",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Polish",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Punjabi",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Russian",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Sinhala",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Tamil",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Vietnamese",
+      "syllabus_type": "General (Senior External Examination)",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Aboriginal & Torres Strait Islander Languages",
+      "syllabus_type": "Short Course",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Career Education",
+      "syllabus_type": "Short Course",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Literacy",
+      "syllabus_type": "Short Course",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    },
+    {
+      "subject": "Numeracy",
+      "syllabus_type": "Short Course",
+      "identifier_kind": "subject_title",
+      "outcome_extraction_status": "pending"
+    }
+  ]
+}
