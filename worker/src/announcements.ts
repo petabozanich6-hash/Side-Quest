@@ -121,7 +121,7 @@ export async function processAnnouncementBatch(env:Env,max=12,now=new Date()) {
         await env.DB.prepare("UPDATE announcement_recipients SET status='skipped' WHERE broadcast_id=? AND user_id=?")
           .bind(r.broadcast_id,r.user_id).run();
       }else {
-        const unsubscribe=SITE_URL+"/announcements/unsubscribe?token="+encodeURIComponent(pref.unsubscribe_token);
+        const unsubscribe=SITE_URL+"/api/announcements/unsubscribe?token="+encodeURIComponent(pref.unsubscribe_token);
         const result=await sendEmail(env,{to:r.email,...announcementEmail(r.kind,r.subject,r.body,unsubscribe)});
         await env.DB.prepare("UPDATE announcement_recipients SET status=?,sent_at=? WHERE broadcast_id=? AND user_id=?")
           .bind(result?"sent":"failed",result?new Date().toISOString():null,r.broadcast_id,r.user_id).run();
