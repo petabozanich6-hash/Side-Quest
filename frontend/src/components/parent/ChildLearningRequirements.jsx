@@ -46,7 +46,7 @@ export function requirementsFor(jurisdiction, stage) {
   if (jurisdiction === "NT") return {
     required: [], choices: [], verified: false,
     source: "https://nt.gov.au/learning/primary-and-secondary-students/home-education",
-    explanation: "Northern Territory programs must meet Australian Curriculum (ACARA) requirements. For Transition–Year 10, check the NT subject-selection and program-planning document for the child's actual year; it is not safe to assume there is no required subject pattern. For Years 11–12, the NT requires 25 hours of educational learning each week. Side-Quest has not verified a single elective count for every NT year level.",
+    explanation: "Northern Territory home education requires an approved curriculum and a suitable program. The current official page directs Transition–Year 10 families to its subject-selection and program-planning document. An older NT application form illustrates eight learning areas and subject choices in Years 9–10, but its indicative hours and elective shading are not verified as current binding rules. For Years 11–12 the current guidance requires 25 hours of educational learning per week. Side-Quest cannot yet state a dependable subject-by-year or minimum elective number here.",
   };
   if (jurisdiction === "QLD") return {
     required: [], choices: [], verified: true,
