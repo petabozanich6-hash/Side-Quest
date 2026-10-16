@@ -43,9 +43,10 @@ function curriculumAreas(student, jurisdiction) {
     : ["English", "Mathematics", "Science", "Humanities and Social Sciences", "Health and Physical Education", "The Arts", "Technologies", "Languages"];
   return [...new Set(stateAreas.length ? stateAreas : defaults)];
 }
-function allocate(student, areas, days, startTime, weekStart, existing) {
+function allocate(student, areas, days, startTime, weekStart, existing, dailyOverride) {
   // Teaching-time guidance, not an assertion about any jurisdiction's minimum.
-  const daily = secondary(student) ? 270 : ["ES1", "S1"].includes(student.stage) ? 150 : 210;
+  const defaultDaily = secondary(student) ? 270 : ["ES1", "S1"].includes(student.stage) ? 150 : 210;
+  const daily = dailyOverride || defaultDaily;
   const minBlock = secondary(student) ? 35 : 25;
   const maxBlock = secondary(student) ? 65 : 50;
   const totalMinutes = daily * days.length;
@@ -133,6 +134,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
   const [days, setDays] = useState([1, 2, 3, 4, 5]);
   const [weekStart, setWeekStart] = useState(nextMonday());
   const [startTime, setStartTime] = useState("09:00");
+  const [dailyMinutes, setDailyMinutes] = useState(180);
   const [jurisdiction, setJurisdiction] = useState(null);
   const [draft, setDraft] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -154,7 +156,7 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
     if (!jurisdiction?.jurisdiction) return toast.error("Set your family's state or territory before generating a timetable.");
     if (!selected.length || !days.length) return toast.error("Select at least one child and one learning day.");
     if (!weekStart || !/^\d{2}:\d{2}$/.test(startTime)) return toast.error("Choose a valid week and start time.");
-    const proposed = plan.flatMap(({ child, areas }) => allocate(child, areas, days, startTime, weekStart, events));
+    const proposed = plan.flatMap(({ child, areas }) => allocate(child, areas, days, startTime, weekStart, events, dailyMinutes));
     setDraft(proposed);
     if (!proposed.length) toast.message("No new entries proposed; matching dates or times are already scheduled.");
   };
@@ -213,6 +215,16 @@ export default function TimetableGenerator({ students, events, onClose, onDone }
         <label className="text-sm">Week starting<input type="date" data-testid="tt-week" className="block w-full border rounded p-2 mt-1" value={weekStart} onChange={e=>{setWeekStart(e.target.value);setDraft(null);}} /></label>
         <label className="text-sm">Learning day starts<input type="time" className="block w-full border rounded p-2 mt-1" value={startTime} onChange={e=>{setStartTime(e.target.value);setDraft(null);}} /></label>
       </div>
+      <label className="block text-sm font-semibold">Target lesson time per learning day
+        <select className="block w-full border rounded p-2 mt-1" value={dailyMinutes} onChange={e=>{setDailyMinutes(Number(e.target.value));setDraft(null);}} data-testid="tt-daily-load">
+          <option value={90}>Light day · 1½ hours</option>
+          <option value={120}>Gentle day · 2 hours</option>
+          <option value={180}>Balanced day · 3 hours</option>
+          <option value={240}>Full day · 4 hours</option>
+          <option value={300}>Extended day · 5 hours</option>
+        </select>
+        <span className="block text-xs font-normal text-slate-500 mt-1">Suggested lesson time only; adjust to suit your child. Breaks are additional.</span>
+      </label>
       {plan.length>0 && <p className="text-xs text-slate-500">Curriculum areas are selected automatically: {plan.map(x=>x.child.name + " (" + x.areas.join(", ") + ")").join("; ")}.</p>}
       <div className="flex flex-wrap gap-2">
         <button type="button" disabled={loading||!jurisdiction?.jurisdiction||allowed===null} onClick={makeDraft} className="rounded-full bg-emerald-800 text-white px-5 py-2 font-semibold disabled:opacity-50" data-testid="tt-generate">Generate this week</button>
