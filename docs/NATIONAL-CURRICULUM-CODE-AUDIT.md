@@ -122,6 +122,10 @@ Recorded **11 outcome code references** from the Ceramics Stage 6 CEC (2000) syl
 
 Reconciled all seven review files spanning the nine previously inaccessible syllabus routes into `curriculum-audits/nsw-nine-cec-outcome-identity-reconciliation.json`. **103 outcome records** yield **103 distinct authority/subject/edition/identifier keys**, but only **50 distinct bare labels**; **29 bare labels are reused** across records. The Numeracy file's eight `N6-` codes have no stored `scoped_identifier` property, so the reconciliation derives its compound keys rather than treating all eight as the same undefined key. This check covers data integrity and identifier collisions, **not primary-source verification or syllabus completeness**. Several legacy sources are PDF-indexed, school reproduced or third-party hosted. Parent Outcome Tracker must key these outcomes by source syllabus and edition and should not enable them until release gates pass. These 103 records are not necessarily 103 new identifiers relative to historical audit checkpoints.
 
+### Numeracy CEC parent-tracking identity fix (16 October 2026)
+
+Persisted an explicit `scoped_identifier` for all eight `N6-` Numeracy Stage 6 CEC (2021) outcomes in `worker/src/data/nsw-numeracy-cec-2021-verified-outcomes-review.json`. Previously, the nine-CEC reconciliation computed compound identities dynamically for Numeracy while the source file had no persistent key. Each key now follows `NSW:NESA:Numeracy Stage 6 CEC:2021:<outcome>`; human-facing official identifiers remain unchanged. This resolves a **data schema consistency issue** only. No new outcomes, no runtime integration, no claim that all 103 CEC outcomes are independently primary-source certified.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
