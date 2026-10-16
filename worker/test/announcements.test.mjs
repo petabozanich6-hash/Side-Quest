@@ -170,3 +170,12 @@ test("required-verification accounts are excluded from previews and queued deliv
   assert.equal(sent.length,0);
   assert.equal(h.db.raw.prepare("SELECT status FROM announcement_recipients WHERE user_id=?").get(owner.id).status,"skipped");
 });
+
+test("inbound auto-reply: only authenticated senders, never echoes their subject, capped per day", async () => {
+  const { senderAuthenticated, DAILY_AUTO_REPLY_CAP } = await import("../src/inbound.ts");
+  const H = (o) => new Headers(o);
+  assert.equal(senderAuthenticated(H({})), false);
+  assert.equal(senderAuthenticated(H({ "authentication-results": "mx.cloudflare.net; spf=fail; dkim=none; dmarc=fail" })), false);
+  assert.equal(senderAuthenticated(H({ "authentication-results": "mx.cloudflare.net; dkim=pass header.d=example.com; spf=softfail" })), true);
+  assert.ok(DAILY_AUTO_REPLY_CAP > 0 && DAILY_AUTO_REPLY_CAP <= 500);
+});

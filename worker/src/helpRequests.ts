@@ -1,3 +1,4 @@
+import { hitRateLimit } from "./adminAudit";
 import { button, esc, firstName, layout, note, p, sendEmail, SITE_URL, steps } from "./email";
 import type { OutgoingEmail } from "./email";
 import type { App, Env, Guards } from "./types";
@@ -72,6 +73,26 @@ You are getting this because ${child} asked for help signing in to Side Quest. W
   return { to, subject, text, html };
 }
 
+const ipKey = async (ip: string) => {
+  const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`child-help:${ip}`));
+  return [...new Uint8Array(d)].slice(0, 12).map((b) => b.toString(16).padStart(2, "0")).join("");
+};
+
+/**
+ * Usernames are guessable, so the public endpoint is also capped per child (6 emails a day) and per
+ * network (20 requests an hour; only a hash of the address is kept). Over a cap, nothing is sent and
+ * the reply stays the same. If the limits can't be checked, nothing is sent.
+ */
+async function withinHelpLimits(db: D1Database, studentId: string, ip: string | undefined): Promise<boolean> {
+  try {
+    if (ip && !(await hitRateLimit(db, `child-help:ip:${await ipKey(ip)}`, 20, 3600)).ok) return false;
+    return (await hitRateLimit(db, `child-help:s:${studentId}`, 6, 86400)).ok;
+  } catch (error) {
+    console.error("child-help limit check failed", error instanceof Error ? error.name : "error");
+    return false;
+  }
+}
+
 export function registerHelpRequests(app: App, g: Guards) {
   /** Public: a child who can't sign in asks for help. Always answers the same way so usernames can't be probed. */
   app.post("/api/auth/child-help", async (c) => {
@@ -88,7 +109,7 @@ export function registerHelpRequests(app: App, g: Guards) {
           "SELECT id, emailed_at FROM help_requests WHERE student_id = ? AND resolved_at IS NULL ORDER BY created_at DESC LIMIT 1"
         ).bind(s.id).first<{ id: string; emailed_at: string | null }>();
         const cutoff = new Date(Date.now() - THROTTLE_MINUTES * 60000).toISOString();
-        if (!(open?.emailed_at && open.emailed_at > cutoff)) {
+        if (!(open?.emailed_at && open.emailed_at > cutoff) && (await withinHelpLimits(c.env.DB, s.id, c.req.header("cf-connecting-ip")))) {
           const ts = nowIso();
           let id = open?.id;
           if (id) {
@@ -139,7 +160,7 @@ export function registerHelpRequests(app: App, g: Guards) {
       ).bind(c.get("user").family_id).all();
       return c.json(results ?? []);
     } catch (error) {
-      return c.json({ detail: `Couldn't load help requests: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't load help requests. Please try again.` }, 500);
     }
   });
 
@@ -150,7 +171,7 @@ export function registerHelpRequests(app: App, g: Guards) {
         .bind(nowIso(), c.req.param("id"), c.get("user").family_id).run();
       return c.json({ ok: true });
     } catch (error) {
-      return c.json({ detail: `Couldn't update that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't update that. Please try again.` }, 500);
     }
   });
 

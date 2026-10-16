@@ -57,8 +57,10 @@ async function decryptPin(env: Env, studentId: string, stored: string): Promise<
   }
 }
 
-const fail = (c: any, error: unknown) =>
-  c.json({ detail: `Couldn't complete that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+const fail = (c: any, error: unknown) => {
+  console.error("student credentials failed", error instanceof Error ? error.name : "error");
+  return c.json({ detail: "Couldn't complete that. Please try again." }, 500);
+};
 
 export function registerStudentCredentials(app: App, g: Guards) {
   /** Set or reset a child's PIN. Stores the sign-in hash and an encrypted copy the parent can view later. */
