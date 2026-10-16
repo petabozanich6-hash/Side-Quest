@@ -613,8 +613,13 @@ test("owner feedback replies are private, auditable, unread until viewed, and wo
   assert.equal(r.status,200);assert.equal(r.json.reports.length,0,"other families cannot view");
   r=await h.req("/feedback/unread-count",{token:bob.token,admin:false});
   assert.equal(r.json.unread,0);
+  assert.equal(r.json.latest,null,"other families get no reply details");
   r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
   assert.equal(r.json.unread,1);
+  assert.equal(r.json.latest.feedback_id,id,"dashboard links to the actual unread thread");
+  assert.equal(r.json.latest.subject,"My calendar is stuck");
+  assert.ok(r.json.latest.replied_at);
+  assert.equal(r.json.latest.body,undefined,"notification never includes reply text");
   r=await h.req("/feedback/unread-count",{token:c.token,admin:false});
   assert.equal(r.status,403,"children cannot see parent replies");
   r=await h.req("/feedback/"+id+"/replies/read",{method:"POST",token:bob.token,admin:false});
@@ -625,6 +630,7 @@ test("owner feedback replies are private, auditable, unread until viewed, and wo
   assert.equal(r.status,200);
   r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
   assert.equal(r.json.unread,0);
+  assert.equal(r.json.latest,null,"notification vanishes after parent reads reply");
   r=await h.req("/admin/feedback/"+id+"/replies",{token:owner.token});
   assert.equal(r.status,200);
   assert.ok(r.json.replies[0].parent_read_at);
@@ -654,6 +660,37 @@ test("feedback reply email only notifies the real submitting parent and never in
   assert.ok(!JSON.stringify(sent).includes(phrase));
   assert.ok(!JSON.stringify(sent).includes("More maths games please"));
   assert.ok(!JSON.stringify(sent).includes(bob.email));
+});
+
+test("dashboard reply alert surfaces older unread threads buried behind 50 newer submissions",async()=>{
+  const h=harness();
+  const alice=await h.register("older-feedback@example.com","Alice");
+  const bob=await h.register("other-feedback@example.com","Bob");
+  const insert=h.db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES(?,?,?,'idea',?,'Please consider the suggestion here.','','new','',NULL,?,?)");
+  for(let i=0;i<55;i++){
+    const date=new Date(Date.UTC(2026,9,1+i)).toISOString();
+    insert.run("old-feedback-"+i,alice.familyId,alice.id,"Feedback item "+i,date,date);
+  }
+  const old="old-feedback-0";
+  h.db.raw.prepare("INSERT INTO parent_feedback_replies(id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES(?,?,?,'Please try the fix.',NULL,?)")
+    .run("old-reply",old,bob.id,new Date().toISOString());
+  let r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.unread,1);
+  assert.equal(r.json.latest.feedback_id,old);
+  r=await h.req("/feedback",{token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  assert.equal(r.json.reports.length,50);
+  assert.equal(r.json.reports[0].id,old,"old item with unread reply is promoted above newer items");
+  assert.equal(r.json.reports[0].replies[0].body,"Please try the fix.");
+  r=await h.req("/feedback",{token:bob.token,admin:false});
+  assert.equal(r.status,200);assert.equal(r.json.reports.length,0);
+  r=await h.req("/feedback/unread-count",{token:bob.token,admin:false});
+  assert.equal(r.json.unread,0);assert.equal(r.json.latest,null);
+  r=await h.req("/feedback/"+old+"/replies/read",{method:"POST",token:alice.token,admin:false});
+  assert.equal(r.status,200);
+  r=await h.req("/feedback/unread-count",{token:alice.token,admin:false});
+  assert.equal(r.json.unread,0);assert.equal(r.json.latest,null);
 });
 
 test("feedback: input validation and rate limiting stop spam without creating extra reports", async () => {
