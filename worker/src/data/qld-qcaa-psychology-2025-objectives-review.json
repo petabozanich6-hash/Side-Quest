@@ -1,0 +1,136 @@
+{
+  "authority": "QCAA",
+  "jurisdiction": "QLD",
+  "framework": "QCE General",
+  "syllabus": "Psychology 2025 v1.3 (January 2026)",
+  "checked_on": "2026-10-16",
+  "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+  "official_subject_url": "https://www.qcaa.qld.edu.au/senior/senior-subjects/syllabuses/sciences/psychology",
+  "source_version": "2025 v1.3",
+  "status": "direct_official_pdf_verified_review_only",
+  "complete_for_syllabus_objective_number_list": true,
+  "complete_for_all_subject_matter": false,
+  "record_count": 6,
+  "notes": [
+    "Exact numbered syllabus objectives 1-6 verified from official QCAA PDF printed page 4 / PDF page 7.",
+    "Numbers are ordinal, NOT globally unique alphanumeric outcome codes.",
+    "Unit objectives are additionally contextualised per unit and may need unit-specific contextual wording for parent tracking.",
+    "This is new Queensland source-backed review data, not an Australian curriculum completeness claim."
+  ],
+  "records": [
+    {
+      "identifier": "1",
+      "scoped_identifier": "QLD:QCAA:Psychology:General:2025:syllabus_objective:1",
+      "identifier_kind": "syllabus_objective_number",
+      "subject": "Psychology",
+      "year_from": 2025,
+      "applies_to_units": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Describe ideas and findings",
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+      "source_pdf_page": 7,
+      "printed_syllabus_page": 4,
+      "verification": "direct_official_pdf_visual_and_text",
+      "runtime_enabled": false
+    },
+    {
+      "identifier": "2",
+      "scoped_identifier": "QLD:QCAA:Psychology:General:2025:syllabus_objective:2",
+      "identifier_kind": "syllabus_objective_number",
+      "subject": "Psychology",
+      "year_from": 2025,
+      "applies_to_units": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Apply understanding",
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+      "source_pdf_page": 7,
+      "printed_syllabus_page": 4,
+      "verification": "direct_official_pdf_visual_and_text",
+      "runtime_enabled": false
+    },
+    {
+      "identifier": "3",
+      "scoped_identifier": "QLD:QCAA:Psychology:General:2025:syllabus_objective:3",
+      "identifier_kind": "syllabus_objective_number",
+      "subject": "Psychology",
+      "year_from": 2025,
+      "applies_to_units": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Analyse data",
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+      "source_pdf_page": 7,
+      "printed_syllabus_page": 4,
+      "verification": "direct_official_pdf_visual_and_text",
+      "runtime_enabled": false
+    },
+    {
+      "identifier": "4",
+      "scoped_identifier": "QLD:QCAA:Psychology:General:2025:syllabus_objective:4",
+      "identifier_kind": "syllabus_objective_number",
+      "subject": "Psychology",
+      "year_from": 2025,
+      "applies_to_units": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Interpret evidence",
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+      "source_pdf_page": 7,
+      "printed_syllabus_page": 4,
+      "verification": "direct_official_pdf_visual_and_text",
+      "runtime_enabled": false
+    },
+    {
+      "identifier": "5",
+      "scoped_identifier": "QLD:QCAA:Psychology:General:2025:syllabus_objective:5",
+      "identifier_kind": "syllabus_objective_number",
+      "subject": "Psychology",
+      "year_from": 2025,
+      "applies_to_units": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Evaluate conclusions, claims and processes",
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+      "source_pdf_page": 7,
+      "printed_syllabus_page": 4,
+      "verification": "direct_official_pdf_visual_and_text",
+      "runtime_enabled": false
+    },
+    {
+      "identifier": "6",
+      "scoped_identifier": "QLD:QCAA:Psychology:General:2025:syllabus_objective:6",
+      "identifier_kind": "syllabus_objective_number",
+      "subject": "Psychology",
+      "year_from": 2025,
+      "applies_to_units": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "label": "Investigate phenomena",
+      "source_url": "https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf",
+      "source_pdf_page": 7,
+      "printed_syllabus_page": 4,
+      "verification": "direct_official_pdf_visual_and_text",
+      "runtime_enabled": false
+    }
+  ]
+}
