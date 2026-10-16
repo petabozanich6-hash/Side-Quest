@@ -11,13 +11,13 @@ const KIND = { lesson: "Lesson work", life: "Life learning", note: "Parent obser
 const CSS = `
   @page { size: A4; margin: 16mm 14mm; }
   * { box-sizing: border-box; }
-  body { font-family: Georgia, "Times New Roman", serif; color: #111; max-width: 760px; margin: 24px auto; padding: 0 18px; font-size: 13px; line-height: 1.45; }
-  h1 { font-size: 24px; margin: 0 0 4px; } h2 { font-size: 17px; margin: 26px 0 8px; border-bottom: 2px solid #111; padding-bottom: 3px; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #243a2d; max-width: 760px; margin: 24px auto; padding: 0 18px; font-size: 13px; line-height: 1.45; }
+  h1 { font-size: 26px; color: #1F3B2D; margin: 0 0 5px; } h2 { font-size: 18px; color: #1F3B2D; margin: 26px 0 8px; border-left: 4px solid #C77B5B; border-bottom: 1px solid #C8D3BF; padding: 2px 0 7px 10px; }
   h2, h3 { break-after: avoid; } h3 { font-size: 15px; margin: 18px 0 6px; } h4 { font-size: 12px; margin: 8px 0 2px; text-transform: uppercase; letter-spacing: .04em; color: #444; }
   table { width: 100%; border-collapse: collapse; margin: 6px 0; } th, td { border: 1px solid #bbb; padding: 4px 6px; text-align: left; vertical-align: top; font-size: 12px; }
-  th { background: #f2f2f2; } .muted { color: #555; font-size: 12px; } .gap { color: #8a4b00; font-weight: bold; }
-  .meta td:first-child { width: 32%; font-weight: bold; background: #fafafa; }
-  .entry { break-inside: avoid; border: 1px solid #ccc; border-radius: 4px; padding: 10px 12px; margin: 10px 0; }
+  th { background: #EFF3EA; color: #1F3B2D; } .muted { color: #555; font-size: 12px; } .gap { color: #8a4b00; font-weight: bold; }
+  .meta td:first-child { width: 32%; font-weight: bold; background: #F5F7F1; }
+  .entry { break-inside: avoid; border: 1px solid #B7C7B0; border-left: 3px solid #4A5D3A; border-radius: 5px; padding: 10px 12px; margin: 10px 0; }
   .entry .head { display: flex; justify-content: space-between; gap: 12px; } .entry .title { font-weight: bold; font-size: 14px; }
   .tag { display: inline-block; border: 1px solid #999; border-radius: 10px; padding: 0 7px; font-size: 11px; margin: 2px 4px 2px 0; }
   .ach { border-color: #2e7d32; color: #1b5e20; } .wt { border-color: #b26a00; color: #7a4800; }
@@ -30,7 +30,7 @@ const CSS = `
   .s-achieved { background: #1f3b2d; } .s-demonstrated { background: #4a7c59; } .s-developing { background: #9dbf9e; } .s-introduced { background: #d9e5d6; }
   .key span { display: inline-block; width: 10px; height: 10px; border: 1px solid #777; margin: 0 3px 0 10px; vertical-align: middle; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .num { text-align: right; white-space: nowrap; }
-  @media print { body { margin: 0; } .noprint { display: none; } }
+  @media print { body { margin: 0; } .noprint { display: none; } th, .meta td:first-child { background: #f3f3f3; } h1, h2 { color: #243a2d; } thead { display: table-header-group; } tr { break-inside: avoid; } }
 `;
 
 // Outcome Tracker statuses. "Achieved" here always means the parent confirmed it in the tracker.
