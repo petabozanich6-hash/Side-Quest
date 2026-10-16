@@ -637,7 +637,18 @@ await step("H. child hands the work in", async () => {
 await step("I. parent sees it waiting, reviews it (with the answer key) and approves", async () => {
   await page.goto(BASE + "/parent");
   await page.waitForSelector(`[data-testid=waiting-${submissionId}]`, { timeout: 15000 });
-  await page.click(`[data-testid=open-${submissionId}]`);
+  await page.waitForSelector("[data-testid=dashboard-child-work-alert]", {timeout:15000});
+  const notice=await page.textContent("[data-testid=dashboard-child-work-alert]");
+  ok(notice.includes("Your adventurer has reported back!"),"new work notice absent");
+  ok(notice.includes("Mia"),"child name should appear in dashboard alert");
+  // Opening is not the same as reviewing. Closing the review must NOT clear the banner.
+  await page.click("[data-testid=dashboard-child-work-review]");
+  await page.waitForSelector('[data-testid=review-modal]');
+  await page.locator('[data-testid=review-modal] button').first().click();
+  await page.waitForSelector('[data-testid=review-modal]', {state:"detached"});
+  ok((await page.locator("[data-testid=dashboard-child-work-alert]").count())===1,
+    "alert was dismissed without completing review");
+  await page.click("[data-testid=dashboard-child-work-review]");
   await page.waitForSelector('[data-testid=review-modal]');
   const m = await page.textContent('[data-testid=review-modal]');
   ok(m.includes("Four quarters"), "answers not shown to parent");
@@ -646,6 +657,9 @@ await step("I. parent sees it waiting, reviews it (with the answer key) and appr
   await page.fill('[data-testid=feedback-text]', "Lovely folding, Mia!");
   await page.click('[data-testid=approve-btn]');
   await page.waitForSelector(`[data-testid=waiting-${submissionId}]`, { state: "detached", timeout: 15000 });
+  await page.waitForSelector("[data-testid=dashboard-child-work-alert]", {state:"detached",timeout:15000});
+  ok((await page.locator("[data-testid=dashboard-child-work-alert]").count())===0,
+    "completed review left a persistent alert");
 });
 
 await step("J. XP, progress and evidence update; XP is awarded exactly once", async () => {
