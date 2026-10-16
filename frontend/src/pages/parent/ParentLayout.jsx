@@ -13,6 +13,7 @@ import JurisdictionGate from "../../components/parent/JurisdictionPicker";
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
   { to: "/parent/children", icon: Users, label: "Children", testid: "nav-children" },
+  { to: "/parent/homeschool-compass", icon: Compass, label: "Homeschooling Compass", testid: "nav-homeschool-compass" },
   { to: "/parent/curriculum", icon: GraduationCap, label: "Curriculum", testid: "nav-curriculum" },
   { to: "/parent/outcomes", icon: MapIcon, label: "Outcome tracker", testid: "nav-outcomes" },
   { to: "/parent/lessons", icon: BookOpen, label: "My lessons", testid: "nav-lessons" },
