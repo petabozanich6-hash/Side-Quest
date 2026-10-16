@@ -101,6 +101,24 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
         </div>
       ))}
 
+      {list(l.resources).length > 0 && <><H>Videos and resources</H>
+        <p className="text-sm text-slate-700">These links are optional online extras. A printed page cannot contain a playable video.</p>
+        {list(l.resources).map((resource, i) => <div key={i} className="mb-3 break-inside-avoid">
+          <p className="font-semibold">{resource.title || "Resource"}{resource.type === "video" ? " (video)" : ""}</p>
+          {/^https?:\/\//i.test(resource.url || "") && <p className="text-sm break-all">{resource.url}</p>}
+          {resource.prompt && <><Para>{resource.prompt}</Para>{student && <Lines n={2} />}</>}
+          {resource.check && <><Para>{resource.check.question}</Para>
+            <ul className="space-y-1 text-sm">{list(resource.check.options).map((opt, j) => <li key={j}>{parent && j === resource.check.correct_index ? "✔" : "☐"} {opt}</li>)}</ul>
+            {parent && typeof resource.check.correct_index === "number" && <Ans>{resource.check.options?.[resource.check.correct_index]}</Ans>}
+          </>}
+        </div>)}
+      </>}
+      {l.printable_resource && <><H>{l.printable_resource.title || "Printable activity"}</H>
+        {l.printable_resource.instructions && <Para>{l.printable_resource.instructions}</Para>}
+        {l.printable_resource.passage && <Para>{l.printable_resource.passage}</Para>}
+        {list(l.printable_resource.prompts).map((prompt, i) => <div key={i}><Para>{i + 1}. {prompt}</Para>{student && <Lines n={3} />}</div>)}
+      </>}
+      {l.offline_alternative && <><H>Offline / paper alternative</H><Para>{l.offline_alternative}</Para></>}
       {l.consolidation && <><H>Wrap-up</H><Para>{l.consolidation}</Para></>}
       {parent && l.support && <><H>If your child is struggling</H><Para>{l.support}</Para></>}
       {l.extension && <><H>Challenge</H><Para>{l.extension}</Para></>}
