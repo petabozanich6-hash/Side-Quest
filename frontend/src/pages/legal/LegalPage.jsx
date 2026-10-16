@@ -126,14 +126,17 @@ export default function LegalPage({ base = "/parent/trust", publicView = false }
             ))}
           </div>
         )}
-        {!publicView && page.group === "support" && (
+        {!publicView && (page.group === "support" || page.group === "privacy" || page.contact === "problem") && (
           <Link to="/parent/feedback" className="mt-6 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold" style={{backgroundColor:"#1F3B2D",color:"#F5EFE0"}} data-testid="legal-feedback-link">
-            <Mail size={16}/> Open Ideas & Feedback in Parent Hub
+            <Mail size={16}/> Send a message through Ideas & Feedback
           </Link>
         )}
         {mail && (
+          <p className="mt-5 text-sm text-stone-600">{publicView ? "For support without signing in, email the address below." : "If you cannot sign in or the in-app feedback form is unavailable, email is the fallback contact method."}</p>
+        )}
+        {mail && (
           <a href={`mailto:${mail[0]}?subject=${encodeURIComponent(mail[1])}`} className="mt-8 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold" style={{ backgroundColor: "#1F3B2D", color: "#F5EFE0" }} data-testid="legal-mail-btn">
-            <Mail size={16} /> Email us
+            <Mail size={16} /> {publicView ? "Email support" : "Email instead (fallback)"}
           </a>
         )}
       </div>

@@ -74,7 +74,7 @@ export const PAGES = {
         "Emails you send me are kept as long as needed to deal with your request.",
       ] },
       { h: "Data breaches", p: "If a data breach is likely to cause serious harm, I will act quickly to contain it and will tell affected families, and the Office of the Australian Information Commissioner where required." },
-      { h: "Accessing and correcting your information", p: "You can ask to see the personal information I hold about you and your children, and ask me to correct anything that is wrong, incomplete or out of date. You can also edit most details yourself in the parent hub. To see your information, use the Request Your Data page. To correct it, email support@sidequestlearning.app with \"Correct my information\" in the subject line. I will confirm your identity first and aim to respond within 30 days. There is no charge for making a request." },
+      { h: "Accessing and correcting your information", p: "You can ask to see the personal information I hold about you and your children, and ask me to correct anything that is wrong, incomplete or out of date. You can also edit most details yourself in the parent hub. To see your information, use the Request Your Data page. To correct information you cannot edit yourself, use Parent Hub → Ideas & Feedback → Problems. If you cannot sign in or the feedback tool fails, email support@sidequestlearning.app with \"Correct my information\" in the subject line. I will confirm your identity first and aim to respond within 30 days. There is no charge for making a request." },
       { h: "Deleting your information", p: "You can delete your account at any time from the Trust & Support page or the sidebar. This removes your account and your children's profiles and learning records." },
       { h: "Complaints", p: "If you are unhappy with how your information has been handled, use the Privacy Complaint page or email support@sidequestlearning.app and I will look into it and reply in writing. You may also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
       { h: "Changes to this policy", p: "I may update this policy as Side-Quest grows, including its learning apps, AI capabilities, billing and account messages, or if law changes. The date at the top shows when it was last updated. If I make an important change I will let families know through the app or by email." },
@@ -195,7 +195,7 @@ export const PAGES = {
         "Tell me if something isn't right using Report a Problem.",
       ] },
       { h: "Changes to AI features", p: "AI tools change quickly. I may add, change or remove AI features, or switch the technology behind them, as Side-Quest grows. If a change affects how information is used, I will update this page and the Privacy Policy." },
-      { h: "Contact", p: "Questions or concerns about AI in Side-Quest? Email support@sidequestlearning.app." },
+      { h: "Contact", p: "Questions or concerns about AI in Side-Quest? Use Parent Hub → Ideas & Feedback. If it is unavailable, email support@sidequestlearning.app." },
     ],
   },
   "contact": {
@@ -204,7 +204,7 @@ export const PAGES = {
     sections: [
       { h: "Hello from base camp", p: "Side-Quest is made by one parent who is also homeschooling, usually somewhere between a maths lesson and a snack break. Anything you send goes straight to the Side-Quest inbox and I read every message myself." },
       { h: "Send a message", p: "The easiest route while signed in is Parent Hub → Ideas & Feedback. Choose an idea, problem or other feedback and send it straight to Side-Quest HQ. I can reply in your thread, and the Parent Hub highlights unread responses. If you cannot get into your account, email support@sidequestlearning.app." },
-      { h: "How long will I wait?", p: "I'll reply as soon as I reasonably can; this is still a one-person project, not a staffed support desk. In-app replies show on your dashboard when unread, but I can't promise a response time. For sign-in issues use support@sidequestlearning.app." },
+      { h: "How long will I wait?", p: "I'll reply as soon as I reasonably can; this is still a one-person project, not a staffed support desk. In-app replies show on your dashboard when unread, but I can't promise a response time. If you cannot sign in, email support@sidequestlearning.app." },
       { h: "Good things to send", items: [
         "Questions about how something works.",
         "Ideas for new lessons, pets or features.",
@@ -282,7 +282,7 @@ export const PAGES = {
       { h: "Does Side-Quest work in my state or territory?", p: "Families across Australia can use Side-Quest for learning organisation, child assignments, registration guidance and records. Homeschooling Compass links to jurisdiction-specific official resources. However, not every state's subjects, electives or outcome codes are complete in the tracker yet; some automated mappings and planning tools are still being expanded. Please check your authority's current requirements." },
 
       { h: "Signing in" , p: "Getting back into camp." },
-      { h: "I forgot my password", p: "On the main sign-in page, choose \"Forgot password?\" and follow the steps. If it doesn't work for you, email me at support@sidequestlearning.app from the address on your account and I'll help. I'll never ask for your password or your child's PIN." },
+      { h: "I forgot my password", p: "On the main sign-in page, choose \"Forgot password?\" and follow the steps. If you can still sign in, use Parent Hub → Ideas & Feedback → Problems. Otherwise email support@sidequestlearning.app from your account address for help. I'll never ask for your password or your child's PIN." },
       { h: "My child forgot their PIN", p: "On the child sign-in page, your child can choose \"Forgot my PIN\". This sends a prompt to your parent dashboard. Open the \"View\" area to see the details and set a new PIN for them. Pick one that isn't used anywhere else, and let your child know. The request only goes to you, and children can't use it to message anyone else." },
       { h: "I think someone else has used my account", p: "Email me straight away at support@sidequestlearning.app from your account address, and change your password. Keep your password private and use one you don't use anywhere else." },
       { h: "Someone asked me for my password or my child's PIN", p: "Don't share it. I will never ask you for a password or PIN, by email or any other way. If someone claiming to be Side-Quest does, let me know." },
@@ -297,7 +297,7 @@ export const PAGES = {
 
       { h: "Your information and account" , p: "You're in control of your family's data." },
       { h: "Can I see what you hold about my family?", p: "Yes. Use Request Your Data. I'll confirm your identity first and aim to reply within 30 days. It's free." },
-      { h: "My own details are wrong or out of date", p: "You can edit most details yourself in Children and your account. If it's something you can't change directly, email support@sidequestlearning.app from your account address with \"Correct my information\" in the subject line." },
+      { h: "My own details are wrong or out of date", p: "You can edit most details yourself in Children and your account. If it's something you can't change directly, use Parent Hub → Ideas & Feedback → Problems. Email support@sidequestlearning.app only if you cannot access or submit the form." },
       { h: "Can I delete one child's profile?", p: "Yes. Deleting a child profile removes that child's information and learning records, except where something must be kept by law. Keep your own copy of anything you need, like photos or records for reporting, first." },
       { h: "How do I delete my account?", p: "Use Delete account from the Account & privacy requests page or the sidebar. It removes your account, your children's profiles and their learning records. The hosting provider may keep short-term backups for a limited time before they're removed." },
       { h: "I'm not happy with how my information was handled", p: "Use the Privacy Complaint page or email me. I'll look into it and reply in writing. You can also contact the Office of the Australian Information Commissioner at oaic.gov.au." },
@@ -366,7 +366,7 @@ export const PAGES = {
         "Emails you've sent me, kept as long as needed to deal with your request.",
       ] },
       { h: "How to ask", items: [
-        "Email support@sidequestlearning.app from the address on your Side-Quest account, so I can match it to you.",
+        "Use Parent Hub → Ideas & Feedback to make the request from your signed-in account. If the platform is unavailable, email support@sidequestlearning.app from the address on your account.",
         "Put \"Request Your Data\" in the subject line so it doesn't get lost among the questions and quests.",
         "Say whether you'd like everything, or just certain things, for example one child's reading log.",
         "If you're asking about a child, use their first name or nickname only.",
@@ -388,7 +388,7 @@ export const PAGES = {
       ] },
       { h: "Do it yourself", p: "A lot of your information is already visible in your parent hub, including children, lessons, evidence, reading logs and your account. If you only want to check one thing or keep a photo or record, you may be able to find it there straight away." },
       { h: "Related requests", items: [
-        "Something in your own information is wrong: edit it in your parent hub, or email support@sidequestlearning.app with \"Correct my information\" in the subject line.",
+        "Something in your own information is wrong: edit it in Parent Hub, or use Ideas & Feedback → Problems. Email support@sidequestlearning.app if the platform cannot be used.",
         "A lesson or fact on the site is wrong or out of date: use Request a Correction.",
         "You'd like it all gone: use Delete Account on this page or in the sidebar. You may want to request a copy of your data first, because deleting is permanent.",
         "You're unhappy with how your information was handled: use Privacy Complaint.",
@@ -419,13 +419,13 @@ export const PAGES = {
         "What it should say, if you know.",
         "A link to your state or territory's official curriculum, if you have one.",
       ] },
-      { h: "Send a message to base camp", p: "The fastest way when signed in is Parent Hub → Ideas & Feedback, with the page, lesson or code you're concerned about. I can respond in the same conversation and your dashboard will let you know. Alternatively email support@sidequestlearning.app with 'Request a Correction' in the subject. Never include passwords, PINs, government IDs or photos of children." },
+      { h: "Send a message to base camp", p: "The fastest way when signed in is Parent Hub → Ideas & Feedback, with the page, lesson or code you're concerned about. I can respond in the same conversation and your dashboard will let you know. If the in-app feedback system is unavailable, email support@sidequestlearning.app with 'Request a Correction' in the subject. Never include passwords, PINs, government IDs or photos of children." },
       { h: "What happens next", p: "I'll review the details and, when I reply in Side-Quest, you'll see a dashboard alert linking to that message. I may ask questions or explain why a suggested change isn't suitable. Curriculum coverage is still being expanded and corrections are not an official endorsement or guarantee of completeness." },
       { h: "A word of caution from the trail", p: "Side-Quest helps you organise your own teaching and evidence; it is not an official education authority. For reporting and registration, rely on the guidance and curriculum published by your state or territory. See the Educational Disclaimer and Curriculum page." },
       { h: "Wrong path?", items: [
         "Something is broken: use Report a Problem.",
         "An idea for a new lesson, pet or feature: use Contact Us.",
-        "Your own account details are wrong: edit them in the parent hub, or email support@sidequestlearning.app with \"Correct my information\" in the subject line.",
+        "Your own account details are wrong: edit them in Parent Hub, or use Ideas & Feedback → Problems. Email support@sidequestlearning.app only if the platform is unavailable.",
         "A copy of your information: use Request Your Data.",
       ] },
       { h: "For young adventurers", p: "If your child finds a mistake in a lesson, that's a real win. They can tell you, and you can send it along." },
@@ -446,7 +446,7 @@ export const PAGES = {
       ] },
       { h: "Quicker routes first", p: "Some things don't need a formal complaint and can be fixed faster another way. You can edit most details yourself in the parent hub. You can ask for a copy of your information on Request Your Data, and you can delete a child profile or your account at any time. If any of those didn't work, or you'd rather make a complaint anyway, that's completely fine." },
       { h: "How to complain", items: [
-        "Email support@sidequestlearning.app from the address on your Side-Quest account, so I can match it to you.",
+        "Use Parent Hub → Ideas & Feedback to make the request from your signed-in account. If the platform is unavailable, email support@sidequestlearning.app from the address on your account.",
         "Put \"Privacy Complaint\" in the subject line so it doesn't get lost among the questions and quests.",
         "Tell me what happened, when you noticed it, and what information you think was involved.",
         "Tell me what you'd like me to do about it, if you know.",
@@ -523,7 +523,7 @@ export const PAGES = {
         "Edit most details yourself in the parent hub.",
         "Ask for a copy of your information with Request Your Data.",
         "Delete a child profile, or your whole account, at any time.",
-        "Ask me to correct anything that's wrong by emailing support@sidequestlearning.app with \"Correct my information\" in the subject line.",
+        "Ask for a correction through Parent Hub → Ideas & Feedback → Problems; email support@sidequestlearning.app if the platform is inaccessible.",
         "Raise a concern or complaint with Privacy Complaint.",
       ] },
       { h: "If something goes wrong", p: "If a data breach is likely to cause serious harm, I'll act quickly to contain it and tell affected families, and the Office of the Australian Information Commissioner where required. If you ever think your account has been accessed by someone else, change your password, reset your children's PINs, and email me straight away." },
