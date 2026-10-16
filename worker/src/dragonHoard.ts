@@ -14,7 +14,7 @@ export const HOARD_SCHEMA = [
     code TEXT NOT NULL,
     label TEXT NOT NULL,
     percent_off INTEGER NOT NULL CHECK (percent_off BETWEEN 5 AND 50),
-    duration_months INTEGER NOT NULL CHECK (duration_months BETWEEN 1 AND 3),
+    duration_months INTEGER NOT NULL CHECK (duration_months = 1),
     max_redemptions INTEGER NOT NULL CHECK (max_redemptions BETWEEN 1 AND 500),
     expires_at TEXT NOT NULL,
     stripe_coupon_id TEXT NOT NULL,
@@ -58,7 +58,7 @@ export function validateHoardOffer(input: Record<string, unknown>) {
   if (!/^[A-Z0-9]{4,24}$/.test(code)) return { ok: false as const, error: "Code must contain 4–24 letters or numbers." };
   if (label.length < 3 || label.length > 80 || /[<>]/.test(label)) return { ok: false as const, error: "Give this campaign a name of 3–80 characters." };
   if (!(typeof percent !== "number" || !Number.isInteger(percent)) || percent < 5 || percent > 50) return { ok: false as const, error: "Choose a whole-number discount between 5% and 50%." };
-  if (typeof months !== "number" || ![1, 2, 3].includes(months) || !Number.isInteger(months)) return { ok: false as const, error: "Duration must be 1, 2 or 3 months." };
+  if (months !== 1) return { ok: false as const, error: "Discounts currently apply to the first invoice only." };
   if (!(typeof limit !== "number" || !Number.isInteger(limit)) || limit < 1 || limit > 500) return { ok: false as const, error: "Redemption limit must be between 1 and 500." };
   if (!Number.isFinite(stamp) || stamp < Date.now() + 3600_000 || stamp > Date.now() + 366 * 86400_000) {
     return { ok: false as const, error: "Expiry must be at least an hour away and no more than 366 days away." };
@@ -81,8 +81,7 @@ export async function createHoardOffer(db: D1Database, env: Env, input: Record<s
   const couponId = "sqhoard_" + cfg.mode + "_" + v.code.toLowerCase();
   const coupon = await stripeCall(cfg.key, "POST", "coupons", {
     id: couponId, name: "SideQuest · " + v.label, percent_off: v.percent_off,
-    duration: v.duration_months === 1 ? "once" : "repeating",
-    ...(v.duration_months > 1 ? { duration_in_months: v.duration_months } : {}),
+    duration: "once",
     metadata: { source: "sidequest_dragons_hoard" },
   }, { idempotencyKey: "sq-hoard-coupon-" + cfg.mode + "-" + v.code });
   const promo = await stripeCall(cfg.key, "POST", "promotion_codes", {
