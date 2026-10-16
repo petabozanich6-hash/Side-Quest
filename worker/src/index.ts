@@ -23,6 +23,7 @@ import { registerHomeschoolCompass } from "./homeschoolCompass";
 import { registerSiteSearch } from "./siteSearch";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
+import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
@@ -246,6 +247,7 @@ registerTimetable(app, guards);
 registerHomeschoolCompass(app, guards);
 registerSiteSearch(app, guards);
 registerFeedback(app, guards);
+registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
 // Unhandled errors: record the method, route pattern and error class only (no ids, bodies or messages).
@@ -267,5 +269,6 @@ export default {
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env)), ctx);
   },
+  scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => { await processAnnouncementBatch(env); },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };
