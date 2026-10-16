@@ -597,13 +597,13 @@ export async function assignLesson(
   if (lesson.status !== "ready") return fail(409, "Save this lesson to your library (mark it ready) before assigning it.", "NOT_READY");
   const { limits } = await getEntitlement(db, familyId, now);
   if (!limits.canAssign) return paywall("Your free preview has ended. Your children's progress is kept; upgrade to assign more lessons.");
-  if ((await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
-    return paywall(`The free preview includes ${limits.maxActiveAssignments} active assignments. ${UPGRADE_MESSAGE}`);
-  }
   const prior = await priorAssignment(db, familyId, input.student_id, input.lesson_id);
   if (prior === "open") return fail(409, "This lesson is already assigned to this child and not finished yet.", "ALREADY_ASSIGNED");
   if (prior === "done" && input.again !== true) {
     return fail(409, "This child has already finished this lesson. Choose \"assign again\" if you want them to repeat it.", "ALREADY_COMPLETED");
+  }
+  if ((await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
+    return paywall(`The free preview includes ${limits.maxActiveAssignments} active assignments. ${UPGRADE_MESSAGE}`);
   }
   const id = newId();
   const snapshot = JSON.stringify(lessonOut(lesson));
