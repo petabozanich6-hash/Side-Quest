@@ -52,7 +52,6 @@ async function ownerAlert(env: Env, id: string, category: string) {
 
 export function registerFeedback(app: App, guards: Guards) {
   app.get("/api/feedback", guards.auth, guards.parent, async (c) => {
-    await ensureFeedbackBaseSchema(c.env.DB);
     // Compatibility fallback: never prevent parents from seeing or sending feedback
     // just because the newly deployed reply table is not yet available.
     let results: any[] = [];
@@ -63,10 +62,14 @@ export function registerFeedback(app: App, guards: Guards) {
       ).bind(c.get("user").family_id,c.get("user").id).all<any>();
       results = r.results ?? [];
     } catch {
-      const r = await c.env.DB.prepare(
-        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50"
-      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
-      results = r.results ?? [];
+      const sql = "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50";
+      try {
+        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id).all<any>()).results??[];
+      } catch (err) {
+        if(!/no such table.*parent_feedback/i.test(String(err))) throw err;
+        await ensureFeedbackBaseSchema(c.env.DB);
+        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id).all<any>()).results??[];
+      }
     }
     // One batched, family-and-parent-scoped query. Internal notes and other users' replies never leave the server.
     const reports = (results ?? []).map(ownRow);
@@ -97,7 +100,6 @@ export function registerFeedback(app: App, guards: Guards) {
   // Small count endpoint for parent-side unread badge. Works on every plan, including expired previews.
   app.get("/api/feedback/unread-count", guards.auth, guards.parent, async (c) => {
     try {
-      await ensureFeedbackSchema(c.env.DB);
     const u = c.get("user");
     const result = await c.env.DB.prepare(
       "SELECT COUNT(*) n FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE p.family_id=? AND p.user_id=? AND r.parent_read_at IS NULL",
@@ -142,14 +144,20 @@ export function registerFeedback(app: App, guards: Guards) {
       return c.json({ detail: "Describe it in 10 to 4000 characters." }, 400);
     if (b.page_hint !== undefined && (typeof b.page_hint !== "string" || b.page_hint.length > 160))
       return c.json({ detail: "Page or feature name is too long." }, 400);
-    await ensureFeedbackBaseSchema(c.env.DB);
     const user = c.get("user");
     const limit = await hitRateLimit(c.env.DB, "feedback:" + user.id, 5, 600);
     if (!limit.ok) { c.header("Retry-After", String(limit.retryAfter)); return c.json({ detail: "You've sent several reports. Please try again in a few minutes." }, 429); }
     const id = newId(), now = nowIso();
-    await c.env.DB.prepare(
-      "INSERT INTO parent_feedback (id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,'new','',NULL,?,?)",
-    ).bind(id, user.family_id, user.id, b.category, b.subject.trim(), b.message.trim(), (b.page_hint || "").trim(), now, now).run();
+    // Production has the table already. Avoid running migration DDL every
+    // time a parent presses Send. Provision the base table only on fresh installs.
+    const save = () => c.env.DB.prepare(
+      "INSERT INTO parent_feedback (id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,'new','',NULL,?,?)"
+    ).bind(id,user.family_id,user.id,b.category,b.subject.trim(),b.message.trim(),(b.page_hint || "").trim(),now,now).run();
+    try { await save(); } catch (err) {
+      if (!/no such table.*parent_feedback/i.test(String(err))) throw err;
+      await ensureFeedbackBaseSchema(c.env.DB);
+      await save();
+    }
     // A failed or unconfigured email never undoes the durable, private HQ submission.
     try { await ownerAlert(c.env, id, b.category); } catch { /* optional */ }
     return c.json({ id, status: "new", created_at: now }, 201);
