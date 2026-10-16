@@ -179,6 +179,8 @@ export type SyncDecision =
   | { action: "update"; fields: Record<string, string | number | null>; plan_changed: boolean };
 
 const GRANT_STATES = new Set(["active", "trialing", "past_due"]);
+// Subscriptions that are, or can still become, a paying membership.
+const LIVE_SUB_STATES = new Set(["active", "trialing", "past_due", "unpaid", "paused"]);
 const ENDED_STATES = new Set(["canceled", "unpaid", "incomplete_expired", "paused"]);
 const secIso = (s: unknown): string | null => (typeof s === "number" && s > 0 ? new Date(s * 1000).toISOString() : null);
 const idOf = (v: any): string | null => (typeof v === "string" ? v : v && typeof v.id === "string" ? v.id : null);
@@ -501,6 +503,24 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
         const again = await c.env.DB.prepare("SELECT stripe_customer_id FROM families WHERE id = ?").bind(u.family_id).first<{ stripe_customer_id: string }>();
         customer = again?.stripe_customer_id || created.id;
       }
+      // Stripe is the source of truth: the webhook for an earlier purchase may not have arrived yet.
+      const existingSubs = await stripeCall(cfg.key, "GET", "subscriptions", { customer, status: "all", limit: 100 }, { fetchImpl });
+      if ((existingSubs?.data || []).some((s: any) => LIVE_SUB_STATES.has(String(s?.status || "")))) {
+        return c.json({ detail: "You already have a Family Membership. Use Manage billing to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
+      }
+      // Only one checkout should be payable at a time. Reuse an open page for the same choice (a double
+      // click) and close the rest (another tab or plan). Best effort: a failure here never blocks checkout.
+      const promoKey = promotionId ?? "none";
+      try {
+        const open = await stripeCall(cfg.key, "GET", "checkout/sessions", { customer, status: "open", limit: 100 }, { fetchImpl });
+        for (const s of open?.data || []) {
+          if (!s?.id) continue;
+          if (s.url && s.metadata?.interval === interval && s.metadata?.promo === promoKey) return c.json({ url: s.url });
+          await stripeCall(cfg.key, "POST", `checkout/sessions/${encodeURIComponent(s.id)}/expire`, {}, { fetchImpl });
+        }
+      } catch (e: any) {
+        console.error("billing checkout: could not close earlier checkout pages", e?.message);
+      }
       const origin = appOrigin(c.env, c.req.url);
       const session = await stripeCall(cfg.key, "POST", "checkout/sessions", {
         mode: "subscription",
@@ -509,7 +529,7 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
         line_items: [{ price: price.price, quantity: 1 }],
         // Only owner-issued Hoard offers are eligible, while Stripe enforces actual redemption limits.
         ...(promotionId ? { discounts: [{ promotion_code: promotionId }] } : {}),
-        metadata: { family_id: u.family_id, interval },
+        metadata: { family_id: u.family_id, interval, promo: promoKey },
         subscription_data: { metadata: { family_id: u.family_id, interval } },
         success_url: `${origin}/parent/plan?checkout=success`,
         cancel_url: `${origin}/parent/plan?checkout=cancelled`,
@@ -582,4 +602,81 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
       return c.json({ detail: "Processing failed; Stripe will retry" }, 500);
     }
   });
+}
+
+// ---------------------------------------------------------------- account deletion guard
+
+export type DeletionBlock = { status: 409 | 503; detail: string; code: string };
+
+const NOT_RENEWING = new Set(["canceled", "incomplete_expired"]);
+const renews = (s: any) => !NOT_RENEWING.has(String(s?.status || "")) && !(s?.cancel_at_period_end || s?.cancel_at);
+
+/**
+ * Erasing a family must never leave a Stripe subscription that keeps charging a card nobody can
+ * manage any more. Asks Stripe for the customer's subscriptions; fails closed when Stripe can't answer.
+ * Returns null when deletion may go ahead.
+ */
+export async function deletionBillingBlock(db: DB, env: Env, familyId: string, fetchImpl?: Fetch): Promise<DeletionBlock | null> {
+  let row: { stripe_customer_id: string | null; subscription_status: string | null; cancel_at_period_end: number | null } | null = null;
+  try {
+    row = await db.prepare("SELECT stripe_customer_id, subscription_status, cancel_at_period_end FROM families WHERE id = ?")
+      .bind(familyId).first<any>();
+  } catch {
+    return null; // billing columns (migration 0053) not applied: no Stripe customer can exist
+  }
+  if (!row?.stripe_customer_id) return null;
+  const renewing: DeletionBlock = {
+    status: 409,
+    code: "SUBSCRIPTION_RENEWING",
+    detail: "Your Family Membership is still set to renew. Cancel it in Manage billing first (you keep access until the paid period ends), then delete your account.",
+  };
+  const localRenews = () => renews({ status: row!.subscription_status || "canceled", cancel_at_period_end: row!.cancel_at_period_end });
+  const cfg = billingConfig(env);
+  if (!cfg.ok) return localRenews() ? renewing : null;
+  try {
+    const list = await stripeCall(cfg.key, "GET", "subscriptions", { customer: row.stripe_customer_id, status: "all", limit: 100 }, { fetchImpl });
+    return (list?.data || []).some(renews) ? renewing : null;
+  } catch (e) {
+    // A customer id from the other Stripe mode doesn't exist here; fall back to what the webhook recorded.
+    if (e instanceof StripeError && e.status === 404) return localRenews() ? renewing : null;
+    return { status: 503, code: "BILLING_UNAVAILABLE", detail: "We couldn't check your membership with our payment provider, so nothing was deleted. Please try again shortly." };
+  }
+}
+
+// ---------------------------------------------------------------- reconciliation (cron)
+
+/**
+ * Safety net for missed or failed webhooks: re-reads, from Stripe, subscriptions whose paid period
+ * has ended or is about to, and that haven't been synced in the last hour. Bounded per run.
+ */
+export async function reconcileSubscriptions(db: DB, env: Env, fetchImpl?: Fetch, now: Date = new Date(), limit = 10): Promise<string[]> {
+  const cfg = billingConfig(env);
+  if (!cfg.ok) return [];
+  const soon = new Date(now.getTime() + 3600_000).toISOString();
+  const stale = new Date(now.getTime() - 3600_000).toISOString();
+  let rows: { id: string; stripe_subscription_id: string }[] = [];
+  try {
+    ({ results: rows } = await db.prepare(
+      `SELECT id, stripe_subscription_id FROM families
+       WHERE stripe_subscription_id IS NOT NULL AND COALESCE(plan, '') != 'INTERNAL'
+         AND COALESCE(subscription_status, '') NOT IN ('canceled', 'incomplete_expired')
+         AND (plan_period_end IS NULL OR plan_period_end < ?)
+         AND (billing_updated_at IS NULL OR billing_updated_at < ?)
+       ORDER BY billing_updated_at LIMIT ?`
+    ).bind(soon, stale, limit).all<any>());
+  } catch {
+    return []; // billing columns not migrated
+  }
+  const out: string[] = [];
+  for (const r of rows) {
+    try {
+      out.push(await syncSubscription(db, cfg, r.stripe_subscription_id, fetchImpl, now));
+    } catch (e: any) {
+      out.push(`failed ${r.stripe_subscription_id}: ${e?.status || "error"}`);
+    }
+    // Ignored or failed syncs must not be retried every five minutes.
+    await db.prepare("UPDATE families SET billing_updated_at = ? WHERE id = ? AND (billing_updated_at IS NULL OR billing_updated_at < ?)")
+      .bind(now.toISOString(), r.id, stale).run();
+  }
+  return out;
 }

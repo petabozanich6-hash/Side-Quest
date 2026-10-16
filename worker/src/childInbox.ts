@@ -40,7 +40,7 @@ export function registerChildInbox(app: App, g: Guards) {
       const row = await c.env.DB.prepare("SELECT child_label FROM users WHERE id = ?").bind(c.get("user").id).first<{ child_label: string | null }>();
       return c.json({ label: row?.child_label || "" });
     } catch (error) {
-      return c.json({ detail: `Couldn't load that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't load that. Please try again.` }, 500);
     }
   });
 
@@ -52,7 +52,7 @@ export function registerChildInbox(app: App, g: Guards) {
       await c.env.DB.prepare("UPDATE users SET child_label = ? WHERE id = ?").bind(label || null, c.get("user").id).run();
       return c.json({ ok: true, label });
     } catch (error) {
-      return c.json({ detail: `Couldn't save that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't save that. Please try again.` }, 500);
     }
   });
 
@@ -65,7 +65,7 @@ export function registerChildInbox(app: App, g: Guards) {
       for (const r of rows) if (r.child_label) out[r.id] = r.child_label;
       return c.json(out);
     } catch (error) {
-      return c.json({ detail: `Couldn't load that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't load that. Please try again.` }, 500);
     }
   });
 
@@ -112,7 +112,7 @@ export function registerChildInbox(app: App, g: Guards) {
       items.sort((a: any, b: any) => rank(a.kind) - rank(b.kind) || String(b.created_at).localeCompare(String(a.created_at)));
       return c.json(items);
     } catch (error) {
-      return c.json({ detail: `Couldn't load your messages: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't load your messages. Please try again.` }, 500);
     }
   });
 
@@ -132,7 +132,7 @@ export function registerChildInbox(app: App, g: Guards) {
       }
       return c.json({ ok: true });
     } catch (error) {
-      return c.json({ detail: `Couldn't save that: ${error instanceof Error ? error.message : String(error)}` }, 500);
+      return c.json({ detail: `Couldn't save that. Please try again.` }, 500);
     }
   });
 }

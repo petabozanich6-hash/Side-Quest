@@ -30,6 +30,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   const [sessions, setSessions] = useState(1);
   const [open, setOpen] = useState({}); // child id -> open slots from today
   const [slotId, setSlotId] = useState("");
+  const [assignees, setAssignees] = useState({}); // child id -> { done, status } for this lesson
   const lesson = fixed || lessons.find(l => l.id === lessonId);
   const choices = lessons.filter(l => l.status === "ready");
   const area = lesson?.learning_area || "";
@@ -45,6 +46,20 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
         .then((r) => setOpen((o) => ({ ...o, [sid]: r.data || [] }))).catch(() => setOpen((o) => ({ ...o, [sid]: [] })));
     });
   }, [timetable, picked, open]);
+
+  // Who already has this lesson: those children can't be picked again (finished ones only on purpose).
+  useEffect(() => {
+    if (!lesson?.id) { setAssignees({}); return; }
+    let live = true;
+    api.get(`/lessons/${lesson.id}/assignees`).then((r) => {
+      if (!live) return;
+      const m = {};
+      (r.data || []).forEach((a) => { m[a.student_id] = a; });
+      setAssignees(m);
+      setPicked((p) => p.filter((sid) => !m[sid] || !m[sid].done));
+    }).catch(() => {});
+    return () => { live = false; };
+  }, [lesson?.id]);
 
   const dates = useMemo(() => {
     if (!start) return [];
@@ -63,15 +78,16 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   const nextSlots = (sid) => (open[sid] || []).filter((s) => sameSubject(s.title, area)).slice(0, sessions);
   const onlyChild = picked.length === 1 ? picked[0] : null;
 
-  // The assignment for this child (creating it, or finding the one that's already open).
+  // The child's open assignment, a new one, or null if another tab assigned it in the meantime.
   const assignmentFor = async (sid) => {
+    const has = assignees[sid];
+    if (has && !has.done) return has.assignment_id; // already assigned: only add it to their week
     try {
-      const { data } = await api.post("/assignments", { student_id: sid, lesson_id: lesson.id, support_level: "green" });
+      const { data } = await api.post("/assignments", { student_id: sid, lesson_id: lesson.id, support_level: "green", again: !!assignees[sid]?.done });
       return data.id;
     } catch (e) {
-      if (e.response?.data?.code !== "ALREADY_ASSIGNED") throw e;
-      const { data } = await api.get("/assignments");
-      return (data || []).find((a) => a.student_id === sid && a.lesson_id === lesson.id && !["accepted", "demonstrated", "completed"].includes(a.status))?.id;
+      if (["ALREADY_ASSIGNED", "ALREADY_COMPLETED"].includes(e.response?.data?.code)) return null;
+      throw e;
     }
   };
   const scheduleOnDays = async (sid, days) => {
@@ -94,8 +110,9 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
     try {
       for (const sid of picked) {
         const aid = await assignmentFor(sid);
+        if (!aid) { notes.push(`${students.find((s) => s.id === sid)?.name || "Child"} already had it, so nothing was added for them`); continue; }
         if (mode === "days") { await scheduleOnDays(sid, dates); continue; }
-        if (mode === "none" || !aid) continue;
+        if (mode === "none") continue;
         const body = mode === "pick" ? { slot_ids: [slotId] } : { count: sessions };
         const { data } = await api.post(`/assignments/${aid}/place`, body);
         if (!data.placed.length) {
@@ -118,7 +135,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
 
   const modeBtn = (value, label, testid) => (
     <label className={`flex items-start gap-2 rounded-lg border px-3 py-2 text-sm cursor-pointer ${mode === value ? "border-slate-900 bg-slate-50" : "border-slate-200"}`}>
-      <input type="radio" name="when" checked={mode === value} onChange={() => setMode(value)} className="mt-0.5" data-testid={testid} />
+      <input type="radio" name="when" checked={mode === value} onChange={() => { setMode(value); if (value === "none") setPicked((p) => p.filter((sid) => !assignees[sid] || assignees[sid].done)); }} className="mt-0.5" data-testid={testid} />
       <span>{label}</span>
     </label>
   );
@@ -146,12 +163,20 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
         <div className="mb-4">
           <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Children</div>
           <div className="space-y-1">
-            {students.map(s => (
-              <label key={s.id} className="flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
-                <input type="checkbox" checked={picked.includes(s.id)} onChange={() => { toggle(picked, setPicked, s.id); setSlotId(""); }} data-testid={`sch-student-${s.id}`}/>
-                {s.name}
-              </label>
-            ))}
+            {students.map(s => {
+              const has = assignees[s.id];
+              const open = has && !has.done;
+              const locked = open && mode === "none"; // nothing to schedule, and it's never assigned twice
+              return (
+                <label key={s.id} className={`flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2 ${locked ? "bg-slate-50 text-slate-500 cursor-not-allowed" : ""}`}>
+                  <input type="checkbox" disabled={locked} checked={picked.includes(s.id)} data-testid={`sch-student-${s.id}`}
+                    onChange={() => { toggle(picked, setPicked, s.id); setSlotId(""); }} />
+                  <span>{s.name}</span>
+                  {open && <span className="ml-auto text-xs text-amber-800 text-right" data-testid={`sch-already-${s.id}`}>{locked ? "Already assigned" : "Already assigned · ticking only adds it to their week"}</span>}
+                  {has?.done && <span className="ml-auto text-xs text-emerald-700" data-testid={`sch-finished-${s.id}`}>Finished · tick to assign again</span>}
+                </label>
+              );
+            })}
             {students.length === 0 && <p className="text-sm text-slate-500">Add a student first.</p>}
           </div>
         </div>

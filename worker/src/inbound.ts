@@ -28,10 +28,15 @@ function looksAutomated(h: Headers, from: string): boolean {
   return false;
 }
 
-function replySubject(original: string | null): string {
-  const clean = (original || "").replace(/[\r\n]+/g, " ").trim().slice(0, 120);
-  if (!clean) return "Your message to Side-Quest Learning";
-  return /^re:/i.test(clean) ? clean : `Re: ${clean}`;
+// The sender's subject is never echoed: spoofed mail can't make us repeat spam text to a third party.
+const REPLY_SUBJECT = "We've received your message to Side-Quest Learning";
+// At most this many auto-replies a day across all senders (backscatter cap).
+export const DAILY_AUTO_REPLY_CAP = 200;
+
+/** Only reply when the receiving server says the sender's domain authenticated (SPF, DKIM or DMARC pass). */
+export function senderAuthenticated(headers: Headers): boolean {
+  const results = [headers.get("authentication-results"), headers.get("arc-authentication-results")].filter(Boolean).join(";").toLowerCase();
+  return /\b(dmarc|dkim|spf)=pass\b/.test(results);
 }
 
 export function autoReplyContent() {
@@ -85,17 +90,20 @@ export async function handleInbound(message: InboundMessage, env: Env): Promise<
   try {
     const from = (message.from || "").trim().toLowerCase();
     if (looksAutomated(message.headers, from)) return;
+    if (!senderAuthenticated(message.headers)) return;
 
     const cutoff = new Date(Date.now() - REPLY_WINDOW_MS).toISOString();
     const recent = await env.DB.prepare("SELECT sender FROM auto_replies WHERE sender = ? AND last_sent_at > ?")
       .bind(from, cutoff).first();
     if (recent) return;
+    const today = await env.DB.prepare("SELECT COUNT(*) AS n FROM auto_replies WHERE last_sent_at > ?").bind(cutoff).first<{ n: number }>();
+    if (Number(today?.n ?? 0) >= DAILY_AUTO_REPLY_CAP) return;
 
     const { text, html } = autoReplyContent();
     const messageId = message.headers.get("message-id");
     const sent = await sendEmail(env, {
       to: from,
-      subject: replySubject(message.headers.get("subject")),
+      subject: REPLY_SUBJECT,
       text,
       html,
       from: SUPPORT_EMAIL,

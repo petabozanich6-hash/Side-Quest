@@ -5,14 +5,17 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Install scripts and tests run with a read-only token; only the separate publish job can write.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -114,19 +117,42 @@ jobs:
             echo "e2e_install_app=${{ steps.e2e_app.outcome }}"
             echo "e2e_offline_lessons=${{ steps.e2e_offline.outcome }}"
           } | tee ci-logs/summary.txt
-      - name: Publish logs to branch ci-results (logs only, no code)
+      - name: Collect logs for the publish job
         if: always() && github.event_name != 'pull_request'
         run: |
-          set -e
-          SHA=$(git rev-parse --short HEAD)
           mkdir -p /tmp/res && cp -r ci-logs/. /tmp/res/ && [ -d e2e-shots ] && cp -r e2e-shots /tmp/res/ || true
           for f in /tmp/res/*.log; do tail -c 200000 "$f" > "$f.tmp" && mv "$f.tmp" "$f"; done
-          cd /tmp/res && git init -q && git checkout -q -b ci-results
-          git config user.name "ci" && git config user.email "ci@users.noreply.github.com"
-          echo "commit $SHA" > commit.txt
-          git add -A && git commit -q -m "CI logs for $SHA"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" ci-results
+      - uses: actions/upload-artifact@v4
+        if: always() && github.event_name != 'pull_request'
+        with:
+          name: ci-logs
+          path: /tmp/res
+          retention-days: 7
       - name: Fail if any step failed
         if: always()
         run: |
           grep -q "failure" ci-logs/summary.txt && exit 1 || exit 0
+
+  # Runs no project code: it only pushes the collected logs to the ci-results branch.
+  publish:
+    needs: verify
+    if: always() && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ci-logs
+          path: /tmp/res
+      - name: Publish logs to branch ci-results (logs only, no code)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -e
+          cd /tmp/res && git init -q && git checkout -q -b ci-results
+          git config user.name "ci" && git config user.email "ci@users.noreply.github.com"
+          echo "commit ${SHA::7}" > commit.txt
+          git add -A && git commit -q -m "CI logs for ${SHA::7}"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" ci-results

@@ -203,7 +203,7 @@ test("purposeful revision: a demonstrated outcome not seen for weeks is revisite
   const la = await lesson(db, fam, "A", [A]);
   for (const d of [-60, -59]) {
     const when = D(d);
-    const asg = await lb.assignLesson(db, fam, { student_id: sid, lesson_id: la.id }, when);
+    const asg = await lb.assignLesson(db, fam, { student_id: sid, lesson_id: la.id, again: d === -59 }, when);
     const user = { id: sid, family_id: fam };
     await lb.checkQuiz(db, user, asg.assignment.id, ["2"], when);
     const sub = await lb.submitWork(db, user, { assignment_id: asg.assignment.id, response_text: "w" }, when);

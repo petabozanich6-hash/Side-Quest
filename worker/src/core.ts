@@ -28,6 +28,14 @@ const stageInfo: Record<string, { name: string; band: string }> = {
   S5: { name: "Stage 5", band: "secondary" },
   S6: { name: "Stage 6", band: "senior" },
 };
+const ASSIGNMENT_STATUSES = ["not_started", "opened", "in_progress", "awaiting_help", "submitted", "needs_revision", "accepted", "demonstrated", "completed"];
+const WORKING = ["not_started", "opened", "in_progress", "awaiting_help", "needs_revision"];
+const CHILD_STATUS_FROM: Record<string, string[]> = {
+  opened: ["not_started"],
+  in_progress: WORKING,
+  awaiting_help: WORKING,
+};
+
 function studentOut(r: any) {
   const extra = parseJson<{ stage_name?: string; band?: string; subject_levels?: Record<string, string>; electives?: any[] }>(r.extra, {});
   const meta = stageInfo[r.stage] || { name: r.stage, band: "primary" };
@@ -323,6 +331,14 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return c.json(results);
   });
 
+  // Who already has this lesson, so the assign dialog can stop duplicates before they're sent.
+  app.get("/api/lessons/:id/assignees", auth, parent, async (c) => {
+    const fid = c.get("user").family_id;
+    const lesson = await c.env.DB.prepare("SELECT id FROM lessons WHERE id = ? AND family_id = ?").bind(c.req.param("id"), fid).first();
+    if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
+    return c.json((await lb.lessonAssignees(c.env.DB, fid, c.req.param("id"))).get(c.req.param("id")) || []);
+  });
+
   app.post("/api/assignments", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     const r = await lb.assignLesson(c.env.DB, c.get("user").family_id, b);
@@ -382,13 +398,15 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const u = c.get("user");
     const status = c.req.query("status") || "";
     if (!status) return c.json({ detail: "status is required" }, 400);
+    if (!ASSIGNMENT_STATUSES.includes(status)) return c.json({ detail: "Unknown status" }, 400);
     let sql = "UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND family_id = ?";
     const b: any[] = [status, nowIso(), c.req.param("id"), u.family_id];
     if (u.role === "child") {
-      if (!["opened", "in_progress", "awaiting_help", "submitted"].includes(status)) {
-        return c.json({ detail: "Child cannot set this status" }, 403);
-      }
-      sql += " AND student_id = ?"; b.push(u.id);
+      // A child can open, work on, or ask for help with their own unfinished work. Submitting goes through
+      // /api/submissions, and finished or submitted work is never moved backwards.
+      const from = CHILD_STATUS_FROM[status];
+      if (!from) return c.json({ detail: "Child cannot set this status" }, 403);
+      sql += ` AND student_id = ? AND status IN (${from.map(() => "?").join(",")})`; b.push(u.id, ...from);
     }
     await c.env.DB.prepare(sql).bind(...b).run();
     return c.json({ ok: true });

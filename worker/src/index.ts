@@ -15,7 +15,7 @@ import { registerAccount } from "./account";
 import { registerPasswordReset } from "./passwordReset";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
-import { registerBilling } from "./billing";
+import { registerBilling, reconcileSubscriptions } from "./billing";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
@@ -30,7 +30,7 @@ import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
 import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
 import { meterWorkersAi } from "./aiCost";
-import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
+import { authenticateToken, bumpAuthVersion, familyState, issueFileToken, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
 import { sendParentVerification, redeemParentVerification, resendParentVerification } from "./emailVerification";
 import { handleInbound } from "./inbound";
@@ -167,7 +167,7 @@ app.post("/api/auth/login", async (c) => {
   const email = String(b.email || "").trim().toLowerCase();
   const password = String(b.password || "");
   const ip = c.req.header("CF-Connecting-IP") || "";
-  if (await loginBlocked(c.env.DB, "parent", email, ip)) return c.json({ detail: "Too many sign-in attempts. Please wait 15 minutes and try again." }, 429);
+  if (await loginBlocked(c.env.DB, "parent", email, ip)) return c.json({ detail: "Too many sign-in attempts. Please wait 15 minutes and try again, or reset your password." }, 429);
   const user = await c.env.DB.prepare(
     "SELECT id, family_id, email, name, password_hash FROM users WHERE email = ?"
   ).bind(email).first<any>();
@@ -228,7 +228,7 @@ app.post("/api/auth/child-login", async (c) => {
   const username = String(b.username || "").trim().toLowerCase();
   const pin = String(b.pin || "");
   const ip = c.req.header("CF-Connecting-IP") || "";
-  if (await loginBlocked(c.env.DB, "child", username, ip)) return c.json({ detail: "Too many sign-in attempts. Please ask a parent, or wait 15 minutes and try again." }, 429);
+  if (await loginBlocked(c.env.DB, "child", username, ip)) return c.json({ detail: "Too many sign-in attempts. Please ask a parent to help, or wait and try again later." }, 429);
   const s = await c.env.DB.prepare("SELECT * FROM students WHERE username = ?").bind(username).first<any>();
   if (!s || !(await verifySecret(pin, s.pin_hash))) {
     await recordLoginFailure(c.env.DB, "child", username, ip);
@@ -237,7 +237,8 @@ app.post("/api/auth/child-login", async (c) => {
   await clearLoginFailures(c.env.DB, "child", username);
   if (await suspended(c.env.DB, s.family_id)) return c.json({ detail: SUSPENDED_MESSAGE, code: "ACCOUNT_SUSPENDED" }, 403);
   const token = await makeToken(c.env, s.id, "child", s.family_id);
-  const { pin_hash, pin_enc, ...safe } = s;
+  // Parent-only fields stay out of the child's session (notes are the parent's private notes about the child).
+  const { pin_hash, pin_enc, notes: _notes, ...safe } = s;
   // Offline sign-in on the child's device is a Family Membership feature.
   const offlineAllowed = await getEntitlement(c.env.DB, s.family_id).then((e) => e.limits.offlineLessons).catch(() => false);
   return c.json({ token, offline_allowed: offlineAllowed, student: { ...safe, interests: JSON.parse(s.interests || "[]"), role: "child" } });
@@ -247,7 +248,11 @@ app.get("/api/auth/me", requireAuth, async (c) => {
   const u = c.get("user");
   // is_platform_owner only decides whether the Owner HQ link is shown; every /api/admin call re-checks the role.
   const owner = u.role === "parent" && (await isPlatformOwner(c.env.DB, u.id));
-  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id), ...(owner ? { is_platform_owner: true } : {}) });
+  // Lets account screens ask for the right proof (password, or a fresh Google sign-in).
+  const hasPassword = u.role === "parent"
+    ? !!(await c.env.DB.prepare("SELECT password_hash FROM users WHERE id = ?").bind(u.id).first<{ password_hash: string | null }>())?.password_hash
+    : undefined;
+  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id), file_token: await issueFileToken(c.env, u), ...(hasPassword === undefined ? {} : { has_password: hasPassword }), ...(owner ? { is_platform_owner: true } : {}) });
 });
 
 
@@ -326,6 +331,7 @@ export default {
     // The two independent mail queues must not prevent each other running.
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
     try { await processTrialReminders(env); } catch (e) { console.error("trial reminder cron failed", e); }
+    try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

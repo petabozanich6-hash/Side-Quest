@@ -16,8 +16,12 @@ const ddl = [
   "CREATE INDEX IF NOT EXISTS idx_ann_queued ON announcement_recipients(status,broadcast_id)",
   "CREATE INDEX IF NOT EXISTS idx_ann_recent ON announcement_broadcasts(created_at DESC)"
 ];
+// Once per Worker instance and database: the cron runs every five minutes.
+const schemaReady=new WeakSet<D1Database>();
 export async function ensureAnnouncementSchema(db:D1Database) {
+  if(schemaReady.has(db))return;
   for (const sql of ddl) await db.prepare(sql).run();
+  schemaReady.add(db);
 }
 export async function audienceCount(db:D1Database,kind:AnnouncementKind,now=new Date()) {
   const opt=kind==="optional"?" AND ap.opted_in=1":"";
@@ -134,6 +138,10 @@ export async function processAnnouncementBatch(env:Env,max=12,now=new Date()) {
     }
     processed++;
   }
+  // A run killed mid-send leaves its recipient in 'sending'. After an hour it's recorded as failed (never
+  // resent: the mail may have gone), so the broadcast can still complete.
+  await env.DB.prepare("UPDATE announcement_recipients SET status='failed' WHERE status='sending' AND claimed_at<?")
+    .bind(new Date(now.getTime()-3600_000).toISOString()).run();
   await env.DB.prepare(
     "UPDATE announcement_broadcasts SET status='completed',finished_at=? WHERE status IN ('queued','sending') "+
     "AND NOT EXISTS(SELECT 1 FROM announcement_recipients r WHERE r.broadcast_id=announcement_broadcasts.id AND r.status IN ('queued','sending'))"

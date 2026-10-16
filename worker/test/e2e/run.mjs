@@ -21,7 +21,7 @@ const badResponses = [];
 const watch = (label, p) => p.on("response", (r) => { if (r.status() >= 400 && r.url().includes("/api/")) badResponses.push(`${label} ${r.status()} ${r.request().method()} ${r.url().replace(BASE, "")}`); });
 async function step(name, fn) {
   try { await fn(); results.push({ name, ok: true }); console.log(`PASS ${name}`); }
-  catch (e) { results.push({ name, ok: false, err: String(e.message || e).slice(0, 600) }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 600)}`); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); if (cpage) await shot("FAILchild-" + name.replace(/\W+/g, "-").slice(0, 40), cpage); }
+  catch (e) { if (e?.cause) e = new Error(`${e.message} (${e.cause.code || e.cause.message || e.cause})`); results.push({ name, ok: false, err: String(e.message || e).slice(0, 600) }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 600)}`); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); if (cpage) await shot("FAILchild-" + name.replace(/\W+/g, "-").slice(0, 40), cpage); }
 }
 const ok = (c, m) => { if (!c) throw new Error(m || "assertion failed"); };
 
@@ -461,6 +461,24 @@ await step("E. parent assigns the lesson to the child through the UI", async () 
   ok(dup.status === 409, "duplicate active assignment allowed");
 });
 
+await step("E2. My lessons shows who has the lesson, and the assign dialog won't assign it twice", async () => {
+  const kids = await api("GET", "/students", parentToken);
+  const kid = kids.json[0];
+  await page.goto(BASE + "/parent/lessons");
+  await page.waitForSelector(`[data-testid=assignee-${lessonId}-${kid.id}]`, { timeout: 10000 });
+  ok((await page.textContent(`[data-testid=assigned-to-${lessonId}]`)).includes(kid.name), "child's name not shown on the lesson");
+  await page.click(`[data-testid=assign-${lessonId}]`);
+  await page.waitForSelector(`[data-testid=sch-already-${kid.id}]`, { timeout: 10000 });
+  ok(!(await page.isChecked(`[data-testid=sch-student-${kid.id}]`)), "already-assigned child pre-ticked");
+  if (await page.$("[data-testid=sch-mode-none]")) {
+    await page.check("[data-testid=sch-mode-none]");
+    ok(await page.isDisabled(`[data-testid=sch-student-${kid.id}]`), "already-assigned child can be assigned again");
+  }
+  await page.click('[data-testid=schedule-modal] button[aria-label=Close]');
+  const as = await api("GET", "/assignments", parentToken);
+  ok(as.json.filter((a) => a.lesson_id === lessonId && a.student_id === kid.id).length === 1, "assignment duplicated");
+});
+
 // ---- child
 const cctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
 cpage = await cctx.newPage();
@@ -755,8 +773,11 @@ await step("uploads: child can upload a photo, same family can read it, other fa
   const up = async (token, name, type, bytes) => { const fd = new FormData(); fd.append("file", new Blob([bytes], { type }), name); const r = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${token}` }, body: fd }); return { status: r.status, json: await r.json().catch(() => null) }; };
   const ok1 = await up(childToken, "work.png", "image/png", png);
   ok(ok1.status === 200 && ok1.json.id, "png upload failed " + ok1.status);
-  const get = (token, id) => fetch(`${BASE}/api/files/${id}?auth=${encodeURIComponent(token)}`);
+  const get = async (token, id) => fetch(`${BASE}/api/files/${id}?ft=${encodeURIComponent((await api("GET", "/auth/me", token)).json.file_token)}`);
   ok((await get(parentToken, ok1.json.id)).status === 200, "parent cannot read child's upload");
+  ok((await fetch(`${BASE}/api/files/${ok1.json.id}?auth=${encodeURIComponent(parentToken)}`)).status === 401, "sign-in token still accepted in a URL");
+  ok((await fetch(`${BASE}/api/files/${ok1.json.id}?ft=${encodeURIComponent(parentToken)}`)).status === 401, "sign-in token accepted as a file token");
+  ok((await api("GET", "/lessons", (await api("GET", "/auth/me", parentToken)).json.file_token)).status === 401, "file token opens the API");
   const other = await api("POST", "/auth/register", null, { name: "Third", email: `family4-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
   ok((await get(other.json.token, ok1.json.id)).status === 404, "other family can read the upload");
   ok((await up(childToken, "x.html", "text/html", "<script>alert(1)</script>")).status === 400, "html upload allowed");
@@ -804,7 +825,9 @@ await step("AI drafting: free preview is blocked by the server and the builder s
 
 await step("assignments page: change dates and cancel an unstarted assignment", async () => {
   const kids = await api("GET", "/students", parentToken);
-  const made = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
+  const plain = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId });
+  ok(plain.status === 409 && plain.json.code === "ALREADY_COMPLETED", "finished lesson re-assigned without asking: " + plain.status);
+  const made = await api("POST", "/assignments", parentToken, { student_id: kids.json[0].id, lesson_id: lessonId, again: true });
   ok(made.status === 200, "could not assign again after finishing: " + made.status);
   const id = made.json.id;
   await page.goto(BASE + "/parent/assignments"); await page.waitForSelector(`[data-testid=asg-${id}]`);

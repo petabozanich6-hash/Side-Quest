@@ -83,7 +83,7 @@ export default function PetCompanion({ stageKey, stageTitle }) {
 
   const callAdult = async () => {
     try {
-      await api.put(`/assignments/${aid}/status?status=needs_help`);
+      await api.put(`/assignments/${aid}/status?status=awaiting_help`);
       setSent(true);
       toast.success(`${name} let a grown-up know`);
     } catch {

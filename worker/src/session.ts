@@ -71,3 +71,32 @@ export async function bumpAuthVersion(db: D1Database, familyId: string): Promise
   await db.prepare("DELETE FROM admin_step_up WHERE user_id IN (SELECT id FROM users WHERE family_id = ?)").bind(familyId).run();
   return (await familyState(db, familyId)).authVersion;
 }
+
+// ---------------------------------------------------------------- file links
+
+export const FILE_TOKEN_HOURS = 12;
+
+/**
+ * Images and downloads are opened by URL (<img src>, new tab), where no Authorization header can be sent.
+ * Those URLs carry this token instead of the sign-in token: it can only read files of the family, expires
+ * in hours and dies with "sign out everywhere", so a leaked link (history, logs, a copy-paste) never
+ * hands over the account.
+ */
+export async function issueFileToken(env: Env, user: { id: string; role: "parent" | "child"; family_id: string }): Promise<string> {
+  const { authVersion } = await familyState(env.DB, user.family_id);
+  const exp = Math.floor(Date.now() / 1000) + FILE_TOKEN_HOURS * 3600;
+  return sign({ sub: user.id, role: "file", for: user.role, family_id: user.family_id, av: authVersion, exp }, env.JWT_SECRET);
+}
+
+/** Family id a file token may read from, or null. */
+export async function verifyFileToken(env: Env, token: string): Promise<string | null> {
+  let p: any;
+  try { p = await verify(token, env.JWT_SECRET, "HS256"); } catch { return null; }
+  if (p?.role !== "file" || typeof p.family_id !== "string" || (p.for !== "parent" && p.for !== "child")) return null;
+  const row = await env.DB.prepare(
+    `SELECT t.family_id, COALESCE(s.status, 'active') AS family_status, COALESCE(s.auth_version, 0) AS auth_version
+     FROM ${p.for === "parent" ? "users" : "students"} t LEFT JOIN family_admin_state s ON s.family_id = t.family_id WHERE t.id = ?`,
+  ).bind(String(p.sub || "")).first<{ family_id: string; family_status: string; auth_version: number }>();
+  if (!row || row.family_id !== p.family_id || row.family_status === "suspended") return null;
+  return Number(p.av ?? -1) === Number(row.auth_version) ? row.family_id : null;
+}

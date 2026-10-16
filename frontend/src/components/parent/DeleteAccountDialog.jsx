@@ -5,14 +5,16 @@ import { api } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 
 export default function DeleteAccountDialog({ onClose }) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const google = user && user.has_password === false; // Google-only: a fresh sign-in replaces the password
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [needsCancel, setNeedsCancel] = useState(false);
 
-  const ready = password.length > 0 && confirm.trim() === "DELETE" && !busy;
+  const ready = (google || password.length > 0) && confirm.trim() === "DELETE" && !busy;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -20,11 +22,12 @@ export default function DeleteAccountDialog({ onClose }) {
     setBusy(true);
     setError("");
     try {
-      await api.post("/auth/delete-account", { password, confirm: confirm.trim() });
+      await api.post("/auth/delete-account", { password: google ? undefined : password, confirm: confirm.trim() });
       await logout();
       navigate("/");
     } catch (err) {
       const detail = err?.response?.data?.detail;
+      setNeedsCancel(err?.response?.data?.code === "SUBSCRIPTION_RENEWING");
       setError(typeof detail === "string" ? detail : "Something went wrong. Nothing was deleted.");
       setBusy(false);
     }
@@ -47,17 +50,33 @@ export default function DeleteAccountDialog({ onClose }) {
           <li>Reading logs, life learning and evidence</li>
           <li>All uploaded files and calendar events</li>
         </ul>
-        <p className="text-sm font-bold mb-4" style={{color:"#9B2C2C"}}>This cannot be undone. Your children will no longer be able to sign in.</p>
+        <p className="text-sm font-bold mb-2" style={{color:"#9B2C2C"}}>This cannot be undone. Your children will no longer be able to sign in.</p>
+        <p className="text-sm text-stone-700 mb-4">If you have a Family Membership that will renew, cancel it in Manage billing first. A membership already set to end doesn&apos;t stop you deleting.</p>
 
-        <label className="block text-xs font-bold text-stone-600 mb-1">Your password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"
-          className="w-full rounded-xl border px-3 py-2 text-sm mb-3" style={{borderColor:"#D4C8A8"}} data-testid="delete-account-password"/>
+        {google ? (
+          <p className="text-sm text-stone-700 mb-3" data-testid="delete-account-google">You sign in with Google, so there&apos;s no password to check. If you signed in more than 15 minutes ago, sign out and sign in with Google again first.</p>
+        ) : (
+          <>
+            <label className="block text-xs font-bold text-stone-600 mb-1">Your password</label>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password"
+              className="w-full rounded-xl border px-3 py-2 text-sm mb-3" style={{borderColor:"#D4C8A8"}} data-testid="delete-account-password"/>
+          </>
+        )}
 
         <label className="block text-xs font-bold text-stone-600 mb-1">Type DELETE to confirm</label>
         <input type="text" value={confirm} onChange={(e) => setConfirm(e.target.value)} autoComplete="off"
           className="w-full rounded-xl border px-3 py-2 text-sm mb-3" style={{borderColor:"#D4C8A8"}} data-testid="delete-account-confirm"/>
 
-        {error && <div className="text-sm mb-3" style={{color:"#9B2C2C"}} data-testid="delete-account-error">{error}</div>}
+        {error && (
+          <div className="text-sm mb-3" style={{color:"#9B2C2C"}} data-testid="delete-account-error">
+            {error}
+            {needsCancel && (
+              <button type="button" onClick={() => { onClose(); navigate("/parent/plan"); }} className="block mt-1 font-bold underline" data-testid="delete-account-manage-billing">
+                Go to Manage billing
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="flex gap-2 justify-end">
           <button type="button" onClick={onClose} className="rounded-xl px-4 py-2 text-sm font-semibold text-stone-700 hover:bg-white">Cancel</button>

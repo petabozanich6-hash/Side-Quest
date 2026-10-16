@@ -347,13 +347,14 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
   }
   const ev = await db.prepare("SELECT id, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first();
   const why = p.purpose === "revise" ? `Revision (Auto-Quest): revisiting ${json<string[]>(p.outcome_codes, []).join(", ")}.` : null;
-  const a = await lb.assignLesson(db, familyId, { student_id: p.student_id, lesson_id: p.lesson_id, scheduled_date: p.date, parent_notes: why }, now);
+  const a = await lb.assignLesson(db, familyId, { student_id: p.student_id, lesson_id: p.lesson_id, scheduled_date: p.date, parent_notes: why, again: true }, now);
   let assignmentId: string;
   if (a.ok) assignmentId = a.assignment.id;
   else if (a.code === "ALREADY_ASSIGNED") {
     const open = await db.prepare("SELECT id FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed') ORDER BY created_at DESC LIMIT 1").bind(familyId, p.student_id, p.lesson_id).first();
     assignmentId = open.id;
   } else return a;
+  // (again: the parent approved this proposal, and revision deliberately repeats a finished lesson.)
   // Never override a slot the parent already linked to something else.
   if (ev && !ev.linked_assignment_id) {
     await db.prepare("UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id = COALESCE(linked_lesson_id, ?) WHERE id = ? AND family_id = ? AND linked_assignment_id IS NULL").bind(assignmentId, p.lesson_id, ev.id, familyId).run();

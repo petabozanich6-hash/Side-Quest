@@ -4,7 +4,7 @@ import { JURISDICTIONS as PLAN_JURISDICTIONS, CHECKED_ON } from "./data/planJuri
 import { analyseLifeEvidence } from "./data/lifeEvidence";
 import { FRAMEWORKS, JURISDICTION_CODES, frameworkFor, getFamilyJurisdiction, normJurisdiction, setFamilyJurisdiction, usesNswOutcomes } from "./data/jurisdictions";
 import { mapLifeEvidenceWithAi, lifeMapLimits } from "./lifeLearningAi";
-import { getEntitlement } from "./lessonBuilder";
+import { checkFiles, getEntitlement } from "./lessonBuilder";
 import { safely, trackLifeEvidence } from "./outcomeTracker";
 import { buildPlanContent } from "./data/planBuilder";
 import type { App, Guards } from "./types";
@@ -126,16 +126,25 @@ export function registerLearning(app: App, g: Guards) {
     const user = c.get("user");
     const lessonRow = await getLesson(c.env.DB, user.family_id, c.req.param("lesson_id"));
     if (!lessonRow) return c.json({ detail: "Lesson not found" }, 404);
+    // Only this family's children and files can be attached.
+    const childId = user.role === "child" ? user.id : String(body.child_id || "");
+    if (user.role !== "child") {
+      const own = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?").bind(childId, user.family_id).first();
+      if (!own) return c.json({ detail: "Choose one of your children." }, 400);
+    }
+    const fileIds = Array.isArray(body.file_ids) ? body.file_ids.map(String).slice(0, 20) : [];
+    const badFile = await checkFiles(c.env.DB, user.family_id, fileIds);
+    if (badFile) return c.json({ detail: badFile.detail, code: badFile.code }, badFile.status as 400);
 
     const evidence = {
       id: newId(),
       family_id: user.family_id,
       lesson_id: c.req.param("lesson_id"),
-      child_id: user.role === "child" ? user.id : String(body.child_id || user.id),
+      child_id: childId,
       type: String(body.type || "text"),
       text: String(body.text || ""),
       file_name: String(body.file_name || ""),
-      file_ids: JSON.stringify(Array.isArray(body.file_ids) ? body.file_ids : []),
+      file_ids: JSON.stringify(fileIds),
       submitted_at: nowIso(),
     };
     await c.env.DB.prepare(
@@ -172,6 +181,9 @@ export function registerLearning(app: App, g: Guards) {
     const user = c.get("user");
     const student = await getStudent(c.env.DB, user.family_id, String(body.student_id || ""));
     if (!student) return c.json({ detail: "Student not found" }, 404);
+    const fileIds = Array.isArray(body.file_ids) ? body.file_ids.map(String).slice(0, 20) : [];
+    const badFile = await checkFiles(c.env.DB, user.family_id, fileIds);
+    if (badFile) return c.json({ detail: badFile.detail, code: badFile.code }, badFile.status as 400);
 
     const created_at = nowIso();
     const record = {
@@ -183,7 +195,7 @@ export function registerLearning(app: App, g: Guards) {
       date: String(body.date || created_at.slice(0, 10)),
       duration_minutes: body.duration_minutes == null ? null : Number(body.duration_minutes),
       location: body.location ? String(body.location) : null,
-      file_ids: JSON.stringify(Array.isArray(body.file_ids) ? body.file_ids : []),
+      file_ids: JSON.stringify(fileIds),
       parent_note: body.parent_note ? String(body.parent_note) : null,
       status: "awaiting_mapping",
       suggested_mappings: JSON.stringify([]),

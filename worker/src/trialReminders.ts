@@ -71,6 +71,7 @@ export async function processTrialReminders(env: Env, now = new Date()) {
         AND COALESCE(fs.status,'active')='active'
         AND f.trial_ends_at > ? AND f.trial_ends_at <= ?
         AND u.email LIKE '%@%.%'
+        AND (u.email_verification_required_at IS NULL OR u.email_verified_at IS NOT NULL)
         AND NOT EXISTS (SELECT 1 FROM trial_reminder_deliveries d
                         WHERE d.family_id=f.id AND d.kind=?)
       ORDER BY f.trial_ends_at ASC LIMIT ?`).bind(earliest, latest, kind, MAX_PER_RUN).all<Candidate>();

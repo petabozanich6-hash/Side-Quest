@@ -28,3 +28,23 @@ test("only failed sign-ins count, per account, and success clears them; child an
   assert.equal(await loginBlocked(db, "child", "kid", ""), false);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM login_attempts WHERE key LIKE '%kid%'").get().n, 0, "keys are hashed, never stored in clear");
 });
+
+test("a daily cap per account stops slow PIN guessing from rotating addresses; a new PIN lifts it", async () => {
+  const db = makeDb();
+  const realNow = Date.now;
+  let t = Date.parse("2026-10-14T00:00:00Z");
+  Date.now = () => t;
+  try {
+    // Seven failures every 16 minutes stays under the 15-minute limit, from a new address each time.
+    for (let i = 0; i < 30; i++) {
+      if (i && i % 7 === 0) t += 16 * 60e3;
+      await recordLoginFailure(db, "child", "kid", `10.0.0.${i}`);
+    }
+    t += 16 * 60e3;
+    assert.equal(await loginBlocked(db, "child", "kid", "10.9.9.9"), true, "30 failures in a day block");
+    await clearLoginFailures(db, "child", "kid");
+    assert.equal(await loginBlocked(db, "child", "kid", "10.9.9.9"), true, "a correct guess elsewhere doesn't lift the daily cap");
+    await clearLoginFailures(db, "child", "kid", { daily: true });
+    assert.equal(await loginBlocked(db, "child", "kid", "10.9.9.9"), false);
+  } finally { Date.now = realNow; }
+});
