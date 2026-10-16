@@ -170,6 +170,10 @@ Added **6** subject-scoped numbered Chemistry syllabus objectives to `worker/src
 
 Added **six** subject-scoped numbered syllabus objectives from **QCAA Earth & Environmental Science General senior syllabus 2025 v1.3 (January 2026)** to `worker/src/data/qld-qcaa-earth-environmental-science-2025-objectives-review.json`. Original PDF page index 6 / printed page 4 was independently checked: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_earth_science_25_syll.pdf . This brings the separately collected Queensland senior syllabus-level objective records in these continuation batches from 39 to **45 across seven subjects**. These are course-scoped objective ordinals, not unique alphanumeric outcomes, unit-level content descriptions, or proof of full Queensland coverage. No runtime exposure; review-only.
 
+### Queensland Biology Unit 1 objectives: first unit-level import (16 October 2026)
+
+Added **six numbered QCAA Biology 2025 v1.3 Unit 1 objectives** (Cells and multicellular organisms), directly checked against official QCAA PDF page index 22 / printed page 20: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Dataset `worker/src/data/qld-qcaa-biology-2025-unit1-objectives-review.json`. Each has a composite identifier `QLD:QCAA:Biology:General:2025:unit:1:objective:<n>`, distinct from the six *overall syllabus* objective references previously collected for Biology. The six unit objectives are complete for Unit 1's ordinal list, but this is **not a complete representation of Unit 1 subject matter, Units 2–4, or all Queensland Biology learning requirements**. Review-only; no live tracking or merge.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
