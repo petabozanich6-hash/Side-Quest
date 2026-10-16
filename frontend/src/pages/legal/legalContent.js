@@ -125,7 +125,7 @@ export const PAGES = {
       { h: "Limits on my responsibility", p: "Side-Quest is provided as is. To the extent the law allows, I am not liable for loss or damage arising from your use of the service, including lost data, interruptions, inaccurate content, or decisions you make based on it. Nothing in these terms excludes or limits any right or remedy that you have under the Australian Consumer Law or other law that cannot be excluded." },
       { h: "Changes to these terms", p: "I may update these terms from time to time. The date at the top shows the latest version. If I make an important change I will let you know through the app or by email. Continuing to use Side-Quest after a change means you accept it." },
       { h: "Governing law", p: "These terms are governed by the laws of Australia. If any part is found unenforceable, the rest still applies." },
-      { h: "Contact", p: "Side-Quest, support@sidequestlearning.app" },
+      { h: "Contact", p: "For signed-in support, use Parent Hub → Ideas, feedback & problems so I can reply privately in your thread. If you cannot sign in or the feature is unavailable, email support@sidequestlearning.app." },
     ],
   },
   "disclaimer": {
@@ -154,7 +154,7 @@ export const PAGES = {
       { h: "Other resources and links", p: "Side-Quest may link to books, videos, websites and other resources made by others. I do not control or endorse them and cannot guarantee that they are accurate, appropriate or still available. Preview anything before sharing it with your child." },
       { h: "Parent supervision", p: "Parents and guardians remain responsible for supervising children, reviewing any content, and deciding what is right for their family." },
       { h: "Changes and corrections", p: "Side-Quest is an independently run service, and its content may change as the platform develops. If you spot something wrong or out of date, please tell me through Request a Correction so I can fix it." },
-      { h: "Contact", p: "Side-Quest, support@sidequestlearning.app" },
+      { h: "Contact", p: "For signed-in support, use Parent Hub → Ideas, feedback & problems so I can reply privately in your thread. If you cannot sign in or the feature is unavailable, email support@sidequestlearning.app." },
     ],
   },
   "ai-use": {
