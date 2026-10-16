@@ -238,7 +238,7 @@ export function registerTimetable(app: App, g: Guards) {
   });
   app.post("/api/timetable/reschedule/apply", g.auth, g.parent, async (c) => {
     const r = await applyMissedDay(c.env.DB, c.get("user").family_id, await c.req.json().catch(() => ({})));
-    return r.ok ? c.json({ moved: r.moved }) : send(c, r);
+    return r.ok && "moved" in r ? c.json({ moved: r.moved }) : send(c, r);
   });
   app.post("/api/assignments/:id/place", g.auth, g.parent, async (c) => {
     const r = await placeAssignment(c.env.DB, c.get("user").family_id, c.req.param("id"), await c.req.json().catch(() => ({})));
