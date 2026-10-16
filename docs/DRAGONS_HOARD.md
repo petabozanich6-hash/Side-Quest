@@ -21,7 +21,7 @@ The Owner can open a customer's HQ page and choose **Gift 7 preview days**. It r
 
 Gifts are permitted only to active, non-admin families whose stored plan is `FREE_PREVIEW` and who have no Stripe subscription/status; extensions are capped at 35 days from the original trial start and compare-and-swap on the previous trial end to avoid concurrent overwrites. A paid plan, internal owner family, or suspended family cannot be gifted preview days.
 
-Trial reminder emails already use the updated preview end date. Confirm existing reminder cadence when gifting near an upcoming scheduled notification.
+An eligible family sees a Dragon’s Hoard gift confirmation on **Your plan**, with the number of bonus days and new preview end date. The owner's reason remains private in the audit log. Trial reminder emails already use the updated preview end date. Confirm existing reminder cadence when gifting near an upcoming scheduled notification.
 
 ## Security and deployment
 
