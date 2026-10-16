@@ -1,0 +1,64 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "WACE",
+  "framework_version": "2026",
+  "source_url": "https://www.scsa.wa.edu.au/__data/assets/pdf_file/0018/1232028/_WACE-Manual-2026-April.pdf",
+  "source_pdf_page": 156,
+  "source_print_page": 144,
+  "verification_date": "2026-10-16",
+  "status": "source_verified_partial",
+  "scope_note": "Punjabi rows omitted from earlier page 144 batch. ALPBL is printed in the official manual and retained literally pending clarification (potential typographic error; DO NOT convert automatically to A1PBL).",
+  "records": [
+    {
+      "subject": "Punjabi: Background Language",
+      "identifier": "PBL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Punjabi: Background Language",
+      "identifier": "AEPBL",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Punjabi: Background Language",
+      "identifier": "ATPBL",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Punjabi: Background Language",
+      "identifier": "ALPBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Punjabi: Background Language",
+      "identifier": "A2PBL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Punjabi: Second Language",
+      "identifier": "PSL",
+      "identifier_kind": "subject_code"
+    },
+    {
+      "subject": "Punjabi: Second Language",
+      "identifier": "AEPSL",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Punjabi: Second Language",
+      "identifier": "ATPSL",
+      "identifier_kind": "course_code"
+    },
+    {
+      "subject": "Punjabi: Second Language",
+      "identifier": "A1PSL",
+      "identifier_kind": "unit_code"
+    },
+    {
+      "subject": "Punjabi: Second Language",
+      "identifier": "A2PSL",
+      "identifier_kind": "unit_code"
+    }
+  ]
+}
