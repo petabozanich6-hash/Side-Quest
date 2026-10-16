@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import ChildLearningRequirements from "../../components/parent/ChildLearningRequirements";
 import { toast } from "sonner";
 import { api, apiErrorMessage } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
@@ -134,6 +135,8 @@ export default function HomeschoolCompass() {
         <div className="flex items-start gap-2 p-3 rounded-xl border border-amber-200 bg-amber-50 text-sm text-amber-950" data-testid="compass-attendance-warning"><AlertTriangle size={18} className="shrink-0 mt-0.5" aria-hidden="true"/><span><strong>Before withdrawing from school:</strong> {guide.beforeLeavingSchool}</span></div>
         <div className="text-xs text-stone-500"><ShieldCheck size={13} className="inline mr-1"/> Official sources checked {prettyDate(COMPASS_REVIEWED_ON)}. Requirements can change; confirm with the authority before applying.</div>
       </section>
+
+      <ChildLearningRequirements key={studentId || "new-child"} jurisdiction={jurisdiction} guide={guide} student={currentStudent} />
 
       <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(280px,340px)] gap-6 items-start">
         <div className="space-y-6 min-w-0">
