@@ -27,7 +27,7 @@ test("all model calls are logged without retaining messages, responses, family i
   const payload={messages:[{role:"user",content:inputText}]};
   const r=await env.AI.run(DEFAULT_WORKERS_AI_MODEL,payload);
   assert.equal(r.response,"CHILD-PRIVATE-RESPONSE");
-  const rows=db.raw.prepare("SELECT * FROM ai_inference_costs").all();
+  const rows=db.raw.prepare("SELECT * FROM ai_calls").all();
   assert.equal(rows.length,1);
   assert.equal(rows[0].token_basis,"reported");
   assert.equal(rows[0].input_tokens,2000);
@@ -57,7 +57,7 @@ test("the production waitUntil path never delays the AI response for cost writes
   assert.equal(response.response, "Ready");
   assert.equal(jobs.length, 1);
   await Promise.all(jobs);
-  const rows = db.raw.prepare("SELECT * FROM ai_inference_costs").all();
+  const rows = db.raw.prepare("SELECT * FROM ai_calls").all();
   assert.equal(rows.length, 1);
   assert.equal(rows[0].model, "@cf/qwen/qwen3-30b-a3b-fp8");
   assert.equal(rows[0].status, "completed");
@@ -109,4 +109,71 @@ test("Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estima
   assert.equal("actual_invoice" in snapshot.ai.cost,false);
   const unbound=await overview({...metered,BUCKET:undefined},defaultSettings());
   assert.equal(unbound.storage.configured,false);
+});
+
+// ---------------------------------------------------------------- model routing
+
+const { routingConfig, modelFor, withMeta, MODELS } = await import("../src/aiRouting.ts");
+const { aiCostBreakdown, usdToAud, resetFxCache, callTimeoutMs } = await import("../src/aiCost.ts");
+const QWEN = "@cf/qwen/qwen3-30b-a3b-fp8";
+
+test("routing is off by default; only allow-listed models and known tasks can be routed", () => {
+  assert.equal(modelFor(routingConfig({ AI_MODEL_ROUTES: JSON.stringify({ outcome_match: QWEN }) }), "outcome_match", DEFAULT_WORKERS_AI_MODEL), DEFAULT_WORKERS_AI_MODEL, "flag off: no change");
+  const cfg = routingConfig({ AI_ROUTING_ENABLED: "true", AI_MODEL_ROUTES: JSON.stringify({ outcome_match: QWEN, lesson_section: "@cf/evil/model", nope: QWEN }) });
+  assert.equal(modelFor(cfg, "outcome_match", DEFAULT_WORKERS_AI_MODEL), QWEN);
+  assert.equal(modelFor(cfg, "outcome_match", DEFAULT_WORKERS_AI_MODEL, 2), DEFAULT_WORKERS_AI_MODEL, "a retry goes back to the caller's model");
+  assert.equal(modelFor(cfg, "lesson_section", DEFAULT_WORKERS_AI_MODEL), DEFAULT_WORKERS_AI_MODEL, "unlisted model ignored");
+  assert.equal(cfg.problems.length, 2);
+  assert.equal(routingConfig({ AI_ROUTING_ENABLED: "true", AI_MODEL_ROUTES: "{bad" }).problems.length, 1);
+  for (const m of Object.values(MODELS)) assert.ok(m.input > 0 && m.output > 0 && m.context > 0);
+  assert.deepEqual(RATES_USD_PER_MILLION[QWEN], { input: 0.0509, output: 0.335 });
+});
+
+test("a routed call uses the routed model, strips metadata, and falls back once to the caller's model on error", async () => {
+  const db = makeDb();
+  const seen = [];
+  const ai = { run: async (model, input, options) => {
+    seen.push({ model, options });
+    if (model === QWEN && input.fail) throw new Error("model unavailable");
+    return { response: "{}", usage: { prompt_tokens: 10, completion_tokens: 5 } };
+  } };
+  const env = meterWorkersAi({ DB: db, JWT_SECRET: "t", AI: ai, AI_ROUTING_ENABLED: "true", AI_MODEL_ROUTES: JSON.stringify({ outcome_match: QWEN }) });
+  await env.AI.run(DEFAULT_WORKERS_AI_MODEL, { messages: [] }, withMeta({ gateway: { id: "g" } }, { task: "outcome_match", generation: "gen-1" }));
+  assert.equal(seen[0].model, QWEN);
+  assert.deepEqual(seen[0].options, { gateway: { id: "g" } }, "Workers AI never sees Side-Quest metadata");
+  await env.AI.run(DEFAULT_WORKERS_AI_MODEL, { messages: [], fail: true }, withMeta(undefined, { task: "outcome_match", generation: "gen-1" }));
+  assert.deepEqual(seen.slice(1).map((s) => s.model), [QWEN, DEFAULT_WORKERS_AI_MODEL]);
+  assert.equal(seen[2].options, undefined);
+  const rows = db.raw.prepare("SELECT model, requested_model, task, generation_id, fallback, status FROM ai_calls ORDER BY rowid").all();
+  assert.deepEqual(rows.map((r) => [r.model, r.fallback, r.status]), [[QWEN, 0, "completed"], [QWEN, 0, "failed"], [DEFAULT_WORKERS_AI_MODEL, 1, "completed"]]);
+  assert.ok(rows.every((r) => r.task === "outcome_match" && r.generation_id === "gen-1" && r.requested_model === DEFAULT_WORKERS_AI_MODEL));
+  const b = await aiCostBreakdown(db);
+  assert.equal(b.generations.count, 1);
+  assert.equal(b.generations.avg_calls, 3);
+  assert.equal(b.rows.find((r) => r.model === QWEN).failed, 1);
+  assert.equal(b.rows.find((r) => r.model === DEFAULT_WORKERS_AI_MODEL).fallbacks, 1);
+});
+
+test("an AI call that hangs times out (when configured) and is recorded as a timeout", async () => {
+  assert.equal(callTimeoutMs({}), 0, "no timeout unless asked: unchanged behaviour");
+  assert.equal(callTimeoutMs({ AI_FAST_PIPELINE: "true" }), 90000);
+  assert.equal(callTimeoutMs({ AI_CALL_TIMEOUT_MS: "100" }), 0, "silly values ignored");
+  const db = makeDb();
+  const env = meterWorkersAi({ DB: db, JWT_SECRET: "t", AI_CALL_TIMEOUT_MS: "5000", AI: { run: () => new Promise(() => {}) } });
+  const realSetTimeout = globalThis.setTimeout;
+  globalThis.setTimeout = (fn, _ms) => realSetTimeout(fn, 1);
+  try {
+    await assert.rejects(env.AI.run(DEFAULT_WORKERS_AI_MODEL, { messages: [] }), /did not answer/);
+  } finally { globalThis.setTimeout = realSetTimeout; }
+  assert.equal(db.raw.prepare("SELECT status FROM ai_calls").get().status, "timeout");
+});
+
+test("AUD conversion uses the ECB rate via Frankfurter and is never invented", async () => {
+  resetFxCache();
+  assert.equal(await usdToAud(async () => new Response("nope", { status: 500 })), null);
+  assert.equal(await usdToAud(async () => new Response(JSON.stringify({ rates: { AUD: 99 }, date: "2026-10-15" }))), null, "implausible rate rejected");
+  const fx = await usdToAud(async (url) => { assert.match(String(url), /api\.frankfurter\.app\/latest\?from=USD&to=AUD/); return new Response(JSON.stringify({ rates: { AUD: 1.52 }, date: "2026-10-15" })); });
+  assert.deepEqual(fx, { rate: 1.52, date: "2026-10-15", source: "European Central Bank reference rate via api.frankfurter.app" });
+  assert.equal((await usdToAud(async () => { throw new Error("cached, not fetched"); })).rate, 1.52);
+  resetFxCache();
 });

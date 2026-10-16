@@ -3,6 +3,7 @@ import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
+import * as jobs from "./aiJobs";
 import * as bat from "./lessonBatches";
 import * as help from "./aiHelp";
 import * as res from "./resources";
@@ -11,7 +12,7 @@ import { buildPortfolio } from "./portfolio";
 import { billingSummary } from "./billing";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; AI_FAST_PIPELINE?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -199,11 +200,41 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return c.json({ allowed: limits.aiGeneration, available: !!c.env.AI, usage: await aid.aiUsage(c.env.DB, u.family_id) });
   });
 
+  // With a request_id (the app always sends one) the same request is never written or charged twice, and
+  // GET /api/ai/lesson-draft/status reports which stage it has really reached.
   app.post("/api/ai/lesson-draft", auth, parent, async (c) => {
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
-    const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", request: b });
-    return r.ok ? c.json({ lesson: r.lesson, usage: r.usage, warnings: r.warnings, model: r.model, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
+    const opts = { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fast: c.env.AI_FAST_PIPELINE === "true", request: b };
+    const out = (r: any) => ({ lesson: r.lesson, usage: r.usage, warnings: r.warnings, model: r.model, assumptions: r.assumptions, generation: r.generation });
+    if (b.request_id === undefined) {
+      const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, opts);
+      return r.ok ? c.json(out(r)) : send(c, r);
+    }
+    if (!jobs.validRequestId(b.request_id)) return c.json({ detail: "Invalid request id" }, 400);
+    const start = await jobs.startJob(c.env.DB, u.family_id, u.id, b.request_id);
+    if (start.state === "done") {
+      const row = await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(start.job.lesson_id, u.family_id).first();
+      if (row) return c.json({ lesson: lb.lessonOut(row), replay: true, warnings: [], assumptions: {}, generation: null });
+    }
+    if (start.state !== "new") {
+      return c.json({ detail: "This lesson is already being written. It will open as soon as it is ready.", code: "IN_PROGRESS", progress: jobs.jobView(start.job) }, 409);
+    }
+    const jobId = start.id;
+    let r: any;
+    try {
+      r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { ...opts, generationId: jobId, onPhase: (p) => jobs.setPhase(c.env.DB, jobId, p) });
+    } finally {
+      await jobs.finishJob(c.env.DB, jobId, r?.ok ? { lessonId: r.lesson.id } : { error: r?.detail || "The lesson could not be written." }).catch(() => {});
+    }
+    return r.ok ? c.json(out(r)) : send(c, r);
+  });
+
+  app.get("/api/ai/lesson-draft/status", auth, parent, async (c) => {
+    const id = c.req.query("request_id");
+    if (!jobs.validRequestId(id)) return c.json({ detail: "Invalid request id" }, 400);
+    c.header("Cache-Control", "no-store");
+    return c.json(jobs.jobView(await jobs.getJob(c.env.DB, c.get("user").family_id, id)));
   });
 
   app.post("/api/ai/lesson-refine", auth, parent, async (c) => {
@@ -234,7 +265,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   });
   app.post("/api/ai/batches/:id/items/:index/draft", auth, parent, async (c) => {
     const u = c.get("user");
-    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", batchId: c.req.param("id"), index: Number(c.req.param("index")) });
+    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fast: c.env.AI_FAST_PIPELINE === "true", batchId: c.req.param("id"), index: Number(c.req.param("index")) });
     return r.ok ? c.json({ lesson: r.lesson, reused: r.reused, usage: r.usage, warnings: r.warnings, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
   });
   app.post("/api/ai/batches/:id/dismiss", auth, parent, async (c) => {

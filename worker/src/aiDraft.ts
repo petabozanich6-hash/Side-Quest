@@ -4,6 +4,8 @@
 // sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
+import { gatewayOptions, withMeta } from "./aiRouting";
+import type { AiCallMeta, AiTask } from "./aiRouting";
 import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
@@ -17,7 +19,7 @@ type DB = D1Database;
 export type AiBinding = { run(model: string, input: Record<string, unknown>, options?: Record<string, unknown>): Promise<any> };
 
 export const DEFAULT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
-export const AI_LIMITS = { perDay: 10, perMonth: 60 };
+export const AI_LIMITS = { perDay: 10, perMonth: 60, failedPerDay: 12 };
 
 export type AiRequest = {
   topic?: unknown; learning_area?: unknown; year_level?: unknown; stage?: unknown; goal?: unknown; duration_minutes?: unknown;
@@ -602,10 +604,14 @@ export function tidyJson(t: string): string {
 type StageRun = { value: any; salvaged: boolean };
 const hasKeys = (v: any, keys: string[]) => v && typeof v === "object" && keys.every((k) => v[k] !== undefined && !(Array.isArray(v[k]) && !v[k].length) && v[k] !== "");
 
+export const stripThinking = (t: string) => t.replace(/<think>[\s\S]*?<\/think>/gi, "").replace(/^[\s\S]*<\/think>/i, "");
+
 /** Strict parse first; only if that fails is a cut-off reply patched up, and then it is reported, never hidden. */
 export function parseReply(out: unknown): StageRun | null {
   const t: any = out;
-  const text = typeof t === "string" ? t : typeof t?.response === "string" ? t.response : t?.choices?.[0]?.message?.content;
+  const rawText = typeof t === "string" ? t : typeof t?.response === "string" ? t.response : t?.choices?.[0]?.message?.content;
+  // Reasoning models (e.g. Qwen3) may think out loud first; only the answer after it is parsed.
+  const text = typeof rawText === "string" ? stripThinking(rawText) : rawText;
   if (typeof text === "string") {
     const a = text.indexOf("{"), b = text.lastIndexOf("}");
     if (a >= 0 && b > a) {
@@ -647,6 +653,23 @@ function aliasKeys(v: any): any {
   return v;
 }
 const SMALL_POOL = 4;
+/** With AI_FAST_PIPELINE every teaching section and worked example is requested at once (one wave, not two or three). */
+export const FAST_POOL = 18;
+
+/** Stages a parent sees while a lesson is written (real milestones, reported as each one starts). */
+export type GenPhase = "design" | "frame" | "teaching" | "practice" | "checking" | "outcomes" | "saving";
+export const GEN_PHASES: GenPhase[] = ["design", "frame", "teaching", "practice", "checking", "outcomes", "saving"];
+export type Pipeline = { fast?: boolean; onPhase?: (phase: GenPhase) => Promise<void> | void; onDesign?: (design: any) => void };
+
+export function taskForStage(name: string): AiTask {
+  if (name === "design") return "lesson_design";
+  if (name === "frame") return "lesson_frame";
+  if (name.startsWith("section")) return "lesson_section";
+  if (name.startsWith("example")) return "lesson_example";
+  if (name === "practice") return "lesson_practice";
+  if (name === "assessment") return "lesson_assessment";
+  return "lesson_repair";
+}
 async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T[]> {
   const out: T[] = new Array(jobs.length);
   let next = 0;
@@ -662,11 +685,12 @@ async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T
  *   4 practice and assessment (two requests). `call(messages, maxTokens)` returns the raw model reply and throws only if the model cannot be reached.
  */
 export async function generateStaged(
-  call: (messages: { role: string; content: string }[], maxTokens: number) => Promise<unknown>,
+  call: (messages: { role: string; content: string }[], maxTokens: number, meta?: AiCallMeta) => Promise<unknown>,
   spec: Spec,
   stats: GenStats,
   flags: string[],
-  compact = false
+  compact = false,
+  pipeline: Pipeline = {}
 ): Promise<Record<string, any> | null> {
   const sys = { role: "system", content: stageSystem() };
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
@@ -674,7 +698,7 @@ export async function generateStaged(
     let lastWhy = "";
     for (let attempt = 0; attempt < 2; attempt++) {
       const started = Date.now();
-      const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens);
+      const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens, { task: taskForStage(name), attempt: attempt + 1 });
       (stats.stage_timings_ms ??= []).push({ stage: name, ms: Date.now() - started });
       stats.calls++;
       stats.input_tokens += Number(raw?.usage?.prompt_tokens) || 0;
@@ -692,18 +716,21 @@ export async function generateStaged(
     if (best) { flags.push(`The AI's reply for the ${name} step was cut off, so the end of it may be missing. Please read it through.`); return best.value; }
     return null;
   };
+  const step = async <T,>(phase: GenPhase, run: () => Promise<T>): Promise<T> => {
+    await pipeline.onPhase?.(phase);
+    return run();
+  };
+  const poolSize = pipeline.fast ? FAST_POOL : SMALL_POOL;
 
-  const design = await go("design", designPrompt(spec), 2800, ["sequence", "worked_examples"]);
+  const design = await step("design", () => go("design", designPrompt(spec), 2800, ["sequence", "worked_examples"]));
   if (!design) return null;
   const seq: any[] = (design.sequence || []).filter((s: any) => s && s.heading && s.idea).slice(0, 10);
   const exs: any[] = (design.worked_examples || []).filter((w: any) => w && w.problem).slice(0, 8);
   if (!seq.length || !exs.length) return null;
   design.sequence = seq; design.worked_examples = exs;
+  pipeline.onDesign?.(design);
 
-  const frame = await go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]);
-  if (!frame) return null;
-  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
-
+  const teach = async (texts: any[]): Promise<[any[], any[]]> => {
   let sections: any[] = [];
   let examples: any[] = [];
   if (compact) {
@@ -731,7 +758,7 @@ export async function generateStaged(
     const grouped = await pool<any>([
       ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
       ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
-    ]);
+    ], poolSize);
     const unpack = async (type: "sections" | "worked_examples", chunksToRead: number[][], offset: number) => {
       const resolved = await Promise.all(chunksToRead.map(async (ids, k) => {
         const items = grouped[offset + k]?.[type];
@@ -754,14 +781,38 @@ export async function generateStaged(
     const results = await pool<any>([
       ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
       ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
-    ]);
+    ], poolSize);
     sections = results.slice(0, seq.length);
     examples = results.slice(seq.length);
+  }
+  return [sections, examples];
+  };
+  // Fast pipeline: a subject that rarely uses readings starts its teaching alongside the frame. The prompts are
+  // exactly the ones it would get anyway (they only differ when the frame returns readings); if the frame
+  // does return readings, the teaching is written again with them, as before, so nothing is lost.
+  const readingsLikely = !!spec.source || /english|literacy|human|hass|history|geograph|civic|social|arts?\b|language/i.test(spec.area || "");
+  const speculate = pipeline.fast === true && !readingsLikely;
+  await pipeline.onPhase?.("frame");
+  const framing = go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]);
+  let early: Promise<[any[], any[]]> | null = null;
+  if (speculate) { await pipeline.onPhase?.("teaching"); early = teach([]); early.catch(() => { /* surfaced when awaited */ }); }
+  const frame = await framing;
+  if (!frame) { if (early) await early.catch(() => null); return null; }
+  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
+  let sections: any[];
+  let examples: any[];
+  if (early && !texts.length) {
+    [sections, examples] = await early;
+  } else {
+    if (early) await early.catch(() => null); // written without the readings: replaced below
+    if (!speculate) await pipeline.onPhase?.("teaching");
+    [sections, examples] = await teach(texts);
   }
   examples.forEach(r => { if (r && Array.isArray(r.steps) && !r.answer) r.answer = String(r.steps[r.steps.length - 1] ?? ""); });
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
   const taught = { sections, worked_examples: examples, texts };
 
+  await pipeline.onPhase?.("practice");
   const [pa, pb] = await Promise.all([
     go("practice", practiceAPrompt(spec, design, taught), 6000, ["guided_practice", "activities"]),
     go("assessment", assessmentPrompt(spec, design, taught), 4500, ["questions", "quiz"]),
@@ -780,7 +831,8 @@ export async function generateStaged(
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; request: AiRequest },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fast?: boolean; request: AiRequest;
+    /** Real progress for the parent (lesson generation jobs). */ onPhase?: (phase: GenPhase) => Promise<void> | void; generationId?: string },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -833,27 +885,55 @@ export async function draftLessonWithAi(
     original: clip(request.request, 600) || undefined, curriculumContext, series,
   };
 
+  // A reservation still 'pending' after 15 minutes belongs to a Worker that stopped mid-draft: release it.
+  await db.prepare("UPDATE ai_usage SET status = 'failed' WHERE family_id = ? AND kind = 'lesson_draft' AND status = 'pending' AND created_at < ?")
+    .bind(familyId, new Date(now.getTime() - 15 * 60_000).toISOString()).run();
   const usage = await aiUsage(db, familyId, now);
   if (!usage.unlimited && usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
   if (!usage.unlimited && usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
+  // Failed drafts don't use the allowance, but they still cost: stop a run of failures from looping.
+  const dayAgo = new Date(now.getTime() - 86400000).toISOString();
+  if (!usage.unlimited) {
+    const failed = Number((await db.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id = ? AND kind = 'lesson_draft' AND status = 'failed' AND created_at >= ?").bind(familyId, dayAgo).first<{ n: number }>())?.n ?? 0);
+    if (failed >= AI_LIMITS.failedPerDay) return lb.fail(429, "Several AI drafts couldn't be finished today, so we've paused AI drafting until tomorrow. You can still build lessons by hand.", "AI_FAILURES");
+  }
 
-  // Reserve the slot first so parallel requests cannot exceed the limit by much; free it if the call fails.
+  // Reserve the slot atomically, so parallel requests can never go over the allowance; freed if the draft fails.
   const usageId = crypto.randomUUID();
-  await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'lesson_draft', 'pending', ?)").bind(usageId, familyId, userId, now.toISOString()).run();
+  const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)).toISOString();
+  const counted = "SELECT COUNT(*) FROM ai_usage WHERE family_id = ? AND kind = 'lesson_draft' AND status != 'failed' AND created_at >= ?";
+  const reserved = usage.unlimited
+    ? await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'lesson_draft', 'pending', ?)").bind(usageId, familyId, userId, now.toISOString()).run()
+    : await db.prepare(`INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) SELECT ?, ?, ?, 'lesson_draft', 'pending', ? WHERE (${counted}) < ? AND (${counted}) < ?`)
+      .bind(usageId, familyId, userId, now.toISOString(), familyId, dayAgo, AI_LIMITS.perDay, familyId, monthStart, AI_LIMITS.perMonth).run();
+  if (!reserved.meta?.changes) return lb.fail(429, `You have used your AI drafts for now. Try again later, or build by hand.`, "AI_QUOTA");
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   const model = opts.model || DEFAULT_MODEL;
 
   const generationStarted = Date.now();
   const stats: GenStats = { calls: 0, input_tokens: 0, output_tokens: 0, stages: [], stage_timings_ms: [] };
   const stageFlags: string[] = [];
-  const call = (messages: { role: string; content: string }[], maxTokens: number) =>
-    ai.run(model, { messages, max_tokens: maxTokens, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+  const generation = opts.generationId || crypto.randomUUID();
+  const call = (messages: { role: string; content: string }[], maxTokens: number, meta: AiCallMeta = {}) =>
+    ai.run(model, { messages, max_tokens: maxTokens, temperature: 0.4 }, withMeta(gatewayOptions(opts.gatewayId), { ...meta, generation }));
+  const phase = async (p: GenPhase) => { try { await opts.onPhase?.(p); } catch { /* progress is informational only */ } };
   let raw: any = null;
   let draft: Draft | null = null;
   let issues: Issue[] = [];
+  // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
+  const wantsOutcomes = (request as any).link_outcomes !== false && usesNswOutcomes(jurisdiction);
+  const matchOutcomes = (d: Draft) => matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, d, { model, gatewayId: opts.gatewayId, generation }).catch(() => null);
+  let earlyOutcomes: ReturnType<typeof matchOutcomes> | null = null;
   try {
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true);
+    // Fast pipeline: outcome matching only reads the title, objectives, key words, section headings and worked
+    // example titles, which the design step settles, so it starts then instead of after everything else.
+    const onDesign = opts.fast === true && wantsOutcomes
+      ? (d: any) => { earlyOutcomes = matchOutcomes({ title: d.title, objectives: d.objectives, key_words: d.key_words, learning_area: spec.area, year_level: spec.year,
+          stage: clip(request.stage, 10) || stageFor(spec.year), sections: (d.sequence || []).map((x: any) => ({ heading: x.heading })), worked_examples: (d.worked_examples || []).map((w: any) => ({ title: w.title, problem: w.problem })) } as any); }
+      : undefined;
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, { fast: opts.fast === true, onPhase: phase, onDesign });
     if (raw) {
+      await phase("checking");
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);
       const fix = issues.filter((i) => i.repair || i.hard);
@@ -864,7 +944,7 @@ export async function draftLessonWithAi(
           { role: "system", content: stageSystem() },
           { role: "user", content: `Here is a lesson draft (JSON):\n${JSON.stringify(ordered({ ...raw }))}\n\nA reviewer found these problems:\n${fix.map((i) => `- ${i.msg}`).join("\n")}\n\nRewrite ONLY these keys so the problems are fixed: ${keys.join(", ")}. Keep everything consistent with the rest of the lesson and keep what was already good. Make the explanations developed and instructional, not longer for the sake of length. Return ONE JSON object containing only those keys, fully rewritten.` },
         ];
-        const rr: any = await call(repairMsg, 6000);
+        const rr: any = await call(repairMsg, 6000, { task: "lesson_repair" });
         stats.calls++; stats.stages.push("repair");
         stats.input_tokens += Number(rr?.usage?.prompt_tokens) || 0; stats.output_tokens += Number(rr?.usage?.completion_tokens) || 0;
         const patch = parseReply(rr)?.value ?? null;
@@ -898,16 +978,16 @@ export async function draftLessonWithAi(
   }
   // Optional (on unless the parent turns it off): link the lesson to the outcomes it develops, picked from the real outcome list.
   let outcomes: OutcomeSuggestion[] = [];
-  // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
-  if ((request as any).link_outcomes !== false && usesNswOutcomes(jurisdiction)) {
-    try {
-      const m = await matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, draft, { model, gatewayId: opts.gatewayId });
-      if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
-    } catch { /* optional step: the lesson is fine without it */ }
+  if (wantsOutcomes) {
+    await phase("outcomes");
+    // optional step: the lesson is fine without it
+    const m = await (earlyOutcomes ?? matchOutcomes(draft));
+    if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
     if (!outcomes.length) outcomes = suggestOutcomes(draft, 2).filter((o) => o.confidence === "likely");
     draft.outcome_codes = outcomes.map((o) => o.code);
     draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
   }
+  await phase("saving");
   const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
   if (!created.ok) {
     await mark("failed");
@@ -975,7 +1055,7 @@ export async function refineLessonWithAi(
         SCHEMA,
       ].join("\n\n") },
     ];
-    const out = await ai.run(model, { messages, max_tokens: 6000, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+    const out = await ai.run(model, { messages, max_tokens: 6000, temperature: 0.4 }, withMeta(gatewayOptions(opts.gatewayId), { task: "lesson_refine" }));
     const parsed: any = extractJson(out);
     patchRaw = parsed && typeof parsed === "object" ? parsed : null;
   } catch {
@@ -1056,7 +1136,7 @@ export async function planSeriesWithAi(
       "Each lesson teaches ONE clear concept that fits in the time. Order them so each builds on the previous one, with no repetition. Use accurate, standard content for this age. Do not invent facts.",
       'Reply with ONE JSON object only: {"series_title":string,"lessons":[{"title":string,"goal":string (one sentence: what the child will be able to do or explain)}]}',
     ].join("\n");
-    const out = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: "You are an experienced Australian teacher planning a unit of work. Reply with valid JSON only." }, { role: "user", content: prompt }], max_tokens: 1500, temperature: 0.3 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+    const out = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: "You are an experienced Australian teacher planning a unit of work. Reply with valid JSON only." }, { role: "user", content: prompt }], max_tokens: 1500, temperature: 0.3 }, withMeta(gatewayOptions(opts.gatewayId), { task: "series_plan" }));
     plan = extractJson(out);
   } catch {
     await done("failed");

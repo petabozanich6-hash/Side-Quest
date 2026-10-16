@@ -1,3 +1,4 @@
+import { gatewayOptions, withMeta } from "./aiRouting";
 // AI mapping of a logged life-learning activity (baking, bushwalks, budgeting...) to curriculum outcomes for the
 // parent's own state or territory. One Workers AI call per request; paid plans only; metered in ai_usage.
 //
@@ -166,7 +167,7 @@ export async function mapLifeEvidenceWithAi(
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   let raw: unknown;
   try {
-    raw = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: system }, { role: "user", content: user }], max_tokens: 900, temperature: 0.2 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+    raw = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: system }, { role: "user", content: user }], max_tokens: 900, temperature: 0.2 }, withMeta(gatewayOptions(opts.gatewayId), { task: "life_mapping" }));
   } catch {
     await mark("failed");
     return { ok: false, status: 502, code: "AI_FAILED", detail: "The AI didn't answer. Nothing was used up. Please try again." };
