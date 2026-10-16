@@ -342,7 +342,7 @@ export function createAdminRoutes() {
       return c.json(result, 201);
     } catch {
       // Do not log the Stripe key, customer information or a full outbound request.
-      return c.json({ detail: "Stripe could not create this scroll. Confirm Coupons and Promotion Codes write permissions, then retry." }, 502);
+      return c.json({ detail: "Stripe could not create this scroll. Check Prices read, Coupons write and Promotion Codes write permissions in the matching Stripe account, then retry." }, 502);
     }
   });
 
