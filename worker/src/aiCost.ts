@@ -148,8 +148,10 @@ export function callTimeoutMs(env: Pick<Env, "AI_CALL_TIMEOUT_MS" | "AI_FAST_PIP
  * there is no execution context, e.g. unit tests), and never holds prompt, reply, child or family data.
  */
 export function meterWorkersAi(env: Env, ctx?: Pick<ExecutionContext, "waitUntil">): Env {
-  if (!env.AI || !env.DB) return env;
+  if (!env.AI) return env;
   const original = env.AI;
+  // Without a database nothing is recorded, but the call tags must still never reach Workers AI.
+  if (!env.DB) return { ...env, AI: { run: (m: string, input: Record<string, unknown>, o?: Record<string, unknown>) => original.run(m, input, splitMeta(o).options) } };
   const routing = routingConfig(env);
   const timeout = callTimeoutMs(env);
   const record = (row: { model: string; requested: string; meta: AiCallMeta; fallback: boolean; input: Record<string, unknown>; raw: any; ok: boolean; ms: number; timedOut: boolean }) => {

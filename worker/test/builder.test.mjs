@@ -1219,3 +1219,11 @@ test("fast pipeline: when the frame does return readings, the teaching is rewrit
   const used = sectionPrompts.filter((u) => u.includes("Seedlings are watered every morning."));
   assert.equal(used.length, GARDEN.sections.length, "the kept sections were written with the reading");
 });
+
+test("replies from reasoning models: the thinking is ignored and the JSON after it is read", () => {
+  const r = aid.parseReply({ response: '<think>Maybe {"title": "wrong"} ... let me plan.</think>\n{"title":"Right","sections":[]}' });
+  assert.equal(r.value.title, "Right");
+  assert.equal(r.salvaged, false);
+  assert.equal(aid.parseReply({ choices: [{ message: { content: '{"title":"Chat shape"}' } }] }).value.title, "Chat shape");
+  assert.equal(aid.stripThinking("plan plan </think>{\"a\":1}"), '{"a":1}', "an unclosed opening tag still drops the reasoning");
+});

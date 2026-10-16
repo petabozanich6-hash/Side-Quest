@@ -604,10 +604,14 @@ export function tidyJson(t: string): string {
 type StageRun = { value: any; salvaged: boolean };
 const hasKeys = (v: any, keys: string[]) => v && typeof v === "object" && keys.every((k) => v[k] !== undefined && !(Array.isArray(v[k]) && !v[k].length) && v[k] !== "");
 
+export const stripThinking = (t: string) => t.replace(/<think>[\s\S]*?<\/think>/gi, "").replace(/^[\s\S]*<\/think>/i, "");
+
 /** Strict parse first; only if that fails is a cut-off reply patched up, and then it is reported, never hidden. */
 export function parseReply(out: unknown): StageRun | null {
   const t: any = out;
-  const text = typeof t === "string" ? t : typeof t?.response === "string" ? t.response : t?.choices?.[0]?.message?.content;
+  const rawText = typeof t === "string" ? t : typeof t?.response === "string" ? t.response : t?.choices?.[0]?.message?.content;
+  // Reasoning models (e.g. Qwen3) may think out loud first; only the answer after it is parsed.
+  const text = typeof rawText === "string" ? stripThinking(rawText) : rawText;
   if (typeof text === "string") {
     const a = text.indexOf("{"), b = text.lastIndexOf("}");
     if (a >= 0 && b > a) {

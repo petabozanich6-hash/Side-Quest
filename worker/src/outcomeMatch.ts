@@ -100,7 +100,8 @@ export async function matchOutcomesWithAi(ai: AiLike, lesson: any, opts: { model
     { role: "user", content: `${summary(lesson)}\n\nOUTCOMES:\n${pool.map((o, i) => `${i + 1}. ${o.description}`).join("\n")}` },
   ];
   const raw: any = await ai.run(opts.model, { messages, max_tokens: 120, temperature: 0 }, withMeta(gatewayOptions(opts.gatewayId), { task: "outcome_match", generation: opts.generation }));
-  const text = typeof raw?.response === "string" ? raw.response : JSON.stringify(raw?.response ?? raw?.choices?.[0]?.message?.content ?? "");
+  const reply = typeof raw?.response === "string" ? raw.response : typeof raw?.choices?.[0]?.message?.content === "string" ? raw.choices[0].message.content : JSON.stringify(raw?.response ?? "");
+  const text = reply.replace(/<think>[\s\S]*?<\/think>/gi, "").replace(/^[\s\S]*<\/think>/i, "");
   const m = /\{[\s\S]*\}/.exec(text);
   if (!m) return null;
   let nums: unknown[] = [];
