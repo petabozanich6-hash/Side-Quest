@@ -48,3 +48,12 @@ binding `DB`). Check the binding on the live Worker, not just the name: `npx wra
 - Build API token: a token on this account with *Workers Scripts: Edit*, *Workers Builds Configuration: Edit*,
   *Account Settings: Read*, *User Details: Read*, *Workers Routes: Edit* (zone `sidequestlearning.app`) and
   *D1: Edit* only if Cloudflare-side migrations are ever wanted again (they are not).
+
+
+## Read-only production schema integrity audit
+
+Before a schema-dependent release, run `npm run db:audit` from a machine authenticated to the production Cloudflare account. The command issues **SELECT-only** D1 queries; it does not apply migrations, update migration history, write family data or create backups. Run the offline comparison tests with `npm run test:db-audit`.
+
+Exit codes: 0 = checked critical schema objects present and migration records match repository; 1 = missing critical table/column/index or migration-history discrepancy; 2 = query/permission/JSON error (audit inconclusive). A migration absent from `d1_migrations` may have had its schema created at runtime or manually; do **not** assume its changes are missing. Likewise a recorded migration does not guarantee its objects still exist.
+
+This is an intentionally scoped integrity check (authentication, billing, promotions, feedback, owner security, lessons and outcomes), not a complete SQL migration replay or constraint/data-integrity audit. Investigate discrepancies using a verified backup and local rehearsal per the release checklist. Never insert migration-history rows or blindly run all pending migrations.
