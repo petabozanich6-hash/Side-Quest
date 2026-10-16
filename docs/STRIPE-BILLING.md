@@ -8,8 +8,8 @@ tests `worker/test/billing.test.mjs`.
 
 | Step | What happens |
 | --- | --- |
-| Parent picks weekly / fortnightly / monthly / yearly | Browser sends only the interval name to `POST /api/billing/checkout`. |
-| Server | Looks up the price id from its own list, uses the logged-in parent's family, creates or reuses the Stripe customer, creates a Checkout Session (no trial) and returns Stripe's URL. |
+| Parent picks weekly / fortnightly / monthly / yearly | Browser sends the interval and an **optional Dragon's Hoard code** to `POST /api/billing/checkout`. |
+| Server | Looks up the price ID from its own list and, if a code was entered, resolves it only from active, unexpired **SideQuest Owner HQ** offers for the current Stripe mode. It uses the signed-in parent's family, creates or reuses the customer, and creates a Checkout Session (no extra trial) with the **server-resolved Stripe promotion ID**. |
 | Stripe Checkout | Card is collected and charged on Stripe's hosted page. |
 | Return to `/parent/plan?checkout=success` | Grants nothing. The page polls `/api/account/plan` until the server confirms. |
 | Webhook `POST /api/billing/webhook` | Signature verified, event de-duplicated, subscription re-fetched from Stripe, family plan set from its *current* state. |
@@ -34,7 +34,7 @@ Or `npx wrangler secret put <NAME>` (add `--config wrangler.staging.jsonc` for s
 
 | Secret | Value | Where in Stripe (Sandbox mode on) |
 | --- | --- | --- |
-| `STRIPE_SECRET_KEY` | `sk_test_...` or a restricted `rk_test_...` | Developers → API keys. Restricted key needs: Customers write, Checkout Sessions write, Customer portal write, Subscriptions read. |
+| `STRIPE_SECRET_KEY` | `sk_test_...` or a restricted `rk_test_...` | Developers → API keys. Restricted key needs: Customers write, Checkout Sessions write, Customer portal write, Subscriptions read. To create/retire Dragon's Hoard campaigns also allow Coupons write and Promotion Codes write. |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` | Shown on the webhook destination after step 3 ("Signing secret"). |
 
 Optional plain variable: `APP_URL=https://sidequestlearning.app`. Do **not** set `STRIPE_LIVE_ENABLED`.
