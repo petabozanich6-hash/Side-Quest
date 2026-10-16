@@ -166,6 +166,10 @@ Added **12** source-verified numbered objectives to `worker/src/data/qld-qcaa-bi
 
 Added **6** subject-scoped numbered Chemistry syllabus objectives to `worker/src/data/qld-qcaa-chemistry-2025-objectives-review.json` after checking original QCAA syllabus 2025 v1.3 January 2026 PDF page index 6 (printed page 4): https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_chemistry_25_syll.pdf . These are syllabus-level ordinal objectives, not globally unique alphanumeric codes; unit-level subject matter remains uncollected. Together with previously collected Psychology 6, Biology 6, Physics 6, Food & Nutrition 8 and Digital Solutions 7, the six Queensland subject datasets now contain **39 subject-specific general objectives**. This is neither a six-syllabus completeness certification nor all Queensland senior curriculum coverage. Review-only; no runtime mapping or deployment.
 
+### Queensland Earth & Environmental Science 2025 — six directly verified objectives (16 October 2026)
+
+Added **six** subject-scoped numbered syllabus objectives from **QCAA Earth & Environmental Science General senior syllabus 2025 v1.3 (January 2026)** to `worker/src/data/qld-qcaa-earth-environmental-science-2025-objectives-review.json`. Original PDF page index 6 / printed page 4 was independently checked: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_earth_science_25_syll.pdf . This brings the separately collected Queensland senior syllabus-level objective records in these continuation batches from 39 to **45 across seven subjects**. These are course-scoped objective ordinals, not unique alphanumeric outcomes, unit-level content descriptions, or proof of full Queensland coverage. No runtime exposure; review-only.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
