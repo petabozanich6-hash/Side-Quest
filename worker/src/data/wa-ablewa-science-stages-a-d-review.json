@@ -1,0 +1,263 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "ABLEWA Science",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json",
+  "verification_date": "2026-10-16",
+  "status": "source_review_needs_independent_full_match",
+  "notes": "Nine code positions per Stage A–D; directly accessible JSON source. This batch is review-only until automatic line-to-record comparison succeeds. Not counted as full national coverage.",
+  "records": [
+    {
+      "identifier": "ACSSU002a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU003a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU004a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU005a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSHE013a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO014a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO011a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO233a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO012a",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage A",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU002b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU003b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU004b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU005b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSHE013b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO014b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO011b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO233b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO012b",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage B",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU002c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU003c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU004c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU005c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSHE013c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO014c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO011c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO233c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO012c",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage C",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU002d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU003d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU004d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSSU005d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSHE013d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO014d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO011d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO233d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    },
+    {
+      "identifier": "ACSISO012d",
+      "identifier_kind": "source_embedded_content_description",
+      "subject": "Science",
+      "level": "ABLEWA Stage D",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json"
+    }
+  ]
+}
