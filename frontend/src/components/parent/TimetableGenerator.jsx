@@ -72,7 +72,12 @@ function allocate(student, areas, days, startTime, weekStart, existing, dailyOve
   for (const slot of slots) {
     const candidates = dayOrder.map(day => {
       const todays = byDay[day];
-      const used = minutesOn(day);
+      const date = dateInWeek(weekStart, day);
+      // Include existing timed lessons and commitments in the day's capacity.
+      // A scheduled event is not free instructional time.
+      const committed = existing.filter(e => e.student_id === student.id && e.date === date)
+        .reduce((minutes, e) => minutes + Math.max(0, Number(e.duration_minutes) || 0), 0);
+      const used = minutesOn(day) + committed;
       const same = todays.filter(x => x.title === slot.title).length;
       const alreadyHeavy = todays.filter(x => heavy(x.title)).length;
       const fits = used + slot.minutes <= daily;
