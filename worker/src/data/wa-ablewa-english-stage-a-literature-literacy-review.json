@@ -1,0 +1,123 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum ABLEWA",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+  "verified_date": "2026-10-16",
+  "status": "source_observed_review_only",
+  "scope": "16 additional literal WA English ABLEWA Stage A content-description identifiers read from official published wa_code entries. Excludes earlier samples. Remaining Stage A entries and other stages not claimed complete.",
+  "records": [
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELA1429a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELA1437a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELA1439a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1785a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1575a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1578a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1580a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1577a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1783a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELT1579a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELY1645a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELY1648a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELY1649a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELY1650a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELY1651a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    },
+    {
+      "subject": "English",
+      "level": "ABLEWA Stage A",
+      "identifier_kind": "content_description",
+      "identifier": "ACELY1652a",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json"
+    }
+  ]
+}
