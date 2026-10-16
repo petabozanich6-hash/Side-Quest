@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight, ScrollText, BookMarked } from "lucide-react";
+import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight, ScrollText, BookMarked, Printer } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
@@ -256,6 +256,7 @@ export default function ParentDashboard() {
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Let AI draft a lesson with Family Membership, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
+          <Quick to="/parent/lessons" icon={Printer} label="Print a lesson" desc="Printable student workbooks and parent teaching guides, straight from My lessons" tint="#4A5D3A" testid="quick-print-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Seasonal surprises" desc="Choose the optional seasonal touches your family wants in your children’s pet rooms" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>

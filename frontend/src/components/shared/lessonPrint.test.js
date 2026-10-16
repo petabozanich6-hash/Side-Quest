@@ -61,6 +61,17 @@ const built = {
 };
 
 describe("paper lesson packs", () => {
+  test("both editions keep Side-Quest visual identity, A4 styles and the actual logo", () => {
+    for (const html of [lessonPrintHtml(library), builtLessonPrintHtml(built, { view: "parent" })]) {
+      expect(html).toContain("Side-Quest Learning");
+      expect(html).toContain('src="/icons/icon-192.png"');
+      expect(html).toContain("@page{size:A4;margin:14mm}");
+      expect(html).toContain("#1F3B2D");
+      expect(html).toContain("#C77B5B");
+      expect(html).toContain("sq-foot");
+    }
+  });
+
   test("original quest's student workbook converts interactions into writing tasks without leaking parent keys", () => {
     const html = lessonPrintHtml(library);
     expect(html).toContain("Student paper workbook");
