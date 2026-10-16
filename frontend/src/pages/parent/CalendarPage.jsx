@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api, apiErrorMessage } from "../../lib/api";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
@@ -25,6 +26,8 @@ function monthMatrix(year, month) {
 }
 
 export default function CalendarPage() {
+  const [searchParams] = useSearchParams();
+  const focused = searchParams.get("event");
   const [events, setEvents] = useState([]);
   const [students, setStudents] = useState([]);
   const [lessons, setLessons] = useState([]);
@@ -42,6 +45,12 @@ export default function CalendarPage() {
 
   const load = () => api.get("/calendar").then(r => setEvents(r.data));
   useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))); }, []);
+  useEffect(() => {
+    const event = events.find(e => e.id === focused);
+    if (!event || !/^\d{4}-\d{2}-\d{2}$/.test(event.date)) return;
+    const [y,m,d] = event.date.split("-").map(Number);
+    setCur(new Date(y,m-1,d));setFilter("");setDayOpen(event.date);
+  },[focused,events]);
 
   const colourOf = (sid) => {
     const i = students.findIndex(s => s.id === sid);
