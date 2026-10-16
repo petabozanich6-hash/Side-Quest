@@ -82,6 +82,10 @@ Compared exact `records[].identifier` in the four recently created NSW 2025 Crea
 
 Five other official-source review files were checked against all 1,435 `nesa-review-import.json` candidates: Geography/History elective **40/40**, Law/Aboriginal Studies **33/33**, Work Education **22/22**, three Stage 6 Life Skills syllabus sets **42/42**, and Ancient History/Geography Life Skills **26/26**. **All 163 codes already occur in the NESA baseline; zero new distinct code strings.** Machine-readable report: `curriculum-audits/nsw-additional-review-overlap-2026.json`. Along with the 45 previously reconciled Creative Arts records, **208 review-file records have now been shown to overlap the existing baseline**. These reviews may still contribute contextual edition and syllabus verification. This comparison does not establish source/edition equivalence or resolve the handoff's uncommitted 1,664-record checkpoint. Do not inflate the unique NSW total by summing subject review files.
 
+### NSW legacy CEC source recovery (16 October 2026)
+
+Located official NESA *alternative source materials* for **four of nine** modern `/outcomes` URLs that returned HTTP 404: **Marine Studies (2012)**, **Sport, Lifestyle and Recreation Studies (2007)**, **Work Studies (2012)** and **Exploring Early Childhood (2007)**. Official legacy NESA landing pages offer syllabus PDFs or Word versions; an official Exploring Early Childhood PDF is also identified. See `curriculum-audits/nsw-cec-official-source-recovery-2026.json` for source URLs and failure mappings. These are **source recovery leads**, not newly extracted or verified identifiers: **0 new codes** from this operation. Five failed routes still require alternative source discovery, and all four recovered sources still need page-level outcome enumeration with exact edition metadata. Do not fabricate alphanumeric patterns for numeric-only historic outcomes.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
