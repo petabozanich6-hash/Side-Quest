@@ -24,6 +24,7 @@ import { registerSiteSearch } from "./siteSearch";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
+import { processTrialReminders } from "./trialReminders";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
@@ -269,6 +270,10 @@ export default {
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env)), ctx);
   },
-  scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => { await processAnnouncementBatch(env); },
+  scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
+    // The two independent mail queues must not prevent each other running.
+    try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
+    try { await processTrialReminders(env); } catch (e) { console.error("trial reminder cron failed", e); }
+  },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

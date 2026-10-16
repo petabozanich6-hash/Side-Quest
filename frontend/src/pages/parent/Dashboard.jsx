@@ -100,6 +100,21 @@ export default function ParentDashboard() {
         </div>
       </header>
 
+      {/* Only while a free preview has less than 24 hours left. Not persistent for members. */}
+      {plan?.effective_plan === "FREE_PREVIEW" && (() => {
+        const left = Date.parse(plan.trial_ends_at) - Date.now();
+        if (!Number.isFinite(left) || left <= 0 || left > 24 * 60 * 60 * 1000) return null;
+        return (
+          <section className="relative z-10 rounded-2xl border border-amber-300 bg-amber-50 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="dashboard-trial-ending" role="status">
+            <div>
+              <h2 className="font-display text-xl font-bold text-emerald-950">Your free preview is nearly over 🐉</h2>
+              <p className="mt-1 text-sm text-stone-700">Less than 24 hours left to create new learning in your preview. Your saved lessons and records stay safe, and there is no automatic payment.</p>
+            </div>
+            <Link to="/parent/plan" className="shrink-0 inline-flex justify-center rounded-full bg-emerald-950 text-white px-5 py-3 text-sm font-bold">See your plan</Link>
+          </section>
+        );
+      })()}
+
       {/* Only present when the authenticated parent has an unread owner reply.
           The server records it as read when the parent opens the matching thread. */}
       {unreadFeedbackReplies > 0 && (
