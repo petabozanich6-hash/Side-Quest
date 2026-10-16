@@ -100,6 +100,7 @@ export default function LearningPlans() {
   const printPlan = (p) => {
     const c = p.ai_content || {};
     const w = window.open("", "_blank");
+    if (!w) { toast.error("Please allow pop-ups to print this document."); return; }
     const list = (title, items) => items?.length ? `<p><strong>${esc(title)}:</strong></p><ul>${items.map(g=>`<li>${esc(g)}</li>`).join("")}</ul>` : "";
     const para = (h, t) => t ? `<h2>${esc(h)}</h2><p>${esc(t).replace(/\n/g,"<br/>")}</p>` : "";
     const lines = [`<html><head><title>${esc(p.title)}</title><style>@page{size:A4;margin:14mm}body{font-family:Arial,sans-serif;max-width:780px;margin:24px auto;padding:0 18px;color:#243a2d;line-height:1.6}h1{font-size:28px;color:#1F3B2D;border-top:5px solid #1F3B2D;padding-top:15px}h2{font-size:18px;color:#1F3B2D;margin-top:28px;border-left:4px solid #C77B5B;border-bottom:1px solid #D4C8A8;padding:0 0 4px 10px;break-after:avoid}h3{font-size:14px;text-transform:uppercase;letter-spacing:0.05em;color:#555;margin-top:20px}.meta{color:#666;font-size:13px}ul{margin:6px 0}li{margin:3px 0}table{border-collapse:collapse;width:100%;font-size:13px}td,th{border:1px solid #B7C7B0;padding:6px;vertical-align:top;text-align:left}th{background:#EFF3EA}thead{display:table-header-group}tr{break-inside:avoid}@media print{body{margin:0;padding:0}th{background:#f3f3f3}}</style></head><body>`,
