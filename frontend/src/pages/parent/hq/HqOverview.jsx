@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Alert, Button, Card, fmtBytes, fmtDate, GREEN, NotConfigured, PLAN_LABELS, Row, Stat } from "./ui";
 import { useAdmin } from "./useAdmin";
 
@@ -22,6 +23,7 @@ function Registrations({ days }) {
 
 export default function HqOverview() {
   const { data: o, error, loading, reload } = useAdmin("/overview");
+  const { data: feedbackCounts } = useAdmin("/feedback/unread-count");
   if (loading && !o) return <p role="status" className="text-stone-600">Loading live figures…</p>;
   if (error && !o) return <><Alert>{error}</Alert><Button onClick={reload}>Retry</Button></>;
   const plans = Object.entries(o.plans.by_effective_plan || {}).sort((a, b) => b[1] - a[1]);
@@ -31,6 +33,10 @@ export default function HqOverview() {
         <p className="text-xs text-stone-500">Measured {fmtDate(o.generated_at)}</p>
         <Button tone="plain" onClick={reload} disabled={loading}>Refresh</Button>
       </div>
+
+      <Link to="/parent/command-centre/feedback" className="block rounded-2xl border border-amber-200 bg-amber-50 p-4 hover:border-amber-600 transition" data-testid="hq-overview-feedback-alert">
+        <div className="flex flex-wrap items-center gap-3 justify-between"><div><h2 className="font-display font-bold text-amber-950 text-lg">Parent feedback & ideas</h2><p className="text-sm text-amber-900 mt-1">Problems, suggestions and messages from your Side-Quest families.</p></div><span className="font-bold rounded-full bg-white border border-amber-300 px-4 py-2 text-amber-950 text-sm">{feedbackCounts?.unread ?? "—"} unread · Open inbox →</span></div>
+      </Link>
 
       {o.health.warnings.length > 0 && (
         <Card title="Needs attention" testid="hq-warnings">
