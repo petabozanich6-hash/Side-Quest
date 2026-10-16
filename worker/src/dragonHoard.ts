@@ -26,6 +26,10 @@ export const HOARD_SCHEMA = [
     UNIQUE(mode, code)
   )`,
   `CREATE INDEX IF NOT EXISTS idx_hoard_offers_created ON dragon_hoard_offers(created_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS dragon_hoard_terms (
+    offer_id TEXT PRIMARY KEY NOT NULL,
+    duration_type TEXT NOT NULL CHECK (duration_type IN ('once','month1','month3','month6'))
+  )`,
 ] as const;
 
 export async function ensureHoardSchema(db: D1Database) {
@@ -34,7 +38,7 @@ export async function ensureHoardSchema(db: D1Database) {
 
 export type HoardOffer = {
   id: string; mode: Mode; code: string; label: string; percent_off: number;
-  duration_months: number; max_redemptions: number; expires_at: string;
+  duration_months: number; duration_type: "once" | "month1" | "month3" | "month6"; max_redemptions: number; expires_at: string;
   stripe_coupon_id: string; stripe_promotion_id: string; active: number;
   created_at: string; disabled_at: string | null;
 };
@@ -42,7 +46,7 @@ export type HoardOffer = {
 export async function listHoardOffers(db: D1Database) {
   await ensureHoardSchema(db);
   const { results } = await db.prepare(
-    "SELECT id, mode, code, label, percent_off, duration_months, max_redemptions, expires_at, stripe_coupon_id, stripe_promotion_id, active, created_at, disabled_at FROM dragon_hoard_offers ORDER BY created_at DESC LIMIT 100"
+    "SELECT o.id, o.mode, o.code, o.label, o.percent_off, o.duration_months, COALESCE(t.duration_type,'once') AS duration_type, o.max_redemptions, o.expires_at, o.stripe_coupon_id, o.stripe_promotion_id, o.active, o.created_at, o.disabled_at FROM dragon_hoard_offers o LEFT JOIN dragon_hoard_terms t ON t.offer_id = o.id ORDER BY o.created_at DESC LIMIT 100"
   ).all<HoardOffer>();
   return results ?? [];
 }
@@ -69,7 +73,7 @@ export async function resolveHoardDiscount(db: D1Database, mode: Mode, raw: stri
 export async function previewHoardDiscount(
   db: D1Database, env: Env, raw: string,
   fetchImpl?: typeof fetch,
-): Promise<{ valid: boolean; code?: string; percent_off?: number; first_invoice_only?: true; message?: string }> {
+): Promise<{ valid: boolean; code?: string; percent_off?: number; duration_type?: string; message?: string }> {
   const unavailable = { valid: false, message: "This code isn't currently available. Check the spelling or try another." };
   const code = raw.trim().toUpperCase();
   if (!/^[A-Z0-9]{4,24}$/.test(code)) return unavailable;
@@ -92,26 +96,32 @@ export async function previewHoardDiscount(
   const coupon = await stripeCall(cfg.key, "GET", "coupons/" + encodeURIComponent(offer.stripe_coupon_id), {}, opts);
   if (!coupon || coupon.id !== offer.stripe_coupon_id || coupon.valid === false ||
       coupon.percent_off !== offer.percent_off || (coupon.duration && coupon.duration !== "once")) return unavailable;
-  return { valid: true, code, percent_off: offer.percent_off, first_invoice_only: true };
+  const terms = await db.prepare("SELECT duration_type FROM dragon_hoard_terms WHERE offer_id = (SELECT id FROM dragon_hoard_offers WHERE stripe_promotion_id = ?)")
+    .bind(offer.stripe_promotion_id).first<{duration_type: string}>();
+  const duration_type = terms?.duration_type || "once";
+  const expectedDuration = duration_type === "once" ? "once" : "repeating";
+  if (coupon.duration !== expectedDuration) return unavailable;
+  return { valid: true, code, percent_off: offer.percent_off, duration_type };
+
 }
 
 export function validateHoardOffer(input: Record<string, unknown>) {
   const code = typeof input.code === "string" ? input.code.trim().toUpperCase() : "";
   const label = typeof input.label === "string" ? input.label.trim() : "";
   const percent = input.percent_off;
-  const months = input.duration_months;
+  const duration = input.duration_type ?? (input.duration_months === 1 ? "once" : undefined);
   const limit = input.max_redemptions;
   const expiry = typeof input.expires_at === "string" ? input.expires_at.trim() : "";
   const stamp = Date.parse(expiry);
   if (!/^[A-Z0-9]{4,24}$/.test(code)) return { ok: false as const, error: "Code must contain 4–24 letters or numbers." };
   if (label.length < 3 || label.length > 80 || /[<>]/.test(label)) return { ok: false as const, error: "Give this campaign a name of 3–80 characters." };
   if (typeof percent !== "number" || !Number.isInteger(percent) || percent < 5 || percent > 50) return { ok: false as const, error: "Choose a whole-number discount between 5% and 50%." };
-  if (months !== 1) return { ok: false as const, error: "Discounts currently apply to the first invoice only." };
+  if (!["once", "month1", "month3", "month6"].includes(String(duration))) return { ok: false as const, error: "Choose a supported discount duration." };
   if (typeof limit !== "number" || !Number.isInteger(limit) || limit < 1 || limit > 500) return { ok: false as const, error: "Redemption limit must be between 1 and 500." };
   if (!Number.isFinite(stamp) || stamp < Date.now() + 3600_000 || stamp > Date.now() + 366 * 86400_000) {
     return { ok: false as const, error: "Expiry must be at least an hour away and no more than 366 days away." };
   }
-  return { ok: true as const, value: { code, label, percent_off: Number(percent), duration_months: Number(months), max_redemptions: Number(limit), expires_at: new Date(stamp).toISOString() } };
+  return { ok: true as const, value: { code, label, percent_off: Number(percent), duration_months: 1, duration_type: duration as "once" | "month1" | "month3" | "month6", max_redemptions: Number(limit), expires_at: new Date(stamp).toISOString() } };
 }
 
 export async function createHoardOffer(db: D1Database, env: Env, input: Record<string, unknown>, ownerId: string) {
@@ -140,7 +150,8 @@ export async function createHoardOffer(db: D1Database, env: Env, input: Record<s
   const couponId = "sqhoard_" + cfg.mode + "_" + v.code.toLowerCase();
   const coupon = await stripeCall(cfg.key, "POST", "coupons", {
     id: couponId, name: "SideQuest · " + v.label, percent_off: v.percent_off,
-    duration: "once",
+    duration: v.duration_type === "once" ? "once" : "repeating",
+    ...(v.duration_type === "once" ? {} : { duration_in_months: Number(v.duration_type.slice(5)) }),
     applies_to: { products },
     metadata: { source: "sidequest_dragons_hoard" },
   }, { idempotencyKey: "sq-hoard-coupon-" + cfg.mode + "-" + v.code });
@@ -154,6 +165,7 @@ export async function createHoardOffer(db: D1Database, env: Env, input: Record<s
   await db.prepare(
     "INSERT INTO dragon_hoard_offers (id, mode, code, label, percent_off, duration_months, max_redemptions, expires_at, stripe_coupon_id, stripe_promotion_id, active, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)"
   ).bind(id, cfg.mode, v.code, v.label, v.percent_off, v.duration_months, v.max_redemptions, v.expires_at, coupon.id, promo.id, ownerId, nowIso()).run();
+  await db.prepare("INSERT INTO dragon_hoard_terms (offer_id, duration_type) VALUES (?, ?)").bind(id, v.duration_type).run();
   return { ok: true as const, id, code: v.code, mode: cfg.mode };
 }
 
