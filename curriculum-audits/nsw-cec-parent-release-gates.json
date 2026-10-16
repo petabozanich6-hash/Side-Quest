@@ -1,0 +1,67 @@
+{
+  "created_on": "2026-10-16",
+  "review_only": true,
+  "purpose": "Explicit safety gates before parent-facing outcome tracking",
+  "record_count": 103,
+  "syllabus_count": 9,
+  "groups": [
+    {
+      "subject": "Numeracy",
+      "current_evidence": "official teaching guide checked",
+      "remaining_verification": "confirm complete 2021 syllabus table and cohort applicability",
+      "release_eligible": false
+    },
+    {
+      "subject": "Exploring Early Childhood",
+      "current_evidence": "official PDF indexed",
+      "remaining_verification": "inspect original section 7.1 page images and edition",
+      "release_eligible": false
+    },
+    {
+      "subject": "Marine Studies",
+      "current_evidence": "third-party original syllabus mirror",
+      "remaining_verification": "compare original with NESA official edition",
+      "release_eligible": false
+    },
+    {
+      "subject": "Computing Applications",
+      "current_evidence": "NSW school assessment guides",
+      "remaining_verification": "inspect NESA 2012 syllabus outcome table",
+      "release_eligible": false
+    },
+    {
+      "subject": "Sport, Lifestyle and Recreation Studies",
+      "current_evidence": "partial NSW school references",
+      "remaining_verification": "extract complete 2007 primary-source table; validate missing outcome numbers",
+      "release_eligible": false
+    },
+    {
+      "subject": "Photography, Video and Digital Imaging",
+      "current_evidence": "NESA PDF indexed",
+      "remaining_verification": "reopen page images and verify complete table",
+      "release_eligible": false
+    },
+    {
+      "subject": "Visual Design",
+      "current_evidence": "school-hosted mirror indexed",
+      "remaining_verification": "locate official original and verify all outcomes",
+      "release_eligible": false
+    },
+    {
+      "subject": "Ceramics",
+      "current_evidence": "NSW school assessment guides",
+      "remaining_verification": "inspect NESA 2000 primary-source table",
+      "release_eligible": false
+    }
+  ],
+  "release_controls": [
+    "Confirm complete source table with exact page location",
+    "Verify primary authority and syllabus edition",
+    "Confirm start/end implementation years and applicable student cohorts",
+    "Check codes against edition-scoped catalogue to avoid collisions",
+    "Provide descriptive label or licensed text as appropriate",
+    "Run family jurisdiction and subject isolation tests",
+    "Preserve legacy portfolio evidence"
+  ],
+  "claim": "0 of 9 syllabus groups certified parent-ready in this review gate; schema validation alone is insufficient."
+}
