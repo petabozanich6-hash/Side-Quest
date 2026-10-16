@@ -23,11 +23,16 @@ export default function AchievementWall({ items = [], emptyText }) {
 
   return (
     <div
-      className="achievement-wall grid sm:grid-cols-2 lg:grid-cols-3 gap-4 select-none"
+      className="achievement-wall grid sm:grid-cols-2 lg:grid-cols-3 gap-4 print:block select-none"
       onContextMenu={(event) => event.preventDefault()}
       data-testid="achievement-wall"
     >
-      <style>{`@media print { .achievement-wall { display: none !important; } }`}</style>
+      <style>{`@media print {
+  @page { size: A4 portrait; margin: 14mm; }
+  .achievement-wall { display: block !important; }
+  .achievement-wall .paper-card { break-inside: avoid-page; page-break-inside: avoid; width: 100%; min-height: 120mm; margin: 0 0 12mm; padding: 18mm 12mm; border: 2px solid #1F3B2D !important; border-radius: 12px; background: #fff !important; box-shadow: none !important; }
+  .achievement-wall .paper-card:after { content: "SIDE-QUEST LEARNING • Every achievement is part of the adventure"; display: block; margin-top: 20mm; padding-top: 6mm; border-top: 1px solid #D4C8A8; color: #4A5D3A; font-size: 11px; }
+}`}</style>
 
       {items.map((item) => (
         <div

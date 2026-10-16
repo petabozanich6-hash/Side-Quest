@@ -52,7 +52,8 @@ export default function ChildAchievements() {
   };
 
   return (
-    <div className="space-y-6 animate-in" data-testid="child-achievements">
+    <div className="space-y-6 animate-in sq-achievements-page" data-testid="child-achievements">
+      <style>{`@media print { .sq-achievements-page > :not(.sq-print-achievements) { display: none !important; } .sq-print-achievements > h2, .sq-print-achievements button { display: none !important; } }`}</style>
       <h1
         className="font-display text-3xl font-bold"
         style={{ color: "#1F3B2D" }}
@@ -146,7 +147,8 @@ export default function ChildAchievements() {
         )
       )}
 
-      <section>
+      <section className="sq-print-achievements">
+        <div className="flex justify-end mb-3 print:hidden">{items.length > 0 && <button type="button" onClick={() => window.print()} className="rounded-full px-4 py-2 text-sm font-bold text-white bg-[#1F3B2D]" data-testid="print-certificates">Print certificates / Save as PDF</button>}</div>
         <h2
           className="font-display text-xl font-bold mb-3"
           style={{ color: "#1F3B2D" }}
