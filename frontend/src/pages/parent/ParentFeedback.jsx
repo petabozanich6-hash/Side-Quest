@@ -22,8 +22,17 @@ export default function ParentFeedback() {
   const [busy, setBusy] = useState(false);
   const [reports, setReports] = useState([]);
   const [error, setError] = useState("");
+  const [historyError, setHistoryError] = useState("");
   const [sent, setSent] = useState(null);
-  const load = () => api.get("/feedback").then(({data}) => setReports(data.reports || [])).catch((e) => setError(apiErrorMessage(e, "Could not load your submissions")));
+  const load = async () => {
+    try {
+      const {data} = await api.get("/feedback");
+      setReports(data.reports || []);
+      setHistoryError("");
+    } catch (e) {
+      setHistoryError(apiErrorMessage(e,"Could not load your previous messages"));
+    }
+  };
   const openThread = async (id) => {
     if (expandedId===id) { setExpandedId(""); return; }
     setExpandedId(id);
@@ -48,12 +57,17 @@ export default function ParentFeedback() {
   const submit = async (e) => {
     e.preventDefault();
     if (busy) return;
-    setBusy(true); setError("");
+    if (message.trim().length < 10) {
+      setError("Please write at least 10 characters in the message box. The short title is optional.");
+      return;
+    }
+    setBusy(true); setError("");setSent(null);
     try {
       const { data } = await api.post("/feedback", { category, subject: subject.trim(), message: message.trim(), page_hint: pageHint.trim() });
-      setSent(data.id); setSubject(""); setMessage(""); setPageHint("");setExpandedId(data.id);
+      // Only the POST response determines whether sending succeeded. History is a separate request.
+      setSent(data.id); setSubject(""); setMessage(""); setPageHint("");setExpandedId("");
       toast.success("Sent to the Side-Quest team");
-      await load();
+      void load();
     } catch (err) {
       const text = apiErrorMessage(err, "Could not send your message");
       setError(text); toast.error(text);
@@ -85,24 +99,25 @@ export default function ParentFeedback() {
               </label>)}
             </div>
           </fieldset>
-          <label className="block text-sm font-bold text-stone-800">Short title <span className="text-rose-700">*</span>
-            <input required minLength={4} maxLength={120} value={subject} onChange={e=>setSubject(e.target.value)} className="mt-1 block w-full rounded-xl border border-stone-300 p-3 text-sm font-normal bg-white focus:outline-emerald-700" placeholder="e.g. My lesson won't save" data-testid="feedback-subject"/>
+          <label className="block text-sm font-bold text-stone-800">Short title <span className="font-normal text-stone-500">(optional)</span>
+            <input maxLength={120} value={subject} onChange={e=>setSubject(e.target.value)} className="mt-1 block w-full rounded-xl border border-stone-300 p-3 text-sm font-normal bg-white focus:outline-emerald-700" placeholder="e.g. My lesson won't save" data-testid="feedback-subject"/>
           </label>
-          <label className="block text-sm font-bold text-stone-800">Tell us a bit more <span className="text-rose-700">*</span>
+          <label className="block text-sm font-bold text-stone-800">Your message <span className="text-rose-700">*</span>
             <textarea required minLength={10} maxLength={4000} rows={6} value={message} onChange={e=>setMessage(e.target.value)} className="mt-1 block w-full rounded-xl border border-stone-300 p-3 text-sm font-normal bg-white focus:outline-emerald-700" placeholder="What happened, what did you expect, or how would your idea help? You're welcome to just tell us in your own words." data-testid="feedback-message"/>
-            <span className="block mt-1 text-right text-xs text-stone-500 font-normal">{message.length}/4000</span>
+            <span className="block mt-1 text-xs text-stone-500 font-normal">Write at least 10 characters. You can leave the title blank. {message.length}/4000 characters.</span>
           </label>
           <label className="block text-sm font-bold text-stone-800">Which page or feature? <span className="font-normal text-stone-500">(optional)</span>
             <input maxLength={160} value={pageHint} onChange={e=>setPageHint(e.target.value)} className="mt-1 block w-full rounded-xl border border-stone-300 p-3 text-sm font-normal bg-white focus:outline-emerald-700" placeholder="e.g. lesson builder, child's room, timetable" data-testid="feedback-page"/>
           </label>
-          {error && <p className="rounded-lg p-3 text-sm bg-rose-50 text-rose-900" role="alert">{error}</p>}
+          {error && <p className="rounded-lg p-3 text-sm bg-rose-50 text-rose-900" role="alert" data-testid="feedback-send-error">{error}</p>}
           {sent && <p className="rounded-lg p-3 text-sm bg-emerald-50 text-emerald-950" role="status" data-testid="feedback-success">Your message is in the Owner HQ inbox. Reference: <code>{sent}</code></p>}
-          <button type="submit" disabled={busy || subject.trim().length < 4 || message.trim().length < 10} className="rounded-full bg-emerald-950 text-white font-bold text-sm px-6 py-3 inline-flex items-center gap-2 disabled:opacity-50" data-testid="feedback-submit"><Send size={16}/>{busy?"Sending…":"Send to Side-Quest"}</button>
+          <button type="submit" disabled={busy} className="rounded-full bg-emerald-950 text-white font-bold text-sm px-6 py-3 inline-flex items-center gap-2 disabled:opacity-50" data-testid="feedback-submit"><Send size={16}/>{busy?"Sending…":"Send to Side-Quest"}</button>
         </form>
       </section>
       <section className="paper-card p-5 sm:p-6 space-y-3" data-testid="parent-feedback-history">
         <h2 className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Messages you've sent</h2>
         <p className="text-xs text-stone-500">Only messages sent from your parent account appear here. The team can reply to your messages here. Replies are private to the parent account that sent them; you can come back and read them any time.</p>
+        {historyError && <p className="text-sm rounded-lg bg-amber-50 p-3 text-amber-950" role="alert" data-testid="feedback-history-error">{historyError}. This does not affect sending new messages.</p>}
         {reports.length===0?<p className="text-sm text-stone-600 py-3">Nothing here yet. Your first idea could be a good one!</p>:
           <div className="space-y-2">{reports.map(r=><div key={r.id} className={"rounded-xl border bg-white p-4 "+(r.unread_replies>0?"border-amber-400":"border-stone-200")} data-testid={"parent-feedback-"+r.id}>
             <div className="flex flex-wrap gap-2 items-center justify-between"><h3 className="text-sm font-bold text-stone-900">{r.subject}</h3><div className="flex items-center gap-2">{r.unread_replies>0&&<span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-950" data-testid={"parent-feedback-unread-"+r.id}>{r.unread_replies} new {r.unread_replies===1?"reply":"replies"}</span>}<span className="text-xs rounded-full bg-stone-100 px-3 py-1 font-semibold text-stone-700">{STATUS[r.status]||"Received"}</span></div></div>
