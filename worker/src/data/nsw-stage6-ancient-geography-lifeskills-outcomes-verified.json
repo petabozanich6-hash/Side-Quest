@@ -1,0 +1,250 @@
+{
+  "authority": "NSW Education Standards Authority (NESA)",
+  "jurisdiction": "NSW",
+  "extracted_date": "2026-10-16",
+  "source_type": "official_NESA_syllabus_outcomes_page",
+  "status": "source_verified_specific_syllabus_outcome_lists",
+  "complete_national": false,
+  "record_count": 26,
+  "notes": [
+    "Course version must not be lost during deduplication.",
+    "Ancient History Life Skills 2024 implementation begins in 2027; do not activate as universally current in 2026.",
+    "Geography 2022 implementation date deliberately unspecified here pending edition-specific confirmation."
+  ],
+  "records": [
+    {
+      "identifier": "AH-LS-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-03",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-04",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-05",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-06",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-07",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-08",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-09",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-10",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-11",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-12",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-13",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "AH-LS-14",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Ancient History Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2024,
+      "implementation_start_year": 2027,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/ancient-history-ls-11-12-2024/outcomes"
+    },
+    {
+      "identifier": "GE-LS-01",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-02",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-03",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-04",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-05",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-06",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-07",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-08",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-09",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-10",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-11",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    },
+    {
+      "identifier": "GE-LS-12",
+      "identifier_kind": "syllabus_outcome",
+      "subject": "Geography Life Skills",
+      "stage": 6,
+      "syllabus_edition": 2022,
+      "implementation_start_year": null,
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-life-skills-11-12-2022/outcomes"
+    }
+  ]
+}
