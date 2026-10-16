@@ -11,7 +11,7 @@
 import { ACTIVE_PLANS, PAST_DUE_GRACE_DAYS } from "./entitlements";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
-import { resolveHoardDiscount } from "./dragonHoard";
+import { resolveHoardDiscount, previewHoardDiscount } from "./dragonHoard";
 import type { Plan } from "./entitlements";
 import type { App, Env, Guards } from "./types";
 
@@ -427,6 +427,19 @@ function appOrigin(env: Env, reqUrl: string): string {
 
 export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: Fetch) {
   const notConfigured = (reason: string) => ({ detail: "Membership checkout is not available yet.", code: "BILLING_NOT_CONFIGURED", reason });
+
+  // Read-only validation before checkout: never creates a payment, reserves a code,
+  // or trusts a browser-calculated discount. Stripe remains final at checkout.
+  app.get("/api/billing/discount-preview", auth, parent, async (c) => {
+    const code = (c.req.query("code") || "").trim().toUpperCase();
+    if (!code || code.length > 24) return c.json({ valid: false, message: "Enter a Dragon's Hoard code." }, 400);
+    try {
+      c.header("Cache-Control", "no-store");
+      return c.json(await previewHoardDiscount(c.env.DB, c.env, code, fetchImpl));
+    } catch {
+      return c.json({ valid: false, message: "We couldn't check this code right now. Try again shortly." }, 503);
+    }
+  });
 
   // Start a subscription. Body: { interval: "weekly" | "fortnightly" | "monthly" | "yearly", promo_code?: string }.
   // Promotion IDs come exclusively from active, mode-scoped Dragon\u2019s Hoard records on the server.

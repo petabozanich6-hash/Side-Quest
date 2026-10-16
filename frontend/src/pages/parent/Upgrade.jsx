@@ -19,6 +19,7 @@ export default function UpgradePage() {
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [promoCode, setPromoCode] = useState("");
+  const [discount, setDiscount] = useState({ code: "", status: "idle" });
   const [params] = useSearchParams();
   const checkout = params.get("checkout");
 
@@ -36,6 +37,32 @@ export default function UpgradePage() {
     return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkout]);
+
+  // Debounced server/Stripe check. Editing even one character invalidates the previous
+  // approval; an unavailable network must never silently pass a code into checkout.
+  useEffect(() => {
+    if (!promoCode) { setDiscount({ code: "", status: "idle" }); return undefined; }
+    if (promoCode.length < 4) { setDiscount({ code: promoCode, status: "invalid", message: "Enter at least four letters or numbers." }); return undefined; }
+    const controller = new AbortController();
+    setDiscount({ code: promoCode, status: "checking" });
+    const timer = setTimeout(async () => {
+      try {
+        const response = await api.get("/billing/discount-preview", { params: { code: promoCode }, signal: controller.signal });
+        if (!controller.signal.aborted) {
+          const offer = response.data;
+          setDiscount({ code: promoCode, status: offer.valid ? "valid" : "invalid", ...offer });
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) setDiscount({ code: promoCode, status: "error", message: err.response?.data?.message || "Couldn't check the code. Try again shortly." });
+      }
+    }, 650);
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [promoCode]);
+
+  const verifiedDiscount = promoCode && discount.code === promoCode && discount.status === "valid" ? discount : null;
+  const codeReady = !promoCode || !!verifiedDiscount;
+  const durationLabel = (value) => ({ once: "first payment only", month1: "first month", month3: "first three months", month6: "first six months" }[value] || "limited period");
+  const discountedCents = (amount) => Math.round(amount * (100 - (verifiedDiscount?.percent_off || 0)) / 100);
 
   const go = async (path, body, key) => {
     setBusy(key); setError("");
@@ -93,15 +120,26 @@ export default function UpgradePage() {
           <div className="paper-card p-4 mb-4 space-y-2" data-testid="plan-promo-scroll">
             <label htmlFor="sidequest-promo-code" className="block text-sm font-bold" style={{color:"#1F3B2D"}}>🐉 Have a Dragon’s Hoard discount scroll?</label>
             <input id="sidequest-promo-code" maxLength={24} autoComplete="off" value={promoCode} onChange={(e) => setPromoCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} placeholder="Enter your code (optional)" className="block w-full rounded-xl border border-stone-300 bg-white p-3 text-sm" data-testid="plan-promo-code" />
-            <p className="text-xs text-stone-600">Your scroll will be checked against SideQuest’s active offers when you choose a plan. Stripe confirms the final discounted amount before you pay. Offers apply to the first invoice only.</p>
+            <p className="text-xs text-stone-600">We'll check your code here before you choose a membership. Stripe confirms the final amount before payment.</p>
+            {promoCode && (
+              <div role="status" aria-live="polite" data-testid="plan-promo-status" className={`rounded-lg px-3 py-2 text-sm ${verifiedDiscount ? "bg-emerald-50 text-emerald-900 border border-emerald-200" : discount.code === promoCode && (discount.status === "invalid" || discount.status === "error") ? "bg-rose-50 text-rose-900 border border-rose-200" : "bg-stone-50 text-stone-700"}`}>
+                {verifiedDiscount ? <><strong>✓ Discount confirmed: {verifiedDiscount.percent_off}% off!</strong> Valid for the {durationLabel(verifiedDiscount.duration_type)}. Your estimated first payment is shown below. Stripe makes the final eligibility and price decision.</>
+                  : discount.code === promoCode && (discount.status === "invalid" || discount.status === "error") ? <><strong>Code not applied.</strong> {discount.message || "Please check your code."}</>
+                  : "Checking this scroll with the Dragon…"}
+              </div>
+            )}
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {billing.options.map((o) => (
               <div key={o.interval} className="paper-card p-4 flex flex-col gap-2" data-testid={`plan-${o.interval}`}>
                 <div className="text-xs font-bold uppercase tracking-wider text-stone-500">{o.label}</div>
-                <div><span className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{money(o.amount_cents)}</span> <span className="text-sm text-stone-600">{o.currency} {o.every}</span></div>
-                <p className="text-xs text-stone-500">Billed {money(o.amount_cents)} {o.every} until you cancel. Same Family Membership on every option.</p>
-                <button type="button" className={`${BTN} mt-auto`} style={BTN_STYLE} disabled={!!busy} onClick={() => go("/billing/checkout", { interval: o.interval, ...(promoCode ? { promo_code: promoCode } : {}) }, o.interval)} data-testid={`choose-${o.interval}`}>
+                <div>{verifiedDiscount ? <>
+                  <span className="text-sm line-through text-stone-500">{money(o.amount_cents)} {o.currency}</span>{" "}
+                  <span className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}} data-testid={`promo-price-${o.interval}`}>{money(discountedCents(o.amount_cents))}</span>
+                  <span className="text-sm text-stone-600"> {o.currency} estimated first payment</span>
+                </> : <><span className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{money(o.amount_cents)}</span> <span className="text-sm text-stone-600">{o.currency} {o.every}</span></>}</div>
+                <p className="text-xs text-stone-500">{verifiedDiscount ? `Your ${verifiedDiscount.percent_off}% discount applies for the ${durationLabel(verifiedDiscount.duration_type)}. After the offer ends, the regular ${money(o.amount_cents)} ${o.currency} ${o.every} resumes. Monthly-duration offers can discount more than one weekly or fortnightly invoice.` : `Billed ${money(o.amount_cents)} ${o.every} until you cancel. Same Family Membership on every option.`}</p>
+                <button type="button" className={`${BTN} mt-auto`} style={BTN_STYLE} disabled={!!busy || !codeReady} onClick={() => go("/billing/checkout", { interval: o.interval, ...(verifiedDiscount ? { promo_code: promoCode } : {}) }, o.interval)} data-testid={`choose-${o.interval}`}>
                   {busy === o.interval ? "Opening checkout…" : `Choose ${o.label.toLowerCase()}`}
                 </button>
               </div>

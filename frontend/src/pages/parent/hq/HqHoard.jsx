@@ -14,7 +14,7 @@ const futureDate = () => {
 
 export default function HqHoard() {
   const { data, error, loading, reload } = useAdmin("/hoard");
-  const [form, setForm] = useState({ code: "", label: "", percent_off: 20, duration_months: 1, max_redemptions: 25, expires_at: futureDate() });
+  const [form, setForm] = useState({ code: "", label: "", percent_off: 20, duration_months: 1, duration_type: "once", max_redemptions: 25, expires_at: futureDate() });
   const [approved, setApproved] = useState(false);
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState("");
@@ -33,7 +33,7 @@ export default function HqHoard() {
         confirm: "CREATE",
       });
       toast.success("Your discount scroll has been created in Stripe.");
-      setForm({ code: "", label: "", percent_off: 20, duration_months: 1, max_redemptions: 25, expires_at: futureDate() });
+      setForm({ code: "", label: "", percent_off: 20, duration_months: 1, duration_type: "once", max_redemptions: 25, expires_at: futureDate() });
       setApproved(false);
       await reload();
     } catch (e) {
@@ -95,8 +95,11 @@ export default function HqHoard() {
                   </select>
                 </label>
                 <label className="text-sm font-semibold">Duration
-                  <select value={form.duration_months} onChange={(e) => patch("duration_months", Number(e.target.value))} className={inputClass}>
-                    <option value={1}>First invoice only</option>
+                  <select value={form.duration_type} onChange={(e) => patch("duration_type", e.target.value)} className={inputClass} data-testid="hoard-duration">
+                    <option value="once">First invoice only</option>
+                    <option value="month1">First month (all invoices billed in that month)</option>
+                    <option value="month3">First 3 months</option>
+                    <option value="month6">First 6 months</option>
                   </select>
                 </label>
                 <label className="text-sm font-semibold">Maximum redemptions
@@ -106,7 +109,7 @@ export default function HqHoard() {
                   <input type="datetime-local" required value={form.expires_at} onChange={(e) => patch("expires_at", e.target.value)} className={inputClass}/>
                 </label>
               </div>
-              <p className="text-xs text-stone-600">Offers are limited to first-time Stripe transactions and cannot stack with another code. Maximum discount 50%; minimum 1 redemption. The discount applies to the first invoice only, so annual plans cannot be discounted for multiple periods.</p>
+              <p className="text-xs text-stone-600">Offers are for first-time Stripe transactions and cannot stack. Monthly-duration offers may discount several weekly or fortnightly renewals; yearly billing will usually receive only one discounted invoice during a 1–6 month offer. Choose an affordable redemption cap and expiry.</p>
               <label className="flex gap-2 items-start text-sm text-stone-700">
                 <input type="checkbox" checked={approved} onChange={(e) => setApproved(e.target.checked)} className="mt-1" />
                 <span>I have checked the amount, end date and redemption limit. Create this campaign in <strong>{currentMode === "test" ? "Stripe test mode" : "Stripe live mode"}</strong>.</span>
@@ -135,7 +138,7 @@ export default function HqHoard() {
                       <code className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-1.5 font-bold text-stone-900">{o.code}</code>
                       <Button tone="plain" onClick={() => navigator.clipboard?.writeText(o.code)}>Copy code</Button>
                     </div>
-                    <p className="text-sm text-stone-700">{o.percent_off}% off · first invoice · maximum {o.max_redemptions} redemptions · expires {fmtDay(o.expires_at)}</p>
+                    <p className="text-sm text-stone-700">{o.percent_off}% off · {({ once: "first invoice", month1: "first month", month3: "first 3 months", month6: "first 6 months" })[o.duration_type] || "first invoice"} · maximum {o.max_redemptions} redemptions · expires {fmtDay(o.expires_at)}</p>
                     {o.active && !expired && o.mode === currentMode && <Button tone="plain" onClick={() => setRetiring(o)}>Retire scroll</Button>}
                   </div>
                 );
