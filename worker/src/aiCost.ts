@@ -22,7 +22,7 @@ export const RATES_USD_PER_MILLION: Record<string, { input: number; output: numb
 };
 
 /** Additive runtime fallback; deployment does not automatically apply SQL migrations. */
-const CREATE_TABLE = \`CREATE TABLE IF NOT EXISTS ai_inference_costs (
+const CREATE_TABLE = `CREATE TABLE IF NOT EXISTS ai_inference_costs (
   id TEXT PRIMARY KEY,
   model TEXT NOT NULL,
   input_tokens INTEGER,
@@ -31,7 +31,7 @@ const CREATE_TABLE = \`CREATE TABLE IF NOT EXISTS ai_inference_costs (
   estimated_usd REAL,
   status TEXT NOT NULL,
   created_at TEXT NOT NULL
-)\`;
+)`;
 const CREATE_INDEX = "CREATE INDEX IF NOT EXISTS idx_ai_costs_time ON ai_inference_costs(created_at)";
 export async function ensureAiCostSchema(db: D1Database) {
   await db.prepare(CREATE_TABLE).run();
@@ -144,7 +144,7 @@ export async function aiCostSummary(db: D1Database, now = new Date()): Promise<A
   const since24 = new Date(now.getTime() - 86400000).toISOString();
   const since30 = new Date(now.getTime() - 30 * 86400000).toISOString();
   const { results } = await db.prepare(
-    \`SELECT
+    `SELECT
       COUNT(*) AS all_calls,
       MIN(created_at) AS first_at,
       COALESCE(SUM(CASE WHEN status='completed' THEN estimated_usd ELSE 0 END),0) AS all_gross,
@@ -155,7 +155,7 @@ export async function aiCostSummary(db: D1Database, now = new Date()): Promise<A
       COALESCE(SUM(CASE WHEN created_at >= ? AND token_basis='approximate' THEN 1 ELSE 0 END),0) AS approximate30,
       COALESCE(SUM(CASE WHEN created_at >= ? AND status='completed' AND estimated_usd IS NULL THEN 1 ELSE 0 END),0) AS unpriced30,
       COALESCE(SUM(CASE WHEN created_at >= ? AND status='failed' THEN 1 ELSE 0 END),0) AS failed30
-    FROM ai_inference_costs\`
+    FROM ai_inference_costs`
   ).bind(since24, since30, since30, since30, since30, since30, since30).all<any>();
   const x = results?.[0] || {};
   return {
