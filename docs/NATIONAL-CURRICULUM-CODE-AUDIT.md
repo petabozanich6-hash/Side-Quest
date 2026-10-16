@@ -86,6 +86,10 @@ Five other official-source review files were checked against all 1,435 `nesa-rev
 
 Located official NESA *alternative source materials* for **four of nine** modern `/outcomes` URLs that returned HTTP 404: **Marine Studies (2012)**, **Sport, Lifestyle and Recreation Studies (2007)**, **Work Studies (2012)** and **Exploring Early Childhood (2007)**. Official legacy NESA landing pages offer syllabus PDFs or Word versions; an official Exploring Early Childhood PDF is also identified. See `curriculum-audits/nsw-cec-official-source-recovery-2026.json` for source URLs and failure mappings. These are **source recovery leads**, not newly extracted or verified identifiers: **0 new codes** from this operation. Five failed routes still require alternative source discovery, and all four recovered sources still need page-level outcome enumeration with exact edition metadata. Do not fabricate alphanumeric patterns for numeric-only historic outcomes.
 
+### NSW CEC source discovery closed; code extraction remains open (16 October 2026)
+
+Located official NESA legacy syllabuses for the **remaining five** modern CEC `/outcomes` 404 cases: Ceramics 2000, Computing Applications 2012, Numeracy 2021, Photography/Video/Digital Imaging 2000, and Visual Design 2000. See `curriculum-audits/nsw-cec-remaining-five-source-recovery-2026.json` for official landing/PDF URLs and source types. With the prior four recovered sources, all **9/9** failed modern route cases now have official alternative source leads. **0 additional syllabus outcome codes extracted this batch**; the full nine-source legacy outcome enumeration, exact kind/edition identification and cross-syllabus deduplication remain pending. Do not count recovered syllabus documents as code coverage.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
