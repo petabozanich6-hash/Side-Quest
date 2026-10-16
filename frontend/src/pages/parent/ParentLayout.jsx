@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { Compass, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -12,6 +12,7 @@ import JurisdictionGate from "../../components/parent/JurisdictionPicker";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
+  { to: "/parent/search", icon: Search, label: "Search Side-Quest", testid: "nav-search" },
   { to: "/parent/children", icon: Users, label: "Children", testid: "nav-children" },
   { to: "/parent/homeschool-compass", icon: Compass, label: "Homeschooling Compass", testid: "nav-homeschool-compass" },
   { to: "/parent/curriculum", icon: GraduationCap, label: "Curriculum", testid: "nav-curriculum" },
@@ -40,6 +41,15 @@ export default function ParentLayout() {
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
   const doLogout = async () => { await logout(); navigate("/"); };
+  useEffect(() => {
+    const shortcut = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault(); navigate("/parent/search"); setMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", shortcut);
+    return () => window.removeEventListener("keydown", shortcut);
+  }, [navigate]);
   return (
     <div className="parent-shell flex relative">
       {menuOpen && <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setMenuOpen(false)} data-testid="menu-overlay" />}
@@ -81,6 +91,7 @@ export default function ParentLayout() {
           <button onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} className="p-1" data-testid="menu-toggle">{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
+        <div className="px-4 sm:px-8 pt-3 flex justify-end"><button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button></div>
         <HelpAlertBar />
         <JurisdictionGate />
         <Outlet />
