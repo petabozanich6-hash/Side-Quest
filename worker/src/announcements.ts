@@ -29,7 +29,7 @@ export function validateAnnouncement(b:Record<string,unknown>) {
   if(kind!=="service"&&kind!=="optional")return {ok:false as const,detail:"Choose a service notice or an optional announcement."};
   if(subject.length<6||subject.length>140)return {ok:false as const,detail:"The subject must be 6–140 characters."};
   if(body.length<20||body.length>6000)return {ok:false as const,detail:"The message must be 20–6000 characters."};
-  return {ok:true as const,kind,subject,body};
+  return {ok:true as const,kind:kind as AnnouncementKind,subject,body};
 }
 export function announcementEmail(kind:AnnouncementKind,subject:string,body:string,unsubscribeUrl:string) {
   const reason=kind==="optional"
