@@ -213,6 +213,35 @@ test("calendar-slot approval refuses a slot filled after planning without making
     "no assignment can be created if the target slot is already occupied");
 });
 
+
+test("replanning another calendar slot keeps the parent's previously selected lesson", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  slot(db, fam, sid, 1, "Mathematics");
+  slot(db, fam, sid, 1, "English");
+  const planned = await plan(db, fam, sid);
+  const maths = planned.proposals.find(p => p.learning_area === "Mathematics");
+  const selected = await lesson(db, fam, "Parent-picked maths", [S2_MATHS[0]]);
+  const pick = await aq.setProposalLesson(db, fam, maths.id, selected.id, NOW);
+  assert.ok(pick.ok);
+  const again = await plan(db, fam, sid);
+  const kept = again.proposals.find(p => p.id === maths.id);
+  assert.equal(kept.lesson.id, selected.id, "replanning after opening another slot must not lose the choice");
+});
+
+test("approval after another tab fills a slot does not overwrite its assignment", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const slotId = slot(db, fam, sid, 1, "Mathematics");
+  const planned = await plan(db, fam, sid);
+  const selected = await lesson(db, fam, "Maths", [S2_MATHS[0]]);
+  await aq.setProposalLesson(db, fam, planned.proposals[0].id, selected.id, NOW);
+  db.raw.prepare("UPDATE calendar_events SET linked_lesson_id = ? WHERE id = ?").run("another-lesson", slotId);
+  const result = await aq.approveProposal(db, fam, `u-${fam}`, planned.proposals[0].id, {}, NOW);
+  assert.equal(result.code, "SLOT_TAKEN");
+  assert.equal(db.raw.prepare("SELECT linked_lesson_id FROM calendar_events WHERE id = ?").get(slotId).linked_lesson_id, "another-lesson");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ?").get(fam).n, 0);
+});
 test("reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught", async () => {
   const db = makeDb();
   const fam = family(db); const sid = kid(db, fam);
