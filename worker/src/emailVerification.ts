@@ -58,9 +58,14 @@ export async function redeemParentVerification(env: Env, token: string) {
 /** Public resend; no account enumeration and no access without the email link. */
 export async function resendParentVerification(env: Env, email: string, ip: string) {
   const reply = { ok: true, message: "If that email needs verification, a new link is on its way." };
-  const lookup = "verify:" + email;
-  if (await loginBlocked(env.DB, "parent", lookup, ip)) return reply;
-  await recordLoginFailure(env.DB, "parent", lookup, ip); // counts every resend regardless of email existence
+  // Isolate resend throttling from ordinary parent login's IP budget:
+  // requesting emails must never lock an unrelated family out of sign-in.
+  const accountKey = "verify-resend:" + email;
+  const ipKey = "verify-resend-ip:" + (ip || "local");
+  if (await loginBlocked(env.DB, "parent", accountKey, "") ||
+      await loginBlocked(env.DB, "parent", ipKey, "")) return reply;
+  await recordLoginFailure(env.DB, "parent", accountKey, "");
+  await recordLoginFailure(env.DB, "parent", ipKey, "");
   if (!env.EMAIL) return reply;
   const user = await env.DB.prepare(
     "SELECT id, name FROM users WHERE email = ? AND email_verified_at IS NULL AND email_verification_required_at IS NOT NULL"
