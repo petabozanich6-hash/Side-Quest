@@ -66,7 +66,24 @@ export const countActiveAssignments = (db: DB, familyId: string) =>
 
 export async function planSummary(db: DB, familyId: string, now: Date = new Date()) {
   const { plan, limits, row } = await getEntitlement(db, familyId, now);
+  // The last Helping Hand gift is already in the immutable owner audit log. Expose only
+  // the days and deadline to that family, never the owner's private reason or audit metadata.
+  let preview_gift: { days: number; ends_at: string } | null = null;
+  if (plan === "FREE_PREVIEW") {
+    try {
+      const gift = await db.prepare(
+        "SELECT detail_json, created_at FROM admin_audit_log WHERE action = 'hoard.preview_gift' AND target_type = 'family' AND target_id = ? ORDER BY created_at DESC LIMIT 1"
+      ).bind(familyId).first<{ detail_json: string; created_at: string }>();
+      if (gift && Date.parse(gift.created_at) > now.getTime() - 30 * 86400000) {
+        const detail = JSON.parse(gift.detail_json) as Record<string, unknown>;
+        if (typeof detail.days === "number" && typeof detail.ends_at === "string") {
+          preview_gift = { days: detail.days, ends_at: detail.ends_at };
+        }
+      }
+    } catch { /* Owner HQ audit tables may not exist in an older local setup. */ }
+  }
   return {
+    preview_gift,
     plan: row?.plan ?? "FREE_PREVIEW",
     effective_plan: plan,
     trial_ends_at: row?.trial_ends_at ?? (row?.created_at ? trialEndFrom(row.created_at) : null),
