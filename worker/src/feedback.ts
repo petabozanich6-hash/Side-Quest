@@ -5,7 +5,7 @@
 import type { App, Guards, Env } from "./types";
 import { newId, nowIso } from "./types";
 import { hitRateLimit } from "./adminAudit";
-import { sendEmail, SITE_URL } from "./email";
+import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
 export const FEEDBACK_STATUSES = ["new", "reviewing", "in_progress", "resolved", "closed"] as const;
@@ -46,7 +46,15 @@ async function ownerAlert(env: Env, id: string, category: string) {
   await sendEmail(env, {
     to, subject: "Side-Quest: new " + category + " submission",
     text: "New submission in Owner HQ.\nReference: " + id + "\nCategory: " + category + "\n" + link,
-    html: '<p>A parent has sent a ' + category + ' submission.</p><p>Reference: ' + id + '</p><p><a href="' + link + '">Open the secure Owner HQ inbox</a></p>',
+    html: layout({
+      preheader: "A new parent message is ready in your private Owner HQ inbox.",
+      kicker: "A message from the quest board.",
+      heading: "A parent has reported in!",
+      body: p("A parent has submitted a " + esc(category) + " report to Owner HQ.") +
+        button("Open your feedback inbox", link) +
+        p("Private reference: " + esc(id) + ". Open Owner HQ to read the message securely."),
+      reason: "You're receiving this as the Side-Quest owner because a parent sent a message.",
+    }),
   });
 }
 
