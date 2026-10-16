@@ -150,7 +150,7 @@ export async function helpForChild(
   if (st.reason === "limit") return lb.fail(429, "You've used all your helper questions for now. Ask your grown-up, or try again tomorrow.", "HELP_LIMIT");
 
   const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ?").bind(opts.assignmentId, user.id, user.family_id).first<any>();
-  if (!a) return lb.fail(404, "Lesson not found");
+  if (!a || a.status === "revoked") return lb.fail(404, "Lesson not found");
   if (lb.DONE_STATUSES.includes(a.status)) return lb.fail(409, "This lesson is finished.", "ALREADY_DONE");
   const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first<any>();
   const lesson = lb.assignmentLesson(a, live);

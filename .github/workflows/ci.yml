@@ -53,12 +53,12 @@ jobs:
         run: |
           set -o pipefail
           npm --prefix worker run typecheck 2>&1 | tee ci-logs/typecheck.log
-      - name: Printable lesson regression tests
+      - name: Frontend regression tests
         id: print_tests
         continue-on-error: true
         run: |
           set -o pipefail
-          CI=true npm --prefix frontend test -- --watchAll=false --runInBand --testPathPattern=lessonPrint.test.js 2>&1 | tee ci-logs/print-tests.log
+          CI=true npm --prefix frontend test -- --watchAll=false --runInBand 2>&1 | tee ci-logs/print-tests.log
       - name: Frontend build
         id: build
         continue-on-error: true

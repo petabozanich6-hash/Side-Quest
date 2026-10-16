@@ -5,6 +5,7 @@ import { api } from "../../lib/api";
 import LessonPrintActions from "../../components/parent/LessonPrintActions";
 
 const STATUS = {
+  revoked: ["Revoked", "bg-slate-100 text-slate-500"],
   not_started: ["Not started", "bg-slate-100 text-slate-700"],
   in_progress: ["In progress", "bg-sky-100 text-sky-800"],
   submitted: ["Submitted", "bg-amber-100 text-amber-800"],
@@ -24,6 +25,7 @@ export default function AssignmentsPage() {
   const [child, setChild] = useState("");
   const [show, setShow] = useState("open");
   const [edit, setEdit] = useState(null);
+  const [revoking, setRevoking] = useState(null);
   const [loading, setLoading] = useState(true);
   const load = () => api.get("/assignments").then(r => setRows(r.data || [])).finally(() => setLoading(false));
   useEffect(() => { load(); api.get("/students").then(r => setStudents(r.data)).catch(() => {}); }, []);
@@ -41,14 +43,26 @@ export default function AssignmentsPage() {
     catch (e) { toast.error(e.response?.data?.detail || "Something went wrong"); }
   };
 
-  const shown = rows.filter(a => (!child || a.student_id === child) && (show === "all" || (show === "open" ? !DONE.includes(a.status) : DONE.includes(a.status))));
+  const revoke = async (a) => {
+    if (revoking || !window.confirm(`Revoke "${a.lesson?.title || "Lesson"}" for ${name(a.student_id)}? It will leave their assigned work. The source lesson and any saved work or history will be kept.`)) return;
+    setRevoking(a.id);
+    try {
+      await api.delete(`/assignments/${a.id}`);
+      setRows(current => current.map(row => row.id === a.id ? { ...row, status: "revoked" } : row));
+      setEdit(null);
+      toast.success("Assignment revoked");
+    } catch (e) { toast.error(e.response?.data?.detail || "Could not revoke assignment. Please try again."); }
+    finally { setRevoking(null); }
+  };
+
+  const shown = rows.filter(a => (!child || a.student_id === child) && (show === "all" || (show === "open" ? !DONE.includes(a.status) && a.status !== "revoked" : DONE.includes(a.status))));
   const sel = "rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm";
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-5" data-testid="assignments-page">
       <header>
         <h1 className="font-display text-3xl font-bold text-slate-900">Assignments</h1>
-        <p className="text-sm text-slate-600 mt-1">Everything you've given your children. Change a date, give it to another child, or take it back before they start. To give out a lesson, use <Link to="/parent/lessons" className="underline">My lessons</Link>.</p>
+        <p className="text-sm text-slate-600 mt-1">Everything you've given your children. Change a date, give it to another child, or revoke unfinished work. To give out a lesson, use <Link to="/parent/lessons" className="underline">My lessons</Link>.</p>
       </header>
       <div className="flex flex-wrap gap-2">
         <select className={sel} value={child} onChange={e => setChild(e.target.value)} aria-label="Child" data-testid="asg-child"><option value="">All children</option>{students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}</select>
@@ -83,12 +97,11 @@ export default function AssignmentsPage() {
                 <div className="mt-3 border-t border-dashed border-stone-200 pt-3">
                   <LessonPrintActions lessonId={a.lesson_id || a.lesson?.id} compact />
                 </div>
-                {!DONE.includes(a.status) && (
+                {!DONE.includes(a.status) && a.status !== "revoked" && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     <button onClick={() => setEdit({ id: a.id, mode: "dates", scheduled_date: a.scheduled_date || "", due_date: a.due_date || "" })} className="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold" data-testid={`asg-move-${a.id}`}>Change dates</button>
                     {!started && students.length > 1 && <button onClick={() => setEdit({ id: a.id, mode: "reassign", student_id: "" })} className="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold" data-testid={`asg-reassign-${a.id}`}>Give to another child</button>}
-                    {!started && <button onClick={() => { if (window.confirm("Take this assignment back? The child hasn't started it.")) act(() => api.delete(`/assignments/${a.id}`), "Assignment cancelled"); }} className="rounded-full border border-rose-300 text-rose-700 px-3 py-1 text-xs font-semibold" data-testid={`asg-cancel-${a.id}`}>Cancel</button>}
-                    {started && <span className="text-xs text-slate-500 self-center">Started, so it can't be cancelled or moved to another child.</span>}
+                    <button disabled={!!revoking} onClick={() => revoke(a)} className="rounded-full border border-rose-300 text-rose-700 px-3 py-1 text-xs font-semibold disabled:opacity-50" data-testid={`asg-cancel-${a.id}`}>{revoking === a.id ? "Revoking…" : "Revoke assignment"}</button>
                   </div>
                 )}
                 {edit?.id === a.id && edit.mode === "dates" && (

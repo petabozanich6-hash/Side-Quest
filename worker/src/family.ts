@@ -836,7 +836,7 @@ export function registerFamily(app: App, g: Guards) {
       if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
     }
     if (updates.linked_assignment_id) {
-      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ?")
+      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ? AND status != 'revoked'")
         .bind(updates.linked_assignment_id, c.get("user").family_id)
         .first();
       if (!assignment) return c.json({ detail: "Assignment not found" }, 404);

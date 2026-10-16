@@ -94,7 +94,7 @@ export async function getBatch(db: DB, familyId: string, id: string, now: Date =
   if (lessonIds.length) {
     const rows = (await db.prepare(
       `SELECT a.lesson_id, a.student_id, s.name FROM assignments a LEFT JOIN students s ON s.id = a.student_id
-        WHERE a.family_id = ? AND a.lesson_id IN (${lessonIds.map(() => "?").join(",")})`
+        WHERE a.family_id = ? AND a.status != 'revoked' AND a.lesson_id IN (${lessonIds.map(() => "?").join(",")})`
     ).bind(familyId, ...lessonIds).all<any>()).results || [];
     for (const r of rows) {
       const list = (assigned[r.lesson_id] = assigned[r.lesson_id] || []);

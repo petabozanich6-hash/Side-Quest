@@ -234,7 +234,7 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
   const cat = catalogueFor(jurisdiction);
   const [events, assignments, lessons] = await Promise.all([
     db.prepare("SELECT id, student_id, date, title, event_type, linked_assignment_id, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date >= ? AND date <= ? ORDER BY date ASC, start_time ASC LIMIT 250").bind(familyId, sid, from, to).all(),
-    db.prepare("SELECT id, student_id, lesson_id, scheduled_date, status FROM assignments WHERE family_id = ? AND student_id = ? LIMIT 2000").bind(familyId, sid).all(),
+    db.prepare("SELECT id, student_id, lesson_id, scheduled_date, status FROM assignments WHERE family_id = ? AND student_id = ? AND status != 'revoked' LIMIT 2000").bind(familyId, sid).all(),
     lb.listLessons(db, familyId),
   ]);
   let progress: QuestProgress[] = [];
@@ -351,7 +351,7 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
   let assignmentId: string;
   if (a.ok) assignmentId = a.assignment.id;
   else if (a.code === "ALREADY_ASSIGNED") {
-    const open = await db.prepare("SELECT id FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed') ORDER BY created_at DESC LIMIT 1").bind(familyId, p.student_id, p.lesson_id).first();
+    const open = await db.prepare("SELECT id FROM assignments WHERE family_id = ? AND student_id = ? AND lesson_id = ? AND status NOT IN ('accepted','demonstrated','completed','revoked') ORDER BY created_at DESC LIMIT 1").bind(familyId, p.student_id, p.lesson_id).first();
     assignmentId = open.id;
   } else return a;
   // (again: the parent approved this proposal, and revision deliberately repeats a finished lesson.)
