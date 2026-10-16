@@ -95,12 +95,12 @@ export async function previewHoardDiscount(
 
   const coupon = await stripeCall(cfg.key, "GET", "coupons/" + encodeURIComponent(offer.stripe_coupon_id), {}, opts);
   if (!coupon || coupon.id !== offer.stripe_coupon_id || coupon.valid === false ||
-      coupon.percent_off !== offer.percent_off || (coupon.duration && coupon.duration !== "once")) return unavailable;
+      Number(coupon.percent_off) !== offer.percent_off) return unavailable;
   const terms = await db.prepare("SELECT duration_type FROM dragon_hoard_terms WHERE offer_id = (SELECT id FROM dragon_hoard_offers WHERE stripe_promotion_id = ?)")
     .bind(offer.stripe_promotion_id).first<{duration_type: string}>();
   const duration_type = terms?.duration_type || "once";
   const expectedDuration = duration_type === "once" ? "once" : "repeating";
-  if (coupon.duration !== expectedDuration) return unavailable;
+  if (coupon.duration !== expectedDuration || (duration_type !== "once" && Number(coupon.duration_in_months) !== Number(duration_type.slice(5)))) return unavailable;
   return { valid: true, code, percent_off: offer.percent_off, duration_type };
 
 }
