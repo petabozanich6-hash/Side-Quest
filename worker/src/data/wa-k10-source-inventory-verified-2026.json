@@ -1,51 +1,148 @@
 {
-  "authority": "Western Australia SCSA",
+  "authority": "School Curriculum and Standards Authority (SCSA)",
   "jurisdiction": "WA",
   "source_index": "https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads",
   "inventory_checked": "2026-10-16",
-  "status": "confirmed_official_source_links_only",
-  "completeness": "partial",
-  "note": "These are confirmed direct SCSA downloads with authority-published last-updated dates, NOT collected learning outcome counts. Remaining 13+ JSON routes still require source inventory and full extraction; 403/network restrictions do not imply nonexistent content. Never mark as complete.",
+  "status": "all_19_official_json_download_links_inventoried",
+  "completeness": "source_url_inventory_only_NOT_outcome_coverage",
   "source_files": [
     {
       "learning_area": "English",
       "subject": "English",
-      "year_range": "P-10",
-      "published_updated": "2025-03-12",
       "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270382/english.json",
+      "published_updated": "2025-03-12",
       "import_status": "pending_full_verified_import"
     },
     {
-      "learning_area": "Mathematics",
-      "subject": "Mathematics",
-      "year_range": "P-10",
+      "learning_area": "Health and Physical Education",
+      "subject": "Health and Physical Education",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270387/hpe.json",
+      "published_updated": "2025-03-13",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Humanities and Social Sciences",
+      "subject": "Humanities and Social Sciences",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270385/hass.json",
       "published_updated": "2026-02-12",
-      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
       "import_status": "pending_full_verified_import"
     },
     {
       "learning_area": "Languages",
       "subject": "Noongar",
-      "year_range": "P-10",
-      "published_updated": "2024-05-16",
       "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270376/aboriginal-languages-noongar.json",
+      "published_updated": "2024-05-16",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Chinese: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0011/1270379/chinese-second-language.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "French: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0006/1270383/french-second-language.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "German: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0007/1270384/german-second-language.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Hindi: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0009/1270386/hindi-second-language.json",
+      "published_updated": "2024-05-16",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Indonesian: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0011/1270388/indonesian-second-language.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Italian: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0003/1270389/italian-second-language.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Japanese: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270390/japanese-second-language.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Korean: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0005/1270391/korean-second-language.json",
+      "published_updated": "2024-05-16",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Tamil: Second Language",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0009/1270395/tamil-second-language.json",
+      "published_updated": "2024-05-16",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Languages",
+      "subject": "Languages Years 7–10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0007/1270393/languages7-10.json",
+      "published_updated": "2021-10-18",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Mathematics",
+      "subject": "Mathematics",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0020/1270370/mathematics.json",
+      "published_updated": "2026-02-12",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "Science",
+      "subject": "Science",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0008/1270394/science.json",
+      "published_updated": "2026-02-12",
       "import_status": "pending_full_verified_import"
     },
     {
       "learning_area": "Technologies",
       "subject": "Design and Technologies",
-      "year_range": "P-10",
-      "published_updated": "2026-02-12",
       "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0003/1270380/design-and-technologies.json",
+      "published_updated": "2026-02-12",
       "import_status": "pending_full_verified_import"
     },
     {
       "learning_area": "Technologies",
       "subject": "Digital Technologies",
-      "year_range": "P-10",
-      "published_updated": "2026-02-12",
       "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json",
+      "published_updated": "2026-02-12",
+      "import_status": "pending_full_verified_import"
+    },
+    {
+      "learning_area": "The Arts",
+      "subject": "The Arts",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0010/1270378/arts.json",
+      "published_updated": "2017-11-20",
       "import_status": "pending_full_verified_import"
     }
+  ],
+  "notes": [
+    "This is a verified complete enumeration of the 19 JSON download links on the official index at the checked date; individual JSONs are not yet exhaustively imported.",
+    "Mixed source update dates 2017–2026: code-level effective year and syllabus version require separate verification.",
+    "Do not claim WA curriculum coverage or treat 19 source links as 19 complete outcome sets."
   ]
 }
