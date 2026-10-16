@@ -59,3 +59,16 @@ test("WA ABLEWA Digital Technologies extracts VCDT codes from content descriptio
   assert.deepEqual(rows.map(x=>x.code),["VCDTDS001","VCDTDI002","VCDTCD003","WAPDIGDS1"]);
   assert.ok(rows.slice(0,3).every(x=>x.identifier_kind==="wa_ablewa_content_description"));
 });
+
+
+test("WA ABLEWA Science source-embedded identifiers are extracted without examples", () => {
+  const source={url:"https://k10outline.scsa.wa.edu.au/test/science.json",name:"Science"};
+  const doc=[{year:"a",subject:"Science",strands:[{textContents:[
+    {wa_code:"",markdown:"<p>Living things (ACSSU002a)</p>"},
+    {wa_code:"",markdown:"<p>Inquiry (ACSISO014a)</p>"},
+    {wa_code:"",markdown:"<p>Human endeavour (ACSHE013a)</p>"},
+    {wa_code:"WAPSSUB1",markdown:"<p>Example (ACSSU999a)</p>"}
+  ]}],examples:[{wa_code:"",markdown:"(ACSSU888a)"}]}];
+  const rows=flattenWaJson(doc,source);
+  assert.deepEqual(rows.map(x=>x.code),["ACSSU002a","ACSISO014a","ACSHE013a","WAPSSUB1"]);
+});
