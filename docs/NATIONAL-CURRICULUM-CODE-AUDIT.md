@@ -1,0 +1,329 @@
+# Nationwide curriculum identifier coverage — verified source audit (16 October 2026)
+
+## Foundation to Year 10 outcome codes with parent summaries (16 October 2026)
+
+Side-Quest now holds **every Foundation/Kindergarten/Pre-primary to Year 10 outcome or content-description code it could read from the official sources**, for every subject, each with a short summary in Side-Quest's own words so a parent can tell what the code means. The parent sees the code, the summary, the subject/strand/level and a link to the official wording.
+
+| Catalogue | Used by | Codes | Source |
+|---|---|---:|---|
+| Australian Curriculum v9 (ACARA) | QLD, SA, TAS, ACT, NT | 2,678 incl. Languages | ACARA machine-readable export (CC BY 4.0) |
+| VCAA Victorian Curriculum F–10 v2 + v1 EAL | VIC | 3,723 (3,722 summarised) | f10.vcaa.vic.edu.au pages |
+| NESA syllabuses K–10 | NSW | 1,803 official codes added to the existing list | curriculum.nsw.edu.au digital syllabuses, plus nsw.gov.au Word/PDF for older syllabuses still in use |
+| SCSA Western Australian Curriculum | WA | 3,158 incl. ABLEWA stages A–D and 10 languages | k10outline.scsa.wa.edu.au outline downloads (JSON) |
+
+**Copyright approach.** Only codes, structure (subject, strand, years/stage, pathway, status) and Side-Quest-written summaries are committed. No official outcome wording is stored or republished; each code links to the official page instead. Summaries live in `worker/data/outcome-summaries/*.json` and are merged by `worker/scripts/build-outcome-summaries.mjs` into `worker/src/data/outcome-summaries.json` (11,361 codes). Codes-only data files: `worker/src/data/nsw-k10-codes.ts`, `worker/src/data/wa-codes.ts`. Tests (`worker/test/outcomeSummaries.test.mjs`) fail if any catalogue code lacks a summary, if a summary copies the official AC9 text, or if a codes file gains a description field.
+
+**How codes reach a child's program.**
+- WA uses the same year-by-year and subject matching as AC9. ABLEWA stages are only used when the parent picks the stage (for example "ABLEWA B") as the child's level. History, Geography, Civics and Economics are strands of one WA HASS subject, so a History course picks up the History strand.
+- NSW: only syllabuses NESA lists as current are in the default 2026 program. Upcoming, outgoing or unclassified ones stay browsable. Life Skills outcomes only appear for a child on a Life Skills pathway. Elective syllabuses (History/Geography Elective) only match courses named as electives.
+- NSW Languages courses map to Aboriginal Languages, Auslan, Classical Languages or (by default) Modern Languages.
+
+**Known gaps and oddities (not invented around).**
+- VIC `VC2CCPACP3` is listed in the import but appears on no VCAA page we could read, so it has no summary.
+- NSW: 30 codes in the older hand-made seed list are not official NESA codes, for example `PHe-1`, `VAe-1`, `MUe-1`, `MA1-MR-01`, `ST2-7PW-T`, `MA3-RWN-01`, `SC4-LW-04` and `VA5-1`. They are left in place so existing child records keep working, but they should be reviewed and retired. The legacy seed (`worker/src/data/nsw-outcomes.ts`) also still contains NESA wording. Replacing that wording with summaries is a follow-up.
+- NSW: the outgoing Dance, Drama and Music 2003 syllabuses and VET were not imported. Older 2003/2004 numbered outcomes are namespaced (for example `VA2003:4.1` and `PDM2004:5.1`) so they cannot collide.
+- NSW case twins (for example seed `ENe-OLC-01` and NESA `ENE-OLC-01`) are both kept; the non-official spelling is marked `duplicate` so it is not counted twice. Summaries are looked up case-insensitively.
+- AC9 export: `AC9SF03` is filed under Science, and the `AC9L1AU2C04` row is missing (merged into C03) in ACARA's export.
+- WA: SCSA publishes Tamil content without codes, so those 21 rows use namespaced Side-Quest keys (`TAMIL-WA:socialising-1` etc.). A few codes are kept exactly as SCSA prints them, even where they look like typos or combinations: `ACLTC011`, `ACLITU017-ACLITU018`, `ACLKOU126127128`. A stray "(" before seven Japanese codes was removed.
+- WA's per-year content often reuses one code across a band (for example Arts F–2), so a code can cover several years.
+- Senior secondary (Years 11–12) course outcomes and VET units are **not** part of this F–10 pass.
+
+
+## Interrupted Work-mode verification checkpoint — reconciliation pending (16 October 2026)
+
+The interrupted Work-mode session reported **1,664 structured NSW records** and **1,038 Victorian outcome references** each matched to their recorded source locations. It clarified that Victoria had **92 distinct source documents**, not 95 (the latter counted repeated/shared document links). **These figures are a handoff checkpoint, not yet independently reproduced by the committed verification artifacts**; they must not silently supersede the older numbers elsewhere in this document or be described as a complete curriculum import.
+
+| Control | Handoff checkpoint | Last identified committed control | Required reconciliation |
+|---|---:|---:|---|
+| NSW source-verified structured records | 1,664 | `curriculum-audits/nesa-card-verification.json`: 1,435/1,435 matched on 81 pages | Identify the 229 additional source/record pairs; compare page URLs, exact IDs, editions and overlapping subject-specific review files. Report duplicates and future-only records separately. |
+| Victorian outcome references | 1,038 | Earlier VC2, VC1 EAL and transitional Languages collections use different identifier kinds and counts | Locate the exact 1,038-record reference manifest; distinguish document references from unique identifiers and from VC2/VC1 catalogue totals. |
+| Victorian unique source documents | 92 | Historical checkpoint: 95 links | Deduplicate canonical document URLs and SHA/source identities; preserve references to shared documents without counting each link as a new document. |
+
+Outstanding follow-up from the interrupted session:
+- **VIC English / EAL:** extract identifiers and edition/pathway mappings presented in tables, not only linear paragraph text; record table coordinates/page provenance. Do not classify ordinary English and EAL as interchangeable.
+- **VIC Drama / Theatre Studies:** official downloadable source links were broken; retain original URLs and failure responses, seek current official replacement/archived edition references, and mark unresolved records as pending instead of inventing codes.
+- **NSW unresolved references:** reconcile unmatched or inaccessible official syllabus pages against the latest official syllabus inventory; account for stage gaps, senior elective/Life Skills pages, version changes and duplicate source/code pairs.
+- Re-run verification using **committed, reproducible manifests** before changing the headline counts or claiming the audit is complete. Track `source_url`, `source_edition`, `identifier_kind`, exact `identifier`, verification method/date, status, and source-document identity.
+- Keep all newly collected or uncertain records **review-only**: do not regenerate runtime catalogues, merge/deploy this PR, alter historic child evidence or present national coverage as complete.
+
+
+**Status: inventory and implementation design; NOT a completed dataset.** Do not describe Side-Quest as having all codes until automated coverage checks pass. This audit intentionally does not invent identifiers.
+
+## Latest executed collection and verification (16 October 2026)
+
+**This section supersedes the historical progress figures below. All eight jurisdictions remain INCOMPLETE.** This is a review-only collection commit; runtime catalogues and integrations were not regenerated. No merge or deployment was performed. Unknown denominators are not percentages of completeness.
+
+All 11 existing bulk jobs were executed. See `curriculum-audits/national-collection-report.json` for the initial run and `collection-followup-report.json` for fixes, retries and validation. The initial ACT Python lacked pdfplumber; the retry used the bundled Python runtime. The orchestrator now accepts `CURRICULUM_PYTHON` and allows ten minutes per importer instead of killing a sequential source collection after two minutes.
+
+| Jurisdiction | Evidence retained / collected | Remaining completeness gaps |
+|---|---|---|
+| NSW | **1,435 source-page/code records, 1,430 distinct code strings**, from 81/90 modern outcome pages. Added 568 source/code pairs and removed 18 adjustment notices from the outcome collection (net +550). All 1,435 match independently fetched rendered NESA outcome-card IDs; URLs and response hashes retained. | Nine CEC routes return 404; 37 syllabus versions lack expected stages; legacy syllabuses, editions, senior and VET inventories unresolved. Distinct code strings are not edition-scoped identities. |
+| VIC | Existing 2,927 VC2 codes classified across 53 official routes; rerun reached all 53 routes. EAL rerun confirms 796 identifiers; transitional Languages rerun confirms 1,249 candidates from 13/14 routes. | Level-page retry reached 13/15 pages, with Year 7 and Foundation timing out; prior 15-page dataset preserved. Classical-language framework route is 404; senior VCE/VM/VET and version applicability unresolved. |
+| QLD | Existing 78 A–Z syllabus-title records plus 18 SEE/short-course inventory records retained, with overlap possible. | Direct QCAA bulk index returns 403; individual syllabus objectives/outcomes, editions and VET still require collection. Titles are not outcome identifiers. |
+| WA | All 26 existing WA source inventories and partial review datasets are now included in the audit, including WACE and ABLEWA. Science and Digital Technologies ABLEWA parser patterns repaired. | All 19 official JSON downloads returned 403. Existing partial observations remain review-only; no fabricated or empty replacement catalogue. WACE course/unit tables do not establish outcome coverage. |
+| SA | SACE rerun: 427 distinct subject/credit codes from 91/91 tables, including 62 Modified Subject variants. | Outcome/performance-standard identifiers, VET, external courses and state applicability remain unresolved. |
+| TAS | TASC rerun: 164/164 declared 2026 accredited course identifiers, no extraction errors. | Course outcomes/criteria, VET and specialist pathways are not covered by a course-list count. |
+| ACT | Newly saved **113 course names/classifications**, all rendered table cells parsed from official register version 20.02.2026. A=91, T=83, M=84, H=10 match the overview. | Table V classifications total **29**, but overview states **28** VET-integrated courses. Retain both counts; control check fails and completeness stays false. No numeric outcome codes invented; R units, external VET and course outcomes remain outside this extraction. |
+| NT | Shared SACE rerun confirms 427 subject/credit codes; counted once in source data. | NTCET-specific arrangements, local pathways, outcomes, VET/external courses and F–10 adoption require reconciliation. |
+
+Shared ACARA rerun recovered 2,678 content-description identifiers across all eight learning areas, including 1,283 Languages. This validates the shared source release, not eight complete state catalogues. The regenerated runtime file differed only in its download date and was not committed.
+
+Verification: **225/225 JavaScript tests**, **6/6 ACT Python parser tests**, and worker TypeScript checking passed. Separate live verification matched **1,435/1,435 NSW records** to exact rendered card attributes on 81 official pages. Tests validate extraction and application regressions, not national curriculum completeness.
+
+Sources and machine-readable evidence:
+- NSW per-record official URLs and syllabus editions: `worker/src/data/nesa-review-import.json`; independent response hashes: `curriculum-audits/nesa-card-verification.json`.
+- ACT official PDF URL, SHA-256, page numbers, register edition and discrepant controls: `worker/src/data/act-bsss-2026-courses-review.json`.
+- Every available jurisdiction dataset, including previously omitted review files: `curriculum-audits/national-data-audit.json`. Within-file counts must not be summed across files or identifier kinds.
+- WA acquisition failures: `curriculum-audits/wa-acquisition-report.json`; Victorian level retry: `curriculum-audits/vic-level-retry.json`.
+
+The 18 excluded `-ADJ-` identifiers remain listed in `collection-followup-report.json` as adjustment notices. Historical child evidence and active outcome catalogues were not rewritten.
+
+### Follow-up collected: VCE English/EAL table outcomes (16 October 2026)
+
+Captured **16 source-linked unit-outcome references** in `worker/src/data/vic-vce-english-eal-unit-outcomes-review.json`: Units 1–4, Outcomes 1–2, separately for English and EAL (8 per pathway). The current official VCAA planning page presents these as side-by-side outcome-statement tables: https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/english-and-english-additional-language/planning . Units 1–2 apply from 2023, Units 3–4 from 2024. These are **unit/outcome references**, not invented globally unique alphanumeric identifiers. The source's pathway-specific statements are not conflated. No runtime changes, no merge, no national completeness claim. This does **not** resolve the separate 1,038-reference / 92-document verification checkpoint until its manifest is located.
+
+### Follow-up collected: VCE Drama and Theatre Studies (16 October 2026)
+
+Stored **14 individually observed VCE unit/outcome headings**, comprising 10 Drama and 4 Theatre Studies references, in `worker/src/data/vic-vce-drama-theatre-verified-unit-outcome-review.json`. Source: VCAA official 2025-accredited teaching-and-learning pages https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/drama/teaching-and-learning and https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/teaching-and-learning-0 . This is a **verified subset**, not all outcomes for either study. VCAA unit/outcome ordinal references are not invented official alphanumeric codes. Original failed download links still require separate resolution. No runtime data changed.
+
+### Follow-up collected: VCE science outcome references (16 October 2026)
+
+Added **17 individually checked unit/outcome references** to `worker/src/data/vic-vce-sciences-unit-outcomes-review.json` — Biology 6, Chemistry 8, Psychology 3. These are **selected verified headings only**, not the full set of outcomes for the subjects, and not alphanumeric curriculum codes. Official pages: https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/biology/teaching-and-learning ; https://www.vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/chemistry/teaching-and-learning ; https://vcaa.vic.edu.au/curriculum/vce-curriculum/vce-study-designs/psychology/teaching-and-learning . Keep review-only and do not count toward a completed national syllabus inventory.
+
+### Follow-up collected: NSW 2025 Drama and Music Life Skills official outcomes (16 October 2026)
+
+Verified and retained **20 literal NESA syllabus outcome IDs**: **12 Drama Life Skills 11–12** (`worker/src/data/nsw-drama-life-skills-2025-official-outcomes-review.json`) and **8 Music Life Skills 11–12** (`worker/src/data/nsw-music-life-skills-2025-official-outcomes-review.json`). Full outcome identifier lists on the two specified official source pages were checked: https://curriculum.nsw.edu.au/learning-areas/creative-arts/drama-life-skills-11-12-2025/outcomes and https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-life-skills-11-12-2025/outcomes . Both 2025 syllabus editions begin staged implementation **in 2027**, so they are not automatically active in 2026. Their codes may already occur in the broader NESA import; **do not add 20 to unique NSW code totals without edition/source-pair deduplication**. These are real official alphanumeric outcome identifiers, unlike VCE ordinal outcome references. No runtime modification.
+
+### Follow-up collected: NSW Dance Life Skills and Music 2 (16 October 2026)
+
+Retained **25 source-checked NSW 2025 syllabus outcome code records** in two separate review-only datasets:
+
+- `worker/src/data/nsw-dance-life-skills-2025-official-outcomes-review.json`: **13** Dance Life Skills 11–12 literal codes, official source https://curriculum.nsw.edu.au/learning-areas/creative-arts/dance-life-skills-11-12-2025/outcomes .
+- `worker/src/data/nsw-music-2-2025-official-outcomes-review.json`: **12** Music 2 11–12 literal codes (6 Year 11 + 6 Year 12), official source https://curriculum.nsw.edu.au/learning-areas/creative-arts/music-2-11-12-2025/outcomes .
+
+Both syllabuses first implement in 2027 (Music 2 first new-syllabus HSC examination 2028). These files are verifiable **page-level lists**; they are **not necessarily 25 novel identifiers** relative to `nesa-review-import.json`. Compare exact code, source URL and syllabus edition before updating the NSW distinct-ID count. Do not publish these future-only identifiers into current 2026 mappings, rewrite past evidence, or merge/deploy.
+
+### Reconciliation: 45 NSW Creative Arts review records are duplicates (16 October 2026)
+
+Compared exact `records[].identifier` in the four recently created NSW 2025 Creative Arts review files with `candidates[].code` in the original `worker/src/data/nesa-review-import.json` (1,435 candidates). **All 45 already exist**: Dance Life Skills 13/13, Music 2 12/12, Drama Life Skills 12/12, Music Life Skills 8/8. **Zero new distinct code strings** from these four files. Machine-readable record: `curriculum-audits/nsw-creative-arts-duplicate-reconciliation.json`. This is exact-identifier reconciliation only, not a fresh URL/edition-level check of all 45. Earlier 'new records' counts refer to newly saved *files*, not newly discovered codes. Future collection should first check against the 1,435-candidate base and other existing review files before claiming code growth.
+
+### Further NSW exact-code reconciliation (16 October 2026)
+
+Five other official-source review files were checked against all 1,435 `nesa-review-import.json` candidates: Geography/History elective **40/40**, Law/Aboriginal Studies **33/33**, Work Education **22/22**, three Stage 6 Life Skills syllabus sets **42/42**, and Ancient History/Geography Life Skills **26/26**. **All 163 codes already occur in the NESA baseline; zero new distinct code strings.** Machine-readable report: `curriculum-audits/nsw-additional-review-overlap-2026.json`. Along with the 45 previously reconciled Creative Arts records, **208 review-file records have now been shown to overlap the existing baseline**. These reviews may still contribute contextual edition and syllabus verification. This comparison does not establish source/edition equivalence or resolve the handoff's uncommitted 1,664-record checkpoint. Do not inflate the unique NSW total by summing subject review files.
+
+### NSW legacy CEC source recovery (16 October 2026)
+
+Located official NESA *alternative source materials* for **four of nine** modern `/outcomes` URLs that returned HTTP 404: **Marine Studies (2012)**, **Sport, Lifestyle and Recreation Studies (2007)**, **Work Studies (2012)** and **Exploring Early Childhood (2007)**. Official legacy NESA landing pages offer syllabus PDFs or Word versions; an official Exploring Early Childhood PDF is also identified. See `curriculum-audits/nsw-cec-official-source-recovery-2026.json` for source URLs and failure mappings. These are **source recovery leads**, not newly extracted or verified identifiers: **0 new codes** from this operation. Five failed routes still require alternative source discovery, and all four recovered sources still need page-level outcome enumeration with exact edition metadata. Do not fabricate alphanumeric patterns for numeric-only historic outcomes.
+
+### NSW CEC source discovery closed; code extraction remains open (16 October 2026)
+
+Located official NESA legacy syllabuses for the **remaining five** modern CEC `/outcomes` 404 cases: Ceramics 2000, Computing Applications 2012, Numeracy 2021, Photography/Video/Digital Imaging 2000, and Visual Design 2000. See `curriculum-audits/nsw-cec-remaining-five-source-recovery-2026.json` for official landing/PDF URLs and source types. With the prior four recovered sources, all **9/9** failed modern route cases now have official alternative source leads. **0 additional syllabus outcome codes extracted this batch**; the full nine-source legacy outcome enumeration, exact kind/edition identification and cross-syllabus deduplication remain pending. Do not count recovered syllabus documents as code coverage.
+
+### NSW Stage 6 Numeracy CEC — eight genuinely absent identifiers recovered (16 October 2026)
+
+Unlike the duplicated Creative Arts and other review sets, **eight literal Numeracy CEC (2021) syllabus outcomes were absent** from every `candidates[].code` in the 1,435-record `nesa-review-import.json`: `N6-1.1`, `N6-1.2`, `N6-1.3`, `N6-2.1`, `N6-2.2`, `N6-2.3`, `N6-3.1`, `N6-3.2`. Official NESA Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, lists all eight: https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES (corroborated by the Module 2 guide, p. 9). Saved as `worker/src/data/nsw-numeracy-cec-2021-verified-outcomes-review.json`. **This is eight newly discovered baseline-missing code strings, not yet a complete NSW catalogue or reconciliation with the interrupted 1,664 checkpoint.** Keep review-only; NESA syllabus edition is 2021 and implementation began Year 11 in 2022, Year 12 in 2023. No runtime integration.
+
+### Exploring Early Childhood CEC: 14 numbered outcomes, scoped for tracking (16 October 2026)
+
+Saved **14** official indexed-PDF Section 7.1 outcome *numbers* in `worker/src/data/nsw-exploring-early-childhood-cec-2007-outcomes-review.json`: 1.1–1.5; 2.1–2.5; 3.1; 4.1–4.3. These are **syllabus-local identifiers**, not globally unique alphanumeric NESA codes; preserve a compound authority + syllabus + edition + outcome key for parent tracking. None of the 14 bare numbers appeared as exact `candidates[].code` in the existing 1,435-record NESA baseline, but their overlap status with the interrupted 1,664 checkpoint is unresolved. The indexed text is from the official 2007 PDF Section 7.1 (https://www.educationstandards.nsw.edu.au/wps/wcm/connect/9466f2c0-454f-4b31-9565-667112bc252b/explorearlychild_cec_syl.pdf?CVID=&MOD=AJPERES). The legacy PDF URL can redirect; re-open the archived document/page image and check the edition before runtime promotion. **No live parent tracking integration, merge or deployment.**
+
+### NSW Marine Studies CEC: 18 numbered outcome identifiers (16 October 2026)
+
+Recovered complete Section 7.1 **Objectives and Outcomes** table from the original Board of Studies NSW Marine Studies Stage 6 CEC syllabus (2012): **18 numbered outcomes**, grouped 1.1–1.5 (5), 2.1–2.3 (3), 3.1–3.4 (4), 4.1–4.2 (2), 5.1–5.4 (4). Directly inspected the PDF page images 12–13 in the third-party mirror https://www.marineteachers.com.au/files/9213/9528/3601/marinestudies_cec_syl.pdf . Official 2012 syllabus overview: https://curriculum.nsw.edu.au/learning-areas/tas/marine-studies-stage-6-cec-2012/overview . Stored as `worker/src/data/nsw-marine-studies-cec-2012-numbered-outcomes-review.json` with syllabus-scoped compound identifiers (not globally unique bare numbers). **Provenance limitation:** syllabus PDF is currently accessible from a third-party mirror, not the NESA-hosted file; verify matching official document/edition before enabling parent progress tracking. No source wording mirrored. Review-only, no runtime mapping or deployment.
+
+### NSW Computing Applications CEC — 13 syllabus-local outcomes (16 October 2026)
+
+Collected **13 literal numeric outcome identifiers** for Computing Applications Stage 6 CEC (2012), from a 2025 NSW Department of Education public-school assessment guide's complete syllabus outcomes table, corroborated by a second NSW public-school 2026 assessment booklet: `1.1`–`1.3`, `2.1`–`2.3`, `3.1`–`3.3`, `4.1`–`4.3`, `5.1`. Record: `worker/src/data/nsw-computing-applications-cec-2012-numbered-outcomes-review.json`. Primary source mirror: https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/s/sthcrossc-d/localcontent/2025-content/Yr12_Assessment_Guidelines_2025.pdf ; corroboration: https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/s/sydneyh-d/Enrolment%20Documents/Academic%20Docs/Yr-12-HSC-Assessment_Booklet.pdf . All 13 *bare* identifiers are absent from the modern NESA 1,435-candidate base, but bare numbers are not globally unique; use authority/syllabus/edition scoped keys. Direct original 2012 NESA syllabus table and edition confirmation remain a **required release gate**. Review-only; no deployment, no all-Australia completeness claim.
+
+### NSW SLR CEC — 18 observed numbers, not yet full syllabus verification (16 October 2026)
+
+Saved **18 distinct numbered outcome candidates** observed in two NSW government-school assessment/scope-and-sequence documents for Sport, Lifestyle and Recreation Studies Stage 6 CEC (2007), `worker/src/data/nsw-slr-cec-2007-observed-outcome-candidates.json`. Source references: https://canterburg-h.schools.nsw.gov.au/content/dam/doe/sws/schools/c/canterburg-h/download-box/stage-6/Year_12_2025_Scope_and_Sequence_-_all_courses_combined.pdf and https://assets.schools.nsw.gov.au/content/dam/doe/sws/schools/n/narooma-h/Documents/Current_Year/2025-2026_Year_12_HSC_Assessment_Guide_V2.pdf . The official NESA current syllabus overview is https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/overview (earlier generated dead route **omitted the word `and`**). These 18 are **only school-documented candidates**, not a completeness-certified extraction of the original 55-page NESA syllabus: the full official outcome table must be inspected before promotion. Scope numeric identifiers to subject and 2007 edition; review-only, no runtime use. **No primary-verified new outcomes claimed this step.**
+
+### NSW 2000 CEC Creative Arts identifier recovery (16 October 2026)
+
+Collected **21 syllabus-scoped, source-indexed outcome references** from two legacy Stage 6 CEC Section 7.1 tables: **Photography, Video and Digital Imaging: 11** (`M1`–`M6`, `CH1`–`CH5`) from official NESA PDF https://educationstandards.nsw.edu.au/wps/wcm/connect/7eb74351-07d8-4f5e-9a6f-e436caefe724/photoviddig_cec_syl.pdf?MOD=AJPERES ; **Visual Design: 10 observed** (`DM1`–`DM6`, `CH1`–`CH4`) from original syllabus mirrored on a NSW public-school URL https://westwyalon-h.schools.nsw.gov.au/content/dam/doe/sws/schools/w/westwyalon-h/localcontent/visualdesign_cecsyl.pdf . Stored in `worker/src/data/nsw-creative-arts-cec-2000-outcome-codes-review.json`. Because the old PDF direct links may redirect or return 404, both indexed table extractions still require reproducible document/page-image verification (particularly Visual Design completeness) before parent tracking. `CH1`–`CH4` appear in **both** subject lists and must not be collapsed across syllabuses. No new unique-code count certified; Ceramics remains unextracted; no runtime integration.
+
+### NSW Ceramics CEC (2000): eleven observed syllabus outcomes (16 October 2026)
+
+Recorded **11 outcome code references** from the Ceramics Stage 6 CEC (2000) syllabus: Making **M1–M6** (6) and Critical and Historical Studies **CH1–CH5** (5). These identifiers and their course associations appear together in two NSW Department of Education school assessment books (Nepean High School 2025 and Picton High School 2025), with the Ceramics syllabus listed as current by NESA: https://curriculum.nsw.edu.au/learning-areas/creative-arts/ceramics-stage-6-cec-2000/overview . Source-backed review data is in `worker/src/data/nsw-ceramics-cec-2000-outcomes-review.json`. **Verification gate:** compare directly with the original NESA 2000 syllabus PDF's outcomes table before classifying as primary-source verified or enabling parent tracking. The identifiers M1 and CH1 etc are reused in other art CEC subjects; use a syllabus/edition-scoped outcome identity. No runtime changes, no deployment.
+
+### Nine legacy NSW CEC syllabuses: compound identity reconciliation (16 October 2026)
+
+Reconciled all seven review files spanning the nine previously inaccessible syllabus routes into `curriculum-audits/nsw-nine-cec-outcome-identity-reconciliation.json`. **103 outcome records** yield **103 distinct authority/subject/edition/identifier keys**, but only **50 distinct bare labels**; **29 bare labels are reused** across records. The Numeracy file's eight `N6-` codes have no stored `scoped_identifier` property, so the reconciliation derives its compound keys rather than treating all eight as the same undefined key. This check covers data integrity and identifier collisions, **not primary-source verification or syllabus completeness**. Several legacy sources are PDF-indexed, school reproduced or third-party hosted. Parent Outcome Tracker must key these outcomes by source syllabus and edition and should not enable them until release gates pass. These 103 records are not necessarily 103 new identifiers relative to historical audit checkpoints.
+
+### Numeracy CEC parent-tracking identity fix (16 October 2026)
+
+Persisted an explicit `scoped_identifier` for all eight `N6-` Numeracy Stage 6 CEC (2021) outcomes in `worker/src/data/nsw-numeracy-cec-2021-verified-outcomes-review.json`. Previously, the nine-CEC reconciliation computed compound identities dynamically for Numeracy while the source file had no persistent key. Each key now follows `NSW:NESA:Numeracy Stage 6 CEC:2021:<outcome>`; human-facing official identifiers remain unchanged. This resolves a **data schema consistency issue** only. No new outcomes, no runtime integration, no claim that all 103 CEC outcomes are independently primary-source certified.
+
+### NSW CEC tracking integrity control (16 October 2026)
+
+Re-read all **103** legacy CEC review records across seven source files. **103/103** have a persisted syllabus-scoped identifier; **0** duplicate scoped keys; **103/103** provide a source URL. Report: `curriculum-audits/nsw-cec-tracking-integrity-check-2026.json`. These checks establish *schema integrity*, **not** source authenticity, complete syllabus enumeration, authority edition match or suitability for live parent tracking. Verification tiers remain separately labelled: official NESA guides, indexed PDF requiring page recheck, school reproduced outcomes, third-party mirror, and incomplete candidate sets. **None is promoted to the live tracker by this change.**
+
+### Parent release verification gates for nine NSW legacy CEC syllabuses (16 October 2026)
+
+Created `curriculum-audits/nsw-cec-parent-release-gates.json` for the nine syllabus groups and 103 previously collected review records. Each group remains `release_eligible: false` while primary syllabus completeness, exact original document provenance, edition/cohort applicability, collision-safe identity, parent display/licensing, family isolation and legacy evidence preservation are checked. This is a release checklist, **not a new outcome import**. Further web lookup in this continuation did not independently substantiate additional primary-source codes; 0 newly verified outcomes claimed. Continue extracting the remaining incomplete official syllabus tables before changing release eligibility.
+
+### NSW SLR CEC expanded from 18 observed to 28 indexed outcomes (16 October 2026)
+
+The indexed text of an original 2007 Sport, Lifestyle and Recreation Stage 6 CEC syllabus reproduces the Section 7.1 table with **28 outcome numbers**: group 1 (1.1–1.6), group 2 (2.1–2.5), group 3 (3.1–3.7), group 4 (4.1–4.5) and group 5 (5.1–5.5). The earlier 18 school-document candidates omit **ten**: `1.2`, `1.6`, `2.3`, `3.3`, `3.7`, `5.1`, `5.2`, `5.3`, `5.4`, `5.5`. Added `worker/src/data/nsw-slr-cec-2007-outcomes-full-indexed-review.json`, containing all 28 with exact scoped keys and prior-overlap flags. Search-indexed original syllabus PDF: https://goulburn-h.schools.nsw.gov.au/content/dam/doe/sws/schools/g/goulburn-h/localcontent/slr_syllabus.pdf ; official syllabus overview: https://curriculum.nsw.edu.au/learning-areas/pdhpe/sport-lifestyle-and-recreation-studies-stage-6-cec-2007/overview . **The PDF URL currently returns HTTP 404 on direct access**; independent page-image/authority-edition check is pending. Earlier nine-CEC integrity report covered the original 103 records and is a historical snapshot, not automatically updated to include the ten additional SLR numbers. No runtime release or completion claim.
+
+### NSW CEC reconciled count after SLR expansion (16 October 2026)
+
+The newer SLR review file contains 28 unique outcome labels, retaining all 18 labels from the previous SLR candidate file and adding ten. **No duplicates or removals within the expanded file.** Replacing the old 18 with 28 changes the prior nine-CEC snapshot from **103 to 113 syllabus-scoped outcome records**, *not* 131; never sum both overlapping SLR files. This revised 113 is **provisional review coverage**, pending SLR primary PDF verification and verification of other legacy records. See `curriculum-audits/nsw-cec-slr-expanded-reconciliation-2026.json`. Nothing promoted to parent tracking.
+
+### Visual Design CEC independent code corroboration (16 October 2026)
+
+The 10 recorded Visual Design Stage 6 CEC (2000) labels (`DM1`–`DM6`, `CH1`–`CH4`) are independently reproduced in a NSW Department of Education school's 2023/24 HSC scope-and-sequence: https://manilla-c.schools.nsw.gov.au/content/dam/doe/sws/schools/m/manilla-c/scope-and-sequence/2024/STAGE_6_HSC_Scope_and_Secquence_Visual_DEsign.pdf . Updated `worker/src/data/nsw-creative-arts-cec-2000-outcome-codes-review.json` with this corroborating URL. NESA's 2000 course remains listed as current: https://curriculum.nsw.edu.au/learning-areas/creative-arts . **This corroborates the labels but does not independently verify the original 34-page NESA PDF's full outcomes table**, so parent release is still blocked. No new unique identifiers this batch.
+
+### Primary document access regression: Photography CEC (16 October 2026)
+
+Directly opening the previously recorded NESA Photography, Video and Digital Imaging (2000) syllabus PDF URL redirects to the NESA home page, **not a PDF**. The legacy authority page indicates a 51-page syllabus and the currently published overview confirms the course. Machine-readable access record: `curriculum-audits/nsw-cec-primary-document-access-2026.json`. The 11 indexed outcome identifiers remain **review-only pending actual document inspection**. Search engine PDF indexing is not equivalent to authority source verification. **0 new codes** this check. Obtain via the official curriculum download facility or other permitted NESA document provision, compare the original outcomes table and source edition, then reconsider release eligibility.
+
+### Queensland QCAA General Psychology 2025 — primary PDF objectives (16 October 2026)
+
+Expanded actual Queensland outcome/objective collection beyond course titles: **six numbered syllabus objectives (1–6)** for Psychology General senior syllabus **2025 v1.3 (January 2026)**, visually inspected against the original authority PDF (PDF page 7, printed page 4). Source https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_psychology_25_syll.pdf ; dataset `worker/src/data/qld-qcaa-psychology-2025-objectives-review.json`. These are **ordinal syllabus objectives**, not alphanumeric outcomes or a complete inventory of unit-specific subject matter. Each has an edition-scoped identity for eventual parent tracking. This is **6 additional primary-source verified QLD review records**; QCE coverage otherwise incomplete and not enabled in runtime. Do not conflate QCAA objectives with AC9 content descriptions or the earlier syllabus-title-only inventories.
+
+### Queensland Food & Nutrition and Digital Solutions — 15 primary-source objectives (16 October 2026)
+
+Captured **15 verified numbered QCAA General senior syllabus objectives** from original authority PDF page images: Food & Nutrition **8**, 2025 v1.3 January 2026, PDF page 7 / printed page 4, https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_food_25_syll.pdf ; Digital Solutions **7**, 2025 v1.4 February 2026, PDF page 6 / printed page 3, https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_digital_solutions_25_syll.pdf . Review-only dataset: `worker/src/data/qld-qcaa-food-digital-2025-objectives-review.json`. The records have syllabus-scoped objective ordinals (not official unique alphanumeric identifiers). These are complete *overall syllabus objective lists* for these two published editions, **not full unit-subject-matter, assessment, standards or all-QCE coverage**. Neither dataset is enabled in the Outcome Tracker. No merge or deployment.
+
+### Queensland Biology and Physics objectives — direct QCAA PDF verification (16 October 2026)
+
+Added **12** source-verified numbered objectives to `worker/src/data/qld-qcaa-biology-physics-2025-objectives-review.json`: Biology (6) and Physics (6). Both are General senior **2025 v1.3 January 2026**. PDF page index 6 / printed syllabus page 4 was checked visually and against the published text: Biology https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf ; Physics https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_physics_25_syll.pdf . These subjects share six *titles* (also similar to Psychology); each record retains its own subject, version and objective number. **This is 12 subject-scoped references, not 12 unique objective wordings or official alphanumeric codes.** Unit-level subject matter and national completeness are unresolved. Review-only; no runtime activation.
+
+### Queensland Chemistry 2025 General syllabus — six verified objectives (16 October 2026)
+
+Added **6** subject-scoped numbered Chemistry syllabus objectives to `worker/src/data/qld-qcaa-chemistry-2025-objectives-review.json` after checking original QCAA syllabus 2025 v1.3 January 2026 PDF page index 6 (printed page 4): https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_chemistry_25_syll.pdf . These are syllabus-level ordinal objectives, not globally unique alphanumeric codes; unit-level subject matter remains uncollected. Together with previously collected Psychology 6, Biology 6, Physics 6, Food & Nutrition 8 and Digital Solutions 7, the six Queensland subject datasets now contain **39 subject-specific general objectives**. This is neither a six-syllabus completeness certification nor all Queensland senior curriculum coverage. Review-only; no runtime mapping or deployment.
+
+### Queensland Earth & Environmental Science 2025 — six directly verified objectives (16 October 2026)
+
+Added **six** subject-scoped numbered syllabus objectives from **QCAA Earth & Environmental Science General senior syllabus 2025 v1.3 (January 2026)** to `worker/src/data/qld-qcaa-earth-environmental-science-2025-objectives-review.json`. Original PDF page index 6 / printed page 4 was independently checked: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_earth_science_25_syll.pdf . This brings the separately collected Queensland senior syllabus-level objective records in these continuation batches from 39 to **45 across seven subjects**. These are course-scoped objective ordinals, not unique alphanumeric outcomes, unit-level content descriptions, or proof of full Queensland coverage. No runtime exposure; review-only.
+
+### Queensland Biology Unit 1 objectives: first unit-level import (16 October 2026)
+
+Added **six numbered QCAA Biology 2025 v1.3 Unit 1 objectives** (Cells and multicellular organisms), directly checked against official QCAA PDF page index 22 / printed page 20: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Dataset `worker/src/data/qld-qcaa-biology-2025-unit1-objectives-review.json`. Each has a composite identifier `QLD:QCAA:Biology:General:2025:unit:1:objective:<n>`, distinct from the six *overall syllabus* objective references previously collected for Biology. The six unit objectives are complete for Unit 1's ordinal list, but this is **not a complete representation of Unit 1 subject matter, Units 2–4, or all Queensland Biology learning requirements**. Review-only; no live tracking or merge.
+
+### Queensland Biology Unit 2 — six source-verified unit objectives (16 October 2026)
+
+Added **6** Unit 2 numbered objectives (Maintaining the internal environment) from **Biology General 2025 v1.3 (January 2026)** to `worker/src/data/qld-qcaa-biology-2025-unit2-objectives-review.json`. Directly checked the complete numbered list on printed page **25** / PDF zero-based page **27**: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Each source-scoped record distinguishes QCAA, syllabus edition, Biology, Unit 2 and objective ordinal; unit topics Homeostasis and Infectious disease and epidemiology retained. **These six unit objectives do not constitute all Unit 2 subject-matter statements**, or coverage of Biology Units 3–4. Review-only; no parent runtime integration, merge or deployment.
+
+### Queensland Biology Units 3 and 4 completed objective lists (16 October 2026)
+
+Captured **12 unit-specific objective references**: Unit 3 (Biodiversity and the interconnectedness of life) objectives 1–6, and Unit 4 (Heredity and continuity of life) objectives 1–6. Verified via **original QCAA Biology 2025 v1.3 January 2026 PDF page images**, printed pages **29** and **34** respectively: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . New review file: `worker/src/data/qld-qcaa-biology-2025-units3-4-objectives-review.json`. Combined with the earlier overall six objectives and Unit 1 and 2 six-objective lists, Biology now has **30 review records (6 syllabus + 24 unit objectives)**, covering all four *objective-number lists*. This is **not** exhaustive Biology content coverage: unit subject-matter statements and assessment conditions require separate structured extraction before complete parent tracking can be claimed. All records are review-only, no merge or deployment.
+
+### Queensland Biology actual subject matter: four Unit 1 Science Inquiry statements (16 October 2026)
+
+Collected **four top-level individual Science Inquiry subject-matter bullets** from QCAA Biology 2025 v1.3 Unit 1, printed page 22 / PDF page index 24. Direct PDF page-image verification: https://www.qcaa.qld.edu.au/downloads/senior-qce/syllabuses/snr_biology_25_syll.pdf . Review-only records: `worker/src/data/qld-qcaa-biology-2025-unit1-science-inquiry-subject-matter-review.json`. They cover microscopy of tissues, electron-micrograph comparisons, surface-area/volume and diffusion, and stem cell technology investigations. The four internal source-position keys are **not official QCAA-issued alphanumeric outcome codes**; sub-bullets belong to the parent microscopy requirement. Summaries are paraphrased with source attribution. This completes **only those four statements from one section on one page**, not Unit 1, Biology, QCE or national coverage. Detailed extraction of Science understanding, Science as a human endeavour and remaining units is required. No runtime activation.
+
+## Historical progress notes (superseded where the latest run differs)
+
+## Verified senior curriculum source imports (16 October 2026)
+
+Senior COURSE/SUBJECT identifiers are **not** learning-outcome/content-description identifiers. Do not place them into `outcome_progress` / mastery codes merely because they exist.
+
+- **Tasmania, TASC 2026:** the full current-year official A–Z list declares **164 courses**; the source parser independently recovered **164** (0 failures, 164 distinct IDs), broken down as Preliminary 32, Level 1 20, Level 2 60, Level 3 48, Level 4 4. Codes, real course titles, levels, TCE credits and official source URLs are held in `worker/src/data/tasc-2026-course-codes.json`. These are source-confirmed **senior course IDs**. View through the family-jurisdiction-bound read-only `GET /api/curriculum/senior-courses` and TAS Curriculum Compass search. Future years require re-verification. Source: https://www.tasc.tas.gov.au/students/courses/a-z/.
+- **South Australia and Northern Territory (SACE/NTCET):** official SACE subject listing and **all 91/91 parsed code-table pages** provided **427 distinct codes** (Stage 1: 234; Stage 2: 193; **62 Modified Subject variants**, failures 0). Data kept as `worker/src/data/sace-2026-subject-review.json` with exact official page URLs; `seniorCatalogueFor("SA"|"NT")` provides **subject-and-credit codes**, not outcomes, and labels the catalogue **partial** pending VET/external national continuers/NT-specific verification. Both jurisdictions use read-only family-scoped API and Curriculum Compass search. Source: https://www.sace.sa.edu.au/teaching/subjects.
+- **ACT BSSS 2026:** the official source `ACT_BSSS_Course_Register_2026.pdf` says **113 unique courses** within 11 frameworks, including A/T/M/V/H classifications. These are publicly presented as named courses and classification codes, **not individual numbered outcomes**. Review-only PDF parser and regression tests committed, but the direct official PDF gave HTTP **403** to GitHub Actions. No ACT senior codes were added; do not silently invent identifiers. Official source: https://www.bsss.act.edu.au/act_senior_secondary_system/curriculum/act_bsss_curriculum_and_course_register.
+- **Queensland QCE:** senior General, Applied, Short Courses and electives have an official QCAA listing. `worker/scripts/import-qcaa-senior.mjs` and parser fixtures exist, but GitHub-hosted source access was HTTP **403**; no verified QCE senior course listing was added.
+- **Western Australia WACE:** state curriculum JSON importer exists but both source index and direct JSON assets were HTTP **403** to hosted jobs. State-specific K–10 and WACE cannot be claimed complete.
+
+**No merge, production deployment, child evidence rewrite or unauthorised fetch workaround.** When official sites block automated downloads, use a legitimate authority-provided export/manual-download source and validate it before exposing records as complete.
+
+## Victorian curriculum source-backed code catalogue (16 October 2026)
+
+**Built and connected on this draft branch** — not merged, not live:
+
+- **2,927 distinct Victorian Curriculum F–10 v2 identifiers** discovered from all 15 official VCAA level pages, then mapped against **53 subject / capability / language-sequence source pages**, with **0 unmapped codes** and **43 identifiers legitimately referenced in more than one subject/sequence context**. All VCAA source URLs and 2026 applicable-version warnings are retained.
+- **796 distinct official VCAA v1 English as an Additional Language content-description identifiers**, separately extracted and level-tagged: Pathway A 161, B 318 and C 317. The 2026 VCAA timeline confirms EAL continues to use v1 at this time.
+- **3,723 unique VCAA code identifiers** compiled to `worker/src/data/vic-source-ids.ts`. Each retains code, official URL, version, subject(s), pathway(s) and source level(s), without reproducing syllabus wording.
+- `catalogueFor("VIC")` now returns a **partial, source-backed VCAA catalogue**, separate from NSW NESA codes and ACARA v9. `programFor` filters selected subjects, language pathways and exact EAL progression levels. Ordinary English children must not receive EAL outcomes; generic "Languages" does not mean all 18 language electives.
+- In 2026, **Version 1.0 remains required** for several Phase 3/4 Languages (including Arabic, Latin, Classical Greek and Turkish); published VC2 identifiers for these subjects are **not added to a child's default program**. Their missing VC1 counterparts still need a full official source import. VC2 transition flags do not certify school-sector implementation dates.
+- Victorian lesson manual code linking is now enabled with a VCAA lookup link; **automated lesson-code matching remains NSW-only** until independently tested. The Outcome Tracker is source-backed but is **not complete Victorian curriculum certification**.
+- Missing: V1 Phase 3/4 Languages, other transitional V1 A–D materials, senior VCE/VCE VM/VET, unverified Level 10A availability, and all other jurisdiction-wide completeness manifests. Do not claim everything is loaded.
+
+Source authority: https://www.vcaa.vic.edu.au/curriculum/foundation-10-version-2/victorian-curriculum-f-10-version-20 . Official code search https://f10.vcaa.vic.edu.au/download-curriculum .
+
+### Western Australia blocker confirmed with direct downloads
+
+SCSA officially lists downloadable subject-by-subject JSON, including Noongar, Chinese, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Tamil and Years 7–10 languages. GitHub Actions received **HTTP 403** for both the outline index and directly requested official English/Chinese JSON assets. The WA importer and its fixture tests remain available; an authorised direct-file provision (for example a human-downloaded source import) is needed before we can correctly ingest WA state identifiers. All WA code claims remain unavailable.
+
+## Verified import progress (16 October 2026)
+
+- **ACARA MRAC/2024/04: 2,678 content descriptions imported and committed on this draft branch**, compared with 1,395 in main.
+- Includes all eight F–10 learning areas and **1,283 Languages identifiers**, covering 18 identified subjects/frameworks/pathways including 42 `ACL9` classical-language codes.
+- Automated GitHub Actions fetched the official source, checked source-area presence, duplicate IDs, F–10 bands and regression tests. Imported into `worker/src/data/ac9-outcomes.ts`; the existing Outcome Tracker reads this shared file automatically.
+- Specific language electives and Chinese first/background/second-language pathways are tested so outcomes from unrelated languages and pathways are not silently mixed.
+- **NSW remains a partial seed of 137 identifiers**. Victoria and WA require state-specific imports, and every senior-secondary authority still needs a course/outcome inventory.
+- **These 2,678 entries are verified *national curriculum content-description identifiers*, not separate complete curriculum catalogues for five states.**
+- Victoria's 2026 effective provision includes a mix of VC2 and VC1 in certain languages and EAL subjects; import both with separate effective dates, not a fabricated single VC2 catalogue. Official references: https://www.vcaa.vic.edu.au/curriculum/foundation-10-version-2/victorian-curriculum-f-10-version-20 and https://f10.vcaa.vic.edu.au/download-curriculum (official CSV download selector).
+- WA's curriculum publishes applicable versions and some transitional 2027 Languages material: https://k10outline.scsa.wa.edu.au/. Do not substitute national content codes without verifying WA adoption and any state-specific identifiers.
+
+### NSW NESA accuracy issue found
+
+The current NSW seed uses identifiers such as `ENe-OLC-01` and omits official English 2022 outcomes including `ENE-PRINT-01` and `ENE-REFLU-01`. The [NESA English K–10 Syllabus (2022) outcomes page](https://curriculum.nsw.edu.au/learning-areas/english/english-k-10-2022/outcomes) uses uppercase `ENE-OLC-01`. Some seed entries are old syllabus codes or legacy stage notation. The existing 137-code NSW seed is **not** a complete or uniformly current NESA release.
+
+**Do not blindly rewrite saved child outcome evidence IDs:** new NESA editions and old code forms need source-edition-scoped identifiers plus explicit reviewed aliases/migrations. A case-normalisation pass must not equate unrelated code systems. Build a complete official syllabus index and per-version NESA outcomes import first, including Life Skills and senior extensions/electives; verify expected counts against authority syllabus pages.
+
+## NSW source discovery and staged integration (16 October 2026)
+
+- Official primary, secondary and senior syllabus listings discovered **258 distinct linked entries** (including a small number of cross-page or general references which still need reconciliation). Each is tagged with its URL, listing status, publication year where published, kind (including CEC, Life Skills, Extension and VET) and relevant stage index.
+- **90** listed modern syllabus pages had a direct outcomes URL. Across those, **885 code candidates** were extracted with their precise official URLs and syllabus edition. **25 pages failed or returned no code**, and legacy NESA material hosted elsewhere remains largely unextracted. This is an incomplete source audit, not a complete NSW dataset.
+- Of those extracted, **396 distinct current-listed, stage-resolved code identifiers** were compiled into `nesa-current-2026.ts` and added **without rewriting the existing 137-code seed or historical evidence**. The helper deduplicates genuinely shared outcomes across syllabus versions (for example MAO-WM-01 across multiple senior Mathematics courses).
+- Current, outgoing and future syllabus versions are not conflated; **future-only codes are not enabled simply because the syllabus is published**.
+- The source audit flags missing K–10 stages. The NESA website's rendered outcome pages may only show selected stages, so a reachable outcomes page does not prove complete course coverage.
+- Year 11/12 course identifiers must derive their Stage 6 association from the syllabus context: numbers in *Extension 1* and *Extension 2* codes do not mean Stage 1 or Stage 2.
+- `outcomeTracker.ts` now narrows selected Stage 6 English Advanced/Standard and Mathematics pathways by course, rather than attributing all relevant learning-area codes to a child.
+- **The NSW catalogue remains partial**. Complete legacy syllabuses, missing stages, Life Skills and senior language/VET pathways still need authoritative import, per-edition checks and careful review of code aliases.
+
+## WA state-specific sources and access issue
+
+Official SCSA provides JSON curriculum downloads (with genuine identifiers such as WA3ELYA3 and language-specific ACL... codes) at https://k10outline.scsa.wa.edu.au/home/resources/outline-downloads . The source importer `worker/scripts/import-wa-review.mjs` and fixture tests are committed, but **the live download returned HTTP 403 to GitHub Actions**. The WA catalogue is **NOT imported**. The importer can be run manually when legitimate source files/site access are available. Do not substitute AC9 as proof of Western Australian curriculum equivalence. Published WA curriculum versions are transitional (some areas revised for implementation 2025/2026, Languages and Arts familiarisation 2026), so verify each subject's applicable year/edition.
+
+## Confirmed gaps in main (historical baseline)
+
+- `worker/src/data/jurisdictions.ts` advertises only NSW as `codes: "verified"`; VIC, QLD, WA, SA, TAS, ACT, NT are `none`.
+- `worker/src/data/nsw-outcomes.ts` is an existing seed, **not evidence of complete syllabus coverage**.
+- Main previously omitted Languages; this draft PR now imports all eight areas, retaining official language pathways and both `AC9` and `ACL9` identifiers.
+- `worker/src/data/curriculum.ts` defines internal course identifiers (for example ENG-S4 and MAT-S4); these must never be represented as official learning-outcome identifiers.
+- `docs/OUTCOME-TRACKER.md` describes mastery's curriculum-catalogue dependency and notes the prior Australian Curriculum import branch; deployment status needs fresh verification.
+
+## Jurisdiction-specific authoritative sources
+
+| Jurisdiction | F–10 / K–10 primary authority | Senior secondary authority and special cases |
+|---|---|---|
+| NSW | NESA, https://curriculum.nsw.edu.au/ ; catalogue **syllabus outcome IDs**, syllabus release and stage | NESA 11–12, including all elective courses, extensions and VET; track old/new syllabus transition |
+| VIC | VCAA Victorian Curriculum F–10 v2, https://f10.vcaa.vic.edu.au/ ; curriculum-content IDs and capabilities, including language pathways, EAL and Foundations A–D | VCAA VCE, VCE VM and VET subjects; not interchangeable with F–10 IDs |
+| QLD | QCAA Australian Curriculum v9, https://www.qcaa.qld.edu.au/p-10/aciq/version-9 ; use AC9 content description IDs | QCAA QCE General/Applied/Short Courses, VET as applicable |
+| WA | SCSA K–10 Outline, https://k10outline.scsa.wa.edu.au/ ; independently verify which adopted / adapted AC9 descriptors and editions apply | SCSA WACE https://senior-secondary.scsa.wa.edu.au/syllabus-and-support-materials/course-codes ; distinguish course, unit and outcome identifiers |
+| SA | Australian Curriculum v9 per SA implementation; use AC9 descriptors with edition provenance | SACE Board https://www.sace.sa.edu.au/ ; include Stage 1/2 courses and Modified Subjects |
+| TAS | Australian Curriculum v9 per Tasmanian implementation; use AC9 descriptors with edition provenance | TASC https://www.tasc.tas.gov.au/ ; accredited senior courses and VET, plus relevant course identifiers |
+| ACT | Australian Curriculum v9, per ACT implementation | ACT BSSS https://www.bsss.act.edu.au/act_senior_secondary_system/curriculum/act_bsss_curriculum_and_course_register ; course register, school-accredited courses, frameworks |
+| NT | Australian Curriculum v9 per NT implementation; verify local arrangements and edition | NTCET / SACE-related accredited courses and VET; verify course and subject identifiers per authority |
+
+Sources: https://www.australiancurriculum.edu.au/machine-readable-australian-curriculum ; https://www.vcaa.vic.edu.au/curriculum/foundation-10-version-2/victorian-curriculum-f-10-version-20 ; https://www.qcaa.qld.edu.au/p-10/aciq/version-9 ; https://www.bsss.act.edu.au/act_senior_secondary_system/curriculum/act_bsss_curriculum_and_course_register .
+
+## Data contract (required before bulk ingestion)
+
+One record per source identifier (not one per display label):
+`authority, framework, framework_version, jurisdiction_applicability[], identifier, identifier_kind, year_from, year_to, stage, learning_area, subject, course, strand, is_elective, pathway, effective_from, effective_to, source_url, verification_date, status`.
+
+`identifier_kind` separates `syllabus_outcome`, `content_description`, `achievement_standard`, `course_code`, `unit_code`, `competency`, `capability`, and `internal_subject_key`. The last must NEVER pass as an authority code. A senior course code is not automatically an outcome.
+
+Store jurisdiction applicability separately from record identity: identical AC9 codes can legitimately apply to multiple jurisdictions without duplication. Maintain precise editions and coexistence during transitions. Keep existing family outcome/evidence references stable; never erase records on import.
+
+## Ingestion and completeness checks
+
+1. Inventory every official syllabus/course/subject for each jurisdiction × year/band, with a machine-verifiable **expected catalogue manifest**; include compulsory, all elective subjects, Languages/pathways, extensions, VET, disability adjustments and senior courses.
+2. Pull **identifiers and non-copyrightable structural metadata** from published machine-readable/downloadable source when available, retaining direct source links and attribution. Review authority terms before bulk mirroring of substantial descriptions.
+3. Validate identifiers against authority source, check duplicate IDs and code-kind mismatches; flag unmatched or stale identifiers rather than fabricate.
+4. For NSW, expand beyond seed v3; verify per syllabus/version including Stage 6 and all electives.
+5. Expand the AC9 importer to Languages and verify no missing curriculum learning areas (including Work Studies where relevant). Some disciplines have multiple subjects and pathways.
+6. Do not automatically substitute AC9 IDs for Victoria's distinct curriculum, nor for WA where state-adapted content differs.
+7. Expose verified catalogue via one shared API to lesson drafting, parent outcome tracker, learning plans, life learning, evidence backpack and child profile. All surfaces must query the **family jurisdiction and relevant syllabus version**.
+8. Generate CI coverage matrix reporting actual/expected per jurisdiction, stage/year, learning area, elective/course, active/versioned status. Hard-fail misleading “complete” indicators and invalid official code claims.
+9. Support explicit `not_yet_imported` and `no_identifier_in_framework` states. Never manufacture an outcome code.
+10. Preserve existing data, use additive migrations, test user/family isolation, code validation and historical evidence. Review PR and deploy migrations with approval.
+
+## Acceptance
+
+“All codes” can only be certified **per source version and explicit scope** when expected syllabus/course manifests match imported verified identifiers; unknown/transitioning senior programmes must be marked pending, not silently omitted. Coverage includes every elective and each pathway/language where codes exist. This document alone does not satisfy acceptance.
