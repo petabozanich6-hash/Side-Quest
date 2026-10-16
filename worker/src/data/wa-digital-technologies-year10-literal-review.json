@@ -1,0 +1,55 @@
+{
+  "authority": "SCSA",
+  "jurisdiction": "WA",
+  "framework": "Western Australian Curriculum",
+  "subject": "Digital Technologies",
+  "year_level": "10",
+  "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json",
+  "verified_date": "2026-10-16",
+  "status": "literal_official_wa_code_verified_partial",
+  "scope": "Six independently inspected literal wa_code fields from Year 10 section of official SCSA JSON; no inferred patterns and no claim of complete Year 10 coverage.",
+  "records": [
+    {
+      "identifier": "WA10DIGDS1",
+      "strand": "Digital systems",
+      "identifier_kind": "content_description",
+      "year_level": "10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA10DIGDR1",
+      "strand": "Data representation",
+      "identifier_kind": "content_description",
+      "year_level": "10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA10DIGPS1",
+      "strand": "Privacy and security",
+      "identifier_kind": "content_description",
+      "year_level": "10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA10DIGPS2",
+      "strand": "Privacy and security",
+      "identifier_kind": "content_description",
+      "year_level": "10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA10DIGDI1",
+      "strand": "Digital implementation",
+      "identifier_kind": "content_description",
+      "year_level": "10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    },
+    {
+      "identifier": "WA10DIGDI2",
+      "strand": "Digital implementation",
+      "identifier_kind": "content_description",
+      "year_level": "10",
+      "source_url": "https://k10outline.scsa.wa.edu.au/__data/assets/file/0004/1270381/digital-technologies.json"
+    }
+  ]
+}
