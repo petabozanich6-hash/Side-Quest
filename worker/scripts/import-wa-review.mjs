@@ -48,7 +48,16 @@ export function flattenWaJson(doc, source) {
     const subject = typeof v.learningArea==="string" ? v.learningArea : typeof v.subject==="string" ? v.subject : context.subject;
     const segment = typeof v.strand_name==="string" ? v.strand_name : typeof v.header==="string" ? v.header : typeof v.label==="string" ? v.label : "";
     const path = segment ? [...context.path,segment] : context.path;
-    if (typeof v.wa_code === "string") add(v.wa_code,year,subject,path,"wa_content_description");
+    if (typeof v.wa_code === "string" && v.wa_code.trim()) add(v.wa_code,year,subject,path,"wa_content_description");
+    // Older ABLEWA content-description records publish their identifiers in
+    // parenthesised HTML text with an empty wa_code. Extract ONLY when the
+    // textContents node itself has an empty code; never scan examples or prose
+    // elsewhere in the curriculum hierarchy.
+    if (typeof v.wa_code === "string" && !v.wa_code.trim() && typeof v.markdown === "string") {
+      for (const match of v.markdown.matchAll(/\\((AC(?:MNA|MMG|MSP|ELA|ELY|ELT|ELD)[A-Z0-9]*[a-d])\\)/g)) {
+        add(match[1],year,subject,path,"wa_ablewa_content_description");
+      }
+    }
     if (Array.isArray(v.notations) && /content description/i.test(String(v.label??""))) {
       for(const code of v.notations) if(typeof code==="string") add(code,year,subject,path,"wa_content_description");
     }
