@@ -45,12 +45,35 @@ export function requirementsFor(jurisdiction, stage) {
     source: "https://www.act.gov.au/education-and-training/find-a-school-and-enrol/home-education-home-schooling",
     explanation: "ACT home education requires a broad, high-quality program suited to the child, including intellectual, physical, social and emotional development. The ACT registration guidance does not prescribe a fixed list of compulsory school subjects or a minimum number of elective subjects. Literacy and numeracy progress is included in annual reporting.",
   };
-  if (jurisdiction === "NT") return {
-    required: [], choices: [], verified: false,
-    source: "https://nt.gov.au/learning/primary-and-secondary-students/home-education",
-    detailed_subjects_url: "https://nt.gov.au/__data/assets/word_doc/0007/1639843/subjects-and-content-descriptions-transition-to-year-10-.DOCX",
-    explanation: "Northern Territory home education requires an approved curriculum and a suitable program. The current official page directs Transition–Year 10 families to its subject-selection and program-planning document. An older NT application form illustrates eight learning areas and subject choices in Years 9–10, but its indicative hours and elective shading are not verified as current binding rules. For Years 11–12 the current guidance requires 25 hours of educational learning per week. Side-Quest cannot yet state a dependable subject-by-year or minimum elective number here.",
-  };
+  if (jurisdiction === "NT") {
+    const main = ["English", "Mathematics", "Science", "Health and Physical Education", "Technologies"];
+    const shared = {
+      source: "https://nt.gov.au/learning/primary-and-secondary-students/home-education",
+      detailed_subjects_url: "https://nt.gov.au/__data/assets/word_doc/0007/1639843/subjects-and-content-descriptions-transition-to-year-10-.DOCX",
+      verified: true, choices: [],
+      choicesNote: "The NT subject-selection table states no numerical minimum for additional elective subjects.",
+    };
+    if (["ES1", "S1", "S2", "S3"].includes(stage)) return {
+      ...shared, required: [...main, "Humanities and Social Sciences (HASS)", "The Arts"],
+      optional: ["Languages"],
+      explanation: "Transition–Year 6: teach English, Mathematics, Science, Health and Physical Education, HASS, The Arts and Technologies. Languages are optional. The government asks programs to address most listed content descriptions.",
+    };
+    if (stage === "S4") return {
+      ...shared, required: [...main, "Humanities and Social Sciences (History, Geography, Economics and Business, Civics and Citizenship)", "The Arts"],
+      optional: ["Languages"],
+      explanation: "Years 7–8: teach English, Mathematics, Science, Health and Physical Education, HASS (including History, Geography, Economics and Business, Civics and Citizenship), The Arts and Technologies. Languages are optional.",
+    };
+    if (stage === "S5") return {
+      ...shared, required: [...main, "History (HASS)"],
+      optional: ["Geography", "Economics and Business", "Civics and Citizenship", "The Arts (Dance, Drama, Media Arts, Music, Visual Arts)", "Languages"],
+      explanation: "Years 9–10: English, Mathematics, Science, Health and Physical Education, History and Technologies are listed without an optional label. Geography, Economics and Business, Civics and Citizenship, The Arts and Languages are explicitly optional. No minimum elective number is specified.",
+    };
+    return {
+      required: [], choices: [], verified: true,
+      source: shared.source, detailed_subjects_url: shared.detailed_subjects_url,
+      explanation: "For Years 11–12, the NT home education guidance requires 25 hours per week of educational learning. It does not prescribe a fixed elective-subject count; subjects should suit the child's interests, needs and future goals.",
+    };
+  }
   if (jurisdiction === "QLD") return {
     required: [], choices: [], verified: true,
     source: "https://education.qld.gov.au/schools-and-educators/other-education/Pages/registration.aspx",
@@ -119,8 +142,9 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
       {result.verified && result.required.length > 0 ? <>
         <h3 className="font-bold text-emerald-950 mt-4 mb-2">{jurisdiction === "VIC" ? "Eight learning areas to address" : "Mandatory learning areas"}</h3>
         <ul className="grid sm:grid-cols-2 gap-2">{result.required.map(s => <li key={s} className="text-sm flex items-start gap-2"><span aria-hidden="true" className="text-emerald-700">✓</span>{s}</li>)}</ul>
-      </> : result.verified ? <p className="text-sm font-semibold mt-3 text-emerald-950">No fixed compulsory subject list is mandated in the cited home education guidance.</p> : <p className="text-sm font-semibold mt-3 text-amber-900">This jurisdiction or stage needs an authority-verified mandatory/choice breakdown.</p>}
+      </> : result.verified ? <p className="text-sm font-semibold mt-3 text-emerald-950">This level has no fixed compulsory subject list in the cited home education guidance.</p> : <p className="text-sm font-semibold mt-3 text-amber-900">This jurisdiction or stage needs an authority-verified mandatory/choice breakdown.</p>}
       {result.verified && result.choices.length === 0 && <p className="text-xs text-stone-600 mt-3">No fixed minimum number of additional elective subjects is specified in the cited home education guidance. Other learning opportunities can still be included.</p>}
+      {result.optional?.length > 0 && <><h3 className="font-bold text-emerald-950 mt-4 mb-2">Optional subjects (no set minimum)</h3><ul className="grid sm:grid-cols-2 gap-2">{result.optional.map(item => <li key={item} className="text-sm">• {item}</li>)}</ul></>}
       {result.choices.length > 0 && <>
         <h3 className="font-bold text-emerald-950 mt-4">Select at least {result.chooseCount} additional learning areas</h3>
         <p className="text-xs text-stone-600 mb-2">{result.choicesNote}</p>
