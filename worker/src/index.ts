@@ -176,8 +176,8 @@ app.post("/api/auth/login", async (c) => {
     return c.json({ detail: "Invalid email or password" }, 401);
   }
   await clearLoginFailures(c.env.DB, "parent", email);
-  if (c.env.EMAIL_VERIFICATION_REQUIRED === "true") {
-    // Existing users without an opt-in marker remain fully functional.
+  {
+    // Always block marked unverified users, even if new registrations are temporarily ungated.
     const verification = await c.env.DB.prepare(
       "SELECT email_verified_at, email_verification_required_at FROM users WHERE id = ?"
     ).bind(user.id).first<{email_verified_at: string | null; email_verification_required_at: string | null}>();
