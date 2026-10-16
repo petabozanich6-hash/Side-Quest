@@ -15,6 +15,9 @@ export const FEEDBACK_SCHEMA: readonly string[] = [
   "CREATE INDEX IF NOT EXISTS idx_parent_feedback_created ON parent_feedback(created_at DESC)",
   "CREATE INDEX IF NOT EXISTS idx_parent_feedback_family ON parent_feedback(family_id,created_at DESC)",
   "CREATE INDEX IF NOT EXISTS idx_parent_feedback_unseen ON parent_feedback(seen_at,created_at DESC)",
+  "CREATE TABLE IF NOT EXISTS parent_feedback_replies (id TEXT PRIMARY KEY, feedback_id TEXT NOT NULL REFERENCES parent_feedback(id) ON DELETE CASCADE, author_user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, body TEXT NOT NULL, parent_read_at TEXT, created_at TEXT NOT NULL)",
+  "CREATE INDEX IF NOT EXISTS idx_parent_feedback_replies_thread ON parent_feedback_replies(feedback_id,created_at,id)",
+  "CREATE INDEX IF NOT EXISTS idx_parent_feedback_replies_unread ON parent_feedback_replies(feedback_id,parent_read_at)",
 ];
 export async function ensureFeedbackSchema(db: D1Database) {
   // Remote migrations are not run by production deploys, so runtime DDL remains idempotent.
@@ -23,6 +26,7 @@ export async function ensureFeedbackSchema(db: D1Database) {
 const ownRow = (r: any) => ({
   id: r.id, category: r.category, subject: r.subject, message: r.message, page_hint: r.page_hint,
   status: r.status, created_at: r.created_at, updated_at: r.updated_at,
+  replies: [] as any[], unread_replies: 0,
 });
 const isCategory = (value: unknown): value is typeof FEEDBACK_CATEGORIES[number] =>
   typeof value === "string" && (FEEDBACK_CATEGORIES as readonly string[]).includes(value);
@@ -45,8 +49,47 @@ export function registerFeedback(app: App, guards: Guards) {
     const { results } = await c.env.DB.prepare(
       "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50",
     ).bind(c.get("user").family_id, c.get("user").id).all();
+    // One batched, family-and-parent-scoped query. Internal notes and other users' replies never leave the server.
+    const reports = (results ?? []).map(ownRow);
+    if (reports.length) {
+      const { results: replies } = await c.env.DB.prepare(
+        "SELECT r.id,r.feedback_id,r.body,r.created_at,r.parent_read_at FROM parent_feedback_replies r JOIN parent_feedback p ON p.id = r.feedback_id WHERE p.family_id = ? AND p.user_id = ? ORDER BY r.created_at ASC,r.id ASC LIMIT 500"
+      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
+      const byId = new Map(reports.map((r: any) => [r.id,r]));
+      for (const reply of replies ?? []) {
+        const report: any = byId.get(reply.feedback_id);
+        if (!report) continue;
+        report.replies.push({ id:reply.id, body:reply.body, created_at:reply.created_at, read_at:reply.parent_read_at });
+        if (!reply.parent_read_at) report.unread_replies++;
+      }
+    }
     c.header("Cache-Control", "no-store");
-    return c.json({ reports: (results ?? []).map(ownRow) });
+    return c.json({ reports });
+  });
+
+  // Small count endpoint for parent-side unread badge. Works on every plan, including expired previews.
+  app.get("/api/feedback/unread-count", guards.auth, guards.parent, async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const u = c.get("user");
+    const result = await c.env.DB.prepare(
+      "SELECT COUNT(*) n FROM parent_feedback_replies r JOIN parent_feedback p ON p.id=r.feedback_id WHERE p.family_id=? AND p.user_id=? AND r.parent_read_at IS NULL",
+    ).bind(u.family_id,u.id).first<{n:number}>();
+    c.header("Cache-Control","no-store");
+    return c.json({unread:Number(result?.n || 0)});
+  });
+
+  // Acknowledgement is scoped to the exact submitting account, never just a guessed feedback ID.
+  app.post("/api/feedback/:id/replies/read", guards.auth, guards.parent, async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const u=c.get("user");
+    const owns = await c.env.DB.prepare(
+      "SELECT id FROM parent_feedback WHERE id=? AND family_id=? AND user_id=?",
+    ).bind(c.req.param("id"),u.family_id,u.id).first();
+    if(!owns) return c.json({detail:"Message not found"},404);
+    await c.env.DB.prepare(
+      "UPDATE parent_feedback_replies SET parent_read_at=? WHERE feedback_id=? AND parent_read_at IS NULL",
+    ).bind(nowIso(),c.req.param("id")).run();
+    return c.json({ok:true});
   });
 
   app.post("/api/feedback", guards.auth, guards.parent, async (c) => {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
-import { Lightbulb, MessageSquare, Send, ShieldCheck, Bug, ClipboardList } from "lucide-react";
+import { Lightbulb, MessageSquare, Send, ShieldCheck, Bug, ClipboardList, ChevronDown, Mail } from "lucide-react";
 
 const CATEGORIES = [
   { id: "problem", title: "Report a problem", desc: "Something isn't working as expected.", Icon: Bug },
@@ -13,6 +13,8 @@ const CATEGORIES = [
 const STATUS = { new: "Received", reviewing: "Under review", in_progress: "Being worked on", resolved: "Resolved", closed: "Closed" };
 
 export default function ParentFeedback() {
+  const [params, setParams] = useSearchParams();
+  const [expandedId,setExpandedId] = useState("");
   const [category, setCategory] = useState("problem");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
@@ -22,14 +24,25 @@ export default function ParentFeedback() {
   const [error, setError] = useState("");
   const [sent, setSent] = useState(null);
   const load = () => api.get("/feedback").then(({data}) => setReports(data.reports || [])).catch((e) => setError(apiErrorMessage(e, "Could not load your submissions")));
+  const openThread = async (id) => {
+    if (expandedId===id) { setExpandedId(""); return; }
+    setExpandedId(id);
+    if (params.get("thread")!==id) setParams(prev=>{const next=new URLSearchParams(prev);next.set("thread",id);return next;},{replace:true});
+    try {
+      await api.post("/feedback/"+encodeURIComponent(id)+"/replies/read",{});
+      setReports(prev=>prev.map(r=>r.id===id?{...r,unread_replies:0,replies:(r.replies||[]).map(m=>({...m,read_at:m.read_at||new Date().toISOString()}))}:r));
+      window.dispatchEvent(new Event("sidequest-feedback-replies-updated"));
+    } catch (e) { setError(apiErrorMessage(e,"Could not mark the reply read")); }
+  };
   useEffect(() => { load(); }, []);
+  useEffect(() => { const thread=params.get("thread"); if(thread && reports.some(r=>r.id===thread) && expandedId!==thread) openThread(thread); },[reports.length,params.get("thread")]);
   const submit = async (e) => {
     e.preventDefault();
     if (busy) return;
     setBusy(true); setError("");
     try {
       const { data } = await api.post("/feedback", { category, subject: subject.trim(), message: message.trim(), page_hint: pageHint.trim() });
-      setSent(data.id); setSubject(""); setMessage(""); setPageHint("");
+      setSent(data.id); setSubject(""); setMessage(""); setPageHint("");setExpandedId(data.id);
       toast.success("Sent to the Side-Quest team");
       await load();
     } catch (err) {
@@ -80,12 +93,14 @@ export default function ParentFeedback() {
       </section>
       <section className="paper-card p-5 sm:p-6 space-y-3" data-testid="parent-feedback-history">
         <h2 className="font-display text-xl font-bold" style={{color:"#1F3B2D"}}>Messages you've sent</h2>
-        <p className="text-xs text-stone-500">Only messages sent from your parent account appear here. The team may change the status as they review them; this isn't a live chat.</p>
+        <p className="text-xs text-stone-500">Only messages sent from your parent account appear here. The team can reply to your messages here. Replies are private to the parent account that sent them; you can come back and read them any time.</p>
         {reports.length===0?<p className="text-sm text-stone-600 py-3">Nothing here yet. Your first idea could be a good one!</p>:
-          <div className="space-y-2">{reports.map(r=><div key={r.id} className="rounded-xl border border-stone-200 bg-white p-4" data-testid={"parent-feedback-"+r.id}>
-            <div className="flex flex-wrap gap-2 items-center justify-between"><h3 className="text-sm font-bold text-stone-900">{r.subject}</h3><span className="text-xs rounded-full bg-stone-100 px-3 py-1 font-semibold text-stone-700">{STATUS[r.status]||"Received"}</span></div>
+          <div className="space-y-2">{reports.map(r=><div key={r.id} className={"rounded-xl border bg-white p-4 "+(r.unread_replies>0?"border-amber-400":"border-stone-200")} data-testid={"parent-feedback-"+r.id}>
+            <div className="flex flex-wrap gap-2 items-center justify-between"><h3 className="text-sm font-bold text-stone-900">{r.subject}</h3><div className="flex items-center gap-2">{r.unread_replies>0&&<span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-950" data-testid={"parent-feedback-unread-"+r.id}>{r.unread_replies} new {r.unread_replies===1?"reply":"replies"}</span>}<span className="text-xs rounded-full bg-stone-100 px-3 py-1 font-semibold text-stone-700">{STATUS[r.status]||"Received"}</span></div></div>
             <p className="text-xs text-stone-500 capitalize mt-1">{r.category} · {new Date(r.created_at).toLocaleDateString("en-AU")}</p>
             <p className="text-sm mt-2 whitespace-pre-wrap break-words text-stone-700">{r.message}</p>
+            <button type="button" onClick={()=>openThread(r.id)} className="mt-3 flex items-center gap-2 text-sm font-semibold text-emerald-900 underline underline-offset-2" aria-expanded={expandedId===r.id} data-testid={"parent-feedback-toggle-"+r.id}><Mail size={15}/>{r.replies?.length?("Side-Quest replies ("+r.replies.length+")"):"Reply updates"}<ChevronDown size={14} className={expandedId===r.id?"rotate-180":""}/></button>
+            {expandedId===r.id&&<div className="mt-3 space-y-3 border-t border-stone-200 pt-3" data-testid={"parent-feedback-thread-"+r.id}>{!r.replies?.length?<p className="text-xs text-stone-500">No replies yet. You'll see the Side-Quest team's messages here when they respond.</p>:(r.replies||[]).map(m=><div key={m.id} className="rounded-xl bg-emerald-50 border border-emerald-200 p-4"><div className="text-xs font-bold text-emerald-950">Side-Quest team · {new Date(m.created_at).toLocaleString("en-AU")}</div><p className="text-sm mt-2 whitespace-pre-wrap break-words text-stone-800">{m.body}</p></div>)}</div>}
           </div>)}</div>}
         <p className="text-xs text-stone-500">For account and privacy policies, visit <Link to="/parent/trust" className="underline font-semibold">Trust & Support</Link>.</p>
       </section>

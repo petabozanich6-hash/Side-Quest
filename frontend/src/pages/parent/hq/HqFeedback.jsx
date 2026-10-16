@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Bell, CheckCircle, RefreshCw, Search, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Bell, CheckCircle, RefreshCw, Search, ShieldCheck, Send, MessageSquare } from "lucide-react";
 import { adminApi, errorText } from "../../../lib/adminApi";
 import { Alert, Button, GREEN } from "./ui";
 
@@ -23,6 +23,10 @@ export default function HqFeedback() {
   const [ownerNote,setOwnerNote] = useState("");
   const [saving,setSaving] = useState(false);
   const [unread,setUnread] = useState(0);
+  const [replies,setReplies] = useState([]);
+  const [replyText,setReplyText] = useState("");
+  const [sending,setSending] = useState(false);
+  const [sentNotice,setSentNotice] = useState("");
 
   async function load() {
     setLoading(true);setError("");
@@ -40,6 +44,11 @@ export default function HqFeedback() {
 
   async function openItem(item) {
     setSelected(item);setDraftStatus(item.status);setOwnerNote(item.owner_note||"");
+    setReplies([]);setReplyText("");setSentNotice("");
+    try {
+      const thread=await adminApi.get("/feedback/"+encodeURIComponent(item.id)+"/replies");
+      setReplies(thread.replies||[]);
+    } catch(e) {setError(errorText(e,"Could not load replies."));}
     if(item.seen_at) return;
     try {
       await adminApi.put("/feedback/"+encodeURIComponent(item.id),{status:item.status});
@@ -57,6 +66,28 @@ export default function HqFeedback() {
       await load();
     } catch(e) {setError(errorText(e,"Could not save changes."));}
     finally {setSaving(false);}
+  }
+
+  const PRESETS = [
+    { label:"Thanks!", status:null, text:"Thanks for taking the time to send this through! I really appreciate your feedback." },
+    { label:"It's fixed", status:"resolved", text:"Thanks for flagging this! I've made a fix. Please give it another try, and let me know if anything still isn't working as expected." },
+    { label:"Looking into it", status:"reviewing", text:"Thanks for letting me know! I'm looking into this and will update you when I have more information." },
+    { label:"Need more detail", status:"reviewing", text:"Thanks for reporting this! Could you please send a little more information about what happened and which page you were using? That will help me investigate." },
+  ];
+  async function sendReply() {
+    if(!selected || sending || replyText.trim().length<2) return;
+    setSending(true);setError("");setSentNotice("");
+    const id=selected.id;
+    try {
+      const result=await adminApi.post("/feedback/"+encodeURIComponent(id)+"/replies",{message:replyText.trim(),status:draftStatus});
+      const thread=await adminApi.get("/feedback/"+encodeURIComponent(id)+"/replies");
+      setReplies(thread.replies||[]);
+      setReplyText("");
+      setSelected(prev=>prev?.id===id?{...prev,status:result.status}:prev);
+      setItems(prev=>prev.map(x=>x.id===id?{...x,status:result.status}:x));
+      setSentNotice(result.email_notification_sent?"Reply delivered in Side-Quest and an email notification was sent.":"Reply delivered in Side-Quest. Email notification was not sent; the parent will see it in their account.");
+    } catch(e) {setError(errorText(e,"Could not send reply."));}
+    finally {setSending(false);}
   }
   return <div className="space-y-4" data-testid="hq-feedback">
     <header className="flex flex-wrap justify-between gap-3 items-center">
@@ -116,12 +147,23 @@ export default function HqFeedback() {
               <p className="text-sm leading-relaxed whitespace-pre-wrap break-words text-stone-900">{selected.message}</p>
             </div>
             <div className="border-t border-stone-200 pt-4 space-y-3">
-              <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><ShieldCheck size={16}/> Owner follow-up</h4>
+              <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><MessageSquare size={16}/> Replies to the parent</h4>
+              {replies.length===0?<p className="text-xs text-stone-500">No replies yet.</p>:<div className="space-y-2" data-testid="hq-feedback-replies">{replies.map(r=><div key={r.id} className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3"><div className="text-xs font-bold text-emerald-950">Sent · {new Date(r.created_at).toLocaleString("en-AU")}{r.parent_read_at?" · Read by parent":" · Unread by parent"}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-stone-800">{r.body}</p></div>)}</div>}
+              <div className="flex flex-wrap gap-2">{PRESETS.map(p=><button key={p.label} type="button" className="rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold px-3 py-2 hover:bg-emerald-100" onClick={()=>{setReplyText(p.text);if(p.status)setDraftStatus(p.status);setSentNotice("");}}>{p.label}</button>)}</div>
+              <F label="Message the parent (only the submitting parent sees this)">
+                <textarea rows={5} maxLength={2000} value={replyText} onChange={e=>setReplyText(e.target.value)} className="w-full rounded-xl border border-stone-300 p-3 text-sm" placeholder="Thanks for the suggestion… or the issue has been fixed!" data-testid="hq-feedback-reply-message"/>
+              </F>
+              <div className="text-xs text-stone-500">{replyText.length}/2000. This is a private reply in the parent's feedback history. An email notification is attempted when available, without including the message.</div>
+              <Button onClick={sendReply} disabled={sending||replyText.trim().length<2} data-testid="hq-feedback-send-reply"><Send size={14} className="inline mr-1"/>{sending?"Sending…":"Send reply to parent"}</Button>
+              {sentNotice&&<p className="text-sm rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-emerald-950" role="status" data-testid="hq-feedback-reply-sent">{sentNotice}</p>}
+            </div>
+            <div className="border-t border-stone-200 pt-4 space-y-3">
+              <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><ShieldCheck size={16}/> Internal owner follow-up</h4>
               <F label="Progress"><select value={draftStatus} onChange={e=>setDraftStatus(e.target.value)} data-testid="hq-feedback-edit-status" className="border border-stone-300 rounded-lg bg-white p-2 text-sm w-full">
                 {STATUS.map(([id,label])=><option key={id} value={id}>{label}</option>)}
               </select></F>
               <F label="Internal notes (only you can see these)"><textarea rows={4} maxLength={2000} value={ownerNote} onChange={e=>setOwnerNote(e.target.value)} data-testid="hq-feedback-owner-note" className="w-full rounded-xl border border-stone-300 p-3 text-sm" placeholder="Investigated, reproduction steps, fix PR, follow-up…"/></F>
-              <p className="text-xs text-stone-500">The parent sees their submission and current status, never these internal notes. Updating a status does not send an email or direct reply.</p>
+              <p className="text-xs text-stone-500">The parent sees the status and any reply you send, but never these internal notes. Saving status and notes alone does not send a message.</p>
               <Button onClick={save} disabled={saving} data-testid="hq-feedback-save">{saving?"Saving…":"Save status and notes"}</Button>
             </div>
           </>}
