@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api, apiErrorMessage } from "../../lib/api";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, BookOpen, Trash2, Printer, Check } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
@@ -21,6 +22,8 @@ const MODES = [
 const SOURCES = ["home", "library", "school", "audiobook", "digital"];
 
 export default function ReadingLog() {
+  const [searchParams] = useSearchParams();
+  const focused = searchParams.get("focus");
   const [entries, setEntries] = useState([]);
   const [stats, setStats] = useState(null);
   const [students, setStudents] = useState([]);
@@ -45,6 +48,13 @@ export default function ReadingLog() {
     loadPending();
   }, []);
   useEffect(() => { load(); }, [filter]);
+  useEffect(() => {
+    if (!focused) return;
+    if (filter) {setFilter("");return;}
+    if (!entries.some(e => e.id===focused)) return;
+    const raf=requestAnimationFrame(()=>document.getElementById("search-reading-"+focused)?.scrollIntoView({behavior:"smooth",block:"center"}));
+    return ()=>cancelAnimationFrame(raf);
+  },[focused,filter,entries]);
 
   const studentName = (id) => students.find(s => s.id === id)?.name || "Child";
 
@@ -156,7 +166,7 @@ export default function ReadingLog() {
           </thead>
           <tbody>
             {entries.map(e => (
-              <tr key={e.id} className="border-t group" style={{borderColor:"#E8E2D1"}} data-testid={`read-${e.id}`}>
+              <tr id={"search-reading-"+e.id} key={e.id} className={"border-t group "+(focused===e.id?"bg-emerald-50 ring-2 ring-emerald-400":"")} style={{borderColor:"#E8E2D1"}} data-testid={`read-${e.id}`}>
                 <td className="p-3 font-mono text-xs">{e.read_date}</td>
                 <td className="p-3 font-semibold">{e.student?.name}</td>
                 <td className="p-3"><div className="font-semibold">{e.title}{e.verified_by_parent && <span title="Verified by parent" className="ml-2 text-[10px] font-bold uppercase tracking-wider text-emerald-700">verified</span>}</div>{e.author && <div className="text-xs text-stone-500">by {e.author}</div>}</td>

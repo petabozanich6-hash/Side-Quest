@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
+import { Compass, Search, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
 import { api } from "../../lib/api";
 import { flushOutbox, pendingCount } from "../../lib/offline";
 import { isKidsDevice } from "../../lib/pwa";
@@ -64,6 +64,7 @@ export default function ChildLayout() {
             </div>
           </div>
           <nav className="flex items-center gap-1 text-sm max-w-full overflow-x-auto whitespace-nowrap pb-1 sm:pb-0" aria-label="Main">
+            <Link to="/child/search" className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-nav-search"><Search size={14} className="inline mr-1"/> Search</Link>
             <Link to="/child" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-home"><Home size={14} className="inline mr-1"/> Home</Link>
             <Link to="/child/archive" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/archive" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/archive" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}}><FolderOpen size={14} className="inline mr-1"/> Archive</Link>
             <Link to="/child/portfolio" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/portfolio" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/portfolio" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-portfolio"><FolderOpen size={14} className="inline mr-1"/> Portfolio</Link>

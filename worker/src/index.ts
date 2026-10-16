@@ -20,6 +20,7 @@ import { registerOutcomes } from "./outcomeTracker";
 import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
 import { registerHomeschoolCompass } from "./homeschoolCompass";
+import { registerSiteSearch } from "./siteSearch";
 import { registerFeedback } from "./feedback";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
@@ -239,6 +240,7 @@ registerOutcomes(app, guards);
 registerAutoQuest(app, guards);
 registerTimetable(app, guards);
 registerHomeschoolCompass(app, guards);
+registerSiteSearch(app, guards);
 registerFeedback(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
