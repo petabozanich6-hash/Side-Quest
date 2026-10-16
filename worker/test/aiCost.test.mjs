@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
+import { overview } from "../src/adminData.ts";
+import { defaultSettings } from "../src/platformSettings.ts";
 import {
   aiCostSummary, ensureAiCostSchema, estimateGrossUsd, meterWorkersAi, tokenCounts,
   DEFAULT_WORKERS_AI_MODEL, RATES_USD_PER_MILLION,
@@ -70,4 +72,21 @@ test("provider failures preserve the original error; metering failures do not br
   await ensureAiCostSchema(db);
   sum=await aiCostSummary(db);
   assert.equal(sum.tracked_calls_30d,1);
+});
+
+
+test("Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estimates, never invoice amounts",async()=>{
+  const db=makeDb();
+  const env={DB:db,JWT_SECRET:"test-only",BUCKET:{list:async()=>({objects:[]})},AI:{run:async()=>({response:"Yes",usage:{prompt_tokens:1000,completion_tokens:100}})}};
+  const metered=meterWorkersAi(env);
+  await metered.AI.run(DEFAULT_WORKERS_AI_MODEL,{messages:[{role:"user",content:"test"}]});
+  const snapshot=await overview(metered,defaultSettings());
+  assert.equal(snapshot.storage.configured,true);
+  assert.equal(snapshot.storage.files,0);
+  assert.equal(snapshot.ai.cost.configured,true);
+  assert.ok(snapshot.ai.cost.estimated_gross_30d_usd>0);
+  assert.equal(snapshot.ai.cost.invoiced,false);
+  assert.equal("actual_invoice" in snapshot.ai.cost,false);
+  const unbound=await overview({...metered,BUCKET:undefined},defaultSettings());
+  assert.equal(unbound.storage.configured,false);
 });
