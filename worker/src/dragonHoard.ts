@@ -57,9 +57,9 @@ export function validateHoardOffer(input: Record<string, unknown>) {
   const stamp = Date.parse(expiry);
   if (!/^[A-Z0-9]{4,24}$/.test(code)) return { ok: false as const, error: "Code must contain 4–24 letters or numbers." };
   if (label.length < 3 || label.length > 80 || /[<>]/.test(label)) return { ok: false as const, error: "Give this campaign a name of 3–80 characters." };
-  if (!(typeof percent !== "number" || !Number.isInteger(percent)) || percent < 5 || percent > 50) return { ok: false as const, error: "Choose a whole-number discount between 5% and 50%." };
+  if (typeof percent !== "number" || !Number.isInteger(percent) || percent < 5 || percent > 50) return { ok: false as const, error: "Choose a whole-number discount between 5% and 50%." };
   if (months !== 1) return { ok: false as const, error: "Discounts currently apply to the first invoice only." };
-  if (!(typeof limit !== "number" || !Number.isInteger(limit)) || limit < 1 || limit > 500) return { ok: false as const, error: "Redemption limit must be between 1 and 500." };
+  if (typeof limit !== "number" || !Number.isInteger(limit) || limit < 1 || limit > 500) return { ok: false as const, error: "Redemption limit must be between 1 and 500." };
   if (!Number.isFinite(stamp) || stamp < Date.now() + 3600_000 || stamp > Date.now() + 366 * 86400_000) {
     return { ok: false as const, error: "Expiry must be at least an hour away and no more than 366 days away." };
   }
