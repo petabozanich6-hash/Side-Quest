@@ -45,7 +45,7 @@ export const COMPASS_GUIDES = {
       "Prepare identity and parental-responsibility evidence and any court orders/consent that applies.",
       "Write a learning plan for each child across eight learning areas. You may choose your own educational approach; the Victorian Curriculum itself is not compulsory.",
       "Complete the VRQA form and email your application, learning plan and evidence as instructed on its registration page.",
-      "VRQA considers complete applications; allow up to 28 days. Continue school attendance until registration is approved.",
+      "VRQA assesses the documents in your application and may request further information. Your child must remain enrolled in school until the application is approved.",
       "Keep learning activities and records. VRQA may choose your registration for review."
     ),
     links: [
@@ -100,7 +100,7 @@ export const COMPASS_GUIDES = {
   SA: {
     name: "South Australia", authority: "SA Department for Education – Home Education team",
     summary: "South Australia uses a home education exemption process. First request an application form and read the government's home education guide.",
-    beforeLeavingSchool: "Do not assume requesting or lodging an application makes school attendance optional. Ask the Home Education team and your school about attendance or temporary exemption while your application is assessed.",
+    beforeLeavingSchool: "Students must continue attending school until an exemption is approved. In some cases, a principal may grant up to one month of temporary exemption after receiving confirmation from the Home Education office that an application was lodged.",
     whatToPrepare: ["Family and child contact information", "Current school details", "Individual educational program", "Learning resources, environment and progress-monitoring approach"],
     renewal: "Home education exemption arrangements require ongoing compliance and renewal. Check your approval and the current SA guide for dates.",
     steps: steps(
@@ -108,7 +108,7 @@ export const COMPASS_GUIDES = {
       "Request the application form through the Department for Education webform; it will be sent by email.",
       "Prepare a program that meets the Australian Curriculum goals or similar, including progress monitoring, resources and social opportunities.",
       "Complete the application sent by the Home Education team and follow their submission instructions.",
-      "Work with the Home Education team during assessment and follow its advice about school attendance while awaiting an outcome.",
+      "Work with the Home Education team during assessment. Your child must keep attending school unless a valid exemption has been approved; check whether a principal-approved short-term exemption is available.",
       "Save your exemption terms and program records, and check your renewal requirements."
     ),
     links: [
@@ -126,16 +126,16 @@ export const COMPASS_GUIDES = {
     renewal: "After the first year, provide a separate Home Education Summary and Program (HESP) annually for each child.",
     steps: steps(
       "Read the OER guide for new home education registrations and the ten standards.",
-      "Download the current application form from the OER and gather information about each child.",
+      "Follow the OER's latest guide and complete its application form as directed, including certified proof of identity and any relevant legal documents.",
       "Prepare a separate HEP in your own words addressing the ten standards, including learning approaches, literacy, numeracy, wellbeing and evaluation.",
-      "Submit the application and each child's plan to the OER using the current guide's instructions.",
+      "Submit the application and each child's HEP to the OER using the current guide's instructions; the 2025 guide describes an online form.",
       "Keep schooling arrangements in place until provisional registration is granted; liaise with the assigned registration officer about assessment.",
       "Keep learning records and prepare the annual HESP with the previous year's summary and next year's program."
     ),
     links: [
       { label: "Service Tasmania: how to apply", url: "https://www.service.tas.gov.au/services/education-and-skills/schools/apply-for-home-education/", category: "Registration" },
       { label: "OER: new registration guide (PDF)", url: "https://oer.tas.gov.au/wp-content/uploads/2025/07/VD4228-Office-of-the-Education-Registrar_NEW-Registration_FINAL.pdf", category: "Requirements" },
-      { label: "OER: current application form (PDF)", url: "https://oer.tas.gov.au/wp-content/uploads/2025/05/Home-Education-Application-Form-March-2025-OER-007-V9.pdf", category: "Apply" },
+      { label: "OER: application form (March 2025 PDF; check for updates)", url: "https://oer.tas.gov.au/wp-content/uploads/2025/05/Home-Education-Application-Form-March-2025-OER-007-V9.pdf", category: "Apply" },
       { label: "OER: understanding the standards (PDF)", url: "https://oer.tas.gov.au/wp-content/uploads/2023/10/Understanding-the-Standards-Sept-2023-FINAL-2.pdf", category: "Planning" },
     ],
   },
