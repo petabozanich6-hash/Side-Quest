@@ -260,6 +260,7 @@ export function builtLessonPrintHtml(lesson, options = {}) {
     choiceSet("Show what you know", lesson.questions, view) +
     choiceSet("Quick quiz", list(lesson.quiz).map((q) => ({ ...q, question: q.question || q.prompt })), view) +
     resourcesPaper(lesson, view) +
+    printableSheet(lesson.printable_resource) +
     section("Wrap-up", lesson.consolidation, view) +
     section("Challenge", lesson.extension, view) +
     section("Offline alternative", lesson.offline_alternative, view) +
