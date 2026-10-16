@@ -344,6 +344,30 @@ test("suspend / restore / sign out everywhere: confirmed, reasoned, enforced on 
   assert.equal((await h.req(`/admin/customers/${owner.familyId}/sign-out-everywhere`, { method: "POST", token: owner.token, body: { reason: "Testing myself" } })).status, 409);
 });
 
+test("Dragon's Hoard is Owner-only, passkey protected, and free-preview gifts are audited", async () => {
+  const { h, owner } = await ownerSetup();
+  const family = await h.register("hoard-family@example.com");
+  assert.equal((await h.req("/admin/hoard", { token: family.token })).status, 404);
+  assert.equal((await h.req("/admin/hoard", { token: owner.token })).status, 401, "Owner must unlock with passkey");
+  await stepUp(h, owner);
+  const listed = await h.req("/admin/hoard", { token: owner.token });
+  assert.equal(listed.status, 200, JSON.stringify(listed.json));
+  assert.equal(listed.json.billing_configured, false);
+  assert.equal(listed.json.offers.length, 0);
+  assert.equal((await h.req("/admin/hoard", { method: "POST", token: family.token, body: { confirm: "CREATE" } })).status, 404);
+  assert.equal((await h.req("/admin/hoard", { method: "POST", token: owner.token, body: { confirm: "CREATE", code: "DRAGON20", label: "Dragon deal", percent_off: 20, duration_months: 1, max_redemptions: 10, expires_at: new Date(Date.now() + 86400000).toISOString() } })).status, 503, "No Stripe key must never create a coupon");
+  const giftPath = "/admin/customers/" + family.familyId + "/gift-preview";
+  assert.equal((await h.req(giftPath, { method: "POST", token: owner.token, body: { confirm: "GIFT", days: 7, reason: "Generosity test" }, admin: false })).status, 403, "CSRF header required");
+  assert.equal((await h.req(giftPath, { method: "POST", token: family.token, body: { confirm: "GIFT", days: 7, reason: "Not owner" } })).status, 404);
+  assert.equal((await h.req(giftPath, { method: "POST", token: owner.token, body: { confirm: "GIFT", days: 7, reason: "no" } })).status, 400);
+  assert.equal((await h.req(giftPath, { method: "POST", token: owner.token, body: { confirm: "GIFT", days: 7, reason: "Need a little more time" } })).status, 200);
+  const changes = h.db.raw.prepare("SELECT action, detail_json FROM admin_audit_log WHERE target_id = ?").all(family.familyId);
+  assert.equal(changes.length, 1);
+  assert.equal(changes[0].action, "hoard.preview_gift");
+  assert.equal(JSON.parse(changes[0].detail_json).days, 7);
+  assert.equal((await h.req("/admin/customers/" + owner.familyId + "/gift-preview", { method: "POST", token: owner.token, body: { confirm: "GIFT", days: 7, reason: "My account" } })).status, 409);
+});
+
 test("deleting a family still works with the new tables (no foreign key gets in the way)", async () => {
   const { h, owner } = await ownerSetup();
   const parent = await h.register("leaving@example.com");
