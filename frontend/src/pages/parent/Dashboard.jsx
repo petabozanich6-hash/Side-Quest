@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight } from "lucide-react";
+import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight, ScrollText, BookMarked } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
@@ -58,7 +58,7 @@ export default function ParentDashboard() {
 
   const load = () => {
     api.get("/dashboard/parent").then(r => setData(r.data));
-    api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status))));
+    api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status)))).catch(() => {});
     api.get("/reading-submissions/pending").then(r => setReadingPending(r.data || [])).catch(() => setReadingPending([]));
   };
   useEffect(() => {
@@ -66,9 +66,24 @@ export default function ParentDashboard() {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
     api.get("/ai/batches?open=1").then(r => setDrafts(r.data)).catch(() => setDrafts(null));
   }, []);
+  useEffect(() => {
+    // Refresh when returning to the parent dashboard after a child submits work
+    // from another device. Do not poll the full submissions list constantly.
+    const onFocus = () => load();
+    const onVisible = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("focus", onFocus);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      document.removeEventListener("visibilitychange", onVisible);
+    };
+  }, []);
   if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
 
   const pendingTotal = waiting.length + readingPending.length;
+  const nextSubmitted = waiting[0] || null;
+  const nextReading = readingPending[0] || null;
+  const nextReadingStudent = nextReading ? data.students.find(s => s.id === nextReading.student_id) : null;
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-8 relative" data-testid="parent-dashboard">
@@ -106,6 +121,35 @@ export default function ParentDashboard() {
               data-testid="dashboard-feedback-open-reply">Read your message <ArrowRight size={17}/></Link>
           </div>
           <p className="mt-3 text-xs text-stone-600">This notice disappears automatically after you've read your reply.</p>
+        </section>
+      )}
+
+      {/* Show only while a child actually has work awaiting review.
+          Opening the review without making a decision does not dismiss it. */}
+      {pendingTotal > 0 && (
+        <section className="relative z-10 rounded-2xl border-2 border-amber-400 bg-amber-50 p-5 sm:p-7 shadow-lg"
+          role="status" aria-live="polite" data-testid="dashboard-child-work-alert">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="shrink-0 grid place-items-center rounded-2xl bg-emerald-950 p-3 text-amber-100" aria-hidden="true"><ScrollText size={30}/></div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-900">New work from your adventurer</p>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold mt-1 text-emerald-950">Your adventurer has reported back!</h2>
+              <p className="mt-2 text-sm sm:text-base text-stone-800 leading-relaxed">
+                {nextSubmitted
+                  ? <><strong>{nextSubmitted.student?.name || "Your child"}</strong> has sent <strong>{nextSubmitted.lesson?.title || "a lesson"}</strong> for your review.</>
+                  : <><strong>{nextReadingStudent?.name || "Your child"}</strong> has submitted a reading entry{nextReading?.title ? <> for <strong>{nextReading.title}</strong></> : null}.</>}
+                {pendingTotal > 1 && <> There are <strong>{pendingTotal} items</strong> waiting for your review.</>}
+              </p>
+            </div>
+            {nextSubmitted
+              ? <button type="button" onClick={() => setOpenId(nextSubmitted.id)}
+                  className="shrink-0 inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-emerald-950 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-950"
+                  data-testid="dashboard-child-work-review">Review their work <ArrowRight size={17}/></button>
+              : <Link to="/parent/reading-log"
+                  className="shrink-0 inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-emerald-950 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-950"
+                  data-testid="dashboard-child-reading-review">Review reading <BookMarked size={17}/></Link>}
+          </div>
+          <p className="mt-3 text-xs text-stone-600">This notice clears when the work is approved or returned, and reappears if more work needs your attention.</p>
         </section>
       )}
 
