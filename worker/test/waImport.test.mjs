@@ -32,3 +32,16 @@ test("WA Languages JSON uses published content-description notations, not arbitr
   assert.equal(rows[0].subject,"Japanese: Second Language");
   assert.equal(rows[0].level,"Year 4");
 });
+
+
+test("WA ABLEWA markdown identifiers are extracted only from empty-wa_code descriptions", () => {
+  const source={url:"https://k10outline.scsa.wa.edu.au/test/mathematics.json",name:"Mathematics"};
+  const doc=[{year:"a",subject:"Mathematics",strands:[{textContents:[
+    {wa_code:"",markdown:"<p>Respond to objects (ACMNA001a)</p>"},
+    {wa_code:"",markdown:"<p>Respond to routine events (ACMMG007a)</p>"},
+    {wa_code:"WA3MNAUN7",markdown:"<p>Example (ACMNA999a) should not be read</p>"}
+  ]}],examples:[{wa_code:"",markdown:"Not an outcome (ACMNA888a)"}]}];
+  const rows=flattenWaJson(doc,source);
+  assert.deepEqual(rows.map(x=>x.code),["ACMNA001a","ACMMG007a","WA3MNAUN7"]);
+  assert.equal(rows[0].identifier_kind,"wa_ablewa_content_description");
+});
