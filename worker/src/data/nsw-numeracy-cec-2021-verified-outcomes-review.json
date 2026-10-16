@@ -11,7 +11,8 @@
     "Eight literal code identifiers are shown together in the official NESA Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10.",
     "Matching full list also appears in official NESA Module 2 teaching guide, p. 9.",
     "Code existence checked against the existing 1435-candidate NESA import; all eight were absent.",
-    "No automatic assignment or production exposure."
+    "No automatic assignment or production exposure.",
+    "Syllabus-scoped identifiers added for all eight records to prevent numerical code collisions between curricula. Preserve original N6 identifiers for human-facing display."
   ],
   "records": [
     {
@@ -26,7 +27,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-1.1"
     },
     {
       "identifier": "N6-1.2",
@@ -40,7 +42,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-1.2"
     },
     {
       "identifier": "N6-1.3",
@@ -54,7 +57,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-1.3"
     },
     {
       "identifier": "N6-2.1",
@@ -68,7 +72,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-2.1"
     },
     {
       "identifier": "N6-2.2",
@@ -82,7 +87,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-2.2"
     },
     {
       "identifier": "N6-2.3",
@@ -96,7 +102,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-2.3"
     },
     {
       "identifier": "N6-3.1",
@@ -110,7 +117,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-3.1"
     },
     {
       "identifier": "N6-3.2",
@@ -124,7 +132,8 @@
       "source_url": "https://www.educationstandards.nsw.edu.au/wps/wcm/connect/8f82efd1-a958-4e87-83b1-637667e72d3f/numeracy-stage-6-cec-teaching-guide-module-1-pdf.pdf?MOD=AJPERES",
       "source_location": "Numeracy Stage 6 CEC Teaching Guide Module 1, p. 10, Outcomes",
       "verification_status": "literal_code_in_official_NESA_teaching_guide",
-      "status": "review_only"
+      "status": "review_only",
+      "scoped_identifier": "NSW:NESA:Numeracy Stage 6 CEC:2021:N6-3.2"
     }
   ]
 }
