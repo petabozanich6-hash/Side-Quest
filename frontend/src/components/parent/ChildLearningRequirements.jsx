@@ -38,6 +38,16 @@ export function requirementsFor(jurisdiction, stage) {
     required: VIC_AREAS, choices: [], verified: true, source: SA_SOURCE,
     explanation: "South Australian home education programs must address all eight Australian Curriculum learning areas. The department does not require one specific teaching method or commercial curriculum. There is no fixed additional elective-subject number in this guidance; senior pathways need separate consideration.",
   };
+  if (jurisdiction === "ACT") return {
+    required: [], choices: [], verified: true,
+    source: "https://www.act.gov.au/education-and-training/find-a-school-and-enrol/home-education-home-schooling",
+    explanation: "ACT home education requires a broad, high-quality program suited to the child, including intellectual, physical, social and emotional development. The ACT registration guidance does not prescribe a fixed list of compulsory school subjects or a minimum number of elective subjects. Literacy and numeracy progress is included in annual reporting.",
+  };
+  if (jurisdiction === "NT") return {
+    required: [], choices: [], verified: false,
+    source: "https://nt.gov.au/learning/primary-and-secondary-students/home-education",
+    explanation: "Northern Territory programs must meet Australian Curriculum (ACARA) requirements. For Transition–Year 10, check the NT subject-selection and program-planning document for the child's actual year; it is not safe to assume there is no required subject pattern. For Years 11–12, the NT requires 25 hours of educational learning each week. Side-Quest has not verified a single elective count for every NT year level.",
+  };
   if (jurisdiction === "QLD") return {
     required: [], choices: [], verified: true,
     source: "https://education.qld.gov.au/schools-and-educators/other-education/Pages/registration.aspx",
