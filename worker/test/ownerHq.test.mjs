@@ -641,6 +641,24 @@ test("owner feedback replies are private, auditable, unread until viewed, and wo
   assert.equal(r.status,200,"free/expired parent can acknowledge replies");
 });
 
+test("branded Owner HQ feedback email includes the real Side-Quest logo without private content",async()=>{
+  const h=harness();
+  const parent=await h.register("branded-hq-test@example.com","Parent");
+  const mail=[];
+  h.env.EMAIL={send:async obj=>{mail.push(obj);return {messageId:"test"}}};
+  h.env.OWNER_NOTIFICATION_EMAIL="test-owner@example.com";
+  const secret="TOP-SECRET-FAMILY-DETAILS";
+  const r=await h.req("/feedback",{method:"POST",token:parent.token,admin:false,body:{
+    category:"feedback",subject:"Feature feedback",message:"This is private: "+secret
+  }});
+  assert.equal(r.status,201,JSON.stringify(r.json));
+  assert.equal(mail.length,1);
+  assert.equal(mail[0].to,"test-owner@example.com");
+  assert.ok(mail[0].html.includes("/icons/icon-192.png"),"email contains publicly hosted Side-Quest logo");
+  assert.ok(mail[0].html.includes("Side-Quest Learning logo"),"logo includes alternative text");
+  assert.ok(!JSON.stringify(mail[0]).includes(secret),"private feedback content remains in Owner HQ");
+});
+
 test("feedback reply email only notifies the real submitting parent and never includes private message text",async()=>{
   const {h,owner}=await ownerSetup();
   const alice=await h.register("email-alice@example.com","Alice");
@@ -657,6 +675,8 @@ test("feedback reply email only notifies the real submitting parent and never in
   assert.equal(r.json.email_notification_sent,true);
   assert.equal(sent.length,1);
   assert.deepEqual(sent[0].to,alice.email);
+  assert.ok(sent[0].html.includes("/icons/icon-192.png"),"parent reply email carries Side-Quest logo");
+  assert.ok(sent[0].html.includes("Side-Quest has reported back!"));
   assert.ok(!JSON.stringify(sent).includes(phrase));
   assert.ok(!JSON.stringify(sent).includes("More maths games please"));
   assert.ok(!JSON.stringify(sent).includes(bob.email));
