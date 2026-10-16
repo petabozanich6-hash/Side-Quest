@@ -15,7 +15,7 @@ import { registerAccount } from "./account";
 import { registerPasswordReset } from "./passwordReset";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
-import { registerBilling } from "./billing";
+import { registerBilling, reconcileSubscriptions } from "./billing";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
@@ -326,6 +326,7 @@ export default {
     // The two independent mail queues must not prevent each other running.
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
     try { await processTrialReminders(env); } catch (e) { console.error("trial reminder cron failed", e); }
+    try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

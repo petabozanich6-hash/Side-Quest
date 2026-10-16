@@ -585,3 +585,20 @@ test("checkout: Stripe's own subscription list blocks a second membership; open 
   assert.equal(r.data.url, "https://checkout.stripe.com/new");
   assert.ok(calls.some((c) => c.url.endsWith("/checkout/sessions/cs_other/expire") && c.method === "POST"), "the other plan's page is closed");
 });
+
+test("reconcile: a missed cancellation webhook is caught once the period ends; fresh or future rows are left alone", async () => {
+  const db = makeDb();
+  const ended = new Date(NOW.getTime() - DAY);
+  seedFamily(db, "f1", "ACTIVE_MONTHLY", { stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", subscription_status: "active", plan_period_end: ended.toISOString(), billing_updated_at: new Date(NOW.getTime() - 40 * DAY).toISOString() });
+  seedFamily(db, "f2", "ACTIVE_MONTHLY", { stripe_customer_id: "cus_2", stripe_subscription_id: "sub_2", subscription_status: "active", plan_period_end: new Date(NOW.getTime() + 20 * DAY).toISOString() });
+  const state = { sub_1: sub({ status: "canceled", ended }), sub_2: sub({ id: "sub_2", customer: "cus_2", family: "f2" }) };
+  const seen = [];
+  const f = async (url, init) => { seen.push(url); return fakeStripe(state)(url, init); };
+  const out = await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, NOW);
+  assert.equal(out.length, 1);
+  assert.equal(fam(db, "f1").plan, "CANCELLED");
+  assert.equal(fam(db, "f1").subscription_status, "canceled");
+  assert.ok(!seen.some((u) => u.includes("sub_2")));
+  assert.deepEqual(await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, NOW), [], "not re-checked straight away");
+  assert.deepEqual(await b.reconcileSubscriptions(db, {}, f, NOW), [], "billing off: nothing");
+});

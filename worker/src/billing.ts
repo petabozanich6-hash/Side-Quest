@@ -642,3 +642,41 @@ export async function deletionBillingBlock(db: DB, env: Env, familyId: string, f
     return { status: 503, code: "BILLING_UNAVAILABLE", detail: "We couldn't check your membership with our payment provider, so nothing was deleted. Please try again shortly." };
   }
 }
+
+// ---------------------------------------------------------------- reconciliation (cron)
+
+/**
+ * Safety net for missed or failed webhooks: re-reads, from Stripe, subscriptions whose paid period
+ * has ended or is about to, and that haven't been synced in the last hour. Bounded per run.
+ */
+export async function reconcileSubscriptions(db: DB, env: Env, fetchImpl?: Fetch, now: Date = new Date(), limit = 10): Promise<string[]> {
+  const cfg = billingConfig(env);
+  if (!cfg.ok) return [];
+  const soon = new Date(now.getTime() + 3600_000).toISOString();
+  const stale = new Date(now.getTime() - 3600_000).toISOString();
+  let rows: { id: string; stripe_subscription_id: string }[] = [];
+  try {
+    ({ results: rows } = await db.prepare(
+      `SELECT id, stripe_subscription_id FROM families
+       WHERE stripe_subscription_id IS NOT NULL AND COALESCE(plan, '') != 'INTERNAL'
+         AND COALESCE(subscription_status, '') NOT IN ('canceled', 'incomplete_expired')
+         AND (plan_period_end IS NULL OR plan_period_end < ?)
+         AND (billing_updated_at IS NULL OR billing_updated_at < ?)
+       ORDER BY billing_updated_at LIMIT ?`
+    ).bind(soon, stale, limit).all<any>());
+  } catch {
+    return []; // billing columns not migrated
+  }
+  const out: string[] = [];
+  for (const r of rows) {
+    try {
+      out.push(await syncSubscription(db, cfg, r.stripe_subscription_id, fetchImpl, now));
+    } catch (e: any) {
+      out.push(`failed ${r.stripe_subscription_id}: ${e?.status || "error"}`);
+    }
+    // Ignored or failed syncs must not be retried every five minutes.
+    await db.prepare("UPDATE families SET billing_updated_at = ? WHERE id = ? AND (billing_updated_at IS NULL OR billing_updated_at < ?)")
+      .bind(now.toISOString(), r.id, stale).run();
+  }
+  return out;
+}
