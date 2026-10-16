@@ -11,7 +11,7 @@
       ],
       "k10": {
         "status": "partial",
-        "existing": "nesa-current-2026.ts plus historical NSW seed",
+        "existing": "nesa-review-import.json: 1,435 edition-specific source records across K–12; 81 rendered pages verified; 9 page failures and 37 stage gaps remain; runtime catalogue unchanged",
         "required": [
           "every current/outgoing K-10 syllabus",
           "all mandatory and elective subjects",
@@ -153,11 +153,12 @@
         ]
       },
       "senior": {
-        "status": "missing",
+        "status": "partial_review",
         "required": [
           "all BSSS frameworks, A/T/M/V/H and school-accredited courses",
           "outcome codes where officially defined"
-        ]
+        ],
+        "existing": "act-bsss-2026-courses-review.json: 113 names/classifications; V classification count 29 differs from overview 28; no outcome codes"
       }
     },
     {

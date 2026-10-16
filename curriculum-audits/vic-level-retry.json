@@ -1,0 +1,108 @@
+{
+  "downloaded_on": "2026-10-16",
+  "complete": false,
+  "warnings": [
+    "Candidates require classification by official subject, curriculum version and applicable year before being published to the tracker.",
+    "2026 EAL, Phase 3/4 Languages, and certain A\u2013D curricula still use Victorian Curriculum v1; these are not in the VC2 candidates.",
+    "Selected level pages may contain shared navigation/hydration code references. A level-page mention does not by itself certify the code's learning level.",
+    "VCE, VCE VM, VET and senior course identifiers are separate and not included."
+  ],
+  "results": [
+    {
+      "level": "1",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-1",
+      "html_bytes": 2402243,
+      "candidate_codes": 421
+    },
+    {
+      "level": "2",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-2",
+      "html_bytes": 2401692,
+      "candidate_codes": 423
+    },
+    {
+      "level": "3",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-3",
+      "html_bytes": 2239222,
+      "candidate_codes": 377
+    },
+    {
+      "level": "4",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-4",
+      "html_bytes": 2236314,
+      "candidate_codes": 377
+    },
+    {
+      "level": "5",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-5",
+      "html_bytes": 2419937,
+      "candidate_codes": 393
+    },
+    {
+      "level": "6",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-6",
+      "html_bytes": 2409476,
+      "candidate_codes": 392
+    },
+    {
+      "level": "8",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-8",
+      "html_bytes": 4276310,
+      "candidate_codes": 634
+    },
+    {
+      "level": "9",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-9",
+      "html_bytes": 4730825,
+      "candidate_codes": 637
+    },
+    {
+      "level": "10",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-10",
+      "html_bytes": 4747649,
+      "candidate_codes": 643
+    },
+    {
+      "level": "FLA",
+      "url": "https://f10.vcaa.vic.edu.au/levels/foundation-level-a",
+      "html_bytes": 551528,
+      "candidate_codes": 48
+    },
+    {
+      "level": "FLB",
+      "url": "https://f10.vcaa.vic.edu.au/levels/foundation-level-b",
+      "html_bytes": 580617,
+      "candidate_codes": 60
+    },
+    {
+      "level": "FLC",
+      "url": "https://f10.vcaa.vic.edu.au/levels/foundation-level-c",
+      "html_bytes": 656357,
+      "candidate_codes": 66
+    },
+    {
+      "level": "FLD",
+      "url": "https://f10.vcaa.vic.edu.au/levels/foundation-level-d",
+      "html_bytes": 690787,
+      "candidate_codes": 74
+    }
+  ],
+  "failures": [
+    {
+      "level": "7",
+      "url": "https://f10.vcaa.vic.edu.au/levels/level-7",
+      "error": "TimeoutError: The operation was aborted due to timeout"
+    },
+    {
+      "level": "Foundation",
+      "url": "https://f10.vcaa.vic.edu.au/levels/foundation",
+      "error": "TimeoutError: The operation was aborted due to timeout"
+    }
+  ],
+  "summary": {
+    "requested_level_pages": 15,
+    "successes": 13,
+    "failures": 2,
+    "distinct_codes": 2785
+  }
+}

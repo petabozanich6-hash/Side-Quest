@@ -29,12 +29,12 @@ def parse_cell(raw, framework, source_page):
     if not value or value in {"Framework", "A/T/M/V Courses", "H Courses"}:
         return None
     if framework == "H":
-        if not re.search(r"\bH Course\b", value):
+        if not re.search(r"\bH Cou(?:r)?se\b", value):
             return None
-        name = re.sub(r"^(?:UC|UNSW) H Course\s+", "", value).strip()
+        name = re.sub(r"^(?:UC|UNSW) H Cou(?:r)?se\s+", "", value).strip()
         if not name or name == value:
             return None
-        return {"name": name, "classifications": ["H"], "issuer": value.split(" H Course")[0],
+        return {"name": name, "classifications": ["H"], "issuer": value.split(" H ")[0],
                 "identifier_kind": "senior_course_title_and_classification",
                 "official_course_code": None, "pdf_page": source_page}
     words = value.split(" ")
@@ -52,6 +52,15 @@ def parse_cell(raw, framework, source_page):
     return {"name": name, "classifications": classes, "issuer": "ACT BSSS",
             "identifier_kind": "senior_course_title_and_classification",
             "official_course_code": None, "pdf_page": source_page}
+
+def framework_columns(row):
+    labels = [norm(cell) for cell in row]
+    if "Mathematics" not in labels or "Technologies" not in labels:
+        return None
+    columns = {i: label for i, label in enumerate(labels) if label in CATEGORIES}
+    if len(columns) != len(CATEGORIES):
+        raise RuntimeError("Unrecognised course framework columns")
+    return columns
 
 def extract():
     import pdfplumber
@@ -84,20 +93,20 @@ def extract():
                 header = None
                 for row_idx,row in enumerate(table):
                     if not row: continue
-                    joined = " ".join(norm(x) for x in row)
-                    if "Mathematics" in joined and "Technologies" in joined:
-                        header = row
+                    columns = framework_columns(row)
+                    if columns is not None:
+                        header = columns
                         continue
                     if header is None:
                         continue
-                    # Typical table: column 0 is vertical "A/T/M/V Courses",
-                    # columns 1..11 are distinct learning frameworks.
-                    for i,cell in enumerate(row[1:12]):
+                    # PDF extraction can split the vertical framework label into several
+                    # columns. Use exact header positions, never fixed offsets.
+                    for i,group in header.items():
+                        cell = row[i]
                         if not cell: continue
                         all_cells += 1
-                        group = CATEGORIES[i]
                         text = norm(cell)
-                        framework = "H" if " H Course " in " "+text+" " or text.startswith(("UC H Course","UNSW H Course")) else "A/T/M/V"
+                        framework = "H" if re.match(r"^(?:UC|UNSW) H Cou(?:r)?se\b", text) else "A/T/M/V"
                         rec = parse_cell(cell, framework, page_idx+1)
                         if not rec:
                             if text and "Framework" not in text: skipped.append({"page":page_idx+1,"text":text[:120]})
@@ -111,18 +120,25 @@ def extract():
                                 found[key].setdefault("also_in_frameworks",[]).append(group)
                         else: found[key] = rec
     courses=sorted(found.values(),key=lambda x:(x["learning_area"],x["name"]))
+    classification_counts = {c: sum(c in r["classifications"] for r in courses) for c in sorted(VALID_CLASSES)}
+    register_counts_match = classification_counts == {"T":83,"A":91,"M":84,"H":10,"V":28}
     result={"authority":"ACT Board of Senior Secondary Studies (BSSS)","source_url":URL,
         "version":"20.02.2026","current_year":2026,"extracted_at":date.today().isoformat(),
         "identifier_kind":"senior_course_title_and_classification",
-        "complete": len(courses)==113 and len(skipped)==0,
+        "complete": False,
+        "complete_register_inventory": len(courses)==113 and len(skipped)==0 and register_counts_match,
+        "source_sha256": __import__("hashlib").sha256(document).hexdigest(),
+        "classification_control_counts_expected": {"T":83,"A":91,"M":84,"H":10,"V":28},
+        "coverage_scope": "Published register course names/classifications only; not course outcomes, external VET or R units",
         "summary":{"declared_unique_courses":113,"parsed_distinct_entries":len(courses),
-                   "rejected_populated_cells":len(skipped),"considered_cells":all_cells},
+                   "rejected_populated_cells":len(skipped),"considered_cells":all_cells,"classification_counts":classification_counts,
+                   "classification_control_counts_match":register_counts_match},
         "courses":courses,"unparsed_cells":skipped}
     OUT.write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n",encoding="utf-8")
     print("ACT BSSS COURSE REGISTER "+json.dumps(result["summary"]))
     if skipped:print("REVIEW UNPARSED: "+json.dumps(skipped[:20]))
-    if len(courses)!=113 or len(skipped)!=0:
-        raise RuntimeError("ACT BSSS 113-course completeness requirement not met; review-only file, DO NOT attach as complete")
+    if len(courses)!=113 or len(skipped)!=0 or not register_counts_match:
+        raise RuntimeError("ACT BSSS register control counts do not reconcile; review-only file, DO NOT attach as complete")
     print("All 113 official course names and classifications extracted; no fake numeric codes.")
 if __name__ == "__main__":
     extract()

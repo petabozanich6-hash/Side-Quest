@@ -81,7 +81,7 @@ export function extractCodes(html, source, syllabusTitle = "") {
   // rather than the selected syllabus's outcome list.
   const t = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<\/(?:h[1-6]|p|li|section|div|dt|dd|tr|td|span)>/gi, "\n")
+    .replace(/<\/(?:h[1-6]|p|li|section|div|dt|dd|tr|td|span|small)>/gi, "\n")
     .replace(/<[^>]+>/g, " ").split(/\n/).map(clean);
   const start = t.findIndex((line) => /^Outcomes$/i.test(line));
   if (start < 0) return [];
@@ -94,7 +94,7 @@ export function extractCodes(html, source, syllabusTitle = "") {
     else if (/^(?:Year|Years) (11|12)(?:.?12)?$/i.test(line)) stage = "S6";
     if (line.length > 95) continue; // outcome code labels, not descriptions
     const match = CODE.exec(line);
-    if (!match || seen.has(match[1])) continue;
+    if (!match || /-ADJ-/.test(match[1]) || seen.has(match[1])) continue;
     seen.add(match[1]);
     codes.push({ code: match[1], stage_hint: inferStageFromCode(match[1], syllabusTitle), page_stage_context: stage, official_outcomes_url: source, identifier_kind: "nesa_syllabus_outcome", status: "extracted_pending_completeness_check" });
   }

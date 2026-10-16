@@ -4,15 +4,13 @@
 import {readFileSync,existsSync,writeFileSync,mkdirSync,readdirSync} from "node:fs";
 import {fileURLToPath} from "node:url";
 const root=fileURLToPath(new URL("../src/data/",import.meta.url));
+const dataFiles=readdirSync(root).sort();
+const matching=(prefixes)=>dataFiles.filter(name=>/\.(json|ts)$/.test(name)&&prefixes.some(prefix=>name.startsWith(prefix)));
 const inventory={
- NSW:["nesa-current-2026.ts","nesa-review-import.json","nsw-stage6-2024-life-skills-verified-outcomes.json","nsw-stage6-ancient-geography-lifeskills-outcomes-verified.json"],
- VIC:["vic-source-ids.ts","vic1-languages-review.json"],
- QLD:["qcaa-senior-a-z-subject-inventory-2026-review.json","qcaa-senior-see-short-courses-2026-review.json"],
- WA:["wa-k10-source-inventory-verified-2026.json","wa-ablewa-science-stages-a-d-review.json"],
- SA:["sace-2026-subject-review.json"],
- TAS:["tasc-2026-course-codes.json"],
- ACT:[],
- NT:["sace-2026-subject-review.json"]
+ NSW:matching(["nesa-","nsw-"]), VIC:matching(["vic-","vic1-"]),
+ QLD:matching(["qcaa-"]), WA:matching(["wa-"]),
+ SA:["sace-2026-subject-review.json"], TAS:["tasc-2026-course-codes.json"],
+ ACT:matching(["act-bsss-"]), NT:["sace-2026-subject-review.json"]
 };
 const shared="ac9-outcomes.ts";
 const filenameKind=name=>name.includes("inventory")?"source_or_subject_inventory":name.includes("review")?"review_mixed":name.includes("outcomes")?"outcome_or_content_candidate":"authority_data";
@@ -24,11 +22,13 @@ function auditDataset(name){
   if(name.endsWith(".ts"))return {file:name,status:"present_typescript",bytes:Buffer.byteLength(source),verified_identifiers:null,
     note:"TS catalogues require their dedicated importer audits; file presence is not a record count"};
   const doc=JSON.parse(source);
-  const rows=Array.isArray(doc.records)?doc.records:Array.isArray(doc.candidates)?doc.candidates:null;
-  const kinds=rows?rows.reduce((acc,r)=>{const k=r.identifier_kind||"unspecified";acc[k]=(acc[k]||0)+1;return acc},{}):{};
+  const recordKey=["records","candidates","identifiers","subject_codes","courses","subjects","code_mappings"].find(key=>Array.isArray(doc[key]));
+  const rows=recordKey?doc[recordKey]:null;
+  const kinds=rows?rows.reduce((acc,r)=>{const k=r.identifier_kind||r.kind||doc.identifier_kind||"unspecified";acc[k]=(acc[k]||0)+1;return acc},{}):{};
   const codes=rows?.map(r=>String(r.identifier||r.code||"")).filter(Boolean)||[];
-  return {file:name,status:"present_review",source_status:doc.status||null,records:rows?.length??null,
-    distinct_identifiers:new Set(codes).size,identifier_kinds:kinds,category:filenameKind(name),
+  return {file:name,status:"present_review",source_status:doc.status||null,record_container:recordKey||null,source_summary:doc.summary||null,records:rows?.length??null,
+    distinct_identifiers:new Set(codes).size,identifier_kinds:kinds,
+    count_warning:"Within-file unique strings only; cross-file duplicates, editions and course/outcome kinds must not be summed",category:filenameKind(name),
     verified_identifiers:null,note:"Counts are source/review records; NOT certified outcomes or exhaustive coverage"};
  }catch(e){return {file:name,status:"invalid_json",error:String(e).slice(0,180)}}
 }

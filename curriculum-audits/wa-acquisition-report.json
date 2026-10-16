@@ -1,0 +1,111 @@
+{
+  "created_at": "2026-10-16T00:44:40.719Z",
+  "official_source_count": 19,
+  "source_acquisition": [
+    {
+      "source": "English",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Health and Physical Education",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Humanities and Social Sciences",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Noongar",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Chinese: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "French: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "German: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Hindi: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Indonesian: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Italian: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Japanese: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Korean: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Tamil: Second Language",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Languages Years 7–10",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Mathematics",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Science",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Design and Technologies",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "Digital Technologies",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    },
+    {
+      "source": "The Arts",
+      "status": "blocked_or_invalid",
+      "reason": "Error: HTTP 403"
+    }
+  ],
+  "summary": {
+    "expected_sources": 19,
+    "loaded_sources": 0,
+    "candidate_rows": 0,
+    "distinct_source_code_level": 0,
+    "duplicates": 0
+  },
+  "complete_source_input": false,
+  "verified_all_codes": false,
+  "publication_status": "REVIEW_ONLY_DO_NOT_USE_FOR_MASTERY"
+}

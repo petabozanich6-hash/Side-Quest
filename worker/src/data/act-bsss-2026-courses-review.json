@@ -1,0 +1,1915 @@
+{
+  "authority": "ACT Board of Senior Secondary Studies (BSSS)",
+  "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+  "version": "20.02.2026",
+  "current_year": 2026,
+  "extracted_at": "2026-10-16",
+  "identifier_kind": "senior_course_title_and_classification",
+  "complete": false,
+  "complete_register_inventory": false,
+  "source_sha256": "0ea3bfc95c259b1d42a81a73c7afcf2016d7ef68ec844b7658055c04090f267e",
+  "classification_control_counts_expected": {
+    "T": 83,
+    "A": 91,
+    "M": 84,
+    "H": 10,
+    "V": 28
+  },
+  "coverage_scope": "Published register course names/classifications only; not course outcomes, external VET or R units",
+  "summary": {
+    "declared_unique_courses": 113,
+    "parsed_distinct_entries": 113,
+    "rejected_populated_cells": 0,
+    "considered_cells": 113,
+    "classification_counts": {
+      "A": 91,
+      "H": 10,
+      "M": 84,
+      "T": 83,
+      "V": 29
+    },
+    "classification_control_counts_match": false
+  },
+  "courses": [
+    {
+      "name": "Accounting",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Commerce",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Business",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Commerce",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Business Decision Making",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Commerce",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Commerce Integrated",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Commerce",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Economics",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Commerce",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Tourism and Event Management",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Commerce",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Bridging Literacy",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Creative Writing",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "EAL",
+      "classifications": [
+        "A",
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "EAL-English Integrated",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "English",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "English/ Literature Integrated",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Essential English",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Literature",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "English",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Athlete Development",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Exercise Science",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Outdoor Recreation",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Outdoor and Environmental Education",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Performance Analysis in Sport",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Physical Education Studies",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Public Health",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Health, Outdoor and PE",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Ancient History",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Early Childhood Studies",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Geography",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Global Studies",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "History Integrated",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Indigenous Language and Culture",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Legal Studies",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Modern History",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Philosophy",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Politics",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Politics and Democracy",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Pre-Modern History",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Religious Studies",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Social and Community Work",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Sociology",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Religion",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "World Religions",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Humanities and Social Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Automotive Technology",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Business Services",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Construction Pathways",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Digital Products",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Food Studies",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Furniture Making Pathways",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Horticulture",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Live Production and Services",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Metal Products",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Sport, Fitness and Recreation",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Timber Products",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Industry and Services",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Connected Learning",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Integrated Learning",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Education Studies",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Integrated Learning",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Interdisciplinary Inquiry",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Integrated Learning",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Pacific Studies",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Integrated Learning",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Pathways to Work and Learning",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Integrated Learning",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Advanced Modern Languages",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Language",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Beginning Classical Languages",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Language",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Beginning Modern Languages",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Language",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Continuing Classical Languages",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Language",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Continuing Modern Languages",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Language",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Translating and Interpreting",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Language",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Bridging Numeracy",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Essential Mathematics",
+      "classifications": [
+        "A",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Further Mathematics Integrated",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Mathematical Applications",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Mathematical Methods",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialist Mathematics",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialist Methods",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Mathematics",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Agriculture",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Biology",
+      "classifications": [
+        "A",
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Chemistry",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Earth and Environmental Science",
+      "classifications": [
+        "A",
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Food Science and Nutrition",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Health Science",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Interdisciplinary Science",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Meeting Environmental Challenges",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Physics",
+      "classifications": [
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Psychology",
+      "classifications": [
+        "A",
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Systemic Anatomy and Physiology",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Understanding People and Behaviour",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Science",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Cybersecurity",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UNSW",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Data Science",
+      "classifications": [
+        "A",
+        "T",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Design and Emerging Technologies",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Design and Graphics",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Design and Technology Integrated",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Design and Textiles",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Designed Environments",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Digital Technologies",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Engineering Studies",
+      "classifications": [
+        "A",
+        "T"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Hospitality",
+      "classifications": [
+        "A",
+        "M",
+        "T",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Information Technology Integrated",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Networking and Security",
+      "classifications": [
+        "A",
+        "T",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Robotics and Mechatronics",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Systems Architecture",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UNSW",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Visual Communication Theory and Principles",
+      "classifications": [
+        "H"
+      ],
+      "issuer": "UC",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "Technologies",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Dance",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Drama",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Media",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Music",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Photography",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialised Dance",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialised Drama",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialised Media",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialised Music",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialised Photography",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Specialised Visual Arts",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Stage Performance",
+      "classifications": [
+        "A",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Dance",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Drama",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Media",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Music",
+      "classifications": [
+        "A",
+        "T",
+        "M",
+        "V"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Photography",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Studies of Visual Arts",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 6,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    },
+    {
+      "name": "Visual Arts",
+      "classifications": [
+        "A",
+        "T",
+        "M"
+      ],
+      "issuer": "ACT BSSS",
+      "identifier_kind": "senior_course_title_and_classification",
+      "official_course_code": null,
+      "pdf_page": 5,
+      "learning_area": "The Arts",
+      "source_url": "https://www.bsss.act.edu.au/__data/assets/pdf_file/0003/610644/ACT_BSSS_Course_Register_2026.pdf",
+      "register_version": "20.02.2026",
+      "applicable_year": 2026,
+      "jurisdiction": "ACT"
+    }
+  ],
+  "unparsed_cells": []
+}

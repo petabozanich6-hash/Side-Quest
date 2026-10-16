@@ -18,13 +18,13 @@ const commands=[
 ];
 export const NATIONAL_COLLECTION_JOBS=commands;
 export function chooseJobs(codes){return commands.filter(job=>!codes.length||job.jurisdictions.some(j=>codes.includes(j)));}
-export function buildNationalPlan({jurisdictions=[],execute=false,runner=spawnSync}={}){
+export function buildNationalPlan({jurisdictions=[],execute=false,runner=spawnSync,timeoutMs=600000,python=process.env.CURRICULUM_PYTHON||"python3"}={}){
  const selected=chooseJobs(jurisdictions),results=[];
  for(const job of selected){
-  const entry={id:job.id,jurisdictions:job.jurisdictions,authority:job.authority,kind:job.kind,command:job.command,
+  const entry={id:job.id,jurisdictions:job.jurisdictions,authority:job.authority,kind:job.kind,command:job.command[0]==="python3"?[python,...job.command.slice(1)]:job.command,
     status:"planned_not_executed",source_verified:false,coverage_complete:false};
   if(execute){
-   const r=runner(job.command[0],job.command.slice(1),{encoding:"utf8",timeout:120000,stdio:"pipe"});
+   const r=runner(entry.command[0],entry.command.slice(1),{encoding:"utf8",timeout:timeoutMs,stdio:"pipe"});
    entry.status=r.error||r.status!==0?"failed_or_blocked":"import_executed_review_only";
    entry.exit_code=r.status;
    entry.error=(r.error?.message||r.stderr||"").slice(-1200);

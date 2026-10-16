@@ -2,6 +2,37 @@
 
 **Status: inventory and implementation design; NOT a completed dataset.** Do not describe Side-Quest as having all codes until automated coverage checks pass. This audit intentionally does not invent identifiers.
 
+## Latest executed collection and verification (16 October 2026)
+
+**This section supersedes the historical progress figures below. All eight jurisdictions remain INCOMPLETE.** This is a review-only collection commit; runtime catalogues and integrations were not regenerated. No merge or deployment was performed. Unknown denominators are not percentages of completeness.
+
+All 11 existing bulk jobs were executed. See `curriculum-audits/national-collection-report.json` for the initial run and `collection-followup-report.json` for fixes, retries and validation. The initial ACT Python lacked pdfplumber; the retry used the bundled Python runtime. The orchestrator now accepts `CURRICULUM_PYTHON` and allows ten minutes per importer instead of killing a sequential source collection after two minutes.
+
+| Jurisdiction | Evidence retained / collected | Remaining completeness gaps |
+|---|---|---|
+| NSW | **1,435 source-page/code records, 1,430 distinct code strings**, from 81/90 modern outcome pages. Added 568 source/code pairs and removed 18 adjustment notices from the outcome collection (net +550). All 1,435 match independently fetched rendered NESA outcome-card IDs; URLs and response hashes retained. | Nine CEC routes return 404; 37 syllabus versions lack expected stages; legacy syllabuses, editions, senior and VET inventories unresolved. Distinct code strings are not edition-scoped identities. |
+| VIC | Existing 2,927 VC2 codes classified across 53 official routes; rerun reached all 53 routes. EAL rerun confirms 796 identifiers; transitional Languages rerun confirms 1,249 candidates from 13/14 routes. | Level-page retry reached 13/15 pages, with Year 7 and Foundation timing out; prior 15-page dataset preserved. Classical-language framework route is 404; senior VCE/VM/VET and version applicability unresolved. |
+| QLD | Existing 78 A–Z syllabus-title records plus 18 SEE/short-course inventory records retained, with overlap possible. | Direct QCAA bulk index returns 403; individual syllabus objectives/outcomes, editions and VET still require collection. Titles are not outcome identifiers. |
+| WA | All 26 existing WA source inventories and partial review datasets are now included in the audit, including WACE and ABLEWA. Science and Digital Technologies ABLEWA parser patterns repaired. | All 19 official JSON downloads returned 403. Existing partial observations remain review-only; no fabricated or empty replacement catalogue. WACE course/unit tables do not establish outcome coverage. |
+| SA | SACE rerun: 427 distinct subject/credit codes from 91/91 tables, including 62 Modified Subject variants. | Outcome/performance-standard identifiers, VET, external courses and state applicability remain unresolved. |
+| TAS | TASC rerun: 164/164 declared 2026 accredited course identifiers, no extraction errors. | Course outcomes/criteria, VET and specialist pathways are not covered by a course-list count. |
+| ACT | Newly saved **113 course names/classifications**, all rendered table cells parsed from official register version 20.02.2026. A=91, T=83, M=84, H=10 match the overview. | Table V classifications total **29**, but overview states **28** VET-integrated courses. Retain both counts; control check fails and completeness stays false. No numeric outcome codes invented; R units, external VET and course outcomes remain outside this extraction. |
+| NT | Shared SACE rerun confirms 427 subject/credit codes; counted once in source data. | NTCET-specific arrangements, local pathways, outcomes, VET/external courses and F–10 adoption require reconciliation. |
+
+Shared ACARA rerun recovered 2,678 content-description identifiers across all eight learning areas, including 1,283 Languages. This validates the shared source release, not eight complete state catalogues. The regenerated runtime file differed only in its download date and was not committed.
+
+Verification: **225/225 JavaScript tests**, **6/6 ACT Python parser tests**, and worker TypeScript checking passed. Separate live verification matched **1,435/1,435 NSW records** to exact rendered card attributes on 81 official pages. Tests validate extraction and application regressions, not national curriculum completeness.
+
+Sources and machine-readable evidence:
+- NSW per-record official URLs and syllabus editions: `worker/src/data/nesa-review-import.json`; independent response hashes: `curriculum-audits/nesa-card-verification.json`.
+- ACT official PDF URL, SHA-256, page numbers, register edition and discrepant controls: `worker/src/data/act-bsss-2026-courses-review.json`.
+- Every available jurisdiction dataset, including previously omitted review files: `curriculum-audits/national-data-audit.json`. Within-file counts must not be summed across files or identifier kinds.
+- WA acquisition failures: `curriculum-audits/wa-acquisition-report.json`; Victorian level retry: `curriculum-audits/vic-level-retry.json`.
+
+The 18 excluded `-ADJ-` identifiers remain listed in `collection-followup-report.json` as adjustment notices. Historical child evidence and active outcome catalogues were not rewritten.
+
+## Historical progress notes (superseded where the latest run differs)
+
 ## Verified senior curriculum source imports (16 October 2026)
 
 Senior COURSE/SUBJECT identifiers are **not** learning-outcome/content-description identifiers. Do not place them into `outcome_progress` / mastery codes merely because they exist.

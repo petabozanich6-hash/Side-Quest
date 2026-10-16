@@ -1,0 +1,225 @@
+{
+  "created_at": "2026-10-16T00:44:52.677Z",
+  "jurisdictions": [
+    "NSW",
+    "VIC",
+    "QLD",
+    "WA",
+    "SA",
+    "TAS",
+    "ACT",
+    "NT"
+  ],
+  "executed": true,
+  "all_complete": false,
+  "warning": "A successful importer run is not a completeness certification. Senior course IDs are not outcome IDs.",
+  "jobs": [
+    {
+      "id": "ACARA-F10",
+      "jurisdictions": [
+        "NSW",
+        "VIC",
+        "QLD",
+        "WA",
+        "SA",
+        "TAS",
+        "ACT",
+        "NT"
+      ],
+      "authority": "ACARA",
+      "kind": "content_description",
+      "command": [
+        "node",
+        "worker/scripts/import-ac9.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": "ENG: 284\nMAT: 240\nSCI: 152\nHASS: 333\nHPE: 97\nART: 165\nTEC: 124\nLAN: 1283\nWrote 2678 content descriptions to <repository>/worker/src/data/ac9-outcomes.ts\n"
+    },
+    {
+      "id": "NSW-NESA",
+      "jurisdictions": [
+        "NSW"
+      ],
+      "authority": "NESA",
+      "kind": "syllabus_outcome",
+      "command": [
+        "node",
+        "worker/scripts/import-nesa-review.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": ",{\"syllabus\":\"Health and Movement Science Life Skills 11–12 (2023)\",\"url\":\"https://curriculum.nsw.edu.au/learning-areas/pdhpe/health-and-movement-science-life-skills-11-12-2023/outcomes\",\"reason\":\"No outcome identifiers extracted\"},{\"syllabus\":\"Law and the Community Life Skills 11–12 (2025)\",\"url\":\"https://curriculum.nsw.edu.au/learning-areas/hsie/law-and-the-community-life-skills-11-12-2025/outcomes\",\"reason\":\"No outcome identifiers extracted\"}]\nReview-only import generated. DO NOT present as all NSW outcomes or merge into the active tracker without completeness and stage-version validation.\n"
+    },
+    {
+      "id": "VIC-VC2",
+      "jurisdictions": [
+        "VIC"
+      ],
+      "authority": "VCAA",
+      "kind": "content_description",
+      "command": [
+        "node",
+        "worker/scripts/import-vic-review.mjs"
+      ],
+      "status": "failed_or_blocked",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": null,
+      "error": "spawnSync node ETIMEDOUT",
+      "stdout_tail": "VCAA 1: 421 distinct codes, page 2402243 bytes\nVCAA 2: 423 distinct codes, page 2401692 bytes\nVCAA 6: 392 distinct codes, page 2409476 bytes\nVCAA 8: 634 distinct codes, page 4276310 bytes\nVCAA 9: 637 distinct codes, page 4730825 bytes\n"
+    },
+    {
+      "id": "VIC-SUBJECTS",
+      "jurisdictions": [
+        "VIC"
+      ],
+      "authority": "VCAA",
+      "kind": "content_description",
+      "command": [
+        "node",
+        "worker/scripts/import-vic-subjects.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": "didates\nVCAA Spanish / F–10: 61 candidates\nVCAA Roman Alphabet Languages / 7–10: 20 candidates\nVCAA Spanish / 7–10: 29 candidates\nVCAA Turkish / F–10: 51 candidates\nVCAA Turkish / 7–10: 20 candidates\nVCAA Vietnamese / F–10: 51 candidates\nVCAA Vietnamese / 7–10: 20 candidates\nVCAA SOURCE CLASSIFICATION {\"official_subject_routes\":53,\"successful_routes\":53,\"failed_or_empty_routes\":0,\"distinct_codes_on_level_pages\":2927,\"classified_candidates\":2927,\"ambiguous_codes\":43,\"unmapped_codes\":0}\nReview-only classification; still requires VC1 legacy subjects, version/year validation and senior electives.\n"
+    },
+    {
+      "id": "VIC-EAL",
+      "jurisdictions": [
+        "VIC"
+      ],
+      "authority": "VCAA",
+      "kind": "content_description",
+      "command": [
+        "node",
+        "worker/scripts/import-vic1-eal.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": "VC1 EAL Pathway A: 161 codes, levels A1,A2\nVC1 EAL Pathway B: 318 codes, levels BL,B1,B2,B3\nVC1 EAL Pathway C: 317 codes, levels CL,C1,C2,C3,C4\nVICTORIAN v1 EAL SOURCE AUDIT {\"total_records\":796,\"unique_identifiers\":796,\"paths_complete\":3,\"problems\":0}\n"
+    },
+    {
+      "id": "VIC-LANGUAGES",
+      "jurisdictions": [
+        "VIC"
+      ],
+      "authority": "VCAA",
+      "kind": "content_description",
+      "command": [
+        "node",
+        "worker/scripts/import-vic1-languages.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": "nguages mixed: 66 source candidates\nVIC 2026 VC1 LANGUAGES {\"target_pages\":14,\"pages_with_codes\":13,\"total_source_records\":1249,\"unique_codes\":1249,\"failed_or_thin_pages\":1}\nUnavailable source pages [{\"language\":\"Framework for Classical Languages\",\"phase\":3,\"sequence\":\"mixed\",\"learner_pathway\":null,\"url\":\"https://victoriancurriculum.vcaa.vic.edu.au/languages/framework-for-classical-languages/curriculum/f-10?layout=1\",\"kind\":\"vc1_languages_code_candidate\",\"issue\":\"Error: HTTP 404 https://victoriancurriculum.vcaa.vic.edu.au/languages/framework-for-classical-languages/curriculum/f-10?layout=1\"}]\n"
+    },
+    {
+      "id": "QLD-QCE",
+      "jurisdictions": [
+        "QLD"
+      ],
+      "authority": "QCAA",
+      "kind": "senior_course",
+      "command": [
+        "node",
+        "worker/scripts/import-qcaa-senior.mjs"
+      ],
+      "status": "failed_or_blocked",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 1,
+      "error": "Error: HTTP 403 https://www.qcaa.qld.edu.au/senior/senior-subjects/syllabuses\n    at get (file://<repository>/worker/scripts/import-qcaa-senior.mjs:47:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async main (file://<repository>/worker/scripts/import-qcaa-senior.mjs:53:14)\n",
+      "stdout_tail": ""
+    },
+    {
+      "id": "WA-K10",
+      "jurisdictions": [
+        "WA"
+      ],
+      "authority": "SCSA",
+      "kind": "content_description",
+      "command": [
+        "node",
+        "worker/scripts/collect-wa-k10-bulk.mjs",
+        "wa-official-json"
+      ],
+      "status": "failed_or_blocked",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 1,
+      "error": "Incomplete WA source download; candidates saved only for review.\n",
+      "stdout_tail": "{\"expected_sources\":19,\"loaded_sources\":0,\"candidate_rows\":0,\"distinct_source_code_level\":0,\"duplicates\":0}\n"
+    },
+    {
+      "id": "SA-NT-SACE",
+      "jurisdictions": [
+        "SA",
+        "NT"
+      ],
+      "authority": "SACE",
+      "kind": "senior_subject",
+      "command": [
+        "node",
+        "worker/scripts/import-sace-2026.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": "SACE AUTHORITY CODE AUDIT {\"listed_subject_pages\":91,\"pages_with_codes\":91,\"distinct_subject_codes\":427,\"modified_codes\":62,\"stage1\":234,\"stage2\":193,\"failed_or_code_less_pages\":0}\n"
+    },
+    {
+      "id": "TAS-TASC",
+      "jurisdictions": [
+        "TAS"
+      ],
+      "authority": "TASC",
+      "kind": "senior_course",
+      "command": [
+        "node",
+        "worker/scripts/import-tasc-2026.mjs"
+      ],
+      "status": "import_executed_review_only",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 0,
+      "error": "",
+      "stdout_tail": "TASC OFFICIAL 2026 COURSE CODE AUDIT {\"declared\":164,\"verified_course_codes\":164,\"errors\":0,\"by_level\":{\"1\":20,\"2\":60,\"3\":48,\"4\":4,\"Pre\":32}}\nEvery code is verified as a course identifier. These are not outcome or content-description codes.\n"
+    },
+    {
+      "id": "ACT-BSSS",
+      "jurisdictions": [
+        "ACT"
+      ],
+      "authority": "BSSS",
+      "kind": "senior_course",
+      "command": [
+        "python3",
+        "worker/scripts/import-act-bsss-2026.py"
+      ],
+      "status": "failed_or_blocked",
+      "source_verified": false,
+      "coverage_complete": false,
+      "exit_code": 1,
+      "error": "Traceback (most recent call last):\n  File \"<repository>/worker/scripts/import-act-bsss-2026.py\", line 128, in <module>\n    extract()\n  File \"<repository>/worker/scripts/import-act-bsss-2026.py\", line 57, in extract\n    import pdfplumber\nModuleNotFoundError: No module named 'pdfplumber'\n",
+      "stdout_tail": ""
+    }
+  ]
+}

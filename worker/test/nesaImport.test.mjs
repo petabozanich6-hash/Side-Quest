@@ -57,3 +57,11 @@ test("NSW syllabus stage coverage flags K–10 omissions before mapping", () => 
   assert.deepEqual(expectedStages("English Advanced 11–12 (2024)"), ["S6"]);
   assert.deepEqual(expectedStages("Ceramics Stage 6 (CEC) (2000)"), ["S6"]);
 });
+
+// Official NESA cards place a small stage label directly before the code.
+test("Life Skills card labels do not hide outcomes; adjustment notices are excluded", () => {
+ const html='<h2>Outcomes</h2><small>Life Skills for Stage 6</small><div><span>LAC-LS-01</span></div><small>Stage 4</small><div>WE4-ADJ-01</div>';
+ const rows=extractCodes(html,"https://curriculum.nsw.edu.au/test/outcomes","Law and the Community Life Skills 11–12 (2025)");
+ assert.deepEqual(rows.map(x=>x.code),["LAC-LS-01"]);
+ assert.equal(rows[0].stage_hint,"S6");
+});

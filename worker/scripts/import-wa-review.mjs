@@ -61,7 +61,7 @@ export function flattenWaJson(doc, source) {
     // Science ABLEWA uses source-embedded ACSSU / ACSHE / ACSISO codes.
     // Only use explicit code-bearing textContents nodes with blank wa_code.
     if (v.wa_code === "" && v.sub_strand_id != null && typeof v.markdown === "string" && /Science/i.test(String(subject))) {
-      for (const match of v.markdown.matchAll(/\((AC(?:SSU|SHE|SISO)\\d{3}[a-d])\)/g)) {
+      for (const match of v.markdown.matchAll(/\((AC(?:SSU|SHE|SISO)\d{3}[a-d])\)/g)) {
         add(match[1],year,subject,path,"wa_ablewa_content_description");
       }
     }
@@ -70,7 +70,7 @@ export function flattenWaJson(doc, source) {
     // Restrict extraction to content-description nodes with an explicitly
     // empty wa_code, and only the VCDTDS / VCDTDI / VCDTCD code families.
     if (v.wa_code === "" && v.sub_strand_id != null && typeof v.markdown === "string" && /Digital Technologies/i.test(String(subject))) {
-      for (const match of v.markdown.matchAll(/\((VCDT(?:DS|DI|CD)\\d{3})\)/g)) {
+      for (const match of v.markdown.matchAll(/\((VCDT(?:DS|DI|CD)\d{3})\)/g)) {
         add(match[1], year, subject, path, "wa_ablewa_content_description");
       }
     }

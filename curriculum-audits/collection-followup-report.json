@@ -1,0 +1,117 @@
+{
+  "date": "2026-10-16",
+  "base_commit": "af33a05c07a90f7ae099e5989e8658a311790d25",
+  "review_only": true,
+  "all_eight_jurisdictions_complete": false,
+  "nsw": {
+    "previous_records": 885,
+    "current_records": 1435,
+    "added_source_identifier_pairs": 568,
+    "removed_source_identifier_pairs": 18,
+    "removed": [
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/creative-arts/photography-film-and-digital-media-7-10-2025/outcomes",
+        "PFM4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/creative-arts/visual-and-motion-design-7-10-2025/outcomes",
+        "VMD4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/hsie/aboriginal-studies-7-10-2024/outcomes",
+        "AST4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/hsie/commerce-7-10-2024/outcomes",
+        "CO4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/hsie/geography-elective-7-10-2025/outcomes",
+        "GEE4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/hsie/history-elective-7-10-2025/outcomes",
+        "HIE4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes",
+        "WE4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/pdhpe/child-studies-7-10-2025/outcomes",
+        "CS4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/pdhpe/physical-activity-and-sports-science-7-10-2025/outcomes",
+        "PAS4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/agriculture-technology-7-10-2024/outcomes",
+        "AGT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/aquatic-technology-7-10-2024/outcomes",
+        "AQT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/communication-technology-7-10-2025/outcomes",
+        "CMT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/computing-technology-7-10-2022/outcomes",
+        "CT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/design-innovation-technology-7-10-2025/outcomes",
+        "DIT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/engineering-technology-7-10-2024/outcomes",
+        "EGT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/food-technology-7-10-2025/outcomes",
+        "FT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/industrial-technology-7-10-2025/outcomes",
+        "INT4-ADJ-01"
+      ],
+      [
+        "https://curriculum.nsw.edu.au/learning-areas/tas/textiles-technology-7-10-2025/outcomes",
+        "TT4-ADJ-01"
+      ]
+    ],
+    "independent_verification": "nesa-card-verification.json"
+  },
+  "act": {
+    "status": "review_required_source_control_count_mismatch",
+    "source_sha256": "0ea3bfc95c259b1d42a81a73c7afcf2016d7ef68ec844b7658055c04090f267e",
+    "summary": {
+      "declared_unique_courses": 113,
+      "parsed_distinct_entries": 113,
+      "rejected_populated_cells": 0,
+      "considered_cells": 113,
+      "classification_counts": {
+        "A": 91,
+        "H": 10,
+        "M": 84,
+        "T": 83,
+        "V": 29
+      },
+      "classification_control_counts_match": false
+    }
+  },
+  "victoria": {
+    "retry": "vic-level-retry.json",
+    "prior_complete_level_extraction_preserved": true
+  },
+  "validation": {
+    "javascript_tests": 225,
+    "javascript_passed": 225,
+    "python_tests": 6,
+    "python_passed": 6,
+    "worker_typecheck": "passed"
+  },
+  "runtime_catalogues_changed": false
+}
