@@ -1,0 +1,44 @@
+{
+  "checked_on": "2026-10-16",
+  "baseline": "worker/src/data/nesa-review-import.json",
+  "baseline_candidates": 1435,
+  "match_key": "exact identifier to candidates[].code",
+  "comparison": "Existing baseline codes compared with each review file's records[].identifier",
+  "status": "duplicates_in_existing_collection",
+  "groups": [
+    {
+      "file": "worker/src/data/nsw-dance-life-skills-2025-official-outcomes-review.json",
+      "records": 13,
+      "matching_existing_codes": 13,
+      "missing_from_existing": 0
+    },
+    {
+      "file": "worker/src/data/nsw-music-2-2025-official-outcomes-review.json",
+      "records": 12,
+      "matching_existing_codes": 12,
+      "missing_from_existing": 0
+    },
+    {
+      "file": "worker/src/data/nsw-drama-life-skills-2025-official-outcomes-review.json",
+      "records": 12,
+      "matching_existing_codes": 12,
+      "missing_from_existing": 0
+    },
+    {
+      "file": "worker/src/data/nsw-music-life-skills-2025-official-outcomes-review.json",
+      "records": 8,
+      "matching_existing_codes": 8,
+      "missing_from_existing": 0
+    }
+  ],
+  "total_review_records": 45,
+  "existing_matches": 45,
+  "novel_identifier_count": 0,
+  "notes": [
+    "This checks exact code existence; confirm source URL and edition independently for release applicability.",
+    "Do not add 45 to the NSW unique ID total.",
+    "Separate review files remain useful for syllabus-specific completeness checks.",
+    "Music 2 and Dance Life Skills outcome pages were also independently viewed on NESA."
+  ],
+  "complete_nsw": false
+}
