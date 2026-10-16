@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { api, apiErrorMessage } from "../../lib/api";
+import { toast } from "sonner";
 
 /**
  * Registration requirements explainer, NOT an official approval/compliance assessment.
@@ -82,11 +84,19 @@ const STAGES = [
 ];
 export default function ChildLearningRequirements({ jurisdiction, guide, student }) {
   const [stage, setStage] = useState(student?.stage || "S2");
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(Array.isArray(student?.compass_areas) ? student.compass_areas : []);
+  const [saving, setSaving] = useState(false);
   const [age, setAge] = useState("");
   const result = useMemo(() => requirementsFor(jurisdiction, stage), [jurisdiction, stage]);
   const chosenAreas = new Set(selected);
   const choiceSatisfied = !result.chooseCount || chosenAreas.size >= result.chooseCount;
+  const canSave = jurisdiction === "NSW" && ["S4", "S5"].includes(stage) && student?.id && stage === student.stage;
+  const saveChoices = async () => {
+    setSaving(true);
+    try { await api.put(`/students/${student.id}`, { compass_areas: selected }); toast.success("Learning-area choices saved to this child"); }
+    catch (err) { toast.error(apiErrorMessage(err)); }
+    finally { setSaving(false); }
+  };
   return <section className="paper-card p-5 sm:p-6 space-y-4" aria-labelledby="learning-requirements-heading" data-testid="compass-learning-requirements">
     <div>
       <h2 id="learning-requirements-heading" className="font-display text-2xl font-bold text-emerald-950">Which subjects does my child need?</h2>
@@ -125,6 +135,6 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
         <span className="text-stone-600">Learning-plan creation is a separate paid Side-Quest service.</span>
       </div>
     </div>
-    <p className="text-xs text-stone-600">Choices ticked here are illustrative only and are not saved. Your child profile remains the place to save subject selections. This checklist is a guide to planning, not evidence that a registration application meets the rules. Senior courses, exemptions, age eligibility, implementation dates and special pathways may require individual advice. Confirm details with {guide?.authority || "your registration authority"}.</p>
+    <p className="text-xs text-stone-600">For NSW Stage 4–5, use Save to store the selected learning areas on this child’s profile; this does not select specific syllabuses or overwrite existing subjects. For other jurisdictions and stages, the checklist is informational only. This checklist is a guide to planning, not evidence that a registration application meets the rules. Senior courses, exemptions, age eligibility, implementation dates and special pathways may require individual advice. Confirm details with {guide?.authority || "your registration authority"}.</p>
   </section>;
 }
