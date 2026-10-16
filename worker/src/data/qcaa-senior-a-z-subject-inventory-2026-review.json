@@ -1,0 +1,480 @@
+{
+  "authority": "QCAA",
+  "jurisdiction": "QLD",
+  "framework": "QCE senior syllabus",
+  "source_url": "https://www.qcaa.qld.edu.au/senior/senior-subjects/syllabuses",
+  "source_page_last_updated": "2024-10-24",
+  "observed_on": "2026-10-16",
+  "status": "official_A_to_Z_syllabus_title_inventory_not_outcome_codes",
+  "coverage_note": "Complete visible A–Z listing at official QCAA syllabus page as retrieved. Does not include separately listed borrowed Senior External Examination subjects except overlap; link to SEE inventory. Source edition and syllabus type must be fetched per subject.",
+  "subjects": [
+    {
+      "name": "Aboriginal & Torres Strait Islander Languages",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Aboriginal & Torres Strait Islander Studies",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Accounting",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Aerospace Systems",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Agricultural Practices",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Agricultural Science",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Ancient History",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Aquatic Practices",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Arts in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Biology",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Building & Construction Skills",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Business",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Business Studies",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Career Education",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Chemistry",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Chinese",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Chinese Extension",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Critical Thinking",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Dance",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Dance in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Design",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Digital Solutions",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Drama",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Drama in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Early Childhood Studies",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Earth & Environmental Science",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Economics",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Engineering",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Engineering Skills",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "English",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "English & Literature Extension",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "English as an Additional Language",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Essential English",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Essential Mathematics",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Fashion",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Film, Television & New Media",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Food & Nutrition",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "French",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "French Extension",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Furnishing Skills",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "General Mathematics",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Geography",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "German",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "German Extension",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Health",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Hospitality Practices",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Industrial Graphics Skills",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Industrial Technology Skills",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Information & Communication Technology",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Italian",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Japanese",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Legal Studies",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Literacy",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Literature",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Marine Science",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Mathematical Methods",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Media Arts in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Modern History",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Music",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Music Extension (Composition)",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Music Extension (Musicology)",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Music Extension (Performance)",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Music in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Numeracy",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Philosophy & Reason",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Physical Education",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Physics",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Psychology",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Religion & Ethics",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Science in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Social & Community Studies",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Spanish",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Specialist Mathematics",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Sport & Recreation",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Study of Religion",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Tourism",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Visual Art",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    },
+    {
+      "name": "Visual Arts in Practice",
+      "identifier_kind": "official_subject_title",
+      "syllabus_url_status": "requires_individual_source_capture",
+      "outcome_codes_status": "not_imported"
+    }
+  ]
+}
