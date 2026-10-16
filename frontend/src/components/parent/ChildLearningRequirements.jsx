@@ -125,7 +125,9 @@ export default function ChildLearningRequirements({ jurisdiction, guide, student
         <h3 className="font-bold text-emerald-950 mt-4">Select at least {result.chooseCount} additional learning areas</h3>
         <p className="text-xs text-stone-600 mb-2">{result.choicesNote}</p>
         <div className="grid sm:grid-cols-2 gap-2">{result.choices.map(s => <label key={s} className="flex gap-2 items-center text-sm"><input type="checkbox" checked={chosenAreas.has(s)} onChange={e => setSelected(old => e.target.checked ? [...old, s] : old.filter(x => x !== s))}/>{s}</label>)}</div>
-        <p role="status" className="text-sm mt-3">{choiceSatisfied ? "✓ Both additional learning areas selected. Choose specific syllabuses when setting up the child's learning program." : `${chosenAreas.size} of ${result.chooseCount} additional learning areas selected.`}</p>
+        <p role="status" className="text-sm mt-3">{choiceSatisfied ? "✓ Minimum learning-area selection met. Choose specific syllabuses on the child profile." : `${chosenAreas.size} of ${result.chooseCount} additional learning areas selected.`}</p>
+        {canSave && <button type="button" onClick={saveChoices} disabled={!choiceSatisfied || saving} className="rounded-xl bg-emerald-900 text-white text-sm font-bold px-4 py-2 disabled:opacity-50 mt-2">{saving ? "Saving…" : "Save these learning-area choices for this child"}</button>}
+        {!canSave && <p className="text-xs text-stone-600 mt-2">Save subject choices on the child profile; this checklist does not change their stage.</p>}
       </>}
       {jurisdiction === "NSW" && result.verified && !result.choices.length && <p className="text-xs mt-3">Optional: Languages. You can combine several learning areas in a project while recording the relevant learning.</p>}
       <div className="mt-4 flex flex-wrap gap-4 text-sm">
