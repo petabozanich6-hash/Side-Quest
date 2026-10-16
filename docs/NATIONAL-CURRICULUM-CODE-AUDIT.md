@@ -74,6 +74,10 @@ Retained **25 source-checked NSW 2025 syllabus outcome code records** in two sep
 
 Both syllabuses first implement in 2027 (Music 2 first new-syllabus HSC examination 2028). These files are verifiable **page-level lists**; they are **not necessarily 25 novel identifiers** relative to `nesa-review-import.json`. Compare exact code, source URL and syllabus edition before updating the NSW distinct-ID count. Do not publish these future-only identifiers into current 2026 mappings, rewrite past evidence, or merge/deploy.
 
+### Reconciliation: 45 NSW Creative Arts review records are duplicates (16 October 2026)
+
+Compared exact `records[].identifier` in the four recently created NSW 2025 Creative Arts review files with `candidates[].code` in the original `worker/src/data/nesa-review-import.json` (1,435 candidates). **All 45 already exist**: Dance Life Skills 13/13, Music 2 12/12, Drama Life Skills 12/12, Music Life Skills 8/8. **Zero new distinct code strings** from these four files. Machine-readable record: `curriculum-audits/nsw-creative-arts-duplicate-reconciliation.json`. This is exact-identifier reconciliation only, not a fresh URL/edition-level check of all 45. Earlier 'new records' counts refer to newly saved *files*, not newly discovered codes. Future collection should first check against the 1,435-candidate base and other existing review files before claiming code growth.
+
 ## Historical progress notes (superseded where the latest run differs)
 
 ## Verified senior curriculum source imports (16 October 2026)
