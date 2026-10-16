@@ -1,12 +1,27 @@
 import type { App, Guards } from "./types";
 import { verifySecret } from "./auth";
 import { deletionBillingBlock } from "./billing";
+import { TOKEN_DAYS } from "./session";
 import type { Fetch } from "./billing";
 
 // Tables that are never swept by family/student id.
 const SKIP_TABLES = new Set(["users", "families", "students", "outcomes", "app_config", "d1_migrations"]);
 const UPLOAD_PREFIX = "sidequest/families/";
 const CHUNK = 50;
+
+const KEEP_USER_ROWS = new Set([...SKIP_TABLES, "admin_audit_log"]);
+
+/** DELETE statements for every table with a user_id column, for the users the subquery selects. */
+async function userRowDeletes(db: D1Database, tables: string[], usersSql: string, ...binds: string[]): Promise<D1PreparedStatement[]> {
+  const out: D1PreparedStatement[] = [];
+  for (const name of tables) {
+    if (KEEP_USER_ROWS.has(name)) continue;
+    const { results: cols } = await db.prepare(`SELECT name FROM pragma_table_info('${name.replace(/'/g, "''")}')`).all<{ name: string }>();
+    if (!cols.some((c) => c.name === "user_id")) continue;
+    out.push(db.prepare(`DELETE FROM "${name.replace(/"/g, '""')}" WHERE user_id IN (${usersSql})`).bind(...binds));
+  }
+  return out;
+}
 
 /**
  * Tables are discovered at run time, so data added by later migrations is
@@ -54,6 +69,15 @@ async function purgeFamily(db: D1Database, bucket: R2Bucket | undefined, familyI
     for (const t of batch) { ordered.push(t); pending.delete(t); }
   }
 
+  // Rows keyed only by a parent (reset links, passkeys, email preferences, announcement recipients...).
+  // Done first, while the users rows they point at still exist. The Owner's audit trail is kept.
+  stmts.push(...(await userRowDeletes(db, ordered, "SELECT id FROM users WHERE family_id = ?", familyId)));
+  for (const _ of stmts.slice(names.length)) names.push("parent_records");
+  if (ordered.includes("parent_feedback_replies") && ordered.includes("parent_feedback")) {
+    stmts.push(db.prepare("DELETE FROM parent_feedback_replies WHERE feedback_id IN (SELECT id FROM parent_feedback WHERE family_id = ?)").bind(familyId));
+    names.push("parent_feedback_replies");
+  }
+
   for (const name of ordered) {
     if (SKIP_TABLES.has(name)) continue;
     const { results: cols } = await db.prepare(`SELECT name FROM pragma_table_info('${name.replace(/'/g, "''")}')`)
@@ -92,6 +116,19 @@ async function purgeFamily(db: D1Database, bucket: R2Bucket | undefined, familyI
   return report;
 }
 
+const RECENT_SIGN_IN_S = 15 * 60;
+
+/** Whether the (already verified) bearer token was issued in the last 15 minutes. */
+function signedInRecently(header: string | undefined, nowS = Math.floor(Date.now() / 1000)): boolean {
+  try {
+    const payload = JSON.parse(atob(String(header || "").slice(7).split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    const issued = Number(payload.exp) - TOKEN_DAYS * 86400;
+    return Number.isFinite(issued) && nowS - issued >= -60 && nowS - issued <= RECENT_SIGN_IN_S;
+  } catch {
+    return false;
+  }
+}
+
 export function registerAccount(app: App, g: Guards, fetchImpl?: Fetch) {
   app.post("/api/auth/delete-account", g.auth, g.parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
@@ -102,15 +139,22 @@ export function registerAccount(app: App, g: Guards, fetchImpl?: Fetch) {
     const record = await db.prepare("SELECT id, family_id, password_hash FROM users WHERE id = ?")
       .bind(user.id).first<any>();
     if (!record) return c.json({ detail: "Account not found" }, 404);
-    if (!record.password_hash || !(await verifySecret(String(b.password ?? ""), record.password_hash))) {
-      return c.json({ detail: "Incorrect password" }, 403);
+    if (record.password_hash) {
+      if (!(await verifySecret(String(b.password ?? ""), record.password_hash))) return c.json({ detail: "Incorrect password" }, 403);
+    } else if (!signedInRecently(c.req.header("Authorization"))) {
+      // Google-only accounts have no password to re-check: a fresh sign-in proves it's really them.
+      return c.json({ detail: "For your security, sign out and sign in with Google again, then delete your account within 15 minutes.", code: "REAUTH_REQUIRED" }, 403);
     }
 
     const others = await db.prepare("SELECT COUNT(*) n FROM users WHERE family_id = ? AND id != ?")
       .bind(record.family_id, record.id).first<{ n: number }>();
     if (others?.n) {
       // The family and its membership stay with the other parent; hand over ownership if needed.
+      const { results: tables } = await db.prepare(
+        "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%'"
+      ).all<{ name: string }>();
       await db.batch([
+        ...(await userRowDeletes(db, tables.map((t) => t.name), "?", record.id)),
         db.prepare("DELETE FROM users WHERE id = ?").bind(record.id),
         db.prepare(
           "UPDATE users SET is_owner = 1 WHERE id = (SELECT id FROM users WHERE family_id = ? ORDER BY created_at, id LIMIT 1) AND NOT EXISTS (SELECT 1 FROM users WHERE family_id = ? AND is_owner = 1)"

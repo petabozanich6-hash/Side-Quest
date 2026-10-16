@@ -1,6 +1,7 @@
 import type { App } from "./types";
 import { newId, nowIso } from "./types";
 import { hashSecret } from "./auth";
+import { bumpAuthVersion } from "./session";
 import { SITE_URL, sendEmail } from "./email";
 import { passwordChangedEmail, passwordResetEmail } from "./authEmails";
 
@@ -79,6 +80,12 @@ export function registerPasswordReset(app: App) {
       c.env.DB.prepare("UPDATE users SET password_hash = ? WHERE id = ?").bind(newHash, row.user_id),
       c.env.DB.prepare("UPDATE password_resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL").bind(ts, row.user_id),
     ]);
+    // A reset is what someone does when they think their account is in the wrong hands: every existing
+    // sign-in of the family ends (children sign in again with their PIN).
+    const fam = await c.env.DB.prepare("SELECT family_id FROM users WHERE id = ?").bind(row.user_id).first<{ family_id: string }>();
+    if (fam?.family_id) await bumpAuthVersion(c.env.DB, fam.family_id);
+    // The reset link reached this inbox, which proves the address.
+    await c.env.DB.prepare("UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?").bind(ts, row.user_id).run().catch(() => {});
 
     const user = await c.env.DB.prepare("SELECT name, email FROM users WHERE id = ?")
       .bind(row.user_id).first<{ name: string; email: string }>();

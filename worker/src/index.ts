@@ -30,7 +30,7 @@ import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
 import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
 import { meterWorkersAi } from "./aiCost";
-import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
+import { authenticateToken, bumpAuthVersion, familyState, issueFileToken, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
 import { sendParentVerification, redeemParentVerification, resendParentVerification } from "./emailVerification";
 import { handleInbound } from "./inbound";
@@ -247,7 +247,11 @@ app.get("/api/auth/me", requireAuth, async (c) => {
   const u = c.get("user");
   // is_platform_owner only decides whether the Owner HQ link is shown; every /api/admin call re-checks the role.
   const owner = u.role === "parent" && (await isPlatformOwner(c.env.DB, u.id));
-  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id), ...(owner ? { is_platform_owner: true } : {}) });
+  // Lets account screens ask for the right proof (password, or a fresh Google sign-in).
+  const hasPassword = u.role === "parent"
+    ? !!(await c.env.DB.prepare("SELECT password_hash FROM users WHERE id = ?").bind(u.id).first<{ password_hash: string | null }>())?.password_hash
+    : undefined;
+  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id), file_token: await issueFileToken(c.env, u), ...(hasPassword === undefined ? {} : { has_password: hasPassword }), ...(owner ? { is_platform_owner: true } : {}) });
 });
 
 

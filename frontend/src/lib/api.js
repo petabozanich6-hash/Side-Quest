@@ -11,9 +11,12 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Links can't send a header, so they carry a files-only token from /auth/me (never the sign-in token).
+export const FILE_TOKEN = "sq_file_token";
 export const fileUrl = (fid) => {
-  const token = localStorage.getItem("sq_token");
-  return `${API}/files/${fid}?auth=${encodeURIComponent(token || "")}`;
+  let token = "";
+  try { token = localStorage.getItem(FILE_TOKEN) || ""; } catch {}
+  return `${API}/files/${fid}?ft=${encodeURIComponent(token)}`;
 };
 
 /** Surface actionable API failures instead of generic "Failed" toasts. */

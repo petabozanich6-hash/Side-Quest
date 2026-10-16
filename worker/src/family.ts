@@ -1,4 +1,4 @@
-import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from "./session";
+import { authenticateToken, bumpAuthVersion, familyState, issueToken, SUSPENDED_MESSAGE, verifyFileToken } from "./session";
 import { loadPlatformSettings } from "./platformSettings";
 import { trialEndFrom } from "./entitlements";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
@@ -221,9 +221,19 @@ async function upsertGoogleUser(env: Env, email: string, name: string, picture?:
     .first<Record<string, unknown>>();
   if (existing) {
     if ((await familyState(env.DB, String(existing.family_id))).status === "suspended") return { blocked: SUSPENDED_MESSAGE, status: 403 as const };
+    // Google has just proved this person owns the address. A password set by someone who never proved it
+    // (anyone can register an address they don't own) is removed and its sessions end, so it can't be used
+    // to read the family later. The owner can set a new password with "Forgot password".
+    const unproven = await env.DB.prepare("SELECT 1 AS x FROM users WHERE id = ? AND password_hash IS NOT NULL AND email_verified_at IS NULL")
+      .bind(existing.id).first().catch(() => null);
+    if (unproven) {
+      await env.DB.prepare("UPDATE users SET password_hash = NULL WHERE id = ?").bind(existing.id).run();
+      await bumpAuthVersion(env.DB, String(existing.family_id));
+    }
     await env.DB.prepare("UPDATE users SET name = ?, picture = ?, oauth_provider = 'google' WHERE id = ?")
       .bind(name, picture ?? null, existing.id)
       .run();
+    await env.DB.prepare("UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?").bind(nowIso(), existing.id).run().catch(() => {});
     const jurisdiction = await getFamilyJurisdiction(env.DB, String(existing.family_id)).catch(() => null);
     const user = { ...existing, name, picture: picture ?? null, oauth_provider: "google", role: "parent", jurisdiction };
     return { token: await makeToken(env, String(existing.id), "parent", String(existing.family_id)), user };
@@ -773,14 +783,16 @@ export function registerFamily(app: App, g: Guards) {
   });
 
   app.get("/api/files/:fid", async (c) => {
+    // A link (<img src>, new tab) carries a files-only token (?ft=); the full sign-in token only travels in a header.
     const header = c.req.header("Authorization") || "";
-    const token = header.startsWith("Bearer ") ? header.slice(7) : c.req.query("auth");
-    if (!token) return c.json({ detail: "No auth" }, 401);
-
-    const user = await getAuthUserFromToken(c.env, token);
-    if (!user) return c.json({ detail: "Invalid token" }, 401);
+    const ft = c.req.query("ft");
+    let familyId: string | null = null;
+    if (header.startsWith("Bearer ")) familyId = (await getAuthUserFromToken(c.env, header.slice(7)))?.family_id ?? null;
+    else if (ft) familyId = await verifyFileToken(c.env, ft);
+    else return c.json({ detail: "No auth" }, 401);
+    if (!familyId) return c.json({ detail: "This link has expired. Refresh the page and try again." }, 401);
     const record = await c.env.DB.prepare("SELECT * FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0")
-      .bind(c.req.param("fid"), user.family_id)
+      .bind(c.req.param("fid"), familyId)
       .first<Record<string, unknown>>();
     if (!record) return c.json({ detail: "Not found" }, 404);
     if (!c.env.BUCKET) return c.json({ detail: "File storage not configured" }, 501);

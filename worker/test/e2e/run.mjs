@@ -773,8 +773,11 @@ await step("uploads: child can upload a photo, same family can read it, other fa
   const up = async (token, name, type, bytes) => { const fd = new FormData(); fd.append("file", new Blob([bytes], { type }), name); const r = await fetch(BASE + "/api/files/upload", { method: "POST", headers: { authorization: `Bearer ${token}` }, body: fd }); return { status: r.status, json: await r.json().catch(() => null) }; };
   const ok1 = await up(childToken, "work.png", "image/png", png);
   ok(ok1.status === 200 && ok1.json.id, "png upload failed " + ok1.status);
-  const get = (token, id) => fetch(`${BASE}/api/files/${id}?auth=${encodeURIComponent(token)}`);
+  const get = async (token, id) => fetch(`${BASE}/api/files/${id}?ft=${encodeURIComponent((await api("GET", "/auth/me", token)).json.file_token)}`);
   ok((await get(parentToken, ok1.json.id)).status === 200, "parent cannot read child's upload");
+  ok((await fetch(`${BASE}/api/files/${ok1.json.id}?auth=${encodeURIComponent(parentToken)}`)).status === 401, "sign-in token still accepted in a URL");
+  ok((await fetch(`${BASE}/api/files/${ok1.json.id}?ft=${encodeURIComponent(parentToken)}`)).status === 401, "sign-in token accepted as a file token");
+  ok((await api("GET", "/lessons", (await api("GET", "/auth/me", parentToken)).json.file_token)).status === 401, "file token opens the API");
   const other = await api("POST", "/auth/register", null, { name: "Third", email: `family4-${stamp}@example.com`, password: pw, jurisdiction: "NSW" });
   ok((await get(other.json.token, ok1.json.id)).status === 404, "other family can read the upload");
   ok((await up(childToken, "x.html", "text/html", "<script>alert(1)</script>")).status === 400, "html upload allowed");
