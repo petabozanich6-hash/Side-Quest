@@ -38,3 +38,4 @@ backup-*.sql
 backups/
 *.sqlite
 wrangler.timetable-e2e.jsonc
+wrangler.subjects-e2e.jsonc
