@@ -83,12 +83,21 @@ function allocate(student, areas, days, startTime, weekStart, existing) {
       // Short break after every two learning blocks.
       if (i && i % 2 === 0) cursor += 15;
       if (cursor + slot.minutes > 1440) break;
-      const time = String(Math.floor(cursor / 60)).padStart(2, "0") + ":" + String(cursor % 60).padStart(2, "0");
-      if (!existing.some(e => e.student_id === student.id && e.date === date && e.start_time === time)) {
-        result.push({ key: student.id + "-" + day + "-" + i, student_id: student.id, title: slot.title,
-          date, start_time: time, duration_minutes: slot.minutes, event_type: "lesson",
-          notes: "Suggested by Side-Quest using family curriculum areas, year level and learning days. Parent reviewed." });
+      // Find the next genuinely free interval, not merely a different start time.
+      // Respect existing events and appointments, plus blocks proposed earlier in this preview.
+      const occupied = [...existing, ...result]
+        .filter(e => e.student_id === student.id && e.date === date && e.start_time)
+        .map(e => ({ from: Number(e.start_time.slice(0, 2)) * 60 + Number(e.start_time.slice(3)),
+          length: Math.max(1, Number(e.duration_minutes) || 1) }))
+        .sort((a, b) => a.from - b.from);
+      for (const block of occupied) {
+        if (cursor < block.from + block.length && block.from < cursor + slot.minutes) cursor = block.from + block.length;
       }
+      if (cursor + slot.minutes > 1440) continue;
+      const time = String(Math.floor(cursor / 60)).padStart(2, "0") + ":" + String(cursor % 60).padStart(2, "0");
+      result.push({ key: student.id + "-" + day + "-" + i, student_id: student.id, title: slot.title,
+        date, start_time: time, duration_minutes: slot.minutes, event_type: "lesson",
+        notes: "Suggested by Side-Quest using family curriculum areas, year level and learning days. Parent reviewed." });
       cursor += slot.minutes;
     }
   }
