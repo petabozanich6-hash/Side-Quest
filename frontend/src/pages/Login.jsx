@@ -10,6 +10,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [verificationPending, setVerificationPending] = useState(false);
+  const [resendingVerification, setResendingVerification] = useState(false);
   const { setSession } = useAuth();
   const nav = useNavigate();
 
@@ -19,8 +21,21 @@ export default function Login() {
       const { data } = await api.post("/auth/login", { email, password });
       setSession(data.token, { ...data.user, role: "parent" });
       toast.success("Welcome back"); nav("/parent");
-    } catch (err) { toast.error(err.response?.data?.detail || "Login failed"); }
+    } catch (err) {
+      if (err.response?.data?.code === "EMAIL_VERIFICATION_REQUIRED") setVerificationPending(true);
+      toast.error(err.response?.data?.detail || "Login failed");
+    }
     finally { setLoading(false); }
+  };
+
+  const resendVerification = async () => {
+    setResendingVerification(true);
+    try {
+      await api.post("/auth/verify-email/resend", { email });
+      toast.success("If your email is waiting for confirmation, another link is on its way. Check your inbox and spam folder.");
+    } catch (err) {
+      toast.error(err.response?.data?.detail || "We couldn't resend that link. Please try again shortly.");
+    } finally { setResendingVerification(false); }
   };
 
   return (
@@ -63,6 +78,14 @@ export default function Login() {
             </div>
           </div>
           <button disabled={loading} className="mt-6 w-full rounded-full py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="login-submit">{loading ? "Signing in…" : "Sign in"}</button>
+          {verificationPending && (
+            <div className="mt-4 rounded-xl px-4 py-3 text-sm" style={{background:"#F5EFE0", color:"#1F3B2D"}} data-testid="login-verification-pending">
+              <p><strong>One little quest left!</strong> You need to confirm your email before entering SideQuest. A link was sent when you registered.</p>
+              <button type="button" className="mt-2 font-bold underline disabled:opacity-50" onClick={resendVerification} disabled={resendingVerification} data-testid="login-verify-resend">
+                {resendingVerification ? "Resending…" : "Send me another confirmation link"}
+              </button>
+            </div>
+          )}
           <div className="mt-5 flex items-center justify-between text-xs">
             <Link to="/register" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
             <Link to="/child-login" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-child">Student sign in</Link>
