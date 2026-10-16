@@ -2,6 +2,8 @@ import { authenticateToken, familyState, issueToken, SUSPENDED_MESSAGE } from ".
 import { loadPlatformSettings } from "./platformSettings";
 import { trialEndFrom } from "./entitlements";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
+import { seniorCatalogueFor } from "./data/seniorCatalogue";
+import { catalogueFor, outcomeInfo } from "./outcomeTracker";
 
 import { hashSecret } from "./auth";
 import { encryptPin } from "./studentCredentials";
@@ -326,14 +328,68 @@ export function registerFamily(app: App, g: Guards) {
     c.json(NSW_SECONDARY_PATTERN[c.req.param("stage") as keyof typeof NSW_SECONDARY_PATTERN] ?? { compulsory: [], electives: [] })
   );
 
-  app.get("/api/curriculum/outcomes", (c) => {
+  // Backwards-compatible array response, but now ALWAYS from the signed-in
+  // family's framework; never expose NSW codes by default to interstate users.
+  app.get("/api/curriculum/outcomes", g.auth, g.parent, async (c) => {
+    const jurisdiction = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const catalogue = catalogueFor(jurisdiction);
+    if (!catalogue.available) return c.json([]);
     const stage = c.req.query("stage");
     const learningArea = c.req.query("learning_area");
-    // Codes only: Side-Quest links to NESA for the outcome wording rather than republishing it.
-    return c.json(
-      NSW_OUTCOMES.filter((item) => (!stage || item.stage === stage) && (!learningArea || item.learning_area === learningArea))
-        .map((item) => ({ code: item.code, stage: item.stage, learning_area: item.learning_area, source: item.source, description: "" }))
-    );
+    return c.json(catalogue.outcomes
+      .filter(o => (!stage || o.stage === stage) &&
+        (!learningArea || (o.learning_areas?.length ? o.learning_areas : [o.learning_area]).includes(learningArea)))
+      .map(o=>({ code:o.code, stage:o.stage, learning_area:o.learning_area,
+        source:o.source, description:"", official_url:outcomeInfo(o).official_url })));
+  });
+
+  // Version-aware code-only reference index for parent review. The jurisdiction
+  // is always resolved from this authenticated family, NEVER from a query param.
+  // Querying a source code does not grant achievement or create evidence.
+  app.get("/api/curriculum/identifiers", g.auth, g.parent, async (c) => {
+    const jurisdiction = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const catalogue = catalogueFor(jurisdiction);
+    if (!catalogue.available) return c.json({ available: false, jurisdiction,
+      note: catalogue.note, identifiers: [], total: 0 });
+    const query=(c.req.query("q") || "").trim().toLowerCase();
+    const area=(c.req.query("learning_area") || "").trim().toLowerCase();
+    const selectedSubject=(c.req.query("subject") || "").trim().toLowerCase();
+    const stage=(c.req.query("stage") || "").trim().toUpperCase();
+    const offset=Math.min(100000,Math.max(0,Number.parseInt(c.req.query("offset") || "0",10)||0));
+    const requested=Number.parseInt(c.req.query("limit") || "50",10);
+    const limit=Math.min(100,Math.max(1,Number.isFinite(requested)?requested:50));
+    const filtered=catalogue.outcomes.filter((o) => {
+      if(query && !o.code.toLowerCase().includes(query) && !(o.subject||"").toLowerCase().includes(query))return false;
+      if(area && !(o.learning_areas?.length ? o.learning_areas : [o.learning_area]).some(x=>x.toLowerCase()===area))return false;
+      if(selectedSubject && !(o.subjects?.length ? o.subjects : [o.subject||""]).some(x=>x.toLowerCase()===selectedSubject))return false;
+      if(stage && o.stage.toUpperCase()!==stage)return false;
+      return true;
+    });
+    return c.json({
+      available:true, jurisdiction, framework:catalogue.framework,
+      name:catalogue.name,version:catalogue.version, complete:false,
+      note:"Official-source curriculum reference codes. Coverage is partial; confirm the relevant syllabus edition and school year with the authority. Identifiers are not evidence of achieving an outcome.",
+      total:filtered.length, offset, limit,
+      identifiers:filtered.slice(offset,offset+limit).map(o=>({
+        code:o.code, learning_area:o.learning_area, subject:o.subject || null,
+        subjects:o.subjects || null, pathway:o.pathway || null,
+        stage:o.stage, status:o.status || "source_verified",
+        identifier_kind:(catalogue.framework==="AC9"||catalogue.framework==="WA") ? "content_description" : "curriculum_outcome_or_description",
+        source:outcomeInfo(o).source_title, official_url:outcomeInfo(o).official_url,
+      })),
+    });
+  });
+
+  // Source-backed SENIOR COURSE identifiers only: these are not outcomes and
+  // must never be counted toward mastery evidence by the Outcome Tracker.
+  // Family jurisdiction is resolved server-side, preventing a mismatched state
+  // catalogue being attributed to the wrong child.
+  app.get("/api/curriculum/senior-courses", g.auth, g.parent, async (c) => {
+    const jurisdiction = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);
+    const cat = jurisdiction ? seniorCatalogueFor(jurisdiction) : null;
+    if (!cat) return c.json({ jurisdiction, available: false,
+      note: "There is not yet a complete source-verified senior course-code catalogue for this jurisdiction. Check your official curriculum authority." });
+    return c.json({ ...cat, available: true });
   });
 
   app.get("/api/calendar/ics", g.auth, g.parent, async (c) => {
