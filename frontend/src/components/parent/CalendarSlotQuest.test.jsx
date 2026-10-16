@@ -54,10 +54,7 @@ test("AI draft requires explicit parent review before it can be assigned", async
   await click('[data-testid="slot-plan"]');
   await click('[data-testid="slot-generate"]');
   expect(box.querySelector('[data-testid="slot-approve"]').disabled).toBe(true);
-  const check = box.querySelector('[data-testid="slot-reviewed"]');
-  await act(async () => { check.checked = true; check.dispatchEvent(new MouseEvent("click", { bubbles: true })); });
-  // React checkbox can be toggled through click in JSDOM.
-  if(box.querySelector('[data-testid="slot-approve"]').disabled) await click('[data-testid="slot-reviewed"]');
+  await click('[data-testid="slot-reviewed"]');
   expect(box.querySelector('[data-testid="slot-approve"]').disabled).toBe(false);
   await click('[data-testid="slot-approve"]');
   expect(api.post).toHaveBeenCalledWith("/auto-quest/proposals/proposal-1/approve", { confirm_reviewed: true });
