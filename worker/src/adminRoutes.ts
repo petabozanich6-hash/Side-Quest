@@ -500,10 +500,12 @@ export function createAdminRoutes() {
       return c.json({detail:"Confirm that optional news goes only to parents who have opted in."},400);
     // Checked after the request itself, so a mistyped confirmation gets its own message; still fails closed.
     if(!c.env.EMAIL)return c.json({detail:"Outgoing email is not configured on this Cloudflare Worker. Nothing was sent."},503);
+    const safeIdempotencyKey=body.idempotency_key as string;
+    const safeRecipientCount=body.expected_recipients as number;
     await ensureAnnouncementSchema(c.env.DB);
     const result=await queueAnnouncement(c.env.DB,c.get("user").id,{
       kind:v.kind,subject:v.subject,body:v.body,
-      idempotency_key:body.idempotency_key,expected_recipients:body.expected_recipients
+      idempotency_key:safeIdempotencyKey,expected_recipients:safeRecipientCount
     });
     if("error" in result)return c.json({detail:result.error},409);
     if(!result.existing)await writeAudit(c.env.DB,{

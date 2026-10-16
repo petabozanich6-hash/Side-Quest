@@ -156,11 +156,15 @@ export function registerFeedback(app: App, guards: Guards) {
     const limit = await hitRateLimit(c.env.DB, "feedback:" + user.id, 5, 600);
     if (!limit.ok) { c.header("Retry-After", String(limit.retryAfter)); return c.json({ detail: "You've sent several reports. Please try again in a few minutes." }, 429); }
     const id = newId(), now = nowIso();
+    // Preserve validated scalars across the asynchronous database writes below.
+    const title = (b.subject as string).trim();
+    const detail = (b.message as string).trim();
+    const hint = typeof b.page_hint === "string" ? b.page_hint.trim() : "";
     // Production has the table already. Avoid running migration DDL every
     // time a parent presses Send. Provision the base table only on fresh installs.
     const save = () => c.env.DB.prepare(
       "INSERT INTO parent_feedback (id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,'new','',NULL,?,?)"
-    ).bind(id,user.family_id,user.id,b.category,String(b.subject).trim(),String(b.message).trim(),String(b.page_hint || "").trim(),now,now).run();
+    ).bind(id,user.family_id,user.id,b.category,title,detail,hint,now,now).run();
     try { await save(); } catch (err) {
       if (!/no such table.*parent_feedback/i.test(String(err))) throw err;
       await ensureFeedbackBaseSchema(c.env.DB);

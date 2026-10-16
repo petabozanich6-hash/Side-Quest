@@ -95,7 +95,7 @@ export default function ParentFeedback() {
           <label className="block text-sm font-bold text-stone-800">Which page or feature? <span className="font-normal text-stone-500">(optional)</span>
             <input maxLength={160} value={pageHint} onChange={e=>setPageHint(e.target.value)} className="mt-1 block w-full rounded-xl border border-stone-300 p-3 text-sm font-normal bg-white focus:outline-emerald-700" placeholder="e.g. lesson builder, child's room, timetable" data-testid="feedback-page"/>
           </label>
-          {error && <p className="rounded-lg p-3 text-sm bg-rose-50 text-rose-900" role="alert">{error}</p>}
+          {error && <div className="rounded-lg p-3 text-sm bg-rose-50 text-rose-900" role="alert"><p>{error}</p><p className="mt-2">If you cannot send your message here, email <a className="font-semibold underline" href="mailto:support@sidequestlearning.app?subject=Side-Quest%20feedback%20form%20unavailable">support@sidequestlearning.app</a> instead. Never include passwords or PINs.</p></div>}
           {sent && <p className="rounded-lg p-3 text-sm bg-emerald-50 text-emerald-950" role="status" data-testid="feedback-success">Your message is in the Owner HQ inbox. Reference: <code>{sent}</code></p>}
           <button type="submit" disabled={busy || subject.trim().length < 4 || message.trim().length < 10} className="rounded-full bg-emerald-950 text-white font-bold text-sm px-6 py-3 inline-flex items-center gap-2 disabled:opacity-50" data-testid="feedback-submit"><Send size={16}/>{busy?"Sending…":"Send to Side-Quest"}</button>
         </form>
