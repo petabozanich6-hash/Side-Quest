@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Link, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
+import LessonPrintActions from "../../components/parent/LessonPrintActions";
 
 const STATUS = {
   not_started: ["Not started", "bg-slate-100 text-slate-700"],
@@ -78,6 +79,9 @@ export default function AssignmentsPage() {
                     <p className="text-xs text-slate-600">{name(a.student_id)}{a.scheduled_date ? ` · planned ${a.scheduled_date}` : ""}{a.due_date ? ` · due ${a.due_date}` : ""}</p>
                   </div>
                   <span className={`rounded-full px-3 py-1 text-xs font-semibold ${cls}`}>{label}</span>
+                </div>
+                <div className="mt-3 border-t border-dashed border-stone-200 pt-3">
+                  <LessonPrintActions lessonId={a.lesson_id || a.lesson?.id} compact />
                 </div>
                 {!DONE.includes(a.status) && (
                   <div className="mt-3 flex flex-wrap gap-2">
