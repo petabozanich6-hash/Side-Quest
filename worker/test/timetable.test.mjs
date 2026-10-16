@@ -240,4 +240,9 @@ test("reschedule preview respects completed lessons, family isolation and free s
   assert.equal(slots.find(s=>s.date===day(2)).linked_assignment_id, assignment);
   const second = await h.req("/timetable/reschedule/preview", { method: "POST", token: parent.token, body: input });
   assert.deepEqual(second.json.plan, [], "moving again must not duplicate work");
+  const stale = await h.req("/timetable/reschedule/apply", { method: "POST", token: parent.token,
+    body: {...input, moves: preview.json.plan.map(p=>({from_slot_id:p.from_slot_id,to_slot_id:p.to_slot_id}))} });
+  assert.equal(stale.status, 409, "stale preview must be rejected");
+  assert.equal((await h.slots(parent, sid)).filter(x=>x.linked_assignment_id===assignment).length, 1,
+    "reapplying must not duplicate assignment placement");
 });
