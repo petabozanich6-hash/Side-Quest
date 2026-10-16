@@ -138,10 +138,14 @@ export function registerFeedback(app: App, guards: Guards) {
     if (!input || typeof input !== "object" || Array.isArray(input)) return c.json({ detail: "Enter a report." }, 400);
     const b = input as Record<string, unknown>;
     if (!isCategory(b.category)) return c.json({ detail: "Choose a report category." }, 400);
-    if (typeof b.subject !== "string" || b.subject.trim().length < 4 || b.subject.trim().length > 120)
-      return c.json({ detail: "Give your report a title (4 to 120 characters)." }, 400);
+    // A subject is optional. Derive one from the parent's actual message if blank,
+    // while keeping the original message untouched in the stored report.
+    if (b.subject !== undefined && (typeof b.subject !== "string" || b.subject.trim().length > 120))
+      return c.json({ detail: "Short title must be 120 characters or fewer." }, 400);
     if (typeof b.message !== "string" || b.message.trim().length < 10 || b.message.trim().length > 4000)
-      return c.json({ detail: "Describe it in 10 to 4000 characters." }, 400);
+      return c.json({ detail: "Write at least 10 characters (up to 4000) in your message." }, 400);
+    const subject = (typeof b.subject === "string" ? b.subject.trim() : "") ||
+      b.message.trim().replace(/\\s+/g, " ").slice(0, 90);
     if (b.page_hint !== undefined && (typeof b.page_hint !== "string" || b.page_hint.length > 160))
       return c.json({ detail: "Page or feature name is too long." }, 400);
     const user = c.get("user");
@@ -152,7 +156,7 @@ export function registerFeedback(app: App, guards: Guards) {
     // time a parent presses Send. Provision the base table only on fresh installs.
     const save = () => c.env.DB.prepare(
       "INSERT INTO parent_feedback (id,family_id,user_id,category,subject,message,page_hint,status,owner_note,seen_at,created_at,updated_at) VALUES (?,?,?,?,?,?,?,'new','',NULL,?,?)"
-    ).bind(id,user.family_id,user.id,b.category,b.subject.trim(),b.message.trim(),(b.page_hint || "").trim(),now,now).run();
+    ).bind(id,user.family_id,user.id,b.category,subject,b.message.trim(),(b.page_hint || "").trim(),now,now).run();
     try { await save(); } catch (err) {
       if (!/no such table.*parent_feedback/i.test(String(err))) throw err;
       await ensureFeedbackBaseSchema(c.env.DB);
