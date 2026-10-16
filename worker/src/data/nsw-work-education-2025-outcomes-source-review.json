@@ -1,0 +1,168 @@
+{
+  "authority": "NESA",
+  "jurisdiction": "NSW",
+  "syllabus": "Work Education 7–10",
+  "edition": 2025,
+  "implementation_from": 2028,
+  "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes",
+  "checked_on": "2026-10-16",
+  "status": "source_page_transcribed_review_only",
+  "page_outcomes_complete": true,
+  "note": "Exactly 8 Stage 5 outcome IDs and 14 Life Skills IDs transcribed from official outcomes page; WE4-ADJ-01 excluded because it is a Stage 4 adjustment instruction, not an ordinary outcome. New syllabus not generally implemented until 2028; older 2019 syllabus remains available during transition.",
+  "records": [
+    {
+      "identifier": "WE5-RRE-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-WOR-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-TEC-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-EDT-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-WRI-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-DEC-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-SAE-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WE5-COM-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "5",
+      "subject": "Work Education",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-WOR-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-WOR-02",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-RRE-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-RRE-02",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-TEC-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-WPP-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-EDT-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-EDT-02",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-DEC-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-DEC-02",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-WRI-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-SAE-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-COM-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    },
+    {
+      "identifier": "WELS-FIN-01",
+      "identifier_kind": "syllabus_outcome",
+      "stage": "4/5 Life Skills",
+      "subject": "Work Education Life Skills",
+      "source_url": "https://curriculum.nsw.edu.au/learning-areas/hsie/work-education-7-10-2025/outcomes"
+    }
+  ]
+}
