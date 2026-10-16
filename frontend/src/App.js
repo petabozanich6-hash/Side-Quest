@@ -49,6 +49,7 @@ import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
 import ParentFeedback from "./pages/parent/ParentFeedback";
+import SiteSearch from "./pages/shared/SiteSearch";
 import HqFeedback from "./pages/parent/hq/HqFeedback";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
@@ -89,6 +90,7 @@ function Router() {
       <Route path="/print/lesson/:id" element={<Guard role="parent"><LessonPrint /></Guard>} />
       <Route path="/parent" element={<Guard role="parent"><ParentLayout /></Guard>}>
         <Route index element={<ParentDashboard />} />
+        <Route path="search" element={<SiteSearch mode="parent" />} />
         <Route path="children" element={<ChildrenPage />} />
         <Route path="children/:sid" element={<ChildOverviewPage />} />
         <Route path="curriculum" element={<CurriculumPage />} />
@@ -130,6 +132,7 @@ function Router() {
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
+        <Route path="search" element={<SiteSearch mode="child" />} />
         <Route path="lesson/:aid" element={<ChildLessonRouter />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
         <Route path="archive" element={<ChildLessonArchive />} />
