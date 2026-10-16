@@ -76,3 +76,32 @@ test("a Google-only parent can delete their account after a fresh sign-in, not w
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM users WHERE id = ?").get(id).n, 0);
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM password_resets WHERE user_id = ?").get(id).n, 0, "parent-keyed rows are erased too");
 });
+
+test("assignment revocation is parent-only and family-scoped; revoked work cannot be reopened", async () => {
+  const h = harness();
+  const reg = await h.req("/auth/register", { method: "POST", body: { email: "revoke@example.com", password: PW, name: "P", jurisdiction: "NSW" } });
+  const other = await h.req("/auth/register", { method: "POST", body: { email: "other-revoke@example.com", password: PW, name: "Q", jurisdiction: "NSW" } });
+  const token = reg.json.token, fid = reg.json.user.family_id;
+  h.db.raw.prepare("UPDATE families SET plan='INTERNAL'").run();
+  const kid = await h.req("/students", { method: "POST", token, body: { name: "Mia", username: "revoke-mia", pin: "4321", stage: "S2" } });
+  assert.equal(kid.status, 200, JSON.stringify(kid.json));
+  const login = await h.req("/auth/child-login", { method: "POST", body: { username: "revoke-mia", pin: "4321" } });
+  const ct = login.json.token;
+  const ts = new Date().toISOString();
+  h.db.raw.prepare("INSERT INTO lessons (id,family_id,title,created_at) VALUES ('rl',?,'Fractions',?)").run(fid, ts);
+  h.db.raw.prepare("INSERT INTO assignments (id,family_id,student_id,lesson_id,status,created_at) VALUES ('ra',?,?,'rl','in_progress',?)").run(fid, kid.json.id, ts);
+  const path = "/assignments/ra";
+  assert.equal((await h.req(path, { method: "DELETE" })).status, 401);
+  assert.equal((await h.req(path, { method: "DELETE", token: ct })).status, 403);
+  assert.equal((await h.req(path, { method: "DELETE", token: other.json.token })).status, 404);
+  assert.equal((await h.req(path, { method: "DELETE", token })).status, 200);
+  assert.equal((await h.req(path, { token: ct })).status, 404);
+  assert.equal((await h.req("/assignments", { token: ct })).json.length, 0);
+  for (const userToken of [ct, token]) {
+    await h.req(path + "/status?status=in_progress", { method: "PUT", token: userToken });
+    assert.equal((await h.req(path, { token })).json.status, "revoked");
+  }
+  assert.equal((await h.req(path + "/draft", { method: "PUT", token: ct, body: { answer: "late" } })).status, 404);
+  assert.equal((await h.req("/submissions", { method: "POST", token: ct, body: { assignment_id: "ra" } })).status, 404);
+  assert.equal(h.db.raw.prepare("SELECT title FROM lessons WHERE id='rl'").get().title, "Fractions");
+});
