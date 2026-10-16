@@ -31,13 +31,30 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 );
 
 export default function ParentDashboard() {
-  const { unreadFeedbackReplies = 0, latestUnreadFeedbackReply = null } = useOutletContext() || {};
+  const { unreadFeedbackReplies: parentUnread = 0, latestUnreadFeedbackReply: parentLatest = null } = useOutletContext() || {};
+  // Independently refresh when this page opens: a stale sidebar badge must not
+  // hide a fresh Owner reply on the actual dashboard.
+  const [feedbackNotice,setFeedbackNotice] = useState(null);
+  const unreadFeedbackReplies = feedbackNotice?.unread ?? parentUnread;
+  const latestUnreadFeedbackReply = feedbackNotice?.latest ?? parentLatest;
   const [data, setData] = useState(null);
   const [waiting, setWaiting] = useState([]);
   const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [plan, setPlan] = useState(null);
   const [drafts, setDrafts] = useState(null);
+  useEffect(() => {
+    let live=true;
+    const refresh=()=>api.get("/feedback/unread-count").then(({data})=>{
+      if(live) setFeedbackNotice({unread:Number(data?.unread||0),latest:data?.latest||null});
+    }).catch(()=>{});
+    refresh();
+    const onFocus=()=>refresh();
+    window.addEventListener("focus",onFocus);
+    window.addEventListener("sidequest-feedback-replies-updated",onFocus);
+    const timer=window.setInterval(refresh,60000);
+    return ()=>{live=false;window.removeEventListener("focus",onFocus);window.removeEventListener("sidequest-feedback-replies-updated",onFocus);window.clearInterval(timer);};
+  },[]);
 
   const load = () => {
     api.get("/dashboard/parent").then(r => setData(r.data));

@@ -114,6 +114,49 @@ await step("Owner adds a passkey (password re-check) and unlocks HQ with it", as
   await shot("02-overview-desktop");
 });
 
+
+// Reproduce the parent -> Owner HQ -> parent dashboard path in a REAL browser.
+// Use separate browser contexts so the owner's and parent's localStorage cannot collide.
+await step("feedback regression: parent sends, Owner replies, dashboard alerts and clears on read", async () => {
+  const parentCtx=await browser.newContext({viewport:{width:1280,height:900}});
+  const pp=await parentCtx.newPage();
+  try {
+    await signIn(pp,user.token);
+    await pp.goto(BASE+"/parent/feedback");
+    await pp.waitForSelector("[data-testid=parent-feedback-form]");
+    await pp.fill("[data-testid=feedback-subject]","Feedback submission must still work");
+    await pp.fill("[data-testid=feedback-message]","I am testing whether a report reaches Owner HQ with no issues.");
+    await pp.click("[data-testid=feedback-submit]");
+    await pp.waitForSelector("[data-testid=feedback-success]",{timeout:15000});
+    const id=(await pp.locator("[data-testid=feedback-success] code").textContent()).trim();
+    ok(id.length>10,"no successful submission ID");
+    ok((await api("GET","/feedback",user.token)).json.reports.some(x=>x.id===id),"report was not saved");
+    await page.click("[data-testid=hq-tab-feedback]");
+    await page.waitForSelector("[data-testid=hq-feedback]");
+    const item=page.locator('[data-testid="hq-feedback-item-'+id+'"]');
+    await item.waitFor({timeout:15000});
+    await item.click();
+    await page.fill("[data-testid=hq-feedback-reply-message]","This is a response from Side-Quest. Your issue is resolved.");
+    await page.click("[data-testid=hq-feedback-send-reply]");
+    await page.waitForSelector("[data-testid=hq-feedback-reply-sent]",{timeout:15000});
+    await pp.goto(BASE+"/parent");
+    await pp.waitForSelector("[data-testid=dashboard-feedback-reply-alert]",{timeout:15000});
+    ok((await pp.textContent("[data-testid=dashboard-feedback-reply-alert]")).includes("Side-Quest has reported back"),"dashboard alert missing");
+    await pp.click("[data-testid=dashboard-feedback-open-reply]");
+    const thread=pp.locator('[data-testid="parent-feedback-thread-'+id+'"]');
+    await thread.waitFor({timeout:15000});
+    ok((await thread.textContent()).includes("Your issue is resolved"),"deep link missed owner's reply");
+    await pp.waitForFunction(async()=>{
+      const token=localStorage.getItem("sq_token");
+      const r=await fetch("/api/feedback/unread-count",{headers:{Authorization:"Bearer "+token}});
+      return r.ok && (await r.json()).unread===0;
+    },null,{timeout:15000});
+    await pp.goto(BASE+"/parent");
+    await pp.waitForSelector("[data-testid=parent-dashboard]",{timeout:15000});
+    ok((await pp.locator("[data-testid=dashboard-feedback-reply-alert]").count())===0,"read reply left a permanent alert");
+  } finally { await parentCtx.close(); }
+});
+
 await step("HQ layout fits phone, tablet and desktop without sideways scrolling", async () => {
   for (const [w, h, name] of [[375, 812, "phone"], [768, 1024, "tablet"], [1280, 900, "desktop"]]) {
     await page.setViewportSize({ width: w, height: h });
