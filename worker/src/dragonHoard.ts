@@ -91,10 +91,22 @@ export async function createHoardOffer(db: D1Database, env: Env, input: Record<s
 
   // Stripe stores the actual discount and enforces its expiry / redemption count, not a browser-side calculation.
   // Reuse an explicit coupon identifier and idempotency keys to make retries safe after partial network failures.
+  // Stripe coupon applicability must be limited to the products behind SideQuest's configured prices.
+  // Otherwise a customer with a valid SideQuest code could try it on Pocket Goblin or any other
+  // product sharing the same Stripe account. A missing/invalid price fails before creating a coupon.
+  const priceIds = [...new Set(Object.values(cfg.prices).filter(Boolean).map((p) => p!.price))];
+  const priceObjects = await Promise.all(priceIds.map((priceId) =>
+    stripeCall(cfg.key, "GET", "prices/" + encodeURIComponent(priceId))
+  ));
+  const products = [...new Set(priceObjects.map((price) => price?.product))];
+  if (products.length === 0 || products.some((p) => typeof p !== "string" || !/^prod_[A-Za-z0-9]+$/.test(p))) {
+    throw new Error("Stripe did not return a valid SideQuest product for each configured price");
+  }
   const couponId = "sqhoard_" + cfg.mode + "_" + v.code.toLowerCase();
   const coupon = await stripeCall(cfg.key, "POST", "coupons", {
     id: couponId, name: "SideQuest · " + v.label, percent_off: v.percent_off,
     duration: "once",
+    applies_to: { products },
     metadata: { source: "sidequest_dragons_hoard" },
   }, { idempotencyKey: "sq-hoard-coupon-" + cfg.mode + "-" + v.code });
   const promo = await stripeCall(cfg.key, "POST", "promotion_codes", {
