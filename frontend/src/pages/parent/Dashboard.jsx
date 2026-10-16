@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare } from "lucide-react";
+import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
@@ -31,6 +31,7 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 );
 
 export default function ParentDashboard() {
+  const { unreadFeedbackReplies = 0, latestUnreadFeedbackReply = null } = useOutletContext() || {};
   const [data, setData] = useState(null);
   const [waiting, setWaiting] = useState([]);
   const [readingPending, setReadingPending] = useState([]);
@@ -66,6 +67,30 @@ export default function ParentDashboard() {
           </p>
         </div>
       </header>
+
+      {/* Only present when the authenticated parent has an unread owner reply.
+          The server records it as read when the parent opens the matching thread. */}
+      {unreadFeedbackReplies > 0 && (
+        <section className="relative z-10 rounded-2xl border-2 border-amber-400 bg-amber-50 p-5 sm:p-7 shadow-lg" role="status" aria-live="polite" data-testid="dashboard-feedback-reply-alert">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="shrink-0 grid place-items-center rounded-2xl bg-emerald-950 p-3 text-amber-100" aria-hidden="true"><MailCheck size={30}/></div>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-900">New message from the Side-Quest team</p>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold mt-1 text-emerald-950">Side-Quest has reported back!</h2>
+              <p className="mt-2 text-sm sm:text-base text-stone-800 leading-relaxed">
+                {latestUnreadFeedbackReply?.subject
+                  ? <>We've replied to your feedback about <strong className="break-words">{latestUnreadFeedbackReply.subject}</strong>.</>
+                  : "We've replied to your feedback."}
+                {unreadFeedbackReplies > 1 && <> You have <strong>{unreadFeedbackReplies} unread replies</strong> to catch up on.</>}
+              </p>
+            </div>
+            <Link to={latestUnreadFeedbackReply?.feedback_id ? "/parent/feedback?thread=" + encodeURIComponent(latestUnreadFeedbackReply.feedback_id) : "/parent/feedback"}
+              className="shrink-0 inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-emerald-950 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-950"
+              data-testid="dashboard-feedback-open-reply">Read your message <ArrowRight size={17}/></Link>
+          </div>
+          <p className="mt-3 text-xs text-stone-600">This notice disappears automatically after you've read your reply.</p>
+        </section>
+      )}
 
       {(() => {
         const kids = data.students.length;

@@ -42,6 +42,7 @@ export default function ParentLayout() {
   const [showDelete, setShowDelete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [unreadReplies,setUnreadReplies] = useState(0);
+  const [latestUnreadReply,setLatestUnreadReply] = useState(null);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
   const paidPlans = ["ACTIVE_WEEKLY","ACTIVE_FORTNIGHTLY","ACTIVE_MONTHLY","ACTIVE_ANNUAL","PAST_DUE","INTERNAL"];
@@ -63,16 +64,19 @@ export default function ParentLayout() {
     return () => { alive = false; };
   }, [user?.id, location.pathname, paidNotice]);
   useEffect(() => {
-    if (!user?.id) { setUnreadReplies(0); return undefined; }
+    if (!user?.id) { setUnreadReplies(0); setLatestUnreadReply(null); return undefined; }
     let alive = true;
     const refresh = () => api.get("/feedback/unread-count").then(r => {
-      if(alive) setUnreadReplies(Number(r.data?.unread || 0));
+      if (!alive) return;
+      const unread = Number(r.data?.unread || 0);
+      setUnreadReplies(unread);
+      setLatestUnreadReply(unread > 0 ? r.data?.latest || null : null);
     }).catch(()=>{});
     refresh();
     const timer = setInterval(refresh,60000);
     window.addEventListener("sidequest-feedback-replies-updated",refresh);
     return () => {alive=false;clearInterval(timer);window.removeEventListener("sidequest-feedback-replies-updated",refresh);};
-  },[user?.id]);
+  },[user?.id,location.pathname]);
   useEffect(() => {
     const shortcut = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -124,11 +128,11 @@ export default function ParentLayout() {
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
         <div className="px-4 sm:px-8 pt-3 flex justify-end"><button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button></div>
-        {unreadReplies>0 && route!=="/parent/feedback" && <Link to="/parent/feedback" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
+        {unreadReplies>0 && route!=="/parent/feedback" && route!=="/parent" && <Link to="/parent/feedback" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
         <HelpAlertBar />
         <JurisdictionGate />
         {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
-        <Outlet />
+        <Outlet context={{ unreadFeedbackReplies: unreadReplies, latestUnreadFeedbackReply: latestUnreadReply }} />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
       <HelpPopup />
