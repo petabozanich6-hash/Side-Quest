@@ -85,3 +85,24 @@ This is a security notification for your account at sidequestlearning.app.`;
     }),
   };
 }
+
+/** Confirming the real email address unlocks a new family account and starts its preview. */
+export function parentVerificationEmail(to: string, name: string, link: string): OutgoingEmail {
+  const n = firstName(name);
+  return {
+    to, subject: "Confirm your email to begin your SideQuest adventure 🐉",
+    text: `Hi ${n},\n\nJust one small quest before we begin: confirm that this email address belongs to you. Your seven-day free preview starts after confirmation.\n\nOpen this link (valid for 48 hours, once only): ${link}\n\nIf you didn't register, you can ignore this message.\n\nSide-Quest Learning`,
+    html: layout({
+      preheader: "Confirm your email and start your seven-day preview.",
+      kicker: "One small quest before we begin.",
+      heading: "Confirm your email address",
+      body: [
+        p(`Hi ${esc(n)}, before the adventure begins, please confirm that this email address is yours.`),
+        p("Your seven-day free preview starts when you confirm, not while you're waiting for this message."),
+        button("Confirm my email", link),
+        note("This secure link can be used once and expires in 48 hours. If you didn't sign up, simply ignore this email."),
+      ].join("\n"),
+      reason: "Someone used this email to register a new SideQuest family account.",
+    }),
+  };
+}
