@@ -55,8 +55,10 @@ export function registerHomeschoolCompass(app: App, guards: Guards) {
     if (!belongs) return c.json({ detail: "Child not found in this family" }, 404);
     const jurisdiction = await getFamilyJurisdiction(c.env.DB, familyId);
     if (!jurisdiction) return c.json({ detail: "Choose your family's state or territory first", code: "JURISDICTION_REQUIRED" }, 409);
-    const body: Record<string, unknown> = await c.req.json().catch(() => ({}));
-    if (!Array.isArray(body.completed_steps) || body.completed_steps.some(x => typeof x !== "string" || !STEP_IDS.has(x)))
+    const payload: unknown = await c.req.json().catch(() => null);
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)) return c.json({ detail: "A checklist object is required" }, 400);
+    const body = payload as Record<string, unknown>;
+    if (!Array.isArray(body.completed_steps) || body.completed_steps.length > STEP_IDS.size || body.completed_steps.some(x => typeof x !== "string" || !STEP_IDS.has(x)))
       return c.json({ detail: "Invalid checklist steps" }, 400);
     if (typeof body.registration_status !== "string" || !STATUSES.has(body.registration_status))
       return c.json({ detail: "Invalid registration status" }, 400);
