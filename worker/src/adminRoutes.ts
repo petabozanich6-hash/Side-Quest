@@ -31,6 +31,7 @@ import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
+import { sendEmail, SITE_URL, esc } from "./email";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
 type AdminContext = Context<{ Bindings: Env; Variables: AdminVars }>;
@@ -393,6 +394,61 @@ export function createAdminRoutes() {
     // Audit metadata only: no private parent report text in administrative log.
     await writeAudit(c.env.DB,{...actor(c),action:"feedback.update",targetType:"feedback",targetId:row.id,detail:{from:row.status,to:status,notes_updated:ownerNote!==null}});
     return c.json({ok:true,id:row.id,status,seen_at:row.seen_at || when});
+  });
+
+  // A private reply is persisted first. Optional email only alerts the correct submitting parent
+  // to sign in; it never contains the report, reply, names, or other customer data.
+  admin.get("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind(c.req.param("id")).first();
+    if(!exists) return c.json({detail:"Feedback not found"},404);
+    const {results}=await c.env.DB.prepare(
+      "SELECT id,body,created_at,parent_read_at FROM parent_feedback_replies WHERE feedback_id=? ORDER BY created_at ASC,id ASC LIMIT 100",
+    ).bind(c.req.param("id")).all();
+    return c.json({replies:results||[]});
+  });
+
+  admin.post("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
+    await ensureFeedbackSchema(c.env.DB);
+    const b=await readJson(c);
+    if(typeof b.message !== "string" || b.message.trim().length<2 || b.message.trim().length>2000)
+      return c.json({detail:"Write a reply of 2 to 2000 characters."},400);
+    const status=b.status===undefined?undefined:b.status;
+    if(status!==undefined && (typeof status!=="string" || !(FEEDBACK_STATUSES as readonly string[]).includes(status)))
+      return c.json({detail:"Invalid feedback status"},400);
+    const report=await c.env.DB.prepare(
+      "SELECT p.id,p.family_id,p.user_id,p.status,u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id WHERE p.id=?"
+    ).bind(c.req.param("id")).first<{id:string;family_id:string;user_id:string;status:string;email:string}>();
+    if(!report)return c.json({detail:"Feedback not found"},404);
+    const replyId=crypto.randomUUID(), when=nowIso(), body=b.message.trim();
+    // The owner cannot reroute the reply by supplying a target email, family id or user id.
+    const replies=(await c.env.DB.prepare("SELECT COUNT(*) n FROM parent_feedback_replies WHERE feedback_id=?")
+      .bind(report.id).first<{n:number}>())?.n||0;
+    if(Number(replies)>=100)return c.json({detail:"This feedback thread has reached its reply limit."},409);
+    await c.env.DB.batch([
+      c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)")
+        .bind(replyId,report.id,c.get("user").id,body,when),
+      c.env.DB.prepare("UPDATE parent_feedback SET status=COALESCE(?,status),seen_at=COALESCE(seen_at,?),updated_at=? WHERE id=?")
+        .bind(status??null,when,when,report.id),
+    ]);
+    // Keep the audit trail content-free, like other Owner HQ operations.
+    try {
+      await writeAudit(c.env.DB,{...actor(c),action:"feedback.reply",targetType:"feedback",targetId:report.id,
+        detail:{reply_id:replyId, status:status??report.status}});
+    } catch { console.warn("feedback reply audit could not be recorded"); }
+    let emailSent=false;
+    try {
+      if(typeof report.email==="string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(report.email)) {
+        const url=SITE_URL+"/parent/feedback?thread="+encodeURIComponent(report.id);
+        emailSent=await sendEmail(c.env,{
+          to:report.email,subject:"Side-Quest has replied to your feedback",
+          text:"You have a new reply from Side-Quest. Sign in to your Parent Hub to read it:\n"+url+"\n\nThis is a notification only. Your message stays private in your Side-Quest account.",
+          html:'<p>You have a new reply from Side-Quest.</p><p><a href="'+esc(url)+'">Sign in to your Parent Hub to read it</a></p><p>This email contains no private feedback content.</p>',
+        });
+      }
+    } catch { /* the on-site reply is always delivered */ }
+    return c.json({ok:true,id:replyId,feedback_id:report.id,status:status??report.status,
+      created_at:when,email_notification_sent:emailSent,delivered_in_app:true},201);
   });
 
   admin.all("*", (c) => notFound(c));
