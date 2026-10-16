@@ -508,11 +508,12 @@ export function createAdminRoutes() {
     });
     if("error" in result)return c.json({detail:result.error},409);
     if(typeof result.id!=="string")return c.json({detail:"Could not confirm the announcement queue."},500);
+    const broadcastId:string=result.id;
     if(!result.existing)await writeAudit(c.env.DB,{
-      ...actor(c),action:"announcement.queued",targetType:"announcement",targetId:result.id,
+      ...actor(c),action:"announcement.queued",targetType:"announcement",targetId:broadcastId,
       detail:{kind:v.kind,recipient_count:result.count}
     });
-    return c.json({queued:true,id:result.id,already_queued:result.existing,delivery:"Paced in batches via Cloudflare cron."},result.existing?200:201);
+    return c.json({queued:true,id:broadcastId,already_queued:result.existing,delivery:"Paced in batches via Cloudflare cron."},result.existing?200:201);
   });
   admin.post("/announcements/:id/cancel",requirePermission("settings.write"),async c=>{
     await ensureAnnouncementSchema(c.env.DB);
