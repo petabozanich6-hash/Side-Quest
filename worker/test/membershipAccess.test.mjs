@@ -44,6 +44,7 @@ function harness(){
 
 test("access policy covers advanced mutations and trial writes without blocking reading and account safety",()=>{
   for(const [method,url] of [
+    ["GET","/api/audit"],["GET","/api/auto-quest/preview"],["POST","/api/word-bank/try"],
     ["POST","/api/files/upload"],["POST","/api/programs"],["POST","/api/units"],
     ["POST","/api/resources"],["POST","/api/resources/suggest"],["POST","/api/resources/verify-link"],["PUT","/api/resources/abc/approve"],
     ["POST","/api/calendar"],["PUT","/api/calendar/abc"],
@@ -88,6 +89,9 @@ test("preview protects all advanced routes server-side and allows only one basic
     const r=await h.req(path,{method:"POST",token:p.token,body});
     assert.equal(r.status,402,path+" "+JSON.stringify(r.json));assert.equal(r.json.code,"UPGRADE_REQUIRED");
   }
+  assert.equal((await h.req("/audit",{token:p.token})).status,402,"curriculum audit is paid");
+  assert.equal((await h.req("/auto-quest/preview",{token:p.token})).status,402,"Auto-Quest preview is paid");
+  assert.equal((await h.req("/word-bank/try",{method:"POST",token:c.token,body:{word:"unlimited",guess:"unlimited"}})).status,402,"word try cannot insert words for free");
   const noUpload=await h.req("/files/upload",{method:"POST",token:p.token});
   assert.equal(noUpload.status,402);
   const noChildEvidence=await h.req("/lessons/anything/evidence",{method:"POST",token:c.token,body:{text:"test"}});
