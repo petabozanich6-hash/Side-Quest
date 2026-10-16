@@ -1,3 +1,4 @@
+import { gatewayOptions, withMeta } from "./aiRouting";
 // Suggests which curriculum outcomes a lesson contributes to. This is a plain wording match against the outcome list the app
 // holds (no AI call, no cost). It is a SUGGESTION for the parent to confirm: it never claims a lesson "covers" an outcome.
 // Today the outcome list is the NSW syllabus. Other states and territories are not loaded yet, so nothing here is presented as national.
@@ -91,14 +92,14 @@ const summary = (l: any) => [
 type AiLike = { run(model: string, input: Record<string, unknown>, options?: Record<string, unknown>): Promise<any> };
 
 /** Asks the model to PICK from the real outcome list (it cannot invent a code: anything not in the list is dropped). */
-export async function matchOutcomesWithAi(ai: AiLike, lesson: any, opts: { model: string; gatewayId?: string }, limit = 3): Promise<{ suggestions: OutcomeSuggestion[]; input_tokens: number; output_tokens: number } | null> {
+export async function matchOutcomesWithAi(ai: AiLike, lesson: any, opts: { model: string; gatewayId?: string; generation?: string }, limit = 3): Promise<{ suggestions: OutcomeSuggestion[]; input_tokens: number; output_tokens: number } | null> {
   const pool = outcomePool(lesson);
   if (!pool.length) return { suggestions: [], input_tokens: 0, output_tokens: 0 };
   const messages = [
     { role: "system", content: 'You match a school lesson to curriculum outcomes. You may choose ONLY from the numbered list you are given. Choose 1 to ' + limit + ' outcomes that the lesson\'s teaching directly develops, best match first. If none truly fit, choose none. Reply with ONE JSON object only: {"matches":[number,...]} using the list numbers.' },
     { role: "user", content: `${summary(lesson)}\n\nOUTCOMES:\n${pool.map((o, i) => `${i + 1}. ${o.description}`).join("\n")}` },
   ];
-  const raw: any = await ai.run(opts.model, { messages, max_tokens: 120, temperature: 0 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+  const raw: any = await ai.run(opts.model, { messages, max_tokens: 120, temperature: 0 }, withMeta(gatewayOptions(opts.gatewayId), { task: "outcome_match", generation: opts.generation }));
   const text = typeof raw?.response === "string" ? raw.response : JSON.stringify(raw?.response ?? raw?.choices?.[0]?.message?.content ?? "");
   const m = /\{[\s\S]*\}/.exec(text);
   if (!m) return null;

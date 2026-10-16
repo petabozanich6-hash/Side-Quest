@@ -1,3 +1,4 @@
+import { gatewayOptions, withMeta } from "./aiRouting";
 // "I'm stuck! Help me understand." Short, lesson-bound help for a child: explain differently, another example, or a hint.
 // One Workers AI call per request at most (stored hints are reused for free). The context comes from the child's own
 // assignment on the server; the browser only says which part of the lesson and which kind of help. Answer keys are never
@@ -176,7 +177,7 @@ export async function helpForChild(
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   let out = "";
   try {
-    const raw: any = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }], max_tokens: 420, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+    const raw: any = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: SYSTEM }, { role: "user", content: prompt }], max_tokens: 420, temperature: 0.4 }, withMeta(gatewayOptions(opts.gatewayId), { task: "child_help" }));
     out = typeof raw === "string" ? raw : typeof raw?.response === "string" ? raw.response : raw?.choices?.[0]?.message?.content ?? "";
     if (typeof out !== "string") out = "";
     const asJson: any = out.trim().startsWith("{") ? extractJson(out) : null;

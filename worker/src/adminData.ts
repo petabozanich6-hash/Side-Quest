@@ -8,7 +8,8 @@
  */
 import { ACTIVE_PLANS, effectivePlan, type Plan } from "./entitlements";
 import { aiRequestsLast24h, type PlatformSettings } from "./platformSettings";
-import { aiCostSummary } from "./aiCost";
+import { aiCostBreakdown, aiCostSummary, usdToAud } from "./aiCost";
+import { MODELS, routingConfig } from "./aiRouting";
 import type { Env } from "./types";
 
 const DAY = 86400000;
@@ -83,6 +84,14 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
   const aiFamilies7 = await n(db, "SELECT COUNT(DISTINCT family_id) n FROM ai_usage WHERE created_at >= ?", iso(t - 7 * DAY));
   // Inference-by-inference USD estimate; not an invoice and not derived from request counts.
   const aiCost = await aiCostSummary(db, now).catch(() => ({ configured: false as const, note: "AI inference usage metering is temporarily unavailable. Check Cloudflare for billing." }));
+  const [aiBreakdown, aud] = await Promise.all([aiCostBreakdown(db, now).catch(() => null), env.AI ? usdToAud().catch(() => null) : Promise.resolve(null)]);
+  const routing = routingConfig(env);
+  const aiRouting = {
+    enabled: routing.enabled, fast_pipeline: env.AI_FAST_PIPELINE === "true", compact: env.AI_COMPACT_GENERATION === "true",
+    default_model: env.AI_MODEL || "@cf/meta/llama-3.3-70b-instruct-fp8-fast", help_model: env.AI_HELP_MODEL || null,
+    routes: routing.routes, problems: routing.problems,
+    models: Object.entries(MODELS).map(([id, m]) => ({ id, ...m })),
+  };
 
   // ---- storage
   const files = await n(db, "SELECT COUNT(*) n FROM files WHERE is_deleted = 0");
@@ -131,7 +140,7 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
           configured: aiConfigured, enabled: settings.features.aiEnabled,
           requests_24h: ai24, requests_7d: ai7, failed_24h: aiFailed24, families_using_7d: aiFamilies7,
           platform_cap_24h: settings.costSafeguards.aiDailyPlatformCap, by_kind_30d: kinds,
-          cost: aiCost,
+          cost: aiCost, breakdown_30d: aiBreakdown, aud, routing: aiRouting,
         }
       : { configured: false, note: "Workers AI is not bound to this Worker." },
     storage: env.BUCKET

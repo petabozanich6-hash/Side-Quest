@@ -4,6 +4,8 @@
 // sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
+import { gatewayOptions, withMeta } from "./aiRouting";
+import type { AiCallMeta, AiTask } from "./aiRouting";
 import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
@@ -647,6 +649,23 @@ function aliasKeys(v: any): any {
   return v;
 }
 const SMALL_POOL = 4;
+/** With AI_FAST_PIPELINE every teaching section and worked example is requested at once (one wave, not two or three). */
+export const FAST_POOL = 18;
+
+/** Stages a parent sees while a lesson is written (real milestones, reported as each one starts). */
+export type GenPhase = "design" | "frame" | "teaching" | "practice" | "checking" | "outcomes" | "saving";
+export const GEN_PHASES: GenPhase[] = ["design", "frame", "teaching", "practice", "checking", "outcomes", "saving"];
+export type Pipeline = { fast?: boolean; onPhase?: (phase: GenPhase) => Promise<void> | void };
+
+export function taskForStage(name: string): AiTask {
+  if (name === "design") return "lesson_design";
+  if (name === "frame") return "lesson_frame";
+  if (name.startsWith("section")) return "lesson_section";
+  if (name.startsWith("example")) return "lesson_example";
+  if (name === "practice") return "lesson_practice";
+  if (name === "assessment") return "lesson_assessment";
+  return "lesson_repair";
+}
 async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T[]> {
   const out: T[] = new Array(jobs.length);
   let next = 0;
@@ -662,11 +681,12 @@ async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T
  *   4 practice and assessment (two requests). `call(messages, maxTokens)` returns the raw model reply and throws only if the model cannot be reached.
  */
 export async function generateStaged(
-  call: (messages: { role: string; content: string }[], maxTokens: number) => Promise<unknown>,
+  call: (messages: { role: string; content: string }[], maxTokens: number, meta?: AiCallMeta) => Promise<unknown>,
   spec: Spec,
   stats: GenStats,
   flags: string[],
-  compact = false
+  compact = false,
+  pipeline: Pipeline = {}
 ): Promise<Record<string, any> | null> {
   const sys = { role: "system", content: stageSystem() };
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
@@ -674,7 +694,7 @@ export async function generateStaged(
     let lastWhy = "";
     for (let attempt = 0; attempt < 2; attempt++) {
       const started = Date.now();
-      const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens);
+      const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens, { task: taskForStage(name), attempt: attempt + 1 });
       (stats.stage_timings_ms ??= []).push({ stage: name, ms: Date.now() - started });
       stats.calls++;
       stats.input_tokens += Number(raw?.usage?.prompt_tokens) || 0;
@@ -692,15 +712,20 @@ export async function generateStaged(
     if (best) { flags.push(`The AI's reply for the ${name} step was cut off, so the end of it may be missing. Please read it through.`); return best.value; }
     return null;
   };
+  const step = async <T,>(phase: GenPhase, run: () => Promise<T>): Promise<T> => {
+    await pipeline.onPhase?.(phase);
+    return run();
+  };
+  const poolSize = pipeline.fast ? FAST_POOL : SMALL_POOL;
 
-  const design = await go("design", designPrompt(spec), 2800, ["sequence", "worked_examples"]);
+  const design = await step("design", () => go("design", designPrompt(spec), 2800, ["sequence", "worked_examples"]));
   if (!design) return null;
   const seq: any[] = (design.sequence || []).filter((s: any) => s && s.heading && s.idea).slice(0, 10);
   const exs: any[] = (design.worked_examples || []).filter((w: any) => w && w.problem).slice(0, 8);
   if (!seq.length || !exs.length) return null;
   design.sequence = seq; design.worked_examples = exs;
 
-  const frame = await go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]);
+  const frame = await step("frame", () => go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]));
   if (!frame) return null;
   const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
 
@@ -728,10 +753,11 @@ export async function generateStaged(
       "Each example needs 5–9 explicit steps showing what to do and WHY, a checked final answer, and should increase in difficulty.",
       'JSON ONLY: {"worked_examples":[{"title":string,"problem":string,"steps":[string],"answer":string,"visual":optional},...]}', VISUAL_FORMAT,
     ].filter(Boolean).join("\n");
+    await pipeline.onPhase?.("teaching");
     const grouped = await pool<any>([
       ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
       ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
-    ]);
+    ], poolSize);
     const unpack = async (type: "sections" | "worked_examples", chunksToRead: number[][], offset: number) => {
       const resolved = await Promise.all(chunksToRead.map(async (ids, k) => {
         const items = grouped[offset + k]?.[type];
@@ -751,10 +777,11 @@ export async function generateStaged(
       unpack("worked_examples", eChunks, sChunks.length),
     ]);
   } else {
+    await pipeline.onPhase?.("teaching");
     const results = await pool<any>([
       ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
       ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
-    ]);
+    ], poolSize);
     sections = results.slice(0, seq.length);
     examples = results.slice(seq.length);
   }
@@ -762,6 +789,7 @@ export async function generateStaged(
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
   const taught = { sections, worked_examples: examples, texts };
 
+  await pipeline.onPhase?.("practice");
   const [pa, pb] = await Promise.all([
     go("practice", practiceAPrompt(spec, design, taught), 6000, ["guided_practice", "activities"]),
     go("assessment", assessmentPrompt(spec, design, taught), 4500, ["questions", "quiz"]),
@@ -780,7 +808,8 @@ export async function generateStaged(
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; request: AiRequest },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fast?: boolean; request: AiRequest;
+    /** Real progress for the parent (lesson generation jobs). */ onPhase?: (phase: GenPhase) => Promise<void> | void; generationId?: string },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -846,17 +875,27 @@ export async function draftLessonWithAi(
   const generationStarted = Date.now();
   const stats: GenStats = { calls: 0, input_tokens: 0, output_tokens: 0, stages: [], stage_timings_ms: [] };
   const stageFlags: string[] = [];
-  const call = (messages: { role: string; content: string }[], maxTokens: number) =>
-    ai.run(model, { messages, max_tokens: maxTokens, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+  const generation = opts.generationId || crypto.randomUUID();
+  const call = (messages: { role: string; content: string }[], maxTokens: number, meta: AiCallMeta = {}) =>
+    ai.run(model, { messages, max_tokens: maxTokens, temperature: 0.4 }, withMeta(gatewayOptions(opts.gatewayId), { ...meta, generation }));
+  const phase = async (p: GenPhase) => { try { await opts.onPhase?.(p); } catch { /* progress is informational only */ } };
   let raw: any = null;
   let draft: Draft | null = null;
   let issues: Issue[] = [];
+  // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
+  const wantsOutcomes = (request as any).link_outcomes !== false && usesNswOutcomes(jurisdiction);
+  const matchOutcomes = (d: Draft) => matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, d, { model, gatewayId: opts.gatewayId, generation }).catch(() => null);
+  let earlyOutcomes: ReturnType<typeof matchOutcomes> | null = null;
   try {
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true);
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, { fast: opts.fast === true, onPhase: phase });
     if (raw) {
+      await phase("checking");
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);
       const fix = issues.filter((i) => i.repair || i.hard);
+      // Fast pipeline: outcome matching reads the title, objectives and section headings, which a repair
+      // leaves alone, so it runs alongside the repair instead of after it.
+      if (opts.fast === true && fix.length && wantsOutcomes) earlyOutcomes = matchOutcomes(draft);
       if (fix.length) {
         // One targeted repair: only the weak parts are rewritten, with the problems named.
         const keys = [...new Set(fix.flatMap((i) => i.keys))];
@@ -864,7 +903,7 @@ export async function draftLessonWithAi(
           { role: "system", content: stageSystem() },
           { role: "user", content: `Here is a lesson draft (JSON):\n${JSON.stringify(ordered({ ...raw }))}\n\nA reviewer found these problems:\n${fix.map((i) => `- ${i.msg}`).join("\n")}\n\nRewrite ONLY these keys so the problems are fixed: ${keys.join(", ")}. Keep everything consistent with the rest of the lesson and keep what was already good. Make the explanations developed and instructional, not longer for the sake of length. Return ONE JSON object containing only those keys, fully rewritten.` },
         ];
-        const rr: any = await call(repairMsg, 6000);
+        const rr: any = await call(repairMsg, 6000, { task: "lesson_repair" });
         stats.calls++; stats.stages.push("repair");
         stats.input_tokens += Number(rr?.usage?.prompt_tokens) || 0; stats.output_tokens += Number(rr?.usage?.completion_tokens) || 0;
         const patch = parseReply(rr)?.value ?? null;
@@ -898,16 +937,16 @@ export async function draftLessonWithAi(
   }
   // Optional (on unless the parent turns it off): link the lesson to the outcomes it develops, picked from the real outcome list.
   let outcomes: OutcomeSuggestion[] = [];
-  // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
-  if ((request as any).link_outcomes !== false && usesNswOutcomes(jurisdiction)) {
-    try {
-      const m = await matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, draft, { model, gatewayId: opts.gatewayId });
-      if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
-    } catch { /* optional step: the lesson is fine without it */ }
+  if (wantsOutcomes) {
+    await phase("outcomes");
+    // optional step: the lesson is fine without it
+    const m = await (earlyOutcomes ?? matchOutcomes(draft));
+    if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
     if (!outcomes.length) outcomes = suggestOutcomes(draft, 2).filter((o) => o.confidence === "likely");
     draft.outcome_codes = outcomes.map((o) => o.code);
     draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
   }
+  await phase("saving");
   const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
   if (!created.ok) {
     await mark("failed");
@@ -975,7 +1014,7 @@ export async function refineLessonWithAi(
         SCHEMA,
       ].join("\n\n") },
     ];
-    const out = await ai.run(model, { messages, max_tokens: 6000, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+    const out = await ai.run(model, { messages, max_tokens: 6000, temperature: 0.4 }, withMeta(gatewayOptions(opts.gatewayId), { task: "lesson_refine" }));
     const parsed: any = extractJson(out);
     patchRaw = parsed && typeof parsed === "object" ? parsed : null;
   } catch {
@@ -1056,7 +1095,7 @@ export async function planSeriesWithAi(
       "Each lesson teaches ONE clear concept that fits in the time. Order them so each builds on the previous one, with no repetition. Use accurate, standard content for this age. Do not invent facts.",
       'Reply with ONE JSON object only: {"series_title":string,"lessons":[{"title":string,"goal":string (one sentence: what the child will be able to do or explain)}]}',
     ].join("\n");
-    const out = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: "You are an experienced Australian teacher planning a unit of work. Reply with valid JSON only." }, { role: "user", content: prompt }], max_tokens: 1500, temperature: 0.3 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+    const out = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: "You are an experienced Australian teacher planning a unit of work. Reply with valid JSON only." }, { role: "user", content: prompt }], max_tokens: 1500, temperature: 0.3 }, withMeta(gatewayOptions(opts.gatewayId), { task: "series_plan" }));
     plan = extractJson(out);
   } catch {
     await done("failed");
