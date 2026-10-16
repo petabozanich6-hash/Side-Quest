@@ -2,6 +2,7 @@ import type { App } from "./types";
 import { newId, nowIso } from "./types";
 import { hashSecret } from "./auth";
 import { bumpAuthVersion } from "./session";
+import { clearLoginFailures } from "./loginThrottle";
 import { SITE_URL, sendEmail } from "./email";
 import { passwordChangedEmail, passwordResetEmail } from "./authEmails";
 
@@ -84,6 +85,8 @@ export function registerPasswordReset(app: App) {
     // sign-in of the family ends (children sign in again with their PIN).
     const fam = await c.env.DB.prepare("SELECT family_id FROM users WHERE id = ?").bind(row.user_id).first<{ family_id: string }>();
     if (fam?.family_id) await bumpAuthVersion(c.env.DB, fam.family_id);
+    const who = await c.env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(row.user_id).first<{ email: string }>();
+    if (who?.email) await clearLoginFailures(c.env.DB, "parent", who.email.toLowerCase(), { daily: true }).catch(() => {});
     // The reset link reached this inbox, which proves the address.
     await c.env.DB.prepare("UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?").bind(ts, row.user_id).run().catch(() => {});
 

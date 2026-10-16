@@ -1,4 +1,5 @@
 import { hashSecret, verifySecret } from "./auth";
+import { clearLoginFailures } from "./loginThrottle";
 import type { App, Env, Guards } from "./types";
 
 const enc = new TextEncoder();
@@ -71,11 +72,13 @@ export function registerStudentCredentials(app: App, g: Guards) {
       const body = await c.req.json().catch(() => ({}));
       const pin = String(body.pin || "");
       if (pin.length < 4 || pin.length > 32) return c.json({ detail: "PIN must be 4 or more characters" }, 400);
-      const student = await c.env.DB.prepare("SELECT id FROM students WHERE id = ? AND family_id = ?")
-        .bind(sid, c.get("user").family_id).first();
+      const student = await c.env.DB.prepare("SELECT id, username FROM students WHERE id = ? AND family_id = ?")
+        .bind(sid, c.get("user").family_id).first<{ id: string; username: string }>();
       if (!student) return c.json({ detail: "Not found" }, 404);
       await c.env.DB.prepare("UPDATE students SET pin_hash = ?, pin_enc = ?, credential_version = credential_version + 1 WHERE id = ? AND family_id = ?")
         .bind(await hashSecret(pin), await encryptPin(c.env, sid, pin), sid, c.get("user").family_id).run();
+      // A new PIN makes earlier guesses worthless, so the child isn't kept locked out.
+      await clearLoginFailures(c.env.DB, "child", String(student.username || "").toLowerCase(), { daily: true }).catch(() => {});
       return c.json({ ok: true });
     } catch (error) {
       return fail(c, error);

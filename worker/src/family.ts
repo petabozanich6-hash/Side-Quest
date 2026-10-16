@@ -1,3 +1,4 @@
+import { clearLoginFailures } from "./loginThrottle";
 import { authenticateToken, bumpAuthVersion, familyState, issueToken, SUSPENDED_MESSAGE, verifyFileToken } from "./session";
 import { loadPlatformSettings } from "./platformSettings";
 import { trialEndFrom } from "./entitlements";
@@ -597,6 +598,7 @@ export function registerFamily(app: App, g: Guards) {
     await c.env.DB.prepare(
       `UPDATE students SET ${entries.map(([key]) => `${key} = ?`).join(", ")} WHERE id = ? AND family_id = ?`
     ).bind(...entries.map(([, value]) => value), sid, c.get("user").family_id).run();
+    if ("pin_hash" in updates) await clearLoginFailures(c.env.DB, "child", String(existing.username || "").toLowerCase(), { daily: true }).catch(() => {});
 
     const student = studentOut(
       await c.env.DB.prepare(`SELECT ${STUDENT_SELECT} FROM students WHERE id = ? AND family_id = ?`)
