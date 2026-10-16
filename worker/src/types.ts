@@ -27,6 +27,10 @@ export type Env = {
   /** Optional AI Gateway id and model override for Workers AI calls. */
   AI_GATEWAY_ID?: string;
   AI_MODEL?: string;
+  /** Optional separate model for short child-help responses; leave unset to retain the main model. */
+  AI_HELP_MODEL?: string;
+  /** Experimental, opt-in grouped generation; must pass QA before production activation. */
+  AI_COMPACT_GENERATION?: string;
   HELP_PER_CHILD_DAY?: string;
   HELP_PER_FAMILY_DAY?: string;
   HELP_PER_FAMILY_MONTH?: string;
