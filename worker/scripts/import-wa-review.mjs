@@ -53,14 +53,14 @@ export function flattenWaJson(doc, source) {
     // parenthesised HTML text with an empty wa_code. Extract ONLY when the
     // textContents node itself has an empty code; never scan examples or prose
     // elsewhere in the curriculum hierarchy.
-    if (typeof v.wa_code === "string" && !v.wa_code.trim() && typeof v.markdown === "string") {
+    if (v.wa_code === "" && typeof v.markdown === "string" && v.sub_strand_id != null) {
       for (const match of v.markdown.matchAll(/\((AC(?:MNA|MMG|MSP|ELA|ELY|ELT|ELD)[A-Z0-9]*[a-d])\)/g)) {
         add(match[1],year,subject,path,"wa_ablewa_content_description");
       }
     }
     // Science ABLEWA uses source-embedded ACSSU / ACSHE / ACSISO codes.
     // Only use explicit code-bearing textContents nodes with blank wa_code.
-    if (v.wa_code === "" && typeof v.markdown === "string" && /Science/i.test(String(subject))) {
+    if (v.wa_code === "" && v.sub_strand_id != null && typeof v.markdown === "string" && /Science/i.test(String(subject))) {
       for (const match of v.markdown.matchAll(/\((AC(?:SSU|SHE|SISO)\\d{3}[a-d])\)/g)) {
         add(match[1],year,subject,path,"wa_ablewa_content_description");
       }
@@ -69,7 +69,7 @@ export function flattenWaJson(doc, source) {
     // descriptor identifier is embedded in the content's markdown instead.
     // Restrict extraction to content-description nodes with an explicitly
     // empty wa_code, and only the VCDTDS / VCDTDI / VCDTCD code families.
-    if (v.wa_code === "" && typeof v.markdown === "string" && /Digital Technologies/i.test(String(subject))) {
+    if (v.wa_code === "" && v.sub_strand_id != null && typeof v.markdown === "string" && /Digital Technologies/i.test(String(subject))) {
       for (const match of v.markdown.matchAll(/\((VCDT(?:DS|DI|CD)\\d{3})\)/g)) {
         add(match[1], year, subject, path, "wa_ablewa_content_description");
       }
