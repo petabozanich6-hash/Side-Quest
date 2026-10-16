@@ -21,6 +21,7 @@ import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
 import { registerHomeschoolCompass } from "./homeschoolCompass";
 import { registerSiteSearch } from "./siteSearch";
+import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
@@ -225,6 +226,8 @@ app.post("/api/students", requireAuth, requireParent, async (c) => {
   return c.json(studentOut(created, true));
 });
 
+// Membership write restrictions run before every module route, including direct API calls.
+registerMembershipAccess(app);
 registerCore(app, requireAuth, requireParent);
 const guards: Guards = { auth: requireAuth, parent: requireParent, child: requireChild };
 registerFamily(app, guards);
