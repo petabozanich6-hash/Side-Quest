@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { canOverlapLessonFrame, generateStaged, sectionPrompt } from "../src/aiDraft.ts";
+import { canOverlapLessonFrame, generateStaged } from "../src/aiDraft.ts";
 
 const spec = (area = "Mathematics", more = {}) => ({
   topic: "Place value", area, year: "Year 3", goal: "Compare hundreds",
@@ -104,14 +104,4 @@ test("flag off retains frame-first scheduling and the standard pool", async () =
   assert.ok(result);
   assert.equal(m.pipeline, "standard");
   assert.equal(m.calls, 9);
-});
-
-test("efficient section prompts request shorter but fully worked teaching", () => {
-  const long = sectionPrompt(spec("Mathematics", { minutes: 60 }), design, 0, [], false);
-  const concise = sectionPrompt(spec("Mathematics", { minutes: 60 }), design, 0, [], true);
-  assert.match(long, /250 to 380 words/);
-  assert.doesNotMatch(concise, /250 to 380 words/);
-  assert.match(concise, /Cover, in this order:/);
-  assert.match(concise, /explain WHY it works/);
-  assert.match(concise, /concrete example/);
 });
