@@ -26,7 +26,7 @@ type DB = any;
 // ---------------------------------------------------------------- pure planner
 
 export type QuestSlot = { id: string; student_id: string; date: string; title: string; event_type?: string; linked_assignment_id?: string | null; linked_lesson_id?: string | null; duration_minutes?: number | null };
-export type QuestLesson = { id: string; title: string; learning_area?: string; outcome_codes?: string[]; status?: string; archived_at?: string | null };
+export type QuestLesson = { id: string; title: string; learning_area?: string; stage?: string; year_level?: number | string | null; outcome_codes?: string[]; status?: string; archived_at?: string | null };
 export type QuestAssignment = { id: string; student_id: string; lesson_id: string; scheduled_date?: string | null; status?: string };
 export type QuestProgress = { code: string; status: string; last_evidence_on?: string | null; gaps?: string[] };
 export type QuestOutcome = { code: string; learning_area: string };
@@ -49,6 +49,8 @@ export type QuestInputs = {
   progress: QuestProgress[];
   catalogueAvailable: boolean;
   allowedOutcomeCodes: string[];
+  childStage?: string;
+  childYear?: number | string | null;
   /** Catalogue outcomes for the child's level, with their learning areas. Without it, slots can't be matched to outcomes by area. */
   outcomes?: QuestOutcome[];
   /** Maps a timetable title ("Maths", "Science and Technology"...) to a catalogue learning area. Defaults to exact match. */
@@ -68,8 +70,12 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const achieved = new Set(input.progress.filter((p) => p.status === "achieved").map((p) => p.code));
   const mine = input.assignments.filter((a) => a.student_id === input.studentId);
   // Lessons this child has open now (never assigned twice) and lessons already finished (only reused for revision).
-  const open = new Set(mine.filter((a) => !DONE.has(a.status || "")).map((a) => a.lesson_id));
+  const open = new Set(mine.filter((a) => !DONE.has(a.status || "") && a.status !== "revoked").map((a) => a.lesson_id));
   const finished = new Set(mine.filter((a) => DONE.has(a.status || "")).map((a) => a.lesson_id));
+  // Library-first assignment must be genuinely new to this child. Even a
+  // completed or still-open lesson is excluded unless a parent manually
+  // initiates a separate revision assignment.
+  const everAssigned = new Set(mine.filter((a) => a.status !== "revoked").map((a) => a.lesson_id));
   const lessonById = new Map(input.lessons.map((l) => [l.id, l]));
   // Outcomes already being taught by an open assignment are not planned again.
   const inFlight = new Set<string>();
@@ -83,6 +89,25 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const revisitAfter = input.revisitAfterDays ?? DEFAULT_RULES.revisit_after_days;
 
   const lessonArea = (l: QuestLesson) => areaOf(String(l.learning_area || l.title || ""));
+  const childStage = normalize(input.childStage);
+  const childYear = input.childYear == null ? "" : String(input.childYear).trim();
+  const ageMatches = (l: QuestLesson) => {
+    // Never assume an unknown-stage resource is suitable for an age group.
+    if (!childStage || normalize(l.stage) !== childStage) return false;
+    const lessonYear = l.year_level == null ? "" : String(l.year_level).trim();
+    return !childYear || !lessonYear || lessonYear === childYear;
+  };
+  const reusableFor = (area: string, codes: string[]) => input.lessons.filter(l => {
+    if (l.status !== "ready" || l.archived_at || !ageMatches(l) ||
+      normalize(lessonArea(l)) !== normalize(area) || everAssigned.has(l.id) ||
+      usedLessons.has(l.id)) return false;
+    const lessonCodes = l.outcome_codes || [];
+    // A code-less subject only selects code-less lessons. Never infer coverage.
+    if (!codes.length) return lessonCodes.length === 0;
+    // For coded subjects reject an unverified, out-of-program or achieved link.
+    return lessonCodes.some(c => codes.includes(c)) &&
+      lessonCodes.every(c => approved.has(c) && !achieved.has(c));
+  });
 
   return input.slots
     .filter((slot) => slot.student_id === input.studentId && (!slot.event_type || slot.event_type === "lesson" || slot.event_type === "timetable"))
@@ -102,8 +127,15 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       // draft without inventing curriculum coverage or an outcome code.
       const uncoded = (): QuestDecision => {
         const phase = ["introduce the topic", "model and practise", "apply independently", "explore a mini-project", "review and extend"][(n - 1) % 5];
+        const match = reusableFor(area, []);
+        if (match.length) {
+          usedLessons.add(match[0].id);
+          return { ...base, action: "reuse_draft", lessonId: match[0].id, purpose: n === 1 ? "teach" : "consolidate",
+            reason: `From your lesson library: "${match[0].title}" matches this child's stage and ${area} session. No verified outcome codes are claimed.`,
+            eligibleOutcomeCodes: [] };
+        }
         return { ...base, action: "needs_generation", purpose: n === 1 ? "teach" : "consolidate",
-          reason: `No verified outcome codes are available for ${area}. Session ${n}: ${phase}. You can generate a lesson without attaching codes; no curriculum achievement will be claimed.`,
+          reason: `No verified outcome codes are available for ${area}. Session ${n}: ${phase}. No unused, stage-matched ready lesson was found. Generate a new draft without claiming curriculum coverage.`,
           eligibleOutcomeCodes: [] };
       };
       if (!input.catalogueAvailable) return uncoded();
@@ -148,10 +180,9 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       // Reuse a saved lesson that teaches the target outcome: never one the child has open, never the same lesson twice
       // in this plan, and a finished lesson only for revision.
       const target = codes[0];
-      const reusable = input.lessons
-        .filter((l) => l.status !== "archived" && !l.archived_at && (l.outcome_codes || []).includes(target) && !open.has(l.id) && !usedLessons.has(l.id))
-        .filter((l) => purpose === "revise" || !finished.has(l.id))
-        .sort((a, b) => Number(b.status === "ready") - Number(a.status === "ready"));
+      const reusable = reusableFor(area, codes)
+        .sort((a,b) => (b.outcome_codes || []).filter(c => codes.includes(c)).length -
+                        (a.outcome_codes || []).filter(c => codes.includes(c)).length);
       const why = purpose === "revise" ? `Revision: ${target} was demonstrated but hasn't been revisited for ${revisitAfter}+ days.`
         : purpose === "consolidate" ? `Practice and consolidation: ${codes.join(", ")} ${codes.length > 1 ? "are" : "is"} still being learned; assigning a lesson does not mean an outcome is achieved.`
           : `New learning: ${codes.join(", ")} not started yet.`;
@@ -252,7 +283,7 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
   const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
   const cat = catalogueFor(jurisdiction);
   const [events, assignments, lessons] = await Promise.all([
-    db.prepare("SELECT id, student_id, date, title, event_type, linked_assignment_id, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date >= ? AND date <= ? ORDER BY date ASC, start_time ASC LIMIT 250").bind(familyId, sid, from, to).all(),
+    db.prepare("SELECT id, student_id, date, title, event_type, linked_assignment_id, linked_lesson_id, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date >= ? AND date <= ? ORDER BY date ASC, start_time ASC LIMIT 250").bind(familyId, sid, from, to).all(),
     db.prepare("SELECT id, student_id, lesson_id, scheduled_date, status FROM assignments WHERE family_id = ? AND student_id = ? AND status != 'revoked' LIMIT 2000").bind(familyId, sid).all(),
     lb.listLessons(db, familyId),
   ]);
@@ -271,6 +302,7 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
   const decisions = planAutoQuest({
     studentId: sid, slots: events.results || [], lessons: lessons as any, assignments: assignments.results || [], progress,
     catalogueAvailable: cat.available, allowedOutcomeCodes: cat.available ? cat.outcomes.map((o) => o.code) : [], outcomes, areaOf,
+    childStage: child.stage, childYear: child.year_level,
     today: now.toISOString().slice(0, 10),
   });
 
