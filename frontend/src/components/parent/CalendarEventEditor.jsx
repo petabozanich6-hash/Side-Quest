@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 import CalendarSlotQuest from "./CalendarSlotQuest";
+import { lessonAvailableForChild } from "../../lib/lessonAvailability";
 
 export default function CalendarEventEditor({ event, students, lessons, onClose, onSaved }) {
   const [form, setForm] = useState({
@@ -13,6 +14,9 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
   const [busy, setBusy] = useState(false);
   const [showDetails, setShowDetails] = useState(!event.initialQuest);
   const [assignment, setAssignment] = useState(null);
+  const availableLessons = lessons.filter(l =>
+    lessonAvailableForChild(l, form.student_id) || l.id === event.linked_lesson_id
+  );
   const isTimetableSlot = event.event_type === "timetable" ||
     (event.event_type === "lesson" && /^Suggested by Side-Quest/.test(event.notes || ""));
   const isFreeSlot = isTimetableSlot && event.student_id && !event.linked_lesson_id && !event.linked_assignment_id;
@@ -86,9 +90,10 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
         <label className="block text-sm font-semibold">Start time<input className="input mt-1" type="time" value={form.start_time} onChange={e=>set("start_time",e.target.value)}/></label>
       </div>
       <label className="block text-sm font-semibold">Duration (minutes)<input className="input mt-1" type="number" min="1" max="600" value={form.duration_minutes} onChange={e=>set("duration_minutes",e.target.value)}/></label>
-      <label className="block text-sm font-semibold">Child<select className="input mt-1" value={form.student_id} onChange={e=>set("student_id",e.target.value)}><option value="">Whole family / no child</option>{students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
+      <label className="block text-sm font-semibold">Child<select className="input mt-1" value={form.student_id} onChange={e=>setForm(f => ({ ...f, student_id: e.target.value,
+        linked_lesson_id: f.linked_lesson_id && lessons.some(l => l.id === f.linked_lesson_id && (lessonAvailableForChild(l, e.target.value) || l.id === event.linked_lesson_id)) ? f.linked_lesson_id : "" }))}><option value="">Whole family / no child</option>{students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}</select></label>
       <label className="block text-sm font-semibold">Event type<select className="input mt-1" value={form.event_type} onChange={e=>set("event_type",e.target.value)}>{event.event_type === "timetable" && <option value="timetable">Timetable slot</option>}{["lesson","assignment","assessment","project","excursion","co-op","tutor","holiday","parent-review"].map(t=><option key={t} value={t}>{t}</option>)}</select></label>
-      <label className="block text-sm font-semibold">Linked lesson<select className="input mt-1" value={form.linked_lesson_id} onChange={e=>set("linked_lesson_id",e.target.value)}><option value="">None</option>{lessons.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}{event.linked_lesson_id && !lessons.some(l=>l.id===event.linked_lesson_id) && <option value={event.linked_lesson_id}>Previously linked lesson</option>}</select></label>
+      <label className="block text-sm font-semibold">Linked lesson<select className="input mt-1" value={form.linked_lesson_id} onChange={e=>set("linked_lesson_id",e.target.value)}><option value="">None</option>{availableLessons.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}{event.linked_lesson_id && !availableLessons.some(l=>l.id===event.linked_lesson_id) && <option value={event.linked_lesson_id}>Previously linked lesson</option>}</select></label>
       <label className="block text-sm font-semibold">Notes<textarea className="input mt-1" rows={2} value={form.notes} onChange={e=>set("notes",e.target.value)}/></label>
       {isFreeSlot && (unsavedSlotChanges
         ? <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">Save your changes to the slot before generating or assigning its quest.</p>
