@@ -38,6 +38,7 @@ export default function CalendarPage() {
   const [calendarView, setCalendarView] = useState("week");
   const [open, setOpen] = useState(false);
   const [schedOpen, setSchedOpen] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState(null);
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [autoQuestOpen, setAutoQuestOpen] = useState(false);
   const [weekFillOpen, setWeekFillOpen] = useState(false);
@@ -55,7 +56,7 @@ export default function CalendarPage() {
   const [draftProgress, setDraftProgress] = useState(null);
   const [dayTopic, setDayTopic] = useState("");
   const [filter, setFilter] = useState("");
-  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "appointment", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
+  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "appointment", student_id: "", linked_lesson_id: "", start_time: "", duration_minutes: 45, notes: "" });
 
   const visibleWeeks = monthMatrix(cur.getFullYear(), cur.getMonth());
   const rangeFrom = isoLocal(visibleWeeks[0][0]);
@@ -130,7 +131,8 @@ export default function CalendarPage() {
       // Calendar events are commitments, not assignments. Add a lesson uses
       // ScheduleModal so it always creates the correct assignment relationship.
       await api.post("/calendar", {
-        ...form, duration_minutes: Number(form.duration_minutes),
+        ...form, start_time: form.start_time || null,
+        duration_minutes: form.start_time ? Number(form.duration_minutes) : null,
         student_id: targets[0], linked_lesson_id: null, linked_assignment_id: null,
       });
       toast.success("Event added to your calendar");
@@ -274,7 +276,7 @@ export default function CalendarPage() {
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
           <button onClick={()=>setPlanWeekOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2.5 text-sm font-bold" data-testid="plan-week-open">🐉 Plan My Week</button>
-          <button onClick={()=>setSchedOpen(true)} className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Add a lesson</button>
+          <button onClick={()=>{setScheduleDate(null);setSchedOpen(true);}} className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Add a lesson</button>
           <button onClick={()=>setOpen(true)} className="rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
           <details className="relative text-sm"><summary className="cursor-pointer rounded-full border border-slate-300 px-3 py-2 font-semibold">More planning tools</summary><div className="absolute right-0 top-full z-20 mt-2 w-56 rounded-xl bg-white border border-slate-200 shadow-lg p-2 flex flex-col gap-1">
             <button onClick={()=>setWeekFillOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="fill-week-open">Fill My Week (original)</button>
@@ -362,7 +364,9 @@ export default function CalendarPage() {
         onOpenDay={date=>{setWeekFillOpen(false);setDayOpen(date);}} />}
       {autoQuestOpen && <AutoQuestPreview students={students} onClose={()=>setAutoQuestOpen(false)} onChanged={afterCalendarChange} />}
       {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
-      {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
+      {schedOpen && <ScheduleModal lessons={lessons} students={students}
+        defaultDate={scheduleDate} defaultStudents={scheduleDate && (filter || rescheduleChild) ? [filter || rescheduleChild] : []}
+        onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
 
       {dayOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm p-3 sm:p-6 flex items-center justify-center"
@@ -377,10 +381,24 @@ export default function CalendarPage() {
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">{dayList.length} scheduled entries · {daySlots.length} available learning slots</p>
               </div>
-              <button type="button" disabled={dayDrafting} onClick={()=>{setDayOpen(null);setWeekFillOpen(true);}} className="text-sm underline text-teal-900 font-semibold">Fill this week</button>
               <button type="button" disabled={dayDrafting} onClick={()=>setDayOpen(null)} aria-label="Close day"
                 className="p-2 rounded-lg border disabled:opacity-50"><X size={18}/></button>
             </header>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" disabled={dayDrafting}
+                onClick={()=>{setScheduleDate(dayOpen);setDayOpen(null);setSchedOpen(true);}}
+                className="rounded-full bg-teal-800 px-4 py-2 text-sm font-semibold text-white" data-testid="day-add-lesson">
+                + Add lesson to this day
+              </button>
+              <button type="button" disabled={dayDrafting}
+                onClick={()=>{setForm(f=>({...f,date:dayOpen,student_id:filter || ""}));setDayOpen(null);setOpen(true);}}
+                className="rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold" data-testid="day-add-event">
+                + Add event to this day
+              </button>
+              <button type="button" disabled={dayDrafting}
+                onClick={()=>{setDayOpen(null);setPlanWeekOpen(true);}}
+                className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold">Plan this week</button>
+            </div>
             <div className="rounded-xl bg-teal-50 border border-teal-200 p-4 space-y-3" data-testid="day-autoquest">
               <h3 className="font-display font-bold text-teal-950">⚔️ Prepare this day's lessons</h3>
               <p className="text-sm text-slate-700">Side-Quest checks your lesson library first, assigns suitable unused lessons, then drafts missing ones with AI. You'll review AI drafts before assignment.</p>
@@ -471,6 +489,16 @@ export default function CalendarPage() {
             <div className="space-y-3">
               <L label="Title"><input required value={form.title} onChange={e=>setForm({...form, title: e.target.value})} className="input" data-testid="e-title"/></L>
               <L label="Date"><input required type="date" value={form.date} onChange={e=>setForm({...form, date: e.target.value})} className="input" data-testid="e-date"/></L>
+              <div className="grid grid-cols-2 gap-3">
+                <L label="Start time (optional)"><input type="time" value={form.start_time}
+                  onChange={e=>setForm({...form,start_time:e.target.value})} className="input" data-testid="e-start-time"/></L>
+                {form.start_time && <L label="Duration">
+                  <select value={form.duration_minutes} onChange={e=>setForm({...form,duration_minutes:Number(e.target.value)})}
+                    className="input" data-testid="e-duration">
+                    {[15,30,45,60,90,120,180].map(n=><option key={n} value={n}>{n} minutes</option>)}
+                  </select>
+                </L>}
+              </div>
               <L label="Type">
                 <select value={form.event_type} onChange={e=>setForm({...form, event_type: e.target.value})} className="input" data-testid="e-type">
                   <option value="appointment">Appointment / activity</option>
