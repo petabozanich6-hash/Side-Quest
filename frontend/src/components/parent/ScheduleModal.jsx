@@ -129,6 +129,10 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
     }
     if (picked.length === 0) { toast.error("Choose at least one child"); return; }
     if (mode === "days" && dates.length === 0) { toast.error("No days match those dates and weekdays"); return; }
+    if (!timetable && mode === "days" && dates.length > 1) {
+      toast.error("The basic preview can schedule one day per assignment. Choose one date or upgrade for multiple sessions.");
+      return;
+    }
     if (mode === "pick" && !slotId) { toast.error("Choose a timetable slot"); return; }
     setBusy(true);
     const notes = [];
@@ -136,7 +140,16 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
       for (const sid of picked) {
         const aid = await assignmentFor(sid);
         if (!aid) { notes.push(`${students.find((s) => s.id === sid)?.name || "Child"} already had it, so nothing was added for them`); continue; }
-        if (mode === "days") { const skipped = await scheduleOnDays(sid, dates, aid); if (skipped) notes.push(`${skipped} previously scheduled day(s) were kept`); continue; }
+        if (mode === "days") {
+          if (!timetable) {
+            // Free preview permits a basic lesson date, not paid calendar entries.
+            await api.put(`/assignments/${aid}`, { scheduled_date: dates[0] });
+          } else {
+            const skipped = await scheduleOnDays(sid, dates, aid);
+            if (skipped) notes.push(`${skipped} previously scheduled day(s) were kept`);
+          }
+          continue;
+        }
         if (mode === "none") continue;
         const body = mode === "pick" ? { slot_ids: [slotId] } : { count: sessions };
         const { data } = await api.post(`/assignments/${aid}/place`, body);
