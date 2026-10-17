@@ -96,7 +96,7 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
       )}
       <p className="text-xs text-slate-600">Rescheduling changes the calendar, not completed lesson evidence. Changing a linked lesson unlinks the old assignment; it does not erase work.</p>
       <div className="flex justify-between flex-wrap gap-2 pt-2"><button type="button" disabled={busy} onClick={remove} className="border border-red-300 text-red-700 rounded-full px-4 py-2">Remove scheduled entry</button><button disabled={busy} type="submit" className="bg-teal-800 text-white rounded-full px-6 py-2">{busy?"Saving…":"Save changes"}</button></div>
-      </>
+      </>}
     </form>
   </div>;
 }
