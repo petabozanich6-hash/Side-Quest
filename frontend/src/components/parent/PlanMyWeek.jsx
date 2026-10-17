@@ -26,7 +26,6 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
   const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [generating, setGenerating] = useState(false);
   const [progress, setProgress] = useState("");
   const [topic, setTopic] = useState("");
   const [errors, setErrors] = useState([]);
@@ -143,7 +142,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="text-sm font-semibold">Week starting Monday
             <input className="input mt-1" type="date" value={week} disabled={saving}
-              onChange={e => { setWeek(monday(e.target.value)); setPlans(null); }} data-testid="plan-week-start" />
+              onChange={e => { if (e.target.value) { setWeek(monday(e.target.value)); setPlans(null); } }} data-testid="plan-week-start" />
           </label>
           <label className="text-sm font-semibold">Languages topic (when needed)
             <input className="input mt-1" value={topic} maxLength={140} disabled={saving}
