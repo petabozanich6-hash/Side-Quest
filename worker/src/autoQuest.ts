@@ -423,7 +423,9 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
       ev.linked_assignment_id || ev.linked_lesson_id)
     return bad(409, "This timetable slot has changed or already has an assignment. Refresh the calendar before assigning.", "SLOT_TAKEN");
   const why = p.purpose === "revise" ? `Revision (Auto-Quest): revisiting ${json<string[]>(p.outcome_codes, []).join(", ")}.` : null;
-  const a = await lb.assignLesson(db, familyId, { student_id: p.student_id, lesson_id: p.lesson_id, scheduled_date: p.date, parent_notes: why, again: true }, now);
+  // A batch confirmation must not reassign lessons the child has already
+  // completed. Repetition requires its own explicit parent action.
+  const a = await lb.assignLesson(db, familyId, { student_id: p.student_id, lesson_id: p.lesson_id, scheduled_date: p.date, parent_notes: why, again: p.purpose === "revise" && body?.confirm_repeat === true }, now);
   let assignmentId: string;
   if (a.ok) assignmentId = a.assignment.id;
   else if (a.code === "ALREADY_ASSIGNED") {
