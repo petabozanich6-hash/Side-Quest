@@ -25,7 +25,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- pure planner
 
-export type QuestSlot = { id: string; student_id: string; date: string; title: string; event_type?: string; linked_assignment_id?: string | null; duration_minutes?: number | null };
+export type QuestSlot = { id: string; student_id: string; date: string; title: string; event_type?: string; linked_assignment_id?: string | null; linked_lesson_id?: string | null; duration_minutes?: number | null };
 export type QuestLesson = { id: string; title: string; learning_area?: string; outcome_codes?: string[]; status?: string; archived_at?: string | null };
 export type QuestAssignment = { id: string; student_id: string; lesson_id: string; scheduled_date?: string | null; status?: string };
 export type QuestProgress = { code: string; status: string; last_evidence_on?: string | null; gaps?: string[] };
@@ -93,11 +93,20 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       const assigned = mine.find((a) => !!slot.linked_assignment_id && a.id === slot.linked_assignment_id);
       // A different lesson of the same subject on this date does NOT occupy this slot.
       // Only the slot's actual linked assignment counts as assigned.
-      if (assigned) return { ...base, action: "already_assigned", lessonId: assigned.lesson_id, reason: "Already assigned for this day; left as it is.", eligibleOutcomeCodes: [] };
-      if (!input.catalogueAvailable) return { ...base, action: "needs_parent_plan", reason: "Side-Quest has no verified outcome list for your curriculum, so it won't guess outcome codes. Choose a lesson yourself.", eligibleOutcomeCodes: [] };
+      if (assigned || slot.linked_assignment_id || slot.linked_lesson_id) return { ...base, action: "already_assigned", lessonId: assigned?.lesson_id || slot.linked_lesson_id || undefined, reason: "This timetable slot is already filled; its learning is left unchanged.", eligibleOutcomeCodes: [] };
 
       const n = (slotsPerArea.get(normalize(area)) || 0) + 1;
       slotsPerArea.set(normalize(area), n);
+      // Subjects such as Languages may not have an imported outcome catalogue.
+      // They are still valid learning slots: generate an explicitly untracked
+      // draft without inventing curriculum coverage or an outcome code.
+      const uncoded = (): QuestDecision => {
+        const phase = ["introduce the topic", "model and practise", "apply independently", "explore a mini-project", "review and extend"][(n - 1) % 5];
+        return { ...base, action: "needs_generation", purpose: n === 1 ? "teach" : "consolidate",
+          reason: `No verified outcome codes are available for ${area}. Session ${n}: ${phase}. You can generate a lesson without attaching codes; no curriculum achievement will be claimed.`,
+          eligibleOutcomeCodes: [] };
+      };
+      if (!input.catalogueAvailable) return uncoded();
 
       // Outcomes for this learning area at the child's level (or every allowed code when areas aren't known).
       const pool = (input.outcomes ? input.outcomes.filter((o) => normalize(o.learning_area) === normalize(area)).map((o) => o.code) : [...approved])
@@ -130,7 +139,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
         if (practice.length) { purpose = "consolidate"; codes = practice.slice(0, 1); }
       }
       if (!purpose && input.outcomes && !input.outcomes.some((o) => normalize(o.learning_area) === normalize(area))) {
-        return { ...base, action: "needs_parent_plan", reason: `${area} isn't one of the subjects on this child's profile at their level, so Auto-Quest won't pick outcomes for it. Add the subject on the Children page, or plan this session yourself.`, eligibleOutcomeCodes: [] };
+        return uncoded();
       }
       if (!purpose) {
         return { ...base, action: "needs_parent_plan", reason: pool.length ? "Every outcome for this area is already planned or being taught. Choose an extension, a project or a free day." : "No outstanding verified outcomes for this area at this level. Offer an extension, project or revision of your choice.", eligibleOutcomeCodes: [] };
@@ -303,21 +312,34 @@ async function ownProposal(db: DB, familyId: string, id: string) {
 }
 
 /** Drafts a lesson for a proposal with AI (paid plans, normal limits). The draft is saved unassigned for review. */
-export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
+export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
   const p = await ownProposal(db, o.familyId, o.id);
   if (!p) return bad(404, "Proposal not found");
   if (p.status !== "proposed") return bad(409, "This proposal has already been decided.", "DECIDED");
   if (p.lesson_id) return bad(409, "This proposal already has a lesson. Open it to edit, or reject the proposal.", "HAS_LESSON");
   const codes = json<string[]>(p.outcome_codes, []);
   const cat = catalogueFor(await getFamilyJurisdiction(db, o.familyId).catch(() => null));
-  if (!cat.available || !codes.length || !codes.every((c) => cat.byCode.has(c))) return bad(409, "This slot has no verified outcomes to plan from. Choose or build a lesson yourself.", "NO_OUTCOMES");
-  const ev = await db.prepare("SELECT duration_minutes FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, o.familyId).first();
-  // The official wording is used privately to steer the draft; the lesson itself references outcomes by code only.
+  if (codes.length && (!cat.available || !codes.every((c) => cat.byCode.has(c))))
+    return bad(409, "The verified curriculum list has changed. Replan this session first.", "NO_OUTCOMES");
+  const ev = await db.prepare("SELECT student_id, date, duration_minutes, linked_lesson_id, linked_assignment_id FROM calendar_events WHERE id = ? AND family_id = ?")
+    .bind(p.calendar_event_id, o.familyId).first();
+  if (!ev || ev.student_id !== p.student_id || ev.date !== p.date || ev.linked_lesson_id || ev.linked_assignment_id)
+    return bad(409, "This timetable slot has changed. Refresh before generating.", "SLOT_TAKEN");
+  const customTopic = String(o.topic || "").trim().slice(0, 140);
+  const area = String(p.learning_area || "").trim();
+  if (!codes.length && /^languages?(?:\b|\s|$)/i.test(area) && !customTopic)
+    return bad(400, "Tell us which language or topic to teach (for example: Latin greetings) before generating.", "TOPIC_REQUIRED");
+  // Uncoded drafts have NO linked codes and no implied curriculum achievement.
   const goal = codes.map((c) => cat.byCode.get(c)?.description).filter(Boolean).join(" Also: ") || "";
   const purpose = p.purpose === "revise" ? "A short revision lesson revisiting" : p.purpose === "consolidate" ? "A consolidation lesson with extra practice on" : "A first teaching lesson on";
+  const focus = codes.length ? goal || codes.join(", ") : customTopic || area;
+  const topic = codes.length ? `${area}: ${focus}` : `${focus}: ${String(p.reason || "").match(/Session \d+: ([^.]+)/)?.[1] || "learn and practise key skills"}`;
   const r: any = await aid.draftLessonWithAi(db, ai, {
     familyId: o.familyId, userId: o.userId, model: o.model, gatewayId: o.gatewayId, compact: o.compact,
-    request: { student_id: p.student_id, learning_area: p.learning_area, topic: `${p.learning_area}: ${(goal || codes.join(", ")).slice(0, 250)}`, goal: `${purpose} ${goal}`.slice(0, 400), minutes: Number(ev?.duration_minutes) || undefined, link_outcomes: false } as any,
+    request: { student_id: p.student_id, learning_area: area, topic: topic.slice(0, 250),
+      goal: codes.length ? `${purpose} ${goal}`.slice(0, 400) :
+      `${purpose} ${focus}. This is a subject-based draft with NO verified curriculum outcome codes; do not invent any.`.slice(0, 400),
+      minutes: Number(ev?.duration_minutes) || undefined, link_outcomes: false } as any,
   }, now);
   if (!r.ok) return r;
   // Attach the verified target codes (filtered to the family's catalogue again by updateLesson). It stays a draft.
@@ -449,7 +471,8 @@ export function registerAutoQuest(app: App, g: Guards) {
   });
   app.post("/api/auto-quest/proposals/:id/generate", g.auth, g.parent, async (c) => {
     const u = c.get("user");
-    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true" });
+    const body = await c.req.json().catch(() => ({})) as { topic?: string };
+    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", topic: body.topic });
     return r.ok ? c.json(r.proposal) : send(c, r);
   });
   app.put("/api/auto-quest/proposals/:id/lesson", g.auth, g.parent, async (c) => {
