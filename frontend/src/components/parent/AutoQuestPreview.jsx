@@ -48,6 +48,7 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
   const [busy, setBusy] = useState(false);
   const [showAssigned, setShowAssigned] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [topic, setTopic] = useState("");
   const [result, setResult] = useState(null);
   // The family's children may still be loading when the panel opens: pick the first one once they arrive.
   useEffect(() => { if (!studentId && students[0]?.id) setStudentId(students[0].id); }, [students, studentId]);
@@ -62,14 +63,19 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
 
   const plan = async () => {
     setLoading(true);
-    try { const { data } = await api.post("/auto-quest/plan", { student_id: studentId, from, to }); setResult(data); }
+    try { const { data } = await api.post("/auto-quest/plan", { student_id: studentId, from, to, topic: topic.trim() }); setResult(data); }
     catch (error) { toast.error(apiErrorMessage(error, "Couldn't plan these lessons")); }
     finally { setLoading(false); }
   };
   const act = async (p, what, body = {}) => {
     setBusy(true);
     try {
-      const { data } = await api.post(`/auto-quest/proposals/${p.id}/${what}`, body);
+      if (what === "generate" && !p.outcome_codes?.length && /^languages?\b/i.test(p.learning_area || "") && !topic.trim()) {
+        toast.error("Enter the language and topic first, so Side-Quest doesn't guess.");
+        return;
+      }
+      const request = what === "generate" ? { ...body, topic: topic.trim() } : body;
+      const { data } = await api.post(`/auto-quest/proposals/${p.id}/${what}`, request);
       setResult(r => ({ ...r, proposals: r.proposals.map(x => (x.id === p.id ? data : x)) }));
       if (what === "approve") { toast.success("Assigned for " + fmt(p.date)); onChanged && onChanged(); }
       if (what === "generate") toast.success("Draft ready. Open it to check and edit before approving.");
@@ -99,6 +105,11 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
         <label className="text-xs font-semibold">From<input type="date" value={from} onChange={e => setFrom(e.target.value)} className="mt-1 w-full rounded-lg border p-2" data-testid="autoquest-from" /></label>
         <label className="text-xs font-semibold">To<input type="date" value={to} onChange={e => setTo(e.target.value)} className="mt-1 w-full rounded-lg border p-2" data-testid="autoquest-to" /></label>
       </div>
+      <label className="block text-xs font-semibold">Optional subject focus (required for code-free Languages lessons)
+        <input type="text" maxLength={140} value={topic} onChange={e=>setTopic(e.target.value)}
+          placeholder="Latin: greetings and introductions" className="input mt-1" data-testid="autoquest-topic"/>
+      </label>
+      <p className="text-xs text-slate-600">For daily one-click preparation, open a day in the calendar and choose <strong>Prepare all free slots</strong>.</p>
       <button type="button" onClick={plan} disabled={loading || !studentId || from > to} className="rounded-full bg-emerald-900 px-5 py-2 text-sm font-bold text-white disabled:opacity-50" data-testid="autoquest-preview">{loading ? "Planning…" : proposals.length ? "Plan again" : "Plan lessons"}</button>
       {result?.note && <p className="text-sm text-stone-700" data-testid="autoquest-note">{result.note}</p>}
       {result && !proposals.length && <p className="text-sm text-stone-600" data-testid="autoquest-empty">No lesson sessions are timetabled for this child in these dates. Use Generate timetable first, then plan again.</p>}
