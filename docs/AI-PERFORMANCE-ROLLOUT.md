@@ -104,3 +104,57 @@ Missing tokens and unpriced models show **unknown**, never fictional US$0.
 `AI_COMPACT_GENERATION` is changed in this PR. The only way to promote a
 model is a separate, reviewed configuration change after both the human
 quality checks and the synthetic benchmark are acceptable.
+
+
+## Critical-path pipeline experiment — 18 October 2026
+
+The current service may make one model call for design, one for the lesson frame,
+one per teaching section and worked example (four concurrent at a time),
+then parallel practice/assessment, plus optional repair and outcome matching.
+**This is why a lesson can take about three minutes even though individual
+requests are not three minutes long.** The exact wall time is measured, not
+inferred from a model name.
+
+The opt-in `AI_FAST_PIPELINE=true` changes no model, syllabus, price or
+teaching prompt. It makes two bounded scheduling improvements:
+
+1. Pure **Mathematics/Maths/Numeracy** lessons without a source/reading
+   dependency can write their teaching sections and worked examples
+   **while** the opening/closing frame is being generated, after the design.
+2. Other subjects keep their normal frame-first sequence (so original readings
+   are available to teaching), but allow six independent teaching requests to
+   be in flight instead of four. The flag is separate from
+   `AI_COMPACT_GENERATION`, whose earlier reduced-call trial did not
+   demonstrate a reliable latency improvement.
+
+Both flags default **off**. Existing validation, retries, curriculum rules,
+paid plans, 10 drafts/day and 60/month, draft review, and usage/cost metering
+are unchanged. Generation responses now report `generation.pipeline` alongside
+`generation.elapsed_ms`, `generation.stage_timings_ms`, calls and estimated
+gross USD cents. Do not confuse sum of concurrent stage timings with wall time.
+
+### Safe proof before enabling on live families
+
+Run the benchmark with synthetic teaching requirements, using approved
+Cloudflare Workers AI credentials **only on an authorized development device**.
+Never commit credentials or benchmark user/student documents.
+
+```sh
+# First dry run: no Cloudflare calls.
+node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs --dry-run
+
+# Use one model at a time, the SAME model and compact setting for both runs.
+BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false \
+  node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs
+BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false BENCH_FAST_PIPELINE=true \
+  node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs
+```
+
+The script caps aggregate *reserved* gross estimated inference at US$0.50,
+up to 32 calls and 4,096 output tokens per request. Compare identical subjects,
+year levels, goals, real call durations, tokens, costs, retries, incomplete
+responses and education quality. A synthetic benchmark is **not** a production
+speed result. Run at least three representative lessons (Maths, English with
+reading, Science) and review actual teaching quality before turning on the
+flag in a separate controlled deployment. Restore `AI_FAST_PIPELINE=false`
+if quality, failure rate, provider throttling or real latency worsens.
