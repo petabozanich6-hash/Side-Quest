@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
+import { lessonAvailableForChildren } from "../../lib/lessonAvailability";
 import TimetableGenerator from "../../components/parent/TimetableGenerator";
 import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
 import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
@@ -85,6 +86,8 @@ export default function CalendarPage() {
     return i < 0 ? "#475569" : (students[i].prefs?.calendar_colour || COLOURS[i % COLOURS.length]);
   };
   const nameOf = (sid) => students.find(s => s.id === sid)?.name;
+  const targetChildren = form.student_id ? [form.student_id] : students.map(s=>s.id);
+  const calendarLibraryChoices = lessons.filter(l => lessonAvailableForChildren(l, targetChildren));
   // Timetable slots show their subject plus the lesson in them, or "(free)" while empty.
   const isSlot = (e) => e.event_type === "timetable" || (e.event_type === "lesson" && /^Suggested by Side-Quest/.test(e.notes || ""));
   const freeSlot = (e) => isSlot(e) && !e.linked_assignment_id && !e.linked_lesson_id;
@@ -110,7 +113,9 @@ export default function CalendarPage() {
             const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
             assignmentId = a.data?.id || null;
           } catch (e) {
-            if (e.response?.data?.code !== "ALREADY_ASSIGNED") throw e;
+            // Never create a "linked lesson" calendar entry with no assignment
+            // merely because another tab or session already assigned it.
+            throw e;
           }
         }
         await api.post("/calendar", {
@@ -437,7 +442,13 @@ export default function CalendarPage() {
                 </select>
               </L>
               <L label="Child">
-                <select value={form.student_id} onChange={e=>setForm({...form, student_id: e.target.value})} className="input" data-testid="e-student">
+                <select value={form.student_id} onChange={e=>setForm(f => {
+                  const target = e.target.value;
+                  const childIds = target ? [target] : students.map(s=>s.id);
+                  return { ...f, student_id: target, linked_lesson_id:
+                    lessons.some(l => l.id === f.linked_lesson_id && lessonAvailableForChildren(l, childIds))
+                      ? f.linked_lesson_id : "" };
+                })} className="input" data-testid="e-student">
                   <option value="">Every child (one entry each)</option>
                   {students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
@@ -445,7 +456,7 @@ export default function CalendarPage() {
               <L label="Linked lesson (optional)">
                 <select value={form.linked_lesson_id} onChange={e=>setForm({...form, linked_lesson_id: e.target.value})} className="input" data-testid="e-lesson">
                   <option value="">None</option>
-                  {lessons.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}
+                  {calendarLibraryChoices.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}
                 </select>
               </L>
               <L label="Notes"><textarea rows={2} value={form.notes} onChange={e=>setForm({...form, notes: e.target.value})} className="input" data-testid="e-notes"/></L>
