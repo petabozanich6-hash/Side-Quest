@@ -231,6 +231,24 @@ const stagedFor = (over = {}) => (model, input) => {
 const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { calls.push(a); return fn ? fn(...a) : stagedFor()(...a); } }; };
 const req = (family, ai, extra = {}) => ({ familyId: family, userId: "u1", request: { topic: "Fractions", ...extra }, ...extra.opts });
 
+test("owner-only fast preview retains the full lesson and cannot be activated by paying families", async () => {
+  for (const [plan, pipeline] of [["INTERNAL", "parallel_frame"], ["ACTIVE_MONTHLY", "standard"]]) {
+    const db = makeDb(), fam = seed(db, { plan });
+    const ai = stub();
+    const draft = await aid.draftLessonWithAi(db, ai, {
+      familyId: fam, userId: "u",
+      request: { topic: "Place value", learning_area: "Mathematics", owner_fast_preview: true, link_outcomes: false },
+    }, NOW);
+    assert.ok(draft.ok, JSON.stringify(draft));
+    assert.equal(draft.generation.pipeline, pipeline);
+    assert.equal(draft.lesson.sections.length, GARDEN.sections.length);
+    assert.equal(draft.lesson.worked_examples.length, GARDEN.worked_examples.length);
+    assert.equal(draft.lesson.activities.length, GARDEN.activities.length);
+    assert.equal(draft.lesson.quiz.length, GARDEN.quiz.length);
+    assert.equal(draft.lesson.status, "draft");
+  }
+});
+
 test("opt-in compact drafting halves teaching model calls without skipping the quality gate", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
