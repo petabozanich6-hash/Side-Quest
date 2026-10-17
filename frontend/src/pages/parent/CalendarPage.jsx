@@ -186,7 +186,7 @@ export default function CalendarPage() {
         "No AI-generated draft will be assigned automatically. Continue?"
       ];
       if (!window.confirm(summary.join("\n\n"))) return;
-      let assigned = 0, created = 0, failed = 0;
+      let assigned = 0, created = 0, failed = 0, processed = 0, deferred = 0;
       const errors = [];
       const tasks = [...library.map(p => ({ p, kind: "library" })), ...pending.map(p => ({ p, kind: "generate" }))];
       // Run serially to make progress and errors truthful and avoid bursts of
@@ -211,13 +211,18 @@ export default function CalendarPage() {
           errors.push(`${task.p.learning_area || "Lesson"}: ${apiErrorMessage(error)}`);
           // Stop expensive generation after a quota or plan failure; existing
           // library items are deliberately processed first.
-          if (task.kind === "generate" && [402, 429].includes(error.response?.status)) break;
+          if (task.kind === "generate" && [402, 429].includes(error.response?.status)) {
+            processed = i + 1;
+            deferred = tasks.length - processed;
+            break;
+          }
         }
-        setDraftProgress({ done: i + 1, total: tasks.length, assigned, created, failed,
+        processed = i + 1;
+        setDraftProgress({ done: processed, total: tasks.length, assigned, created, failed,
           current: `${assigned} assigned · ${created} drafts saved · ${failed} need attention` });
       }
-      setDraftProgress({ done: tasks.length, total: tasks.length, assigned, created, failed,
-        current: `${assigned} library lesson(s) assigned; ${created} AI drafts saved for review. ${review.length} existing draft(s) awaiting review.` });
+      setDraftProgress({ done: processed, total: tasks.length, assigned, created, failed,
+        current: `${assigned} library lesson(s) assigned; ${created} AI drafts saved for review. ${review.length} existing draft(s) awaiting review.${deferred ? ` ${deferred} not attempted because generation is unavailable or the allowance was reached.` : ""}` });
       if (assigned || created) toast.success(`${assigned} library lessons assigned; ${created} AI drafts saved for review.`);
       if (errors.length) toast.error(`${failed} item(s) could not be prepared: ${errors[0]}`);
       await load();

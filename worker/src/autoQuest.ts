@@ -67,6 +67,7 @@ const daysBetween = (a: string, b: string) => Math.floor((Date.parse(b.slice(0, 
 export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const areaOf = input.areaOf || ((t: string) => t);
   const approved = new Set(input.allowedOutcomeCodes);
+  const childProgramCodes = input.outcomes ? new Set(input.outcomes.map(o => o.code)) : approved;
   const prog = new Map(input.progress.map((p) => [p.code, p]));
   const achieved = new Set(input.progress.filter((p) => p.status === "achieved").map((p) => p.code));
   const mine = input.assignments.filter((a) => a.student_id === input.studentId);
@@ -108,7 +109,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
     if (!codes.length) return lessonCodes.length === 0;
     // For coded subjects reject an unverified, out-of-program or achieved link.
     return lessonCodes.some(c => codes.includes(c)) &&
-      lessonCodes.every(c => approved.has(c) && !achieved.has(c));
+      lessonCodes.every(c => childProgramCodes.has(c) && approved.has(c) && !achieved.has(c));
   });
 
   return input.slots
@@ -382,7 +383,8 @@ export async function generateForProposal(db: DB, ai: any, o: { familyId: string
   if (!r.ok) return r;
   // Attach the verified target codes (filtered to the family's catalogue again by updateLesson). It stays a draft.
   const lesson = r.lesson;
-  const up = await lb.updateLesson(db, o.familyId, lesson.id, { ...lesson, status: "draft", outcome_codes: codes, curriculum_refs: [...codes, ...(lesson.curriculum_refs || []).filter((x: string) => !codes.includes(x))].slice(0, 10) }, now);
+  const up = await lb.updateLesson(db, o.familyId, lesson.id, { ...lesson, status: "draft", outcome_codes: codes,
+    curriculum_refs: codes.length ? codes : [] }, now);
   if (!up.ok) return up;
   await db.prepare("UPDATE auto_quest_proposals SET lesson_id = ?, generated = 1, action = 'reuse_draft', updated_at = ? WHERE id = ? AND family_id = ?").bind(lesson.id, now.toISOString(), p.id, o.familyId).run();
   const lessons = await lessonMap(db, o.familyId, [lesson.id]);
