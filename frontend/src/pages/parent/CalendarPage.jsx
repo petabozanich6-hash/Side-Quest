@@ -79,6 +79,17 @@ export default function CalendarPage() {
     load();
     loadLessons().catch(e => toast.error(apiErrorMessage(e, "Couldn't refresh available lessons")));
   };
+  const afterWeeklyPlanning = (date) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date || "")) return afterCalendarChange();
+    const [y, m, d] = date.split("-").map(Number);
+    const changedMonth = cur.getFullYear() !== y || cur.getMonth() !== m - 1;
+    setCur(new Date(y, m - 1, d));
+    setCalendarView("week");
+    // A month change loads the new date range through useEffect; avoid a stale
+    // refresh of the previous month racing it and hiding the newly planned week.
+    if (changedMonth) loadLessons().catch(e => toast.error(apiErrorMessage(e)));
+    else afterCalendarChange();
+  };
   useEffect(() => { load(); }, [rangeFrom, rangeTo]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     api.get("/students").then(r=>setStudents(r.data)).catch(e=>toast.error(apiErrorMessage(e)));
@@ -358,7 +369,7 @@ export default function CalendarPage() {
       )}
 
       {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
-      {planWeekOpen && <PlanMyWeek students={students} initialChild={filter} initialDate={isoLocal(cur)} onClose={()=>setPlanWeekOpen(false)} onDone={afterCalendarChange} />}
+      {planWeekOpen && <PlanMyWeek students={students} initialChild={filter} initialDate={isoLocal(cur)} onClose={()=>setPlanWeekOpen(false)} onDone={afterWeeklyPlanning} />}
       {weekFillOpen && <FillMyWeek students={students} initialChild={filter || rescheduleChild}
         initialDate={isoLocal(cur)} onClose={()=>setWeekFillOpen(false)} onDone={afterCalendarChange}
         onOpenDay={date=>{setWeekFillOpen(false);setDayOpen(date);}} />}
