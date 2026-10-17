@@ -281,6 +281,27 @@ test("approval: drafts need the parent's review; assignment lands on the slot's 
 });
 
 
+test("an appointment added after planning blocks assignment without creating partial work", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const slotId = slot(db, fam, sid, 2, "Mathematics");
+  const saved = await lesson(db, fam, "Number lines", [S2_MATHS[0]]);
+  const planned = await plan(db, fam, sid);
+  assert.equal(planned.proposals.length, 1);
+  await aq.setProposalLesson(db, fam, planned.proposals[0].id, saved.id, NOW);
+  db.raw.prepare(`INSERT INTO calendar_events
+    (id,family_id,student_id,title,date,start_time,duration_minutes,event_type,created_at)
+    VALUES (?,?,?,?,?,?,?, ?,?)`)
+    .run("appt-overlap",fam,sid,"Dentist",day(2),"09:15",30,"appointment",NOW.toISOString());
+  const result = await aq.approveProposal(db,fam,`u-${fam}`,planned.proposals[0].id,{},NOW);
+  assert.equal(result.code,"TIME_CONFLICT");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ?").get(fam).n,0);
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ?").get(slotId).linked_assignment_id,null);
+  db.raw.prepare("DELETE FROM calendar_events WHERE id = ?").run("appt-overlap");
+  const success = await aq.approveProposal(db,fam,`u-${fam}`,planned.proposals[0].id,{},NOW);
+  assert.ok(success.ok,JSON.stringify(success));
+});
+
 test("calendar-slot approval refuses a slot filled after planning without making a new assignment", async () => {
   const db = makeDb();
   const fam = family(db), sid = kid(db, fam);
