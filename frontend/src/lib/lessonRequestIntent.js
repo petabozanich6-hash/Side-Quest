@@ -33,7 +33,12 @@ export function requestedSeparateSubjects(text) {
 
 export function lessonRequestIntent(text, hasSource = false) {
   const subjects = requestedSeparateSubjects(text);
-  if (subjects.length >= 2 && !explicitAmount.test(text)) {
+  // "two Science and Maths lessons" and "a Science and Maths lesson" both
+  // name two subjects. An explicit request for four lessons across two subjects
+  // needs the existing sequence planner rather than assuming one per subject.
+  const countText = explicitAmount.exec(text)?.[1]?.toLowerCase();
+  const amount = countText ? ({ two: 2, three: 3, four: 4, five: 5, six: 6 }[countText] || Number(countText)) : null;
+  if (subjects.length >= 2 && (!amount || amount === subjects.length)) {
     return { type: "multi_subject", subjects, blockedBySource: !!hasSource };
   }
   return { type: explicitAmount.test(text) ? "series" : "single", subjects: [], blockedBySource: false };
