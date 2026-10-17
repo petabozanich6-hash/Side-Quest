@@ -232,8 +232,13 @@ const stub = (fn) => { const calls = []; return { calls, run: async (...a) => { 
 const req = (family, ai, extra = {}) => ({ familyId: family, userId: "u1", request: { topic: "Fractions", ...extra }, ...extra.opts });
 
 test("owner-only fast preview retains the full lesson and cannot be activated by paying families", async () => {
-  for (const [plan, pipeline] of [["INTERNAL", "parallel_frame"], ["ACTIVE_MONTHLY", "standard"]]) {
+  for (const [plan, hasOwnerRole, pipeline] of [["INTERNAL", true, "parallel_frame"], ["INTERNAL", false, "standard"], ["ACTIVE_MONTHLY", false, "standard"]]) {
     const db = makeDb(), fam = seed(db, { plan });
+    db.raw.prepare("INSERT INTO users (id, family_id, email, name, created_at) VALUES (?, ?, ?, ?, ?)")
+      .run("u", fam, "admin-" + fam + "@example.com", "Parent", NOW.toISOString());
+    if (hasOwnerRole) db.raw.prepare(
+      "INSERT INTO user_roles (id, user_id, role, granted_by, reason) VALUES (?, ?, 'owner', 'test', 'test')"
+    ).run("speed-owner-" + fam, "u");
     const ai = stub();
     const draft = await aid.draftLessonWithAi(db, ai, {
       familyId: fam, userId: "u",
