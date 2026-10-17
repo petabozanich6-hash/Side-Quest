@@ -158,3 +158,28 @@ speed result. Run at least three representative lessons (Maths, English with
 reading, Science) and review actual teaching quality before turning on the
 flag in a separate controlled deployment. Restore `AI_FAST_PIPELINE=false`
 if quality, failure rate, provider throttling or real latency worsens.
+
+
+### Owner-only live acceptance test (no paid-family rollout)
+
+After code review and green CI, merging this PR does **not** enable the
+`AI_FAST_PIPELINE` environment variable. On *Make a lesson*, only a
+parent with an **active platform Owner HQ role** and `INTERNAL` membership
+sees **Owner-only speed trial**. The server checks the active role in
+`user_roles`; `INTERNAL` entitlement by itself grants no access. A
+paid family's forged `owner_fast_preview` is ignored.
+
+For a controlled comparison: draft two 60-minute lessons using the
+same child's profile, subject, request, outcome option and original
+Llama 3.3 model. Leave the checkbox unchecked first, then select it.
+The completed lesson review displays actual elapsed generation time
+and estimated inference cost. Record both, then compare the **complete**
+lesson explanations, worked examples, guided and independent practice,
+questions, quiz and answer key. Teacher-review any mathematical facts
+or curriculum mapping. Outcomes remain advisory; parents approve
+before assignment. The outputs can differ in wording because inference
+is nondeterministic; neither pipeline asks for shorter or fewer materials.
+
+If speed has not materially improved or completeness/accuracy is weaker,
+stop using the trial; the owner checkbox defaults to **unchecked**, and
+paid family requests always use the existing path.
