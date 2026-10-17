@@ -557,6 +557,17 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const b: any[] = [u.family_id];
     if (u.role === "child") { sql += " AND (e.student_id = ? OR e.student_id IS NULL)"; b.push(u.id); }
     else if (c.req.query("student_id")) { sql += " AND e.student_id = ?"; b.push(c.req.query("student_id")); }
+    // A calendar month needs its six visible weeks, not the family's oldest
+    // 1,000 entries. Explicit range keeps long-running school years accessible.
+    const from = c.req.query("from"), to = c.req.query("to");
+    if (from || to) {
+      const dateOk = (v: string | undefined) => !!v && /^\\d{4}-\\d{2}-\\d{2}$/.test(v) &&
+        !Number.isNaN(Date.parse(v + "T12:00:00Z"));
+      const span = Date.parse((to || "") + "T12:00:00Z") - Date.parse((from || "") + "T12:00:00Z");
+      if (!dateOk(from) || !dateOk(to) || from! > to! || span > 100 * 86400000)
+        return c.json({ detail: "Choose a valid calendar date range of up to 100 days." }, 400);
+      sql += " AND e.date >= ? AND e.date <= ?"; b.push(from, to);
+    }
     sql += " ORDER BY e.date ASC, e.start_time ASC LIMIT 1000";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
     return c.json(results);
