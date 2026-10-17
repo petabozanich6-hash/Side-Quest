@@ -51,6 +51,7 @@ export type QuestInputs = {
   allowedOutcomeCodes: string[];
   childStage?: string;
   childYear?: number | string | null;
+  subjectFocus?: string;
   /** Catalogue outcomes for the child's level, with their learning areas. Without it, slots can't be matched to outcomes by area. */
   outcomes?: QuestOutcome[];
   /** Maps a timetable title ("Maths", "Science and Technology"...) to a catalogue learning area. Defaults to exact match. */
@@ -91,6 +92,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const lessonArea = (l: QuestLesson) => areaOf(String(l.learning_area || l.title || ""));
   const childStage = normalize(input.childStage);
   const childYear = input.childYear == null ? "" : String(input.childYear).trim();
+  const requestedLanguage = String(input.subjectFocus || "").trim().split(/[:;,.]/)[0].trim().split(/\\s+/)[0].toLowerCase();
   const ageMatches = (l: QuestLesson) => {
     // Never assume an unknown-stage resource is suitable for an age group.
     if (!childStage || normalize(l.stage) !== childStage) return false;
@@ -127,7 +129,10 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       // draft without inventing curriculum coverage or an outcome code.
       const uncoded = (): QuestDecision => {
         const phase = ["introduce the topic", "model and practise", "apply independently", "explore a mini-project", "review and extend"][(n - 1) % 5];
-        const match = reusableFor(area, []);
+        const language = /^languages?(?:\\b|\\s|$)/i.test(area);
+        // A generic Languages slot is not permission to substitute French for Latin.
+        const match = language && !requestedLanguage ? [] : reusableFor(area, [])
+          .filter(l => !language || new RegExp(`(^|[^a-z])${requestedLanguage.replace(/[^a-z]/g, "")}([^a-z]|$)`, "i").test(l.title));
         if (match.length) {
           usedLessons.add(match[0].id);
           return { ...base, action: "reuse_draft", lessonId: match[0].id, purpose: n === 1 ? "teach" : "consolidate",
@@ -275,7 +280,7 @@ async function checkRange(db: DB, familyId: string, q: { student_id?: unknown; f
 }
 
 /** Reads the timetable, tracker and library, and saves one proposal per timetabled lesson slot. Spends no AI. */
-export async function planRange(db: DB, familyId: string, q: { student_id?: unknown; from?: unknown; to?: unknown }, now: Date = new Date()): Promise<R<{ jurisdiction: string | null; catalogue_available: boolean; note: string; proposals: any[]; counts: Record<string, number> }>> {
+export async function planRange(db: DB, familyId: string, q: { student_id?: unknown; from?: unknown; to?: unknown; topic?: unknown }, now: Date = new Date()): Promise<R<{ jurisdiction: string | null; catalogue_available: boolean; note: string; proposals: any[]; counts: Record<string, number> }>> {
   await ensureAutoQuest(db);
   const c = await checkRange(db, familyId, q);
   if (!c.ok) return c;
@@ -302,7 +307,7 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
   const decisions = planAutoQuest({
     studentId: sid, slots: events.results || [], lessons: lessons as any, assignments: assignments.results || [], progress,
     catalogueAvailable: cat.available, allowedOutcomeCodes: cat.available ? cat.outcomes.map((o) => o.code) : [], outcomes, areaOf,
-    childStage: child.stage, childYear: child.year_level,
+    childStage: child.stage, childYear: child.year_level, subjectFocus: String(q.topic || "").slice(0, 140),
     today: now.toISOString().slice(0, 10),
   });
 
