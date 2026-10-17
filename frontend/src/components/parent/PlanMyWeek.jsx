@@ -23,6 +23,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
   const [week, setWeek] = useState(suggestedWeek(initialDate || iso(new Date())));
   const [children, setChildren] = useState(initialChild ? [initialChild] : students.map(s => s.id));
   const [calendar, setCalendar] = useState(null);
+  const [calendarError, setCalendarError] = useState("");
   const [plans, setPlans] = useState(null);
   const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
   const chosen = ready.filter(r => selected.includes(r.id));
   const missing = rows.filter(r => r.state === "missing");
   const reviewing = rows.filter(r => r.state === "review");
+  const attention = rows.filter(r => r.state === "attention");
   const clashes = rows.filter(r => r.state === "conflict");
   const slots = (calendar || []).filter(e => children.includes(e.student_id) &&
     (e.event_type === "timetable" || (e.event_type === "lesson" && String(e.notes || "").startsWith("Suggested by Side-Quest"))));
@@ -47,10 +49,10 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
 
   useEffect(() => {
     let active = true;
-    setCalendar(null); setPlans(null); setSelected([]); setErrors([]);
+    setCalendar(null); setPlans(null); setSelected([]); setErrors([]); setCalendarError("");
     api.get("/calendar", { params: { from: week, to: end } })
       .then(({ data }) => { if (active) setCalendar(data || []); })
-      .catch(e => { if (active) toast.error(apiErrorMessage(e, "Couldn't load this week's calendar")); });
+      .catch(e => { if (active) setCalendarError(apiErrorMessage(e, "Couldn't load this week's calendar")); });
     return () => { active = false; };
   }, [week, end]);
 
@@ -66,7 +68,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
           : await api.get("/auto-quest/proposals", { params: { student_id: child, from: week, to: end } });
         updates[child] = data.proposals || [];
       }
-      setCalendar(entries || []); setPlans(updates);
+      setCalendar(entries || []); setPlans(updates); setCalendarError("");
       const eligible = children.flatMap(child => buildWeeklyLessonRows(entries || [], updates[child] || [], child))
         .filter(r => r.state === "ready").map(r => r.id);
       setSelected(eligible);
@@ -161,6 +163,12 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
             </label>)}
           </div>
         </div>
+        {calendarError && <div role="alert" className="rounded-xl border border-red-300 p-4 text-sm">
+          {calendarError}
+          <button type="button" disabled={loading || saving} onClick={() => {
+            setCalendarError(""); refresh(false);
+          }} className="ml-3 text-teal-800 font-semibold underline">Retry</button>
+        </div>}
         {calendar && <>
           <div className="rounded-xl bg-stone-50 p-4 flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -184,7 +192,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
             {[[rows.filter(r => r.state === "scheduled").length, "Already scheduled"],
               [ready.length, "Ready to assign"], [missing.length, "Need a lesson"],
-              [reviewing.length + clashes.length, "Need attention"]].map(([n, title]) =>
+              [reviewing.length + clashes.length + attention.length, "Need attention"]].map(([n, title]) =>
               <div key={title} className="rounded-lg bg-stone-50 p-3"><p className="text-xl font-bold">{n}</p><p className="text-xs">{title}</p></div>)}
           </div>
           {children.map(child => {
@@ -202,7 +210,8 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
                     <p className="text-sm font-semibold">{dateLabel(r.slot.date)} · {r.slot.start_time || "Flexible"} · {r.slot.title}</p>
                     <p className={`text-xs ${colour}`}>{status}{r.state === "ready" ? ` — ${r.proposal.lesson.title}` : ""}
                       {r.state === "review" ? ` — ${r.proposal.lesson.title}` : ""}
-                      {r.state === "conflict" ? ` — overlaps ${r.conflict.title}` : ""}</p>
+                      {r.state === "conflict" ? ` — overlaps ${r.conflict.title}` : ""}
+                      {r.state === "attention" && r.proposal?.reason ? ` — ${r.proposal.reason}` : ""}</p>
                   </div>
                   {r.state === "review" && r.proposal?.lesson?.id &&
                     <a href={`/parent/lessons/${r.proposal.lesson.id}/edit`} className="text-xs font-semibold underline text-teal-900">Review draft</a>}
