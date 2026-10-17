@@ -1254,6 +1254,9 @@ await step("Q. Auto-Quest: plan the week from the timetable, approve a reused le
   ok((await li.textContent()).includes(codes[0]), "verified code not shown");
   await shot("autoquest-plan", qp);
   await li.locator("[data-testid=aq-approve]").click();
+  // Assigned sessions are deliberately collapsed by default in the calmer
+  // Auto-Quest preview. Reveal them before checking the persisted decision.
+  await qp.locator("[data-testid=autoquest-show-assigned]").check();
   await qp.waitForSelector('[data-testid=autoquest-decisions] li[data-status="assigned"]');
   const asg = (await api("GET", `/assignments?student_id=${ch.json.id}`, pt)).json;
   ok(asg.length === 1 && asg[0].lesson_id === les.json.id && asg[0].scheduled_date === d, "assignment " + JSON.stringify(asg).slice(0, 200));
