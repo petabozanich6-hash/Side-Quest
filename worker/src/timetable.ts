@@ -13,6 +13,7 @@
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { normArea } from "./outcomeMatch";
+import { calendarConflict } from "./calendarIntegrity";
 import type { App, Guards } from "./types";
 
 type DB = D1Database;
@@ -85,7 +86,7 @@ export async function saveWeek(db: DB, familyId: string, input: any, now = new D
       const eventEnd = eventStart + Math.max(1, Number(event.duration_minutes) || 1);
       return start < eventEnd && eventStart < start + r.duration_minutes;
     });
-    if (clash) { skipped++; continue; }
+    if (clash || await calendarConflict(db, familyId, { ...r, event_type: "timetable" })) { skipped++; continue; }
     await db.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 'timetable', ?, ?)",
     ).bind(crypto.randomUUID(), familyId, r.student_id, r.title, r.date, r.start_time, r.duration_minutes, "Timetable slot", now.toISOString()).run();
