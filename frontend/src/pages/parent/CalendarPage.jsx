@@ -43,17 +43,42 @@ export default function CalendarPage() {
   const [reschedulePreview, setReschedulePreview] = useState(null);
   const [rescheduleChild, setRescheduleChild] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loadingCalendar, setLoadingCalendar] = useState(true);
+  const [calendarError, setCalendarError] = useState("");
+  const [dayDrafting, setDayDrafting] = useState(false);
+  const [draftProgress, setDraftProgress] = useState(null);
+  const [dayTopic, setDayTopic] = useState("");
   const [filter, setFilter] = useState("");
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
-  const load = () => api.get("/calendar").then(r => setEvents(r.data));
-  useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))); }, []);
+  const visibleWeeks = monthMatrix(cur.getFullYear(), cur.getMonth());
+  const rangeFrom = isoLocal(visibleWeeks[0][0]);
+  const rangeTo = isoLocal(visibleWeeks[5][6]);
+  const load = async () => {
+    setLoadingCalendar(true);
+    try {
+      const { data } = await api.get("/calendar", { params: { from: rangeFrom, to: rangeTo } });
+      setEvents(data);
+      setCalendarError("");
+    } catch (error) {
+      setCalendarError(apiErrorMessage(error, "Unable to load your calendar."));
+    } finally { setLoadingCalendar(false); }
+  };
+  useEffect(() => { load(); }, [rangeFrom, rangeTo]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    api.get("/students").then(r=>setStudents(r.data)).catch(e=>toast.error(apiErrorMessage(e)));
+    api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))).catch(e=>toast.error(apiErrorMessage(e)));
+  }, []);
   useEffect(() => {
     const event = events.find(e => e.id === focused);
     if (!event || !/^\d{4}-\d{2}-\d{2}$/.test(event.date)) return;
     const [y,m,d] = event.date.split("-").map(Number);
     setCur(new Date(y,m-1,d));setFilter("");setDayOpen(event.date);
   },[focused,events]);
+
+  useEffect(() => {
+    if (dayOpen && !rescheduleChild && students.length) setRescheduleChild(filter || students[0].id);
+  }, [dayOpen, rescheduleChild, students, filter]);
 
   const colourOf = (sid) => {
     const i = students.findIndex(s => s.id === sid);
@@ -67,7 +92,7 @@ export default function CalendarPage() {
     + (e.start_time && isSlot(e) ? `${e.start_time} ` : "") + e.title + (e.lesson_title ? ` · ${e.lesson_title}` : freeSlot(e) ? " (free)" : "");
 
   const month = cur.getMonth(), year = cur.getFullYear();
-  const weeks = monthMatrix(year, month);
+  const weeks = visibleWeeks;
   const shown = events.filter(e => !filter || e.student_id === filter || !e.student_id);
   const eventsByDate = shown.reduce((m, e) => { (m[e.date] = m[e.date] || []).push(e); return m; }, {});
   const todayIso = isoLocal(new Date());
@@ -125,6 +150,81 @@ export default function CalendarPage() {
     } catch (err) { toast.error(apiErrorMessage(err, "Could not reschedule lessons; preview again")); setReschedulePreview(null); }
     finally { setRescheduling(false); }
   };
+  const generateDayDrafts = async () => {
+    if (!dayOpen || !rescheduleChild || dayDrafting) return toast.error("Choose a child for this day first.");
+    const selected = dayList.filter(e => e.student_id === rescheduleChild && freeSlot(e));
+    if (!selected.length) return toast.info("This child has no free timetable slots today.");
+    setDayDrafting(true);
+    setDraftProgress({ done: 0, total: 0, assigned: 0, created: 0, failed: 0, current: "Checking your lesson library first…" });
+    try {
+      // A plan only saves proposals: no AI usage and no assignments.
+      const { data } = await api.post("/auto-quest/plan", {
+        student_id: rescheduleChild, from: dayOpen, to: dayOpen, topic: dayTopic.trim()
+      });
+      const ids = new Set(selected.map(e => e.id));
+      const proposals = (data.proposals || []).filter(p => ids.has(p.calendar_event_id) && p.status === "proposed");
+      const library = proposals.filter(p => p.lesson?.status === "ready");
+      const pending = proposals.filter(p => p.action === "needs_generation" && !p.lesson);
+      const review = proposals.filter(p => p.lesson && p.lesson.status !== "ready");
+      const missing = selected.length - library.length - pending.length - review.length;
+      if (!library.length && !pending.length) {
+        setDraftProgress({ done: 0, total: 0, assigned: 0, created: 0, failed: 0,
+          current: review.length ? `${review.length} draft(s) need your review. Open their slots to assign.` :
+            "No available library lessons or AI drafts for these slots. Open a free slot to plan it manually." });
+        return;
+      }
+      if (pending.some(p => !p.outcome_codes?.length && /^languages?\b/i.test(p.learning_area || "")) && !dayTopic.trim()) {
+        toast.error("Enter the language/topic for these sessions (e.g. Latin greetings). No AI allowance has been used.");
+        return;
+      }
+      const summary = [
+        `Prepare ${students.find(c=>c.id === rescheduleChild)?.name || "this child's"} lessons for ${dayOpen}?`,
+        `${library.length} unused ready library lesson(s) will be assigned to their exact timetable slots.`,
+        `${pending.length} missing lesson(s) will be drafted with AI using your normal allowance; you'll review each draft before assignment.`,
+        ...(review.length ? [`${review.length} existing draft(s) still need review.`] : []),
+        ...(missing > 0 ? [`${missing} slot(s) need manual planning.`] : []),
+        "No AI-generated draft will be assigned automatically. Continue?"
+      ];
+      if (!window.confirm(summary.join("\n\n"))) return;
+      let assigned = 0, created = 0, failed = 0;
+      const errors = [];
+      const tasks = [...library.map(p => ({ p, kind: "library" })), ...pending.map(p => ({ p, kind: "generate" }))];
+      // Run serially to make progress and errors truthful and avoid bursts of
+      // simultaneous AI-generation calls that can exceed the family's quota.
+      for (const [i, task] of tasks.entries()) {
+        setDraftProgress({ done: i, total: tasks.length, assigned, created, failed,
+          current: task.kind === "library"
+            ? `Assigning saved ${task.p.lesson?.title || "lesson"} (${i + 1}/${tasks.length})…`
+            : `Drafting ${task.p.learning_area || "lesson"} (${i + 1}/${tasks.length})…` });
+        try {
+          if (task.kind === "library") {
+            await api.post(`/auto-quest/proposals/${task.p.id}/approve`, {});
+            assigned++;
+          } else {
+            await api.post(`/auto-quest/proposals/${task.p.id}/generate`, {
+              topic: !task.p.outcome_codes?.length && /^languages?\b/i.test(task.p.learning_area || "") ? dayTopic.trim() : undefined
+            });
+            created++;
+          }
+        } catch (error) {
+          failed++;
+          errors.push(`${task.p.learning_area || "Lesson"}: ${apiErrorMessage(error)}`);
+          // Stop expensive generation after a quota or plan failure; existing
+          // library items are deliberately processed first.
+          if (task.kind === "generate" && [402, 429].includes(error.response?.status)) break;
+        }
+        setDraftProgress({ done: i + 1, total: tasks.length, assigned, created, failed,
+          current: `${assigned} assigned · ${created} drafts saved · ${failed} need attention` });
+      }
+      setDraftProgress({ done: tasks.length, total: tasks.length, assigned, created, failed,
+        current: `${assigned} library lesson(s) assigned; ${created} AI drafts saved for review. ${review.length} existing draft(s) awaiting review.` });
+      if (assigned || created) toast.success(`${assigned} library lessons assigned; ${created} AI drafts saved for review.`);
+      if (errors.length) toast.error(`${failed} item(s) could not be prepared: ${errors[0]}`);
+      await load();
+    } catch (error) { toast.error(apiErrorMessage(error, "Couldn't prepare this day.")); }
+    finally { setDayDrafting(false); }
+  };
+
   const clearDay = async () => {
     const selected = dayList.filter(e => !!e.id);
     if (!selected.length || !window.confirm(`Remove all ${selected.length} calendar entries scheduled for ${dayOpen}? Assigned lessons and portfolio evidence will be kept.`)) return;
@@ -140,7 +240,9 @@ export default function CalendarPage() {
   };
 
   const monthName = cur.toLocaleString("en-AU", { month: "long", year: "numeric" });
-  const dayList = dayOpen ? (eventsByDate[dayOpen] || []) : [];
+  const dayList = dayOpen ? [...(eventsByDate[dayOpen] || [])].sort((a, b) =>
+    (a.start_time || "99:99").localeCompare(b.start_time || "99:99") || a.title.localeCompare(b.title)) : [];
+  const daySlots = dayList.filter(e => freeSlot(e) && (!rescheduleChild || e.student_id === rescheduleChild));
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="calendar-page">
@@ -168,6 +270,10 @@ export default function CalendarPage() {
         </div>
       )}
 
+      {calendarError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        {calendarError} <button type="button" onClick={load} className="ml-2 font-bold underline">Retry calendar</button>
+      </div>}
+      {loadingCalendar && <p role="status" className="text-sm text-slate-600">Loading this month's timetable…</p>}
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-slate-100">
           <h2 className="font-display text-lg font-semibold" data-testid="calendar-month">{monthName}</h2>
@@ -193,7 +299,7 @@ export default function CalendarPage() {
                     <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}><button type="button" onClick={()=>setDayOpen(iso)} aria-label={`View and edit ${iso}`} className="rounded p-1 hover:bg-teal-50">{dt.getDate()}</button></div>
                     <div className="mt-1 space-y-0.5">
                       {dayEvents.slice(0,3).map(e => (
-                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${labelOf(e)}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id), opacity: freeSlot(e) ? 0.55 : 1}} onClick={()=>setEditing(e)} data-testid={`edit-cal-${e.id}`} data-slot={isSlot(e) ? (freeSlot(e) ? "free" : "filled") : undefined}>{labelOf(e)}</button>
+                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${labelOf(e)}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id), opacity: freeSlot(e) ? 0.55 : 1}} onClick={()=>setEditing({ ...e, initialQuest: freeSlot(e) })} data-testid={`edit-cal-${e.id}`} data-slot={isSlot(e) ? (freeSlot(e) ? "free" : "filled") : undefined}>{labelOf(e)}</button>
                       ))}
                       {dayEvents.length > 3 && <button type="button" onClick={()=>setDayOpen(iso)} className="text-[10px] text-teal-700 font-semibold underline" data-testid={`more-${iso}`}>+{dayEvents.length - 3} more</button>}
                     </div>
@@ -211,34 +317,101 @@ export default function CalendarPage() {
       {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
 
       {dayOpen && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setDayOpen(null)}>
-          <div onClick={e=>e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-6 max-h-[80vh] overflow-y-auto" data-testid="day-modal">
-            <div className="flex items-center justify-between mb-4"><h2 className="font-display text-lg font-bold">{dayOpen}</h2><button type="button" onClick={()=>setDayOpen(null)} aria-label="Close day"><X size={18}/></button></div>
-            <div className="flex justify-between items-center gap-2 mb-3"><span className="text-xs text-slate-500">{dayList.length} scheduled entries</span><button type="button" disabled={!dayList.length || removingDay} onClick={clearDay} className="rounded-full border border-red-300 text-red-700 px-3 py-1.5 text-xs disabled:opacity-50">{removingDay ? "Clearing…" : "Clear scheduled day"}</button></div>
-            <div className="mb-4 rounded-xl border border-teal-200 p-3 space-y-2">
-              <p className="font-semibold text-sm">Reschedule My Day</p>
-              <p className="text-xs text-slate-600">Move unfinished assigned lessons into upcoming free subject slots. Completed lessons stay put.</p>
-              <select aria-label="Child to reschedule" value={rescheduleChild} onChange={e => {setRescheduleChild(e.target.value);setReschedulePreview(null);}} className="w-full border rounded p-2 text-sm">
-                <option value="">Choose a child</option>
-                {students.map(child => <option key={child.id} value={child.id}>{child.name}</option>)}
-              </select>
-              <button type="button" disabled={!rescheduleChild || rescheduling} onClick={previewReschedule} className="rounded-full bg-teal-800 text-white px-4 py-2 text-sm disabled:opacity-50">Find available days</button>
-              {reschedulePreview && <div className="space-y-2 text-sm">
-                {reschedulePreview.plan.length ? reschedulePreview.plan.map(p => <p key={p.from_slot_id}>{p.title}: {p.from_date} → {p.to_date} at {p.to_time}</p>) : <p>No matching free slots found in the next four weeks.</p>}
-                {!!reschedulePreview.unplaced?.length && <p className="text-amber-800">{reschedulePreview.unplaced.length} lesson(s) could not be placed and will remain on their original day.</p>}
-                {!!reschedulePreview.plan.length && <button type="button" disabled={rescheduling} onClick={applyReschedule} className="rounded-full bg-slate-900 text-white px-4 py-2 disabled:opacity-50">Confirm new dates</button>}
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm p-3 sm:p-6 flex items-center justify-center"
+          onClick={() => !dayDrafting && setDayOpen(null)}>
+          <section role="dialog" aria-modal="true" aria-label="Day's learning plan" onClick={e=>e.stopPropagation()}
+            className="w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white shadow-xl p-4 sm:p-6 space-y-5"
+            data-testid="day-modal">
+            <header className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-display text-xl sm:text-2xl font-bold">
+                  {new Date(dayOpen + "T12:00:00").toLocaleDateString("en-AU", { weekday:"long", day:"numeric", month:"long" })}
+                </h2>
+                <p className="text-sm text-slate-600 mt-1">{dayList.length} scheduled entries · {daySlots.length} available learning slots</p>
+              </div>
+              <button type="button" disabled={dayDrafting} onClick={()=>setDayOpen(null)} aria-label="Close day"
+                className="p-2 rounded-lg border disabled:opacity-50"><X size={18}/></button>
+            </header>
+            <div className="rounded-xl bg-teal-50 border border-teal-200 p-4 space-y-3" data-testid="day-autoquest">
+              <h3 className="font-display font-bold text-teal-950">⚔️ Prepare this day's lessons</h3>
+              <p className="text-sm text-slate-700">Side-Quest checks your lesson library first, assigns suitable unused lessons, then drafts missing ones with AI. You'll review AI drafts before assignment.</p>
+              <label className="block text-sm font-semibold">Child
+                <select aria-label="Child to prepare" value={rescheduleChild}
+                  onChange={e=>{setRescheduleChild(e.target.value); setReschedulePreview(null); setDraftProgress(null);}}
+                  disabled={dayDrafting} className="input mt-1" data-testid="day-child">
+                  <option value="">Choose a child</option>
+                  {students.map(child=><option value={child.id} key={child.id}>{child.name}</option>)}
+                </select>
+              </label>
+              {daySlots.some(e => /^languages?\b/i.test(e.title)) && <label className="block text-sm font-semibold">
+                Language / topic (e.g. Latin greetings)
+                <input className="input mt-1" value={dayTopic} maxLength={140}
+                  onChange={e=>setDayTopic(e.target.value)} placeholder="Latin: greetings and introductions"
+                  data-testid="day-language-topic" disabled={dayDrafting}/>
+                <span className="block text-xs font-normal text-slate-600 mt-1">Needed for Languages so the library doesn't substitute another language.</span>
+              </label>}
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-xs text-slate-600">{daySlots.length} free slot(s) for the selected child</p>
+                <button type="button" onClick={generateDayDrafts}
+                  disabled={dayDrafting || !rescheduleChild || !daySlots.length}
+                  className="rounded-full bg-teal-800 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+                  data-testid="generate-day-lessons">
+                  {dayDrafting ? "Preparing lessons…" : "Prepare all free slots"}
+                </button>
+              </div>
+              {draftProgress && <div className="rounded-lg bg-white border border-teal-200 p-3 text-sm" role="status" data-testid="day-batch-progress">
+                <p>{draftProgress.current}</p>
+                {!!draftProgress.total && <progress value={draftProgress.done} max={draftProgress.total}
+                  aria-label="Lessons prepared" className="w-full mt-2"/>}
+                {draftProgress.total > 0 && <p className="text-xs mt-1 text-slate-600">
+                  {draftProgress.assigned || 0} library lesson(s) assigned · {draftProgress.created || 0} draft(s) for review · {draftProgress.failed || 0} issues
+                </p>}
               </div>}
             </div>
             <div className="space-y-2">
-              {dayList.map(e => (
-                <div key={e.id} className="flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
-                  <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{backgroundColor: colourOf(e.student_id)}}/>
-                  <span className="font-medium">{nameOf(e.student_id) || "Whole family"}</span>
-                  <span className="text-slate-600 truncate flex-1">{e.title}</span><button type="button" className="text-teal-700 text-xs font-semibold underline" onClick={()=>{setDayOpen(null);setEditing(e);}}>Edit</button>
+              <h3 className="font-display font-bold">Your timetable</h3>
+              {!dayList.length && <p className="text-sm text-slate-600">No scheduled entries on this day. Create a weekly timetable or add an event.</p>}
+              {dayList.map(e => <article key={e.id}
+                className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-xl border border-slate-200 p-3"
+                data-testid={`day-event-${e.id}`}>
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  <div className="h-3 w-3 rounded-full shrink-0 mt-1.5" style={{backgroundColor:colourOf(e.student_id)}}/>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-sm">{e.start_time || "Any time"} · {e.title}
+                      {freeSlot(e) && <span className="ml-2 text-xs text-amber-800 font-normal">Free slot</span>}
+                    </div>
+                    <p className="text-xs text-slate-600">{nameOf(e.student_id) || "Whole family"}
+                      {e.duration_minutes ? ` · ${e.duration_minutes} min` : ""}
+                      {e.lesson_title ? ` · Lesson: ${e.lesson_title}` : ""}
+                    </p>
+                  </div>
                 </div>
-              ))}
+                <button type="button"
+                  className={`rounded-full px-4 py-2 text-xs font-semibold shrink-0 ${freeSlot(e) ? "bg-teal-800 text-white" : "border border-slate-300 text-slate-700"}`}
+                  onClick={()=>{setDayOpen(null);setEditing({ ...e, initialQuest: freeSlot(e) });}}
+                  data-testid={freeSlot(e) ? `fill-slot-${e.id}` : `edit-day-${e.id}`}>
+                  {freeSlot(e) ? "⚔️ Fill this slot" : "View / edit"}
+                </button>
+              </article>)}
             </div>
-          </div>
+            <details className="rounded-xl border border-slate-200 p-3">
+              <summary className="font-semibold text-sm cursor-pointer">Reschedule or clear this day</summary>
+              <div className="space-y-3 mt-3 text-sm">
+                <p>Move unfinished assigned lessons into upcoming free slots of the same subject. Completed work stays put.</p>
+                <button type="button" disabled={!rescheduleChild || rescheduling} onClick={previewReschedule}
+                  className="rounded-full bg-slate-800 text-white px-3 py-2 text-xs disabled:opacity-50">Find alternative days</button>
+                {reschedulePreview && <div className="space-y-2">
+                  {reschedulePreview.plan.length ? reschedulePreview.plan.map(p=><p key={p.from_slot_id}>{p.title}: {p.from_date} → {p.to_date} at {p.to_time}</p>) : <p>No matching free slots found in the next four weeks.</p>}
+                  {!!reschedulePreview.unplaced?.length && <p className="text-amber-800">{reschedulePreview.unplaced.length} could not be moved and will stay in place.</p>}
+                  {!!reschedulePreview.plan.length && <button type="button" disabled={rescheduling}
+                    onClick={applyReschedule} className="rounded-full bg-teal-800 text-white px-4 py-2 text-xs disabled:opacity-50">Confirm new dates</button>}
+                </div>}
+                <button type="button" disabled={!dayList.length || removingDay || dayDrafting} onClick={clearDay}
+                  className="rounded-full border border-red-300 text-red-700 px-3 py-2 text-xs disabled:opacity-50">
+                  {removingDay ? "Clearing…" : "Remove all calendar entries for this day"}</button>
+              </div>
+            </details>
+          </section>
         </div>
       )}
 

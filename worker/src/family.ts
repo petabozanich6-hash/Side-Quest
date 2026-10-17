@@ -1,3 +1,4 @@
+import { validateCalendarAssignment } from "./calendarLinks";
 import { clearLoginFailures } from "./loginThrottle";
 import { authenticateToken, bumpAuthVersion, familyState, issueToken, SUSPENDED_MESSAGE, verifyFileToken } from "./session";
 import { loadPlatformSettings } from "./platformSettings";
@@ -835,12 +836,21 @@ export function registerFamily(app: App, g: Guards) {
         .first();
       if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
     }
-    if (updates.linked_assignment_id) {
-      const assignment = await c.env.DB.prepare("SELECT id FROM assignments WHERE id = ? AND family_id = ? AND status != 'revoked'")
-        .bind(updates.linked_assignment_id, c.get("user").family_id)
-        .first();
-      if (!assignment) return c.json({ detail: "Assignment not found" }, 404);
-    }
+    // Determine the final relationship, not just the changed fields. An edit may
+    // change the child or lesson while leaving an old assignment ID untouched.
+    const current = await c.env.DB.prepare(
+      "SELECT student_id, linked_lesson_id, linked_assignment_id FROM calendar_events WHERE id = ? AND family_id = ?"
+    ).bind(c.req.param("eid"), c.get("user").family_id).first<{
+      student_id: string | null; linked_lesson_id: string | null; linked_assignment_id: string | null;
+    }>();
+    if (!current) return c.json({ detail: "Event not found" }, 404);
+    const finalValue = (key: "student_id" | "linked_lesson_id" | "linked_assignment_id") =>
+      Object.prototype.hasOwnProperty.call(updates, key) ? updates[key] : current[key];
+    const link = await validateCalendarAssignment(
+      c.env.DB, c.get("user").family_id,
+      finalValue("linked_assignment_id"), finalValue("student_id"), finalValue("linked_lesson_id")
+    );
+    if (!link.ok) return c.json({ detail: link.detail }, link.status);
 
     const entries = Object.entries(updates);
     const result = await c.env.DB.prepare(

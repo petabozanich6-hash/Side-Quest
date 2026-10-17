@@ -116,35 +116,66 @@ export async function listSlots(db: DB, familyId: string, q: { student_id?: stri
 export async function placeAssignment(db: DB, familyId: string, assignmentId: string, input: any, now = new Date()):
   Promise<Result<{ placed: any[]; reason?: string; learning_area: string }>> {
   if (!(await timetableAllowed(db, familyId))) return paywall();
-  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND family_id = ?").bind(assignmentId, familyId).first<any>();
+  const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND family_id = ?")
+    .bind(assignmentId, familyId).first<any>();
   if (!a || a.status === "revoked") return fail(404, "Assignment not found");
-  if (lb.DONE_STATUSES.includes(a.status) || a.status === "submitted") return fail(409, "This lesson is already handed in or finished.", "ALREADY_DONE");
-  const lesson = await db.prepare("SELECT title, learning_area, stage FROM lessons WHERE id = ?").bind(a.lesson_id).first<any>();
-  const child = await db.prepare("SELECT stage FROM students WHERE id = ?").bind(a.student_id).first<any>();
-  const area = String(lesson?.learning_area || "");
-  const stage = String(child?.stage || lesson?.stage || "");
+  if (lb.DONE_STATUSES.includes(a.status) || a.status === "submitted")
+    return fail(409, "This lesson is already handed in or finished.", "ALREADY_DONE");
+  const lesson = await db.prepare("SELECT title, learning_area, stage FROM lessons WHERE id = ? AND family_id = ?")
+    .bind(a.lesson_id, familyId).first<any>();
+  const child = await db.prepare("SELECT stage FROM students WHERE id = ? AND family_id = ?")
+    .bind(a.student_id, familyId).first<any>();
+  if (!lesson || !child) return fail(404, "Lesson or child not found");
+  const area = String(lesson.learning_area || "");
+  const stage = String(child.stage || lesson.stage || "");
   const from = validDate(input?.from) ? input.from : now.toISOString().slice(0, 10);
   let chosen: any[] = [];
   if (Array.isArray(input?.slot_ids) && input.slot_ids.length) {
-    const ids = input.slot_ids.map(String).slice(0, 10);
-    const open = await listSlots(db, familyId, { student_id: a.student_id, open: true });
-    chosen = ids.map((id: string) => open.find((s: any) => s.id === id)).filter(Boolean);
-    if (chosen.length !== ids.length) return fail(409, "That timetable slot isn't free any more. Please pick another.", "SLOT_TAKEN");
+    const ids: string[] = input.slot_ids.map(String).slice(0, 10);
+    if (new Set(ids).size !== ids.length) return fail(400, "Choose each timetable slot only once.");
+    const placeholders = ids.map(() => "?").join(",");
+    const sql = `SELECT id, student_id, title, date, start_time, linked_assignment_id, linked_lesson_id
+      FROM calendar_events WHERE family_id = ? AND student_id = ? AND id IN (${placeholders})
+        AND ${SLOT_SQL}`;
+    const slots = (await db.prepare(sql).bind(familyId, a.student_id, ...ids).all<any>()).results ?? [];
+    chosen = ids.map(id => slots.find((slot: any) => slot.id === id)).filter(Boolean);
+    if (chosen.length !== ids.length || chosen.some((slot: any) =>
+      slot.linked_assignment_id || slot.linked_lesson_id || !sameSubject(slot.title, area, stage)))
+      return fail(409, "Choose empty timetable slots for this child's subject.", "SLOT_TAKEN");
   } else {
     const count = Math.min(10, Math.max(1, Number(input?.count) || 1));
     const open = await listSlots(db, familyId, { student_id: a.student_id, from, open: true });
-    chosen = open.filter((s: any) => sameSubject(s.title, area, stage)).slice(0, count);
+    chosen = open.filter((slot: any) => sameSubject(slot.title, area, stage)).slice(0, count);
     if (!chosen.length) return { ok: true, placed: [], reason: "no_slot", learning_area: area };
   }
-  for (const s of chosen) {
-    // Only fill a slot that is still open (a second tab or Auto-Quest may have filled it meanwhile).
-    const r = await db.prepare("UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id = ? WHERE id = ? AND family_id = ? AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL")
-      .bind(a.id, a.lesson_id, s.id, familyId).run();
-    if (!r.meta.changes) return fail(409, "That timetable slot isn't free any more. Please pick another.", "SLOT_TAKEN");
+  // Cloudflare D1 batch executes atomically: stale slot validation and writes
+  // succeed together or all roll back. Individual updates can leave a partial day.
+  const writes: D1PreparedStatement[] = [];
+  for (const slot of chosen) {
+    const verify = `SELECT CASE WHEN EXISTS(
+      SELECT 1 FROM calendar_events WHERE id = ? AND family_id = ? AND student_id = ?
+        AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL AND ${SLOT_SQL}
+    ) THEN 1 ELSE json('SLOT_TAKEN') END AS available`;
+    writes.push(db.prepare(verify).bind(slot.id, familyId, a.student_id));
+    writes.push(db.prepare(`UPDATE calendar_events SET linked_assignment_id = ?, linked_lesson_id = ?
+      WHERE id = ? AND family_id = ? AND student_id = ?
+        AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL`)
+      .bind(a.id, a.lesson_id, slot.id, familyId, a.student_id));
   }
-  const first = chosen.map((s: any) => s.date).sort()[0];
-  await db.prepare("UPDATE assignments SET scheduled_date = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(first, now.toISOString(), a.id, familyId).run();
-  return { ok: true, placed: chosen.map((s: any) => ({ id: s.id, title: s.title, date: s.date, start_time: s.start_time })), learning_area: area };
+  writes.push(db.prepare(`UPDATE assignments SET
+    scheduled_date = (SELECT MIN(date) FROM calendar_events
+      WHERE family_id = ? AND linked_assignment_id = ?),
+    updated_at = ? WHERE id = ? AND family_id = ?`)
+    .bind(familyId, a.id, now.toISOString(), a.id, familyId));
+  try { await db.batch(writes); }
+  catch (error) {
+    if (/malformed JSON|SLOT_TAKEN/i.test(String(error)))
+      return fail(409, "A selected slot is no longer free. Refresh your timetable.", "SLOT_TAKEN");
+    throw error;
+  }
+  return { ok: true,
+    placed: chosen.map((slot: any) => ({ id: slot.id, title: slot.title, date: slot.date, start_time: slot.start_time })),
+    learning_area: area };
 }
 
 /** Empties the slots an assignment was in (the timetable itself stays). */
@@ -213,9 +244,14 @@ export async function applyMissedDay(db: DB, familyId: string, input: any) {
       (SELECT lesson_id FROM assignments WHERE id = ? AND family_id = ?)
       WHERE id = ? AND family_id = ? AND linked_assignment_id IS NULL AND linked_lesson_id IS NULL`)
       .bind(move.assignment_id, move.assignment_id, familyId, move.to_slot_id, familyId));
-    statements.push(db.prepare("UPDATE assignments SET scheduled_date = ?, updated_at = ? WHERE id = ? AND family_id = ?")
-      .bind(move.to_date, new Date().toISOString(), move.assignment_id, familyId));
   }
+  // Some lessons span multiple timetable sessions. Preserve their actual
+  // earliest remaining session after every move, rather than the last moved date.
+  const assignmentIds = [...new Set(moves.map(m => String(m.assignment_id)))];
+  for (const id of assignmentIds) statements.push(db.prepare(`UPDATE assignments SET
+    scheduled_date = (SELECT MIN(date) FROM calendar_events WHERE family_id = ? AND linked_assignment_id = ?),
+    updated_at = ? WHERE id = ? AND family_id = ?`)
+    .bind(familyId, id, new Date().toISOString(), id, familyId));
   await db.batch(statements);
   return { ok: true, moved: moves.length };
 }

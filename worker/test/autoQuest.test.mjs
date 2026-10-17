@@ -3,14 +3,14 @@ import assert from "node:assert/strict";
 import { planAutoQuest } from "../src/autoQuest.ts";
 
 const base = {
-  studentId: "child-a",
+  studentId: "child-a", childStage: "S2", childYear: "3",
   slots: [
     { id: "mon", student_id: "child-a", date: "2026-10-19", title: "Mathematics", event_type: "lesson" },
     { id: "tue", student_id: "child-a", date: "2026-10-20", title: "Mathematics", event_type: "lesson" },
   ],
   lessons: [
-    { id: "lesson-achieved", title: "Numbers", learning_area: "Mathematics", outcome_codes: ["ACH"] },
-    { id: "lesson-next", title: "Addition", learning_area: "Mathematics", outcome_codes: ["NEXT"] },
+    { id: "lesson-achieved", title: "Numbers", stage: "S2", status: "ready", learning_area: "Mathematics", outcome_codes: ["ACH"] },
+    { id: "lesson-next", title: "Addition", stage: "S2", status: "ready", learning_area: "Mathematics", outcome_codes: ["NEXT"] },
   ],
   assignments: [],
   progress: [{ code: "ACH", status: "achieved" }, { code: "NEXT", status: "developing" }],
@@ -18,7 +18,7 @@ const base = {
   allowedOutcomeCodes: ["ACH", "NEXT"],
 };
 
-test("reuses only a draft with unachieved verified outcomes and does not reuse it twice", () => {
+test("reuses only a ready, age-matched unused library lesson once", () => {
   const result = planAutoQuest(base);
   assert.equal(result[0].action, "reuse_draft");
   assert.equal(result[0].lessonId, "lesson-next");
@@ -33,7 +33,8 @@ test("existing assignments are never overwritten", () => {
 
 test("without a verified catalogue, does not suggest fabricated mappings", () => {
   const result = planAutoQuest({ ...base, catalogueAvailable: false });
-  assert.ok(result.every(x => x.action === "needs_parent_plan" && x.eligibleOutcomeCodes.length === 0));
+  assert.ok(result.every(x => x.eligibleOutcomeCodes.length === 0));
+  assert.equal(result[0].action, "needs_generation", "no verified catalogue means a subject-only draft, never a code claim");
 });
 
 test("achieved-only curriculum is not generated again by default", () => {
@@ -82,6 +83,48 @@ test("multiple sessions reinforce an outcome without claiming it is achieved", (
   assert.ok(result.slice(0, 3).every(p => p.action !== "needs_parent_plan"));
   assert.ok(result.some(p => p.purpose === "consolidate"));
   assert.ok(result.some(p => /assigning a lesson does not mean an outcome is achieved/.test(p.reason)));
+});
+
+test("library-first refuses lessons from wrong stage, already assigned, completed or archived", () => {
+  const rows = [
+    { id: "younger", title: "Year 1 Maths", stage: "S1", status: "ready", learning_area: "Mathematics", outcome_codes: ["NEXT"] },
+    { id: "done", title: "Already finished", stage: "S2", status: "ready", learning_area: "Mathematics", outcome_codes: ["NEXT"] },
+    { id: "open", title: "Already open", stage: "S2", status: "ready", learning_area: "Mathematics", outcome_codes: ["NEXT"] },
+    { id: "archive", title: "Archived", stage: "S2", status: "ready", archived_at: "2026-10-01", learning_area: "Mathematics", outcome_codes: ["NEXT"] },
+    { id: "candidate", title: "Fresh Year 3 Maths", stage: "S2", year_level: "3", status: "ready", learning_area: "Mathematics", outcome_codes: ["NEXT"] }
+  ];
+  const decisions = planAutoQuest({ ...base, lessons: rows, assignments: [
+    { id: "a1", student_id: "child-a", lesson_id: "done", status: "completed" },
+    { id: "a2", student_id: "child-a", lesson_id: "open", status: "not_started" }
+  ] });
+  assert.equal(decisions[0].lessonId, "candidate");
+  assert.notEqual(decisions[1].lessonId, "candidate", "the same library lesson cannot be used twice");
+});
+
+test("Languages without codes reuses an age-matched, not-previously-assigned ready lesson", () => {
+  const slots = [{ id: "lat-1", date: "2026-10-19", student_id: "child-a", title: "Languages", event_type: "timetable" },
+    { id: "lat-2", date: "2026-10-20", student_id: "child-a", title: "Languages", event_type: "timetable" }];
+  const lessons = [
+    { id: "latin", title: "Latin greetings", stage: "S2", learning_area: "Languages", status: "ready", outcome_codes: [] },
+    { id: "higher", title: "Advanced French", stage: "S4", learning_area: "Languages", status: "ready", outcome_codes: [] }
+  ];
+  const result = planAutoQuest({ ...base, slots, lessons, outcomes: [], subjectFocus: "Latin" });
+  assert.equal(result[0].action, "reuse_draft");
+  assert.equal(result[0].lessonId, "latin");
+  assert.deepEqual(result[0].eligibleOutcomeCodes, []);
+  assert.equal(result[1].action, "needs_generation");
+  assert.deepEqual(result[1].eligibleOutcomeCodes, []);
+});
+
+test("Languages never chooses a different language without a matching focus", () => {
+  const items = [{ id:"fr",title:"French alphabet",stage:"S2",status:"ready",learning_area:"Languages",outcome_codes:[] }];
+  const slots = [{ id:"lang",student_id:"child-a",date:"2026-10-19",title:"Languages",event_type:"timetable" }];
+  const unknown = planAutoQuest({...base, slots, lessons:items, outcomes:[]});
+  assert.equal(unknown[0].action,"needs_generation");
+  const latin = planAutoQuest({...base, slots, lessons:items, outcomes:[], subjectFocus:"Latin greetings"});
+  assert.equal(latin[0].action,"needs_generation", "French library lesson cannot substitute for Latin");
+  const french = planAutoQuest({...base, slots, lessons:items, outcomes:[], subjectFocus:"French alphabet"});
+  assert.equal(french[0].lessonId,"fr");
 });
 
 // ---------------------------------------------------------------- integration: real migrations, real queries
@@ -317,10 +360,8 @@ test("purposeful revision: a demonstrated outcome not seen for weeks is revisite
   const rev = r.proposals.filter((p) => p.purpose === "revise");
   assert.equal(rev.length, 1, "one revision slot, not repetition");
   assert.equal(rev[0].date, day(4));
-  assert.equal(rev[0].lesson.id, la.id, "revision may reuse the finished lesson, labelled as revision");
-  const ok = await aq.approveProposal(db, fam, `u-${fam}`, rev[0].id, {}, NOW);
-  assert.ok(ok.ok, JSON.stringify(ok));
-  assert.match(db.raw.prepare("SELECT parent_notes p FROM assignments WHERE id = ?").get(ok.proposal.assignment_id).p, /Revision/);
+  assert.equal(rev[0].lesson, null, "completed library lessons must not be automatically assigned again");
+  assert.equal(rev[0].action, "needs_generation", "a distinct revision lesson can still be drafted");
 });
 
 test("family isolation and unsupported curricula", async () => {
@@ -339,7 +380,7 @@ test("family isolation and unsupported curricula", async () => {
   const vic = family(db, { jurisdiction: "VIC" }); const sv = kid(db, vic); slot(db, vic, sv, 1, "Mathematics");
   const rv = await plan(db, vic, sv);
   assert.equal(rv.catalogue_available, false);
-  assert.equal(rv.proposals[0].action, "needs_parent_plan");
+  assert.equal(rv.proposals[0].action, "needs_generation");
   assert.deepEqual(rv.proposals[0].outcome_codes, []);
   assert.match(rv.note, /verified outcome list/);
 
@@ -397,6 +438,6 @@ test("Auto-Quest plans only within the child's program from their profile", asyn
   const [m, h, mu] = r.proposals;
   assert.ok(m.outcome_codes.length && m.outcome_codes.every((c) => { const o = cat.byCode.get(c); return o.learning_area === "Mathematics" && o.from <= 9 && o.to >= 9; }), "Year 9 maths only");
   assert.ok(h.outcome_codes.every((c) => cat.byCode.get(c).subject === "History 7-10"), "History, not Geography or Civics");
-  assert.equal(mu.action, "needs_parent_plan");
-  assert.match(mu.reason, /isn't one of the subjects on this child's profile/);
+  assert.equal(mu.action, "needs_generation");
+  assert.deepEqual(mu.outcome_codes, [], "uncoded electives never pretend to cover official outcomes");
 });

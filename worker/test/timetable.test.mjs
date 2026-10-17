@@ -267,3 +267,84 @@ test("parent revocation keeps lesson history, empties timetable slot, and permit
   assert.equal(reassigned.status, 200, JSON.stringify(reassigned.json));
   assert.notEqual(reassigned.json.id, aid);
 });
+
+
+test("calendar linked assignments cannot cross children or mismatch a lesson", async () => {
+  const h = harness();
+  const f = await h.family("cal-links@example.com");
+  const a = await h.child(f, "onechild");
+  const b = await h.child(f, "twochild");
+  const maths = await h.lesson(f, "Numbers", "Mathematics");
+  const science = await h.lesson(f, "Forces", "Science");
+  const aid = await h.assign(f, a, maths);
+  const data = { student_id: a, title: "Numbers", date: day(0), event_type: "lesson",
+    linked_lesson_id: maths, linked_assignment_id: aid, start_time: "09:00", duration_minutes: 45 };
+  assert.equal((await h.req("/calendar", { token: f.token, method: "POST",
+    body: {...data, student_id: b} })).status, 409, "a sibling must never own another child's assignment");
+  assert.equal((await h.req("/calendar", { token: f.token, method: "POST",
+    body: {...data, linked_lesson_id: science} })).status, 409, "assignment and lesson must match");
+  const valid = await h.req("/calendar", { token: f.token, method: "POST", body: data });
+  assert.equal(valid.status, 200, JSON.stringify(valid.json));
+  const id = valid.json.id;
+  assert.ok(id);
+  assert.equal((await h.req(`/calendar/${id}`, { token:f.token, method:"PUT", body: {student_id:b} })).status,409);
+  assert.equal((await h.req(`/calendar/${id}`, { token:f.token, method:"PUT", body: {linked_lesson_id:science} })).status,409);
+  assert.equal((await h.req(`/calendar/${id}`, { token:f.token, method:"PUT", body: {notes:"Parent note"} })).status,200);
+});
+
+test("calendar supports a visible month date range without showing older years", async () => {
+  const h=harness();const f=await h.family("calendar-range@example.com");
+  const sid=await h.child(f,"rangechild");
+  const old=await h.req("/calendar",{token:f.token,method:"POST",
+    body:{student_id:sid,title:"Older event",date:"2025-09-01",event_type:"lesson"}});
+  const now=await h.req("/calendar",{token:f.token,method:"POST",
+    body:{student_id:sid,title:"Current event",date:day(0),event_type:"lesson"}});
+  assert.equal(old.status,200,JSON.stringify(old.json));
+  assert.equal(now.status,200,JSON.stringify(now.json));
+  const visible=await h.req(`/calendar?from=${MON}&to=${day(6)}`,{token:f.token});
+  assert.equal(visible.status,200);
+  assert.deepEqual(visible.json.map(e=>e.title),["Current event"]);
+  const invalid=await h.req("/calendar?from=2026-01-01&to=2026-12-31",{token:f.token});
+  assert.equal(invalid.status,400);
+});
+
+test("manual timetable assignment rejects wrong-subject slots without changing any slot", async () => {
+  const h=harness();const f=await h.family("atomic-slots@example.com");
+  const sid=await h.child(f,"atomicchild");
+  await h.req("/timetable/week",{method:"POST",token:f.token,body:week(sid)});
+  const a=await h.assign(f,sid,await h.lesson(f,"Counting","Mathematics"));
+  const slots=await h.slots(f,sid);
+  const maths=slots.find(x=>x.title==="Mathematics");
+  const english=slots.find(x=>x.title==="English");
+  const bad=await h.req(`/assignments/${a}/place`,{method:"POST",token:f.token,
+    body:{slot_ids:[maths.id,english.id]}});
+  assert.equal(bad.status,409);
+  assert.equal((await h.slots(f,sid)).filter(x=>x.linked_assignment_id===a).length,0);
+  const duplicate=await h.req(`/assignments/${a}/place`,{method:"POST",token:f.token,
+    body:{slot_ids:[maths.id,maths.id]}});
+  assert.equal(duplicate.status,400);
+});
+
+test("rescheduling one of several sessions preserves the earliest remaining lesson date", async () => {
+  const h=harness();const f=await h.family("multi-session@example.com");
+  const sid=await h.child(f,"multi-session-kid");
+  await h.req("/timetable/week",{method:"POST",token:f.token,body:{
+    week_start:MON,blocks:[0,2,4].map(d=>({
+      student_id:sid,title:"Mathematics",date:day(d),start_time:"09:00",duration_minutes:45
+    }))
+  }});
+  const a=await h.assign(f,sid,await h.lesson(f,"Fractions","Mathematics"));
+  const placed=await h.req(`/assignments/${a}/place`,{method:"POST",token:f.token,
+    body:{from:MON,count:2}});
+  assert.equal(placed.status,200,JSON.stringify(placed.json));
+  assert.equal(placed.json.placed.length,2);
+  const preview=await h.req("/timetable/reschedule/preview",{method:"POST",token:f.token,
+    body:{student_id:sid,date:day(0)}});
+  assert.equal(preview.status,200,JSON.stringify(preview.json));
+  assert.equal(preview.json.plan[0].to_date,day(4));
+  const result=await h.req("/timetable/reschedule/apply",{method:"POST",token:f.token,
+    body:{student_id:sid,date:day(0),moves:preview.json.plan}});
+  assert.equal(result.status,200,JSON.stringify(result.json));
+  const assignment=(await h.req("/assignments",{token:f.token})).json.find(x=>x.id===a);
+  assert.equal(assignment.scheduled_date,day(2),"earliest Wednesday session should remain the assignment date");
+});
