@@ -88,6 +88,8 @@ export default function HqOverview() {
                     <Row label="Gross estimate · 30 days">{usd(o.ai.cost.estimated_gross_30d_usd)} USD</Row>
                     <Row label="Gross estimate · since tracking began">{usd(o.ai.cost.estimated_gross_all_time_usd)} USD</Row>
                     <Row label="AI model calls · 30 days">{o.ai.cost.tracked_calls_30d}</Row>
+                    {o.ai.cost.mean_call_ms_30d != null && <Row label="Average model call · 30 days">{(o.ai.cost.mean_call_ms_30d / 1000).toFixed(2)} seconds</Row>}
+                    {o.ai.cost.models_30d?.map((model) => <Row key={model.model} label={`Model: ${model.model} · ${model.timed_calls} timed calls`}>{model.mean_call_ms == null ? "Timing pending migration" : `${(model.mean_call_ms / 1000).toFixed(2)} s average`} · {model.calls} calls</Row>)}
                     <Row label="Provider token counts · 30 days">{o.ai.cost.reported_tokens_30d}</Row>
                     <Row label="Approximate token counts · 30 days">{o.ai.cost.approximate_tokens_30d}</Row>
                     {(o.ai.cost.unpriced_calls_30d > 0) && <Row label="Calls without a price · 30 days">{o.ai.cost.unpriced_calls_30d}</Row>}
