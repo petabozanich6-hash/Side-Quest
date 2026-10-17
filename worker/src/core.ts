@@ -591,6 +591,19 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       b.linked_assignment_id, b.student_id, b.linked_lesson_id
     );
     if (!link.ok) return c.json({ detail: link.detail }, link.status);
+    // A retry or an already-assigned child must not get a second calendar
+    // entry for the same learning session. Separate timed sessions are valid.
+    if (b.linked_assignment_id) {
+      const duplicate = await c.env.DB.prepare(
+        "SELECT id FROM calendar_events WHERE family_id = ? AND linked_assignment_id = ? AND date = ? AND (? IS NULL OR start_time IS ?) LIMIT 1"
+      ).bind(c.get("user").family_id, b.linked_assignment_id, b.date,
+        b.start_time ?? null, b.start_time ?? null).first<{ id: string }>();
+      if (duplicate) return c.json({
+        code: "ALREADY_SCHEDULED",
+        detail: "This lesson is already scheduled for that day. Open the existing calendar entry to change it.",
+        event_id: duplicate.id,
+      }, 409);
+    }
     const conflict = await calendarConflict(c.env.DB, c.get("user").family_id, b);
     if (conflict) return c.json(conflict, conflict.code === "INVALID_TIME" ? 400 : 409);
     const id = newId();
