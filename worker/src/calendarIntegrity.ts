@@ -20,6 +20,8 @@ export async function calendarConflict(db: D1Database, familyId: string, candida
   const start = minutes(candidate.start_time);
   const duration = Number(candidate.duration_minutes) || 0;
   const isHoliday = candidate.event_type === "holiday";
+  if (candidate.start_time && start === null)
+    return { detail: "Choose a valid start time (for example 09:00).", code: "INVALID_TIME" };
   if (!candidate.date || (!isHoliday && start === null)) return null;
   if (start !== null && (duration <= 0 || duration > 600 || start + duration > 1440)) {
     return { detail: "Choose a valid duration and a time that ends before midnight.", code: "INVALID_TIME" };
