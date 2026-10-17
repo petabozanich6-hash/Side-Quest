@@ -92,7 +92,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const lessonArea = (l: QuestLesson) => areaOf(String(l.learning_area || l.title || ""));
   const childStage = normalize(input.childStage);
   const childYear = input.childYear == null ? "" : String(input.childYear).trim();
-  const requestedLanguage = String(input.subjectFocus || "").trim().split(/[:;,.]/)[0].trim().split(/\\s+/)[0].toLowerCase();
+  const requestedLanguage = String(input.subjectFocus || "").trim().split(/[:;,.]/)[0].trim().split(/\s+/)[0].toLowerCase();
   const ageMatches = (l: QuestLesson) => {
     // Never assume an unknown-stage resource is suitable for an age group.
     if (!childStage || normalize(l.stage) !== childStage) return false;
@@ -129,7 +129,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
       // draft without inventing curriculum coverage or an outcome code.
       const uncoded = (): QuestDecision => {
         const phase = ["introduce the topic", "model and practise", "apply independently", "explore a mini-project", "review and extend"][(n - 1) % 5];
-        const language = /^languages?(?:\\b|\\s|$)/i.test(area);
+        const language = /^languages?(?:\b|\s|$)/i.test(area);
         // A generic Languages slot is not permission to substitute French for Latin.
         const match = language && !requestedLanguage ? [] : reusableFor(area, [])
           .filter(l => !language || new RegExp(`(^|[^a-z])${requestedLanguage.replace(/[^a-z]/g, "")}([^a-z]|$)`, "i").test(l.title));
