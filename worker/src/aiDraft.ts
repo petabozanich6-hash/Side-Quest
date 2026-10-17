@@ -628,11 +628,11 @@ export function generationReport(st: GenStats, model: string) {
     ? estimateGrossUsd(model, st.input_tokens, st.output_tokens) : null;
   const est = gross === null ? null : Math.round(gross * 10000) / 100;
   return { calls: st.calls, stages: st.stages, input_tokens: st.input_tokens, output_tokens: st.output_tokens, est_cost_us_cents: est,
-    elapsed_ms: st.elapsed_ms ?? null, stage_timings_ms: st.stage_timings_ms ?? [] };
+    elapsed_ms: st.elapsed_ms ?? null, stage_timings_ms: st.stage_timings_ms ?? [], pipeline: st.pipeline ?? "standard" };
 }
 
 export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[]; failed?: string;
-  elapsed_ms?: number; stage_timings_ms?: { stage: string; ms: number }[] };
+  elapsed_ms?: number; stage_timings_ms?: { stage: string; ms: number }[]; pipeline?: "standard" | "parallel_frame" | "concurrent_teaching" };
 
 /** The parent answer key is assembled from the items themselves, so it always agrees with the lesson. */
 export function buildAnswerKey(l: any): string {
@@ -651,6 +651,16 @@ function aliasKeys(v: any): any {
   for (const [to, from] of pairs) if (v[to] === undefined && v[from] !== undefined) v[to] = v[from];
   return v;
 }
+/** Mathematical lessons with no requested reading can draft their teaching
+ * while the independent opening/closing is generated. Other subjects keep their
+ * reading-first dependency to protect original source-based teaching. */
+export function canOverlapLessonFrame(spec: Spec): boolean {
+  const area = String(spec.area || "").trim().toLowerCase();
+  if (!/^(maths?|mathematics|numeracy)$/.test(area) || !!spec.source?.trim()) return false;
+  const brief = [spec.topic, spec.goal, spec.notes, spec.original].join(" ");
+  return !/\b(reading|comprehension|passage|article|source text|book excerpt|poem|novel|worksheet|provided text|data table)\b/i.test(brief);
+}
+
 const SMALL_POOL = 4;
 async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T[]> {
   const out: T[] = new Array(jobs.length);
@@ -671,7 +681,8 @@ export async function generateStaged(
   spec: Spec,
   stats: GenStats,
   flags: string[],
-  compact = false
+  compact = false,
+  fastPipeline = false
 ): Promise<Record<string, any> | null> {
   const sys = { role: "system", content: stageSystem() };
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
@@ -705,10 +716,7 @@ export async function generateStaged(
   if (!seq.length || !exs.length) return null;
   design.sequence = seq; design.worked_examples = exs;
 
-  const frame = await go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]);
-  if (!frame) return null;
-  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
-
+  const teaching = async (texts: any[]): Promise<{ sections: any[]; examples: any[] } | null> => {
   let sections: any[] = [];
   let examples: any[] = [];
   if (compact) {
@@ -736,7 +744,7 @@ export async function generateStaged(
     const grouped = await pool<any>([
       ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
       ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
-    ]);
+    ], fastPipeline ? 6 : SMALL_POOL);
     const unpack = async (type: "sections" | "worked_examples", chunksToRead: number[][], offset: number) => {
       const resolved = await Promise.all(chunksToRead.map(async (ids, k) => {
         const items = grouped[offset + k]?.[type];
@@ -759,12 +767,27 @@ export async function generateStaged(
     const results = await pool<any>([
       ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
       ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
-    ]);
+    ], fastPipeline ? 6 : SMALL_POOL);
     sections = results.slice(0, seq.length);
     examples = results.slice(seq.length);
   }
   examples.forEach(r => { if (r && Array.isArray(r.steps) && !r.answer) r.answer = String(r.steps[r.steps.length - 1] ?? ""); });
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
+  return { sections, examples };
+  };
+  const parallelFrame = fastPipeline && canOverlapLessonFrame(spec);
+  stats.pipeline = !fastPipeline ? "standard" : parallelFrame ? "parallel_frame" : "concurrent_teaching";
+  const [frame, prebuilt] = parallelFrame
+    ? await Promise.all([
+        go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]),
+        teaching([]),
+      ])
+    : [await go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]), null];
+  if (!frame) return null;
+  const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
+  const built = parallelFrame ? prebuilt : await teaching(texts);
+  if (!built) return null;
+  const { sections, examples } = built;
   const taught = { sections, worked_examples: examples, texts };
 
   const [pa, pb] = await Promise.all([
@@ -785,7 +808,7 @@ export async function generateStaged(
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; request: AiRequest },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; request: AiRequest },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -857,7 +880,7 @@ export async function draftLessonWithAi(
   let draft: Draft | null = null;
   let issues: Issue[] = [];
   try {
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true);
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true);
     if (raw) {
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);
