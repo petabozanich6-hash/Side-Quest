@@ -103,7 +103,7 @@ test("when there are no learning times, guides the parent to set up the timetabl
   root = createRoot(host);
   await act(async () => root.render(<PlanMyWeek students={[first, second]} initialDate={date}
     onClose={jest.fn()} onDone={done} />));
-  expect(host.textContent).toMatch(/Set up learning times/);
+  expect(host.textContent).toMatch(/Choose different learning times/);
   expect(host.querySelector('[data-testid="plan-review-week"]').disabled).toBe(true);
 });
 
