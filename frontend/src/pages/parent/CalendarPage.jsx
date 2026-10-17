@@ -8,6 +8,7 @@ import { lessonAvailableForChildren } from "../../lib/lessonAvailability";
 import TimetableGenerator from "../../components/parent/TimetableGenerator";
 import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
 import FillMyWeek from "../../components/parent/FillMyWeek";
+import PlanMyWeek from "../../components/parent/PlanMyWeek";
 import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
 
 const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
@@ -39,6 +40,7 @@ export default function CalendarPage() {
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [autoQuestOpen, setAutoQuestOpen] = useState(false);
   const [weekFillOpen, setWeekFillOpen] = useState(false);
+  const [planWeekOpen, setPlanWeekOpen] = useState(false);
   const [dayOpen, setDayOpen] = useState(null);
   const [editing, setEditing] = useState(null);
   const [removingDay, setRemovingDay] = useState(false);
@@ -270,11 +272,14 @@ export default function CalendarPage() {
             <option value="">All children</option>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
-          <button onClick={()=>setWeekFillOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2 text-sm font-bold" data-testid="fill-week-open">⚔️ Fill My Week</button>
-          <button onClick={()=>setAutoQuestOpen(true)} className="rounded-full border border-emerald-300 bg-emerald-50 text-emerald-900 px-4 py-2 text-sm font-semibold" data-testid="autoquest-open-btn">Auto-Quest (advanced)</button>
-          <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Weekly timetable</button>
-          <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
-          <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+          <button onClick={()=>setPlanWeekOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2.5 text-sm font-bold" data-testid="plan-week-open">🐉 Plan My Week</button>
+          <button onClick={()=>setSchedOpen(true)} className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Add a lesson</button>
+          <button onClick={()=>setOpen(true)} className="rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+          <details className="relative text-sm"><summary className="cursor-pointer rounded-full border border-slate-300 px-3 py-2 font-semibold">More planning tools</summary><div className="absolute right-0 top-full z-20 mt-2 w-56 rounded-xl bg-white border border-slate-200 shadow-lg p-2 flex flex-col gap-1">
+            <button onClick={()=>setWeekFillOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="fill-week-open">Fill My Week (original)</button>
+            <button onClick={()=>setAutoQuestOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="autoquest-open-btn">Auto-Quest (advanced)</button>
+            <button onClick={()=>setGeneratorOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="generate-timetable-btn">Weekly timetable (original)</button>
+          </div></details>
         </div>
       </div>
 
@@ -327,6 +332,7 @@ export default function CalendarPage() {
       </div>
 
       {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
+      {planWeekOpen && <PlanMyWeek students={students} initialChild={filter} initialDate={isoLocal(cur)} onClose={()=>setPlanWeekOpen(false)} onDone={afterCalendarChange} />}
       {weekFillOpen && <FillMyWeek students={students} initialChild={filter || rescheduleChild}
         initialDate={isoLocal(cur)} onClose={()=>setWeekFillOpen(false)} onDone={afterCalendarChange}
         onOpenDay={date=>{setWeekFillOpen(false);setDayOpen(date);}} />}
