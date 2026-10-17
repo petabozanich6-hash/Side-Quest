@@ -22,13 +22,13 @@ const design = {
 const frame = { introduction: "Let's explore numbers", texts: [
   { title: "The reading", kind: "text", content: "Original text that teaching should use in a reading-based lesson." },
 ], consolidation: "Now compare the numbers." };
-function stub(onRequest = () => {}) {
+function stub(onRequest = () => {}, { withReading = false } = {}) {
   return async (messages) => {
     const user = String(messages.at(-1)?.content || "");
     await onRequest(user);
     let value;
     if (user.startsWith("STAGE 1")) value = design;
-    else if (user.startsWith("STAGE 2")) value = frame;
+    else if (user.startsWith("STAGE 2")) value = withReading ? frame : { ...frame, texts: [] };
     else if (user.includes("STAGE 3, SECTION")) value = { heading: "One idea", body: "Here is a worked explanation." };
     else if (user.includes("STAGE 3, WORKED EXAMPLE")) value = { title: "Model", problem: "100+20", steps: ["Set it up", "Solve"], answer: "120" };
     else if (user.startsWith("STAGE 4, PRACTICE")) value = { guided_practice: [{ prompt: "100+20?", answer: "120" }], activities: [{ title: "Explore", tasks: [{ prompt: "Try it", answer: "120" }] }] };
@@ -84,7 +84,7 @@ test("English or source-based teaching still receives complete framed readings",
         assert.equal(frameFinished, true, "section started before essential reading");
         usedReading ||= user.includes("Original text that teaching should use");
       }
-    });
+    }, { withReading: true });
     const m = stats();
     const result = await generateStaged(ai, sp, m, [], false, true);
     assert.ok(result);
@@ -104,4 +104,20 @@ test("flag off retains frame-first scheduling and the standard pool", async () =
   assert.ok(result);
   assert.equal(m.pipeline, "standard");
   assert.equal(m.calls, 9);
+});
+
+test("if mathematics generates an unexpected reading, fast mode rebuilds every section with that reading", async () => {
+  let withReading = 0;
+  const ai = stub(user => {
+    if (user.includes("STAGE 3, SECTION") &&
+        user.includes("Original text that teaching should use")) withReading++;
+  }, { withReading: true });
+  const m = stats(), flags = [];
+  const result = await generateStaged(ai, spec(), m, flags, false, true);
+  assert.ok(result);
+  assert.equal(result.texts.length, 1);
+  assert.equal(withReading, 3);
+  assert.equal(result.sections.length, 3);
+  assert.equal(m.calls, 14, "speculative 5 calls plus the complete 9-call fallback");
+  assert.ok(flags.some(t => t.includes("new reading")));
 });
