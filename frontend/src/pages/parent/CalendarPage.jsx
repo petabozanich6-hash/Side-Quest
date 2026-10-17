@@ -65,10 +65,18 @@ export default function CalendarPage() {
       setCalendarError(apiErrorMessage(error, "Unable to load your calendar."));
     } finally { setLoadingCalendar(false); }
   };
+  const loadLessons = async () => {
+    const { data } = await api.get("/lessons");
+    setLessons((data || []).filter(l => l.status === "ready"));
+  };
+  const afterCalendarChange = () => {
+    load();
+    loadLessons().catch(e => toast.error(apiErrorMessage(e, "Couldn't refresh available lessons")));
+  };
   useEffect(() => { load(); }, [rangeFrom, rangeTo]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     api.get("/students").then(r=>setStudents(r.data)).catch(e=>toast.error(apiErrorMessage(e)));
-    api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))).catch(e=>toast.error(apiErrorMessage(e)));
+    loadLessons().catch(e=>toast.error(apiErrorMessage(e)));
   }, []);
   useEffect(() => {
     const event = events.find(e => e.id === focused);
@@ -109,14 +117,8 @@ export default function CalendarPage() {
       for (const sid of targets) {
         let assignmentId = null;
         if (sid && form.linked_lesson_id) {
-          try {
-            const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
-            assignmentId = a.data?.id || null;
-          } catch (e) {
-            // Never create a "linked lesson" calendar entry with no assignment
-            // merely because another tab or session already assigned it.
-            throw e;
-          }
+          const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
+          assignmentId = a.data?.id || null;
         }
         await api.post("/calendar", {
           ...form,
@@ -127,7 +129,7 @@ export default function CalendarPage() {
         });
       }
       toast.success(targets.length > 1 ? `Scheduled for ${targets.length} children` : "Scheduled");
-      setOpen(false); load();
+      setOpen(false); afterCalendarChange();
     } catch (err) { toast.error(apiErrorMessage(err, "Some entries may already have been added")); load(); }
     finally { setSaving(false); }
   };
@@ -321,10 +323,10 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={load}/>}
-      {autoQuestOpen && <AutoQuestPreview students={students} onClose={()=>setAutoQuestOpen(false)} onChanged={load} />}
+      {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
+      {autoQuestOpen && <AutoQuestPreview students={students} onClose={()=>setAutoQuestOpen(false)} onChanged={afterCalendarChange} />}
       {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
-      {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
+      {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
 
       {dayOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm p-3 sm:p-6 flex items-center justify-center"
