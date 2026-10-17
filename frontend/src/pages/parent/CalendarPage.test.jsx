@@ -93,3 +93,16 @@ test("calendar opens with a readable weekly agenda and retains the original mont
   await click(node.querySelector('[data-testid="calendar-week-mode"]'));
   expect(node.querySelector('[data-testid="calendar-week-agenda"]')).not.toBeNull();
 });
+
+test("adding an event from a particular day uses that date and offers an optional time", async () => {
+  const date = iso(new Date());
+  api.get.mockImplementation(path => Promise.resolve({ data: path === "/calendar" ? [] :
+    path === "/students" ? [{id:"child-1",name:"Mason"}] : [] }));
+  await act(async () => root.render(<CalendarPage />));
+  await click(node.querySelector(`[aria-label="View and edit ${date}"]`));
+  await click(node.querySelector('[data-testid="day-add-event"]'));
+  expect(node.querySelector('[data-testid="event-form"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="e-date"]').value).toBe(date);
+  expect(node.querySelector('[data-testid="e-start-time"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="e-duration"]')).toBeNull();
+});
