@@ -202,7 +202,7 @@ export default function CalendarPage() {
             assigned++;
           } else {
             await api.post(`/auto-quest/proposals/${task.p.id}/generate`, {
-              topic: task.p.outcome_codes?.length ? undefined : dayTopic.trim()
+              topic: !task.p.outcome_codes?.length && /^languages?\b/i.test(task.p.learning_area || "") ? dayTopic.trim() : undefined
             });
             created++;
           }
