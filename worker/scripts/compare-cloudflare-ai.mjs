@@ -102,7 +102,7 @@ export async function compare({ dryRun = false } = {}) {
     const started = Date.now();
     const call = async (messages, maxTokens) => {
       const chars = messages.reduce((n, m) => n + String(m.content ?? "").length, 0);
-      if (chars > 120_000 || maxTokens > 4_096) throw Error("Benchmark input/output safety cap exceeded");
+      if (chars > 120_000 || maxTokens > 6_500) throw Error("Benchmark input/output safety cap exceeded");
       // Reserve conservative cost based on maximum *possible* model output.
       const upperInput = Math.min(capTokens, Math.max(1, Math.ceil(chars / 3)));
       const upperOutput = Math.max(1, maxTokens);
