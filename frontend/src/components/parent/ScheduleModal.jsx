@@ -19,10 +19,10 @@ const sameSubject = (slot, area) => !!area && areaKey(slot) === areaKey(area);
  * Family Membership: by default it fills each child's next free timetable slot of the lesson's subject (or a slot the
  * parent picks). Otherwise, or by choice, the parent picks the day(s) as before, or leaves it unscheduled.
  */
-export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], defaultStudents = [], onClose, onDone }) {
+export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], defaultStudents = [], defaultDate = null, onClose, onDone }) {
   const [lessonId, setLessonId] = useState(fixed?.id || "");
   const [picked, setPicked] = useState(defaultStudents);
-  const [start, setStart] = useState(isoLocal(new Date()));
+  const [start, setStart] = useState(defaultDate || isoLocal(new Date()));
   const [end, setEnd] = useState("");
   const [weekdays, setWeekdays] = useState([1, 2, 3, 4, 5]);
   const [busy, setBusy] = useState(false);
@@ -43,7 +43,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   }, [fixed, lessonId, choices]);
 
   useEffect(() => {
-    api.get("/timetable/status").then((r) => { if (r.data?.allowed) { setTimetable(true); setMode("slot"); } }).catch(() => {});
+    api.get("/timetable/status").then((r) => { if (r.data?.allowed) { setTimetable(true); if (!defaultDate) setMode("slot"); } }).catch(() => {});
   }, []);
   useEffect(() => {
     if (!timetable) return;
