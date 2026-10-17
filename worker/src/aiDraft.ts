@@ -4,6 +4,7 @@
 // sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
+import { estimateGrossUsd } from "./aiCost";
 import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
@@ -621,7 +622,11 @@ export function parseReply(out: unknown): StageRun | null {
 
 /** What the draft cost, using Cloudflare's published rates for the default model (US cents). Null when the model is not the default. */
 export function generationReport(st: GenStats, model: string) {
-  const est = model === DEFAULT_MODEL ? Math.round(((st.input_tokens * 0.293 + st.output_tokens * 2.253) / 1e6) * 10000) / 100 : null;
+  // Every priced candidate can be compared in Owner HQ. Missing token counts
+  // are not a real $0 cost, so leave the estimate unavailable.
+  const gross = st.input_tokens > 0 && st.output_tokens > 0
+    ? estimateGrossUsd(model, st.input_tokens, st.output_tokens) : null;
+  const est = gross === null ? null : Math.round(gross * 10000) / 100;
   return { calls: st.calls, stages: st.stages, input_tokens: st.input_tokens, output_tokens: st.output_tokens, est_cost_us_cents: est,
     elapsed_ms: st.elapsed_ms ?? null, stage_timings_ms: st.stage_timings_ms ?? [] };
 }
