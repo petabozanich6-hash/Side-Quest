@@ -10,7 +10,6 @@ const EXAMPLES = [
   "Create a one-hour Year 7 lesson introducing negative integers. My child works independently.",
   "Create four science lessons about the solar system for my Year 5 child next week.",
 ];
-const SERIES = /(?<!year\s)\b(two|three|four|five|six|[2-6])\s+(?:[\w-]+\s+){0,4}?lessons?\b/i;
 const STEPS = ["Planning what to teach and in what order…", "Writing the explanations and worked examples…", "Writing the practice, activities and quiz…", "Checking the answers and the teaching…"];
 
 function Progress({ label }) {
