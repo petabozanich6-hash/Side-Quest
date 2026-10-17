@@ -21,7 +21,15 @@ beforeEach(async () => {
   jest.clearAllMocks();
   done = jest.fn();
   api.get.mockImplementation(url => Promise.resolve({ data: url === "/lessons"
-    ? [{ id: "saved-1", title: "Fractions", learning_area: "Mathematics", status: "ready" }]
+    ? [
+      { id: "saved-1", title: "Fractions", learning_area: "Mathematics", status: "ready" },
+      { id: "mason-open", title: "Already assigned", learning_area: "Mathematics", status: "ready",
+        assigned_to: [{ student_id: "child-1", status: "in_progress" }] },
+      { id: "mason-done", title: "Already finished", learning_area: "Mathematics", status: "ready",
+        assigned_to: [{ student_id: "child-1", status: "completed" }] },
+      { id: "sibling-assigned", title: "Sibling lesson", learning_area: "Mathematics", status: "ready",
+        assigned_to: [{ student_id: "child-2", status: "accepted" }] },
+    ]
     : { proposals: [] } }));
   api.post.mockImplementation(url => {
     if (url === "/auto-quest/plan") return Promise.resolve({ data: { proposals: [idea] } });
@@ -48,6 +56,16 @@ test("plans only its exact slot and assigns a chosen ready library lesson", asyn
   await click('[data-testid="slot-approve"]');
   expect(api.post).toHaveBeenCalledWith("/auto-quest/proposals/proposal-1/approve", {});
   expect(done).toHaveBeenCalledTimes(1);
+});
+
+
+test("slot library hides assignments and completed lessons for this child, but keeps sibling lessons", async () => {
+  await click('[data-testid="slot-plan"]');
+  const options = [...box.querySelector('[data-testid="slot-lesson"]').options].map(o => o.value);
+  expect(options).toContain("saved-1");
+  expect(options).toContain("sibling-assigned");
+  expect(options).not.toContain("mason-open");
+  expect(options).not.toContain("mason-done");
 });
 
 test("AI draft requires explicit parent review before it can be assigned", async () => {

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { X } from "lucide-react";
+import { lessonAvailableForChildren } from "../../lib/lessonAvailability";
 
 export const isoLocal = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
@@ -32,8 +33,14 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   const [slotId, setSlotId] = useState("");
   const [assignees, setAssignees] = useState({}); // child id -> { done, status } for this lesson
   const lesson = fixed || lessons.find(l => l.id === lessonId);
-  const choices = lessons.filter(l => l.status === "ready");
+  const choices = lessons.filter(l => l.status === "ready" && lessonAvailableForChildren(l, picked));
   const area = lesson?.learning_area || "";
+  // The generic picker never offers a lesson already assigned or completed
+  // for any selected child. Fixed lessons retain the explicit "assign again"
+  // journey from the lesson library.
+  useEffect(() => {
+    if (!fixed && lessonId && !choices.some(l => l.id === lessonId)) setLessonId("");
+  }, [fixed, lessonId, choices]);
 
   useEffect(() => {
     api.get("/timetable/status").then((r) => { if (r.data?.allowed) { setTimetable(true); setMode("slot"); } }).catch(() => {});
@@ -102,6 +109,10 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
 
   const submit = async () => {
     if (!lesson) { toast.error("Choose a lesson"); return; }
+    if (!fixed && !lessonAvailableForChildren(lesson, picked)) {
+      toast.error("That lesson has already been assigned to one of the selected children. Choose an unused lesson.");
+      return;
+    }
     if (picked.length === 0) { toast.error("Choose at least one child"); return; }
     if (mode === "days" && dates.length === 0) { toast.error("No days match those dates and weekdays"); return; }
     if (mode === "pick" && !slotId) { toast.error("Choose a timetable slot"); return; }
@@ -157,6 +168,8 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
               <option value="">Choose a lesson…</option>
               {choices.map(l => <option key={l.id} value={l.id}>{l.title}</option>)}
             </select>
+            {picked.length > 0 && !choices.length &&
+              <p className="mt-2 text-xs text-slate-600">No unused ready lessons for the selected child{picked.length > 1 ? "ren" : ""}.</p>}
           </div>
         )}
 

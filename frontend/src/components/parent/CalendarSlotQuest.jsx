@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
+import { lessonAvailableForChild } from "../../lib/lessonAvailability";
 
 /** A single calendar slot's Auto-Quest controls. Planning costs no AI and
  * creates no assignment; generation saves a draft; approval fills this exact slot. */
@@ -22,7 +23,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
     ]);
     const current = (result.data?.proposals || []).find(p => p.calendar_event_id === event.id) || null;
     setProposal(current);
-    setChoices((ls.data || []).filter(l => l.status === "ready"));
+    setChoices((ls.data || []).filter(l => l.status === "ready" && lessonAvailableForChild(l, event.student_id)));
     setSelected(current?.lesson?.id || "");
     setReviewed(false);
     setStale(false);
@@ -37,7 +38,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
       if (!live) return;
       const p = (r.data?.proposals || []).find(x => x.calendar_event_id === event.id) || null;
       setProposal(p); setSelected(p?.lesson?.id || "");
-      setChoices((ls.data || []).filter(l => l.status === "ready"));
+      setChoices((ls.data || []).filter(l => l.status === "ready" && lessonAvailableForChild(l, event.student_id)));
     }).catch(() => { if (live) setStale(true); })
       .finally(() => { if (live) setLoading(false); });
     return () => { live = false; };
@@ -83,6 +84,8 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
     } finally { setBusy(false); }
   };
   const draft = proposal?.lesson && proposal.lesson.status !== "ready";
+  const selectedLibraryUnavailable = proposal?.lesson?.status === "ready" &&
+    !choices.some(l => l.id === proposal.lesson.id);
   const slotNeedsLanguage = /^languages?\b/i.test(event.title || "");
   const noCodes = proposal?.outcome_codes?.length === 0;
   const needsLanguage = noCodes && /^languages?\b/i.test(proposal?.learning_area || event.title);
@@ -120,9 +123,12 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
           <select className="input mt-1" value={selected} onChange={e=>setSelected(e.target.value)} data-testid="slot-lesson">
             <option value="">Select a saved lesson…</option>
             {choices.map(l=><option key={l.id} value={l.id}>{l.title} · {l.learning_area}</option>)}
-            {proposal.lesson && !choices.some(l=>l.id===proposal.lesson.id) && <option value={proposal.lesson.id}>{proposal.lesson.title} (draft)</option>}
+            {proposal.lesson && !choices.some(l=>l.id===proposal.lesson.id) &&
+              <option value={proposal.lesson.id} disabled>{proposal.lesson.title} ({draft ? "draft" : "already assigned or unavailable"})</option>}
           </select>
         </label>
+        {!choices.length && <p className="text-xs text-slate-600">No unused ready lessons in the library for this child. You can generate or build a new one.</p>}
+        {selectedLibraryUnavailable && <p role="alert" className="text-xs text-amber-800">This saved lesson is already assigned to this child or is no longer available. Choose another lesson or replan this slot.</p>}
         {selected && selected !== (proposal.lesson?.id || "") && <button type="button" disabled={busy} onClick={() => run("choose")}
           className="rounded-full border border-teal-700 px-3 py-2 disabled:opacity-50" data-testid="slot-choose">Use selected lesson</button>}
         {noCodes && !proposal.lesson && <label className="block text-xs font-semibold" data-testid="slot-uncoded">
@@ -142,7 +148,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
           <input type="checkbox" checked={reviewed} onChange={e=>setReviewed(e.target.checked)} data-testid="slot-reviewed" />
           I've opened and reviewed this draft, including teaching content and answers.
         </label>}
-        {proposal.lesson && <button type="button" disabled={busy || !!(selected && selected !== proposal.lesson.id) || (draft && !reviewed)}
+        {proposal.lesson && <button type="button" disabled={busy || selectedLibraryUnavailable || !!(selected && selected !== proposal.lesson.id) || (draft && !reviewed)}
           onClick={() => run("approve")} className="rounded-full bg-emerald-800 px-4 py-2 text-white disabled:opacity-50" data-testid="slot-approve">
           {busy ? "Working…" : "Approve and assign to this slot"}</button>}
         <p className="text-xs text-slate-600">Built a new lesson in another tab? Refresh lesson options, select it above and assign it here.</p>
