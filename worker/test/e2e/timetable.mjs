@@ -105,6 +105,21 @@ await step("paying parent: plan one week; it is saved as free timetable slots", 
   ok(s.some((x) => x.title === "Mathematics") && s.some((x) => x.title === "English"), "subjects missing: " + [...new Set(s.map((x) => x.title))].join(", "));
 });
 
+await step("Plan My Week finds the child's existing timetable without assigning anything before approval", async () => {
+  await page.goto(BASE + "/parent/calendar");
+  await page.click("[data-testid=plan-week-open]");
+  await page.waitForSelector("[data-testid=plan-my-week]");
+  await page.fill("[data-testid=plan-week-start]", weekStart);
+  await page.waitForSelector("[data-testid=plan-review-week]:not([disabled])");
+  await page.click("[data-testid=plan-review-week]");
+  await page.waitForSelector("[data-testid=plan-week-results]", { timeout: 25000 });
+  const planText = await page.textContent("[data-testid=plan-week-results]");
+  ok(planText.includes("Mathematics"), "the weekly plan did not include the saved Mathematics times");
+  ok(planText.includes("English"), "the weekly plan did not include the saved English times");
+  ok((await slots()).every(x => !x.linked_assignment_id), "opening a plan must not automatically assign lessons");
+  await page.click('[aria-label="Close weekly planner"]');
+});
+
 await step("assigning a maths lesson puts it in Mia's next free Mathematics slot (shown before saving)", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.click(`[data-testid=assign-${maths1}]`);
