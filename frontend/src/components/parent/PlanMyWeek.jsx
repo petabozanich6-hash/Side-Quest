@@ -166,7 +166,10 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
         {calendarError && <div role="alert" className="rounded-xl border border-red-300 p-4 text-sm">
           {calendarError}
           <button type="button" disabled={loading || saving} onClick={() => {
-            setCalendarError(""); refresh(false);
+            setCalendarError("");
+            api.get("/calendar", { params: { from: week, to: end } })
+              .then(({ data }) => setCalendar(data || []))
+              .catch(e => setCalendarError(apiErrorMessage(e, "Couldn't load this week's calendar")));
           }} className="ml-3 text-teal-800 font-semibold underline">Retry</button>
         </div>}
         {calendar && <>
