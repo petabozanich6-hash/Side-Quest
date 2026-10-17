@@ -76,6 +76,10 @@ export default function CalendarPage() {
     setCur(new Date(y,m-1,d));setFilter("");setDayOpen(event.date);
   },[focused,events]);
 
+  useEffect(() => {
+    if (dayOpen && !rescheduleChild && students.length) setRescheduleChild(filter || students[0].id);
+  }, [dayOpen, rescheduleChild, students, filter]);
+
   const colourOf = (sid) => {
     const i = students.findIndex(s => s.id === sid);
     return i < 0 ? "#475569" : (students[i].prefs?.calendar_colour || COLOURS[i % COLOURS.length]);
@@ -238,7 +242,6 @@ export default function CalendarPage() {
   const monthName = cur.toLocaleString("en-AU", { month: "long", year: "numeric" });
   const dayList = dayOpen ? [...(eventsByDate[dayOpen] || [])].sort((a, b) =>
     (a.start_time || "99:99").localeCompare(b.start_time || "99:99") || a.title.localeCompare(b.title)) : [];
-  const childrenForDay = students.filter(child => !rescheduleChild || child.id === rescheduleChild);
   const daySlots = dayList.filter(e => freeSlot(e) && (!rescheduleChild || e.student_id === rescheduleChild));
 
   return (
@@ -296,7 +299,7 @@ export default function CalendarPage() {
                     <div className={`text-xs ${isToday ? "font-bold text-teal-700" : ""}`}><button type="button" onClick={()=>setDayOpen(iso)} aria-label={`View and edit ${iso}`} className="rounded p-1 hover:bg-teal-50">{dt.getDate()}</button></div>
                     <div className="mt-1 space-y-0.5">
                       {dayEvents.slice(0,3).map(e => (
-                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${labelOf(e)}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id), opacity: freeSlot(e) ? 0.55 : 1}} onClick={()=>setEditing(e)} data-testid={`edit-cal-${e.id}`} data-slot={isSlot(e) ? (freeSlot(e) ? "free" : "filled") : undefined}>{labelOf(e)}</button>
+                        <button type="button" key={e.id} title={`${nameOf(e.student_id) || "Whole family"}: ${labelOf(e)}`} className="block w-full text-left truncate text-[10px] rounded px-1.5 py-0.5 text-white" style={{backgroundColor: colourOf(e.student_id), opacity: freeSlot(e) ? 0.55 : 1}} onClick={()=>setEditing({ ...e, initialQuest: freeSlot(e) })} data-testid={`edit-cal-${e.id}`} data-slot={isSlot(e) ? (freeSlot(e) ? "free" : "filled") : undefined}>{labelOf(e)}</button>
                       ))}
                       {dayEvents.length > 3 && <button type="button" onClick={()=>setDayOpen(iso)} className="text-[10px] text-teal-700 font-semibold underline" data-testid={`more-${iso}`}>+{dayEvents.length - 3} more</button>}
                     </div>
@@ -314,34 +317,101 @@ export default function CalendarPage() {
       {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={load} />}
 
       {dayOpen && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={()=>setDayOpen(null)}>
-          <div onClick={e=>e.stopPropagation()} className="w-full max-w-md rounded-2xl bg-white p-6 max-h-[80vh] overflow-y-auto" data-testid="day-modal">
-            <div className="flex items-center justify-between mb-4"><h2 className="font-display text-lg font-bold">{dayOpen}</h2><button type="button" onClick={()=>setDayOpen(null)} aria-label="Close day"><X size={18}/></button></div>
-            <div className="flex justify-between items-center gap-2 mb-3"><span className="text-xs text-slate-500">{dayList.length} scheduled entries</span><button type="button" disabled={!dayList.length || removingDay} onClick={clearDay} className="rounded-full border border-red-300 text-red-700 px-3 py-1.5 text-xs disabled:opacity-50">{removingDay ? "Clearing…" : "Clear scheduled day"}</button></div>
-            <div className="mb-4 rounded-xl border border-teal-200 p-3 space-y-2">
-              <p className="font-semibold text-sm">Reschedule My Day</p>
-              <p className="text-xs text-slate-600">Move unfinished assigned lessons into upcoming free subject slots. Completed lessons stay put.</p>
-              <select aria-label="Child to reschedule" value={rescheduleChild} onChange={e => {setRescheduleChild(e.target.value);setReschedulePreview(null);}} className="w-full border rounded p-2 text-sm">
-                <option value="">Choose a child</option>
-                {students.map(child => <option key={child.id} value={child.id}>{child.name}</option>)}
-              </select>
-              <button type="button" disabled={!rescheduleChild || rescheduling} onClick={previewReschedule} className="rounded-full bg-teal-800 text-white px-4 py-2 text-sm disabled:opacity-50">Find available days</button>
-              {reschedulePreview && <div className="space-y-2 text-sm">
-                {reschedulePreview.plan.length ? reschedulePreview.plan.map(p => <p key={p.from_slot_id}>{p.title}: {p.from_date} → {p.to_date} at {p.to_time}</p>) : <p>No matching free slots found in the next four weeks.</p>}
-                {!!reschedulePreview.unplaced?.length && <p className="text-amber-800">{reschedulePreview.unplaced.length} lesson(s) could not be placed and will remain on their original day.</p>}
-                {!!reschedulePreview.plan.length && <button type="button" disabled={rescheduling} onClick={applyReschedule} className="rounded-full bg-slate-900 text-white px-4 py-2 disabled:opacity-50">Confirm new dates</button>}
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm p-3 sm:p-6 flex items-center justify-center"
+          onClick={() => !dayDrafting && setDayOpen(null)}>
+          <section role="dialog" aria-modal="true" aria-label="Day's learning plan" onClick={e=>e.stopPropagation()}
+            className="w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white shadow-xl p-4 sm:p-6 space-y-5"
+            data-testid="day-modal">
+            <header className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-display text-xl sm:text-2xl font-bold">
+                  {new Date(dayOpen + "T12:00:00").toLocaleDateString("en-AU", { weekday:"long", day:"numeric", month:"long" })}
+                </h2>
+                <p className="text-sm text-slate-600 mt-1">{dayList.length} scheduled entries · {daySlots.length} available learning slots</p>
+              </div>
+              <button type="button" disabled={dayDrafting} onClick={()=>setDayOpen(null)} aria-label="Close day"
+                className="p-2 rounded-lg border disabled:opacity-50"><X size={18}/></button>
+            </header>
+            <div className="rounded-xl bg-teal-50 border border-teal-200 p-4 space-y-3" data-testid="day-autoquest">
+              <h3 className="font-display font-bold text-teal-950">⚔️ Prepare this day's lessons</h3>
+              <p className="text-sm text-slate-700">Side-Quest checks your lesson library first, assigns suitable unused lessons, then drafts missing ones with AI. You'll review AI drafts before assignment.</p>
+              <label className="block text-sm font-semibold">Child
+                <select aria-label="Child to prepare" value={rescheduleChild}
+                  onChange={e=>{setRescheduleChild(e.target.value); setReschedulePreview(null); setDraftProgress(null);}}
+                  disabled={dayDrafting} className="input mt-1" data-testid="day-child">
+                  <option value="">Choose a child</option>
+                  {students.map(child=><option value={child.id} key={child.id}>{child.name}</option>)}
+                </select>
+              </label>
+              {daySlots.some(e => /^languages?\\b/i.test(e.title)) && <label className="block text-sm font-semibold">
+                Language / topic (e.g. Latin greetings)
+                <input className="input mt-1" value={dayTopic} maxLength={140}
+                  onChange={e=>setDayTopic(e.target.value)} placeholder="Latin: greetings and introductions"
+                  data-testid="day-language-topic" disabled={dayDrafting}/>
+                <span className="block text-xs font-normal text-slate-600 mt-1">Needed for Languages so the library doesn't substitute another language.</span>
+              </label>}
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-xs text-slate-600">{daySlots.length} free slot(s) for the selected child</p>
+                <button type="button" onClick={generateDayDrafts}
+                  disabled={dayDrafting || !rescheduleChild || !daySlots.length}
+                  className="rounded-full bg-teal-800 px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+                  data-testid="generate-day-lessons">
+                  {dayDrafting ? "Preparing lessons…" : "Prepare all free slots"}
+                </button>
+              </div>
+              {draftProgress && <div className="rounded-lg bg-white border border-teal-200 p-3 text-sm" role="status" data-testid="day-batch-progress">
+                <p>{draftProgress.current}</p>
+                {!!draftProgress.total && <progress value={draftProgress.done} max={draftProgress.total}
+                  aria-label="Lessons prepared" className="w-full mt-2"/>}
+                {draftProgress.total > 0 && <p className="text-xs mt-1 text-slate-600">
+                  {draftProgress.assigned || 0} library lesson(s) assigned · {draftProgress.created || 0} draft(s) for review · {draftProgress.failed || 0} issues
+                </p>}
               </div>}
             </div>
             <div className="space-y-2">
-              {dayList.map(e => (
-                <div key={e.id} className="flex items-center gap-2 text-sm rounded-lg border border-slate-200 px-3 py-2">
-                  <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{backgroundColor: colourOf(e.student_id)}}/>
-                  <span className="font-medium">{nameOf(e.student_id) || "Whole family"}</span>
-                  <span className="text-slate-600 truncate flex-1">{e.title}</span><button type="button" className="text-teal-700 text-xs font-semibold underline" onClick={()=>{setDayOpen(null);setEditing(e);}}>Edit</button>
+              <h3 className="font-display font-bold">Your timetable</h3>
+              {!dayList.length && <p className="text-sm text-slate-600">No scheduled entries on this day. Create a weekly timetable or add an event.</p>}
+              {dayList.map(e => <article key={e.id}
+                className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-xl border border-slate-200 p-3"
+                data-testid={`day-event-${e.id}`}>
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  <div className="h-3 w-3 rounded-full shrink-0 mt-1.5" style={{backgroundColor:colourOf(e.student_id)}}/>
+                  <div className="min-w-0">
+                    <div className="font-semibold text-sm">{e.start_time || "Any time"} · {e.title}
+                      {freeSlot(e) && <span className="ml-2 text-xs text-amber-800 font-normal">Free slot</span>}
+                    </div>
+                    <p className="text-xs text-slate-600">{nameOf(e.student_id) || "Whole family"}
+                      {e.duration_minutes ? ` · ${e.duration_minutes} min` : ""}
+                      {e.lesson_title ? ` · Lesson: ${e.lesson_title}` : ""}
+                    </p>
+                  </div>
                 </div>
-              ))}
+                <button type="button"
+                  className={`rounded-full px-4 py-2 text-xs font-semibold shrink-0 ${freeSlot(e) ? "bg-teal-800 text-white" : "border border-slate-300 text-slate-700"}`}
+                  onClick={()=>{setDayOpen(null);setEditing({ ...e, initialQuest: freeSlot(e) });}}
+                  data-testid={freeSlot(e) ? `fill-slot-${e.id}` : `edit-day-${e.id}`}>
+                  {freeSlot(e) ? "⚔️ Fill this slot" : "View / edit"}
+                </button>
+              </article>)}
             </div>
-          </div>
+            <details className="rounded-xl border border-slate-200 p-3">
+              <summary className="font-semibold text-sm cursor-pointer">Reschedule or clear this day</summary>
+              <div className="space-y-3 mt-3 text-sm">
+                <p>Move unfinished assigned lessons into upcoming free slots of the same subject. Completed work stays put.</p>
+                <button type="button" disabled={!rescheduleChild || rescheduling} onClick={previewReschedule}
+                  className="rounded-full bg-slate-800 text-white px-3 py-2 text-xs disabled:opacity-50">Find alternative days</button>
+                {reschedulePreview && <div className="space-y-2">
+                  {reschedulePreview.plan.length ? reschedulePreview.plan.map(p=><p key={p.from_slot_id}>{p.title}: {p.from_date} → {p.to_date} at {p.to_time}</p>) : <p>No matching free slots found in the next four weeks.</p>}
+                  {!!reschedulePreview.unplaced?.length && <p className="text-amber-800">{reschedulePreview.unplaced.length} could not be moved and will stay in place.</p>}
+                  {!!reschedulePreview.plan.length && <button type="button" disabled={rescheduling}
+                    onClick={applyReschedule} className="rounded-full bg-teal-800 text-white px-4 py-2 text-xs disabled:opacity-50">Confirm new dates</button>}
+                </div>}
+                <button type="button" disabled={!dayList.length || removingDay || dayDrafting} onClick={clearDay}
+                  className="rounded-full border border-red-300 text-red-700 px-3 py-2 text-xs disabled:opacity-50">
+                  {removingDay ? "Clearing…" : "Remove all calendar entries for this day"}</button>
+              </div>
+            </details>
+          </section>
         </div>
       )}
 
