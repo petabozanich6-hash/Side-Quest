@@ -430,7 +430,7 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
   // A parent may have added an appointment AFTER the timetable was created.
   // Never place a lesson over a timed commitment or a full-day holiday.
   const toMinutes = (v: unknown) => {
-    const m = /^([01]\\d|2[0-3]):([0-5]\\d)$/.exec(String(v || ""));
+    const m = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(String(v || ""));
     return m ? Number(m[1]) * 60 + Number(m[2]) : null;
   };
   const starts = toMinutes(ev.start_time);
