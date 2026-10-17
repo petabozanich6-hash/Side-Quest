@@ -161,7 +161,7 @@ export type AiCostSummary = {
   unpriced_calls_30d: number;
   failed_calls_30d: number;
   mean_call_ms_30d: number | null;
-  models_30d: { model: string; calls: number; failures: number; mean_call_ms: number | null; estimated_gross_usd: number; unpriced_calls: number }[];
+  models_30d: { model: string; calls: number; failures: number; timed_calls: number; mean_call_ms: number | null; estimated_gross_usd: number; unpriced_calls: number }[];
   tracking_started_at: string | null;
   note: string;
 };
@@ -191,6 +191,7 @@ export async function aiCostSummary(db: D1Database, now = new Date()): Promise<A
     const report = await db.prepare(
       `SELECT model, COUNT(*) calls,
         SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) failures,
+        COUNT(duration_ms) timed_calls,
         ROUND(AVG(duration_ms)) mean_call_ms,
         COALESCE(SUM(CASE WHEN status='completed' THEN estimated_usd ELSE 0 END), 0) estimated_gross_usd,
         SUM(CASE WHEN status='completed' AND estimated_usd IS NULL THEN 1 ELSE 0 END) unpriced_calls
@@ -200,15 +201,16 @@ export async function aiCostSummary(db: D1Database, now = new Date()): Promise<A
       model: String(r.model),
       calls: Number(r.calls ?? 0),
       failures: Number(r.failures ?? 0),
+      timed_calls: Number(r.timed_calls ?? 0),
       mean_call_ms: r.mean_call_ms == null ? null : Number(r.mean_call_ms),
       estimated_gross_usd: Number(r.estimated_gross_usd ?? 0),
       unpriced_calls: Number(r.unpriced_calls ?? 0),
     }));
   } catch { /* duration column not yet migrated */ }
   const sampled = models.filter(r => r.mean_call_ms !== null);
-  const sampledCalls = sampled.reduce((n, r) => n + r.calls, 0);
+  const sampledCalls = sampled.reduce((n, r) => n + r.timed_calls, 0);
   const meanCallMs = sampledCalls > 0
-    ? Math.round(sampled.reduce((n, r) => n + (r.mean_call_ms ?? 0) * r.calls, 0) / sampledCalls)
+    ? Math.round(sampled.reduce((n, r) => n + (r.mean_call_ms ?? 0) * r.timed_calls, 0) / sampledCalls)
     : null;
   return {
     configured: true, currency: "USD", model_price_updated: PRICING_UPDATED, pricing_source: PRICING_SOURCE,
