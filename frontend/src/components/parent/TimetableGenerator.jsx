@@ -134,10 +134,10 @@ function allocate(student, areas, days, startTime, weekStart, existing, dailyOve
   return result;
 }
 
-export default function TimetableGenerator({ students, events, onClose, onDone }) {
+export default function TimetableGenerator({ students, events, onClose, onDone, initialWeek }) {
   const [selected, setSelected] = useState(students.map(s => s.id));
   const [days, setDays] = useState([1, 2, 3, 4, 5]);
-  const [weekStart, setWeekStart] = useState(nextMonday());
+  const [weekStart, setWeekStart] = useState(initialWeek || nextMonday());
   const [startTime, setStartTime] = useState("09:00");
   const [dailyMinutes, setDailyMinutes] = useState(180);
   const [jurisdiction, setJurisdiction] = useState(null);

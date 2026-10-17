@@ -97,11 +97,12 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
       throw e;
     }
   };
-  const scheduleOnDays = async (sid, days) => {
+  const scheduleOnDays = async (sid, days, assignmentId) => {
     for (let i = 0; i < days.length; i++) {
       await api.post("/calendar", {
         title: days.length > 1 ? `${lesson.title} · Day ${i + 1} of ${days.length}` : lesson.title,
         date: days[i], event_type: "lesson", student_id: sid, linked_lesson_id: lesson.id,
+        linked_assignment_id: assignmentId,
         duration_minutes: Number(lesson.duration_minutes) || 45, notes: "",
       });
     }
@@ -122,13 +123,13 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
       for (const sid of picked) {
         const aid = await assignmentFor(sid);
         if (!aid) { notes.push(`${students.find((s) => s.id === sid)?.name || "Child"} already had it, so nothing was added for them`); continue; }
-        if (mode === "days") { await scheduleOnDays(sid, dates); continue; }
+        if (mode === "days") { await scheduleOnDays(sid, dates, aid); continue; }
         if (mode === "none") continue;
         const body = mode === "pick" ? { slot_ids: [slotId] } : { count: sessions };
         const { data } = await api.post(`/assignments/${aid}/place`, body);
         if (!data.placed.length) {
           // No free slot for this subject: put it on the start day instead, so it's still in the week.
-          await scheduleOnDays(sid, [start]);
+          await scheduleOnDays(sid, [start], aid);
           notes.push(`${students.find((s) => s.id === sid)?.name || "Child"}: no free ${area || "matching"} slot, so it's on ${start}`);
         }
       }

@@ -1246,6 +1246,7 @@ await step("Q. Auto-Quest: plan the week from the timetable, approve a reused le
   await qp.fill('[data-testid=login-email]', em); await qp.fill('[data-testid=login-password]', pw);
   await qp.click('[data-testid=login-submit]'); await qp.waitForURL("**/parent");
   await qp.goto(BASE + "/parent/calendar");
+  await qp.getByText("More planning tools").click();
   await qp.click("[data-testid=autoquest-open-btn]");
   await qp.click("[data-testid=autoquest-preview]");
   await qp.waitForSelector("[data-testid=autoquest-decisions] li");
