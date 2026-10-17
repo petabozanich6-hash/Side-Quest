@@ -8,7 +8,7 @@
  */
 import type { Env } from "./types";
 
-export const PRICING_UPDATED = "2026-10-16";
+export const PRICING_UPDATED = "2026-10-17";
 export const PRICING_SOURCE = "https://developers.cloudflare.com/workers-ai/platform/pricing/";
 export const DEFAULT_WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
@@ -21,6 +21,8 @@ export const RATES_USD_PER_MILLION: Record<string, { input: number; output: numb
   "@cf/meta/llama-3.2-3b-instruct": { input: 0.051, output: 0.335 },
   "@cf/qwen/qwen3-30b-a3b-fp8": { input: 0.051, output: 0.335 },
   "@cf/openai/gpt-oss-20b": { input: 0.200, output: 0.300 },
+  "@cf/google/gemma-4-26b-a4b-it": { input: 0.100, output: 0.300 },
+  "@cf/zai-org/glm-4.7-flash": { input: 0.0605, output: 0.400 },
 };
 
 /** Additive runtime fallback; deployment does not automatically apply SQL migrations. */
