@@ -901,7 +901,9 @@ export async function draftLessonWithAi(
           { role: "system", content: stageSystem() },
           { role: "user", content: `Here is a lesson draft (JSON):\n${JSON.stringify(ordered({ ...raw }))}\n\nA reviewer found these problems:\n${fix.map((i) => `- ${i.msg}`).join("\n")}\n\nRewrite ONLY these keys so the problems are fixed: ${keys.join(", ")}. Keep everything consistent with the rest of the lesson and keep what was already good. Make the explanations developed and instructional, not longer for the sake of length. Return ONE JSON object containing only those keys, fully rewritten.` },
         ];
+        const repairStarted = Date.now();
         const rr: any = await call(repairMsg, 6000);
+        (stats.stage_timings_ms ??= []).push({ stage: "repair", ms: Date.now() - repairStarted });
         stats.calls++; stats.stages.push("repair");
         stats.input_tokens += Number(rr?.usage?.prompt_tokens) || 0; stats.output_tokens += Number(rr?.usage?.completion_tokens) || 0;
         const patch = parseReply(rr)?.value ?? null;
@@ -937,10 +939,12 @@ export async function draftLessonWithAi(
   let outcomes: OutcomeSuggestion[] = [];
   // Only the NSW outcome list is loaded, so families in other states and territories never get NSW codes attached.
   if ((request as any).link_outcomes !== false && usesNswOutcomes(jurisdiction)) {
+    const outcomesStarted = Date.now();
     try {
       const m = await matchOutcomesWithAi({ run: (mdl, input, o) => ai.run(mdl, input, o) }, draft, { model, gatewayId: opts.gatewayId });
       if (m) { outcomes = m.suggestions; stats.calls++; stats.stages.push("outcomes"); stats.input_tokens += m.input_tokens; stats.output_tokens += m.output_tokens; }
     } catch { /* optional step: the lesson is fine without it */ }
+    finally { (stats.stage_timings_ms ??= []).push({ stage: "outcomes", ms: Date.now() - outcomesStarted }); }
     if (!outcomes.length) outcomes = suggestOutcomes(draft, 2).filter((o) => o.confidence === "likely");
     draft.outcome_codes = outcomes.map((o) => o.code);
     draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
