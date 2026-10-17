@@ -10,7 +10,7 @@ const SUBJECT_NAMES = {
   technology: "Technologies", computing: "Technologies", coding: "Technologies",
   music: "The Arts", "visual art": "The Arts", "visual arts": "The Arts", art: "The Arts",
 };
-const SINGLE_COMBINED = /\b(?:single|one|an?)\s+(?:(?:cross[- ]curricular|interdisciplinary|integrated|combined|joint)\s+)?lesson\s+(?:combining|integrating|covering|on|using|about|with|involving)\b|\b(?:combined|integrated|cross[- ]curricular|interdisciplinary)\s+(?:lesson|activity|project)\b/i;
+const SINGLE_COMBINED = /\b(?:single|one|an?)\s+(?:(?:cross[- ]curricular|interdisciplinary|integrated|combined|joint)\s+)?lesson\s+(?:combining|integrating|covering|on|using|about|with|involving)\b|\b(?:combined|integrated|cross[- ]curricular|interdisciplinary)\b(?:(?:\s+\w+){0,7})\s+lesson\b/i;
 const explicitAmount = /(?<!year\s)\b(two|three|four|five|six|[2-6])\s+(?:[\w-]+\s+){0,4}?lessons?\b/i;
 
 export function requestedSeparateSubjects(text) {
