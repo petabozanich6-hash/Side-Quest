@@ -32,7 +32,8 @@ const CREATE_TABLE = `CREATE TABLE IF NOT EXISTS ai_inference_costs (
   token_basis TEXT NOT NULL,
   estimated_usd REAL,
   status TEXT NOT NULL,
-  created_at TEXT NOT NULL
+  created_at TEXT NOT NULL,
+  duration_ms INTEGER
 )`;
 const CREATE_INDEX = "CREATE INDEX IF NOT EXISTS idx_ai_costs_time ON ai_inference_costs(created_at)";
 export async function ensureAiCostSchema(db: D1Database) {
@@ -105,6 +106,7 @@ export function meterWorkersAi(env: Env, ctx?: Pick<ExecutionContext, "waitUntil
       run: async (model: string, input: Record<string, unknown>, options?: Record<string, unknown>) => {
         let raw: any;
         let ok = false;
+        const started = Date.now();
         try {
           raw = await original.run(model, input, options);
           ok = true;
@@ -116,9 +118,22 @@ export function meterWorkersAi(env: Env, ctx?: Pick<ExecutionContext, "waitUntil
               const counts = ok ? tokenCounts(input, raw) : { input: null, output: null, basis: "unknown" };
               const gross = ok ? estimateGrossUsd(model, counts.input, counts.output) : null;
               await ensureAiCostSchema(env.DB);
-              await env.DB.prepare(
-                "INSERT INTO ai_inference_costs (id, model, input_tokens, output_tokens, token_basis, estimated_usd, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-              ).bind(crypto.randomUUID(), String(model).slice(0, 140), counts.input, counts.output, counts.basis, gross, ok ? "completed" : "failed", new Date().toISOString()).run();
+              const id = crypto.randomUUID();
+              const name = String(model).slice(0, 140);
+              const status = ok ? "completed" : "failed";
+              const created = new Date().toISOString();
+              const durationMs = Math.min(600000, Math.max(0, Date.now() - started));
+              // Schema 0070 is applied separately. Until then keep cost metering
+              // working against the old table; never block user AI on telemetry.
+              try {
+                await env.DB.prepare(
+                  "INSERT INTO ai_inference_costs (id, model, input_tokens, output_tokens, token_basis, estimated_usd, status, created_at, duration_ms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                ).bind(id, name, counts.input, counts.output, counts.basis, gross, status, created, durationMs).run();
+              } catch {
+                await env.DB.prepare(
+                  "INSERT INTO ai_inference_costs (id, model, input_tokens, output_tokens, token_basis, estimated_usd, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+                ).bind(id, name, counts.input, counts.output, counts.basis, gross, status, created).run();
+              }
             } catch {
               console.warn("Workers AI cost metering unavailable");
             }
@@ -145,6 +160,8 @@ export type AiCostSummary = {
   approximate_tokens_30d: number;
   unpriced_calls_30d: number;
   failed_calls_30d: number;
+  mean_call_ms_30d: number | null;
+  models_30d: { model: string; calls: number; failures: number; mean_call_ms: number | null; estimated_gross_usd: number; unpriced_calls: number }[];
   tracking_started_at: string | null;
   note: string;
 };
@@ -167,6 +184,32 @@ export async function aiCostSummary(db: D1Database, now = new Date()): Promise<A
     FROM ai_inference_costs`
   ).bind(since24, since30, since30, since30, since30, since30, since30).all<any>();
   const x = results?.[0] || {};
+  // This query intentionally fails closed on pre-0070 databases. Never invent
+  // per-model durations or replace the authoritative billing breakdown.
+  let models: AiCostSummary["models_30d"] = [];
+  try {
+    const report = await db.prepare(
+      `SELECT model, COUNT(*) calls,
+        SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) failures,
+        ROUND(AVG(duration_ms)) mean_call_ms,
+        COALESCE(SUM(CASE WHEN status='completed' THEN estimated_usd ELSE 0 END), 0) estimated_gross_usd,
+        SUM(CASE WHEN status='completed' AND estimated_usd IS NULL THEN 1 ELSE 0 END) unpriced_calls
+      FROM ai_inference_costs WHERE created_at >= ? GROUP BY model ORDER BY calls DESC`
+    ).bind(since30).all<any>();
+    models = (report.results ?? []).map(r => ({
+      model: String(r.model),
+      calls: Number(r.calls ?? 0),
+      failures: Number(r.failures ?? 0),
+      mean_call_ms: r.mean_call_ms == null ? null : Number(r.mean_call_ms),
+      estimated_gross_usd: Number(r.estimated_gross_usd ?? 0),
+      unpriced_calls: Number(r.unpriced_calls ?? 0),
+    }));
+  } catch { /* duration column not yet migrated */ }
+  const sampled = models.filter(r => r.mean_call_ms !== null);
+  const sampledCalls = sampled.reduce((n, r) => n + r.calls, 0);
+  const meanCallMs = sampledCalls > 0
+    ? Math.round(sampled.reduce((n, r) => n + (r.mean_call_ms ?? 0) * r.calls, 0) / sampledCalls)
+    : null;
   return {
     configured: true, currency: "USD", model_price_updated: PRICING_UPDATED, pricing_source: PRICING_SOURCE,
     estimated_gross_24h_usd: Number(x.gross24 || 0),
@@ -177,7 +220,9 @@ export async function aiCostSummary(db: D1Database, now = new Date()): Promise<A
     approximate_tokens_30d: Number(x.approximate30 || 0),
     unpriced_calls_30d: Number(x.unpriced30 || 0),
     failed_calls_30d: Number(x.failed30 || 0),
+    mean_call_ms_30d: meanCallMs,
+    models_30d: models,
     tracking_started_at: x.first_at ?? null,
-    note: "Estimated gross Workers AI inference cost only, since tracking began. Token counts are provider-reported when available, otherwise approximate (~4 characters/token). Excludes prior usage, daily free allocation, discounts, taxes, Workers/R2/D1 charges and actual Cloudflare invoice adjustments.",
+    note: "Estimated gross Workers AI inference cost only, since tracking began. Token counts are provider-reported when available, otherwise approximate (~4 characters/token). Timing is measured per AI call only, not full lesson duration; historical durations are unavailable until migration 0070. Excludes prior usage, daily free allocation, discounts, taxes, Workers/R2/D1 charges and actual Cloudflare invoice adjustments.",
   };
 }
