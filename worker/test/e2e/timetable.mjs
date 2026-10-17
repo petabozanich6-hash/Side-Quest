@@ -146,7 +146,8 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
     await page.goto(BASE + "/parent/lessons");
     await page.click(`[data-testid=assign-${lid}]`);
     await page.check(`[data-testid=sch-student-${kid.id}]`);
-    await page.waitForSelector("[data-testid=sch-mode-slot]:checked");
+    await page.waitForSelector("[data-testid=sch-slot-preview]");
+    ok(await page.isChecked("[data-testid=sch-mode-slot]"), "the recommended timetable placement was not selected");
     await page.click("[data-testid=sch-submit]");
     await page.waitForSelector("text=Scheduled in the timetable");
     const s = (await slots()).find((x) => x.linked_lesson_id === lid);
