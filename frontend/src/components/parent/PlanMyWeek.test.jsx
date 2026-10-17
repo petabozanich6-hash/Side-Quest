@@ -106,3 +106,28 @@ test("when there are no learning times, guides the parent to set up the timetabl
   expect(host.textContent).toMatch(/Set up learning times/);
   expect(host.querySelector('[data-testid="plan-review-week"]').disabled).toBe(true);
 });
+
+test("copies last week's times for both children without carrying over old assignments", async () => {
+  const get = api.get.getMockImplementation();
+  const post = api.post.getMockImplementation();
+  api.get.mockImplementation((path, options) => {
+    if (path === "/timetable/slots") return Promise.resolve({ data: [{
+      id: "last-week-maths", title: "Mathematics", date: "2026-10-12",
+      start_time: "09:00", duration_minutes: 45,
+      linked_assignment_id: "previous-assignment", linked_lesson_id: "old-lesson",
+    }] });
+    return get(path, options);
+  });
+  api.post.mockImplementation((path, body) => {
+    if (path === "/timetable/week") return Promise.resolve({ data: { created: 2, skipped: 0 } });
+    return post(path, body);
+  });
+  await click('[data-testid="plan-copy-week"]');
+  const call = api.post.mock.calls.find(([path]) => path === "/timetable/week");
+  expect(call).toBeDefined();
+  expect(call[1].week_start).toBe("2026-10-19");
+  expect(call[1].blocks).toHaveLength(2);
+  expect(call[1].blocks.map(b => b.student_id).sort()).toEqual(["first", "second"]);
+  expect(call[1].blocks.every(b => b.date === "2026-10-19" && !("linked_assignment_id" in b) && !("linked_lesson_id" in b))).toBe(true);
+  expect(confirmed).toHaveBeenCalledTimes(1);
+});
