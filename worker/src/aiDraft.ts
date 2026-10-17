@@ -508,9 +508,16 @@ export function framePrompt(sp: Spec, design: any): string {
   ].join("\n");
 }
 
-export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[]): string {
+export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[], efficient = false): string {
   const sec = design.sequence[i];
   const n = design.sequence.length;
+  // At 60 min the original 250–380 words *per section* yields long and
+  // repetitive drafts. The existing quality gate already requires sufficient
+  // actual teaching, so the fast path targets a concise, fully taught section.
+  const target = Math.max(140, Math.ceil(sizeFor(sp.minutes).minTeachingWords / Math.max(1, n)) + 30);
+  const lengthRule = efficient
+    ? `Write ${target - 15} to ${target + 40} words in useful short paragraphs.`
+    : "Write 250 to 380 words in short paragraphs separated by blank lines.";
   return [
     `STAGE 3, SECTION ${i + 1} OF ${n}: write ONE complete teaching section of a ${sp.minutes}-minute lesson. This is the actual explanation the student reads, so it must teach thoroughly and completely.`,
     ...contextBlock(sp),
@@ -518,7 +525,7 @@ export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[]): s
     texts?.length ? `READINGS THE LESSON USES:\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
     standardExcerpt(sp.delivery),
     `THIS SECTION: heading "${sec.heading}". The ONE new idea: ${sec.idea}. How to teach it: ${sec.how}. It must make clear: ${(sec.key_points || []).join("; ")}.${i > 0 ? ` The student has already been taught: ${design.sequence.slice(0, i).map((s: any) => s.idea).join("; ")}. Build on that without repeating it.` : " This is the first section, so begin from what the student already knows."}`,
-    "Write 250 to 380 words in short paragraphs separated by blank lines. Cover, in this order: (1) connect to something the student already knows or has seen; (2) state the new idea in plain words and define any new term the first time it appears; (3) work through at least one concrete example with the real numbers or details, one step at a time, saying what happens at each step; (4) explain WHY it works, not just what to do; (5) point out the slip students commonly make here and how to avoid it; (6) finish with a sentence that leads into what comes next. Every sentence must teach something. No filler, no repeating the heading.",
+    lengthRule + " Cover, in this order: (1) connect to something the student already knows or has seen; (2) state the new idea in plain words and define any new term the first time it appears; (3) work through at least one concrete example with the real numbers or details, one step at a time, saying what happens at each step; (4) explain WHY it works, not just what to do; (5) point out the slip students commonly make here and how to avoid it; (6) finish with a sentence that leads into what comes next. Every sentence must teach something. No filler, no repeating the heading.",
     'JSON shape: {"heading":string,"body":string,"visual":optional (' + VISUAL_FORMAT + ")}",
   ].filter(Boolean).join("\n");
 }
@@ -730,7 +737,10 @@ export async function generateStaged(
       ...contextBlock(spec), `WHOLE LESSON: ${designBrief(design)}`,
       texts.length ? `READINGS: ${JSON.stringify(texts)}` : "", standardExcerpt(spec.delivery),
       ...ids.map(i => `SECTION ${i + 1}: heading "${seq[i].heading}". Idea: ${seq[i].idea}. Method: ${seq[i].how}. Key points: ${(seq[i].key_points || []).join("; ")}. Earlier learning: ${seq.slice(0, i).map((x: any) => x.idea).join("; ") || "start with prior knowledge"}.`),
-      "Write 250–380 words EACH in short paragraphs. Introduce, explain, model with real details, say WHY, correct misconceptions and link ahead. Do not mix sections or repeat content.",
+      (fastPipeline
+        ? `Write ${Math.max(140, Math.ceil(sizeFor(spec.minutes).minTeachingWords / Math.max(1, seq.length)) + 15)} to ${Math.max(175, Math.ceil(sizeFor(spec.minutes).minTeachingWords / Math.max(1, seq.length)) + 70)} words EACH in short paragraphs.`
+        : "Write 250–380 words EACH in short paragraphs.") +
+        " Introduce, explain, model with real details, say WHY, correct misconceptions and link ahead. Do not mix sections or repeat content.",
       'JSON ONLY: {"sections":[{"heading":string,"body":string,"visual":optional},...]}', VISUAL_FORMAT,
     ].filter(Boolean).join("\n");
     const ePrompt = (ids: number[]) => [
@@ -744,7 +754,7 @@ export async function generateStaged(
     const grouped = await pool<any>([
       ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
       ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
-    ], fastPipeline ? 6 : SMALL_POOL);
+    ], fastPipeline ? (canOverlapLessonFrame(spec) ? 5 : 6) : SMALL_POOL);
     const unpack = async (type: "sections" | "worked_examples", chunksToRead: number[][], offset: number) => {
       const resolved = await Promise.all(chunksToRead.map(async (ids, k) => {
         const items = grouped[offset + k]?.[type];
@@ -754,7 +764,7 @@ export async function generateStaged(
         // If a bundled call was truncated or invalid, retain the proven individual path.
         flags.push("The grouped teaching request needed an individual retry; the original lesson checks still apply.");
         return Promise.all(ids.map(i => type === "sections"
-          ? go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])
+          ? go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts, fastPipeline), 1700, ["heading", "body"])
           : go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])));
       }));
       return resolved.flat();
@@ -765,9 +775,9 @@ export async function generateStaged(
     ]);
   } else {
     const results = await pool<any>([
-      ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
+      ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts, fastPipeline), 1700, ["heading", "body"])),
       ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
-    ], fastPipeline ? 6 : SMALL_POOL);
+    ], fastPipeline ? (canOverlapLessonFrame(spec) ? 5 : 6) : SMALL_POOL);
     sections = results.slice(0, seq.length);
     examples = results.slice(seq.length);
   }
