@@ -39,13 +39,14 @@ export default function MakeLesson() {
   const [linkOutcomes, setLinkOutcomes] = useState(true);
   const [ownerFastPreview, setOwnerFastPreview] = useState(false);
   const [jurisdiction, setJurisdiction] = useState(null);
+  const [isPlatformOwner, setIsPlatformOwner] = useState(false);
   const leaving = useRef(false);
   const batchId = useRef(null); // one set per "Write all", even if the button is pressed twice
 
   useEffect(() => {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => setPlan({ limits: {} }));
     api.get("/students").then(r => { setStudents(r.data); if (r.data.length === 1) setStudent(r.data[0].id); else if (!r.data.some(x => x.id === qs.get("student"))) setStudent(""); }).catch(() => {});
-    api.get("/auth/me").then(r => setJurisdiction(r.data?.jurisdiction || null)).catch(() => {});
+    api.get("/auth/me").then(r => { setJurisdiction(r.data?.jurisdiction || null); setIsPlatformOwner(r.data?.is_platform_owner === true); }).catch(() => {});
   }, []);
   useEffect(() => {
     const warn = e => { if (busy && !leaving.current) { e.preventDefault(); e.returnValue = ""; } };
@@ -54,7 +55,7 @@ export default function MakeLesson() {
   }, [busy]);
 
   const child = students.find(s => s.id === student);
-  const body = (extra = {}) => ({ request: text.trim(), student_id: student || undefined, source_text: resource.trim() || undefined, link_outcomes: linkOutcomes, ...(plan?.effective_plan === "INTERNAL" && ownerFastPreview ? { owner_fast_preview: true } : {}), ...extra });
+  const body = (extra = {}) => ({ request: text.trim(), student_id: student || undefined, source_text: resource.trim() || undefined, link_outcomes: linkOutcomes, ...(plan?.effective_plan === "INTERNAL" && isPlatformOwner && ownerFastPreview ? { owner_fast_preview: true } : {}), ...extra });
   const fail = e => setErr(e.response?.data?.detail || "Something went wrong. Nothing was used from your allowance. You can try again, or build the lesson yourself.");
 
   const create = async () => {
@@ -161,7 +162,7 @@ export default function MakeLesson() {
             ) : (
               <p className="text-xs text-stone-600 mb-3" data-testid="mk-state-curriculum-note">{jurisdiction ? `Your lesson will be written with your ${jurisdiction} curriculum in mind, and will include a link to the official curriculum. Verified outcome codes for ${jurisdiction} are not yet loaded, so no codes will be invented.` : "Choose your family's state or territory on the Curriculum page for state-aware lesson drafting. Until then, drafts are general Australian lessons without automatic curriculum codes."}</p>
             )}
-            {plan.effective_plan === "INTERNAL" && !SERIES.test(text) && (
+            {plan.effective_plan === "INTERNAL" && isPlatformOwner && !SERIES.test(text) && (
               <label className="flex items-start gap-2 text-xs text-slate-700 border border-amber-200 rounded-xl p-3 bg-amber-50" data-testid="mk-owner-speed-test">
                 <input type="checkbox" className="mt-0.5" checked={ownerFastPreview} onChange={e => setOwnerFastPreview(e.target.checked)} />
                 <span><strong>Owner-only speed trial</strong> — test a faster writing sequence. The full teaching, worked examples, activities, and quality checks stay exactly the same. All families continue using the normal service.</span>
