@@ -13,7 +13,7 @@ import { buildPortfolio } from "./portfolio";
 import { billingSummary } from "./billing";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; AI_FAST_PIPELINE?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -204,7 +204,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.post("/api/ai/lesson-draft", auth, parent, async (c) => {
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
-    const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", request: b });
+    const r = await aid.draftLessonWithAi(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: c.env.AI_FAST_PIPELINE === "true", request: b });
     return r.ok ? c.json({ lesson: r.lesson, usage: r.usage, warnings: r.warnings, model: r.model, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
   });
 
@@ -236,7 +236,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   });
   app.post("/api/ai/batches/:id/items/:index/draft", auth, parent, async (c) => {
     const u = c.get("user");
-    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", batchId: c.req.param("id"), index: Number(c.req.param("index")) });
+    const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: c.env.AI_FAST_PIPELINE === "true", batchId: c.req.param("id"), index: Number(c.req.param("index")) });
     return r.ok ? c.json({ lesson: r.lesson, reused: r.reused, usage: r.usage, warnings: r.warnings, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
   });
   app.post("/api/ai/batches/:id/dismiss", auth, parent, async (c) => {
