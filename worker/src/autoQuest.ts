@@ -25,7 +25,7 @@ type DB = any;
 
 // ---------------------------------------------------------------- pure planner
 
-export type QuestSlot = { id: string; student_id: string; date: string; title: string; event_type?: string; linked_assignment_id?: string | null; linked_lesson_id?: string | null; duration_minutes?: number | null };
+export type QuestSlot = { id: string; student_id: string; date: string; title: string; event_type?: string; notes?: string | null; linked_assignment_id?: string | null; linked_lesson_id?: string | null; duration_minutes?: number | null };
 export type QuestLesson = { id: string; title: string; learning_area?: string; stage?: string; year_level?: number | string | null; outcome_codes?: string[]; status?: string; archived_at?: string | null };
 export type QuestAssignment = { id: string; student_id: string; lesson_id: string; scheduled_date?: string | null; status?: string };
 export type QuestProgress = { code: string; status: string; last_evidence_on?: string | null; gaps?: string[] };
@@ -113,7 +113,8 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   });
 
   return input.slots
-    .filter((slot) => slot.student_id === input.studentId && (!slot.event_type || slot.event_type === "lesson" || slot.event_type === "timetable"))
+    .filter((slot) => slot.student_id === input.studentId && (!slot.event_type || slot.event_type === "timetable" ||
+      (slot.event_type === "lesson" && String(slot.notes || "").startsWith("Suggested by Side-Quest"))))
     .sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id))
     .map((slot): QuestDecision => {
       const area = areaOf(slot.title);
@@ -289,7 +290,7 @@ export async function planRange(db: DB, familyId: string, q: { student_id?: unkn
   const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
   const cat = catalogueFor(jurisdiction);
   const [events, assignments, lessons] = await Promise.all([
-    db.prepare("SELECT id, student_id, date, title, event_type, linked_assignment_id, linked_lesson_id, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date >= ? AND date <= ? ORDER BY date ASC, start_time ASC LIMIT 250").bind(familyId, sid, from, to).all(),
+    db.prepare("SELECT id, student_id, date, title, event_type, notes, linked_assignment_id, linked_lesson_id, duration_minutes FROM calendar_events WHERE family_id = ? AND student_id = ? AND date >= ? AND date <= ? ORDER BY date ASC, start_time ASC LIMIT 250").bind(familyId, sid, from, to).all(),
     db.prepare("SELECT id, student_id, lesson_id, scheduled_date, status FROM assignments WHERE family_id = ? AND student_id = ? AND status != 'revoked' LIMIT 2000").bind(familyId, sid).all(),
     lb.listLessons(db, familyId),
   ]);
