@@ -37,6 +37,9 @@ export async function moveAssignmentDay(db: DB, familyId: string, id: string, re
     ORDER BY date ASC, start_time ASC LIMIT 5`).bind(familyId, id).all<any>()).results || [];
   if (linked.length > 1) return fail(409, "This lesson has multiple sessions. Open the calendar to move each session.", "MULTIPLE_SESSIONS");
   const before = linked[0] || null;
+  const { limits } = await lb.getEntitlement(db, familyId);
+  if (!limits.timetable && before)
+    return lb.paywall("Rescheduling a linked calendar lesson needs Family Membership. Your existing work is safe.");
   if (before?.status === "done") return fail(409, "This calendar session is marked complete and cannot be moved.", "ALREADY_DONE");
   const now = new Date().toISOString();
   const verify = (source: any) => db.prepare(`SELECT CASE WHEN EXISTS (
@@ -47,6 +50,12 @@ export async function updateAssignment(db: DB, familyId: string, id: string, inp
   if (!a) return fail(404, "Assignment not found");
   if (a.status === "revoked") return fail(409, "This assignment has been revoked.", "REVOKED");
   if (lb.DONE_STATUSES.includes(a.status)) return fail(409, "This lesson is finished, so it can't be changed.", "ALREADY_DONE");
+  // Validate everything before moving the calendar so an invalid due date
+  // cannot leave a partial update.
+  if ("due_date" in (input || {})) {
+    const due = input.due_date;
+    if (due !== null && due !== "" && !validDate(due)) return fail(400, "Dates must look like 2026-10-31.");
+  }
   const sets: string[] = [];
   const b: unknown[] = [];
   if ("scheduled_date" in (input || {})) {
@@ -184,7 +193,6 @@ export async function deleteEvidenceNote(db: DB, familyId: string, id: string): 
   if (isSlot || !before) {
     // Only paid plans can create new timetable-backed events. A preview can
     // still keep a date on its original manual assignment without new slots.
-    const { limits } = await lb.getEntitlement(db, familyId);
     if (!limits.timetable && !before) {
       await db.prepare("UPDATE assignments SET scheduled_date = ?, updated_at = ? WHERE id = ? AND family_id = ?")
         .bind(date, now, id, familyId).run();
