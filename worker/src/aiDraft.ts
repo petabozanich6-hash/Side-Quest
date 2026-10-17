@@ -817,7 +817,7 @@ export async function draftLessonWithAi(
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
-  const { limits } = await lb.getEntitlement(db, familyId, now);
+  const { limits, plan } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("AI lesson drafting is part of the paid plan. Your free preview includes the full manual lesson builder.");
 
   let student: StudentInfo | null = null;
@@ -885,7 +885,10 @@ export async function draftLessonWithAi(
   let draft: Draft | null = null;
   let issues: Issue[] = [];
   try {
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true);
+    // Only the privileged INTERNAL family can opt in to a speed experiment.
+    // A paid parent's forged owner_fast_preview request is never honoured.
+    const ownerPreview = plan === "INTERNAL" && (request as any).owner_fast_preview === true;
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true || ownerPreview);
     if (raw) {
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);
