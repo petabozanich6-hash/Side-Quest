@@ -8,6 +8,7 @@ const iso = d => [d.getFullYear(), String(d.getMonth() + 1).padStart(2, "0"), St
 const fromIso = date => new Date(date + "T12:00:00");
 const monday = date => { const d = fromIso(date); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return iso(d); };
 const plusDays = (date, n) => { const d = fromIso(date); d.setDate(d.getDate() + n); return iso(d); };
+const suggestedWeek = date => { const day = fromIso(date).getDay(); const start = monday(date); return day === 0 || day === 6 ? plusDays(start, 7) : start; };
 const dateLabel = date => fromIso(date).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" });
 const STATUS = {
   scheduled: ["Already on the calendar", "text-emerald-800"],
@@ -19,7 +20,7 @@ const STATUS = {
 };
 
 export default function PlanMyWeek({ students = [], initialDate, initialChild = "", onClose, onDone }) {
-  const [week, setWeek] = useState(monday(initialDate || iso(new Date())));
+  const [week, setWeek] = useState(suggestedWeek(initialDate || iso(new Date())));
   const [children, setChildren] = useState(initialChild ? [initialChild] : students.map(s => s.id));
   const [calendar, setCalendar] = useState(null);
   const [plans, setPlans] = useState(null);
