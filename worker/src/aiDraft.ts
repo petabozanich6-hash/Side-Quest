@@ -785,7 +785,12 @@ export async function generateStaged(
     : [await go("frame", framePrompt(spec, design), 1800, ["introduction", "consolidation"]), null];
   if (!frame) return null;
   const texts: any[] = Array.isArray(frame.texts) ? frame.texts.filter((t: any) => t?.content) : [];
-  const built = parallelFrame ? prebuilt : await teaching(texts);
+  // A source-free maths lesson may nevertheless produce an original reading or
+  // data table in its frame. Never discard that material just to save latency:
+  // rebuild the teaching with the real text (the unreferenced speculative
+  // sections are never persisted or shown to the parent).
+  if (parallelFrame && texts.length) flags.push("The lesson includes a new reading, so teaching was checked against the completed text.");
+  const built = parallelFrame && !texts.length ? prebuilt : await teaching(texts);
   if (!built) return null;
   const { sections, examples } = built;
   const taught = { sections, worked_examples: examples, texts };
