@@ -55,7 +55,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
 
   const refresh = async (replan = false) => {
     if (!children.length) return;
-    setLoading(true); setErrors([]); setProgress("");
+    setLoading(true); if (replan) setErrors([]); setProgress("");
     try {
       const { data: entries } = await api.get("/calendar", { params: { from: week, to: end } });
       const updates = {};
