@@ -27,6 +27,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
   const [plans, setPlans] = useState(null);
   const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [copying, setCopying] = useState(false);
   const [saving, setSaving] = useState(false);
   const [progress, setProgress] = useState("");
   const [topic, setTopic] = useState("");
@@ -74,6 +75,38 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
       setSelected(eligible);
     } catch (e) { toast.error(apiErrorMessage(e, "Couldn't review the learning week")); }
     finally { setLoading(false); }
+  };
+
+  const copyLastWeek = async () => {
+    if (!children.length || saving || copying) return;
+    setCopying(true);
+    try {
+      const previousMonday = plusDays(week, -7);
+      const previousSunday = plusDays(week, -1);
+      const blocks = [];
+      for (const child of children) {
+        const { data } = await api.get("/timetable/slots", {
+          params: { student_id: child, from: previousMonday, to: previousSunday },
+        });
+        for (const entry of data || []) {
+          blocks.push({
+            student_id: child, title: entry.title, date: plusDays(entry.date, 7),
+            start_time: entry.start_time, duration_minutes: Number(entry.duration_minutes) || 45,
+          });
+        }
+      }
+      if (!blocks.length) {
+        toast.error("No learning times found last week. Choose Set up learning times instead.");
+        return;
+      }
+      if (!window.confirm(`Copy ${blocks.length} learning times to ${dateLabel(week)} – ${dateLabel(end)}? Lessons, finished work and assignments will NOT be copied.`)) return;
+      const { data } = await api.post("/timetable/week", { week_start: week, blocks });
+      toast.success(`${data.created || 0} learning times copied. ${data.skipped || 0} already existed or conflicted.`);
+      onDone?.(week);
+      await refresh(true);
+    } catch (e) {
+      toast.error(apiErrorMessage(e, "Couldn't copy last week's learning times"));
+    } finally { setCopying(false); }
   };
 
   const commit = async () => {
@@ -178,16 +211,23 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
               <p className="font-semibold text-sm">{dateLabel(week)} – {dateLabel(end)}</p>
               <p className="text-xs text-slate-600">{slots.length} learning times already in the calendar.</p>
             </div>
-            <button type="button" onClick={() => setTimetableOpen(true)} disabled={!children.length || saving}
-              className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-bold">
-              {hasSlots ? "Adjust learning times" : "Set up learning times"}
-            </button>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={copyLastWeek} disabled={!children.length || saving || loading || copying}
+                className="rounded-full bg-teal-800 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"
+                data-testid="plan-copy-week">
+                {copying ? "Copying learning times…" : "Copy last week's times"}
+              </button>
+              <button type="button" onClick={() => setTimetableOpen(true)} disabled={!children.length || saving || copying}
+                className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-bold">
+                {hasSlots ? "Adjust learning times" : "Choose different learning times"}
+              </button>
+            </div>
           </div>
           {!hasSlots && <div className="rounded-xl border border-dashed border-amber-400 p-4 text-sm">
-            <p className="font-semibold">First, choose when your children learn.</p>
-            <p className="mt-1 text-slate-600">Set your learning days and available hours once, then Side-Quest can suggest the right lessons for each time. No lessons will be assigned yet.</p>
+            <p className="font-semibold">Use last week’s timetable, or choose your learning times.</p>
+            <p className="mt-1 text-slate-600">Copy last week’s learning times in one tap, or choose different days and hours. Finished lessons and previous assignments are never copied.</p>
           </div>}
-          <button type="button" onClick={() => refresh(true)} disabled={!hasSlots || !children.length || loading || saving}
+          <button type="button" onClick={() => refresh(true)} disabled={!hasSlots || !children.length || loading || saving || copying}
             className="w-full sm:w-auto rounded-full bg-teal-800 text-white font-bold px-6 py-3 disabled:opacity-50"
             data-testid="plan-review-week">{loading ? "Preparing your week…" : plans ? "Refresh my week" : "Find lessons for my week"}</button>
         </>}
