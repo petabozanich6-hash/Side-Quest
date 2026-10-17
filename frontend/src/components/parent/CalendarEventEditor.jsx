@@ -11,6 +11,7 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
     notes: event.notes || ""
   });
   const [busy, setBusy] = useState(false);
+  const [showDetails, setShowDetails] = useState(!event.initialQuest);
   const [assignment, setAssignment] = useState(null);
   const isTimetableSlot = event.event_type === "timetable" ||
     (event.event_type === "lesson" && /^Suggested by Side-Quest/.test(event.notes || ""));
@@ -68,7 +69,17 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
   };
   return <div className="fixed inset-0 z-50 bg-slate-900/50 flex items-center justify-center p-4" onClick={onClose}>
     <form className="w-full max-w-lg bg-white rounded-2xl p-6 space-y-3 max-h-[90vh] overflow-y-auto" onClick={e=>e.stopPropagation()} onSubmit={save} data-testid="calendar-edit-modal">
-      <div className="flex justify-between items-center"><h2 className="font-display text-xl font-bold">Edit scheduled entry</h2><button type="button" onClick={onClose} aria-label="Close" className="p-2">✕</button></div>
+      <div className="flex justify-between items-center"><h2 className="font-display text-xl font-bold">{event.initialQuest && isFreeSlot ? "⚔️ Fill this timetable slot" : "Edit scheduled entry"}</h2><button type="button" onClick={onClose} aria-label="Close" className="p-2">✕</button></div>
+      {event.initialQuest && isFreeSlot && <div className="text-sm text-slate-700">
+        <strong>{students.find(s=>s.id===event.student_id)?.name || "Child"} · {event.title}</strong>
+        <p>{event.date}{event.start_time ? ` · ${event.start_time}` : ""} · {event.duration_minutes || "?"} minutes</p>
+        <p className="mt-1 text-xs text-slate-600">Choose a library lesson or generate a new draft for this exact time slot.</p>
+      </div>}
+      {event.initialQuest && isFreeSlot && !showDetails && <CalendarSlotQuest event={event} onAssigned={() => { onSaved(); onClose(); }} />}
+      {event.initialQuest && isFreeSlot && <button type="button" className="text-xs underline font-semibold text-teal-800" onClick={()=>setShowDetails(v=>!v)}>
+        {showDetails ? "Hide schedule details" : "Edit time, subject or event details"}
+      </button>}
+      {showDetails && <>
       <label className="block text-sm font-semibold">Title<input className="input mt-1" required value={form.title} onChange={e=>set("title",e.target.value)}/></label>
       <div className="grid grid-cols-2 gap-3">
         <label className="block text-sm font-semibold">Date<input className="input mt-1" type="date" required value={form.date} onChange={e=>set("date",e.target.value)}/></label>
@@ -85,6 +96,7 @@ export default function CalendarEventEditor({ event, students, lessons, onClose,
       )}
       <p className="text-xs text-slate-600">Rescheduling changes the calendar, not completed lesson evidence. Changing a linked lesson unlinks the old assignment; it does not erase work.</p>
       <div className="flex justify-between flex-wrap gap-2 pt-2"><button type="button" disabled={busy} onClick={remove} className="border border-red-300 text-red-700 rounded-full px-4 py-2">Remove scheduled entry</button><button disabled={busy} type="submit" className="bg-teal-800 text-white rounded-full px-6 py-2">{busy?"Saving…":"Save changes"}</button></div>
+      </>
     </form>
   </div>;
 }
