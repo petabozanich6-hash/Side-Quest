@@ -17,7 +17,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
 
   const load = async () => {
     const [result, ls] = await Promise.all([
-      api.get("/auto-quest/proposals", { params: { student_id: event.student_id, from: event.date, to: event.date, topic: topic.trim() } }),
+      api.get("/auto-quest/proposals", { params: { student_id: event.student_id, from: event.date, to: event.date } }),
       api.get("/lessons")
     ]);
     const current = (result.data?.proposals || []).find(p => p.calendar_event_id === event.id) || null;
@@ -49,7 +49,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
     try {
       if (action === "plan") {
         const { data } = await api.post("/auto-quest/plan", {
-          student_id: event.student_id, from: event.date, to: event.date
+          student_id: event.student_id, from: event.date, to: event.date, topic: topic.trim()
         });
         const p = (data.proposals || []).find(x => x.calendar_event_id === event.id);
         if (!p) throw new Error("This slot could not be planned. Check that it is a free timetable lesson slot.");
