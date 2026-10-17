@@ -356,10 +356,9 @@ export async function generateForProposal(db: DB, ai: any, o: { familyId: string
   if (p.lesson_id) return bad(409, "This proposal already has a lesson. Open it to edit, or reject the proposal.", "HAS_LESSON");
   const codes = json<string[]>(p.outcome_codes, []);
   const cat = catalogueFor(await getFamilyJurisdiction(db, o.familyId).catch(() => null));
-  if (codes.length) {
-    if (!cat.available || codes.some((c) => !cat.available || !cat.byCode.has(c)))
-      return bad(409, "The verified curriculum list has changed. Replan this session first.", "NO_OUTCOMES");
-  }
+  const verifiedByCode = cat.available ? cat.byCode : new Map<string, { description?: string }>();
+  if (codes.length && codes.some(c => !verifiedByCode.has(c)))
+    return bad(409, "The verified curriculum list has changed. Replan this session first.", "NO_OUTCOMES");
   const ev = await db.prepare("SELECT student_id, date, duration_minutes, linked_lesson_id, linked_assignment_id FROM calendar_events WHERE id = ? AND family_id = ?")
     .bind(p.calendar_event_id, o.familyId).first();
   if (!ev || ev.student_id !== p.student_id || ev.date !== p.date || ev.linked_lesson_id || ev.linked_assignment_id)
@@ -369,7 +368,7 @@ export async function generateForProposal(db: DB, ai: any, o: { familyId: string
   if (!codes.length && /^languages?(?:\b|\s|$)/i.test(area) && !customTopic)
     return bad(400, "Tell us which language or topic to teach (for example: Latin greetings) before generating.", "TOPIC_REQUIRED");
   // Uncoded drafts have NO linked codes and no implied curriculum achievement.
-  const goal = cat.available ? codes.map((c) => cat.byCode.get(c)?.description).filter(Boolean).join(" Also: ") : "";
+  const goal = codes.map(c => verifiedByCode.get(c)?.description).filter(Boolean).join(" Also: ");
   const purpose = p.purpose === "revise" ? "A short revision lesson revisiting" : p.purpose === "consolidate" ? "A consolidation lesson with extra practice on" : "A first teaching lesson on";
   const focus = codes.length ? goal || codes.join(", ") : customTopic || area;
   const topic = codes.length ? `${area}: ${focus}` : `${focus}: ${String(p.reason || "").match(/Session \d+: ([^.]+)/)?.[1] || "learn and practise key skills"}`;
