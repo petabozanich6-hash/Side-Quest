@@ -7,6 +7,7 @@ import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
 import { lessonAvailableForChildren } from "../../lib/lessonAvailability";
 import TimetableGenerator from "../../components/parent/TimetableGenerator";
 import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
+import FillMyWeek from "../../components/parent/FillMyWeek";
 import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
 
 const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
@@ -37,6 +38,7 @@ export default function CalendarPage() {
   const [schedOpen, setSchedOpen] = useState(false);
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [autoQuestOpen, setAutoQuestOpen] = useState(false);
+  const [weekFillOpen, setWeekFillOpen] = useState(false);
   const [dayOpen, setDayOpen] = useState(null);
   const [editing, setEditing] = useState(null);
   const [removingDay, setRemovingDay] = useState(false);
@@ -268,7 +270,8 @@ export default function CalendarPage() {
             <option value="">All children</option>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
-          <button onClick={()=>setAutoQuestOpen(true)} className="rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300 px-4 py-2 text-sm font-semibold" data-testid="autoquest-open-btn">⚔️ Auto-Quest</button>
+          <button onClick={()=>setWeekFillOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2 text-sm font-bold" data-testid="fill-week-open">⚔️ Fill My Week</button>
+          <button onClick={()=>setAutoQuestOpen(true)} className="rounded-full border border-emerald-300 bg-emerald-50 text-emerald-900 px-4 py-2 text-sm font-semibold" data-testid="autoquest-open-btn">Auto-Quest (advanced)</button>
           <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Weekly timetable</button>
           <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
           <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
@@ -324,6 +327,9 @@ export default function CalendarPage() {
       </div>
 
       {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
+      {weekFillOpen && <FillMyWeek students={students} initialChild={filter || rescheduleChild}
+        initialDate={isoLocal(cur)} onClose={()=>setWeekFillOpen(false)} onDone={afterCalendarChange}
+        onOpenDay={date=>{setWeekFillOpen(false);setDayOpen(date);}} />}
       {autoQuestOpen && <AutoQuestPreview students={students} onClose={()=>setAutoQuestOpen(false)} onChanged={afterCalendarChange} />}
       {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
       {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
@@ -341,6 +347,7 @@ export default function CalendarPage() {
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">{dayList.length} scheduled entries · {daySlots.length} available learning slots</p>
               </div>
+              <button type="button" disabled={dayDrafting} onClick={()=>{setDayOpen(null);setWeekFillOpen(true);}} className="text-sm underline text-teal-900 font-semibold">Fill this week</button>
               <button type="button" disabled={dayDrafting} onClick={()=>setDayOpen(null)} aria-label="Close day"
                 className="p-2 rounded-lg border disabled:opacity-50"><X size={18}/></button>
             </header>

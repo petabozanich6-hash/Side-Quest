@@ -5,8 +5,8 @@ import { planAutoQuest } from "../src/autoQuest.ts";
 const base = {
   studentId: "child-a", childStage: "S2", childYear: "3",
   slots: [
-    { id: "mon", student_id: "child-a", date: "2026-10-19", title: "Mathematics", event_type: "lesson" },
-    { id: "tue", student_id: "child-a", date: "2026-10-20", title: "Mathematics", event_type: "lesson" },
+    { id: "mon", student_id: "child-a", date: "2026-10-19", title: "Mathematics", event_type: "timetable" },
+    { id: "tue", student_id: "child-a", date: "2026-10-20", title: "Mathematics", event_type: "timetable" },
   ],
   lessons: [
     { id: "lesson-achieved", title: "Numbers", stage: "S2", status: "ready", learning_area: "Mathematics", outcome_codes: ["ACH"] },
@@ -59,6 +59,17 @@ test("same subject on the same day gets a separate proposal unless that exact sl
   assert.equal(proposed[1].action, "needs_generation", "an in-flight outcome may still receive a distinct practice task");
   assert.equal(proposed[1].purpose, "consolidate");
   assert.deepEqual(proposed[1].eligibleOutcomeCodes, ["NEXT"]);
+});
+
+test("Auto-Quest ignores ordinary calendar lessons but includes older explicitly marked timetable slots", () => {
+  const slots = [
+    { id:"ordinary", student_id:"child-a", title:"English", date:"2026-10-19", event_type:"lesson" },
+    { id:"legacy", student_id:"child-a", title:"English", date:"2026-10-19",
+      event_type:"lesson", notes:"Suggested by Side-Quest (older timetable)" },
+    { id:"timetable", student_id:"child-a", title:"English", date:"2026-10-20", event_type:"timetable" }
+  ];
+  const decisions = planAutoQuest({ ...base, slots });
+  assert.deepEqual(decisions.map(x=>x.slotId), ["legacy", "timetable"]);
 });
 
 test("six weekly sessions can use different practice tasks for the same unachieved outcome", () => {
@@ -170,7 +181,7 @@ function kid(db, fam) {
 function slot(db, fam, sid, d, title, extra = {}) {
   const id = `ev${++k}`;
   db.raw.prepare("INSERT INTO calendar_events (id,family_id,student_id,title,date,start_time,duration_minutes,event_type,linked_lesson_id,linked_assignment_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)")
-    .run(id, fam, sid, title, day(d), "09:00", 40, extra.event_type || "lesson", extra.linked_lesson_id || null, extra.linked_assignment_id || null, NOW.toISOString());
+    .run(id, fam, sid, title, day(d), "09:00", 40, extra.event_type || "timetable", extra.linked_lesson_id || null, extra.linked_assignment_id || null, NOW.toISOString());
   return id;
 }
 const lessonBody = (title, codes, over = {}) => ({ title, learning_area: "Mathematics", stage: "S2", status: "ready", objectives: ["Learn"], sections: [{ heading: "Teach", body: "Explained." }], quiz: [{ question: "Pick 2", options: ["1", "2"], correct_index: 1 }], outcome_codes: codes, ...over });
@@ -269,6 +280,27 @@ test("approval: drafts need the parent's review; assignment lands on the slot's 
   assert.equal(linked.action, "already_assigned"); assert.equal(linked.status, "assigned");
 });
 
+
+test("an appointment added after planning blocks assignment without creating partial work", async () => {
+  const db = makeDb();
+  const fam = family(db), sid = kid(db, fam);
+  const slotId = slot(db, fam, sid, 2, "Mathematics");
+  const saved = await lesson(db, fam, "Number lines", [S2_MATHS[0]]);
+  const planned = await plan(db, fam, sid);
+  assert.equal(planned.proposals.length, 1);
+  await aq.setProposalLesson(db, fam, planned.proposals[0].id, saved.id, NOW);
+  db.raw.prepare(`INSERT INTO calendar_events
+    (id,family_id,student_id,title,date,start_time,duration_minutes,event_type,created_at)
+    VALUES (?,?,?,?,?,?,?, ?,?)`)
+    .run("appt-overlap",fam,sid,"Dentist",day(2),"09:15",30,"appointment",NOW.toISOString());
+  const result = await aq.approveProposal(db,fam,`u-${fam}`,planned.proposals[0].id,{},NOW);
+  assert.equal(result.code,"TIME_CONFLICT");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE family_id = ?").get(fam).n,0);
+  assert.equal(db.raw.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ?").get(slotId).linked_assignment_id,null);
+  db.raw.prepare("DELETE FROM calendar_events WHERE id = ?").run("appt-overlap");
+  const success = await aq.approveProposal(db,fam,`u-${fam}`,planned.proposals[0].id,{},NOW);
+  assert.ok(success.ok,JSON.stringify(success));
+});
 
 test("calendar-slot approval refuses a slot filled after planning without making a new assignment", async () => {
   const db = makeDb();
