@@ -34,8 +34,10 @@ writeFileSync(`${ROOT}/${CONFIG}`, JSON.stringify({
   assets: { directory: "./frontend/build", not_found_handling: "single-page-application", run_worker_first: ["/api/*"] },
   d1_databases: [{ binding: "DB", database_name: "e2e-timetable", database_id: "00000000-0000-0000-0000-000000000005", migrations_dir: "./worker/migrations" }],
 }));
-const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
-ok(wr(["d1", "migrations", "apply", "DB", "--local"]).status === 0, "local migrations failed");
+const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 120000 });
+const migration = wr(["d1", "migrations", "apply", "DB", "--local"]);
+if (migration.status !== 0) console.error("Local timetable D1 migrations failed:", { status: migration.status, signal: migration.signal, error: migration.error?.message }, (migration.stderr || "").slice(-5000), (migration.stdout || "").slice(-5000));
+ok(migration.status === 0, "local migrations failed");
 let server = null;
 const up = async () => {
   server = spawn("npx", ["wrangler", "dev", "--config", CONFIG, "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: "ignore" });
