@@ -1237,7 +1237,7 @@ await step("Q. Auto-Quest: plan the week from the timetable, approve a reused le
   const les = await api("POST", "/lessons", pt, { title: "Quest place value", learning_area: "Mathematics", stage: "S2", status: "ready", outcome_codes: [codes[0]], sections: [{ heading: "Tens", body: "Tens and ones." }] });
   ok(les.status === 200 && les.json.outcome_codes.includes(codes[0]), "lesson");
   const d = new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 10);
-  const ev = await api("POST", "/calendar", pt, { title: "Mathematics", date: d, student_id: ch.json.id, event_type: "lesson", start_time: "09:00", duration_minutes: 40 });
+  const ev = await api("POST", "/calendar", pt, { title: "Mathematics", date: d, student_id: ch.json.id, event_type: "timetable", start_time: "09:00", duration_minutes: 40 });
   ok(ev.status === 200, "slot " + ev.status);
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const qp = await ctx.newPage();
