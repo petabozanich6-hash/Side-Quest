@@ -239,8 +239,11 @@ await step("customers: find a family, see metadata only, suspend it with a reaso
   await page.click("[data-testid=hq-tab-customers]");
   await page.fill("[data-testid=hq-customer-search]", userEmail);
   await page.keyboard.press("Enter");
-  await page.waitForSelector("[data-testid=hq-customer-row]");
-  await page.click("[data-testid=hq-customer-row]");
+  // Wait for the actual search result, not a stale first row left visible
+  // while the customer search request is still loading.
+  const targetFamily = page.locator("[data-testid=hq-customer-row]").filter({ hasText: userEmail });
+  await targetFamily.waitFor();
+  await targetFamily.click();
   await page.waitForSelector("[data-testid=hq-customer]");
   await page.click("[data-testid=hq-suspend]");
   await page.fill("[data-testid=confirm-reason]", "End-to-end test suspension");
