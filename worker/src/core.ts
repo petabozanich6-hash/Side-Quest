@@ -561,7 +561,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     // 1,000 entries. Explicit range keeps long-running school years accessible.
     const from = c.req.query("from"), to = c.req.query("to");
     if (from || to) {
-      const dateOk = (v: string | undefined) => !!v && /^\\d{4}-\\d{2}-\\d{2}$/.test(v) &&
+      const dateOk = (v: string | undefined) => !!v && /^\d{4}-\d{2}-\d{2}$/.test(v) &&
         !Number.isNaN(Date.parse(v + "T12:00:00Z"));
       const span = Date.parse((to || "") + "T12:00:00Z") - Date.parse((from || "") + "T12:00:00Z");
       if (!dateOk(from) || !dateOk(to) || from! > to! || span > 100 * 86400000)
