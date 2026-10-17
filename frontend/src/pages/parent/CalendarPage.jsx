@@ -9,6 +9,7 @@ import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
 import FillMyWeek from "../../components/parent/FillMyWeek";
 import PlanMyWeek from "../../components/parent/PlanMyWeek";
 import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
+import CalendarWeekAgenda from "../../components/parent/CalendarWeekAgenda";
 
 const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
 
@@ -34,6 +35,7 @@ export default function CalendarPage() {
   const [students, setStudents] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [cur, setCur] = useState(new Date());
+  const [calendarView, setCalendarView] = useState("week");
   const [open, setOpen] = useState(false);
   const [schedOpen, setSchedOpen] = useState(false);
   const [generatorOpen, setGeneratorOpen] = useState(false);
@@ -108,6 +110,16 @@ export default function CalendarPage() {
   const shown = events.filter(e => !filter || e.student_id === filter || !e.student_id);
   const eventsByDate = shown.reduce((m, e) => { (m[e.date] = m[e.date] || []).push(e); return m; }, {});
   const todayIso = isoLocal(new Date());
+  const weekMonday = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() - ((cur.getDay() + 6) % 7));
+  const weekDays = Array.from({length: 7}, (_, i) => {
+    const day = new Date(weekMonday);
+    day.setDate(weekMonday.getDate() + i);
+    const date = isoLocal(day);
+    return { date, isToday: date === todayIso,
+      label: day.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "short" }) };
+  });
+  const shiftWeek = amount => setCur(new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + amount));
+
 
   const submit = async (e) => {
     e.preventDefault();
@@ -283,6 +295,27 @@ export default function CalendarPage() {
         {calendarError} <button type="button" onClick={load} className="ml-2 font-bold underline">Retry calendar</button>
       </div>}
       {loadingCalendar && <p role="status" className="text-sm text-slate-600">Loading this month's timetable…</p>}
+
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="inline-flex rounded-full border border-slate-300 p-1 gap-1 bg-stone-50" role="group" aria-label="Calendar view">
+          <button type="button" onClick={() => setCalendarView("week")} aria-pressed={calendarView === "week"}
+            className={`px-4 py-2 text-sm font-semibold rounded-full ${calendarView === "week" ? "bg-teal-800 text-white" : "text-slate-700"}`}
+            data-testid="calendar-week-mode">Week</button>
+          <button type="button" onClick={() => setCalendarView("month")} aria-pressed={calendarView === "month"}
+            className={`px-4 py-2 text-sm font-semibold rounded-full ${calendarView === "month" ? "bg-teal-800 text-white" : "text-slate-700"}`}
+            data-testid="calendar-month-mode">Month</button>
+        </div>
+        {calendarView === "week" && <div className="flex items-center gap-2">
+          <button type="button" onClick={() => shiftWeek(-7)} className="rounded-lg border border-slate-300 p-2" aria-label="Previous week" data-testid="previous-week"><ChevronLeft size={16}/></button>
+          <button type="button" onClick={() => setCur(new Date())} className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold">This week</button>
+          <button type="button" onClick={() => shiftWeek(7)} className="rounded-lg border border-slate-300 p-2" aria-label="Next week" data-testid="next-week"><ChevronRight size={16}/></button>
+        </div>}
+      </div>
+      {calendarView === "week" ? <>
+        <h2 className="font-display font-semibold text-lg">{weekDays[0].label} – {weekDays[6].label}</h2>
+        <CalendarWeekAgenda days={weekDays} eventsByDate={eventsByDate} nameOf={nameOf} colourOf={colourOf}
+          isFreeSlot={freeSlot} onDayOpen={setDayOpen} onEdit={setEditing}/>
+      </> : (
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-slate-100">
           <h2 className="font-display text-lg font-semibold" data-testid="calendar-month">{monthName}</h2>
@@ -319,6 +352,8 @@ export default function CalendarPage() {
           ))}
         </div>
       </div>
+
+      )}
 
       {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
       {planWeekOpen && <PlanMyWeek students={students} initialChild={filter} initialDate={isoLocal(cur)} onClose={()=>setPlanWeekOpen(false)} onDone={afterCalendarChange} />}
