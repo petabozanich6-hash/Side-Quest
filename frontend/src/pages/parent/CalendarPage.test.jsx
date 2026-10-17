@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
+
 import CalendarPage from "./CalendarPage";
 import { api } from "../../lib/api";
 
@@ -9,6 +9,7 @@ jest.mock("../../lib/api", () => ({
   api: { get: jest.fn(), post: jest.fn(), put: jest.fn(), delete: jest.fn() },
   apiErrorMessage: (error, fallback) => error?.message || fallback
 }));
+jest.mock("react-router-dom", () => ({ useSearchParams: () => [new URLSearchParams()] }));
 jest.mock("sonner", () => ({ toast: { success: jest.fn(), error: jest.fn(), info: jest.fn() } }));
 jest.mock("../../components/parent/TimetableGenerator", () => () => null);
 jest.mock("../../components/parent/AutoQuestPreview", () => () => null);
@@ -51,7 +52,7 @@ test("day batch fills unused ready library lessons first, then saves missing AI 
     if(path==="/auto-quest/proposals/p2/generate") return Promise.resolve({data:{status:"proposed",lesson:{id:"draft",status:"draft"}}});
     throw Error("Unexpected request: "+path);
   });
-  await act(async () => root.render(<MemoryRouter><CalendarPage /></MemoryRouter>));
+  await act(async () => root.render(<CalendarPage />));
   const day=node.querySelector(`[aria-label="View and edit ${date}"]`);
   expect(day).not.toBeNull();
   await click(day);
