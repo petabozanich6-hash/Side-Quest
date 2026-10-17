@@ -149,58 +149,76 @@ export default function CalendarPage() {
   const generateDayDrafts = async () => {
     if (!dayOpen || !rescheduleChild || dayDrafting) return toast.error("Choose a child for this day first.");
     const selected = dayList.filter(e => e.student_id === rescheduleChild && freeSlot(e));
-    if (!selected.length) return toast.error("All timetable slots for this child are already filled.");
-    // Planning is free; AI drafting uses the family's existing allowance.
+    if (!selected.length) return toast.info("This child has no free timetable slots today.");
     setDayDrafting(true);
-    setDraftProgress({ done: 0, total: 0, failed: 0, created: 0, current: "Planning available slots…" });
+    setDraftProgress({ done: 0, total: 0, assigned: 0, created: 0, failed: 0, current: "Checking your lesson library first…" });
     try {
-      const { data } = await api.post("/auto-quest/plan", { student_id: rescheduleChild, from: dayOpen, to: dayOpen });
-      const ids = new Set(selected.map(x => x.id));
-      const pending = (data.proposals || []).filter(p =>
-        ids.has(p.calendar_event_id) && p.status === "proposed" &&
-        p.action === "needs_generation" && !p.lesson);
-      if (!pending.length) {
-        toast.info("There are no empty slots needing an AI draft. Open a slot to review or choose its saved lesson.");
+      // A plan only saves proposals: no AI usage and no assignments.
+      const { data } = await api.post("/auto-quest/plan", {
+        student_id: rescheduleChild, from: dayOpen, to: dayOpen, topic: dayTopic.trim()
+      });
+      const ids = new Set(selected.map(e => e.id));
+      const proposals = (data.proposals || []).filter(p => ids.has(p.calendar_event_id) && p.status === "proposed");
+      const library = proposals.filter(p => p.lesson?.status === "ready");
+      const pending = proposals.filter(p => p.action === "needs_generation" && !p.lesson);
+      const review = proposals.filter(p => p.lesson && p.lesson.status !== "ready");
+      const missing = selected.length - library.length - pending.length - review.length;
+      if (!library.length && !pending.length) {
+        setDraftProgress({ done: 0, total: 0, assigned: 0, created: 0, failed: 0,
+          current: review.length ? `${review.length} draft(s) need your review. Open their slots to assign.` :
+            "No available library lessons or AI drafts for these slots. Open a free slot to plan it manually." });
         return;
       }
-      const languages = pending.some(p => !p.outcome_codes?.length && /^languages?\\b/i.test(p.learning_area || ""));
-      if (languages && !dayTopic.trim()) {
-        toast.error("Enter the language/topic for this day (such as Latin: greetings) before batch generating.");
+      if (pending.some(p => !p.outcome_codes?.length && /^languages?\\b/i.test(p.learning_area || "")) && !dayTopic.trim()) {
+        toast.error("Enter the language/topic for these sessions (e.g. Latin greetings). No AI allowance has been used.");
         return;
       }
-      if (!window.confirm(`Create ${pending.length} AI lesson draft(s) for ${students.find(c=>c.id === rescheduleChild)?.name || "this child"} on ${dayOpen}? This uses your AI allowance. You'll review and assign each draft afterwards.`)) return;
-      let created = 0, failed = 0;
+      const summary = [
+        `Prepare ${students.find(c=>c.id === rescheduleChild)?.name || "this child's"} lessons for ${dayOpen}?`,
+        `${library.length} unused ready library lesson(s) will be assigned to their exact timetable slots.`,
+        `${pending.length} missing lesson(s) will be drafted with AI using your normal allowance; you'll review each draft before assignment.`,
+        ...(review.length ? [`${review.length} existing draft(s) still need review.`] : []),
+        ...(missing > 0 ? [`${missing} slot(s) need manual planning.`] : []),
+        "No AI-generated draft will be assigned automatically. Continue?"
+      ];
+      if (!window.confirm(summary.join("\\n\\n"))) return;
+      let assigned = 0, created = 0, failed = 0;
       const errors = [];
-      for (let i = 0; i < pending.length; i++) {
-        const proposal = pending[i];
-        setDraftProgress({ done: i, total: pending.length, created, failed,
-          current: `Drafting ${proposal.learning_area || "lesson"} (${i + 1}/${pending.length})…` });
+      const tasks = [...library.map(p => ({ p, kind: "library" })), ...pending.map(p => ({ p, kind: "generate" }))];
+      // Run serially to make progress and errors truthful and avoid bursts of
+      // simultaneous AI-generation calls that can exceed the family's quota.
+      for (const [i, task] of tasks.entries()) {
+        setDraftProgress({ done: i, total: tasks.length, assigned, created, failed,
+          current: task.kind === "library"
+            ? `Assigning saved ${task.p.lesson?.title || "lesson"} (${i + 1}/${tasks.length})…`
+            : `Drafting ${task.p.learning_area || "lesson"} (${i + 1}/${tasks.length})…` });
         try {
-          await api.post(`/auto-quest/proposals/${proposal.id}/generate`, {
-            topic: !proposal.outcome_codes?.length ? dayTopic.trim() : undefined
-          });
-          created++;
+          if (task.kind === "library") {
+            await api.post(`/auto-quest/proposals/${task.p.id}/approve`, {});
+            assigned++;
+          } else {
+            await api.post(`/auto-quest/proposals/${task.p.id}/generate`, {
+              topic: task.p.outcome_codes?.length ? undefined : dayTopic.trim()
+            });
+            created++;
+          }
         } catch (error) {
           failed++;
-          errors.push(`${proposal.learning_area}: ${apiErrorMessage(error)}`);
-          if (error.response?.status === 429 || error.response?.status === 402) {
-            const remaining = pending.length - i - 1;
-            failed += remaining;
-            break; // quota reached; do not keep sending paid generation requests
-          }
+          errors.push(`${task.p.learning_area || "Lesson"}: ${apiErrorMessage(error)}`);
+          // Stop expensive generation after a quota or plan failure; existing
+          // library items are deliberately processed first.
+          if (task.kind === "generate" && [402, 429].includes(error.response?.status)) break;
         }
-        setDraftProgress({ done: i + 1, total: pending.length, created, failed,
-          current: `Saved ${created} draft(s); ${failed} could not be created.` });
+        setDraftProgress({ done: i + 1, total: tasks.length, assigned, created, failed,
+          current: `${assigned} assigned · ${created} drafts saved · ${failed} need attention` });
       }
-      setDraftProgress({ done: pending.length, total: pending.length, created, failed,
-        current: created ? `${created} draft(s) ready for review. Open their slots to approve and assign.` :
-          "No drafts were generated. Try a single slot to see the issue." });
-      if (created) toast.success(`${created} lesson draft(s) saved for review — nothing assigned automatically.`);
-      if (errors.length) toast.error(`${failed} lesson(s) need attention. ${errors[0]}`);
+      setDraftProgress({ done: tasks.length, total: tasks.length, assigned, created, failed,
+        current: `${assigned} library lesson(s) assigned; ${created} AI drafts saved for review. ${review.length} existing draft(s) awaiting review.` });
+      if (assigned || created) toast.success(`${assigned} library lessons assigned; ${created} AI drafts saved for review.`);
+      if (errors.length) toast.error(`${failed} item(s) could not be prepared: ${errors[0]}`);
       await load();
-    } catch (error) {
-      toast.error(apiErrorMessage(error, "Couldn't prepare this day."));
-    } finally { setDayDrafting(false); }
+    } catch (error) { toast.error(apiErrorMessage(error, "Couldn't prepare this day.")); }
+    finally { setDayDrafting(false); }
   };
 
   const clearDay = async () => {
