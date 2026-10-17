@@ -95,7 +95,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
         try { await api.post(`/auto-quest/proposals/${row.proposal.id}/approve`, {}); applied++; }
         catch (e) { failed.push(`${row.slot.title} (${dateLabel(row.slot.date)}): ${apiErrorMessage(e)}`); }
       }
-      if (applied) { toast.success(`${applied} lesson(s) scheduled.`); onDone?.(); }
+      if (applied) { toast.success(`${applied} lesson(s) scheduled.`); onDone?.(week); }
       if (failed.length) toast.error(`${failed.length} need attention. Nothing already assigned was replaced.`);
       setErrors(failed);
       await refresh(false);
@@ -227,7 +227,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
         {progress && <p role="status" className="text-sm font-medium">{progress}</p>}
         {timetableOpen && <TimetableGenerator students={students.filter(s => children.includes(s.id))}
           events={calendar || []} initialWeek={week}
-          onClose={() => setTimetableOpen(false)} onDone={() => { setTimetableOpen(false); onDone?.(); refresh(true); }} />}
+          onClose={() => setTimetableOpen(false)} onDone={() => { setTimetableOpen(false); onDone?.(week); refresh(true); }} />}
       </section>
     </div>
   );
