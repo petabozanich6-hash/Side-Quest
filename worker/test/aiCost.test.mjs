@@ -33,11 +33,16 @@ test("all model calls are logged without retaining messages, responses, family i
   assert.equal(rows[0].input_tokens,2000);
   assert.equal(rows[0].output_tokens,300);
   assert.equal(rows[0].status,"completed");
+  assert.equal(typeof rows[0].duration_ms,"number");
   assert.equal(rows[0].estimated_usd,estimateGrossUsd(DEFAULT_WORKERS_AI_MODEL,2000,300));
   assert.ok(!JSON.stringify(rows).includes("CHILD-PRIVATE"));
   const sum=await aiCostSummary(db);
   assert.equal(sum.configured,true);
   assert.equal(sum.tracked_calls_30d,1);
+  assert.equal(sum.models_30d[0].model, DEFAULT_WORKERS_AI_MODEL);
+  assert.equal(sum.models_30d[0].calls,1);
+  assert.equal(sum.models_30d[0].timed_calls,1);
+  assert.ok(sum.mean_call_ms_30d >= 0);
   assert.equal(sum.reported_tokens_30d,1);
   assert.equal(sum.approximate_tokens_30d,0);
   assert.equal(sum.unpriced_calls_30d,0);
@@ -109,4 +114,19 @@ test("Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estima
   assert.equal("actual_invoice" in snapshot.ai.cost,false);
   const unbound=await overview({...metered,BUCKET:undefined},defaultSettings());
   assert.equal(unbound.storage.configured,false);
+});
+
+test("older D1 schemas keep recording AI costs until the additive latency migration is approved", async () => {
+  const db=makeDb("0070_ai_inference_latency.sql");
+  const metered=meterWorkersAi({
+    DB:db, JWT_SECRET:"test", AI:{run:async()=>({response:"Ready",usage:{prompt_tokens:20,completion_tokens:30}})},
+  });
+  const result=await metered.AI.run(DEFAULT_WORKERS_AI_MODEL,{messages:[{role:"user",content:"test"}]});
+  assert.equal(result.response,"Ready");
+  const legacy=db.raw.prepare("SELECT model,status FROM ai_inference_costs").all();
+  assert.equal(legacy.length,1);
+  const sum=await aiCostSummary(db);
+  assert.equal(sum.tracked_calls_30d,1);
+  assert.equal(sum.mean_call_ms_30d,null);
+  assert.deepEqual(sum.models_30d,[]);
 });
