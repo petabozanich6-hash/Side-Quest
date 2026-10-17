@@ -40,7 +40,7 @@ const click = async selector => act(async () => box.querySelector(selector).clic
 
 test("plans only its exact slot and assigns a chosen ready library lesson", async () => {
   await click('[data-testid="slot-plan"]');
-  expect(api.post).toHaveBeenCalledWith("/auto-quest/plan", { student_id: "child-1", from: event.date, to: event.date });
+  expect(api.post).toHaveBeenCalledWith("/auto-quest/plan", { student_id: "child-1", from: event.date, to: event.date, topic: "" });
   const select = box.querySelector('[data-testid="slot-lesson"]');
   await act(async () => { select.value = "saved-1"; select.dispatchEvent(new Event("change", { bubbles: true })); });
   await click('[data-testid="slot-choose"]');
