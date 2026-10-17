@@ -151,7 +151,7 @@ BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false BE
 ```
 
 The script caps aggregate *reserved* gross estimated inference at US$0.50,
-up to 32 calls and 4,096 output tokens per request. Compare identical subjects,
+up to 32 calls and 6,500 output tokens per request (the normal practice stage requests 6,000). Compare identical subjects,
 year levels, goals, real call durations, tokens, costs, retries, incomplete
 responses and education quality. A synthetic benchmark is **not** a production
 speed result. Run at least three representative lessons (Maths, English with
