@@ -173,7 +173,7 @@ export default function CalendarPage() {
             "No available library lessons or AI drafts for these slots. Open a free slot to plan it manually." });
         return;
       }
-      if (pending.some(p => !p.outcome_codes?.length && /^languages?\\b/i.test(p.learning_area || "")) && !dayTopic.trim()) {
+      if (pending.some(p => !p.outcome_codes?.length && /^languages?\b/i.test(p.learning_area || "")) && !dayTopic.trim()) {
         toast.error("Enter the language/topic for these sessions (e.g. Latin greetings). No AI allowance has been used.");
         return;
       }
@@ -185,7 +185,7 @@ export default function CalendarPage() {
         ...(missing > 0 ? [`${missing} slot(s) need manual planning.`] : []),
         "No AI-generated draft will be assigned automatically. Continue?"
       ];
-      if (!window.confirm(summary.join("\\n\\n"))) return;
+      if (!window.confirm(summary.join("\n\n"))) return;
       let assigned = 0, created = 0, failed = 0;
       const errors = [];
       const tasks = [...library.map(p => ({ p, kind: "library" })), ...pending.map(p => ({ p, kind: "generate" }))];
@@ -343,7 +343,7 @@ export default function CalendarPage() {
                   {students.map(child=><option value={child.id} key={child.id}>{child.name}</option>)}
                 </select>
               </label>
-              {daySlots.some(e => /^languages?\\b/i.test(e.title)) && <label className="block text-sm font-semibold">
+              {daySlots.some(e => /^languages?\b/i.test(e.title)) && <label className="block text-sm font-semibold">
                 Language / topic (e.g. Latin greetings)
                 <input className="input mt-1" value={dayTopic} maxLength={140}
                   onChange={e=>setDayTopic(e.target.value)} placeholder="Latin: greetings and introductions"
