@@ -16,21 +16,25 @@ export default function ChildCalendar() {
   const [assignments, setAssignments] = useState([]);
   const [week, setWeek] = useState(mondayOf(new Date()));
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!user?.id) return;
-    (async () => {
-      try {
-        const [a, c] = await Promise.all([
-          api.get("/assignments"),
-          api.get("/calendar", { params: { student_id: user.id } }),
-        ]);
-        setAssignments((a.data || []).filter(x => x.student_id === user.id));
-        setEvents((c.data || []).filter(e => e.student_id === user.id && e.event_type !== "parent-review"));
-      } catch {}
-      setLoaded(true);
-    })();
-  }, [user?.id]);
+    let active = true;
+    const end = new Date(week); end.setDate(end.getDate() + 6);
+    setLoaded(false);
+    Promise.all([
+      api.get("/assignments"),
+      api.get("/calendar", { params: { student_id: user.id, from: iso(week), to: iso(end) } }),
+    ]).then(([a, c]) => {
+      if (!active) return;
+      setAssignments((a.data || []).filter(x => x.student_id === user.id));
+      setEvents((c.data || []).filter(e => e.student_id === user.id && e.event_type !== "parent-review"));
+      setError("");
+    }).catch(() => { if (active) setError("Could not load your week. Try changing weeks or reload the page."); })
+      .finally(() => { if (active) setLoaded(true); });
+    return () => { active = false; };
+  }, [user?.id, week]);
 
   const lessonOf = (a) => a.lesson?.id || a.lesson_id;
 
@@ -90,6 +94,7 @@ export default function ChildCalendar() {
         </div>
       </div>
       <p className="text-sm opacity-75">{label}. You can start any lesson early, even if it is planned for another day.</p>
+      {error && <p className="rounded-xl border border-red-300 p-3 text-sm text-red-800" role="alert">{error}</p>}
 
       <div className="space-y-3">
         {days.map(d => {
