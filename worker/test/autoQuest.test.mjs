@@ -108,7 +108,7 @@ test("Languages without codes reuses an age-matched, not-previously-assigned rea
     { id: "latin", title: "Latin greetings", stage: "S2", learning_area: "Languages", status: "ready", outcome_codes: [] },
     { id: "higher", title: "Advanced French", stage: "S4", learning_area: "Languages", status: "ready", outcome_codes: [] }
   ];
-  const result = planAutoQuest({ ...base, slots, lessons, subjectFocus: "Latin" });
+  const result = planAutoQuest({ ...base, slots, lessons, outcomes: [], subjectFocus: "Latin" });
   assert.equal(result[0].action, "reuse_draft");
   assert.equal(result[0].lessonId, "latin");
   assert.deepEqual(result[0].eligibleOutcomeCodes, []);
@@ -119,11 +119,11 @@ test("Languages without codes reuses an age-matched, not-previously-assigned rea
 test("Languages never chooses a different language without a matching focus", () => {
   const items = [{ id:"fr",title:"French alphabet",stage:"S2",status:"ready",learning_area:"Languages",outcome_codes:[] }];
   const slots = [{ id:"lang",student_id:"child-a",date:"2026-10-19",title:"Languages",event_type:"timetable" }];
-  const unknown = planAutoQuest({...base, slots, lessons:items});
+  const unknown = planAutoQuest({...base, slots, lessons:items, outcomes:[]});
   assert.equal(unknown[0].action,"needs_generation");
-  const latin = planAutoQuest({...base, slots, lessons:items, subjectFocus:"Latin greetings"});
+  const latin = planAutoQuest({...base, slots, lessons:items, outcomes:[], subjectFocus:"Latin greetings"});
   assert.equal(latin[0].action,"needs_generation", "French library lesson cannot substitute for Latin");
-  const french = planAutoQuest({...base, slots, lessons:items, subjectFocus:"French alphabet"});
+  const french = planAutoQuest({...base, slots, lessons:items, outcomes:[], subjectFocus:"French alphabet"});
   assert.equal(french[0].lessonId,"fr");
 });
 
