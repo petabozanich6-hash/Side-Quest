@@ -43,11 +43,32 @@ export default function CalendarPage() {
   const [reschedulePreview, setReschedulePreview] = useState(null);
   const [rescheduleChild, setRescheduleChild] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loadingCalendar, setLoadingCalendar] = useState(true);
+  const [calendarError, setCalendarError] = useState("");
+  const [dayDrafting, setDayDrafting] = useState(false);
+  const [draftProgress, setDraftProgress] = useState(null);
+  const [dayTopic, setDayTopic] = useState("");
   const [filter, setFilter] = useState("");
   const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
-  const load = () => api.get("/calendar").then(r => setEvents(r.data));
-  useEffect(() => { load(); api.get("/students").then(r=>setStudents(r.data)); api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))); }, []);
+  const visibleWeeks = monthMatrix(cur.getFullYear(), cur.getMonth());
+  const rangeFrom = isoLocal(visibleWeeks[0][0]);
+  const rangeTo = isoLocal(visibleWeeks[5][6]);
+  const load = async () => {
+    setLoadingCalendar(true);
+    try {
+      const { data } = await api.get("/calendar", { params: { from: rangeFrom, to: rangeTo } });
+      setEvents(data);
+      setCalendarError("");
+    } catch (error) {
+      setCalendarError(apiErrorMessage(error, "Unable to load your calendar."));
+    } finally { setLoadingCalendar(false); }
+  };
+  useEffect(() => { load(); }, [rangeFrom, rangeTo]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    api.get("/students").then(r=>setStudents(r.data)).catch(e=>toast.error(apiErrorMessage(e)));
+    api.get("/lessons").then(r=>setLessons((r.data || []).filter(l => l.status === "ready"))).catch(e=>toast.error(apiErrorMessage(e)));
+  }, []);
   useEffect(() => {
     const event = events.find(e => e.id === focused);
     if (!event || !/^\d{4}-\d{2}-\d{2}$/.test(event.date)) return;
@@ -67,7 +88,7 @@ export default function CalendarPage() {
     + (e.start_time && isSlot(e) ? `${e.start_time} ` : "") + e.title + (e.lesson_title ? ` · ${e.lesson_title}` : freeSlot(e) ? " (free)" : "");
 
   const month = cur.getMonth(), year = cur.getFullYear();
-  const weeks = monthMatrix(year, month);
+  const weeks = visibleWeeks;
   const shown = events.filter(e => !filter || e.student_id === filter || !e.student_id);
   const eventsByDate = shown.reduce((m, e) => { (m[e.date] = m[e.date] || []).push(e); return m; }, {});
   const todayIso = isoLocal(new Date());
@@ -125,6 +146,63 @@ export default function CalendarPage() {
     } catch (err) { toast.error(apiErrorMessage(err, "Could not reschedule lessons; preview again")); setReschedulePreview(null); }
     finally { setRescheduling(false); }
   };
+  const generateDayDrafts = async () => {
+    if (!dayOpen || !rescheduleChild || dayDrafting) return toast.error("Choose a child for this day first.");
+    const selected = dayList.filter(e => e.student_id === rescheduleChild && freeSlot(e));
+    if (!selected.length) return toast.error("All timetable slots for this child are already filled.");
+    // Planning is free; AI drafting uses the family's existing allowance.
+    setDayDrafting(true);
+    setDraftProgress({ done: 0, total: 0, failed: 0, created: 0, current: "Planning available slots…" });
+    try {
+      const { data } = await api.post("/auto-quest/plan", { student_id: rescheduleChild, from: dayOpen, to: dayOpen });
+      const ids = new Set(selected.map(x => x.id));
+      const pending = (data.proposals || []).filter(p =>
+        ids.has(p.calendar_event_id) && p.status === "proposed" &&
+        p.action === "needs_generation" && !p.lesson);
+      if (!pending.length) {
+        toast.info("There are no empty slots needing an AI draft. Open a slot to review or choose its saved lesson.");
+        return;
+      }
+      const languages = pending.some(p => !p.outcome_codes?.length && /^languages?\\b/i.test(p.learning_area || ""));
+      if (languages && !dayTopic.trim()) {
+        toast.error("Enter the language/topic for this day (such as Latin: greetings) before batch generating.");
+        return;
+      }
+      if (!window.confirm(`Create ${pending.length} AI lesson draft(s) for ${students.find(c=>c.id === rescheduleChild)?.name || "this child"} on ${dayOpen}? This uses your AI allowance. You'll review and assign each draft afterwards.`)) return;
+      let created = 0, failed = 0;
+      const errors = [];
+      for (let i = 0; i < pending.length; i++) {
+        const proposal = pending[i];
+        setDraftProgress({ done: i, total: pending.length, created, failed,
+          current: `Drafting ${proposal.learning_area || "lesson"} (${i + 1}/${pending.length})…` });
+        try {
+          await api.post(`/auto-quest/proposals/${proposal.id}/generate`, {
+            topic: !proposal.outcome_codes?.length ? dayTopic.trim() : undefined
+          });
+          created++;
+        } catch (error) {
+          failed++;
+          errors.push(`${proposal.learning_area}: ${apiErrorMessage(error)}`);
+          if (error.response?.status === 429 || error.response?.status === 402) {
+            const remaining = pending.length - i - 1;
+            failed += remaining;
+            break; // quota reached; do not keep sending paid generation requests
+          }
+        }
+        setDraftProgress({ done: i + 1, total: pending.length, created, failed,
+          current: `Saved ${created} draft(s); ${failed} could not be created.` });
+      }
+      setDraftProgress({ done: pending.length, total: pending.length, created, failed,
+        current: created ? `${created} draft(s) ready for review. Open their slots to approve and assign.` :
+          "No drafts were generated. Try a single slot to see the issue." });
+      if (created) toast.success(`${created} lesson draft(s) saved for review — nothing assigned automatically.`);
+      if (errors.length) toast.error(`${failed} lesson(s) need attention. ${errors[0]}`);
+      await load();
+    } catch (error) {
+      toast.error(apiErrorMessage(error, "Couldn't prepare this day."));
+    } finally { setDayDrafting(false); }
+  };
+
   const clearDay = async () => {
     const selected = dayList.filter(e => !!e.id);
     if (!selected.length || !window.confirm(`Remove all ${selected.length} calendar entries scheduled for ${dayOpen}? Assigned lessons and portfolio evidence will be kept.`)) return;
@@ -140,7 +218,10 @@ export default function CalendarPage() {
   };
 
   const monthName = cur.toLocaleString("en-AU", { month: "long", year: "numeric" });
-  const dayList = dayOpen ? (eventsByDate[dayOpen] || []) : [];
+  const dayList = dayOpen ? [...(eventsByDate[dayOpen] || [])].sort((a, b) =>
+    (a.start_time || "99:99").localeCompare(b.start_time || "99:99") || a.title.localeCompare(b.title)) : [];
+  const childrenForDay = students.filter(child => !rescheduleChild || child.id === rescheduleChild);
+  const daySlots = dayList.filter(e => freeSlot(e) && (!rescheduleChild || e.student_id === rescheduleChild));
 
   return (
     <div className="p-8 lg:p-10 space-y-6" data-testid="calendar-page">
@@ -168,6 +249,10 @@ export default function CalendarPage() {
         </div>
       )}
 
+      {calendarError && <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        {calendarError} <button type="button" onClick={load} className="ml-2 font-bold underline">Retry calendar</button>
+      </div>}
+      {loadingCalendar && <p role="status" className="text-sm text-slate-600">Loading this month's timetable…</p>}
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-slate-100">
           <h2 className="font-display text-lg font-semibold" data-testid="calendar-month">{monthName}</h2>
