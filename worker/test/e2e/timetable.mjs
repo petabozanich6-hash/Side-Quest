@@ -109,7 +109,8 @@ await step("assigning a maths lesson puts it in Mia's next free Mathematics slot
   await page.goto(BASE + "/parent/lessons");
   await page.click(`[data-testid=assign-${maths1}]`);
   await page.check(`[data-testid=sch-student-${kid.id}]`);
-  await page.waitForSelector("[data-testid=sch-mode-slot]:checked");
+  await page.waitForSelector("[data-testid=sch-slot-preview]");
+  ok(await page.isChecked("[data-testid=sch-mode-slot]"), "the recommended timetable option was not selected");
   const first = (await slots()).filter((x) => x.title === "Mathematics")[0];
   await page.waitForFunction(() => !/checking/.test(document.querySelector("[data-testid=sch-slot-preview]")?.textContent || "checking"));
   ok((await page.textContent("[data-testid=sch-slot-preview]")).includes("Mathematics"), "preview doesn't show the slot");
