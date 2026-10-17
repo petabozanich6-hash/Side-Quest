@@ -164,3 +164,24 @@ test("repeated schedule requests do not create duplicate sessions for the same a
   const entries = (await h.req("/calendar?from=2026-10-19&to=2026-10-25", { token: f.token })).json;
   assert.equal(entries.filter(e => e.linked_assignment_id === aid).length, 1);
 });
+
+test("free-preview manual lesson dates work without unlocking paid timetable or calendar writes", async () => {
+  const h = harness();
+  const r = await h.req("/auth/register", { method: "POST", body: {
+    email: "free-calendar-preview@example.com", password: "Testing-pass-99", name: "Parent", jurisdiction: "NSW",
+  } });
+  assert.equal(r.status, 200);
+  const free = { token: r.json.token, id: r.json.user.family_id };
+  const child = await h.student(free, "free-preview-child");
+  const l = await h.lesson(free);
+  const aid = await h.assignment(free, child, l);
+  const move = await h.req(`/assignments/${aid}`, { method: "PUT", token: free.token,
+    body: { scheduled_date: "2026-10-20" } });
+  assert.equal(move.status, 200, JSON.stringify(move.json));
+  assert.equal(move.json.scheduled_date, "2026-10-20");
+  const paidCalendar = await h.req("/calendar", { method: "POST", token: free.token,
+    body: { title: "Paid event", date: "2026-10-20", student_id: child } });
+  assert.equal(paidCalendar.status, 402);
+  const cal = await h.req("/calendar?from=2026-10-19&to=2026-10-25", { token: free.token });
+  assert.equal(cal.json.length, 0);
+});
