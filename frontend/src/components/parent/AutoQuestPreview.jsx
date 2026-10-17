@@ -46,6 +46,8 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
   const [to, setTo] = useState(inDays(6));
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [showAssigned, setShowAssigned] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const [result, setResult] = useState(null);
   // The family's children may still be loading when the panel opens: pick the first one once they arrive.
   useEffect(() => { if (!studentId && students[0]?.id) setStudentId(students[0].id); }, [students, studentId]);
@@ -75,6 +77,10 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
     finally { setBusy(false); }
   };
   const proposals = result?.proposals || [];
+  const assignedCount = proposals.filter(p => p.status === "assigned").length;
+  const draftCount = proposals.filter(p => p.status === "proposed" && p.lesson && p.lesson.status !== "ready").length;
+  const openProposals = proposals.filter(p => showAssigned || p.status !== "assigned");
+  const displayed = showAll ? openProposals : openProposals.slice(0, 8);
 
   return <div className="fixed inset-0 z-50 bg-slate-900/60 p-4 overflow-y-auto flex items-start justify-center" onClick={onClose}>
     <section className="mt-6 mb-6 w-full max-w-3xl rounded-2xl bg-white p-4 sm:p-6 shadow-xl space-y-4" role="dialog" aria-modal="true" aria-label="Auto-Quest" onClick={e => e.stopPropagation()} data-testid="autoquest-modal">
@@ -96,7 +102,24 @@ export default function AutoQuestPreview({ students, onClose, onChanged }) {
       <button type="button" onClick={plan} disabled={loading || !studentId || from > to} className="rounded-full bg-emerald-900 px-5 py-2 text-sm font-bold text-white disabled:opacity-50" data-testid="autoquest-preview">{loading ? "Planning…" : proposals.length ? "Plan again" : "Plan lessons"}</button>
       {result?.note && <p className="text-sm text-stone-700" data-testid="autoquest-note">{result.note}</p>}
       {result && !proposals.length && <p className="text-sm text-stone-600" data-testid="autoquest-empty">No lesson sessions are timetabled for this child in these dates. Use Generate timetable first, then plan again.</p>}
-      {proposals.length > 0 && <ul className="divide-y rounded-xl border" data-testid="autoquest-decisions">{proposals.map(p => <Proposal key={p.id} p={p} busy={busy} act={act} />)}</ul>}
+      {proposals.length > 0 && <>
+        <div className="flex items-center flex-wrap gap-3 text-xs text-slate-700" data-testid="autoquest-summary">
+          <span>{proposals.length - assignedCount} to review or plan</span>
+          <span>{assignedCount} already assigned</span>
+          <span>{draftCount} draft(s) need review</span>
+          <label className="flex items-center gap-1 ml-auto">
+            <input type="checkbox" checked={showAssigned} onChange={e => setShowAssigned(e.target.checked)}
+              data-testid="autoquest-show-assigned"/> Show already assigned
+          </label>
+        </div>
+        {displayed.length ? <ul className="divide-y rounded-xl border" data-testid="autoquest-decisions">
+          {displayed.map(p => <Proposal key={p.id} p={p} busy={busy} act={act} />)}
+        </ul> : <p className="rounded-lg border p-4 text-sm text-slate-600">All sessions are already assigned. Use Show already assigned to review them.</p>}
+        {openProposals.length > 8 && <button type="button" className="text-sm underline text-teal-800 font-semibold"
+          onClick={()=>setShowAll(v=>!v)} data-testid="autoquest-show-more">
+          {showAll ? "Show fewer sessions" : `Show ${openProposals.length - 8} more sessions`}
+        </button>}
+      </>}
       <p className="text-xs text-stone-500">AI drafts use your Family Membership allowance and are always saved as drafts for you to check. Finishing a lesson never marks an outcome as mastered: your reviews in the Outcome Tracker decide that.</p>
     </section>
   </div>;
