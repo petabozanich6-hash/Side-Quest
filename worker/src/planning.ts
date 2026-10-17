@@ -31,7 +31,7 @@ export async function moveAssignmentDay(db: DB, familyId: string, id: string, re
   if (!a) return fail(404, "Assignment not found");
   if (a.status === "revoked" || lb.DONE_STATUSES.includes(a.status) || a.status === "submitted")
     return fail(409, "Completed or submitted lessons cannot be rescheduled.", "ALREADY_DONE");
-  const date = requested === "" ? null : requested;
+  const date: string | null = requested === null || requested === "" ? null : typeof requested === "string" ? requested : "";
   if (date !== null && !validDate(date)) return fail(400, "Choose a valid date.");
   const linked = (await db.prepare(`SELECT * FROM calendar_events WHERE family_id = ? AND linked_assignment_id = ?
     ORDER BY date ASC, start_time ASC LIMIT 5`).bind(familyId, id).all<any>()).results || [];
