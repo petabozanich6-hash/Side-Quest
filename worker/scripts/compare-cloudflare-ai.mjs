@@ -11,6 +11,7 @@
  * --dry-run prints the plan WITHOUT credentials or model calls.
  */
 import { mkdir, writeFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { generateStaged, generationReport, sizeFor } from "../src/aiDraft.ts";
 import { estimateGrossUsd, RATES_USD_PER_MILLION } from "../src/aiCost.ts";
 
@@ -157,10 +158,13 @@ export async function compare({ dryRun = false } = {}) {
     note: "Developer benchmark only. Automatic checks do not verify factual/educational correctness; manually assess lessons. Cloudflare billing is authoritative." };
 }
 
-const dryRun = process.argv.includes("--dry-run");
-compare({ dryRun }).then(r => {
-  console.log(JSON.stringify(r, null, 2));
-}).catch(error => {
-  console.error("Benchmark stopped:", error instanceof Error ? error.message : "Unknown error");
-  process.exitCode = 1;
-});
+// Importable from local tests without initiating requests or reading secrets.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const dryRun = process.argv.includes("--dry-run");
+  compare({ dryRun }).then(r => {
+    console.log(JSON.stringify(r, null, 2));
+  }).catch(error => {
+    console.error("Benchmark stopped:", error instanceof Error ? error.message : "Unknown error");
+    process.exitCode = 1;
+  });
+}
