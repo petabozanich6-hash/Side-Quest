@@ -4,6 +4,7 @@
 // sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
+import { isPlatformOwner } from "./access";
 import { estimateGrossUsd } from "./aiCost";
 import type { Result } from "./lessonBuilder";
 import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
@@ -887,7 +888,7 @@ export async function draftLessonWithAi(
   try {
     // Only the privileged INTERNAL family can opt in to a speed experiment.
     // A paid parent's forged owner_fast_preview request is never honoured.
-    const ownerPreview = plan === "INTERNAL" && (request as any).owner_fast_preview === true;
+    const ownerPreview = plan === "INTERNAL" && (request as any).owner_fast_preview === true && await isPlatformOwner(db, userId);
     raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true || ownerPreview);
     if (raw) {
       draft = normaliseDraft(raw, spec);
