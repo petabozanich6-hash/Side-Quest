@@ -116,6 +116,20 @@ test("Languages without codes reuses an age-matched, not-previously-assigned rea
   assert.deepEqual(result[1].eligibleOutcomeCodes, []);
 });
 
+test("library-first excludes otherwise-valid outcome codes outside this child's selected programme", () => {
+  const available = [
+    { id: "out-of-program", title: "Advanced equations", stage: "S2", status: "ready",
+      learning_area: "Mathematics", outcome_codes: ["NEXT", "UNSELECTED"] },
+    { id: "appropriate", title: "Addition practice", stage: "S2", status: "ready",
+      learning_area: "Mathematics", outcome_codes: ["NEXT"] }
+  ];
+  const result = planAutoQuest({ ...base, lessons: available,
+    allowedOutcomeCodes: ["NEXT", "UNSELECTED"],
+    outcomes: [{ code: "NEXT", learning_area: "Mathematics" }] });
+  assert.equal(result[0].lessonId, "appropriate");
+  assert.equal(result[1].action, "needs_generation", "the same library lesson cannot be reused automatically");
+});
+
 test("Languages never chooses a different language without a matching focus", () => {
   const items = [{ id:"fr",title:"French alphabet",stage:"S2",status:"ready",learning_area:"Languages",outcome_codes:[] }];
   const slots = [{ id:"lang",student_id:"child-a",date:"2026-10-19",title:"Languages",event_type:"timetable" }];
