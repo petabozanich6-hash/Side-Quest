@@ -17,7 +17,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
 
   const load = async () => {
     const [result, ls] = await Promise.all([
-      api.get("/auto-quest/proposals", { params: { student_id: event.student_id, from: event.date, to: event.date } }),
+      api.get("/auto-quest/proposals", { params: { student_id: event.student_id, from: event.date, to: event.date, topic: topic.trim() } }),
       api.get("/lessons")
     ]);
     const current = (result.data?.proposals || []).find(p => p.calendar_event_id === event.id) || null;
@@ -83,6 +83,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
     } finally { setBusy(false); }
   };
   const draft = proposal?.lesson && proposal.lesson.status !== "ready";
+  const slotNeedsLanguage = /^languages?\b/i.test(event.title || "");
   const noCodes = proposal?.outcome_codes?.length === 0;
   const needsLanguage = noCodes && /^languages?\b/i.test(proposal?.learning_area || event.title);
   return <section className="rounded-xl border border-teal-200 bg-teal-50/40 p-4 space-y-3" data-testid="slot-quest">
@@ -93,8 +94,14 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
     {loading && <p className="text-sm">Checking this slot…</p>}
     {stale && <button type="button" onClick={() => { setBusy(true); load().catch(e=>toast.error(apiErrorMessage(e))).finally(()=>setBusy(false)); }}
       disabled={busy} className="text-sm underline" data-testid="slot-refresh">Refresh lesson options</button>}
-    {!loading && !proposal && <button type="button" disabled={busy} onClick={() => run("plan")}
-      className="rounded-full bg-teal-800 px-4 py-2 text-white text-sm disabled:opacity-50" data-testid="slot-plan">Plan a task for this slot</button>}
+    {!loading && !proposal && <>
+      {slotNeedsLanguage && <label className="block text-xs font-semibold">Which language/topic should this slot teach?
+        <input type="text" className="input mt-1" value={topic} onChange={e=>setTopic(e.target.value)}
+          placeholder="Latin: greetings and introductions" maxLength={140} data-testid="slot-topic-initial"/>
+      </label>}
+      <button type="button" disabled={busy || (slotNeedsLanguage && !topic.trim())} onClick={() => run("plan")}
+        className="rounded-full bg-teal-800 px-4 py-2 text-white text-sm disabled:opacity-50" data-testid="slot-plan">Check library & plan this slot</button>
+    </>}
     {proposal && <div className="space-y-3 text-sm" data-testid="slot-proposal">
       <p><strong>{proposal.learning_area || event.title}</strong> · {event.date} {event.start_time || ""}</p>
       <p className="text-slate-700">{proposal.reason}</p>
