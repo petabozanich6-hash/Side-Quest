@@ -141,6 +141,7 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
 await step("the calendar shows each lesson inside its slot and free slots as free", async () => {
   const [y, mo] = weekStart.split("-").map(Number);
   await page.goto(BASE + "/parent/calendar");
+  await page.click("[data-testid=calendar-month-mode]");
   const now = new Date();
   if (now.getFullYear() * 12 + now.getMonth() < y * 12 + mo - 1) await page.click("[data-testid=next-month]");
   await page.waitForSelector("[data-slot=filled]", { timeout: 10000 });
