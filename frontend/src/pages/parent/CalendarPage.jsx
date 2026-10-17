@@ -4,11 +4,12 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
-import { lessonAvailableForChildren } from "../../lib/lessonAvailability";
 import TimetableGenerator from "../../components/parent/TimetableGenerator";
 import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
 import FillMyWeek from "../../components/parent/FillMyWeek";
+import PlanMyWeek from "../../components/parent/PlanMyWeek";
 import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
+import CalendarWeekAgenda from "../../components/parent/CalendarWeekAgenda";
 
 const COLOURS = ["#0F766E", "#B45309", "#6D28D9", "#BE123C", "#1D4ED8", "#4D7C0F"];
 
@@ -34,11 +35,14 @@ export default function CalendarPage() {
   const [students, setStudents] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [cur, setCur] = useState(new Date());
+  const [calendarView, setCalendarView] = useState("week");
   const [open, setOpen] = useState(false);
   const [schedOpen, setSchedOpen] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState(null);
   const [generatorOpen, setGeneratorOpen] = useState(false);
   const [autoQuestOpen, setAutoQuestOpen] = useState(false);
   const [weekFillOpen, setWeekFillOpen] = useState(false);
+  const [planWeekOpen, setPlanWeekOpen] = useState(false);
   const [dayOpen, setDayOpen] = useState(null);
   const [editing, setEditing] = useState(null);
   const [removingDay, setRemovingDay] = useState(false);
@@ -52,7 +56,7 @@ export default function CalendarPage() {
   const [draftProgress, setDraftProgress] = useState(null);
   const [dayTopic, setDayTopic] = useState("");
   const [filter, setFilter] = useState("");
-  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
+  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "appointment", student_id: "", linked_lesson_id: "", start_time: "", duration_minutes: 45, notes: "" });
 
   const visibleWeeks = monthMatrix(cur.getFullYear(), cur.getMonth());
   const rangeFrom = isoLocal(visibleWeeks[0][0]);
@@ -75,6 +79,17 @@ export default function CalendarPage() {
     load();
     loadLessons().catch(e => toast.error(apiErrorMessage(e, "Couldn't refresh available lessons")));
   };
+  const afterWeeklyPlanning = (date) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date || "")) return afterCalendarChange();
+    const [y, m, d] = date.split("-").map(Number);
+    const changedMonth = cur.getFullYear() !== y || cur.getMonth() !== m - 1;
+    setCur(new Date(y, m - 1, d));
+    setCalendarView("week");
+    // A month change loads the new date range through useEffect; avoid a stale
+    // refresh of the previous month racing it and hiding the newly planned week.
+    if (changedMonth) loadLessons().catch(e => toast.error(apiErrorMessage(e)));
+    else afterCalendarChange();
+  };
   useEffect(() => { load(); }, [rangeFrom, rangeTo]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => {
     api.get("/students").then(r=>setStudents(r.data)).catch(e=>toast.error(apiErrorMessage(e)));
@@ -96,8 +111,6 @@ export default function CalendarPage() {
     return i < 0 ? "#475569" : (students[i].prefs?.calendar_colour || COLOURS[i % COLOURS.length]);
   };
   const nameOf = (sid) => students.find(s => s.id === sid)?.name;
-  const targetChildren = form.student_id ? [form.student_id] : students.map(s=>s.id);
-  const calendarLibraryChoices = lessons.filter(l => lessonAvailableForChildren(l, targetChildren));
   // Timetable slots show their subject plus the lesson in them, or "(free)" while empty.
   const isSlot = (e) => e.event_type === "timetable" || (e.event_type === "lesson" && /^Suggested by Side-Quest/.test(e.notes || ""));
   const freeSlot = (e) => isSlot(e) && !e.linked_assignment_id && !e.linked_lesson_id;
@@ -109,30 +122,33 @@ export default function CalendarPage() {
   const shown = events.filter(e => !filter || e.student_id === filter || !e.student_id);
   const eventsByDate = shown.reduce((m, e) => { (m[e.date] = m[e.date] || []).push(e); return m; }, {});
   const todayIso = isoLocal(new Date());
+  const weekMonday = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() - ((cur.getDay() + 6) % 7));
+  const weekDays = Array.from({length: 7}, (_, i) => {
+    const day = new Date(weekMonday);
+    day.setDate(weekMonday.getDate() + i);
+    const date = isoLocal(day);
+    return { date, isToday: date === todayIso,
+      label: day.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "short" }) };
+  });
+  const shiftWeek = amount => setCur(new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + amount));
+
 
   const submit = async (e) => {
     e.preventDefault();
     if (saving) return;
-    const targets = form.student_id ? [form.student_id] : (students.length ? students.map(s => s.id) : [null]);
+    const targets = [form.student_id || null];
     setSaving(true);
     try {
-      for (const sid of targets) {
-        let assignmentId = null;
-        if (sid && form.linked_lesson_id) {
-          const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
-          assignmentId = a.data?.id || null;
-        }
-        await api.post("/calendar", {
-          ...form,
-          duration_minutes: Number(form.duration_minutes),
-          student_id: sid,
-          linked_lesson_id: form.linked_lesson_id || null,
-          linked_assignment_id: assignmentId,
-        });
-      }
-      toast.success(targets.length > 1 ? `Scheduled for ${targets.length} children` : "Scheduled");
+      // Calendar events are commitments, not assignments. Add a lesson uses
+      // ScheduleModal so it always creates the correct assignment relationship.
+      await api.post("/calendar", {
+        ...form, start_time: form.start_time || null,
+        duration_minutes: form.start_time ? Number(form.duration_minutes) : null,
+        student_id: targets[0], linked_lesson_id: null, linked_assignment_id: null,
+      });
+      toast.success("Event added to your calendar");
       setOpen(false); afterCalendarChange();
-    } catch (err) { toast.error(apiErrorMessage(err, "Some entries may already have been added")); load(); }
+    } catch (err) { toast.error(apiErrorMessage(err, "Event could not be added")); load(); }
     finally { setSaving(false); }
   };
 
@@ -270,11 +286,14 @@ export default function CalendarPage() {
             <option value="">All children</option>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
-          <button onClick={()=>setWeekFillOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2 text-sm font-bold" data-testid="fill-week-open">⚔️ Fill My Week</button>
-          <button onClick={()=>setAutoQuestOpen(true)} className="rounded-full border border-emerald-300 bg-emerald-50 text-emerald-900 px-4 py-2 text-sm font-semibold" data-testid="autoquest-open-btn">Auto-Quest (advanced)</button>
-          <button onClick={()=>setGeneratorOpen(true)} className="rounded-full bg-amber-100 text-amber-950 border border-amber-300 px-4 py-2 text-sm font-semibold" data-testid="generate-timetable-btn">Weekly timetable</button>
-          <button onClick={()=>setSchedOpen(true)} className="rounded-full bg-teal-700 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Schedule lesson</button>
-          <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+          <button onClick={()=>setPlanWeekOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2.5 text-sm font-bold" data-testid="plan-week-open">🐉 Plan My Week</button>
+          <button onClick={()=>{setScheduleDate(null);setSchedOpen(true);}} className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Add a lesson</button>
+          <button onClick={()=>setOpen(true)} className="rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
+          <details className="relative text-sm"><summary className="cursor-pointer rounded-full border border-slate-300 px-3 py-2 font-semibold">More planning tools</summary><div className="absolute right-0 top-full z-20 mt-2 w-56 rounded-xl bg-white border border-slate-200 shadow-lg p-2 flex flex-col gap-1">
+            <button onClick={()=>setWeekFillOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="fill-week-open">Fill My Week (original)</button>
+            <button onClick={()=>setAutoQuestOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="autoquest-open-btn">Auto-Quest (advanced)</button>
+            <button onClick={()=>setGeneratorOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="generate-timetable-btn">Weekly timetable (original)</button>
+          </div></details>
         </div>
       </div>
 
@@ -289,6 +308,27 @@ export default function CalendarPage() {
         {calendarError} <button type="button" onClick={load} className="ml-2 font-bold underline">Retry calendar</button>
       </div>}
       {loadingCalendar && <p role="status" className="text-sm text-slate-600">Loading this month's timetable…</p>}
+
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="inline-flex rounded-full border border-slate-300 p-1 gap-1 bg-stone-50" role="group" aria-label="Calendar view">
+          <button type="button" onClick={() => setCalendarView("week")} aria-pressed={calendarView === "week"}
+            className={`px-4 py-2 text-sm font-semibold rounded-full ${calendarView === "week" ? "bg-teal-800 text-white" : "text-slate-700"}`}
+            data-testid="calendar-week-mode">Week</button>
+          <button type="button" onClick={() => setCalendarView("month")} aria-pressed={calendarView === "month"}
+            className={`px-4 py-2 text-sm font-semibold rounded-full ${calendarView === "month" ? "bg-teal-800 text-white" : "text-slate-700"}`}
+            data-testid="calendar-month-mode">Month</button>
+        </div>
+        {calendarView === "week" && <div className="flex items-center gap-2">
+          <button type="button" onClick={() => shiftWeek(-7)} className="rounded-lg border border-slate-300 p-2" aria-label="Previous week" data-testid="previous-week"><ChevronLeft size={16}/></button>
+          <button type="button" onClick={() => setCur(new Date())} className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-bold">This week</button>
+          <button type="button" onClick={() => shiftWeek(7)} className="rounded-lg border border-slate-300 p-2" aria-label="Next week" data-testid="next-week"><ChevronRight size={16}/></button>
+        </div>}
+      </div>
+      {calendarView === "week" ? <>
+        <h2 className="font-display font-semibold text-lg">{weekDays[0].label} – {weekDays[6].label}</h2>
+        <CalendarWeekAgenda days={weekDays} eventsByDate={eventsByDate} nameOf={nameOf} colourOf={colourOf}
+          isFreeSlot={freeSlot} onDayOpen={setDayOpen} onEdit={setEditing}/>
+      </> : (
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-slate-100">
           <h2 className="font-display text-lg font-semibold" data-testid="calendar-month">{monthName}</h2>
@@ -326,13 +366,18 @@ export default function CalendarPage() {
         </div>
       </div>
 
+      )}
+
       {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
+      {planWeekOpen && <PlanMyWeek students={students} initialChild={filter} initialDate={isoLocal(cur)} onClose={()=>setPlanWeekOpen(false)} onDone={afterWeeklyPlanning} />}
       {weekFillOpen && <FillMyWeek students={students} initialChild={filter || rescheduleChild}
         initialDate={isoLocal(cur)} onClose={()=>setWeekFillOpen(false)} onDone={afterCalendarChange}
         onOpenDay={date=>{setWeekFillOpen(false);setDayOpen(date);}} />}
       {autoQuestOpen && <AutoQuestPreview students={students} onClose={()=>setAutoQuestOpen(false)} onChanged={afterCalendarChange} />}
       {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
-      {schedOpen && <ScheduleModal lessons={lessons} students={students} onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
+      {schedOpen && <ScheduleModal lessons={lessons} students={students}
+        defaultDate={scheduleDate} defaultStudents={scheduleDate && (filter || rescheduleChild) ? [filter || rescheduleChild] : []}
+        onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
 
       {dayOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm p-3 sm:p-6 flex items-center justify-center"
@@ -347,10 +392,24 @@ export default function CalendarPage() {
                 </h2>
                 <p className="text-sm text-slate-600 mt-1">{dayList.length} scheduled entries · {daySlots.length} available learning slots</p>
               </div>
-              <button type="button" disabled={dayDrafting} onClick={()=>{setDayOpen(null);setWeekFillOpen(true);}} className="text-sm underline text-teal-900 font-semibold">Fill this week</button>
               <button type="button" disabled={dayDrafting} onClick={()=>setDayOpen(null)} aria-label="Close day"
                 className="p-2 rounded-lg border disabled:opacity-50"><X size={18}/></button>
             </header>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" disabled={dayDrafting}
+                onClick={()=>{setScheduleDate(dayOpen);setDayOpen(null);setSchedOpen(true);}}
+                className="rounded-full bg-teal-800 px-4 py-2 text-sm font-semibold text-white" data-testid="day-add-lesson">
+                + Add lesson to this day
+              </button>
+              <button type="button" disabled={dayDrafting}
+                onClick={()=>{setForm(f=>({...f,date:dayOpen,student_id:filter || ""}));setDayOpen(null);setOpen(true);}}
+                className="rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold" data-testid="day-add-event">
+                + Add event to this day
+              </button>
+              <button type="button" disabled={dayDrafting}
+                onClick={()=>{setDayOpen(null);setPlanWeekOpen(true);}}
+                className="rounded-full border border-slate-300 px-4 py-2 text-sm font-semibold">Plan this week</button>
+            </div>
             <div className="rounded-xl bg-teal-50 border border-teal-200 p-4 space-y-3" data-testid="day-autoquest">
               <h3 className="font-display font-bold text-teal-950">⚔️ Prepare this day's lessons</h3>
               <p className="text-sm text-slate-700">Side-Quest checks your lesson library first, assigns suitable unused lessons, then drafts missing ones with AI. You'll review AI drafts before assignment.</p>
@@ -441,9 +500,19 @@ export default function CalendarPage() {
             <div className="space-y-3">
               <L label="Title"><input required value={form.title} onChange={e=>setForm({...form, title: e.target.value})} className="input" data-testid="e-title"/></L>
               <L label="Date"><input required type="date" value={form.date} onChange={e=>setForm({...form, date: e.target.value})} className="input" data-testid="e-date"/></L>
+              <div className="grid grid-cols-2 gap-3">
+                <L label="Start time (optional)"><input type="time" value={form.start_time}
+                  onChange={e=>setForm({...form,start_time:e.target.value})} className="input" data-testid="e-start-time"/></L>
+                {form.start_time && <L label="Duration">
+                  <select value={form.duration_minutes} onChange={e=>setForm({...form,duration_minutes:Number(e.target.value)})}
+                    className="input" data-testid="e-duration">
+                    {[15,30,45,60,90,120,180].map(n=><option key={n} value={n}>{n} minutes</option>)}
+                  </select>
+                </L>}
+              </div>
               <L label="Type">
                 <select value={form.event_type} onChange={e=>setForm({...form, event_type: e.target.value})} className="input" data-testid="e-type">
-                  <option value="lesson">Lesson</option><option value="assignment">Assignment</option>
+                  <option value="appointment">Appointment / activity</option>
                   <option value="assessment">Assessment</option><option value="project">Project milestone</option>
                   <option value="excursion">Excursion</option><option value="co-op">Co-op</option>
                   <option value="tutor">Tutor</option><option value="holiday">Holiday / rest day</option>
@@ -451,21 +520,9 @@ export default function CalendarPage() {
                 </select>
               </L>
               <L label="Child">
-                <select value={form.student_id} onChange={e=>setForm(f => {
-                  const target = e.target.value;
-                  const childIds = target ? [target] : students.map(s=>s.id);
-                  return { ...f, student_id: target, linked_lesson_id:
-                    lessons.some(l => l.id === f.linked_lesson_id && lessonAvailableForChildren(l, childIds))
-                      ? f.linked_lesson_id : "" };
-                })} className="input" data-testid="e-student">
-                  <option value="">Every child (one entry each)</option>
+                <select value={form.student_id} onChange={e=>setForm(f => ({ ...f, student_id: e.target.value }))} className="input" data-testid="e-student">
+                  <option value="">Whole family (one event)</option>
                   {students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
-                </select>
-              </L>
-              <L label="Linked lesson (optional)">
-                <select value={form.linked_lesson_id} onChange={e=>setForm({...form, linked_lesson_id: e.target.value})} className="input" data-testid="e-lesson">
-                  <option value="">None</option>
-                  {calendarLibraryChoices.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}
                 </select>
               </L>
               <L label="Notes"><textarea rows={2} value={form.notes} onChange={e=>setForm({...form, notes: e.target.value})} className="input" data-testid="e-notes"/></L>

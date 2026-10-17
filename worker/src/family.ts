@@ -1,4 +1,5 @@
 import { validateCalendarAssignment } from "./calendarLinks";
+import { calendarConflict, syncAssignmentDate } from "./calendarIntegrity";
 import { clearLoginFailures } from "./loginThrottle";
 import { authenticateToken, bumpAuthVersion, familyState, issueToken, SUSPENDED_MESSAGE, verifyFileToken } from "./session";
 import { loadPlatformSettings } from "./platformSettings";
@@ -839,9 +840,10 @@ export function registerFamily(app: App, g: Guards) {
     // Determine the final relationship, not just the changed fields. An edit may
     // change the child or lesson while leaving an old assignment ID untouched.
     const current = await c.env.DB.prepare(
-      "SELECT student_id, linked_lesson_id, linked_assignment_id FROM calendar_events WHERE id = ? AND family_id = ?"
+      "SELECT student_id, linked_lesson_id, linked_assignment_id, date, start_time, duration_minutes, event_type FROM calendar_events WHERE id = ? AND family_id = ?"
     ).bind(c.req.param("eid"), c.get("user").family_id).first<{
       student_id: string | null; linked_lesson_id: string | null; linked_assignment_id: string | null;
+      date: string; start_time: string | null; duration_minutes: number | null; event_type: string;
     }>();
     if (!current) return c.json({ detail: "Event not found" }, 404);
     const finalValue = (key: "student_id" | "linked_lesson_id" | "linked_assignment_id") =>
@@ -851,12 +853,22 @@ export function registerFamily(app: App, g: Guards) {
       finalValue("linked_assignment_id"), finalValue("student_id"), finalValue("linked_lesson_id")
     );
     if (!link.ok) return c.json({ detail: link.detail }, link.status);
+    if (["date", "start_time", "duration_minutes", "student_id", "event_type"].some(key => key in updates)) {
+      const conflict = await calendarConflict(c.env.DB, c.get("user").family_id, {
+        ...current, ...updates, id: c.req.param("eid"),
+      });
+      if (conflict) return c.json(conflict, conflict.code === "INVALID_TIME" ? 400 : 409);
+    }
 
     const entries = Object.entries(updates);
     const result = await c.env.DB.prepare(
       `UPDATE calendar_events SET ${entries.map(([key]) => `${key} = ?`).join(", ")} WHERE id = ? AND family_id = ?`
     ).bind(...entries.map(([, value]) => value), c.req.param("eid"), c.get("user").family_id).run();
     if (!result.meta.changes) return c.json({ detail: "Event not found" }, 404);
+    await syncAssignmentDate(c.env.DB, c.get("user").family_id, current.linked_assignment_id);
+    if (finalValue("linked_assignment_id") !== current.linked_assignment_id) {
+      await syncAssignmentDate(c.env.DB, c.get("user").family_id, finalValue("linked_assignment_id") as string | null);
+    }
     return c.json(await c.env.DB.prepare("SELECT * FROM calendar_events WHERE id = ? AND family_id = ?").bind(c.req.param("eid"), c.get("user").family_id).first());
   });
 

@@ -19,10 +19,10 @@ const sameSubject = (slot, area) => !!area && areaKey(slot) === areaKey(area);
  * Family Membership: by default it fills each child's next free timetable slot of the lesson's subject (or a slot the
  * parent picks). Otherwise, or by choice, the parent picks the day(s) as before, or leaves it unscheduled.
  */
-export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], defaultStudents = [], onClose, onDone }) {
+export default function ScheduleModal({ lesson: fixed, lessons = [], students = [], defaultStudents = [], defaultDate = null, onClose, onDone }) {
   const [lessonId, setLessonId] = useState(fixed?.id || "");
   const [picked, setPicked] = useState(defaultStudents);
-  const [start, setStart] = useState(isoLocal(new Date()));
+  const [start, setStart] = useState(defaultDate || isoLocal(new Date()));
   const [end, setEnd] = useState("");
   const [weekdays, setWeekdays] = useState([1, 2, 3, 4, 5]);
   const [busy, setBusy] = useState(false);
@@ -43,7 +43,7 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   }, [fixed, lessonId, choices]);
 
   useEffect(() => {
-    api.get("/timetable/status").then((r) => { if (r.data?.allowed) { setTimetable(true); setMode("slot"); } }).catch(() => {});
+    api.get("/timetable/status").then((r) => { if (r.data?.allowed) { setTimetable(true); if (!defaultDate) setMode("slot"); } }).catch(() => {});
   }, []);
   useEffect(() => {
     if (!timetable) return;
@@ -97,14 +97,28 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
       throw e;
     }
   };
-  const scheduleOnDays = async (sid, days) => {
+  const scheduleOnDays = async (sid, days, assignmentId) => {
+    const { data: existing } = await api.get("/calendar", {
+      params: { from: days[0], to: days[days.length - 1] },
+    });
+    const already = new Set((existing || []).filter(e =>
+      e.linked_assignment_id === assignmentId && e.student_id === sid).map(e => e.date));
+    let skipped = 0;
     for (let i = 0; i < days.length; i++) {
-      await api.post("/calendar", {
-        title: days.length > 1 ? `${lesson.title} · Day ${i + 1} of ${days.length}` : lesson.title,
-        date: days[i], event_type: "lesson", student_id: sid, linked_lesson_id: lesson.id,
-        duration_minutes: Number(lesson.duration_minutes) || 45, notes: "",
-      });
+      if (already.has(days[i])) { skipped++; continue; }
+      try {
+        await api.post("/calendar", {
+          title: days.length > 1 ? `${lesson.title} · Day ${i + 1} of ${days.length}` : lesson.title,
+          date: days[i], event_type: "lesson", student_id: sid, linked_lesson_id: lesson.id,
+          linked_assignment_id: assignmentId,
+          duration_minutes: Number(lesson.duration_minutes) || 45, notes: "",
+        });
+      } catch (e) {
+        if (e.response?.data?.code !== "ALREADY_SCHEDULED") throw e;
+        skipped++;
+      }
     }
+    return skipped;
   };
 
   const submit = async () => {
@@ -115,6 +129,10 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
     }
     if (picked.length === 0) { toast.error("Choose at least one child"); return; }
     if (mode === "days" && dates.length === 0) { toast.error("No days match those dates and weekdays"); return; }
+    if (!timetable && mode === "days" && dates.length > 1) {
+      toast.error("The basic preview can schedule one day per assignment. Choose one date or upgrade for multiple sessions.");
+      return;
+    }
     if (mode === "pick" && !slotId) { toast.error("Choose a timetable slot"); return; }
     setBusy(true);
     const notes = [];
@@ -122,13 +140,22 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
       for (const sid of picked) {
         const aid = await assignmentFor(sid);
         if (!aid) { notes.push(`${students.find((s) => s.id === sid)?.name || "Child"} already had it, so nothing was added for them`); continue; }
-        if (mode === "days") { await scheduleOnDays(sid, dates); continue; }
+        if (mode === "days") {
+          if (!timetable) {
+            // Free preview permits a basic lesson date, not paid calendar entries.
+            await api.put(`/assignments/${aid}`, { scheduled_date: dates[0] });
+          } else {
+            const skipped = await scheduleOnDays(sid, dates, aid);
+            if (skipped) notes.push(`${skipped} previously scheduled day(s) were kept`);
+          }
+          continue;
+        }
         if (mode === "none") continue;
         const body = mode === "pick" ? { slot_ids: [slotId] } : { count: sessions };
         const { data } = await api.post(`/assignments/${aid}/place`, body);
         if (!data.placed.length) {
           // No free slot for this subject: put it on the start day instead, so it's still in the week.
-          await scheduleOnDays(sid, [start]);
+          await scheduleOnDays(sid, [start], aid);
           notes.push(`${students.find((s) => s.id === sid)?.name || "Child"}: no free ${area || "matching"} slot, so it's on ${start}`);
         }
       }
@@ -195,34 +222,49 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
         </div>
 
         {timetable && (
-          <div className="mb-4 space-y-1.5" data-testid="sch-when">
-            <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">When</div>
-            {modeBtn("slot", <>Next free <strong>{area || "matching"}</strong> slot in the timetable</>, "sch-mode-slot")}
-            {mode === "slot" && (
-              <div className="pl-7 space-y-1 text-xs text-slate-600" data-testid="sch-slot-preview">
-                <label className="flex items-center gap-2">Sessions
-                  <select value={sessions} onChange={(e) => setSessions(Number(e.target.value))} className="rounded border border-slate-300 px-1 py-0.5" data-testid="sch-sessions">
-                    {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
+          <div className="mb-4 space-y-3" data-testid="sch-when">
+            <div className="rounded-xl border border-teal-200 bg-teal-50 p-3">
+              <p className="text-xs font-bold uppercase tracking-wide text-teal-900 mb-1">Where this lesson will go</p>
+              <p className="text-sm font-semibold text-teal-950">
+                {mode === "slot" ? `Next available ${area || "subject"} learning time`
+                  : mode === "days" ? `On the day${end ? "s" : ""} you choose`
+                  : mode === "pick" ? "In the timetable slot you select" : "Assigned without a calendar date"}
+              </p>
+              {mode === "slot" && <div className="mt-2 space-y-1 text-xs text-slate-700" data-testid="sch-slot-preview">
+                <label className="flex items-center gap-2">Number of sessions
+                  <select value={sessions} onChange={e => setSessions(Number(e.target.value))}
+                    className="rounded border border-slate-300 px-1 py-0.5" data-testid="sch-sessions">
+                    {[1,2,3,4,5].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </label>
-                {picked.map((sid) => {
-                  const name = students.find((s) => s.id === sid)?.name;
+                {picked.map(sid => {
                   const next = nextSlots(sid);
-                  return <p key={sid}>{name}: {!open[sid] ? "checking…" : next.length ? next.map(niceSlot).join(", ") : <span className="text-amber-700">no free {area || "matching"} slot, so it goes on the start day below</span>}</p>;
+                  return <p key={sid}>{students.find(s => s.id === sid)?.name || "Child"}: {
+                    !open[sid] ? "Checking available times…" : next.length ?
+                      next.map(niceSlot).join(", ") : `No free ${area || "matching"} slot — use the fallback day below`
+                  }</p>;
                 })}
+              </div>}
+            </div>
+            <details className="rounded-lg border border-slate-200 px-3 py-2" data-testid="sch-options">
+              <summary className="cursor-pointer text-sm font-semibold text-teal-900">Change when this lesson is scheduled</summary>
+              <div className="space-y-2 mt-3">
+                {modeBtn("slot", <>Next free <strong>{area || "matching"}</strong> subject slot</>, "sch-mode-slot")}
+                {onlyChild && modeBtn("pick", "Choose a specific timetable slot", "sch-mode-pick")}
+                {mode === "pick" && onlyChild && (
+                  <select value={slotId} onChange={e => setSlotId(e.target.value)}
+                    className="w-full rounded-lg border border-slate-300 px-2 py-2 text-sm" data-testid="sch-slot">
+                    <option value="">Choose a free slot…</option>
+                    {[...(open[onlyChild] || [])].sort((a, b) =>
+                      Number(sameSubject(b.title, area)) - Number(sameSubject(a.title, area))).map(slot => (
+                      <option key={slot.id} value={slot.id}>{niceSlot(slot)}{sameSubject(slot.title, area) ? "" : " (different subject)"}</option>
+                    ))}
+                  </select>
+                )}
+                {modeBtn("days", "Choose the day(s) myself", "sch-mode-days")}
+                {modeBtn("none", "Assign without scheduling", "sch-mode-none")}
               </div>
-            )}
-            {onlyChild && modeBtn("pick", "Choose a timetable slot", "sch-mode-pick")}
-            {mode === "pick" && onlyChild && (
-              <select value={slotId} onChange={(e) => setSlotId(e.target.value)} className="ml-7 w-[calc(100%-1.75rem)] rounded-lg border border-slate-300 px-2 py-1.5 text-sm" data-testid="sch-slot">
-                <option value="">Choose a free slot…</option>
-                {[...(open[onlyChild] || [])].sort((a, b) => Number(sameSubject(b.title, area)) - Number(sameSubject(a.title, area))).map((s) => (
-                  <option key={s.id} value={s.id}>{niceSlot(s)}{sameSubject(s.title, area) ? "" : " (different subject)"}</option>
-                ))}
-              </select>
-            )}
-            {modeBtn("days", "Choose the day(s) myself", "sch-mode-days")}
-            {modeBtn("none", "Don't schedule yet", "sch-mode-none")}
+            </details>
           </div>
         )}
 

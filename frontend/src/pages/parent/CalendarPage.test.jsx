@@ -69,3 +69,40 @@ test("day batch fills unused ready library lessons first, then saves missing AI 
   expect(progress.textContent).toMatch(/1 AI drafts saved for review/);
   expect(slots.every(s=>!s.linked_assignment_id)).toBe(true, "drafting never mutates timetable data locally");
 });
+
+test("calendar opens with a readable weekly agenda and retains the original month view", async () => {
+  const date = iso(new Date());
+  const slots = [
+    { id:"ready-session", student_id:"child-1", title:"Mathematics", date,
+      start_time:"09:00", duration_minutes:45, event_type:"timetable",
+      linked_lesson_id:"lesson-1", linked_assignment_id:"assignment-1", lesson_title:"Fractions" },
+    { id:"free-session", student_id:"child-1", title:"English", date,
+      start_time:"10:00", duration_minutes:45, event_type:"timetable" },
+  ];
+  api.get.mockImplementation(path => Promise.resolve({ data: path === "/calendar" ? slots :
+    path === "/students" ? [{id:"child-1", name:"Mason"}] : [] }));
+  await act(async () => root.render(<CalendarPage />));
+  expect(node.querySelector('[data-testid="calendar-week-agenda"]')).not.toBeNull();
+  expect(node.textContent).toMatch(/Fractions/);
+  expect(node.textContent).toMatch(/Lesson not chosen/);
+  expect(node.querySelector('[data-slot="filled"]')).not.toBeNull();
+  expect(node.querySelector('[data-slot="free"]')).not.toBeNull();
+  await click(node.querySelector('[data-testid="calendar-month-mode"]'));
+  expect(node.querySelector('[data-testid="calendar-month"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="calendar-week-agenda"]')).toBeNull();
+  await click(node.querySelector('[data-testid="calendar-week-mode"]'));
+  expect(node.querySelector('[data-testid="calendar-week-agenda"]')).not.toBeNull();
+});
+
+test("adding an event from a particular day uses that date and offers an optional time", async () => {
+  const date = iso(new Date());
+  api.get.mockImplementation(path => Promise.resolve({ data: path === "/calendar" ? [] :
+    path === "/students" ? [{id:"child-1",name:"Mason"}] : [] }));
+  await act(async () => root.render(<CalendarPage />));
+  await click(node.querySelector(`[aria-label="View and edit ${date}"]`));
+  await click(node.querySelector('[data-testid="day-add-event"]'));
+  expect(node.querySelector('[data-testid="event-form"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="e-date"]').value).toBe(date);
+  expect(node.querySelector('[data-testid="e-start-time"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="e-duration"]')).toBeNull();
+});

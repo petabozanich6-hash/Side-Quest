@@ -4,6 +4,7 @@ import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { safely, evidenceNoteDeleted } from "./outcomeTracker";
 import { SLOT_SQL, emptySlotsFor } from "./timetable";
+import { moveAssignmentDay } from "./assignmentScheduling";
 
 type DB = D1Database;
 const { fail } = lb;
@@ -26,23 +27,39 @@ export async function updateAssignment(db: DB, familyId: string, id: string, inp
   if (!a) return fail(404, "Assignment not found");
   if (a.status === "revoked") return fail(409, "This assignment has been revoked.", "REVOKED");
   if (lb.DONE_STATUSES.includes(a.status)) return fail(409, "This lesson is finished, so it can't be changed.", "ALREADY_DONE");
+  // Validate the complete change before moving any calendar session.
+  if ("due_date" in (input || {})) {
+    const v = input.due_date;
+    if (v !== null && v !== "" && !validDate(v)) return fail(400, "Dates must look like 2026-10-31.");
+  }
+  if ("scheduled_date" in (input || {})) {
+    const v = input.scheduled_date;
+    if (v !== null && v !== "" && !validDate(v)) return fail(400, "Dates must look like 2026-10-31.");
+  }
+  if ("support_level" in (input || {}) && !SUPPORT.includes(input.support_level))
+    return fail(400, "Unknown support level.");
+  if ("scheduled_date" in (input || {})) {
+    const result = await moveAssignmentDay(db, familyId, id, input.scheduled_date);
+    if (!result.ok) return result;
+  }
   const sets: string[] = [];
   const b: unknown[] = [];
-  for (const k of ["due_date", "scheduled_date"] as const) {
-    if (k in (input || {})) {
-      const v = input[k];
-      if (v !== null && v !== "" && !validDate(v)) return fail(400, "Dates must look like 2026-10-31.");
-      sets.push(`${k} = ?`); b.push(v || null);
-    }
+  if ("due_date" in (input || {})) {
+    sets.push("due_date = ?"); b.push(input.due_date || null);
   }
-  if ("parent_notes" in (input || {})) { sets.push("parent_notes = ?"); b.push(clip(input.parent_notes, 2000) || null); }
+  if ("parent_notes" in (input || {})) {
+    sets.push("parent_notes = ?"); b.push(clip(input.parent_notes, 2000) || null);
+  }
   if ("support_level" in (input || {})) {
-    if (!SUPPORT.includes(input.support_level)) return fail(400, "Unknown support level.");
     sets.push("support_level = ?"); b.push(input.support_level);
   }
-  if (!sets.length) return fail(400, "Nothing to change.");
-  await db.prepare(`UPDATE assignments SET ${sets.join(", ")} WHERE id = ? AND family_id = ?`).bind(...b, id, familyId).run();
-  return { ok: true, assignment: await ownAssignment(db, familyId, id).then((r: any) => { delete r.lesson_snapshot; delete r.draft; return r; }) };
+  if (!sets.length && !("scheduled_date" in (input || {})))
+    return fail(400, "Nothing to change.");
+  if (sets.length) await db.prepare("UPDATE assignments SET " + sets.join(", ") + " WHERE id = ? AND family_id = ?")
+    .bind(...b, id, familyId).run();
+  return { ok: true, assignment: await ownAssignment(db, familyId, id).then((r: any) => {
+    delete r.lesson_snapshot; delete r.draft; return r;
+  }) };
 }
 
 /** Give a not-yet-started assignment to a different child. */

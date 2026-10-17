@@ -1,4 +1,5 @@
 import { validateCalendarAssignment } from "./calendarLinks";
+import { calendarConflict, syncAssignmentDate } from "./calendarIntegrity";
 import { publicMapping } from "./syllabusText";
 import type { Hono, MiddlewareHandler } from "hono";
 import { applySpelling } from "./data/spelling";
@@ -590,10 +591,26 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       b.linked_assignment_id, b.student_id, b.linked_lesson_id
     );
     if (!link.ok) return c.json({ detail: link.detail }, link.status);
+    // A retry or an already-assigned child must not get a second calendar
+    // entry for the same learning session. Separate timed sessions are valid.
+    if (b.linked_assignment_id) {
+      const duplicate = await c.env.DB.prepare(
+        "SELECT id FROM calendar_events WHERE family_id = ? AND linked_assignment_id = ? AND date = ? AND (? IS NULL OR start_time IS ?) LIMIT 1"
+      ).bind(c.get("user").family_id, b.linked_assignment_id, b.date,
+        b.start_time ?? null, b.start_time ?? null).first<{ id: string }>();
+      if (duplicate) return c.json({
+        code: "ALREADY_SCHEDULED",
+        detail: "This lesson is already scheduled for that day. Open the existing calendar entry to change it.",
+        event_id: duplicate.id,
+      }, 409);
+    }
+    const conflict = await calendarConflict(c.env.DB, c.get("user").family_id, b);
+    if (conflict) return c.json(conflict, conflict.code === "INVALID_TIME" ? 400 : 409);
     const id = newId();
     await c.env.DB.prepare(
       "INSERT INTO calendar_events (id, family_id, student_id, title, date, start_time, duration_minutes, event_type, linked_lesson_id, linked_assignment_id, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     ).bind(id, c.get("user").family_id, b.student_id || null, b.title, b.date, b.start_time ?? null, b.duration_minutes ?? null, b.event_type || "lesson", b.linked_lesson_id || null, b.linked_assignment_id || null, b.notes ?? null, nowIso()).run();
+    await syncAssignmentDate(c.env.DB, c.get("user").family_id, b.linked_assignment_id);
     return c.json(await c.env.DB.prepare("SELECT * FROM calendar_events WHERE id = ?").bind(id).first());
   });
 
@@ -609,9 +626,12 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   });
 
   app.delete("/api/calendar/:id", auth, parent, async (c) => {
+    const linked = await c.env.DB.prepare("SELECT linked_assignment_id FROM calendar_events WHERE id = ? AND family_id = ?")
+      .bind(c.req.param("id"), c.get("user").family_id).first<{ linked_assignment_id: string | null }>();
     const r = await c.env.DB.prepare("DELETE FROM calendar_events WHERE id = ? AND family_id = ?")
       .bind(c.req.param("id"), c.get("user").family_id).run();
     if (!r.meta.changes) return c.json({ detail: "Event not found" }, 404);
+    await syncAssignmentDate(c.env.DB, c.get("user").family_id, linked?.linked_assignment_id);
     return c.json({ ok: true });
   });
 

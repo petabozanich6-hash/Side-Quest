@@ -34,8 +34,10 @@ writeFileSync(`${ROOT}/${CONFIG}`, JSON.stringify({
   assets: { directory: "./frontend/build", not_found_handling: "single-page-application", run_worker_first: ["/api/*"] },
   d1_databases: [{ binding: "DB", database_name: "e2e-timetable", database_id: "00000000-0000-0000-0000-000000000005", migrations_dir: "./worker/migrations" }],
 }));
-const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8" });
-ok(wr(["d1", "migrations", "apply", "DB", "--local"]).status === 0, "local migrations failed");
+const wr = (args) => spawnSync("npx", ["wrangler", ...args, "--config", CONFIG, "--persist-to", STATE], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024, timeout: 120000 });
+const migration = wr(["d1", "migrations", "apply", "DB", "--local"]);
+if (migration.status !== 0) console.error("Local timetable D1 migrations failed:", { status: migration.status, signal: migration.signal, error: migration.error?.message }, (migration.stderr || "").slice(-5000), (migration.stdout || "").slice(-5000));
+ok(migration.status === 0, "local migrations failed");
 let server = null;
 const up = async () => {
   server = spawn("npx", ["wrangler", "dev", "--config", CONFIG, "--local", "--persist-to", STATE, "--port", String(PORT), "--ip", "127.0.0.1"], { cwd: ROOT, stdio: "ignore" });
@@ -90,6 +92,7 @@ let weekStart;
 await step("paying parent: plan one week; it is saved as free timetable slots", async () => {
   await login(page, paidEmail);
   await page.goto(BASE + "/parent/calendar");
+  await page.getByText("More planning tools").click();
   await page.click("[data-testid=generate-timetable-btn]");
   await page.waitForSelector("[data-testid=tt-generate]:not([disabled])");
   weekStart = await page.inputValue("[data-testid=tt-week]");
@@ -104,11 +107,27 @@ await step("paying parent: plan one week; it is saved as free timetable slots", 
   ok(s.some((x) => x.title === "Mathematics") && s.some((x) => x.title === "English"), "subjects missing: " + [...new Set(s.map((x) => x.title))].join(", "));
 });
 
+await step("Plan My Week finds the child's existing timetable without assigning anything before approval", async () => {
+  await page.goto(BASE + "/parent/calendar");
+  await page.click("[data-testid=plan-week-open]");
+  await page.waitForSelector("[data-testid=plan-my-week]");
+  await page.fill("[data-testid=plan-week-start]", weekStart);
+  await page.waitForSelector("[data-testid=plan-review-week]:not([disabled])");
+  await page.click("[data-testid=plan-review-week]");
+  await page.waitForSelector("[data-testid=plan-week-results]", { timeout: 25000 });
+  const planText = await page.textContent("[data-testid=plan-week-results]");
+  ok(planText.includes("Mathematics"), "the weekly plan did not include the saved Mathematics times");
+  ok(planText.includes("English"), "the weekly plan did not include the saved English times");
+  ok((await slots()).every(x => !x.linked_assignment_id), "opening a plan must not automatically assign lessons");
+  await page.click('[aria-label="Close weekly planner"]');
+});
+
 await step("assigning a maths lesson puts it in Mia's next free Mathematics slot (shown before saving)", async () => {
   await page.goto(BASE + "/parent/lessons");
   await page.click(`[data-testid=assign-${maths1}]`);
   await page.check(`[data-testid=sch-student-${kid.id}]`);
-  await page.waitForSelector("[data-testid=sch-mode-slot]:checked");
+  await page.waitForSelector("[data-testid=sch-slot-preview]");
+  ok(await page.isChecked("[data-testid=sch-mode-slot]"), "the recommended timetable option was not selected");
   const first = (await slots()).filter((x) => x.title === "Mathematics")[0];
   await page.waitForFunction(() => !/checking/.test(document.querySelector("[data-testid=sch-slot-preview]")?.textContent || "checking"));
   ok((await page.textContent("[data-testid=sch-slot-preview]")).includes("Mathematics"), "preview doesn't show the slot");
@@ -127,7 +146,8 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
     await page.goto(BASE + "/parent/lessons");
     await page.click(`[data-testid=assign-${lid}]`);
     await page.check(`[data-testid=sch-student-${kid.id}]`);
-    await page.waitForSelector("[data-testid=sch-mode-slot]:checked");
+    await page.waitForSelector("[data-testid=sch-slot-preview]");
+    ok(await page.isChecked("[data-testid=sch-mode-slot]"), "the recommended timetable placement was not selected");
     await page.click("[data-testid=sch-submit]");
     await page.waitForSelector("text=Scheduled in the timetable");
     const s = (await slots()).find((x) => x.linked_lesson_id === lid);
@@ -140,6 +160,7 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
 await step("the calendar shows each lesson inside its slot and free slots as free", async () => {
   const [y, mo] = weekStart.split("-").map(Number);
   await page.goto(BASE + "/parent/calendar");
+  await page.click("[data-testid=calendar-month-mode]");
   const now = new Date();
   if (now.getFullYear() * 12 + now.getMonth() < y * 12 + mo - 1) await page.click("[data-testid=next-month]");
   await page.waitForSelector("[data-slot=filled]", { timeout: 10000 });
@@ -147,6 +168,19 @@ await step("the calendar shows each lesson inside its slot and free slots as fre
   ok(/Mathematics · Place value/.test(text), "filled slot label missing");
   ok(await page.locator("[data-slot=free]").count() >= 1, "no free slots shown");
   await shot("03-calendar");
+});
+
+await step("new weekly agenda is readable at mobile width and parents can switch views", async () => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(BASE + "/parent/calendar");
+  await page.waitForSelector("[data-testid=calendar-week-agenda]");
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  ok(overflow <= 1, "weekly calendar requires sideways scrolling on a phone: " + overflow + "px");
+  await page.click("[data-testid=calendar-month-mode]");
+  await page.waitForSelector("[data-testid=calendar-month]");
+  await page.click("[data-testid=calendar-week-mode]");
+  await page.waitForSelector("[data-testid=calendar-week-agenda]");
+  await page.setViewportSize({ width: 1280, height: 900 });
 });
 
 await step("un-assigning a lesson frees its slot; the timetable stays", async () => {
@@ -160,6 +194,7 @@ await step("un-assigning a lesson frees its slot; the timetable stays", async ()
 
 await step("Repeat last week copies the timetable into the next week", async () => {
   await page.goto(BASE + "/parent/calendar");
+  await page.getByText("More planning tools").click();
   await page.click("[data-testid=generate-timetable-btn]");
   const next = new Date(weekStart + "T12:00:00"); next.setDate(next.getDate() + 7);
   const nextStart = next.toISOString().slice(0, 10);
@@ -178,6 +213,7 @@ await step("free-preview family: timetable shows the membership message; assigni
   const fp = await fctx.newPage();
   await login(fp, freeEmail);
   await fp.goto(BASE + "/parent/calendar");
+  await fp.getByText("More planning tools").click();
   await fp.click("[data-testid=generate-timetable-btn]");
   await fp.waitForSelector("[data-testid=timetable-upsell]");
   ok(await fp.locator("[data-testid=tt-generate]").count() === 0, "free family can generate a timetable");
