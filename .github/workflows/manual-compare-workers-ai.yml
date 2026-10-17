@@ -1,0 +1,51 @@
+name: Manually compare Side-Quest Workers AI models
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Which Cloudflare AI model should be tested?"
+        type: choice
+        required: true
+        default: qwen
+        options:
+          - qwen
+          - gemma
+          - baseline
+          - all-three
+      confirm_charge:
+        description: "Type RUN to authorise a small real inference test (possibly billable)"
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  compare:
+    if: ${{ inputs.confirm_charge == 'RUN' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm --prefix worker ci
+      - name: Select explicitly allowlisted models
+        id: choose
+        env:
+          INPUT_MODEL: ${{ inputs.model }}
+        run: |
+          case "$INPUT_MODEL" in
+            qwen) echo "models=@cf/qwen/qwen3-30b-a3b-fp8" >> "$GITHUB_OUTPUT" ;;
+            gemma) echo "models=@cf/google/gemma-4-26b-a4b-it" >> "$GITHUB_OUTPUT" ;;
+            baseline) echo "models=@cf/meta/llama-3.3-70b-instruct-fp8-fast" >> "$GITHUB_OUTPUT" ;;
+            all-three) echo "models=@cf/meta/llama-3.3-70b-instruct-fp8-fast,@cf/qwen/qwen3-30b-a3b-fp8,@cf/google/gemma-4-26b-a4b-it" >> "$GITHUB_OUTPUT" ;;
+            *) exit 1 ;;
+          esac
+      - name: Show zero-call dry run
+        run: node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs --dry-run
+      - name: Run bounded real synthetic test
+        env:
+          BENCHMARK_MODELS: ${{ steps.choose.outputs.models }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs

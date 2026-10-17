@@ -53,3 +53,54 @@ Primary sources:
 - `worker/test/aiCost.test.mjs` checks background writes and that no child text is kept in the ledger.
 - `worker/test/builder.test.mjs` checks grouped response success, original-path fallback and resulting lesson draft semantics.
 - Existing CI covers entitlements, quality rejection, outcome restrictions, security, print, offline, browser and owner flows.
+
+
+## 17 October: reproducible, budget-capped live-model comparison
+
+The optional command `worker/scripts/compare-cloudflare-ai.mjs` executes the
+**actual staged lesson generator**, not an unrelated toy prompt, with a fixed
+synthetic Year 3 maths fixture and compact generation enabled. It is NOT
+invoked on a deployment, user request or automated CI.
+
+First, verify settings and upper bounds without credentials or AI calls:
+
+```bash
+node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs --dry-run
+```
+
+To deliberately execute the small comparison, an authorised operator must
+provide `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` via the process
+environment. Never commit or share tokens. The default comparison includes
+the existing Llama 70B, Qwen3 30B and Gemma 4 26B; choose 1–3 from this list
+using `BENCHMARK_MODELS`, separated by commas, to restrict usage further.
+The command refuses to start without both credentials.
+
+**Hard limits in the script:** 32 total AI calls across all models; a
+conservative US$0.50 maximum reserved gross token estimate before free
+neurons, which may not exactly match the invoice; 4,096 maximum output tokens
+per call; 75-second request timeout. It cannot prevent costs of any
+provider-side processing beyond the assumptions in published prices, so run
+only with permission and keep Cloudflare spending alerts enabled.
+
+It prints model call counts, generation time, structural completeness, warnings,
+and output-token estimates without printing model-generated lessons or any
+credentials. For optional **synthetic** lesson review, set
+`BENCH_REPORT_DIR` to a private local path. Do NOT use actual child data.
+
+Quality review is essential: the automated `structurallyPlausible` gate
+checks rough completeness, not arithmetic accuracy, teaching depth,
+curriculum alignment or reading-level adjustments. A model with a lower cost
+must NOT become the production default if it writes weaker lessons.
+
+Cloudflare's currently published additional trial models:
+- `@cf/google/gemma-4-26b-a4b-it`: US$0.10 input / $0.30 output per million.
+- `@cf/zai-org/glm-4.7-flash`: US$0.0605 input / $0.40 output per million.
+
+The Owner HQ gross cost ledger and individual draft
+`generation.est_cost_us_cents` estimate now recognise their exact prices.
+Missing tokens and unpriced models show **unknown**, never fictional US$0.
+
+**Deployment stays unchanged.** No `AI_MODEL`, `AI_HELP_MODEL` or
+`AI_COMPACT_GENERATION` is changed in this PR. The only way to promote a
+model is a separate, reviewed configuration change after both the human
+quality checks and the synthetic benchmark are acceptable.
