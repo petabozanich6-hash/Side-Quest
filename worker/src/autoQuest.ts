@@ -351,7 +351,7 @@ async function ownProposal(db: DB, familyId: string, id: string) {
 }
 
 /** Drafts a lesson for a proposal with AI (paid plans, normal limits). The draft is saved unassigned for review. */
-export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
+export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
   const p = await ownProposal(db, o.familyId, o.id);
   if (!p) return bad(404, "Proposal not found");
   if (p.status !== "proposed") return bad(409, "This proposal has already been decided.", "DECIDED");
@@ -375,7 +375,7 @@ export async function generateForProposal(db: DB, ai: any, o: { familyId: string
   const focus = codes.length ? goal || codes.join(", ") : customTopic || area;
   const topic = codes.length ? `${area}: ${focus}` : `${focus}: ${String(p.reason || "").match(/Session \d+: ([^.]+)/)?.[1] || "learn and practise key skills"}`;
   const r: any = await aid.draftLessonWithAi(db, ai, {
-    familyId: o.familyId, userId: o.userId, model: o.model, gatewayId: o.gatewayId, compact: o.compact,
+    familyId: o.familyId, userId: o.userId, model: o.model, gatewayId: o.gatewayId, compact: o.compact, fastPipeline: o.fastPipeline,
     request: { student_id: p.student_id, learning_area: area, topic: topic.slice(0, 250),
       goal: codes.length ? `${purpose} ${goal}`.slice(0, 400) :
       `${purpose} ${focus}. This is a subject-based draft with NO verified curriculum outcome codes; do not invent any.`.slice(0, 400),
@@ -538,7 +538,7 @@ export function registerAutoQuest(app: App, g: Guards) {
   app.post("/api/auto-quest/proposals/:id/generate", g.auth, g.parent, async (c) => {
     const u = c.get("user");
     const body = await c.req.json().catch(() => ({})) as { topic?: string };
-    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", topic: body.topic });
+    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: c.env.AI_FAST_PIPELINE === "true", topic: body.topic });
     return r.ok ? c.json(r.proposal) : send(c, r);
   });
   app.put("/api/auto-quest/proposals/:id/lesson", g.auth, g.parent, async (c) => {
