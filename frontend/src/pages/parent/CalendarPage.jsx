@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
-import { lessonAvailableForChildren } from "../../lib/lessonAvailability";
 import TimetableGenerator from "../../components/parent/TimetableGenerator";
 import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
 import FillMyWeek from "../../components/parent/FillMyWeek";
@@ -54,7 +53,7 @@ export default function CalendarPage() {
   const [draftProgress, setDraftProgress] = useState(null);
   const [dayTopic, setDayTopic] = useState("");
   const [filter, setFilter] = useState("");
-  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "lesson", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
+  const [form, setForm] = useState({ title: "", date: isoLocal(new Date()), event_type: "appointment", student_id: "", linked_lesson_id: "", duration_minutes: 45, notes: "" });
 
   const visibleWeeks = monthMatrix(cur.getFullYear(), cur.getMonth());
   const rangeFrom = isoLocal(visibleWeeks[0][0]);
@@ -98,8 +97,6 @@ export default function CalendarPage() {
     return i < 0 ? "#475569" : (students[i].prefs?.calendar_colour || COLOURS[i % COLOURS.length]);
   };
   const nameOf = (sid) => students.find(s => s.id === sid)?.name;
-  const targetChildren = form.student_id ? [form.student_id] : students.map(s=>s.id);
-  const calendarLibraryChoices = lessons.filter(l => lessonAvailableForChildren(l, targetChildren));
   // Timetable slots show their subject plus the lesson in them, or "(free)" while empty.
   const isSlot = (e) => e.event_type === "timetable" || (e.event_type === "lesson" && /^Suggested by Side-Quest/.test(e.notes || ""));
   const freeSlot = (e) => isSlot(e) && !e.linked_assignment_id && !e.linked_lesson_id;
@@ -115,26 +112,18 @@ export default function CalendarPage() {
   const submit = async (e) => {
     e.preventDefault();
     if (saving) return;
-    const targets = form.student_id ? [form.student_id] : (students.length ? students.map(s => s.id) : [null]);
+    const targets = [form.student_id || null];
     setSaving(true);
     try {
-      for (const sid of targets) {
-        let assignmentId = null;
-        if (sid && form.linked_lesson_id) {
-          const a = await api.post("/assignments", { student_id: sid, lesson_id: form.linked_lesson_id, support_level: "green" });
-          assignmentId = a.data?.id || null;
-        }
-        await api.post("/calendar", {
-          ...form,
-          duration_minutes: Number(form.duration_minutes),
-          student_id: sid,
-          linked_lesson_id: form.linked_lesson_id || null,
-          linked_assignment_id: assignmentId,
-        });
-      }
-      toast.success(targets.length > 1 ? `Scheduled for ${targets.length} children` : "Scheduled");
+      // Calendar events are commitments, not assignments. Add a lesson uses
+      // ScheduleModal so it always creates the correct assignment relationship.
+      await api.post("/calendar", {
+        ...form, duration_minutes: Number(form.duration_minutes),
+        student_id: targets[0], linked_lesson_id: null, linked_assignment_id: null,
+      });
+      toast.success("Event added to your calendar");
       setOpen(false); afterCalendarChange();
-    } catch (err) { toast.error(apiErrorMessage(err, "Some entries may already have been added")); load(); }
+    } catch (err) { toast.error(apiErrorMessage(err, "Event could not be added")); load(); }
     finally { setSaving(false); }
   };
 
@@ -449,7 +438,7 @@ export default function CalendarPage() {
               <L label="Date"><input required type="date" value={form.date} onChange={e=>setForm({...form, date: e.target.value})} className="input" data-testid="e-date"/></L>
               <L label="Type">
                 <select value={form.event_type} onChange={e=>setForm({...form, event_type: e.target.value})} className="input" data-testid="e-type">
-                  <option value="lesson">Lesson</option><option value="assignment">Assignment</option>
+                  <option value="appointment">Appointment / activity</option>
                   <option value="assessment">Assessment</option><option value="project">Project milestone</option>
                   <option value="excursion">Excursion</option><option value="co-op">Co-op</option>
                   <option value="tutor">Tutor</option><option value="holiday">Holiday / rest day</option>
@@ -457,21 +446,9 @@ export default function CalendarPage() {
                 </select>
               </L>
               <L label="Child">
-                <select value={form.student_id} onChange={e=>setForm(f => {
-                  const target = e.target.value;
-                  const childIds = target ? [target] : students.map(s=>s.id);
-                  return { ...f, student_id: target, linked_lesson_id:
-                    lessons.some(l => l.id === f.linked_lesson_id && lessonAvailableForChildren(l, childIds))
-                      ? f.linked_lesson_id : "" };
-                })} className="input" data-testid="e-student">
-                  <option value="">Every child (one entry each)</option>
+                <select value={form.student_id} onChange={e=>setForm(f => ({ ...f, student_id: e.target.value }))} className="input" data-testid="e-student">
+                  <option value="">Whole family (one event)</option>
                   {students.map(s=><option key={s.id} value={s.id}>{s.name}</option>)}
-                </select>
-              </L>
-              <L label="Linked lesson (optional)">
-                <select value={form.linked_lesson_id} onChange={e=>setForm({...form, linked_lesson_id: e.target.value})} className="input" data-testid="e-lesson">
-                  <option value="">None</option>
-                  {calendarLibraryChoices.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}
                 </select>
               </L>
               <L label="Notes"><textarea rows={2} value={form.notes} onChange={e=>setForm({...form, notes: e.target.value})} className="input" data-testid="e-notes"/></L>
