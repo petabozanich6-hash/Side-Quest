@@ -420,12 +420,35 @@ export async function approveProposal(db: DB, familyId: string, parentId: string
     const up = await lb.updateLesson(db, familyId, row.id, { ...lesson, status: "ready" }, now);
     if (!up.ok) return up;
   }
-  const ev = await db.prepare("SELECT id, student_id, date, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first();
+  const ev = await db.prepare("SELECT id, student_id, date, event_type, notes, start_time, duration_minutes, linked_assignment_id, linked_lesson_id FROM calendar_events WHERE id = ? AND family_id = ?").bind(p.calendar_event_id, familyId).first();
   // Check the exact timetable slot before creating an assignment. This avoids
   // leaving orphaned assignments if another tab or parent filled the slot first.
   if (!ev || ev.student_id !== p.student_id || ev.date !== p.date ||
-      ev.linked_assignment_id || ev.linked_lesson_id)
+      ev.linked_assignment_id || ev.linked_lesson_id ||
+      !(ev.event_type === "timetable" || (ev.event_type === "lesson" && String(ev.notes || "").startsWith("Suggested by Side-Quest"))))
     return bad(409, "This timetable slot has changed or already has an assignment. Refresh the calendar before assigning.", "SLOT_TAKEN");
+  // A parent may have added an appointment AFTER the timetable was created.
+  // Never place a lesson over a timed commitment or a full-day holiday.
+  const toMinutes = (v: unknown) => {
+    const m = /^([01]\\d|2[0-3]):([0-5]\\d)$/.exec(String(v || ""));
+    return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+  };
+  const starts = toMinutes(ev.start_time);
+  if (starts !== null) {
+    const ends = starts + Math.max(1, Number(ev.duration_minutes) || 1);
+    const others = (await db.prepare(`SELECT id, title, event_type, start_time, duration_minutes
+      FROM calendar_events WHERE family_id = ? AND date = ? AND id != ?
+        AND (student_id = ? OR student_id IS NULL)`)
+      .bind(familyId, ev.date, ev.id, p.student_id).all()).results || [];
+    const conflicting = others.find((other: any) => {
+      const at = toMinutes(other.start_time);
+      if (at === null) return other.event_type === "holiday";
+      return starts < at + Math.max(1, Number(other.duration_minutes) || 1) && at < ends;
+    });
+    if (conflicting) return bad(409,
+      `That slot overlaps ${String(conflicting.title || "another calendar event").slice(0, 80)}. Move the other commitment or choose a different slot.`,
+      "TIME_CONFLICT");
+  }
   const why = p.purpose === "revise" ? `Revision (Auto-Quest): revisiting ${json<string[]>(p.outcome_codes, []).join(", ")}.` : null;
   // A batch confirmation must not reassign lessons the child has already
   // completed. Repetition requires its own explicit parent action.
