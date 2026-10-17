@@ -121,3 +121,17 @@ test("if mathematics generates an unexpected reading, fast mode rebuilds every s
   assert.equal(m.calls, 14, "speculative 5 calls plus the complete 9-call fallback");
   assert.ok(flags.some(t => t.includes("new reading")));
 });
+
+test("fast and standard modes send exactly the same full teaching prompts and preserve the same output", async () => {
+  const capture = async fast => {
+    const requests = [];
+    const ai = stub(user => { requests.push(user); });
+    const result = await generateStaged(ai, spec(), stats(), [], false, fast);
+    assert.ok(result);
+    return { requests: requests.sort(), result };
+  };
+  const standard = await capture(false);
+  const fast = await capture(true);
+  assert.deepEqual(fast.requests, standard.requests, "Speed must never shorten, omit or rewrite the original teacher prompts.");
+  assert.deepEqual(fast.result, standard.result);
+});
