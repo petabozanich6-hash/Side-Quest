@@ -13,6 +13,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
   const [selected, setSelected] = useState("");
   const [reviewed, setReviewed] = useState(false);
   const [stale, setStale] = useState(false);
+  const [topic, setTopic] = useState("");
 
   const load = async () => {
     const [result, ls] = await Promise.all([
@@ -58,7 +59,7 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
         const { data } = await api.put(`/auto-quest/proposals/${proposal.id}/lesson`, { lesson_id: selected });
         setProposal(data); setReviewed(false);
       } else if (action === "generate") {
-        const { data } = await api.post(`/auto-quest/proposals/${proposal.id}/generate`);
+        const { data } = await api.post(`/auto-quest/proposals/${proposal.id}/generate`, topic ? { topic: topic.trim() } : {});
         setProposal(data); setSelected(data.lesson?.id || ""); setReviewed(false);
         toast.success("Draft created. Review it before assigning.");
       } else if (action === "reopen") {
@@ -82,7 +83,8 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
     } finally { setBusy(false); }
   };
   const draft = proposal?.lesson && proposal.lesson.status !== "ready";
-  const active = proposal?.status === "proposed";
+  const noCodes = proposal?.outcome_codes?.length === 0;
+  const needsLanguage = noCodes && /^languages?\b/i.test(proposal?.learning_area || event.title);
   return <section className="rounded-xl border border-teal-200 bg-teal-50/40 p-4 space-y-3" data-testid="slot-quest">
     <div>
       <h3 className="text-sm font-bold text-teal-950">⚔️ Turn this slot into a quest</h3>
@@ -116,9 +118,16 @@ export default function CalendarSlotQuest({ event, onAssigned }) {
         </label>
         {selected && selected !== (proposal.lesson?.id || "") && <button type="button" disabled={busy} onClick={() => run("choose")}
           className="rounded-full border border-teal-700 px-3 py-2 disabled:opacity-50" data-testid="slot-choose">Use selected lesson</button>}
+        {noCodes && !proposal.lesson && <label className="block text-xs font-semibold" data-testid="slot-uncoded">
+          {needsLanguage ? "Which language and topic? (required — e.g. Latin greetings)" : "Optional lesson topic or focus"}
+          <input type="text" value={topic} onChange={e => setTopic(e.target.value)} maxLength={140}
+            placeholder={needsLanguage ? "Latin: greetings and introductions" : "What should this lesson focus on?"}
+            className="input mt-1" data-testid="slot-topic" />
+          <span className="block mt-1 font-normal text-slate-600">Subject-based draft only. No unverified outcome codes or coverage claims.</span>
+        </label>}
         <div className="flex flex-wrap gap-2">
-          {!proposal.lesson && proposal.action === "needs_generation" && proposal.outcome_codes?.length > 0 &&
-            <button type="button" disabled={busy} onClick={() => run("generate")} className="rounded-full bg-teal-800 px-3 py-2 text-white disabled:opacity-50" data-testid="slot-generate">Generate an AI lesson draft</button>}
+          {!proposal.lesson && proposal.action === "needs_generation" &&
+            <button type="button" disabled={busy || (needsLanguage && !topic.trim())} onClick={() => run("generate")} className="rounded-full bg-teal-800 px-3 py-2 text-white disabled:opacity-50" data-testid="slot-generate">Generate an AI lesson draft</button>}
           <Link className="rounded-full border border-slate-400 px-3 py-2" target="_blank" rel="noopener noreferrer"
             to={`/parent/lessons/new?outcome=${encodeURIComponent(proposal.outcome_codes?.[0] || "")}`}>Build a lesson myself</Link>
         </div>
