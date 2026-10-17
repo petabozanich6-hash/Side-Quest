@@ -152,6 +152,19 @@ await step("the calendar shows each lesson inside its slot and free slots as fre
   await shot("03-calendar");
 });
 
+await step("new weekly agenda is readable at mobile width and parents can switch views", async () => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto(BASE + "/parent/calendar");
+  await page.waitForSelector("[data-testid=calendar-week-agenda]");
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+  ok(overflow <= 1, "weekly calendar requires sideways scrolling on a phone: " + overflow + "px");
+  await page.click("[data-testid=calendar-month-mode]");
+  await page.waitForSelector("[data-testid=calendar-month]");
+  await page.click("[data-testid=calendar-week-mode]");
+  await page.waitForSelector("[data-testid=calendar-week-agenda]");
+  await page.setViewportSize({ width: 1280, height: 900 });
+});
+
 await step("un-assigning a lesson frees its slot; the timetable stays", async () => {
   const before = (await slots()).length;
   const a = (await api("GET", "/assignments", pt)).json.find((x) => x.lesson_id === english);
