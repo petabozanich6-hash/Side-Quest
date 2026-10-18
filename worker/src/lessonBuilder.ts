@@ -491,7 +491,7 @@ export async function familyOutcomeCodes(db: DB, familyId: string, codes: string
   return cat.available ? codes.filter((c) => cat.byCode.has(c)) : [];
 }
 
-export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[] } = {}): Promise<Result<{ lesson: any }>> {
+export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[]; freeAiUsageId?: string } = {}): Promise<Result<{ lesson: any }>> {
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
@@ -508,12 +508,27 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   if (bad) return bad;
   const id = newId();
   const ts = nowIso(now);
-  await db
-    .prepare(
-      "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
-    )
-    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}) }), ts, ts)
-    .run();
+  const insert = db.prepare(
+    "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
+  ).bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}) }), ts, ts);
+  if (plan === "FREE_PREVIEW" && opts.ai && opts.freeAiUsageId) {
+    // D1 batch is transactional. The gifted lesson cannot be saved without also
+    // recording that the family's one free claim succeeded. If the Worker is
+    // interrupted immediately afterwards (or the parent deletes the lesson),
+    // no second complimentary generation is possible.
+    const results = await db.batch([
+      db.prepare("UPDATE ai_usage SET status = 'ok' WHERE id = ? AND family_id = ? AND kind = 'free_lesson_draft' AND status = 'pending'")
+        .bind(opts.freeAiUsageId, familyId),
+      insert,
+    ]);
+    if (Number(results[0]?.meta?.changes || 0) !== 1) {
+      // This should never happen for an owned active claim. Fail closed rather
+      // than returning an AI draft whose entitlement was not consumed.
+      throw new Error("Free AI claim could not be finalised");
+    }
+  } else {
+    await insert.run();
+  }
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
 
