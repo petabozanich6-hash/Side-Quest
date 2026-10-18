@@ -109,7 +109,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
     const db = c.env.DB;
     const { results: pending } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision','needs_more_practice') ORDER BY created_at DESC LIMIT 200"
+      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision','needs_more_practice') ORDER BY CASE WHEN status IN ('needs_revision','needs_more_practice','in_progress','awaiting_help','opened') THEN 0 ELSE 1 END, created_at DESC LIMIT 200"
     ).bind(u.id).all<any>();
     for (const a of pending) {
       const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
