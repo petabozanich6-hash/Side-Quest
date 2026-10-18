@@ -82,7 +82,7 @@ export default function OutcomeTracker() {
 
   if (students && students.length === 0) {
     return (
-      <div className="p-6 lg:p-10"><div className="paper-card p-8 text-center"><p className="font-display text-lg" style={{ color: "#1F3B2D" }}>Add a child first</p><Link to="/parent/children" className="mt-3 inline-block underline font-semibold">Add a child</Link></div></div>
+      <div className="p-6 lg:p-10"><div data-tour="tour-outcomes" className="paper-card p-8 text-center"><p className="font-display text-lg" style={{ color: "#1F3B2D" }}>Add a child first</p><Link to="/parent/children" className="mt-3 inline-block underline font-semibold">Add a child</Link></div></div>
     );
   }
   if (international) return <InternationalGoalTracker students={students || []} />;
@@ -92,7 +92,7 @@ export default function OutcomeTracker() {
     <div className="p-4 sm:p-6 lg:p-10 space-y-6 max-w-6xl" data-testid="outcome-tracker">
       <header className="space-y-2">
         <div className="font-script text-2xl" style={{ color: "#C77B5B" }}>The learning trail</div>
-        <h1 className="font-display text-3xl sm:text-4xl font-bold flex items-center gap-3" style={{ color: "#1F3B2D" }}><MapIcon size={28} aria-hidden="true" /> Outcome tracker</h1>
+        <h1 data-tour="tour-outcomes" className="font-display text-3xl sm:text-4xl font-bold flex items-center gap-3" style={{ color: "#1F3B2D" }}><MapIcon size={28} aria-hidden="true" /> Outcome tracker</h1>
         <p className="text-sm text-stone-600 max-w-3xl leading-relaxed">
           The curriculum outcomes your child is covering, and how far along the trail they are. It updates itself from reviewed lesson work, quizzes,
           life learning and your own observations. Finishing a lesson never marks an outcome Achieved: only you can, once the evidence is there.
