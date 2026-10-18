@@ -56,6 +56,9 @@ async function count(db: DB, sql: string, ...binds: unknown[]): Promise<number> 
 
 export const countLessons = (db: DB, familyId: string) =>
   count(db, "SELECT COUNT(*) n FROM lessons WHERE family_id = ? AND archived_at IS NULL", familyId);
+// The preview's two manually created lessons are separate from its one complimentary AI lesson.
+export const countManualLessons = (db: DB, familyId: string) =>
+  count(db, "SELECT COUNT(*) n FROM lessons WHERE family_id = ? AND archived_at IS NULL AND COALESCE(json_extract(data, '$.ai_generated'), 0) != 1", familyId);
 export const countChildren = (db: DB, familyId: string) =>
   count(db, "SELECT COUNT(*) n FROM students WHERE family_id = ?", familyId);
 export const countActiveAssignments = (db: DB, familyId: string) =>
@@ -83,8 +86,17 @@ export async function planSummary(db: DB, familyId: string, now: Date = new Date
       }
     } catch { /* Owner HQ audit tables may not exist in an older local setup. */ }
   }
+  const freeAi = await db.prepare(
+    "SELECT status FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
+  ).bind(familyId).first<{ status: string }>();
   return {
     preview_gift,
+    free_ai_lesson: {
+      limit: 1,
+      used: freeAi?.status === "ok",
+      in_progress: freeAi?.status === "pending",
+      available: plan === "FREE_PREVIEW" && !freeAi,
+    },
     plan: row?.plan ?? "FREE_PREVIEW",
     effective_plan: plan,
     trial_ends_at: row?.trial_ends_at ?? (row?.created_at ? trialEndFrom(row.created_at) : null),
@@ -93,6 +105,7 @@ export async function planSummary(db: DB, familyId: string, now: Date = new Date
     usage: {
       children: await countChildren(db, familyId),
       lessons: await countLessons(db, familyId),
+      manual_lessons: await countManualLessons(db, familyId),
       active_assignments: await countActiveAssignments(db, familyId),
     },
   };
@@ -469,9 +482,13 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
-  const { limits } = await getEntitlement(db, familyId, now);
+  const { limits, plan } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Your lessons and progress are kept; upgrade to keep creating lessons.");
-  if ((await countLessons(db, familyId)) >= limits.maxLessons) {
+  // A successful free AI draft has its own lifetime entitlement; it must not take
+  // away either of the two manual lessons (nor fail if both were created already).
+  const used = plan === "FREE_PREVIEW" && !opts.ai
+    ? await countManualLessons(db, familyId) : await countLessons(db, familyId);
+  if (used >= limits.maxLessons && !(plan === "FREE_PREVIEW" && opts.ai)) {
     return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   const bad = await checkFiles(db, familyId, clean.value.file_ids);
@@ -508,9 +525,13 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
 export async function duplicateLesson(db: DB, familyId: string, id: string, now: Date = new Date()): Promise<Result<{ lesson: any }>> {
   const row = await ownLesson(db, familyId, id);
   if (!row) return fail(404, "Lesson not found");
-  const { limits } = await getEntitlement(db, familyId, now);
+  const { limits, plan } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Upgrade to keep creating lessons.");
-  if ((await countLessons(db, familyId)) >= limits.maxLessons) {
+  const copyingAi = parseJson<any>(row.data, {}).ai_generated === true;
+  const atPreviewCap = plan === "FREE_PREVIEW" &&
+    ((await countLessons(db, familyId)) >= limits.maxLessons + 1 ||
+     (!copyingAi && (await countManualLessons(db, familyId)) >= limits.maxLessons));
+  if (atPreviewCap || (plan !== "FREE_PREVIEW" && (await countLessons(db, familyId)) >= limits.maxLessons)) {
     return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   const copyId = newId();
@@ -530,9 +551,13 @@ export async function setArchived(db: DB, familyId: string, id: string, archived
   const row = await ownLesson(db, familyId, id);
   if (!row) return fail(404, "Lesson not found");
   if (!archived) {
-    const { limits } = await getEntitlement(db, familyId, now);
+    const { limits, plan } = await getEntitlement(db, familyId, now);
     if (!limits.canCreate) return paywall("Your free preview has ended. Upgrade to restore lessons.");
-    if ((await countLessons(db, familyId)) >= limits.maxLessons) return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
+    const restoringAi = parseJson<any>(row.data, {}).ai_generated === true;
+    const atPreviewCap = plan === "FREE_PREVIEW" &&
+      ((await countLessons(db, familyId)) >= limits.maxLessons + 1 ||
+       (!restoringAi && (await countManualLessons(db, familyId)) >= limits.maxLessons));
+    if (atPreviewCap || (plan !== "FREE_PREVIEW" && (await countLessons(db, familyId)) >= limits.maxLessons)) return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   await db.prepare("UPDATE lessons SET archived_at = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(archived ? nowIso(now) : null, nowIso(now), id, familyId).run();
   return { ok: true, archived };
