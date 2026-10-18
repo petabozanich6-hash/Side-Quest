@@ -348,3 +348,27 @@ test("rescheduling one of several sessions preserves the earliest remaining less
   const assignment=(await h.req("/assignments",{token:f.token})).json.find(x=>x.id===a);
   assert.equal(assignment.scheduled_date,day(2),"earliest Wednesday session should remain the assignment date");
 });
+
+test("one lesson with an HSIE connection may fill HSIE time once without duplicating its English assignment", async () => {
+  const h = harness(), parent = await h.family("cross-hsie@example.com");
+  const kid = await h.child(parent, "crosskid");
+  await h.req("/timetable/week", { method: "POST", token: parent.token, body: {
+    week_start: MON,
+    blocks: [{ student_id: kid, title: "HSIE", date: day(0), start_time: "10:00", duration_minutes: 45 }],
+  } });
+  const made = await h.req("/lessons", { method: "POST", token: parent.token, body: {
+    title: "Halloween sources and storytelling",
+    learning_area: "English", additional_learning_areas: ["Humanities and Social Sciences"],
+    stage: "S2", status: "ready", sections: [{ heading: "Stories and sources", body: "Compare historical sources and narrative choices." }],
+  } });
+  assert.equal(made.status, 200, JSON.stringify(made.json));
+  const id = made.json.id;
+  const got = await h.req(`/lessons/${id}`, { token: parent.token });
+  assert.deepEqual(got.json.additional_learning_areas, ["Humanities and Social Sciences"]);
+  const aid = await h.assign(parent, kid, id);
+  const placed = await h.req(`/assignments/${aid}/place`, { method: "POST", token: parent.token, body: { from: MON } });
+  assert.equal(placed.status, 200, JSON.stringify(placed.json));
+  assert.deepEqual(placed.json.placed.map(x => x.title), ["HSIE"]);
+  assert.equal((await h.slots(parent, kid)).filter(x => x.linked_assignment_id === aid).length, 1);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM assignments WHERE lesson_id = ? AND student_id = ?").get(id, kid).n, 1);
+});
