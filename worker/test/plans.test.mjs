@@ -72,7 +72,8 @@ test("jurisdiction reads and writes work on a database without migration 0054 (t
 });
 
 test("each jurisdiction gets its own learning areas and year names", () => {
-  assert.equal(Object.keys(JURISDICTIONS).length, 8);
+  assert.equal(Object.keys(JURISDICTIONS).filter(code => code !== "OTHER").length, 8);
+  assert.equal(JURISDICTIONS.OTHER.outcomeCodes, false);
   assert.deepEqual(planAreas(JURISDICTIONS.NSW, { stage: "S2", year_level: "3" }).areas.length, 6);
   assert.equal(planAreas(JURISDICTIONS.VIC, { stage: "S2" }).areas.length, 8);
   assert.ok(planAreas(JURISDICTIONS.TAS, { stage: "S2" }).areas.includes("Literacy"));
