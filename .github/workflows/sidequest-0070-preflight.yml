@@ -1,0 +1,92 @@
+name: Side-Quest 0070 production D1 preflight
+on:
+  push:
+    branches: [ops/free-ai-d1-preflight-2026-10-18]
+    paths: [.github/workflows/sidequest-0070-preflight.yml]
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      SIDEQUEST_BACKUP_DIR: /tmp/sidequest-free-ai-0070-backup
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify credentials and existing production D1 binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          [ -n "${CLOUDFLARE_API_TOKEN}" ] && [ -n "${CLOUDFLARE_ACCOUNT_ID}" ] || { echo "::error::Cloudflare repository credentials are unavailable"; exit 1; }
+          grep -q '"database_name": "sidequest-db1"' wrangler.jsonc
+          grep -q '"database_id": "d26b63e2-d9e1-4021-b9c5-c494b607aa14"' wrangler.jsonc
+          echo "Confirmed the existing Side-Quest production database binding. This workflow cannot deploy or change production."
+      - name: Install Wrangler
+        run: npm ci --ignore-scripts
+      - name: Read-only migration and schema inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx wrangler d1 execute DB --remote --json --command "SELECT name FROM d1_migrations ORDER BY id" > /tmp/sidequest-applied.json
+          npx wrangler d1 execute DB --remote --json --command "SELECT name FROM sqlite_master WHERE type = 'index' AND name = 'idx_ai_one_free_lesson_per_family'" > /tmp/sidequest-index.json
+          node --input-type=module <<'JS'
+          import fs from "node:fs";
+          const rows = path => {
+            const data = JSON.parse(fs.readFileSync(path, "utf8"));
+            if (!Array.isArray(data) || !Array.isArray(data[0]?.results) || data[0]?.success === false) throw Error("Unexpected D1 response");
+            return data[0].results;
+          };
+          const applied = new Set(rows("/tmp/sidequest-applied.json").map(r=>r.name));
+          const repo = fs.readdirSync("worker/migrations").filter(x=>x.endsWith(".sql")).sort();
+          const missing = [...applied].filter(x=>!repo.includes(x));
+          const pending = repo.filter(x=>!applied.has(x));
+          const idx = rows("/tmp/sidequest-index.json").length>0;
+          console.log(JSON.stringify({ pending, production_index_present:idx, recorded_not_in_repository: missing }));
+          if (missing.length) throw Error("Unknown recorded migrations: manual reconciliation required");
+          if (pending.some(x=>!["0069_parent_email_verification.sql","0070_one_free_ai_lesson.sql"].includes(x))) throw Error("Unexpected production migrations pending; no change authorised");
+          if (!idx && !pending.includes("0070_one_free_ai_lesson.sql")) throw Error("Missing index with recorded migration 0070: inconsistent schema");
+          fs.writeFileSync("/tmp/sidequest-pending.json",JSON.stringify(pending));
+          JS
+      - name: Verify production backup by export and live row-count comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run db:backup
+          test "$(find "$SIDEQUEST_BACKUP_DIR" -maxdepth 1 -name '*.sql' | wc -l)" -eq 1
+          test "$(find "$SIDEQUEST_BACKUP_DIR" -maxdepth 1 -name '*.json' | wc -l)" -eq 1
+          echo "Production backup has been restored into SQLite and its table counts checked against live."
+      - name: Rehearse pending migrations on verified backup without changing production
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'JS'
+          import fs from "node:fs";
+          import path from "node:path";
+          import { DatabaseSync } from "node:sqlite";
+          const dir=process.env.SIDEQUEST_BACKUP_DIR;
+          const sqlFile=fs.readdirSync(dir).filter(x=>x.endsWith(".sql"))[0];
+          const reportFile=fs.readdirSync(dir).filter(x=>x.endsWith(".json"))[0];
+          const report=JSON.parse(fs.readFileSync(path.join(dir,reportFile),"utf8"));
+          if (report.restore_check!=="all tables match live") throw Error("Verified backup missing");
+          const db=new DatabaseSync(":memory:");
+          db.exec(fs.readFileSync(path.join(dir,sqlFile),"utf8"));
+          const tables=db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_cf_%' ORDER BY name").all().map(x=>x.name);
+          const counts=()=>Object.fromEntries(tables.map(t=>[t,db.prepare('SELECT COUNT(*) n FROM "'+t+'"').get().n]));
+          const before=counts();
+          const pending=JSON.parse(fs.readFileSync("/tmp/sidequest-pending.json","utf8"));
+          for(const file of pending) db.exec(fs.readFileSync(path.join("worker/migrations",file),"utf8"));
+          const after=counts();
+          if (JSON.stringify(before)!==JSON.stringify(after)) throw Error("Migration changes existing table row counts");
+          const index=db.prepare("SELECT sql FROM sqlite_master WHERE type='index' AND name='idx_ai_one_free_lesson_per_family'").get()?.sql;
+          if(!index || !/UNIQUE INDEX/i.test(index) || !/free_lesson_draft/.test(index)) throw Error("Free AI unique partial index absent after rehearsal");
+          console.log("Backup rehearsal succeeded; verified "+tables.length+" existing tables retain their row counts.");
+          JS
+      - name: Summary - no production changes
+        run: echo "PREFLIGHT COMPLETE. The production database was NOT migrated or deployed by this workflow."
