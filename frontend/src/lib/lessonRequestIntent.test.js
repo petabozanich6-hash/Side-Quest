@@ -11,6 +11,27 @@ describe("multi-subject lesson intent", () => {
     expect(lessonRequestIntent(text)).toMatchObject({ type: "multi_subject", subjects: expect.arrayContaining(["Science", "Mathematics"]) });
     expect(lessonRequestIntent(text).subjects).toHaveLength(2);
   });
+  test.each([
+    "I need 3 lessons, a science, an English and an HSIE",
+    "Create three lessons: Science, English, and HSIE for Year 7",
+    "I want a science, english and hsie lesson for my Year 7 student",
+    "Make me science, english & hass lessons with a Halloween theme",
+    "Create one Science lesson, one English lesson, and one Human Society and Its Environment lesson",
+    "Create 3 lessons: science, english and humanities and social sciences",
+  ])("recognises all three separate subjects: %s", text => {
+    expect(lessonRequestIntent(text)).toMatchObject({
+      type: "multi_subject",
+      subjects: ["Science", "English", "Humanities and Social Sciences"],
+    });
+  });
+  test("HSIE and HASS are the same learning area, not two duplicate subjects", () => {
+    expect(requestedSeparateSubjects("Science, HSIE and HASS lessons")).toEqual(["Science", "Humanities and Social Sciences"]);
+  });
+  test("explicitly one integrated English, Science and HSIE lesson is not divided", () => {
+    expect(lessonRequestIntent("Create one integrated lesson combining Science, English and HSIE")).toMatchObject({
+      type: "single", subjects: [],
+    });
+  });
   test("preserves natural subject order", () => {
     expect(requestedSeparateSubjects("math and science lessons")).toEqual(["Mathematics", "Science"]);
     expect(requestedSeparateSubjects("science and math lesson")).toEqual(["Science", "Mathematics"]);
