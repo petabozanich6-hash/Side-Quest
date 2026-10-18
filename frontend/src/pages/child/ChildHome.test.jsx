@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
 import ChildHome from "./ChildHome";
 import { api } from "../../lib/api";
-import { syncSavedLessons } from "../../lib/offline";
+import { syncSavedLessons, savedLessonIds, notices, savedDashboard } from "../../lib/offline";
 
 jest.mock("../../lib/api", () => ({ api: { get: jest.fn() } }));
 jest.mock("../../context/AuthContext", () => ({
@@ -26,6 +26,10 @@ let host, root;
 
 beforeEach(async () => {
   jest.clearAllMocks();
+  // CRA's Jest configuration resets mock implementations between tests.
+  savedLessonIds.mockResolvedValue(new Set());
+  notices.mockResolvedValue([]);
+  savedDashboard.mockResolvedValue(null);
   host = document.createElement("div");
   document.body.appendChild(host);
   root = createRoot(host);
