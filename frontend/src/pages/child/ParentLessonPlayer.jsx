@@ -218,7 +218,13 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const [saved, setSaved] = useState("");
   const [busy, setBusy] = useState(false);
   const [uploadsOn, setUploadsOn] = useState(false);
-  const [files, setFiles] = useState([]);
+  // Keep uploaded evidence alongside answers when a lesson is returned.
+  // Older hand-ins did not save file metadata in their editable draft; their
+  // submission still contains the original file IDs.
+  const [files, setFiles] = useState(() => Array.isArray(d0.files) ? d0.files :
+    a.status === "needs_revision" && Array.isArray(last?.file_ids)
+      ? last.file_ids.map((id) => ({ id, original_filename: "Previously uploaded evidence" }))
+      : []);
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
   const first = useRef(true);
@@ -290,7 +296,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
 
   const saveNow = async (silent) => {
     if (preview) return;
-    const draft = { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur };
+    const draft = { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, files, step: cur };
     try {
       await api.put(`/assignments/${a.id}/draft`, draft);
       rememberDraft(childId, a.id, draft);
@@ -317,7 +323,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     const t = setTimeout(() => saveNow(true), 900);
     return () => clearTimeout(t);
     // eslint-disable-next-line
-  }, [answers, checks, reflection, gp, tv, fbs, watch, cur]);
+  }, [answers, checks, reflection, gp, tv, fbs, watch, files, cur]);
 
   const unanswered = questions.filter((_, i) => !(answers[i] || "").trim()).length;
   const needsQuiz = hasQuiz && !quizOk && !quizQueued;
@@ -335,14 +341,14 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     if (activities.length) lines.push(`Activities done: ${didIt.length ? didIt.join(", ") : "none ticked"}`);
     const body = { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: forceHelp === true || needsHelp,
       // The latest answers travel with the hand-in even if autosave is still pending.
-      draft: { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur } };
+      draft: { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, files, step: cur } };
     try {
       await api.post("/submissions", body);
       toast.success(forceHelp === true || needsHelp ? "Sent to your grown-up" : "Handed in! Your grown-up will take a look.");
       onChanged && onChanged();
     } catch (e) {
       if (isNetworkError(e)) {
-        await queueDraft(childId, a.id, { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur });
+        await queueDraft(childId, a.id, { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, files, step: cur });
         await queueSubmission(childId, a.id, body);
         toast.success("All done! It will be handed in as soon as you're back online.");
         onChanged && onChanged();
