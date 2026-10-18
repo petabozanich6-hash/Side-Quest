@@ -101,7 +101,7 @@ export default function ChildHome() {
   const nextDate = {};
   events.filter(e => e.date > today).forEach(e => { if (!nextDate[e.linked_lesson_id] || e.date < nextDate[e.linked_lesson_id]) nextDate[e.linked_lesson_id] = e.date; });
 
-  const tasks = visible(data.today);
+  // The API exposes five highlighted quests as "today", but every open assignment\n  // must remain discoverable — including older in-progress and returned work.\n  const tasks = visible(data.all_pending || data.today);
   const scheduledToday = tasks.filter(a => todayIds.has(lessonOf(a)));
   const catchUp = tasks.filter(a => !todayIds.has(lessonOf(a)) && overdueIds.has(lessonOf(a)));
   const workAhead = tasks
