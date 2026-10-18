@@ -31,8 +31,10 @@ export type Env = {
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */
   AI_COMPACT_GENERATION?: string;
-  /** Opt-in critical-path optimization; default false until measured quality review. */
+  /** Enabled for paid families after the owner quality/speed trial; true in wrangler.jsonc. */
   AI_FAST_PIPELINE?: string;
+  /** Emergency dashboard kill switch; true reverts all lesson drafts to standard pipeline. */
+  AI_FAST_PIPELINE_STOP?: string;
   HELP_PER_CHILD_DAY?: string;
   HELP_PER_FAMILY_DAY?: string;
   HELP_PER_FAMILY_MONTH?: string;
