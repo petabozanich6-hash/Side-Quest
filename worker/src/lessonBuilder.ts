@@ -789,28 +789,41 @@ export async function reviewSubmission(
   const sub = await db.prepare("SELECT * FROM submissions WHERE id = ? AND family_id = ?").bind(submissionId, familyId).first<any>();
   if (!sub) return fail(404, "Not found");
   const status = String(body.status);
+  // A lost response must not create extra evidence or overwrite an earlier decision.
+  // "awaiting_help" is also a reviewable submission (a child requested help).
+  if (sub.status !== "submitted" && sub.status !== "awaiting_help") {
+    return sub.status === status
+      ? { ok: true, xp_awarded: 0 }
+      : fail(409, "This work has already been reviewed. Refresh to see the latest decision.", "ALREADY_REVIEWED");
+  }
+
   const ts = nowIso(now);
   const mappings = Array.isArray(body.outcome_mappings) ? body.outcome_mappings.slice(0, 20) : [];
-  await db.batch([
+  const amount = XP_FOR_REVIEW[status] ?? 0;
+  // D1 batch is transactional: a failed evidence insert or XP claim must not leave
+  // the submission marked approved while its records are only half saved.
+  const writes = [
     db
       .prepare("UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?")
       .bind(String(body.feedback_text ?? "").slice(0, 4000), status, body.next_step ?? null, JSON.stringify(mappings), ts, parentId, sub.id),
-    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'").bind(status, ts, sub.assignment_id),
-  ]);
-  let xp = 0;
-  const amount = XP_FOR_REVIEW[status] ?? 0;
+    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'")
+      .bind(status, ts, sub.assignment_id),
+  ];
   if (amount > 0) {
-    // The conditional update succeeds for exactly one review per assignment, so XP is never awarded twice.
-    const claimed = await db.prepare("UPDATE assignments SET xp_awarded = ? WHERE id = ? AND family_id = ? AND xp_awarded = 0").bind(amount, sub.assignment_id, familyId).run();
-    if ((claimed.meta?.changes ?? 0) === 1) {
-      await awardXp(db, sub.student_id, amount, "Lesson reviewed", now);
-      xp = amount;
-    }
-    await db
-      .prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
-      .bind(newId(), familyId, sub.lesson_id, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts)
-      .run();
+    writes.push(
+      db
+        .prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
+        .bind(newId(), familyId, sub.lesson_id, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts),
+      // Claim XP in the same transaction as the review; concurrent/repeated
+      // requests cannot claim it twice.
+      db.prepare("UPDATE assignments SET xp_awarded = ? WHERE id = ? AND family_id = ? AND xp_awarded = 0")
+        .bind(amount, sub.assignment_id, familyId),
+    );
   }
+  const saved = await db.batch(writes);
+  const claimed = amount > 0 && (saved[saved.length - 1]?.meta?.changes ?? 0) === 1;
+  if (claimed) await awardXp(db, sub.student_id, amount, "Lesson reviewed", now);
+
   await safely("review", () => trackSubmission(db, familyId, sub.id, now));
-  return { ok: true, xp_awarded: xp };
+  return { ok: true, xp_awarded: claimed ? amount : 0 };
 }
