@@ -70,7 +70,6 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
     setSpot(null);
     setStepIndex(next);
     navigate(steps[next].path, { replace: true });
-    window.scrollTo?.(0, 0);
   };
 
   // Spotlight real elements as each route loads (including lazy/async screens).
