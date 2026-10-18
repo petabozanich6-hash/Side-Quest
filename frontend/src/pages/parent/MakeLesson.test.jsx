@@ -148,6 +148,19 @@ test("free preview rejects separate science and maths lessons without calling th
   expect(api.post).not.toHaveBeenCalled();
 });
 
+test("free preview refuses a week of lessons even when no count is specified", async () => {
+  api.get.mockImplementation(path => {
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: true } } });
+    if (path === "/students") return Promise.resolve({ data: [{ id: "kid-7", name: "Year 7 child" }] });
+    if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
+    throw Error("unexpected GET " + path);
+  });
+  await mount("Plan a whole week of maths lessons about fractions for Year 7");
+  await click('[data-testid="mk-go"]');
+  expect(node.querySelector('[data-testid="mk-error"]').textContent).toContain("one complete lesson");
+  expect(api.post).not.toHaveBeenCalled();
+});
+
 test("free preview with used AI lesson shows upgrade instead of another generator", async () => {
   api.get.mockImplementation(path => {
     if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: false, used: true } } });
