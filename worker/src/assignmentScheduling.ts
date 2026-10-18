@@ -5,7 +5,8 @@
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { calendarConflict } from "./calendarIntegrity";
-import { listSlots, sameSubject } from "./timetable";
+import { listSlots } from "./timetable";
+import { lessonSupportsArea } from "./lessonAreas";
 
 type DB = D1Database;
 const validDate = (v: unknown): v is string =>
@@ -81,15 +82,17 @@ export async function moveAssignmentDay(db: DB, familyId: string, id: string, re
       "UPDATE calendar_events SET date = ? WHERE id = ? AND family_id = ? AND linked_assignment_id = ?"
     ).bind(date, current.id, familyId, id));
   } else {
-    const lesson = await db.prepare("SELECT title, learning_area, stage FROM lessons WHERE id = ? AND family_id = ?")
+    const lesson = await db.prepare("SELECT title, learning_area, stage, data FROM lessons WHERE id = ? AND family_id = ?")
       .bind(assignment.lesson_id, familyId).first<any>();
     const child = await db.prepare("SELECT stage FROM students WHERE id = ? AND family_id = ?")
       .bind(assignment.student_id, familyId).first<any>();
     if (!lesson || !child) return lb.fail(404, "Lesson or child not found");
     const open = await listSlots(db, familyId, { student_id: assignment.student_id, from: date, to: date, open: true });
     let target: any = null;
+    let secondary: string[] = [];
+    try { secondary = JSON.parse(String(lesson.data || "{}")).additional_learning_areas || []; } catch { /* legacy lesson */ }
     for (const slot of open) {
-      if (!sameSubject(slot.title, String(lesson.learning_area || ""), String(child.stage || lesson.stage || ""))) continue;
+      if (!lessonSupportsArea({ learning_area: lesson.learning_area, additional_learning_areas: secondary }, String(slot.title || ""), String(child.stage || lesson.stage || ""))) continue;
       if (current && Number(slot.duration_minutes || 0) < Number(current.duration_minutes || 0)) continue;
       if (await calendarConflict(db, familyId, { ...slot, id: slot.id })) continue;
       target = slot;
