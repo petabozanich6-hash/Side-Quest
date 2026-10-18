@@ -183,3 +183,62 @@ is nondeterministic; neither pipeline asks for shorter or fewer materials.
 If speed has not materially improved or completeness/accuracy is weaker,
 stop using the trial; the owner checkbox defaults to **unchecked**, and
 paid family requests always use the existing path.
+
+
+## Paid-family fast rollout — 18 October 2026
+
+Following an owner test of a complete Maths lesson generated in approximately
+70 seconds (versus a previous report of around three minutes) with acceptable
+initial quality, the approved deployment sets `AI_FAST_PIPELINE=true` in
+`wrangler.jsonc`. This applies to eligible paid families and the INTERNAL
+owner account, across individual AI lesson drafting, separately saved
+multi-lesson batches, and parent-approved Auto-Quest draft generation.
+
+**The 70-second result is one owner measurement, not a guaranteed duration.**
+English/Science and reading-based lessons have different dependencies and may
+take longer. The original 250–380-word teaching prompts, worked examples,
+activities, assessment and existing quality gate are unchanged.
+`AI_COMPACT_GENERATION` is not enabled and the model is not switched.
+
+The owner-facing checkbox now means **use original generation for comparison**.
+It's intentionally available only to the verified Owner HQ role in the
+INTERNAL family. Paid parents do not see the checkbox and cannot spoof it.
+
+### Rollback without a code change
+
+Go to Cloudflare Workers & Pages → **side-quest** → Settings → Variables
+and Secrets. Add an ordinary text variable `AI_FAST_PIPELINE_STOP` set
+to `true` and **Deploy** the updated Worker settings. The application
+checks this variable at all three lesson drafting entry points before passing
+the `fastPipeline` option; it immediately reverts future new requests to
+the previous standard generation ordering, without touching completed
+lessons, quotas, entitlements or saved drafts. Existing in-flight requests
+may finish under the pipeline used at their start.
+
+`keep_vars: true` in `wrangler.jsonc` preserves this dashboard-managed
+emergency stop and other variables on subsequent GitHub/Cloudflare deploys.
+To resume faster drafting after resolving a problem, remove that variable
+or set it to `false` and deploy Worker settings.
+
+If Cloudflare cannot deploy the dashboard variable, use Worker
+**Roll back** to the prior version, or revert the rollout PR and merge the
+revert to `main`. Do not disable Workers AI or change the model merely to
+switch off the faster pipeline.
+
+### What to inspect after the production deploy
+
+- Cloudflare Workers Build finished successfully for the merged main commit.
+- Paid subscriber can draft one full Science or English lesson; a free-preview
+  account remains correctly blocked from AI drafting.
+- The reported generation pipeline is `concurrent_teaching` for reading-based
+  subjects or `parallel_frame` for independent Maths, unless the kill switch
+  is activated (`standard`).
+- Compare actual elapsed seconds, estimated gross inference cost, retry/failure
+  frequency and full lesson quality for several distinct subjects. More
+  concurrent calls are not guaranteed to mean a cheaper or faster result when
+  the provider is under load.
+- Check model invocations on the Cloudflare Workers AI dashboard and support
+  inbox for timeouts or parent-reported incomplete lessons.
+
+Do not promise every lesson will complete in 70 seconds. If families report
+more failures, throttling or poorer content, enable the emergency stop.

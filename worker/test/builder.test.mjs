@@ -254,6 +254,43 @@ test("owner-only fast preview retains the full lesson and cannot be activated by
   }
 });
 
+test("paid default runs the original full-length lesson through the fast pipeline and ignores forged baseline opt-outs", async () => {
+  for (const plan of ["ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL"]) {
+    const db = makeDb(), familyId = seed(db, { plan });
+    const lesson = await aid.draftLessonWithAi(db, stub(), {
+      familyId, userId: "ordinary-parent", fastPipeline: true,
+      request: { topic: "Place value", learning_area: "Mathematics",
+        owner_standard_preview: true, link_outcomes: false },
+    }, NOW);
+    assert.ok(lesson.ok, JSON.stringify(lesson));
+    assert.equal(lesson.generation.pipeline, "parallel_frame");
+    assert.equal(lesson.lesson.sections.length, GARDEN.sections.length);
+    assert.equal(lesson.lesson.worked_examples.length, GARDEN.worked_examples.length);
+    assert.equal(lesson.lesson.activities.length, GARDEN.activities.length);
+    assert.equal(lesson.lesson.quiz.length, GARDEN.quiz.length);
+  }
+});
+
+test("only a verified INTERNAL platform owner can select standard generation for comparison", async () => {
+  for (const [ownerRole, expected] of [[true, "standard"], [false, "parallel_frame"]]) {
+    const db = makeDb(), familyId = seed(db, { plan: "INTERNAL" });
+    db.raw.prepare("INSERT INTO users (id, family_id, email, name, created_at) VALUES (?, ?, ?, ?, ?)")
+      .run("owner-tester", familyId, "user-" + familyId + "@example.com", "Parent", NOW.toISOString());
+    if (ownerRole) db.raw.prepare(
+      "INSERT INTO user_roles (id, user_id, role, granted_by, reason) VALUES (?, ?, 'owner', 'test', 'test')"
+    ).run("owner-role-" + familyId, "owner-tester");
+    const draft = await aid.draftLessonWithAi(db, stub(), {
+      familyId, userId: "owner-tester", fastPipeline: true,
+      request: { topic: "Place value", learning_area: "Mathematics",
+        owner_standard_preview: true, link_outcomes: false },
+    }, NOW);
+    assert.ok(draft.ok, JSON.stringify(draft));
+    assert.equal(draft.generation.pipeline, expected);
+    assert.equal(draft.lesson.sections.length, GARDEN.sections.length);
+    assert.equal(draft.lesson.worked_examples.length, GARDEN.worked_examples.length);
+  }
+});
+
 test("opt-in compact drafting halves teaching model calls without skipping the quality gate", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });

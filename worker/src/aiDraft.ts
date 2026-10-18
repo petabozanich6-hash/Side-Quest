@@ -887,10 +887,16 @@ export async function draftLessonWithAi(
   let draft: Draft | null = null;
   let issues: Issue[] = [];
   try {
-    // Only the privileged INTERNAL family can opt in to a speed experiment.
-    // A paid parent's forged owner_fast_preview request is never honoured.
-    const ownerPreview = plan === "INTERNAL" && (request as any).owner_fast_preview === true && await isPlatformOwner(db, userId);
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true || ownerPreview);
+    // The fast service is now the paid-plan default. The genuine Owner HQ user
+    // may explicitly compare against the old sequence; no other parent can
+    // override the server-side rollout through a forged request field.
+    const wantsOwnerComparison = (request as any).owner_standard_preview === true ||
+      (request as any).owner_fast_preview === true;
+    const verifiedOwner = plan === "INTERNAL" && wantsOwnerComparison && await isPlatformOwner(db, userId);
+    const ownerStandard = verifiedOwner && (request as any).owner_standard_preview === true;
+    const legacyOwnerFast = verifiedOwner && (request as any).owner_fast_preview === true;
+    const useFast = !ownerStandard && (opts.fastPipeline === true || legacyOwnerFast);
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, useFast);
     if (raw) {
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);

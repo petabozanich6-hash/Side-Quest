@@ -6,7 +6,8 @@
   "observability": { "enabled": true },
   // Pace special Owner HQ emails: up to 12 recipients every five minutes.
   "triggers": { "crons": ["*/5 * * * *"] },
-  "vars": { "STRIPE_LIVE_ENABLED": "true" },
+  "keep_vars": true,
+  "vars": { "STRIPE_LIVE_ENABLED": "true", "AI_FAST_PIPELINE": "true" },
   "build": {
     "command": "node worker/scripts/guard-build-branch.mjs && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
   },
@@ -33,8 +34,11 @@
   // Optional vars: AI_MODEL (default @cf/meta/llama-3.3-70b-instruct-fp8-fast), AI_GATEWAY_ID (route via an AI Gateway).
   // AI_HELP_MODEL optionally routes short child-help requests to a separate Workers AI model.
   // AI_COMPACT_GENERATION=true enables experimental paired sections/examples with individual-call fallback.
-  // AI_FAST_PIPELINE=true optionally overlaps independent mathematics framing/teaching and increases independent teaching concurrency.
-  // All speed/model flags remain off: benchmark wall time, output quality and cost before setting production vars.
+  // AI_FAST_PIPELINE=true enables the same full-length lesson prompts with improved concurrent scheduling
+  // for paid families (single lessons, batches and Auto-Quest). Approved after owner quality/speed trial.
+  // Emergency rollback: add AI_FAST_PIPELINE_STOP=true under Worker dashboard Variables and Secrets;
+  // keep_vars preserves the dashboard kill switch and other existing variables on future deploys.
+  // AI_COMPACT_GENERATION stays OFF so original teaching depth and prompts do not change.
   "ai": { "binding": "AI" },
   // R2 storage for family files (paid membership). Match BUCKET in worker/src/types.ts.
   // The bucket must exist in the same Cloudflare account as this Worker.
