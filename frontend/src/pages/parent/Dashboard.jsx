@@ -90,7 +90,7 @@ export default function ParentDashboard() {
       <Leaf className="absolute right-10 top-8 opacity-50" size={70} color="#C8893B"/>
       <Branch className="absolute left-0 bottom-10 opacity-20" size={200} color="#4A5D3A"/>
 
-      <header className="flex items-start justify-between gap-6 relative z-10">
+      <header data-tour="tour-dashboard" className="flex items-start justify-between gap-6 relative z-10">
         <div>
           <div className="font-script text-2xl" style={{color:"#C77B5B"}}>Good to see you</div>
           <h1 className="font-display text-4xl font-bold" style={{color:"#1F3B2D"}}>Parent Hub</h1>
