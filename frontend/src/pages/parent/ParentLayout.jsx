@@ -10,6 +10,7 @@ import HelpAlertBar from "../../components/parent/HelpAlertBar";
 import ParentLabel from "../../components/parent/ParentLabel";
 import InstallApp from "../../components/shared/InstallApp";
 import JurisdictionGate from "../../components/parent/JurisdictionPicker";
+import ParentGuidedTour from "../../components/parent/ParentGuidedTour";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -42,6 +43,7 @@ export default function ParentLayout() {
   const [planState, setPlanState] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [tourOpenRequest, setTourOpenRequest] = useState(0);
   const [unreadReplies,setUnreadReplies] = useState(0);
   const [latestUnreadReply,setLatestUnreadReply] = useState(null);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
@@ -128,7 +130,13 @@ export default function ParentLayout() {
           <button onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} className="p-1" data-testid="menu-toggle">{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>
         </div>
-        <div className="px-4 sm:px-8 pt-3 flex justify-end"><button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button></div>
+        <div className="px-4 sm:px-8 pt-3 flex flex-wrap justify-end gap-2">
+          <button type="button" onClick={() => { setMenuOpen(false); setTourOpenRequest(n => n + 1); }}
+            data-testid="parent-start-tour" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700" aria-label="Take a guided tour of Side-Quest">
+            <Compass size={17}/> Take a tour
+          </button>
+          <button type="button" onClick={() => navigate("/parent/search")} data-testid="parent-global-search" className="flex items-center gap-2 rounded-full border border-stone-300 bg-white/90 px-4 py-2 text-sm font-semibold text-emerald-950 hover:border-emerald-700"><Search size={17}/> Search Side-Quest <span className="ml-2 text-xs text-stone-400 hidden sm:inline">⌘ / Ctrl + K</span></button>
+        </div>
         {unreadReplies>0 && route!=="/parent/feedback" && route!=="/parent" && <Link to="/parent/feedback" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
         <HelpAlertBar />
         <JurisdictionGate />
@@ -137,6 +145,7 @@ export default function ParentLayout() {
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
       <HelpPopup />
+      <ParentGuidedTour user={user} openRequest={tourOpenRequest} />
     </div>
   );
 }
