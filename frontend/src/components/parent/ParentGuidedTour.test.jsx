@@ -50,7 +50,7 @@ test("tour steps follow real Parent Hub routes and explain international outcome
   expect(other[6].title).toMatch(/learning goals/i);
   expect(other[7].path).toBe("/parent/curriculum");
   expect(other[6].description).toMatch(/doesn't claim/i);
-  expect(other.some(step => step.description.includes("Australian outcome codes"))).toBe(false);
+  expect(other[7].description).toMatch(/outside Australia/i);
 });
 
 test("first visit offers a tour that moves through real routes and can be skipped", async () => {
