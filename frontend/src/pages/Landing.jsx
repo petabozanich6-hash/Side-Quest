@@ -64,7 +64,7 @@ export default function Landing() {
           </h1>
           <p className="mt-6 text-lg leading-relaxed max-w-2xl" style={{color:"#52473A"}}>
             Homeschooling has plenty of wonderful moments — and plenty to organise. Side-Quest brings lesson planning, your children's learning and progress records into one friendly place.
-            With Family Membership, the AI Lesson Builder drafts teaching, examples, activities and questions from your topic — so you can review and adapt a starting point instead of planning from a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
+            Try one complete AI-generated lesson during your free preview. Family Membership then gives you ongoing access to the AI Lesson Builder's teaching, examples, activities and questions, so you can adapt a starting point instead of planning from a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
           </p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
@@ -131,7 +131,7 @@ export default function Landing() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           <Feature icon={Users} title="Your family, one home base" desc="Set up child profiles, plan their learning and keep each child’s work organised privately in your family account." tint="#4A5D3A"/>
-          <Feature icon={Sparkles} title="AI Lesson Builder" desc="Have a topic in mind? Let Side-Quest draft the explanations, examples, activities and questions. You check and adjust the lesson instead of starting from a blank page. Included with Family Membership." tint="#C77B5B"/>
+          <Feature icon={Sparkles} title="AI Lesson Builder" desc="Have a topic in mind? Let Side-Quest draft the explanations, examples, activities and questions. You check and adjust the lesson instead of starting from a blank page. Try one lesson in the free preview; ongoing access comes with Family Membership." tint="#C77B5B"/>
           <Feature icon={Camera} title="Evidence Backpack" desc="Your free preview shows a summary and one detailed entry. Family Membership unlocks full records, everyday learning evidence and portfolio exports." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="A plan you can actually change" desc="Family Membership includes the editable family calendar, weekly timetables and Auto-Quest planning. Change the schedule when life changes — because it will." tint="#C8893B"/>
           <Feature icon={BookOpen} title="Progress and learning records" desc="See completed work, review progress and organise evidence for your family's learning journey. Find your state's official curriculum and registration resources in the Curriculum hub." tint="#4A5D3A"/>
@@ -190,7 +190,8 @@ export default function Landing() {
             <div><div className="font-script text-2xl" style={{color:"#C77B5B"}}>A little taste of the quest</div><h3 className="font-display text-2xl font-bold mt-1" style={{color:"#1F3B2D"}}>Free preview · 7 days</h3><p className="text-sm text-stone-600 mt-2">No payment details, no automatic charge.</p></div>
             <ul className="space-y-2 text-sm leading-relaxed text-stone-800 list-disc pl-5">
               <li>One child profile, their learning space, pocket pet and XP</li>
-              <li>Make and edit two manual lessons, with two active assignments at a time</li>
+              <li>Make and edit two manual lessons, plus one complete AI-generated lesson for your family</li>
+               <li>Assign up to two active lessons at a time, and review or print your AI lesson</li>
               <li>Review your child's work and see automatic learning progress</li>
               <li>One basic learning plan, plus reading logs during the preview</li>
               <li>Homeschooling Compass, official links, curriculum reference and search</li>
