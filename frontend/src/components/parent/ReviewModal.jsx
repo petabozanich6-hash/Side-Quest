@@ -70,7 +70,9 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
       toast.success(status === "demonstrated" ? "Approved and added to Evidence" : "Returned to your child with your comment");
       onDone && onDone();
       onClose();
-    } catch { toast.error("Something went wrong, please try again"); }
+    } catch (error) {
+      toast.error(error?.response?.data?.detail || "The review could not be confirmed. Refresh to check whether it saved before trying again.");
+    }
     finally { setBusy(false); }
   };
 
