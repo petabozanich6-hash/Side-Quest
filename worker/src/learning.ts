@@ -231,7 +231,7 @@ export function registerLearning(app: App, g: Guards) {
   app.put("/api/me/jurisdiction", g.auth, g.parent, async (c) => {
     const body: any = await c.req.json().catch(() => ({}));
     const code = normJurisdiction(body.jurisdiction);
-    if (!code) return c.json({ detail: "Choose your state or territory." }, 400);
+    if (!code) return c.json({ detail: "Choose an Australian state or territory, or Other / Outside Australia." }, 400);
     await setFamilyJurisdiction(c.env.DB, c.get("user").family_id, code);
     const f = FRAMEWORKS[code];
     return c.json({ ok: true, jurisdiction: code, framework: { name: f.name, short: f.short, url: f.url, codes: f.codes, jurisdiction_name: f.jurisdiction_name } });
@@ -248,7 +248,7 @@ export function registerLearning(app: App, g: Guards) {
     if (!student) return c.json({ detail: "Student not found" }, 404);
 
     const fw = frameworkFor(await getFamilyJurisdiction(c.env.DB, user.family_id));
-    if (!fw) return c.json({ detail: "Choose your state or territory first, so outcomes match your curriculum.", code: "JURISDICTION_REQUIRED" }, 409);
+    if (!fw) return c.json({ detail: "Choose your location first.", code: "JURISDICTION_REQUIRED" }, 409);
 
     const evidence = { ...row, file_ids: parseJson(row.file_ids, []) };
     const s = studentOut(student) || {};
@@ -351,7 +351,7 @@ export function registerLearning(app: App, g: Guards) {
   app.put("/api/family/jurisdiction", g.auth, g.parent, async (c) => {
     const body = await c.req.json().catch(()=>({})) as { jurisdiction?: string };
     const code = normJurisdiction(body.jurisdiction);
-    if (!code) return c.json({detail:"Choose a state or territory"},400);
+    if (!code) return c.json({detail:"Choose your location"},400);
     await setFamilyJurisdiction(c.env.DB,c.get("user").family_id,code);
     return c.json({ok:true,jurisdiction:code,name:PLAN_JURISDICTIONS[code].name});
   });
