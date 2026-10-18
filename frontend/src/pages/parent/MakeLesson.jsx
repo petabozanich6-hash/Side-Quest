@@ -10,6 +10,7 @@ const EXAMPLES = [
   "Create a one-hour Year 7 lesson introducing negative integers. My child works independently.",
   "Create four science lessons about the solar system for my Year 5 child next week.",
 ];
+const CROSS_SUBJECTS = ["English", "Mathematics", "Science", "Humanities and Social Sciences", "Health and Physical Education", "The Arts", "Technologies", "Languages"];
 const STEPS = ["Planning what to teach and in what order…", "Writing the explanations and worked examples…", "Writing the practice, activities and quiz…", "Checking the answers and the teaching…"];
 
 function Progress({ label }) {
@@ -122,6 +123,25 @@ export default function MakeLesson() {
                 {l.learning_area && <p className="text-xs font-bold text-violet-700 mb-2" data-testid={`series-subject-${i}`}>{l.learning_area} · Lesson {i + 1}</p>}
                 <input disabled={!!busy} value={l.title} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, title: e.target.value } : x) }))} className="w-full font-semibold border-b border-dashed border-slate-300 focus:outline-none" data-testid="series-title" />
                 <input disabled={!!busy} value={l.goal} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, goal: e.target.value } : x) }))} className="w-full text-sm text-slate-600 mt-1 focus:outline-none" />
+                {l.learning_area && (
+                  <div className="mt-3" data-testid={`series-related-${i}`}>
+                    <p className="text-xs font-semibold text-slate-700">Also useful for (optional; review before saving)</p>
+                    <div className="flex gap-2 flex-wrap mt-2">
+                      {CROSS_SUBJECTS.filter(area => area !== l.learning_area).map(area => (
+                        <label key={area} className="text-xs inline-flex items-center gap-1 border rounded-lg px-2 py-1 bg-slate-50">
+                          <input type="checkbox" disabled={!!busy}
+                            checked={(l.additional_learning_areas || []).includes(area)}
+                            onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) =>
+                              j === i ? { ...x, additional_learning_areas: e.target.checked
+                                ? [...new Set([...(x.additional_learning_areas || []), area])].slice(0, 5)
+                                : (x.additional_learning_areas || []).filter(v => v !== area) } : x) }))} />
+                          {area}
+                        </label>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1">Connections do not automatically mark curriculum outcomes complete or create extra assignments.</p>
+                  </div>
+                )}
               </li>
             ))}
           </ol>
