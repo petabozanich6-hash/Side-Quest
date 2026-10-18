@@ -56,11 +56,11 @@ test("access policy covers advanced mutations and trial writes without blocking 
     ["POST","/api/outcomes/students/abc/rebuild"],["PUT","/api/outcomes/students/abc/support"],
     ["POST","/api/auto-quest/plan"],["POST","/api/auto-quest/proposals/abc/generate"],
     ["PUT","/api/auto-quest/proposals/abc/lesson"],["POST","/api/timetable/week"],
-    ["POST","/api/word-bank/words"],["POST","/api/ai/lesson-draft"],["POST","/api/ai/batches"],
+    ["POST","/api/word-bank/words"],["POST","/api/ai/lesson-refine"],["POST","/api/ai/series-plan"],["POST","/api/ai/batches"],
     ["POST","/api/lessons/abc/apply-patch"],["POST","/api/assignments/abc/place"]
   ])assert.equal(accessPolicy(method,url),"paid",method+" "+url);
   for(const [method,url] of [
-    ["POST","/api/reading-log"],["POST","/api/reading-submissions"],
+    ["POST","/api/ai/lesson-draft"],["POST","/api/reading-log"],["POST","/api/reading-submissions"],
     ["POST","/api/lessons/abc/evidence"],["POST","/api/learning-plans/abc/build"]
   ])assert.equal(accessPolicy(method,url),"preview",method+" "+url);
   assert.equal(accessPolicy("POST","/api/learning-plans"),"single_preview_plan");
@@ -89,6 +89,13 @@ test("preview protects all advanced routes server-side and allows only one basic
     const r=await h.req(path,{method:"POST",token:p.token,body});
     assert.equal(r.status,402,path+" "+JSON.stringify(r.json));assert.equal(r.json.code,"UPGRADE_REQUIRED");
   }
+  const freeAi=await h.req("/ai/lesson-draft",{method:"POST",token:p.token,body:{topic:"Fractions"}});
+  assert.equal(freeAi.status,503,"free preview reaches the generator even when AI is offline");
+  assert.equal(freeAi.json.code,"AI_UNAVAILABLE");
+  const freePlan=await h.req("/account/plan",{token:p.token});
+  assert.equal(freePlan.json.free_ai_lesson.available,true,"failed or unavailable AI should not use the free lesson");
+  const series=await h.req("/ai/series-plan",{method:"POST",token:p.token,body:{request:"four science lessons"}});
+  assert.equal(series.status,402,"free preview cannot plan a series");
   assert.equal((await h.req("/audit",{token:p.token})).status,402,"curriculum audit is paid");
   assert.equal((await h.req("/auto-quest/preview",{token:p.token})).status,402,"Auto-Quest preview is paid");
   assert.equal((await h.req("/word-bank/try",{method:"POST",token:c.token,body:{word:"unlimited",guess:"unlimited"}})).status,402,"word try cannot insert words for free");
@@ -122,6 +129,8 @@ test("expired families cannot write new content; existing records and safeguards
     const r=await h.req(path,{method:"POST",token:p.token,body});
     assert.equal(r.status,402,path+" "+JSON.stringify(r.json));
   }
+  const expiredAi=await h.req("/ai/lesson-draft",{method:"POST",token:p.token,body:{topic:"Fractions"}});
+  assert.equal(expiredAi.status,402,"expired preview cannot use even an unclaimed free AI lesson");
   const old=await h.req("/reading-log",{token:p.token});
   assert.equal(old.status,200);assert.ok(old.json.some(x=>x.title==="DCC"));
   const plan=await h.req("/account/plan",{token:p.token});
