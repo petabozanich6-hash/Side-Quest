@@ -146,9 +146,11 @@ export default function ChildLesson() {
 
       try {
         const raw = window.localStorage.getItem(progressKey(aid));
+        // Prefer this device's latest progress; otherwise restore the server hand-in
+        // snapshot (including when a parent returned work on another device).
+        const saved = raw ? JSON.parse(raw) : result.data.draft;
 
-        if (raw) {
-          const saved = JSON.parse(raw);
+        if (saved) {
 
           setDone(saved.done || {});
           setSkipped(saved.skipped || {});
@@ -174,9 +176,9 @@ export default function ChildLesson() {
         api.put(`/assignments/${aid}/status?status=opened`).catch(() => {});
       }
 
-      if (result.data.submissions?.length > 0) {
-        setSubmitted(true);
-      }
+      // Earlier submissions do not mean a returned lesson is still locked.
+      // Its current assignment status is the source of truth.
+      setSubmitted(["submitted", "awaiting_help", "accepted", "demonstrated", "completed"].includes(result.data.status));
 
       const hoardWords = lessonHoardWords(lesson);
 
@@ -309,7 +311,9 @@ export default function ChildLesson() {
         response_text: `${quizLine}${planLine}${response}${answerLine}${shortAnswerLine}`,
         reflection,
         file_ids: files.map((file) => file.id),
-        needs_help: needsHelp
+        needs_help: needsHelp,
+        // Carry the full editable state with hand-in so returned work can be restored.
+        draft: { done, skipped, current, open, plan, response, promptAnswer, reflection, files, needsHelp, quizResult, quizShortAnswers }
       });
 
       toast.success(
@@ -1133,6 +1137,14 @@ export default function ChildLesson() {
         })}
       </div>
 
+      {a.status === "needs_revision" && a.submissions?.[0]?.response_text && (
+        <details className="paper-card p-4 text-sm" data-testid="previous-submitted-work">
+          <summary className="cursor-pointer font-semibold">See the answers I already handed in</summary>
+          <p className="mt-2">Your previous answers are still recorded, even if they could not be restored into the boxes automatically.</p>
+          <pre className="mt-2 whitespace-pre-wrap break-words font-sans">{a.submissions[0].response_text}</pre>
+          {a.submissions[0].parent_feedback && <p className="mt-2"><strong>Parent feedback:</strong> {a.submissions[0].parent_feedback}</p>}
+        </details>
+      )}
       {submitted && hasHoardWords && (
         <div
           className="paper-card p-5 flex items-center gap-4 flex-wrap"
