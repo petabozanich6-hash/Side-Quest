@@ -5,6 +5,23 @@ import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import ParentGuidedTour from "./ParentGuidedTour";
 import { parentTourSteps, tourStorageKey } from "./parentTour";
 
+// CRA's Jest resolver cannot import React Router 7's react-router/dom entrypoint.
+// Mock only the routing context; production uses the actual router and is exercised by browser tests.
+jest.mock("react-router-dom", () => {
+  const React = require("react");
+  const RouterContext = React.createContext(null);
+  function MemoryRouter({ children, initialEntries = ["/"] }) {
+    const [pathname, setPathname] = React.useState(initialEntries[0]);
+    const navigate = React.useCallback((path) => setPathname(path), []);
+    return React.createElement(RouterContext.Provider, { value: { location: { pathname }, navigate } }, children);
+  }
+  return {
+    MemoryRouter,
+    useLocation: () => React.useContext(RouterContext).location,
+    useNavigate: () => React.useContext(RouterContext).navigate,
+  };
+});
+
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
 const parent = { id: "test-parent", role: "parent", jurisdiction: "NSW" };
