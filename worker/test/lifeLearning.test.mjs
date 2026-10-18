@@ -18,7 +18,8 @@ test("jurisdiction codes normalise and every state has a framework", () => {
   assert.equal(normJurisdiction("vic"), "VIC");
   assert.equal(normJurisdiction(" nt "), "NT");
   assert.equal(normJurisdiction("NZ"), null);
-  assert.equal(Object.keys(FRAMEWORKS).length, 8);
+  assert.equal(Object.keys(FRAMEWORKS).filter(code => code !== "OTHER").length, 8);
+  assert.equal(FRAMEWORKS.OTHER.codes, "none");
   assert.equal(frameworkFor("NSW").codes, "verified");
   assert.equal(frameworkFor("VIC").codes, "none");
   assert.equal(frameworkFor("WA").codes, "none", "WA state-specific catalogue remains unavailable");

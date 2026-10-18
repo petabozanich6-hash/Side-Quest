@@ -1205,7 +1205,8 @@ test("state or territory: codes are validated, and families outside NSW never ge
   assert.equal(j.normJurisdiction(" vic "), "VIC");
   assert.equal(j.normJurisdiction("Victoria"), null);
   assert.equal(j.normJurisdiction(""), null);
-  assert.equal(j.JURISDICTION_CODES.length, 8);
+  assert.equal(j.JURISDICTION_CODES.filter(code => code !== "OTHER").length, 8);
+  assert.equal(j.normJurisdiction("other"), "OTHER");
   const Y7L = JSON.parse(readFileSync(new URL("../../frontend/src/data/referenceYear7Integers.json", import.meta.url), "utf8"));
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY", jurisdiction: null });

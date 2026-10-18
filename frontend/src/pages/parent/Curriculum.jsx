@@ -48,12 +48,12 @@ function ChangeJurisdiction({ current }) {
   const save = async () => {
     if (!code || code === current) { setOpen(false); return; }
     setSaving(true);
-    try { await saveJurisdiction(code, setSession, user); toast.success("State or territory updated"); setOpen(false); }
+    try { await saveJurisdiction(code, setSession, user); toast.success("Learning location updated"); setOpen(false); }
     catch (err) { toast.error(err.response?.data?.detail || "Couldn't save that. Please try again."); }
     finally { setSaving(false); }
   };
   if (!open) {
-    return <button type="button" onClick={() => { setCode(current || ""); setOpen(true); }} className="text-sm font-semibold underline text-emerald-800" data-testid="curriculum-change-state">Moved interstate? Change your state or territory</button>;
+    return <button type="button" onClick={() => { setCode(current || ""); setOpen(true); }} className="text-sm font-semibold underline text-emerald-800" data-testid="curriculum-change-state">Change your learning location</button>;
   }
   return (
     <div className="flex flex-wrap items-center gap-2" data-testid="curriculum-change-form">
@@ -93,6 +93,7 @@ export default function Curriculum() {
   const { user } = useAuth();
   const place = jurisdictionFor(user?.jurisdiction);
   const nsw = usesNswOutcomes(user?.jurisdiction);
+  const international = user?.jurisdiction === "OTHER";
   return (
     <div className="p-4 sm:p-6 lg:p-10 space-y-9 max-w-7xl mx-auto" data-testid="curriculum-page">
       <header className="space-y-4">
@@ -100,16 +101,22 @@ export default function Curriculum() {
           <Compass size={17} aria-hidden="true" /> Your curriculum compass
         </div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold" style={{ color: "#1F3B2D" }}>
-          {place ? `Home education in ${place.name}` : "Home education in your state or territory"}
+          {international ? "Learning beyond Australia" : (place ? `Home education in ${place.name}` : "Home education in your state or territory")}
         </h1>
         <p className="text-base leading-relaxed text-stone-700 max-w-3xl">
-          Side-Quest welcomes Australian families wherever they live. Here are the official home education,
-          curriculum and record-keeping resources for <strong>{place ? place.name : "your state or territory"}</strong>, plus national resources that are useful anywhere.
+          {international
+            ? "Side-Quest was built around Australian home education, but families abroad can still use lessons, family planning, portfolios, and their own learning goal tracker. We do not provide local registration guidance or verified curriculum outcomes for countries outside Australia."
+            : <>Side-Quest welcomes Australian families wherever they live. Here are official home education, curriculum and record-keeping resources for <strong>{place ? place.name : "your state or territory"}</strong>, plus national resources you may find useful.</>}
         </p>
-        {place && <ChangeJurisdiction current={place.code} />}
+        {user?.jurisdiction && <ChangeJurisdiction current={user.jurisdiction} />}
       </header>
 
       {place && <JurisdictionSection place={place} />}
+      {international && <section className="paper-card p-5 space-y-3" data-testid="international-curriculum-notice">
+        <h2 className="font-display text-xl font-bold text-emerald-950">Your family sets the learning trail</h2>
+        <p className="text-sm text-stone-700">Choose subjects and define learning goals that make sense for your child. Track progress and link observations from the Evidence Backpack. Side-Quest will not insert Australian outcome codes or suggest that your program satisfies the rules where you live.</p>
+        <Link className="inline-block font-bold text-sm underline text-emerald-900" to="/parent/outcomes">Open your family goal tracker →</Link>
+      </section>}
 
       <section className="paper-card p-4 sm:p-6 border-l-4" style={{ borderLeftColor: "#4A5D3A" }} aria-labelledby="mapping-heading">
         <div className="flex items-center gap-2 mb-2">
@@ -121,9 +128,11 @@ export default function Curriculum() {
           Side-Quest helps you organise learning; it doesn't register a child or certify a program, so check what your authority actually asks for.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-stone-600" data-testid="curriculum-outcome-note">
-          {nsw
-            ? "Automatic outcome suggestions and the learning plan writer use the NSW syllabus outcome list. They are suggestions for you to check, not official confirmation."
-            : `Side-Quest doesn't hold the ${place ? place.code : "local"} outcome list yet, so automatic outcome suggestions and the learning plan writer are switched off for your family rather than showing NSW outcomes that don't apply. Record outcomes yourself from your official curriculum above.`}
+          {international
+            ? "Outside Australia, outcomes are parent-defined. You can build lessons and learning plans, keep records, and link your own learning goals to evidence. Official curriculum mapping and local legal advice are not provided."
+            : nsw
+              ? "Automatic outcome suggestions and the learning plan writer use the NSW syllabus outcome list. They are suggestions for you to check, not official confirmation."
+              : `Automatic outcome codes are only displayed where Side-Quest holds a verified reference for your jurisdiction. Always check against your own local curriculum.`}
         </p>
       </section>
 
@@ -132,8 +141,7 @@ export default function Curriculum() {
           <h2 id="australia-wide-heading" className="font-display text-2xl font-bold" style={{ color: "#1F3B2D" }}>Useful wherever you call home</h2>
         </div>
         <p className="text-sm text-stone-600 max-w-3xl">
-          These national resources can help with planning and finding teaching ideas. The Australian
-          Curriculum is a useful reference, but it doesn't replace your local home education rules.
+          These Australian resources can provide optional teaching ideas and planning inspiration. They do not replace your local home education rules or establish a curriculum for international families.
         </p>
         <div className="grid md:grid-cols-3 gap-3" data-testid="curriculum-national-resources">
           {NATIONAL_RESOURCES.map((resource) => <ResourceLink key={resource.url} resource={resource} />)}

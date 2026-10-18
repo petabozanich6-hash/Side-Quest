@@ -24,7 +24,7 @@ export default function Register() {
   const submit = async (e) => {
     e.preventDefault();
     if (!label) { toast.error("Please tell us what your children call you"); return; }
-    if (!form.jurisdiction) { toast.error("Please choose your state or territory"); return; }
+    if (!form.jurisdiction) { toast.error("Please choose your location"); return; }
     setLoading(true);
     try {
       const { data } = await api.post("/auth/register", form);
@@ -106,9 +106,9 @@ export default function Register() {
               {pick === "__other" && <input value={other} onChange={e => setOther(e.target.value)} maxLength={30} required placeholder="e.g. Mama" className="input mt-2" data-testid="reg-label-other"/>}
               <p className="text-[11px] text-stone-500 mt-1">Your child's pet will say "{label || "Mum"} sent you a message" instead of using your name.</p>
             </F>
-            <F label="State or territory">
+            <F label="State, territory or country">
               <JurisdictionSelect value={form.jurisdiction} onChange={(v) => setForm(f => ({ ...f, jurisdiction: v }))} testid="reg-jurisdiction" />
-              <p className="text-[11px] text-stone-500 mt-1">We'll show the home education rules, curriculum and record-keeping guidance for where you live. You can change this later.</p>
+              <p className="text-[11px] text-stone-500 mt-1">Australian families receive state-specific guidance. Outside Australia, you can create lessons and track family-defined learning goals, but Side-Quest does not provide your local curriculum or registration rules. You can change this later.</p>
             </F>
             <F label="Family name (optional)"><input value={form.family_name} onChange={upd("family_name")} className="input" data-testid="reg-family"/></F>
             <F label="Email"><input value={form.email} onChange={upd("email")} type="email" required className="input" data-testid="reg-email"/></F>

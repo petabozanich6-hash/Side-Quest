@@ -854,7 +854,9 @@ export async function draftLessonWithAi(
   const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
   const framework = frameworkFor(jurisdiction);
   const stage = student?.stage || stageFor(r.year);
-  const curriculumContext = framework
+  const curriculumContext = jurisdiction === "OTHER"
+    ? "INTERNATIONAL FAMILY: The parent selects learning goals and subjects. Do not use Australian curriculum outcome codes, refer to an Australian regulatory authority, or claim the lesson meets local laws. Teach the requested topic using age-appropriate explanations and invite the parent to track their own goals and evidence."
+    : framework
     ? [
         `FAMILY'S CHOSEN CURRICULUM: ${framework.name} (${framework.jurisdiction_name}).`,
         `Official curriculum reference: ${framework.url}.`,
