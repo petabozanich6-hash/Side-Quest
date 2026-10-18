@@ -9,6 +9,7 @@
 // ordinary rows in `lessons`. Each slot is claimed atomically before it is written, so double clicks, two tabs or a
 // refresh can never produce two lessons for the same slot, and a finished slot is never rewritten over a parent's edits.
 import * as lb from "./lessonBuilder";
+import { cleanAdditionalAreas } from "./lessonAreas";
 import type { Result } from "./lessonBuilder";
 import { draftLessonWithAi, SERIES_MAX } from "./aiDraft";
 import type { AiBinding } from "./aiDraft";
@@ -43,7 +44,7 @@ export async function createBatch(
   const { limits } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("AI lesson drafting is part of the paid plan. Your free preview includes the full manual lesson builder.");
   const lessons = (Array.isArray(b.lessons) ? b.lessons : [])
-    .map((l: any) => ({ title: clip(l?.title, 150), goal: clip(l?.goal, 300), learning_area: clip(l?.learning_area, 80) }))
+    .map((l: any) => ({ title: clip(l?.title, 150), goal: clip(l?.goal, 300), learning_area: clip(l?.learning_area, 80), additional_learning_areas: cleanAdditionalAreas(l?.additional_learning_areas, l?.learning_area) }))
     .filter((l: any) => l.title);
   if (lessons.length < 2 || lessons.length > SERIES_MAX) return lb.fail(400, `A set of lessons has 2 to ${SERIES_MAX} lessons, each with a title.`);
   const supported = new Set(["Mathematics", "Science", "English", "History", "Geography", "Humanities and Social Sciences", "Technologies", "The Arts"]);
@@ -62,7 +63,7 @@ export async function createBatch(
   }
   // Persist the selected subject separately from its editable lesson title.
   // The existing request JSON avoids a database migration.
-  const request = { request: clip(b.request, 1200), link_outcomes: b.link_outcomes !== false, subjects: lessons.map((l: any) => l.learning_area || null) };
+  const request = { request: clip(b.request, 1200), link_outcomes: b.link_outcomes !== false, subjects: lessons.map((l: any) => l.learning_area || null), additional_areas: lessons.map((l: any) => l.additional_learning_areas) };
   const ts = now.toISOString();
   await db.batch([
     db.prepare("INSERT INTO lesson_batches (id, family_id, student_id, title, request, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
@@ -115,6 +116,7 @@ export async function getBatch(db: DB, familyId: string, id: string, now: Date =
     return {
       index: i.idx, title: i.lesson_title || i.planned_title, planned_title: i.planned_title, goal: i.goal,
       learning_area: requested.subjects?.[i.idx] || null,
+      additional_learning_areas: requested.additional_areas?.[i.idx] || [],
       state, lesson_id: lesson ? i.lesson_id : null, lesson_status: i.lesson_status ?? null, assigned_to: who,
       error: state === "failed" ? (i.item_status === "generating" ? "Writing this lesson was interrupted. You can try it again." : i.error || "This lesson could not be written.") : null,
       updated_at: i.lesson_updated_at || i.updated_at,
@@ -193,6 +195,7 @@ export async function draftBatchItem(
     request: {
       request: req.request, student_id: batch.student_id || undefined, link_outcomes: req.link_outcomes !== false,
       learning_area: Array.isArray(req.subjects) ? (req.subjects[index] || undefined) : undefined,
+      additional_learning_areas: Array.isArray(req.additional_areas) ? (req.additional_areas[index] || []) : [],
       series: { index, titles: items.map((i: any) => i.title), goals: items.map((i: any) => i.goal) },
     } as any,
   }, now);
