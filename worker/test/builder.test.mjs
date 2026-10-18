@@ -331,8 +331,8 @@ test("compact group parse failure falls back to independently validated sections
   assert.equal(result.lesson.status, "draft");
 });
 
-test("AI drafting: free preview, expired and cancelled are blocked before any AI call", async () => {
-  for (const [plan, trialStart] of [["FREE_PREVIEW"], ["FREE_PREVIEW", "2026-09-01T00:00:00Z"], ["CANCELLED"]]) {
+test("AI drafting: expired preview and cancelled families are blocked before any AI call", async () => {
+  for (const [plan, trialStart] of [["FREE_PREVIEW", "2026-09-01T00:00:00Z"], ["CANCELLED"]]) {
     const db = makeDb();
     const fam = seed(db, { plan, trialStart: trialStart || NOW.toISOString() });
     const ai = stub();
@@ -344,6 +344,74 @@ test("AI drafting: free preview, expired and cancelled are blocked before any AI
     assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM ai_usage").get().n, 0);
     assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
   }
+});
+
+test("free preview: one complete AI draft in addition to two manual lessons, still available for review and assignment", async () => {
+  const db = makeDb();
+  const fam = seed(db);
+  const sid = child(db, fam);
+  await mk(db, fam, { title: "Manual one" });
+  await mk(db, fam, { title: "Manual two" });
+  const offer = await lb.planSummary(db, fam, NOW);
+  assert.equal(offer.free_ai_lesson.available, true);
+  assert.equal(offer.usage.manual_lessons, 2);
+  const ai = stub();
+  const created = await aid.draftLessonWithAi(db, ai, req(fam, ai, { link_outcomes: false, student_id: sid }), NOW);
+  assert.ok(created.ok, JSON.stringify(created));
+  assert.equal(created.lesson.ai_generated, true);
+  assert.equal(created.lesson.status, "draft");
+  assert.ok(created.lesson.sections.length > 0);
+  assert.ok(created.lesson.activities.length > 0);
+  assert.equal((await lb.countLessons(db, fam)), 3);
+  assert.equal((await lb.countManualLessons(db, fam)), 2);
+  assert.equal(db.raw.prepare("SELECT status FROM ai_usage WHERE family_id=? AND kind='free_lesson_draft'").get(fam).status, "ok");
+  const summary = await lb.planSummary(db, fam, NOW);
+  assert.equal(summary.free_ai_lesson.used, true);
+  assert.equal(summary.free_ai_lesson.available, false);
+  // Free families can use their lesson through the existing parent-review/child flow.
+  assert.ok((await lb.updateLesson(db, fam, created.lesson.id, { ...lesson(), title: "Reviewed free AI draft", status: "ready" }, NOW)).ok);
+  assert.ok((await lb.assignLesson(db, fam, { student_id: sid, lesson_id: created.lesson.id }, NOW)).ok);
+  const againAi = stub();
+  const again = await aid.draftLessonWithAi(db, againAi, req(fam), NOW);
+  assert.equal(again.code, "UPGRADE_REQUIRED");
+  assert.equal(againAi.calls.length, 0);
+  const seriesAi = stub();
+  assert.equal((await aid.planSeriesWithAi(db, seriesAi, { familyId: fam, userId: "u1", request: { request: "four lessons on maths" } }, NOW)).code, "UPGRADE_REQUIRED");
+  assert.equal(seriesAi.calls.length, 0);
+  assert.equal((await aid.refineLessonWithAi(db, stub(), { familyId: fam, userId: "u1", lessonId: created.lesson.id, instruction: "make it easier" }, NOW)).code, "UPGRADE_REQUIRED");
+});
+
+test("free AI lesson: failures release the slot and deleting the draft does not grant another", async () => {
+  const db = makeDb();
+  const fam = seed(db);
+  const failed = await aid.draftLessonWithAi(db, stub(() => { throw new Error("offline"); }), req(fam), NOW);
+  assert.equal(failed.code, "AI_FAILED");
+  assert.equal((await lb.planSummary(db, fam, NOW)).free_ai_lesson.available, true);
+  assert.equal(db.raw.prepare("SELECT status FROM ai_usage WHERE family_id=? AND kind='free_lesson_draft'").get(fam).status, "failed");
+  const created = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.ok(created.ok, JSON.stringify(created));
+  assert.equal((await lb.deleteLesson(db, fam, created.lesson.id, NOW)).ok, true);
+  const second = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.equal(second.code, "UPGRADE_REQUIRED");
+  const other = seed(db);
+  assert.ok((await aid.draftLessonWithAi(db, stub(), req(other), NOW)).ok, "another family has its own trial");
+});
+
+test("free AI lesson: parallel requests reserve only one slot and a stale attempt can be recovered", async () => {
+  const db = makeDb(), fam = seed(db);
+  const [one, two] = await Promise.all([
+    aid.draftLessonWithAi(db, stub(), req(fam), NOW),
+    aid.draftLessonWithAi(db, stub(), req(fam), NOW),
+  ]);
+  assert.equal([one, two].filter(r => r.ok).length, 1, "exactly one draft was generated");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id=? AND kind='free_lesson_draft' AND status='ok'").get(fam).n, 1);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id=?").get(fam).n, 1);
+  const retryFamily = seed(db);
+  db.raw.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, 'u1', 'free_lesson_draft', 'pending', ?)")
+    .run("abandoned", retryFamily, new Date(NOW.getTime() - 31 * 60 * 1000).toISOString());
+  assert.equal((await lb.planSummary(db, retryFamily, NOW)).free_ai_lesson.available, true);
+  assert.equal(db.raw.prepare("SELECT status FROM ai_usage WHERE id='abandoned'").get().status, "failed");
+  assert.ok((await aid.draftLessonWithAi(db, stub(), req(retryFamily), NOW)).ok);
 });
 
 test("AI drafting: paid family gets an unreviewed AI-labelled draft with no links, and usage is recorded", async () => {
