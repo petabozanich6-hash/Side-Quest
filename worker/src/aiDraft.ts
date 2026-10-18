@@ -916,7 +916,9 @@ export async function draftLessonWithAi(
     if (!freePreview || !/unique|constraint/i.test(String(e))) throw e;
     return lb.fail(409, "Your family's free AI lesson is already being written or has been used. Refresh your plan for its status.", "FREE_LESSON_CLAIMED");
   }
-  const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
+  // Once a free lesson is durably saved, the successful lifetime claim must
+  // never be demoted to "failed" by late error handling or a repeated request.
+  const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ? AND status = 'pending'").bind(s, usageId).run();
   const model = opts.model || DEFAULT_MODEL;
 
   const generationStarted = Date.now();
