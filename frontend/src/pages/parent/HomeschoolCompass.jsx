@@ -120,7 +120,7 @@ export default function HomeschoolCompass() {
     <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="homeschool-compass">
       <header className="space-y-3">
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-800"><Compass size={16}/> Side-Quest · parent hub</div>
-        <h1 className="font-display text-3xl sm:text-4xl font-bold" style={{color:"#1F3B2D"}}>Homeschooling Compass</h1>
+        <h1 data-tour="tour-compass" className="font-display text-3xl sm:text-4xl font-bold" style={{color:"#1F3B2D"}}>Homeschooling Compass</h1>
         <p className="text-sm sm:text-base leading-relaxed text-stone-700 max-w-3xl">A clearer route through registration, educational plans and ongoing requirements. The guidance and links below are tailored to your family's state or territory.</p>
       </header>
 
