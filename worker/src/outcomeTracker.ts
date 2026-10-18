@@ -18,6 +18,7 @@ import { VIC_SOURCE_VERIFIED_IDS } from "./data/vic-source-ids";
 import { WA_CODES, WA_SOURCE_URL } from "./data/wa-codes";
 import { summaryFor } from "./data/outcomeSummaries";
 import { FRAMEWORKS, getFamilyJurisdiction, yearLabel, type JurisdictionCode } from "./data/jurisdictions";
+import { internationalGoalSummary } from "./internationalGoals";
 import type { App, Guards } from "./types";
 
 type DB = any;
@@ -1145,6 +1146,7 @@ export async function setLearnerSupport(db: DB, familyId: string, studentId: str
 export async function familySummary(db: DB, familyId: string, now: Date = new Date()) {
   await ensureTracker(db);
   const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
+  if (jurisdiction === "OTHER") return internationalGoalSummary(db, familyId);
   const cat = catalogueFor(jurisdiction);
   const { results: kids } = await db.prepare("SELECT id, name, stage, year_level FROM students WHERE family_id = ? ORDER BY created_at").bind(familyId).all();
   if (!cat.available) return { available: false, note: cat.note, students: (kids || []).map((k: any) => ({ id: k.id, name: k.name })) };
