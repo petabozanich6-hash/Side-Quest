@@ -23,12 +23,12 @@ async function childFor(c: any) {
   const familyId = c.get("user").family_id as string;
   if (await getFamilyJurisdiction(c.env.DB, familyId) !== "OTHER") return null;
   return c.env.DB.prepare("SELECT id, name FROM students WHERE id = ? AND family_id = ?")
-    .bind(c.req.param("sid"), familyId).first<{ id: string; name: string }>();
+    .bind(c.req.param("sid"), familyId).first() as Promise<{ id: string; name: string } | null>;
 }
 
 async function goalFor(c: any) {
   return c.env.DB.prepare("SELECT * FROM international_learning_goals WHERE id = ? AND family_id = ? AND student_id = ?")
-    .bind(c.req.param("gid"), c.get("user").family_id, c.req.param("sid")).first<any>();
+    .bind(c.req.param("gid"), c.get("user").family_id, c.req.param("sid")).first() as Promise<any>;
 }
 
 export function registerInternationalGoals(app: App, g: Guards) {
