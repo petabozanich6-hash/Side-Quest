@@ -75,7 +75,7 @@ export default function LessonsPage() {
 
       {plan && plan.effective_plan === "FREE_PREVIEW" && (
         <div className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700" data-testid="preview-banner">
-          Your seven-day preview ends {new Date(plan.trial_ends_at).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. You’ve used {plan.usage.lessons} of {plan.limits.maxLessons} lessons, {plan.usage.children} of {plan.limits.maxChildren} child profiles, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
+          Your seven-day preview ends {new Date(plan.trial_ends_at).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. You’ve used {plan.usage.manual_lessons} of {plan.limits.maxLessons} manual lessons, {plan.usage.children} of {plan.limits.maxChildren} child profiles, {plan.usage.active_assignments} of {plan.limits.maxActiveAssignments} active assignments. {plan.free_ai_lesson?.available ? <Link to="/parent/lessons/make" className="underline font-bold">Try your one free AI lesson</Link> : plan.free_ai_lesson?.used ? "Your complimentary AI lesson is yours to keep." : null} <Link to="/parent/plan" className="underline font-bold">See plans</Link>
         </div>
       )}
       {plan && plan.effective_plan === "PREVIEW_EXPIRED" && (
