@@ -1,7 +1,8 @@
 // Paid-plan AI lesson drafting on Cloudflare Workers AI (binding `AI`, optionally routed through an AI Gateway).
 // Three model requests per draft (design, teaching, practice), plus at most one targeted repair when the quality check finds a real problem.
-// Rules: paid plans and one complimentary draft per preview family (checked on the server), fair-use limits,
-// sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
+// Rules: paid plans and one complimentary draft per preview family (checked on the server), fair-use limits.
+// All output is cleaned and validated by the same sanitiser as the manual builder,
+// and saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
 import { cleanAdditionalAreas } from "./lessonAreas";
