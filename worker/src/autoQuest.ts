@@ -19,6 +19,7 @@ import * as aid from "./aiDraft";
 import { catalogueFor, trackerFor, programFor, DEFAULT_RULES, type Catalogue } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { normArea } from "./outcomeMatch";
+import { lessonSupportsArea } from "./lessonAreas";
 import type { App, Guards } from "./types";
 
 type DB = any;
@@ -26,7 +27,7 @@ type DB = any;
 // ---------------------------------------------------------------- pure planner
 
 export type QuestSlot = { id: string; student_id: string; date: string; title: string; event_type?: string; notes?: string | null; linked_assignment_id?: string | null; linked_lesson_id?: string | null; duration_minutes?: number | null };
-export type QuestLesson = { id: string; title: string; learning_area?: string; stage?: string; year_level?: number | string | null; outcome_codes?: string[]; status?: string; archived_at?: string | null };
+export type QuestLesson = { id: string; title: string; learning_area?: string; additional_learning_areas?: string[]; stage?: string; year_level?: number | string | null; outcome_codes?: string[]; status?: string; archived_at?: string | null };
 export type QuestAssignment = { id: string; student_id: string; lesson_id: string; scheduled_date?: string | null; status?: string };
 export type QuestProgress = { code: string; status: string; last_evidence_on?: string | null; gaps?: string[] };
 export type QuestOutcome = { code: string; learning_area: string };
@@ -102,7 +103,7 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   };
   const reusableFor = (area: string, codes: string[]) => input.lessons.filter(l => {
     if (l.status !== "ready" || l.archived_at || !ageMatches(l) ||
-      normalize(lessonArea(l)) !== normalize(area) || everAssigned.has(l.id) ||
+      !lessonSupportsArea({ learning_area: lessonArea(l), additional_learning_areas: l.additional_learning_areas }, area, input.childStage || "") || everAssigned.has(l.id) ||
       usedLessons.has(l.id)) return false;
     const lessonCodes = l.outcome_codes || [];
     // A code-less subject only selects code-less lessons. Never infer coverage.

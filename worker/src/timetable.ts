@@ -13,6 +13,7 @@
 import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { normArea } from "./outcomeMatch";
+import { lessonSupportsArea } from "./lessonAreas";
 import { calendarConflict } from "./calendarIntegrity";
 import type { App, Guards } from "./types";
 
@@ -122,13 +123,15 @@ export async function placeAssignment(db: DB, familyId: string, assignmentId: st
   if (!a || a.status === "revoked") return fail(404, "Assignment not found");
   if (lb.DONE_STATUSES.includes(a.status) || a.status === "submitted")
     return fail(409, "This lesson is already handed in or finished.", "ALREADY_DONE");
-  const lesson = await db.prepare("SELECT title, learning_area, stage FROM lessons WHERE id = ? AND family_id = ?")
+  const lesson = await db.prepare("SELECT title, learning_area, stage, data FROM lessons WHERE id = ? AND family_id = ?")
     .bind(a.lesson_id, familyId).first<any>();
   const child = await db.prepare("SELECT stage FROM students WHERE id = ? AND family_id = ?")
     .bind(a.student_id, familyId).first<any>();
   if (!lesson || !child) return fail(404, "Lesson or child not found");
   const area = String(lesson.learning_area || "");
   const stage = String(child.stage || lesson.stage || "");
+  const secondary = ((): string[] => { try { return JSON.parse(String(lesson.data || "{}")).additional_learning_areas || []; } catch { return []; } })();
+  const supported = (title: string) => lessonSupportsArea({ learning_area: area, additional_learning_areas: secondary }, title, stage);
   const from = validDate(input?.from) ? input.from : now.toISOString().slice(0, 10);
   let chosen: any[] = [];
   if (Array.isArray(input?.slot_ids) && input.slot_ids.length) {
@@ -141,12 +144,15 @@ export async function placeAssignment(db: DB, familyId: string, assignmentId: st
     const slots = (await db.prepare(sql).bind(familyId, a.student_id, ...ids).all<any>()).results ?? [];
     chosen = ids.map(id => slots.find((slot: any) => slot.id === id)).filter(Boolean);
     if (chosen.length !== ids.length || chosen.some((slot: any) =>
-      slot.linked_assignment_id || slot.linked_lesson_id || !sameSubject(slot.title, area, stage)))
+      slot.linked_assignment_id || slot.linked_lesson_id || !supported(slot.title)))
       return fail(409, "Choose empty timetable slots for this child's subject.", "SLOT_TAKEN");
   } else {
     const count = Math.min(10, Math.max(1, Number(input?.count) || 1));
     const open = await listSlots(db, familyId, { student_id: a.student_id, from, open: true });
-    chosen = open.filter((slot: any) => sameSubject(slot.title, area, stage)).slice(0, count);
+    const primary = open.filter((slot: any) => sameSubject(slot.title, area, stage));
+    const related = open.filter((slot: any) => !sameSubject(slot.title, area, stage) && supported(slot.title));
+    // Prefer the lesson’s primary subject before using a genuine secondary subject.
+    chosen = [...primary, ...related].slice(0, count);
     if (!chosen.length) return { ok: true, placed: [], reason: "no_slot", learning_area: area };
   }
   // Cloudflare D1 batch executes atomically: stale slot validation and writes

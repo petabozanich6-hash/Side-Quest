@@ -5,6 +5,7 @@ import { publicLesson } from "./syllabusText";
 import { recordPetEvent } from "./data/petQuests";
 import { knownOutcomeCodes } from "./outcomeMatch";
 import { safely, trackSubmission, trackAssignmentQuiz, catalogueFor } from "./outcomeTracker";
+import { cleanAdditionalAreas } from "./lessonAreas";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
@@ -187,6 +188,7 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
     const b = obj(raw ?? {}, "Lesson");
     const title = text(b.title, 200, "Title", true);
     const learning_area = text(b.learning_area, 80, "Subject") || null;
+    const additional_learning_areas = cleanAdditionalAreas(b.additional_learning_areas, learning_area);
     const year_level = text(b.year_level, 40, "Year level") || null;
     const stageRaw = text(b.stage, 10, "Stage");
     const stage = STAGES.includes(stageRaw) ? stageRaw : null;
@@ -315,6 +317,7 @@ export function sanitizeLessonInput(raw: unknown): Result<{ value: CleanLesson }
 
     const builder = {
       year_level,
+      additional_learning_areas,
       objectives,
       sections,
       activities,

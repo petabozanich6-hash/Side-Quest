@@ -317,3 +317,45 @@ test("an invalid multi-subject planner request is blocked before making any AI c
   assert.equal(r.status, 400);
   assert.equal(ai.calls.length, 0);
 });
+
+test("three Year 7 Halloween lessons preserve Science, English and HSIE, including secondary areas, end to end", async () => {
+  const db = makeDb(), fam = seed(db), kid = child(db, fam);
+  const subjects = ["Science", "English", "Humanities and Social Sciences"];
+  const writer = stub((model, input) => {
+    const msg = String(input.messages?.at(-1)?.content || "");
+    if (msg.includes("Plan exactly 3 SEPARATE full lessons")) {
+      assert.match(msg, /1\. Science; 2\. English; 3\. Humanities and Social Sciences/);
+      return { response: JSON.stringify({ series_title: "Three Halloween subjects", lessons: [
+        { title: "Exploring materials", goal: "Conduct a science investigation", additional_learning_areas: [] },
+        { title: "Gothic narrative", goal: "Write a suspenseful description", additional_learning_areas: ["Humanities and Social Sciences"] },
+        { title: "Historical traditions", goal: "Evaluate sources about Halloween", additional_learning_areas: ["English"] },
+      ] }) };
+    }
+    return staged(model, input);
+  });
+  const input = { request: "Three Year 7 Halloween lessons: a science, an English and an HSIE", student_id: kid, count: 3, subjects };
+  const planned = await aid.planSeriesWithAi(db, writer, { familyId: fam, userId: "u", request: input }, NOW);
+  assert.ok(planned.ok, JSON.stringify(planned));
+  assert.deepEqual(planned.lessons.map(l => l.learning_area), subjects);
+  assert.deepEqual(planned.lessons.map(l => l.additional_learning_areas), [
+    [], ["Humanities and Social Sciences"], ["English"],
+  ]);
+  const created = await bat.createBatch(db, { familyId: fam, userId: "u", body: {
+    title: planned.title, lessons: planned.lessons, student_id: kid, request: input.request, link_outcomes: false,
+  } }, NOW);
+  assert.ok(created.ok, JSON.stringify(created));
+  assert.deepEqual(created.batch.items.map(i => i.learning_area), subjects);
+  for (let i = 0; i < 3; i++) {
+    const d = await draft(db, writer, fam, created.batch.id, i);
+    assert.ok(d.ok, JSON.stringify(d));
+  }
+  const after = (await bat.getBatch(db, fam, created.batch.id, NOW)).batch;
+  assert.deepEqual(states(after), ["ready", "ready", "ready"]);
+  const lessons = after.items.map(i => lb.lessonOut(db.raw.prepare("SELECT * FROM lessons WHERE id = ?").get(i.lesson_id)));
+  assert.deepEqual(lessons.map(l => l.learning_area), subjects);
+  assert.deepEqual(lessons.map(l => l.additional_learning_areas), [[], ["Humanities and Social Sciences"], ["English"]]);
+  assert.ok(lessons.every(l => l.status === "draft" && l.sections.length === GARDEN.sections.length && l.activities.length === GARDEN.activities.length));
+  assert.equal(lessonsIn(db, fam), 3);
+  for (let i = 0; i < 3; i++) assert.equal((await draft(db, writer, fam, created.batch.id, i)).reused, true);
+  assert.equal(lessonsIn(db, fam), 3, "secondary-area connections must never create duplicate lessons");
+});

@@ -23,6 +23,11 @@ const TWO = [
   { title: "Science — Haunted chemical reactions", goal: "Explain chemical versus physical changes", learning_area: "Science" },
   { title: "Mathematics — Pumpkin proportions", goal: "Use ratios to scale Halloween recipes", learning_area: "Mathematics" },
 ];
+const THREE = [
+  { title: "Science — Witch's laboratory", goal: "Explore changes", learning_area: "Science", additional_learning_areas: [] },
+  { title: "English — Gothic writing", goal: "Write a suspenseful passage", learning_area: "English", additional_learning_areas: ["Humanities and Social Sciences"] },
+  { title: "Humanities and Social Sciences — Origins of Halloween", goal: "Investigate cultural traditions", learning_area: "Humanities and Social Sciences", additional_learning_areas: ["English"] },
+];
 beforeEach(() => {
   jest.clearAllMocks();
   api.get.mockImplementation(path => {
@@ -31,9 +36,10 @@ beforeEach(() => {
     if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
     throw Error("unexpected GET " + path);
   });
-  api.post.mockImplementation(path => {
-    if (path === "/ai/series-plan") return Promise.resolve({ data: { title: "Halloween Year 7", count: 2, minutes: 60, lessons: TWO, usage: { unlimited: true } } });
-    if (path === "/ai/batches") return Promise.resolve({ data: { id: "batch-a", items: [{ index: 0, state: "pending" }, { index: 1, state: "pending" }] } });
+  api.post.mockImplementation((path, body) => {
+    const count = body?.subjects?.length === 3 || body?.lessons?.length === 3 ? 3 : 2;
+    if (path === "/ai/series-plan") return Promise.resolve({ data: { title: "Halloween Year 7", count, minutes: 60, lessons: count === 3 ? THREE : TWO, usage: { unlimited: true } } });
+    if (path === "/ai/batches") return Promise.resolve({ data: { id: "batch-a", items: Array.from({ length: count }, (_, index) => ({ index, state: "pending" })) } });
     if (path === "/ai/lesson-draft") return Promise.resolve({ data: { lesson: { id: "one" }, assumptions: {}, warnings: [], generation: {} } });
     throw Error("unexpected POST " + path);
   });
@@ -69,4 +75,20 @@ test("explicitly integrated Science and Maths request remains a single lesson", 
   await click('[data-testid="mk-go"]');
   expect(api.post.mock.calls.filter(([p]) => p === "/ai/series-plan")).toHaveLength(0);
   expect(api.post.mock.calls.filter(([p]) => p === "/ai/lesson-draft")).toHaveLength(1);
+});
+
+test("a three-subject Halloween request previews Science, English and HSIE separately and retains related areas", async () => {
+  await mount("Create three Halloween lessons for Year 7: a science, an English, and an HSIE");
+  await click('[data-testid="mk-go"]');
+  const call = api.post.mock.calls.find(([p]) => p === "/ai/series-plan");
+  expect(call[1]).toMatchObject({
+    count: 3, subjects: ["Science", "English", "Humanities and Social Sciences"],
+  });
+  expect(node.querySelectorAll('[data-testid^="series-subject-"]')).toHaveLength(3);
+  expect(node.querySelectorAll('[data-testid^="series-related-"]')).toHaveLength(3);
+  await click('[data-testid="series-go"]');
+  const saved = api.post.mock.calls.find(([p]) => p === "/ai/batches")[1];
+  expect(saved.lessons.map(l => l.learning_area)).toEqual(["Science", "English", "Humanities and Social Sciences"]);
+  expect(saved.lessons[1].additional_learning_areas).toEqual(["Humanities and Social Sciences"]);
+  expect(runBatch).toHaveBeenCalledWith("batch-a", [0, 1, 2]);
 });

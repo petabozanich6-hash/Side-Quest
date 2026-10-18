@@ -47,15 +47,15 @@ export default function LessonsPage() {
 
   const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const shown = lessons.filter(l => {
-    const t = [l.title, l.learning_area, l.year_level, ...(l.objectives || [])].join(" ").toLowerCase();
-    if (fSubject && l.learning_area !== fSubject) return false;
+    const t = [l.title, l.learning_area, ...(l.additional_learning_areas || []), l.year_level, ...(l.objectives || [])].join(" ").toLowerCase();
+    if (fSubject && l.learning_area !== fSubject && !(l.additional_learning_areas || []).includes(fSubject)) return false;
     if (fYear && l.year_level !== fYear) return false;
     if (fStatus === "draft" && l.status !== "draft") return false;
     if (fStatus === "ready" && l.status !== "ready") return false;
     if (fChild && !(assignedTo[fChild] && assignedTo[fChild].has(l.id))) return false;
     return terms.every(w => t.includes(w));
   });
-  const subjects = [...new Set(lessons.map(l => l.learning_area).filter(Boolean))].sort();
+  const subjects = [...new Set(lessons.flatMap(l => [l.learning_area, ...(l.additional_learning_areas || [])]).filter(Boolean))].sort();
   const years = [...new Set(lessons.map(l => l.year_level).filter(Boolean))].sort();
   const sel = "rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm";
 
@@ -105,6 +105,7 @@ export default function LessonsPage() {
           <div key={l.id} className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col" data-testid={`lesson-${l.id}`}>
             <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
               {[l.learning_area, l.year_level].filter(Boolean).join(" · ") || "No subject yet"}
+              {!!l.additional_learning_areas?.length && <span className="block mt-1 normal-case tracking-normal text-violet-700" data-testid={`lesson-related-${l.id}`}>Also useful for: {l.additional_learning_areas.join(", ")}</span> }
               {l.status === "draft" && <span className="ml-2 rounded-full bg-slate-100 border border-slate-200 px-2 py-0.5 normal-case tracking-normal text-slate-700">Draft</span>}
               {l.ai_generated && <span className="ml-2 rounded-full bg-violet-100 border border-violet-200 px-2 py-0.5 normal-case tracking-normal text-violet-800">AI draft</span>}
             </div>
