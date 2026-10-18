@@ -54,8 +54,10 @@ export function outcomeLists(j: Jurisdiction, stage: string, areas: string[]): R
 
 function systemPrompt(j: Jurisdiction) {
   return [
-    `You are an experienced Australian teacher and home education consultant. You draft a ${j.planName} for a parent who home educates in ${j.name}. The parent will review, personalise and submit it themselves.`,
-    "Write warm, specific, practical plain English that a parent can stand behind, in Australian spelling. Every sentence must be about THIS child, period and plan; no generic filler and no repetition.",
+    j.code === "OTHER"
+      ? "You are a family-learning planner. Prepare an adaptable draft for a parent outside Australia. Do not assume any country, curriculum or mandatory learning requirements; the parent must check their own local regulations."
+      : `You are an experienced Australian teacher and home education consultant. You draft a ${j.planName} for a parent who home educates in ${j.name}. The parent will review, personalise and submit it themselves.`,
+    "Write warm, specific, practical plain English that a parent can stand behind. Every sentence must be about THIS child, period and plan; no generic filler and no repetition.",
     `Refer to the child only as ${CHILD} (exactly that placeholder, it is replaced with their name later). Never invent a name, age, diagnosis or family detail.`,
     "Never invent curriculum codes, book titles, publishers, apps, websites, courses, organisations, people or dates. Describe the KIND of resource instead (for example 'a levelled reader series' or 'a local library history program'). Where the authority expects named resources, say so in 'parent_to_complete'.",
     "Never claim the plan meets, satisfies, complies with or is approved under any rule. You may say it is organised around or addresses the listed elements.",
@@ -68,9 +70,13 @@ function systemPrompt(j: Jurisdiction) {
 
 function context(j: Jurisdiction, c: { level: string; secondary: boolean; start: string; end: string; weeks: number; interests: string[]; approach: string; notes: string; areas: string[]; areaNote: string; focus: string[] }) {
   return [
-    `JURISDICTION: ${j.name}. Authority: ${j.authority}. The document is a ${j.planName}; it is read by the ${j.reviewer}.`,
+    j.code === "OTHER"
+      ? "INTERNATIONAL FAMILY: This is a family-defined learning plan, not an official curriculum, registration form or compliance document. Local legal requirements are unknown and must be checked by the parent."
+      : `JURISDICTION: ${j.name}. Authority: ${j.authority}. The document is a ${j.planName}; it is read by the ${j.reviewer}.`,
     `Curriculum position: ${j.curriculum}`,
-    `The authority looks for:\n${j.requirements.map((r) => `- ${r}`).join("\n")}`,
+    j.code === "OTHER"
+      ? `FAMILY PLANNING IDEAS (not official requirements):\n${j.requirements.map((r) => `- ${r}`).join("\n")}`
+      : `The authority looks for:\n${j.requirements.map((r) => `- ${r}`).join("\n")}`,
     `Writing guidance for ${j.code}:\n${j.guidance.map((g) => `- ${g}`).join("\n")}`,
     `CHILD: ${CHILD}, ${c.level || "level not given"}${c.secondary ? " (secondary)" : ""}. In ${j.name} the first year of school is called ${j.foundationYear}.`,
     `PERIOD: ${c.start || "start not given"} to ${c.end || "end not given"}${c.weeks ? ` (about ${c.weeks} weeks)` : ""}.`,
