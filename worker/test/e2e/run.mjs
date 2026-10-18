@@ -826,15 +826,16 @@ await step("K. another family cannot see or touch this family's records", async 
   ok((await api("POST", "/students", t2, { name: "B", username: `b${stamp}`.slice(0, 14), pin: "1234", stage: "S1" })).status === 200, "INTERNAL child 2");
 });
 
-await step("AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI", async () => {
+await step("AI drafting: free preview allows one full draft but reports honestly when AI is offline", async () => {
   sql("UPDATE families SET plan='FREE_PREVIEW' WHERE id='" + workflowFamilyId + "'");
   try {
   const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
-  ok(r.status === 402 && r.json.code === "UPGRADE_REQUIRED", `expected 402, got ${r.status}`);
+  ok(r.status === 503 && r.json.code === "AI_UNAVAILABLE", `expected honest 503, got ${r.status}`);
   const st = await api("GET", "/ai/status", parentToken);
-  ok(st.json.allowed === false, "free preview shown as allowed");
+  ok(st.json.allowed === true && st.json.available === false, "free preview must be entitled to one lesson, but offline AI must report unavailable");
+  ok(st.json.usage.free_lesson_available === true, "offline AI must not consume complimentary lesson");
   const n = await api("GET", "/lessons", parentToken);
-  ok(!n.json.some(l => l.ai_generated), "AI lesson exists for a free family");
+  ok(!n.json.some(l => l.ai_generated), "offline AI saved an invented lesson for a free family");
   } finally { sql("UPDATE families SET plan='INTERNAL' WHERE id='" + workflowFamilyId + "'"); }
 });
 
