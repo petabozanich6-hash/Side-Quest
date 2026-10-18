@@ -28,7 +28,7 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
     p === "/api/life-evidence" || p === "/api/life-evidence/analyse" ||
     p === "/api/auto-quest/plan" || p === "/api/timetable/week" ||
     p === "/api/word-bank/words" || p === "/api/word-bank/try" ||
-    p === "/api/ai/lesson-draft" || p === "/api/ai/lesson-refine" ||
+    p === "/api/ai/lesson-refine" ||
     p === "/api/ai/series-plan" || p === "/api/ai/batches" ||
     p === "/api/calendar"
   )) return "paid";
@@ -49,6 +49,10 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
     /^\/api\/calendar\/[^/]+$/.test(p)
   )) return "paid";
 
+  // One complimentary AI lesson uses the authenticated family's lifetime
+  // entitlement in aiDraft. The preview policy only checks the seven-day window;
+  // the generator reserves the single slot atomically in D1.
+  if (verb === "POST" && p === "/api/ai/lesson-draft") return "preview";
   // The only non-paid learning workflows allowed during the seven days.
   if (verb === "POST" && p === "/api/learning-plans") return "single_preview_plan";
   if (verb === "POST" && (p === "/api/reading-log" || p === "/api/reading-submissions" ||
