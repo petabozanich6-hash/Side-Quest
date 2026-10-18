@@ -94,7 +94,9 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
       const next = padded(bounds);
       setSpot(old => old && Object.keys(next).every(k => old[k] === next[k]) ? old : next);
     };
-    const schedule = () => { if (frame == null) frame = window.requestAnimationFrame(() => { frame = null; measure(); }); };
+    const raf = window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : (fn) => window.setTimeout(fn, 16);
+    const caf = window.cancelAnimationFrame ? window.cancelAnimationFrame.bind(window) : window.clearTimeout.bind(window);
+    const schedule = () => { if (frame == null) frame = raf(() => { frame = null; measure(); }); };
     schedule();
     const observer = typeof MutationObserver !== "undefined"
       ? new MutationObserver(schedule) : null;
@@ -105,7 +107,7 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
       observer?.disconnect();
       window.removeEventListener("scroll", schedule, true);
       window.removeEventListener("resize", schedule);
-      if (frame != null) window.cancelAnimationFrame(frame);
+      if (frame != null) caf(frame);
     };
   }, [mode, location.pathname, step]);
 
