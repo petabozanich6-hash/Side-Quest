@@ -4,6 +4,7 @@
 // sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
+import { cleanAdditionalAreas } from "./lessonAreas";
 import { isPlatformOwner } from "./access";
 import { estimateGrossUsd } from "./aiCost";
 import type { Result } from "./lessonBuilder";
@@ -892,6 +893,7 @@ export async function draftLessonWithAi(
     raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true || ownerPreview);
     if (raw) {
       draft = normaliseDraft(raw, spec);
+    draft.additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
       issues = qualityIssues(draft, spec);
       const fix = issues.filter((i) => i.repair || i.hard);
       if (fix.length) {
@@ -1063,7 +1065,7 @@ export async function planSeriesWithAi(
   ai: AiBinding | undefined,
   opts: { familyId: string; userId: string; model?: string; gatewayId?: string; request: AiRequest & { count?: unknown; subjects?: unknown } },
   now: Date = new Date()
-): Promise<Result<{ title: string; lessons: { title: string; goal: string; learning_area?: string }[]; count: number; minutes: number; delivery: string; assumptions: Record<string, string | number>; usage: Awaited<ReturnType<typeof aiUsage>> }>> {
+): Promise<Result<{ title: string; lessons: { title: string; goal: string; learning_area?: string; additional_learning_areas?: string[] }[]; count: number; minutes: number; delivery: string; assumptions: Record<string, string | number>; usage: Awaited<ReturnType<typeof aiUsage>> }>> {
   const { familyId, userId, request } = opts;
   const { limits } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("AI lesson drafting is part of the paid plan. Your free preview includes the full manual lesson builder.");
@@ -1109,7 +1111,10 @@ export async function planSeriesWithAi(
       subjects.length
         ? "Each lesson must teach ONE distinct age-appropriate concept from ITS OWN named subject. Preserve the parent's common theme in EACH lesson, with each subject taught fully and independently. Titles and goals must match the subject in their assigned order, whether there are two, three or more lessons. Do not invent facts."
         : "Each lesson teaches ONE clear concept that fits in the time. Order them so each builds on the previous one, with no repetition. Use accurate, standard content for this age. Do not invent facts.",
-      'Reply with ONE JSON object only: {"series_title":string,"lessons":[{"title":string,"goal":string (one sentence: what the child will be able to do or explain)}]}',
+      subjects.length
+        ? "Suggest optional additional_learning_areas for a lesson ONLY if its planned actual teaching also substantially develops that subject. A common Halloween theme alone does NOT qualify. These are parent-reviewable cross-curricular connections, not verified curriculum outcomes. Choose only from English, Mathematics, Science, Humanities and Social Sciences, Health and Physical Education, The Arts, Technologies. It is fine and often better to return an empty list."
+        : "",
+      'Reply with ONE JSON object only: {"series_title":string,"lessons":[{"title":string,"goal":string (one sentence: what the child will be able to do or explain),"additional_learning_areas":optional string[]}]}',
     ].join("\n");
     const out = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: "You are an experienced Australian teacher planning a unit of work. Reply with valid JSON only." }, { role: "user", content: prompt }], max_tokens: 1500, temperature: 0.3 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
     plan = extractJson(out);
@@ -1121,7 +1126,7 @@ export async function planSeriesWithAi(
     const title = clip(l?.title, 120);
     const subject = subjects[i];
     return { title: subject && title && !title.toLowerCase().startsWith(subject.toLowerCase())
-      ? `${subject} — ${title}` : title, goal: clip(l?.goal, 300), ...(subject ? { learning_area: subject } : {}) };
+      ? `${subject} — ${title}` : title, goal: clip(l?.goal, 300), ...(subject ? { learning_area: subject, additional_learning_areas: cleanAdditionalAreas(l?.additional_learning_areas, subject) } : {}) };
   }).filter((l: any) => l.title);
   if (lessons.length < count) {
     await done("failed");
