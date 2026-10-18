@@ -46,7 +46,7 @@ export async function createBatch(
     .map((l: any) => ({ title: clip(l?.title, 150), goal: clip(l?.goal, 300), learning_area: clip(l?.learning_area, 80) }))
     .filter((l: any) => l.title);
   if (lessons.length < 2 || lessons.length > SERIES_MAX) return lb.fail(400, `A set of lessons has 2 to ${SERIES_MAX} lessons, each with a title.`);
-  const supported = new Set(["Mathematics", "Science", "English", "History", "Geography", "Technologies", "The Arts"]);
+  const supported = new Set(["Mathematics", "Science", "English", "History", "Geography", "Humanities and Social Sciences", "Technologies", "The Arts"]);
   if (lessons.some((l: any) => l.learning_area && !supported.has(l.learning_area))) return lb.fail(400, "A lesson has an unsupported subject.");
   const studentId = clip(b.student_id, 80) || null;
   if (studentId) {
