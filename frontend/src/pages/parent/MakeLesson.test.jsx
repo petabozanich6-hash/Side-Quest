@@ -92,3 +92,45 @@ test("a three-subject Halloween request previews Science, English and HSIE separ
   expect(saved.lessons[1].additional_learning_areas).toEqual(["Humanities and Social Sciences"]);
   expect(runBatch).toHaveBeenCalledWith("batch-a", [0, 1, 2]);
 });
+
+test("free preview can request one complete lesson with no multi-lesson planning", async () => {
+  api.get.mockImplementation(path => {
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: true, used: false } } });
+    if (path === "/students") return Promise.resolve({ data: [{ id: "kid-7", name: "Year 7 child" }] });
+    if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
+    throw Error("unexpected GET " + path);
+  });
+  await mount("Create a one-hour Year 7 maths lesson about fractions");
+  expect(node.querySelector('[data-testid="free-ai-lesson-offer"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="mk-go"]').textContent).toContain("Free AI Lesson");
+  expect(node.querySelectorAll('[data-testid="mk-example"]')).toHaveLength(2);
+  await click('[data-testid="mk-go"]');
+  expect(api.post.mock.calls.filter(([p]) => p === "/ai/lesson-draft")).toHaveLength(1);
+  expect(api.post.mock.calls.filter(([p]) => p === "/ai/series-plan")).toHaveLength(0);
+});
+
+test("free preview multi-lesson requests are explained without calling AI", async () => {
+  api.get.mockImplementation(path => {
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: true } } });
+    if (path === "/students") return Promise.resolve({ data: [{ id: "kid-7", name: "Year 7 child" }] });
+    if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
+    throw Error("unexpected GET " + path);
+  });
+  await mount("Create four science lessons about the solar system for my Year 5 child next week.");
+  await click('[data-testid="mk-go"]');
+  expect(node.querySelector('[data-testid="mk-error"]').textContent).toContain("one complete lesson");
+  expect(api.post).not.toHaveBeenCalled();
+});
+
+test("free preview with used AI lesson shows upgrade instead of another generator", async () => {
+  api.get.mockImplementation(path => {
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: false, used: true } } });
+    if (path === "/students") return Promise.resolve({ data: [] });
+    if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
+    throw Error("unexpected GET " + path);
+  });
+  await mount("");
+  expect(node.querySelector('[data-testid="ai-upsell"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="mk-go"]')).toBeNull();
+  expect(node.textContent).toContain("one complete free AI lesson");
+});
