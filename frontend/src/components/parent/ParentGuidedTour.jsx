@@ -112,7 +112,8 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
   }, [mode, location.pathname, step]);
 
   useEffect(() => {
-    if (mode === "idle") return;
+    // Only a started tour takes focus; the initial invitation should not interrupt work.
+    if (mode !== "touring") return;
     headingRef.current?.focus();
   }, [mode, stepIndex]);
 
@@ -122,7 +123,7 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
       if (event.key === "Escape") { event.preventDefault(); close(false); return; }
       if (mode === "touring" && event.key === "ArrowRight") { event.preventDefault(); move(1); return; }
       if (mode === "touring" && event.key === "ArrowLeft") { event.preventDefault(); move(-1); return; }
-      if (event.key !== "Tab") return;
+      if (mode === "offer" || event.key !== "Tab") return;
       const dialog = document.querySelector('[data-testid="parent-tour-dialog"]');
       const controls = [...(dialog?.querySelectorAll("button:not([disabled]), a[href]") || [])];
       if (!controls.length) return;
@@ -138,6 +139,13 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, stepIndex, key]);
 
+  useEffect(() => {
+    if (mode !== "offer" || location.pathname === "/parent") return;
+    // Parents who navigate away without answering have chosen to explore for now.
+    if (key) remember(key);
+    setMode("idle");
+  }, [mode, location.pathname, key]);
+
   if (mode === "idle") return null;
   const isOffer = mode === "offer";
   const showSpot = !isOffer && spot && location.pathname === step.path;
@@ -152,7 +160,7 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
 
   return (
     <div data-testid="parent-tour-root">
-      {showSpot ? (
+      {isOffer ? null : showSpot ? (
         <>
           {scrim.map((geometry, i) => <div key={i} aria-hidden="true" style={{ ...layer, ...geometry }} />)}
           <div aria-hidden="true" style={{
@@ -163,7 +171,7 @@ export default function ParentGuidedTour({ user, openRequest = 0 }) {
           }}/>
         </>
       ) : <div aria-hidden="true" style={{ ...layer, inset: 0 }} />}
-      <section role="dialog" aria-modal="true"
+      <section role="dialog" aria-modal={!isOffer}
         aria-labelledby="parent-tour-title" aria-describedby="parent-tour-description"
         data-testid="parent-tour-dialog"
         className="fixed z-[110] left-4 right-4 bottom-4 sm:left-auto sm:right-6 sm:w-[420px] rounded-2xl bg-white p-5 sm:p-6 shadow-2xl border-2 border-amber-200 max-h-[75vh] overflow-y-auto"
