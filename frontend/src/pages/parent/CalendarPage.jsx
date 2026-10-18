@@ -278,7 +278,7 @@ export default function CalendarPage() {
     <div className="p-8 lg:p-10 space-y-6" data-testid="calendar-page">
       <div className="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900">Family Calendar</h1>
+          <h1 data-tour="tour-calendar" className="font-display text-3xl font-bold text-slate-900">Family Calendar</h1>
           <p className="text-sm text-slate-600 mt-1">Each child has their own days. Scheduled lessons show on their side.</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">

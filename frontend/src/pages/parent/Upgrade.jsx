@@ -89,7 +89,7 @@ export default function UpgradePage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 max-w-3xl space-y-6" data-testid="upgrade-page">
       <header>
-        <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Your plan</h1>
+        <h1 data-tour="tour-plan" className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Your plan</h1>
         <p className="text-sm text-stone-600 mt-1">Current plan: <strong data-testid="plan-name">{LABEL[eff] || eff}</strong>{preview && plan.trial_ends_at ? ` · preview ends ${day(plan.trial_ends_at)}` : ""}</p>
         {billing.mode === "test" && <p className="mt-2 inline-block rounded bg-amber-100 px-2 py-1 text-xs font-bold text-amber-900" data-testid="billing-test-mode">Test mode: no real payments are taken</p>}
       </header>

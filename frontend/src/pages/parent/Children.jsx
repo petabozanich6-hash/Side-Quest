@@ -328,7 +328,7 @@ export default function ChildrenPage() {
     <div className="p-8 lg:p-10 space-y-6" data-testid="children-page">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Children</h1>
+          <h1 data-tour="tour-children" className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Children</h1>
           <p className="text-sm text-stone-600 mt-1">Click a child to view their learning dashboard and send high-fives.</p>
         </div>
         <button onClick={() => setOpen(true)} className="rounded-full px-4 py-2 text-sm font-bold flex items-center gap-1.5" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="add-student-btn"><Plus size={14}/> Add student</button>

@@ -100,7 +100,7 @@ export default function Curriculum() {
         <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800">
           <Compass size={17} aria-hidden="true" /> Your curriculum compass
         </div>
-        <h1 className="font-display text-3xl sm:text-4xl font-bold" style={{ color: "#1F3B2D" }}>
+        <h1 data-tour="tour-curriculum" className="font-display text-3xl sm:text-4xl font-bold" style={{ color: "#1F3B2D" }}>
           {international ? "Learning beyond Australia" : (place ? `Home education in ${place.name}` : "Home education in your state or territory")}
         </h1>
         <p className="text-base leading-relaxed text-stone-700 max-w-3xl">

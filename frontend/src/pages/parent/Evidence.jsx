@@ -158,7 +158,7 @@ export default function EvidencePage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="evidence-page">
       <header>
-        <h1 className="font-display text-3xl font-bold text-slate-900">Evidence Backpack</h1>
+        <h1 data-tour="tour-evidence" className="font-display text-3xl font-bold text-slate-900">Evidence Backpack</h1>
         <p className="text-sm text-slate-600 mt-1">A home for your family’s learning portfolio: parent-approved lessons, notes from everyday learning and progress records. Review work waiting for you on the dashboard.</p>
       </header>
 
