@@ -211,13 +211,18 @@ test("parent review rolls back fully if evidence cannot be saved, then succeeds 
   assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(assignment.id).status, "demonstrated");
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
 
-  const retry = await lb.reviewSubmission(db, fam, "parent", sub.id,
-    { status: "demonstrated", feedback_text: "Changed feedback should not overwrite review" }, NOW);
+  const retry = await lb.reviewSubmission(db, fam, "parent", sub.id, approve, NOW);
   assert.ok(retry.ok);
   assert.equal(retry.xp_awarded, 0);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
   assert.equal(db.raw.prepare("SELECT parent_feedback FROM submissions WHERE id=?").get(sub.id).parent_feedback, "Good work!");
   assert.equal(db.raw.prepare("SELECT xp FROM pets WHERE student_id=?").get(sid).xp, 45);
+  const correction = await lb.reviewSubmission(db, fam, "parent", sub.id,
+    { status: "demonstrated", feedback_text: "Updated parent note" }, NOW);
+  assert.ok(correction.ok);
+  assert.equal(correction.xp_awarded, 0);
+  assert.equal(db.raw.prepare("SELECT parent_feedback FROM submissions WHERE id=?").get(sub.id).parent_feedback, "Updated parent note");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
   assert.equal((await lb.reviewSubmission(db, fam, "parent", sub.id, { status: "needs_revision" }, NOW)).status, 409);
   assert.equal((await lb.reviewSubmission(db, "another-family", "parent", sub.id, approve, NOW)).status, 404);
 });
