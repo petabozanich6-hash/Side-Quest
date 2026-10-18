@@ -999,12 +999,14 @@ export async function draftLessonWithAi(
   }
   // Apply reviewable subject links after repair so no repaired draft loses them.
   (draft as any).additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
-  const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
+  const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags, ...(freePreview ? { freeAiUsageId: usageId } : {}) });
   if (!created.ok) {
     await mark("failed");
     return created;
   }
-  await mark("ok");
+  // Free preview already finalised its one-time claim atomically with saving
+  // the lesson. Paid drafts keep their existing separate usage status update.
+  if (!freePreview) await mark("ok");
   stats.elapsed_ms = Date.now() - generationStarted;
   return { ok: true, lesson: created.lesson, usage: await aiUsage(db, familyId, now), warnings: [...extraWarnings, ...flags], model, assumptions: r.assumptions, generation: generationReport(stats, model), outcomes };
 }
