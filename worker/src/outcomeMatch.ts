@@ -16,6 +16,8 @@ const toks = (s: string) => (s.toLowerCase().replace(/[^a-z0-9\s]/g, " ").match(
 export function normArea(area: string, stage: string): string | null {
   const a = (area || "").toLowerCase();
   const primary = ["ES1", "S1", "S2", "S3"].includes(stage);
+  // HSIE/HASS must take precedence: "Humanities and Social Sciences" contains "science" as a substring.
+  if (/^(humanities? and social sciences?|social studies|human society and (?:its|the) environment)$/.test(a.trim())) return "HSIE";
   if (/math|numeracy|arithmetic|algebra|geometry|statistics/.test(a)) return "Mathematics";
   if (/english|literacy|reading|writing|spelling|grammar|phonics|handwriting/.test(a)) return "English";
   if (/science|technolog|stem|biology|chemistry|physics|earth|space/.test(a)) return primary ? "Science and Technology" : "Science";
