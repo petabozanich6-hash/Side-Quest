@@ -1107,7 +1107,7 @@ export async function planSeriesWithAi(
       `Parent's request: "${clip(request.request, 600)}"`,
       `Subject: ${subjects.length ? subjects.join(" and ") : (r.area || "(infer from the request)")}. Topic: ${r.topic}. Child: ${r.year || "year level not stated"}. ${r.delivery === "independent" ? "The child works independently." : "A parent teaches alongside the child."}${r.theme ? ` Theme to weave in: ${r.theme}.` : ""}`,
       subjects.length
-        ? "Each lesson must teach ONE distinct age-appropriate concept from ITS OWN named subject. Preserve the parent's common theme in both. The Mathematics lesson must teach mathematics and the Science lesson must teach science. Titles and goals must match the subject in their assigned order. Do not invent facts."
+        ? "Each lesson must teach ONE distinct age-appropriate concept from ITS OWN named subject. Preserve the parent's common theme in EACH lesson, with each subject taught fully and independently. Titles and goals must match the subject in their assigned order, whether there are two, three or more lessons. Do not invent facts."
         : "Each lesson teaches ONE clear concept that fits in the time. Order them so each builds on the previous one, with no repetition. Use accurate, standard content for this age. Do not invent facts.",
       'Reply with ONE JSON object only: {"series_title":string,"lessons":[{"title":string,"goal":string (one sentence: what the child will be able to do or explain)}]}',
     ].join("\n");
