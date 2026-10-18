@@ -89,7 +89,12 @@ export default function MakeLesson() {
     }
     setBusy("one");
     try {
-      const r = await api.post("/ai/lesson-draft", body());
+      // A complimentary single lesson can combine subjects. Preserve its
+      // primary and additional subject links without starting a paid batch.
+      const crossCurricular = freePreview && intent.type === "multi_subject"
+        ? { learning_area: intent.subjects[0], additional_learning_areas: intent.subjects.slice(1) }
+        : {};
+      const r = await api.post("/ai/lesson-draft", body(crossCurricular));
       leaving.current = true;
       nav(`/parent/lessons/${r.data.lesson.id}/review`, { state: { assumptions: { ...r.data.assumptions, child: child?.name }, warnings: r.data.warnings, generation: r.data.generation, studentId: student || undefined } });
     } catch (e) { fail(e); setBusy(""); }
