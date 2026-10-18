@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Map as MapIcon, RefreshCw, Search, ShieldCheck, ChevronRight, Info } from "lucide-react";
 import { api } from "../../lib/api";
+import { useAuth } from "../../context/AuthContext";
+import InternationalGoalTracker from "./InternationalGoalTracker";
 import { STATUS, STATUS_ORDER, GAPS, StatusBadge, StatusBar } from "../../lib/outcomes";
 
 const GAP_FILTERS = ["awaiting_confirmation", "needs_consolidation", "limited_evidence", "not_revisited", "not_introduced", "confirmed_evidence_changed"];
@@ -41,6 +43,8 @@ function SupportSettings({ data, onSaved }) {
 }
 
 export default function OutcomeTracker() {
+  const { user } = useAuth();
+  const international = user?.jurisdiction === "OTHER";
   const { sid } = useParams();
   const nav = useNavigate();
   const [students, setStudents] = useState(null);
@@ -57,7 +61,7 @@ export default function OutcomeTracker() {
   useEffect(() => { if (!sid && students?.length) nav(`/parent/outcomes/${students[0].id}`, { replace: true }); }, [sid, students, nav]);
 
   const load = (refresh = false) => {
-    if (!sid) return;
+    if (!sid || international) return;
     setErr("");
     const req = refresh ? api.post(`/outcomes/students/${sid}/rebuild`) : api.get(`/outcomes/students/${sid}`);
     return req.then((r) => setData(r.data)).catch((e) => setErr(e.response?.data?.detail || "Could not load the tracker"));
@@ -81,6 +85,7 @@ export default function OutcomeTracker() {
       <div className="p-6 lg:p-10"><div className="paper-card p-8 text-center"><p className="font-display text-lg" style={{ color: "#1F3B2D" }}>Add a child first</p><Link to="/parent/children" className="mt-3 inline-block underline font-semibold">Add a child</Link></div></div>
     );
   }
+  if (international) return <InternationalGoalTracker students={students || []} />;
   const otherCount = data?.outcomes?.filter((o) => !o.in_stage).length || 0;
 
   return (
