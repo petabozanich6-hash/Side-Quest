@@ -122,6 +122,32 @@ test("free preview multi-lesson requests are explained without calling AI", asyn
   expect(api.post).not.toHaveBeenCalled();
 });
 
+test("free preview accepts one cross-curricular science and maths lesson instead of incorrectly requiring payment", async () => {
+  api.get.mockImplementation(path => {
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: true } } });
+    if (path === "/students") return Promise.resolve({ data: [{ id: "kid-7", name: "Year 7 child" }] });
+    if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
+    throw Error("unexpected GET " + path);
+  });
+  await mount("Create a Halloween science and maths lesson at the same time for Year 7");
+  await click('[data-testid="mk-go"]');
+  expect(api.post.mock.calls.filter(([p]) => p === "/ai/lesson-draft")).toHaveLength(1);
+  expect(api.post.mock.calls.filter(([p]) => p === "/ai/series-plan")).toHaveLength(0);
+});
+
+test("free preview rejects separate science and maths lessons without calling the model", async () => {
+  api.get.mockImplementation(path => {
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: true } } });
+    if (path === "/students") return Promise.resolve({ data: [{ id: "kid-7", name: "Year 7 child" }] });
+    if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
+    throw Error("unexpected GET " + path);
+  });
+  await mount("Create a science lesson and a maths lesson for Year 7");
+  await click('[data-testid="mk-go"]');
+  expect(node.querySelector('[data-testid="mk-error"]').textContent).toContain("one complete lesson");
+  expect(api.post).not.toHaveBeenCalled();
+});
+
 test("free preview with used AI lesson shows upgrade instead of another generator", async () => {
   api.get.mockImplementation(path => {
     if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: false }, effective_plan: "FREE_PREVIEW", free_ai_lesson: { available: false, used: true } } });
