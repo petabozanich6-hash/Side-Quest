@@ -3,7 +3,7 @@
 // content-description REFERENCE catalogue; this is not a certification of local compliance.
 // VIC data are quarantined until the source-generated catalogue is restored and verified; do not advertise coverage.\n// WA still requires an accessible state-specific official catalogue. Never invent identifiers.
 
-export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT";
+export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT" | "OTHER";
 
 export type Framework = {
   jurisdiction: JurisdictionCode;
@@ -48,6 +48,8 @@ export const FRAMEWORKS: Record<JurisdictionCode, Framework> = {
   TAS: { jurisdiction: "TAS", jurisdiction_name: "Tasmania", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
   ACT: { jurisdiction: "ACT", jurisdiction_name: "Australian Capital Territory", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
   NT: { jurisdiction: "NT", jurisdiction_name: "Northern Territory", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
+  // Not a legal or curriculum framework: used only to support parent-led learning outside Australia.
+  OTHER: { jurisdiction: "OTHER", jurisdiction_name: "Outside Australia", name: "Parent-defined learning goals", short: "Your own learning goals", url: "", codes: "none", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
 };
 
 export const JURISDICTION_CODES = Object.keys(FRAMEWORKS) as JurisdictionCode[];
@@ -109,4 +111,6 @@ export async function setFamilyJurisdiction(db: D1Database, familyId: string, j:
 export const usesNswOutcomes = (j: JurisdictionCode | null) => j === "NSW";
 
 export const outcomesNotLoadedNote = (j: JurisdictionCode) =>
-  `Lesson outcome suggestions are not available for ${j} yet. Side-Quest only holds a verified outcome list for NSW, so nothing is suggested rather than showing NSW outcomes that don't apply. Record outcomes yourself from your official curriculum (see Curriculum).`;
+  j === "OTHER"
+    ? "Official outcome codes are not automatically assigned outside Australia. Use the parent-defined Outcome tracker to record your own goals and evidence."
+    : `Lesson outcome suggestions are not available for ${j} yet. Side-Quest does not automatically assign unverified outcome codes. Check your local curriculum in Curriculum.`;
