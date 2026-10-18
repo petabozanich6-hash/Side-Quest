@@ -487,3 +487,17 @@ test("Auto-Quest plans only within the child's program from their profile", asyn
   assert.equal(mu.action, "needs_generation");
   assert.deepEqual(mu.outcome_codes, [], "uncoded electives never pretend to cover official outcomes");
 });
+
+test("related subject lesson can be offered once in another subject without inventing outcomes", () => {
+  const slots = [
+    { id: "hsie-slot", student_id: "child-a", date: "2026-10-19", title: "HSIE", event_type: "timetable" },
+    { id: "english-slot", student_id: "child-a", date: "2026-10-20", title: "English", event_type: "timetable" },
+  ];
+  const lessons = [{ id: "cross", title: "Gothic story with historical sources", stage: "S2",
+    status: "ready", learning_area: "English", additional_learning_areas: ["Humanities and Social Sciences"], outcome_codes: [] }];
+  const result = planAutoQuest({ ...base, slots, lessons, catalogueAvailable: false, outcomes: [] });
+  assert.equal(result[0].action, "reuse_draft");
+  assert.equal(result[0].lessonId, "cross");
+  assert.equal(result[1].action, "needs_generation", "the same lesson cannot be allocated twice to the child");
+  assert.deepEqual(result[0].eligibleOutcomeCodes, [], "subject links are not verified curriculum claims");
+});
