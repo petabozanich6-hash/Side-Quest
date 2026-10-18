@@ -56,7 +56,7 @@ export default function ParentLayout() {
     route.startsWith("/parent/outcomes") ? "Your automatically recorded progress remains visible. Manually confirming or managing outcome evidence needs Family Membership." :
     route.startsWith("/parent/evidence") ? "The free preview includes a summary and one detailed sample. Full exports and new evidence notes need Family Membership." :
     route.startsWith("/parent/learning-plans") ? "The free preview includes one basic learning plan. More plans and AI planning need Family Membership." :
-    (route.startsWith("/parent/lessons/make") || route.startsWith("/parent/lessons/drafts")) ? "AI lesson drafting and AI refinements need Family Membership. You can still build your free-preview lessons by hand." : "";
+    (route.startsWith("/parent/lessons/make") || route.startsWith("/parent/lessons/drafts")) ? "Your preview includes one complete AI lesson. Further AI lessons, lesson sets and AI refinements need Family Membership." : "";
   const doLogout = async () => { await logout(); navigate("/"); };
   useEffect(() => {
     if (!user?.id || !paidNotice) return;
@@ -132,7 +132,7 @@ export default function ParentLayout() {
         {unreadReplies>0 && route!=="/parent/feedback" && route!=="/parent" && <Link to="/parent/feedback" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
         <HelpAlertBar />
         <JurisdictionGate />
-        {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
+        {paidNotice && planState && !hasMembership && !(route.startsWith("/parent/lessons/make") && planState.free_ai_lesson?.available) && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
         <Outlet context={{ unreadFeedbackReplies: unreadReplies, latestUnreadFeedbackReply: latestUnreadReply }} />
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
