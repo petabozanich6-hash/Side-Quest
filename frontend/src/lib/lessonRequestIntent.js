@@ -2,11 +2,16 @@
 // "two lessons". Keep detection conservative: only distinct, explicitly
 // conjoined school subjects are interpreted as separate lessons. A deliberate
 // interdisciplinary/single lesson is never split.
-const SUBJECT_WORD = /\b(mathematics|maths?|science|english|history|geography|technology|computing|coding|music|visual arts?|art)\b/gi;
+const SUBJECT_WORD = /\b(human society and (?:its|the) environment|humanities and social sciences|social studies|mathematics|maths?|science|english|history|geography|hsie|hass|humanities|technology|computing|coding|music|visual arts?|art)\b/gi;
 const SUBJECT_NAMES = {
   mathematics: "Mathematics", math: "Mathematics", maths: "Mathematics",
   science: "Science", english: "English",
   history: "History", geography: "Geography",
+  hsie: "Humanities and Social Sciences", hass: "Humanities and Social Sciences",
+  humanities: "Humanities and Social Sciences", "social studies": "Humanities and Social Sciences",
+  "human society and its environment": "Humanities and Social Sciences",
+  "human society and the environment": "Humanities and Social Sciences",
+  "humanities and social sciences": "Humanities and Social Sciences",
   technology: "Technologies", computing: "Technologies", coding: "Technologies",
   music: "The Arts", "visual art": "The Arts", "visual arts": "The Arts", art: "The Arts",
 };
