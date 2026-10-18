@@ -725,7 +725,7 @@ export async function saveDraft(db: DB, user: { id: string; family_id: string },
 export async function submitWork(
   db: DB,
   user: { id: string; family_id: string },
-  body: { assignment_id?: string; response_text?: string | null; reflection?: string | null; file_ids?: string[]; needs_help?: boolean },
+  body: { assignment_id?: string; response_text?: string | null; reflection?: string | null; file_ids?: string[]; needs_help?: boolean; draft?: unknown },
   now: Date = new Date()
 ): Promise<Result<{ id: string; status: string; assignment_id: string; submitted_at: string; xp_gained: number }>> {
   const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(body.assignment_id ?? "", user.id, user.family_id).first<any>();
@@ -746,7 +746,7 @@ export async function submitWork(
     const f = await db.prepare("SELECT id FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, user.family_id).first();
     if (!f) return fail(400, "One of your files could not be found.", "FILE_NOT_FOUND");
   }
-  const needsHelp = !!body.needs_help;
+  // Preserve the exact interactive answers in the same transaction as hand-in.\n  // If no fresh draft is sent (older clients), retain the last autosaved copy.\n  let handInDraft: string | null = null;\n  if (body.draft !== undefined && body.draft !== null) {\n    if (typeof body.draft !== "object" || Array.isArray(body.draft)) return fail(400, "Invalid saved work");\n    handInDraft = JSON.stringify(body.draft);\n    if (new TextEncoder().encode(handInDraft).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");\n  }\n  const needsHelp = !!body.needs_help;
   const status = needsHelp ? "awaiting_help" : "submitted";
   const id = newId();
   const ts = nowIso(now);
@@ -756,7 +756,7 @@ export async function submitWork(
         "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated'))"
       )
       .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts, a.id),
-    db.prepare("UPDATE assignments SET draft = NULL, status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(status, ts, a.id, id),
+    db.prepare("UPDATE assignments SET draft = COALESCE(?, draft), status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(handInDraft, status, ts, a.id, id),
   ]);
   if (!writes[0].meta.changes) return fail(409, "This assignment is no longer available for hand-in.", "ASSIGNMENT_CHANGED");
   if (!needsHelp) await recordPetEvent(db as any, user.id, { kind: "lesson_done" }, now);
