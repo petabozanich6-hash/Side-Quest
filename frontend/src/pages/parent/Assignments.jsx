@@ -61,7 +61,7 @@ export default function AssignmentsPage() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-5" data-testid="assignments-page">
       <header>
-        <h1 className="font-display text-3xl font-bold text-slate-900">Assignments</h1>
+        <h1 data-tour="tour-assignments" className="font-display text-3xl font-bold text-slate-900">Assignments</h1>
         <p className="text-sm text-slate-600 mt-1">Everything you've given your children. Change a date, give it to another child, or revoke unfinished work. To give out a lesson, use <Link to="/parent/lessons" className="underline">My lessons</Link>.</p>
       </header>
       <div className="flex flex-wrap gap-2">
