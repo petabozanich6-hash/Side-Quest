@@ -710,12 +710,12 @@ export async function quizPassed(db: DB, user: { id: string }, a: any, lesson: a
 export async function saveDraft(db: DB, user: { id: string; family_id: string }, assignmentId: string, draft: unknown, now: Date = new Date()): Promise<Result<{ saved_at: string }>> {
   const a = await db.prepare("SELECT id, status FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(assignmentId, user.id, user.family_id).first<any>();
   if (!a) return fail(404, "Assignment not found");
-  if (DONE_STATUSES.includes(a.status) || a.status === "submitted") return fail(409, "This lesson has already been handed in.", "ALREADY_SUBMITTED");
+  if (DONE_STATUSES.includes(a.status) || ["submitted", "awaiting_help"].includes(a.status)) return fail(409, "This lesson has already been handed in.", "ALREADY_SUBMITTED");
   if (!draft || typeof draft !== "object" || Array.isArray(draft)) return fail(400, "Nothing to save");
   const json = JSON.stringify(draft);
   if (new TextEncoder().encode(json).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
   const ts = nowIso(now);
-  const saved = await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated')").bind(json, ts, a.id).run();
+  const saved = await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ? AND status NOT IN ('revoked','submitted','awaiting_help','accepted','completed','demonstrated')").bind(json, ts, a.id).run();
   if (!saved.meta.changes) return fail(409, "This assignment is no longer available for editing.", "ASSIGNMENT_CHANGED");
   return { ok: true, saved_at: ts };
 }
@@ -731,7 +731,7 @@ export async function submitWork(
   const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(body.assignment_id ?? "", user.id, user.family_id).first<any>();
   if (!a) return fail(404, "Assignment not found");
   if (DONE_STATUSES.includes(a.status)) return fail(409, "This lesson has already been reviewed and finished.", "ALREADY_DONE");
-  if (a.status === "submitted") return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
+  if (["submitted", "awaiting_help"].includes(a.status)) return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
   if (!body.needs_help) {
     const { lesson } = await assignmentForChild(db, user, a.id);
     const passed = await quizPassed(db, user, a, lesson);
@@ -753,7 +753,7 @@ export async function submitWork(
   const writes = await db.batch([
     db
       .prepare(
-        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated'))"
+        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','awaiting_help','accepted','completed','demonstrated'))"
       )
       .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts, a.id),
     db.prepare("UPDATE assignments SET draft = COALESCE(?, draft), status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(handInDraft, status, ts, a.id, id),
