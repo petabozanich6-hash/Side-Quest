@@ -23,6 +23,13 @@ test("reports missing columns, tables and indexes without modifying fixtures", (
   assert(report.issues.some(x => x.kind === "missing_index" && x.name === "idx_email_verification_user"));
   assert.equal(JSON.stringify(fixture), before);
 });
+test("pre-release audit refuses a missing one-free-AI-lesson unique index", () => {
+  const fixture = fixtures();
+  fixture.objects = fixture.objects.filter(x => x.name !== "idx_ai_one_free_lesson_per_family");
+  const report = compareSchema(fixture);
+  assert(report.issues.some(x => x.kind === "missing_index" && x.name === "idx_ai_one_free_lesson_per_family"));
+});
+
 test("identifies migrations recorded but absent in repository", () => {
   const fixture = fixtures();
   fixture.recorded.push({ name: "retired.sql" });
