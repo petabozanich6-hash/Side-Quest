@@ -70,7 +70,7 @@ export default function ChildHome() {
       // Offline lessons are a Family Membership feature: only then are quests saved on the device.
       if (r.data.offline_allowed) {
         saveDashboard(user?.id, r.data);
-        syncSavedLessons(user?.id, r.data.today || []);
+        syncSavedLessons(user?.id, r.data.all_pending || r.data.today || []);
       } else {
         dropSavedLessons(user?.id);
         if (user?.username) forgetOfflineChild(user.username);
