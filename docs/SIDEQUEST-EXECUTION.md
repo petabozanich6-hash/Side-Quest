@@ -6,7 +6,7 @@
 
 **Cancelled:** Producing 19,202 / 4,902 / 900 prewritten lessons, the Stage 2/4 lesson-authoring program, legacy curriculum research, lesson-excellence pipelines and proprietary curriculum release targets. Do not restart them. Do not promise complete syllabus coverage.
 
-**Current product:** Parent creates or brings learning material -> saves in family lesson library -> assigns to child -> child learns and submits -> parent reviews -> progress, evidence and XP update. Preserve branding, parent and child dashboards, family-owned lessons, reusable assignment snapshots, independent child work and gamification. AI lesson drafting is built in from the start on Cloudflare Workers AI, for **paid plans only** (enforced on the server; free preview and expired users are refused). The manual builder never depends on AI.
+**Current product:** Parent creates or brings learning material -> saves in family lesson library -> assigns to child -> child learns and submits -> parent reviews -> progress, evidence and XP update. Preserve branding, parent and child dashboards, family-owned lessons, reusable assignment snapshots, independent child work and gamification. AI lesson drafting is built in from the start on Cloudflare Workers AI, for paid plans plus **one complete complimentary AI lesson per family during the seven-day preview** (enforced on the server; expired and cancelled users are refused). The manual builder never depends on AI.
 
 **National scope:** Welcome Australian families, but do not claim that the application automatically satisfies any state or territory's homeschooling requirements. Links and any mapping must be verified for that jurisdiction.
 
@@ -43,7 +43,7 @@ Claude builds and integrates; the owner tests by hand; ChatGPT may prepare small
 | N | Dashboards (real data only) | IMPLEMENTED | |
 | O | Mobile/tablet | VERIFIED (phone layouts) | Tablet pass pending. |
 | P | Production hardening | NOT STARTED | Password reset, account deletion, legal pages flagged for owner/legal review. |
-| AI | Paid-only AI lesson drafting | IMPLEMENTED, tests passing locally | See below. |
+| AI | One free preview lesson, then paid AI drafting | IMPLEMENTED, tests added | See below. |
 
 ## Installable app (PWA, 14 Oct 2026)
 
@@ -52,10 +52,10 @@ Claude builds and integrates; the owner tests by hand; ChatGPT may prepare small
 - "Install the app" button (`components/shared/InstallApp.jsx`) in the parent sidebar and landing nav: the browser prompt on Android/Chrome/Edge, Add to Home Screen steps on iPhone/iPad; hidden once installed.
 - Not in the app stores. A Google Play listing can later wrap this PWA as a Trusted Web Activity; the Apple App Store needs a native wrapper and tends to reject plain website wrappers.
 
-## AI lesson drafting (paid plans only)
+## AI lesson drafting (one free preview lesson; paid afterwards)
 
 - Route `POST /api/ai/lesson-draft`, status `GET /api/ai/status`. Code: `worker/src/aiDraft.ts`. UI: "Draft with AI" panel in the builder (free users see an upgrade note, no fake AI).
-- Server checks `limitsFor(plan).aiGeneration` first: FREE_PREVIEW, PREVIEW_EXPIRED and CANCELLED get 402 `UPGRADE_REQUIRED` before any AI call or usage record. Existing INTERNAL families count as paid.
+- Server checks the effective entitlement first. FREE_PREVIEW families may draft **one complete standalone AI lesson per family lifetime**, during the active seven-day preview; multi-lesson sets and AI refinements remain paid-only. PREVIEW_EXPIRED and CANCELLED get 402 before any AI call. Existing INTERNAL families retain unlimited owner testing.
 - Fair use: 10 drafts per family per day, 60 per month (`ai_usage` table, migration 0051). Failed calls do not use the allowance.
 - Output is a whitelist, passed through the same sanitiser as manual lessons, links removed, always saved as an unreviewed DRAFT labelled "AI-generated" (`ai_generated`, `source: ai`). Marking it ready records a parent review. No curriculum alignment is claimed.
 - Cloudflare requirement: `"ai": {"binding": "AI"}` is in `wrangler.jsonc`. Workers AI has a free daily allowance and bills per use beyond it, so owner should confirm the Cloudflare plan. Optional vars `AI_MODEL`, `AI_GATEWAY_ID`. If the binding is missing the route returns 503 `AI_UNAVAILABLE`.
@@ -145,3 +145,10 @@ On branch `cleanup/remove-legacy-lesson-history-2026-10-14` (PR into `dev/sidequ
 ## Comprehensive teaching (per-section generation)
 
 Teaching was thin because a whole 60-minute lesson's explanations competed for one reply. Generation is now: design → frame (introduction, readings, wrap-up) → one request per teaching section (250–380 words: prior knowledge, plain idea, worked detail, why it works, common slip) and one per worked example (5–9 reasoned steps, with a check), run four at a time → practice and assessment (two requests). The parent answer key is built in code from the items' own answers. About 13 requests for a 60-minute lesson (estimated ~4–5 US cents on the default model; the exact figure is shown on the review page). The quality floor is now 14 words of teaching per minute (sections plus worked-example steps). A section or example that fails twice fails the whole draft and uses no allowance. Quality of real output is for the owner to judge; if the default model is the limit, `AI_MODEL` can be changed only with owner approval.
+
+### Complimentary AI lesson release (migration 0070)
+
+- `worker/migrations/0070_one_free_ai_lesson.sql` adds a partial unique index on `ai_usage` for one pending or successful `free_lesson_draft` per family. Failed attempts release the slot; saved lessons never release it, even if deleted or archived. The index prevents parallel requests from using two lessons.
+- No extra charge or payment details. The free draft is full-length, unreviewed until the parent approves it, with the usual verified curriculum matching and print/assignment options. It does not consume either of the two manual preview lessons.
+- Entitlement is available only during the active preview. Free families cannot generate sets, request AI revisions or reset their gift by refreshing or switching child profiles. Upgrade does not remove saved work.
+- **Release order:** per `docs/RELEASE.md`, verify a production D1 backup, rehearse migration 0070 on the backup, apply pending migrations to production, **then** merge/deploy the Worker. GitHub PR checks are not a production D1 migration and deployment itself will not apply the index.
