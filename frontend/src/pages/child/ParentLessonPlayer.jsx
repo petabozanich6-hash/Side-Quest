@@ -189,7 +189,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
 
   // "waiting_to_send": handed in with no signal; it is sent automatically when the device is back online.
   const waitingToSend = a.status === "waiting_to_send";
-  const locked = waitingToSend || ["submitted", "accepted", "demonstrated", "completed"].includes(a.status);
+  const locked = waitingToSend || ["awaiting_help", "submitted", "accepted", "demonstrated", "completed"].includes(a.status);
   const childId = a.student_id;
   const last = (a.submissions || [])[0];
   const d0 = a.draft || {};
