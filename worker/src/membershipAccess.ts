@@ -49,6 +49,10 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
     /^\/api\/calendar\/[^/]+$/.test(p)
   )) return "paid";
 
+  // International parent-defined tracking is an advanced paid feature, just like outcome administration.
+  if (verb === "POST" && /^\/api\/international\/goals\/[^/]+(?:\/[^/]+\/evidence)?$/.test(p)) return "paid";
+  if (verb === "PUT" && /^\/api\/international\/goals\/[^/]+\/[^/]+$/.test(p)) return "paid";
+
   // The only non-paid learning workflows allowed during the seven days.
   if (verb === "POST" && p === "/api/learning-plans") return "single_preview_plan";
   if (verb === "POST" && (p === "/api/reading-log" || p === "/api/reading-submissions" ||
