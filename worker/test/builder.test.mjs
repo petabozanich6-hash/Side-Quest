@@ -181,6 +181,46 @@ test("full workflow: create, assign, snapshot survives edit, submit once, review
   // needs_revision gives no XP and lets the child resubmit
 });
 
+test("parent review rolls back fully if evidence cannot be saved, then succeeds once", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const sid = child(db, fam);
+  const lessonRow = await mk(db, fam);
+  const assignment = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: lessonRow.id }, NOW)).assignment;
+  // Help requests can also be reviewed; use one to avoid an unrelated quiz gate.
+  const sub = await lb.submitWork(db, { id: sid, family_id: fam },
+    { assignment_id: assignment.id, needs_help: true, response_text: "Please check this." }, NOW);
+  assert.ok(sub.ok);
+  assert.equal(sub.status, "awaiting_help");
+  const approve = { status: "demonstrated", feedback_text: "Good work!" };
+
+  db.raw.exec("CREATE TRIGGER fail_parent_evidence BEFORE INSERT ON lesson_evidence BEGIN SELECT RAISE(ABORT, 'simulated evidence failure'); END;");
+  await assert.rejects(() => lb.reviewSubmission(db, fam, "parent", sub.id, approve, NOW), /simulated evidence failure/);
+  assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id=?").get(sub.id).status, "awaiting_help");
+  assert.equal(db.raw.prepare("SELECT status, xp_awarded FROM assignments WHERE id=?").get(assignment.id).status, "awaiting_help");
+  assert.equal(db.raw.prepare("SELECT xp_awarded FROM assignments WHERE id=?").get(assignment.id).xp_awarded, 0);
+  assert.equal(db.raw.prepare("SELECT xp FROM pets WHERE student_id=?").get(sid).xp, 0);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 0);
+
+  db.raw.exec("DROP TRIGGER fail_parent_evidence");
+  const approved = await lb.reviewSubmission(db, fam, "parent", sub.id, approve, NOW);
+  assert.ok(approved.ok);
+  assert.equal(approved.xp_awarded, 45);
+  assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id=?").get(sub.id).status, "demonstrated");
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(assignment.id).status, "demonstrated");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
+
+  const retry = await lb.reviewSubmission(db, fam, "parent", sub.id,
+    { status: "demonstrated", feedback_text: "Changed feedback should not overwrite review" }, NOW);
+  assert.ok(retry.ok);
+  assert.equal(retry.xp_awarded, 0);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
+  assert.equal(db.raw.prepare("SELECT parent_feedback FROM submissions WHERE id=?").get(sub.id).parent_feedback, "Good work!");
+  assert.equal(db.raw.prepare("SELECT xp FROM pets WHERE student_id=?").get(sid).xp, 45);
+  assert.equal((await lb.reviewSubmission(db, fam, "parent", sub.id, { status: "needs_revision" }, NOW)).status, 409);
+  assert.equal((await lb.reviewSubmission(db, "another-family", "parent", sub.id, approve, NOW)).status, 404);
+});
+
 test("two children have independent assignments", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
