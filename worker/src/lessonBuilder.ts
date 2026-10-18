@@ -508,23 +508,37 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   if (bad) return bad;
   const id = newId();
   const ts = nowIso(now);
-  const insert = db.prepare(
-    "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
-  ).bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}) }), ts, ts);
-  if (plan === "FREE_PREVIEW" && opts.ai && opts.freeAiUsageId) {
-    // D1 batch is transactional. The gifted lesson cannot be saved without also
-    // recording that the family's one free claim succeeded. If the Worker is
-    // interrupted immediately afterwards (or the parent deletes the lesson),
-    // no second complimentary generation is possible.
+  const isFreeAi = plan === "FREE_PREVIEW" && opts.ai === true;
+  if (isFreeAi && !opts.freeAiUsageId) {
+    return fail(409, "Your complimentary lesson reservation could not be verified. Please retry.", "FREE_LESSON_CLAIM_REQUIRED");
+  }
+  const params = [
+    id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area,
+    clean.value.status,
+    JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}) }),
+    ts, ts,
+  ];
+  // A conditional INSERT prevents a lesson from being saved when the reserved
+  // free slot is missing, already used or belongs to another family.
+  const insert = isFreeAi
+    ? db.prepare(
+      "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) " +
+      "SELECT ?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ? WHERE EXISTS (" +
+      "SELECT 1 FROM ai_usage WHERE id = ? AND family_id = ? AND kind = 'free_lesson_draft' AND status = 'pending')"
+    ).bind(...params, opts.freeAiUsageId, familyId)
+    : db.prepare(
+      "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
+    ).bind(...params);
+  if (isFreeAi) {
+    // D1 batch is transactional. Save the lesson AND finalise the lifetime claim
+    // as one operation, so a crash or deletion can never reopen a used slot.
     const results = await db.batch([
+      insert,
       db.prepare("UPDATE ai_usage SET status = 'ok' WHERE id = ? AND family_id = ? AND kind = 'free_lesson_draft' AND status = 'pending'")
         .bind(opts.freeAiUsageId, familyId),
-      insert,
     ]);
-    if (Number(results[0]?.meta?.changes || 0) !== 1) {
-      // This should never happen for an owned active claim. Fail closed rather
-      // than returning an AI draft whose entitlement was not consumed.
-      throw new Error("Free AI claim could not be finalised");
+    if (Number(results[0]?.meta?.changes || 0) !== 1 || Number(results[1]?.meta?.changes || 0) !== 1) {
+      return fail(409, "Your complimentary lesson reservation is no longer available. Please refresh your plan.", "FREE_LESSON_CLAIMED");
     }
   } else {
     await insert.run();
