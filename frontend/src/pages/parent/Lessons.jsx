@@ -63,7 +63,7 @@ export default function LessonsPage() {
     <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="lessons-page">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-bold text-slate-900">My lessons</h1>
+          <h1 data-tour="tour-lessons" className="font-display text-3xl font-bold text-slate-900">My lessons</h1>
           <p className="text-sm text-slate-600 mt-1">Lessons your family creates and saves live here. Build one yourself or ask AI for a draft to review, then assign it to a child.</p>
         </div>
         <div className="flex flex-wrap gap-2">
