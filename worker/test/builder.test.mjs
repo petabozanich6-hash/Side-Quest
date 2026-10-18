@@ -398,6 +398,28 @@ test("free AI lesson: failures release the slot and deleting the draft does not 
   assert.ok((await aid.draftLessonWithAi(db, stub(), req(other), NOW)).ok, "another family has its own trial");
 });
 
+test("free AI save is atomic: missing, foreign and already-used reservations never create lessons", async () => {
+  const db = makeDb(), fam = seed(db), other = seed(db);
+  const draft = lesson({ title: "Gifted science", status: "draft" });
+  const missing = await lb.createLesson(db, fam, draft, NOW, { ai: true });
+  assert.equal(missing.code, "FREE_LESSON_CLAIM_REQUIRED");
+  db.raw.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, 'other-parent', 'free_lesson_draft', 'pending', ?)")
+    .run("foreign-slot", other, NOW.toISOString());
+  const foreign = await lb.createLesson(db, fam, draft, NOW, { ai: true, freeAiUsageId: "foreign-slot" });
+  assert.equal(foreign.code, "FREE_LESSON_CLAIMED");
+  assert.equal(db.raw.prepare("SELECT status FROM ai_usage WHERE id = 'foreign-slot'").get().status, "pending");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
+  db.raw.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, 'this-parent', 'free_lesson_draft', 'pending', ?)")
+    .run("own-slot", fam, NOW.toISOString());
+  const saved = await lb.createLesson(db, fam, draft, NOW, { ai: true, freeAiUsageId: "own-slot" });
+  assert.ok(saved.ok, JSON.stringify(saved));
+  assert.equal(db.raw.prepare("SELECT status FROM ai_usage WHERE id = 'own-slot'").get().status, "ok");
+  assert.ok((await lb.deleteLesson(db, fam, saved.lesson.id, NOW)).ok);
+  const reused = await lb.createLesson(db, fam, draft, NOW, { ai: true, freeAiUsageId: "own-slot" });
+  assert.equal(reused.code, "FREE_LESSON_CLAIMED");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 0);
+});
+
 test("free AI lesson: parallel requests reserve only one slot and a stale attempt can be recovered", async () => {
   const db = makeDb(), fam = seed(db);
   const [one, two] = await Promise.all([
