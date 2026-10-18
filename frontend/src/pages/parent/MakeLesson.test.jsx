@@ -131,7 +131,12 @@ test("free preview accepts one cross-curricular science and maths lesson instead
   });
   await mount("Create a Halloween science and maths lesson at the same time for Year 7");
   await click('[data-testid="mk-go"]');
-  expect(api.post.mock.calls.filter(([p]) => p === "/ai/lesson-draft")).toHaveLength(1);
+  const drafts = api.post.mock.calls.filter(([p]) => p === "/ai/lesson-draft");
+  expect(drafts).toHaveLength(1);
+  expect(drafts[0][1]).toMatchObject({
+    learning_area: "Science",
+    additional_learning_areas: ["Mathematics"],
+  });
   expect(api.post.mock.calls.filter(([p]) => p === "/ai/series-plan")).toHaveLength(0);
 });
 
