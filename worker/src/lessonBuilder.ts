@@ -746,7 +746,15 @@ export async function submitWork(
     const f = await db.prepare("SELECT id FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, user.family_id).first();
     if (!f) return fail(400, "One of your files could not be found.", "FILE_NOT_FOUND");
   }
-  // Preserve the exact interactive answers in the same transaction as hand-in.\n  // If no fresh draft is sent (older clients), retain the last autosaved copy.\n  let handInDraft: string | null = null;\n  if (body.draft !== undefined && body.draft !== null) {\n    if (typeof body.draft !== "object" || Array.isArray(body.draft)) return fail(400, "Invalid saved work");\n    handInDraft = JSON.stringify(body.draft);\n    if (new TextEncoder().encode(handInDraft).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");\n  }\n  const needsHelp = !!body.needs_help;
+  // Preserve the exact interactive answers in the same transaction as hand-in.
+  // If no fresh draft is sent (older clients), retain the last autosaved copy.
+  let handInDraft: string | null = null;
+  if (body.draft !== undefined && body.draft !== null) {
+    if (typeof body.draft !== "object" || Array.isArray(body.draft)) return fail(400, "Invalid saved work");
+    handInDraft = JSON.stringify(body.draft);
+    if (new TextEncoder().encode(handInDraft).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
+  }
+  const needsHelp = !!body.needs_help;
   const status = needsHelp ? "awaiting_help" : "submitted";
   const id = newId();
   const ts = nowIso(now);
