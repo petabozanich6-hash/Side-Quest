@@ -35,7 +35,7 @@ function Goal({ goal, sid, notes, refresh }) {
     } catch (e) { err(e); } finally { setSaving(false); }
   };
   const remove = async () => {
-    if (!window.confirm("Delete this learning goal and unlink its evidence? Your Evidence Backpack notes will stay safe.")) return;
+    if (!window.confirm("Delete this learning goal and its stand-alone observations? Linked Evidence Backpack notes will stay safe.")) return;
     try { await api.delete(url); toast.success("Goal removed"); await refresh(); } catch (e) { err(e); }
   };
   const addEvidence = async (event) => {
@@ -212,7 +212,7 @@ export default function InternationalGoalTracker({ students = [] }) {
       <section className="space-y-4" aria-label="Your learning goals">
         {(data?.goals || []).map((g) => <Goal key={g.id} goal={g} sid={sid} notes={notes} refresh={load} />)}
       </section>
-      <p className="text-xs text-stone-600 flex items-center gap-2"><CheckCircle2 size={15}/> Evidence Backpack notes stay in your records even if you unlink or delete a learning goal.</p>
+      <p className="text-xs text-stone-600 flex items-center gap-2"><CheckCircle2 size={15}/> Linked Evidence Backpack notes remain in your records when unlinked. Stand-alone observations are deleted if you delete their goal.</p>
     </div>
   );
 }
