@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter, useLocation } from "react-router-dom";
+import { MemoryRouter, useLocation, useNavigate } from "react-router-dom";
 import ParentGuidedTour from "./ParentGuidedTour";
 import { parentTourSteps, tourStorageKey } from "./parentTour";
 
@@ -20,10 +20,15 @@ function CurrentPath() {
   const location = useLocation();
   return <span data-testid="test-current-path">{location.pathname}</span>;
 }
+function VisitChildren() {
+  const navigate = useNavigate();
+  return <button type="button" data-testid="test-visit-children" onClick={() => navigate("/parent/children")}>Visit children</button>;
+}
 function App({ user, openRequest = 0 }) {
   return (
     <MemoryRouter initialEntries={["/parent"]}>
       <CurrentPath />
+      <VisitChildren />
       <div data-tour="tour-dashboard">Dashboard</div>
       <ParentGuidedTour user={user} openRequest={openRequest} />
     </MemoryRouter>
@@ -56,6 +61,7 @@ test("tour steps follow real Parent Hub routes and explain international outcome
 test("first visit offers a tour that moves through real routes and can be skipped", async () => {
   await act(async () => root.render(<App user={parent} />));
   expect(host.querySelector('[data-testid="parent-tour-dialog"]')).not.toBeNull();
+  expect(host.querySelector('[data-testid="parent-tour-dialog"]').getAttribute("aria-modal")).toBe("false");
   await click("parent-tour-accept");
   expect(host.textContent).toContain("Dragon HQ: your dashboard");
   await click("parent-tour-next");
@@ -86,4 +92,13 @@ test("outside-Australia families get the international path, with their own repl
   await click("parent-tour-next");
   expect(where()).toBe("/parent/curriculum");
   expect(host.textContent).toContain("A compass for learning abroad");
+});
+
+test("tour invitation does not block normal navigation and disappears if parent explores alone", async () => {
+  await act(async () => root.render(<App user={parent} />));
+  expect(host.querySelector('[data-testid="parent-tour-dialog"]').getAttribute("aria-modal")).toBe("false");
+  await click("test-visit-children");
+  expect(where()).toBe("/parent/children");
+  expect(host.querySelector('[data-testid="parent-tour-dialog"]')).toBeNull();
+  expect(window.localStorage.getItem(tourStorageKey(parent.id))).toBe("done");
 });
