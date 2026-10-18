@@ -356,6 +356,11 @@ async function ownProposal(db: DB, familyId: string, id: string) {
 export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
   const p = await ownProposal(db, o.familyId, o.id);
   if (!p) return bad(404, "Proposal not found");
+  // The single free AI draft is available only through the stand-alone lesson
+  // builder. Auto-Quest's automatic proposal generation remains paid-only even
+  // when this function is invoked outside the HTTP membership middleware.
+  const { limits } = await lb.getEntitlement(db, o.familyId, now);
+  if (!limits.aiGeneration) return lb.paywall("Auto-Quest AI generation needs a Family Membership. Your complimentary lesson is available through Make a lesson.");
   if (p.status !== "proposed") return bad(409, "This proposal has already been decided.", "DECIDED");
   if (p.lesson_id) return bad(409, "This proposal already has a lesson. Open it to edit, or reject the proposal.", "HAS_LESSON");
   const codes = json<string[]>(p.outcome_codes, []);
