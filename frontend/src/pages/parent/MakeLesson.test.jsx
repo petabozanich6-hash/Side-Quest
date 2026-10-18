@@ -1,11 +1,17 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
+
 import MakeLesson from "./MakeLesson";
 import { api } from "../../lib/api";
 import { runBatch } from "../../lib/batchRunner";
 
+let mockSearch = new URLSearchParams();
+jest.mock("react-router-dom", () => ({
+  Link: ({ to, children, ...props }) => require("react").createElement("a", { href: to, ...props }, children),
+  useNavigate: () => jest.fn(),
+  useSearchParams: () => [mockSearch],
+}));
 jest.mock("../../lib/api", () => ({ api: { get: jest.fn(), post: jest.fn() } }));
 jest.mock("../../lib/batchRunner", () => ({
   newId: () => "11223344-1122-4122-8122-112233445566",
@@ -36,11 +42,8 @@ beforeEach(() => {
 });
 afterEach(async () => { await act(async () => root.unmount()); node.remove(); });
 const mount = async prompt => {
-  await act(async () => root.render(
-    <MemoryRouter initialEntries={[`/parent/lessons/make?prompt=${encodeURIComponent(prompt)}&student=kid-7`]}>
-      <MakeLesson />
-    </MemoryRouter>
-  ));
+  mockSearch = new URLSearchParams(`prompt=${encodeURIComponent(prompt)}&student=kid-7`);
+  await act(async () => root.render(<MakeLesson />));
 };
 const click = async selector => act(async () => node.querySelector(selector).click());
 
