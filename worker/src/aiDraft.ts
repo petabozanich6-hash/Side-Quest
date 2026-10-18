@@ -1078,7 +1078,7 @@ export async function planSeriesWithAi(
   const r = resolveRequest(request as Record<string, unknown>, student);
   // Explicit multiple subjects must produce one complete lesson per subject.
   // The model cannot silently turn two subjects into one blended lesson.
-  const allowed = new Set(["Mathematics", "Science", "English", "History", "Geography", "Technologies", "The Arts"]);
+  const allowed = new Set(["Mathematics", "Science", "English", "History", "Geography", "Humanities and Social Sciences", "Technologies", "The Arts"]);
   const subjects: string[] = Array.isArray(request.subjects) ? request.subjects : [];
   if (subjects.length && (subjects.length < 2 || subjects.length > SERIES_MAX ||
       subjects.some(v => typeof v !== "string" || !allowed.has(v)) ||
