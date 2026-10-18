@@ -63,15 +63,23 @@ export default function MakeLesson() {
     setErr("");
     if (students.length > 1 && !student) { setErr("Choose which child this lesson is for."); return; }
     const intent = lessonRequestIntent(text, !!resource.trim());
-    if (plan?.effective_plan === "FREE_PREVIEW" && (intent.type === "multi_subject" || intent.type === "series")) {
-      setErr("Your free AI lesson is one complete lesson. Choose one topic or subject for this request; creating a lesson set is available with a Family Membership.");
+    const freePreview = plan?.effective_plan === "FREE_PREVIEW";
+    // A single cross-curricular lesson can cover several subjects. What the
+    // free preview excludes is asking AI to create two or more separate lessons.
+    const multipleLessonsRequested = intent.type === "series" ||
+      (intent.type === "multi_subject" && (
+        /\blessons\b|\bseparate\b/i.test(text) ||
+        (text.match(/\blesson\b/gi) || []).length > 1
+      ));
+    if (freePreview && multipleLessonsRequested) {
+      setErr("Your complimentary AI build creates one complete lesson, which can combine subjects. Separate lessons or a lesson set need Family Membership.");
       return;
     }
-    if (intent.type === "multi_subject" && intent.blockedBySource) {
+    if (!freePreview && intent.type === "multi_subject" && intent.blockedBySource) {
       setErr("To make separate lessons, please remove the shared worksheet or passage first. You can paste it into each lesson individually so nothing is left out.");
       return;
     }
-    if ((intent.type === "multi_subject" || intent.type === "series") && !resource.trim()) {
+    if (!freePreview && (intent.type === "multi_subject" || intent.type === "series") && !resource.trim()) {
       setBusy("plan");
       try { const r = await api.post("/ai/series-plan", body(intent.type === "multi_subject" ? { count: intent.subjects.length, subjects: intent.subjects } : {})); setOutline(r.data); }
       catch (e) { fail(e); }
@@ -169,7 +177,7 @@ export default function MakeLesson() {
           {freePreview && freeLesson?.available && (
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm" data-testid="free-ai-lesson-offer">
               <p className="font-semibold text-emerald-900">🐉 One full AI lesson, on Dragon HQ!</p>
-              <p className="text-emerald-900 mt-1">Make one complete lesson for your family during your seven-day preview. Pick a topic, child and subject; then review, edit, assign or print it. Only a successfully created lesson uses your free chance. Multi-lesson sets and AI rewrites are paid features.</p>
+              <p className="text-emerald-900 mt-1">Make one complete lesson for your family during your seven-day preview. Pick a topic and child (you can combine subjects in one lesson); then review, edit, assign or print it. Only a successfully created lesson uses your free chance. Multi-lesson sets and AI rewrites are paid features.</p>
             </div>
           )}
           <div>
