@@ -31,6 +31,21 @@ async function goalFor(c: any) {
     .bind(c.req.param("gid"), c.get("user").family_id, c.req.param("sid")).first() as Promise<any>;
 }
 
+/** Lightweight goal counts for the same progress cards Australian families use. */
+export async function internationalGoalSummary(db: D1Database, familyId: string) {
+  await ensureTables(db);
+  const { results: kids } = await db.prepare("SELECT id, name, stage, year_level FROM students WHERE family_id = ? ORDER BY created_at").bind(familyId).all<any>();
+  const { results: goalCounts } = await db.prepare("SELECT student_id, status, COUNT(*) AS n FROM international_learning_goals WHERE family_id = ? GROUP BY student_id, status").bind(familyId).all<any>();
+  const students = (kids || []).map((child) => {
+    const counts: Record<string, number> = { not_started: 0, introduced: 0, developing: 0, demonstrated: 0, achieved: 0 };
+    for (const row of goalCounts || []) if (row.student_id === child.id && row.status in counts) counts[row.status] = Number(row.n || 0);
+    return { id: child.id, name: child.name, year_level: child.year_level || null,
+      total: Object.values(counts).reduce((sum, n) => sum + n, 0), counts,
+      awaiting_confirmation: counts.demonstrated, needs_attention: 0, needs_consolidation: 0 };
+  });
+  return { available: true, mode: "parent_defined", framework: { key: "OTHER", name: "Family-defined goals" }, students };
+}
+
 export function registerInternationalGoals(app: App, g: Guards) {
   app.get("/api/international/goals/:sid", g.auth, g.parent, async (c) => {
     const child = await childFor(c);
