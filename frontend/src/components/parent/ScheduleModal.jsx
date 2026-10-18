@@ -35,6 +35,8 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   const lesson = fixed || lessons.find(l => l.id === lessonId);
   const choices = lessons.filter(l => l.status === "ready" && lessonAvailableForChildren(l, picked));
   const area = lesson?.learning_area || "";
+  const relatedAreas = Array.isArray(lesson?.additional_learning_areas) ? lesson.additional_learning_areas : [];
+  const matchesLesson = title => sameSubject(title, area) || relatedAreas.some(other => sameSubject(title, other));
   // The generic picker never offers a lesson already assigned or completed
   // for any selected child. Fixed lessons retain the explicit "assign again"
   // journey from the lesson library.
@@ -82,7 +84,12 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
   }, [start, end, weekdays]);
 
   const toggle = (list, setList, v) => setList(list.includes(v) ? list.filter(x => x !== v) : [...list, v]);
-  const nextSlots = (sid) => (open[sid] || []).filter((s) => sameSubject(s.title, area)).slice(0, sessions);
+  const nextSlots = sid => {
+    const available = open[sid] || [];
+    const primary = available.filter(s => sameSubject(s.title, area));
+    const related = available.filter(s => !sameSubject(s.title, area) && matchesLesson(s.title));
+    return [...primary, ...related].slice(0, sessions);
+  };
   const onlyChild = picked.length === 1 ? picked[0] : null;
 
   // The child's open assignment, a new one, or null if another tab assigned it in the meantime.
@@ -256,8 +263,8 @@ export default function ScheduleModal({ lesson: fixed, lessons = [], students = 
                     className="w-full rounded-lg border border-slate-300 px-2 py-2 text-sm" data-testid="sch-slot">
                     <option value="">Choose a free slot…</option>
                     {[...(open[onlyChild] || [])].sort((a, b) =>
-                      Number(sameSubject(b.title, area)) - Number(sameSubject(a.title, area))).map(slot => (
-                      <option key={slot.id} value={slot.id}>{niceSlot(slot)}{sameSubject(slot.title, area) ? "" : " (different subject)"}</option>
+                      Number(matchesLesson(b.title)) - Number(matchesLesson(a.title))).map(slot => (
+                      <option key={slot.id} value={slot.id}>{niceSlot(slot)}{sameSubject(slot.title, area) ? "" : matchesLesson(slot.title) ? " (related subject)" : " (different subject — not eligible)"}</option>
                     ))}
                   </select>
                 )}
