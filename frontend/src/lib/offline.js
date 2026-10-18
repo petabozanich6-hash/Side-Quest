@@ -85,7 +85,13 @@ export async function setSavedLessonStatus(childId, aid, status) {
 export async function syncSavedLessons(childId, tasks) {
   if (!childId) return;
   reopen();
-  const open = (tasks || []).filter((a) => a && a.id && !["submitted", "reviewed", "approved", "completed", "awaiting_help"].includes(a.status)).slice(0, MAX_LESSONS);
+  // If storage is capped, protect lessons the child is already working on or
+  // that a grown-up returned before caching newly assigned, untouched lessons.
+  const rank = (a) => ({ needs_revision: 0, needs_more_practice: 0, in_progress: 1, opened: 2 })[a.status] ?? 3;
+  const open = (tasks || [])
+    .filter((a) => a && a.id && !["submitted", "reviewed", "approved", "accepted", "demonstrated", "completed", "awaiting_help"].includes(a.status))
+    .sort((a, b) => rank(a) - rank(b))
+    .slice(0, MAX_LESSONS);
   const keep = new Set(open.map((a) => a.id));
   for (const a of open) {
     try {
