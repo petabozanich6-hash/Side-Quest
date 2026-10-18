@@ -1,6 +1,6 @@
 // Paid-plan AI lesson drafting on Cloudflare Workers AI (binding `AI`, optionally routed through an AI Gateway).
 // Three model requests per draft (design, teaching, practice), plus at most one targeted repair when the quality check finds a real problem.
-// Rules: paid plans only (checked on the server), per-family fair-use limits, output is cleaned and validated by the same
+// Rules: paid plans and one complimentary draft per preview family (checked on the server), fair-use limits,
 // sanitiser as the manual builder and always saved as an unreviewed DRAFT labelled AI-generated.
 // The model is told never to invent links, worksheets or curriculum codes; any it returns are discarded.
 import * as lb from "./lessonBuilder";
@@ -30,6 +30,9 @@ export type AiRequest = {
 };
 
 export const REFINE_LIMITS = { perDay: 20, perMonth: 120 };
+export const FREE_AI_LESSON_LIMIT = 1;
+/** Interrupted generation can be retried, without opening a second live free slot. */
+const FREE_CLAIM_STALE_MS = 30 * 60 * 1000;
 export async function aiUsage(db: DB, familyId: string, now: Date = new Date()) {
   // Only the pre-launch owner account (server-side INTERNAL entitlement) is
   // exempt while testing lesson quality. Paid families keep all fair-use caps.
@@ -41,8 +44,15 @@ export async function aiUsage(db: DB, familyId: string, now: Date = new Date()) 
     Number((await db.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id = ? AND created_at >= ? AND kind = ? AND status != 'failed'").bind(familyId, since, kind).first<{ n: number }>())?.n ?? 0);
   const [d, m] = [await q(day, "lesson_draft"), await q(month, "lesson_draft")];
   const [rd, rm] = [await q(day, "lesson_refine"), await q(month, "lesson_refine")];
+  const free = await db.prepare(
+    "SELECT status FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
+  ).bind(familyId).first<{ status: string }>();
   return {
     unlimited,
+    free_lesson_limit: FREE_AI_LESSON_LIMIT,
+    free_lesson_used: free?.status === "ok",
+    free_lesson_in_progress: free?.status === "pending",
+    free_lesson_available: plan === "FREE_PREVIEW" && !free,
     today: d, month: m, limit_per_day: AI_LIMITS.perDay, limit_per_month: AI_LIMITS.perMonth,
     changes_today: rd, changes_month: rm, changes_limit_per_day: REFINE_LIMITS.perDay, changes_limit_per_month: REFINE_LIMITS.perMonth,
   };
@@ -820,7 +830,10 @@ export async function draftLessonWithAi(
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
   const { limits, plan } = await lb.getEntitlement(db, familyId, now);
-  if (!limits.aiGeneration) return lb.paywall("AI lesson drafting is part of the paid plan. Your free preview includes the full manual lesson builder.");
+  const freePreview = plan === "FREE_PREVIEW";
+  if (!limits.aiGeneration && !freePreview) return lb.paywall("Your free preview has ended. Upgrade to create more AI lessons.");
+  // One self-contained lesson, not a back door for AI lesson sets.
+  if (freePreview && request.series) return lb.paywall("The complimentary AI lesson is one lesson. Multi-lesson sets need a Family Membership.");
 
   let student: StudentInfo | null = null;
   const sid = clip(request.student_id, 80);
@@ -869,12 +882,39 @@ export async function draftLessonWithAi(
   };
 
   const usage = await aiUsage(db, familyId, now);
-  if (!usage.unlimited && usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
-  if (!usage.unlimited && usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
+  if (freePreview) {
+    // An interrupted Worker may leave a pending reservation. Never release a
+    // finished free lesson: a saved AI lesson is evidence that it was consumed.
+    const prior = await db.prepare(
+      "SELECT id, status, created_at FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
+    ).bind(familyId).first<{ id: string; status: string; created_at: string }>();
+    if (prior?.status === "pending" && Date.parse(prior.created_at) < now.getTime() - FREE_CLAIM_STALE_MS) {
+      const saved = await db.prepare(
+        "SELECT id FROM lessons WHERE family_id = ? AND created_at >= ? AND json_extract(data, '$.ai_generated') = 1 LIMIT 1"
+      ).bind(familyId, prior.created_at).first();
+      await db.prepare("UPDATE ai_usage SET status = ? WHERE id = ? AND status = 'pending'")
+        .bind(saved ? "ok" : "failed", prior.id).run();
+    }
+    const claimed = await db.prepare(
+      "SELECT status FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
+    ).bind(familyId).first<{ status: string }>();
+    if (claimed?.status === "ok") return lb.paywall("Your family's one free AI lesson has already been created. Subscribe to build more.");
+    if (claimed?.status === "pending") return lb.fail(409, "Your free AI lesson is already being written. Please let it finish before trying again.", "AI_IN_PROGRESS");
+  } else {
+    if (!usage.unlimited && usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
+    if (!usage.unlimited && usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
+  }
 
-  // Reserve the slot first so parallel requests cannot exceed the limit by much; free it if the call fails.
+  // The partial unique DB index protects the free claim from parallel tabs,
+  // replays and multiple accounts in the same family; failed requests release it.
   const usageId = crypto.randomUUID();
-  await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'lesson_draft', 'pending', ?)").bind(usageId, familyId, userId, now.toISOString()).run();
+  try {
+    await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, ?, 'pending', ?)")
+      .bind(usageId, familyId, userId, freePreview ? "free_lesson_draft" : "lesson_draft", now.toISOString()).run();
+  } catch (e) {
+    if (!freePreview || !/unique|constraint/i.test(String(e))) throw e;
+    return lb.fail(409, "Your family's free AI lesson is already being written or has been used. Refresh your plan for its status.", "FREE_LESSON_CLAIMED");
+  }
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   const model = opts.model || DEFAULT_MODEL;
 
