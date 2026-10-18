@@ -44,7 +44,7 @@ test("international family creates goals, attaches observations and explicitly c
   const { request, post, put } = harness();
   const base = "/api/international/goals/kid-one";
   let r = await post(base, { title: "Explain plant growth", learning_area: "Science", description: "Observe seeds growing." });
-  assert.equal(r.status, 201, await r.text());
+  assert.equal(r.status, 201, "goal creation must succeed");
   const { id } = await r.json();
   r = await request(base);
   let data = await r.json();
