@@ -67,8 +67,9 @@ export default function MakeLesson() {
     // A single cross-curricular lesson can cover several subjects. What the
     // free preview excludes is asking AI to create two or more separate lessons.
     const multipleLessonsRequested = intent.type === "series" ||
+      /\blessons\b/i.test(text) ||
       (intent.type === "multi_subject" && (
-        /\blessons\b|\bseparate\b/i.test(text) ||
+        /\bseparate\b/i.test(text) ||
         (text.match(/\blesson\b/gi) || []).length > 1
       ));
     if (freePreview && multipleLessonsRequested) {
