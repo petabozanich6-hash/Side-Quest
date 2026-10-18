@@ -333,7 +333,9 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
     Object.entries(watch).forEach(([k, v]) => { if (filled(v) && videos[k]) lines.push(`After the video "${videos[k].title}": ${shown(v)}`); });
     const didIt = activities.filter((_, i) => checks[i]).map((x) => x.title);
     if (activities.length) lines.push(`Activities done: ${didIt.length ? didIt.join(", ") : "none ticked"}`);
-    const body = { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: forceHelp === true || needsHelp };
+    const body = { assignment_id: a.id, response_text: lines.join("\n\n"), reflection: reflection.trim() || null, file_ids: files.map((f) => f.id), needs_help: forceHelp === true || needsHelp,
+      // The latest answers travel with the hand-in even if autosave is still pending.
+      draft: { answers, checks, reflection, guided: gp, tasks: tv, fbs, watch, step: cur } };
     try {
       await api.post("/submissions", body);
       toast.success(forceHelp === true || needsHelp ? "Sent to your grown-up" : "Handed in! Your grown-up will take a look.");
@@ -540,6 +542,14 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
           <strong>Your grown-up asked you to try again:</strong> {last.parent_feedback}
           {last.next_step && <div className="mt-1">Next step: {last.next_step}</div>}
         </div>
+      )}
+      {a.status === "needs_revision" && last?.response_text && (
+        <details className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm" data-testid="previous-submitted-work">
+          <summary className="cursor-pointer font-semibold text-amber-900">See the answers I already handed in</summary>
+          <p className="mt-2 text-amber-900">Your previous submission is kept here, even if an older lesson did not restore its editable boxes automatically.</p>
+          <pre className="mt-2 whitespace-pre-wrap break-words font-sans text-slate-800">{last.response_text}</pre>
+          {last.reflection && <p className="mt-2 whitespace-pre-wrap text-slate-700"><strong>Reflection:</strong> {last.reflection}</p>}
+        </details>
       )}
       {!online && !preview && (
         <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="offline-lesson">
