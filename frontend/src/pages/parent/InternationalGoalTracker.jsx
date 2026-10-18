@@ -84,6 +84,7 @@ function Goal({ goal, sid, notes, refresh }) {
           <span className="font-normal">Link evidence first, then add your judgement. Completing a lesson never marks a goal achieved automatically.</span>
         </label>
       )}
+      {edit.status === "achieved" && !goal.evidence.some((item) => !item.missing_source) && <p className="text-xs font-semibold text-amber-900">This goal is marked achieved, but it has no currently linked evidence. Please review your confirmation or attach an observation.</p>}
       <div className="flex flex-wrap items-center gap-3">
         <button type="button" onClick={save} disabled={saving} className="inline-flex items-center gap-2 rounded-full bg-emerald-900 px-4 py-2 text-xs font-bold text-white disabled:opacity-50"><Save size={14}/> Save progress</button>
         <button type="button" onClick={() => setAdding(v => !v)} className="inline-flex items-center gap-2 rounded-full border border-stone-400 bg-white px-4 py-2 text-xs font-bold"><Plus size={14}/> Add or link evidence</button>
