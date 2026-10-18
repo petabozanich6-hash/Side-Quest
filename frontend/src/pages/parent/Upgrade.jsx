@@ -94,6 +94,13 @@ export default function UpgradePage() {
         {billing.mode === "test" && <p className="mt-2 inline-block rounded bg-amber-100 px-2 py-1 text-xs font-bold text-amber-900" data-testid="billing-test-mode">Test mode: no real payments are taken</p>}
       </header>
 
+      {preview && plan.free_ai_lesson && (
+        <div className="paper-card p-4 text-sm space-y-2" data-testid="plan-free-ai-lesson">
+          <p className="font-bold">🐉 One complete AI lesson from Dragon HQ</p>
+          <p>{plan.free_ai_lesson.used ? "Your family has used its complimentary AI lesson. You can keep it, review it and print it; membership unlocks more." : plan.free_ai_lesson.in_progress ? "Your free lesson is currently being created. Find it in My lessons when it finishes." : "You can create one full AI lesson during your seven-day preview. Failed generations do not use it, and it does not replace either of your two manual lessons."}</p>
+          {plan.free_ai_lesson.available && <Link to="/parent/lessons/make" className="underline font-bold">Create my free AI lesson</Link>}
+        </div>
+      )}
       {preview && plan.preview_gift && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="preview-gift-notice"><strong>🐉 A little something from the Dragon’s Hoard!</strong> You’ve been gifted {plan.preview_gift.days} extra preview day{plan.preview_gift.days === 1 ? "" : "s"}. Your free preview now runs until {day(plan.preview_gift.ends_at)}. All the usual preview limits still apply.</div>}
       {checkout === "success" && !paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirming">Thanks! We are confirming your payment with Stripe. This usually takes a few seconds.</div>}
       {checkout === "success" && paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirmed">Your Family Membership is active. Welcome!</div>}
@@ -175,7 +182,7 @@ export default function UpgradePage() {
             {row("Life learning records and detailed evidence notes", ["No", "Yes"])}
             {row("Resource library, video suggestions and Word Hoard authoring", ["No", "Yes"])}
             {row("File uploads and attachments", ["No", "Up to 250 MB per family*"])}
-            {row("AI lesson drafting", ["No", "10 drafts/day, 60/month"])}
+            {row("AI lesson drafting", ["1 complete lesson per family", "10 drafts/day, 60/month"])}
             {row("AI lesson changes", ["No", "20/day, 120/month"])}
             {row("AI learning plans, outcome help and child AI assistance", ["No", "Fair-use limits apply"])}
             {row("Offline lessons in SQ Kids", ["No", "Yes"])}
