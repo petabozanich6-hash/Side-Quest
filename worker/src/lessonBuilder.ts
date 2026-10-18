@@ -541,9 +541,12 @@ export async function duplicateLesson(db: DB, familyId: string, id: string, now:
   const { limits, plan } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Upgrade to keep creating lessons.");
   const copyingAi = parseJson<any>(row.data, {}).ai_generated === true;
+  // Copying a complimentary AI draft should not create a second AI-labelled
+  // lesson for free; families can still edit and print their original freely.
+  if (plan === "FREE_PREVIEW" && copyingAi) return paywall("Your preview includes one AI lesson. You can edit, assign or print it; upgrading unlocks additional AI lessons.");
   const atPreviewCap = plan === "FREE_PREVIEW" &&
     ((await countLessons(db, familyId)) >= limits.maxLessons + 1 ||
-     (!copyingAi && (await countManualLessons(db, familyId)) >= limits.maxLessons));
+     (await countManualLessons(db, familyId)) >= limits.maxLessons);
   if (atPreviewCap || (plan !== "FREE_PREVIEW" && (await countLessons(db, familyId)) >= limits.maxLessons)) {
     return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
