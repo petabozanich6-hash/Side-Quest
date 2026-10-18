@@ -3,7 +3,7 @@
 // AI and the template, not legal advice: rules change, so every plan tells the parent to confirm with the authority.
 // Keep wording factual; never claim a plan "meets" or "is approved under" any jurisdiction's rules.
 
-export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT";
+export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT" | "OTHER";
 
 export type Jurisdiction = {
   code: JurisdictionCode;
@@ -274,6 +274,22 @@ export const JURISDICTIONS: Record<JurisdictionCode, Jurisdiction> = {
     sources: [
       { title: "NT Government: home education", url: "https://nt.gov.au/learning/primary-and-secondary-students/home-education" },
     ],
+  },
+  OTHER: {
+    code: "OTHER",
+    name: "Outside Australia / Other",
+    authority: "Your local education authority (check the requirements where you live)",
+    reviewer: "Your family or your relevant local authority",
+    notesHeading: "Parent notes and local requirements to verify",
+    planName: "family learning plan",
+    curriculum: "No country-specific curriculum or legal requirements are supplied by Side-Quest for this option. Choose goals and subjects appropriate for your child and check your local requirements.",
+    curriculumRequired: false,
+    outcomeCodes: false,
+    foundationYear: "Early years",
+    areas: AC_AREAS,
+    requirements: ["Family-selected learning goals and subjects", "Appropriate activities and learning resources", "Ways to record progress and evidence", "Review the registration and curriculum rules in your country or region separately"],
+    guidance: ["Write an adaptable family learning plan based on the parent's stated goals and interests.", "Never claim that it meets official local legal or curriculum requirements.", "Do not assign Australian syllabus outcome codes. Parent-defined goals are managed separately in Side-Quest's outcome tracker."],
+    sources: [],
   },
 };
 
