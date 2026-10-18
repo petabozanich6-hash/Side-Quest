@@ -169,6 +169,7 @@ export function catalogueFor(jurisdiction: JurisdictionCode | null): Catalogue |
   if (!jurisdiction) {
     return { available: false, framework: null, name: null, note: "Choose your state or territory first, so the tracker can follow the right curriculum." };
   }
+  if (jurisdiction === "OTHER") return { available: false, framework: "OTHER", name: "Parent-defined learning goals", note: "Outside Australia, use your own family-defined learning goals rather than Australian curriculum codes. Open the international goal tracker to add goals and record evidence." };
   const cat = CATALOGUES[jurisdiction];
   if (cat) return cat;
   const fw = FRAMEWORKS[jurisdiction];
