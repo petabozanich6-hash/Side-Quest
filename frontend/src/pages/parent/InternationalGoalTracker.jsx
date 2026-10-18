@@ -171,7 +171,7 @@ export default function InternationalGoalTracker({ students = [] }) {
     <div className="p-4 sm:p-6 lg:p-10 max-w-5xl space-y-6" data-testid="international-outcome-tracker">
       <header className="space-y-3">
         <span className="font-script text-2xl" style={{ color: "#C77B5B" }}>A trail of your very own</span>
-        <h1 className="font-display text-3xl sm:text-4xl font-bold flex items-center gap-2 text-emerald-950"><Map size={27}/> Family learning goal tracker</h1>
+        <h1 data-tour="tour-outcomes" className="font-display text-3xl sm:text-4xl font-bold flex items-center gap-2 text-emerald-950"><Map size={27}/> Family learning goal tracker</h1>
         <p className="text-sm text-stone-700 leading-relaxed max-w-3xl">
           Outside Australia? You can still record what your children are learning, add evidence, and track their progress.
           You choose the goals and confirm achievements. Side-Quest does not supply or verify your country's curriculum codes, registration rules or compliance.
