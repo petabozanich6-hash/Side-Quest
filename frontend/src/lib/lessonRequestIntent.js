@@ -27,7 +27,7 @@ export function requestedSeparateSubjects(text) {
   const groups = [];
   for (let i = 0; i < words.length - 1; i++) {
     const between = text.slice(words[i].end, words[i + 1].start)
-      .replace(/\b(?:an?|the|lessons?|subjects?)\b/gi, " ").trim();
+      .replace(/\b(?:one|an?|the|lessons?|subjects?)\b/gi, " ").trim();
     if (!/^(?:(?:and|plus|&|\+|,|;|\/|\s)+)$/i.test(between)) continue;
     if (!groups.length || groups.at(-1) !== words[i].subject) groups.push(words[i].subject);
     if (groups.at(-1) !== words[i + 1].subject) groups.push(words[i + 1].subject);
