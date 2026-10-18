@@ -14,7 +14,7 @@ const YEARS = ["Kindergarten / Foundation", "Year 1", "Year 2", "Year 3", "Year 
 const STAGE_OF = { "Kindergarten / Foundation": "ES1", "Year 1": "S1", "Year 2": "S1", "Year 3": "S2", "Year 4": "S2", "Year 5": "S3", "Year 6": "S3", "Year 7": "S4", "Year 8": "S4", "Year 9": "S5", "Year 10": "S5" };
 
 const blank = () => ({
-  title: "", learning_area: "", year_level: "", objectives: [""], sections: [{ heading: "", body: "" }],
+  title: "", learning_area: "", additional_learning_areas: [], year_level: "", objectives: [""], sections: [{ heading: "", body: "" }],
   activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "", outcome_codes: [], hoard_words: "",
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
   delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
@@ -42,7 +42,7 @@ function fromServer(l) {
     ...blank(),
     ai_generated: !!l.ai_generated,
     ai_flags: l.ai_flags || [],
-    title: l.title || "", learning_area: l.learning_area || "", year_level: l.year_level || "",
+    title: l.title || "", learning_area: l.learning_area || "", additional_learning_areas: l.additional_learning_areas || [], year_level: l.year_level || "",
     objectives: l.objectives?.length ? l.objectives : [""],
     sections: l.sections?.length ? l.sections.map(x => ({ ...x })) : [{ heading: "", body: "" }],
     activities: (l.activities || []).map(a => ({ ...a, tasks: a.tasks || [] })), questions: l.questions || [], quiz: l.quiz || [],
@@ -67,7 +67,7 @@ function fromServer(l) {
 
 function toServer(f, status) {
   return {
-    title: f.title, learning_area: f.learning_area, year_level: f.year_level, stage: STAGE_OF[f.year_level] || "",
+    title: f.title, learning_area: f.learning_area, additional_learning_areas: f.additional_learning_areas, year_level: f.year_level, stage: STAGE_OF[f.year_level] || "",
     status,
     objectives: f.objectives.map(s => s.trim()).filter(Boolean),
     sections: f.sections.filter(s => s.body.trim()).map(s => ({ ...s, heading: s.heading, body: s.body })),
@@ -259,6 +259,21 @@ export default function LessonBuilder() {
                   <option value="">Choose…</option>
                   {SUBJECTS.map(s => <option key={s}>{s}</option>)}
                 </select>
+              </div>
+              <div className="sm:col-span-3" data-testid="b-related-subjects">
+                <p className={label}>Also useful for (optional)</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {SUBJECTS.filter(a => a !== f.learning_area && a !== "Other").map(a => (
+                    <label key={a} className="inline-flex items-center gap-1 text-xs border border-slate-200 rounded-lg px-2 py-1">
+                      <input type="checkbox" checked={(f.additional_learning_areas || []).includes(a)}
+                        onChange={e => set("additional_learning_areas", e.target.checked
+                          ? [...new Set([...(f.additional_learning_areas || []), a])].slice(0, 5)
+                          : (f.additional_learning_areas || []).filter(x => x !== a))} />
+                      {a}
+                    </label>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-500 mt-1">Tag genuine related learning without creating duplicate lessons or automatically claiming outcome mastery.</p>
               </div>
               <div>
                 <label className={label}>Year level</label>
