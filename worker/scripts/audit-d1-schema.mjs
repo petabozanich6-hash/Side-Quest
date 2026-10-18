@@ -20,6 +20,7 @@ export const REQUIRED = {
   announcement_recipients: ["id"],
   homeschool_compass_progress: ["family_id"],
   ai_inference_costs: ["id"],
+  ai_usage: ["id", "family_id", "kind", "status", "created_at"],
   assignments: ["id"],
   lessons: ["id"],
   students: ["id"],
@@ -28,7 +29,7 @@ export const REQUIRED = {
   admin_audit_log: ["id"],
   webauthn_credentials: ["id"],
 };
-export const REQUIRED_INDEXES = ["idx_password_resets_token", "idx_password_resets_user", "idx_email_verification_user", "idx_parent_feedback_family"];
+export const REQUIRED_INDEXES = ["idx_password_resets_token", "idx_password_resets_user", "idx_email_verification_user", "idx_parent_feedback_family", "idx_ai_one_free_lesson_per_family"];
 
 export function compareSchema({ objects, columns, recorded, migrationFiles }) {
   const issues = [];
