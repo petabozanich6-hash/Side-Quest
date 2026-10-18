@@ -364,6 +364,7 @@ test("free preview: one complete AI draft in addition to two manual lessons, sti
   assert.ok(created.lesson.activities.length > 0);
   assert.equal((await lb.countLessons(db, fam)), 3);
   assert.equal((await lb.countManualLessons(db, fam)), 2);
+  assert.equal((await lb.duplicateLesson(db, fam, created.lesson.id, NOW)).code, "UPGRADE_REQUIRED", "cannot clone the free AI lesson");
   assert.equal(db.raw.prepare("SELECT status FROM ai_usage WHERE family_id=? AND kind='free_lesson_draft'").get(fam).status, "ok");
   const summary = await lb.planSummary(db, fam, NOW);
   assert.equal(summary.free_ai_lesson.used, true);
