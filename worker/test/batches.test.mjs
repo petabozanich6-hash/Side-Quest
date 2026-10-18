@@ -240,3 +240,80 @@ test("batches: validation, paid-only, and single-lesson drafting unchanged", asy
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_batches WHERE family_id = ?").get(fam).n, 1);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_batch_items WHERE lesson_id = ?").get(one.lesson.id).n, 0);
 });
+
+
+test("Year 7 Halloween Science AND Maths request creates two fully independent, correctly labelled draft lessons", async () => {
+  const db = makeDb(), fam = seed(db), kid = child(db, fam);
+  const writer = stub((model, input) => {
+    const userPrompt = input.messages.at(-1).content;
+    if (userPrompt.includes("Plan exactly 2 SEPARATE full lessons")) {
+      assert.match(userPrompt, /1\. Science; 2\. Mathematics/);
+      assert.match(userPrompt, /Halloween/i);
+      return { response: JSON.stringify({
+        series_title: "Halloween Year 7 adventures",
+        lessons: [
+          { title: "Spooky reactions", goal: "Explain changes using Year 7 science concepts" },
+          { title: "Pumpkin proportions", goal: "Solve Year 7 proportions and scaling problems" },
+        ],
+      }) };
+    }
+    return staged(model, input);
+  });
+  const input = { request: "Create a Halloween science and math lesson at the same time for a Year 7 student", student_id: kid, count: 2, subjects: ["Science", "Mathematics"] };
+  const plan = await aid.planSeriesWithAi(db, writer, { familyId: fam, userId: "u", request: input }, NOW);
+  assert.ok(plan.ok, JSON.stringify(plan));
+  assert.equal(plan.count, 2);
+  assert.deepEqual(plan.lessons.map(l => l.learning_area), ["Science", "Mathematics"]);
+  assert.match(plan.lessons[0].title, /^Science/);
+  assert.match(plan.lessons[1].title, /^Mathematics/);
+
+  const created = await bat.createBatch(db, { familyId: fam, userId: "u", body: {
+    title: plan.title, lessons: plan.lessons, student_id: kid, request: input.request, link_outcomes: false,
+  } }, NOW);
+  assert.ok(created.ok, JSON.stringify(created));
+  assert.deepEqual(states(created.batch), ["pending", "pending"]);
+  assert.deepEqual(created.batch.items.map(i => i.learning_area), ["Science", "Mathematics"]);
+  const science = await draft(db, writer, fam, created.batch.id, 0);
+  assert.ok(science.ok, JSON.stringify(science));
+  const maths = await draft(db, writer, fam, created.batch.id, 1);
+  assert.ok(maths.ok, JSON.stringify(maths));
+
+  const loaded = (await bat.getBatch(db, fam, created.batch.id, NOW)).batch;
+  assert.deepEqual(states(loaded), ["ready", "ready"]);
+  assert.equal(loaded.items.length, 2);
+  assert.equal(new Set(loaded.items.map(i => i.lesson_id)).size, 2);
+  const fullLessons = loaded.items.map(i => lb.lessonOut(db.raw.prepare("SELECT * FROM lessons WHERE id=?").get(i.lesson_id)));
+  assert.deepEqual(fullLessons.map(l => l.learning_area), ["Science", "Mathematics"]);
+  assert.deepEqual(fullLessons.map(l => l.year_level), ["Year 7", "Year 7"]);
+  assert.ok(fullLessons.every(l => l.status === "draft"));
+  assert.ok(fullLessons.every(l => l.sections.length === GARDEN.sections.length && l.worked_examples.length === GARDEN.worked_examples.length && l.activities.length === GARDEN.activities.length));
+  assert.equal(lessonsIn(db, fam), 2);
+  for (const i of [0, 1]) {
+    const repeat = await draft(db, writer, fam, created.batch.id, i);
+    assert.ok(repeat.ok && repeat.reused);
+  }
+  assert.equal(lessonsIn(db, fam), 2, "reopening does not duplicate either subject");
+});
+
+test("reject unsupported individual batch subjects instead of silently writing the wrong subject", async () => {
+  const db = makeDb(), fam = seed(db);
+  const r = await bat.createBatch(db, { familyId: fam, userId: "u", body: {
+    title: "Mixed", lessons: [
+      { title: "Science", goal: "Experiment", learning_area: "Science" },
+      { title: "Unknown", goal: "Incorrect", learning_area: "Unknown subject" },
+    ],
+  } }, NOW);
+  assert.equal(r.ok, false);
+  assert.equal(r.status, 400);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_batches").get().n, 0);
+});
+
+test("an invalid multi-subject planner request is blocked before making any AI call", async () => {
+  const db = makeDb(), fam = seed(db), ai = stub();
+  const r = await aid.planSeriesWithAi(db, ai, {
+    familyId: fam, userId: "u", request: { request: "Halloween science and math", subjects: ["Science", "Science"], count: 2 },
+  }, NOW);
+  assert.equal(r.ok, false);
+  assert.equal(r.status, 400);
+  assert.equal(ai.calls.length, 0);
+});

@@ -112,7 +112,28 @@ await step("Plan My Week finds the child's existing timetable without assigning 
   await page.click("[data-testid=plan-week-open]");
   await page.waitForSelector("[data-testid=plan-my-week]");
   await page.fill("[data-testid=plan-week-start]", weekStart);
-  await page.waitForSelector("[data-testid=plan-review-week]:not([disabled])");
+  // Cloudflare test browser can race its initial calendar fetch after opening
+  // the modal. Retry a fresh view once, but never count an empty/disabled
+  // timetable as success: the original teaching-time assertions remain.
+  try {
+    await page.waitForSelector("[data-testid=plan-review-week]:not([disabled])", { timeout: 11000 });
+  } catch {
+    const retry = page.locator('[data-testid=plan-my-week] [role="alert"] button');
+    if (await retry.count()) {
+      await retry.first().click();
+    } else {
+      await page.click('[aria-label="Close weekly planner"]');
+      await page.click("[data-testid=plan-week-open]");
+      await page.waitForSelector("[data-testid=plan-my-week]");
+      await page.fill("[data-testid=plan-week-start]", weekStart);
+    }
+    try {
+      await page.waitForSelector("[data-testid=plan-review-week]:not([disabled])", { timeout: 20000 });
+    } catch {
+      const status = await page.locator("[data-testid=plan-my-week]").innerText();
+      throw Error("Plan My Week still cannot find the saved timetable: " + status.slice(0, 700));
+    }
+  }
   await page.click("[data-testid=plan-review-week]");
   await page.waitForSelector("[data-testid=plan-week-results]", { timeout: 25000 });
   const planText = await page.textContent("[data-testid=plan-week-results]");

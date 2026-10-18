@@ -3,13 +3,13 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Sparkles, Hammer, FileText, ArrowLeft, Loader2 } from "lucide-react";
 import { api } from "../../lib/api";
 import { newId, runBatch } from "../../lib/batchRunner";
+import { lessonRequestIntent } from "../../lib/lessonRequestIntent";
 
 const EXAMPLES = [
   "Create a one-hour Year 3 maths lesson about addition using gardening as the theme.",
   "Create a one-hour Year 7 lesson introducing negative integers. My child works independently.",
   "Create four science lessons about the solar system for my Year 5 child next week.",
 ];
-const SERIES = /(?<!year\s)\b(two|three|four|five|six|[2-6])\s+(?:[\w-]+\s+){0,4}?lessons?\b/i;
 const STEPS = ["Planning what to teach and in what order…", "Writing the explanations and worked examples…", "Writing the practice, activities and quiz…", "Checking the answers and the teaching…"];
 
 function Progress({ label }) {
@@ -61,9 +61,14 @@ export default function MakeLesson() {
   const create = async () => {
     setErr("");
     if (students.length > 1 && !student) { setErr("Choose which child this lesson is for."); return; }
-    if (SERIES.test(text) && !resource.trim()) {
+    const intent = lessonRequestIntent(text, !!resource.trim());
+    if (intent.type === "multi_subject" && intent.blockedBySource) {
+      setErr("To make separate lessons, please remove the shared worksheet or passage first. You can paste it into each lesson individually so nothing is left out.");
+      return;
+    }
+    if ((intent.type === "multi_subject" || intent.type === "series") && !resource.trim()) {
       setBusy("plan");
-      try { const r = await api.post("/ai/series-plan", body()); setOutline(r.data); }
+      try { const r = await api.post("/ai/series-plan", body(intent.type === "multi_subject" ? { count: intent.subjects.length, subjects: intent.subjects } : {})); setOutline(r.data); }
       catch (e) { fail(e); }
       finally { setBusy(""); }
       return;
@@ -110,10 +115,11 @@ export default function MakeLesson() {
       ) : outline ? (
         <div className="rounded-2xl border border-slate-200 bg-white p-5 space-y-4" data-testid="series-plan">
           <h2 className="font-display text-xl font-bold">{outline.title}</h2>
-          <p className="text-sm text-slate-600">Here is the plan for {outline.count} lessons of about {outline.minutes} minutes. Each one builds on the last. Change any title or goal first if you like.</p>
+          <p className="text-sm text-slate-600">Here is the plan for {outline.count} separate, complete lessons of about {outline.minutes} minutes each. {outline.lessons.some(l => l.learning_area) ? "Each subject has its own lesson and will be saved individually." : "Each one builds on the last."} Change any title or goal first if you like.</p>
           <ol className="space-y-3">
             {outline.lessons.map((l, i) => (
               <li key={i} className="rounded-lg border border-slate-200 p-3">
+                {l.learning_area && <p className="text-xs font-bold text-violet-700 mb-2" data-testid={`series-subject-${i}`}>{l.learning_area} · Lesson {i + 1}</p>}
                 <input disabled={!!busy} value={l.title} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, title: e.target.value } : x) }))} className="w-full font-semibold border-b border-dashed border-slate-300 focus:outline-none" data-testid="series-title" />
                 <input disabled={!!busy} value={l.goal} onChange={e => setOutline(o => ({ ...o, lessons: o.lessons.map((x, j) => j === i ? { ...x, goal: e.target.value } : x) }))} className="w-full text-sm text-slate-600 mt-1 focus:outline-none" />
               </li>
@@ -162,7 +168,7 @@ export default function MakeLesson() {
             ) : (
               <p className="text-xs text-stone-600 mb-3" data-testid="mk-state-curriculum-note">{jurisdiction ? `Your lesson will be written with your ${jurisdiction} curriculum in mind, and will include a link to the official curriculum. Verified outcome codes for ${jurisdiction} are not yet loaded, so no codes will be invented.` : "Choose your family's state or territory on the Curriculum page for state-aware lesson drafting. Until then, drafts are general Australian lessons without automatic curriculum codes."}</p>
             )}
-            {plan.effective_plan === "INTERNAL" && isPlatformOwner && !SERIES.test(text) && (
+            {plan.effective_plan === "INTERNAL" && isPlatformOwner && lessonRequestIntent(text).type === "single" && (
               <label className="flex items-start gap-2 text-xs text-slate-700 border border-amber-200 rounded-xl p-3 bg-amber-50" data-testid="mk-owner-speed-test">
                 <input type="checkbox" className="mt-0.5" checked={ownerFastPreview} onChange={e => setOwnerFastPreview(e.target.checked)} />
                 <span><strong>Owner-only speed trial</strong> — test a faster writing sequence. The full teaching, worked examples, activities, and quality checks stay exactly the same. All families continue using the normal service.</span>

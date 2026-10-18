@@ -144,7 +144,7 @@ function BatchView({ id }) {
         {batch.items.map(i => (
           <li key={i.index} className="rounded-2xl border border-slate-200 bg-white p-4 flex flex-wrap items-center gap-3" data-testid={`draft-row-${i.index}`}>
             <div className="min-w-0 flex-1 basis-60">
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Lesson {i.index + 1}</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Lesson {i.index + 1}{i.learning_area ? ` · ${i.learning_area}` : ""}</p>
               <p className="font-display font-bold text-slate-900">{i.title}</p>
               {i.goal && i.state !== "failed" && <p className="text-xs text-slate-500 mt-0.5">{i.goal}</p>}
               {i.state === "failed" && <p className="text-sm text-rose-700 mt-0.5" data-testid={`draft-error-${i.index}`}>{i.error}</p>}

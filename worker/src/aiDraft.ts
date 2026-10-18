@@ -1061,9 +1061,9 @@ export const SERIES_MAX = 6;
 export async function planSeriesWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; request: AiRequest & { count?: unknown } },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; request: AiRequest & { count?: unknown; subjects?: unknown } },
   now: Date = new Date()
-): Promise<Result<{ title: string; lessons: { title: string; goal: string }[]; count: number; minutes: number; delivery: string; assumptions: Record<string, string | number>; usage: Awaited<ReturnType<typeof aiUsage>> }>> {
+): Promise<Result<{ title: string; lessons: { title: string; goal: string; learning_area?: string }[]; count: number; minutes: number; delivery: string; assumptions: Record<string, string | number>; usage: Awaited<ReturnType<typeof aiUsage>> }>> {
   const { familyId, userId, request } = opts;
   const { limits } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("AI lesson drafting is part of the paid plan. Your free preview includes the full manual lesson builder.");
@@ -1076,7 +1076,17 @@ export async function planSeriesWithAi(
     student = { year_level: row.year_level, stage: row.stage, interests: parse(row.interests, []), prefs: cleanPrefs(parse(row.extra, {}).prefs) };
   }
   const r = resolveRequest(request as Record<string, unknown>, student);
-  const count = Number(request.count) || r.count || 0;
+  // Explicit multiple subjects must produce one complete lesson per subject.
+  // The model cannot silently turn two subjects into one blended lesson.
+  const allowed = new Set(["Mathematics", "Science", "English", "History", "Geography", "Technologies", "The Arts"]);
+  const subjects: string[] = Array.isArray(request.subjects) ? request.subjects : [];
+  if (subjects.length && (subjects.length < 2 || subjects.length > SERIES_MAX ||
+      subjects.some(v => typeof v !== "string" || !allowed.has(v)) ||
+      new Set(subjects).size !== subjects.length)) {
+    return lb.fail(400, "Choose between two and six different supported school subjects.");
+  }
+  const count = Number(request.count) || subjects.length || r.count || 0;
+  if (subjects.length && count !== subjects.length) return lb.fail(400, "The number of lessons must match the subjects you selected.");
   if (count < 2 || count > SERIES_MAX) return lb.fail(400, `Say how many lessons you want, from 2 to ${SERIES_MAX} (for example "four science lessons about the solar system").`);
   if (r.topic.length < 3) return lb.fail(400, "Tell the AI what the lessons are about.");
   if (!ai) return lb.fail(503, "AI lesson drafting is not switched on yet. You can still build lessons by hand.", "AI_UNAVAILABLE");
@@ -1091,10 +1101,14 @@ export async function planSeriesWithAi(
   let plan: any = null;
   try {
     const prompt = [
-      `Plan a sequence of exactly ${count} connected lessons of about ${r.minutes} minutes each.`,
+      subjects.length
+        ? `Plan exactly ${count} SEPARATE full lessons (about ${r.minutes} minutes each) in this subject order: ${subjects.map((subject, i) => `${i + 1}. ${subject}`).join("; ")}. Do NOT blend subjects or omit any subject.`
+        : `Plan a sequence of exactly ${count} connected lessons of about ${r.minutes} minutes each.`,
       `Parent's request: "${clip(request.request, 600)}"`,
-      `Subject: ${r.area || "(infer from the request)"}. Topic: ${r.topic}. Child: ${r.year || "year level not stated"}. ${r.delivery === "independent" ? "The child works independently." : "A parent teaches alongside the child."}${r.theme ? ` Theme to weave in: ${r.theme}.` : ""}`,
-      "Each lesson teaches ONE clear concept that fits in the time. Order them so each builds on the previous one, with no repetition. Use accurate, standard content for this age. Do not invent facts.",
+      `Subject: ${subjects.length ? subjects.join(" and ") : (r.area || "(infer from the request)")}. Topic: ${r.topic}. Child: ${r.year || "year level not stated"}. ${r.delivery === "independent" ? "The child works independently." : "A parent teaches alongside the child."}${r.theme ? ` Theme to weave in: ${r.theme}.` : ""}`,
+      subjects.length
+        ? "Each lesson must teach ONE distinct age-appropriate concept from ITS OWN named subject. Preserve the parent's common theme in both. The Mathematics lesson must teach mathematics and the Science lesson must teach science. Titles and goals must match the subject in their assigned order. Do not invent facts."
+        : "Each lesson teaches ONE clear concept that fits in the time. Order them so each builds on the previous one, with no repetition. Use accurate, standard content for this age. Do not invent facts.",
       'Reply with ONE JSON object only: {"series_title":string,"lessons":[{"title":string,"goal":string (one sentence: what the child will be able to do or explain)}]}',
     ].join("\n");
     const out = await ai.run(opts.model || DEFAULT_MODEL, { messages: [{ role: "system", content: "You are an experienced Australian teacher planning a unit of work. Reply with valid JSON only." }, { role: "user", content: prompt }], max_tokens: 1500, temperature: 0.3 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
@@ -1103,7 +1117,12 @@ export async function planSeriesWithAi(
     await done("failed");
     return lb.fail(502, "The AI service didn't respond. Nothing was used from your allowance; please try again.", "AI_FAILED");
   }
-  const lessons = (Array.isArray(plan?.lessons) ? plan.lessons : []).map((l: any) => ({ title: clip(l?.title, 150), goal: clip(l?.goal, 300) })).filter((l: any) => l.title);
+  const lessons = (Array.isArray(plan?.lessons) ? plan.lessons : []).map((l: any, i: number) => {
+    const title = clip(l?.title, 120);
+    const subject = subjects[i];
+    return { title: subject && title && !title.toLowerCase().startsWith(subject.toLowerCase())
+      ? `${subject} — ${title}` : title, goal: clip(l?.goal, 300), ...(subject ? { learning_area: subject } : {}) };
+  }).filter((l: any) => l.title);
   if (lessons.length < count) {
     await done("failed");
     return lb.fail(502, "The AI couldn't plan that set of lessons. Nothing was used from your allowance; please try again.", "AI_FAILED");
