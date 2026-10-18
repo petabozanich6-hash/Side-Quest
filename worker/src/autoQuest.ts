@@ -16,6 +16,7 @@
  */
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
+import { fastLessonPipelineEnabled } from "./aiPipeline";
 import { catalogueFor, trackerFor, programFor, DEFAULT_RULES, type Catalogue } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { normArea } from "./outcomeMatch";
@@ -539,7 +540,7 @@ export function registerAutoQuest(app: App, g: Guards) {
   app.post("/api/auto-quest/proposals/:id/generate", g.auth, g.parent, async (c) => {
     const u = c.get("user");
     const body = await c.req.json().catch(() => ({})) as { topic?: string };
-    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: c.env.AI_FAST_PIPELINE === "true", topic: body.topic });
+    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env), topic: body.topic });
     return r.ok ? c.json(r.proposal) : send(c, r);
   });
   app.put("/api/auto-quest/proposals/:id/lesson", g.auth, g.parent, async (c) => {
