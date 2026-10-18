@@ -86,9 +86,22 @@ export async function planSummary(db: DB, familyId: string, now: Date = new Date
       }
     } catch { /* Owner HQ audit tables may not exist in an older local setup. */ }
   }
-  const freeAi = await db.prepare(
-    "SELECT status FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
-  ).bind(familyId).first<{ status: string }>();
+  let freeAi = await db.prepare(
+    "SELECT id, status, created_at FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
+  ).bind(familyId).first<{ id: string; status: string; created_at: string }>();
+  // If a Worker was interrupted, let the family retry after a reasonable timeout.
+  // A lesson saved just before an interruption still counts, even when the usage
+  // record was left pending, so refreshing the page never grants a second copy.
+  if (freeAi?.status === "pending" && Date.parse(freeAi.created_at) < now.getTime() - 30 * 60 * 1000) {
+    const saved = await db.prepare(
+      "SELECT id FROM lessons WHERE family_id = ? AND created_at >= ? AND json_extract(data, '$.ai_generated') = 1 LIMIT 1"
+    ).bind(familyId, freeAi.created_at).first();
+    await db.prepare("UPDATE ai_usage SET status = ? WHERE id = ? AND status = 'pending'")
+      .bind(saved ? "ok" : "failed", freeAi.id).run();
+    freeAi = await db.prepare(
+      "SELECT id, status, created_at FROM ai_usage WHERE family_id = ? AND kind = 'free_lesson_draft' AND status IN ('pending','ok') LIMIT 1"
+    ).bind(familyId).first<{ id: string; status: string; created_at: string }>();
+  }
   return {
     preview_gift,
     free_ai_lesson: {
