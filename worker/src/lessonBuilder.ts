@@ -797,23 +797,39 @@ export async function reviewSubmission(
   const sub = await db.prepare("SELECT * FROM submissions WHERE id = ? AND family_id = ?").bind(submissionId, familyId).first<any>();
   if (!sub) return fail(404, "Not found");
   const status = String(body.status);
-  // A lost response must not create extra evidence or overwrite an earlier decision.
-  // "awaiting_help" is also a reviewable submission (a child requested help).
+  // "awaiting_help" is reviewable (the child asked for a grown-up).
+  // A parent may revisit the outcome judgements on already reviewed work;
+  // doing so must not create fresh evidence or grant XP a second time.
+  const ts = nowIso(now);
+  const mappings = Array.isArray(body.outcome_mappings)
+    ? body.outcome_mappings.slice(0, 20)
+    : parseJson<unknown[]>(sub.outcome_mappings, []);
+  const feedback = body.feedback_text === undefined
+    ? String(sub.parent_feedback ?? "")
+    : String(body.feedback_text ?? "").slice(0, 4000);
+  const nextStep = body.next_step === undefined ? sub.next_step ?? null : body.next_step ?? null;
   if (sub.status !== "submitted" && sub.status !== "awaiting_help") {
-    return sub.status === status
-      ? { ok: true, xp_awarded: 0 }
-      : fail(409, "This work has already been reviewed. Refresh to see the latest decision.", "ALREADY_REVIEWED");
+    if (sub.status !== status) {
+      return fail(409, "This work has already been reviewed. Refresh to see the latest decision.", "ALREADY_REVIEWED");
+    }
+    const same = feedback === String(sub.parent_feedback ?? "")
+      && nextStep === (sub.next_step ?? null)
+      && JSON.stringify(mappings) === JSON.stringify(parseJson<unknown[]>(sub.outcome_mappings, []));
+    if (same) return { ok: true, xp_awarded: 0 };
+    await db.prepare(
+      "UPDATE submissions SET parent_feedback = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ? AND family_id = ? AND status = ?"
+    ).bind(feedback, nextStep, JSON.stringify(mappings), ts, parentId, sub.id, familyId, status).run();
+    await safely("re-review", () => trackSubmission(db, familyId, sub.id, now));
+    return { ok: true, xp_awarded: 0 };
   }
 
-  const ts = nowIso(now);
-  const mappings = Array.isArray(body.outcome_mappings) ? body.outcome_mappings.slice(0, 20) : [];
   const amount = XP_FOR_REVIEW[status] ?? 0;
   // D1 batch is transactional: a failed evidence insert or XP claim must not leave
   // the submission marked approved while its records are only half saved.
   const writes = [
     db
       .prepare("UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?")
-      .bind(String(body.feedback_text ?? "").slice(0, 4000), status, body.next_step ?? null, JSON.stringify(mappings), ts, parentId, sub.id),
+      .bind(feedback, status, nextStep, JSON.stringify(mappings), ts, parentId, sub.id),
     db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'")
       .bind(status, ts, sub.assignment_id),
   ];
