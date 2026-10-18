@@ -893,7 +893,6 @@ export async function draftLessonWithAi(
     raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, opts.fastPipeline === true || ownerPreview);
     if (raw) {
       draft = normaliseDraft(raw, spec);
-    draft.additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
       issues = qualityIssues(draft, spec);
       const fix = issues.filter((i) => i.repair || i.hard);
       if (fix.length) {
@@ -951,6 +950,8 @@ export async function draftLessonWithAi(
     draft.outcome_codes = outcomes.map((o) => o.code);
     draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
   }
+  // Apply reviewable subject links after repair so no repaired draft loses them.
+  (draft as any).additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
   const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
   if (!created.ok) {
     await mark("failed");
