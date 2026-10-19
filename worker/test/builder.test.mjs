@@ -855,7 +855,7 @@ test("maths prompts teach algebra instead of merely stating rules", () => {
   const teaching = aid.sectionPrompt(base, design, 0, []);
   assert.match(teaching, /3 \+ 2 = 5/); // keep the planned actual model, not just the section title
   assert.match(teaching, /WHY|why/i);
-  assert.match(aid.examplePrompt(base, design, 0, []), /ORIGINAL problem/);
+  assert.match(aid.examplePrompt(base, design, 0, []), /verify in the original|check by substitution|original equation/i);
   const expressionOnly = aid.mathsTeachingFocus({ ...base, topic: "Understanding algebraic expressions", goal: "Collect like terms" });
   assert.match(expressionOnly, /ALGEBRA EXPRESSIONS/);
   assert.doesNotMatch(expressionOnly, /ALGEBRA EQUATIONS/);
