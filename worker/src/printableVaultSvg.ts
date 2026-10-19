@@ -47,6 +47,8 @@ function maze(size:number,seed:number,answer=false){let st=seed>>>0;const rand=(
 function dice(x:number,y:number,u:number){const cells=[[1,0],[0,1],[1,1],[2,1],[3,1],[1,2]],set=new Set(cells.map(q=>q.join(",")));let z="";for(let i=0;i<cells.length;i++){const c=cells[i][0],r=cells[i][1],X=x+c*u,Y=y+r*u;z+=text(X+u*.41,Y+u*.60,String(i+1),25,'font-weight="bold"');const edges=[[X,Y,X+u,Y,0,-1],[X+u,Y,X+u,Y+u,1,0],[X+u,Y+u,X,Y+u,0,1],[X,Y+u,X,Y,-1,0]];for(const v of edges){z+=line(v[0],v[1],v[2],v[3],'stroke-dasharray="'+(set.has([c+v[4],r+v[5]].join(","))?"9 6":"none")+'"');}}return z;}
 function art(item:VaultPicture,page:number,guide:boolean) {
  const id=item.id,spooky=/haunted|halloween|spider|bat-puppet|pumpkin|trick-or-treat|monster/.test(id);let z="";
+ if(guide&&id.includes("maze"))return text(88,222,"SOLUTION ROUTE: trace the green path",20,'font-weight="bold"')+
+ maze(12,25+id.length,true)+(spooky?castle(367,247,.35,true):dragon(177,245,.30));
  if(guide){z+=text(84,230,"PARENT GUIDE / HOW TO PLAY",24,'font-weight="bold"');for(let k=0;k<item.guide.length;k++)z+=text(92,295+k*57,(k+1)+". "+item.guide[k].slice(0,82),17);
  z+=dragon(420,740,.55)+pumpkin(193,787,.55,true);return z;}
  if(id.includes("maze")){z+=text(88,242,"Find a route from START to the treasure!",17);z+=maze(page===0?12:page===1?17:22,25+page+id.length);
@@ -96,7 +98,13 @@ function art(item:VaultPicture,page:number,guide:boolean) {
  if(id.includes("detective")||id.includes("match-up")){
  z+=text(86,215,"Cut out the six pairs of picture cards and match them!",17);
  for(let i=0;i<6;i++){const X=80+(i%3)*200,Y=272+Math.floor(i/3)*302;z+=rect(X,Y,183,264,'rx="14"')+text(X+18,Y+35,spooky?["GHOST","BAT","SPIDER","PUMPKIN","SKULL","DRAGON"][i]:["FOX","OWL","FROG","RABBIT","DEER","BIRD"][i],16,'font-weight="bold"');
- z+=spooky?[ghost,bat,spider,pumpkin,()=>skull(X+89,Y+147,.9),dragon][i](X+89,Y+147,.6):i%2?bat(X+89,Y+149,.4):dragon(X+89,Y+150,.29);}
+ if(spooky){if(i===0)z+=ghost(X+89,Y+147,.6);
+ else if(i===1)z+=bat(X+89,Y+147,.6);
+ else if(i===2)z+=spider(X+89,Y+147,.6);
+ else if(i===3)z+=pumpkin(X+89,Y+147,.6,true);
+ else if(i===4)z+=skull(X+89,Y+147,.9);
+ else z+=dragon(X+89,Y+147,.35);
+ }else z+=i%2?bat(X+89,Y+149,.4):dragon(X+89,Y+150,.29);}
  return z;}
  if(id.includes("illusion")){if(page===0){z+=text(87,217,"Colour alternating circles to make a moving illusion.",18);for(let r=12;r<251;r+=11)z+=cir(368,565,r);for(let i=0;i<24;i++){const t=i*Math.PI/12;z+=line(368+Math.cos(t)*24,565+Math.sin(t)*24,368+Math.cos(t)*248,565+Math.sin(t)*248);}}
  else{z+=text(86,216,"Colour the triangles; cut them out and tessellate!",17);for(let r=0;r<7;r++)for(let c=0;c<6;c++){const X=88+c*101+(r%2?44:0),Y=290+r*87;if(X+86>650)continue;z+=path("M "+X+" "+(Y+78)+" l 43 -78 l 43 78 Z");}}
@@ -114,7 +122,7 @@ function fantasyScene(){return castle(360,563,.77,true)+dragon(171,623,.68)+moon
 export function renderVaultSvg(item:VaultPicture,page:number,variant:string):string{
  const ink=variant==="ink";const guide=variant==="guide";
  if(page<0||page>=item.pages)throw new Error("Invalid image page");
- const styled='<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 744 1052" role="img" aria-label="'+attr(item.title)+'"><style>text{font-family:Georgia,Times New Roman,serif;fill:#1d392f}path,polygon,polyline,circle,rect{stroke:#203a30;stroke-width:2.3;stroke-linejoin:round;stroke-linecap:round;fill:none}text{stroke:none}svg{background:#fff} @media print{svg{width:210mm;height:297mm}}</style><rect width="744" height="1052" fill="'+(ink?"#fff":"#fffdf6")+'" stroke="none"/>';
+ const styled='<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 744 1052" role="img" aria-label="'+attr(item.title)+'"><style>text{font-family:Georgia,Times New Roman,serif;fill:#1d392f}path,polygon,polyline,circle,rect{stroke:#203a30;stroke-width:2.3;stroke-linejoin:round;stroke-linecap:round}path:not([fill]),polygon:not([fill]),polyline:not([fill]),circle:not([fill]),rect:not([fill]){fill:none}text{stroke:none}svg{background:#fff} @media print{svg{width:210mm;height:297mm}}</style><rect width="744" height="1052" fill="'+(ink?"#fff":"#fffdf6")+'" stroke="none"/>';
  return styled+frame(ink,item.title,guide?"Parent guide":item.category,guide?0:page,guide?1:item.pages)+
  art(item,guide?0:page,guide)+"</svg>";
 }
