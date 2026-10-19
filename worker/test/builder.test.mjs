@@ -227,6 +227,25 @@ test("parent review rolls back fully if evidence cannot be saved, then succeeds 
   assert.equal((await lb.reviewSubmission(db, "another-family", "parent", sub.id, approve, NOW)).status, 404);
 });
 
+test("legacy submissions with no lesson_id can still be approved safely", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const sid = child(db, fam);
+  const l = await mk(db, fam);
+  const a = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).assignment;
+  const sub = await lb.submitWork(db, { id: sid, family_id: fam },
+    { assignment_id: a.id, needs_help: true, response_text: "Original work" }, NOW);
+  assert.ok(sub.ok);
+  db.raw.prepare("UPDATE submissions SET lesson_id = NULL WHERE id = ?").run(sub.id);
+  const approved = await lb.reviewSubmission(db, fam, "parent", sub.id,
+    { status: "demonstrated", feedback_text: "Well done" }, NOW);
+  assert.ok(approved.ok);
+  assert.equal(approved.xp_awarded, 45);
+  assert.equal(db.raw.prepare("SELECT lesson_id FROM lesson_evidence WHERE child_id = ?").get(sid).lesson_id, l.id);
+  assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id = ?").get(sub.id).status, "demonstrated");
+  assert.equal(db.raw.prepare("SELECT response_text FROM submissions WHERE id = ?").get(sub.id).response_text, "Original work");
+});
+
 test("a missing approval evidence table returns a safe error without changing work", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
