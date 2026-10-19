@@ -23,6 +23,7 @@ const nav = [
   { to: "/parent/assignments", icon: ClipboardList, label: "Assignments", testid: "nav-assignments" },
   { to: "/parent/learning-plans", icon: FileCheck, label: "Learning plans", testid: "nav-plans" },
   { to: "/parent/reading-log", icon: BookOpen, label: "Reading log", testid: "nav-reading" },
+  { to: "/parent/dragons-library", icon: Library, label: "Dragon’s Library", testid: "nav-dragons-library" },
   { to: "/parent/word-hoard", icon: Sparkles, label: "Word Hoard", testid: "nav-word-hoard" },
   { to: "/parent/side-quest", icon: Wand2, label: "Seasonal Surprises", testid: "nav-sidequest" },
   { to: "/parent/evidence", icon: Camera, label: "Evidence Backpack", testid: "nav-evidence" },

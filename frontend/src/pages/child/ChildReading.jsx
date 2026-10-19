@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { ArrowLeft, BookOpen } from "lucide-react";
@@ -20,9 +20,10 @@ const STATUS = {
 
 export default function ChildReading() {
   const nav = useNavigate();
+  const [searchParams] = useSearchParams();
   const today = new Date().toISOString().slice(0, 10);
   const blank = { title: "", author: "", read_date: today, duration_minutes: 20, pages: "", book_type: "fiction", reading_mode: "independent" };
-  const [form, setForm] = useState(blank);
+  const [form, setForm] = useState(() => ({...blank, title:(searchParams.get("book") || "").slice(0,120), author:(searchParams.get("author") || "").slice(0,80)}));
   const [items, setItems] = useState([]);
   const [busy, setBusy] = useState(false);
 

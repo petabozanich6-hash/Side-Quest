@@ -67,6 +67,7 @@ import ChildAchievements from "./pages/child/ChildAchievements";
 import ChildWordHoard from "./pages/child/ChildWordHoard";
 import PetRoom from "./pages/child/PetRoom";
 import ChildReading from "./pages/child/ChildReading";
+import DragonLibrary from "./pages/shared/DragonLibrary";
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
@@ -127,6 +128,7 @@ function Router() {
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
         <Route path="printable-vault" element={<PrintableVault />} />
+        <Route path="dragons-library" element={<DragonLibrary mode="parent" />} />
         <Route path="homeschool-compass" element={<HomeschoolCompass />} />
         <Route path="evidence" element={<EvidencePage />} />
         <Route path="calendar" element={<CalendarPage />} />
@@ -151,6 +153,7 @@ function Router() {
         <Route path="word-hoard" element={<ChildWordHoard />} />
         <Route path="room" element={<PetRoom />} />
         <Route path="reading" element={<ChildReading />} />
+        <Route path="dragons-library" element={<DragonLibrary mode="child" />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
