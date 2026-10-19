@@ -182,7 +182,7 @@ function flight(p:Page){
   draw(125,"A - LONG",false);draw(325,"B - SHORT",true);
 }
 function island(p:Page){
-  const x=143,y=235,z=62;
+  const x=155,y=140,z=50;
   p.pen(0.1,0.3,0.25);
   for(let n=0;n<=5;n++){p.line(x,y+n*z,x+5*z,y+n*z);p.line(x+n*z,y,x+n*z,y+5*z);}
   for(let n=0;n<5;n++){p.text(x+22+n*z,y+5*z+12,String.fromCharCode(65+n),12,true);p.text(x-22,y+22+(4-n)*z,String(n+1),12,true);}
@@ -215,14 +215,18 @@ function renderItem(item:VaultItem,ink:boolean,guide=false):string{
     for(const q of item.questions.slice(1)){ yy=p.paragraph(48,yy,"- "+q,92,9)-4;if(yy<60)break; }
   }else{
     let yy=657;
-    if(item.id==="ember-island-map"){island(p);yy=665;}
-    const qs=item.id==="ember-island-map"?item.questions.slice(0,2):item.questions;
-    for(let i=0;i<qs.length;i++){
-      const q=qs[i];yy=p.paragraph(47,yy,(i+1)+". "+q,89,11)-12;
-      if(item.id!=="secret-library" || i>0){p.line(49,yy,540,yy);yy-=31;}
-      if(yy<140)break;
+    const map=item.id==="ember-island-map";
+    if(map)island(p);
+    if(item.id==="secret-library"){
+      yy=p.paragraph(47,yy,item.questions[0],88,11)-16;
     }
-    if(item.id==="ember-island-map")p.text(48,180,"Use the coordinate grid and discuss your route.",11);
+    const qs=item.id==="secret-library"?item.questions.slice(1):item.questions;
+    for(let i=0;i<qs.length;i++){
+      yy=p.paragraph(47,yy,(i+1)+". "+qs[i],89,11)-10;
+      if(!map){p.line(49,yy,540,yy);yy-=30;}
+      if(yy<(map?450:140))break;
+    }
+    if(map)p.text(48,102,"Use the grid and record answers on this page or on spare paper.",10);
   }
   p.pen(0.52,0.56,0.52);p.line(42,45,551,45);
   p.fill(0.24,0.27,0.24);p.text(42,27,"Original Side-Quest activity  |  Print at 100% on A4",9);
