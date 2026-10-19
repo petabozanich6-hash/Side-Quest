@@ -118,7 +118,7 @@ function stableShuffle<T>(items: T[], seed: string, key: (t: T) => string): T[] 
  *  This protects already-assigned immutable lesson snapshots as well as new drafts. */
 export function childFacingPrompt(value: unknown): string {
   if (typeof value !== "string") return "";
-  return value.replace(/(^|[?!.][ \t]+|\r?\n[ \t]*)(?:the[ \t]+)?(?:(?:correct|model|sample|expected|final|worked)[ \t]+)?(?:answer(?:[ \t]+key)?|solution)[ \t]*(?::|=|is\b|→)[ \t]*[^\r\n]*/gim, "$1").trim();
+  return value.replace(/(^|[?!.][ \t]+|\r?\n[ \t]*)(?:the[ \t]+)?(?:(?:correct|model|sample|expected|final|worked)[ \t]+)?(?:answer(?:[ \t]+key)?|solution|check)[ \t]*(?::|=|is\b|→)[ \t]*[^\r\n]*/gim, "$1").trim();
 }
 
 export function hasEmbeddedAnswer(value: unknown): boolean {
