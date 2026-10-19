@@ -113,6 +113,8 @@ export default function HqOverview() {
               <h3 className="text-sm font-bold" style={{ color: GREEN }}>Lesson approval storage · read-only check</h3>
               {o.health.review_storage.status === "ready" ? (
                 <p className="text-xs text-emerald-800 mt-1">Required review, draft and evidence columns are present.</p>
+              ) : o.health.review_storage.status === "legacy_compatible" ? (
+                <p className="text-xs text-amber-900 mt-1">Older evidence storage detected: the file_ids column is absent. Lesson approval uses safe compatibility mode; a separate backed-up schema repair is still recommended.</p>
               ) : o.health.review_storage.status === "needs_attention" ? (
                 <div className="text-xs text-rose-800 mt-1">
                   <p>Missing tables or columns. Do not attempt further approvals until the production schema is repaired with a verified backup.</p>
