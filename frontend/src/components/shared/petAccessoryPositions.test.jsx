@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { act } from "react";
+import { act } from "react-dom/test-utils";
 import PetWearables from "./PetWearables";
 import { petSpots, maxThreeBySlot } from "./petAccessoryPositions";
 
@@ -15,7 +15,7 @@ test("turtle accessories follow turtle anatomy instead of a universal emoji stri
 
 test("only three equipped pieces show and conflicting headwear replaces itself", () => {
   expect(maxThreeBySlot(["scarf","flower_crown","party_hat","backpack","shades"]))
-    .toEqual(["backpack","shades","party_hat"].sort(() => 0) /* replaced headwear; newest slots retained */);
+    .toEqual(["party_hat","backpack","shades"]);
 });
 
 test("worn accessories draw as SVG wearables on the pet canvas", async () => {
