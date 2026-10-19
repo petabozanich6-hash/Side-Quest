@@ -288,6 +288,16 @@ test("owner can diagnose missing approval storage without exposing family record
   assert.equal((await h.req("/admin/overview", { token: parent.token })).status, 404);
 });
 
+test("legacy evidence column appears as compatible, not fully repaired, in owner overview", async () => {
+  const { h, owner } = await ownerSetup();
+  await stepUp(h, owner);
+  h.db.raw.exec("ALTER TABLE lesson_evidence DROP COLUMN file_ids");
+  const response = await h.req("/admin/overview", { token: owner.token });
+  assert.equal(response.status, 200);
+  assert.equal(response.json.health.review_storage.status, "legacy_compatible");
+  assert.deepEqual(response.json.health.review_storage.missing, ["lesson_evidence.file_ids"]);
+});
+
 test("privacy: customer list and detail carry metadata and counts only, never children's or private content", async () => {
   const { h, owner } = await ownerSetup();
   const parent = await h.register("family@example.com", "Parent " + SECRET);
