@@ -84,7 +84,7 @@ function FeaturedQuest({ quest, ready, feedback, senior }) {
   const returned = ["needs_revision", "needs_more_practice"].includes(quest.status);
   const color = palette(quest);
   const journey = quest.resume;
-  const showProgress = journey && Number.isFinite(journey.step) && Number.isFinite(journey.total) && journey.total > 1;
+  const showProgress = !returned && journey && Number.isFinite(journey.step) && Number.isFinite(journey.total) && journey.total > 1;
   const pct = showProgress ? Math.round(Math.min(100, Math.max(0, journey.step / (journey.total - 1) * 100))) : 0;
   return (
     <section className="overflow-hidden rounded-[2rem] border-2 border-[#D4C8A8] bg-[#FFFCF5] shadow-md" data-testid="continue-quest">
