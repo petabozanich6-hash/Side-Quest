@@ -52,3 +52,24 @@ These need an integration QA pass; do not add fake buttons.
 
 ## Content policy
 Activities are first-party. Any external material needs verified reuse rights and correct attribution; no claim of curriculum accreditation. Publish new printables only after subject, safety, licensing and print-layout editorial QA.
+
+## Phase 2 — activity-first collection
+
+The new collection contains **10 original, paper-first designs** instead of question sheets, with multi-page A4 PDF artwork. Each printable is generated only after paid-parent or verified-owner entitlement checks, preserving the existing free-preview lock.
+
+| ID | Format | What is physically on the page |
+|---|---|---|
+| lost-treasure-maze | maze | 10×10 and 18×18 seeded perfect mazes; answer path in parent solution PDF |
+| moving-dragon-puppet | buildable | body/head, wings, tail, two legs; pin joint markers |
+| enchanted-castle-colouring | colouring | simple castle scene and detailed seek-and-colour fantasy scene |
+| race-to-hoard | board game | 36 playable numbered path squares, four tokens and printable folding die |
+| paper-medieval-castle | craft | tabbed four-sided tower net plus gate/wall sections with stand folds |
+| design-dragon-egg | craft | three patterned eggs, baby dragon and a glue-tab nest strip |
+| forest-detective | cut/match | six animal cards, six footprint cards and three habitat cards |
+| potion-spinner | spinner game | ingredient and effect wheels, pointers and invented potion cards |
+| illusion-gallery | art puzzle | concentric optical illusion and a cut-out triangle tessellation |
+| goblin-workshop-escape | escape game | cut-out Caesar decoder, secret message and picture-count final lock |
+
+Bundles: Mazes and Escape Quests, Cut Build and Make, Colour and Create, Print and Play. Each includes member-only colour and ink-saver variants.
+
+Editorial checks: paper-cut joint fit and spinner assembly need hands-on testing. Detailed vector originals are intentionally simple to print with no graphics hosting or copyrighted material. Printed off-site previews should never bypass membership. No auto-assignment or state-outcome tagging in this phase.
