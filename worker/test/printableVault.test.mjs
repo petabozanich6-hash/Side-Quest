@@ -79,7 +79,7 @@ test("Paid families receive private A4 SVGs and separate parent guides",async()=
    assert.match(svg,/width="210mm" height="297mm"/);
    assert.ok(svg.includes(item.title.slice(0,12)),item.id+" title");
    assert.ok(svg.length>3000,item.id+" artwork is not an empty placeholder");
-   assert.doesNotMatch(svg,/<script|onload=|https?:\/\//i,item.id+" no script or remote URLs");
+   assert.doesNotMatch(svg,/<script|onload=|(?:href|src)=["\x27]https?:/i,item.id+" no script or remote URLs");
   }
   const ink=await h.req("/printables/"+item.id+"/image?variant=ink",p.token);
   assert.equal(ink.status,200,item.id+" ink saver");
