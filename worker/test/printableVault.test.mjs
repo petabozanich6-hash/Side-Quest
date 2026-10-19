@@ -8,11 +8,13 @@ let seq=0;
 function harness() {
   const db=makeDb();
   const storage=new Map();
+  const metadata=new Map();
   const env={DB:db,JWT_SECRET:"printable-vault-test-secret",
     BUCKET:{
       head:async key=>storage.has(key)?{key}:null,
       get:async key=>storage.has(key)?{body:new Response(storage.get(key)).body}:null,
-      put:async (key,bytes)=>{storage.set(key,bytes);return {key};}
+      put:async (key,bytes,options)=>{storage.set(key,bytes);metadata.set(key,options?.customMetadata||{});return {key};},
+      list:async ({prefix}={})=>({objects:[...storage.keys()].filter(key=>key.startsWith(prefix||"")).map(key=>({key,customMetadata:metadata.get(key),uploaded:new Date()})),truncated:false})
     }
   };
   const ctx={waitUntil(){},passThroughOnException(){}};
@@ -137,4 +139,34 @@ test("Owner uploads become immediately viewable and printable by paid families, 
    assert.equal((await h.req(name+"?variant=ink",blocked.token)).status,402);
  }
  assert.equal((await h.req(name)).status,401);
+});
+
+test("Owner can add brand-new solar-system activities without a code whitelist or migration",async()=>{
+ const h=harness(),owner=await h.parent("FREE_PREVIEW"),paid=await h.parent("ACTIVE_MONTHLY");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')")
+  .run(crypto.randomUUID(),owner.userId);
+ const bytes=new Uint8Array(33);
+ for(const [i,b] of [137,80,78,71,13,10,26,10].entries())bytes[i]=b;
+ const dv=new DataView(bytes.buffer);dv.setUint32(16,1024);dv.setUint32(20,1536);
+ const id="solar-system-planet-quest";
+ const path="/printables/admin/assets/"+id+"?variant=colour&title=Solar%20System%20Planet%20Quest&category=Learning%20%26%20Discovery";
+ const saved=await h.req(path,owner.token,"POST",bytes,"image/png");
+ assert.equal(saved.status,200);
+ assert.equal((await saved.json()).ok,true);
+ const ownerIndex=await (await h.req("/printables",owner.token)).json();
+ assert.equal(ownerIndex.ready_count,1);
+ const card=ownerIndex.items.find(item=>item.id===id);
+ assert.equal(card.title,"Solar System Planet Quest");
+ assert.equal(card.category,"Learning & Discovery");
+ assert.equal(card.available,true);
+ assert.equal(card.pages,1);
+ const paidIndex=await (await h.req("/printables",paid.token)).json();
+ assert.equal(paidIndex.items.find(item=>item.id===id).available,true);
+ assert.equal((await h.req("/printables/"+id+"/image",paid.token)).status,200);
+ const preview=await h.parent("FREE_PREVIEW");
+ const freeIndex=await (await h.req("/printables",preview.token)).json();
+ assert.equal(freeIndex.items.find(item=>item.id===id).available,false);
+ assert.equal((await h.req("/printables/"+id+"/image",preview.token)).status,402);
+ assert.equal((await h.req("/printables/admin/assets/"+id,paid.token,"POST",bytes,"image/png")).status,403);
+ assert.equal((await h.req("/printables/../../foo/image",paid.token)).status,404);
 });
