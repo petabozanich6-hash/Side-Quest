@@ -150,7 +150,9 @@ function cube(p:Page){
       if(!tab){p.line(a[0],a[1],b[0],b[1]);return;}
       p.line(a[0],a[1],b[0],b[1],true);
       const u=dx*14,v=dy*14;
-      p.polygon([[a[0],a[1]],[a[0]+u+(dy?11:0),a[1]+v+(dx?11:0)],[b[0]+u-(dy?11:0),b[1]+v-(dx?11:0)],[b[0],b[1]]]);
+      const c=[a[0]+u+(dy?11:0),a[1]+v+(dx?11:0)];
+      const d=[b[0]+u-(dy?11:0),b[1]+v-(dx?11:0)];
+      p.line(a[0],a[1],c[0],c[1]);p.line(c[0],c[1],d[0],d[1]);p.line(d[0],d[1],b[0],b[1]);
     });
   });
   p.text(85,198,"SOLID = CUT   /   DASHED = FOLD   /   TABS = GLUE INSIDE",9,true);
@@ -159,9 +161,9 @@ function pocket(p:Page){
   p.pen(0.1,0.3,0.2);p.ops.push("1.8 w");
   const x=180,y=320,w=230,h=200,t=35;
   p.line(x,y+h,x+w,y+h);
-  p.polygon([[x,y],[x-t,y+20],[x-t,y+h-20],[x,y+h]]);
-  p.polygon([[x+w,y],[x+w+t,y+20],[x+w+t,y+h-20],[x+w,y+h]]);
-  p.polygon([[x,y],[x+30,y-55],[x+w-30,y-55],[x+w,y]]);
+  p.line(x,y,x-t,y+20);p.line(x-t,y+20,x-t,y+h-20);p.line(x-t,y+h-20,x,y+h);
+  p.line(x+w,y,x+w+t,y+20);p.line(x+w+t,y+20,x+w+t,y+h-20);p.line(x+w+t,y+h-20,x+w,y+h);
+  p.line(x,y,x+30,y-55);p.line(x+30,y-55,x+w-30,y-55);p.line(x+w-30,y-55,x+w,y);
   p.line(x,y,x,y+h,true);p.line(x+w,y,x+w,y+h,true);p.line(x,y,x+w,y,true);
   p.text(220,430,"MY TREASURE",18,true);p.text(242,406,"POCKET",18,true);
   p.text(92,429,"GLUE",9);p.text(449,429,"GLUE",9);p.text(243,285,"FOLD UP",10);
