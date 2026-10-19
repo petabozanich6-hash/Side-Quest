@@ -1,8 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
-import { MemoryRouter } from "react-router-dom";
 import ChildStuff from "./ChildStuff";
+
+// Stub links because this Jest environment cannot load react-router/dom directly.
+jest.mock("react-router-dom", () => {
+  const React = require("react");
+  return { Link: ({ to, children, ...props }) => React.createElement("a", { href: to, ...props }, children) };
+});
 
 jest.mock("../../context/AuthContext", () => ({
   useAuth: () => ({ user: { id: "child-test", role: "child", theme: "primary" } }),
@@ -13,7 +18,7 @@ test("My Stuff keeps reading and achievements but never links children to Dragon
   const host = document.createElement("div");
   document.body.appendChild(host);
   const root = createRoot(host);
-  await act(async () => root.render(<MemoryRouter><ChildStuff /></MemoryRouter>));
+  await act(async () => root.render(<ChildStuff />));
   const childDestinations = [...host.querySelectorAll("a")].map(a => a.getAttribute("href"));
   expect(childDestinations).toContain("/child/reading");
   expect(childDestinations).toContain("/child/word-hoard");
