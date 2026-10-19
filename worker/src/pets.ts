@@ -12,6 +12,7 @@ import {
 } from "./data/seasonal";
 import {
   PET_SPECIES,
+  ACCESSORY_SLOTS,
   PLAY_DAILY_CAP,
   PLAY_XP,
   legacyPetView,
@@ -130,14 +131,18 @@ export function registerPets(app: App, g: Guards) {
       changed = true;
     }
     if (Array.isArray(body.accessories)) {
-      pet.accessories = Array.from(
-        new Set(
-          body.accessories
-            .map((item: unknown) => String(item).slice(0, 30))
-            .filter((item: string) => !!item),
-        ),
-      ) as string[];
-      pet.accessories = pet.accessories.slice(0, 10);
+      // Legacy customize must not bypass the wardrobe's unlock/slot rules.
+      const pub: any = await publicPet(c.env.DB, pet);
+      const allowed = new Set<string>(pub.unlocked_accessories || []);
+      const bySlot = new Map<string, string>();
+      for (const raw of body.accessories) {
+        const id = String(raw);
+        const slot = ACCESSORY_SLOTS[id];
+        if (!slot || !allowed.has(id)) continue;
+        bySlot.delete(slot);
+        bySlot.set(slot, id);
+      }
+      pet.accessories = [...bySlot.values()].slice(-3);
       changed = true;
     }
     if (!changed) return jsonDetail(c, "Nothing to update", 400);
@@ -258,14 +263,15 @@ export function registerPets(app: App, g: Guards) {
     if (!Array.isArray(body.accessories)) return jsonDetail(c, "accessories must be a list", 400);
     const pub: any = await publicPet(c.env.DB, pet);
     const allowed = new Set<string>(pub.unlocked_accessories || []);
-    pet.accessories = Array.from(
-      new Set(
-        body.accessories
-          .map((item: unknown) => String(item))
-          .filter((item: string) => allowed.has(item)),
-      ),
-    ) as string[];
-    pet.accessories = pet.accessories.slice(0, 10);
+    const bySlot = new Map<string, string>();
+    for (const raw of body.accessories) {
+      const id = String(raw);
+      const slot = ACCESSORY_SLOTS[id];
+      if (!slot || !allowed.has(id)) continue;
+      bySlot.delete(slot);
+      bySlot.set(slot, id);
+    }
+    pet.accessories = [...bySlot.values()].slice(-3);
     await savePet(c.env.DB, pet);
     return c.json({ accessories: pet.accessories });
   });
