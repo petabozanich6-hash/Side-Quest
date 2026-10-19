@@ -11,7 +11,7 @@ The previous 12-item collection and its question-sheet PDF endpoints have been r
 ## Access
 - GET /api/printables lists metadata only and returns an unlocked flag.
 - GET /api/printables/:id/image?page=0&variant=colour|ink|guide returns server-rendered protected SVG for a particular page.
-- The parent role and an **effective paid plan or verified platform owner role** are checked on each image GET. Ordinary preview and expired families cannot fetch bytes, not even directly by URL. Child accounts cannot view parent guides.
+- The parent role and verified platform-owner role are checked on each image GET. While VAULT_ART_REVIEW_ONLY is true, **only the verified owner** can obtain images, even if a paid customer signs in. After editorial sign-off, set the flag to false to restore paid Family Membership entitlement. Ordinary preview and expired families cannot fetch bytes, not even directly by URL. Child accounts cannot view parent guides.
 - Cache-Control private, no-store; Content-Type image/svg+xml; Content-Security-Policy default-src none (inline style for original artwork).
 - No public /assets PDF or SVG copies.
 - No database migration, Stripe change or per-image AI charge.
@@ -24,6 +24,7 @@ The previous 12-item collection and its question-sheet PDF endpoints have been r
 - **Print / PDF:** opens an A4 print layout; standard browser Print dialog can save as PDF.
 - **Ink-saving:** same artwork on white stock with minimal fills.
 - **Parent guide:** separate instructive image, not baked into the child's activity page.
+- **Art review banner:** signed-in parents who aren't the verified owner see a clear quality-review notice, not a misleading upsell.
 
 ## Release requirements
 1. Automated Worker test, TypeScript check, frontend build and regression suites pass.
