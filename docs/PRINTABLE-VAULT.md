@@ -1,36 +1,43 @@
-# Printable Vault — image-first overhaul
+# Side-Quest premium printable artwork — owner import
 
-## Authoring and quality target
-Side-Quest is selling access to high-quality, first-party printable **activities**, not plain question sheets. The quality reference is the illustrated Preview Collection shown to the owner in ChatGPT. This change is a **technical and vector-template overhaul**; it does not embed the exact generated preview images. Review the real printable artwork before releasing to members.
+## What is deployed
+The Printable Vault is switched to **actual raster illustrations**, using the ten black-and-white Side-Quest-branded activity pages approved by the founder. Code-drawn SVGs and question-style worksheet content are not served as fallbacks.
 
-Every image is scalable SVG with A4 dimensions (210 × 297 mm), so it can be printed or converted into a PDF from the browser's Print / Save as PDF action. All SVG source is authored on the server, with no remote scripts or assets. No AI is used on download. White/ink-saving mode, parent guide mode, and ordinary artwork mode are available.
+All source artwork is kept out of the PUBLIC GitHub repository. Only canonical slugs, page metadata and secure backend code are in the repository.
 
-## New catalogue
-The previous 12-item collection and its question-sheet PDF endpoints have been retired. The current catalogue contains **20 originals**: ten general activity sheets (maze, puppet, colouring, games, castles, dragon eggs, creature matching, potion spinner, optical illusions, goblin escape game), and ten Halloween activity sheets (haunted maze, spiderweb maze pack, bat puppet, pumpkin faces, paper haunted house, trick-or-treat board game, monster match, potion spinner, colouring, escape pumpkin patch).
+### How the artwork is brought into Side-Quest
+1. Download `SideQuest_Premium_Printables_Batch_01.zip` from the accompanying ChatGPT deliverable. It contains 10 print masters plus 10 ink-saving PNGs, each 2480 × 3508 pixels on an A4-proportioned canvas, manifest and README.
+2. Sign in as the **verified platform owner**, open `/parent/printable-vault`, and use **Owner HQ · Premium artwork importer**.
+3. Choose the ZIP **directly**, no extraction necessary. The frontend reads the ZIP locally and sends all 20 PNGs to authenticated, owner-only `POST /api/printables/admin/assets/:id?variant=colour|ink` endpoints.
+4. The Worker checks valid known IDs, A4 dimensions, PNG signature, byte length, and owner role, then stores original image bytes privately in Cloudflare R2 (`BUCKET`, `sidequest-files`), prefix `printable-vault/illustrated-v1/`.
+5. Reload the page to inspect the imported cards, open previews, and print to A4 or save as PDF via browser print.
+6. The collection remains **owner-review-only** until actual maze solvability, board numbering, craft folding, and print layouts are checked and the owner signs off.
 
-## Access
-- GET /api/printables lists metadata only and returns an unlocked flag.
-- GET /api/printables/:id/image?page=0&variant=colour|ink|guide returns server-rendered protected SVG for a particular page.
-- The parent role and verified platform-owner role are checked on each image GET. While VAULT_ART_REVIEW_ONLY is true, **only the verified owner** can obtain images, even if a paid customer signs in. After editorial sign-off, set the flag to false to restore paid Family Membership entitlement. Ordinary preview and expired families cannot fetch bytes, not even directly by URL. Child accounts cannot view parent guides.
-- Cache-Control private, no-store; Content-Type image/svg+xml; Content-Security-Policy default-src none (inline style for original artwork).
-- No public /assets PDF or SVG copies.
-- No database migration, Stripe change or per-image AI charge.
+If the upload stops part-way through, selecting the ZIP again safely replaces already uploaded objects and finishes the rest. Unrecognised PNG names are rejected.
 
-## Parent interface
-- Real member-only illustration thumbnails lazily loaded through authenticated API requests.
-- Search, filters for colouring, crafts, mazes, puzzles and games; Halloween bundled separately.
-- **View:** inspect the actual SVG pages.
-- **Images:** save the underlying A4 SVG pages for reuse.
-- **Print / PDF:** opens an A4 print layout; standard browser Print dialog can save as PDF.
-- **Ink-saving:** same artwork on white stock with minimal fills.
-- **Parent guide:** separate instructive image, not baked into the child's activity page.
-- **Art review banner:** signed-in parents who aren't the verified owner see a clear quality-review notice, not a misleading upsell.
+### Deployed collection (10)
+- lost-treasure-maze
+- moving-dragon-puppet
+- enchanted-castle-colouring
+- race-to-hoard
+- paper-medieval-castle
+- haunted-castle-maze
+- build-a-bat-puppet
+- pumpkin-face-creator
+- trick-or-treat-board-game
+- halloween-colouring-adventure
 
-## Release requirements
-1. Automated Worker test, TypeScript check, frontend build and regression suites pass.
-2. View each of the 20 images at full A4, zoom in and print; ensure cut/fold lines and reading order are usable.
-3. **Physically assemble** all foldable crafts, dice and split-pin activities, testing both Chrome and Safari printing.
-4. Editorial illustration review against the reference previews before commercial release; if images don't meet the standard, keep this pull request unmerged and upgrade the art first.
-5. Inspect game mechanics and parent keys, particularly every maze solution, spinner and cipher.
-6. Check paid, owner, preview, expired, child and unauthenticated access. Verify old PDFs return 404.
-7. Production deploy only after explicit artwork sign-off.
+Other planned activities and Halloween crafts do **not** show the old SVG art while their premium illustration files are outstanding.
+
+## Privacy and security
+- Public GitHub repo carries NO original PNGs; originals are held in private R2.
+- Child and unauthenticated accounts cannot access previews/answers.
+- Even paid members cannot yet download images while `VAULT_ART_REVIEW_ONLY=true`.
+- Only the verified platform owner can upload or download under-review artwork.
+- No presigned R2 URLs or CDN public object keys are sent to the browser. PNG bytes stream through authenticated Worker GETs with `private, no-store`.
+- No database migration; existing R2 BUCKET binding works.
+
+## Release QA
+- Artwork itself is visually approved, but mechanical activity correctness has **not** been proved: a visually attractive AI-drawn maze may be blocked; board games may contain misnumbered squares and model parts may not fit when assembled. Those need individual remediation before the owner disables the review-only release gate.
+- Browser A4 printing should maintain proportions. The PNG canvas is 2480×3508; the original source was lower resolution, so resampling does not invent 300-dpi illustration detail.
+- Before publication, test A4 print margins on home printers and assemble paper parts, using adult supervision for scissors/split pins.
