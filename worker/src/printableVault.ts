@@ -67,86 +67,82 @@ export const VAULT_BUNDLES=[
 ];
 
 
-export const VAULT_ART_REVIEW_ONLY=false;
-type Variant="colour"|"ink";
-type VaultMeta={title:string;category:string;kind:string;ages:string;theme:string;collection:string;materials:string};
-type InventoryItem={id:string;colour:boolean;ink:boolean;meta?:Partial<VaultMeta>;updated?:number};
-const textValue=(value:string|undefined,max:number)=>String(value||"").replace(/[\x00-\x1f\x7f]/g,"").trim().slice(0,max);
-const readableTitle=(id:string)=>id.replace(/^sidequest-/,"").split("-").filter(Boolean).map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" ");
-const FALLBACK_META=(id:string):VaultMeta=>({
- title:readableTitle(id),category:"Learning & Discovery",kind:"activity",ages:"All ages",
- theme:"Discovery",collection:"new-adventures",materials:"Pencils or colouring supplies"
+export const VAULT_ART_REVIEW_ONLY = false; // Premium resources stay paid-only. Owner may add new original artwork.
+const ART_PREFIX="printable-vault/illustrated-v1/";
+const SAFE_ID=/^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const MAX_PNG_BYTES=7_000_000;
+const META_FIELDS=["title","category","ages","minutes","kind","theme","collection","materials","description"] as const;
+const premiumTitle=(id:string)=>id.split("-").map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
+const clean=(s:unknown,limit:number)=>typeof s==="string"?s.trim().slice(0,limit):"";
+const metaOf=(id:string,stored:Record<string,string>={})=>({
+ id,
+ title:clean(stored.title,120)||premiumTitle(id),
+ pages:1,category:clean(stored.category,80)||"Learning & Discovery",
+ ages:clean(stored.ages,30)||"6-14",minutes:Math.min(180,Math.max(5,Number(stored.minutes)||25)),
+ kind:clean(stored.kind,25)||"puzzle",theme:clean(stored.theme,60)||"Science",
+ collection:clean(stored.collection,70)||"science-discovery",
+ materials:clean(stored.materials,150)||"Pencil and colouring pencils",
+ description:clean(stored.description,350)||"An original print-and-play learning activity.",
+ guide:[] as string[]
 });
-const metaFor=(id:string,meta?:Partial<VaultMeta>):VaultPicture=>{
- const known=knownItems.get(id);
- if(known)return known;
- const defaults=FALLBACK_META(id);
- const m={...defaults,...meta};
- return {id,title:textValue(m.title,120)||defaults.title,pages:1,
-   category:textValue(m.category,60)||defaults.category,
-   ages:textValue(m.ages,30)||defaults.ages,minutes:25,
-   kind:textValue(m.kind,30)||defaults.kind,
-   theme:textValue(m.theme,50)||defaults.theme,
-   collection:"new-adventures",
-   materials:textValue(m.materials,100)||defaults.materials,
-   description:"Original Side-Quest printable activity: "+(textValue(m.title,120)||defaults.title)+".",
-   guide:[]};
-};
 const itemMeta=(i:VaultPicture,available:boolean,inkAvailable:boolean)=>({
  id:i.id,title:i.title,category:i.category,ages:i.ages,minutes:i.minutes,
  kind:i.kind,description:i.description,materials:i.materials,theme:i.theme,
  collection:i.collection,pages:1,format:"png",available,ink_available:inkAvailable
 });
-
-/** Discover the owner's entire private collection in R2. Older approved art has no
- * R2 metadata, so keep its original descriptions while allowing unlimited new slugs. */
-async function getInventory(bucket:R2Bucket|undefined):Promise<InventoryItem[]>{
- const found=new Map<string,InventoryItem>();
- for(const old of premiumItems)found.set(old.id,{id:old.id,colour:false,ink:false});
- if(!bucket)return [...found.values()];
- let cursor: string|undefined;
- do{
-  const page=await bucket.list({prefix:ROOT_PREFIX,limit:1000,cursor,include:["customMetadata"]});
-  for(const obj of page.objects){
-   if(!obj.key.startsWith(ROOT_PREFIX))continue;
-   const filename=obj.key.slice(ROOT_PREFIX.length);
-   const match=/^([a-z0-9-]+?)(-ink)?\.png$/.exec(filename);
-   if(!match||!VALID_ID.test(match[1]))continue;
-   const id=match[1],variant:Variant=match[2]?"ink":"colour";
-   const entry:InventoryItem=found.get(id)||{id,colour:false,ink:false};
-   entry[variant]=true;
-   const objectMeta=obj.customMetadata as Partial<VaultMeta>|undefined;
-   if(objectMeta&&Object.keys(objectMeta).length)entry.meta={...entry.meta,...objectMeta};
-   entry.updated=Math.max(entry.updated||0,obj.uploaded?.getTime()||0);
-   found.set(id,entry);
+const validPng=(data:ArrayBuffer)=>{
+ const b=new Uint8Array(data);
+ const magic=[137,80,78,71,13,10,26,10];
+ if(b.length<33||!magic.every((v,i)=>b[i]===v))return false;
+ const dv=new DataView(data);
+ const w=dv.getUint32(16),h=dv.getUint32(20);
+ // Portrait printable images: A4 masters and smaller original art are both accepted.
+ return w>=768&&h>=1024&&w<=8000&&h<=11000&&w/h>=0.65&&w/h<=0.77;
+};
+type StoredVaultArt={id:string;colour:boolean;ink:boolean;metadata:Record<string,string>};
+async function listVaultArt(bucket:R2Bucket):Promise<Map<string,StoredVaultArt>>{
+ const found=new Map<string,StoredVaultArt>();
+ let cursor:string|undefined;
+ do {
+  const result=await bucket.list({prefix:ART_PREFIX,limit:1000,include:["customMetadata"],...(cursor?{cursor}:{})});
+  for(const object of result.objects){
+   const name=object.key.slice(ART_PREFIX.length);
+   const match=/^([a-z0-9]+(?:-[a-z0-9]+)*?)(-ink)?\.png$/.exec(name);
+   if(!match||!SAFE_ID.test(match[1]))continue;
+   const id=match[1],current=found.get(id)||{id,colour:false,ink:false,metadata:{}};
+   if(match[2])current.ink=true;
+   else{current.colour=true;current.metadata=object.customMetadata||{};}
+   found.set(id,current);
   }
-  cursor=page.truncated?page.cursor:undefined;
+  cursor=result.truncated?result.cursor:undefined;
  }while(cursor);
- // Legacy asset objects are still discovered above. No separate database migration.
- return [...found.values()];
+ return found;
 }
-
-export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}){
+export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}) {
  const {limits}=await getEntitlement(db,user.family_id);
- return await isPlatformOwner(db,user.id)||(!VAULT_ART_REVIEW_ONLY&&limits.aiGeneration);
+ return await isPlatformOwner(db,user.id) || (!VAULT_ART_REVIEW_ONLY && limits.aiGeneration);
 }
 export function registerPrintableVault(app:App,g:Guards){
  app.get("/api/printables",g.auth,g.parent,async c=>{
   const owner=await isPlatformOwner(c.env.DB,c.get("user").id);
   const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
-  const inventory=await getInventory(c.env.BUCKET);
-  const newUploads=inventory.filter(x=>!premiumSet.has(x.id)&&x.colour)
-   .sort((a,b)=>(b.updated||0)-(a.updated||0));
-  const order=[...newUploads,...inventory.filter(x=>premiumSet.has(x.id))];
-  const items=order.map(a=>itemMeta(metaFor(a.id,a.meta),unlocked&&a.colour,unlocked&&a.ink));
-  const bundles=[...VAULT_BUNDLES];
-  if(items.some(i=>i.collection==="new-adventures"))bundles.unshift({
-   id:"new-adventures",title:"New Printable Adventures",description:"Freshly uploaded activities and educational discoveries."
+  const found=c.env.BUCKET?await listVaultArt(c.env.BUCKET):new Map<string,StoredVaultArt>();
+  const items=premiumItems.map(i=>{
+   const a=found.get(i.id);
+   return itemMeta(i,unlocked&&!!a?.colour,unlocked&&!!a?.ink);
   });
+  for(const [id,asset] of found){
+   if(premiumSet.has(id)||!asset.colour)continue;
+   items.push(itemMeta(metaOf(id,asset.metadata),unlocked,unlocked&&asset.ink));
+  }
+  const bundles=[...VAULT_BUNDLES].filter(b=>items.some(i=>i.collection===b.id));
+  for(const i of items)if(!bundles.some(b=>b.id===i.collection)){
+   bundles.push({id:i.collection,title:i.collection==="science-discovery"?"Science Discovery Quests":premiumTitle(i.collection),
+    description:"Original hands-on learning activities to print, play and explore."});
+  }
   c.header("Cache-Control","private, no-store");
-  return c.json({unlocked,owner,art_review_only:VAULT_ART_REVIEW_ONLY,items,
-   bundles:bundles.filter(b=>items.some(i=>i.collection===b.id)),
-   format:"png",ready_count:owner?inventory.filter(a=>a.colour).length:undefined});
+  return c.json({unlocked,owner,art_review_only:VAULT_ART_REVIEW_ONLY,items,bundles,
+   format:"png",ready_count:unlocked?items.filter(i=>i.available).length:0});
  });
  const paid=async(c:any,next:any)=>{
   if(!await canAccessPrintableVault(c.env.DB,c.get("user")))
@@ -155,55 +151,48 @@ export function registerPrintableVault(app:App,g:Guards){
  };
  app.get("/api/printables/:id/image",g.auth,g.parent,paid,async c=>{
   const id=c.req.param("id");
-  if(!VALID_ID.test(id))return c.json({detail:"Not found"},404);
+  if(!SAFE_ID.test(id))return c.json({detail:"Not found"},404);
   if(!c.env.BUCKET)return c.json({detail:"Private printable storage is not configured."},503);
   const page=Number(c.req.query("page")||"0");
   if(!Number.isInteger(page)||page!==0)return c.json({detail:"Page not found"},404);
-  const variantParam=c.req.query("variant")||"colour";
-  if(variantParam==="guide")return c.json({detail:"Parent guide is not yet approved."},404);
-  if(variantParam!=="ink"&&variantParam!=="colour")return c.json({detail:"Unknown image variant"},400);
-  const object=await c.env.BUCKET.get(premiumPath(id,variantParam));
+  if(c.req.query("variant")==="guide")return c.json({detail:"Parent guide is not yet approved."},404);
+  const variant=c.req.query("variant")==="ink"?"ink":"colour";
+  const object=await c.env.BUCKET.get(premiumPath(id,variant));
   if(!object)return c.json({detail:"Illustration awaiting owner import."},404);
   c.header("Content-Type","image/png");
   c.header("Cache-Control","private, no-store");
   c.header("X-Content-Type-Options","nosniff");
   return c.body(object.body);
  });
- // Owner-only import: the R2 object itself is the catalogue entry, so adding an
- // activity does not require a code change, D1 migration, or public asset URL.
+ // Only the verified owner may add new resources or replace existing private PNGs.
  app.post("/api/printables/admin/assets/:id",g.auth,g.parent,async c=>{
   if(!await isPlatformOwner(c.env.DB,c.get("user").id))
    return c.json({detail:"Platform-owner access required"},403);
   if(!c.env.BUCKET)return c.json({detail:"Private printable storage is not configured"},503);
   const id=c.req.param("id");
-  if(!VALID_ID.test(id))return c.json({detail:"Invalid printable file name"},400);
-  const variant=c.req.query("variant")||"colour";
-  if(variant!=="colour"&&variant!=="ink")return c.json({detail:"Invalid artwork variant"},400);
+  if(!SAFE_ID.test(id)||id.length>80||id.endsWith("-ink"))return c.json({detail:"Invalid printable name"},400);
+  const variant=c.req.query("variant")==="ink"?"ink":"colour";
   if(c.req.header("content-type")?.split(";")[0].trim().toLowerCase()!=="image/png")
    return c.json({detail:"PNG images only"},415);
   const length=Number(c.req.header("content-length")||"0");
-  if(length>BYTES_LIMIT)return c.json({detail:"Image is too large (7 MB limit)"},413);
+  if(length>MAX_PNG_BYTES)return c.json({detail:"Image is too large (7 MB limit)"},413);
   const bytes=await c.req.arrayBuffer();
-  if(bytes.byteLength>BYTES_LIMIT)return c.json({detail:"Image is too large (7 MB limit)"},413);
-  if(!isPng(bytes))return c.json({detail:"Use a portrait PNG at least 768 by 1000 pixels (A4 proportions)."},400);
-  const existing=knownItems.get(id);
-  const metadata:VaultMeta=existing?{
-   title:existing.title,category:existing.category,kind:existing.kind,
-   ages:existing.ages,theme:existing.theme,collection:existing.collection,materials:existing.materials
-  }:{
-   title:textValue(c.req.query("title"),120)||readableTitle(id),
-   category:textValue(c.req.query("category"),60)||"Learning & Discovery",
-   kind:textValue(c.req.query("kind"),30)||"activity",
-   ages:textValue(c.req.query("ages"),30)||"All ages",
-   theme:textValue(c.req.query("theme"),50)||"Discovery",
-   collection:"new-adventures",
-   materials:"Pencils or colouring supplies"
-  };
+  if(bytes.byteLength>MAX_PNG_BYTES)return c.json({detail:"Image is too large (7 MB limit)"},413);
+  if(!validPng(bytes))return c.json({detail:"Image must be a portrait printable PNG."},400);
+  const queryMeta:Record<string,string>={};
+  for(const field of META_FIELDS){
+   const val=c.req.query(field);
+   if(val)queryMeta[field]=clean(val,field==="description"?350:field==="materials"?150:120);
+  }
+  const previous=await c.env.BUCKET.head(premiumPath(id,"colour"));
+  const metadata:Record<string,string>={...(previous?.customMetadata||{}),...queryMeta};
+  // The original ten resources have canonical catalogue metadata; new resources carry theirs in R2.
+  if(!premiumSet.has(id)){
+   const normalized=metaOf(id,metadata);
+   for(const field of META_FIELDS)metadata[field]=String(normalized[field]);
+  }
   const key=premiumPath(id,variant);
-  await c.env.BUCKET.put(key,bytes,{httpMetadata:{contentType:"image/png"},customMetadata:{...metadata}});
-  const saved=await c.env.BUCKET.head(key);
-  if(!saved)return c.json({detail:"Storage confirmation failed; please retry this image."},502);
-  c.header("Cache-Control","no-store");
+  await c.env.BUCKET.put(key,bytes,{httpMetadata:{contentType:"image/png"},customMetadata:metadata});
   return c.json({ok:true,id,variant,bytes:bytes.byteLength});
  });
 }
