@@ -57,36 +57,46 @@ function waitForPrintableImage(img){
   });
 }
 
-/** A small browser-only reader for STORE-format ZIPs. No external ZIP library or remote CDN. */
-async function unpackImportFiles(files,knownIds){
+
+/** Read the PNG artwork from individual files or the approved uncompressed batch ZIP. */
+async function unpackImportFiles(files){
  const records=[];
  for(const file of Array.from(files||[])){
   if(file.name.toLowerCase().endsWith(".zip")){
    if(file.size>55_000_000)throw new Error("The import ZIP exceeds the 55 MB limit.");
    const buffer=await file.arrayBuffer(),view=new DataView(buffer),bytes=new Uint8Array(buffer);
    let offset=0;
-   while(offset+30<=buffer.byteLength && view.getUint32(offset,true)===0x04034b50){
+   while(offset+30<=buffer.byteLength&&view.getUint32(offset,true)===0x04034b50){
     const flag=view.getUint16(offset+6,true),compression=view.getUint16(offset+8,true);
-    if(flag&8||compression!==0)throw new Error("Please use the Side-Quest uncompressed import ZIP.");
+    if(flag&8||compression!==0)throw new Error("This ZIP uses compression the Vault importer cannot read. Please extract it and select the PNG images, or use an uncompressed ZIP.");
     const length=view.getUint32(offset+18,true),nameLen=view.getUint16(offset+26,true),extraLen=view.getUint16(offset+28,true);
     const start=offset+30+nameLen+extraLen;
     if(start+length>buffer.byteLength)throw new Error("Invalid ZIP file.");
     const name=new TextDecoder().decode(bytes.subarray(offset+30,offset+30+nameLen));
-    if(name.toLowerCase().endsWith(".png")){
+    if(name.toLowerCase().endsWith(".png")&&!name.split("/").pop().startsWith("._")){
      records.push({name,blob:new Blob([bytes.slice(start,start+length)],{type:"image/png"})});
     }
     offset=start+length;
    }
   }else if(file.name.toLowerCase().endsWith(".png")){
-    records.push({name:file.name,blob:file});
+   records.push({name:file.name,blob:file});
   }else throw new Error("Only Side-Quest ZIPs or PNG images are supported.");
  }
  if(!records.length)throw new Error("No printable PNG images were found.");
- const valid=[];
+ if(records.length>100)throw new Error("Import a maximum of 100 images at a time.");
+ const valid=[],seen=new Set();
  for(const r of records){
-  const match=/^([a-z0-9-]+?)(-ink)?\.png$/i.exec(r.name);
-  if(!match||!knownIds.has(match[1]))throw new Error("Unrecognised printable file: "+r.name);
-  valid.push({id:match[1],variant:match[2]?"ink":"colour",blob:r.blob});
+  const base=r.name.replace(/\\/g,"/").split("/").pop();
+  const stem=base.replace(/\\.png$/i,"");
+  const variant=/-ink$/i.test(stem)?"ink":"colour";
+  const id=slug(stem.replace(/-ink$/i,"")).slice(0,80).replace(/-$/,"");
+  if(!id||id.length<2||!(/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(id)))
+   throw new Error("Invalid printable file name: "+base);
+  const key=id+"/"+variant;
+  if(seen.has(key))throw new Error("Duplicate printable filename in this batch: "+base);
+  seen.add(key);
+  const title=id.replace(/^sidequest-/,"").split("-").map(word=>word.charAt(0).toUpperCase()+word.slice(1)).join(" ");
+  valid.push({id,variant,blob:r.blob,title});
  }
  return valid;
 }
@@ -99,6 +109,7 @@ export default function PrintableVault(){
   const [kind,setKind]=useState("");
   const [busy,setBusy]=useState("");
   const [importProgress,setImportProgress]=useState("");
+  const [importCategory,setImportCategory]=useState("Learning & Discovery");
   const [preview,setPreview]=useState(null);
   useEffect(()=>{let live=true;api.get("/printables").then(({data:d})=>{if(live)setData(d);}).catch(e=>{if(live)setError(apiErrorMessage(e,"Could not open the Vault"));});return()=>{live=false;};},[]);
   useEffect(()=>()=>{preview?.urls.forEach(u=>URL.revokeObjectURL(u));},[preview]);
@@ -170,23 +181,41 @@ export default function PrintableVault(){
     finally{setBusy("");}
   };
   const bundleItems=(id,variant="colour")=>items.filter(i=>i.collection===id && (variant==="ink"?i.ink_available:i.available));
+
   const importFiles=async input=>{
     if(!data?.owner)return;
     setBusy("import");
+    let uploaded=0;
     try{
-      const records=await unpackImportFiles(input,new Set(items.map(i=>i.id)));
+      const records=await unpackImportFiles(input);
+      const previous=new Set(items.filter(i=>i.available).map(i=>i.id));
       for(let j=0;j<records.length;j++){
         const item=records[j];
-        setImportProgress("Uploading "+(j+1)+" of "+records.length+": "+item.id+(item.variant==="ink"?" (ink)":""));
-        await api.post("/printables/admin/assets/"+encodeURIComponent(item.id)+"?variant="+item.variant,item.blob,{
+        setImportProgress("Uploading "+(j+1)+" of "+records.length+": "+item.title+(item.variant==="ink"?" (ink)":""));
+        const params=new URLSearchParams({variant:item.variant,title:item.title,
+          category:importCategory,kind:importCategory==="Mazes & Puzzles"?"puzzle":
+          importCategory==="Colouring & Creativity"?"colouring":
+          importCategory==="Colour, Cut & Create"?"craft":
+          importCategory==="Print & Play Games"?"game":"activity"});
+        const result=await api.post("/printables/admin/assets/"+encodeURIComponent(item.id)+"?"+params,item.blob,{
           headers:{"Content-Type":"image/png"},timeout:120000
         });
+        if(!result.data?.ok||result.data?.id!==item.id)throw new Error("The Vault did not confirm "+item.title+".");
+        uploaded++;
       }
-      const response=await api.get("/printables");
+      setImportProgress("Checking the saved files in the Vault…");
+      const response=await api.get("/printables",{params:{_refresh:Date.now()}});
+      const expected=records.filter(r=>r.variant==="colour");
+      const missing=expected.filter(r=>!response.data?.items?.some(i=>i.id===r.id&&i.available));
+      if(missing.length)throw new Error("Upload finished, but "+missing.map(r=>r.title).join(", ")+" did not appear in the Vault. Please refresh and retry.");
       setData(response.data);
-      toast.success("Imported "+records.length+" private printable images");
-    }catch(e){toast.error(e?.message||apiErrorMessage(e,"Import stopped. Uploaded images are kept; retry the same ZIP to resume."));}
-    finally{setBusy("");setImportProgress("");}
+      setSearch("");setCategory("");setKind("");
+      const added=new Set(expected.filter(r=>!previous.has(r.id)).map(r=>r.id)).size;
+      const replaced=new Set(expected.filter(r=>previous.has(r.id)).map(r=>r.id)).size;
+      toast.success(added+" new activities added"+(replaced?", "+replaced+" existing updated":"")+". Verified in the Printable Vault.");
+    }catch(e){
+      toast.error((uploaded?uploaded+" files uploaded before the error. ":"")+apiErrorMessage(e,e?.message||"Import stopped. Retry to finish."),{duration:9000});
+    }finally{setBusy("");setImportProgress("");}
   };
 
   return <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="printable-vault">
@@ -203,7 +232,21 @@ export default function PrintableVault(){
     {!data&&!error&&<p role="status">Opening the Vault…</p>}
     {error&&<div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
     {data&&<>
-      {data.owner&&<section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-2" data-testid="vault-owner-import"><h2 className="font-bold text-emerald-950">Owner HQ · Premium artwork importer</h2><p className="text-sm text-emerald-900">Original approved images: {data.ready_count||0} of {data.items.length} stored privately in Cloudflare. Import the Side-Quest premium ZIP once, or select its PNG files. Uploads never appear as public assets.</p><label className="inline-flex rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold cursor-pointer">{busy==="import"?"Importing…":"Import printable images"}<input type="file" accept=".zip,.png,image/png" multiple disabled={!!busy} className="sr-only" onChange={e=>{const selected=e.target.files;if(selected?.length)void importFiles(selected);e.target.value="";}}/></label>{importProgress&&<p role="status" className="text-sm">{importProgress}</p>}<p className="text-xs text-emerald-800">Only your owner account can upload or replace artwork. Imported images become available to paid families immediately.</p></section>}
+
+      {data.owner&&<section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-3" data-testid="vault-owner-import">
+        <h2 className="font-bold text-emerald-950">Owner HQ · Printable Vault artwork importer</h2>
+        <p className="text-sm text-emerald-900">Stored in private Cloudflare storage: <strong>{data.ready_count||0} images</strong>. Add as many new activities as you like; each PNG filename becomes a new activity, unless its name matches an existing one (which replaces its artwork).</p>
+        <label className="block text-sm text-emerald-950 font-semibold">Category for new activities
+          <select value={importCategory} onChange={e=>setImportCategory(e.target.value)} disabled={!!busy} className="block mt-1 rounded-xl border border-emerald-500 bg-white px-3 py-2 text-sm">
+            {["Learning & Discovery","Mazes & Puzzles","Colouring & Creativity","Colour, Cut & Create","Print & Play Games"].map(v=><option key={v}>{v}</option>)}
+          </select>
+        </label>
+        <label className="inline-flex rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold cursor-pointer">{busy==="import"?"Importing…":"Add printable images"}
+          <input type="file" accept=".zip,.png,image/png" multiple disabled={!!busy} className="sr-only" onChange={e=>{const selected=e.target.files;if(selected?.length)void importFiles(selected);e.target.value="";}}/>
+        </label>
+        {importProgress&&<p role="status" className="text-sm font-semibold text-emerald-900">{importProgress}</p>}
+        <p className="text-xs text-emerald-800">Use portrait PNGs (at least 768×1000 pixels), or an uncompressed ZIP. New artwork appears to paying families once its storage and catalogue entry are confirmed. Only your owner account can import or replace images.</p>
+      </section>}
 
       {!data.unlocked&&<div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 flex flex-wrap gap-3" data-testid="vault-membership-locked">
         <Lock className="text-amber-800"/><div className="flex-1">
