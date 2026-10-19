@@ -36,6 +36,7 @@ import LessonPrint from "./pages/parent/LessonPrint";
 import UpgradePage from "./pages/parent/Upgrade";
 import AssignmentsPage from "./pages/parent/Assignments";
 import ResourcesPage from "./pages/parent/Resources";
+import PrintableVault from "./pages/parent/PrintableVault";
 import HomeschoolCompass from "./pages/parent/HomeschoolCompass";
 import EvidencePage from "./pages/parent/Evidence";
 import CalendarPage from "./pages/parent/CalendarPage";
@@ -125,6 +126,7 @@ function Router() {
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
+        <Route path="printable-vault" element={<PrintableVault />} />
         <Route path="homeschool-compass" element={<HomeschoolCompass />} />
         <Route path="evidence" element={<EvidencePage />} />
         <Route path="calendar" element={<CalendarPage />} />

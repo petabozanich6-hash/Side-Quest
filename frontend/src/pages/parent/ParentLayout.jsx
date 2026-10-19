@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
-import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Mail, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Mail, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -28,6 +28,7 @@ const nav = [
   { to: "/parent/evidence", icon: Camera, label: "Evidence Backpack", testid: "nav-evidence" },
   { to: "/parent/life-learning", icon: Trees, label: "Life learning", testid: "nav-life" },
   { to: "/parent/resources", icon: Library, label: "Resources", testid: "nav-resources" },
+  { to: "/parent/printable-vault", icon: Scissors, label: "Printable Vault", testid: "nav-printable-vault" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
   { to: "/parent/audit", icon: ShieldAlert, label: "Audit", testid: "nav-audit" },
   { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
@@ -52,6 +53,7 @@ export default function ParentLayout() {
   const hasMembership = planState && paidPlans.includes(planState.effective_plan);
   const route = location.pathname;
   const paidNotice = route.startsWith("/parent/life-learning") ? "Life-learning evidence and AI outcome mapping need Family Membership." :
+    route.startsWith("/parent/printable-vault") ? "The original downloadable printable collection is included with Family Membership." :
     route.startsWith("/parent/resources") ? "Saving and managing resources and video suggestions need Family Membership." :
     route.startsWith("/parent/calendar") ? "Creating calendar events and weekly timetables need Family Membership. Existing events stay visible." :
     route.startsWith("/parent/word-hoard") ? "Adding new Word Hoard words needs Family Membership. Previously saved practice remains available." :
