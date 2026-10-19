@@ -64,7 +64,7 @@ export default function Landing() {
           </h1>
           <p className="mt-6 text-lg leading-relaxed max-w-2xl" style={{color:"#52473A"}}>
             Homeschooling has plenty of wonderful moments — and plenty to organise. Side-Quest brings lesson planning, your children's learning and progress records into one friendly place.
-            With Family Membership, the AI Lesson Builder drafts teaching, examples, activities and questions from your topic — so you can review and adapt a starting point instead of planning from a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
+            Try one complete AI-generated lesson for your family during your free preview. Family Membership unlocks ongoing AI lesson building, editing and lesson sets — so you can keep planning from a useful starting point instead of a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
           </p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
@@ -87,7 +87,7 @@ export default function Landing() {
             </Link>
           </div>
 
-          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Start with seven days free, no card or automatic charge. Your preview includes one child, two lessons and two active assignments.</p>
+          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Start with seven days free, no card or automatic charge. Your preview includes one child, two manual lessons, two active assignments and one complete AI-generated lesson per family.</p>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
             Made for home-educating families across Australia. You'll find official curriculum,
             registration and record-keeping resources for your state or territory in the Curriculum hub.
@@ -131,7 +131,7 @@ export default function Landing() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           <Feature icon={Users} title="Your family, one home base" desc="Set up child profiles, plan their learning and keep each child’s work organised privately in your family account." tint="#4A5D3A"/>
-          <Feature icon={Sparkles} title="AI Lesson Builder" desc="Have a topic in mind? Let Side-Quest draft the explanations, examples, activities and questions. You check and adjust the lesson instead of starting from a blank page. Included with Family Membership." tint="#C77B5B"/>
+          <Feature icon={Sparkles} title="AI Lesson Builder" desc="Try one complete AI-created lesson free during your seven-day preview, per family. Review and adapt its teaching, examples, activities and questions. Membership unlocks ongoing drafting, AI edits and lesson sets." tint="#C77B5B"/>
           <Feature icon={Camera} title="Evidence Backpack" desc="Your free preview shows a summary and one detailed entry. Family Membership unlocks full records, everyday learning evidence and portfolio exports." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="A plan you can actually change" desc="Family Membership includes the editable family calendar, weekly timetables and Auto-Quest planning. Change the schedule when life changes — because it will." tint="#C8893B"/>
           <Feature icon={BookOpen} title="Progress and learning records" desc="See completed work, review progress and organise evidence for your family's learning journey. Find your state's official curriculum and registration resources in the Curriculum hub." tint="#4A5D3A"/>
@@ -191,6 +191,7 @@ export default function Landing() {
             <ul className="space-y-2 text-sm leading-relaxed text-stone-800 list-disc pl-5">
               <li>One child profile, their learning space, pocket pet and XP</li>
               <li>Make and edit two manual lessons, with two active assignments at a time</li>
+              <li><strong>One complete AI-generated lesson per family</strong> to try during the seven days (in addition to your two manual lessons)</li>
               <li>Review your child's work and see automatic learning progress</li>
               <li>One basic learning plan, plus reading logs during the preview</li>
               <li>Homeschooling Compass, official links, curriculum reference and search</li>
@@ -202,7 +203,7 @@ export default function Landing() {
             <div><div className="font-script text-2xl" style={{color:"#4A5D3A"}}>The whole enchanted toolbox</div><h3 className="font-display text-2xl font-bold mt-1" style={{color:"#1F3B2D"}}>Family Membership</h3><p className="text-sm text-stone-600 mt-2">One family payment. Every advanced tool included.</p></div>
             <ul className="space-y-2 text-sm leading-relaxed text-stone-800 list-disc pl-5">
               <li>Up to 20 children, 5,000 lessons and 5,000 active assignments*</li>
-              <li>AI lesson drafts, AI editing and guided child assistance*</li>
+              <li>Ongoing AI lesson drafting, AI editing, lesson sets and guided child assistance*</li>
               <li>Advanced learning plans, manual calendar, timetables and Auto-Quest</li>
               <li>Full Evidence Backpack, life-learning records and outcome evidence management</li>
               <li>Resource tools, Word Hoard authoring and file uploads*</li>
@@ -234,7 +235,7 @@ export default function Landing() {
             </div>
           ))}
         </div>
-        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview. Family Membership supports up to 20 child profiles and includes AI lesson drafting with fair-use limits. All four billing options include the same features; cancel any time and paid access normally continues through the current billing period.</p>
+        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview including one AI-generated lesson per family. Family Membership supports up to 20 child profiles and ongoing AI lesson drafting with fair-use limits. All four billing options include the same features; cancel any time and paid access normally continues through the current billing period.</p>
         <div className="mt-6 flex justify-center"><Link to="/register" className="rounded-full px-6 py-3 font-semibold text-sm shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>Start your free preview</Link></div>
       </section>
 
