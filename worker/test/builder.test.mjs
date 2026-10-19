@@ -838,6 +838,59 @@ test("quality gate catches fake resources, vague activities, wrong arithmetic an
   assert.deepEqual(aid.arithmeticErrors(["100 + 70 + 10 + 3 = 183.", "3 \u2212 9 = \u22126", "2 \u00d7 3 + 4 = 10", "10 \u2212 4 \u2212 3 = 4"]), ["10 \u2212 4 \u2212 3 = 4"]);
 });
 
+test("maths prompts teach algebra instead of merely stating rules", () => {
+  const base = { topic: "Solving one-step algebra equations", area: "Mathematics", year: "Year 7", goal: "Solve and check equations", minutes: 45, delivery: "independent", interests: "", needs: "", notes: "" };
+  const focus = aid.mathsTeachingFocus(base);
+  assert.match(focus, /both sides/i);
+  assert.match(focus, /because|WHY/i);
+  assert.match(focus, /ORIGINAL equation/i);
+  assert.match(aid.designPrompt(base), /ACTUAL concrete example/i);
+  const design = {
+    concept: "Solve and check a one-step equation",
+    key_words: [{ word: "variable", meaning: "a letter for a number" }],
+    sequence: [{ heading: "What equality means", idea: "both sides have the same value", how: "Show 3 + 2 = 5 using two equal groups", key_points: ["same value"] }],
+    worked_examples: [{ title: "Solve x + 4 = 9", problem: "x + 4 = 9", skill: "undo an addition" }],
+    misconceptions: [],
+  };
+  const teaching = aid.sectionPrompt(base, design, 0, []);
+  assert.match(teaching, /3 \+ 2 = 5/); // keep the planned actual model, not just the section title
+  assert.match(teaching, /WHY|why/i);
+  assert.match(aid.examplePrompt(base, design, 0, []), /ORIGINAL problem/);
+  const expressionOnly = aid.mathsTeachingFocus({ ...base, topic: "Understanding algebraic expressions", goal: "Collect like terms" });
+  assert.match(expressionOnly, /ALGEBRA EXPRESSIONS/);
+  assert.doesNotMatch(expressionOnly, /ALGEBRA EQUATIONS/);
+});
+
+test("maths quality gate rejects summaries that look like teaching but contain no demonstration", () => {
+  const spec = { topic: "Adding two-digit numbers", area: "Mathematics", year: "Year 3", goal: "", minutes: 60, delivery: "independent", interests: "", needs: "", notes: "" };
+  const good = aid.normaliseDraft(GARDEN, spec);
+  const weak = {
+    ...good,
+    sections: good.sections.map((x) => ({ ...x, body: "You should understand how to use the right strategy. Remember to follow the rules carefully. Think through the answer and check it afterwards. The method can help with all sorts of maths problems. Practice will help you remember the skill." })),
+    worked_examples: good.worked_examples.map((x) => ({ ...x, steps: ["First apply the strategy.", "Next follow the rule carefully.", "Finally check your work."] })),
+  };
+  const issues = aid.qualityIssues(weak, spec);
+  assert.ok(issues.some((i) => /never actually demonstrate a calculation/i.test(i.msg) && i.hard && i.repair));
+  assert.ok(issues.some((i) => /without showing any real calculation/i.test(i.msg) && i.hard && i.repair));
+});
+
+test("equation lessons must demonstrate why an operation works and check the result", () => {
+  const spec = { topic: "Solving one-step algebra equations", area: "Mathematics", year: "Year 7", goal: "Solve x + a = b", minutes: 60, delivery: "independent", interests: "", needs: "", notes: "" };
+  const original = aid.normaliseDraft(GARDEN, spec);
+  const missing = { ...original, worked_examples: original.worked_examples.map((w) => ({ ...w,
+    problem: "x + 4 = 9", steps: ["We use the inverse operation.", "So x = 5.", "Now we are finished."], answer: "x = 5",
+  })) };
+  assert.ok(aid.qualityIssues(missing, spec).some((i) => /equation-solving teaching must/i.test(i.msg) && i.hard));
+  const taught = { ...missing, worked_examples: [{ ...missing.worked_examples[0], steps: [
+    "x + 4 = 9 means that x plus four is equal to nine.",
+    "Subtract four from BOTH sides because equal changes preserve the balance: x + 4 - 4 = 9 - 4.",
+    "Simplify the two sides: x = 5.",
+    "Check in the original equation by substituting x = 5: 5 + 4 = 9.",
+    "Both sides give nine, so the answer is correct.",
+  ] }, ...original.worked_examples.slice(1)] };
+  assert.equal(aid.qualityIssues(taught, spec).some((i) => /equation-solving teaching must/i.test(i.msg)), false);
+});
+
 test("truncated model output is salvaged to the last complete item", () => {
   const cut = '{"title":"T","sections":[{"heading":"A","body":"one"},{"heading":"B","body":"tw';
   const got = aid.extractJson(cut);
