@@ -163,6 +163,12 @@ export function stageForXp(xp: number, hatched: boolean, floor = "") {
 // Consistent tiers for any pet-independent XP display.
 export function levelForXp(xp: number) { return stageForXp(xp, xp >= HATCH_XP); }
 
+const parseDate = (value: string | null | undefined) => {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d;
+};
+
 const careStatus = (hatched: boolean, neglectDays: number) => {
   if (neglectDays >= ASLEEP_DAYS) return hatched ? "asleep" : "cold";
   if (neglectDays >= SICK_DAYS) return hatched ? "sick" : "cold";
