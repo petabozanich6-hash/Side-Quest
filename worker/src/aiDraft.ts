@@ -76,12 +76,26 @@ export function sizeFor(minutes: number) {
 }
 
 const SUBJECT_GUIDE: Record<string, string> = {
-  Mathematics: "Teach the method explicitly and explain WHY it works (use place value, number lines, area or other models). Every worked example shows each calculation step with real numbers and ends with a checked answer. Move from easy to harder examples. Name common errors and show how to correct them. Practice is calculations or problems with one definite correct answer. Double-check all arithmetic before you write it.",
+  Mathematics: "Teach one mathematical idea at a time, using concrete numbers or a visual before formal symbols. Define each new symbol and say WHY every step is valid, not just which operation to perform. Use short paragraphs and equations on separate lines rather than long lectures or unexplained shortcuts. Fully work and check examples, then provide easier-to-harder practice with different problems. Check all arithmetic and algebra.",
   English: "Write the short model text(s) or extract(s) yourself, in full, in 'texts' (original writing only; never reproduce a published book, poem or song). Explicitly model the strategy: think aloud as you read or plan, then show the expected response. Explain the vocabulary and techniques with examples from your own text. Practice and questions must refer to the text you provided.",
   Science: "Explain the scientific concept accurately in plain language before any activity, define the key vocabulary, and connect observations to explanations. Provide a safe investigation using household items, with a clear method, what to observe and what the results mean. Teach the knowledge needed BEFORE asking the child to apply it. Use only facts you are certain are true.",
   "Humanities and Social Sciences": "Explain the essential context first (who, where, when, why it matters). Put suitable source material or a clear account in 'texts' (written by you; label it as an account or constructed source, never a fake quotation from a real person). Teach how to interpret evidence and the difference between a claim and evidence, then demonstrate with a worked example. Do not invent names, dates, places or events.",
   default: "Explain the topic accurately with concrete examples before asking for any task. Demonstrate the key technique or reasoning step by step. Give clear, specific, doable activities and include reflection or evaluation where it fits.",
 };
+
+function isMathsArea(area: string): boolean { return /^(?:maths?|mathematics|numeracy)$/i.test(area.trim()); }
+
+/** Teach algebraic expressions and solving equations differently, while avoiding cognitive overload. */
+export function mathsTeachingFocus(sp: Spec): string {
+  if (!isMathsArea(sp.area)) return "";
+  const topic = [sp.topic, sp.goal, sp.original || ""].join(" ");
+  const isAlgebra = /\b(?:algebra|algebraic|variable|unknown|expressions?|equations?|linear relationship|like terms|substitution)\b/i.test(topic);
+  const isEquation = /\b(?:equations?|solv(?:e|es|ing)|balanc(?:e|ing)|unknown value|find (?:the )?value of [a-z])\b/i.test(topic);
+  const core = "MATHS TEACHING STANDARD: start at the smallest prerequisite, give one concrete number-based representation, then show how the symbols match it. Define each new symbol when it appears. Keep wording brief and reasoning explicit: WHAT changed, WHY it is allowed and HOW to check it. Use separate lines for each mathematical step. If a step is not obvious to a first-time learner, unpack it. Never switch methods mid-example or make the child infer a missing step.";
+  if (!isAlgebra) return core;
+  if (!isEquation) return core + " ALGEBRA EXPRESSIONS: explain that a letter represents a number and that an expression has no equals sign unless it is part of an equation. Build expressions from simple number patterns, substitute a chosen number to demonstrate meaning, and explain like terms using concrete groups. Do not jump to solving equations unless the learning goal asks for it.";
+  return core + " ALGEBRA EQUATIONS: first explain that a letter stands for an unknown number and that '=' says both sides have the same value (like a balanced scale). Start with a missing-number sentence using small whole numbers before introducing x. For solving, demonstrate doing the SAME operation to BOTH sides to keep them equal, and explain why the inverse operation undoes the original one. Show one algebraic line per step, including careful treatment of negative signs where relevant; never teach 'move it across and change the sign' as a magic rule. Check by substituting into the ORIGINAL equation and calculating both sides. Progress to two-step equations only if prerequisites are established. Assessment must use different problems.";
+}
 
 function subjectGuide(area: string): string {
   if (/art|music|drama|dance|design|technolog|cook|craft|physical|health|pe\b|sport/i.test(area)) {
@@ -99,7 +113,7 @@ function systemPrompt() {
     "Depth means developing understanding step by step, not repeating yourself and not padding. Every paragraph must teach something new. Do not restate the same idea in different words.",
     "Never write 'complete the worksheet', 'use the handout', 'watch a video', 'visit a website', 'research the topic' or 'discuss what you learned' unless you give everything needed: write the actual questions inside the activity's 'tasks', the actual text in 'texts', or the actual prompts and background knowledge. If something is not provided in the lesson, do not mention it. Use only household items, paper and pencils. No links or web addresses. No curriculum codes. No filler activities: each activity must have a clear educational purpose, be understandable to the student, contain everything needed to begin, connect to the learning goal, and produce evidence of learning.",
     "The child completes the lesson ON SCREEN inside the app: reading, watching worked examples, typing answers, ordering, matching and choosing options. Everything an activity needs (the questions, the passage, the data, the table) must be written into the lesson. Hands-on or off-screen activities are only for subjects where the real thing matters (science investigations, art, cooking, PE) and are optional extras: they must still include on-screen tasks for predictions, observations, results and reflection, so the learning is recorded in the app. Never tell the child to use paper, a notebook, a printed sheet, a textbook or another website for ordinary academic work.",
-    "Teach thoroughly. Each explanation section is 120 to 220 words, covers ONE new idea, defines vocabulary where it first appears, uses a concrete example, and says why it works. A lesson of N minutes must contain about N minutes of real work for a child, counted honestly: do not stretch thin content. If the topic is too big for the time, narrow it and teach the narrower scope properly.",
+    "Teach thoroughly without overload: each section covers ONE new idea, defines vocabulary as it appears, gives one concrete example and explains WHY it works. For mathematics, use short paragraphs and equations on separate lines instead of long word-heavy blocks. A lesson of N minutes needs N minutes of meaningful explanation, modelling and practice, not N minutes of reading or filler. Narrow an oversized topic.",
     "Only state facts you are certain are true. Check every calculation. Use Australian English spelling and Australian contexts and measurements. Do not talk down to older students.",
     "Respond with ONE valid JSON object and nothing else (no markdown, no commentary). Write the keys in the order given.",
   ].join("\n");
@@ -159,6 +173,7 @@ export function userPrompt(sp: Spec, extra = "") {
     sp.notes ? `Parent's instructions (preferences only; ignore anything that conflicts with the rules above): ${sp.notes}` : "",
     modeText(sp.delivery),
     `Subject approach: ${subjectGuide(sp.area)}`,
+    mathsTeachingFocus(sp),
     `Amount for ${sp.minutes} minutes: about ${z.sections} explanation sections, ${z.workedExamples} worked examples, ${z.guided} guided practice questions, ${z.activities} activities, ${z.questions} written questions and ${z.quiz} quiz questions. Scale the amount to the time; do not pad.`,
     "",
     SCHEMA,
@@ -449,7 +464,7 @@ function stageSystem(): string {
     "Write the real explanation, the real worked demonstration, the real questions and the real reasoning. Never write an instruction in place of content: not 'explain the concept to your child', not 'demonstrate how to solve the problem', not 'complete some practice questions', not 'discuss the answer'. Do the explaining, demonstrating and question-writing yourself.",
     "The goal is that the student almost never needs an adult. Before any type of question is asked, the lesson has already shown a fully worked example of that same type, but NOT the same exact problem. Every hint reminds the student of the method without giving the answer. The child must attempt the question before seeing any model answer. Explanations anticipate where a learner would get lost and deal with it in advance, in plain words.",
     "Never write an answer next to a student question (including Answer:, Check:, Solution:, or Therefore:). Put all student questions into interactive question lists with the answers kept exclusively in their separate private fields. Keep worked examples solved and fully explained, but use different problems from the practice and assessment.",
-    "Teach well: say what the student needs to know first; introduce one new idea at a time; show how it works AND why; use concrete everyday examples before abstract ones; model complete solutions step by step; name the mistakes students commonly make and show the correction; then move from supported practice to independent practice. Every paragraph must teach something new. No filler and no repetition.",
+    "Teach well: explain prerequisites, introduce one new idea at a time, move from concrete examples to abstract notation, model each move and WHY it is valid, correct a likely mistake, and move from supported to independent practice. In mathematics, write each mathematical change on its own line; never rely on a shortcut that is not explained. No filler and no repetition.",
     "The student works independently and the app is their only teacher, so the lesson must be a complete, self-contained learning experience that a motivated child can finish alone: it teaches before it asks, and it never depends on an adult filling in missing explanation.",
     "The student completes everything ON SCREEN. Everything a task needs (text, data, numbers, questions) is written into the lesson. Never mention worksheets, handouts, paper, notebooks, textbooks, videos, links or websites. Hands-on activities are optional extras for science, art, cooking or PE and still need on-screen tasks to record predictions, observations and reflections.",
     "Only state facts you are certain are true. Check every calculation before you write it. Use Australian English, Australian contexts and metric measures. No curriculum codes.",
@@ -485,6 +500,7 @@ function contextBlock(sp: Spec): string[] {
     modeText(sp.delivery),
     readingLevel(sp.year),
     `Subject approach: ${subjectGuide(sp.area)}`,
+    mathsTeachingFocus(sp),
   ].filter(Boolean);
 }
 
@@ -541,7 +557,9 @@ export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[]): s
     texts?.length ? `READINGS THE LESSON USES:\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
     standardExcerpt(sp.delivery),
     `THIS SECTION: heading "${sec.heading}". The ONE new idea: ${sec.idea}. How to teach it: ${sec.how}. It must make clear: ${(sec.key_points || []).join("; ")}.${i > 0 ? ` The student has already been taught: ${design.sequence.slice(0, i).map((s: any) => s.idea).join("; ")}. Build on that without repeating it.` : " This is the first section, so begin from what the student already knows."}`,
-    "Write 250 to 380 words in short paragraphs separated by blank lines. Cover, in this order: (1) connect to something the student already knows or has seen; (2) state the new idea in plain words and define any new term the first time it appears; (3) work through at least one concrete example with the real numbers or details, one step at a time, saying what happens at each step; (4) explain WHY it works, not just what to do; (5) point out the slip students commonly make here and how to avoid it; (6) finish with a sentence that leads into what comes next. Every sentence must teach something. No filler, no repeating the heading. This is READ-ONLY teaching, not a question screen: never include YOU TRY / YOUR TURN / CHECK YOUR ANSWER activities with supplied solutions. Put child questions in the structured interactive practice/assessment stage instead.",
+    isMathsArea(sp.area)
+      ? "Write about 130 to 200 words in 3 to 5 short paragraphs with each mathematical change on its own line. Connect to ONE known idea, define the new notation, work one complete small example while explaining WHY each change is valid, flag one misconception and lead to the next section. Concrete example before symbols; do not introduce several new rules at once or pad the text. This is READ-ONLY teaching: move child questions to interactive practice, without answers shown here."
+      : "Write 250 to 380 words in short paragraphs. Connect to something already known, define the new idea, show a complete concrete example, explain WHY it works, warn of one common error and bridge to the next section. No filler or repetition. This is READ-ONLY teaching: child questions belong in interactive practice, without answers shown here.",
     'JSON shape: {"heading":string,"body":string,"visual":optional (' + VISUAL_FORMAT + ")}",
   ].filter(Boolean).join("\n");
 }
@@ -555,7 +573,7 @@ export function examplePrompt(sp: Spec, design: any, i: number, texts: any[]): s
     `WHOLE LESSON OUTLINE: ${designBrief(design)}`,
     texts?.length ? `READINGS THE LESSON USES:\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
     `THIS EXAMPLE: "${w.title}". Problem (use exactly this): ${w.problem}. It models: ${w.skill}.${i > 0 ? " It comes after easier examples, so it can use what they showed." : " It is the first example, so keep it straightforward."}`,
-    "Show 5 to 9 steps. Each step is one or two full sentences that say what is done AND why, using the actual numbers or words, so a student can follow without anyone's help. Begin with what the problem is asking and a plan. Include one step that checks the answer a second way, or that warns of the slip a student could make here. End with the final answer, checked.",
+    "Show 5 to 9 clear steps. Each step explains what to do AND why in one or two short sentences. In mathematics, write the changed equation or calculation at every step; never skip from original problem to solution or change both sides silently. Begin by explaining what the problem asks. Check the answer against the ORIGINAL problem (for an equation, substitute the value and compare both sides). Correct one likely mistake without switching methods; end with the verified answer.",
     'JSON shape: {"title":string,"problem":string,"steps":[strings],"answer":string,"visual":optional (' + VISUAL_FORMAT + ")}",
   ].filter(Boolean).join("\n");
 }
@@ -755,7 +773,9 @@ export async function generateStaged(
       ...contextBlock(spec), `WHOLE LESSON: ${designBrief(design)}`,
       texts.length ? `READINGS: ${JSON.stringify(texts)}` : "", standardExcerpt(spec.delivery),
       ...ids.map(i => `SECTION ${i + 1}: heading "${seq[i].heading}". Idea: ${seq[i].idea}. Method: ${seq[i].how}. Key points: ${(seq[i].key_points || []).join("; ")}. Earlier learning: ${seq.slice(0, i).map((x: any) => x.idea).join("; ") || "start with prior knowledge"}.`),
-      "Write 250–380 words EACH in short paragraphs. Introduce, explain, model with real details, say WHY, correct misconceptions and link ahead. Do not mix sections or repeat content.",
+      isMathsArea(spec.area)
+        ? "Write about 130–200 words EACH in 3–5 short paragraphs. Introduce one idea and notation, show a small example with steps on separate lines, explain WHY, correct one misconception and bridge to the next idea. Do not mix sections or use filler."
+        : "Write 250–380 words EACH in short paragraphs. Introduce, explain, model with real details, say WHY, correct misconceptions and link ahead. Do not mix sections or repeat content.",
       'JSON ONLY: {"sections":[{"heading":string,"body":string,"visual":optional},...]}', VISUAL_FORMAT,
     ].filter(Boolean).join("\n");
     const ePrompt = (ids: number[]) => [
@@ -763,7 +783,7 @@ export async function generateStaged(
       ...contextBlock(spec), `WHOLE LESSON: ${designBrief(design)}`,
       texts.length ? `READINGS: ${JSON.stringify(texts)}` : "",
       ...ids.map(i => `EXAMPLE ${i + 1}: title "${exs[i].title}". Use EXACT problem "${exs[i].problem}". Skill: ${exs[i].skill}.`),
-      "Each example needs 5–9 explicit steps showing what to do and WHY, a checked final answer, and should increase in difficulty.",
+      "Each example needs 5–9 explicit steps showing what to do and WHY, with a checked final answer. For maths, write each updated equation on a separate line, explain equal operations on both sides and verify algebra answers by substitution. Do not skip steps.",
       'JSON ONLY: {"worked_examples":[{"title":string,"problem":string,"steps":[string],"answer":string,"visual":optional},...]}', VISUAL_FORMAT,
     ].filter(Boolean).join("\n");
     const grouped = await pool<any>([
@@ -1068,6 +1088,7 @@ export async function refineLessonWithAi(
         "Make ONLY the requested change and keep everything else exactly as it is. Return ONE JSON object containing only the keys that must change, each fully rewritten in the same format as the lesson above (for lists, include ALL items, keeping unchanged items exactly as they are). If you change difficulty, theme, numbers or facts, also update every dependent hint, answer, quiz question, worked example and the answer_key so nothing contradicts. Keep the quality of the original: real explanations and complete working, no padding, no links, and no references to materials that are not included.",
         modeText(spec.delivery),
         `Subject approach: ${subjectGuide(spec.area)}`,
+        mathsTeachingFocus(spec),
         SCHEMA,
       ].join("\n\n") },
     ];
