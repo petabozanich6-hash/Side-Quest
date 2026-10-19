@@ -1,11 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { ArrowRight, Award, BookOpen, FolderOpen, Library, Search, Sparkles, ScrollText } from "lucide-react";
+import { ArrowRight, Award, BookOpen, FolderOpen, Search, Sparkles, ScrollText } from "lucide-react";
 
 const places = [
   { path: "/child/reading", title: "My Reading", desc: "Tell your grown-up about the books you've read", icon: BookOpen, color: "#EAF7F4" },
-  { path: "/child/dragons-library", title: "Dragon's Library", desc: "Find a story for your next adventure", icon: Library, color: "#FFF0E4" },
   { path: "/child/word-hoard", title: "Word Hoard", desc: "Practice spelling and tame tricky words", icon: ScrollText, color: "#F1ECFD" },
   { path: "/child/achievements", title: "Achievements", desc: "See your badges and claim any surprises", icon: Award, color: "#FFF5D9" },
   { path: "/child/portfolio", title: "My Portfolio", desc: "Look back at your work and grown-up feedback", icon: FolderOpen, color: "#EAF6FE" },
