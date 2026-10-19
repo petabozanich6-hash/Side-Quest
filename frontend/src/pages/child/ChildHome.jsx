@@ -5,43 +5,133 @@ import { clearNotices, dropSavedLessons, isNetworkError, notices, onOfflineChang
 import { forgetOfflineChild } from "../../lib/offlineSignIn";
 import { useAuth } from "../../context/AuthContext";
 import PetWelcome from "../../components/child/PetWelcome";
-import { Clock, ChevronRight, Sparkles, CalendarDays } from "lucide-react";
+import { featuredChildQuest, groupChildQuests, isResume } from "../../lib/childDashboard";
+import { ArrowRight, BookOpen, CalendarDays, CheckCircle2, Clock, Compass, RotateCcw, Sparkles, Star } from "lucide-react";
 
-const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-const niceDate = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" }); };
+const iso = (d) => [
+  d.getFullYear(), String(d.getMonth() + 1).padStart(2, "0"), String(d.getDate()).padStart(2, "0"),
+].join("-");
+const niceDate = (value) => {
+  if (!value) return "";
+  const [y, m, d] = value.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" });
+};
+const colors = {
+  English: { bg: "#F1ECFD", border: "#D9C9F6", ink: "#5C3C9E", icon: "📚" },
+  Mathematics: { bg: "#ECF6E9", border: "#C9E7C5", ink: "#28644C", icon: "🧭" },
+  Maths: { bg: "#ECF6E9", border: "#C9E7C5", ink: "#28644C", icon: "🧭" },
+  Science: { bg: "#EAF6FE", border: "#C6E4F5", ink: "#215B85", icon: "🔭" },
+  History: { bg: "#FFF3DE", border: "#F4DEAB", ink: "#875313", icon: "🏰" },
+  Geography: { bg: "#EAF7F4", border: "#BDE5DC", ink: "#28695F", icon: "🌍" },
+};
+const palette = (a) => colors[a.lesson?.learning_area] || { bg: "#F9F2E5", border: "#EAD8B4", ink: "#76562A", icon: "📜" };
+const labelFor = (a) => {
+  if (a.status === "needs_revision" || a.status === "needs_more_practice") return "Try again";
+  if (isResume(a)) return "Continue";
+  if (a.status === "awaiting_help") return "Waiting for help";
+  return "Start quest";
+};
 
-function TaskCard({ a, planned, early, ready }) {
+function QuestCard({ a, planned, ready, note }) {
+  const color = palette(a);
   return (
-    <Link to={`/child/lesson/${a.id}`} className="block rounded-2xl bg-white border border-slate-200 p-5 hover:border-slate-400 transition group" data-testid={`task-${a.id}`}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="text-xs font-mono opacity-60">{a.lesson?.stage} · {a.lesson?.learning_area}</div>
-          <div className="font-display text-lg font-semibold mt-1 group-hover:text-teal-700">{a.lesson?.title}</div>
-          <div className="mt-2 flex items-center gap-3 flex-wrap text-xs opacity-75">
-            <span className="flex items-center gap-1"><Clock size={12}/> {a.lesson?.duration_minutes || 30} min</span>
-            <span className={`pill pill-${(a.status || "not-started").replace(/_/g, '-')}`}>{a.status?.replace(/_/g, ' ')}</span>
-            {planned && <span className="font-semibold">Planned for {planned}</span>}
-            {a.support_level === "red" && <span className="pill pill-needs-help">Wait for adult</span>}
-            {a.support_level === "yellow" && <span className="pill pill-submitted">Ask if stuck</span>}
-            {ready && <span className="rounded-full bg-sky-50 border border-sky-200 px-2 py-0.5 text-sky-900 font-semibold" data-testid="ready-offline">✓ Ready offline</span>}
+    <Link
+      to={"/child/lesson/" + a.id}
+      className="block h-full rounded-3xl border-2 p-4 sm:p-5 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:shadow-md"
+      style={{ backgroundColor: color.bg, borderColor: color.border }}
+      data-testid={"task-" + a.id}
+    >
+      <div className="flex items-start gap-3">
+        <span aria-hidden="true" className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-white/80 text-4xl">{color.icon}</span>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-extrabold" style={{ color: color.ink }}>{a.lesson?.learning_area || "My quest"}</p>
+          <h3 className="mt-1 font-display text-lg font-bold leading-tight" style={{ color: "#1F3B2D" }}>{a.lesson?.title || "Untitled quest"}</h3>
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-stone-600">
+            <span className="inline-flex items-center gap-1"><Clock size={13} /> {a.lesson?.duration_minutes || 30} min</span>
+            {planned && <span>Planned {niceDate(planned)}</span>}
+            {ready && <span data-testid="ready-offline">✓ Saved offline</span>}
+            {a.support_level === "red" && <span className="font-bold text-rose-800">With a grown-up</span>}
           </div>
+          {note && <p className="mt-2 text-sm text-stone-700 line-clamp-2">{note}</p>}
         </div>
-        <div className="flex items-center gap-1 text-slate-400 group-hover:text-slate-700">
-          {early && <span className="text-xs font-semibold">Start early</span>}
-          <ChevronRight />
-        </div>
+      </div>
+      <div className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-white/80 px-4 py-2.5 text-sm font-extrabold" style={{ color: color.ink }}>
+        {labelFor(a)} <ArrowRight size={17} />
       </div>
     </Link>
   );
 }
 
-const Group = ({ title, hint, items, plannedOf, early, ready }) => items.length === 0 ? null : (
-  <section>
-    <h2 className="font-display text-lg font-semibold">{title}</h2>
-    {hint && <p className="text-sm opacity-70 mt-0.5">{hint}</p>}
-    <div className="space-y-3 mt-3">{items.map(a => <TaskCard key={a.id} a={a} planned={plannedOf ? plannedOf(a) : null} early={early} ready={ready?.has(a.id)} />)}</div>
-  </section>
-);
+function QuestGroup({ title, subtitle, items, planned, ready, feedback, tone = "plain", testid }) {
+  if (!items.length) return null;
+  const highlighted = tone === "returned" || tone === "catchup";
+  return (
+    <section className={highlighted ? "rounded-3xl border p-4 sm:p-5" : ""} style={tone === "returned" ? { background: "#FFF0EF", borderColor: "#F2CFC8" } : tone === "catchup" ? { background: "#EEF5FC", borderColor: "#CCE5F6" } : {}} data-testid={testid}>
+      <div className="mb-3">
+        <h2 className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>{title} <span className="text-sm font-bold text-stone-500">({items.length})</span></h2>
+        {subtitle && <p className="mt-1 text-sm text-stone-600">{subtitle}</p>}
+      </div>
+      <div className={highlighted ? "grid gap-3 sm:grid-cols-2" : "grid gap-3 md:grid-cols-2 xl:grid-cols-3"}>
+        {items.map((a) => <QuestCard key={a.id} a={a} planned={planned[a.id]} ready={ready.has(a.id)} note={feedback?.[a.id]} />)}
+      </div>
+    </section>
+  );
+}
+
+function FeaturedQuest({ quest, ready, feedback, senior }) {
+  if (!quest) return null;
+  const resumed = isResume(quest);
+  const returned = ["needs_revision", "needs_more_practice"].includes(quest.status);
+  const color = palette(quest);
+  const journey = quest.resume;
+  const showProgress = !returned && journey && Number.isFinite(journey.step) && Number.isFinite(journey.total) && journey.total > 1;
+  const pct = showProgress ? Math.round(Math.min(100, Math.max(0, journey.step / (journey.total - 1) * 100))) : 0;
+  return (
+    <section className="overflow-hidden rounded-[2rem] border-2 border-[#D4C8A8] bg-[#FFFCF5] shadow-md" data-testid="continue-quest">
+      <div className="grid gap-5 p-5 sm:p-7 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+        <div className="relative flex min-h-44 items-center justify-center overflow-hidden rounded-3xl" style={{ background: "radial-gradient(circle at 50% 25%, white, " + color.bg + " 65%, " + color.border + ")" }}>
+          <div aria-hidden="true" className={senior ? "text-7xl" : "text-8xl sm:text-9xl"}>{color.icon}</div>
+          <span aria-hidden="true" className="absolute right-5 top-4 text-3xl text-amber-500">✦</span>
+          <span aria-hidden="true" className="absolute bottom-4 left-6 text-xl text-emerald-600">✧</span>
+          <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold" style={{ color: color.ink }}>{quest.lesson?.learning_area || "Adventure"}</span>
+        </div>
+        <div className="flex flex-col justify-center">
+          <div className="flex items-center gap-2 font-extrabold uppercase tracking-wide text-sm" style={{ color: "#4A5D3A" }}>
+            {returned ? <RotateCcw size={18} /> : <Compass size={18} />}
+            {returned ? "Back for another go" : resumed ? "Pick up where you left off" : "Your next quest"}
+          </div>
+          <h2 className="mt-2 font-display text-2xl font-extrabold leading-tight sm:text-3xl" style={{ color: "#1F3B2D" }}>{quest.lesson?.title || "Your quest"}</h2>
+          {feedback && returned ? (
+            <p className="mt-2 text-sm text-stone-700"><strong>Your grown-up says:</strong> {feedback}</p>
+          ) : (
+            <p className="mt-2 text-base text-stone-700">{resumed ? "Your adventure is right where you left it. Ready for the next bit?" : "A new adventure is ready whenever you are."}</p>
+          )}
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-stone-600">
+            <span className="inline-flex items-center gap-1"><Clock size={15} /> About {quest.lesson?.duration_minutes || 30} min</span>
+            <span className="font-semibold">{resumed ? "Already started" : returned ? "Feedback ready" : "Ready to begin"}</span>
+            {ready && <span data-testid="ready-offline">✓ Ready offline</span>}
+            {quest.support_level === "red" && <strong className="text-rose-800">Do this with your grown-up</strong>}
+          </div>
+          {showProgress && (
+            <div className="mt-4" data-testid="continue-progress">
+              <div className="mb-1 flex justify-between text-xs font-bold text-stone-600">
+                <span>Where you left off</span><span>Step {journey.step + 1} of {journey.total}</span>
+              </div>
+              <div className="h-3 overflow-hidden rounded-full bg-stone-200" role="progressbar" aria-label="Steps reached in this lesson" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+                <div className="h-full rounded-full bg-[#318D64]" style={{ width: pct + "%" }} />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="px-5 pb-5 sm:px-7 sm:pb-7">
+        <Link to={"/child/lesson/" + quest.id} className="flex min-h-16 w-full items-center justify-center gap-3 rounded-2xl bg-[#2B8A61] px-5 py-4 text-center font-display text-xl font-bold text-white transition hover:bg-[#206E4D] focus-visible:bg-[#206E4D]" data-testid={"task-" + quest.id}>
+          <span aria-hidden="true">▶</span> {returned ? "Review and Continue" : resumed ? "Continue My Quest" : "Start My Quest"} <ArrowRight size={22} />
+        </Link>
+      </div>
+    </section>
+  );
+}
 
 export default function ChildHome() {
   const { user } = useAuth();
@@ -51,23 +141,24 @@ export default function ChildHome() {
   const [offline, setOffline] = useState(false);
   const [ready, setReady] = useState(new Set());
   const [news, setNews] = useState([]);
+  const [reloads, setReloads] = useState(0);
+
   useEffect(() => {
     if (!user?.id) return undefined;
     const refresh = () => { savedLessonIds(user.id).then(setReady); notices(user.id).then(setNews); };
     refresh();
     return onOfflineChange(refresh);
   }, [user?.id]);
-  const [reloads, setReloads] = useState(0);
   useEffect(() => {
     const again = () => setReloads((n) => n + 1);
     window.addEventListener("sq-offline-sent", again);
     return () => window.removeEventListener("sq-offline-sent", again);
   }, []);
   useEffect(() => {
-    // Online: show the live list and save the open lessons on this device. Offline: the list saved last time.
-    api.get("/dashboard/child").then(r => {
+    let active = true;
+    api.get("/dashboard/child").then((r) => {
+      if (!active) return;
       setData(r.data); setOffline(false);
-      // Offline lessons are a Family Membership feature: only then are quests saved on the device.
       if (r.data.offline_allowed) {
         saveDashboard(user?.id, r.data);
         syncSavedLessons(user?.id, r.data.all_pending || r.data.today || []);
@@ -77,102 +168,103 @@ export default function ChildHome() {
       }
     }).catch(async (e) => {
       const saved = isNetworkError(e) ? await savedDashboard(user?.id) : null;
+      if (!active) return;
       setOffline(isNetworkError(e));
       setData(saved || { today: [], completed: [], waiting: [], xp: 0 });
     });
+    setEventsReady(false);
     api.get("/calendar", { params: user?.id ? { student_id: user.id } : {} })
-      .then(r => setEvents((r.data || []).filter(e => e.linked_lesson_id && !(e.student_id && user?.id && e.student_id !== user.id))))
+      .then((r) => { if (active) setEvents((r.data || []).filter((e) =>
+        (e.linked_lesson_id || e.linked_assignment_id) && !(e.student_id && user?.id && e.student_id !== user.id)
+      )); })
       .catch(() => {})
-      .finally(() => setEventsReady(true));
+      .finally(() => { if (active) setEventsReady(true); });
+    return () => { active = false; };
   }, [user?.id, user?.username, reloads]);
-  if (!data) return <div className="text-slate-500">Loading…</div>;
-  // Offline, only lessons saved on this device can be opened.
-  const visible = (list) => (offline ? (list || []).filter((a) => ready.has(a.id)) : list || []);
 
-  const greeting = user?.theme === "early" ? "Hi" : user?.theme === "senior" ? "Welcome back" : "Hey";
-  const headingSize = user?.theme === "early" ? "text-4xl" : "text-3xl";
-
-  const now = new Date();
-  const today = iso(now);
-  const todayLabel = now.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
-  const lessonOf = (a) => a.lesson?.id || a.lesson_id;
-  const todayIds = new Set(events.filter(e => e.date === today).map(e => e.linked_lesson_id));
-  const overdueIds = new Set(events.filter(e => e.date < today).map(e => e.linked_lesson_id));
-  const nextDate = {};
-  events.filter(e => e.date > today).forEach(e => { if (!nextDate[e.linked_lesson_id] || e.date < nextDate[e.linked_lesson_id]) nextDate[e.linked_lesson_id] = e.date; });
-
-  // The API exposes five highlighted quests as "today", but every open assignment
-  // must remain discoverable — including older in-progress and returned work.
+  if (!data) return <div role="status" className="paper-card p-8 text-center text-stone-600">Gathering your quests…</div>;
+  const visible = (list) => offline ? (list || []).filter((a) => ready.has(a.id)) : list || [];
   const tasks = visible(data.all_pending || data.today);
-  const scheduledToday = tasks.filter(a => todayIds.has(lessonOf(a)));
-  const catchUp = tasks.filter(a => !todayIds.has(lessonOf(a)) && overdueIds.has(lessonOf(a)));
-  const workAhead = tasks
-    .filter(a => !todayIds.has(lessonOf(a)) && !overdueIds.has(lessonOf(a)) && nextDate[lessonOf(a)])
-    .sort((x, y) => nextDate[lessonOf(x)].localeCompare(nextDate[lessonOf(y)]));
-  const anytime = tasks.filter(a => !todayIds.has(lessonOf(a)) && !overdueIds.has(lessonOf(a)) && !nextDate[lessonOf(a)]);
+  const today = iso(new Date());
+  const groups = groupChildQuests(tasks, events, today);
+  const featured = featuredChildQuest(groups);
+  const excludeFeatured = (items) => items.filter((a) => a.id !== featured?.id);
+  const feedback = Object.fromEntries((data.feedback || [])
+    .filter((f) => f.assignment_id && f.parent_feedback)
+    .map((f) => [f.assignment_id, f.parent_feedback]));
+  const kid = user?.theme === "early" || user?.theme === "primary";
+  const senior = user?.theme === "secondary" || user?.theme === "senior";
+  const dateLabel = new Date().toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long" });
+  const remainingToday = excludeFeatured(groups.today);
 
   return (
-    <div className="space-y-6 animate-in" data-testid="child-home">
-      {offline && (
-        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="offline-home">
-          <strong>📶 You're offline.</strong> The quests below are saved on this device, so you can still do them. Your work is sent automatically when you're back online.
-        </div>
-      )}
-      {news.length > 0 && (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 space-y-1" data-testid="offline-news">
-          {news.map((n, i) => <p key={i}>{n.kind === "handed_in" ? "✅ " : "⚠️ "}{n.text}</p>)}
-          <button type="button" className="underline font-semibold" onClick={() => clearNotices(user?.id)}>OK</button>
-        </div>
-      )}
-      <section className="flex items-start justify-between gap-4">
+    <div className="space-y-7 animate-in" data-testid="child-home">
+      {offline && <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="offline-home"><strong>📶 You're offline.</strong> Your saved quests are ready on this device. Your work will send when you're back online.</div>}
+      {news.length > 0 && <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 space-y-2" data-testid="offline-news">
+        {news.map((n, i) => <p key={i}>{n.kind === "handed_in" ? "✅ " : "⚠️ "}{n.text}</p>)}
+        <button type="button" className="font-bold underline" onClick={async () => { setNews([]); await clearNotices(user?.id); }}>Got it</button>
+      </div>}
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className={`font-display ${headingSize} font-bold`}>{greeting}, {user?.name}!</h1>
-          <p className="text-sm opacity-75 mt-1" data-testid="today-label">Today is {todayLabel}.</p>
+          <p className="text-sm font-bold text-[#527259]" data-testid="today-label">{dateLabel}</p>
+          <h1 className={"mt-1 font-display font-extrabold text-[#1F3B2D] " + (kid ? "text-4xl" : "text-3xl")}>
+            {senior ? "Welcome back" : "Ready for an adventure"}, {user?.name || "explorer"}!
+          </h1>
+          <p className="mt-1 text-sm text-stone-600">{senior ? "Your work, your pace. Pick up where you left off." : "Your next adventure is just one click away."}</p>
         </div>
-        <Link to="/child/calendar" className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-white border border-slate-300 px-4 py-2 text-sm font-semibold hover:border-slate-500" data-testid="view-calendar-link"><CalendarDays size={16}/> View calendar</Link>
-      </section>
+        <Link to="/child/calendar" className="inline-flex items-center gap-2 rounded-full border-2 border-[#D4C8A8] bg-white px-4 py-2.5 text-sm font-bold text-[#1F3B2D]" data-testid="view-calendar-link"><CalendarDays size={18} /> View my week</Link>
+      </div>
 
-      <section className="grid grid-cols-3 gap-3" data-testid="quest-stats">
-        <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-xp">{data.xp ?? 0}</div><div className="text-xs opacity-70">XP earned</div></div>
-        <Link to="/child/portfolio" className="rounded-2xl bg-white border border-slate-200 p-4 text-center hover:border-emerald-300" data-testid="stat-done-link"><div className="font-display text-2xl font-bold" data-testid="stat-done">{(data.completed || []).length}</div><div className="text-xs opacity-70">Quests complete · Portfolio</div></Link>
-        <div className="rounded-2xl bg-white border border-slate-200 p-4 text-center"><div className="font-display text-2xl font-bold" data-testid="stat-waiting">{(data.waiting || []).length}</div><div className="text-xs opacity-70">Waiting for review</div></div>
-      </section>
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.9fr)_minmax(260px,1fr)]">
+        <div>{featured ? <FeaturedQuest quest={featured} ready={ready.has(featured.id)} feedback={feedback[featured.id]} senior={senior} /> :
+          <section className="flex h-full min-h-64 flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-[#B5C9AF] bg-white/80 p-8 text-center" data-testid="no-work">
+            <Sparkles size={40} className="mb-3 text-[#4A5D3A]" />
+            <h2 className="font-display text-2xl font-bold text-[#1F3B2D]">{groups.awaitingHelp.length ? "Your grown-up has the next move" : "All caught up!"}</h2>
+            <p className="mt-2 text-sm text-stone-600">{groups.awaitingHelp.length ? "Your saved work is waiting for help. You can explore your pet or reading while you wait." : "No quests waiting right now. Visit your pet, add some reading or look back at your adventures."}</p>
+            <Link className="mt-4 rounded-full bg-[#1F3B2D] px-5 py-3 text-sm font-bold text-white" to="/child/stuff">Explore My Stuff</Link>
+          </section>}
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-3 gap-2" data-testid="quest-stats">
+            <Link to="/child/room" className="rounded-2xl border border-[#D4C8A8] bg-white p-3 text-center">
+              <div className="font-display text-xl font-extrabold text-[#1F3B2D]" data-testid="stat-xp">{data.xp ?? 0}</div><div className="text-xs text-stone-600">Pet XP</div>
+            </Link>
+            <Link to="/child/portfolio" className="rounded-2xl border border-[#D4C8A8] bg-white p-3 text-center" data-testid="stat-done-link">
+              <div className="font-display text-xl font-extrabold text-[#1F3B2D]" data-testid="stat-done">{(data.completed || []).length}</div><div className="text-xs text-stone-600">Recent wins</div>
+            </Link>
+            <div className="rounded-2xl border border-[#D4C8A8] bg-white p-3 text-center">
+              <div className="font-display text-xl font-extrabold text-[#1F3B2D]" data-testid="stat-waiting">{(data.waiting || []).length}</div><div className="text-xs text-stone-600">In review</div>
+            </div>
+          </div>
+          {eventsReady && <PetWelcome childId={user?.id} name={user?.name} today={groups.today.length} overdue={groups.catchUp.length} ahead={groups.workAhead.length} total={tasks.length} />}
+          <Link to="/child/reading" className="flex items-center justify-between gap-3 rounded-2xl border border-[#D4C8A8] bg-white p-4 text-sm font-bold text-[#1F3B2D]"><BookOpen size={19} /> Add to my reading log <ArrowRight size={18} /></Link>
+        </div>
+      </div>
 
-      {(data.waiting || []).length > 0 && (
-        <section data-testid="waiting-section">
-          <h2 className="font-display text-lg font-semibold">Handed in</h2>
-          <div className="space-y-2 mt-2">{data.waiting.map(w => <div key={w.id} className="rounded-xl bg-white border border-slate-200 px-4 py-3 text-sm">{w.lesson?.title} <span className="opacity-60">· waiting for your grown-up</span></div>)}</div>
+      {groups.returned.length > 0 && (
+        <QuestGroup title="A little more adventuring" subtitle="Your grown-up has left some feedback. Your answers are saved, so you can pick up from there." items={excludeFeatured(groups.returned)} planned={groups.planned} ready={ready} feedback={feedback} tone="returned" testid="returned-section" />
+      )}
+      <QuestGroup title="Other quests for today" subtitle="Pick whichever adventure you feel ready for." items={remainingToday} planned={groups.planned} ready={ready} testid="today-section" />
+      <QuestGroup title="Catch up" subtitle="From earlier days — take them one at a time." items={excludeFeatured(groups.catchUp)} planned={groups.planned} ready={ready} tone="catchup" testid="catchup-section" />
+      <QuestGroup title="Ready whenever you are" subtitle="No set day, so choose one when it suits." items={excludeFeatured(groups.anytime)} planned={groups.planned} ready={ready} testid="anytime-section" />
+      <QuestGroup title="Work ahead" subtitle="These are planned for later, but you can start early." items={excludeFeatured(groups.workAhead)} planned={groups.planned} ready={ready} testid="ahead-section" />
+      {groups.awaitingHelp.length > 0 && (
+        <section className="rounded-3xl border border-amber-200 bg-amber-50 p-4" data-testid="help-section">
+          <h2 className="font-display text-lg font-bold text-amber-900">Waiting for a grown-up</h2>
+          <div className="mt-2 space-y-2">{groups.awaitingHelp.map((a) =>
+            <div key={a.id} className="rounded-xl bg-white px-4 py-3 text-sm text-stone-700">{a.lesson?.title || "Your quest"} — your request for help is with your grown-up.</div>)}</div>
         </section>
       )}
-
-      {eventsReady && (
-        <PetWelcome childId={user?.id} name={user?.name} today={scheduledToday.length} overdue={catchUp.length} ahead={workAhead.length} total={tasks.length} />
-      )}
-
-      {tasks.length === 0 ? (
-        <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-white/70 p-10 text-center" data-testid="no-work">
-          <Sparkles className="mx-auto text-slate-400 mb-3" size={32} />
-          <p className="font-display text-lg font-semibold">All caught up!</p>
-          <p className="text-sm opacity-70 mt-1">No tasks waiting right now. Ask your parent to assign something, or check your portfolio.</p>
-        </div>
-      ) : (
-        <>
-          {scheduledToday.length === 0 && (
-            <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-white/70 p-6 text-center" data-testid="nothing-today">
-              <p className="font-display text-lg font-semibold">Nothing planned for today</p>
-              <p className="text-sm opacity-70 mt-1">{(catchUp.length + workAhead.length + anytime.length) > 0 ? "You can still pick something from below if you feel like it." : "Enjoy your day!"}</p>
-            </div>
-          )}
-          <Group title="Today's quests" items={scheduledToday} ready={ready} />
-          <Group title="Catch up" hint="These were planned for an earlier day." items={catchUp} ready={ready} />
-          <Group title="Work ahead" hint="Planned for a later day, but you can start any of these now." items={workAhead} plannedOf={(a) => niceDate(nextDate[lessonOf(a)])} early ready={ready} />
-          <Group title="Anytime" hint="No set day. Do them whenever you like." items={anytime} ready={ready} />
-        </>
+      {(data.waiting || []).length > 0 && (
+        <section className="rounded-3xl border border-[#D4C8A8] bg-white/80 p-5" data-testid="waiting-section">
+          <h2 className="flex items-center gap-2 font-display text-lg font-bold text-[#1F3B2D]"><Clock size={19} /> Handed in — waiting for review</h2>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">{data.waiting.map((a) =>
+            <div key={a.id} className="flex items-center gap-2 rounded-xl bg-[#F5F1E8] px-4 py-3 text-sm"><CheckCircle2 size={16} className="shrink-0 text-[#4A5D3A]" /> {a.lesson?.title || "Your quest"}</div>)}</div>
+        </section>
       )}
       {(data.completed || []).length > 0 && (
-        <Link to="/child/archive" className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-4 hover:bg-emerald-100" data-testid="completed-portfolio-link">
-          <span className="font-display text-lg font-semibold text-emerald-900">Your completed quests are in your Archive</span>
-          <p className="mt-1 text-sm text-emerald-800">Visit your portfolio whenever you want to look back at your work, parent feedback and achievements.</p>
+        <Link to="/child/archive" className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900 hover:bg-emerald-100" data-testid="completed-portfolio-link">
+          <span className="flex items-center gap-3 font-bold"><Star size={20} /> Your finished quests are safe in your Archive</span><ArrowRight size={20} />
         </Link>
       )}
     </div>

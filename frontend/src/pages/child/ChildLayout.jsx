@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Compass, Search, Home, FolderOpen, LogOut, Heart, Award, BookOpen, Library } from "lucide-react";
+import { Compass, CalendarDays, PawPrint, Backpack, LogOut } from "lucide-react";
 import { api } from "../../lib/api";
 import { flushOutbox, pendingCount } from "../../lib/offline";
 import { isKidsDevice } from "../../lib/pwa";
@@ -54,26 +54,36 @@ export default function ChildLayout() {
 
   return (
     <div className={`min-h-screen ${theme.shell}`} data-testid="child-shell" data-theme={user?.theme}>
-      <header className="sm:sticky top-0 z-30 border-b backdrop-blur-xl" style={{backgroundColor:"rgba(251,247,236,0.9)", borderColor:"#D4C8A8"}}>
-        <div className="mx-auto max-w-6xl flex flex-wrap items-center justify-between gap-2 px-4 sm:px-5 py-3">
-          <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl grid place-items-center" style={{backgroundColor: theme.accent}}><Compass size={18} style={{color:"#F5EFE0"}}/></div>
-            <div className="leading-tight">
-              <div className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>Side-Quest</div>
-              <div className="text-[10px] uppercase tracking-widest font-bold" style={{color: theme.accent}}>{theme.title}</div>
+      <header className="sticky top-0 z-30 border-b border-[#365A47] bg-[#1F3B2D] text-white shadow-lg" data-testid="child-header">
+        <div className="mx-auto max-w-6xl px-3 pb-2 pt-3 sm:px-5">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <Link to="/child" className="flex items-center gap-2.5" aria-label="Side-Quest — My Quests">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-[#4A5D3A]"><Compass size={21} /></div>
+              <div className="leading-tight">
+                <div className="font-display text-lg font-extrabold">Side-Quest</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-[#DBE9C8]">{theme.title}</div>
+              </div>
+            </Link>
+            <div className="flex items-center gap-2">
+              <div className="hidden min-w-0 items-center gap-2 rounded-full bg-white/10 px-3 py-2 sm:flex">
+                <span aria-hidden="true" className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#C77B5B] font-bold">{(user?.name || "E").slice(0, 1).toUpperCase()}</span>
+                <span className="max-w-32 truncate text-sm font-bold">Hi, {user?.name || "explorer"}!</span>
+              </div>
+              <button onClick={doLogout} className="inline-flex min-h-10 items-center gap-1 rounded-full px-3 py-2 text-xs font-bold text-white/90 hover:bg-white/10" data-testid="child-logout"><LogOut size={16} /> <span className="hidden sm:inline">Sign out</span></button>
             </div>
           </div>
-          <nav className="flex items-center gap-1 text-sm max-w-full overflow-x-auto whitespace-nowrap pb-1 sm:pb-0" aria-label="Main">
-            <Link to="/child/search" className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-nav-search"><Search size={14} className="inline mr-1"/> Search</Link>
-            <Link to="/child" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-home"><Home size={14} className="inline mr-1"/> Home</Link>
-            <Link to="/child/archive" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/archive" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/archive" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}}><FolderOpen size={14} className="inline mr-1"/> Archive</Link>
-            <Link to="/child/portfolio" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/portfolio" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/portfolio" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-portfolio"><FolderOpen size={14} className="inline mr-1"/> Portfolio</Link>
-            <Link to="/child/reading" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/reading" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/reading" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-reading"><Library size={14} className="inline mr-1"/> My reading</Link>
-            <Link to="/child/dragons-library" className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-nav-dragons-library"><Library size={14} className="inline mr-1"/> Library</Link>
-            <Link to="/child/word-hoard" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/word-hoard" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/word-hoard" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-word-hoard"><BookOpen size={14} className="inline mr-1"/> Word Hoard</Link>
-            <Link to="/child/achievements" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/achievements" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/achievements" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-achievements"><Award size={14} className="inline mr-1"/> Achievements</Link>
-            <Link to="/child/room" className={`rounded-full px-3 py-1.5 font-bold ${loc.pathname === "/child/room" ? "" : "hover:bg-white"}`} style={loc.pathname === "/child/room" ? {backgroundColor: theme.accent, color:"#F5EFE0"} : {color:"#2A2822"}} data-testid="child-nav-room"><Heart size={14} className="inline mr-1"/> Pet room</Link>
-            <button onClick={doLogout} className="rounded-full px-3 py-1.5 font-bold hover:bg-white" style={{color:"#2A2822"}} data-testid="child-logout"><LogOut size={14} className="inline mr-1"/> Sign out</button>
+          <nav className="grid grid-cols-4 gap-1.5 sm:gap-2" aria-label="Main">
+            {[
+              { to: "/child", label: "My Quests", Icon: Compass, active: loc.pathname === "/child" || loc.pathname.startsWith("/child/lesson/"), test: "child-nav-home" },
+              { to: "/child/calendar", label: "My Week", Icon: CalendarDays, active: loc.pathname === "/child/calendar", test: "child-nav-calendar" },
+              { to: "/child/room", label: "My Pet", Icon: PawPrint, active: loc.pathname === "/child/room", test: "child-nav-room" },
+              { to: "/child/stuff", label: "My Stuff", Icon: Backpack, active: !["/child", "/child/calendar", "/child/room"].includes(loc.pathname) && !loc.pathname.startsWith("/child/lesson/"), test: "child-nav-stuff" },
+            ].map((tab) => {
+              const Icon = tab.Icon;
+              return <Link key={tab.to} to={tab.to} aria-current={tab.active ? "page" : undefined} data-testid={tab.test} className={"flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-2 text-center text-xs font-extrabold transition sm:min-h-16 sm:flex-row sm:gap-2 sm:text-sm " + (tab.active ? "bg-[#FBF7EC] text-[#1F3B2D] shadow" : "bg-white/10 text-[#F5EFE0] hover:bg-white/20")}>
+                <Icon size={22} aria-hidden="true" /><span>{tab.label}</span>
+              </Link>;
+            })}
           </nav>
         </div>
       </header>

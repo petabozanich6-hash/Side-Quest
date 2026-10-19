@@ -21,7 +21,8 @@ const STATUS = {
 export default function ChildReading() {
   const nav = useNavigate();
   const [searchParams] = useSearchParams();
-  const today = new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  const today = [d.getFullYear(), String(d.getMonth() + 1).padStart(2, "0"), String(d.getDate()).padStart(2, "0")].join("-");
   const blank = { title: "", author: "", read_date: today, duration_minutes: 20, pages: "", book_type: "fiction", reading_mode: "independent" };
   const [form, setForm] = useState(() => ({...blank, title:(searchParams.get("book") || "").slice(0,120), author:(searchParams.get("author") || "").slice(0,80)}));
   const [items, setItems] = useState([]);

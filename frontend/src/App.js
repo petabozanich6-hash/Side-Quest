@@ -59,6 +59,7 @@ import HqHoard from "./pages/parent/hq/HqHoard";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
+import ChildStuff from "./pages/child/ChildStuff";
 import ChildLessonRouter from "./pages/child/ChildLessonRouter";
 import ChildPortfolio from "./pages/child/ChildPortfolio";
 import ChildLessonArchive from "./pages/child/ChildLessonArchive";
@@ -144,6 +145,7 @@ function Router() {
       </Route>
       <Route path="/child" element={<Guard role="child"><ChildLayout /></Guard>}>
         <Route index element={<ChildHome />} />
+        <Route path="stuff" element={<ChildStuff />} />
         <Route path="search" element={<SiteSearch mode="child" />} />
         <Route path="lesson/:aid" element={<ChildLessonRouter />} />
         <Route path="portfolio" element={<ChildPortfolio />} />
