@@ -14,6 +14,7 @@ function harness() {
       head:async key=>storage.has(key)?{key}:null,
       get:async key=>storage.has(key)?{body:new Response(storage.get(key)).body}:null,
       put:async (key,bytes,options)=>{storage.set(key,bytes);metadata.set(key,options?.customMetadata||{});return {key};},
+      delete:async keys=>{for(const key of Array.isArray(keys)?keys:[keys]){storage.delete(key);metadata.delete(key);}},
       list:async ({prefix}={})=>({objects:[...storage.keys()].filter(key=>key.startsWith(prefix||"")).map(key=>({key,customMetadata:metadata.get(key),uploaded:new Date()})),truncated:false})
     }
   };
@@ -47,7 +48,7 @@ function harness() {
 
 
 
-test("Only the ten premium illustrated activities remain; old SVG and PDF routes are retired",async()=>{
+test("Ten original illustrated catalogue activities remain; old SVG and PDF routes are retired",async()=>{
  const h=harness(),p=await h.parent("FREE_PREVIEW");
  const r=await h.req("/printables",p.token);
  assert.equal(r.status,200);
@@ -95,7 +96,7 @@ test("Only verified owner imports a valid 2480x3508 A4 PNG to private R2 and rea
  assert.equal((await h.req("/printables/lost-treasure-maze/image?variant=guide",p.token)).status,404);
  const invalid=new Uint8Array(30);
  assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze",p.token,"POST",invalid,"image/png")).status,400);
- assert.equal((await h.req("/printables/admin/assets/missing",p.token,"POST",bytes,"image/png")).status,404);
+ assert.equal((await h.req("/printables/admin/assets/%40invalid",p.token,"POST",bytes,"image/png")).status,400);
 });
 
 test("Owner uploads become immediately viewable and printable by paid families, never free or expired families",async()=>{
@@ -118,7 +119,7 @@ test("Owner uploads become immediately viewable and printable by paid families, 
    assert.equal(catalogue.owner,false);
    assert.equal(catalogue.unlocked,true);
    assert.equal(catalogue.art_review_only,false);
-   assert.equal(catalogue.ready_count,1);
+   assert.equal(catalogue.ready_count,undefined);
    assert.equal(catalogue.items.length,10);
    assert.equal(catalogue.items.find(i=>i.id==="lost-treasure-maze").available,true);
    assert.equal(catalogue.items.find(i=>i.id==="lost-treasure-maze").ink_available,true);
@@ -168,5 +169,58 @@ test("Owner can add brand-new solar-system activities without a code whitelist o
  assert.equal(freeIndex.items.find(item=>item.id===id).available,false);
  assert.equal((await h.req("/printables/"+id+"/image",preview.token)).status,402);
  assert.equal((await h.req("/printables/admin/assets/"+id,paid.token,"POST",bytes,"image/png")).status,403);
- assert.equal((await h.req("/printables/../../foo/image",paid.token)).status,404);
+ assert.equal((await h.req("/printables/%40invalid/image",paid.token)).status,404);
+});
+
+test("Owner delete removes main and ink R2 artwork; legacy card returns to import pending",async()=>{
+ const h=harness(),owner=await h.parent("FREE_PREVIEW"),paid=await h.parent("ACTIVE_MONTHLY"),free=await h.parent("FREE_PREVIEW");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),owner.userId);
+ const bytes=new Uint8Array(33);
+ [137,80,78,71,13,10,26,10].forEach((x,i)=>bytes[i]=x);
+ const dv=new DataView(bytes.buffer);dv.setUint32(16,2480);dv.setUint32(20,3508);
+ const id="lost-treasure-maze";
+ for(const suffix of ["","?variant=ink"]){
+  assert.equal((await h.req("/printables/admin/assets/"+id+suffix,owner.token,"POST",bytes,"image/png")).status,200);
+ }
+ // A different printable must not be deleted by accident.
+ assert.equal((await h.req("/printables/admin/assets/other-quest",owner.token,"POST",bytes,"image/png")).status,200);
+ const before=await (await h.req("/printables",owner.token)).json();
+ assert.equal(before.owner_uploads.find(x=>x.id===id).ink,true);
+ assert.equal(before.owner_uploads.length,2);
+ const path="/printables/admin/assets/"+id;
+ assert.equal((await h.req(path,undefined,"DELETE")).status,401);
+ assert.equal((await h.req(path,paid.token,"DELETE")).status,403);
+ assert.equal((await h.req(path,free.token,"DELETE")).status,403);
+ const result=await h.req(path,owner.token,"DELETE");
+ assert.equal(result.status,200);
+ assert.deepEqual((await result.json()).deleted_variants,["colour","ink"]);
+ assert.equal(h.storage.has("printable-vault/illustrated-v1/"+id+".png"),false);
+ assert.equal(h.storage.has("printable-vault/illustrated-v1/"+id+"-ink.png"),false);
+ assert.equal(h.storage.has("printable-vault/illustrated-v1/other-quest.png"),true);
+ const after=await (await h.req("/printables",owner.token)).json();
+ assert.equal(after.owner_uploads.some(x=>x.id===id),false);
+ assert.equal(after.ready_count,1);
+ assert.equal(after.items.find(x=>x.id===id).available,false);
+ assert.equal(after.items.find(x=>x.id===id).ink_available,false);
+ assert.equal((await h.req("/printables/"+id+"/image",paid.token)).status,404);
+ assert.equal((await h.req(path,owner.token,"DELETE")).status,404);
+});
+test("Deleting a newly uploaded activity removes its card; ink-only remnants are manageable",async()=>{
+ const h=harness(),owner=await h.parent("FREE_PREVIEW"),paid=await h.parent("ACTIVE_MONTHLY");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),owner.userId);
+ const bytes=new Uint8Array(33);
+ [137,80,78,71,13,10,26,10].forEach((x,i)=>bytes[i]=x);
+ const dv=new DataView(bytes.buffer);dv.setUint32(16,1024);dv.setUint32(20,1536);
+ const id="butterfly-life-cycle";
+ assert.equal((await h.req("/printables/admin/assets/"+id,owner.token,"POST",bytes,"image/png")).status,200);
+ assert.equal((await h.req("/printables",paid.token)).status,200);
+ assert.ok((await (await h.req("/printables",owner.token)).json()).items.some(x=>x.id===id));
+ assert.equal((await h.req("/printables/admin/assets/"+id,owner.token,"DELETE")).status,200);
+ assert.ok(!(await (await h.req("/printables",owner.token)).json()).items.some(x=>x.id===id));
+ assert.equal((await h.req("/printables/admin/assets/"+id+"?variant=ink",owner.token,"POST",bytes,"image/png")).status,200);
+ const withInk=await (await h.req("/printables",owner.token)).json();
+ assert.ok(withInk.owner_uploads.some(x=>x.id===id&&x.ink&&!x.colour));
+ assert.equal((await h.req("/printables/admin/assets/"+id,owner.token,"DELETE")).status,200);
+ assert.ok(!(await (await h.req("/printables",owner.token)).json()).owner_uploads.some(x=>x.id===id));
+ assert.equal((await h.req("/printables/admin/assets/%40invalid",owner.token,"DELETE")).status,400);
 });
