@@ -36,109 +36,78 @@ function harness() {
   return {req,db,parent,child};
 }
 
-test("catalogue is parent-only; previews never unlock downloads",async()=>{
-  const h=harness();
-  const p=await h.parent("FREE_PREVIEW");
-  assert.equal((await h.req("/printables")).status,401);
-  assert.equal((await h.req("/printables/dragon-hoard/pdf")).status,401);
-  const childToken=await h.child(p);
-  assert.equal((await h.req("/printables",childToken)).status,403);
-  assert.equal((await h.req("/printables/dragon-hoard/pdf?variant=guide",childToken)).status,403);
-  const listing=await h.req("/printables",p.token);
-  assert.equal(listing.status,200);
-  const data=await listing.json();
-  assert.equal(data.unlocked,false);
-  assert.equal(data.items.length,22);
-  assert.equal(data.bundles.length,7);
-  const blocked=await h.req("/printables/dragon-hoard/pdf",p.token);
-  assert.equal(blocked.status,402);
-  assert.equal((await blocked.json()).code,"UPGRADE_REQUIRED");
-  assert.equal((await h.req("/printables/dragon-hoard/pdf?variant=guide",p.token)).status,402);
-  assert.equal((await h.req("/printables/bundles/craft/pdf",p.token)).status,402);
-  h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(p.id);
-  assert.equal((await h.req("/printables/dragon-hoard/pdf",p.token)).status,402);
+
+test("Vault removes retired question-sheet PDFs and lists only hands-on activities",async()=>{
+ const h=harness(),p=await h.parent("FREE_PREVIEW");
+ assert.equal((await h.req("/printables")).status,401);
+ const r=await h.req("/printables",p.token);
+ assert.equal(r.status,200);
+ const data=await r.json();
+ assert.equal(data.unlocked,false);
+ assert.equal(data.items.length,20);
+ assert.equal(data.bundles.length,8);
+ assert.ok(data.items.every(i=>i.kind!=="worksheet"&&i.format==="svg"));
+ assert.equal(data.items.filter(i=>i.theme==="Halloween").length,10);
+ assert.equal((await h.req("/printables/dragon-hoard/pdf",p.token)).status,404);
+ assert.equal((await h.req("/printables/secret-library/pdf",p.token)).status,404);
+ assert.equal((await h.req("/printables/dragon-hoard/image",p.token)).status,402);
 });
-
-test("paid family receives private valid A4 PDF and separate guide",async()=>{
-  const h=harness(),p=await h.parent("ACTIVE_MONTHLY");
-  const catalogue=await (await h.req("/printables",p.token)).json();
-  assert.equal(catalogue.unlocked,true);
-  const student=await h.req("/printables/dragon-hoard/pdf",p.token);
-  assert.equal(student.status,200);
-  assert.match(student.headers.get("content-type")||"",/application\/pdf/);
-  assert.equal(student.headers.get("cache-control"),"private, no-store");
-  const studentPdf=await student.text();
-  assert.ok(studentPdf.startsWith("%PDF-1.4"));
-  assert.match(studentPdf,/The Dragon Hoard/);
-  assert.doesNotMatch(studentPdf,/ANSWERS AND FACILITATOR NOTES/);
-  assert.match(studentPdf,/\/MediaBox \[0 0 595 842\]/);
-  const guide=await h.req("/printables/dragon-hoard/pdf?variant=guide",p.token);
-  assert.equal(guide.status,200);
-  const guidePdf=await guide.text();
-  assert.match(guidePdf,/ANSWERS AND FACILITATOR NOTES/);
-  assert.match(guidePdf,/120 - 27 = 93/);
-  const ink=await h.req("/printables/build-a-dragon/pdf?variant=ink",p.token);
-  assert.equal(ink.status,200);
-  assert.match(await ink.text(),/BODY/);
-  const bundle=await h.req("/printables/bundles/craft/pdf",p.token);
-  assert.equal(bundle.status,200);
-  const bundlePdf=await bundle.text();
-  assert.equal((bundlePdf.match(/\/Type \/Page \/Parent/g)||[]).length,3);
-  assert.equal((await h.req("/printables/bundles/not-a-bundle/pdf",p.token)).status,404);
-  assert.equal((await h.req("/printables/missing/pdf",p.token)).status,404);
+test("Free, child, expired and unauthenticated cannot obtain protected images",async()=>{
+ const h=harness(),p=await h.parent("FREE_PREVIEW");
+ const child=await h.child(p);
+ for(const endpoint of ["/printables/lost-treasure-maze/image","/printables/build-a-bat-puppet/image?variant=guide","/printables/halloween-colouring-adventure/image?variant=ink"]){
+  assert.equal((await h.req(endpoint)).status,401);
+  assert.equal((await h.req(endpoint,child)).status,403);
+  const r=await h.req(endpoint,p.token);
+  assert.equal(r.status,402);
+  assert.equal((await r.json()).code,"VAULT_REVIEW_ONLY");
+ }
+ h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(p.id);
+ assert.equal((await h.req("/printables/escape-pumpkin-patch/image",p.token)).status,402);
 });
-
-
-test("verified platform owner can review subscriber printables without paying",async()=>{
-  const h=harness();
-  const owner=await h.parent("FREE_PREVIEW");
-  const outsider=await h.parent("FREE_PREVIEW");
-  h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),owner.userId);
-  const catalogue=await (await h.req("/printables",owner.token)).json();
-  assert.equal(catalogue.unlocked,true);
-  const owned=await h.req("/printables/build-a-dragon/pdf",owner.token);
-  assert.equal(owned.status,200);
-  assert.match(await owned.text(),/%PDF-1.4/);
-  assert.equal((await h.req("/printables/build-a-dragon/pdf",outsider.token)).status,402);
-});
-
-
-test("ten activity-first printables are full art pages with working protected downloads",async()=>{
-  const h=harness(),paid=await h.parent("ACTIVE_MONTHLY"),free=await h.parent("FREE_PREVIEW");
-  const originals=[
-    ["lost-treasure-maze",2,"HOARD"],
-    ["moving-dragon-puppet",2,"PIN"],
-    ["enchanted-castle-colouring",2,"HIDDEN TREASURES"],
-    ["race-to-hoard",2,"STAR +1"],
-    ["paper-medieval-castle",2,"GLUE"],
-    ["design-dragon-egg",2,"HATCHLING"],
-    ["forest-detective",2,"TRACK 1"],
-    ["potion-spinner",2,"INGREDIENTS"],
-    ["illusion-gallery",2,"TESSELLATE"],
-    ["goblin-workshop-escape",2,"J     R"]
-  ];
-  const list=await (await h.req("/printables",paid.token)).json();
-  for(const [id,count,needle] of originals){
-    assert.ok(list.items.some(i=>i.id===id),id+" present in catalogue");
-    const res=await h.req("/printables/"+id+"/pdf",paid.token);
-    assert.equal(res.status,200,id+" PDF returns OK");
-    const pdf=await res.text();
-    assert.ok(pdf.startsWith("%PDF-1.4"),id+" PDF header");
-    assert.equal((pdf.match(/\/Type \/Page \/Parent/g)||[]).length,count,id+" page count");
-    assert.match(pdf,new RegExp(needle),id+" actual activity art");
-    assert.doesNotMatch(pdf,/ANSWERS AND FACILITATOR NOTES/,id+" no parent answers");
-    const guide=await h.req("/printables/"+id+"/pdf?variant=guide",paid.token);
-    assert.equal(guide.status,200,id+" guide accessible to paid parent");
-    const guidePdf=await guide.text();
-    assert.ok(guidePdf.startsWith("%PDF-1.4"),id+" guide is a real PDF");
-    assert.equal((await h.req("/printables/"+id+"/pdf?variant=ink",paid.token)).status,200,id+" ink saver");
-    assert.equal((await h.req("/printables/"+id+"/pdf",free.token)).status,402,id+" private free gate");
+test("Owner review receives private A4 SVGs and separate parent guides",async()=>{
+ const h=harness(),p=await h.parent("FREE_PREVIEW");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')")
+  .run(crypto.randomUUID(),p.userId);
+ const catalogue=(await (await h.req("/printables",p.token)).json()).items;
+ for(const item of catalogue){
+  for(let page=0;page<item.pages;page++){
+   const r=await h.req("/printables/"+item.id+"/image?page="+page,p.token);
+   assert.equal(r.status,200,item.id+" page "+page);
+   assert.match(r.headers.get("content-type")||"",/image\/svg\+xml/);
+   assert.equal(r.headers.get("cache-control"),"private, no-store");
+   const svg=await r.text();
+   assert.match(svg,/<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/);
+   assert.match(svg,/width="210mm" height="297mm"/);
+   assert.ok(svg.includes(item.title.slice(0,12)),item.id+" title");
+   assert.ok(svg.length>3000,item.id+" artwork is not an empty placeholder");
+   assert.doesNotMatch(svg,/<script|onload=|(?:href|src)=["\x27]https?:/i,item.id+" no script or remote URLs");
   }
-  for(const id of ["activity-puzzles","activity-build","activity-art","activity-play"]){
-    const pack=await h.req("/printables/bundles/"+id+"/pdf",paid.token);
-    assert.equal(pack.status,200,id);
-    const pdf=await pack.text();
-    assert.ok((pdf.match(/\/Type \/Page \/Parent/g)||[]).length>=4,id+" multi-page activities in bundle");
-    assert.equal((await h.req("/printables/bundles/"+id+"/pdf",free.token)).status,402);
-  }
+  const ink=await h.req("/printables/"+item.id+"/image?variant=ink",p.token);
+  assert.equal(ink.status,200,item.id+" ink saver");
+  const guide=await h.req("/printables/"+item.id+"/image?variant=guide",p.token);
+  assert.equal(guide.status,200,item.id+" parent guide");
+  assert.match(await guide.text(),/PARENT GUIDE/);
+ }
+ assert.equal((await h.req("/printables/lost-treasure-maze/image?page=3",p.token)).status,404);
+ assert.equal((await h.req("/printables/lost-treasure-maze/image?page=-1",p.token)).status,404);
+ assert.equal((await h.req("/printables/dragon-hoard/image",p.token)).status,404);
+});
+test("Verified owner can review; ordinary free family remains locked",async()=>{
+ const h=harness(),owner=await h.parent("FREE_PREVIEW"),other=await h.parent("FREE_PREVIEW");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')")
+  .run(crypto.randomUUID(),owner.userId);
+ assert.equal((await (await h.req("/printables",owner.token)).json()).unlocked,true);
+ assert.equal((await h.req("/printables/pumpkin-face-creator/image",owner.token)).status,200);
+ assert.equal((await h.req("/printables/pumpkin-face-creator/image",other.token)).status,402);
+});
+
+test("Even subscribed customers cannot access under-review artwork until it is approved",async()=>{
+ const h=harness(),subscriber=await h.parent("ACTIVE_MONTHLY");
+ const data=await (await h.req("/printables",subscriber.token)).json();
+ assert.equal(data.art_review_only,true);
+ assert.equal(data.unlocked,false);
+ const r=await h.req("/printables/haunted-castle-maze/image",subscriber.token);
+ assert.equal(r.status,402);
+ assert.equal((await r.json()).code,"VAULT_REVIEW_ONLY");
 });

@@ -1,75 +1,36 @@
-# Printable Vault — Phase 1 (October 2026)
+# Printable Vault — image-first overhaul
 
-## Scope and access
-- First-party original learning activities, not external worksheet redistribution.
-- Paid Family Membership parents can download A4 PDFs, ink-savers and parent keys. The verified platform owner can also download them to review the library without buying a subscription.
-- Preview/expired accounts can browse metadata, but not PDF content; child accounts cannot access the parent catalogue.
-- Entitlement is verified on EVERY PDF GET using the existing paid-membership signal in getEntitlement. No public static PDFs or bearer tokens in URLs.
-- This is separate from the parent-saved external Resource Library. No AI is needed for downloads.
-- PDF responses are private/no-store. No migrations.
+## Authoring and quality target
+Side-Quest is selling access to high-quality, first-party printable **activities**, not plain question sheets. The quality reference is the illustrated Preview Collection shown to the owner in ChatGPT. This change is a **technical and vector-template overhaul**; it does not embed the exact generated preview images. Review the real printable artwork before releasing to members.
 
-## Routes
-- /parent/printable-vault
-- GET /api/printables — metadata and entitlement flag
-- GET /api/printables/:id/pdf?variant=colour|ink|guide — printable activity or parent key
-- GET /api/printables/bundles/:id/pdf?variant=colour|ink — printable pack
+Every image is scalable SVG with A4 dimensions (210 × 297 mm), so it can be printed or converted into a PDF from the browser's Print / Save as PDF action. All SVG source is authored on the server, with no remote scripts or assets. No AI is used on download. White/ink-saving mode, parent guide mode, and ordinary artwork mode are available.
 
-## Individual activities
-| ID | Title | Ages | Pack |
-|---|---|---|---|
-| dragon-hoard | The Dragon Hoard | 8–11 | starter |
-| secret-library | A Secret in the Library | 8–12 | starter |
-| dragon-flight-lab | Dragon Flight Lab | 8–13 | starter |
-| ember-island-map | Map of Ember Island | 8–12 | starter |
-| goblin-lockers | The Goblin Lockers | 9–14 | starter |
-| rune-gate | The Rune Gate | 12–16 | starter |
-| build-a-dragon | Build Your Own Dragon | 6–12 | craft |
-| story-quest-cube | Fold a Story Quest Cube | 7–14 | craft |
-| treasure-pocket | Make a Treasure Pocket | 6–12 | craft |
-| fraction-feast | Dragon's Fraction Feast | 8–12 | quick |
-| science-sort | Sort the Scientist's Samples | 7–11 | quick |
-| poetry-portal | The Poetry Portal | 10–15 | quick |
+## New catalogue
+The previous 12-item collection and its question-sheet PDF endpoints have been retired. The current catalogue contains **20 originals**: ten general activity sheets (maze, puppet, colouring, games, castles, dragon eggs, creature matching, potion spinner, optical illusions, goblin escape game), and ten Halloween activity sheets (haunted maze, spiderweb maze pack, bat puppet, pumpkin faces, paper haunted house, trick-or-treat board game, monster match, potion spinner, colouring, escape pumpkin patch).
 
-## Sample file status
-The earlier sample PDF attachments from the design conversation are NOT yet deployed as files to GitHub or R2. The code reproduces the nine original concepts in an on-demand template renderer and adds three more. Do not claim the exact original sample PDFs are live.
+## Access
+- GET /api/printables lists metadata only and returns an unlocked flag.
+- GET /api/printables/:id/image?page=0&variant=colour|ink|guide returns server-rendered protected SVG for a particular page.
+- The parent role and verified platform-owner role are checked on each image GET. While VAULT_ART_REVIEW_ONLY is true, **only the verified owner** can obtain images, even if a paid customer signs in. After editorial sign-off, set the flag to false to restore paid Family Membership entitlement. Ordinary preview and expired families cannot fetch bytes, not even directly by URL. Child accounts cannot view parent guides.
+- Cache-Control private, no-store; Content-Type image/svg+xml; Content-Security-Policy default-src none (inline style for original artwork).
+- No public /assets PDF or SVG copies.
+- No database migration, Stripe change or per-image AI charge.
 
-## Deliberately deferred
-- Assign-to-child button and activity-specific evidence association.
-- Downloadable thumbnails, favourites, versioned uploads.
-- Australian curriculum outcome code matching (needs verification).
-- Uploading the exact binary PDFs and hosting them securely from R2.
-These need an integration QA pass; do not add fake buttons.
+## Parent interface
+- Real member-only illustration thumbnails lazily loaded through authenticated API requests.
+- Search, filters for colouring, crafts, mazes, puzzles and games; Halloween bundled separately.
+- **View:** inspect the actual SVG pages.
+- **Images:** save the underlying A4 SVG pages for reuse.
+- **Print / PDF:** opens an A4 print layout; standard browser Print dialog can save as PDF.
+- **Ink-saving:** same artwork on white stock with minimal fills.
+- **Parent guide:** separate instructive image, not baked into the child's activity page.
+- **Art review banner:** signed-in parents who aren't the verified owner see a clear quality-review notice, not a misleading upsell.
 
-## Before merge/deploy
-1. Typecheck Worker, run unit tests and frontend build.
-2. Verify unauthenticated, child, preview, expired and paid access to both single and bundle endpoints.
-3. Download every student, ink saver and parent PDF and validate A4 and answer isolation.
-4. Physically assemble all paper crafts: validate cut outlines, dashed fold lines, tabs and instructions.
-5. Check no questions overlap diagrams or other content, and that writing space is adequate.
-6. Test browser preview and saving on mobile PWA, Chrome and Safari.
-7. Confirm no public static URL exposes member-only files.
-8. No database migration needed.
-
-## Content policy
-Activities are first-party. Any external material needs verified reuse rights and correct attribution; no claim of curriculum accreditation. Publish new printables only after subject, safety, licensing and print-layout editorial QA.
-
-## Phase 2 — activity-first collection
-
-The new collection contains **10 original, paper-first designs** instead of question sheets, with multi-page A4 PDF artwork. Each printable is generated only after paid-parent or verified-owner entitlement checks, preserving the existing free-preview lock.
-
-| ID | Format | What is physically on the page |
-|---|---|---|
-| lost-treasure-maze | maze | 10×10 and 18×18 seeded perfect mazes; answer path in parent solution PDF |
-| moving-dragon-puppet | buildable | body/head, wings, tail, two legs; pin joint markers |
-| enchanted-castle-colouring | colouring | simple castle scene and detailed seek-and-colour fantasy scene |
-| race-to-hoard | board game | 36 playable numbered path squares, four tokens and printable folding die |
-| paper-medieval-castle | craft | tabbed four-sided tower net plus gate/wall sections with stand folds |
-| design-dragon-egg | craft | three patterned eggs, baby dragon and a glue-tab nest strip |
-| forest-detective | cut/match | six animal cards, six footprint cards and three habitat cards |
-| potion-spinner | spinner game | ingredient and effect wheels, pointers and invented potion cards |
-| illusion-gallery | art puzzle | concentric optical illusion and a cut-out triangle tessellation |
-| goblin-workshop-escape | escape game | cut-out Caesar decoder, secret message and picture-count final lock |
-
-Bundles: Mazes and Escape Quests, Cut Build and Make, Colour and Create, Print and Play. Each includes member-only colour and ink-saver variants.
-
-Editorial checks: paper-cut joint fit and spinner assembly need hands-on testing. Detailed vector originals are intentionally simple to print with no graphics hosting or copyrighted material. Printed off-site previews should never bypass membership. No auto-assignment or state-outcome tagging in this phase.
+## Release requirements
+1. Automated Worker test, TypeScript check, frontend build and regression suites pass.
+2. View each of the 20 images at full A4, zoom in and print; ensure cut/fold lines and reading order are usable.
+3. **Physically assemble** all foldable crafts, dice and split-pin activities, testing both Chrome and Safari printing.
+4. Editorial illustration review against the reference previews before commercial release; if images don't meet the standard, keep this pull request unmerged and upgrade the art first.
+5. Inspect game mechanics and parent keys, particularly every maze solution, spinner and cipher.
+6. Check paid, owner, preview, expired, child and unauthenticated access. Verify old PDFs return 404.
+7. Production deploy only after explicit artwork sign-off.
