@@ -844,7 +844,7 @@ test("maths prompts teach algebra instead of merely stating rules", () => {
   assert.match(focus, /both sides/i);
   assert.match(focus, /because|WHY/i);
   assert.match(focus, /ORIGINAL equation/i);
-  assert.match(aid.designPrompt(base), /ACTUAL concrete example/i);
+  assert.match(aid.designPrompt(base), /SPECIFIC demonstration with actual numbers|concrete example with numbers/i);
   const design = {
     concept: "Solve and check a one-step equation",
     key_words: [{ word: "variable", meaning: "a letter for a number" }],
