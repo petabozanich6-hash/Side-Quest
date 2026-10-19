@@ -1,6 +1,7 @@
 import type { App, Guards } from "./types";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
+import { isPlayPrintable, renderPlayPages } from "./printableActivityArt";
 
 /**
  * Original first-party Side-Quest activity collection. No user-uploaded content,
@@ -9,12 +10,44 @@ import { isPlatformOwner } from "./access";
  */
 export type VaultItem = {
   id: string; title: string; category: string; ages: string; minutes: number;
-  kind: "worksheet" | "craft" | "game"; description: string;
+  kind: "worksheet" | "craft" | "game" | "maze" | "colouring" | "puzzle"; description: string;
   materials: string; questions: string[]; answers: string[];
   theme: string; collection: string;
 };
 
 export const VAULT_ITEMS: VaultItem[] = [
+
+  {id:"lost-treasure-maze",title:"The Dragon's Lost Treasure Maze",category:"Mazes & Puzzles",ages:"5-10",minutes:20,kind:"maze",theme:"Dragons",collection:"activity-puzzles",materials:"Coloured pencils",
+    description:"Two genuine winding cave mazes - one easy and one tricky - with a treasure goal.",
+    questions:["Find your way to the hoard on two full-page mazes."],answers:["Both mazes have one guaranteed continuous solution path.","The parent guide draws the successful route on each maze."]},
+  {id:"moving-dragon-puppet",title:"Build-a-Dragon Moving Puppet",category:"Colour, Cut & Create",ages:"6-12",minutes:40,kind:"craft",theme:"Dragons",collection:"activity-build",materials:"Colouring pencils, scissors, split pins, thin card optional",
+    description:"Colour, cut out and assemble a dragon with moving wings, legs, head and tail.",
+    questions:["Colour the dragon parts and cut around the solid outlines."],answers:["Adult assistance is needed to make pin holes.","Join the marked holes with split pins so parts swivel instead of gluing joints."]},
+  {id:"enchanted-castle-colouring",title:"Enchanted Castle Colouring Adventure",category:"Colouring & Creativity",ages:"7-Adult",minutes:35,kind:"colouring",theme:"Fantasy",collection:"activity-art",materials:"Colouring pencils or markers",
+    description:"Two detailed castle illustrations with dragons, hidden items and plenty of colouring space.",
+    questions:["Colour an enchanted castle, then find magical items hidden in the detailed scene."],answers:["One simpler and one detailed castle scene.","The detailed illustration hides seven gems, a key and a potion bottle."]},
+  {id:"race-to-hoard",title:"Race to the Dragon's Hoard",category:"Print & Play Games",ages:"6-13",minutes:30,kind:"game",theme:"Dragons",collection:"activity-play",materials:"Scissors, glue, colouring pencils",
+    description:"A complete 36-square adventure board game with player tokens and a foldable die.",
+    questions:["Cut out player tokens and fold the die, then race to square 36."],answers:["Stars move a player forward one extra space; goblins move a player back one; gems give an extra roll.","First to reach square 36 wins, without requiring an exact roll."]},
+  {id:"paper-medieval-castle",title:"Build Your Own Medieval Castle",category:"Colour, Cut & Create",ages:"8-15",minutes:45,kind:"craft",theme:"Medieval",collection:"activity-build",materials:"Colouring pencils, scissors, glue, light cardstock optional",
+    description:"Build a freestanding paper castle from a square tower net and modular gate walls.",
+    questions:["Colour, cut, fold and join a tower net and two castle wall pieces."],answers:["Print the tower sheet twice for two matching towers.","Solid lines are cutting paths; dashed lines are fold lines.","Use the glue flap to close each tower and fold the wall bases back."]},
+  {id:"design-dragon-egg",title:"Design a Dragon Egg",category:"Colour, Cut & Create",ages:"5-12",minutes:30,kind:"craft",theme:"Dragons",collection:"activity-build",materials:"Colours, child-safe scissors, glue stick",
+    description:"Decorate and cut three patterned dragon eggs, make a baby dragon and build a paper nest.",
+    questions:["Colour three different dragon eggs, cut them out and craft a nest ring."],answers:["Glue the end tab of the long paper nest strip behind the opposite end to make a ring.","The dragon eggs and hatchling can sit inside the ring."]},
+  {id:"forest-detective",title:"The Forest Creature Detective",category:"Print & Play Games",ages:"6-11",minutes:25,kind:"game",theme:"Nature",collection:"activity-play",materials:"Scissors, coloured pencils",
+    description:"Cut out animal and track cards, match six species and create habitat groups.",
+    questions:["Match six animal illustrations to their six footprints and sort habitat cards."],answers:["Track 1 fox; track 2 rabbit; track 3 owl; track 4 hedgehog; track 5 deer; track 6 frog.","Suggested homes: woodland fox, owl, hedgehog and deer; meadow rabbit; pond frog. Other supported matches are welcome."]},
+  {id:"potion-spinner",title:"The Potion-Maker's Spinner",category:"Print & Play Games",ages:"8-14",minutes:35,kind:"game",theme:"Magic",collection:"activity-play",materials:"Scissors, two split pins, coloured pencils",
+    description:"Make two real spinning wheels, combine fictional ingredients and invent potion recipes.",
+    questions:["Cut out two wheels and pointers, attach with split pins and invent magical potions."],answers:["Imaginary play only: no real chemicals, cooking or drinking.","Each spin combines an ingredient with a magical effect."]},
+  {id:"illusion-gallery",title:"The Impossible Illusion Gallery",category:"Mazes & Puzzles",ages:"12-Adult",minutes:30,kind:"puzzle",theme:"Geometry",collection:"activity-art",materials:"Two contrasting colours, scissors",
+    description:"Colour a geometric optical illusion and cut out a tessellation puzzle.",
+    questions:["Colour alternating geometric rings, then cut and assemble repeating triangular tiles."],answers:["No single correct colour scheme; compare high-contrast effects and repeating triangle patterns."]},
+  {id:"goblin-workshop-escape",title:"Escape the Goblin Workshop",category:"Mazes & Puzzles",ages:"10-16",minutes:40,kind:"puzzle",theme:"Escape Room",collection:"activity-puzzles",materials:"Scissors, split pin, pencil",
+    description:"A two-page cut-out escape game featuring an alphabet decoder and illustrated number lock.",
+    questions:["Assemble the decoder, read the goblin's secret message and unlock a picture-code door."],answers:["The Caesar shift is +3; JREOLQ decodes to GOBLIN.","Count four torches, two gears and seven gems to enter 427."]},
+
   { id:"dragon-hoard", title:"The Dragon Hoard", category:"Maths", ages:"8–11", minutes:20, kind:"worksheet", theme:"Dragons", collection:"starter", materials:"Pencil",
     description:"Count, share and rescue the coins in a dragon's treasure room.",
     questions:["A dragon has 120 coins. Goblins sneak away with 27. How many remain?","The dragon discovers 18 more coins. How many now?","Divide the coins equally into 3 treasure chests. How many per chest?","One chest gives 9 coins to a knight. How many remain in that chest?","BONUS: Five dragons each find 14 gems. How many gems altogether?"],
@@ -66,9 +99,13 @@ export const VAULT_ITEMS: VaultItem[] = [
 ];
 
 export const VAULT_BUNDLES = [
-  { id:"starter", title:"Original Quest Starter Pack", description:"Six ready-to-use maths, English, science and mystery adventures." },
-  { id:"craft", title:"Colour, Cut & Create", description:"Three buildable templates, including a dragon, cube and treasure pocket." },
-  { id:"quick", title:"Quick Quest Collection", description:"Three activities for a spare 20–25 minutes." }
+  { id:"activity-puzzles", title:"Mazes and Escape Quests", description:"A winding dragon maze and an interactive goblin escape-room adventure." },
+  { id:"activity-build", title:"Cut, Build and Make", description:"Build a moving dragon, a paper castle and a dragon egg nest." },
+  { id:"activity-art", title:"Colour and Create", description:"Colour fantasy castles and turn geometry into optical illusions." },
+  { id:"activity-play", title:"Print and Play", description:"A board game, animal matching cards and two potion spinners." },
+  { id:"starter", title:"Original Quest Starter Pack", description:"Six maths, English, science and mystery paper quests." },
+  { id:"craft", title:"Colour, Cut & Create - Vol. 1", description:"Three earlier buildable templates: dragon, cube and treasure pocket." },
+  { id:"quick", title:"Quick Quest Collection", description:"Three classic activities for a spare 20-25 minutes." }
 ];
 
 const printable = (i: VaultItem) => ({
@@ -253,7 +290,10 @@ function pdfOf(streams:string[]):Uint8Array{
 
 function download(c:any,items:VaultItem[],variant:string,label:string){
   const guide=variant==="guide",ink=variant==="ink";
-  const bytes=pdfOf(items.map(item=>renderItem(item,ink,guide)));
+  const streams=items.flatMap(item=>isPlayPrintable(item.id)
+    ? renderPlayPages(item,ink,guide,()=>new Page(ink))
+    : [renderItem(item,ink,guide)]);
+  const bytes=pdfOf(streams);
   c.header("Content-Type","application/pdf");
   c.header("Content-Disposition",'attachment; filename="sidequest-'+label+'-'+variant+'.pdf"');
   c.header("Cache-Control","private, no-store");

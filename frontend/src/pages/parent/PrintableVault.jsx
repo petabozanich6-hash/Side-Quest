@@ -2,16 +2,19 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
-import { BookOpen, Download, FileText, Lock, Paintbrush, Printer, Search, Scissors, Sparkles, X } from "lucide-react";
+import { BookOpen, Download, FileText, Lock, Paintbrush, Printer, Search, Scissors, Sparkles, Puzzle, Palette, Gamepad2, Route, X } from "lucide-react";
 
-const ICONS = { craft: Scissors, worksheet: BookOpen, game: Sparkles };
+const ICONS = { craft: Scissors, worksheet: BookOpen, game: Gamepad2, maze: Route, colouring: Palette, puzzle: Puzzle };
 const COLOURS = {
   "Maths": "from-amber-50 to-orange-100 border-amber-200",
   "English": "from-sky-50 to-blue-100 border-sky-200",
   "Science": "from-emerald-50 to-teal-100 border-emerald-200",
   "Geography": "from-lime-50 to-green-100 border-lime-200",
   "Logic & Puzzles": "from-purple-50 to-violet-100 border-purple-200",
-  "Colour, Cut & Create": "from-pink-50 to-rose-100 border-pink-200"
+  "Colour, Cut & Create": "from-pink-50 to-rose-100 border-pink-200",
+  "Colouring & Creativity": "from-fuchsia-50 to-pink-100 border-fuchsia-200",
+  "Mazes & Puzzles": "from-indigo-50 to-violet-100 border-indigo-200",
+  "Print & Play Games": "from-yellow-50 to-amber-100 border-amber-200"
 };
 
 export default function PrintableVault() {
@@ -71,7 +74,7 @@ export default function PrintableVault() {
       <div className="relative z-10">
         <div className="text-xs font-bold tracking-[.22em] uppercase text-emerald-200">Side-Quest Original Collection</div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold mt-2">The Printable Vault</h1>
-        <p className="max-w-xl text-emerald-50 mt-3 leading-relaxed">Little paper quests. Big adventures. Colour, cut, build, investigate and discover — with original A4 activities ready when your family is.</p>
+        <p className="max-w-xl text-emerald-50 mt-3 leading-relaxed">Real paper adventures: colour a castle, solve a maze, build a puppet or play a board game. Original A4 activities, with no worksheet required.</p>
         <div className="flex flex-wrap items-center gap-2 mt-5 text-xs font-semibold">
           <span className="rounded-full bg-white/15 px-3 py-1.5">{items.length} printable quests</span>
           <span className="rounded-full bg-white/15 px-3 py-1.5">Ink-saving versions</span>
@@ -117,7 +120,7 @@ export default function PrintableVault() {
             <input className="w-full py-2.5 outline-none bg-transparent text-sm" placeholder="Find a quest…" value={search} onChange={e=>setSearch(e.target.value)} data-testid="vault-search" />
           </label>
           <select className="rounded-xl border border-stone-300 bg-white px-3 py-2.5 text-sm" value={category} onChange={e=>setCategory(e.target.value)} aria-label="Filter by subject" data-testid="vault-category"><option value="">All subjects</option>{categories.map(c=><option key={c} value={c}>{c}</option>)}</select>
-          <select className="rounded-xl border border-stone-300 bg-white px-3 py-2.5 text-sm" value={kind} onChange={e=>setKind(e.target.value)} aria-label="Filter by format" data-testid="vault-kind"><option value="">All formats</option><option value="worksheet">Worksheets</option><option value="craft">Colour, cut & create</option></select>
+          <select className="rounded-xl border border-stone-300 bg-white px-3 py-2.5 text-sm" value={kind} onChange={e=>setKind(e.target.value)} aria-label="Filter by format" data-testid="vault-kind"><option value="">All formats</option><option value="worksheet">Worksheets</option><option value="craft">Cut & build</option><option value="colouring">Colouring</option><option value="maze">Mazes</option><option value="puzzle">Puzzles</option><option value="game">Games</option></select>
           {(search||category||kind) && <button type="button" onClick={() => {setSearch("");setCategory("");setKind("");}} className="text-emerald-800 text-xs font-bold px-2">Clear filters</button>}
         </div>
         {filtered.length===0 && <div className="p-8 border border-dashed rounded-2xl text-center text-stone-600">No quests match your search. Try clearing the filters.</div>}
@@ -132,7 +135,7 @@ export default function PrintableVault() {
               </div>
               <div className="p-5 flex-1 flex flex-col gap-3">
                 <p className="text-sm text-slate-600 flex-1">{item.description}</p>
-                <p className="text-xs text-stone-600">Ages {item.ages} · {item.minutes} min · {item.kind==="craft"?"Make and create":"Paper quest"}</p>
+                <p className="text-xs text-stone-600">Ages {item.ages} · {item.minutes} min · {({craft:"Cut & build",colouring:"Colouring",maze:"Maze",puzzle:"Puzzle",game:"Game",worksheet:"Paper quest"})[item.kind] || "Paper quest"}</p>
                 <p className="text-xs text-stone-500">You need: {item.materials}</p>
                 <div className="flex flex-wrap gap-2 border-t pt-3">
                   <button className="rounded-full bg-emerald-900 px-3 py-2 text-white text-xs font-bold disabled:opacity-50" onClick={()=>one(item.id,item.title,"colour","preview")} disabled={!data.unlocked || !!busy} aria-label={"Preview "+item.title}><FileText size={14} className="inline mr-1"/> Preview</button>

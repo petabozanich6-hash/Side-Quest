@@ -48,8 +48,8 @@ test("catalogue is parent-only; previews never unlock downloads",async()=>{
   assert.equal(listing.status,200);
   const data=await listing.json();
   assert.equal(data.unlocked,false);
-  assert.equal(data.items.length,12);
-  assert.equal(data.bundles.length,3);
+  assert.equal(data.items.length,22);
+  assert.equal(data.bundles.length,7);
   const blocked=await h.req("/printables/dragon-hoard/pdf",p.token);
   assert.equal(blocked.status,402);
   assert.equal((await blocked.json()).code,"UPGRADE_REQUIRED");
@@ -100,4 +100,45 @@ test("verified platform owner can review subscriber printables without paying",a
   assert.equal(owned.status,200);
   assert.match(await owned.text(),/%PDF-1.4/);
   assert.equal((await h.req("/printables/build-a-dragon/pdf",outsider.token)).status,402);
+});
+
+
+test("ten activity-first printables are full art pages with working protected downloads",async()=>{
+  const h=harness(),paid=await h.parent("ACTIVE_MONTHLY"),free=await h.parent("FREE_PREVIEW");
+  const originals=[
+    ["lost-treasure-maze",2,"HOARD"],
+    ["moving-dragon-puppet",2,"PIN"],
+    ["enchanted-castle-colouring",2,"HIDDEN TREASURES"],
+    ["race-to-hoard",2,"STAR +1"],
+    ["paper-medieval-castle",2,"GLUE"],
+    ["design-dragon-egg",2,"HATCHLING"],
+    ["forest-detective",2,"TRACK 1"],
+    ["potion-spinner",2,"INGREDIENTS"],
+    ["illusion-gallery",2,"TESSELLATE"],
+    ["goblin-workshop-escape",2,"J     R"]
+  ];
+  const list=await (await h.req("/printables",paid.token)).json();
+  for(const [id,count,needle] of originals){
+    assert.ok(list.items.some(i=>i.id===id),id+" present in catalogue");
+    const res=await h.req("/printables/"+id+"/pdf",paid.token);
+    assert.equal(res.status,200,id+" PDF returns OK");
+    const pdf=await res.text();
+    assert.ok(pdf.startsWith("%PDF-1.4"),id+" PDF header");
+    assert.equal((pdf.match(/\/Type \/Page \/Parent/g)||[]).length,count,id+" page count");
+    assert.match(pdf,new RegExp(needle),id+" actual activity art");
+    assert.doesNotMatch(pdf,/ANSWERS AND FACILITATOR NOTES/,id+" no parent answers");
+    const guide=await h.req("/printables/"+id+"/pdf?variant=guide",paid.token);
+    assert.equal(guide.status,200,id+" guide accessible to paid parent");
+    const guidePdf=await guide.text();
+    assert.ok(guidePdf.startsWith("%PDF-1.4"),id+" guide is a real PDF");
+    assert.equal((await h.req("/printables/"+id+"/pdf?variant=ink",paid.token)).status,200,id+" ink saver");
+    assert.equal((await h.req("/printables/"+id+"/pdf",free.token)).status,402,id+" private free gate");
+  }
+  for(const id of ["activity-puzzles","activity-build","activity-art","activity-play"]){
+    const pack=await h.req("/printables/bundles/"+id+"/pdf",paid.token);
+    assert.equal(pack.status,200,id);
+    const pdf=await pack.text();
+    assert.ok((pdf.match(/\/Type \/Page \/Parent/g)||[]).length>=4,id+" multi-page activities in bundle");
+    assert.equal((await h.req("/printables/bundles/"+id+"/pdf",free.token)).status,402);
+  }
 });
