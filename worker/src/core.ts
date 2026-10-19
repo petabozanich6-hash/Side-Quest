@@ -114,6 +114,20 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     for (const a of pending) {
       const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
       a.lesson = lb.childSafeLesson(lb.assignmentLesson(a, live));
+      // Give the dashboard the *last visited step*, never the child's answers.
+      // This is a position indicator, not a claim that all earlier work is completed.
+      const draft = parseJson<any>(a.draft, {});
+      const lesson = a.lesson || {};
+      if (Number.isInteger(draft.step) && (lesson.builder || lesson.source === "parent" || lesson.source === "ai")) {
+        const count = (key: string) => Array.isArray(lesson[key]) ? lesson[key].length : 0;
+        const hasScoredQuiz = (lesson.quiz || []).some((q: any) => q.type !== "short_answer" && Array.isArray(q.options));
+        const videos = (lesson.resources || []).filter((r: any) => r.type === "video" && (r.embed_url || r.url)).length;
+        const total = 3 + count("texts") + count("sections") + count("worked_examples") +
+          (count("misconceptions") ? 1 : 0) + Math.ceil(count("guided_practice") / 4) +
+          count("activities") + count("questions") / Math.max(1, count("questions")) +
+          (hasScoredQuiz ? 1 : 0) + videos;
+        a.resume = { step: Math.max(0, Math.min(total - 1, draft.step)), total };
+      }
       delete a.lesson_snapshot;
     }
     const { results: fb } = await db.prepare(
