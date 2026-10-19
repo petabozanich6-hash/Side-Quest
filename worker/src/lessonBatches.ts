@@ -172,6 +172,10 @@ export async function draftBatchItem(
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; reused: boolean; [k: string]: any }>> {
   const { familyId, batchId, index } = opts;
+  // The one-time free sample must never be usable to write a lesson within
+  // a batch, even if this family created the batch before changing plans.
+  const { limits } = await lb.getEntitlement(db, familyId, now);
+  if (!limits.aiGeneration) return lb.paywall("AI lesson sets are part of Family Membership. Your free AI sample builds one lesson through Make a lesson.");
   const batch = await db.prepare("SELECT * FROM lesson_batches WHERE id = ? AND family_id = ?").bind(batchId, familyId).first<any>();
   if (!batch) return lb.fail(404, "That set of lessons was not found.");
   const items = (await db.prepare("SELECT * FROM lesson_batch_items WHERE batch_id = ? AND family_id = ? ORDER BY idx").bind(batchId, familyId).all<any>()).results || [];
