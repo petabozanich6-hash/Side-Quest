@@ -20,6 +20,11 @@ on:
         options:
           - year3-place-value
           - year7-algebra
+          - year4-english
+          - year5-science
+          - year7-history
+          - year5-technologies
+          - year4-arts
       confirm_charge:
         description: "Type RUN to authorise a small real inference test (possibly billable)"
         required: true
