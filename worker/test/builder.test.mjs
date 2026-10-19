@@ -246,6 +246,41 @@ test("legacy submissions with no lesson_id can still be approved safely", async 
   assert.equal(db.raw.prepare("SELECT response_text FROM submissions WHERE id = ?").get(sub.id).response_text, "Original work");
 });
 
+test("approval succeeds on legacy production evidence schema missing file_ids", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const sid = child(db, fam);
+  const l = await mk(db, fam);
+  const a = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).assignment;
+  const draft = { answers: { 0: "Saved work" }, step: 6 };
+  const user = { id: sid, family_id: fam };
+  const first = await lb.submitWork(db, user,
+    { assignment_id: a.id, needs_help: true, response_text: "Original work", file_ids: [], draft }, NOW);
+  assert.ok(first.ok);
+  assert.ok((await lb.reviewSubmission(db, fam, "parent", first.id,
+    { status: "needs_revision", feedback_text: "Fix your explanation" }, NOW)).ok);
+  const corrected = { answers: { 0: "Updated work" }, step: 8 };
+  assert.ok((await lb.saveDraft(db, user, a.id, corrected, NOW)).ok);
+  const second = await lb.submitWork(db, user,
+    { assignment_id: a.id, needs_help: true, response_text: "Updated work", draft: corrected }, NOW);
+  assert.ok(second.ok);
+  // Reproduce the exact production schema discrepancy without touching live D1.
+  db.raw.exec("ALTER TABLE lesson_evidence DROP COLUMN file_ids");
+  const approved = await lb.reviewSubmission(db, fam, "parent", second.id,
+    { status: "demonstrated", feedback_text: "Now approved!" }, NOW);
+  assert.ok(approved.ok, JSON.stringify(approved));
+  assert.equal(approved.xp_awarded, 45);
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id = ?").get(a.id).status, "demonstrated");
+  assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id = ?").get(first.id).status, "needs_revision");
+  assert.equal(db.raw.prepare("SELECT status, response_text FROM submissions WHERE id = ?").get(second.id).response_text, "Updated work");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id = ?").get(sid).n, 1);
+  assert.deepEqual(JSON.parse(db.raw.prepare("SELECT draft FROM assignments WHERE id = ?").get(a.id).draft), corrected);
+  const retry = await lb.reviewSubmission(db, fam, "parent", second.id,
+    { status: "demonstrated", feedback_text: "Now approved!" }, NOW);
+  assert.equal(retry.xp_awarded, 0, "legacy schema retries must not duplicate XP");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id = ?").get(sid).n, 1);
+});
+
 test("a missing approval evidence table returns a safe error without changing work", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
