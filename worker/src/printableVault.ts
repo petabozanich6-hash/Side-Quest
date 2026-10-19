@@ -1,5 +1,6 @@
 import type { App, Guards } from "./types";
 import { getEntitlement } from "./lessonBuilder";
+import { isPlatformOwner } from "./access";
 
 /**
  * Original first-party Side-Quest activity collection. No user-uploaded content,
@@ -259,18 +260,22 @@ function download(c:any,items:VaultItem[],variant:string,label:string){
   return c.body(bytes);
 }
 
+export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}) {
+  const {limits}=await getEntitlement(db,user.family_id);
+  return limits.aiGeneration || await isPlatformOwner(db,user.id);
+}
+
 export function registerPrintableVault(app:App,g:Guards){
   // Browsable metadata only for signed-in parents; no worksheets or answer keys.
   app.get("/api/printables",g.auth,g.parent,async c=>{
-    const {limits}=await getEntitlement(c.env.DB,c.get("user").family_id);
+    const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
     c.header("Cache-Control","private, no-store");
-    return c.json({unlocked:limits.aiGeneration,items:VAULT_ITEMS.map(printable),bundles:VAULT_BUNDLES});
+    return c.json({unlocked,items:VAULT_ITEMS.map(printable),bundles:VAULT_BUNDLES});
   });
   // Route checks are explicit for GET requests too, since the generic membership
   // middleware mainly guards paid mutations. Never host protected PDFs in /public.
   const paid=async(c:any,next:any)=>{
-    const {limits}=await getEntitlement(c.env.DB,c.get("user").family_id);
-    if(!limits.aiGeneration)return c.json({code:"UPGRADE_REQUIRED",detail:"The Printable Vault is included with a paid Family Membership."},402);
+    if(!await canAccessPrintableVault(c.env.DB,c.get("user")))return c.json({code:"UPGRADE_REQUIRED",detail:"The Printable Vault is included with a paid Family Membership."},402);
     return next();
   };
   app.get("/api/printables/bundles/:id/pdf",g.auth,g.parent,paid,c=>{
