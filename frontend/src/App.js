@@ -155,7 +155,7 @@ function Router() {
         <Route path="word-hoard" element={<ChildWordHoard />} />
         <Route path="room" element={<PetRoom />} />
         <Route path="reading" element={<ChildReading />} />
-        <Route path="dragons-library" element={<DragonLibrary mode="child" />} />
+        <Route path="dragons-library" element={<Navigate to="/child/stuff" replace />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
