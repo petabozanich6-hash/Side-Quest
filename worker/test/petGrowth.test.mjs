@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { makePet, stageForXp, previousStageForXp, CARE_STAGES } from "../src/data/pets.ts";
+import { makePet, stageForXp, previousStageForXp, CARE_STAGES, needsFeed } from "../src/data/pets.ts";
 import { newPet, swapPet, questView } from "../src/data/petQuests.ts";
 
 test("new pet growth takes sustained XP and retains the 60 XP hatching threshold", () => {
@@ -43,4 +43,10 @@ test("new pets start on the new curve without inheriting old minimum levels", ()
   const p = makePet("student","family","Nibbles","owl");
   assert.equal(p.extra.growth_version,2);
   assert.equal(p.extra.growth_floor,undefined);
+});
+
+test("pet feeding cooldown still parses persisted dates after growth changes", () => {
+  const now = new Date("2026-10-20T12:00:00Z");
+  assert.equal(needsFeed({ last_fed: "2026-10-20T11:00:00Z" }, now), false);
+  assert.equal(needsFeed({ last_fed: "2026-10-20T01:00:00Z" }, now), true);
 });
