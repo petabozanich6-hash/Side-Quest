@@ -58,7 +58,7 @@ export default function Landing() {
       <section className="relative z-10 mx-auto max-w-7xl px-6 pt-10 pb-16 grid lg:grid-cols-5 gap-10 items-center">
         <div className="lg:col-span-3">
           <span className="inline-flex max-w-full items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wide sm:tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
-            <Sparkles size={13}/> Built in Australia, welcoming families everywhere
+            <Sparkles size={13}/> For homeschool families across Australia and beyond
           </span>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
             <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Less time planning.</span>
