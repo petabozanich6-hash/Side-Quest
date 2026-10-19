@@ -99,13 +99,13 @@ export const VAULT_ITEMS: VaultItem[] = [
 ];
 
 export const VAULT_BUNDLES = [
-  { id:"starter", title:"Original Quest Starter Pack", description:"Six ready-to-use maths, English, science and mystery adventures." },
-  { id:"craft", title:"Colour, Cut & Create", description:"Three buildable templates, including a dragon, cube and treasure pocket." },
-  { id:"quick", title:"Quick Quest Collection", description:"Three activities for a spare 20–25 minutes." },
   { id:"activity-puzzles", title:"Mazes and Escape Quests", description:"A winding dragon maze and an interactive goblin escape-room adventure." },
   { id:"activity-build", title:"Cut, Build and Make", description:"Build a moving dragon, a paper castle and a dragon egg nest." },
   { id:"activity-art", title:"Colour and Create", description:"Colour fantasy castles and turn geometry into optical illusions." },
-  { id:"activity-play", title:"Print and Play", description:"A board game, animal matching cards and two potion spinners." }
+  { id:"activity-play", title:"Print and Play", description:"A board game, animal matching cards and two potion spinners." },
+  { id:"starter", title:"Original Quest Starter Pack", description:"Six maths, English, science and mystery paper quests." },
+  { id:"craft", title:"Colour, Cut & Create - Vol. 1", description:"Three earlier buildable templates: dragon, cube and treasure pocket." },
+  { id:"quick", title:"Quick Quest Collection", description:"Three classic activities for a spare 20-25 minutes." }
 ];
 
 const printable = (i: VaultItem) => ({
