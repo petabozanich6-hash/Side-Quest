@@ -20,7 +20,11 @@ export const REQUIRED = {
   announcement_recipients: ["id"],
   homeschool_compass_progress: ["family_id"],
   ai_inference_costs: ["id"],
-  assignments: ["id"],
+  // Review must never mark work complete unless its feedback, evidence and
+  // XP bookkeeping tables/columns exist in production.
+  assignments: ["id", "family_id", "student_id", "lesson_id", "status", "draft", "xp_awarded"],
+  submissions: ["id", "family_id", "assignment_id", "student_id", "lesson_id", "status", "parent_feedback", "next_step", "outcome_mappings", "reviewed_at", "reviewed_by", "file_ids", "response_text"],
+  lesson_evidence: ["id", "family_id", "lesson_id", "child_id", "type", "text", "file_name", "file_ids", "submitted_at"],
   lessons: ["id"],
   students: ["id"],
   outcome_progress: ["student_id"],

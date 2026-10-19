@@ -108,6 +108,30 @@ export default function HqOverview() {
             <Row label="Unprocessed Stripe events">{o.health.stripe_events_unprocessed ?? "—"}</Row>
             <Row label="Outgoing email">{o.health.email.configured ? "Configured" : "Not configured"}</Row>
           </dl>
+          {o.health.review_storage && (
+            <div className="mt-3 border-t border-stone-200 pt-3" data-testid="hq-review-storage">
+              <h3 className="text-sm font-bold" style={{ color: GREEN }}>Lesson approval storage · read-only check</h3>
+              {o.health.review_storage.status === "ready" ? (
+                <p className="text-xs text-emerald-800 mt-1">Required review, draft and evidence columns are present.</p>
+              ) : o.health.review_storage.status === "legacy_compatible" ? (
+                <p className="text-xs text-amber-900 mt-1">Older evidence storage detected: the file_ids column is absent. Lesson approval uses safe compatibility mode; a separate backed-up schema repair is still recommended.</p>
+              ) : o.health.review_storage.status === "needs_attention" ? (
+                <div className="text-xs text-rose-800 mt-1">
+                  <p>Missing tables or columns. Do not attempt further approvals until the production schema is repaired with a verified backup.</p>
+                  <ul className="mt-1 space-y-0.5">{(o.health.review_storage.missing || []).map(x => <li key={x}><code>{x}</code></li>)}</ul>
+                </div>
+              ) : <p className="text-xs text-amber-900 mt-1">The read-only check could not confirm the schema. This is not a passing result.</p>}
+            </div>
+          )}
+          {(o.health.error_types_7d || []).length > 0 && (
+            <div className="mt-3" data-testid="hq-error-classes">
+              <h3 className="text-sm font-bold" style={{ color: GREEN }}>Server error classes (7 days)</h3>
+              <p className="text-xs text-stone-600 mt-1">Error types recorded by the server. This does not include private request data or the underlying SQL message.</p>
+              <ul className="text-xs text-stone-700 mt-1 space-y-1">
+                {o.health.error_types_7d.map((r, i) => <li key={r.method + r.route + r.error_name + i} className="break-all"><code>{r.method} {r.route}</code> · {r.error_name || "Error"} · {r.n}</li>)}
+              </ul>
+            </div>
+          )}
           {o.health.top_error_routes_7d.length > 0 && (
             <div className="mt-3">
               <h3 className="text-sm font-bold" style={{ color: GREEN }}>Where errors happened (7 days)</h3>

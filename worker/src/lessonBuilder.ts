@@ -710,12 +710,12 @@ export async function quizPassed(db: DB, user: { id: string }, a: any, lesson: a
 export async function saveDraft(db: DB, user: { id: string; family_id: string }, assignmentId: string, draft: unknown, now: Date = new Date()): Promise<Result<{ saved_at: string }>> {
   const a = await db.prepare("SELECT id, status FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(assignmentId, user.id, user.family_id).first<any>();
   if (!a) return fail(404, "Assignment not found");
-  if (DONE_STATUSES.includes(a.status) || a.status === "submitted") return fail(409, "This lesson has already been handed in.", "ALREADY_SUBMITTED");
+  if (DONE_STATUSES.includes(a.status) || ["submitted", "awaiting_help"].includes(a.status)) return fail(409, "This lesson has already been handed in.", "ALREADY_SUBMITTED");
   if (!draft || typeof draft !== "object" || Array.isArray(draft)) return fail(400, "Nothing to save");
   const json = JSON.stringify(draft);
   if (new TextEncoder().encode(json).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
   const ts = nowIso(now);
-  const saved = await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated')").bind(json, ts, a.id).run();
+  const saved = await db.prepare("UPDATE assignments SET draft = ?, status = CASE WHEN status IN ('not_started','opened') THEN 'in_progress' ELSE status END, updated_at = ? WHERE id = ? AND status NOT IN ('revoked','submitted','awaiting_help','accepted','completed','demonstrated')").bind(json, ts, a.id).run();
   if (!saved.meta.changes) return fail(409, "This assignment is no longer available for editing.", "ASSIGNMENT_CHANGED");
   return { ok: true, saved_at: ts };
 }
@@ -725,13 +725,13 @@ export async function saveDraft(db: DB, user: { id: string; family_id: string },
 export async function submitWork(
   db: DB,
   user: { id: string; family_id: string },
-  body: { assignment_id?: string; response_text?: string | null; reflection?: string | null; file_ids?: string[]; needs_help?: boolean },
+  body: { assignment_id?: string; response_text?: string | null; reflection?: string | null; file_ids?: string[]; needs_help?: boolean; draft?: unknown },
   now: Date = new Date()
 ): Promise<Result<{ id: string; status: string; assignment_id: string; submitted_at: string; xp_gained: number }>> {
   const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(body.assignment_id ?? "", user.id, user.family_id).first<any>();
   if (!a) return fail(404, "Assignment not found");
   if (DONE_STATUSES.includes(a.status)) return fail(409, "This lesson has already been reviewed and finished.", "ALREADY_DONE");
-  if (a.status === "submitted") return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
+  if (["submitted", "awaiting_help"].includes(a.status)) return fail(409, "You have already handed this in. It is waiting for your grown-up to look at it.", "ALREADY_SUBMITTED");
   if (!body.needs_help) {
     const { lesson } = await assignmentForChild(db, user, a.id);
     const passed = await quizPassed(db, user, a, lesson);
@@ -746,6 +746,14 @@ export async function submitWork(
     const f = await db.prepare("SELECT id FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, user.family_id).first();
     if (!f) return fail(400, "One of your files could not be found.", "FILE_NOT_FOUND");
   }
+  // Preserve the exact interactive answers in the same transaction as hand-in.
+  // If no fresh draft is sent (older clients), retain the last autosaved copy.
+  let handInDraft: string | null = null;
+  if (body.draft !== undefined && body.draft !== null) {
+    if (typeof body.draft !== "object" || Array.isArray(body.draft)) return fail(400, "Invalid saved work");
+    handInDraft = JSON.stringify(body.draft);
+    if (new TextEncoder().encode(handInDraft).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
+  }
   const needsHelp = !!body.needs_help;
   const status = needsHelp ? "awaiting_help" : "submitted";
   const id = newId();
@@ -753,10 +761,10 @@ export async function submitWork(
   const writes = await db.batch([
     db
       .prepare(
-        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','accepted','completed','demonstrated'))"
+        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','awaiting_help','accepted','completed','demonstrated'))"
       )
       .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts, a.id),
-    db.prepare("UPDATE assignments SET draft = NULL, status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(status, ts, a.id, id),
+    db.prepare("UPDATE assignments SET draft = COALESCE(?, draft), status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(handInDraft, status, ts, a.id, id),
   ]);
   if (!writes[0].meta.changes) return fail(409, "This assignment is no longer available for hand-in.", "ASSIGNMENT_CHANGED");
   if (!needsHelp) await recordPetEvent(db as any, user.id, { kind: "lesson_done" }, now);
@@ -789,28 +797,86 @@ export async function reviewSubmission(
   const sub = await db.prepare("SELECT * FROM submissions WHERE id = ? AND family_id = ?").bind(submissionId, familyId).first<any>();
   if (!sub) return fail(404, "Not found");
   const status = String(body.status);
+  // Older submission rows are permitted to have a NULL lesson_id even though
+  // lesson_evidence requires one. Recover it from the original assignment.
+  const evidenceLessonId = sub.lesson_id || (await db.prepare(
+    "SELECT lesson_id FROM assignments WHERE id = ? AND family_id = ? AND student_id = ?"
+  ).bind(sub.assignment_id, familyId, sub.student_id).first<{ lesson_id: string }>())?.lesson_id;
+  if (!evidenceLessonId) return fail(409, "This submission is missing its original lesson link. Your child's answers are preserved; contact Side-Quest support.", "REVIEW_LESSON_LINK_MISSING");
+  // "awaiting_help" is reviewable (the child asked for a grown-up).
+  // A parent may revisit the outcome judgements on already reviewed work;
+  // doing so must not create fresh evidence or grant XP a second time.
   const ts = nowIso(now);
-  const mappings = Array.isArray(body.outcome_mappings) ? body.outcome_mappings.slice(0, 20) : [];
-  await db.batch([
+  const mappings = Array.isArray(body.outcome_mappings)
+    ? body.outcome_mappings.slice(0, 20)
+    : parseJson<unknown[]>(sub.outcome_mappings, []);
+  const feedback = body.feedback_text === undefined
+    ? String(sub.parent_feedback ?? "")
+    : String(body.feedback_text ?? "").slice(0, 4000);
+  const nextStep = body.next_step === undefined ? sub.next_step ?? null : body.next_step ?? null;
+  if (sub.status !== "submitted" && sub.status !== "awaiting_help") {
+    if (sub.status !== status) {
+      return fail(409, "This work has already been reviewed. Refresh to see the latest decision.", "ALREADY_REVIEWED");
+    }
+    const same = feedback === String(sub.parent_feedback ?? "")
+      && nextStep === (sub.next_step ?? null)
+      && JSON.stringify(mappings) === JSON.stringify(parseJson<unknown[]>(sub.outcome_mappings, []));
+    if (same) return { ok: true, xp_awarded: 0 };
+    await db.prepare(
+      "UPDATE submissions SET parent_feedback = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ? AND family_id = ? AND status = ?"
+    ).bind(feedback, nextStep, JSON.stringify(mappings), ts, parentId, sub.id, familyId, status).run();
+    await safely("re-review", () => trackSubmission(db, familyId, sub.id, now));
+    return { ok: true, xp_awarded: 0 };
+  }
+
+  const amount = XP_FOR_REVIEW[status] ?? 0;
+  // Production D1 databases created before migration 0005 may have
+  // lesson_evidence without file_ids. Its only missing column in the live
+  // audit is this one. Prefer a read-only schema check and an older-compatible
+  // INSERT, not an automatic ALTER TABLE on family data without a backup.
+  // Uploaded file IDs remain durably saved on the submissions row, where the
+  // review and outcome tracker read them.
+  const evidenceHasFileIds = amount > 0
+    ? !!(await db.prepare("SELECT name FROM pragma_table_info('lesson_evidence') WHERE name = 'file_ids'").first())
+    : false;
+  // D1 batch is transactional: a failed evidence insert or XP claim must not leave
+  // the submission marked approved while its records are only half saved.
+  const writes = [
     db
       .prepare("UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?")
-      .bind(String(body.feedback_text ?? "").slice(0, 4000), status, body.next_step ?? null, JSON.stringify(mappings), ts, parentId, sub.id),
-    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'").bind(status, ts, sub.assignment_id),
-  ]);
-  let xp = 0;
-  const amount = XP_FOR_REVIEW[status] ?? 0;
+      .bind(feedback, status, nextStep, JSON.stringify(mappings), ts, parentId, sub.id),
+    db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'")
+      .bind(status, ts, sub.assignment_id),
+  ];
   if (amount > 0) {
-    // The conditional update succeeds for exactly one review per assignment, so XP is never awarded twice.
-    const claimed = await db.prepare("UPDATE assignments SET xp_awarded = ? WHERE id = ? AND family_id = ? AND xp_awarded = 0").bind(amount, sub.assignment_id, familyId).run();
-    if ((claimed.meta?.changes ?? 0) === 1) {
-      await awardXp(db, sub.student_id, amount, "Lesson reviewed", now);
-      xp = amount;
-    }
-    await db
-      .prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
-      .bind(newId(), familyId, sub.lesson_id, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts)
-      .run();
+    writes.push(
+      evidenceHasFileIds
+        ? db.prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
+          .bind(newId(), familyId, evidenceLessonId, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts)
+        : db.prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?)")
+          .bind(newId(), familyId, evidenceLessonId, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, ts),
+      // Claim XP in the same transaction as the review; concurrent/repeated
+      // requests cannot claim it twice.
+      db.prepare("UPDATE assignments SET xp_awarded = ? WHERE id = ? AND family_id = ? AND xp_awarded = 0")
+        .bind(amount, sub.assignment_id, familyId),
+    );
   }
+  let saved: D1Result[];
+  try {
+    saved = await db.batch(writes);
+  } catch (error) {
+    // Some long-lived production D1 databases predate the full lesson/evidence
+    // schema. Do not report approval or mutate the child data when its atomic
+    // review transaction cannot commit. Only expose a safe diagnostic class.
+    const message = error instanceof Error ? error.message : String(error);
+    if (/no such (table|column)|has no column named/i.test(message)) {
+      return fail(503, "Approval couldn't be saved because Side-Quest's database needs a repair. Your child's submission is still recorded; please contact Side-Quest support.", "REVIEW_SCHEMA_MISSING");
+    }
+    throw error;
+  }
+  const claimed = amount > 0 && (saved[saved.length - 1]?.meta?.changes ?? 0) === 1;
+  if (claimed) await awardXp(db, sub.student_id, amount, "Lesson reviewed", now);
+
   await safely("review", () => trackSubmission(db, familyId, sub.id, now));
-  return { ok: true, xp_awarded: xp };
+  return { ok: true, xp_awarded: claimed ? amount : 0 };
 }
