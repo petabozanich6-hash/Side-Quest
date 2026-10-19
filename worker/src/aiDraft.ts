@@ -878,13 +878,7 @@ export async function draftLessonWithAi(
   };
 
   const usage = await aiUsage(db, familyId, now);
-  if (freeSample) {
-    // Avoid spending AI calls on an account that cannot save the result. This
-    // is only a preflight; createLesson still checks the authoritative cap.
-    if (await lb.countLessons(db, familyId) >= limits.maxLessons) {
-      return lb.paywall("Your free preview's lesson library is full. Your existing lessons are safe; Family Membership unlocks more lessons.");
-    }
-  } else {
+  if (!freeSample) {
     if (!usage.unlimited && usage.today >= AI_LIMITS.perDay) return lb.fail(429, `You have used today's ${AI_LIMITS.perDay} AI drafts. Try again tomorrow, or build by hand.`, "AI_QUOTA");
     if (!usage.unlimited && usage.month >= AI_LIMITS.perMonth) return lb.fail(429, `You have used this month's ${AI_LIMITS.perMonth} AI drafts. The allowance resets next month.`, "AI_QUOTA");
   }
