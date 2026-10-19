@@ -520,6 +520,20 @@ test("AI drafting: one successful free-preview lesson per family, never per acco
   assert.equal((await aid.draftLessonWithAi(db, stub(), req(fam), NOW)).code, "AI_PREVIEW_USED");
 });
 
+test("a preview family with two manual lessons can still generate its one AI sample", async () => {
+  const db = makeDb(), fam = seed(db);
+  assert.ok((await mk(db, fam, { title: "Manual A" })).id);
+  assert.ok((await mk(db, fam, { title: "Manual B" })).id);
+  assert.equal((await lb.createLesson(db, fam, lesson({ title: "Manual C" }), NOW)).status, 402);
+  const ai = stub();
+  const sample = await aid.draftLessonWithAi(db, ai, req(fam), NOW);
+  assert.ok(sample.ok, JSON.stringify(sample));
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 3);
+  assert.equal((await lb.createLesson(db, fam, lesson({ title: "Manual D" }), NOW)).status, 402);
+  const again = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.equal(again.code, "AI_PREVIEW_USED");
+});
+
 test("AI drafting: preview retries a failed generation, but cannot run two at once", async () => {
   const db = makeDb(), fam = seed(db);
   const unavailable = await aid.draftLessonWithAi(db, undefined, req(fam), NOW);
