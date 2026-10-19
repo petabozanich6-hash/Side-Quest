@@ -53,7 +53,7 @@ test("new algebra benchmark runs the actual Year 7 independent generator only af
   assert.equal(dry.grossUsdCeiling, 0.5);
   assert.throws(() => selectFixture("real-child-profile"), /Unknown benchmark fixture/);
   await assert.rejects(compare({ dryRun: true, fixtureId: "real-child-profile" }), /Unknown benchmark fixture/);
-  assert.equal(Object.keys(BENCH_FIXTURES).length, 2);
+  assert.equal(Object.keys(BENCH_FIXTURES).length, 7);
 });
 
 test("synthetic child-view review shows the teaching model but excludes private assessment answers", () => {
@@ -76,4 +76,39 @@ test("synthetic child-view review shows the teaching model but excludes private 
   assert.match(review, /Solve y \+ 4 = 10/);
   assert.match(review, /Human quality checklist/);
   assert.doesNotMatch(review, /DO_NOT_SHOW_/);
+});
+
+
+test("bounded synthetic learning review covers all major subject teaching styles", async () => {
+  for (const [id, area] of [
+    ["year3-place-value", "Mathematics"],
+    ["year7-algebra", "Mathematics"],
+    ["year4-english", "English"],
+    ["year5-science", "Science"],
+    ["year7-history", "History"],
+    ["year5-technologies", "Technologies"],
+    ["year4-arts", "The Arts"],
+  ]) {
+    const spec = selectFixture(id);
+    assert.equal(spec.area, area);
+    assert.ok(!JSON.stringify(spec).includes("@"));
+    const dry = await compare({ dryRun: true, fixtureId: id });
+    assert.equal(dry.modelRequests, 0);
+    assert.equal(dry.fixture, id);
+    assert.equal(dry.hardMaxCalls, 32);
+    assert.equal(dry.grossUsdCeiling, 0.5);
+    const review = studentReview({
+      introduction: "We will learn this skill.",
+      sections: [{ heading: "Learn", body: "A complete example follows." }],
+      worked_examples: [{ title: "Model", problem: "Example", steps: ["Explain a specific move and why it is valid."], answer: "Model answer" }],
+      guided_practice: [], activities: [], questions: [], quiz: [],
+    }, spec);
+    assert.match(review, /ACTUAL model/);
+    assert.match(review, /WHY/);
+    if (area === "Science") assert.match(review, /mechanism/);
+    if (area === "English") assert.match(review, /sample passage/);
+    if (area === "History") assert.match(review, /evidence supports/);
+    if (area === "Technologies") assert.match(review, /input-to-output/);
+    if (area === "The Arts") assert.match(review, /technique\/process/);
+  }
 });
