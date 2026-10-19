@@ -124,7 +124,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
         const videos = (lesson.resources || []).filter((r: any) => r.type === "video" && (r.embed_url || r.url)).length;
         const total = 3 + count("texts") + count("sections") + count("worked_examples") +
           (count("misconceptions") ? 1 : 0) + Math.ceil(count("guided_practice") / 4) +
-          count("activities") + count("questions") / Math.max(1, count("questions")) +
+          count("activities") + (count("questions") ? 1 : 0) +
           (hasScoredQuiz ? 1 : 0) + videos;
         a.resume = { step: Math.max(0, Math.min(total - 1, draft.step)), total };
       }
