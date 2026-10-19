@@ -2,7 +2,7 @@
 
 ## Scope and access
 - First-party original learning activities, not external worksheet redistribution.
-- Paid Family Membership parents can download A4 PDFs, ink-savers and parent keys.
+- Paid Family Membership parents can download A4 PDFs, ink-savers and parent keys. The verified platform owner can also download them to review the library without buying a subscription.
 - Preview/expired accounts can browse metadata, but not PDF content; child accounts cannot access the parent catalogue.
 - Entitlement is verified on EVERY PDF GET using the existing paid-membership signal in getEntitlement. No public static PDFs or bearer tokens in URLs.
 - This is separate from the parent-saved external Resource Library. No AI is needed for downloads.
