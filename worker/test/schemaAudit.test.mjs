@@ -23,6 +23,15 @@ test("reports missing columns, tables and indexes without modifying fixtures", (
   assert(report.issues.some(x => x.kind === "missing_index" && x.name === "idx_email_verification_user"));
   assert.equal(JSON.stringify(fixture), before);
 });
+test("approval-critical tables and columns are checked without database writes", () => {
+  const fixture = fixtures();
+  fixture.objects = fixture.objects.filter(x => x.name !== "lesson_evidence");
+  fixture.columns = fixture.columns.filter(x => !(x.table_name === "assignments" && x.name === "xp_awarded"));
+  const report = compareSchema(fixture);
+  assert.ok(report.issues.some(x => x.kind === "missing_table" && x.name === "lesson_evidence"));
+  assert.ok(report.issues.some(x => x.kind === "missing_column" && x.name === "assignments.xp_awarded"));
+});
+
 test("identifies migrations recorded but absent in repository", () => {
   const fixture = fixtures();
   fixture.recorded.push({ name: "retired.sql" });
