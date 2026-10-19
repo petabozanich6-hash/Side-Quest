@@ -33,6 +33,38 @@ function dragon(x:number,y:number,s=1){return at(x,y,s,
  Array.from({length:7},(_,i)=>path("M "+(-97+i*22)+" "+(-103+i%2*9)+" l 15 -23 l 16 25")).join(""));
 }
 function castle(x:number,y:number,s=1,haunted=false){let z=at(x,y,s,path("M -210 130 V -172 H -163 V -282 H -108 V -218 H 0 V -299 H 54 V -214 H 119 V -272 H 179 V -172 H 210 V 130 Z",'fill="white"'));for(const v of [[-185,-172,68],[-135,-282,56],[27,-299,60],[149,-272,65]]){const X=v[0],Y=v[1],w=v[2];z+=at(x,y,s,path("M "+(X-w/2-8)+" "+Y+" L "+X+" "+(Y-91)+" L "+(X+w/2+8)+" "+Y+" Z")+path("M "+X+" "+(Y-91)+" v -33 l 27 12 -27 10"));}z+=at(x,y,s,path("M -54 130 V -24 Q 0 -107 54 -24 V 130 M 0 -57 V 130 M -42 37 H 43"));for(let r=0;r<7;r++)for(let c=0;c<9;c++){const X=-195+c*45+(r%2?19:0),Y=-143+r*38;if(X>-61&&X<66&&Y>-55)continue;z+=at(x,y,s,path("M "+X+" "+Y+" h 29 v 21 h -29"));}for(const X of [-180,-131,-66,85,147])z+=at(x,y,s,path("M "+X+" -154 v -27 q 13 -37 26 0 v 27 z"));if(haunted)z+=bat(x+10*s,y-314*s,.37*s)+ghost(x+237*s,y+45*s,.6*s)+web(x-181*s,y-190*s,47*s);return z;}
+
+function forestAnimal(x:number,y:number,kind:number){
+ const head=cir(0,-32,30)+cir(-12,-39,3)+cir(12,-39,3)+path("M -8 -16 Q 0 -5 8 -16");
+ const body=path("M -40 3 Q -61 51 -30 87 H 30 Q 61 51 40 3 Q 0 -21 -40 3 Z");
+ let details="";
+ if(kind===0)details=path("M -29 -55 L -43 -100 L -7 -73 M 29 -55 L 43 -100 L 7 -73 M 37 27 Q 100 5 108 73 Q 85 104 48 76");
+ if(kind===1)details=cir(-15,-37,14)+cir(15,-37,14)+path("M -7 -22 L 0 -10 L 7 -22 M -38 -52 L -50 -86 L -9 -66 M 38 -52 L 50 -86 L 9 -66");
+ if(kind===2)details=cir(-24,-63,13)+cir(24,-63,13)+path("M -45 37 L -93 65 L -65 79 M 45 37 L 93 65 L 65 79");
+ if(kind===3)details=path("M -25 -65 Q -45 -155 -19 -162 Q -3 -145 -10 -69 M 25 -65 Q 45 -155 19 -162 Q 3 -145 10 -69");
+ if(kind===4)details=path("M -28 -53 Q -57 -103 -56 -126 M -56 -126 L -72 -153 M -56 -126 L -42 -153 M 28 -53 Q 57 -103 56 -126 M 56 -126 L 72 -153 M 56 -126 L 42 -153");
+ if(kind===5)details=path("M -42 -33 Q -77 12 -47 51 M 42 -33 Q 77 12 47 51 M 32 -29 L 70 -21 L 36 -13");
+ return at(x,y,.74,body+head+details);
+}
+function creatureShadow(x:number,y:number,kind:number){
+ const d=["M -45 73 L -45 -17 Q -45 -100 0 -100 Q 45 -100 45 -17 L 45 73 L 27 60 L 11 79 L 0 61 L -15 79 L -30 59 Z",
+ "M 0 -20 Q -40 -115 -125 -69 Q -101 -12 -77 43 L -40 7 L 0 42 L 40 7 L 77 43 Q 101 -12 125 -69 Q 40 -115 0 -20 Z",
+ "M -24 25 Q -72 -23 -53 -78 L -25 -60 Q 0 -92 25 -60 L 53 -78 Q 72 -23 24 25 L 24 85 L -24 85 Z",
+ "M -73 68 Q -125 -17 -69 -84 Q 0 -135 69 -84 Q 125 -17 73 68 Z",
+ "M -43 86 L -43 29 Q -81 -67 0 -98 Q 81 -67 43 29 L 43 86 Z",
+ "M -105 83 Q -168 18 -107 -57 L -16 -98 L 55 -145 L 112 -62 L 94 54 L 125 91 Z"][kind];
+ return at(x,y,.52,path(d,'fill="#283d32" stroke="#283d32"'));
+}
+function trackCard(x:number,y:number,kind:number){
+ let z="";
+ for(let j=0;j<3;j++){
+  const xx=x+(j-1)*31,yy=y+(j%2?13:-13);
+  if(kind===2||kind===5){z+=line(xx,yy+19,xx,yy-18)+line(xx,yy+3,xx-15,yy+18)+line(xx,yy+3,xx+15,yy+18);}
+  else{z+=cir(xx,yy+15,7)+cir(xx-13,yy-2,5)+cir(xx,yy-7,5)+cir(xx+13,yy-2,5);}
+ }
+ return z;
+}
+
 function wheel(x:number,y:number,r:number,labels:string[]){let z=cir(x,y,r)+cir(x,y,6);for(let i=0;i<labels.length;i++){const t=i*Math.PI*2/labels.length,th=t+Math.PI/labels.length;z+=line(x,y,x+Math.cos(t)*r,y+Math.sin(t)*r);const X=x+Math.cos(th)*r*.67,Y=y+Math.sin(th)*r*.67;z+=text(X-27,Y+6,labels[i],12,'font-weight="bold"');}return z;}
 function maze(size:number,seed:number,answer=false){let st=seed>>>0;const rand=()=>{st=(Math.imul(st,1664525)+1013904223)>>>0;return st/4294967296;};
  const w=Array.from({length:size*size},()=>[true,true,true,true]),parents=Array(size*size).fill(-1),seen=new Set([0]),stack=[0];
@@ -96,15 +128,18 @@ function art(item:VaultPicture,page:number,guide:boolean) {
  else{for(let i=0;i<4;i++){const x=137+i*152;z+=path("M "+(x-43)+" 340 L "+x+" 290 L "+(x+43)+" 340 Z")+path("M "+(x-42)+" 515 Q "+x+" 464 "+(x+42)+" 515 L "+(x+30)+" 553 H "+(x-30)+" Z")+path("M "+(x-48)+" 679 L "+(x+48)+" 679 L "+x+" 741 Z");}z+=text(89,916,"Cut the eyes, mouths and hats. Mix-and-match your own face!",15);}
  return z;}
  if(id.includes("detective")||id.includes("match-up")){
- z+=text(86,215,"Cut out the six pairs of picture cards and match them!",17);
- for(let i=0;i<6;i++){const X=80+(i%3)*200,Y=272+Math.floor(i/3)*302;z+=rect(X,Y,183,264,'rx="14"')+text(X+18,Y+35,spooky?["GHOST","BAT","SPIDER","PUMPKIN","SKULL","DRAGON"][i]:["FOX","OWL","FROG","RABBIT","DEER","BIRD"][i],16,'font-weight="bold"');
- if(spooky){if(i===0)z+=ghost(X+89,Y+147,.6);
+ z+=text(86,215,page===0?"Cut out the picture cards. Keep all six!":spooky?"Match each creature to its silhouette.":"Match animals to their footprint cards.",17);
+ for(let i=0;i<6;i++){const X=80+(i%3)*200,Y=272+Math.floor(i/3)*302;
+ z+=rect(X,Y,183,264,'rx="14"')+text(X+18,Y+35,page===0?(spooky?["GHOST","BAT","SPIDER","PUMPKIN","SKULL","DRAGON"][i]:["FOX","OWL","FROG","RABBIT","DEER","BIRD"][i]):"MATCH "+(i+1),16,'font-weight="bold"');
+ if(page===1){z+=spooky?creatureShadow(X+92,Y+143,i):trackCard(X+92,Y+145,i);}
+ else if(spooky){if(i===0)z+=ghost(X+89,Y+147,.6);
  else if(i===1)z+=bat(X+89,Y+147,.6);
  else if(i===2)z+=spider(X+89,Y+147,.6);
  else if(i===3)z+=pumpkin(X+89,Y+147,.6,true);
  else if(i===4)z+=skull(X+89,Y+147,.9);
  else z+=dragon(X+89,Y+147,.35);
- }else z+=i%2?bat(X+89,Y+149,.4):dragon(X+89,Y+150,.29);}
+ }else z+=forestAnimal(X+89,Y+170,i);
+ }
  return z;}
  if(id.includes("illusion")){if(page===0){z+=text(87,217,"Colour alternating circles to make a moving illusion.",18);for(let r=12;r<251;r+=11)z+=cir(368,565,r);for(let i=0;i<24;i++){const t=i*Math.PI/12;z+=line(368+Math.cos(t)*24,565+Math.sin(t)*24,368+Math.cos(t)*248,565+Math.sin(t)*248);}}
  else{z+=text(86,216,"Colour the triangles; cut them out and tessellate!",17);for(let r=0;r<7;r++)for(let c=0;c<6;c++){const X=88+c*101+(r%2?44:0),Y=290+r*87;if(X+86>650)continue;z+=path("M "+X+" "+(Y+78)+" l 43 -78 l 43 78 Z");}}
