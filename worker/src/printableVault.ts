@@ -89,7 +89,8 @@ const wrap = (s: string, max=84): string[] => {
 class Page {
   ops:string[]=[];
   dark=false;
-  constructor(public ink:boolean){}
+  ink:boolean;
+  constructor(ink:boolean){this.ink=ink;}
   fill(r:number,g:number,b:number){this.ops.push(rgb(r,g,b)+" rg");}
   pen(r:number,g:number,b:number){this.ops.push(rgb(r,g,b)+" RG");}
   rect(x:number,y:number,w:number,h:number,filled=false){this.ops.push(x+" "+y+" "+w+" "+h+" re "+(filled?"f":"S"));}
