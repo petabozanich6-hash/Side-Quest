@@ -797,6 +797,12 @@ export async function reviewSubmission(
   const sub = await db.prepare("SELECT * FROM submissions WHERE id = ? AND family_id = ?").bind(submissionId, familyId).first<any>();
   if (!sub) return fail(404, "Not found");
   const status = String(body.status);
+  // Older submission rows are permitted to have a NULL lesson_id even though
+  // lesson_evidence requires one. Recover it from the original assignment.
+  const evidenceLessonId = sub.lesson_id || (await db.prepare(
+    "SELECT lesson_id FROM assignments WHERE id = ? AND family_id = ? AND student_id = ?"
+  ).bind(sub.assignment_id, familyId, sub.student_id).first<{ lesson_id: string }>())?.lesson_id;
+  if (!evidenceLessonId) return fail(409, "This submission is missing its original lesson link. Your child's answers are preserved; contact Side-Quest support.", "REVIEW_LESSON_LINK_MISSING");
   // "awaiting_help" is reviewable (the child asked for a grown-up).
   // A parent may revisit the outcome judgements on already reviewed work;
   // doing so must not create fresh evidence or grant XP a second time.
@@ -837,7 +843,7 @@ export async function reviewSubmission(
     writes.push(
       db
         .prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
-        .bind(newId(), familyId, sub.lesson_id, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts),
+        .bind(newId(), familyId, evidenceLessonId, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts),
       // Claim XP in the same transaction as the review; concurrent/repeated
       // requests cannot claim it twice.
       db.prepare("UPDATE assignments SET xp_awarded = ? WHERE id = ? AND family_id = ? AND xp_awarded = 0")
