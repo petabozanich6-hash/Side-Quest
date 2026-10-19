@@ -22,7 +22,7 @@ function harness() {
     assert.equal(response.status,200);
     const data=await response.json();
     if(plan!=="FREE_PREVIEW")db.raw.prepare("UPDATE families SET plan=? WHERE id=?").run(plan,data.user.family_id);
-    return {token:data.token,id:data.user.family_id};
+    return {token:data.token,id:data.user.family_id,userId:data.user.id};
   }
   async function child(p) {
     const n=++seq;
@@ -86,4 +86,18 @@ test("paid family receives private valid A4 PDF and separate guide",async()=>{
   assert.equal((bundlePdf.match(/\/Type \/Page \/Parent/g)||[]).length,3);
   assert.equal((await h.req("/printables/bundles/not-a-bundle/pdf",p.token)).status,404);
   assert.equal((await h.req("/printables/missing/pdf",p.token)).status,404);
+});
+
+
+test("verified platform owner can review subscriber printables without paying",async()=>{
+  const h=harness();
+  const owner=await h.parent("FREE_PREVIEW");
+  const outsider=await h.parent("FREE_PREVIEW");
+  h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),owner.userId);
+  const catalogue=await (await h.req("/printables",owner.token)).json();
+  assert.equal(catalogue.unlocked,true);
+  const owned=await h.req("/printables/build-a-dragon/pdf",owner.token);
+  assert.equal(owned.status,200);
+  assert.match(await owned.text(),/%PDF-1.4/);
+  assert.equal((await h.req("/printables/build-a-dragon/pdf",outsider.token)).status,402);
 });
