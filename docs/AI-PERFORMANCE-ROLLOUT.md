@@ -55,6 +55,18 @@ Primary sources:
 - Existing CI covers entitlements, quality rejection, outcome restrictions, security, print, offline, browser and owner flows.
 
 
+## 20 October: reproducible child-view algebra teaching audit
+
+The manual, explicitly authorised Workers AI workflow now supports a second **synthetic** fixture, `year7-algebra`, alongside `year3-place-value`. Unlike a unit-test stub, it exercises the actual staged lesson generator on a new first-time-learner prompt: *explain the meaning of variables and equality; teach how to solve and check one-step equations*.
+
+To run after reviewing potential inference charges, open GitHub **Actions → Manually compare Side-Quest Workers AI models → Run workflow**. Set **model = baseline**, **fixture = year7-algebra**, and type **RUN** into the charge confirmation input. This is manual-only; ordinary CI, deployments and merges do **not** invoke Cloudflare inference. The existing maximum 32 requests and US$0.50 conservative reserved estimate remain in place. Do not use a real child profile or work sample.
+
+After the manual run, review the `synthetic-lesson-teaching-review` artifact (3-day retention). It includes the model-generated synthetic lesson JSON, its original quality-gate failures/warnings, and a `*-child-view.md` transcript in the same explanation-then-worked-examples order used by the child lesson player. Practice and assessment answer keys are intentionally absent from the child-view transcript.
+
+**Human approval is still essential.** The checkboxes at the end of the child-view transcript ask whether a confused student can learn the concept from the actual explanation, whether each equation step has a clear reason, whether a solution is checked in the original equation and whether the first practice problem is genuinely taught first. No automated word count or regex can certify pedagogical clarity. If the lesson fails that review, improve the teaching design and test another fresh synthetic lesson before promoting anything.
+
+**Current assignment safety:** Existing assigned lessons are immutable snapshots. This benchmark never fetches family/student data and never overwrites existing lessons, submissions, drafts, subscriptions, database tables or AI settings.
+
 ## 17 October: reproducible, budget-capped live-model comparison
 
 The optional command `worker/scripts/compare-cloudflare-ai.mjs` executes the
