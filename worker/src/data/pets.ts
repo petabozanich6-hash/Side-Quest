@@ -65,6 +65,14 @@ export const ACCESSORIES: Record<string, { label: string; rule: string }> = {
   butterfly: { label: "Butterfly Wings", rule: "quest:butterfly" },
 };
 
+// Only one regular accessory can occupy each body slot.
+export const ACCESSORY_SLOTS: Record<string, string> = {
+  scarf: "neck", bow: "head", flower_crown: "head", party_hat: "head",
+  bookworm_specs: "face", backpack: "back", cape: "back",
+  star_badge: "chest", crown: "head", top_hat: "head", rainbow: "head",
+  magic_wand: "right", headphones: "head", shades: "face", butterfly: "back",
+};
+
 const SUBMISSION_XP = 15;
 const FEEDBACK_XP: Record<string, number> = {
   accepted: 25,
@@ -501,6 +509,7 @@ export async function publicPet(db: D1Database, pet: PetState) {
     id,
     label: accessory.label,
     rule: accessory.rule,
+    slot: ACCESSORY_SLOTS[id],
     unlocked: unlocked.has(id),
   }));
   out.egg_style = EGG_STYLES[pet.species] ?? EGG_STYLES.dragon;
