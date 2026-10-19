@@ -41,7 +41,10 @@ async function checkReviewStorage(db: D1Database) {
       if (!columns.size) { missing.push(table); continue; }
       for (const column of required) if (!columns.has(column)) missing.push(`${table}.${column}`);
     }
-    return { status: missing.length ? "needs_attention" : "ready", missing };
+    // Code-only compatibility in lessonBuilder supports this one known legacy
+    // omission. The schema still needs a separately backed-up repair later.
+    const legacyCompatible = missing.length === 1 && missing[0] === "lesson_evidence.file_ids";
+    return { status: legacyCompatible ? "legacy_compatible" : missing.length ? "needs_attention" : "ready", missing };
   } catch {
     // A failed introspection is not evidence that the schema is healthy.
     return { status: "unavailable", missing: [] as string[] };
