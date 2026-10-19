@@ -7,7 +7,7 @@ import { knownOutcomeCodes } from "./outcomeMatch";
 import { safely, trackSubmission, trackAssignmentQuiz, catalogueFor } from "./outcomeTracker";
 import { cleanAdditionalAreas } from "./lessonAreas";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
-import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, markItem, modelAnswer, estimateMinutes } from "./items";
+import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, childFacingPrompt, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
 import type { Plan, Limits } from "./entitlements";
 
@@ -402,16 +402,17 @@ export function childSafeLesson(l: any) {
   for (const k of ["answer_key", "parent_notes", "parent_check", "explicit_teaching", "curriculum_refs", "outcome_codes", "parent_script", "support", "evidence_suggestions", "teaching_plan"]) delete copy[k];
   delete copy.teaching_questions; // parent-only: what to ask and what to expect
   delete copy.ai_flags;
-  if (Array.isArray(copy.activities)) copy.activities = copy.activities.map((a: any, i: number) => ({ ...a, tasks: Array.isArray(a?.tasks) ? a.tasks.map((t: any, j: number) => childItem(t, `t${i}-${j}`)) : a?.tasks }));
+  if (Array.isArray(copy.activities)) copy.activities = copy.activities.map((a: any, i: number) => ({ ...a, instructions: childFacingPrompt(a?.instructions), tasks: Array.isArray(a?.tasks) ? a.tasks.map((t: any, j: number) => childItem(t, `t${i}-${j}`)) : a?.tasks }));
   if (Array.isArray(copy.guided_practice)) copy.guided_practice = copy.guided_practice.map((g: any, i: number) => childItem(g, `g${i}`));
-  if (Array.isArray(copy.questions)) copy.questions = copy.questions.map((q: any) => ({ prompt: q.prompt, type: q.type }));
-  // Quiz correct answers stay on the server. The child's browser sends answers to the quiz-check route to be marked.
-  if (Array.isArray(copy.quiz)) {
-    copy.quiz = copy.quiz.map((q: any) => {
-      const { correct_index: _c, correct: _k, answer: _a, ...rest } = q || {};
-      return rest;
-    });
-  }
+  if (Array.isArray(copy.questions)) copy.questions = copy.questions.map((q: any) => ({ prompt: childFacingPrompt(q.prompt), type: q.type }));
+  // Whitelist only what a child needs to take a quiz. An AI-written "explanation"
+  // can itself contain the right option, even when correct_index was stripped.
+  // Scoring and explanations remain available on the server after a submission.
+  if (Array.isArray(copy.quiz)) copy.quiz = copy.quiz.map((q: any) => ({
+    question: childFacingPrompt(q?.question),
+    type: q?.type,
+    options: Array.isArray(q?.options) ? q.options : [],
+  }));
   return copy;
 }
 

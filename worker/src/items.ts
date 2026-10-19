@@ -113,10 +113,22 @@ function stableShuffle<T>(items: T[], seed: string, key: (t: T) => string): T[] 
   return out;
 }
 
+/** Older AI drafts sometimes put an explicit solution in the question or hint itself.
+ *  Keep the question and remove only a separately labelled answer, not teaching examples.
+ *  This protects already-assigned immutable lesson snapshots as well as new drafts. */
+export function childFacingPrompt(value: unknown): string {
+  if (typeof value !== "string") return "";
+  return value.replace(/(^|[?!.][ \t]+|\r?\n[ \t]*)(?:the[ \t]+)?(?:(?:correct|model|sample|expected|final|worked)[ \t]+)?(?:answer(?:[ \t]+key)?|solution|check)[ \t]*(?::|=|is\b|→)[ \t]*[^\r\n]*/gim, "$1").trim();
+}
+
+export function hasEmbeddedAnswer(value: unknown): boolean {
+  return typeof value === "string" && childFacingPrompt(value) !== value.trim();
+}
+
 /** Strips answers from an item for the child. Order and match items are shuffled so the layout does not give the answer away. */
 export function childItem(it: any, seed: string) {
-  const out: any = { prompt: it?.prompt };
-  if (it?.hint) out.hint = it.hint;
+  const out: any = { prompt: childFacingPrompt(it?.prompt) };
+  if (it?.hint) out.hint = childFacingPrompt(it.hint);
   if (it?.kind) out.kind = it.kind;
   if (it?.kind === "choice") out.options = stableShuffle<string>(it.options || [], seed, (x) => x);
   if (it?.kind === "order") out.options = stableShuffle<string>(it.options || [], seed, (x) => x);
