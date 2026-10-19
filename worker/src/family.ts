@@ -495,8 +495,8 @@ export function registerFamily(app: App, g: Guards) {
       student,
       pet: pet ? { ...pet, ...stageForXp(
         Number(pet.xp || 0), !!pet.hatched,
-        (parseJson<any>(pet.extra, {}).growth_version === 2
-          ? parseJson<any>(pet.extra, {}).growth_floor
+        (parseJson<any>(String(pet.extra ?? ""), {}).growth_version === 2
+          ? parseJson<any>(String(pet.extra ?? ""), {}).growth_floor
           : previousStageForXp(Number(pet.xp || 0), !!pet.hatched))
       ) } : null,
       assignments,
