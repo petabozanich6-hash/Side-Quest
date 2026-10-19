@@ -66,7 +66,6 @@ const itemMeta=(i:VaultPicture,available:boolean,inkAvailable:boolean)=>({
  kind:i.kind,description:i.description,materials:i.materials,theme:i.theme,
  collection:i.collection,pages:1,format:"png",available,ink_available:inkAvailable
 });
-export const VAULT_ART_REVIEW_ONLY=true;
 export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}) {
  const {limits}=await getEntitlement(db,user.family_id);
  return await isPlatformOwner(db,user.id) || (!VAULT_ART_REVIEW_ONLY && limits.aiGeneration);
