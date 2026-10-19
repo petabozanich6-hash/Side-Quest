@@ -262,7 +262,30 @@ test("overview: real counts, and unmeasured things say so instead of inventing n
   assert.equal(o.storage.configured, false);
   assert.equal(o.health.errors_24h, 1);
   assert.equal(o.health.top_error_routes_7d[0].route, "/api/x/:id");
+  assert.equal(o.health.error_types_7d[0].error_name, "TypeError", "owner sees only recorded error class");
+  assert.equal(o.health.review_storage.status, "ready", "real migration includes approval-critical columns");
+  assert.deepEqual(o.health.review_storage.missing, []);
   assert.ok(o.health.warnings.some((w) => /server error/.test(w.message)));
+});
+
+test("owner can diagnose missing approval storage without exposing family records or changing data", async () => {
+  const { h, owner } = await ownerSetup();
+  const parent = await h.register("another@example.com");
+  await h.addChild(parent, "missingapproval1");
+  await stepUp(h, owner);
+  const beforeChildren = h.db.raw.prepare("SELECT COUNT(*) n FROM students").get().n;
+  const beforeSubmissions = h.db.raw.prepare("SELECT COUNT(*) n FROM submissions").get().n;
+  h.db.raw.exec("DROP TABLE lesson_evidence");
+  const response = await h.req("/admin/overview", { token: owner.token });
+  assert.equal(response.status, 200);
+  assert.equal(response.json.health.review_storage.status, "needs_attention");
+  assert.ok(response.json.health.review_storage.missing.includes("lesson_evidence"));
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM students").get().n, beforeChildren);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM submissions").get().n, beforeSubmissions);
+  const health = JSON.stringify(response.json.health);
+  assert.ok(!health.includes("Mia"), "health leaks no child names");
+  assert.ok(!health.includes("another@example.com"), "health leaks no parent emails");
+  assert.equal((await h.req("/admin/overview", { token: parent.token })).status, 404);
 });
 
 test("privacy: customer list and detail carry metadata and counts only, never children's or private content", async () => {
