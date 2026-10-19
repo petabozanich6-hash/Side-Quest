@@ -38,20 +38,21 @@ export const VAULT_BUNDLES=[
  {id:"activity-play",title:"Print & Play",description:"Board game, picture cards and magical potion wheels."}
 ];
 
+export const VAULT_ART_REVIEW_ONLY = true; // Owner-only preview while print illustration/assembly QA is incomplete.
 const itemMeta=(i:VaultPicture)=>({id:i.id,title:i.title,category:i.category,ages:i.ages,minutes:i.minutes,kind:i.kind,description:i.description,materials:i.materials,theme:i.theme,collection:i.collection,pages:i.pages,format:"svg"});
 export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}) {
  const {limits}=await getEntitlement(db,user.family_id);
- return limits.aiGeneration || await isPlatformOwner(db,user.id);
+ return await isPlatformOwner(db,user.id) || (!VAULT_ART_REVIEW_ONLY && limits.aiGeneration);
 }
 export function registerPrintableVault(app:App,g:Guards) {
  app.get("/api/printables",g.auth,g.parent,async c=>{
   const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
   c.header("Cache-Control","private, no-store");
-  return c.json({unlocked,items:VAULT_ITEMS.map(itemMeta),bundles:VAULT_BUNDLES,format:"svg"});
+  return c.json({unlocked,art_review_only:VAULT_ART_REVIEW_ONLY,items:VAULT_ITEMS.map(itemMeta),bundles:VAULT_BUNDLES,format:"svg"});
  });
  const paid=async(c:any,next:any)=>{
   if(!await canAccessPrintableVault(c.env.DB,c.get("user")))
-   return c.json({code:"UPGRADE_REQUIRED",detail:"The Printable Vault is included in Family Membership."},402);
+   return c.json({code:VAULT_ART_REVIEW_ONLY?"VAULT_REVIEW_ONLY":"UPGRADE_REQUIRED",detail:VAULT_ART_REVIEW_ONLY?"The illustrated Vault is temporarily available to the verified owner for quality review.":"The Printable Vault is included in Family Membership."},402);
   return next();
  };
  app.get("/api/printables/:id/image",g.auth,g.parent,paid,c=>{
