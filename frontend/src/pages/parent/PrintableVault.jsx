@@ -127,8 +127,11 @@ export default function PrintableVault(){
     {error&&<div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
     {data&&<>
       {!data.unlocked&&<div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 flex flex-wrap gap-3" data-testid="vault-membership-locked">
-        <Lock className="text-amber-800"/><div className="flex-1"><p className="font-bold text-amber-950">Family Membership unlocks every activity image.</p><p className="text-sm text-amber-900 mt-1">You can browse the titles and themes. Images, print mode and parent guides are accessible to subscribers and the verified platform owner.</p></div>
-        <Link to="/parent/plan" className="text-sm font-bold text-amber-900 underline">See plans</Link>
+        <Lock className="text-amber-800"/><div className="flex-1">
+          <p className="font-bold text-amber-950">{data.art_review_only?"Illustration review in progress":"Family Membership unlocks every activity image."}</p>
+          <p className="text-sm text-amber-900 mt-1">{data.art_review_only?"The new illustrated activities are being checked before release. Only the verified platform owner can view and print the drafts for now.":"You can browse the collection. Images, print mode and parent guides unlock with a paid Family Membership."}</p>
+        </div>
+        {!data.art_review_only&&<Link to="/parent/plan" className="text-sm font-bold text-amber-900 underline">See plans</Link>}
       </div>}
       <section>
         <h2 className="font-display text-xl font-bold mb-3 text-slate-900">Print a whole activity pack</h2>
