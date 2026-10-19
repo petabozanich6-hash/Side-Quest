@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
-import { BookOpen, Download, FileImage, Lock, Paintbrush, Printer, Search, Scissors, Sparkles, Puzzle, Palette, Gamepad2, Route, X } from "lucide-react";
+import { BookOpen, Download, FileImage, Lock, Paintbrush, Printer, Search, Scissors, Sparkles, Puzzle, Palette, Gamepad2, Route, X, Trash2, AlertTriangle } from "lucide-react";
 
 const ICONS={craft:Scissors,game:Gamepad2,maze:Route,colouring:Palette,puzzle:Puzzle};
 const PALETTE={
@@ -113,6 +113,7 @@ export default function PrintableVault(){
   const [replaceExisting,setReplaceExisting]=useState(false);
   const [galleryRevision,setGalleryRevision]=useState(0);
   const [preview,setPreview]=useState(null);
+  const [deleteTarget,setDeleteTarget]=useState(null);
   useEffect(()=>{let live=true;api.get("/printables").then(({data:d})=>{if(live)setData(d);}).catch(e=>{if(live)setError(apiErrorMessage(e,"Could not open the Vault"));});return()=>{live=false;};},[]);
   useEffect(()=>()=>{preview?.urls.forEach(u=>URL.revokeObjectURL(u));},[preview]);
 
@@ -223,6 +224,26 @@ export default function PrintableVault(){
     }finally{setBusy("");setImportProgress("");}
   };
 
+
+  const deleteUploadedPrintable=async()=>{
+    if(!data?.owner||!deleteTarget)return;
+    const target=deleteTarget;
+    setBusy("delete-"+target.id);
+    try{
+      const result=await api.delete("/printables/admin/assets/"+encodeURIComponent(target.id),{timeout:120000});
+      if(!result.data?.ok||result.data.id!==target.id)throw new Error("The Vault did not confirm the removal.");
+      const response=await api.get("/printables",{params:{_refresh:Date.now()}});
+      const stillStored=response.data?.owner_uploads?.some(i=>i.id===target.id);
+      if(stillStored)throw new Error("The artwork was deleted but the Vault still lists it. Refresh the page and check before retrying.");
+      setData(response.data);
+      setGalleryRevision(v=>v+1);
+      setPreview(prev=>prev?.title===target.title?null:prev);
+      setDeleteTarget(null);
+      toast.success("Deleted "+target.title+" from the Printable Vault.");
+    }catch(e){toast.error(e?.response?apiErrorMessage(e):e?.message||"Could not delete this printable.",{duration:8000});}
+    finally{setBusy("");}
+  };
+
   return <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="printable-vault">
     <header className="rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 text-white p-6 sm:p-9 relative overflow-hidden">
       <div className="relative z-10">
@@ -250,6 +271,23 @@ export default function PrintableVault(){
           <input type="file" accept=".zip,.png,image/png" multiple disabled={!!busy} className="sr-only" onChange={e=>{const selected=e.target.files;if(selected?.length)void importFiles(selected);e.target.value="";}}/>
         </label>
         <label className="flex gap-2 items-center text-sm text-emerald-900"><input type="checkbox" checked={replaceExisting} onChange={e=>setReplaceExisting(e.target.checked)} disabled={!!busy}/> Replace existing artwork when a filename matches (otherwise duplicates are blocked)</label>
+
+        <div className="rounded-xl border border-emerald-300 bg-white p-3 space-y-2" data-testid="vault-owner-manage-uploads">
+          <h3 className="font-bold text-emerald-950">Manage uploaded printables ({data.owner_uploads?.length||0})</h3>
+          <p className="text-xs text-stone-600">Delete removes the selected image and any ink-saving version from private storage. Newly added activities disappear; original catalogue activities remain as awaiting import. Nothing is removed until you confirm.</p>
+          {!data.owner_uploads?.length?<p className="text-sm text-stone-600">No uploaded artwork found.</p>:
+            <div className="max-h-72 overflow-y-auto divide-y divide-stone-100">
+              {data.owner_uploads.map(item=><div key={item.id} className="flex flex-wrap gap-2 items-center justify-between py-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-slate-800 break-words">{item.title}</p>
+                  <p className="text-xs text-stone-500">{item.colour?"Main image stored":"Main image missing"}{item.ink?" · Ink-saving stored":""}</p>
+                </div>
+                <button type="button" data-testid={"vault-delete-"+item.id} disabled={!!busy} className="inline-flex gap-1 items-center rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 disabled:opacity-50" onClick={()=>setDeleteTarget(item)}>
+                  <Trash2 size={15}/> Delete
+                </button>
+              </div>)}
+            </div>}
+        </div>
         {importProgress&&<p role="status" className="text-sm font-semibold text-emerald-900">{importProgress}</p>}
         <p className="text-xs text-emerald-800">Use portrait PNGs (at least 768×1000 pixels), or an uncompressed ZIP. New artwork appears to paying families once its storage and catalogue entry are confirmed. Only your owner account can import or replace images.</p>
       </section>}
@@ -304,6 +342,17 @@ export default function PrintableVault(){
       </section>
       <p className="text-xs text-stone-500">Side-Quest originals; not official curriculum publications. Print at A4/100%. Craft activities involving scissors or split pins may need adult help.</p>
     </>}
+    {deleteTarget&&<div role="dialog" aria-modal="true" aria-label={"Delete "+deleteTarget.title} className="fixed inset-0 z-[70] bg-slate-950/70 p-4 grid place-items-center">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 space-y-4">
+        <h2 className="text-lg font-bold text-slate-950 flex items-center gap-2"><AlertTriangle size={21} className="text-red-700"/> Delete printable artwork?</h2>
+        <p className="text-sm text-slate-700">Permanently remove <strong>{deleteTarget.title}</strong> and its ink-saving version (if uploaded) from Cloudflare storage? Paid families will no longer be able to view or print this activity.</p>
+        <p className="text-xs text-red-800">This cannot be undone. You can re-upload the original PNG later.</p>
+        <div className="flex flex-wrap gap-3 justify-end">
+          <button type="button" disabled={!!busy} className="rounded-lg border border-slate-300 px-4 py-2 font-semibold text-slate-800 disabled:opacity-50" onClick={()=>setDeleteTarget(null)}>Cancel</button>
+          <button type="button" data-testid="vault-confirm-delete" disabled={!!busy} className="rounded-lg bg-red-800 text-white px-4 py-2 font-bold disabled:opacity-50" onClick={deleteUploadedPrintable}>{busy.startsWith("delete-")?"Deleting…":"Yes, delete artwork"}</button>
+        </div>
+      </div>
+    </div>}
     {preview&&<div role="dialog" aria-modal="true" aria-label={"Preview "+preview.title} className="fixed inset-0 z-50 bg-slate-950/80 p-3 sm:p-7 flex flex-col">
       <div className="rounded-t-xl bg-white px-4 py-3 flex gap-3 items-center justify-between">
         <h2 className="font-bold text-sm truncate">{preview.title}</h2>

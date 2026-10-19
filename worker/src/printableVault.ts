@@ -146,7 +146,10 @@ export function registerPrintableVault(app:App,g:Guards){
   c.header("Cache-Control","private, no-store");
   return c.json({unlocked,owner,art_review_only:VAULT_ART_REVIEW_ONLY,items,
    bundles:bundles.filter(b=>items.some(i=>i.collection===b.id)),
-   format:"png",ready_count:owner?inventory.filter(a=>a.colour).length:undefined});
+   format:"png",ready_count:owner?inventory.filter(a=>a.colour).length:undefined,
+   owner_uploads:owner?inventory.filter(a=>a.colour||a.ink).map(a=>({
+    id:a.id,title:metaFor(a.id,a.meta).title,colour:a.colour,ink:a.ink
+   })):undefined});
  });
  const paid=async(c:any,next:any)=>{
   if(!await canAccessPrintableVault(c.env.DB,c.get("user")))
@@ -205,5 +208,24 @@ export function registerPrintableVault(app:App,g:Guards){
   if(!saved)return c.json({detail:"Storage confirmation failed; please retry this image."},502);
   c.header("Cache-Control","no-store");
   return c.json({ok:true,id,variant,bytes:bytes.byteLength});
+ });
+ // The owner deletes an entire uploaded printable (colour and optional ink artwork).
+ // Original ten catalogue descriptions remain, but return to "Import pending".
+ // New uploads disappear from the gallery. All other R2 folders are untouched.
+ app.delete("/api/printables/admin/assets/:id",g.auth,g.parent,async c=>{
+  if(!await isPlatformOwner(c.env.DB,c.get("user").id))
+   return c.json({detail:"Platform-owner access required"},403);
+  if(!c.env.BUCKET)return c.json({detail:"Private printable storage is not configured"},503);
+  const id=c.req.param("id");
+  if(!VALID_ID.test(id))return c.json({detail:"Invalid printable ID"},400);
+  const keys=[premiumPath(id,"colour"),premiumPath(id,"ink")];
+  const before=await Promise.all(keys.map(key=>c.env.BUCKET!.head(key)));
+  if(!before.some(Boolean))return c.json({detail:"No uploaded artwork exists for this printable."},404);
+  await c.env.BUCKET.delete(keys);
+  // Check storage, rather than telling the owner something was removed when R2 still has it.
+  const remaining=await Promise.all(keys.map(key=>c.env.BUCKET!.head(key)));
+  if(remaining.some(Boolean))return c.json({detail:"The printable could not be fully deleted. Please retry."},502);
+  c.header("Cache-Control","no-store");
+  return c.json({ok:true,id,deleted_variants:before.map((obj,i)=>obj?(i===0?"colour":"ink"):null).filter(Boolean)});
  });
 }
