@@ -110,6 +110,8 @@ export default function PrintableVault(){
   const [busy,setBusy]=useState("");
   const [importProgress,setImportProgress]=useState("");
   const [importCategory,setImportCategory]=useState("Learning & Discovery");
+  const [replaceExisting,setReplaceExisting]=useState(false);
+  const [galleryRevision,setGalleryRevision]=useState(0);
   const [preview,setPreview]=useState(null);
   useEffect(()=>{let live=true;api.get("/printables").then(({data:d})=>{if(live)setData(d);}).catch(e=>{if(live)setError(apiErrorMessage(e,"Could not open the Vault"));});return()=>{live=false;};},[]);
   useEffect(()=>()=>{preview?.urls.forEach(u=>URL.revokeObjectURL(u));},[preview]);
@@ -189,6 +191,8 @@ export default function PrintableVault(){
     try{
       const records=await unpackImportFiles(input);
       const previous=new Set(items.filter(i=>i.available).map(i=>i.id));
+      const conflicts=[...new Set(records.filter(r=>r.variant==="colour"&&previous.has(r.id)).map(r=>r.title))];
+      if(conflicts.length&&!replaceExisting)throw new Error("These names already exist: "+conflicts.join(", ")+". Rename the new image files, or tick Replace existing artwork if you intend to overwrite them.");
       for(let j=0;j<records.length;j++){
         const item=records[j];
         setImportProgress("Uploading "+(j+1)+" of "+records.length+": "+item.title+(item.variant==="ink"?" (ink)":""));
@@ -209,6 +213,7 @@ export default function PrintableVault(){
       const missing=expected.filter(r=>!response.data?.items?.some(i=>i.id===r.id&&i.available));
       if(missing.length)throw new Error("Upload finished, but "+missing.map(r=>r.title).join(", ")+" did not appear in the Vault. Please refresh and retry.");
       setData(response.data);
+      setGalleryRevision(v=>v+1);
       setSearch("");setCategory("");setKind("");
       const added=new Set(expected.filter(r=>!previous.has(r.id)).map(r=>r.id)).size;
       const replaced=new Set(expected.filter(r=>previous.has(r.id)).map(r=>r.id)).size;
@@ -244,6 +249,7 @@ export default function PrintableVault(){
         <label className="inline-flex rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold cursor-pointer">{busy==="import"?"Importing…":"Add printable images"}
           <input type="file" accept=".zip,.png,image/png" multiple disabled={!!busy} className="sr-only" onChange={e=>{const selected=e.target.files;if(selected?.length)void importFiles(selected);e.target.value="";}}/>
         </label>
+        <label className="flex gap-2 items-center text-sm text-emerald-900"><input type="checkbox" checked={replaceExisting} onChange={e=>setReplaceExisting(e.target.checked)} disabled={!!busy}/> Replace existing artwork when a filename matches (otherwise duplicates are blocked)</label>
         {importProgress&&<p role="status" className="text-sm font-semibold text-emerald-900">{importProgress}</p>}
         <p className="text-xs text-emerald-800">Use portrait PNGs (at least 768×1000 pixels), or an uncompressed ZIP. New artwork appears to paying families once its storage and catalogue entry are confirmed. Only your owner account can import or replace images.</p>
       </section>}
@@ -277,7 +283,7 @@ export default function PrintableVault(){
         </div>
         <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map(item=><article key={item.id} data-testid={"vault-item-"+item.id} className="rounded-2xl overflow-hidden border border-stone-200 bg-white shadow-sm flex flex-col">
-            <VaultThumbnail item={item} unlocked={data.unlocked}/>
+            <VaultThumbnail key={item.id+"-"+galleryRevision} item={item} unlocked={data.unlocked}/>
             <div className="p-5 flex-1 flex flex-col gap-2">
               <p className="text-xs font-extrabold uppercase tracking-wider text-emerald-900">{item.category}</p>
               <h3 className="font-display text-lg font-bold text-slate-900">{item.title}</h3>
