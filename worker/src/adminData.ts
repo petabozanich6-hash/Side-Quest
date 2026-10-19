@@ -24,6 +24,30 @@ async function maybe(db: D1Database, sql: string, ...binds: unknown[]): Promise<
   try { return await n(db, sql, ...binds); } catch { return null; }
 }
 
+// Read-only, explicitly scoped to what the parent approval transaction needs.
+// Never return family, child, lesson, submission or evidence data to Owner HQ.
+const REVIEW_STORAGE_COLUMNS: Record<string, string[]> = {
+  assignments: ["id", "family_id", "student_id", "lesson_id", "status", "draft", "xp_awarded"],
+  submissions: ["id", "family_id", "assignment_id", "student_id", "lesson_id", "status", "parent_feedback", "next_step", "outcome_mappings", "reviewed_at", "reviewed_by", "file_ids", "response_text"],
+  lesson_evidence: ["id", "family_id", "lesson_id", "child_id", "type", "text", "file_name", "file_ids", "submitted_at"],
+};
+async function checkReviewStorage(db: D1Database) {
+  try {
+    const missing: string[] = [];
+    for (const [table, required] of Object.entries(REVIEW_STORAGE_COLUMNS)) {
+      // Table names are hard-coded above, never provided by a request.
+      const { results } = await db.prepare(`SELECT name FROM pragma_table_info('${table}')`).all<{ name: string }>();
+      const columns = new Set((results || []).map((r) => r.name));
+      if (!columns.size) { missing.push(table); continue; }
+      for (const column of required) if (!columns.has(column)) missing.push(`${table}.${column}`);
+    }
+    return { status: missing.length ? "needs_attention" : "ready", missing };
+  } catch {
+    // A failed introspection is not evidence that the schema is healthy.
+    return { status: "unavailable", missing: [] as string[] };
+  }
+}
+
 type FamilyPlanRow = { id: string; plan: string | null; created_at: string | null; trial_started_at: string | null; trial_ends_at: string | null; plan_period_end: string | null };
 
 export async function overview(env: Env, settings: PlatformSettings, now = new Date()) {
@@ -96,6 +120,10 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
   const { results: topRoutes } = await db.prepare(
     "SELECT method, route, COUNT(*) AS n, MAX(created_at) AS last FROM app_errors WHERE created_at >= ? GROUP BY method, route ORDER BY n DESC LIMIT 5",
   ).bind(iso(t - 7 * DAY)).all<{ method: string; route: string; n: number; last: string }>();
+  const { results: errorTypes } = await db.prepare(
+    "SELECT method, route, error_name, COUNT(*) AS n, MAX(created_at) AS last FROM app_errors WHERE created_at >= ? GROUP BY method, route, error_name ORDER BY n DESC LIMIT 10",
+  ).bind(iso(t - 7 * DAY)).all<{ method: string; route: string; error_name: string; n: number; last: string }>();
+  const reviewStorage = await checkReviewStorage(db);
   const stuckWebhooks = await maybe(db, "SELECT COUNT(*) n FROM stripe_events WHERE processed_at IS NULL AND received_at < ?", iso(t - 60 * 60000));
   const unsentHelp = await maybe(db, "SELECT COUNT(*) n FROM help_requests WHERE emailed_at IS NULL AND created_at < ?", iso(t - 60 * 60000));
 
@@ -139,6 +167,7 @@ export async function overview(env: Env, settings: PlatformSettings, now = new D
       : { configured: false, files, bytes, note: "File storage (R2) is not configured, so uploads are switched off." },
     health: {
       errors_24h: errors24, errors_7d: errors7, top_error_routes_7d: topRoutes ?? [],
+      error_types_7d: errorTypes ?? [], review_storage: reviewStorage,
       stripe_events_unprocessed: stuckWebhooks, help_alerts_unsent: unsentHelp,
       email: env.EMAIL ? { configured: true } : { configured: false },
       warnings,
