@@ -56,7 +56,7 @@ test("access policy covers advanced mutations and trial writes without blocking 
     ["POST","/api/outcomes/students/abc/rebuild"],["PUT","/api/outcomes/students/abc/support"],
     ["POST","/api/auto-quest/plan"],["POST","/api/auto-quest/proposals/abc/generate"],
     ["PUT","/api/auto-quest/proposals/abc/lesson"],["POST","/api/timetable/week"],
-    ["POST","/api/word-bank/words"],["POST","/api/ai/lesson-draft"],["POST","/api/ai/batches"],
+    ["POST","/api/word-bank/words"],["POST","/api/ai/lesson-refine"],["POST","/api/ai/series-plan"],["POST","/api/ai/batches"],
     ["POST","/api/lessons/abc/apply-patch"],["POST","/api/assignments/abc/place"]
   ])assert.equal(accessPolicy(method,url),"paid",method+" "+url);
   for(const [method,url] of [
@@ -64,6 +64,8 @@ test("access policy covers advanced mutations and trial writes without blocking 
     ["POST","/api/lessons/abc/evidence"],["POST","/api/learning-plans/abc/build"]
   ])assert.equal(accessPolicy(method,url),"preview",method+" "+url);
   assert.equal(accessPolicy("POST","/api/learning-plans"),"single_preview_plan");
+  assert.equal(accessPolicy("POST","/api/ai/lesson-draft"),"preview_ai");
+  assert.equal(accessPolicy("POST","/api/ai/batches/abc/items/0/draft"),"paid");
   for(const [method,url] of [
     ["POST","/api/submissions"],["POST","/api/submissions/abc/feedback"],
     ["PUT","/api/compass/abc"],["POST","/api/feedback"],
@@ -75,6 +77,16 @@ test("access policy covers advanced mutations and trial writes without blocking 
 test("preview protects all advanced routes server-side and allows only one basic learning plan",async()=>{
   const h=harness();
   const p=await h.parent(),c=await h.child(p);
+  // Free sample reaches the AI generator; with no AI binding it fails safely
+  // at 503 instead of being blocked at the paid entitlement middleware.
+  const draft=await h.req("/ai/lesson-draft",{method:"POST",token:p.token,body:{topic:"Fractions"}});
+  assert.equal(draft.status,503,JSON.stringify(draft.json));
+  assert.equal(draft.json.code,"AI_UNAVAILABLE");
+  assert.equal((await h.req("/ai/status",{token:p.token})).json.usage.preview.remaining,1);
+  const prohibited=await h.req("/ai/series-plan",{method:"POST",token:p.token,body:{request:"Three maths lessons"}});
+  assert.equal(prohibited.status,402);
+  const refine=await h.req("/ai/lesson-refine",{method:"POST",token:p.token,body:{lesson_id:"x",instruction:"Change it"}});
+  assert.equal(refine.status,402);
   const paidOps=[
     ["/calendar",{title:"Weekly schedule",date:"2026-10-18"}],
     ["/resources",{title:"Test resource",url:"https://example.org"}],
