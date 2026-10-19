@@ -21,7 +21,7 @@ export function parentTourSteps(jurisdiction) {
     },
     {
       path: "/parent/lessons", target: "tour-lessons", title: "Make your own learning quests",
-      description: "Build lessons yourself, save them in your library, and assign them when they're ready. AI drafting is a Family Membership feature; you'll always review drafts before assigning them.",
+      description: "Build lessons yourself, or try one free AI-generated lesson per family during your seven-day preview. Save them in your library and assign them when they're ready. AI drafting is a Family Membership feature; you'll always review drafts before assigning them.",
     },
     {
       path: "/parent/assignments", target: "tour-assignments", title: "Give out quests and review work",
@@ -53,7 +53,7 @@ export function parentTourSteps(jurisdiction) {
         },
     {
       path: "/parent/plan", target: "tour-plan", title: "Your plan, your pace",
-      description: "The seven-day preview is deliberately small. This page explains exactly which tools are included and what Family Membership unlocks. There's no need to upgrade to finish the tour.",
+      description: "The seven-day preview includes one complete AI-generated lesson for your family alongside two manual lessons. This page explains what else Family Membership unlocks. There's no need to upgrade to finish the tour.",
     },
   ];
 }
