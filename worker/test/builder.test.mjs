@@ -1076,6 +1076,8 @@ test("help: context comes from the server, never includes answer keys or names, 
   assert.ok(!sent.includes(les.answer_key.slice(0, 40)));
   assert.ok(!sent.includes("Kid"));
   assert.match(sent, /Year 7/); assert.match(sent, /reading support/);
+  assert.match(sent, /actually teaches|MINI-LESSON|TEACH the child/);
+  assert.match(sent, /WHY each step|WHY every step/);
   assert.ok(ai.calls[0][1].max_tokens <= 500);
   assert.equal(ai.calls.length, 1);
   // a leak is free: it did not use the family's allowance
