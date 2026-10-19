@@ -392,8 +392,8 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
     d.quiz.some((q) => hasEmbeddedAnswer(q.question)) && "quiz",
   ].filter(Boolean) as string[];
   if (leakedKeys.length) add({ keys: leakedKeys, msg: "a child-facing question, hint or activity gives the answer away before the student responds; move answers exclusively into private answer fields", hard: true, repair: true });
-  if (d.sections.some((sec) => /(?:^|\\n)\\s*(?:you try|your turn|now try|try it|have a go)\\s*:/im.test(sec.body) &&
-      /(?:^|\\n)\\s*(?:answer|check|solution|sample response|model answer)\\s*:/im.test(sec.body))) {
+  if (d.sections.some((sec) => /(?:^|\n)\s*(?:you try|your turn|now try|try it|have a go)\s*:/im.test(sec.body) &&
+      /(?:^|\n)\s*(?:answer|check|solution|sample response|model answer)\s*:/im.test(sec.body))) {
     add({ keys: ["sections"], msg: "a read-only teaching section contains a YOU TRY question and its answer; put that question in interactive practice and leave the worked teaching intact", hard: true, repair: true });
   }
   const est = estimateMinutes(d);
