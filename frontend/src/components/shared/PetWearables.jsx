@@ -3,7 +3,7 @@ import { ACCESSORY_SLOTS, petSpots } from "./petAccessoryPositions";
 
 // Vector wearables are attached to species-specific points on the illustration,
 // rather than laid out in a disconnected row above the pet.
-function Wearable({ id }) {
+export function Wearable({ id }) {
   const line = { fill: "none", stroke: "#493C34", strokeWidth: 5, strokeLinecap: "round", strokeLinejoin: "round" };
   switch (id) {
     case "scarf": return <><path d="M17 35 Q50 50 83 35 L82 62 Q50 78 18 62Z" fill="#DB7957" stroke="#824735" strokeWidth="5"/><path d="M57 54 L79 93 Q65 99 55 90 L42 59" fill="#EFA28A" stroke="#824735" strokeWidth="5"/><path d="M57 70 L72 66 M63 83 L79 79" stroke="#FFDDD0" strokeWidth="5"/></>;
