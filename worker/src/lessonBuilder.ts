@@ -469,9 +469,14 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
-  const { limits } = await getEntitlement(db, familyId, now);
+  const { limits, plan } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Your lessons and progress are kept; upgrade to keep creating lessons.");
-  if ((await countLessons(db, familyId)) >= limits.maxLessons) {
+  // The once-only AI sample is an additional learning experience, not one
+  // of the two lessons parents may already have drafted by hand. The caller
+  // must have reserved the family's single use atomically in aiDraft.ts;
+  // no normal/manual route can supply opts.ai.
+  const freeAiSample = opts.ai === true && plan === "FREE_PREVIEW";
+  if (!freeAiSample && (await countLessons(db, familyId)) >= limits.maxLessons) {
     return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   const bad = await checkFiles(db, familyId, clean.value.file_ids);

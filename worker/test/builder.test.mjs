@@ -495,8 +495,69 @@ test("compact group parse failure falls back to independently validated sections
   assert.equal(result.lesson.status, "draft");
 });
 
-test("AI drafting: free preview, expired and cancelled are blocked before any AI call", async () => {
-  for (const [plan, trialStart] of [["FREE_PREVIEW"], ["FREE_PREVIEW", "2026-09-01T00:00:00Z"], ["CANCELLED"]]) {
+test("AI drafting: one successful free-preview lesson per family, never per account or device", async () => {
+  const db = makeDb(), fam = seed(db);
+  const first = await aid.draftLessonWithAi(db, stub(),
+    { familyId: fam, userId: "parent-1", request: { topic: "Fractions", link_outcomes: false } }, NOW);
+  assert.ok(first.ok, JSON.stringify(first));
+  assert.equal(first.lesson.status, "draft");
+  assert.equal(first.lesson.ai_generated, true);
+  assert.equal(first.usage.preview.remaining, 0);
+  assert.equal(first.usage.preview.used, true);
+  assert.equal(first.usage.today, 0, "free sample is distinct from the paid rolling quota");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id=? AND kind='preview_lesson_draft' AND status='ok'").get(fam).n, 1);
+  const blockedAi = stub();
+  const second = await aid.draftLessonWithAi(db, blockedAi,
+    { familyId: fam, userId: "parent-2", request: { topic: "Addition" } }, NOW);
+  assert.equal(second.ok, false);
+  assert.equal(second.status, 429);
+  assert.equal(second.code, "AI_PREVIEW_USED");
+  assert.equal(blockedAi.calls.length, 0);
+  const other = seed(db);
+  assert.ok((await aid.draftLessonWithAi(db, stub(), req(other), NOW)).ok, "other family gets its own sample");
+  // Deleting the completed draft must never reset a lifetime grant.
+  assert.ok((await lb.deleteLesson(db, fam, first.lesson.id, NOW)).ok);
+  assert.equal((await aid.draftLessonWithAi(db, stub(), req(fam), NOW)).code, "AI_PREVIEW_USED");
+});
+
+test("a preview family with two manual lessons can still generate its one AI sample", async () => {
+  const db = makeDb(), fam = seed(db);
+  assert.ok((await mk(db, fam, { title: "Manual A" })).id);
+  assert.ok((await mk(db, fam, { title: "Manual B" })).id);
+  assert.equal((await lb.createLesson(db, fam, lesson({ title: "Manual C" }), NOW)).status, 402);
+  const ai = stub();
+  const sample = await aid.draftLessonWithAi(db, ai, req(fam), NOW);
+  assert.ok(sample.ok, JSON.stringify(sample));
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lessons WHERE family_id = ?").get(fam).n, 3);
+  assert.equal((await lb.createLesson(db, fam, lesson({ title: "Manual D" }), NOW)).status, 402);
+  const again = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.equal(again.code, "AI_PREVIEW_USED");
+});
+
+test("AI drafting: preview retries a failed generation, but cannot run two at once", async () => {
+  const db = makeDb(), fam = seed(db);
+  const unavailable = await aid.draftLessonWithAi(db, undefined, req(fam), NOW);
+  assert.equal(unavailable.code, "AI_UNAVAILABLE");
+  assert.equal((await aid.aiUsage(db, fam, NOW)).preview.remaining, 1);
+  const failedAi = stub(() => { throw new Error("temporary outage"); });
+  const failed = await aid.draftLessonWithAi(db, failedAi, req(fam), NOW);
+  assert.equal(failed.code, "AI_FAILED");
+  assert.equal((await aid.aiUsage(db, fam, NOW)).preview.remaining, 1);
+  // Simulate an overlapping parent/device holding the pending generation slot.
+  db.raw.prepare("INSERT INTO ai_usage (id,family_id,user_id,kind,status,created_at) VALUES ('pending-test', ?, 'parent-b', 'preview_lesson_draft', 'pending', ?)")
+    .run(fam, NOW.toISOString());
+  const ai = stub();
+  const denied = await aid.draftLessonWithAi(db, ai, req(fam), NOW);
+  assert.equal(denied.code, "AI_PREVIEW_IN_PROGRESS");
+  assert.equal(ai.calls.length, 0);
+  db.raw.prepare("UPDATE ai_usage SET status='failed' WHERE id='pending-test'").run();
+  const success = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.ok(success.ok, JSON.stringify(success));
+  assert.equal((await aid.aiUsage(db, fam, NOW)).preview.remaining, 0);
+});
+
+test("AI drafting: expired previews and cancelled plans remain blocked before any AI call", async () => {
+  for (const [plan, trialStart] of [["FREE_PREVIEW", "2026-09-01T00:00:00Z"], ["PREVIEW_EXPIRED"], ["CANCELLED"]]) {
     const db = makeDb();
     const fam = seed(db, { plan, trialStart: trialStart || NOW.toISOString() });
     const ai = stub();

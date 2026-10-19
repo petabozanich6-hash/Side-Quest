@@ -19,6 +19,7 @@ jest.mock("../../lib/batchRunner", () => ({
 }));
 global.IS_REACT_ACT_ENVIRONMENT = true;
 let node, root;
+let mockPlan, mockSampleRemaining;
 const TWO = [
   { title: "Science — Haunted chemical reactions", goal: "Explain chemical versus physical changes", learning_area: "Science" },
   { title: "Mathematics — Pumpkin proportions", goal: "Use ratios to scale Halloween recipes", learning_area: "Mathematics" },
@@ -30,8 +31,10 @@ const THREE = [
 ];
 beforeEach(() => {
   jest.clearAllMocks();
+  mockPlan = "ACTIVE_MONTHLY"; mockSampleRemaining = 1;
   api.get.mockImplementation(path => {
-    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: true }, effective_plan: "ACTIVE_MONTHLY" } });
+    if (path === "/account/plan") return Promise.resolve({ data: { limits: { aiGeneration: mockPlan !== "FREE_PREVIEW" }, effective_plan: mockPlan } });
+    if (path === "/ai/status") return Promise.resolve({ data: { allowed: mockSampleRemaining > 0, usage: { preview: { remaining: mockSampleRemaining, used: mockSampleRemaining === 0, in_progress: false } } } });
     if (path === "/students") return Promise.resolve({ data: [{ id: "kid-7", name: "Year 7 child" }] });
     if (path === "/auth/me") return Promise.resolve({ data: { jurisdiction: "NSW", is_platform_owner: false } });
     throw Error("unexpected GET " + path);
@@ -91,4 +94,30 @@ test("a three-subject Halloween request previews Science, English and HSIE separ
   expect(saved.lessons.map(l => l.learning_area)).toEqual(["Science", "English", "Humanities and Social Sciences"]);
   expect(saved.lessons[1].additional_learning_areas).toEqual(["Humanities and Social Sciences"]);
   expect(runBatch).toHaveBeenCalledWith("batch-a", [0, 1, 2]);
+});
+
+test("one free AI lesson is available in preview and submits a single draft", async () => {
+  mockPlan = "FREE_PREVIEW";
+  await mount("Create a one-hour Year 3 lesson about fractions");
+  expect(node.querySelector('[data-testid="free-ai-sample"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="mk-go"]').textContent).toContain("One Free AI Lesson");
+  await click('[data-testid="mk-go"]');
+  expect(api.post.mock.calls.filter(([p]) => p === "/ai/lesson-draft")).toHaveLength(1);
+  expect(api.post.mock.calls.filter(([p]) => p === "/ai/series-plan")).toHaveLength(0);
+});
+
+test("free preview blocks lesson series before any AI request", async () => {
+  mockPlan = "FREE_PREVIEW";
+  await mount("Create three Halloween lessons for Year 7: a science, an English, and an HSIE");
+  await click('[data-testid="mk-go"]');
+  expect(node.querySelector('[data-testid="mk-error"]').textContent).toContain("one complete lesson");
+  expect(api.post).not.toHaveBeenCalled();
+});
+
+test("used free sample shows the membership offer rather than another generation button", async () => {
+  mockPlan = "FREE_PREVIEW"; mockSampleRemaining = 0;
+  await mount("Create a maths lesson");
+  expect(node.querySelector('[data-testid="ai-upsell"]')).not.toBeNull();
+  expect(node.querySelector('[data-testid="ai-upsell"]').textContent).toContain("used its one free AI lesson");
+  expect(node.querySelector('[data-testid="mk-go"]')).toBeNull();
 });

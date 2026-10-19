@@ -13,12 +13,16 @@ import type { App } from "./types";
 import { authenticateToken } from "./session";
 import { getEntitlement } from "./lessonBuilder";
 
-export type AccessPolicy = "paid" | "preview" | "single_preview_plan";
+export type AccessPolicy = "paid" | "preview" | "single_preview_plan" | "preview_ai";
 
 /** Null means no extra entitlement check; existing endpoint auth still applies. */
 export function accessPolicy(method: string, path: string): AccessPolicy | null {
   const verb = method.toUpperCase();
   const p = path.replace(/\/+$/, "") || "/";
+  // Only single-lesson drafting is eligible for the one-time family sample.
+  // Batch generation, lesson refinement, AI planning and all other paid routes
+  // must retain their independent paid entitlement enforcement.
+  if (verb === "POST" && p === "/api/ai/lesson-draft") return "preview_ai";
   // Advanced functions. Deletions of existing user data intentionally remain available.
   if (verb === "GET" && (p === "/api/audit" || p === "/api/auto-quest/preview")) return "paid";
   if (verb === "POST" && (
@@ -28,7 +32,7 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
     p === "/api/life-evidence" || p === "/api/life-evidence/analyse" ||
     p === "/api/auto-quest/plan" || p === "/api/timetable/week" ||
     p === "/api/word-bank/words" || p === "/api/word-bank/try" ||
-    p === "/api/ai/lesson-draft" || p === "/api/ai/lesson-refine" ||
+    p === "/api/ai/lesson-refine" ||
     p === "/api/ai/series-plan" || p === "/api/ai/batches" ||
     p === "/api/calendar"
   )) return "paid";
@@ -75,6 +79,12 @@ export function registerMembershipAccess(app: App) {
     const verified = await authenticateToken(c.env, header.slice(7));
     if (!verified.ok) return c.json({ detail: verified.detail, ...(verified.code ? { code: verified.code } : {}) }, verified.status as any);
     const { plan, limits } = await getEntitlement(c.env.DB, verified.user.family_id);
+    if (policy === "preview_ai" && plan !== "FREE_PREVIEW" && !limits.aiGeneration) {
+      return c.json({
+        code: "UPGRADE_REQUIRED",
+        detail: "The one free AI lesson is available during your seven-day preview. Family Membership unlocks ongoing AI lesson building.",
+      }, 402);
+    }
     if (policy === "paid" && !limits.aiGeneration) {
       return c.json({
         code: "UPGRADE_REQUIRED",

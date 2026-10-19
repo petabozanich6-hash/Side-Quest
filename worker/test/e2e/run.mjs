@@ -826,15 +826,20 @@ await step("K. another family cannot see or touch this family's records", async 
   ok((await api("POST", "/students", t2, { name: "B", username: `b${stamp}`.slice(0, 14), pin: "1234", stage: "S1" })).status === 200, "INTERNAL child 2");
 });
 
-await step("AI drafting: free preview is blocked by the server and the builder shows an upsell, not a fake AI", async () => {
+await step("AI drafting: free preview offers one family sample, without exposing any other AI tools", async () => {
   sql("UPDATE families SET plan='FREE_PREVIEW' WHERE id='" + workflowFamilyId + "'");
   try {
-  const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
-  ok(r.status === 402 && r.json.code === "UPGRADE_REQUIRED", `expected 402, got ${r.status}`);
-  const st = await api("GET", "/ai/status", parentToken);
-  ok(st.json.allowed === false, "free preview shown as allowed");
-  const n = await api("GET", "/lessons", parentToken);
-  ok(!n.json.some(l => l.ai_generated), "AI lesson exists for a free family");
+    const st = await api("GET", "/ai/status", parentToken);
+    ok(st.status === 200 && st.json.allowed === true && st.json.usage.preview.remaining === 1, "free preview should expose one unused draft");
+    // This local-browser suite does not bind Workers AI. An allowed attempt
+    // must reach the generator's 503 without consuming the lifetime slot.
+    const r = await api("POST", "/ai/lesson-draft", parentToken, { topic: "Fractions" });
+    ok(r.status === 503 && r.json.code === "AI_UNAVAILABLE", `expected allowed-but-unavailable 503, got ${r.status}: ${JSON.stringify(r.json)}`);
+    ok((await api("GET", "/ai/status", parentToken)).json.usage.preview.remaining === 1, "unavailable AI must not consume free sample");
+    const paid = await api("POST", "/ai/series-plan", parentToken, { request: "Three fractions lessons" });
+    ok(paid.status === 402, "free preview cannot request multi-lesson AI planning");
+    const n = await api("GET", "/lessons", parentToken);
+    ok(!n.json.some(l => l.ai_generated), "unavailable AI must not save a fake lesson");
   } finally { sql("UPDATE families SET plan='INTERNAL' WHERE id='" + workflowFamilyId + "'"); }
 });
 
