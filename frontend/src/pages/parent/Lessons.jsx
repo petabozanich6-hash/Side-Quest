@@ -11,6 +11,7 @@ export default function LessonsPage() {
   const [lessons, setLessons] = useState([]);
   const [students, setStudents] = useState([]);
   const [plan, setPlan] = useState(null);
+  const [aiStatus, setAiStatus] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
   const [query, setQuery] = useState("");
   const [fSubject, setFSubject] = useState("");
@@ -32,6 +33,7 @@ export default function LessonsPage() {
   useEffect(() => {
     api.get("/students").then(r => setStudents(r.data)).catch(() => {});
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
+    api.get("/ai/status").then(r => setAiStatus(r.data)).catch(() => {});
   }, []);
   // Who has each lesson comes with the library itself (one entry per child).
   useEffect(() => {
@@ -75,7 +77,23 @@ export default function LessonsPage() {
 
       {plan && plan.effective_plan === "FREE_PREVIEW" && (
         <div className="rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700" data-testid="preview-banner">
-          Your seven-day preview ends {new Date(plan.trial_ends_at).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. You’ve used {plan.usage.lessons} of {plan.limits.maxLessons} lessons, {plan.usage.children} of {plan.limits.maxChildren} child profiles, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
+          Your seven-day preview ends {new Date(plan.trial_ends_at).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" })}. You’ve used {plan.usage.manual_lessons ?? plan.usage.lessons} of {plan.limits.maxLessons} manually created lessons, {plan.usage.children} of {plan.limits.maxChildren} child profiles, {plan.usage.activeAssignments} of {plan.limits.maxActiveAssignments} active assignments. Your <strong>one AI-created lesson per family</strong> is separate from your manual allowance. <Link to="/parent/plan" className="underline font-bold">See plans</Link>
+        </div>
+      )}
+
+      {plan?.effective_plan === "FREE_PREVIEW" && (
+        <div className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-4 text-sm text-violet-950 flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-testid="lesson-library-free-ai">
+          <div>
+            <p className="font-bold">🐉 Your family gets one complete AI lesson to try!</p>
+            <p className="mt-1">{aiStatus?.usage?.preview?.in_progress
+              ? "Your AI lesson is being written. Check back shortly."
+              : aiStatus?.usage?.preview?.remaining === 0
+                ? "Your one-time AI sample has been used. Membership unlocks more."
+                : "Use your free sample during the seven-day preview, alongside two lessons you build yourself."}</p>
+          </div>
+          <Link to="/parent/lessons/make" className="shrink-0 inline-flex justify-center rounded-full bg-violet-700 px-4 py-2 text-sm font-bold text-white">
+            {aiStatus?.usage?.preview?.remaining > 0 ? "Create my free AI lesson" : "Open AI lesson builder"}
+          </Link>
         </div>
       )}
       {plan && plan.effective_plan === "PREVIEW_EXPIRED" && (

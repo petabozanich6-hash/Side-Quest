@@ -172,10 +172,10 @@ Your seven-day free preview is ready, with no payment card required.
 Here's an easy place to start:
 1. Sign in to your parent dashboard: ${SITE_URL}/login
 2. Add your child's profile.
-3. Create and assign your first lesson.
-4. Explore the child dashboard and see how progress is recorded.
+3. Build a lesson yourself, or try your family's one free AI-created lesson.
+4. Review your lesson, assign it and see your child's progress.
 
-During your preview you can add one child, create up to two lessons and have two active assignments. A Family Membership unlocks more room for your family to learn, including AI lesson drafting and full portfolio access.
+During your preview you can add one child, create up to two manual lessons, try one full AI-generated lesson per family, and have two active assignments. A Family Membership unlocks ongoing AI lesson drafting, lesson sets, AI edits and full portfolio access.
 
 And please don't feel you need to set everything up on day one. One child, one lesson, one little win. That's a perfectly good beginning.
 
@@ -195,12 +195,12 @@ You received this because a Side-Quest Learning account was created using this e
     steps([
       "Sign in to your parent dashboard.",
       "Add your child's profile.",
-      "Create and assign your first lesson.",
-      "Explore the child dashboard and see how progress is recorded.",
+      "Build a lesson yourself, or try your family’s one free AI-created lesson.",
+      "Review your lesson, assign it and see your child’s progress.",
     ]),
     button("Let's get started", `${SITE_URL}/login`),
     p("No need to set everything up on day one. <strong>One child, one lesson, one little win</strong> is a perfectly good beginning."),
-    note("<strong>While you're exploring:</strong> Your preview includes one child, up to two lessons and two active assignments. A Family Membership adds more room for your family, including AI lesson drafting and full portfolio access."),
+    note("<strong>While you're exploring:</strong> Your preview includes one child, up to two manually created lessons, one complete AI-generated lesson per family and two active assignments. Family Membership unlocks ongoing AI drafting, lesson sets, AI edits and full portfolio access."),
     p(`Have a question, an idea or something that isn't working? Just reply or email <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a>. We'd love to hear from you.`),
     p("We're glad you've joined us. Happy questing!<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");

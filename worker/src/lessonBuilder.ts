@@ -56,6 +56,13 @@ async function count(db: DB, sql: string, ...binds: unknown[]): Promise<number> 
 
 export const countLessons = (db: DB, familyId: string) =>
   count(db, "SELECT COUNT(*) n FROM lessons WHERE family_id = ? AND archived_at IS NULL", familyId);
+/** Keep the free AI sample separate from the two manual lesson slots.
+ * Count only manually-created, unarchived lessons; protect older malformed
+ * JSON rows by treating them as manual rather than granting free slots.
+ */
+export const countManualLessons = (db: DB, familyId: string) =>
+  count(db, `SELECT COUNT(*) n FROM lessons WHERE family_id = ? AND archived_at IS NULL
+    AND COALESCE(CASE WHEN json_valid(data) THEN json_extract(data, '$.ai_generated') ELSE 0 END, 0) != 1`, familyId);
 export const countChildren = (db: DB, familyId: string) =>
   count(db, "SELECT COUNT(*) n FROM students WHERE family_id = ?", familyId);
 export const countActiveAssignments = (db: DB, familyId: string) =>
@@ -93,6 +100,7 @@ export async function planSummary(db: DB, familyId: string, now: Date = new Date
     usage: {
       children: await countChildren(db, familyId),
       lessons: await countLessons(db, familyId),
+      manual_lessons: await countManualLessons(db, familyId),
       active_assignments: await countActiveAssignments(db, familyId),
     },
   };
@@ -477,7 +485,7 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   // must have reserved the family's single use atomically in aiDraft.ts;
   // no normal/manual route can supply opts.ai.
   const freeAiSample = opts.ai === true && plan === "FREE_PREVIEW";
-  if (!freeAiSample && (await countLessons(db, familyId)) >= limits.maxLessons) {
+  if (!freeAiSample && (plan === "FREE_PREVIEW" ? await countManualLessons(db, familyId) : await countLessons(db, familyId)) >= limits.maxLessons) {
     return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   const bad = await checkFiles(db, familyId, clean.value.file_ids);
@@ -514,9 +522,13 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
 export async function duplicateLesson(db: DB, familyId: string, id: string, now: Date = new Date()): Promise<Result<{ lesson: any }>> {
   const row = await ownLesson(db, familyId, id);
   if (!row) return fail(404, "Lesson not found");
-  const { limits } = await getEntitlement(db, familyId, now);
+  const { limits, plan } = await getEntitlement(db, familyId, now);
   if (!limits.canCreate) return paywall("Your free preview has ended. Upgrade to keep creating lessons.");
-  if ((await countLessons(db, familyId)) >= limits.maxLessons) {
+  // A copy of the one-time AI sample is another AI lesson, not a manual
+  // creation. Do not allow the sample to be multiplied through Duplicate.
+  if (plan === "FREE_PREVIEW" && parseJson<any>(row.data, {}).ai_generated)
+    return paywall("You can edit your free AI lesson, but copying AI-generated lessons needs Family Membership.");
+  if ((plan === "FREE_PREVIEW" ? await countManualLessons(db, familyId) : await countLessons(db, familyId)) >= limits.maxLessons) {
     return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   const copyId = newId();
@@ -536,9 +548,11 @@ export async function setArchived(db: DB, familyId: string, id: string, archived
   const row = await ownLesson(db, familyId, id);
   if (!row) return fail(404, "Lesson not found");
   if (!archived) {
-    const { limits } = await getEntitlement(db, familyId, now);
+    const { limits, plan } = await getEntitlement(db, familyId, now);
     if (!limits.canCreate) return paywall("Your free preview has ended. Upgrade to restore lessons.");
-    if ((await countLessons(db, familyId)) >= limits.maxLessons) return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
+    const isAi = parseJson<any>(row.data, {}).ai_generated === true;
+    if ((plan === "FREE_PREVIEW" ? (isAi ? 0 : await countManualLessons(db, familyId)) : await countLessons(db, familyId)) >= limits.maxLessons)
+      return paywall(`The free preview includes ${limits.maxLessons} lessons you create yourself. ${UPGRADE_MESSAGE}`);
   }
   await db.prepare("UPDATE lessons SET archived_at = ?, updated_at = ? WHERE id = ? AND family_id = ?").bind(archived ? nowIso(now) : null, nowIso(now), id, familyId).run();
   return { ok: true, archived };

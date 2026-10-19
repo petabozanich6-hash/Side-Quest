@@ -42,6 +42,7 @@ export default function ParentDashboard() {
   const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
   const [plan, setPlan] = useState(null);
+  const [aiStatus, setAiStatus] = useState(null);
   const [drafts, setDrafts] = useState(null);
   useEffect(() => {
     let live=true;
@@ -64,6 +65,7 @@ export default function ParentDashboard() {
   useEffect(() => {
     load();
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
+    api.get("/ai/status").then(r => setAiStatus(r.data)).catch(() => {});
     api.get("/ai/batches?open=1").then(r => setDrafts(r.data)).catch(() => setDrafts(null));
   }, []);
   useEffect(() => {
@@ -100,6 +102,23 @@ export default function ParentDashboard() {
         </div>
       </header>
 
+
+      {plan?.effective_plan === "FREE_PREVIEW" && (
+        <section className="relative z-10 rounded-2xl border border-violet-200 bg-violet-50 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="dashboard-free-ai-sample">
+          <div>
+            <h2 className="font-display text-xl font-bold text-violet-950">🐉 Your family's one free AI lesson</h2>
+            <p className="mt-1 text-sm text-stone-700">Try a complete AI-written lesson during your seven-day preview, in addition to two lessons you build yourself. One successful draft per family; failed generations don't use your chance.</p>
+            {aiStatus?.usage?.preview && <p className="text-sm font-bold text-violet-900 mt-2" data-testid="dashboard-ai-sample-status">{aiStatus.usage.preview.in_progress
+              ? "Your lesson is being written."
+              : aiStatus.usage.preview.remaining > 0
+                ? "Your free AI lesson is ready to try."
+                : "You've already used your family's free AI lesson."}</p>}
+          </div>
+          <Link to="/parent/lessons/make" className="shrink-0 inline-flex justify-center rounded-full bg-violet-700 text-white px-5 py-3 text-sm font-bold">
+            {aiStatus?.usage?.preview?.remaining > 0 ? "Create my free AI lesson" : "Open lesson builder"}
+          </Link>
+        </section>
+      )}
       {/* Only while a free preview has less than 24 hours left. Not persistent for members. */}
       {plan?.effective_plan === "FREE_PREVIEW" && (() => {
         const left = Date.parse(plan.trial_ends_at) - Date.now();
@@ -255,7 +274,7 @@ export default function ParentDashboard() {
       <section>
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc="Let AI draft a lesson with Family Membership, or build one yourself" tint="#C77B5B" testid="quick-create-lesson"/>
+          <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc={plan?.effective_plan === "FREE_PREVIEW" ? "Try your family’s one free AI-generated lesson, or build a lesson yourself" : "Let AI draft a lesson, or build one yourself"} tint="#C77B5B" testid="quick-create-lesson"/>
           <Quick to="/parent/lessons" icon={Printer} label="Print a lesson" desc="Printable student workbooks and parent teaching guides, straight from My lessons" tint="#4A5D3A" testid="quick-print-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
           <Quick to="/parent/side-quest" icon={Wand2} label="Seasonal surprises" desc="Choose the optional seasonal touches your family wants in your children’s pet rooms" tint="#D4A574" testid="quick-sidequest"/>

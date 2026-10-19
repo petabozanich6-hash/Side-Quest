@@ -16,6 +16,7 @@ const day = (iso) => (iso ? new Date(iso).toLocaleDateString("en-AU", { day: "nu
 
 export default function UpgradePage() {
   const [plan, setPlan] = useState(null);
+  const [aiStatus, setAiStatus] = useState(null);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
   const [promoCode, setPromoCode] = useState("");
@@ -26,6 +27,7 @@ export default function UpgradePage() {
   const load = () => api.get("/account/plan").then((r) => { setPlan(r.data); return r.data; }).catch(() => null);
   useEffect(() => {
     load();
+    api.get("/ai/status").then(r => setAiStatus(r.data)).catch(() => {});
     // Returning from Stripe: access is granted only by the verified webhook, so wait for the server to confirm.
     if (checkout !== "success") return undefined;
     let n = 0;
@@ -94,6 +96,23 @@ export default function UpgradePage() {
         {billing.mode === "test" && <p className="mt-2 inline-block rounded bg-amber-100 px-2 py-1 text-xs font-bold text-amber-900" data-testid="billing-test-mode">Test mode: no real payments are taken</p>}
       </header>
 
+      {preview && (
+        <section className="rounded-2xl border border-violet-200 bg-violet-50 p-5 text-sm text-violet-950 space-y-2" data-testid="plan-free-ai-lesson">
+          <h2 className="font-display text-xl font-bold">🐉 One free AI lesson for your family</h2>
+          <p>Your seven-day preview includes one complete AI-created lesson <strong>in addition to two manual lessons</strong>. It is a one-time family allowance, not one per child. A successful draft uses it permanently; an AI generation failure does not.</p>
+          {aiStatus?.usage?.preview && (
+            <p className="font-semibold" data-testid="plan-ai-sample-status">{aiStatus.usage.preview.in_progress
+              ? "Your free lesson is being written."
+              : aiStatus.usage.preview.remaining > 0
+                ? "Your free AI lesson is still available."
+                : "Your family has already used its free AI lesson."}</p>
+          )}
+          <Link className="inline-flex rounded-full bg-violet-700 text-white px-4 py-2 font-semibold" to="/parent/lessons/make">
+            {aiStatus?.usage?.preview?.remaining > 0 ? "Create my free AI lesson" : "Explore the AI lesson builder"}
+          </Link>
+          <p className="text-xs text-violet-900">AI lesson sets, AI rewrites, extra drafts and other advanced planning tools remain part of Family Membership.</p>
+        </section>
+      )}
       {preview && plan.preview_gift && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="preview-gift-notice"><strong>🐉 A little something from the Dragon’s Hoard!</strong> You’ve been gifted {plan.preview_gift.days} extra preview day{plan.preview_gift.days === 1 ? "" : "s"}. Your free preview now runs until {day(plan.preview_gift.ends_at)}. All the usual preview limits still apply.</div>}
       {checkout === "success" && !paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirming">Thanks! We are confirming your payment with Stripe. This usually takes a few seconds.</div>}
       {checkout === "success" && paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirmed">Your Family Membership is active. Welcome!</div>}
@@ -175,7 +194,7 @@ export default function UpgradePage() {
             {row("Life learning records and detailed evidence notes", ["No", "Yes"])}
             {row("Resource library, video suggestions and Word Hoard authoring", ["No", "Yes"])}
             {row("File uploads and attachments", ["No", "Up to 250 MB per family*"])}
-            {row("AI lesson drafting", ["No", "10 drafts/day, 60/month"])}
+            {row("AI lesson drafting", ["1 full lesson per family, once during the preview", "10 drafts/day, 60/month"])}
             {row("AI lesson changes", ["No", "20/day, 120/month"])}
             {row("AI learning plans, outcome help and child AI assistance", ["No", "Fair-use limits apply"])}
             {row("Offline lessons in SQ Kids", ["No", "Yes"])}

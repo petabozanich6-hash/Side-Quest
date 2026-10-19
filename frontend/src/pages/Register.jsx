@@ -76,7 +76,7 @@ export default function Register() {
           <div className="font-script text-3xl mb-2" style={{color:"#D4A574"}}>Welcome to the family.</div>
           <h2 className="font-display text-4xl font-bold leading-tight">A little more joy, a little less juggling.</h2>
           <ul className="mt-6 space-y-2.5 text-sm" style={{color:"#E8E2D1"}}>
-            <li className="flex gap-2"><span>·</span>Build up to two lessons by hand in the free preview; AI drafts require Family Membership</li>
+            <li className="flex gap-2"><span>·</span>Build two lessons by hand and try one complete AI-generated lesson per family during the seven-day preview</li>
             <li className="flex gap-2"><span>·</span>Official registration and curriculum guidance for every Australian state and territory</li>
             <li className="flex gap-2"><span>·</span>Preview the Evidence Backpack; full records and export require Family Membership</li>
             <li className="flex gap-2"><span>·</span>Offline lessons, advanced planning and attachments with Family Membership</li>
@@ -91,7 +91,7 @@ export default function Register() {
       <div className="flex items-center justify-center p-6">
         <form onSubmit={submit} className="w-full max-w-md paper-card p-8" data-testid="register-form">
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Create a family account</h1>
-          <p className="text-sm text-stone-500 mt-1">Welcome! Try Side-Quest free for seven days with no card and no automatic charge: one child, two manual lessons, two active assignments and a basic learning plan. AI, advanced planning, uploads, offline lessons and full portfolio exports require Family Membership. Your saved records stay available after the preview.</p>
+          <p className="text-sm text-stone-500 mt-1">Welcome! Try Side-Quest free for seven days with no card and no automatic charge: one child, two manual lessons, two active assignments, a basic learning plan and one AI-generated lesson for your family. Ongoing AI drafting, AI editing, advanced planning, uploads, offline lessons and full portfolio exports require Family Membership. Your saved records stay available after the preview.</p>
 
           <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
 

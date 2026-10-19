@@ -219,7 +219,7 @@ export default function LessonBuilder() {
         </div>}
                 {plan && plan.effective_plan === "FREE_PREVIEW" && (
           <p className="mt-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-900" data-testid="preview-banner">
-            Free preview: {plan.usage.lessons} of {plan.limits.maxLessons} lessons used. Preview ends {new Date(plan.trial_ends_at).toLocaleDateString()}.
+            Free preview: {plan.usage.manual_lessons ?? plan.usage.lessons} of {plan.limits.maxLessons} manual lessons used. Your one free AI-created lesson is separate. Preview ends {new Date(plan.trial_ends_at).toLocaleDateString()}.
           </p>
         )}
       </div>

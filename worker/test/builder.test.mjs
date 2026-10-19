@@ -534,6 +534,26 @@ test("a preview family with two manual lessons can still generate its one AI sam
   assert.equal(again.code, "AI_PREVIEW_USED");
 });
 
+test("AI sample drafted first does not steal either manual lesson slot", async () => {
+  const db = makeDb(), fam = seed(db);
+  const sample = await aid.draftLessonWithAi(db, stub(), { familyId: fam, userId: "parent", request: { topic: "Fractions", link_outcomes: false } }, NOW);
+  assert.ok(sample.ok, JSON.stringify(sample));
+  assert.equal((await lb.planSummary(db, fam, NOW)).usage.manual_lessons, 0);
+  assert.ok((await lb.createLesson(db, fam, lesson({ title: "Manual A" }), NOW)).ok);
+  assert.ok((await lb.createLesson(db, fam, lesson({ title: "Manual B" }), NOW)).ok);
+  const usage = await lb.planSummary(db, fam, NOW);
+  assert.equal(usage.usage.manual_lessons, 2);
+  assert.equal(usage.usage.lessons, 3, "AI sample is separately visible in the library");
+  assert.equal((await lb.createLesson(db, fam, lesson({ title: "Manual C" }), NOW)).status, 402);
+  const duplicate = await lb.duplicateLesson(db, fam, sample.lesson.id, NOW);
+  assert.equal(duplicate.status, 402, "duplicating the AI sample must not mint another free AI lesson");
+  const archived = await lb.setArchived(db, fam, sample.lesson.id, true, NOW);
+  assert.ok(archived.ok);
+  const restored = await lb.setArchived(db, fam, sample.lesson.id, false, NOW);
+  assert.ok(restored.ok, "original free AI lesson can be restored without spending another sample");
+  assert.equal((await lb.planSummary(db, fam, NOW)).usage.manual_lessons, 2);
+});
+
 test("AI drafting: preview retries a failed generation, but cannot run two at once", async () => {
   const db = makeDb(), fam = seed(db);
   const unavailable = await aid.draftLessonWithAi(db, undefined, req(fam), NOW);

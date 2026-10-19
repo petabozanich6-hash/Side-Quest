@@ -58,7 +58,7 @@ export default function ParentLayout() {
     route.startsWith("/parent/outcomes") ? "Your automatically recorded progress remains visible. Manually confirming or managing outcome evidence needs Family Membership." :
     route.startsWith("/parent/evidence") ? "The free preview includes a summary and one detailed sample. Full exports and new evidence notes need Family Membership." :
     route.startsWith("/parent/learning-plans") ? "The free preview includes one basic learning plan. More plans and AI planning need Family Membership." :
-    (route.startsWith("/parent/lessons/make") || route.startsWith("/parent/lessons/drafts")) ? "AI lesson drafting and AI refinements need Family Membership. You can still build your free-preview lessons by hand." : "";
+    route.startsWith("/parent/lessons/drafts") ? "Creating AI lesson sets and requesting AI refinements needs Family Membership. Your seven-day preview includes one complete AI-generated single lesson per family from Make a lesson." : "";
   const doLogout = async () => { await logout(); navigate("/"); };
   useEffect(() => {
     if (!user?.id || !paidNotice) return;
