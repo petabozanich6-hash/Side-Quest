@@ -12,6 +12,8 @@ test("already assigned child lessons hide explicit answer labels, not the task o
   assert.equal(childFacingPrompt("What is 7 + 5? Answer: 12"), "What is 7 + 5?");
   assert.equal(childFacingPrompt("What is 7 + 5?"), "What is 7 + 5?");
   assert.equal(hasEmbeddedAnswer("Try 2 + 3? Solution: 5"), true);
+  assert.equal(childFacingPrompt("Work out 9 + 8? Check: 17"), "Work out 9 + 8?");
+  assert.equal(hasEmbeddedAnswer("Your turn! Check: 42"), true);
 
   const parent = {
     title: "Addition",
