@@ -113,7 +113,7 @@ async function getInventory(bucket:R2Bucket|undefined):Promise<InventoryItem[]>{
    const match=/^([a-z0-9-]+?)(-ink)?\.png$/.exec(filename);
    if(!match||!VALID_ID.test(match[1]))continue;
    const id=match[1],variant:Variant=match[2]?"ink":"colour";
-   const entry=found.get(id)||{id,colour:false,ink:false};
+   const entry:InventoryItem=found.get(id)||{id,colour:false,ink:false};
    entry[variant]=true;
    const objectMeta=obj.customMetadata as Partial<VaultMeta>|undefined;
    if(objectMeta&&Object.keys(objectMeta).length)entry.meta={...entry.meta,...objectMeta};
@@ -200,7 +200,7 @@ export function registerPrintableVault(app:App,g:Guards){
    materials:"Pencils or colouring supplies"
   };
   const key=premiumPath(id,variant);
-  await c.env.BUCKET.put(key,bytes,{httpMetadata:{contentType:"image/png"},customMetadata:metadata});
+  await c.env.BUCKET.put(key,bytes,{httpMetadata:{contentType:"image/png"},customMetadata:{...metadata}});
   const saved=await c.env.BUCKET.head(key);
   if(!saved)return c.json({detail:"Storage confirmation failed; please retry this image."},502);
   c.header("Cache-Control","no-store");
