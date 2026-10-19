@@ -87,7 +87,7 @@ async function unpackImportFiles(files){
  const valid=[],seen=new Set();
  for(const r of records){
   const base=r.name.replace(/\\/g,"/").split("/").pop();
-  const stem=base.replace(/\\.png$/i,"");
+  const stem=base.replace(/\.png$/i,"");
   const variant=/-ink$/i.test(stem)?"ink":"colour";
   const id=slug(stem.replace(/-ink$/i,"")).slice(0,80).replace(/-$/,"");
   if(!id||id.length<2||!(/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(id)))
@@ -214,7 +214,7 @@ export default function PrintableVault(){
       const replaced=new Set(expected.filter(r=>previous.has(r.id)).map(r=>r.id)).size;
       toast.success(added+" new activities added"+(replaced?", "+replaced+" existing updated":"")+". Verified in the Printable Vault.");
     }catch(e){
-      toast.error((uploaded?uploaded+" files uploaded before the error. ":"")+apiErrorMessage(e,e?.message||"Import stopped. Retry to finish."),{duration:9000});
+      toast.error((uploaded?uploaded+" files uploaded before the error. ":"")+(e?.response?apiErrorMessage(e):e?.message||"Import stopped. Retry to finish."),{duration:9000});
     }finally{setBusy("");setImportProgress("");}
   };
 
