@@ -354,6 +354,11 @@ async function ownProposal(db: DB, familyId: string, id: string) {
 
 /** Drafts a lesson for a proposal with AI (paid plans, normal limits). The draft is saved unassigned for review. */
 export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
+  // The one-time preview exception applies ONLY to the single-lesson endpoint.
+  // Guard this internal call as well as the HTTP route so proposals can never
+  // spend the free sample or circumvent Auto-Quest's paid entitlement.
+  const entitlement = await lb.getEntitlement(db, o.familyId, now);
+  if (!entitlement.limits.aiGeneration) return lb.paywall("Auto-Quest AI generation is part of Family Membership. Your one free AI sample is available only through Make a lesson.");
   const p = await ownProposal(db, o.familyId, o.id);
   if (!p) return bad(404, "Proposal not found");
   if (p.status !== "proposed") return bad(409, "This proposal has already been decided.", "DECIDED");
