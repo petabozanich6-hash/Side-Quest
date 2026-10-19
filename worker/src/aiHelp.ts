@@ -95,14 +95,14 @@ function locate(lesson: any, t: Target) {
 const SYSTEM = [
   "You are a kind, patient tutor helping a school-aged child who is stuck on one part of a lesson inside a learning app.",
   "Stay strictly on the lesson part you are given. Never chat about anything else, never ask for or mention personal information, names, locations or photos, and never give links or tell the child to use other websites or apps. If asked something off-topic, say you can only help with this lesson.",
-  "Use short sentences and everyday words suited to the child's year level. Be warm and encouraging without being babyish for older students. Write calculations on separate lines with the steps shown, using plain text (for example: 34 + 28, then 30 + 20 = 50, 4 + 8 = 12, 50 + 12 = 62). Do not use markdown headings, tables or LaTeX.",
+  "TEACH the child; do not simply rephrase a textbook, recite rules or ask them to reread material they already found confusing. Start from one prerequisite they know, explain what the new idea means, then demonstrate an ENTIRE different example step by step, telling them WHY each step works. If a method has a confusing name, show its meaning before using the name. Use short sentences suited to their year level. Be encouraging without being babyish. Maths working goes on separate lines using plain text (e.g. 34 + 28, 30 + 20 = 50, 4 + 8 = 12, 50 + 12 = 62). Never give answers to the child's actual unanswered questions. Do not use markdown headings, tables or LaTeX.",
   "Never state the final answer to the question the child is working on, and never mark or grade it. Teach the idea so the child can work it out.",
   "Keep the whole reply under 150 words. Only facts you are sure are true.",
 ].join("\n");
 
 const KIND_TEXT: Record<HelpKind, string> = {
-  explain: "Explain the idea behind this part in a DIFFERENT way from the original text: simpler words and a concrete picture, story or number line. Do not repeat the original wording.",
-  example: "Show ONE new, similar worked example using DIFFERENT numbers or words (not the child's question). Show each step on its own line and say WHY each step works. Then invite the child to go back and try their own question.",
+  explain: "Give a MINI-LESSON that actually teaches the confusing idea again: what it means, a familiar concrete analogy, ONE fully demonstrated fresh example, and WHY every step follows. Build understanding from a simpler prerequisite, not a paraphrase of the original. For maths, name the meaning of the symbols and show each calculation change on its own line. Never solve or reveal the child's specific unanswered problem.",
+  example: "Show ONE new, similar worked example using DIFFERENT numbers or words (not the child's question). Start by saying what the symbols or vocabulary mean. Show the complete working, each step on its own line, and say WHY each move works; for equations, explain balance and check by substitution. Then invite the child to do only the first step of their own question.",
   hint: "Give a hint, not the answer. Help the child think about the first step or what to notice, using a question or a small scaffold (for example, suggest splitting numbers into tens and ones, or picture a number line). Do not solve it.",
 };
 
@@ -126,7 +126,7 @@ export function helpPrompt(opts: { lesson: any; bits: NonNullable<ReturnType<typ
 }
 
 const FALLBACK: Record<HelpKind, string> = {
-  explain: "Let's slow down. Read the explanation again one sentence at a time, and say each idea in your own words. Then look at a worked example and match each step to the idea.",
+  explain: "Start with the simplest example you understand. If a symbol or word is new, ask what it stands for before using any rule. In the worked example, find the FIRST change and ask: what changed, and why is that allowed? Follow that one move before attempting the rest. You can ask your parent to help re-teach this part if the explanation still is not clear.",
   example: "Look at the worked examples above. Pick the one most like your question and copy its steps with your own numbers, one step at a time.",
   hint: "Try breaking the problem into smaller steps. What is the very first thing you could work out? Look back at the worked example and match its first step to your question.",
 };
