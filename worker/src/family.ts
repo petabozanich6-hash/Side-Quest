@@ -20,6 +20,7 @@ import {
 } from "./data/curriculum";
 import type { App, AuthUser, Env, Guards } from "./types";
 import { nowIso, newId, parseJson } from "./types";
+import { stageForXp, previousStageForXp } from "./data/pets";
 
 const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
 // A paid family shares one bounded R2 allowance. Free preview accounts cannot upload.
@@ -27,14 +28,6 @@ const MAX_FAMILY_STORAGE_BYTES = 250 * 1024 * 1024;
 const FILE_PREFIX = "sidequest";
 const SAFE_FILE_TYPES = [
   "application/pdf",
-] as const;
-const LEVEL_TIERS = [
-  [0, "Egg", "egg"],
-  [10, "Hatchling", "sprout"],
-  [30, "Youngling", "leaf"],
-  [80, "Companion", "tree"],
-  [200, "Hero", "star"],
-  [500, "Legend", "sparkle"],
 ] as const;
 const EDITABLE_EVENT_FIELDS = new Set([
   "title",
@@ -96,19 +89,6 @@ const guessTheme = (stage?: string) =>
         : "senior";
 
 const makeToken = (env: Env, sub: string, role: "parent" | "child", familyId: string) => issueToken(env, sub, role, familyId);
-
-function levelForXp(xp: number) {
-  let tier: (typeof LEVEL_TIERS)[number] = LEVEL_TIERS[0];
-  for (const item of LEVEL_TIERS) if (xp >= item[0]) tier = item;
-  const next = LEVEL_TIERS.find((item) => item[0] > xp);
-  return {
-    xp,
-    level_name: tier[1],
-    level_icon: tier[2],
-    next_xp: next?.[0] ?? null,
-    next_level: next?.[1] ?? null,
-  };
-}
 
 export function studentExtraFromBody(body: Record<string, unknown>, stage: string, existing?: StudentExtra): StudentExtra {
   const meta = stageMeta(stage);
@@ -513,7 +493,12 @@ export function registerFamily(app: App, g: Guards) {
     );
     return c.json({
       student,
-      pet: pet ? { ...pet, ...levelForXp(Number(pet.xp || 0)) } : null,
+      pet: pet ? { ...pet, ...stageForXp(
+        Number(pet.xp || 0), !!pet.hatched,
+        (parseJson<any>(String(pet.extra ?? ""), {}).growth_version === 2
+          ? parseJson<any>(String(pet.extra ?? ""), {}).growth_floor
+          : previousStageForXp(Number(pet.xp || 0), !!pet.hatched))
+      ) } : null,
       assignments,
       recent_submissions: submissions,
       cheers: cheers.map((row) => ({ ...row, seen: !!row.seen })),

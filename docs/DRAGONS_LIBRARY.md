@@ -5,7 +5,7 @@ This is a curated **external-link directory**, not an ebook library. It does not
 ## User experience
 
 - Parent Hub: **Dragon's Library** in the sidebar.
-- Child Hub: **Library** beside My reading.
+- Parent Hub only: Dragon's Library is not offered to child accounts. Old child links redirect to My Stuff; children can still maintain their own reading log.
 - Shared catalogue search with reading stage, genre, subjects and access filters.
 - Legitimate external routes: Trove Australian library discovery; Libby and BorrowBox service homepages (library-dependent); direct Book Dash book pages; Project Gutenberg title search (country copyright rules differ); eBay AU second-hand search (parents only).
 - **Log this book after reading** prefills existing reading-log forms and does **not** record work automatically. Parent approvals and child submissions remain unchanged.

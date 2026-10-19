@@ -8,16 +8,16 @@ export const PET_SPECIES = {
   goblin: { label: "Goblin", voice: "cheeky, clever, loyal and a little mischievous" },
 } as const;
 
-export const LEVEL_TIERS: Array<[number, string, string]> = [
-  [0, "Egg", "egg"],
-  [10, "Hatchling", "sprout"],
-  [30, "Youngling", "leaf"],
-  [80, "Companion", "tree"],
-  [200, "Hero", "star"],
-  [500, "Legend", "sparkle"],
-];
-
+// Growth now takes sustained learning. Existing pets retain XP and achieved stages.
 export const CARE_STAGES: Array<[number, string, string]> = [
+  [0, "Egg", "egg"],
+  [60, "Hatchling", "sprout"],
+  [600, "Youngling", "leaf"],
+  [1800, "Companion", "tree"],
+  [4500, "Hero", "star"],
+  [9000, "Legend", "sparkle"],
+];
+export const PREVIOUS_STAGES: Array<[number, string, string]> = [
   [0, "Egg", "egg"],
   [60, "Hatchling", "sprout"],
   [200, "Youngling", "leaf"],
@@ -25,6 +25,8 @@ export const CARE_STAGES: Array<[number, string, string]> = [
   [1000, "Hero", "star"],
   [2000, "Legend", "sparkle"],
 ];
+// Used by older views: keep one consistent growth table.
+export const LEVEL_TIERS = CARE_STAGES;
 
 export const HATCH_XP = 60;
 export const HATCH_CARE_DAYS = 3;
@@ -61,6 +63,14 @@ export const ACCESSORIES: Record<string, { label: string; rule: string }> = {
   headphones: { label: "Study Headphones", rule: "quest:headphones" },
   shades: { label: "Cool Shades", rule: "quest:shades" },
   butterfly: { label: "Butterfly Wings", rule: "quest:butterfly" },
+};
+
+// Only one regular accessory can occupy each body slot.
+export const ACCESSORY_SLOTS: Record<string, string> = {
+  scarf: "neck", bow: "head", flower_crown: "head", party_hat: "head",
+  bookworm_specs: "face", backpack: "back", cape: "back",
+  star_badge: "chest", crown: "head", top_hat: "head", rainbow: "head",
+  magic_wand: "right", headphones: "head", shades: "face", butterfly: "back",
 };
 
 const SUBMISSION_XP = 15;
@@ -125,33 +135,33 @@ const boolInt = (value: boolean) => (value ? 1 : 0);
 const dateOnlyUtc = (d: Date) => d.toISOString().slice(0, 10);
 const plusHours = (d: Date, hours: number) => new Date(d.getTime() + hours * 3600000);
 
-export function levelForXp(xp: number) {
-  let tier = LEVEL_TIERS[0];
-  for (const t of LEVEL_TIERS) if (xp >= t[0]) tier = t;
-  const next = LEVEL_TIERS.find((t) => t[0] > xp) ?? null;
+const tierIndex = (xp: number, tiers: typeof CARE_STAGES) => {
+  let index = 0;
+  for (let i = 0; i < tiers.length; i++) if (xp >= tiers[i][0]) index = i;
+  return index;
+};
+
+export function previousStageForXp(xp: number, hatched: boolean) {
+  return hatched ? PREVIOUS_STAGES[tierIndex(xp, PREVIOUS_STAGES)][1] : "Egg";
+}
+
+export function stageForXp(xp: number, hatched: boolean, floor = "") {
+  const earnedIndex = hatched ? Math.max(1, tierIndex(xp, CARE_STAGES)) : 0;
+  const minimum = hatched ? Math.max(0, CARE_STAGES.findIndex((tier) => tier[1] === floor)) : 0;
+  const index = Math.max(earnedIndex, minimum);
+  const current = CARE_STAGES[index], next = CARE_STAGES[index + 1] || null;
   return {
     xp,
-    level_name: tier[1],
-    level_icon: tier[2],
+    level_name: current[1],
+    level_icon: current[2],
     next_xp: next?.[0] ?? null,
     next_level: next?.[1] ?? null,
+    level_start_xp: current[0],
   };
 }
 
-function stageFor(xp: number, hatched: boolean) {
-  let tier = hatched ? CARE_STAGES[1] : CARE_STAGES[0];
-  if (hatched) {
-    for (const t of CARE_STAGES.slice(1)) if (xp >= t[0]) tier = t;
-  }
-  let next = CARE_STAGES.find((t) => t[0] > xp && (hatched || t[0] > 0)) ?? null;
-  if (!hatched) next = CARE_STAGES[1];
-  return {
-    level_name: tier[1],
-    level_icon: tier[2],
-    next_xp: next?.[0] ?? null,
-    next_level: next?.[1] ?? null,
-  };
-}
+// Consistent tiers for any pet-independent XP display.
+export function levelForXp(xp: number) { return stageForXp(xp, xp >= HATCH_XP); }
 
 const parseDate = (value: string | null | undefined) => {
   if (!value) return null;
@@ -322,7 +332,7 @@ export function makePet(studentId: string, familyId: string, name: string, speci
     care_streak: 0,
     best_streak: 0,
     revived_count: 0,
-    extra: {},
+    extra: { growth_version: 2 },
   };
 }
 
@@ -435,6 +445,15 @@ export async function syncPetCare(db: D1Database, pet: PetState, now = new Date(
 export async function loadSyncedPet(db: D1Database, studentId: string, now = new Date()) {
   const pet = await loadPet(db, studentId);
   if (!pet) return null;
+  if (pet.extra?.growth_version !== 2) {
+    // Capture the old achieved stage before awarding any newly synced activity.
+    pet.extra = {
+      ...pet.extra,
+      growth_version: 2,
+      growth_floor: previousStageForXp(pet.xp, pet.hatched),
+    };
+    await savePet(db, pet);
+  }
   await syncPetProgress(db, pet);
   await syncPetCare(db, pet, now);
   return pet;
@@ -475,7 +494,7 @@ export async function publicPet(db: D1Database, pet: PetState) {
   delete out.activity;
   delete out.extra;
 
-  const stage = stageFor(pet.xp, pet.hatched);
+  const stage = stageForXp(pet.xp, pet.hatched, pet.extra?.growth_floor);
   Object.assign(out, stage);
 
   const stageNames = CARE_STAGES.map((s) => s[1]);
@@ -496,6 +515,7 @@ export async function publicPet(db: D1Database, pet: PetState) {
     id,
     label: accessory.label,
     rule: accessory.rule,
+    slot: ACCESSORY_SLOTS[id],
     unlocked: unlocked.has(id),
   }));
   out.egg_style = EGG_STYLES[pet.species] ?? EGG_STYLES.dragon;
@@ -521,6 +541,6 @@ export function legacyPetView(pet: PetState) {
     items: [...pet.items],
     egg_care_dates: [...pet.egg_care_dates],
     unlocked_accessories: [...pet.unlocked_accessories],
-    ...levelForXp(pet.xp),
+    ...stageForXp(pet.xp, pet.hatched, pet.extra?.growth_floor),
   };
 }

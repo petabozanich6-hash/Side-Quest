@@ -12,6 +12,7 @@ import {
 } from "./data/seasonal";
 import {
   PET_SPECIES,
+  ACCESSORY_SLOTS,
   PLAY_DAILY_CAP,
   PLAY_XP,
   legacyPetView,
@@ -85,13 +86,11 @@ export function registerPets(app: App, g: Guards) {
     if (!(species in PET_SPECIES)) return jsonDetail(c, "Unknown species", 400);
     if (await loadPet(c.env.DB, user.id)) return jsonDetail(c, "Pet already exists", 400);
     const pet = makePet(user.id, user.family_id, String(body.name || ""), species);
-    // XP already earned from reviewed lessons before the pet was chosen is not lost.
-    try {
-      const earned = await c.env.DB.prepare("SELECT COALESCE(SUM(xp_awarded), 0) n FROM assignments WHERE student_id = ?").bind(user.id).first<{ n: number }>();
-      pet.xp = Number(earned?.n || 0);
-    } catch { /* column missing on an unmigrated database */ }
+    // Historical submissions and reviews are credited once by syncPetProgress.
+    // Preloading xp_awarded here used to double count those same lessons.
     await insertPet(c.env.DB, pet);
-    return c.json(legacyPetView(pet));
+    const synced = await loadSyncedPet(c.env.DB, user.id);
+    return c.json(legacyPetView(synced || pet));
   });
 
   app.post("/api/pet/feed", g.auth, g.child, async (c) => {
@@ -104,13 +103,23 @@ export function registerPets(app: App, g: Guards) {
   });
 
   app.post("/api/pet/play", g.auth, g.child, async (c) => {
-    const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
+    // Legacy mobile clients must share the SAME daily cap as the care endpoint.
+    // Otherwise repeatedly tapping an old play action could farm unlimited XP.
+    const now = new Date();
+    const pet = await loadSyncedPet(c.env.DB, c.get("user").id, now);
     if (!pet) return jsonDetail(c, "No pet yet", 404);
-    const ts = nowIso();
+    if (pet.care_paused) return jsonDetail(c, "Care is paused by your parent", 400);
+    if (pet.care_status === "asleep") return jsonDetail(c, "Your pet is asleep - feed it to wake it up", 400);
+    const today = now.toISOString().slice(0, 10);
+    const count = pet.play_day === today ? pet.play_count : 0;
+    if (count >= PLAY_DAILY_CAP) return jsonDetail(c, "Your pet is tired - play again tomorrow", 400);
+    const ts = now.toISOString();
+    pet.play_day = today;
+    pet.play_count = count + 1;
     pet.happiness = Math.min(100, pet.happiness + 8);
-    pet.xp += 2;
+    pet.xp += PLAY_XP;
     pet.last_played = ts;
-    pet.activity = [...pet.activity, { amount: 2, reason: "Played with pet", at: ts }];
+    pet.activity = [...pet.activity, { amount: PLAY_XP, reason: "Played with pet", at: ts }];
     await savePet(c.env.DB, pet);
     return c.json({ happiness: pet.happiness, xp: pet.xp });
   });
@@ -132,14 +141,18 @@ export function registerPets(app: App, g: Guards) {
       changed = true;
     }
     if (Array.isArray(body.accessories)) {
-      pet.accessories = Array.from(
-        new Set(
-          body.accessories
-            .map((item: unknown) => String(item).slice(0, 30))
-            .filter((item: string) => !!item),
-        ),
-      ) as string[];
-      pet.accessories = pet.accessories.slice(0, 10);
+      // Legacy customize must not bypass the wardrobe's unlock/slot rules.
+      const pub: any = await publicPet(c.env.DB, pet);
+      const allowed = new Set<string>(pub.unlocked_accessories || []);
+      const bySlot = new Map<string, string>();
+      for (const raw of body.accessories) {
+        const id = String(raw);
+        const slot = ACCESSORY_SLOTS[id];
+        if (!slot || !allowed.has(id)) continue;
+        bySlot.delete(slot);
+        bySlot.set(slot, id);
+      }
+      pet.accessories = [...bySlot.values()].slice(-3);
       changed = true;
     }
     if (!changed) return jsonDetail(c, "Nothing to update", 400);
@@ -260,14 +273,15 @@ export function registerPets(app: App, g: Guards) {
     if (!Array.isArray(body.accessories)) return jsonDetail(c, "accessories must be a list", 400);
     const pub: any = await publicPet(c.env.DB, pet);
     const allowed = new Set<string>(pub.unlocked_accessories || []);
-    pet.accessories = Array.from(
-      new Set(
-        body.accessories
-          .map((item: unknown) => String(item))
-          .filter((item: string) => allowed.has(item)),
-      ),
-    ) as string[];
-    pet.accessories = pet.accessories.slice(0, 10);
+    const bySlot = new Map<string, string>();
+    for (const raw of body.accessories) {
+      const id = String(raw);
+      const slot = ACCESSORY_SLOTS[id];
+      if (!slot || !allowed.has(id)) continue;
+      bySlot.delete(slot);
+      bySlot.set(slot, id);
+    }
+    pet.accessories = [...bySlot.values()].slice(-3);
     await savePet(c.env.DB, pet);
     return c.json({ accessories: pet.accessories });
   });

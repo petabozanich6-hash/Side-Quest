@@ -1,5 +1,5 @@
 import type { PetState } from "./pets";
-import { PET_SPECIES, levelForXp, loadPet, savePet } from "./pets";
+import { PET_SPECIES, stageForXp, previousStageForXp, loadPet, savePet } from "./pets";
 
 // Everything here lives inside the pet's existing `extra` JSON, so no database change is needed.
 // Rewards are earned by learning (spelling, lessons, reading) and gentle care; nothing is ever lost and nothing is for sale for real money.
@@ -178,11 +178,13 @@ export function placeItems(pet: PetState, ids: unknown, positions?: unknown): { 
 /** Extra pets: a second after 10 mastered words, a third after 30. */
 export const stableSlots = (trophies: number) => 1 + (trophies >= 10 ? 1 : 0) + (trophies >= 30 ? 1 : 0);
 const SWAP = ["name", "species", "xp", "happiness", "background", "hatched", "hatched_at"] as const;
-const snap = (pet: PetState) => ({ name: pet.name, species: pet.species, xp: pet.xp, happiness: pet.happiness, background: pet.background, accessories: [...pet.accessories], hatched: pet.hatched, hatched_at: pet.hatched_at, egg_care_dates: [...pet.egg_care_dates] });
+const snap = (pet: PetState) => ({ name: pet.name, species: pet.species, xp: pet.xp, happiness: pet.happiness, background: pet.background, accessories: [...pet.accessories], hatched: pet.hatched, hatched_at: pet.hatched_at, egg_care_dates: [...pet.egg_care_dates], growth_version: ex(pet).growth_version, growth_floor: ex(pet).growth_floor });
 const load = (pet: PetState, s: any) => {
   for (const k of SWAP) (pet as any)[k] = s[k];
   pet.accessories = arr(s.accessories).map(String);
   pet.egg_care_dates = arr(s.egg_care_dates).map(String);
+  ex(pet).growth_version = 2;
+  ex(pet).growth_floor = s.growth_version === 2 ? (s.growth_floor || null) : previousStageForXp(Number(s.xp || 0), !!s.hatched);
 };
 
 export function newPet(pet: PetState, species: string, name: string): { ok: boolean; detail?: string } {
@@ -192,7 +194,7 @@ export function newPet(pet: PetState, species: string, name: string): { ok: bool
   if (1 + stable.length >= stableSlots(arr(e.trophies).length)) return { ok: false, detail: "Master more words to open another pet slot" };
   if ([pet.species, ...stable.map((s) => s.species)].includes(species)) return { ok: false, detail: "You already have that kind of pet" };
   stable.push(snap(pet));
-  load(pet, { name: String(name || "").trim().slice(0, 30) || PET_SPECIES[species as keyof typeof PET_SPECIES].label, species, xp: 0, happiness: 80, background: pet.background, accessories: [], hatched: false, hatched_at: null, egg_care_dates: [] });
+  load(pet, { name: String(name || "").trim().slice(0, 30) || PET_SPECIES[species as keyof typeof PET_SPECIES].label, species, xp: 0, happiness: 80, background: pet.background, accessories: [], hatched: false, hatched_at: null, egg_care_dates: [], growth_version: 2, growth_floor: null });
   e.stable = stable;
   return { ok: true };
 }
@@ -237,10 +239,10 @@ export function questView(pet: PetState, now: Date) {
     room_pos: e.room_pos && typeof e.room_pos === "object" ? e.room_pos : {},
     rare: Object.entries(RARE).map(([id, r]) => ({ id, ...r, have: arr(e.rare).includes(id) })),
     mood: moodFor(pet),
-    form: levelForXp(pet.xp).level_name,
+    form: stageForXp(pet.xp, pet.hatched, e.growth_floor).level_name,
     cheer: e.cheer && !e.cheer.seen ? e.cheer : null,
     slots: { total: stableSlots(trophies.length), used: 1 + arr(e.stable).length, next_at: trophies.length < 10 ? 10 : trophies.length < 30 ? 30 : null },
-    stable: arr(e.stable).map((s, i) => ({ index: i, name: s.name, species: s.species, level: levelForXp(Number(s.xp || 0)).level_name, hatched: !!s.hatched })),
+    stable: arr(e.stable).map((s, i) => ({ index: i, name: s.name, species: s.species, level: stageForXp(Number(s.xp || 0), !!s.hatched, s.growth_version === 2 ? s.growth_floor : previousStageForXp(Number(s.xp || 0), !!s.hatched)).level_name, hatched: !!s.hatched })),
     species: Object.entries(PET_SPECIES).map(([id, s]) => ({ id, label: s.label })),
   };
 }
