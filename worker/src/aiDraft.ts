@@ -378,6 +378,29 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
   else if (w < z.minTeachingWords) add({ keys: ["sections"], msg: `the explanations total ${w} words; a ${minutes}-minute lesson needs at least ${z.minTeachingWords} words of real teaching`, repair: true });
   if (!d.worked_examples.length) add({ keys: ["worked_examples"], msg: "there are no worked examples", hard: true, repair: true });
   else if (d.worked_examples.length < Math.min(2, z.workedExamples) || d.worked_examples.some((x) => x.steps.length < 2)) add({ keys: ["worked_examples"], msg: "worked examples are too few or do not show step-by-step working", repair: true });
+  // Word count alone does not prove teaching took place. Require demonstrated
+  // mathematical working and a reasoned example, not just instructions like
+  // "isolate the variable" or "use the inverse operation".
+  if (isMathsArea(spec.area)) {
+    const model = d.sections.some((section) =>
+      /\d/.test(section.body) && /(?:[=+×÷−*/]|\b(?:because|means|represents|add|subtract|multiply|divide|number line)\b)/i.test(section.body));
+    if (d.sections.length && !model) add({ keys: ["sections"], msg: "the maths explanations describe the topic but never actually demonstrate a calculation or numerical model; teach a complete concrete example with reasons", hard: true, repair: true });
+    const hasWorking = d.worked_examples.some((ex) => ex.steps.some((st) =>
+      /\d/.test(st) && /[=+×÷−*/-]/.test(st)));
+    if (d.worked_examples.length && !hasWorking) add({ keys: ["worked_examples"], msg: "worked examples describe what to do without showing any real calculation steps; write the actual working", hard: true, repair: true });
+    const topic = [spec.topic, spec.goal, spec.original || ""].join(" ");
+    if (/\b(?:algebra|algebraic|equation|equations|variable)\b/i.test(topic) &&
+        /\b(?:solve|solving|equation|equations|unknown value)\b/i.test(topic)) {
+      const solved = d.worked_examples.some((ex) => {
+        const steps = ex.steps || [];
+        const equations = steps.filter((line) => /=/.test(line)).length;
+        const reasoned = /\b(?:because|same (?:thing|operation)|both sides|remain equal|balance|inverse|undo)\b/i.test(steps.join(" "));
+        const checked = /\b(?:check|substitut|original equation|both sides)\b/i.test(steps.join(" ") + " " + ex.answer);
+        return equations >= 2 && reasoned && checked;
+      });
+      if (!solved) add({ keys: ["worked_examples"], msg: "equation-solving teaching must show at least one actual multi-line solution, why equality is preserved, and a substitution check in the original equation; stating an inverse-operation rule is not teaching", hard: true, repair: true });
+    }
+  }
   if (d.guided_practice.length < 3) add({ keys: ["guided_practice"], msg: "guided practice needs at least 3 questions with hints and answers", repair: true });
   else if (d.guided_practice.some((g) => !g.answer)) add({ keys: ["guided_practice"], msg: "some guided practice questions have no answer" });
   if (!d.quiz.length) add({ keys: ["quiz"], msg: "there is no quiz", hard: true, repair: true });
