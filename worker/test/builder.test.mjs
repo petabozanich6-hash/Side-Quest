@@ -227,6 +227,29 @@ test("parent review rolls back fully if evidence cannot be saved, then succeeds 
   assert.equal((await lb.reviewSubmission(db, "another-family", "parent", sub.id, approve, NOW)).status, 404);
 });
 
+test("a missing approval evidence table returns a safe error without changing work", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const sid = child(db, fam);
+  const l = await mk(db, fam);
+  const a = (await lb.assignLesson(db, fam, { student_id: sid, lesson_id: l.id }, NOW)).assignment;
+  const sub = await lb.submitWork(db, { id: sid, family_id: fam },
+    { assignment_id: a.id, needs_help: true, response_text: "Saved original work" }, NOW);
+  assert.ok(sub.ok);
+  db.raw.exec("DROP TABLE lesson_evidence");
+  const result = await lb.reviewSubmission(db, fam, "parent", sub.id,
+    { status: "demonstrated", feedback_text: "Approved" }, NOW);
+  assert.equal(result.ok, false);
+  assert.equal(result.status, 503);
+  assert.equal(result.code, "REVIEW_SCHEMA_MISSING");
+  assert.equal(db.raw.prepare("SELECT status, response_text FROM submissions WHERE id=?").get(sub.id).status, "awaiting_help");
+  assert.equal(db.raw.prepare("SELECT response_text FROM submissions WHERE id=?").get(sub.id).response_text, "Saved original work");
+  const assignment = db.raw.prepare("SELECT status, xp_awarded FROM assignments WHERE id=?").get(a.id);
+  assert.equal(assignment.status, "awaiting_help");
+  assert.equal(assignment.xp_awarded, 0);
+  assert.equal(db.raw.prepare("SELECT xp FROM pets WHERE student_id=?").get(sid).xp, 0);
+});
+
 test("returned work restores the submitted draft and accepts a corrected hand-in", async () => {
   const db = makeDb(), fam = seed(db, { plan: "ACTIVE_MONTHLY" }), sid = child(db, fam);
   const l = await mk(db, fam);
@@ -252,6 +275,20 @@ test("returned work restores the submitted draft and accepts a corrected hand-in
   assert.deepEqual(JSON.parse(db.raw.prepare("SELECT draft FROM assignments WHERE id=?").get(a.id).draft), corrected);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM submissions WHERE assignment_id=?").get(a.id).n, 2);
   assert.equal(db.raw.prepare("SELECT response_text FROM submissions WHERE id=?").get(first.id).response_text, "my first answer", "original evidence remains");
+  // The new hand-in is a separate submission, and its approval must work
+  // without changing the prior returned submission or losing the corrected draft.
+  const approved = await lb.reviewSubmission(db, fam, "parent", second.id,
+    { status: "demonstrated", feedback_text: "Corrections accepted" }, NOW);
+  assert.ok(approved.ok);
+  assert.equal(approved.xp_awarded, 45);
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(a.id).status, "demonstrated");
+  assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id=?").get(first.id).status, "needs_revision");
+  assert.equal(db.raw.prepare("SELECT status FROM submissions WHERE id=?").get(second.id).status, "demonstrated");
+  assert.deepEqual(JSON.parse(db.raw.prepare("SELECT draft FROM assignments WHERE id=?").get(a.id).draft), corrected);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
+  assert.equal((await lb.reviewSubmission(db, fam, "parent", second.id,
+    { status: "demonstrated", feedback_text: "Corrections accepted" }, NOW)).xp_awarded, 0);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM lesson_evidence WHERE child_id=?").get(sid).n, 1);
 });
 
 test("two children have independent assignments", async () => {
