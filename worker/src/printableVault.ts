@@ -60,7 +60,7 @@ export const VAULT_BUNDLES=[
  {id:"activity-play",title:"Print & Play",description:"Board game, picture cards and magical potion wheels."}
 ];
 
-export const VAULT_ART_REVIEW_ONLY = true; // Owner-only preview while print illustration/assembly QA is incomplete.
+export const VAULT_ART_REVIEW_ONLY = false; // Approved printable artwork is available to active paid families; uploads stay owner-only.
 const itemMeta=(i:VaultPicture,available:boolean,inkAvailable:boolean)=>({
  id:i.id,title:i.title,category:i.category,ages:i.ages,minutes:i.minutes,
  kind:i.kind,description:i.description,materials:i.materials,theme:i.theme,
@@ -75,7 +75,7 @@ export function registerPrintableVault(app:App,g:Guards){
   const owner=await isPlatformOwner(c.env.DB,c.get("user").id);
   const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
   const available=await Promise.all(premiumItems.map(async i=>{
-    if(!owner||!c.env.BUCKET)return {id:i.id,colour:false,ink:false};
+    if(!unlocked||!c.env.BUCKET)return {id:i.id,colour:false,ink:false};
     const [colour,ink]=await Promise.all([
       c.env.BUCKET.head(premiumPath(i.id,"colour")),
       c.env.BUCKET.head(premiumPath(i.id,"ink"))
@@ -94,7 +94,7 @@ export function registerPrintableVault(app:App,g:Guards){
  });
  const paid=async(c:any,next:any)=>{
   if(!await canAccessPrintableVault(c.env.DB,c.get("user")))
-   return c.json({code:VAULT_ART_REVIEW_ONLY?"VAULT_REVIEW_ONLY":"UPGRADE_REQUIRED",detail:"Printable artwork is undergoing owner quality review."},402);
+   return c.json({code:VAULT_ART_REVIEW_ONLY?"VAULT_REVIEW_ONLY":"UPGRADE_REQUIRED",detail:"The Printable Vault is available with an active Family Membership."},402);
   return next();
  };
  app.get("/api/printables/:id/image",g.auth,g.parent,paid,async c=>{
