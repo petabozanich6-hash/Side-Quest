@@ -195,11 +195,14 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     return c.json(await lb.listLessons(c.env.DB, c.get("user").family_id, { archived, q: c.req.query("q") || undefined }));
   });
 
-  // Paid plans only. Creates an unreviewed DRAFT labelled AI-generated; the parent edits it before assigning.
+  // The single AI draft is available once during an active free preview.
+  // All generation and quota checks are still enforced in the server function.
   app.get("/api/ai/status", auth, parent, async (c) => {
     const u = c.get("user");
-    const { limits } = await lb.getEntitlement(c.env.DB, u.family_id);
-    return c.json({ allowed: limits.aiGeneration, available: !!c.env.AI, usage: await aid.aiUsage(c.env.DB, u.family_id) });
+    const { plan, limits } = await lb.getEntitlement(c.env.DB, u.family_id);
+    const usage = await aid.aiUsage(c.env.DB, u.family_id);
+    const previewEligible = plan === "FREE_PREVIEW" && usage.preview.remaining > 0;
+    return c.json({ allowed: limits.aiGeneration || previewEligible, available: !!c.env.AI, preview_eligible: previewEligible, usage });
   });
 
   app.post("/api/ai/lesson-draft", auth, parent, async (c) => {
