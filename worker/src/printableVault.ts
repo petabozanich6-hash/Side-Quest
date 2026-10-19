@@ -158,7 +158,7 @@ function cube(p:Page){
 function pocket(p:Page){
   p.pen(0.1,0.3,0.2);p.ops.push("1.8 w");
   const x=180,y=320,w=230,h=200,t=35;
-  p.rect(x,y,w,h);
+  p.line(x,y+h,x+w,y+h);
   p.polygon([[x,y],[x-t,y+20],[x-t,y+h-20],[x,y+h]]);
   p.polygon([[x+w,y],[x+w+t,y+20],[x+w+t,y+h-20],[x+w,y+h]]);
   p.polygon([[x,y],[x+30,y-55],[x+w-30,y-55],[x+w,y]]);
@@ -191,8 +191,9 @@ function island(p:Page){
 
 function renderItem(item:VaultItem,ink:boolean,guide=false):string{
   const p=new Page(ink);const accent=ink?[0,0,0]:[0.11,0.29,0.23];
-  p.fill(accent[0],accent[1],accent[2]);p.rect(0,784,595,58,true);
-  p.fill(1,1,1);p.text(43,816,"SIDE-QUEST  /  PRINTABLE VAULT",12,true);
+  if(ink){p.pen(0,0,0);p.line(42,786,551,786);p.fill(0,0,0);}
+  else {p.fill(accent[0],accent[1],accent[2]);p.rect(0,784,595,58,true);p.fill(1,1,1);}
+  p.text(43,816,"SIDE-QUEST  /  PRINTABLE VAULT",12,true);
   p.fill(0.08,0.16,0.13);p.text(42,746,guide?"PARENT GUIDE  /  "+item.title:item.title,20,true);
   p.text(42,719,item.category+"   |   Ages "+clean(item.ages)+"   |   "+item.minutes+" minutes",10);
   p.text(42,699,"Materials: "+item.materials,10);
