@@ -6,6 +6,8 @@ import PetArt, { ART_SPECIES } from "../../components/shared/PetArt";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
 import SeasonalWornArt from "../../components/shared/SeasonalWornArt";
+import PetWearables from "../../components/shared/PetWearables";
+import { ACCESSORY_SLOTS, maxThreeBySlot } from "../../components/shared/petAccessoryPositions";
 import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
 import PetQuests from "../../components/pet/PetQuests";
@@ -102,20 +104,23 @@ const PET_CSS = `
 @keyframes petBreathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
 @keyframes auraSpin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
 @keyframes petMunch { 0%,100%{transform:scale(1,1)} 25%{transform:scale(1.08,.9)} 50%{transform:scale(.95,1.06)} 75%{transform:scale(1.06,.93)} }
-@keyframes petSpin { 0%{transform:translateY(0) rotate(0)} 40%{transform:translateY(-34px) rotate(180deg)} 70%{transform:translateY(-12px) rotate(320deg)} 100%{transform:translateY(0) rotate(360deg)} }
+@keyframes petPlay { 0%,100%{transform:translateY(0) rotate(0)} 20%{transform:translateY(-10px) rotate(-6deg)} 50%{transform:translateY(-19px) rotate(4deg)} 80%{transform:translateY(-6px) rotate(-3deg)} }
+@keyframes petHello { 0%,100%{transform:rotate(0) scale(1)} 30%{transform:rotate(-6deg) scale(1.04)} 65%{transform:rotate(6deg) scale(1.04)} }
 @keyframes petShimmy { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-6deg)} 40%{transform:rotate(6deg)} 60%{transform:rotate(-4deg)} 80%{transform:rotate(4deg)} }
 @keyframes fxRise { 0%{opacity:0;transform:translateY(0) scale(.6)} 20%{opacity:1} 100%{opacity:0;transform:translateY(-120px) scale(1.2)} }
 .act-feed{animation:petMunch .8s ease-in-out 2}
-.act-play{animation:petSpin 1s ease-in-out}
+.act-play{animation:petPlay 1.05s ease-in-out}
+.act-hello{animation:petHello .8s ease-in-out}
 .act-clean{animation:petShimmy .8s ease-in-out}
 .act-party{animation:petBounce .5s ease-in-out 3}
 .fx{animation:fxRise 1.4s ease-out forwards;pointer-events:none}
 .arranging{outline:2px dashed #4A5D3A;outline-offset:3px;border-radius:12px;cursor:grab;touch-action:none}
-.mood-happy{animation:petBounce 1.6s ease-in-out infinite}
+.mood-happy{animation:petBounce 2.8s ease-in-out infinite}
+.pet-art-shadow{filter:drop-shadow(0 12px 12px rgba(32,30,19,.28)); transform-origin:center 85%}
 .mood-calm,.mood-sleepy{animation:petBreathe 4s ease-in-out infinite}
 .aura{position:absolute;inset:-18px;border-radius:9999px;pointer-events:none;filter:blur(14px);opacity:.7}
 .aura-ring{animation:auraSpin 14s linear infinite}
-@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.aura-ring,.act-feed,.act-play,.act-clean,.act-party,.fx{animation:none!important}}
+@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.aura-ring,.act-feed,.act-play,.act-clean,.act-party,.act-hello,.fx{animation:none!important}}
 `;
 
 const XP_SOURCES = [
@@ -130,10 +135,10 @@ const XP_SOURCES = [
 
 const GROWTH_STAGES = [
   ["Hatchling", "60 XP"],
-  ["Youngling", "200 XP"],
-  ["Companion", "500 XP"],
-  ["Hero", "1,000 XP"],
-  ["Legend", "2,000 XP"],
+  ["Youngling", "600 XP"],
+  ["Companion", "1,800 XP"],
+  ["Hero", "4,500 XP"],
+  ["Legend", "9,000 XP"],
 ];
 
 export default function PetRoom() {
@@ -212,11 +217,21 @@ export default function PetRoom() {
   };
 
   const toggleAcc = async (id) => {
-    const worn = pet.accessories || [];
-    const next = worn.includes(id) ? worn.filter(a => a !== id) : [...worn, id];
+    if (loading) return;
+    const worn = maxThreeBySlot(pet.accessories || []);
+    const slot = ACCESSORY_SLOTS[id];
+    const next = worn.includes(id)
+      ? worn.filter((a) => a !== id)
+      : maxThreeBySlot([...worn.filter((a) => ACCESSORY_SLOTS[a] !== slot), id]);
+    setLoading(true);
     setPet({ ...pet, accessories: next });
-    try { await api.put("/pet/care/wear", { accessories: next }); }
-    catch { toast.error("Could not change accessories"); load(); }
+    try {
+      const { data } = await api.put("/pet/care/wear", { accessories: next });
+      setPet((current) => current ? { ...current, accessories: data.accessories || next } : current);
+    } catch {
+      toast.error("Couldn't change that outfit. Try again.");
+      await load();
+    } finally { setLoading(false); }
   };
 
   if (!pet) return <div className="text-stone-500">Loading your room…</div>;
@@ -234,7 +249,7 @@ export default function PetRoom() {
   const pct = pet.next_xp ? Math.min(100, Math.round((pet.xp / pet.next_xp) * 100)) : 100;
   const care = pet.care || {};
   const hatch = pet.hatch;
-  const worn = pet.accessories || [];
+  const worn = maxThreeBySlot(pet.accessories || []);
   const catalog = pet.accessory_catalog || [];
 
   const statusText = {
@@ -275,21 +290,17 @@ export default function PetRoom() {
           {!illustrated && <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />}
           <div className="relative z-10 mb-2 flex flex-col items-center">
             {hatched && quests?.mood && <div className="mb-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} data-testid="pet-mood">{quests.mood.text}</div>}
-            <div className={`relative ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => react(hatched ? "hop" : "wobble")} data-testid="pet-body"
+            <div className={`relative pet-art-shadow ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => { react(hatched ? "hop" : "wobble"); if (hatched) { setActFx("hello"); burst("sparkle"); setTimeout(() => setActFx(""), 900); } }} role="button" tabIndex={0} aria-label={`Say hello to ${pet.name}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }} data-testid="pet-body"
               data-form={pet.level_name}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
               {hatched && AURA[pet.level_name] && <span className={`aura ${pet.level_name === "Legend" ? "aura-ring" : ""}`} style={{ background: AURA[pet.level_name] }} aria-hidden />}
               {hatched
                 ? (ART_SPECIES.includes(pet.species)
-                  ? <PetArt species={pet.species} stage={pet.level_name} size={220}><SeasonalWornArt size={220} /></PetArt>
+                  ? <PetArt species={pet.species} stage={pet.level_name} size={220}><PetWearables species={pet.species} equipped={worn} /><SeasonalWornArt species={pet.species} size={220} /></PetArt>
                   : <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>)
-                : ART_SPECIES.includes(pet.species) ? <PetArt species={pet.species} stage="egg" size={150}><SeasonalWornArt size={150} /></PetArt>
+                : ART_SPECIES.includes(pet.species) ? <PetArt species={pet.species} stage="egg" size={150}><SeasonalWornArt size={150} species={pet.species}/></PetArt>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}><SeasonalWorn layout="egg" /></SpeciesEgg>}
-              {hatched && worn.length > 0 && (
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 flex gap-1 text-2xl" data-testid="worn-accessories">
-                  {worn.map(a => <span key={a}>{ACC_EMOJI[a] || "✨"}</span>)}
-                </div>
-              )}
+
               {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
               {sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
               {care.needs_cleaning && hatched && (
@@ -297,7 +308,8 @@ export default function PetRoom() {
                   className="absolute bottom-0 -right-10 text-4xl hover:scale-110 transition" aria-label="Clean up" data-testid="poop">💩</button>
               )}
             </div>
-            <div className="mt-3 paper-card px-4 py-2 flex items-center gap-2">
+            {hatched && <p className="mb-2 rounded-full bg-[#FBF7EC]/90 px-3 py-1 text-xs font-bold text-[#1F3B2D] shadow-sm">✨ Tap {pet.name} to say hello</p>}
+            <div className="mt-1 paper-card px-4 py-2 flex items-center gap-2">
               {!renaming ? (
                 <>
                   <span className="font-script text-2xl" style={{ color: "#C77B5B" }}>{pet.name}</span>
@@ -313,7 +325,7 @@ export default function PetRoom() {
             </div>
           </div>
         </div>
-        <div className="p-5 grid grid-cols-3 gap-4 bg-white">
+        <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 bg-white">
           <StatBar label="Level" value={pet.level_name} badge={pet.level_icon} />
           <ProgressBar label="XP" value={pet.xp} max={pet.next_xp || pet.xp} pct={pct} color="#059669" />
           <ProgressBar label="Happiness" value={pet.happiness} max={100} pct={pet.happiness} color="#D4857A" />
@@ -341,17 +353,18 @@ export default function PetRoom() {
       {catalog.length > 0 && (
         <section className="paper-card p-5" data-testid="wardrobe">
           <h2 className="font-display text-lg font-bold mb-1" style={{ color: "#1F3B2D" }}>Wardrobe</h2>
-          <p className="text-xs text-stone-600 mb-3">Earn accessories as you grow. Wear them whenever you like.</p>
+          <p className="text-sm text-stone-600 mb-3">Dress up your pet! Wear up to three accessories, one per body area. New outfits stay in place while your pet moves.</p>
           <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
             {catalog.map(a => {
               const on = worn.includes(a.id);
               return (
-                <button key={a.id} disabled={!a.unlocked || !hatched} onClick={() => toggleAcc(a.id)}
+                <button key={a.id} disabled={!a.unlocked || !hatched || loading} onClick={() => toggleAcc(a.id)} aria-pressed={on}
                   className="rounded-xl border-2 p-3 text-center disabled:opacity-40"
                   style={{ borderColor: on ? "#1F3B2D" : "#D4C8A8", background: on ? "#ECFCCB" : "#fff" }}
                   data-testid={`acc-${a.id}`}>
                   <div className="text-3xl">{a.unlocked ? (ACC_EMOJI[a.id] || "✨") : "🔒"}</div>
                   <div className="text-[11px] font-bold mt-1" style={{ color: "#1F3B2D" }}>{a.label}</div>
+                  {on && <div className="text-[10px] font-bold text-green-800">✓ Wearing</div>}
                   {!a.unlocked && <div className="text-[10px] text-stone-500 mt-0.5">{ruleText(a.rule)}</div>}
                 </button>
               );
@@ -384,7 +397,7 @@ export default function PetRoom() {
                 <li key={name} className="flex justify-between gap-3"><span>{name}</span><strong className="whitespace-nowrap">{xp}</strong></li>
               ))}
             </ul>
-            <p className="text-xs text-stone-500 mt-2">To hatch from the egg you need 60 XP and care on 3 different days.</p>
+            <p className="text-xs text-stone-500 mt-2">To hatch you need 60 XP and care on 3 different days. Existing pets keep their earned XP and any stage already reached.</p>
           </div>
         </div>
       </section>
