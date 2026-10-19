@@ -43,9 +43,64 @@ export const BENCH_FIXTURES = Object.freeze({
     needs: "The student is meeting equations for the first time. Teach the meaning, demonstrate every step and why it works, correct misconceptions and scaffold before independent practice.",
     notes: "Fully explain rather than merely describe procedures. Keep worked examples and assessed problems different. Australian English. No external resources.",
   }),
+  "year4-english": Object.freeze({
+    topic: "Inferring a character's feelings from details in a short original story",
+    area: "English",
+    year: "Year 4",
+    goal: "Use a clue from a supplied fictional passage to support an inference, and explain how the clue supports the interpretation",
+    minutes: 30,
+    delivery: "independent",
+    interests: "",
+    needs: "Write the full original story, model reading a specific sentence, thinking aloud about a clue and composing a complete evidence-supported answer before giving practice.",
+    notes: "No copyrighted material. Do not tell the child to analyse without modelling an actual analysis.",
+  }),
+  "year5-science": Object.freeze({
+    topic: "Evaporation, condensation and the water cycle",
+    area: "Science",
+    year: "Year 5",
+    goal: "Explain how heating and cooling affect water in the water cycle, connect observations to mechanisms and correct common misconceptions",
+    minutes: 30,
+    delivery: "independent",
+    interests: "",
+    needs: "Explain each scientific mechanism and show a complete observation-to-evidence-to-explanation example, rather than merely listing stages.",
+    notes: "Use scientifically accurate, safe, self-contained examples without requiring off-app experiments.",
+  }),
+  "year7-history": Object.freeze({
+    topic: "Using evidence to explain a historical event",
+    area: "History",
+    year: "Year 7",
+    goal: "Distinguish evidence from interpretation and model how to form a carefully qualified claim from a short, accurately labelled historical account",
+    minutes: 30,
+    delivery: "independent",
+    interests: "",
+    needs: "Teach the reasoning with a complete sample source and explicit worked model, including what evidence cannot prove.",
+    notes: "Use genuine, verifiable historical context without invented quotations. Label constructed illustrative accounts clearly.",
+  }),
+  "year5-technologies": Object.freeze({
+    topic: "Debugging a simple sequence of instructions",
+    area: "Technologies",
+    year: "Year 5",
+    goal: "Read a small algorithm, trace the actions from start to finish, identify a mistake and explain a specific fix",
+    minutes: 30,
+    delivery: "independent",
+    interests: "",
+    needs: "Teach an entire worked trace with starting input, each intermediate step and expected output. Explain why the mistake causes an incorrect result before independent practice.",
+    notes: "No external code editor needed; every example and question must work on-screen.",
+  }),
+  "year4-arts": Object.freeze({
+    topic: "Using line, texture and shading to show form in a drawing",
+    area: "The Arts",
+    year: "Year 4",
+    goal: "Understand how line direction, pressure and shading create the appearance of light and shape, and describe choices in a model demonstration",
+    minutes: 30,
+    delivery: "parent_guided",
+    interests: "",
+    needs: "Actually demonstrate the choices and sequence with clear examples, why they work and observable success criteria before inviting a creative application.",
+    notes: "Use simple materials with a self-contained guided activity and an on-screen reflection.",
+  }),
 });
 export function selectFixture(id = "year3-place-value") {
-  if (!Object.hasOwn(BENCH_FIXTURES, id)) throw Error("Unknown benchmark fixture: select year3-place-value or year7-algebra");
+  if (!Object.hasOwn(BENCH_FIXTURES, id)) throw Error("Unknown benchmark fixture: select an explicitly approved synthetic fixture");
   return BENCH_FIXTURES[id];
 }
 const maxCalls = 32;
@@ -115,15 +170,50 @@ export function studentReview(lesson, spec) {
   lines.push("", "## Questions — private answers hidden");
   (lesson.questions || []).forEach((q, i) => lines.push((i + 1) + ". " + (q.prompt || "")));
   (lesson.quiz || []).forEach((q, i) => lines.push((i + 1) + ". " + (q.question || "") + " [" + (q.options || []).join(" / ") + "]"));
+  const sharedChecklist = [
+    "- [ ] Does the learner see the meaning of the concept and the prerequisite knowledge first?",
+    "- [ ] Is there an ACTUAL model of the target skill, using specific numbers, quotations, evidence, data or actions?",
+    "- [ ] Does the demonstration explain HOW each step was chosen and WHY it follows?",
+    "- [ ] Does the teaching correct a specific likely misunderstanding?",
+    "- [ ] Can the first practice question be attempted using only a method ALREADY demonstrated?",
+    "- [ ] Is all required text, data and background information included here?",
+    "- [ ] Does the lesson avoid revealing practice and assessment answers?",
+    "- [ ] Could a previously confused student understand how to begin independently?",
+  ];
+  const subject = String(spec.area || "").toLowerCase();
+  const specialChecklist = /math/.test(subject)
+    ? [
+        "- [ ] Does each new mathematical symbol have a clear meaning?",
+        "- [ ] Does each calculation/equation change include WHY it is valid?",
+        "- [ ] Is a solution checked in the original problem?",
+      ]
+    : /english/.test(subject)
+    ? [
+        "- [ ] Is the complete original sample passage or model composition present?",
+        "- [ ] Is a specific line analysed or composed with the reasoning narrated?",
+      ]
+    : /science/.test(subject)
+    ? [
+        "- [ ] Does the child see the mechanism/cause, not just names of stages?",
+        "- [ ] Is a concrete observation connected to evidence and an explanation?",
+      ]
+    : /history|geograph|humanit/.test(subject)
+    ? [
+        "- [ ] Are sources/constructed accounts accurately labelled and contextualised?",
+        "- [ ] Does the model explain how specific evidence supports a limited claim?",
+      ]
+    : /technolog/.test(subject)
+    ? [
+        "- [ ] Is an entire input-to-output/process trace demonstrated?",
+        "- [ ] Does the child see WHY an incorrect step fails and how the fix works?",
+      ]
+    : [
+        "- [ ] Is an actual technique/process fully modelled with concrete choices?",
+        "- [ ] Is success observable and a likely problem corrected?",
+      ];
   lines.push("", "## Human quality checklist", "",
-    "- [ ] Does the opening explain what equality and variables actually mean?",
-    "- [ ] Is each symbol introduced before it is used?",
-    "- [ ] Does the lesson demonstrate a complete example, not just tell the child to follow a rule?",
-    "- [ ] Does each equation change include an explanation of WHY it is allowed?",
-    "- [ ] Does the teacher check the answer by substitution into the original equation?",
-    "- [ ] Does the first guided question use only skills already demonstrated?",
-    "- [ ] Are there mistakes or unexplained new methods in the later questions?",
-    "- [ ] Could a previously confused student understand how to begin on their own?",
+    ...sharedChecklist,
+    ...specialChecklist,
     "",
     "Passing automated code checks does NOT certify these human teaching-quality questions.");
   return lines.join("\n") + "\n";
