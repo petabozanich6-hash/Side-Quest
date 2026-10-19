@@ -844,7 +844,19 @@ export async function reviewSubmission(
         .bind(amount, sub.assignment_id, familyId),
     );
   }
-  const saved = await db.batch(writes);
+  let saved: D1Result[];
+  try {
+    saved = await db.batch(writes);
+  } catch (error) {
+    // Some long-lived production D1 databases predate the full lesson/evidence
+    // schema. Do not report approval or mutate the child data when its atomic
+    // review transaction cannot commit. Only expose a safe diagnostic class.
+    const message = error instanceof Error ? error.message : String(error);
+    if (/no such (table|column)|has no column named/i.test(message)) {
+      return fail(503, "Approval couldn't be saved because Side-Quest's database needs a repair. Your child's submission is still recorded; please contact Side-Quest support.", "REVIEW_SCHEMA_MISSING");
+    }
+    throw error;
+  }
   const claimed = amount > 0 && (saved[saved.length - 1]?.meta?.changes ?? 0) === 1;
   if (claimed) await awardXp(db, sub.student_id, amount, "Lesson reviewed", now);
 
