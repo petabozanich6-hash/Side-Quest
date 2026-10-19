@@ -413,17 +413,10 @@ function forest(item:PlayItem,inkSaver:boolean,guide:boolean,createPage:()=>InkP
     return pages([p]);}
   const a=create(item,inkSaver,"ANIMAL CARDS AND TRACK CARDS",1,2,createPage);
   point(a,49,685,"Cut out the 12 cards. Mix them up and find the six matching pairs.",10,true);
-  const xs=[52,220,388], ys=[505,345,185,25];
-  for(let i=0;i<12;i++){
-    const col=i%3,row=Math.floor(i/3),x=xs[col],y=ys[row]+105;
-    if(y>600)continue;
-    const type=i%6;
-    pictureCard(a,x,y,151,128,i<6?names[type]:"TRACK "+(type+1),()=>{
-      if(i<6)animal(a,x+75,y+62,type);
-      else paw(a,x+76,y+61,type);
-    });
+  for(let i=0;i<6;i++){
+    const col=i%3,row=Math.floor(i/3),x=52+col*168,y=439-row*222;
+    pictureCard(a,x,y,151,171,names[i],()=>animal(a,x+76,y+86,i));
   }
-  // last row sits above footer? see page two for tracks 4–6
   const b=create(item,inkSaver,"MORE TRACKS AND HABITATS",2,2,createPage);
   point(b,49,684,"Finish the track pairs, then match animals to their homes.",10,true);
   for(let i=0;i<6;i++){
@@ -497,7 +490,7 @@ function illusion(item:PlayItem,inkSaver:boolean,guide:boolean,createPage:()=>In
   const b=create(item,inkSaver,"COLOUR - CUT - TESSELLATE",2,2,createPage);
   point(b,49,686,"Colour the tiles. Cut on the solid borders, then fit them together.",10,true);
   ink(b);b.ops.push("1.6 w");
-  // 24 equilateral triangles in a tessellation-ready arrangement.
+  // Equilateral triangles in a tessellation-ready arrangement.
   const tri=68,H=tri*Math.sqrt(3)/2;
   for(let r=0;r<6;r++)for(let c=0;c<7;c++){
     const x=60+c*67,y=190+r*H;
@@ -531,8 +524,17 @@ function escape(item:PlayItem,inkSaver:boolean,guide:boolean,createPage:()=>InkP
   box(b,207,388,180,236);roof(b,207,624,180,65);circle(b,365,490,8);
   for(let k=0;k<3;k++){box(b,236+k*47,463,37,48);point(b,246+k*47,482,"?",18,true);}
   point(b,239,442,"THE FINAL LOCK",12,true);
-  for(let i=0;i<4;i++){const x=92+i*80;potionBottle(b,x,342,28);}
-  for(let i=0;i<2;i++)star(b,234+i*74,296,18);
+  for(let i=0;i<4;i++){const x=115+i*95,y=330;
+    b.polygon([[x-9,y],[x+9,y],[x+13,y+30],[x+6,y+47],[x-2,y+35],[x-11,y+43],[x-14,y+25]]);
+    b.line(x,y,x,y-32);b.line(x-7,y-30,x+7,y-30);
+  }
+  for(let i=0;i<2;i++){
+    const x=245+i*84,y=294;
+    b.circle(x,y,22);b.circle(x,y,9);
+    for(let a=0;a<8;a++){const t=a*Math.PI/4;
+      const xx=x+Math.cos(t)*26,yy=y+Math.sin(t)*26; b.rect(xx-4,yy-4,8,8);
+    }
+  }
   for(let i=0;i<7;i++)gem(b,82+i*70,223,13);
   point(b,61,365,"TORCHES",9,true);point(b,196,302,"GEARS",9,true);point(b,67,176,"GEMS",9,true);
   point(b,48,111,"Read the counts in order: TORCHES - GEARS - GEMS",10);
