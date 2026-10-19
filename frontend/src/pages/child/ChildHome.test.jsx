@@ -60,4 +60,42 @@ test("all unfinished quests remain accessible, including a sixth in-progress les
   expect(host.querySelector('[data-testid="task-assignment-6"]')).not.toBeNull();
   expect(host.querySelector('[data-testid="task-assignment-7"]')).not.toBeNull();
   expect(syncSavedLessons).toHaveBeenCalledWith("child-1", quests);
+  expect(host.querySelector('[data-testid="continue-quest"]')).not.toBeNull();
+  expect(host.querySelector('[data-testid="task-assignment-6"]').getAttribute("href")).toBe("/child/lesson/assignment-6");
+});
+
+
+test("returned work has a clear action and never loses the child-facing feedback", async () => {
+  api.get.mockImplementation((path) => {
+    if (path === "/dashboard/child") return Promise.resolve({
+      data: {
+        all_pending: [{
+          id: "try-again", student_id: "child-1", status: "needs_revision",
+          lesson: { id: "plant-lesson", title: "Plant Life Cycles", learning_area: "Science" },
+        }],
+        feedback: [{ assignment_id: "try-again", parent_feedback: "Have another look at question three." }],
+        waiting: [], completed: [], offline_allowed: true, xp: 5,
+      },
+    });
+    if (path === "/calendar") return Promise.resolve({ data: [] });
+    throw Error("Unexpected path " + path);
+  });
+  await act(async () => root.render(<ChildHome />));
+  expect(host.textContent).toContain("Have another look at question three.");
+  expect(host.textContent).toContain("Review and Continue");
+  expect(host.querySelector('[data-testid="task-try-again"]').getAttribute("href")).toBe("/child/lesson/try-again");
+});
+
+test("an empty dashboard offers other useful activities without invented quests", async () => {
+  api.get.mockImplementation((path) => {
+    if (path === "/dashboard/child") return Promise.resolve({
+      data: { all_pending: [], completed: [], waiting: [], offline_allowed: false, xp: 0 },
+    });
+    if (path === "/calendar") return Promise.resolve({ data: [] });
+    throw Error("Unexpected path " + path);
+  });
+  await act(async () => root.render(<ChildHome />));
+  expect(host.querySelector('[data-testid="no-work"]')).not.toBeNull();
+  expect(host.querySelector('[data-testid="continue-quest"]')).toBeNull();
+  expect(host.querySelector('a[href="/child/stuff"]')).not.toBeNull();
 });
