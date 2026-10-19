@@ -830,6 +830,15 @@ export async function reviewSubmission(
   }
 
   const amount = XP_FOR_REVIEW[status] ?? 0;
+  // Production D1 databases created before migration 0005 may have
+  // lesson_evidence without file_ids. Its only missing column in the live
+  // audit is this one. Prefer a read-only schema check and an older-compatible
+  // INSERT, not an automatic ALTER TABLE on family data without a backup.
+  // Uploaded file IDs remain durably saved on the submissions row, where the
+  // review and outcome tracker read them.
+  const evidenceHasFileIds = amount > 0
+    ? !!(await db.prepare("SELECT name FROM pragma_table_info('lesson_evidence') WHERE name = 'file_ids'").first())
+    : false;
   // D1 batch is transactional: a failed evidence insert or XP claim must not leave
   // the submission marked approved while its records are only half saved.
   const writes = [
@@ -841,9 +850,11 @@ export async function reviewSubmission(
   ];
   if (amount > 0) {
     writes.push(
-      db
-        .prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
-        .bind(newId(), familyId, evidenceLessonId, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts),
+      evidenceHasFileIds
+        ? db.prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, file_ids, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?, ?)")
+          .bind(newId(), familyId, evidenceLessonId, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, sub.file_ids || "[]", ts)
+        : db.prepare("INSERT INTO lesson_evidence (id, family_id, lesson_id, child_id, type, text, file_name, submitted_at) VALUES (?, ?, ?, ?, 'parent_review', ?, '', ?)")
+          .bind(newId(), familyId, evidenceLessonId, sub.student_id, `${status}${body.feedback_text ? `: ${String(body.feedback_text).slice(0, 500)}` : ""}`, ts),
       // Claim XP in the same transaction as the review; concurrent/repeated
       // requests cannot claim it twice.
       db.prepare("UPDATE assignments SET xp_awarded = ? WHERE id = ? AND family_id = ? AND xp_awarded = 0")
