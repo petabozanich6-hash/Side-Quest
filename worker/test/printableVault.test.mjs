@@ -24,7 +24,16 @@ function harness() {
     if(plan!=="FREE_PREVIEW")db.raw.prepare("UPDATE families SET plan=? WHERE id=?").run(plan,data.user.family_id);
     return {token:data.token,id:data.user.family_id};
   }
-  return {req,db,parent};
+  async function child(p) {
+    const n=++seq;
+    const username="vaultchild"+n;
+    const response=await req("/students",p.token,"POST",{name:"Child "+n,username,pin:"1234",stage:"S2"});
+    assert.equal(response.status,200);
+    const login=await req("/auth/child-login",undefined,"POST",{username,pin:"1234"});
+    assert.equal(login.status,200);
+    return (await login.json()).token;
+  }
+  return {req,db,parent,child};
 }
 
 test("catalogue is parent-only; previews never unlock downloads",async()=>{
@@ -32,6 +41,9 @@ test("catalogue is parent-only; previews never unlock downloads",async()=>{
   const p=await h.parent("FREE_PREVIEW");
   assert.equal((await h.req("/printables")).status,401);
   assert.equal((await h.req("/printables/dragon-hoard/pdf")).status,401);
+  const childToken=await h.child(p);
+  assert.equal((await h.req("/printables",childToken)).status,403);
+  assert.equal((await h.req("/printables/dragon-hoard/pdf?variant=guide",childToken)).status,403);
   const listing=await h.req("/printables",p.token);
   assert.equal(listing.status,200);
   const data=await listing.json();
