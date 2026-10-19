@@ -410,6 +410,7 @@ export function childSafeLesson(l: any) {
   // Scoring and explanations remain available on the server after a submission.
   if (Array.isArray(copy.quiz)) copy.quiz = copy.quiz.map((q: any) => ({
     question: childFacingPrompt(q?.question),
+    type: q?.type,
     options: Array.isArray(q?.options) ? q.options : [],
   }));
   return copy;
