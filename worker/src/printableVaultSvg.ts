@@ -18,6 +18,11 @@ function frame(ink:boolean,title:string,subtitle:string,page:number,count:number
   text(76,153,subtitle+"   /   Page "+(page+1)+" of "+count,14);
  return border+header+text(66,986,"COLOUR  •  CUT  •  BUILD  •  PLAY",14)+text(575,987,"SIDE-QUEST",14,'font-weight="bold"');
 }
+/** First-party moon illustration; previously referenced without a definition (TS2304). */
+function moon(x:number,y:number,r:number){
+  return cir(x,y,r,'fill="white"')+
+    cir(x-r*.24,y-r*.12,r*.11)+cir(x+r*.22,y+r*.18,r*.14)+cir(x+r*.04,y-r*.36,r*.08);
+}
 function star(x:number,y:number,r:number){let p="";for(let i=0;i<10;i++){const q=i*Math.PI/5-Math.PI/2,s=i%2?r*.44:r;p+=(x+Math.cos(q)*s).toFixed(2)+","+(y+Math.sin(q)*s).toFixed(2)+" ";}return tag("polygon",'points="'+p+'"');}
 function gem(x:number,y:number,s=1){return at(x,y,s,path("M 0 -26 L 25 -7 L 14 24 L -14 24 L -25 -7 Z")+path("M 0 -26 L 0 24 M -25 -7 H 25 M -25 -7 L 0 24 L 25 -7"));}
 function ghost(x:number,y:number,s=1){return at(x,y,s,path("M -40 70 L -40 -12 C -40 -85 40 -85 40 -12 L 40 70 Q 21 48 10 70 Q 0 48 -10 70 Q -25 48 -40 70 Z",'fill="white"')+cir(-14,-16,5)+cir(14,-16,5)+cir(0,19,6));}
@@ -158,6 +163,6 @@ export function renderVaultSvg(item:VaultPicture,page:number,variant:string):str
  const ink=variant==="ink";const guide=variant==="guide";
  if(page<0||page>=item.pages)throw new Error("Invalid image page");
  const styled='<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 744 1052" role="img" aria-label="'+attr(item.title)+'"><style>text{font-family:Georgia,Times New Roman,serif;fill:#1d392f}path,polygon,polyline,circle,rect{stroke:#203a30;stroke-width:2.3;stroke-linejoin:round;stroke-linecap:round}path:not([fill]),polygon:not([fill]),polyline:not([fill]),circle:not([fill]),rect:not([fill]){fill:none}text{stroke:none}svg{background:#fff} @media print{svg{width:210mm;height:297mm}}</style><rect width="744" height="1052" fill="'+(ink?"#fff":"#fffdf6")+'" stroke="none"/>';
- return styled+frame(ink,item.title,guide?"Parent guide":item.category,guide?0:page,guide?1:item.pages)+
+ return styled+frame(ink,item.title,guide?"PARENT GUIDE":item.category,guide?0:page,guide?1:item.pages)+
  art(item,guide?0:page,guide)+"</svg>";
 }
