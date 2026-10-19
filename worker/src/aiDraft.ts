@@ -384,6 +384,14 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
   else if (w < z.minTeachingWords) add({ keys: ["sections"], msg: `the explanations total ${w} words; a ${minutes}-minute lesson needs at least ${z.minTeachingWords} words of real teaching`, repair: true });
   if (!d.worked_examples.length) add({ keys: ["worked_examples"], msg: "there are no worked examples", hard: true, repair: true });
   else if (d.worked_examples.length < Math.min(2, z.workedExamples) || d.worked_examples.some((x) => x.steps.length < 2)) add({ keys: ["worked_examples"], msg: "worked examples are too few or do not show step-by-step working", repair: true });
+  // Catch a lesson that merely repeats generic instructions in place of a
+  // modelled example. The check intentionally targets only obvious stand-ins:
+  // a full English composition or science explanation need not use numerals,
+  // so do NOT mistake subject differences for a lack of teaching.
+  const genericStep = /^(?:(?:first|next|then|now|finally|after that|step \d+)[,:.]?\s*)?(?:you (?:should|can|must) )?(?:(?:read|follow) (?:the|your) (?:text|instructions|steps|question)(?: carefully)?|(?:use|apply|follow) (?:the|a|your) (?:rule|strategy|method|technique)|(?:think|work) (?:carefully|about it|through it)|(?:check|review) (?:your|the) (?:answer|work)|(?:complete|do) (?:the|your) (?:task|exercise|work|questions))(?:[.!])?$/i;
+  if (d.worked_examples.length && d.worked_examples.every((ex) => ex.steps.length > 0 && ex.steps.every((step) => genericStep.test(step.trim())))) {
+    add({ keys: ["worked_examples"], msg: "the worked examples are only generic instructions, with no actual modelled work; demonstrate real subject-specific content and explain the reasoning", hard: true, repair: true });
+  }
   // Word count alone does not prove teaching took place. Require demonstrated
   // mathematical working and a reasoned example, not just instructions like
   // "isolate the variable" or "use the inverse operation".
