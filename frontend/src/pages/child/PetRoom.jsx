@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
-import PetArt, { ART_SPECIES } from "../../components/shared/PetArt";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
-import SeasonalWornArt from "../../components/shared/SeasonalWornArt";
-import PetWearables from "../../components/shared/PetWearables";
+import { Wearable } from "../../components/shared/PetWearables";
 import { ACCESSORY_SLOTS, maxThreeBySlot } from "../../components/shared/petAccessoryPositions";
 import SeasonalWardrobeItems from "../../components/shared/SeasonalWardrobeItems";
 import { toast } from "sonner";
@@ -20,14 +18,6 @@ const ACC_EMOJI = {
   scarf: "🧣", bow: "🎀", flower_crown: "🌸", party_hat: "🎉", bookworm_specs: "👓",
   backpack: "🎒", cape: "🧥", star_badge: "⭐", crown: "👑",
   top_hat: "🎩", rainbow: "🌈", magic_wand: "🪄", headphones: "🎧", shades: "🕶️", butterfly: "🦋",
-};
-
-// Growth shows: a soft glow from Youngling, richer colour at each level, and a turning rainbow glow for a Legend.
-const AURA = {
-  Youngling: "radial-gradient(circle, rgba(167,243,208,.9), rgba(167,243,208,0) 70%)",
-  Companion: "radial-gradient(circle, rgba(253,230,138,.9), rgba(253,230,138,0) 70%)",
-  Hero: "radial-gradient(circle, rgba(251,191,36,.95), rgba(251,191,36,0) 70%)",
-  Legend: "conic-gradient(from 0deg, rgba(248,113,113,.8), rgba(251,191,36,.8), rgba(52,211,153,.8), rgba(96,165,250,.8), rgba(167,139,250,.8), rgba(248,113,113,.8))",
 };
 
 const EGG_FALLBACK = { base: "#E9C8A0", accent: "#FFFFFF", pattern: "spots", glow: "#FFF0DC" };
@@ -88,6 +78,37 @@ const SpeciesEgg = ({ style, size = 200, reaction, cold, children }) => {
   );
 };
 
+
+// The original pet is a 120x120 SVG. Attach accessories in the same SVG
+// coordinate system so they follow the character without image overlays.
+const CLASSIC_SPOTS = {
+  head: [60, 21, 39], face: [60, 48, 43], neck: [60, 74, 48],
+  chest: [72, 88, 28], right: [103, 81, 38],
+};
+const CLASSIC_BACK_SPOTS = {
+  backpack: [90, 82, 45], cape: [60, 84, 103], butterfly: [60, 71, 117],
+};
+const CLASSIC_EMOJI = { rainbow: "🌈", magic_wand: "🪄" };
+
+function ClassicWearables({ equipped = [], behind = false }) {
+  const ids = equipped.filter((id) => (ACCESSORY_SLOTS[id] === "back") === behind);
+  if (!ids.length) return null;
+  return (
+    <g data-testid={behind ? "worn-accessories-back" : "worn-accessories"} pointerEvents="none" aria-hidden="true">
+      {ids.map((id) => {
+        const placement = behind ? CLASSIC_BACK_SPOTS[id] : CLASSIC_SPOTS[ACCESSORY_SLOTS[id]];
+        if (!placement) return null;
+        const [x, y, size] = placement;
+        return CLASSIC_EMOJI[id]
+          ? <text key={id} x={x} y={y} textAnchor="middle" dominantBaseline="central" fontSize={size * 0.8}>{CLASSIC_EMOJI[id]}</text>
+          : <svg key={id} x={x - size / 2} y={y - size / 2} width={size} height={size} viewBox="0 0 100 100" overflow="visible">
+              <Wearable id={id} />
+            </svg>;
+      })}
+    </g>
+  );
+}
+
 const PET_CSS = `
 @keyframes eggIdle { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
 @keyframes eggWobble { 0%{transform:rotate(0)} 20%{transform:rotate(-12deg)} 40%{transform:rotate(10deg)} 60%{transform:rotate(-7deg)} 80%{transform:rotate(4deg)} 100%{transform:rotate(0)} }
@@ -102,7 +123,6 @@ const PET_CSS = `
 .zzz{animation:floatZ 2.6s ease-out infinite}
 @keyframes petBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 @keyframes petBreathe { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
-@keyframes auraSpin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
 @keyframes petMunch { 0%,100%{transform:scale(1,1)} 25%{transform:scale(1.08,.9)} 50%{transform:scale(.95,1.06)} 75%{transform:scale(1.06,.93)} }
 @keyframes petPlay { 0%,100%{transform:translateY(0) rotate(0)} 20%{transform:translateY(-10px) rotate(-6deg)} 50%{transform:translateY(-19px) rotate(4deg)} 80%{transform:translateY(-6px) rotate(-3deg)} }
 @keyframes petHello { 0%,100%{transform:rotate(0) scale(1)} 30%{transform:rotate(-6deg) scale(1.04)} 65%{transform:rotate(6deg) scale(1.04)} }
@@ -118,9 +138,7 @@ const PET_CSS = `
 .mood-happy{animation:petBounce 2.8s ease-in-out infinite}
 .pet-art-shadow{filter:drop-shadow(0 12px 12px rgba(32,30,19,.28)); transform-origin:center 85%}
 .mood-calm,.mood-sleepy{animation:petBreathe 4s ease-in-out infinite}
-.aura{position:absolute;inset:-18px;border-radius:9999px;pointer-events:none;filter:blur(14px);opacity:.7}
-.aura-ring{animation:auraSpin 14s linear infinite}
-@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.aura-ring,.act-feed,.act-play,.act-clean,.act-party,.act-hello,.fx{animation:none!important}}
+@media (prefers-reduced-motion: reduce){.egg,.zzz,.mood-happy,.mood-calm,.mood-sleepy,.act-feed,.act-play,.act-clean,.act-party,.act-hello,.fx{animation:none!important}}
 `;
 
 const XP_SOURCES = [
@@ -293,13 +311,15 @@ export default function PetRoom() {
             <div className={`relative pet-art-shadow ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => { react(hatched ? "hop" : "wobble"); if (hatched) { setActFx("hello"); burst("sparkle"); setTimeout(() => setActFx(""), 900); } }} role="button" tabIndex={0} aria-label={`Say hello to ${pet.name}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }} data-testid="pet-body"
               data-form={pet.level_name}
               style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
-              {hatched && AURA[pet.level_name] && <span className={`aura ${pet.level_name === "Legend" ? "aura-ring" : ""}`} style={{ background: AURA[pet.level_name] }} aria-hidden />}
               {hatched
-                ? (ART_SPECIES.includes(pet.species)
-                  ? <PetArt species={pet.species} stage={pet.level_name} size={220}><PetWearables species={pet.species} equipped={worn} /><SeasonalWornArt species={pet.species} size={220} /></PetArt>
-                  : <Pet species={pet.species} size={200} happy={!sad && pet.happiness > 40}><SeasonalWorn /></Pet>)
-                : ART_SPECIES.includes(pet.species) ? <PetArt species={pet.species} stage="egg" size={150}><SeasonalWornArt size={150} species={pet.species}/></PetArt>
-                : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}><SeasonalWorn layout="egg" /></SpeciesEgg>}
+                ? <Pet species={pet.species} size={220} happy={!sad && pet.happiness > 40}
+                    backChildren={<ClassicWearables equipped={worn} behind />}>
+                    <ClassicWearables equipped={worn} />
+                    <SeasonalWorn />
+                  </Pet>
+                : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}>
+                    <SeasonalWorn layout="egg" />
+                  </SpeciesEgg>}
 
               {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
               {sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
