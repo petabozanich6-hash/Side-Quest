@@ -11,7 +11,7 @@ All source artwork is kept out of the PUBLIC GitHub repository. Only canonical s
 3. Choose the ZIP **directly**, no extraction necessary. The frontend reads the ZIP locally and sends all 20 PNGs to authenticated, owner-only `POST /api/printables/admin/assets/:id?variant=colour|ink` endpoints.
 4. The Worker checks valid known IDs, A4 dimensions, PNG signature, byte length, and owner role, then stores original image bytes privately in Cloudflare R2 (`BUCKET`, `sidequest-files`), prefix `printable-vault/illustrated-v1/`.
 5. Reload the page to inspect the imported cards, open previews, and print to A4 or save as PDF via browser print.
-6. The collection remains **owner-review-only** until actual maze solvability, board numbering, craft folding, and print layouts are checked and the owner signs off.
+6. Uploaded colour and optional ink-saving artwork appears automatically for active Family Memberships. The importer and asset replacement endpoints remain verified-owner-only. Activities not yet uploaded stay unavailable.
 
 If the upload stops part-way through, selecting the ZIP again safely replaces already uploaded objects and finishes the rest. Unrecognised PNG names are rejected.
 
@@ -32,12 +32,12 @@ Other planned activities and Halloween crafts do **not** show the old SVG art wh
 ## Privacy and security
 - Public GitHub repo carries NO original PNGs; originals are held in private R2.
 - Child and unauthenticated accounts cannot access previews/answers.
-- Even paid members cannot yet download images while `VAULT_ART_REVIEW_ONLY=true`.
-- Only the verified platform owner can upload or download under-review artwork.
+- Only verified owner accounts and families with an effective paid membership (including eligible billing grace periods) can fetch printable image bytes. Free-preview, expired and unauthenticated accounts cannot.
+- Only the verified platform owner can upload or replace artwork. Paying families have no upload permission.
 - No presigned R2 URLs or CDN public object keys are sent to the browser. PNG bytes stream through authenticated Worker GETs with `private, no-store`.
 - No database migration; existing R2 BUCKET binding works.
 
 ## Release QA
-- Artwork itself is visually approved, but mechanical activity correctness has **not** been proved: a visually attractive AI-drawn maze may be blocked; board games may contain misnumbered squares and model parts may not fit when assembled. Those need individual remediation before the owner disables the review-only release gate.
+- The previous owner-only review gate has been lifted at the owner's direction. New artwork uploads are shown to paid members immediately, so check each page before importing. Mechanical activity correctness has **not** been proved: a visually attractive AI-drawn maze may be blocked; board games may contain misnumbered squares and model parts may not fit when assembled. Those need individual remediation before the owner disables the review-only release gate.
 - Browser A4 printing should maintain proportions. The PNG canvas is 2480×3508; the original source was lower resolution, so resampling does not invent 300-dpi illustration detail.
 - Before publication, test A4 print margins on home printers and assemble paper parts, using adult supervision for scissors/split pins.
