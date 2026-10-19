@@ -191,7 +191,7 @@ function island(p:Page){
 
 function renderItem(item:VaultItem,ink:boolean,guide=false):string{
   const p=new Page(ink);const accent=ink?[0,0,0]:[0.11,0.29,0.23];
-  p.fill(...accent as [number,number,number]);p.rect(0,784,595,58,true);
+  p.fill(accent[0],accent[1],accent[2]);p.rect(0,784,595,58,true);
   p.fill(1,1,1);p.text(43,816,"SIDE-QUEST  /  PRINTABLE VAULT",12,true);
   p.fill(0.08,0.16,0.13);p.text(42,746,guide?"PARENT GUIDE  /  "+item.title:item.title,20,true);
   p.text(42,719,item.category+"   |   Ages "+clean(item.ages)+"   |   "+item.minutes+" minutes",10);
