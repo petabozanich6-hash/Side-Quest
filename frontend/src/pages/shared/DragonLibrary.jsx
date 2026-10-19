@@ -25,7 +25,7 @@ export default function DragonLibrary({mode = "parent"}) {
       (!q || [b.title,b.author,b.genre,b.note,...b.subjects].join(" ").toLocaleLowerCase().includes(q))
     );
   },[query,band,genre,subject,access]);
-  const [visible,setVisible] = [results.slice(0,limit),setLimit];
+  const visible = results.slice(0,limit);
   const base = child ? "/child" : "/parent";
 
   return (
@@ -59,14 +59,14 @@ export default function DragonLibrary({mode = "parent"}) {
       <div className="grid gap-4 md:grid-cols-2" data-testid="dragon-book-results">
         {visible.map(book => {
           const links = dragonBookLinks(book);
-          const freeLabel = book.access === "bookdash" ? "Find in free Book Dash books" : "Search Project Gutenberg";
+          const freeLabel = book.access === "bookdash" ? "Read free at Book Dash" : "Search Project Gutenberg";
           const readPath = (child ? "/child/reading" : "/parent/reading-log") + "?book=" + encodeURIComponent(book.title) + "&author=" + encodeURIComponent(book.author === "Book Dash creators" ? "" : book.author);
           return <article key={book.id} className="paper-card p-5 space-y-3 flex flex-col" data-testid="dragon-book-card">
             <div className="flex gap-3">
               <div aria-hidden="true" className="w-14 h-20 flex-none rounded-xl bg-[#DBE5D4] grid place-items-center text-[#1F3B2D]"><BookOpen size={28}/></div>
               <div className="min-w-0 space-y-1">
                 <h2 className="font-display font-bold text-lg text-[#1F3B2D] leading-snug">{book.title}</h2>
-                <p className="text-sm text-stone-600">{book.author}</p>
+                <p className="text-sm text-stone-600">{book.access === "bookdash" ? "Book Dash · creator credits at source" : book.author}</p>
                 <p className="text-xs text-stone-600">{BOOK_BANDS.find(b=>b.value===book.band)?.label} · {book.genre}</p>
               </div>
             </div>
@@ -87,7 +87,7 @@ export default function DragonLibrary({mode = "parent"}) {
           </article>;
         })}
       </div>
-      {results.length > visible.length && <div className="text-center"><button type="button" className="rounded-full bg-[#1F3B2D] text-white px-5 py-3 text-sm font-bold" onClick={()=>setVisible(limit+24)}>Explore more books ({results.length-visible.length} remaining)</button></div>}
+      {results.length > visible.length && <div className="text-center"><button type="button" className="rounded-full bg-[#1F3B2D] text-white px-5 py-3 text-sm font-bold" onClick={()=>setLimit(n=>n+24)}>Explore more books ({results.length-visible.length} remaining)</button></div>}
       <footer className="paper-card p-5 text-xs text-stone-600 space-y-2">
         <p className="font-semibold text-[#1F3B2D] flex gap-2 items-center"><ShieldCheck size={16}/> The legal little print</p>
         <p>Recommendations and short descriptions are written by Side-Quest. We use no publisher cover artwork or copied book text. These links lead to independent third-party sites; Side-Quest is not affiliated with them. Libraries vary in eligibility, stock, waits and lending platforms. Always check the provider's terms and copyright rules where you live.</p>

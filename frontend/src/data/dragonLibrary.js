@@ -12,20 +12,20 @@ const RAW = [
   // Book Dash: the free-reading button opens Book Dash's searchable catalogue.
   ["Let's Go Looking", "Book Dash creators", "early", "Picture books", "English,Nature", "bookdash", "A playful invitation to look closely at the world."],
   ["Khumo's Big Trip", "Book Dash creators", "early", "Picture books", "English,Geography", "bookdash", "A gentle trip-themed pick for curious young readers."],
-  ["I Can Do It!", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A picture-book pick about trying things for yourself."],
+  ["I can do it!", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A picture-book pick about trying things for yourself."],
   ["Amo and the Missing Mielies", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A colourful story to practise retelling and prediction."],
-  ["Can We Eat a Rainbow?", "Book Dash creators", "early", "Picture books", "English,Science", "bookdash", "Explore colourful foods and everyday healthy choices."],
-  ["Play With Me", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A friendly conversation starter about play."],
+  ["Can we eat a rainbow?", "Book Dash creators", "early", "Picture books", "English,Science", "bookdash", "Explore colourful foods and everyday healthy choices."],
+  ["Play with me", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A friendly conversation starter about play."],
   ["The Red Umbrella", "Book Dash creators", "early", "Picture books", "English,Art", "bookdash", "A wordless picture book for inventing your own narration."],
-  ["Where Is Lulu?", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "Look for clues and discuss what might happen next."],
-  ["Where Is Thabo?", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A discovery-focused story to read together."],
+  ["Where is Lulu?", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "Look for clues and discuss what might happen next."],
+  ["Where is Thabo?", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "A discovery-focused story to read together."],
   ["Who Took My Shoe?", "Book Dash creators", "early", "Picture books", "English,Art", "bookdash", "A playful prompt for describing and noticing details."],
-  ["What Is It?", "Book Dash creators", "early", "Picture books", "English,Science", "bookdash", "A short pick for building vocabulary and curiosity."],
+  ["What is it?", "Book Dash creators", "early", "Picture books", "English,Science", "bookdash", "A short pick for building vocabulary and curiosity."],
   ["Why Birds Sing at Dawn", "Book Dash creators", "early", "Picture books", "English,Nature", "bookdash", "An animal-themed story for noticing morning sounds."],
-  ["Woof-Woof!", "Book Dash creators", "early", "Picture books", "English,Nature", "bookdash", "A lively animal-themed read for the smallest adventurers."],
-  ["Yapo Saves the Day", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "Talk about decisions and helping others."],
-  ["Meerkat Magic", "Book Dash creators", "early", "Picture books", "English,Nature", "bookdash", "A nature-flavoured picture book to browse together."],
-  ["Zanele Sees Numbers", "Book Dash creators", "early", "Picture books", "Maths,English", "bookdash", "Spot numbers and practise counting through story."],
+  ["Woof-woof!", "Book Dash creators", "early", "Picture books", "English,Nature", "bookdash", "A lively animal-themed read for the smallest adventurers."],
+  ["Yapo Saves The Day", "Book Dash creators", "early", "Picture books", "English,Wellbeing", "bookdash", "Talk about decisions and helping others."],
+  ["Meerkat magic", "Book Dash creators", "early", "Picture books", "English,Nature", "bookdash", "A nature-flavoured picture book to browse together."],
+  ["Zanele sees numbers", "Book Dash creators", "early", "Picture books", "Maths,English", "bookdash", "Spot numbers and practise counting through story."],
 
   // Older classics: search the official Gutenberg catalogue; rights vary by country.
   ["Alice's Adventures in Wonderland", "Lewis Carroll", "middle", "Fantasy", "English,Art", "gutenberg", "A curious child discovers a world where logic behaves strangely."],
@@ -120,10 +120,28 @@ export const BOOK_SUBJECTS = [...new Set(DRAGON_BOOKS.flatMap(b=>b.subjects))].s
 export const BOOK_GENRES = [...new Set(DRAGON_BOOKS.map(b=>b.genre))].sort();
 export function dragonBookLinks(book) {
   const query = encodeURIComponent(book.title + " " + (book.author === "Book Dash creators" ? "" : book.author));
+  const bookDashPages = {
+    "Let's Go Looking":"lets-go-looking",
+    "Khumo's Big Trip":"khumos-big-trip",
+    "I can do it!":"i-can-do-it",
+    "Amo and the Missing Mielies":"amo-and-the-missing-mielies",
+    "Can we eat a rainbow?":"can-we-eat-a-rainbow",
+    "Play with me":"play-with-me",
+    "The Red Umbrella":"the-red-umbrella",
+    "Where is Lulu?":"where-is-lulu",
+    "Where is Thabo?":"where-is-thabo",
+    "Who Took My Shoe?":"who-took-my-shoe",
+    "What is it?":"what-is-it",
+    "Why Birds Sing at Dawn":"why-birds-sing-at-dawn",
+    "Woof-woof!":"woof-woof",
+    "Yapo Saves The Day":"yapo-saves-the-day",
+    "Meerkat magic":"meerkat-magic",
+    "Zanele sees numbers":"zanele-sees-numbers",
+  };
   return {
     trove: "https://trove.nla.gov.au/search/category/books?keyword=" + query,
     secondhand: "https://www.ebay.com.au/sch/i.html?_nkw=" + query,
-    free: book.access === "bookdash" ? "https://bookdash.org/books/" :
+    free: book.access === "bookdash" ? "https://bookdash.org/books/" + bookDashPages[book.title] + "/" :
       book.access === "gutenberg" ? "https://www.gutenberg.org/ebooks/search/?query=" + query : null,
   };
 }

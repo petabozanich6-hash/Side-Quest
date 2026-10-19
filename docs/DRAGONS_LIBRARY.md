@@ -7,7 +7,7 @@ This is a curated **external-link directory**, not an ebook library. It does not
 - Parent Hub: **Dragon's Library** in the sidebar.
 - Child Hub: **Library** beside My reading.
 - Shared catalogue search with reading stage, genre, subjects and access filters.
-- Legitimate external routes: Trove Australian library discovery; Libby and BorrowBox service homepages (library-dependent); Book Dash free reading catalogue; Project Gutenberg title search (country copyright rules differ); eBay AU second-hand search (parents only).
+- Legitimate external routes: Trove Australian library discovery; Libby and BorrowBox service homepages (library-dependent); direct Book Dash book pages; Project Gutenberg title search (country copyright rules differ); eBay AU second-hand search (parents only).
 - **Log this book after reading** prefills existing reading-log forms and does **not** record work automatically. Parent approvals and child submissions remain unchanged.
 - No database migration, third-party API key, external tracking pixel, AI request or new server endpoint.
 
