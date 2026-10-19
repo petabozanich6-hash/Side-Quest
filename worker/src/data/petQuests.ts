@@ -194,7 +194,7 @@ export function newPet(pet: PetState, species: string, name: string): { ok: bool
   if (1 + stable.length >= stableSlots(arr(e.trophies).length)) return { ok: false, detail: "Master more words to open another pet slot" };
   if ([pet.species, ...stable.map((s) => s.species)].includes(species)) return { ok: false, detail: "You already have that kind of pet" };
   stable.push(snap(pet));
-  load(pet, { name: String(name || "").trim().slice(0, 30) || PET_SPECIES[species as keyof typeof PET_SPECIES].label, species, xp: 0, happiness: 80, background: pet.background, accessories: [], hatched: false, hatched_at: null, egg_care_dates: [] });
+  load(pet, { name: String(name || "").trim().slice(0, 30) || PET_SPECIES[species as keyof typeof PET_SPECIES].label, species, xp: 0, happiness: 80, background: pet.background, accessories: [], hatched: false, hatched_at: null, egg_care_dates: [], growth_version: 2, growth_floor: null });
   e.stable = stable;
   return { ok: true };
 }
