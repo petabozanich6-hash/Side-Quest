@@ -12,7 +12,7 @@ import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
 import type { OutcomeSuggestion } from "./outcomeMatch";
 import { getFamilyJurisdiction, frameworkFor, areasFor, usesNswOutcomes, outcomesNotLoadedNote } from "./data/jurisdictions";
-import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes } from "./items";
+import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes, hasEmbeddedAnswer } from "./items";
 import type { StudentInfo } from "./aiRequest";
 import { REFERENCE_INDEPENDENT, REFERENCE_PARENT_GUIDED } from "./data/referenceLessons";
 
@@ -89,6 +89,7 @@ function systemPrompt() {
     "You are an experienced Australian teacher and curriculum designer. You are designing and teaching a complete learning sequence for one lesson, for a homeschooling parent who will not write any of the teaching themselves.",
     "Think like an educator, not a form-filler. Before writing content, decide in 'teaching_plan': WHAT is being taught, WHY it matters, WHAT students need to know first, the ORDER in which ideas will be introduced, and which MISCONCEPTIONS are likely. Then write the lesson so each part builds on the last.",
     "Teach in this progression: introduce the concept with familiar language and a concrete example; explicitly teach how it works and why; model it with complete worked examples; guide practice through increasingly challenging tasks (hints available); give independent application tasks; check understanding with questions that match exactly what was taught; consolidate the key knowledge and correct likely misunderstandings.",
+    "STUDENT ANSWERS ARE PRIVATE: Never include the answer, worked solution, check result or a model response in the prompt, hint, activity instructions or quiz question the child reads. Put solutions only in answer, answer_key, correct_index and quiz explanation fields. Do not put YOU TRY / YOUR TURN questions with their answers inside teaching sections. Put every child task in guided_practice, activities.tasks, questions or quiz so the app provides a response field. Worked examples must use different specific problems from assessed questions.",
     "Depth means developing understanding step by step, not repeating yourself and not padding. Every paragraph must teach something new. Do not restate the same idea in different words.",
     "Never write 'complete the worksheet', 'use the handout', 'watch a video', 'visit a website', 'research the topic' or 'discuss what you learned' unless you give everything needed: write the actual questions inside the activity's 'tasks', the actual text in 'texts', or the actual prompts and background knowledge. If something is not provided in the lesson, do not mention it. Use only household items, paper and pencils. No links or web addresses. No curriculum codes. No filler activities: each activity must have a clear educational purpose, be understandable to the student, contain everything needed to begin, connect to the learning goal, and produce evidence of learning.",
     "The child completes the lesson ON SCREEN inside the app: reading, watching worked examples, typing answers, ordering, matching and choosing options. Everything an activity needs (the questions, the passage, the data, the table) must be written into the lesson. Hands-on or off-screen activities are only for subjects where the real thing matters (science investigations, art, cooking, PE) and are optional extras: they must still include on-screen tasks for predictions, observations, results and reflection, so the learning is recorded in the app. Never tell the child to use paper, a notebook, a printed sheet, a textbook or another website for ordinary academic work.",
@@ -382,6 +383,19 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
     const adult = [d.introduction, ...d.sections.map((x) => x.body), ...d.worked_examples.flatMap((x) => x.steps), ...d.guided_practice.flatMap((g) => [g.prompt, g.hint]), ...d.activities.flatMap((a) => [a.instructions, ...a.tasks.flatMap((t) => [t.prompt, t.hint])]), ...d.questions.map((q) => q.prompt), d.consolidation].map((t) => ASK_ADULT.exec(t || "")?.[0]).find(Boolean);
     if (adult) add({ keys: ["sections", "activities", "guided_practice", "consolidation"], msg: `this is an independent lesson but it sends the student to an adult ("${adult}")`, repair: true });
   }
+  // AI sometimes writes "Question? Answer: ..." in a field displayed before the child can respond.
+  // These are non-negotiable: attempt a targeted repair, and reject the lesson if the leak remains.
+  const leakedKeys = [
+    d.guided_practice.some((g) => [g.prompt, g.hint].some(hasEmbeddedAnswer)) && "guided_practice",
+    d.activities.some((a) => [a.instructions, ...a.tasks.flatMap((t) => [t.prompt, t.hint])].some(hasEmbeddedAnswer)) && "activities",
+    d.questions.some((q) => hasEmbeddedAnswer(q.prompt)) && "questions",
+    d.quiz.some((q) => hasEmbeddedAnswer(q.question)) && "quiz",
+  ].filter(Boolean) as string[];
+  if (leakedKeys.length) add({ keys: leakedKeys, msg: "a child-facing question, hint or activity gives the answer away before the student responds; move answers exclusively into private answer fields", hard: true, repair: true });
+  if (d.sections.some((sec) => /(?:^|\\n)\\s*(?:you try|your turn|now try|try it|have a go)\\s*:/im.test(sec.body) &&
+      /(?:^|\\n)\\s*(?:answer|check|solution|sample response|model answer)\\s*:/im.test(sec.body))) {
+    add({ keys: ["sections"], msg: "a read-only teaching section contains a YOU TRY question and its answer; put that question in interactive practice and leave the worked teaching intact", hard: true, repair: true });
+  }
   const est = estimateMinutes(d);
   if (minutes >= 30 && est < minutes * 0.7) add({ keys: ["sections", "worked_examples", "guided_practice", "activities"], msg: `there is only about ${est} minutes of real work for a ${minutes}-minute lesson; add more teaching, worked examples and practice (not padding)`, repair: true });
   const all = [d.title, d.introduction, d.consolidation, d.parent_script, d.answer_key, ...d.sections.map((x) => x.body), ...d.activities.flatMap((a) => [a.instructions, ...a.tasks.map((t) => t.prompt)]), ...d.questions.map((q) => q.prompt)];
@@ -427,7 +441,8 @@ function stageSystem(): string {
   return [
     "You are an experienced Australian teacher writing the ACTUAL teaching material that a student reads and works through on screen in a learning app. You are not writing a lesson plan, and not notes for a teacher: you are writing the teaching itself, for a student meeting this idea for the first time.",
     "Write the real explanation, the real worked demonstration, the real questions and the real reasoning. Never write an instruction in place of content: not 'explain the concept to your child', not 'demonstrate how to solve the problem', not 'complete some practice questions', not 'discuss the answer'. Do the explaining, demonstrating and question-writing yourself.",
-    "The goal is that the student almost never needs an adult. Before any type of question is asked, the lesson has already shown a fully worked example of that same type. Every hint reminds the student of the method without giving the answer. Explanations anticipate where a learner would get lost and deal with it in advance, in plain words.",
+    "The goal is that the student almost never needs an adult. Before any type of question is asked, the lesson has already shown a fully worked example of that same type, but NOT the same exact problem. Every hint reminds the student of the method without giving the answer. The child must attempt the question before seeing any model answer. Explanations anticipate where a learner would get lost and deal with it in advance, in plain words.",
+    "Never write an answer next to a student question (including Answer:, Check:, Solution:, or Therefore:). Put all student questions into interactive question lists with the answers kept exclusively in their separate private fields. Keep worked examples solved and fully explained, but use different problems from the practice and assessment.",
     "Teach well: say what the student needs to know first; introduce one new idea at a time; show how it works AND why; use concrete everyday examples before abstract ones; model complete solutions step by step; name the mistakes students commonly make and show the correction; then move from supported practice to independent practice. Every paragraph must teach something new. No filler and no repetition.",
     "The student works independently and the app is their only teacher, so the lesson must be a complete, self-contained learning experience that a motivated child can finish alone: it teaches before it asks, and it never depends on an adult filling in missing explanation.",
     "The student completes everything ON SCREEN. Everything a task needs (text, data, numbers, questions) is written into the lesson. Never mention worksheets, handouts, paper, notebooks, textbooks, videos, links or websites. Hands-on activities are optional extras for science, art, cooking or PE and still need on-screen tasks to record predictions, observations and reflections.",
@@ -520,7 +535,7 @@ export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[]): s
     texts?.length ? `READINGS THE LESSON USES:\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
     standardExcerpt(sp.delivery),
     `THIS SECTION: heading "${sec.heading}". The ONE new idea: ${sec.idea}. How to teach it: ${sec.how}. It must make clear: ${(sec.key_points || []).join("; ")}.${i > 0 ? ` The student has already been taught: ${design.sequence.slice(0, i).map((s: any) => s.idea).join("; ")}. Build on that without repeating it.` : " This is the first section, so begin from what the student already knows."}`,
-    "Write 250 to 380 words in short paragraphs separated by blank lines. Cover, in this order: (1) connect to something the student already knows or has seen; (2) state the new idea in plain words and define any new term the first time it appears; (3) work through at least one concrete example with the real numbers or details, one step at a time, saying what happens at each step; (4) explain WHY it works, not just what to do; (5) point out the slip students commonly make here and how to avoid it; (6) finish with a sentence that leads into what comes next. Every sentence must teach something. No filler, no repeating the heading.",
+    "Write 250 to 380 words in short paragraphs separated by blank lines. Cover, in this order: (1) connect to something the student already knows or has seen; (2) state the new idea in plain words and define any new term the first time it appears; (3) work through at least one concrete example with the real numbers or details, one step at a time, saying what happens at each step; (4) explain WHY it works, not just what to do; (5) point out the slip students commonly make here and how to avoid it; (6) finish with a sentence that leads into what comes next. Every sentence must teach something. No filler, no repeating the heading. This is READ-ONLY teaching, not a question screen: never include YOU TRY / YOUR TURN / CHECK YOUR ANSWER activities with supplied solutions. Put child questions in the structured interactive practice/assessment stage instead.",
     'JSON shape: {"heading":string,"body":string,"visual":optional (' + VISUAL_FORMAT + ")}",
   ].filter(Boolean).join("\n");
 }
@@ -557,6 +572,7 @@ export function practiceAPrompt(sp: Spec, design: any, taught: any): string {
     `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
     `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
     `Guided practice starts very close to the worked examples and steadily gets harder; each hint nudges without giving the answer by reminding the student of the method. Independent activities then apply the ideas to new situations (including word problems or real contexts), each with ${z.tasksPerActivity} or more distinct on-screen tasks that go from easy to challenging. Every item has a complete, correct answer. Double-check every calculation.`,
+    "IMPORTANT: The student sees prompt, hint and activity instructions BEFORE responding. Never place an answer or solution in those fields, not even as Answer:, Check:, a completed calculation, or an example solving that same question. Only the private answer field holds the solution. Use new numbers and scenarios rather than copying the worked example problem.",
     "JSON shape:",
     `{"guided_practice":[ITEM] (${z.guided} items),`,
     ` "activities":[{"title":string,"instructions":string (what the student does and why, in 2-5 sentences),"offline":boolean,"visual":optional,"tasks":[ITEM]}] (${z.activities} activities; non-hands-on activities have ${z.tasksPerActivity} or more tasks; a hands-on activity (offline true) is optional and has tasks that record a prediction, observations, results and a reflection)}`,
@@ -572,6 +588,7 @@ export function assessmentPrompt(sp: Spec, design: any, taught: any): string {
     `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
     `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
     "Questions move from recall to explanation and application; at least one of the written questions and one quiz question probes a likely mistake. Quiz options must be plausible, with wrong options reflecting real errors. Every question has a complete correct answer or marking guidance.",
+    "Never reveal the correct response in a question prompt or quiz question, including by adding Answer:, Solution:, Check: or a worked calculation. Put it only in answer_key, correct_index or explanation. Write questions different from the exact worked-example problems.",
     "JSON shape:",
     `{"questions":[{"prompt":string,"type":"short"|"long","answer_key":string (a complete correct answer or marking guidance)}] (${z.questions} items),`,
     ` "quiz":[{"question":string,"options":[3 or 4 plausible strings],"correct_index":number (zero-based),"explanation":string}] (${z.quiz} items; vary which option is correct),`,
