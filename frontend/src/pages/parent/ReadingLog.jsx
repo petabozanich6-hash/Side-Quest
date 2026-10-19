@@ -24,6 +24,8 @@ const SOURCES = ["home", "library", "school", "audiobook", "digital"];
 export default function ReadingLog() {
   const [searchParams] = useSearchParams();
   const focused = searchParams.get("focus");
+  const recommendedBook = searchParams.get("book");
+  const recommendedAuthor = searchParams.get("author");
   const [entries, setEntries] = useState([]);
   const [stats, setStats] = useState(null);
   const [students, setStudents] = useState([]);
@@ -36,6 +38,12 @@ export default function ReadingLog() {
     duration_minutes: 20, source: "home", book_type: "fiction", reading_mode: "independent",
     comprehension_notes: "", favourite_part: "", difficulty: "just_right", parent_note: ""
   });
+
+  useEffect(() => {
+    if (!recommendedBook) return;
+    setForm(f => ({...f, title:recommendedBook.slice(0,120), author:(recommendedAuthor || "").slice(0,80)}));
+    setOpen(true);
+  }, [recommendedBook, recommendedAuthor]);
 
   const load = async () => {
     const q = filter ? `?student_id=${filter}` : "";
