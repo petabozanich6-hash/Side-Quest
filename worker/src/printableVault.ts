@@ -27,6 +27,28 @@ export const VAULT_ITEMS:VaultPicture[]=[
  {id:"halloween-colouring-adventure",title:"Halloween Colouring Adventure",pages:2,category:"Colouring & Creativity",ages:"6-Adult",minutes:35,kind:"colouring",theme:"Halloween",collection:"halloween-art",materials:"Colouring pencils",description:"Detailed fantasy Halloween scenes with castles, bats and dragons.",guide:["Colour the full illustrated scene.","Look for hidden gems and decorative details.","No assigned answer or mandatory written work."]},
  {id:"escape-pumpkin-patch",title:"Escape the Pumpkin Patch",pages:2,category:"Mazes & Puzzles",ages:"9-15",minutes:40,kind:"puzzle",theme:"Halloween",collection:"halloween-puzzles",materials:"Scissors, split pin, pencil",description:"Assemble a cipher wheel and solve the Halloween code to escape.",guide:["Assemble the two cipher wheels with a split pin.","Decode the secret message with a backwards shift of three.","Use picture counting for the final code, 4 - 2 - 7."]}
 ];
+
+/** Owner-approved preview *images*, never check these originals into this public repository.
+ * Their private R2 keys are the only asset source for the gallery and printing. */
+const PREMIUM_IDS=[
+ "lost-treasure-maze","moving-dragon-puppet","enchanted-castle-colouring",
+ "race-to-hoard","paper-medieval-castle","haunted-castle-maze",
+ "build-a-bat-puppet","pumpkin-face-creator",
+ "trick-or-treat-board-game","halloween-colouring-adventure"
+] as const;
+const premiumSet=new Set<string>(PREMIUM_IDS);
+const premiumItems=VAULT_ITEMS.filter(i=>premiumSet.has(i.id));
+const premiumPath=(id:string,variant:"colour"|"ink")=>
+ "printable-vault/illustrated-v1/"+id+(variant==="ink"?"-ink":"")+".png";
+const BYTES_LIMIT=7_000_000;
+const isPng=(data:ArrayBuffer)=>{
+ const b=new Uint8Array(data);
+ const magic=[137,80,78,71,13,10,26,10];
+ if(b.length<33 || !magic.every((v,i)=>b[i]===v))return false;
+ const dv=new DataView(data);
+ return dv.getUint32(16)===2480 && dv.getUint32(20)===3508;
+};
+
 export const VAULT_BUNDLES=[
  {id:"halloween-puzzles",title:"Spooky Mazes & Escapes",description:"Haunted castles, spiderwebs and a pumpkin-patch escape."},
  {id:"halloween-build",title:"Halloween Colour, Cut & Create",description:"Moving bat, silly pumpkin faces and paper haunted house."},
@@ -39,33 +61,75 @@ export const VAULT_BUNDLES=[
 ];
 
 export const VAULT_ART_REVIEW_ONLY = true; // Owner-only preview while print illustration/assembly QA is incomplete.
-const itemMeta=(i:VaultPicture)=>({id:i.id,title:i.title,category:i.category,ages:i.ages,minutes:i.minutes,kind:i.kind,description:i.description,materials:i.materials,theme:i.theme,collection:i.collection,pages:i.pages,format:"svg"});
+const itemMeta=(i:VaultPicture,available:boolean,inkAvailable:boolean)=>({
+ id:i.id,title:i.title,category:i.category,ages:i.ages,minutes:i.minutes,
+ kind:i.kind,description:i.description,materials:i.materials,theme:i.theme,
+ collection:i.collection,pages:1,format:"png",available,ink_available:inkAvailable
+});
+export const VAULT_ART_REVIEW_ONLY=true;
 export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}) {
  const {limits}=await getEntitlement(db,user.family_id);
  return await isPlatformOwner(db,user.id) || (!VAULT_ART_REVIEW_ONLY && limits.aiGeneration);
 }
-export function registerPrintableVault(app:App,g:Guards) {
+export function registerPrintableVault(app:App,g:Guards){
  app.get("/api/printables",g.auth,g.parent,async c=>{
+  const owner=await isPlatformOwner(c.env.DB,c.get("user").id);
   const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
+  const available=await Promise.all(premiumItems.map(async i=>{
+    if(!owner||!c.env.BUCKET)return {id:i.id,colour:false,ink:false};
+    const [colour,ink]=await Promise.all([
+      c.env.BUCKET.head(premiumPath(i.id,"colour")),
+      c.env.BUCKET.head(premiumPath(i.id,"ink"))
+    ]);
+    return {id:i.id,colour:!!colour,ink:!!ink};
+  }));
+  const statuses=new Map(available.map(a=>[a.id,a]));
+  const items=premiumItems.map(i=>{
+    const a=statuses.get(i.id);
+    return itemMeta(i,!!a?.colour,!!a?.ink);
+  });
   c.header("Cache-Control","private, no-store");
-  return c.json({unlocked,art_review_only:VAULT_ART_REVIEW_ONLY,items:VAULT_ITEMS.map(itemMeta),bundles:VAULT_BUNDLES,format:"svg"});
+  return c.json({unlocked,owner,art_review_only:VAULT_ART_REVIEW_ONLY,items,
+    bundles:VAULT_BUNDLES.filter(b=>premiumItems.some(i=>i.collection===b.id)),
+    format:"png",ready_count:available.filter(a=>a.colour).length});
  });
  const paid=async(c:any,next:any)=>{
   if(!await canAccessPrintableVault(c.env.DB,c.get("user")))
-   return c.json({code:VAULT_ART_REVIEW_ONLY?"VAULT_REVIEW_ONLY":"UPGRADE_REQUIRED",detail:VAULT_ART_REVIEW_ONLY?"The illustrated Vault is temporarily available to the verified owner for quality review.":"The Printable Vault is included in Family Membership."},402);
+   return c.json({code:VAULT_ART_REVIEW_ONLY?"VAULT_REVIEW_ONLY":"UPGRADE_REQUIRED",detail:"Printable artwork is undergoing owner quality review."},402);
   return next();
  };
- app.get("/api/printables/:id/image",g.auth,g.parent,paid,c=>{
-  const item=VAULT_ITEMS.find(i=>i.id===c.req.param("id"));
-  if(!item)return c.json({detail:"Activity not found"},404);
-  const variant=c.req.query("variant")==="guide"?"guide":c.req.query("variant")==="ink"?"ink":"colour";
+ app.get("/api/printables/:id/image",g.auth,g.parent,paid,async c=>{
+  const id=c.req.param("id");
+  if(!premiumSet.has(id))return c.json({detail:"Not found"},404);
+  if(!c.env.BUCKET)return c.json({detail:"Private printable storage is not configured."},503);
   const page=Number(c.req.query("page")||"0");
-  if(!Number.isInteger(page)||page<0||page>=item.pages)return c.json({detail:"Page not found"},404);
-  const svg=renderVaultSvg(item,page,variant);
-  c.header("Content-Type","image/svg+xml; charset=utf-8");
+  if(!Number.isInteger(page)||page!==0)return c.json({detail:"Page not found"},404);
+  const variant=c.req.query("variant")==="ink"?"ink":"colour";
+  if(c.req.query("variant")==="guide")return c.json({detail:"Parent guide is not yet approved."},404);
+  const object=await c.env.BUCKET.get(premiumPath(id,variant));
+  if(!object)return c.json({detail:"Illustration awaiting owner import."},404);
+  c.header("Content-Type","image/png");
   c.header("Cache-Control","private, no-store");
   c.header("X-Content-Type-Options","nosniff");
-  c.header("Content-Security-Policy","default-src 'none'; style-src 'unsafe-inline'");
-  return c.body(svg);
+  return c.body(object.body);
+ });
+ // Private owner-only upload. No publicly served assets, no redirects or CDN keys.
+ app.post("/api/printables/admin/assets/:id",g.auth,g.parent,async c=>{
+  if(!await isPlatformOwner(c.env.DB,c.get("user").id))
+    return c.json({detail:"Platform-owner access required"},403);
+  if(!c.env.BUCKET)return c.json({detail:"Private printable storage is not configured"},503);
+  const id=c.req.param("id");
+  if(!premiumSet.has(id))return c.json({detail:"Unknown premium printable"},404);
+  const variant=c.req.query("variant")==="ink"?"ink":"colour";
+  if(c.req.header("content-type")?.split(";")[0].trim().toLowerCase()!=="image/png")
+    return c.json({detail:"PNG images only"},415);
+  const length=Number(c.req.header("content-length")||"0");
+  if(length>BYTES_LIMIT)return c.json({detail:"Image is too large (7 MB limit)"},413);
+  const bytes=await c.req.arrayBuffer();
+  if(bytes.byteLength>BYTES_LIMIT)return c.json({detail:"Image is too large (7 MB limit)"},413);
+  if(!isPng(bytes))return c.json({detail:"Image must be a 2480 by 3508 A4 PNG."},400);
+  const key=premiumPath(id,variant);
+  await c.env.BUCKET.put(key,bytes,{httpMetadata:{contentType:"image/png"}});
+  return c.json({ok:true,id,variant,bytes:bytes.byteLength});
  });
 }

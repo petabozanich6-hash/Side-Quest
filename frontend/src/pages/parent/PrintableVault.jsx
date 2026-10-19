@@ -16,22 +16,22 @@ function VaultThumbnail({item,unlocked}){
   const [url,setUrl]=useState("");
   const element=useRef(null);
   useEffect(()=>{
-    if(!unlocked){setUrl("");return undefined;}
+    if(!unlocked||!item.available){setUrl("");return undefined;}
     let alive=true,objectUrl="";
     const observer=new IntersectionObserver(entries=>{
       if(!entries.some(e=>e.isIntersecting))return;
       observer.disconnect();
       api.get(imageEndpoint(item.id),{responseType:"blob"})
-        .then(r=>{if(!alive)return;objectUrl=URL.createObjectURL(new Blob([r.data],{type:"image/svg+xml"}));setUrl(objectUrl);})
+        .then(r=>{if(!alive)return;objectUrl=URL.createObjectURL(new Blob([r.data],{type:"image/png"}));setUrl(objectUrl);})
         .catch(()=>{});
     },{rootMargin:"200px"});
     const node=element.current;if(node)observer.observe(node);
     return()=>{alive=false;observer.disconnect();if(objectUrl)URL.revokeObjectURL(objectUrl);};
-  },[item.id,unlocked]);
+  },[item.id,unlocked,item.available]);
   const Icon=ICONS[item.kind]||FileImage;
   return <div ref={element} className={"aspect-[210/235] max-h-[245px] w-full relative overflow-hidden grid place-items-center bg-gradient-to-br "+(PALETTE[item.kind]||"from-slate-50 to-stone-100")}>
     {url?<img src={url} alt={"Illustrated printable preview for "+item.title} className="w-full h-full object-contain" loading="lazy"/>:
-      <div className="grid place-items-center gap-2 text-emerald-900/70"><Icon size={52}/><span className="text-xs font-bold">{unlocked?"Opening illustration…":"Subscriber artwork"}</span></div>}
+      <div className="grid place-items-center gap-2 text-emerald-900/70"><Icon size={52}/><span className="text-xs font-bold">{unlocked?(item.available?"Opening illustration…":"Awaiting image import"):"Subscriber artwork"}</span></div>}
     {item.theme==="Halloween"&&<span className="absolute top-2 right-2 text-xs rounded-full bg-orange-100 text-orange-900 px-2 py-1 font-bold">🎃 Halloween</span>}
   </div>;
 }
@@ -43,6 +43,40 @@ function NewPrintWindow({label,images}){
   return '<!doctype html><html><head><title>'+heading+'</title><meta charset="utf-8"><style>'+stylesheet+'</style></head><body><button onclick="window.print()">Print / Save as PDF</button>'+images.map(u=>'<figure><img src="'+u+'" alt="A4 printable image"></figure>').join("")+'</body></html>';
 }
 
+/** A small browser-only reader for STORE-format ZIPs. No external ZIP library or remote CDN. */
+async function unpackImportFiles(files,knownIds){
+ const records=[];
+ for(const file of Array.from(files||[])){
+  if(file.name.toLowerCase().endsWith(".zip")){
+   if(file.size>55_000_000)throw new Error("The import ZIP exceeds the 55 MB limit.");
+   const buffer=await file.arrayBuffer(),view=new DataView(buffer),bytes=new Uint8Array(buffer);
+   let offset=0;
+   while(offset+30<=buffer.byteLength && view.getUint32(offset,true)===0x04034b50){
+    const flag=view.getUint16(offset+6,true),compression=view.getUint16(offset+8,true);
+    if(flag&8||compression!==0)throw new Error("Please use the Side-Quest uncompressed import ZIP.");
+    const length=view.getUint32(offset+18,true),nameLen=view.getUint16(offset+26,true),extraLen=view.getUint16(offset+28,true);
+    const start=offset+30+nameLen+extraLen;
+    if(start+length>buffer.byteLength)throw new Error("Invalid ZIP file.");
+    const name=new TextDecoder().decode(bytes.subarray(offset+30,offset+30+nameLen));
+    if(name.toLowerCase().endsWith(".png")){
+     records.push({name,blob:new Blob([bytes.slice(start,start+length)],{type:"image/png"})});
+    }
+    offset=start+length;
+   }
+  }else if(file.name.toLowerCase().endsWith(".png")){
+    records.push({name:file.name,blob:file});
+  }else throw new Error("Only Side-Quest ZIPs or PNG images are supported.");
+ }
+ if(!records.length)throw new Error("No printable PNG images were found.");
+ const valid=[];
+ for(const r of records){
+  const match=/^([a-z0-9-]+?)(-ink)?\.png$/i.exec(r.name);
+  if(!match||!knownIds.has(match[1]))throw new Error("Unrecognised printable file: "+r.name);
+  valid.push({id:match[1],variant:match[2]?"ink":"colour",blob:r.blob});
+ }
+ return valid;
+}
+
 export default function PrintableVault(){
   const [data,setData]=useState(null);
   const [error,setError]=useState("");
@@ -50,6 +84,7 @@ export default function PrintableVault(){
   const [category,setCategory]=useState("");
   const [kind,setKind]=useState("");
   const [busy,setBusy]=useState("");
+  const [importProgress,setImportProgress]=useState("");
   const [preview,setPreview]=useState(null);
   useEffect(()=>{let live=true;api.get("/printables").then(({data:d})=>{if(live)setData(d);}).catch(e=>{if(live)setError(apiErrorMessage(e,"Could not open the Vault"));});return()=>{live=false;};},[]);
   useEffect(()=>()=>{preview?.urls.forEach(u=>URL.revokeObjectURL(u));},[preview]);
@@ -59,7 +94,7 @@ export default function PrintableVault(){
   const filtered=useMemo(()=>items.filter(i=>(!category||i.category===category)&&(!kind||i.kind===kind)&&(!search||[i.title,i.description,i.theme,i.category].join(" ").toLowerCase().includes(search.toLowerCase()))),[items,search,category,kind]);
 
   const fetchImages=async(chosen,variant)=>{
-    const pages=chosen.flatMap(i=>Array.from({length:variant==="guide"?1:i.pages},(_,p)=>({id:i.id,page:p})));
+    const pages=chosen.flatMap(i=>Array.from({length:i.pages},(_,p)=>({id:i.id,page:p})));
     const urls=[];
     try{
       for(const part of pages){
@@ -102,7 +137,7 @@ export default function PrintableVault(){
     try{
       const urls=await fetchImages([item],variant);
       urls.forEach((url,index)=>{
-        const a=document.createElement("a");a.href=url;a.download="sidequest-"+slug(item.title)+(urls.length>1?"-page-"+(index+1):"")+"-"+variant+".svg";
+        const a=document.createElement("a");a.href=url;a.download="sidequest-"+slug(item.title)+(urls.length>1?"-page-"+(index+1):"")+"-"+variant+".png";
         document.body.appendChild(a);a.click();a.remove();
       });
       window.setTimeout(()=>urls.forEach(u=>URL.revokeObjectURL(u)),60000);
@@ -110,7 +145,25 @@ export default function PrintableVault(){
     }catch(e){toast.error(apiErrorMessage(e,"Could not download image"));}
     finally{setBusy("");}
   };
-  const bundleItems=id=>items.filter(i=>i.collection===id);
+  const bundleItems=(id,variant="colour")=>items.filter(i=>i.collection===id && (variant==="ink"?i.ink_available:i.available));
+  const importFiles=async input=>{
+    if(!data?.owner)return;
+    setBusy("import");
+    try{
+      const records=await unpackImportFiles(input,new Set(items.map(i=>i.id)));
+      for(let j=0;j<records.length;j++){
+        const item=records[j];
+        setImportProgress("Uploading "+(j+1)+" of "+records.length+": "+item.id+(item.variant==="ink"?" (ink)":""));
+        await api.post("/printables/admin/assets/"+encodeURIComponent(item.id)+"?variant="+item.variant,item.blob,{
+          headers:{"Content-Type":"image/png"},timeout:120000
+        });
+      }
+      const response=await api.get("/printables");
+      setData(response.data);
+      toast.success("Imported "+records.length+" private printable images");
+    }catch(e){toast.error(e?.message||apiErrorMessage(e,"Import stopped. Uploaded images are kept; retry the same ZIP to resume."));}
+    finally{setBusy("");setImportProgress("");}
+  };
 
   return <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="printable-vault">
     <header className="rounded-3xl bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-800 text-white p-6 sm:p-9 relative overflow-hidden">
@@ -118,7 +171,7 @@ export default function PrintableVault(){
         <div className="text-xs font-bold tracking-widest uppercase text-emerald-200">Side-Quest · Print, Play & Create</div>
         <h1 className="font-display text-3xl sm:text-4xl font-bold mt-2">The Printable Vault</h1>
         <p className="mt-3 max-w-xl text-emerald-50">Real activities with original printable artwork: mazes, colouring, cut-out crafts, games and Halloween adventures. Every page is an A4 image you can print or save as a PDF.</p>
-        <div className="flex flex-wrap gap-2 mt-5 text-xs font-semibold"><span className="rounded-full bg-white/15 px-3 py-2">{items.length} original activities</span><span className="rounded-full bg-white/15 px-3 py-2">Scalable image artwork</span><span className="rounded-full bg-white/15 px-3 py-2">Ink-saving option</span></div>
+        <div className="flex flex-wrap gap-2 mt-5 text-xs font-semibold"><span className="rounded-full bg-white/15 px-3 py-2">{items.length} original activities</span><span className="rounded-full bg-white/15 px-3 py-2">Original illustrated artwork</span><span className="rounded-full bg-white/15 px-3 py-2">Ink-saving option</span></div>
       </div>
       <Paintbrush className="absolute right-[-24px] bottom-[-31px] text-white/10 rotate-[-18deg]" size={160}/>
     </header>
@@ -126,6 +179,8 @@ export default function PrintableVault(){
     {!data&&!error&&<p role="status">Opening the Vault…</p>}
     {error&&<div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
     {data&&<>
+      {data.owner&&<section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-2" data-testid="vault-owner-import"><h2 className="font-bold text-emerald-950">Owner HQ · Premium artwork importer</h2><p className="text-sm text-emerald-900">Original approved images: {data.ready_count||0} of {data.items.length} stored privately in Cloudflare. Import the Side-Quest premium ZIP once, or select its PNG files. Uploads never appear as public assets.</p><label className="inline-flex rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold cursor-pointer">{busy==="import"?"Importing…":"Import printable images"}<input type="file" accept=".zip,.png,image/png" multiple disabled={!!busy} className="sr-only" onChange={e=>{const selected=e.target.files;if(selected?.length)void importFiles(selected);e.target.value="";}}/></label>{importProgress&&<p role="status" className="text-sm">{importProgress}</p>}<p className="text-xs text-emerald-800">Review-only until artwork and craft instructions pass quality checks.</p></section>}
+
       {!data.unlocked&&<div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 flex flex-wrap gap-3" data-testid="vault-membership-locked">
         <Lock className="text-amber-800"/><div className="flex-1">
           <p className="font-bold text-amber-950">{data.art_review_only?"Illustration review in progress":"Family Membership unlocks every activity image."}</p>
@@ -139,8 +194,8 @@ export default function PrintableVault(){
           {data.bundles.map(b=><div key={b.id} className="rounded-2xl p-5 border border-stone-200 bg-white flex flex-col gap-2" data-testid={"vault-bundle-"+b.id}>
             <h3 className="font-bold text-emerald-950">{b.title}</h3><p className="text-sm text-stone-600 flex-1">{b.description}</p>
             <div className="flex flex-wrap gap-2 mt-3">
-              <button className="rounded-full px-3 py-2 bg-emerald-900 text-white text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>print(bundleItems(b.id),"colour",b.title)}><Printer size={13} className="inline mr-1"/> Print / PDF</button>
-              <button className="rounded-full px-3 py-2 border border-emerald-800 text-emerald-900 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>print(bundleItems(b.id),"ink",b.title)}>Ink-saving</button>
+              <button className="rounded-full px-3 py-2 bg-emerald-900 text-white text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy||!bundleItems(b.id).length} onClick={()=>print(bundleItems(b.id),"colour",b.title)}><Printer size={13} className="inline mr-1"/> Print / PDF</button>
+              <button className="rounded-full px-3 py-2 border border-emerald-800 text-emerald-900 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy||!bundleItems(b.id,"ink").length} onClick={()=>print(bundleItems(b.id,"ink"),"ink",b.title)}>Ink-saving</button>
             </div>
           </div>)}
         </div>
@@ -160,14 +215,14 @@ export default function PrintableVault(){
               <p className="text-xs font-extrabold uppercase tracking-wider text-emerald-900">{item.category}</p>
               <h3 className="font-display text-lg font-bold text-slate-900">{item.title}</h3>
               <p className="text-sm text-slate-600 flex-1">{item.description}</p>
-              <p className="text-xs text-slate-500">{item.pages} A4 image{item.pages>1?"s":""} · Ages {item.ages} · {item.minutes} mins</p>
+              <p className="text-xs text-slate-500">{item.pages} A4 image{item.pages>1?"s":""} · Ages {item.ages} · {item.minutes} mins{!item.available?" · Import pending":""}</p>
               <p className="text-xs text-stone-500">Materials: {item.materials}</p>
               <div className="flex flex-wrap gap-2 border-t pt-3">
-                <button className="rounded-full bg-emerald-900 text-white px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>openPreview(item)}><FileImage size={13} className="inline mr-1"/> View</button>
-                <button className="rounded-full border border-emerald-800 text-emerald-900 px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>print([item],"colour",item.title)}><Printer size={13} className="inline mr-1"/> Print / PDF</button>
-                <button className="rounded-full border border-stone-300 text-stone-700 px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>download(item)}><Download size={13} className="inline mr-1"/> Images</button>
-                <button className="rounded-full border border-stone-300 text-stone-700 px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>print([item],"ink",item.title)}>Ink-saving</button>
-                <button className="text-xs text-emerald-900 underline px-2 py-2 disabled:opacity-50" disabled={!data.unlocked||!!busy} onClick={()=>openPreview(item,"guide")}>Parent guide</button>
+                <button className="rounded-full bg-emerald-900 text-white px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy||!item.available} onClick={()=>openPreview(item)}><FileImage size={13} className="inline mr-1"/> View</button>
+                <button className="rounded-full border border-emerald-800 text-emerald-900 px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy||!item.available} onClick={()=>print([item],"colour",item.title)}><Printer size={13} className="inline mr-1"/> Print / PDF</button>
+                <button className="rounded-full border border-stone-300 text-stone-700 px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy||!item.available} onClick={()=>download(item)}><Download size={13} className="inline mr-1"/> Images</button>
+                <button className="rounded-full border border-stone-300 text-stone-700 px-3 py-2 text-xs font-bold disabled:opacity-50" disabled={!data.unlocked||!!busy||!item.ink_available} onClick={()=>print([item],"ink",item.title)}>Ink-saving</button>
+
               </div>
             </div>
           </article>)}
