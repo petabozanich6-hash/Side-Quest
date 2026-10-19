@@ -152,6 +152,10 @@ export function studentReview(lesson, spec) {
     "Read as a child who has never understood this concept. Does the teaching show you HOW before asking you to answer?", "",
     "## Introduction", "", String(lesson.introduction || "(missing)"),
   ];
+  // The child player presents supplied readings before the explanations.
+  (lesson.texts || []).forEach((t, i) => {
+    lines.push("", "## Supplied reading or data " + (i + 1) + ": " + (t.title || ""), "", String(t.content || "(missing)"));
+  });
   (lesson.sections || []).forEach((sec, i) => {
     lines.push("", "## Teaching " + (i + 1) + ": " + (sec.heading || ""), "", String(sec.body || "(missing)"));
   });
