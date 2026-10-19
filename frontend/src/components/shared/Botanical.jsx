@@ -40,18 +40,20 @@ export const Flower = ({ className = "", color = "#D4857A", size = 40 }) => (
 );
 
 // children are drawn on top of the pet inside its 120x120 drawing (used for worn prizes).
-export const Pet = ({ species = "fox", size = 120, happy = true, children }) => {
+export const Pet = ({ species = "fox", size = 120, happy = true, children, backChildren }) => {
   const bodyColor = {
     fox: "#C77B5B", owl: "#8B6F47", turtle: "#6B8A5B", hedgehog: "#9B7E5C",
-    fawn: "#D4A574", squirrel: "#B8755A", rabbit: "#E8E2D1", dragon: "#4A6D5A"
+    fawn: "#D4A574", squirrel: "#B8755A", rabbit: "#E8E2D1", dragon: "#4A6D5A", goblin: "#91B36D"
   }[species] || "#C77B5B";
   const accent = {
     fox: "#F5EFE0", owl: "#F5EFE0", turtle: "#D4A574", hedgehog: "#F5EFE0",
-    fawn: "#F5EFE0", squirrel: "#F5EFE0", rabbit: "#D4857A", dragon: "#D4857A"
+    fawn: "#F5EFE0", squirrel: "#F5EFE0", rabbit: "#D4857A", dragon: "#D4857A", goblin: "#DDEBB4"
   }[species] || "#F5EFE0";
 
   return (
     <svg width={size} height={size} viewBox="0 0 120 120" className="animate-bob" style={{ overflow: "visible" }}>
+      {/* Accessories that sit behind the original SVG pet (capes, wings, backpacks). */}
+      {backChildren}
       {/* Body */}
       <ellipse cx="60" cy="78" rx="34" ry="30" fill={bodyColor}/>
       {/* Belly */}
@@ -66,6 +68,13 @@ export const Pet = ({ species = "fox", size = 120, happy = true, children }) => 
       {species === "rabbit" && (<>
         <ellipse cx="45" cy="18" rx="7" ry="18" fill={bodyColor}/><ellipse cx="75" cy="18" rx="7" ry="18" fill={bodyColor}/>
         <ellipse cx="45" cy="20" rx="3" ry="12" fill={accent}/><ellipse cx="75" cy="20" rx="3" ry="12" fill={accent}/>
+      </>)}
+      {species === "goblin" && (<>
+        <path d="M37 41 Q20 30 12 36 Q15 52 39 53 Z" fill={bodyColor}/>
+        <path d="M83 41 Q100 30 108 36 Q105 52 81 53 Z" fill={bodyColor}/>
+        <path d="M33 43 Q22 39 19 41 Q24 47 35 48 Z" fill={accent}/>
+        <path d="M87 43 Q98 39 101 41 Q96 47 85 48 Z" fill={accent}/>
+        <path d="M47 21 L51 11 L57 20 L63 10 L69 22 Z" fill={bodyColor}/>
       </>)}
       {species === "owl" && (<>
         <circle cx="48" cy="42" r="10" fill={accent}/><circle cx="72" cy="42" r="10" fill={accent}/>
