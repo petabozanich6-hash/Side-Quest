@@ -618,7 +618,7 @@ export function examplePrompt(sp: Spec, design: any, i: number, texts: any[]): s
 function taughtSummary(taught: any): string {
   return [
     ...(taught.sections || []).map((s: any, i: number) => `Part ${i + 1}. ${s.heading}: ${s.body}`),
-    ...(taught.worked_examples || []).map((w: any) => `Worked example "${w.title}": ${w.problem} => ${w.answer}`),
+    ...(taught.worked_examples || []).map((w: any) => `Worked example "${w.title}": ${w.problem}. Modelled reasoning: ${(w.steps || []).join(" | ")}. Final model answer: ${w.answer}`),
     ...(taught.texts || []).map((t: any) => `Reading "${t.title}": ${t.content}`),
   ].join("\n");
 }
