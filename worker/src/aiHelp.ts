@@ -6,6 +6,7 @@ import * as lb from "./lessonBuilder";
 import type { Result } from "./lessonBuilder";
 import { extractJson, DEFAULT_MODEL } from "./aiDraft";
 import type { AiBinding } from "./aiDraft";
+import { AU_LANGUAGE_RULE, localiseGeneratedDraft, australianSpelling } from "./lessonLanguage";
 
 type DB = D1Database;
 export type HelpKind = "explain" | "example" | "hint";
@@ -98,6 +99,7 @@ const SYSTEM = [
   "TEACH the child; do not simply rephrase a textbook, recite rules or ask them to reread material they already found confusing. Start from one prerequisite they know, explain what the new idea means, then demonstrate an ENTIRE different example step by step, telling them WHY each step works. If a method has a confusing name, show its meaning before using the name. Use short sentences suited to their year level. Be encouraging without being babyish. Maths working goes on separate lines using plain text (e.g. 34 + 28, 30 + 20 = 50, 4 + 8 = 12, 50 + 12 = 62). Never give answers to the child's actual unanswered questions. Do not use markdown headings, tables or LaTeX.",
   "Never state the final answer to the question the child is working on, and never mark or grade it. Teach the idea so the child can work it out.",
   "Keep the whole reply under 150 words. Only facts you are sure are true.",
+  AU_LANGUAGE_RULE,
 ].join("\n");
 
 const KIND_TEXT: Record<HelpKind, string> = {
@@ -187,8 +189,15 @@ export async function helpForChild(
   }
   out = out.replace(/\*\*|__|^#+\s*/gm, "").trim().slice(0, 1400);
   if (out.length < 20) { await mark("failed"); return lb.fail(502, "The helper didn't answer. Nothing was used up. Please try again.", "AI_FAILED"); }
+  // Keep modelled examples in Australian spelling, but never reveal the
+  // underlying graded answer, even when the spellings differ.
   if (leaksAnswer(out, bits.answers)) {
     await mark("failed"); // a safe nudge instead; it costs the family nothing against their allowance
+    return { ok: true, text: bits.hint || FALLBACK[kind], source: "fallback", remaining_today: st.remaining_today ?? 0 };
+  }
+  out = localiseGeneratedDraft({ text: out }, String(lesson.learning_area || ""), String(lesson.title || "")).text;
+  if (leaksAnswer(out, [...bits.answers, ...bits.answers.map(australianSpelling)])) {
+    await mark("failed");
     return { ok: true, text: bits.hint || FALLBACK[kind], source: "fallback", remaining_today: st.remaining_today ?? 0 };
   }
   await mark("ok");

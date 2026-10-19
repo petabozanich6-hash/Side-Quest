@@ -844,7 +844,7 @@ test("maths prompts teach algebra instead of merely stating rules", () => {
   assert.match(focus, /both sides/i);
   assert.match(focus, /because|WHY/i);
   assert.match(focus, /ORIGINAL equation/i);
-  assert.match(aid.designPrompt(base), /ACTUAL concrete example/i);
+  assert.match(aid.designPrompt(base), /SPECIFIC demonstration with actual numbers|concrete example with numbers/i);
   const design = {
     concept: "Solve and check a one-step equation",
     key_words: [{ word: "variable", meaning: "a letter for a number" }],
@@ -855,7 +855,7 @@ test("maths prompts teach algebra instead of merely stating rules", () => {
   const teaching = aid.sectionPrompt(base, design, 0, []);
   assert.match(teaching, /3 \+ 2 = 5/); // keep the planned actual model, not just the section title
   assert.match(teaching, /WHY|why/i);
-  assert.match(aid.examplePrompt(base, design, 0, []), /ORIGINAL problem/);
+  assert.match(aid.examplePrompt(base, design, 0, []), /verify in the original|check by substitution|original equation/i);
   const expressionOnly = aid.mathsTeachingFocus({ ...base, topic: "Understanding algebraic expressions", goal: "Collect like terms" });
   assert.match(expressionOnly, /ALGEBRA EXPRESSIONS/);
   assert.doesNotMatch(expressionOnly, /ALGEBRA EQUATIONS/);
@@ -889,6 +889,48 @@ test("equation lessons must demonstrate why an operation works and check the res
     "Both sides give nine, so the answer is correct.",
   ] }, ...original.worked_examples.slice(1)] };
   assert.equal(aid.qualityIssues(taught, spec).some((i) => /equation-solving teaching must/i.test(i.msg)), false);
+});
+
+test("teaching prompts actually model the method in each subject, not just assign it", () => {
+  const base = { topic: "Teach one concept", area: "", year: "Year 7", goal: "", minutes: 30,
+    delivery: "independent", interests: "", needs: "", notes: "" };
+  const cases = [
+    ["English", "Inferring emotion from fiction", /think aloud|THINK ALOUD/i],
+    ["Science", "Condensation in the water cycle", /mechanism|cause.and.effect/i],
+    ["History", "Analysing a historical source", /evidence.supported claim|evidence/i],
+    ["Geography", "Using mapped evidence", /evidence|spatial/i],
+    ["Technologies", "Debugging an algorithm", /input|code|debug/i],
+    ["The Arts", "Drawing tone and texture", /technique|demonstrate/i],
+  ];
+  for (const [area, topic, guide] of cases) {
+    const spec = { ...base, area, topic };
+    assert.match(aid.subjectGuide(area), guide, area);
+    assert.match(aid.designPrompt(spec), /SPECIFIC demonstration|ACTUAL concrete example/);
+    const design = {
+      concept: "Learn the idea", sequence: [{ heading: "One idea", idea: "The idea", how: "Demonstrate sample A and why", key_points: ["what and why"] }],
+      worked_examples: [{ title: "A full model", problem: "A concrete example", skill: "show and explain" }],
+      misconceptions: [],
+    };
+    assert.match(aid.sectionPrompt(spec, design, 0, []), /THINK ALOUD/i, area);
+    assert.match(aid.examplePrompt(spec, design, 0, []), /specific|REAL move|WHY/i, area);
+    assert.match(aid.practiceAPrompt(spec, design, { sections: [{ heading: "One idea", body: "I will show the reasoning." }],
+      worked_examples: [{ title: "Model", problem: "Example A", steps: ["A SPECIFIC STEP: here is the teaching reason."], answer: "Model result" }] }),
+      /A SPECIFIC STEP: here is the teaching reason/, area);
+  }
+});
+
+test("all-subject quality gate rejects worked examples consisting only of generic orders", () => {
+  const neutral = { area: "English", topic: "Explain a character's feelings", year: "Year 7", goal: "",
+    minutes: 60, delivery: "independent", interests: "", needs: "", notes: "" };
+  const original = aid.normaliseDraft(GARDEN, neutral);
+  const vague = { ...original, worked_examples: original.worked_examples.map((w) => ({ ...w,
+    steps: ["First read the instructions.", "Next follow the rule.", "Then apply the strategy.", "Finally check your answer."],
+  })) };
+  const issues = aid.qualityIssues(vague, neutral);
+  assert.ok(issues.some((x) => x.hard && x.repair && /generic instructions/.test(x.msg)));
+  const better = { ...vague, worked_examples: [{ ...vague.worked_examples[0],
+    steps: ["I notice the character is trembling while they speak.", "Because trembling can happen when people are afraid, I infer the character is worried.", "I use that actual detail to support the inference."] }, ...vague.worked_examples.slice(1)] };
+  assert.equal(aid.qualityIssues(better, neutral).some((x) => /generic instructions/.test(x.msg)), false);
 });
 
 test("truncated model output is salvaged to the last complete item", () => {

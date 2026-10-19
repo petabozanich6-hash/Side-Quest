@@ -12,6 +12,19 @@ on:
           - gemma
           - baseline
           - all-three
+      fixture:
+        description: "Which synthetic lesson should the actual AI generator teach?"
+        type: choice
+        required: true
+        default: year3-place-value
+        options:
+          - year3-place-value
+          - year7-algebra
+          - year4-english
+          - year5-science
+          - year7-history
+          - year5-technologies
+          - year4-arts
       confirm_charge:
         description: "Type RUN to authorise a small real inference test (possibly billable)"
         required: true
@@ -42,10 +55,23 @@ jobs:
             *) exit 1 ;;
           esac
       - name: Show zero-call dry run
+        env:
+          BENCHMARK_FIXTURE: ${{ inputs.fixture }}
         run: node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs --dry-run
       - name: Run bounded real synthetic test
         env:
           BENCHMARK_MODELS: ${{ steps.choose.outputs.models }}
+          BENCHMARK_FIXTURE: ${{ inputs.fixture }}
+          BENCH_REPORT_DIR: ${{ runner.temp }}/sidequest-ai-benchmark
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs
+
+      - name: Upload synthetic lesson and child's teaching review
+        if: ${{ always() && inputs.confirm_charge == 'RUN' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-lesson-teaching-review
+          path: ${{ runner.temp }}/sidequest-ai-benchmark/
+          if-no-files-found: warn
+          retention-days: 3
