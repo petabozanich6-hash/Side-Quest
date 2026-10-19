@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Wand2, Compass, MessageSquare, MailCheck, ArrowRight, ScrollText, BookMarked, Printer } from "lucide-react";
+import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Compass, MailCheck, ArrowRight, ScrollText, BookMarked } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
@@ -193,7 +193,7 @@ export default function ParentDashboard() {
         const assigned = data.students.reduce((n, s) => n + (s.total_assignments || 0), 0);
         const steps = [
           { done: kids > 0, label: "Add your child", to: "/parent/children", cta: "Add a child" },
-          { done: lessons > 0, label: "Create a lesson", to: "/parent/lessons/new", cta: "Build your first lesson" },
+          { done: lessons > 0, label: "Create a lesson", to: "/parent/lessons/make", cta: "Make your first lesson" },
           { done: assigned > 0, label: "Assign it to your child", to: "/parent/lessons", cta: "Choose a lesson" },
           { done: data.students.some(s => s.completed > 0), label: "Review their work after a lesson", to: pendingTotal ? "#waiting" : "/parent/assignments", cta: pendingTotal ? "Review submitted work" : "View assigned lessons" },
         ];
@@ -275,14 +275,11 @@ export default function ParentDashboard() {
         <h2 className="font-display text-xl font-bold mb-4" style={{color:"#1F3B2D"}}>Jump in</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           <Quick to="/parent/lessons/make" icon={BookOpen} label="Make a lesson" desc={plan?.effective_plan === "FREE_PREVIEW" ? "Try your family’s one free AI-generated lesson, or build a lesson yourself" : "Let AI draft a lesson, or build one yourself"} tint="#C77B5B" testid="quick-create-lesson"/>
-          <Quick to="/parent/lessons" icon={Printer} label="Print a lesson" desc="Printable student workbooks and parent teaching guides, straight from My lessons" tint="#4A5D3A" testid="quick-print-lesson"/>
           <Quick to="/parent/children" icon={Plus} label="Add a student" desc="Set up a child with username and PIN" tint="#4A5D3A" testid="quick-add-student"/>
-          <Quick to="/parent/side-quest" icon={Wand2} label="Seasonal surprises" desc="Choose the optional seasonal touches your family wants in your children’s pet rooms" tint="#D4A574" testid="quick-sidequest"/>
           <Quick to="/parent/life-learning" icon={Trees} label="Log life learning" desc="Baking, bushwalks, projects — map them to outcomes" tint="#6B8A5B" testid="quick-life"/>
-          <Quick to="/parent/homeschool-compass" icon={Compass} label="Homeschooling Compass" desc="State-specific registration steps, official resources and renewal planning" tint="#1F3B2D" testid="quick-homeschool-compass"/>
+          <Quick to="/parent/homeschool-compass" icon={Compass} label="Homeschooling Compass" desc="Australian state and territory registration guidance, official resources and renewal planning" tint="#1F3B2D" testid="quick-homeschool-compass"/>
           <Quick to="/parent/learning-plans" icon={FileCheck} label="Build a learning plan" desc="Organise what you plan to teach and keep it alongside your records" tint="#1F3B2D" testid="quick-plan"/>
           <Quick to="/parent/reading-log" icon={BookOpen} label="Add to reading log" desc="Track every book, chapter and audiobook for records" tint="#C8893B" testid="quick-reading"/>
-          <Quick to="/parent/feedback" icon={MessageSquare} label="Send ideas or feedback" desc="Problems, suggestions or thoughts? Send them directly to the Side-Quest team" tint="#C77B5B" testid="quick-feedback"/>
           <Quick to="/parent/evidence" icon={Camera} label="Evidence Backpack" desc="See reviewed work, life learning and portfolio records for each child" tint="#4A5D3A" testid="quick-evidence"/>
         </div>
       </section>
