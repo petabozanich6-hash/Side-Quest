@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { isKidsDevice, isKidsHost, isStandalone } from "../lib/pwa";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
 import InstallApp from "../components/shared/InstallApp";
+import PublicHelpFaq from "../components/shared/PublicHelpFaq";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
@@ -45,6 +46,7 @@ export default function Landing() {
             </div>
           </div>
           <nav className="flex w-full sm:w-auto flex-wrap items-center gap-2 sm:gap-4" aria-label="Main navigation">
+            <a href="#help-faq" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-public-help">Help &amp; FAQ</a>
             <Link to="/child-login" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
             <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
             <Link to="/register" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-semibold hover:translate-y-[-1px] transition shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="nav-register">Start free preview</Link>
@@ -56,15 +58,15 @@ export default function Landing() {
       <section className="relative z-10 mx-auto max-w-7xl px-6 pt-10 pb-16 grid lg:grid-cols-5 gap-10 items-center">
         <div className="lg:col-span-3">
           <span className="inline-flex max-w-full items-center gap-2 rounded-full px-3 sm:px-4 py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wide sm:tracking-widest" style={{backgroundColor:"#E8E2D1", color:"#4A5D3A"}}>
-            <Sparkles size={13}/> Made for homeschool families across Australia
+            <Sparkles size={13}/> Built in Australia, welcoming families everywhere
           </span>
           <h1 className="mt-6 font-display font-bold tracking-tight leading-[1.02]" style={{color:"#1F3B2D"}}>
             <span className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl">Less time planning.</span>
             <span className="block text-4xl sm:text-5xl md:text-5xl lg:text-6xl italic mt-2" style={{color:"#4A5D3A"}}>More time learning together.</span>
           </h1>
           <p className="mt-6 text-lg leading-relaxed max-w-2xl" style={{color:"#52473A"}}>
-            Homeschooling has plenty of wonderful moments — and plenty to organise. Side-Quest brings lesson planning, your children's learning and progress records into one friendly place.
-            Try one complete AI-generated lesson for your family during your free preview. Family Membership unlocks ongoing AI lesson building, editing and lesson sets — so you can keep planning from a useful starting point instead of a blank page. Children get their own learning space, with a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span> along for the adventure.
+            Homeschooling has enough moving parts without juggling a dozen apps. Side-Quest gives your family one friendly home for lessons, schedules, learning records and those wonderful discoveries that happen nowhere near a desk.
+            Build lessons yourself or begin with a thoughtfully structured draft to review and make yours. Children get their own learning space to complete work, celebrate progress and adventure alongside a <span className="font-script text-xl" style={{color:"#C77B5B"}}>pocket pet companion</span>. You stay in charge of the journey.
           </p>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl" data-testid="who-is-here">
@@ -87,11 +89,10 @@ export default function Landing() {
             </Link>
           </div>
 
-          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Start with seven days free, no card or automatic charge. Your preview includes one child, two manual lessons, two active assignments and one complete AI-generated lesson per family.</p>
+          <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Start with seven days free, no card or automatic charge. Your preview includes one child, two lessons you make yourself, two active assignments and one generated lesson draft for your family.</p>
           <p className="mt-7 text-xs leading-relaxed max-w-xl" style={{color:"#7A6E5D"}}>
-            Made for home-educating families across Australia. You'll find official curriculum,
-            registration and record-keeping resources for your state or territory in the Curriculum hub.
-            You remain responsible for checking local requirements; Side-Quest supports your teaching, not replaces it.
+            Australian families can choose their state or territory for official curriculum and registration links and available outcome tools.
+            Outside Australia? Choose “Other” to plan lessons and track your own learning goals. We don't supply curriculum codes or registration guidance for other countries. You remain responsible for checking local requirements.
           </p>
         </div>
         <div className="lg:col-span-2 relative">
@@ -131,11 +132,11 @@ export default function Landing() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
           <Feature icon={Users} title="Your family, one home base" desc="Set up child profiles, plan their learning and keep each child’s work organised privately in your family account." tint="#4A5D3A"/>
-          <Feature icon={Sparkles} title="AI Lesson Builder" desc="Try one complete AI-created lesson free during your seven-day preview, per family. Review and adapt its teaching, examples, activities and questions. Membership unlocks ongoing drafting, AI edits and lesson sets." tint="#C77B5B"/>
+          <Feature icon={Sparkles} title="Make lessons your way" desc="Start with a topic and shape a structured lesson draft — or build one yourself from scratch. Your family can try one generated draft in the free preview; membership includes ongoing drafting and editing." tint="#C77B5B"/>
           <Feature icon={Camera} title="Evidence Backpack" desc="Your free preview shows a summary and one detailed entry. Family Membership unlocks full records, everyday learning evidence and portfolio exports." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="A plan you can actually change" desc="Family Membership includes the editable family calendar, weekly timetables and Auto-Quest planning. Change the schedule when life changes — because it will." tint="#C8893B"/>
-          <Feature icon={BookOpen} title="Progress and learning records" desc="See completed work, review progress and organise evidence for your family's learning journey. Find your state's official curriculum and registration resources in the Curriculum hub." tint="#4A5D3A"/>
-          <Feature icon={Printer} title="Online or hands-on" desc="Children can work through lessons on screen. Family Membership adds life-learning evidence, file attachments and offline lesson access." tint="#D4A574"/>
+          <Feature icon={BookOpen} title="Progress and learning records" desc="Review completed work and keep evidence together. Australian families get official links and available outcome trackers; families using Other can define their own learning goals." tint="#4A5D3A"/>
+          <Feature icon={Printer} title="Books, printables and hands-on learning" desc="Explore Dragon’s Library for book ideas and links to legitimate reading sources. Paid members also have the Printable Vault, lesson printing and offline child learning." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
           <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP and grow their pocket pets as they learn. Families can also opt into seasonal surprises — a little fun along the way." tint="#C77B5B"/>
           <div className="col-span-full mt-2 paper-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="homepage-homeschool-compass">
@@ -165,7 +166,7 @@ export default function Landing() {
           <div className="paper-card p-6">
             <span className="text-xs font-bold uppercase tracking-wider" style={{color:"#4A5D3A"}}>For parents</span>
             <h3 className="font-display text-xl font-bold mt-2" style={{color:"#1F3B2D"}}>Plan and prepare, without starting from zero</h3>
-            <p className="text-sm text-stone-600 leading-relaxed mt-3">Your dashboard brings lessons, assignments, calendar plans and work waiting for review into view. Build a lesson yourself, or let AI create a first draft for you to check.</p>
+            <p className="text-sm text-stone-600 leading-relaxed mt-3">Your dashboard brings lessons, assignments, calendar plans and work waiting for review into view. Start with your own lesson or a suggested draft, then review it before assigning.</p>
           </div>
           <div className="paper-card p-6">
             <span className="text-xs font-bold uppercase tracking-wider" style={{color:"#4A5D3A"}}>For children</span>
@@ -203,11 +204,11 @@ export default function Landing() {
             <div><div className="font-script text-2xl" style={{color:"#4A5D3A"}}>The whole enchanted toolbox</div><h3 className="font-display text-2xl font-bold mt-1" style={{color:"#1F3B2D"}}>Family Membership</h3><p className="text-sm text-stone-600 mt-2">One family payment. Every advanced tool included.</p></div>
             <ul className="space-y-2 text-sm leading-relaxed text-stone-800 list-disc pl-5">
               <li>Up to 20 children, 5,000 lessons and 5,000 active assignments*</li>
-              <li>Ongoing AI lesson drafting, AI editing, lesson sets and guided child assistance*</li>
+              <li>Ongoing guided lesson drafting, editing, lesson sets and optional child hints*</li>
               <li>Advanced learning plans, manual calendar, timetables and Auto-Quest</li>
               <li>Full Evidence Backpack, life-learning records and outcome evidence management</li>
-              <li>Resource tools, Word Hoard authoring and file uploads*</li>
-              <li>Offline learning for children and full portfolio exports</li>
+              <li>Printable Vault activities, saved resources, Word Hoard authoring and file uploads*</li>
+              <li>Offline learning for children, full portfolio exports and family-defined learning goals for “Other” regions</li>
             </ul>
             <p className="text-xs text-stone-600 border-t pt-3" style={{borderColor:"#D4C8A8"}}>*Family-wide fair-use limits apply to AI and records. Active uploaded file storage is limited to 250 MB per family. Every payment option unlocks the same membership.</p>
             <Link to="/register" className="inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold" style={{backgroundColor:"#1F3B2D",color:"#F5EFE0"}}>Start with your free preview <ArrowRight size={16}/></Link>
@@ -235,7 +236,7 @@ export default function Landing() {
             </div>
           ))}
         </div>
-        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview including one AI-generated lesson per family. Family Membership supports up to 20 child profiles and ongoing AI lesson drafting with fair-use limits. All four billing options include the same features; cancel any time and paid access normally continues through the current billing period.</p>
+        <p className="mt-5 text-center text-sm text-stone-600">Start with a 7-day, card-free preview including one generated lesson for your family. Family Membership supports up to 20 child profiles and ongoing lesson drafting with fair-use limits. All four billing options include the same features; cancel any time and paid access normally continues through the current billing period.</p>
         <div className="mt-6 flex justify-center"><Link to="/register" className="rounded-full px-6 py-3 font-semibold text-sm shadow-sm" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}}>Start your free preview</Link></div>
       </section>
 
@@ -260,8 +261,10 @@ export default function Landing() {
         </div>
       </section>
 
+      <PublicHelpFaq />
+
       <footer className="relative z-10 border-t py-10 text-center text-xs" style={{color:"#7A6E5D", borderColor:"#D4C8A8"}}>
-        <p>Side-Quest Learning · Built for homeschool families across Australia.</p>
+        <p>Side-Quest Learning · Australian-made homeschooling tools for families near and far.</p>
         <p className="mt-1 font-script text-base" style={{color:"#C77B5B"}}>Made with care for homeschool families.</p>
       </footer>
     </div>
