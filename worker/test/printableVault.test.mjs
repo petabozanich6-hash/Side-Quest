@@ -53,13 +53,13 @@ test("Only the ten premium illustrated activities remain; old SVG and PDF routes
  assert.equal(data.items.length,10);
  assert.ok(data.items.every(i=>i.pages===1&&i.format==="png"&&!i.available));
  assert.ok(data.items.every(i=>i.kind!=="worksheet"));
- assert.equal(data.art_review_only,true);
+ assert.equal(data.art_review_only,false);
  assert.equal(data.unlocked,false);
  assert.equal((await h.req("/printables/dragon-hoard/pdf",p.token)).status,404);
  const unauthorized=await h.req("/printables/lost-treasure-maze/image",p.token);
  assert.equal(unauthorized.status,402);
 });
-test("Non-owner preview, child and paid customer cannot upload or get pre-release artwork",async()=>{
+test("Owner-only import is enforced for free, paid and child accounts; free remains locked",async()=>{
  const h=harness(),p=await h.parent("FREE_PREVIEW"),paid=await h.parent("ACTIVE_MONTHLY");
  const child=await h.child(p);
  const fake=new Uint8Array(33);
@@ -67,7 +67,7 @@ test("Non-owner preview, child and paid customer cannot upload or get pre-releas
  const dv=new DataView(fake.buffer);dv.setUint32(16,2480);dv.setUint32(20,3508);
  for(const who of [p.token,paid.token,child]){
   assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze",who,"POST",fake,"image/png")).status,who===child?403:403);
-  assert.equal((await h.req("/printables/lost-treasure-maze/image",who)).status,who===child?403:402);
+  assert.equal((await h.req("/printables/lost-treasure-maze/image",who)).status,who===child?403:who===paid.token?404:402);
  }
  assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze",undefined,"POST",fake,"image/png")).status,401);
 });
@@ -94,4 +94,47 @@ test("Only verified owner imports a valid 2480x3508 A4 PNG to private R2 and rea
  const invalid=new Uint8Array(30);
  assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze",p.token,"POST",invalid,"image/png")).status,400);
  assert.equal((await h.req("/printables/admin/assets/missing",p.token,"POST",bytes,"image/png")).status,404);
+});
+
+test("Owner uploads become immediately viewable and printable by paid families, never free or expired families",async()=>{
+ const h=harness();
+ const owner=await h.parent("FREE_PREVIEW");
+ const monthly=await h.parent("ACTIVE_MONTHLY");
+ const weekly=await h.parent("ACTIVE_WEEKLY");
+ const expired=await h.parent("PREVIEW_EXPIRED");
+ const preview=await h.parent("FREE_PREVIEW");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')")
+   .run(crypto.randomUUID(),owner.userId);
+ const bytes=new Uint8Array(33);
+ for(const [i,b] of [137,80,78,71,13,10,26,10].entries())bytes[i]=b;
+ const dv=new DataView(bytes.buffer);dv.setUint32(16,2480);dv.setUint32(20,3508);
+ const name="/printables/lost-treasure-maze/image";
+ assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze",owner.token,"POST",bytes,"image/png")).status,200);
+ assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze?variant=ink",owner.token,"POST",bytes,"image/png")).status,200);
+ for(const paid of [monthly,weekly]){
+   const catalogue=await (await h.req("/printables",paid.token)).json();
+   assert.equal(catalogue.owner,false);
+   assert.equal(catalogue.unlocked,true);
+   assert.equal(catalogue.art_review_only,false);
+   assert.equal(catalogue.ready_count,1);
+   assert.equal(catalogue.items.length,10);
+   assert.equal(catalogue.items.find(i=>i.id==="lost-treasure-maze").available,true);
+   assert.equal(catalogue.items.find(i=>i.id==="lost-treasure-maze").ink_available,true);
+   assert.equal(catalogue.items.find(i=>i.id==="moving-dragon-puppet").available,false);
+   for(const route of [name,name+"?variant=ink"]){
+     const image=await h.req(route,paid.token);
+     assert.equal(image.status,200);
+     assert.match(image.headers.get("content-type")||"",/image\/png/);
+     assert.equal(image.headers.get("cache-control"),"private, no-store");
+   }
+   assert.equal((await h.req("/printables/admin/assets/lost-treasure-maze",paid.token,"POST",bytes,"image/png")).status,403);
+ }
+ for(const blocked of [preview,expired]){
+   const catalogue=await (await h.req("/printables",blocked.token)).json();
+   assert.equal(catalogue.unlocked,false);
+   assert.equal(catalogue.items.find(i=>i.id==="lost-treasure-maze").available,false);
+   assert.equal((await h.req(name,blocked.token)).status,402);
+   assert.equal((await h.req(name+"?variant=ink",blocked.token)).status,402);
+ }
+ assert.equal((await h.req(name)).status,401);
 });
