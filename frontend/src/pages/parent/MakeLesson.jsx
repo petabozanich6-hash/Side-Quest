@@ -28,6 +28,7 @@ function Progress({ label }) {
 export default function MakeLesson() {
   const nav = useNavigate();
   const [plan, setPlan] = useState(null);
+  const [aiStatus, setAiStatus] = useState(undefined);
   const [students, setStudents] = useState([]);
   const [qs] = useSearchParams(); // ?prompt=&student= from the Outcome tracker's gap suggestions
   const [student, setStudent] = useState(qs.get("student") || "");
@@ -46,6 +47,7 @@ export default function MakeLesson() {
 
   useEffect(() => {
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => setPlan({ limits: {} }));
+    api.get("/ai/status").then(r => setAiStatus(r.data)).catch(() => setAiStatus(null));
     api.get("/students").then(r => { setStudents(r.data); if (r.data.length === 1) setStudent(r.data[0].id); else if (!r.data.some(x => x.id === qs.get("student"))) setStudent(""); }).catch(() => {});
     api.get("/auth/me").then(r => { setJurisdiction(r.data?.jurisdiction || null); setIsPlatformOwner(r.data?.is_platform_owner === true); }).catch(() => {});
   }, []);
@@ -63,6 +65,10 @@ export default function MakeLesson() {
     setErr("");
     if (students.length > 1 && !student) { setErr("Choose which child this lesson is for."); return; }
     const intent = lessonRequestIntent(text, !!resource.trim());
+    if (plan?.effective_plan === "FREE_PREVIEW" && (intent.type === "multi_subject" || intent.type === "series")) {
+      setErr("Your free AI sample creates one complete lesson. Please ask for one lesson (you can combine subjects within that single lesson). Lesson sets are available with Family Membership.");
+      return;
+    }
     if (intent.type === "multi_subject" && intent.blockedBySource) {
       setErr("To make separate lessons, please remove the shared worksheet or passage first. You can paste it into each lesson individually so nothing is left out.");
       return;
@@ -95,8 +101,10 @@ export default function MakeLesson() {
     } catch (e) { fail(e); setBusy(""); }
   };
 
-  if (!plan) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
-  const allowed = !!plan.limits?.aiGeneration;
+  if (!plan || (plan.effective_plan === "FREE_PREVIEW" && aiStatus === undefined)) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
+  const freePreview = plan.effective_plan === "FREE_PREVIEW";
+  const freeRemaining = freePreview && aiStatus?.usage?.preview?.remaining > 0;
+  const allowed = !!plan.limits?.aiGeneration || freeRemaining;
   const field = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base";
 
   return (
@@ -110,7 +118,11 @@ export default function MakeLesson() {
       {!allowed ? (
         <div className="rounded-2xl border border-violet-200 bg-violet-50/70 p-5 text-sm space-y-3" data-testid="ai-upsell">
           <p className="font-semibold text-violet-900 flex items-center gap-1"><Sparkles size={16} /> Make it for me</p>
-          <p className="text-slate-700">Having Side-Quest write the whole lesson for you is part of the paid Family Membership. The free preview includes the full lesson builder, so you can still create lessons yourself.</p>
+          <p className="text-slate-700">{freePreview
+            ? aiStatus?.usage?.preview?.in_progress
+              ? "Your family's free AI lesson is already being written. Please wait for it to finish before starting another."
+              : "Your family has used its one free AI lesson. Family Membership unlocks more AI-generated lessons and lesson sets. You can still write lessons yourself during your preview."
+            : "Ongoing AI lesson building is part of Family Membership. Your free preview includes the manual lesson builder, so you can still create lessons yourself."}</p>
           <div className="flex gap-2 flex-wrap"><Link to="/parent/plan" className="rounded-full bg-violet-700 text-white px-4 py-2 font-semibold">See plans</Link><Link to="/parent/lessons/new" className="rounded-full border border-slate-900 bg-white px-4 py-2 font-semibold">Build one myself</Link></div>
         </div>
       ) : outline ? (
@@ -159,6 +171,9 @@ export default function MakeLesson() {
       ) : (
         <div className="rounded-2xl border-2 border-violet-300 bg-white p-5 sm:p-6 space-y-4 shadow-sm" data-testid="make-for-me">
           <h2 className="font-display text-xl font-bold flex items-center gap-2"><Sparkles size={20} className="text-violet-700" /> Make it for me</h2>
+          {freePreview && freeRemaining && <p className="rounded-xl border border-violet-200 bg-violet-50 p-3 text-sm text-violet-950" data-testid="free-ai-sample">
+            <strong>One free AI lesson for your family!</strong> Try the full lesson writer once during your seven-day preview. Only one lesson is included, not a set. A successful draft uses the free sample permanently; failed generation attempts do not.
+          </p>}
           <div>
             <label className="font-semibold text-slate-900" htmlFor="mk-text">What would you like to teach?</label>
             <textarea id="mk-text" rows={3} value={text} onChange={e => setText(e.target.value)} maxLength={1200} className={`${field} mt-1`} placeholder={EXAMPLES[0]} data-testid="mk-text" disabled={!!busy} />
@@ -194,7 +209,7 @@ export default function MakeLesson() {
                 <span><strong>Owner-only comparison: use original generation</strong> — turn this on to compare the older, slower sequence. Leave it off to use the faster writing sequence now available to paid families. Lesson explanations, examples, activities and quality checks are unchanged.</span>
               </label>
             )}
-            <button onClick={create} disabled={text.trim().length < 5} className="w-full sm:w-auto rounded-full bg-violet-700 text-white px-8 py-3 text-base font-bold disabled:opacity-50" data-testid="mk-go">Create My Lesson</button>
+            <button onClick={create} disabled={text.trim().length < 5} className="w-full sm:w-auto rounded-full bg-violet-700 text-white px-8 py-3 text-base font-bold disabled:opacity-50" data-testid="mk-go">{freeRemaining ? "Create My One Free AI Lesson" : "Create My Lesson"}</button>
             </>
           )}
           {err && <p role="alert" className="text-sm text-rose-700" data-testid="mk-error">{err}</p>}
