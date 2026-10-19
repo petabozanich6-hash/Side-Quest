@@ -85,13 +85,11 @@ export function registerPets(app: App, g: Guards) {
     if (!(species in PET_SPECIES)) return jsonDetail(c, "Unknown species", 400);
     if (await loadPet(c.env.DB, user.id)) return jsonDetail(c, "Pet already exists", 400);
     const pet = makePet(user.id, user.family_id, String(body.name || ""), species);
-    // XP already earned from reviewed lessons before the pet was chosen is not lost.
-    try {
-      const earned = await c.env.DB.prepare("SELECT COALESCE(SUM(xp_awarded), 0) n FROM assignments WHERE student_id = ?").bind(user.id).first<{ n: number }>();
-      pet.xp = Number(earned?.n || 0);
-    } catch { /* column missing on an unmigrated database */ }
+    // Historical submissions and reviews are credited once by syncPetProgress.
+    // Preloading xp_awarded here used to double count those same lessons.
     await insertPet(c.env.DB, pet);
-    return c.json(legacyPetView(pet));
+    const synced = await loadSyncedPet(c.env.DB, user.id);
+    return c.json(legacyPetView(synced || pet));
   });
 
   app.post("/api/pet/feed", g.auth, g.child, async (c) => {
