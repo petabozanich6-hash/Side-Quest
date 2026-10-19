@@ -103,13 +103,23 @@ export function registerPets(app: App, g: Guards) {
   });
 
   app.post("/api/pet/play", g.auth, g.child, async (c) => {
-    const pet = await loadSyncedPet(c.env.DB, c.get("user").id);
+    // Legacy mobile clients must share the SAME daily cap as the care endpoint.
+    // Otherwise repeatedly tapping an old play action could farm unlimited XP.
+    const now = new Date();
+    const pet = await loadSyncedPet(c.env.DB, c.get("user").id, now);
     if (!pet) return jsonDetail(c, "No pet yet", 404);
-    const ts = nowIso();
+    if (pet.care_paused) return jsonDetail(c, "Care is paused by your parent", 400);
+    if (pet.care_status === "asleep") return jsonDetail(c, "Your pet is asleep - feed it to wake it up", 400);
+    const today = now.toISOString().slice(0, 10);
+    const count = pet.play_day === today ? pet.play_count : 0;
+    if (count >= PLAY_DAILY_CAP) return jsonDetail(c, "Your pet is tired - play again tomorrow", 400);
+    const ts = now.toISOString();
+    pet.play_day = today;
+    pet.play_count = count + 1;
     pet.happiness = Math.min(100, pet.happiness + 8);
-    pet.xp += 2;
+    pet.xp += PLAY_XP;
     pet.last_played = ts;
-    pet.activity = [...pet.activity, { amount: 2, reason: "Played with pet", at: ts }];
+    pet.activity = [...pet.activity, { amount: PLAY_XP, reason: "Played with pet", at: ts }];
     await savePet(c.env.DB, pet);
     return c.json({ happiness: pet.happiness, xp: pet.xp });
   });
