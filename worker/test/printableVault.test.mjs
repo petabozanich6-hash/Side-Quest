@@ -60,13 +60,15 @@ test("Free, child, expired and unauthenticated cannot obtain protected images",a
   assert.equal((await h.req(endpoint,child)).status,403);
   const r=await h.req(endpoint,p.token);
   assert.equal(r.status,402);
-  assert.equal((await r.json()).code,"UPGRADE_REQUIRED");
+  assert.equal((await r.json()).code,"VAULT_REVIEW_ONLY");
  }
  h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(p.id);
  assert.equal((await h.req("/printables/escape-pumpkin-patch/image",p.token)).status,402);
 });
-test("Paid families receive private A4 SVGs and separate parent guides",async()=>{
- const h=harness(),p=await h.parent("ACTIVE_MONTHLY");
+test("Owner review receives private A4 SVGs and separate parent guides",async()=>{
+ const h=harness(),p=await h.parent("FREE_PREVIEW");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')")
+  .run(crypto.randomUUID(),p.userId);
  const catalogue=(await (await h.req("/printables",p.token)).json()).items;
  for(const item of catalogue){
   for(let page=0;page<item.pages;page++){
@@ -98,4 +100,14 @@ test("Verified owner can review; ordinary free family remains locked",async()=>{
  assert.equal((await (await h.req("/printables",owner.token)).json()).unlocked,true);
  assert.equal((await h.req("/printables/pumpkin-face-creator/image",owner.token)).status,200);
  assert.equal((await h.req("/printables/pumpkin-face-creator/image",other.token)).status,402);
+});
+
+test("Even subscribed customers cannot access under-review artwork until it is approved",async()=>{
+ const h=harness(),subscriber=await h.parent("ACTIVE_MONTHLY");
+ const data=await (await h.req("/printables",subscriber.token)).json();
+ assert.equal(data.art_review_only,true);
+ assert.equal(data.unlocked,false);
+ const r=await h.req("/printables/haunted-castle-maze/image",subscriber.token);
+ assert.equal(r.status,402);
+ assert.equal((await r.json()).code,"VAULT_REVIEW_ONLY");
 });
