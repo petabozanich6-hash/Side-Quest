@@ -160,6 +160,7 @@ export default function EvidencePage() {
       <header>
         <h1 data-tour="tour-evidence" className="font-display text-3xl font-bold text-slate-900">Evidence Backpack</h1>
         <p className="text-sm text-slate-600 mt-1">A home for your family’s learning portfolio: parent-approved lessons, notes from everyday learning and progress records. Review work waiting for you on the dashboard.</p>
+        <Link to="/parent/audit" className="inline-flex mt-3 text-sm font-bold underline underline-offset-4 text-emerald-900" data-testid="evidence-review-pack-link">Build a detailed evidence review pack or curriculum audit →</Link>
       </header>
 
       {students.length > 0 && <VisitPrep students={students} range={range} setRange={setRange} bump={notes.length + submissions.length} />}

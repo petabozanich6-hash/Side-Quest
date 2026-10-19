@@ -180,8 +180,12 @@ await step("Dragon's Hoard appears and gifting preview days reaches the parent",
   await page.click("[data-testid=hq-tab-customers]");
   await page.fill("[data-testid=hq-customer-search]", userEmail);
   await page.keyboard.press("Enter");
-  await page.waitForSelector("[data-testid=hq-customer-row]");
-  await page.click("[data-testid=hq-customer-row]");
+  // Search can render a stale row briefly while its request is in flight.
+  // Select the specific family being gifted, never whichever row appears first.
+  const giftFamilyRow = page.locator("[data-testid=hq-customer-row]").filter({ hasText: userEmail });
+  await giftFamilyRow.waitFor({ timeout: 15000 });
+  await giftFamilyRow.click();
+  await page.waitForSelector("[data-testid=hq-customer]");
   await page.waitForSelector("[data-testid=hq-gift-preview]");
   await page.click("[data-testid=hq-gift-preview]");
   await page.fill("[data-testid=confirm-reason]", "Synthetic E2E launch-readiness gift");

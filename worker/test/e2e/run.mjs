@@ -255,13 +255,18 @@ await step("A. new family registers through the UI", async () => {
   await shot("parent-home");
 });
 
-await step("public homepage explains the full product and honest membership pricing", async () => {
+await step("public homepage explains the full product, international option, help and membership pricing", async () => {
   await page.goto(BASE + "/");
   const t = await page.textContent("body");
-  for (const expected of ["across Australia", "AI Lesson Builder", "Evidence Backpack", "Parent", "pocket pet", "$3", "$6", "$13", "$130", "seven days free"]) {
+  for (const expected of ["across Australia", "Make lessons your way", "Evidence Backpack", "Printable Vault", "Dragon", "Other", "Parent", "pocket pet", "$3", "$6", "$13", "$130", "seven days free"]) {
     ok(t.toLowerCase().includes(expected.toLowerCase()), `homepage does not explain ${expected}`);
   }
   ok(!/ready-made lesson library|prewritten lesson library|NSW-only homeschooling platform/i.test(t), "outdated marketing claim");
+  ok(await page.locator('[data-testid="nav-public-help"]').isVisible(), "public Help & FAQ navigation is missing");
+  ok((await page.locator('[data-testid="public-faq-question"]').count()) >= 10, "homepage has too few FAQ answers");
+  await page.locator('[data-testid="public-faq-question"] summary').first().click();
+  ok(await page.locator('[data-testid="public-faq-question"]').first().getAttribute("open") !== null, "FAQ cannot expand");
+  ok(await page.locator('[data-testid="public-help-email"]').isVisible(), "public support email is missing");
 });
 
 await step("new parent receives clear first steps without promotional interruption", async () => {

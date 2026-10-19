@@ -18,6 +18,10 @@ export default function TrustSupport() {
           <strong className="block text-emerald-950">Your preview and membership</strong>
           <span className="block text-sm text-stone-600 mt-1">See your expiry date, what's included and what stays accessible afterward.</span>
         </Link>
+        <Link to="/parent/email-preferences" className="rounded-2xl bg-white border p-4 hover:shadow-sm" style={{borderColor:"#D4C8A8"}} data-testid="trust-email-preferences-link">
+          <strong className="block text-emerald-950">Email preferences</strong>
+          <span className="block text-sm text-stone-600 mt-1">Manage optional announcements and other email choices.</span>
+        </Link>
         <Link to="/parent/homeschool-compass" className="rounded-2xl bg-white border p-4 hover:shadow-sm" style={{borderColor:"#D4C8A8"}}>
           <strong className="block text-emerald-950">Homeschooling Compass</strong>
           <span className="block text-sm text-stone-600 mt-1">Find registration guidance and official resources for your state or territory.</span>

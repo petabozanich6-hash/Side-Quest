@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
-import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, ShieldAlert, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Mail, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -14,7 +14,6 @@ import ParentGuidedTour from "../../components/parent/ParentGuidedTour";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
-  { to: "/parent/search", icon: Search, label: "Search Side-Quest", testid: "nav-search" },
   { to: "/parent/children", icon: Users, label: "Children", testid: "nav-children" },
   { to: "/parent/homeschool-compass", icon: Compass, label: "Homeschooling Compass", testid: "nav-homeschool-compass" },
   { to: "/parent/curriculum", icon: GraduationCap, label: "Curriculum", testid: "nav-curriculum" },
@@ -28,14 +27,12 @@ const nav = [
   { to: "/parent/side-quest", icon: Wand2, label: "Seasonal Surprises", testid: "nav-sidequest" },
   { to: "/parent/evidence", icon: Camera, label: "Evidence Backpack", testid: "nav-evidence" },
   { to: "/parent/life-learning", icon: Trees, label: "Life learning", testid: "nav-life" },
-  { to: "/parent/resources", icon: Library, label: "Resources", testid: "nav-resources" },
+  { to: "/parent/resources", icon: Library, label: "Saved resources", testid: "nav-resources" },
   { to: "/parent/printable-vault", icon: Scissors, label: "Printable Vault", testid: "nav-printable-vault" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
-  { to: "/parent/audit", icon: ShieldAlert, label: "Audit", testid: "nav-audit" },
   { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
   { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
   { to: "/parent/feedback", icon: MessageSquare, label: "Ideas & Feedback", testid: "nav-feedback" },
-  { to: "/parent/email-preferences", icon: Mail, label: "Email preferences", testid: "nav-email-preferences" },
 ];
 
 export default function ParentLayout() {
