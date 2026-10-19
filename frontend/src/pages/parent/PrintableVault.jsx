@@ -37,10 +37,24 @@ function VaultThumbnail({item,unlocked}){
 }
 
 function NewPrintWindow({label,images}){
-  // Called on a user-opened empty same-origin window, never with user-generated HTML.
-  const stylesheet='@page{size:A4 portrait;margin:0}html,body{margin:0;background:white}figure{margin:0;page-break-after:always;break-after:page;display:block;width:210mm;height:297mm}img{width:210mm;height:297mm;object-fit:contain;display:block}@media screen{body{background:#ddd;padding:20px}figure{margin:0 auto 24px;box-shadow:0 6px 30px #aaa}}button{padding:12px 16px;font-weight:bold;margin:16px}@media print{button{display:none}body{padding:0!important}}';
-  const heading=label.replace(/[<>]/g,"");
-  return '<!doctype html><html><head><title>'+heading+'</title><meta charset="utf-8"><style>'+stylesheet+'</style></head><body><button onclick="window.print()">Print / Save as PDF</button>'+images.map(u=>'<figure><img src="'+u+'" alt="A4 printable image"></figure>').join("")+'</body></html>';
+  // The already-opened same-origin window prints actual private PNG images, never ZIP files.
+  // Leave a small non-printed border so ordinary home printers do not cut off the artwork.
+  const stylesheet='@page{size:A4 portrait;margin:5mm}html,body{margin:0;background:white}body{font-family:system-ui,sans-serif}figure{margin:0;width:200mm;height:287mm;page-break-after:always;break-after:page}figure:last-of-type{page-break-after:auto;break-after:auto}figure img{width:100%;height:100%;object-fit:contain;display:block}button{padding:12px 16px;font-weight:bold;margin:16px;cursor:pointer}button:disabled{cursor:wait;opacity:.6}@media screen{body{background:#ddd;padding:20px}figure{background:white;margin:0 auto 24px;box-shadow:0 6px 30px #aaa}}@media print{button{display:none}body{padding:0!important}}';
+  const heading=label.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  return '<!doctype html><html><head><title>'+heading+'</title><meta charset="utf-8"><style>'+stylesheet+'</style></head><body><button id="print-activities" disabled>Preparing activity pages…</button>'+images.map(u=>'<figure><img src="'+u+'" alt="A4 printable image"></figure>').join("")+'</body></html>';
+}
+
+/** Wait for the page images to render before enabling the print dialog (avoids blank PDFs). */
+function waitForPrintableImage(img){
+  return new Promise((resolve,reject)=>{
+    if(img.complete){
+      if(img.naturalWidth>0)resolve();
+      else reject(new Error("An activity image could not be loaded for printing."));
+      return;
+    }
+    img.addEventListener("load",resolve,{once:true});
+    img.addEventListener("error",()=>reject(new Error("An activity image could not be loaded for printing.")),{once:true});
+  });
 }
 
 /** A small browser-only reader for STORE-format ZIPs. No external ZIP library or remote CDN. */
@@ -99,7 +113,7 @@ export default function PrintableVault(){
     try{
       for(const part of pages){
         const r=await api.get(imageEndpoint(part.id,part.page,variant),{responseType:"blob"});
-        urls.push(URL.createObjectURL(new Blob([r.data],{type:"image/svg+xml"})));
+        urls.push(URL.createObjectURL(new Blob([r.data],{type:"image/png"})));
       }
       return urls;
     }catch(e){urls.forEach(u=>URL.revokeObjectURL(u));throw e;}
@@ -128,6 +142,16 @@ export default function PrintableVault(){
       win.document.write(NewPrintWindow({label,images:urls}));
       win.document.close();
       win.addEventListener("beforeunload",()=>urls.forEach(u=>URL.revokeObjectURL(u)),{once:true});
+      const images=Array.from(win.document.querySelectorAll("figure img"));
+      if(images.length!==urls.length)throw new Error("Some printable pages did not open.");
+      await Promise.all(images.map(waitForPrintableImage));
+      if(!win.closed){
+        const button=win.document.getElementById("print-activities");
+        if(!button)throw new Error("The print button could not be opened.");
+        button.disabled=false;
+        button.textContent="Print / Save as PDF";
+        button.addEventListener("click",()=>win.print());
+      }
     }catch(e){urls.forEach(u=>URL.revokeObjectURL(u));win.close();toast.error(apiErrorMessage(e,"Could not open print mode"));}
     finally{setBusy("");}
   };
