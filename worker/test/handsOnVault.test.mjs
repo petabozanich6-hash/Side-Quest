@@ -10,6 +10,11 @@ import { soundParentGuides } from "../src/data/handsOnSound.ts";
 import { codingParentGuides } from "../src/data/handsOnCoding.ts";
 import { practicalParentGuides } from "../src/data/handsOnPractical.ts";
 import { historyParentGuides } from "../src/data/handsOnHistory.ts";
+import { lightParentGuides, forcesParentGuides } from "../src/data/handsOnExpansionPhysics.ts";
+import { weatherParentGuides, plantsParentGuides } from "../src/data/handsOnExpansionNatural.ts";
+import { logicParentGuides, dramaParentGuides } from "../src/data/handsOnExpansionCreative.ts";
+import { inclusiveParentGuides, marketParentGuides } from "../src/data/handsOnExpansionDesign.ts";
+import { earthParentGuides, civicsParentGuides } from "../src/data/handsOnExpansionEarthCivic.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 
 let seq = 0;
@@ -40,14 +45,17 @@ function makeHarness() {
   return { req, parent, db };
 }
 
-test("ninety original family activities have complete usable printable guides", () => {
-  assert.equal(HANDS_ON_QUESTS.length, 90);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 90);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 15);
+test("150 original family activities have complete usable printable guides", () => {
+  assert.equal(HANDS_ON_QUESTS.length, 150);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 150);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 25);
   const guides = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
     ...spaceParentGuides, ...soundParentGuides, ...codingParentGuides,
-    ...practicalParentGuides, ...historyParentGuides };
-  assert.equal(Object.keys(guides).length, 90, "each quest needs exactly one custom parent guide");
+    ...practicalParentGuides, ...historyParentGuides,
+    ...lightParentGuides, ...forcesParentGuides, ...weatherParentGuides, ...plantsParentGuides,
+    ...logicParentGuides, ...dramaParentGuides, ...inclusiveParentGuides, ...marketParentGuides,
+    ...earthParentGuides, ...civicsParentGuides };
+  assert.equal(Object.keys(guides).length, 150, "each quest needs exactly one custom parent guide");
   for (const q of HANDS_ON_QUESTS) {
     assert.match(q.id, /^[a-z0-9-]+$/);
     assert.ok(q.title.length > 6 && q.description.length > 20, q.id);
@@ -73,9 +81,9 @@ test("free preview gets metadata only, but never step-by-step guides", async () 
   assert.match(list.headers.get("cache-control"), /no-store/);
   const data = await list.json();
   assert.equal(data.unlocked, false);
-  assert.equal(data.count, 90);
-  assert.equal(data.items.length, 90);
-  assert.equal(data.categories.length, 15);
+  assert.equal(data.count, 150);
+  assert.equal(data.items.length, 150);
+  assert.equal(data.categories.length, 25);
   assert.ok(!("materials" in data.items[0]));
   assert.ok(!("steps" in data.items[0]));
   const detail = await h.req("/hands-on-quests/oobleck-lab", p.token);
@@ -83,6 +91,7 @@ test("free preview gets metadata only, but never step-by-step guides", async () 
   assert.equal((await detail.json()).code, "UPGRADE_REQUIRED");
   assert.equal((await h.req("/hands-on-quests", undefined)).status, 401);
   assert.equal((await h.req("/hands-on-quests/robot-command-maze", p.token)).status, 402);
+  assert.equal((await h.req("/hands-on-quests/community-survey", p.token)).status, 402);
   const newItem = data.items.find(q => q.id === "robot-command-maze");
   assert.ok(newItem);
   assert.ok(!("materials" in newItem) && !("steps" in newItem) && !("parentLearning" in newItem));
@@ -109,6 +118,9 @@ test("paid families receive complete guides and own material search metadata", a
   assert.match(second.parentLearning.explanation, /leaves|classification|trait/i);
   const expanded = await (await h.req("/hands-on-quests/robot-command-maze", p.token)).json();
   assert.match(expanded.parentLearning.explanation, /algorithm/i);
+  const newest = await (await h.req("/hands-on-quests/community-survey", p.token)).json();
+  assert.match(newest.parentLearning.explanation, /survey/i);
+  assert.ok(newest.steps.length >= 4);
   assert.ok(expanded.steps.length >= 4);
   assert.equal((await h.req("/hands-on-quests/not-a-real-quest", p.token)).status, 404);
 });
