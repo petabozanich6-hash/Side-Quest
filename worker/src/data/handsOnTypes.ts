@@ -28,3 +28,16 @@ export const quest = (
   safety: string, extension: string,
 ): HandsOnQuest => ({ id, title, category, ages, minutes, mess, icon,
   description, materials, steps, wonder, skills, safety, extension });
+
+/** Each source row is deliberately original and written for printable family guides. */
+export type QuestRow = [
+  id:string, title:string, ages:string, minutes:number, mess:HandsOnQuest["mess"],
+  icon:string, description:string, materials:string, steps:string,
+  wonder:string, skills:string, safety:string, extension:string
+];
+const fields = (source:string):string[] => source.split("|").map(s=>s.trim()).filter(Boolean);
+export function fromRows(category:HandsOnCategory, rows:QuestRow[]):HandsOnQuest[] {
+  return rows.map(([id,title,ages,minutes,mess,icon,description,materials,steps,wonder,skills,safety,extension])=>
+    quest(id,title,category,ages,minutes,mess,icon,description,fields(materials),
+      fields(steps),fields(wonder),fields(skills),safety,extension));
+}
