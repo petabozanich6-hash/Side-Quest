@@ -1,5 +1,7 @@
 import type { App, Guards } from "./types";
 import type { HandsOnQuest } from "./data/handsOnTypes";
+import { PARENT_LEARNING_GUIDES } from "./data/handsOnParentGuides";
+import { MORE_PARENT_LEARNING_GUIDES } from "./data/handsOnParentGuidesMore";
 import { kitchenQuests } from "./data/handsOnKitchen";
 import { crystalQuests } from "./data/handsOnCrystals";
 import { sensoryQuests } from "./data/handsOnSensory";
@@ -20,7 +22,9 @@ export const HANDS_ON_QUESTS: readonly HandsOnQuest[] = [
   ...storiesQuests, ...movementQuests,
 ];
 const QUEST_BY_ID = new Map(HANDS_ON_QUESTS.map(quest => [quest.id, quest]));
+const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES };
 if (QUEST_BY_ID.size !== HANDS_ON_QUESTS.length) throw new Error("Duplicate hands-on quest IDs");
+if (HANDS_ON_QUESTS.some(q => !PARENT_GUIDES[q.id])) throw new Error("Missing parent teaching guide for a hands-on quest");
 
 /** Free preview lists only titles and short descriptors, never proprietary instructions. */
 export function previewQuest(q: HandsOnQuest) {
@@ -54,6 +58,6 @@ export function registerHandsOnVault(app: App, g: Guards) {
         detail: "Printable activity instructions are included with Family Membership." }, 402);
     }
     c.header("Cache-Control", "private, no-store");
-    return c.json(q);
+    return c.json({ ...q, parentLearning: PARENT_GUIDES[q.id] });
   });
 }
