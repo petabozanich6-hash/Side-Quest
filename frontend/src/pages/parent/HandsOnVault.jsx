@@ -11,7 +11,9 @@ const AGE_FILTERS = [
 const MESS_FILTERS = ["Any mess level", "Low", "Medium", "High"];
 const CATEGORY_ICONS = { "Kitchen Science":"🧪", "Crystal Lab":"💎", "Dough & Sensory":"👐",
   "LEGO & Builders":"🧱", "Engineering Lab":"🏗️", "Nature Explorers":"🌿",
-  "Art & Making":"🎨", "Everyday Maths":"📐", "Stories & Words":"📜", "Movement & Games":"🏅" };
+  "Art & Making":"🎨", "Everyday Maths":"📐", "Stories & Words":"📜", "Movement & Games":"🏅",
+  "Space & Sky":"🪐", "Sound & Music":"🎶", "Coding Without Screens":"🤖",
+  "Practical Life":"🧺", "History & Maps":"🗺️" };
 function ageOverlap(ages, filter) {
   if (filter === "all") return true;
   const range = String(ages).match(/(\d+)[^\d]+(\d+)/);
@@ -129,7 +131,7 @@ export default function HandsOnVault() {
           </p>
         </div>
         <div className="rounded-2xl px-5 py-3 text-center shrink-0" style={{background:"#345746"}}>
-          <div className="text-3xl font-display font-bold">{data?.count || 60}</div>
+          <div className="text-3xl font-display font-bold">{data?.count ?? "—"}</div>
           <div className="text-xs opacity-85">family quests</div>
         </div>
       </div>
