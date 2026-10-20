@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { HANDS_ON_QUESTS, previewQuest } from "../src/handsOnVault.ts";
+import { PARENT_LEARNING_GUIDES } from "../src/data/handsOnParentGuides.ts";
+import { MORE_PARENT_LEARNING_GUIDES } from "../src/data/handsOnParentGuidesMore.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 
 let seq = 0;
@@ -37,14 +39,22 @@ test("sixty original family activities have complete usable printable guides", (
   assert.equal(HANDS_ON_QUESTS.length, 60);
   assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 60);
   assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 10);
+  const guides = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES };
+  assert.equal(Object.keys(guides).length, 60, "each quest needs exactly one custom parent guide");
   for (const q of HANDS_ON_QUESTS) {
     assert.match(q.id, /^[a-z0-9-]+$/);
     assert.ok(q.title.length > 6 && q.description.length > 20, q.id);
     assert.ok(q.materials.length >= 3 && q.steps.length >= 4, q.id);
     assert.ok(q.wonder.length >= 2 && q.skills.length >= 2, q.id);
     assert.ok(q.safety.length >= 20 && q.extension.length >= 30, q.id);
+    const guide = guides[q.id];
+    assert.ok(guide, "missing educational explanation for " + q.id);
+    for (const field of ["objective", "explanation", "parentPrompt", "evidence"]) {
+      assert.ok(typeof guide[field] === "string" && guide[field].length > 45,
+        "parent guide missing substantial " + field + " for " + q.id);
+    }
     const preview = previewQuest(q);
-    for (const key of ["materials", "steps", "wonder", "safety", "extension"]) {
+    for (const key of ["materials", "steps", "wonder", "safety", "extension", "parentLearning"]) {
       assert.ok(!(key in preview), "preview leaked " + key + " for " + q.id);
     }
   }
@@ -72,6 +82,7 @@ test("paid families receive complete guides and own material search metadata", a
   assert.equal(listing.unlocked, true);
   assert.ok(listing.items[0].materials.length >= 3);
   assert.ok(!("steps" in listing.items[0]));
+  assert.ok(!("parentLearning" in listing.items[0]));
   const r = await h.req("/hands-on-quests/oobleck-lab", p.token);
   assert.equal(r.status, 200);
   assert.match(r.headers.get("cache-control"), /no-store/);
@@ -79,6 +90,12 @@ test("paid families receive complete guides and own material search metadata", a
   assert.equal(details.title, "The Dragon's Oobleck Quicksand");
   assert.ok(details.steps.length >= 4);
   assert.match(details.safety, /drains/i);
+  assert.match(details.parentLearning.objective, /materials|force|behaviour/i);
+  assert.match(details.parentLearning.explanation, /particles/i);
+  assert.ok(details.parentLearning.parentPrompt.length > 30);
+  assert.ok(details.parentLearning.evidence.length > 30);
+  const second = await (await h.req("/hands-on-quests/leaf-detective", p.token)).json();
+  assert.match(second.parentLearning.explanation, /leaves|classification|trait/i);
   assert.equal((await h.req("/hands-on-quests/not-a-real-quest", p.token)).status, 404);
 });
 test("expired memberships are locked; verified owner can read without payment", async () => {
