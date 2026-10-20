@@ -35,7 +35,7 @@ const fullQuest = {
   },
 };
 const catalogue = unlocked => ({
-  unlocked, count: 174, categories: ["Kitchen Science"],
+  unlocked, count: 190, categories: ["Kitchen Science", "Halloween Crafts", "Halloween Discovery & Games"],
   items: [{ ...sampleQuest, ...(unlocked ? { materials: fullQuest.materials } : {}) }],
 });
 
@@ -59,6 +59,8 @@ afterEach(() => {
 });
 
 test("preview displays catalogue without fetching, showing or printing member instructions", () => {
+  expect(container.querySelector("[data-testid=halloween-vault-feature]")).not.toBeNull();
+  expect(container.querySelector("[data-testid=halloween-show-all]")).not.toBeNull();
   expect(container.querySelector('[data-testid="quest-oobleck-lab"]')).not.toBeNull();
   expect(container.textContent).toContain("A treasure chest for Family Members");
   expect(container.textContent).not.toContain("Cornflour particles resist");
