@@ -774,8 +774,6 @@ export async function submitWork(
     handInDraft = JSON.stringify(body.draft);
     if (new TextEncoder().encode(handInDraft).length > 60000) return fail(400, "Your answers are too long to save. Please shorten them.");
   }
-  // Freeze what was handed in on this attempt. Later revisions must not change its review history.
-  const submissionDraft = handInDraft ?? (typeof a.draft === "string" ? a.draft : null);
   const needsHelp = !!body.needs_help;
   const status = needsHelp ? "awaiting_help" : "submitted";
   const id = newId();
@@ -783,9 +781,9 @@ export async function submitWork(
   const writes = await db.batch([
     db
       .prepare(
-        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at, submission_draft) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','awaiting_help','accepted','completed','demonstrated'))"
+        "INSERT INTO submissions (id, family_id, assignment_id, student_id, lesson_id, response_text, reflection, file_ids, needs_help, status, submitted_at) SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM assignments WHERE id = ? AND status NOT IN ('revoked','submitted','awaiting_help','accepted','completed','demonstrated'))"
       )
-      .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts, submissionDraft, a.id),
+      .bind(id, user.family_id, a.id, user.id, a.lesson_id, response, reflection, JSON.stringify(fileIds), needsHelp ? 1 : 0, status, ts, a.id),
     db.prepare("UPDATE assignments SET draft = COALESCE(?, draft), status = ?, updated_at = ? WHERE id = ? AND EXISTS (SELECT 1 FROM submissions WHERE id = ?)").bind(handInDraft, status, ts, a.id, id),
   ]);
   if (!writes[0].meta.changes) return fail(409, "This assignment is no longer available for hand-in.", "ASSIGNMENT_CHANGED");
