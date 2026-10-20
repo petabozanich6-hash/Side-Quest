@@ -1,0 +1,81 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { makeDb } from "./fakeD1.mjs";
+import worker from "../src/index.ts";
+import { HANDWRITING_PAGE_COUNT, STROKES, renderHandwritingPage } from "../src/handwritingBook.ts";
+import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
+
+let sequence=0;
+function harness(){
+ const db=makeDb();
+ const env={DB:db,JWT_SECRET:"handwriting-test-secret"};
+ const ctx={waitUntil(){},passThroughOnException(){}};
+ clearSettingsCache();clearUsageCache();
+ const req=(path,token,method="GET",body)=>worker.fetch(new Request("http://localhost/api"+path,{
+  method,headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{})},
+  ...(body?{body:JSON.stringify(body)}:{})
+ }),env,ctx);
+ async function parent(plan){
+  const n=++sequence;
+  const response=await req("/auth/register",null,"POST",{name:"Handwriting Parent "+n,email:"handwriting"+n+"@example.test",password:"Password-1234",jurisdiction:"NSW"});
+  assert.equal(response.status,200);
+  const data=await response.json();
+  if(plan!=="FREE_PREVIEW")db.raw.prepare("UPDATE families SET plan=? WHERE id=?").run(plan,data.user.family_id);
+  return {token:data.token,userId:data.user.id,familyId:data.user.family_id};
+ }
+ return {req,parent,db};
+}
+
+test("All 56 A4 pages exist as black-and-white scalable practice sheets",()=>{
+ assert.equal(HANDWRITING_PAGE_COUNT,56);
+ assert.equal(Object.keys(STROKES).length,52);
+ for(const letter of "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"){
+  assert.ok(STROKES[letter].length>0,"missing strokes for "+letter);
+ }
+ for(let n=0;n<56;n++){
+  const svg=renderHandwritingPage(n);
+  assert.ok(svg?.startsWith("<svg"),"missing "+n);
+  assert.match(svg,/width="210mm" height="297mm"/);
+  assert.doesNotMatch(svg,/#[a-f\d]{6}/i,"coloured art on page "+n);
+  assert.doesNotMatch(svg,/fill="(red|green|blue)"/i);
+  assert.match(svg,/sidequestlearning\.app/);
+ }
+ for(const n of [-1,56,1.5,NaN])assert.equal(renderHandwritingPage(n),null);
+ for(const n of [2,3,52,53]){
+  const svg=renderHandwritingPage(n);
+  assert.match(svg,/stroke-dasharray="0.7 7.5"/);
+  assert.match(svg,/Now try without tracing/);
+  assert.match(svg,/Start at the numbered dots/);
+ }
+ assert.match(renderHandwritingPage(2),/Lowercase a/);
+ assert.match(renderHandwritingPage(3),/Capital A/);
+ assert.match(renderHandwritingPage(54),/Little Letter Hero/);
+});
+test("Free families never receive book artwork; paid parents can read it",async()=>{
+ const h=harness(),free=await h.parent("FREE_PREVIEW"),paid=await h.parent("ACTIVE_MONTHLY");
+ const freeMeta=await h.req("/handwriting-book",free.token);
+ assert.equal(freeMeta.status,200);
+ const locked=await freeMeta.json();
+ assert.equal(locked.unlocked,false);
+ assert.equal(locked.pages,56);
+ assert.equal((await h.req("/handwriting-book/pages/2",free.token)).status,402);
+ assert.equal((await h.req("/handwriting-book/pages/2")).status,401);
+ const meta=await (await h.req("/handwriting-book",paid.token)).json();
+ assert.equal(meta.unlocked,true);
+ const sheet=await h.req("/handwriting-book/pages/2",paid.token);
+ assert.equal(sheet.status,200);
+ assert.match(sheet.headers.get("content-type")||"",/image\/svg\+xml/);
+ assert.equal(sheet.headers.get("cache-control"),"private, no-store");
+ const content=await sheet.text();
+ assert.match(content,/Lowercase a/);
+ assert.match(content,/stroke-dasharray/);
+ for(const page of ["-1","56","abc","01"])
+  assert.equal((await h.req("/handwriting-book/pages/"+page,paid.token)).status,404);
+});
+test("Owner has free creator access while ordinary free families stay locked",async()=>{
+ const h=harness(),parent=await h.parent("FREE_PREVIEW");
+ h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),parent.userId);
+ const result=await h.req("/handwriting-book/pages/0",parent.token);
+ assert.equal(result.status,200);
+ assert.match(await result.text(),/THE LITTLE/);
+});
