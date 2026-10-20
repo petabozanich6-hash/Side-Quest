@@ -180,7 +180,7 @@ function glyph(letter:string,x:number,y:number,scale:number,kind:"model"|"trace"
  let s='<g transform="translate('+x+' '+y+') scale('+scale+')" fill="none" stroke-linecap="round" stroke-linejoin="round">';
  strokes.forEach((d,i)=>{
   const closed=/[Zz]\s*$/.test(d);
-  s+='<path d="'+d+'" stroke="'+(kind==="trace"?"#929292":"#151515")+'" stroke-width="'+(kind==="trace"?2.5:3.3)+'"'
+  s+='<path d="'+d+'" stroke="'+(kind==="trace"?"#666":"#151515")+'" stroke-width="'+(kind==="trace"?2.8:3.3)+'"'
    +(kind==="trace"?' stroke-dasharray="0.7 7.5"':closed?'':' marker-end="url(#handwriting-arrow)"')+'/>';
   if(kind==="model"){
    const m=/^M(-?\d+)\s+(-?\d+)/.exec(d);
@@ -194,10 +194,10 @@ function glyph(letter:string,x:number,y:number,scale:number,kind:"model"|"trace"
  return s+'</g>';
 }
 function guidelines(left:number,right:number,top:number,width=1.4,scale=1){
- let s=rule(left,top,right,top,false,"#8d8d8d",width);
- s+=rule(left,top+35*scale,right,top+35*scale,true,"#a4a4a4",width);
- s+=rule(left,top+88*scale,right,top+88*scale,false,"#555",width);
- s+=rule(left,top+121*scale,right,top+121*scale,true,"#aaa",width);
+ let s=rule(left,top,right,top,false,"#c4c4c4",width);
+ s+=rule(left,top+35*scale,right,top+35*scale,true,"#cecece",width);
+ s+=rule(left,top+88*scale,right,top+88*scale,false,"#959595",width);
+ s+=rule(left,top+121*scale,right,top+121*scale,true,"#d1d1d1",width);
  return s;
 }
 function row(baseline:number,letters:string[],traceCount:number){
