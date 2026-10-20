@@ -254,6 +254,10 @@ export default function HandsOnVault() {
                 </div>
               </div>
               <div className="print-sections space-y-3 mt-5">
+                <section className="print-section rounded-xl border border-amber-200 p-3">
+                  <h2 className="font-display text-sm font-bold flex items-center gap-2" style={{color:"#8B4F20"}}><ShieldAlert size={16}/> Grown-up safety check</h2>
+                  <p className="mt-1 text-xs text-stone-700 leading-relaxed">{detail.safety}</p>
+                </section>
                 <section className="print-section print-tile rounded-xl border p-4" style={{borderColor:"#D5DACB",background:"#FBFCF8"}}>
                   <h2 className="font-display text-base font-bold flex items-center gap-2" style={{color:"#1F3B2D"}}><PackageCheck size={17}/> Gather your treasure</h2>
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-3">
@@ -308,10 +312,6 @@ export default function HandsOnVault() {
                   </div>
                   <p className="text-[11px] italic text-stone-600">These are suggested educational opportunities, not proof an outcome was achieved. Record what your child actually demonstrated.</p>
                 </section>}
-                <section className="print-section rounded-xl border border-amber-200 p-3">
-                  <h2 className="font-display text-sm font-bold flex items-center gap-2" style={{color:"#8B4F20"}}><ShieldAlert size={16}/> Grown-up safety check</h2>
-                  <p className="mt-1 text-xs text-stone-700 leading-relaxed">{detail.safety}</p>
-                </section>
                 <section className="print-section rounded-xl p-3" style={{background:"#EDF3E8"}}>
                   <h2 className="font-display text-sm font-bold" style={{color:"#1F3B2D"}}>⭐ Bonus side-quest</h2>
                   <p className="mt-1 text-xs text-stone-700">{detail.extension}</p>
