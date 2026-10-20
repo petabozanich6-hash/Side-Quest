@@ -151,6 +151,9 @@ test("paid families receive complete guides and own material search metadata", a
   assert.match(newest.parentLearning.explanation, /survey/i);
   assert.ok(newest.steps.length >= 4);
   assert.ok(expanded.steps.length >= 4);
+  const colour = await (await h.req("/hands-on-quests/rainbow-prism", p.token)).json();
+  assert.match(colour.materials.join(" "), /CD or DVD/);
+  assert.match(colour.skills.join(" "), /Diffraction/);
   const solar = await (await h.req("/hands-on-quests/solar-oven", p.token)).json();
   assert.ok(solar.steps.length >= 7);
   assert.match(solar.safety, /food|knife|blade/i);
