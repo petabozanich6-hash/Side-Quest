@@ -10,7 +10,8 @@ export type HandsOnCategory =
   | "Logic & Probability" | "Drama & Performance" | "Design for Everyone"
   | "Money & Markets" | "Earth & Landforms" | "Community & Civics"
   | "Sun & Energy" | "Bubbles & Water Play"
-  | "Mini Makers & Machines" | "Kitchen Reaction Lab";
+  | "Mini Makers & Machines" | "Kitchen Reaction Lab"
+  | "Halloween Crafts" | "Halloween Discovery & Games";
 
 export type HandsOnQuest = {
   id: string;
