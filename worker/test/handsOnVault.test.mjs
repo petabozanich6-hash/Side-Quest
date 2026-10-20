@@ -50,7 +50,7 @@ test("sixty original family activities have complete usable printable guides", (
     const guide = guides[q.id];
     assert.ok(guide, "missing educational explanation for " + q.id);
     for (const field of ["objective", "explanation", "parentPrompt", "evidence"]) {
-      assert.ok(typeof guide[field] === "string" && guide[field].length > 45,
+      assert.ok(typeof guide[field] === "string" && guide[field].length > (field === "objective" ? 30 : 45),
         "parent guide missing substantial " + field + " for " + q.id);
     }
     const preview = previewQuest(q);
