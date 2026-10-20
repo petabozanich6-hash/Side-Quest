@@ -66,10 +66,8 @@ function lessonSummary(r: any) {
   return l;
 }
 function subOut(r: any) {
-  // The full draft is kept server-side. Assignment APIs already expose the current editable draft to its child.
-  const { submission_draft: _submissionDraft, ...visible } = r;
   return {
-    ...visible,
+    ...r,
     needs_help: !!r.needs_help,
     file_ids: parseJson(r.file_ids, []),
     review_flags: parseJson(r.review_flags, []),
@@ -526,7 +524,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       .bind(r.lesson_id, u.family_id).first();
     const sl = assignment ? lb.assignmentLesson(assignment, live) : lessonOut(live);
     s.lesson = u.role === "child" ? lb.childSafeLesson(sl) : sl;
-    if (u.role === "parent") s.review_answers = parseJson(r.submission_draft, parseJson(assignment?.draft, {}));
+    if (u.role === "parent") s.review_answers = parseJson(assignment?.draft, {});
     s.student = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
     // The support level the parent set when assigning: the default for the review's per-outcome support.
     if (u.role === "parent") s.support_level = assignment?.support_level || "green";
