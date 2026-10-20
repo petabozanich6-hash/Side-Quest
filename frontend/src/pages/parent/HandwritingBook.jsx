@@ -155,7 +155,7 @@ export default function HandwritingBook(){
     </div>
     {contentsOpen&&<section id="letter-contents" className="rounded-2xl border border-stone-300 bg-white p-4" aria-label="Table of contents">
       <div className="flex items-center justify-between mb-3"><h2 className="font-bold">Jump to a letter</h2><button type="button" aria-label="Close contents" onClick={()=>setContentsOpen(false)}><X size={18}/></button></div>
-      <div className="grid grid-cols-7 sm:grid-cols-13 gap-2">
+      <div className="grid grid-cols-6 sm:grid-cols-9 lg:grid-cols-[repeat(13,minmax(0,1fr))] gap-2">
        {LETTERS.split("").map((letter,i)=><button key={letter} type="button" onClick={()=>{setPage(2+i*2);setContentsOpen(false);}}
         aria-label={"Go to letter "+letter} className="aspect-square min-h-10 rounded-lg border border-stone-300 bg-stone-50 text-emerald-950 font-bold hover:bg-emerald-100">{letter}</button>)}
       </div>
