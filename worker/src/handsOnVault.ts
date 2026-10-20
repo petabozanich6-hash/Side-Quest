@@ -12,6 +12,11 @@ import { artQuests } from "./data/handsOnArt";
 import { mathsQuests } from "./data/handsOnMaths";
 import { storiesQuests } from "./data/handsOnStories";
 import { movementQuests } from "./data/handsOnMovement";
+import { spaceQuests, spaceParentGuides } from "./data/handsOnSpace";
+import { soundQuests, soundParentGuides } from "./data/handsOnSound";
+import { codingQuests, codingParentGuides } from "./data/handsOnCoding";
+import { practicalQuests, practicalParentGuides } from "./data/handsOnPractical";
+import { historyQuests, historyParentGuides } from "./data/handsOnHistory";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 
@@ -20,11 +25,15 @@ export const HANDS_ON_QUESTS: readonly HandsOnQuest[] = [
   ...kitchenQuests, ...crystalQuests, ...sensoryQuests, ...legoQuests,
   ...engineeringQuests, ...natureQuests, ...artQuests, ...mathsQuests,
   ...storiesQuests, ...movementQuests,
+  ...spaceQuests, ...soundQuests, ...codingQuests, ...practicalQuests, ...historyQuests,
 ];
 const QUEST_BY_ID = new Map(HANDS_ON_QUESTS.map(quest => [quest.id, quest]));
-const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES };
+const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
+  ...spaceParentGuides, ...soundParentGuides, ...codingParentGuides,
+  ...practicalParentGuides, ...historyParentGuides };
 if (QUEST_BY_ID.size !== HANDS_ON_QUESTS.length) throw new Error("Duplicate hands-on quest IDs");
 if (HANDS_ON_QUESTS.some(q => !PARENT_GUIDES[q.id])) throw new Error("Missing parent teaching guide for a hands-on quest");
+if (Object.keys(PARENT_GUIDES).length !== HANDS_ON_QUESTS.length) throw new Error("Parent guides must match quests one-to-one");
 
 /** Free preview lists only titles and short descriptors, never proprietary instructions. */
 export function previewQuest(q: HandsOnQuest) {
