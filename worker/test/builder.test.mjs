@@ -1646,3 +1646,53 @@ test("revocation racing a hand-in or completed review cannot lose work or reopen
   assert.equal((await pl.cancelAssignment(db, fam, b.id)).code, "ALREADY_DONE");
   assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id=?").get(b.id).status, "completed");
 });
+
+
+test("question review flags validate targets, stay with the return and preserve answers", async () => {
+  const shape = {
+    questions: [{ prompt: "Explain your answer" }],
+    guided_practice: [{ prompt: "Try this" }],
+    activities: [{ tasks: [{ prompt: "Record your result" }] }],
+  };
+  const flags = [
+    { key: "question:0", comment: "Please show your working" },
+    { key: "guided:0", comment: "" },
+    { key: "task:0:0", comment: "Try a different example" },
+  ];
+  assert.deepEqual(lb.normaliseReviewFlags(flags, shape), { ok: true, flags });
+  assert.equal(lb.normaliseReviewFlags([{ key: "question:4" }], shape).status, 400);
+  assert.equal(lb.normaliseReviewFlags([flags[0], flags[0]], shape).status, 400);
+  assert.equal(lb.normaliseReviewFlags([{ key: "question:0", comment: "a".repeat(281) }], shape).status, 400);
+
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const studentId = child(db, fam);
+  const l = await mk(db, fam, { quiz: [] });
+  const assignment = (await lb.assignLesson(db, fam, { student_id: studentId, lesson_id: l.id }, NOW)).assignment;
+  const user = { id: studentId, family_id: fam };
+  const original = { answers: { 0: "I think one half plus one half is one" }, step: 5 };
+  assert.ok((await lb.saveDraft(db, user, assignment.id, original, NOW)).ok);
+  const handedIn = await lb.submitWork(db, user, { assignment_id: assignment.id, response_text: "My first attempt", draft: original }, NOW);
+  assert.ok(handedIn.ok, JSON.stringify(handedIn));
+  assert.equal((await lb.reviewSubmission(db, fam, "parent", handedIn.id,
+    { status: "needs_revision", review_flags: [{ key: "question:99", comment: "No" }] }, NOW)).status, 400);
+  assert.equal((await lb.reviewSubmission(db, "different-family", "parent", handedIn.id,
+    { status: "needs_revision", review_flags: [flags[0]] }, NOW)).status, 404);
+  const returned = await lb.reviewSubmission(db, fam, "parent", handedIn.id,
+    { status: "needs_revision", feedback_text: "Have another go", review_flags: [flags[0]] }, NOW);
+  assert.ok(returned.ok, JSON.stringify(returned));
+  const review = db.raw.prepare("SELECT review_flags, status FROM submissions WHERE id = ?").get(handedIn.id);
+  assert.equal(review.status, "needs_revision");
+  assert.deepEqual(JSON.parse(review.review_flags), [flags[0]]);
+  assert.equal(db.raw.prepare("SELECT status FROM assignments WHERE id = ?").get(assignment.id).status, "needs_revision");
+  assert.deepEqual(JSON.parse(db.raw.prepare("SELECT draft FROM assignments WHERE id = ?").get(assignment.id).draft).answers, original.answers);
+
+  const improved = { answers: { 0: "One whole, because the halves combine" }, step: 5 };
+  assert.ok((await lb.saveDraft(db, user, assignment.id, improved, NOW)).ok);
+  const second = await lb.submitWork(db, user, { assignment_id: assignment.id, response_text: "Revised", draft: improved }, NOW);
+  assert.ok(second.ok, JSON.stringify(second));
+  assert.deepEqual(JSON.parse(db.raw.prepare("SELECT review_flags FROM submissions WHERE id = ?").get(handedIn.id).review_flags), [flags[0]],
+    "the previous review remains in history");
+  assert.deepEqual(JSON.parse(db.raw.prepare("SELECT review_flags FROM submissions WHERE id = ?").get(second.id).review_flags), [],
+    "the next attempt begins without stale flags");
+});
