@@ -100,5 +100,5 @@ test("Owner has free creator access while ordinary free families stay locked",as
  h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),parent.userId);
  const result=await h.req("/handwriting-book/pages/0",parent.token);
  assert.equal(result.status,200);
- assert.match(await result.text(),/THE LITTLE/);
+ assert.match(await result.text(),/HANDWRITING WORKBOOK/);
 });
