@@ -58,20 +58,20 @@ test("All 56 A4 pages exist as black-and-white scalable practice sheets",()=>{
   const letter="abcdefghijklmnopqrstuvwxyz"[i];
   const intro=renderHandwritingPage(2+i*2);
   const practise=renderHandwritingPage(3+i*2);
-  assert.match(intro,/Let's learn the letter /);
+  assert.match(intro,/Let(?:'|&apos;)s learn the letter /);
   assert.match(intro,/Uppercase /);
   assert.match(intro,/Lowercase /);
   assert.match(intro,/Start at the numbered dots/);
   assert.match(intro,/Trace the uppercase /);
   assert.match(intro,/Trace the lowercase /);
-  assert.match(practise,/Let's practise /);
+  assert.match(practise,/Let(?:'|&apos;)s practise /);
   assert.match(practise,/Now try without tracing/);
   assert.match(practise,/1\. Trace the capital /);
   assert.match(practise,/2\. Trace the lowercase /);
   assert.ok((practise.match(/stroke-dasharray="7 8"/g)||[]).length>=5,"not enough handwriting lines for "+letter);
  }
- assert.match(renderHandwritingPage(2),/Let's learn the letter Aa/);
- assert.match(renderHandwritingPage(3),/Let's practise Aa/);
+ assert.match(renderHandwritingPage(2),/Let(?:'|&apos;)s learn the letter Aa/);
+ assert.match(renderHandwritingPage(3),/Let(?:'|&apos;)s practise Aa/);
  assert.match(renderHandwritingPage(54),/LITTLE LETTER HERO/);
 });
 test("Free families never receive book artwork; paid parents can read it",async()=>{
