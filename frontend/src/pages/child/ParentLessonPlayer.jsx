@@ -192,6 +192,15 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const locked = waitingToSend || ["awaiting_help", "submitted", "accepted", "demonstrated", "completed"].includes(a.status);
   const childId = a.student_id;
   const last = (a.submissions || [])[0];
+  const reviewFlags = a.status === "needs_revision" && Array.isArray(last?.review_flags)
+    ? last.review_flags.filter(f => f && typeof f.key === "string") : [];
+  const flagsByKey = Object.fromEntries(reviewFlags.map(f => [f.key, f]));
+  const flaggedNote = key => flagsByKey[key] && (
+    <div className="mb-2 rounded-lg border border-amber-400 bg-amber-50 px-3 py-2 text-sm text-amber-950" data-testid={"flagged-note-" + key}>
+      <strong>🔎 Your grown-up flagged this question.</strong>
+      {flagsByKey[key].comment && <p className="mt-1 whitespace-pre-wrap">{flagsByKey[key].comment}</p>}
+    </div>
+  );
   const d0 = a.draft || {};
 
   const [answers, setAnswers] = useState(d0.answers || {});
@@ -202,6 +211,7 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
   const [fbs, setFbs] = useState(d0.fbs || {});
   const [watch, setWatch] = useState(d0.watch || {});
   const [step, setStep] = useState(Number.isInteger(d0.step) ? d0.step : 0);
+  const [targetFlag, setTargetFlag] = useState("");
   const [needsHelp, setNeedsHelp] = useState(false);
   const [quizQueued, setQuizQueued] = useState(false);
   const [online, setOnline] = useState(!offline && (typeof navigator === "undefined" || navigator.onLine));
@@ -292,7 +302,33 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
 
   const cur = Math.min(Math.max(0, step), steps.length - 1);
   const st = steps[cur];
-  const go = (n) => { setStep(Math.min(Math.max(0, n), steps.length - 1)); setTimeout(() => top.current?.scrollIntoView({ block: "start" }), 0); };
+  const go = (n) => { setTargetFlag(""); setStep(Math.min(Math.max(0, n), steps.length - 1)); setTimeout(() => top.current?.scrollIntoView({ block: "start" }), 0); };
+  const labelForFlag = key => {
+    const [part, i, j] = key.split(":");
+    if (part === "question") return "Question " + (Number(i) + 1);
+    if (part === "guided") return "Practice " + (Number(i) + 1);
+    if (part === "task") return (activities[Number(i)]?.title || "Activity " + (Number(i) + 1)) + ", task " + (Number(j) + 1);
+    return "Question";
+  };
+  const jumpToFlag = key => {
+    const [part, i] = key.split(":");
+    const targetStep = part === "guided" ? "guided" + Math.floor(Number(i) / PAGE) * PAGE
+      : part === "task" ? "act" + i : "questions";
+    const next = steps.findIndex(x => x.id === targetStep);
+    if (next !== -1) { setStep(next); setTargetFlag(key); }
+  };
+  useEffect(() => {
+    if (!targetFlag) return undefined;
+    const timer = setTimeout(() => {
+      const target = document.getElementById("revision-" + targetFlag.replace(/:/g, "-"));
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+        target.querySelector("textarea, input")?.focus({ preventScroll: true });
+      }
+      setTargetFlag("");
+    }, 60);
+    return () => clearTimeout(timer);
+  }, [step, targetFlag]);
 
   const saveNow = async (silent) => {
     if (preview) return;
@@ -424,7 +460,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
       <div className="space-y-4" data-testid="guided-practice">
         <p className="text-sm text-stone-600">{l.delivery === "independent" ? "Work these out yourself, using the worked examples. Press Check to see how you did." : "Work these out with your grown-up. Press Check to see how you did."}</p>
         {guided.slice(st.guided, st.guided + PAGE).map((g, k) => { const i = st.guided + k; return (
-          <div key={i} className="space-y-2">
+          <div key={i} id={"revision-guided-" + i} className={"space-y-2 rounded-xl " + (flagsByKey["guided:" + i] ? "ring-2 ring-amber-400 p-3 bg-amber-50/40" : "")}>
+            {flaggedNote("guided:" + i)}
             {item("guided", i, 0, g, `${i + 1}.`, gp[i], (v) => setGp({ ...gp, [i]: v }), i)}
             {S({ part: "guided", i })}
           </div>
@@ -437,7 +474,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
         {x.instructions && <p className="text-base leading-relaxed whitespace-pre-wrap">{x.instructions}</p>}
         {x.visual && <LessonVisual visual={x.visual} />}
         {(x.tasks || []).map((t, j) => (
-          <div key={j} className="space-y-2">
+          <div key={j} id={"revision-task-" + i + "-" + j} className={"space-y-2 rounded-xl " + (flagsByKey["task:" + i + ":" + j] ? "ring-2 ring-amber-400 p-3 bg-amber-50/40" : "")}>
+            {flaggedNote("task:" + i + ":" + j)}
             {item("task", i, j, t, `${String.fromCharCode(97 + (j % 26))}.`, tv[`${i}.${j}`], (v) => setTv({ ...tv, [`${i}.${j}`]: v }), j)}
           </div>
         ))}
@@ -456,7 +494,8 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
       <div className="space-y-4" data-testid="questions">
         <p className="text-sm text-stone-600">Answer in your own words. Take your time.</p>
         {questions.map((q, i) => (
-          <div key={i}>
+          <div key={i} id={"revision-question-" + i} className={"rounded-xl " + (flagsByKey["question:" + i] ? "ring-2 ring-amber-400 p-3 bg-amber-50/40" : "")}>
+            {flaggedNote("question:" + i)}
             <label htmlFor={`ans-${i}`} className="font-bold">{i + 1}. {q.prompt}</label>
             <textarea id={`ans-${i}`} rows={q.type === "long" ? 5 : 2} disabled={locked} value={answers[i] || ""} onChange={(e) => setAnswers({ ...answers, [i]: e.target.value })} className={`mt-1 ${area}`} style={border} data-testid={`answer-${i}`} />
             <div className="mt-2">{S({ part: "question", i })}</div>
@@ -548,6 +587,20 @@ export default function ParentLessonPlayer({ assignment, onChanged, preview = fa
           <strong>Your grown-up asked you to try again:</strong> {last.parent_feedback}
           {last.next_step && <div className="mt-1">Next step: {last.next_step}</div>}
         </div>
+      )}
+
+      {a.status === "needs_revision" && reviewFlags.length > 0 && (
+        <section className="rounded-2xl border-2 border-amber-400 bg-amber-50 p-4 space-y-3" data-testid="flagged-questions-summary" aria-label="Questions to revisit">
+          <h2 className="font-display text-lg font-bold text-amber-950">🔎 Your grown-up has flagged {reviewFlags.length} question{reviewFlags.length === 1 ? "" : "s"} to look at again</h2>
+          <p className="text-sm text-amber-950">Your other answers are still saved. Choose a question below to jump straight to it, make your changes and hand the lesson back in.</p>
+          <div className="flex flex-wrap gap-2">
+            {reviewFlags.map(f => (
+              <button key={f.key} type="button" onClick={() => jumpToFlag(f.key)}
+                className="rounded-full border border-amber-500 bg-white px-4 py-2 text-sm font-bold text-amber-950 hover:bg-amber-100"
+                data-testid={"jump-flag-" + f.key}>{labelForFlag(f.key)} →</button>
+            ))}
+          </div>
+        </section>
       )}
       {a.status === "needs_revision" && last?.response_text && (
         <details className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm" data-testid="previous-submitted-work">

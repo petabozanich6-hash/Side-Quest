@@ -805,18 +805,53 @@ async function awardXp(db: DB, studentId: string, amount: number, reason: string
   }
 }
 
+export type RevisionFlag = { key: string; comment: string };
+
+/** Flags may target only editable questions in the child's assigned lesson snapshot. */
+export function normaliseReviewFlags(value: unknown, lesson: any): Result<{ flags: RevisionFlag[] }> {
+  if (!Array.isArray(value) || value.length > 50) return fail(400, "Choose up to 50 questions to revisit.");
+  const keys = new Set<string>();
+  (Array.isArray(lesson?.questions) ? lesson.questions : []).forEach((_: any, i: number) => keys.add("question:" + i));
+  (Array.isArray(lesson?.guided_practice) ? lesson.guided_practice : []).forEach((_: any, i: number) => keys.add("guided:" + i));
+  (Array.isArray(lesson?.activities) ? lesson.activities : []).forEach((a: any, i: number) =>
+    (Array.isArray(a?.tasks) ? a.tasks : []).forEach((_: any, j: number) => keys.add("task:" + i + ":" + j)));
+  const seen = new Set<string>();
+  const flags: RevisionFlag[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object" || typeof item.key !== "string" || !keys.has(item.key) || seen.has(item.key))
+      return fail(400, "One of the flagged questions is invalid. Refresh and select it again.");
+    if (item.comment != null && typeof item.comment !== "string") return fail(400, "Question feedback must be text.");
+    if (String(item.comment || "").length > 280) return fail(400, "Keep feedback for each question under 280 characters.");
+    seen.add(item.key);
+    flags.push({ key: item.key, comment: String(item.comment || "").trim() });
+  }
+  return { ok: true, flags };
+}
+
 export async function reviewSubmission(
   db: DB,
   familyId: string,
   parentId: string,
   submissionId: string,
-  body: { status?: string; feedback_text?: string | null; next_step?: string | null; outcome_mappings?: unknown[] },
+  body: { status?: string; feedback_text?: string | null; next_step?: string | null; outcome_mappings?: unknown[]; review_flags?: unknown },
   now: Date = new Date()
 ): Promise<Result<{ xp_awarded: number }>> {
   if (!REVIEW_STATUSES.includes(String(body.status))) return fail(400, "Invalid status");
   const sub = await db.prepare("SELECT * FROM submissions WHERE id = ? AND family_id = ?").bind(submissionId, familyId).first<any>();
   if (!sub) return fail(404, "Not found");
   const status = String(body.status);
+  const assignment = await db.prepare("SELECT * FROM assignments WHERE id = ? AND family_id = ? AND student_id = ?")
+    .bind(sub.assignment_id, familyId, sub.student_id).first<any>();
+  if (!assignment) return fail(409, "The original assignment could not be found. Your child's answers are preserved.", "REVIEW_ASSIGNMENT_MISSING");
+  const live = assignment.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ? AND (family_id = ? OR family_id IS NULL)")
+    .bind(assignment.lesson_id, familyId).first<any>();
+  const lesson = assignmentLesson(assignment, live);
+  const requested = status === "needs_revision"
+    ? (body.review_flags === undefined ? parseJson<unknown[]>(sub.review_flags, []) : body.review_flags)
+    : [];
+  const checkedFlags = normaliseReviewFlags(requested, lesson);
+  if (!checkedFlags.ok) return checkedFlags;
+  const reviewFlags = JSON.stringify(checkedFlags.flags);
   // Older submission rows are permitted to have a NULL lesson_id even though
   // lesson_evidence requires one. Recover it from the original assignment.
   const evidenceLessonId = sub.lesson_id || (await db.prepare(
@@ -840,11 +875,12 @@ export async function reviewSubmission(
     }
     const same = feedback === String(sub.parent_feedback ?? "")
       && nextStep === (sub.next_step ?? null)
-      && JSON.stringify(mappings) === JSON.stringify(parseJson<unknown[]>(sub.outcome_mappings, []));
+      && JSON.stringify(mappings) === JSON.stringify(parseJson<unknown[]>(sub.outcome_mappings, []))
+      && reviewFlags === JSON.stringify(parseJson<unknown[]>(sub.review_flags, []));
     if (same) return { ok: true, xp_awarded: 0 };
     await db.prepare(
-      "UPDATE submissions SET parent_feedback = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ? AND family_id = ? AND status = ?"
-    ).bind(feedback, nextStep, JSON.stringify(mappings), ts, parentId, sub.id, familyId, status).run();
+      "UPDATE submissions SET parent_feedback = ?, next_step = ?, outcome_mappings = ?, review_flags = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ? AND family_id = ? AND status = ?"
+    ).bind(feedback, nextStep, JSON.stringify(mappings), reviewFlags, ts, parentId, sub.id, familyId, status).run();
     await safely("re-review", () => trackSubmission(db, familyId, sub.id, now));
     return { ok: true, xp_awarded: 0 };
   }
@@ -863,8 +899,8 @@ export async function reviewSubmission(
   // the submission marked approved while its records are only half saved.
   const writes = [
     db
-      .prepare("UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ?")
-      .bind(feedback, status, nextStep, JSON.stringify(mappings), ts, parentId, sub.id),
+      .prepare("UPDATE submissions SET parent_feedback = ?, status = ?, next_step = ?, outcome_mappings = ?, review_flags = ?, reviewed_at = ?, reviewed_by = ? WHERE id = ? AND family_id = ? AND status IN ('submitted','awaiting_help')")
+      .bind(feedback, status, nextStep, JSON.stringify(mappings), reviewFlags, ts, parentId, sub.id, familyId),
     db.prepare("UPDATE assignments SET status = ?, updated_at = ? WHERE id = ? AND status != 'revoked'")
       .bind(status, ts, sub.assignment_id),
   ];

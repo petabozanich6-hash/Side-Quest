@@ -15,6 +15,7 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
   const [sub, setSub] = useState(null);
   const [marks, setMarks] = useState({});
   const [comment, setComment] = useState("");
+  const [flags, setFlags] = useState({});
   const [nextStep, setNextStep] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -35,6 +36,7 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
         setMarks(initial);
         setComment(data.parent_feedback || "");
         setNextStep(data.next_step || "");
+        setFlags(Object.fromEntries((data.review_flags || []).map(f => [f.key, f.comment || ""])));
       } catch { toast.error("Could not open this submission"); onClose(); }
     })();
     return () => { alive = false; };
@@ -42,6 +44,31 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
 
   if (!sub) return null;
   const codes = sub.lesson?.outcome_codes || [];
+  const saved = sub.review_answers || {};
+  const display = v => Array.isArray(v) ? v.join(", ") : String(v ?? "").trim();
+  // Older library lessons use a different player; only show jump-links for the modern editable questions.
+  const modernPlayer = !!(sub.lesson?.builder || sub.lesson?.source === "parent" || sub.lesson?.source === "ai");
+  const reviewItems = modernPlayer ? [
+    ...(Array.isArray(sub.lesson?.guided_practice) ? sub.lesson.guided_practice : []).map((q, i) => ({
+      key: "guided:" + i, label: "Practice question " + (i + 1), prompt: q.prompt,
+      answer: display(saved.guided?.[i]),
+    })),
+    ...(Array.isArray(sub.lesson?.activities) ? sub.lesson.activities : []).flatMap((a, i) => (Array.isArray(a.tasks) ? a.tasks : []).map((q, j) => ({
+      key: "task:" + i + ":" + j, label: (a.title || "Activity " + (i + 1)) + " · task " + (j + 1), prompt: q.prompt,
+      answer: display(saved.tasks?.[i + "." + j]),
+    }))),
+    ...(Array.isArray(sub.lesson?.questions) ? sub.lesson.questions : []).map((q, i) => ({
+      key: "question:" + i, label: "Show what you know · question " + (i + 1), prompt: q.prompt,
+      answer: display(saved.answers?.[i]),
+    })),
+  ] : [];
+  const selectedFlags = Object.entries(flags).map(([key, comment]) => ({ key, comment }));
+  const toggleFlag = key => setFlags(current => {
+    const next = { ...current };
+    if (Object.prototype.hasOwnProperty.call(next, key)) delete next[key];
+    else next[key] = "";
+    return next;
+  });
 
   const mark = (code) => marks[code]?.mark || "";
   const setMark = (code, patch) => setMarks({ ...marks, [code]: { ...(marks[code] || {}), ...patch } });
@@ -62,7 +89,8 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
     try {
       await api.post(`/submissions/${sub.id}/feedback`, {
         submission_id: sub.id,
-        feedback_text: comment.trim() || "Great work!",
+        feedback_text: comment.trim() || (status === "needs_revision" ? "Please revisit the flagged questions." : "Great work!"),
+        review_flags: status === "needs_revision" ? selectedFlags : [],
         status,
         next_step: nextStep || null,
         outcome_mappings: mappings(forceNone),
@@ -78,7 +106,7 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
 
   const approve = () => send("demonstrated", false);
   const sendBack = () => {
-    if (!comment.trim()) { toast.error("Add a comment on how to improve before returning"); return; }
+    if (!comment.trim() && !selectedFlags.length) { toast.error("Flag a question or add a comment before returning"); return; }
     send("needs_revision", true);
   };
 
@@ -123,6 +151,44 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
                     <div className="p-2 text-[11px] truncate">{f.original_filename}</div>
                   </a>
                 );
+              })}
+            </div>
+          </section>
+        )}
+
+
+        {reviewItems.length > 0 && (
+          <section className="mb-5" data-testid="question-review">
+            <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
+              <h3 className="font-display text-base font-semibold">Questions to revisit</h3>
+              <span className="text-xs font-bold text-amber-800" data-testid="flag-count">{selectedFlags.length} flagged</span>
+            </div>
+            <p className="text-sm text-slate-600 mb-3">
+              Mark the exact questions your child should look at again. Their existing answers stay saved.
+              You can add a short note to any flagged question.
+            </p>
+            <div className="space-y-3">
+              {reviewItems.map(q => {
+                const selected = Object.prototype.hasOwnProperty.call(flags, q.key);
+                return <div key={q.key} className={"rounded-xl border p-3 space-y-2 " + (selected ? "border-amber-400 bg-amber-50" : "border-slate-200 bg-white")} data-testid={"review-item-" + q.key}>
+                  <label className="flex gap-3 items-start cursor-pointer">
+                    <input type="checkbox" disabled={readOnly} checked={selected} onChange={() => toggleFlag(q.key)}
+                      className="mt-1 h-4 w-4" aria-label={"Flag " + q.label} data-testid={"flag-" + q.key}/>
+                    <span className="min-w-0">
+                      <span className="block text-sm font-bold text-slate-800">{q.label}</span>
+                      <span className="block text-sm text-slate-700 whitespace-pre-wrap">{q.prompt || "Question"}</span>
+                    </span>
+                  </label>
+                  {q.answer && <div className="ml-7 rounded-lg bg-slate-50 p-2 text-sm text-slate-700 whitespace-pre-wrap"><strong>Child's answer:</strong> {q.answer}</div>}
+                  {selected && <label className="block ml-7 text-xs font-semibold text-amber-900">
+                    Your note for this question (optional)
+                    <input type="text" disabled={readOnly} maxLength={280} value={flags[q.key] || ""}
+                      onChange={e => setFlags(current => ({ ...current, [q.key]: e.target.value }))}
+                      placeholder="For example: Show how you reached your answer"
+                      className="mt-1 w-full rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm font-normal text-slate-900"
+                      data-testid={"flag-note-" + q.key} />
+                  </label>}
+                </div>;
               })}
             </div>
           </section>

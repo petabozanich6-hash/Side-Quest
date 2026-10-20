@@ -70,6 +70,7 @@ function subOut(r: any) {
     ...r,
     needs_help: !!r.needs_help,
     file_ids: parseJson(r.file_ids, []),
+    review_flags: parseJson(r.review_flags, []),
     outcome_mappings: (parseJson(r.outcome_mappings, []) as any[]).map(publicMapping),
   };
 }
@@ -516,11 +517,17 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r: any = await c.env.DB.prepare(sql).bind(...b).first();
     if (!r) return c.json({ detail: "Not found" }, 404);
     const s: any = subOut(r);
-    const sl = lessonOut(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+    // Review the same immutable lesson snapshot the child answered, even when the parent edits their library copy.
+    const assignment: any = await c.env.DB.prepare("SELECT * FROM assignments WHERE id = ? AND family_id = ? AND student_id = ?")
+      .bind(r.assignment_id, u.family_id, r.student_id).first();
+    const live = assignment?.lesson_snapshot ? null : await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ? AND (family_id = ? OR family_id IS NULL)")
+      .bind(r.lesson_id, u.family_id).first();
+    const sl = assignment ? lb.assignmentLesson(assignment, live) : lessonOut(live);
     s.lesson = u.role === "child" ? lb.childSafeLesson(sl) : sl;
+    if (u.role === "parent") s.review_answers = parseJson(assignment?.draft, {});
     s.student = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
     // The support level the parent set when assigning: the default for the review's per-outcome support.
-    if (u.role === "parent") s.support_level = (await c.env.DB.prepare("SELECT support_level FROM assignments WHERE id = ? AND family_id = ?").bind(r.assignment_id, u.family_id).first<{ support_level: string }>())?.support_level || "green";
+    if (u.role === "parent") s.support_level = assignment?.support_level || "green";
     const ids: string[] = Array.isArray(s.file_ids) ? s.file_ids.slice(0, 20) : [];
     s.files = [];
     for (const fid of ids) {
