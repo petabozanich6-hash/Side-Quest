@@ -49,12 +49,30 @@ test("All 56 A4 pages exist as black-and-white scalable practice sheets",()=>{
  for(const n of [2,3,52,53]){
   const svg=renderHandwritingPage(n);
   assert.match(svg,/stroke-dasharray="0.7 7.5"/);
-  assert.match(svg,/Now try without tracing/);
-  assert.match(svg,/Start at the numbered dots/);
+  assert.match(svg,/handwriting-arrow/);
+  assert.match(svg,/width="210mm" height="297mm"/);
  }
- assert.match(renderHandwritingPage(2),/Lowercase a/);
- assert.match(renderHandwritingPage(3),/Capital A/);
- assert.match(renderHandwritingPage(54),/Little Letter Hero/);
+ // Every letter gets a genuinely different illustrated introduction and a
+ // second page of independent practice with ample ruled writing space.
+ for(let i=0;i<26;i++){
+  const letter="abcdefghijklmnopqrstuvwxyz"[i];
+  const intro=renderHandwritingPage(2+i*2);
+  const practise=renderHandwritingPage(3+i*2);
+  assert.match(intro,/Let(?:'|&apos;)s learn the letter /);
+  assert.match(intro,/Uppercase /);
+  assert.match(intro,/Lowercase /);
+  assert.match(intro,/Start at the numbered dots/);
+  assert.match(intro,/Trace the uppercase /);
+  assert.match(intro,/Trace the lowercase /);
+  assert.match(practise,/Let(?:'|&apos;)s practise /);
+  assert.match(practise,/Now try without tracing/);
+  assert.match(practise,/1\. Trace the capital /);
+  assert.match(practise,/2\. Trace the lowercase /);
+  assert.ok((practise.match(/stroke-dasharray="7 8"/g)||[]).length>=5,"not enough handwriting lines for "+letter);
+ }
+ assert.match(renderHandwritingPage(2),/Let(?:'|&apos;)s learn the letter Aa/);
+ assert.match(renderHandwritingPage(3),/Let(?:'|&apos;)s practise Aa/);
+ assert.match(renderHandwritingPage(54),/LITTLE LETTER HERO/);
 });
 test("Free families never receive book artwork; paid parents can read it",async()=>{
  const h=harness(),free=await h.parent("FREE_PREVIEW"),paid=await h.parent("ACTIVE_MONTHLY");
@@ -82,5 +100,5 @@ test("Owner has free creator access while ordinary free families stay locked",as
  h.db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(),parent.userId);
  const result=await h.req("/handwriting-book/pages/0",parent.token);
  assert.equal(result.status,200);
- assert.match(await result.text(),/THE LITTLE/);
+ assert.match(await result.text(),/HANDWRITING[\s\S]*WORKBOOK/);
 });

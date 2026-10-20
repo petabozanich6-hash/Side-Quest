@@ -1,0 +1,37 @@
+name: Handwriting Book Visual Proof
+on:
+  pull_request:
+    paths:
+      - 'worker/src/handwritingBook.ts'
+      - 'worker/test/handwritingBookProof.mjs'
+      - '.github/workflows/handwriting-proof.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Worker dependencies
+        run: npm --prefix worker ci
+      - name: Install browser
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y >/dev/null
+          npm i playwright@1.49.1
+          npx playwright install --with-deps chromium
+      - name: Render real workbook pages to PNG
+        run: |
+          PW_PATH=/tmp/pw/node_modules/playwright/index.mjs \
+            node --no-warnings --import ./worker/test/register.mjs worker/test/handwritingBookProof.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: handwriting-book-visual-proof
+          path: handwriting-proof/*
+          retention-days: 7
