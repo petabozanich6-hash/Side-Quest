@@ -23,8 +23,8 @@ export const STROKES: Record<string,string[]> = {
  B:["M11 0 L11 80","M11 0 C77 -3 76 41 11 40","M11 40 C84 35 83 86 11 80"],
  C:["M66 11 C9 -18 -5 95 66 73"],
  D:["M11 0 L11 80","M11 0 C91 0 90 82 11 80"],
- E:["M66 0 L12 0 L12 80 L66 80","M12 40 L58 40"],
- F:["M12 80 L12 0 L65 0","M12 39 L56 39"],
+ E:["M12 0 L12 80","M12 0 L66 0","M12 40 L58 40","M12 80 L66 80"],
+ F:["M12 0 L12 80","M12 0 L65 0","M12 39 L56 39"],
  G:["M66 13 C8 -13 -8 97 66 77 L66 47 L42 47"],
  H:["M12 0 L12 80","M66 0 L66 80","M12 40 L66 40"],
  I:["M17 0 L61 0","M39 0 L39 80","M17 80 L61 80"],
@@ -88,6 +88,7 @@ const dragon=(x:number,y:number,scale=1)=>
 
 function renderFrame(page:number,body:string){
  return '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 794 1123">'
+ +'<defs><marker id="handwriting-arrow" markerWidth="4" markerHeight="4" refX="2.4" refY="2" orient="auto"><path d="M0 0 L4 2 L0 4 Z" fill="#111"/></marker></defs>'
  +'<rect width="794" height="1123" fill="#fff"/>'
  +'<g font-family="Arial,Helvetica,sans-serif" fill="#151515">'
  +txt(62,64,"SIDE-QUEST  /  THE LITTLE LETTER QUEST",16,'font-weight="bold" letter-spacing="1"')
@@ -105,7 +106,7 @@ function glyph(letter:string,x:number,y:number,scale:number,trace=false,showOrde
  let s='<g transform="translate('+x+' '+y+') scale('+scale+')" fill="none" stroke-linecap="round" stroke-linejoin="round">';
  strokes.forEach((d,i)=>{
   s+='<path d="'+d+'" stroke="'+(trace?'#969696':'#1c1c1c')+'" stroke-width="'+(trace?3:4)+'"'
-   +(trace?' stroke-dasharray="0.7 7.5"':'')+'/>';
+   +(trace?' stroke-dasharray="0.7 7.5"':' marker-end="url(#handwriting-arrow)"')+'/>';
   if(showOrder){
    const p=/^M(-?\d+)\s+(-?\d+)/.exec(d);
    if(p){
