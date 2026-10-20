@@ -46,20 +46,22 @@ export default function ReviewModal({ submissionId, onClose, onDone, readOnly = 
   const codes = sub.lesson?.outcome_codes || [];
   const saved = sub.review_answers || {};
   const display = v => Array.isArray(v) ? v.join(", ") : String(v ?? "").trim();
-  const reviewItems = [
-    ...(sub.lesson?.guided_practice || []).map((q, i) => ({
+  // Older library lessons use a different player; only show jump-links for the modern editable questions.
+  const modernPlayer = !!(sub.lesson?.builder || sub.lesson?.source === "parent" || sub.lesson?.source === "ai");
+  const reviewItems = modernPlayer ? [
+    ...(Array.isArray(sub.lesson?.guided_practice) ? sub.lesson.guided_practice : []).map((q, i) => ({
       key: "guided:" + i, label: "Practice question " + (i + 1), prompt: q.prompt,
       answer: display(saved.guided?.[i]),
     })),
-    ...(sub.lesson?.activities || []).flatMap((a, i) => (a.tasks || []).map((q, j) => ({
+    ...(Array.isArray(sub.lesson?.activities) ? sub.lesson.activities : []).flatMap((a, i) => (Array.isArray(a.tasks) ? a.tasks : []).map((q, j) => ({
       key: "task:" + i + ":" + j, label: (a.title || "Activity " + (i + 1)) + " · task " + (j + 1), prompt: q.prompt,
       answer: display(saved.tasks?.[i + "." + j]),
     }))),
-    ...(sub.lesson?.questions || []).map((q, i) => ({
+    ...(Array.isArray(sub.lesson?.questions) ? sub.lesson.questions : []).map((q, i) => ({
       key: "question:" + i, label: "Show what you know · question " + (i + 1), prompt: q.prompt,
       answer: display(saved.answers?.[i]),
     })),
-  ];
+  ] : [];
   const selectedFlags = Object.entries(flags).map(([key, comment]) => ({ key, comment }));
   const toggleFlag = key => setFlags(current => {
     const next = { ...current };
