@@ -811,10 +811,10 @@ export type RevisionFlag = { key: string; comment: string };
 export function normaliseReviewFlags(value: unknown, lesson: any): Result<{ flags: RevisionFlag[] }> {
   if (!Array.isArray(value) || value.length > 50) return fail(400, "Choose up to 50 questions to revisit.");
   const keys = new Set<string>();
-  (lesson?.questions || []).forEach((_: any, i: number) => keys.add("question:" + i));
-  (lesson?.guided_practice || []).forEach((_: any, i: number) => keys.add("guided:" + i));
-  (lesson?.activities || []).forEach((a: any, i: number) =>
-    (a?.tasks || []).forEach((_: any, j: number) => keys.add("task:" + i + ":" + j)));
+  (Array.isArray(lesson?.questions) ? lesson.questions : []).forEach((_: any, i: number) => keys.add("question:" + i));
+  (Array.isArray(lesson?.guided_practice) ? lesson.guided_practice : []).forEach((_: any, i: number) => keys.add("guided:" + i));
+  (Array.isArray(lesson?.activities) ? lesson.activities : []).forEach((a: any, i: number) =>
+    (Array.isArray(a?.tasks) ? a.tasks : []).forEach((_: any, j: number) => keys.add("task:" + i + ":" + j)));
   const seen = new Set<string>();
   const flags: RevisionFlag[] = [];
   for (const item of value) {
