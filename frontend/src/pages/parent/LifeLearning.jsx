@@ -16,6 +16,8 @@ const EXAMPLES = [
 export default function LifeLearningPage() {
   const [searchParams] = useSearchParams();
   const focused = searchParams.get("focus");
+  const vaultActivity = searchParams.get("vault_activity");
+  const vaultMinutes = searchParams.get("vault_minutes");
   const [items, setItems] = useState([]);
   const [students, setStudents] = useState([]);
   const [open, setOpen] = useState(false);
@@ -28,6 +30,17 @@ export default function LifeLearningPage() {
   const [form, setForm] = useState({ student_id: "", title: "", description: "", duration_minutes: 60, location: "", parent_note: "" });
   const [place, setPlace] = useState({ loaded: false, jurisdiction: null, framework: null });
   const [picking, setPicking] = useState(false);
+
+  // A printed Hands-On Quest is only a suggested plan. Families describe what
+  // actually happened before the Life Learning evidence is saved.
+  useEffect(() => {
+    const title = String(vaultActivity || "").trim().slice(0, 140);
+    if (!title) return;
+    const parsed = Number(vaultMinutes);
+    const duration = Number.isFinite(parsed) && parsed >= 5 && parsed <= 180 ? parsed : 30;
+    setForm(f => ({ ...f, title, description: "", duration_minutes: duration }));
+    setOpen(true);
+  }, [vaultActivity, vaultMinutes]);
 
   const loadPlace = () => api.get("/me/jurisdiction").then(r => setPlace({ loaded: true, ...r.data })).catch(() => setPlace(p => ({ ...p, loaded: true })));
   const savePlace = async (code) => {
