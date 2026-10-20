@@ -22,6 +22,11 @@ const fullQuest = {
   wonder: ["What changed?", "Why is it different?"],
   safety: "Do not eat. Scrape leftovers into a rubbish bin, not the drain.",
   extension: "Draw what happens when you move fast and slow.",
+  runbook: {
+    prepare: "Measure two cups cornflour into a large bowl on a waterproof tray.",
+    expected: "Firm when squeezed fast, flowing slowly with gentle pressure.",
+    troubleshoot: "If it is too runny, add a little cornflour at a time; bin leftovers.",
+  },
   parentLearning: {
     objective: "Investigate how materials behave under different forces.",
     explanation: "Cornflour particles resist a fast push more than a gentle one.",
@@ -30,7 +35,7 @@ const fullQuest = {
   },
 };
 const catalogue = unlocked => ({
-  unlocked, count: 150, categories: ["Kitchen Science"],
+  unlocked, count: 162, categories: ["Kitchen Science"],
   items: [{ ...sampleQuest, ...(unlocked ? { materials: fullQuest.materials } : {}) }],
 });
 
@@ -85,6 +90,12 @@ test("paid parent sees A4 guide with explicit education, safety and evidence lin
   expect(guide.textContent).toContain(fullQuest.parentLearning.parentPrompt);
   expect(guide.textContent).toContain(fullQuest.parentLearning.evidence);
   expect(guide.textContent).toContain(fullQuest.safety);
+  expect(guide.textContent).toContain("Before you start: set up for success");
+  expect(guide.textContent).toContain(fullQuest.runbook.prepare);
+  expect(guide.textContent).toContain(fullQuest.runbook.expected);
+  expect(guide.textContent).toContain(fullQuest.runbook.troubleshoot);
+  expect(guide.textContent).toContain("If it doesn’t work first time");
+  expect(guide.querySelectorAll(".print-step-checkbox")).toHaveLength(4);
   const recordLink = [...container.querySelectorAll("a")].find(a => a.textContent.includes("Record the learning"));
   expect(recordLink.getAttribute("href")).toContain("/parent/life-learning?vault_activity=");
   expect(container.querySelector("style").textContent).toContain("@page { size: A4 portrait;");
