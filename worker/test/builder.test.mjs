@@ -1681,6 +1681,8 @@ test("question review flags validate targets, stay with the return and preserve 
   const returned = await lb.reviewSubmission(db, fam, "parent", handedIn.id,
     { status: "needs_revision", feedback_text: "Have another go", review_flags: [flags[0]] }, NOW);
   assert.ok(returned.ok, JSON.stringify(returned));
+  const originalHandIn = db.raw.prepare("SELECT submission_draft FROM submissions WHERE id = ?").get(handedIn.id);
+  assert.deepEqual(JSON.parse(originalHandIn.submission_draft).answers, original.answers);
   const review = db.raw.prepare("SELECT review_flags, status FROM submissions WHERE id = ?").get(handedIn.id);
   assert.equal(review.status, "needs_revision");
   assert.deepEqual(JSON.parse(review.review_flags), [flags[0]]);
@@ -1691,6 +1693,8 @@ test("question review flags validate targets, stay with the return and preserve 
   assert.ok((await lb.saveDraft(db, user, assignment.id, improved, NOW)).ok);
   const second = await lb.submitWork(db, user, { assignment_id: assignment.id, response_text: "Revised", draft: improved }, NOW);
   assert.ok(second.ok, JSON.stringify(second));
+  assert.deepEqual(JSON.parse(db.raw.prepare("SELECT submission_draft FROM submissions WHERE id = ?").get(handedIn.id).submission_draft).answers,
+    original.answers, "reviewing an earlier submission never substitutes the revised answers");
   assert.deepEqual(JSON.parse(db.raw.prepare("SELECT review_flags FROM submissions WHERE id = ?").get(handedIn.id).review_flags), [flags[0]],
     "the previous review remains in history");
   assert.deepEqual(JSON.parse(db.raw.prepare("SELECT review_flags FROM submissions WHERE id = ?").get(second.id).review_flags), [],
