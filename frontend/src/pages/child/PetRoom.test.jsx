@@ -24,6 +24,7 @@ const render = () => act(async () => root.render(<PetRoom />));
 test.each(['fox', 'owl', 'turtle', 'hedgehog', 'fawn', 'squirrel', 'rabbit', 'dragon', 'goblin'])('%s retains pet art and front, back and seasonal accessory layers', async species => {
   pet.species = species; await render();
   expect(find('pet-body').querySelector('svg').getAttribute('viewBox')).toBe('0 0 120 120');
+  expect(find('pet-body').querySelector('svg').getAttribute('data-species')).toBe(species);
   expect(find('worn-accessories')).not.toBeNull(); expect(find('worn-accessories-back')).not.toBeNull(); expect(find('worn-seasonal')).not.toBeNull();
   expect(find('pet-scene').getAttribute('data-scene')).toBe('cozy');
   expect(host.querySelector('[role="progressbar"][aria-label="XP"]').getAttribute('aria-valuenow')).toBe('1900');

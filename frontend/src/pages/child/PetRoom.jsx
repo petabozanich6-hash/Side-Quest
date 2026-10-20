@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
+import { Fern, Flower, Branch } from "../../components/shared/Botanical";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
 import { Wearable } from "../../components/shared/PetWearables";
@@ -13,14 +13,9 @@ import { playSfx, setSfx, sfxOn } from "../../lib/sfx";
 import { ArrowLeft, Apple, Gamepad2, Sparkles, Loader2, Droplets } from "lucide-react";
 
 import "./PetRoom.css";
+import RoomPet from "../../components/shared/RoomPet";
 
 const SCENE = { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" };
-
-const ACC_EMOJI = {
-  scarf: "🧣", bow: "🎀", flower_crown: "🌸", party_hat: "🎉", bookworm_specs: "👓",
-  backpack: "🎒", cape: "🧥", star_badge: "⭐", crown: "👑",
-  top_hat: "🎩", rainbow: "🌈", magic_wand: "🪄", headphones: "🎧", shades: "🕶️", butterfly: "🦋",
-};
 
 const EGG_FALLBACK = { base: "#E9C8A0", accent: "#FFFFFF", pattern: "spots", glow: "#FFF0DC" };
 
@@ -84,13 +79,13 @@ const SpeciesEgg = ({ style, size = 200, reaction, cold, children }) => {
 // The original pet is a 120x120 SVG. Attach accessories in the same SVG
 // coordinate system so they follow the character without image overlays.
 const CLASSIC_SPOTS = {
-  head: [60, 21, 39], face: [60, 48, 43], neck: [60, 74, 48],
+  head: [60, 21, 39], face: [60, 48, 43], neck: [60, 76, 37],
   chest: [72, 88, 28], right: [103, 81, 38],
 };
 const CLASSIC_BACK_SPOTS = {
-  backpack: [90, 82, 45], cape: [60, 84, 103], butterfly: [60, 71, 117],
+  backpack: [90, 82, 45], cape: [60, 78, 90], butterfly: [60, 71, 117],
 };
-const CLASSIC_EMOJI = { rainbow: "🌈", magic_wand: "🪄" };
+
 
 function ClassicWearables({ equipped = [], behind = false }) {
   const ids = equipped.filter((id) => (ACCESSORY_SLOTS[id] === "back") === behind);
@@ -101,9 +96,7 @@ function ClassicWearables({ equipped = [], behind = false }) {
         const placement = behind ? CLASSIC_BACK_SPOTS[id] : CLASSIC_SPOTS[ACCESSORY_SLOTS[id]];
         if (!placement) return null;
         const [x, y, size] = placement;
-        return CLASSIC_EMOJI[id]
-          ? <text key={id} x={x} y={y} textAnchor="middle" dominantBaseline="central" fontSize={size * 0.8}>{CLASSIC_EMOJI[id]}</text>
-          : <svg key={id} x={x - size / 2} y={y - size / 2} width={size} height={size} viewBox="0 0 100 100" overflow="visible">
+        return <svg key={id} x={x - size / 2} y={y - size / 2} width={size} height={size} viewBox="0 0 100 100" overflow="visible">
               <Wearable id={id} />
             </svg>;
       })}
@@ -315,11 +308,11 @@ export default function PetRoom() {
               data-form={pet.level_name}
               style={{ filter: `drop-shadow(0 8px 5px rgba(45, 30, 16, .22))${sick ? " grayscale(0.7)" : asleep ? " brightness(0.75)" : ""}`, cursor: "pointer" }}>
               {hatched
-                ? <Pet species={pet.species} size={220} happy={!sad && pet.happiness > 40}
+                ? <RoomPet species={pet.species} size={220} happy={!sad && pet.happiness > 40}
                     backChildren={<ClassicWearables equipped={worn} behind />}>
                     <ClassicWearables equipped={worn} />
                     <SeasonalWorn />
-                  </Pet>
+                  </RoomPet>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}>
                     <SeasonalWorn layout="egg" />
                   </SpeciesEgg>}
@@ -387,7 +380,7 @@ export default function PetRoom() {
                   className="pet-room-accessory rounded-xl border-2 p-3 text-center disabled:opacity-60"
                   style={{ borderColor: on ? "#1F3B2D" : "#D4C8A8", background: on ? "#ECFCCB" : "#fff" }}
                   data-testid={`acc-${a.id}`}>
-                  <div className="text-3xl">{a.unlocked ? (ACC_EMOJI[a.id] || "✨") : "🔒"}</div>
+                  <div className="pet-product-preview" aria-hidden="true">{a.unlocked ? <svg viewBox="0 0 100 100"><Wearable id={a.id} /></svg> : <span className="text-3xl">🔒</span>}</div>
                   <div className="text-[11px] font-bold mt-1" style={{ color: "#1F3B2D" }}>{a.label}</div>
                   {on && <div className="text-[10px] font-bold text-green-800">✓ Wearing</div>}
                   {!a.unlocked && <div className="text-[10px] text-stone-500 mt-0.5">{ruleText(a.rule)}</div>}

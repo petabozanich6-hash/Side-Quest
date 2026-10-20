@@ -37,3 +37,6 @@
 @media (prefers-reduced-motion: reduce) {
   .pet-room *, .pet-room *::before, .pet-room *::after { animation: none !important; transition: none !important; }
 }
+
+.pet-product-preview { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 8px; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #fffdf5, #f0e6d3); }
+.pet-product-preview svg { width: 56px; height: 56px; overflow: visible; filter: drop-shadow(0 3px 2px #604c3026); }
