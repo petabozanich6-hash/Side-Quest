@@ -14,7 +14,7 @@ const submission = {
   submitted_at: "2026-10-21T00:00:00Z", response_text: "My answers",
   student: { name: "Explorer" },
   lesson: {
-    title: "Fractions", stage: "S2", learning_area: "Mathematics", outcome_codes: [],
+    title: "Fractions", builder: true, stage: "S2", learning_area: "Mathematics", outcome_codes: [],
     questions: [{ prompt: "Why is a half plus a half one whole?" }],
     guided_practice: [{ prompt: "Try one half plus one quarter" }],
     activities: [{ title: "Fraction blocks", tasks: [{ prompt: "Describe your result" }] }],
