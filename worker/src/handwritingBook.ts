@@ -159,7 +159,7 @@ function banner(x:number,y:number,w:number,label:string){
 }
 function frame(page:number,body:string){
  return '<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 794 1123" role="img" aria-label="Handwriting workbook page '+(page+1)+'">'
- +'<defs><marker id="handwriting-arrow" markerWidth="3" markerHeight="3" refX="2.4" refY="1.5" orient="auto" markerUnits="strokeWidth"><path d="M0 0 L3 1.5 L0 3Z" fill="#111"/></marker></defs>'
+ +'<defs><marker id="handwriting-arrow" markerWidth="2.3" markerHeight="2.3" refX="2" refY="1.15" orient="auto" markerUnits="strokeWidth"><path d="M0 0 L2.3 1.15 L0 2.3Z" fill="#111"/></marker></defs>'
  +'<rect width="794" height="1123" fill="white"/>'
  +'<g font-family="Trebuchet MS,Arial,sans-serif" fill="#151515">'
  +txt(61,54,"SIDE-QUEST LEARNING",17,'font-weight="bold" letter-spacing="1.4"')
@@ -178,16 +178,23 @@ function frame(page:number,body:string){
 function glyph(letter:string,x:number,y:number,scale:number,kind:"model"|"trace"="model"){
  const strokes=STROKES[letter]||[];
  let s='<g transform="translate('+x+' '+y+') scale('+scale+')" fill="none" stroke-linecap="round" stroke-linejoin="round">';
+ const seenStarts:Array<[number,number]>=[];
  strokes.forEach((d,i)=>{
   const closed=/[Zz]\s*$/.test(d);
-  s+='<path d="'+d+'" stroke="'+(kind==="trace"?"#666":"#151515")+'" stroke-width="'+(kind==="trace"?2.8:3.3)+'"'
+  s+='<path d="'+d+'" stroke="'+(kind==="trace"?"#666":"#151515")+'" stroke-width="'+(kind==="trace"?2.8:2.6)+'"'
    +(kind==="trace"?' stroke-dasharray="0.7 7.5"':closed?'':' marker-end="url(#handwriting-arrow)"')+'/>';
   if(kind==="model"){
    const m=/^M(-?\d+)\s+(-?\d+)/.exec(d);
    if(m){
     const px=Number(m[1]),py=Number(m[2]);
-    s+='<circle cx="'+px+'" cy="'+py+'" r="7.2" fill="white" stroke="#111" stroke-width="1.2"/>';
-    s+=txt(px,py+3,String(i+1),9.8,'font-weight="bold" text-anchor="middle" stroke="none" fill="#111"');
+    // Some letter strokes start at the same point. Offset the second *label*,
+    // not the path, so the numbers cannot print directly on top of one another.
+    const same=seenStarts.some(([sx,sy])=>Math.hypot(sx-px,sy-py)<6);
+    seenStarts.push([px,py]);
+    const labelX=px+(same?16:0),labelY=py+(same?9:0);
+    if(same)s+='<line x1="'+px+'" y1="'+py+'" x2="'+labelX+'" y2="'+labelY+'" stroke="#444" stroke-width="1"/>';
+    s+='<circle cx="'+labelX+'" cy="'+labelY+'" r="7.2" fill="white" stroke="#111" stroke-width="1.2"/>';
+    s+=txt(labelX,labelY+3,String(i+1),9.8,'font-weight="bold" text-anchor="middle" stroke="none" fill="#111"');
    }
   }
  });
