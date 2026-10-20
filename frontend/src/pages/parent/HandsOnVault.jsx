@@ -22,9 +22,21 @@ function ageOverlap(ages, filter) {
 const printStyles = `
 @page { size: A4 portrait; margin: 12mm; }
 @media print {
+  /* Remove hidden catalogue/sidebar layout, otherwise long lists create empty print pages. */
+  .parent-shell { display: block !important; }
+  .parent-shell > aside, .parent-shell > main > :not(#hands-on-vault-page) { display: none !important; }
+  .parent-shell > main { display: block !important; position: static !important; width: 100% !important; padding: 0 !important; }
+  #hands-on-vault-page { display: block !important; padding: 0 !important; margin: 0 !important; }
+  #hands-on-vault-page > header,
+  #hands-on-vault-page > section,
+  #hands-on-vault-page > div:not(.hands-on-body) { display: none !important; }
+  #hands-on-vault-page .hands-on-body { display: block !important; margin: 0 !important; }
+  #hands-on-vault-page .hands-on-list { display: none !important; }
+  #hands-on-vault-page .hands-on-detail { display: block !important; position: static !important; width: 100% !important; margin: 0 !important; }
+  #hands-on-vault-page .hands-on-detail > :not(#hands-on-print) { display: none !important; }
   body * { visibility: hidden !important; }
   #hands-on-print, #hands-on-print * { visibility: visible !important; }
-  #hands-on-print { position: absolute !important; left: 0 !important; top: 0 !important;
+  #hands-on-print { position: static !important; left: auto !important; top: auto !important;
     width: 100% !important; max-width: none !important; margin: 0 !important;
     border: 0 !important; box-shadow: none !important; padding: 0 !important; background: white !important; }
   #hands-on-print .print-tile { border: 1px solid #b9c6b7 !important; background: white !important; }
@@ -103,7 +115,7 @@ export default function HandsOnVault() {
     vault_minutes: String(detail.minutes),
   }).toString()}` : "#";
 
-  return <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="hands-on-vault">
+  return <div id="hands-on-vault-page" className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="hands-on-vault">
     <style>{printStyles}</style>
     <header className="relative rounded-3xl overflow-hidden p-6 md:p-9" style={{background:"#1F3B2D",color:"#F5EFE0"}}>
       <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full border-[30px] opacity-10" style={{borderColor:"#E8BC74"}} aria-hidden="true"/>
@@ -174,8 +186,8 @@ export default function HandsOnVault() {
         <p className="text-xs text-stone-500">{items.length} quests match your filters. Ages and times are guides, not requirements.</p>
       </section>
 
-      <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.95fr)] gap-6 items-start">
-        <section aria-label="Activity catalogue">
+      <div className="hands-on-body grid xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.95fr)] gap-6 items-start">
+        <section className="hands-on-list" aria-label="Activity catalogue">
           <div className="grid sm:grid-cols-2 gap-4">
             {items.map(q=><div key={q.id} className="paper-card p-5 flex flex-col" data-testid={`quest-${q.id}`}>
               <div className="flex gap-3 items-start">
@@ -201,7 +213,7 @@ export default function HandsOnVault() {
           {!items.length && <div className="paper-card p-8 text-center text-stone-600">No quests found. Try another search or clear a filter.</div>}
         </section>
 
-        {data.unlocked && <aside ref={detailsRef} className="xl:sticky xl:top-6 min-w-0 scroll-mt-20" aria-label="Quest printable guide">
+        {data.unlocked && <aside ref={detailsRef} className="hands-on-detail xl:sticky xl:top-6 min-w-0 scroll-mt-20" aria-label="Quest printable guide">
           {opening && <div className="paper-card p-8 text-stone-600" role="status">Unrolling the quest scroll…</div>}
           {!opening && !detail && <div className="paper-card p-7 text-center">
             <div className="text-5xl mb-3" aria-hidden="true">📜</div>
