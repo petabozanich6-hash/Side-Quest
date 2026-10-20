@@ -30,7 +30,7 @@ const fullQuest = {
   },
 };
 const catalogue = unlocked => ({
-  unlocked, count: 90, categories: ["Kitchen Science"],
+  unlocked, count: 150, categories: ["Kitchen Science"],
   items: [{ ...sampleQuest, ...(unlocked ? { materials: fullQuest.materials } : {}) }],
 });
 
