@@ -19,7 +19,7 @@ const WORDS = [
  * baseline=80, descenders to y=108. Single-storey a and g throughout.
  * Strokes are sequenced so numbered starting dots also show stroke order. */
 export const STROKES: Record<string,string[]> = {
- A:["M8 80 L35 2","M35 2 L65 80","M19 51 L54 51"],
+ A:["M35 2 L8 80","M35 2 L65 80","M19 51 L54 51"],
  B:["M11 0 L11 80","M11 0 C77 -3 76 41 11 40","M11 40 C84 35 83 86 11 80"],
  C:["M66 11 C9 -18 -5 95 66 73"],
  D:["M11 0 L11 80","M11 0 C91 0 90 82 11 80"],
@@ -45,7 +45,7 @@ export const STROKES: Record<string,string[]> = {
  X:["M11 0 L67 80","M67 0 L11 80"],
  Y:["M11 0 L39 42 L67 0","M39 42 L39 80"],
  Z:["M12 0 L66 0 L12 80 L66 80"],
- a:["M49 39 C29 23 10 40 10 56 C10 79 35 87 49 77","M49 32 L49 80"],
+ a:["M49 39 C29 23 10 40 10 56 C10 79 35 87 49 76 L49 32 L49 80"],
  b:["M14 0 L14 80","M14 57 C14 24 61 24 61 56 C61 86 14 88 14 57"],
  c:["M62 41 C32 15 9 35 9 56 C9 80 36 89 62 72"],
  d:["M57 41 C39 23 10 39 10 56 C10 85 40 90 57 74","M57 0 L57 80"],
@@ -90,17 +90,30 @@ function stars(x:number,y:number){
  return star(x,y,8)+star(x+28,y-19,4)+star(x-17,y+27,4);
 }
 function dragon(x:number,y:number,scale=1) {
- // Original simple smiling dragonling, drawn as monochrome colour-in line art.
- let s='<g transform="translate('+x+' '+y+') scale('+scale+')" stroke-linejoin="round" stroke-linecap="round">';
- s+=path("M42 120 Q14 122 13 93 Q13 76 28 65 L19 44 L34 46 L32 23 L49 34 L62 12 L78 35 L95 25 L99 50 Q124 72 115 98 Q111 125 81 126 Z",3.1);
- s+=path("M35 117 Q6 104 3 71 Q25 75 33 93 M101 108 Q140 92 138 60 Q114 70 105 92",2.7);
- s+=path("M46 51 Q55 39 69 49 Q85 38 95 52 M54 70 Q66 65 79 70",2);
- s+='<ellipse cx="49" cy="82" rx="7" ry="9" fill="white" stroke="#151515" stroke-width="2.3"/>';
- s+='<ellipse cx="88" cy="82" rx="7" ry="9" fill="white" stroke="#151515" stroke-width="2.3"/>';
- s+='<circle cx="51" cy="84" r="3.5" fill="#111"/><circle cx="90" cy="84" r="3.5" fill="#111"/>';
- s+=path("M58 100 Q70 109 82 100 M35 111 Q26 125 31 135 M96 115 Q109 127 105 136",2.5);
- s+=path("M11 79 Q5 44 23 30 M120 78 Q137 42 126 28",2);
- s+=stars(128,18);
+ // A complete friendly dragonling with horns, wings, curled tail, paws and smile.
+ // Original printable monochrome outlines, designed to be coloured by children.
+ let s='<g transform="translate('+x+' '+y+') scale('+scale+')" fill="white" stroke="#111" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">';
+ s+=path("M60 169 Q31 150 23 179 Q20 196 7 187 Q1 180 11 171 Q-2 171 4 192 Q23 208 37 184 Q48 173 64 180");
+ s+=path("M56 119 Q16 82 21 134 Q30 130 37 137 Q38 151 59 147");
+ s+=path("M127 121 Q168 86 161 141 Q151 129 140 139 Q144 156 127 161");
+ s+=path("M65 54 Q47 30 61 17 Q61 36 84 42");
+ s+=path("M103 42 Q101 13 116 5 Q111 30 127 46");
+ s+=path("M69 114 Q45 126 53 158 Q51 194 86 196 L127 195 Q149 188 146 163 Q148 130 120 114Z");
+ s+=path("M86 129 Q76 145 79 172 Q80 191 104 190",2);
+ s+=path("M53 86 Q42 45 82 36 Q129 27 144 65 Q156 104 129 123 Q105 139 75 120 Q57 110 53 86Z");
+ s+=path("M110 95 Q138 85 151 100 Q159 114 137 120 Q114 126 103 115");
+ s+='<circle cx="82" cy="81" r="12"/><circle cx="117" cy="79" r="12"/>';
+ s+='<circle cx="86" cy="84" r="5" fill="#111"/><circle cx="121" cy="82" r="5" fill="#111"/>';
+ s+='<circle cx="87" cy="81" r="1.8" stroke="none"/><circle cx="122" cy="79" r="1.8" stroke="none"/>';
+ s+=path("M115 110 Q125 119 142 109");
+ s+='<circle cx="142" cy="103" r="1.5" fill="#111"/>';
+ s+=path("M73 67 Q80 62 91 66 M111 66 Q123 59 131 67",1.8);
+ s+=path("M65 139 Q53 156 67 167 Q74 172 79 162");
+ s+=path("M132 139 Q142 160 129 169 Q121 174 116 166");
+ s+=path("M64 181 Q52 189 55 196 Q72 205 91 197 L95 187");
+ s+=path("M122 184 Q142 188 143 198 Q121 205 108 194");
+ s+=path("M63 198 L65 202 M72 199 L75 203 M132 200 L131 204",1.5);
+ s+=path("M50 126 L38 116 L45 138 M46 152 L35 148 L48 162",1.6);
  return s+"</g>";
 }
 function pencil(x:number,y:number,s=1){
@@ -180,11 +193,11 @@ function glyph(letter:string,x:number,y:number,scale:number,kind:"model"|"trace"
  });
  return s+'</g>';
 }
-function guidelines(left:number,right:number,top:number,width=1.4){
+function guidelines(left:number,right:number,top:number,width=1.4,scale=1){
  let s=rule(left,top,right,top,false,"#8d8d8d",width);
- s+=rule(left,top+35,right,top+35,true,"#a4a4a4",width);
- s+=rule(left,top+88,right,top+88,false,"#555",width);
- s+=rule(left,top+121,right,top+121,true,"#aaa",width);
+ s+=rule(left,top+35*scale,right,top+35*scale,true,"#a4a4a4",width);
+ s+=rule(left,top+88*scale,right,top+88*scale,false,"#555",width);
+ s+=rule(left,top+121*scale,right,top+121*scale,true,"#aaa",width);
  return s;
 }
 function row(baseline:number,letters:string[],traceCount:number){
@@ -202,14 +215,14 @@ function cover(page:number,back=false){
  s+=txt(397,350,back?"YOU DID IT!":"HANDWRITING",64,'text-anchor="middle" font-weight="bold"');
  s+=txt(397,424,back?"LETTER HERO":"WORKBOOK",67,'text-anchor="middle" font-weight="bold"');
  s+=txt(397,479,back?"Keep practising your letters!":"Letters  •  Tracing  •  Practice",25,'text-anchor="middle"');
- s+=dragon(258,505,2.0)+pencil(558,600,1.4);
+ s+=dragon(260,499,1.42)+pencil(560,601,1.3);
  s+=txt(397,822,back?"Every little effort matters.":"A a   B b   C c   D d",30,'text-anchor="middle"');
  if(!back){s+=txt(126,893,"This book belongs to:",21);s+=rule(361,899,657,899);}
  return frame(page,s);
 }
 function parents(page:number){
  let s=banner(125,105,544,"How to write letters");
- s+=dragon(616,174,.65)+pencil(118,215,.55);
+ s+=dragon(629,164,.43)+pencil(118,215,.55);
  const messages=["Start at the numbered dot.","Follow the arrows carefully.","Trace the dotted shapes slowly.","Copy each letter on the empty lines.","A few minutes is enough. Have fun!"];
  messages.forEach((m,i)=>{
   const y=245+i*98;
@@ -231,7 +244,7 @@ function letterPage(page:number){
  if(practice){
   let s=banner(122,100,549,"Let's practise "+upper+ch);
   s+=txt(108,199,"Trace the letters, then write on your own.",23);
-  s+=dragon(647,168,.54);
+  s+=dragon(646,167,.42);
   s+=txt(102,248,"1. Trace the capital "+upper+".",22,'font-weight="bold"');
   s+=row(351,Array(5).fill(upper),5);
   s+=row(485,Array(5).fill(upper),2);
@@ -240,7 +253,7 @@ function letterPage(page:number){
   s+=row(790,Array(5).fill(ch),2);
   s+=txt(102,858,"3. Now try without tracing.",22,'font-weight="bold"');
   s+=row(975,[],0);
-  s+=txt(108,1014,"Great effort! You are learning to write "+upper+ch+".",17);
+  s+=txt(108,1035,"Great effort! You are learning to write "+upper+ch+".",16);
   return frame(page,s);
  }
  let s=banner(111,101,569,"Let's learn the letter "+upper+ch);
@@ -248,9 +261,9 @@ function letterPage(page:number){
  s+=round(408,184,309,292,15,"#555",1.7);
  s+=txt(230,222,"Uppercase "+upper,24,'font-weight="bold" text-anchor="middle"');
  s+=txt(562,222,"Lowercase "+ch,24,'font-weight="bold" text-anchor="middle"');
- s+=guidelines(112,358,266,1.1)+guidelines(443,694,266,1.1);
- s+=glyph(upper,172,266,1.1,"model");
- s+=glyph(ch,510,266,1.1,"model");
+ s+=guidelines(112,358,249,1.1,1.8)+guidelines(443,694,249,1.1,1.8);
+ s+=glyph(upper,169,249,1.8,"model");
+ s+=glyph(ch,501,249,1.8,"model");
  s+=txt(398,506,upper+" is for "+word+".",29,'text-anchor="middle" font-weight="bold"');
  s+=picture(word,330,519,.76);
  s+=txt(103,636,"Trace the uppercase "+upper+".",22,'font-weight="bold"');
