@@ -13,7 +13,11 @@ const CATEGORY_ICONS = { "Kitchen Science":"🧪", "Crystal Lab":"💎", "Dough 
   "LEGO & Builders":"🧱", "Engineering Lab":"🏗️", "Nature Explorers":"🌿",
   "Art & Making":"🎨", "Everyday Maths":"📐", "Stories & Words":"📜", "Movement & Games":"🏅",
   "Space & Sky":"🪐", "Sound & Music":"🎶", "Coding Without Screens":"🤖",
-  "Practical Life":"🧺", "History & Maps":"🗺️" };
+  "Practical Life":"🧺", "History & Maps":"🗺️",
+  "Light & Colour":"🌈", "Forces & Motion":"🛞", "Weather Watch":"🌤️",
+  "Plants & Gardens":"🌱", "Logic & Probability":"🧩", "Drama & Performance":"🎭",
+  "Design for Everyone":"🛠️", "Money & Markets":"🛒",
+  "Earth & Landforms":"🌍", "Community & Civics":"🏛️" };
 function ageOverlap(ages, filter) {
   if (filter === "all") return true;
   const range = String(ages).match(/(\d+)[^\d]+(\d+)/);
