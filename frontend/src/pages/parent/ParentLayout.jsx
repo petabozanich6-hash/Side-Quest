@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
-import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon } from "lucide-react";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon, Beaker } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -29,6 +29,7 @@ const nav = [
   { to: "/parent/life-learning", icon: Trees, label: "Life learning", testid: "nav-life" },
   { to: "/parent/resources", icon: Library, label: "Saved resources", testid: "nav-resources" },
   { to: "/parent/printable-vault", icon: Scissors, label: "Printable Vault", testid: "nav-printable-vault" },
+  { to: "/parent/hands-on-vault", icon: Beaker, label: "Hands-On Quest Vault", testid: "nav-hands-on-vault" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
   { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
   { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
@@ -52,6 +53,7 @@ export default function ParentLayout() {
   const route = location.pathname;
   const paidNotice = route.startsWith("/parent/life-learning") ? "Life-learning evidence and AI outcome mapping need Family Membership." :
     route.startsWith("/parent/printable-vault") ? "The original downloadable printable collection is included with Family Membership." :
+    route.startsWith("/parent/hands-on-vault") ? "Printing the step-by-step hands-on activity guides is a Family Membership feature. You can preview all of the activity titles." :
     route.startsWith("/parent/resources") ? "Saving and managing resources and video suggestions need Family Membership." :
     route.startsWith("/parent/calendar") ? "Creating calendar events and weekly timetables need Family Membership. Existing events stay visible." :
     route.startsWith("/parent/word-hoard") ? "Adding new Word Hoard words needs Family Membership. Previously saved practice remains available." :
