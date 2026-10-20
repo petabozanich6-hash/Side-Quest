@@ -1370,6 +1370,95 @@ await step("N. mobile layouts of the main parent pages do not overflow", async (
   }
 });
 
+// Dedicated parent → child → parent question-level feedback regression, in its own family.
+await step("S. flagged questions round-trip from parent review to child correction and approval", async () => {
+  const email = `flags-${stamp}@example.com`, user = `fl${stamp}`.slice(0, 16);
+  const reg = await api("POST", "/auth/register", null, { name: "Flag test family", email, password: pw, jurisdiction: "NSW" });
+  ok(reg.status === 200 && reg.json.token, "register: " + reg.status);
+  const pt = reg.json.token;
+  const familyId = JSON.parse(Buffer.from(pt.split(".")[1], "base64url").toString()).family_id;
+  sql(`UPDATE families SET plan='INTERNAL' WHERE id='${familyId}'`);
+  const ch = await api("POST", "/students", pt, { name: "Alex", username: user, pin: "4682", stage: "S2" });
+  ok(ch.status === 200 && ch.json.id, "child creation: " + ch.status);
+  const l = await api("POST", "/lessons", pt, {
+    title: "Flaggable maths", learning_area: "Mathematics", stage: "S2", status: "ready",
+    sections: [{ heading: "Learn", body: "Two equal halves combine to make one whole." }],
+    guided_practice: [{ prompt: "What is one half and one half?" }],
+    questions: [
+      { prompt: "Explain why two halves make a whole.", type: "short" },
+      { prompt: "Write something you learned.", type: "short" },
+    ],
+  });
+  ok(l.status === 200 && l.json?.id, "lesson creation: " + l.status + " " + JSON.stringify(l.json).slice(0, 150));
+  const a = await api("POST", "/assignments", pt, { lesson_id: l.json.id, student_id: ch.json.id });
+  ok(a.status === 200 && a.json?.id, "assignment: " + a.status + " " + JSON.stringify(a.json).slice(0, 150));
+  const aid = a.json.id;
+  const login = await api("POST", "/auth/child-login", null, { username: user, pin: "4682" });
+  ok(login.status === 200 && login.json.token, "child login: " + login.status);
+  const ct = login.json.token;
+  const firstDraft = { answers: { 0: "They make two.", 1: "The whole has equal parts." }, step: 0 };
+  ok((await api("PUT", `/assignments/${aid}/draft`, ct, firstDraft)).status === 200, "initial work did not save");
+  const sub = await api("POST", "/submissions", ct, {
+    assignment_id: aid, response_text: "1. They make two.\\n2. The whole has equal parts.", draft: firstDraft,
+  });
+  ok(sub.status === 200 && sub.json?.id, "submission: " + sub.status + " " + JSON.stringify(sub.json).slice(0, 150));
+  const sid = sub.json.id;
+  // This parent must not be able to flag someone else's submission.
+  ok((await api("POST", `/submissions/${sid}/feedback`, parentToken,
+    { status: "needs_revision", review_flags: [{ key: "question:0", comment: "Bad" }] })).status === 404, "foreign parent could review");
+
+  const parentCtx = await browser.newContext({ viewport: { width: 1024, height: 850 } });
+  const childCtx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
+  try {
+    const pp = await parentCtx.newPage(), cp = await childCtx.newPage();
+    await pp.goto(BASE + "/login");
+    await pp.fill("[data-testid=login-email]", email); await pp.fill("[data-testid=login-password]", pw);
+    await pp.click("[data-testid=login-submit]"); await pp.waitForURL("**/parent");
+    await pp.waitForSelector(`[data-testid=waiting-${sid}]`, { timeout: 15000 });
+    await pp.click(`[data-testid=waiting-${sid}] button`);
+    await pp.waitForSelector("[data-testid=review-modal]");
+    ok((await pp.textContent("[data-testid=review-modal]")).includes("They make two."), "submitted answer missing in review");
+    await pp.check('[data-testid="flag-question:0"]');
+    await pp.fill('[data-testid="flag-note-question:0"]', "Explain how the halves fit together");
+    await pp.click("[data-testid=return-btn]");
+    await pp.waitForSelector("[data-testid=review-modal]", { state: "detached" });
+    const returned = await api("GET", `/assignments/${aid}`, ct);
+    ok(returned.status === 200 && returned.json.status === "needs_revision", "child's lesson not returned");
+    ok(returned.json.submissions[0].review_flags[0].key === "question:0", "flag missing from child's assignment");
+    ok(returned.json.submissions[0].review_flags[0].comment.includes("halves"), "question note missing");
+    ok(returned.json.draft.answers[1] === firstDraft.answers[1], "unflagged answer was erased");
+
+    await cp.goto(BASE + "/child-login");
+    await cp.fill("[data-testid=child-login-username]", user);
+    await cp.fill("[data-testid=child-login-pin]", "4682");
+    await cp.click("[data-testid=child-login-submit]"); await cp.waitForURL("**/child");
+    await cp.goto(BASE + "/child/lesson/" + aid);
+    await cp.waitForSelector("[data-testid=flagged-questions-summary]");
+    await cp.click('[data-testid="jump-flag-question:0"]');
+    await cp.waitForSelector('[data-testid="answer-0"]');
+    ok((await cp.inputValue('[data-testid="answer-0"]')) === "They make two.", "original answer not editable");
+    ok((await cp.textContent('[data-testid="flagged-note-question:0"]')).includes("halves fit together"), "inline parent note not visible");
+    ok((await cp.inputValue('[data-testid="answer-1"]')) === firstDraft.answers[1], "unflagged answer changed");
+    await cp.fill('[data-testid="answer-0"]', "Two equal halves join to make one whole.");
+    const lastIndex = await cp.locator("[data-testid=step-jump]").evaluate(el => el.options.length - 1);
+    await cp.selectOption("[data-testid=step-jump]", { index: lastIndex });
+    await cp.click("[data-testid=submit-work]");
+    await cp.waitForSelector("[data-testid=handed-in]", { timeout: 15000 });
+    const subs = await api("GET", `/assignments/${aid}`, ct);
+    ok(subs.json.submissions.length === 2, "resubmission not recorded");
+    ok(subs.json.submissions[0].review_flags.length === 0, "stale flags appeared on new attempt");
+    ok(subs.json.submissions[1].review_flags[0].key === "question:0", "review history lost its marker");
+    ok(subs.json.draft.answers[1] === firstDraft.answers[1], "unflagged answer lost on resubmission");
+    const review = await api("POST", `/submissions/${subs.json.submissions[0].id}/feedback`, pt,
+      { status: "demonstrated", feedback_text: "Thanks for showing your working!" });
+    ok(review.status === 200, "parent could not approve the corrected work: " + review.status);
+    ok((await api("GET", `/assignments/${aid}`, ct)).json.status === "demonstrated", "corrected work did not finish");
+    await noOverflow(cp, "returned lesson on mobile");
+  } finally {
+    await parentCtx.close(); await childCtx.close();
+  }
+});
+
 ok(true);
 console.log("\nHTTP errors seen by browsers:\n" + badResponses.slice(0, 40).join("\n"));
 console.log("\nbrowser errors (parent):", JSON.stringify(pageErrors.slice(0, 5)));
