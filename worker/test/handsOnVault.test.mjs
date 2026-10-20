@@ -24,6 +24,7 @@ import { coreRunbooks } from "../src/data/handsOnRunbookCore.ts";
 import { middleRunbooks } from "../src/data/handsOnRunbookMiddle.ts";
 import { expandedRunbooks } from "../src/data/handsOnRunbookExpanded.ts";
 import { newRunbooks } from "../src/data/handsOnRunbookNew.ts";
+import { revisedQuestSteps } from "../src/data/handsOnRevisedSteps.ts";
 
 let seq = 0;
 function makeHarness() {
@@ -66,6 +67,11 @@ test("174 original family activities have practical printable guides and trouble
     ...sunParentGuides, ...bubbleParentGuides, ...makingParentGuides, ...kitchenLabParentGuides };
   const runbooks = {...coreRunbooks, ...middleRunbooks, ...expandedRunbooks, ...newRunbooks};
   assert.equal(Object.keys(runbooks).length, 174);
+  assert.equal(Object.keys(revisedQuestSteps).length, 15);
+  for (const [id, steps] of Object.entries(revisedQuestSteps)) {
+    assert.ok(HANDS_ON_QUESTS.some(q => q.id === id), "unknown upgraded quest " + id);
+    assert.ok(steps.length >= 7 && steps.every(step => step.length > 60), id + " must have executable instructions");
+  }
   assert.equal(Object.keys(guides).length, 174, "each quest needs exactly one custom parent guide");
   for (const q of HANDS_ON_QUESTS) {
     assert.match(q.id, /^[a-z0-9-]+$/);
@@ -127,7 +133,9 @@ test("paid families receive complete guides and own material search metadata", a
   assert.match(r.headers.get("cache-control"), /no-store/);
   const details = await r.json();
   assert.equal(details.title, "The Dragon's Oobleck Quicksand");
-  assert.ok(details.steps.length >= 4);
+  assert.ok(details.steps.length >= 7);
+  assert.match(details.steps.join(" "), /2 cups cornflour/);
+  assert.match(details.steps.join(" "), /tablespoon/);
   assert.match(details.safety, /drains/i);
   assert.match(details.parentLearning.objective, /materials|force|behaviour/i);
   assert.match(details.parentLearning.explanation, /particles/i);
