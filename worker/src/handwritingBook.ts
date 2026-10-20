@@ -229,7 +229,7 @@ function cover(page:number,back=false){
 }
 function parents(page:number){
  let s=banner(125,105,544,"How to write letters");
- s+=dragon(629,164,.43)+pencil(118,215,.55);
+ s+=dragon(629,164,.43);
  const messages=["Start at the numbered dot.","Follow the arrows carefully.","Trace the dotted shapes slowly.","Copy each letter on the empty lines.","A few minutes is enough. Have fun!"];
  messages.forEach((m,i)=>{
   const y=245+i*98;
@@ -238,11 +238,11 @@ function parents(page:number){
   s+=txt(165,y,m,24);
   if(i<4)s+=rule(157,y+22,675,y+22,false,"#dedede",1);
  });
- s+=round(88,760,617,232,16,"#555",1.7);
+ s+=round(88,760,617,252,16,"#555",1.7);
  s+=txt(112,802,"Our handwriting lines",29,'font-weight="bold"');
  s+=guidelines(126,661,831);
  s+=glyph("a",171,831,1.1,"trace");
- s+=txt(126,989,"The middle dashed line helps us size lowercase letters.",17);
+ s+=txt(126,992,"The middle dashed line helps us size lowercase letters.",17);
  return frame(page,s);
 }
 function letterPage(page:number){
