@@ -17,7 +17,9 @@ const CATEGORY_ICONS = { "Kitchen Science":"🧪", "Crystal Lab":"💎", "Dough 
   "Light & Colour":"🌈", "Forces & Motion":"🛞", "Weather Watch":"🌤️",
   "Plants & Gardens":"🌱", "Logic & Probability":"🧩", "Drama & Performance":"🎭",
   "Design for Everyone":"🛠️", "Money & Markets":"🛒",
-  "Earth & Landforms":"🌍", "Community & Civics":"🏛️" };
+  "Earth & Landforms":"🌍", "Community & Civics":"🏛️",
+  "Sun & Energy":"☀️", "Bubbles & Water Play":"🫧",
+  "Mini Makers & Machines":"🏗️", "Kitchen Reaction Lab":"🧪" };
 function ageOverlap(ages, filter) {
   if (filter === "all") return true;
   const range = String(ages).match(/(\d+)[^\d]+(\d+)/);
@@ -48,6 +50,8 @@ const printStyles = `
   #hands-on-print .print-tile { border: 1px solid #b9c6b7 !important; background: white !important; }
   #hands-on-print .print-notes { display: block !important; }
   #hands-on-print .print-step { break-inside: avoid; }
+  #hands-on-print .print-step-checkbox { appearance: none; display: inline-block; height: 10pt; width: 10pt; border: 1px solid #6B806B; flex-shrink: 0; }
+  #hands-on-print .print-step-checkbox:checked { background: #CBDCCB; }
   #hands-on-print h1 { font-size: 24pt !important; line-height: 1.1 !important; }
   #hands-on-print h2 { font-size: 12pt !important; }
   #hands-on-print p, #hands-on-print li, #hands-on-print span { font-size: 9.5pt; }
@@ -72,6 +76,7 @@ export default function HandsOnVault() {
   const [time, setTime] = useState("all");
   const [have, setHave] = useState("");
   const [packed, setPacked] = useState([]);
+  const [completedSteps, setCompletedSteps] = useState([]);
   const detailsRef = useRef(null);
 
   useEffect(() => {
@@ -99,6 +104,7 @@ export default function HandsOnVault() {
     setSelectedId(id);
     setDetail(null);
     setPacked([]);
+    setCompletedSteps([]);
     setOpening(true);
     try {
       const {data:quest} = await api.get(`/hands-on-quests/${encodeURIComponent(id)}`);
@@ -248,6 +254,10 @@ export default function HandsOnVault() {
                 </div>
               </div>
               <div className="print-sections space-y-3 mt-5">
+                <section className="print-section rounded-xl border border-amber-200 p-3">
+                  <h2 className="font-display text-sm font-bold flex items-center gap-2" style={{color:"#8B4F20"}}><ShieldAlert size={16}/> Grown-up safety check</h2>
+                  <p className="mt-1 text-xs text-stone-700 leading-relaxed">{detail.safety}</p>
+                </section>
                 <section className="print-section print-tile rounded-xl border p-4" style={{borderColor:"#D5DACB",background:"#FBFCF8"}}>
                   <h2 className="font-display text-base font-bold flex items-center gap-2" style={{color:"#1F3B2D"}}><PackageCheck size={17}/> Gather your treasure</h2>
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-3">
@@ -256,13 +266,24 @@ export default function HandsOnVault() {
                     </label>)}
                   </div>
                 </section>
+                {detail.runbook && <section className="print-section print-tile rounded-xl border p-4" style={{borderColor:"#C9D9CD",background:"#F0F7F1"}}>
+                  <h2 className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>🧺 Before you start: set up for success</h2>
+                  <p className="mt-2 text-sm text-stone-700 leading-relaxed">{detail.runbook.prepare}</p>
+                </section>}
                 <section className="print-section">
                   <h2 className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>🗺️ Your quest, step by step</h2>
+                  <p className="mt-1 text-xs text-stone-600">Follow in order. Tick each step as you go; ask a grown-up for the jobs listed in the safety check.</p>
                   <ol className="space-y-2 mt-3">{detail.steps.map((step,i)=><li key={i} className="print-step flex items-start gap-3 text-sm text-stone-700 leading-relaxed">
                     <span className="shrink-0 rounded-full w-6 h-6 flex items-center justify-center font-bold text-xs" style={{background:"#E5EBDF",color:"#1F3B2D"}}>{i+1}</span>
-                    <span>{step}</span>
+                    <label className="flex gap-2 items-start cursor-pointer flex-1"><input type="checkbox" className="mt-1 accent-green-900 print-step-checkbox" checked={completedSteps.includes(i)} onChange={()=>setCompletedSteps(v=>v.includes(i)?v.filter(x=>x!==i):[...v,i])} aria-label={`Completed step ${i+1}`} /><span>{step}</span></label>
                   </li>)}</ol>
                 </section>
+                {detail.runbook && <section className="print-section print-tile rounded-xl border p-4 space-y-3" style={{borderColor:"#E0CEAB",background:"#FFFAED"}}>
+                  <h2 className="font-display text-base font-bold" style={{color:"#1F3B2D"}}>🔍 Check your results & fix the tricky bits</h2>
+                  <div><h3 className="text-xs font-extrabold uppercase tracking-wider" style={{color:"#1F3B2D"}}>What you should notice</h3><p className="mt-1 text-sm text-stone-700 leading-relaxed">{detail.runbook.expected}</p></div>
+                  <div><h3 className="text-xs font-extrabold uppercase tracking-wider" style={{color:"#1F3B2D"}}>If it doesn’t work first time</h3><p className="mt-1 text-sm text-stone-700 leading-relaxed">{detail.runbook.troubleshoot}</p></div>
+                  <p className="text-xs text-stone-600 italic">Experiments are observations, not guaranteed tricks. An unexpected result is worth noting too.</p>
+                </section>}
                 <section className="print-section print-tile rounded-xl border p-4" style={{borderColor:"#D9C89E",background:"#FFF8EA"}}>
                   <h2 className="font-display text-base font-bold flex gap-2 items-center" style={{color:"#1F3B2D"}}><Sparkles size={16}/> Curious dragon questions</h2>
                   <ul className="mt-2 space-y-1.5 text-sm text-stone-700">{detail.wonder.map((w,i)=><li key={i}>✦ {w}</li>)}</ul>
@@ -291,10 +312,6 @@ export default function HandsOnVault() {
                   </div>
                   <p className="text-[11px] italic text-stone-600">These are suggested educational opportunities, not proof an outcome was achieved. Record what your child actually demonstrated.</p>
                 </section>}
-                <section className="print-section rounded-xl border border-amber-200 p-3">
-                  <h2 className="font-display text-sm font-bold flex items-center gap-2" style={{color:"#8B4F20"}}><ShieldAlert size={16}/> Grown-up safety check</h2>
-                  <p className="mt-1 text-xs text-stone-700 leading-relaxed">{detail.safety}</p>
-                </section>
                 <section className="print-section rounded-xl p-3" style={{background:"#EDF3E8"}}>
                   <h2 className="font-display text-sm font-bold" style={{color:"#1F3B2D"}}>⭐ Bonus side-quest</h2>
                   <p className="mt-1 text-xs text-stone-700">{detail.extension}</p>

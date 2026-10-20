@@ -8,7 +8,9 @@ export type HandsOnCategory =
   | "Practical Life" | "History & Maps"
   | "Light & Colour" | "Forces & Motion" | "Weather Watch" | "Plants & Gardens"
   | "Logic & Probability" | "Drama & Performance" | "Design for Everyone"
-  | "Money & Markets" | "Earth & Landforms" | "Community & Civics";
+  | "Money & Markets" | "Earth & Landforms" | "Community & Civics"
+  | "Sun & Energy" | "Bubbles & Water Play"
+  | "Mini Makers & Machines" | "Kitchen Reaction Lab";
 
 export type HandsOnQuest = {
   id: string;
