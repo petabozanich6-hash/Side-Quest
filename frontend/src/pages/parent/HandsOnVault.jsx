@@ -169,7 +169,14 @@ export default function HandsOnVault() {
       {(data.categories || []).includes("Halloween Crafts") && <section className="rounded-2xl border border-[#E1C0A0] bg-[#FFF4E7] p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3" data-testid="halloween-vault-feature">
         <div><p className="font-display text-lg font-bold text-[#683E24]">🎃 Halloween quests have arrived!</p>
         <p className="text-sm text-[#744D31] mt-1">Make spooky decorations, investigate science and play curious games—no expensive kits or jump scares needed.</p></div>
-        <button type="button" className="rounded-full bg-[#683E24] text-white px-5 py-2.5 font-bold text-sm" data-testid="halloween-show-all" onClick={() => {setQuery("");setAge("all");setMess(MESS_FILTERS[0]);setTime("all");setHave("");setCategory("Halloween Crafts");}}>Explore Halloween crafts</button>
+        <div className="flex flex-wrap gap-2">
+          {["Halloween Crafts","Halloween Discovery & Games"].map((choice,i) => <button key={choice} type="button"
+            className="rounded-full bg-[#683E24] text-white px-4 py-2.5 font-bold text-sm"
+            data-testid={i === 0 ? "halloween-show-all" : "halloween-show-games"}
+            onClick={() => { setQuery("");setAge("all");setMess(MESS_FILTERS[0]);setTime("all");setHave("");setCategory(choice); }}>
+            {i === 0 ? "🎨 Halloween crafts" : "🧪 Spooky science & games"}
+          </button>)}
+        </div>
       </section>}
       <section className="paper-card p-4 md:p-6 space-y-4" aria-label="Find a quest">
         <div className="flex items-center gap-2 font-display font-bold text-lg" style={{color:"#1F3B2D"}}><Search size={20}/> Find your next adventure</div>
