@@ -43,7 +43,7 @@ export function registerHandsOnVault(app: App, g: Guards) {
       unlocked,
       count: HANDS_ON_QUESTS.length,
       categories: [...new Set(HANDS_ON_QUESTS.map(q => q.category))],
-      items: HANDS_ON_QUESTS.map(previewQuest),
+      items: HANDS_ON_QUESTS.map(q => unlocked ? { ...previewQuest(q), materials: q.materials } : previewQuest(q)),
     });
   });
   app.get("/api/hands-on-quests/:id", g.auth, g.parent, async c => {
