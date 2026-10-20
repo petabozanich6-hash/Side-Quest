@@ -259,6 +259,22 @@ export default function PrintableVault(){
     {error&&<div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
     {data&&<>
 
+      <section className="rounded-2xl border border-stone-300 bg-white p-5 sm:p-6 flex flex-wrap items-center gap-5" data-testid="vault-handwriting-book">
+        <div className="rounded-2xl border-2 border-black p-4 w-28 h-36 shrink-0 bg-white text-black flex flex-col justify-center items-center gap-2">
+          <BookOpen size={27}/>
+          <strong className="text-sm text-center leading-tight">The Little Letter Quest</strong>
+          <span className="text-xs font-bold">Aa • Bb • Cc</span>
+        </div>
+        <div className="flex-1 min-w-[210px] space-y-2">
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-900">New · Early learner handwriting book</p>
+          <h2 className="text-xl font-display font-bold text-slate-950">The Little Letter Quest</h2>
+          <p className="text-sm text-stone-700">Learn to write A–Z with 56 black-and-white A4 pages, dotted letter formation, writing lines and real page turning. Print one page, a two-page letter pair, or the whole book. Saves colour ink.</p>
+          <Link to="/parent/handwriting-book" className="inline-flex items-center rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold">
+            {data.unlocked?"Open the handwriting book":"Explore the handwriting book"} →
+          </Link>
+        </div>
+      </section>
+
       {data.owner&&<section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-3" data-testid="vault-owner-import">
         <h2 className="font-bold text-emerald-950">Owner HQ · Printable Vault artwork importer</h2>
         <p className="text-sm text-emerald-900">Stored in private Cloudflare storage: <strong>{data.ready_count||0} images</strong>. Add as many new activities as you like; each PNG filename becomes a new activity, unless its name matches an existing one (which replaces its artwork).</p>
