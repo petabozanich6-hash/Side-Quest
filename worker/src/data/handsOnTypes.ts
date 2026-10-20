@@ -3,7 +3,9 @@ export type HandsOnCategory =
   | "Kitchen Science" | "Crystal Lab" | "Dough & Sensory"
   | "LEGO & Builders" | "Engineering Lab"
   | "Nature Explorers" | "Art & Making"
-  | "Everyday Maths" | "Stories & Words" | "Movement & Games";
+  | "Everyday Maths" | "Stories & Words" | "Movement & Games"
+  | "Space & Sky" | "Sound & Music" | "Coding Without Screens"
+  | "Practical Life" | "History & Maps";
 
 export type HandsOnQuest = {
   id: string;
