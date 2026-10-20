@@ -36,7 +36,12 @@ test("All 56 A4 pages exist as black-and-white scalable practice sheets",()=>{
   const svg=renderHandwritingPage(n);
   assert.ok(svg?.startsWith("<svg"),"missing "+n);
   assert.match(svg,/width="210mm" height="297mm"/);
-  assert.doesNotMatch(svg,/#[a-f\d]{6}/i,"coloured art on page "+n);
+  // Six-digit grey strokes are printer-safe: only reject tinted RGB values.
+  for(const hex of svg.matchAll(/#([0-9a-f]{6})/gi)){
+   const value=hex[1].toLowerCase();
+   assert.equal(value.slice(0,2),value.slice(2,4),"tinted RGB on page "+n);
+   assert.equal(value.slice(2,4),value.slice(4,6),"tinted RGB on page "+n);
+  }
   assert.doesNotMatch(svg,/fill="(red|green|blue)"/i);
   assert.match(svg,/sidequestlearning\.app/);
  }
