@@ -5,6 +5,11 @@ import worker from "../src/index.ts";
 import { HANDS_ON_QUESTS, previewQuest } from "../src/handsOnVault.ts";
 import { PARENT_LEARNING_GUIDES } from "../src/data/handsOnParentGuides.ts";
 import { MORE_PARENT_LEARNING_GUIDES } from "../src/data/handsOnParentGuidesMore.ts";
+import { spaceParentGuides } from "../src/data/handsOnSpace.ts";
+import { soundParentGuides } from "../src/data/handsOnSound.ts";
+import { codingParentGuides } from "../src/data/handsOnCoding.ts";
+import { practicalParentGuides } from "../src/data/handsOnPractical.ts";
+import { historyParentGuides } from "../src/data/handsOnHistory.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 
 let seq = 0;
@@ -35,12 +40,14 @@ function makeHarness() {
   return { req, parent, db };
 }
 
-test("sixty original family activities have complete usable printable guides", () => {
-  assert.equal(HANDS_ON_QUESTS.length, 60);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 60);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 10);
-  const guides = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES };
-  assert.equal(Object.keys(guides).length, 60, "each quest needs exactly one custom parent guide");
+test("ninety original family activities have complete usable printable guides", () => {
+  assert.equal(HANDS_ON_QUESTS.length, 90);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 90);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 15);
+  const guides = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
+    ...spaceParentGuides, ...soundParentGuides, ...codingParentGuides,
+    ...practicalParentGuides, ...historyParentGuides };
+  assert.equal(Object.keys(guides).length, 90, "each quest needs exactly one custom parent guide");
   for (const q of HANDS_ON_QUESTS) {
     assert.match(q.id, /^[a-z0-9-]+$/);
     assert.ok(q.title.length > 6 && q.description.length > 20, q.id);
@@ -66,15 +73,19 @@ test("free preview gets metadata only, but never step-by-step guides", async () 
   assert.match(list.headers.get("cache-control"), /no-store/);
   const data = await list.json();
   assert.equal(data.unlocked, false);
-  assert.equal(data.count, 60);
-  assert.equal(data.items.length, 60);
-  assert.equal(data.categories.length, 10);
+  assert.equal(data.count, 90);
+  assert.equal(data.items.length, 90);
+  assert.equal(data.categories.length, 15);
   assert.ok(!("materials" in data.items[0]));
   assert.ok(!("steps" in data.items[0]));
   const detail = await h.req("/hands-on-quests/oobleck-lab", p.token);
   assert.equal(detail.status, 402);
   assert.equal((await detail.json()).code, "UPGRADE_REQUIRED");
   assert.equal((await h.req("/hands-on-quests", undefined)).status, 401);
+  assert.equal((await h.req("/hands-on-quests/robot-command-maze", p.token)).status, 402);
+  const newItem = data.items.find(q => q.id === "robot-command-maze");
+  assert.ok(newItem);
+  assert.ok(!("materials" in newItem) && !("steps" in newItem) && !("parentLearning" in newItem));
 });
 test("paid families receive complete guides and own material search metadata", async () => {
   const h = makeHarness(), p = await h.parent("ACTIVE_MONTHLY");
@@ -96,6 +107,9 @@ test("paid families receive complete guides and own material search metadata", a
   assert.ok(details.parentLearning.evidence.length > 30);
   const second = await (await h.req("/hands-on-quests/leaf-detective", p.token)).json();
   assert.match(second.parentLearning.explanation, /leaves|classification|trait/i);
+  const expanded = await (await h.req("/hands-on-quests/robot-command-maze", p.token)).json();
+  assert.match(expanded.parentLearning.explanation, /algorithm/i);
+  assert.ok(expanded.steps.length >= 4);
   assert.equal((await h.req("/hands-on-quests/not-a-real-quest", p.token)).status, 404);
 });
 test("expired memberships are locked; verified owner can read without payment", async () => {
