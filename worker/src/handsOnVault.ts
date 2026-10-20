@@ -30,6 +30,7 @@ import { coreRunbooks } from "./data/handsOnRunbookCore";
 import { middleRunbooks } from "./data/handsOnRunbookMiddle";
 import { expandedRunbooks } from "./data/handsOnRunbookExpanded";
 import { newRunbooks } from "./data/handsOnRunbookNew";
+import { revisedQuestSteps } from "./data/handsOnRevisedSteps";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 
@@ -90,6 +91,7 @@ export function registerHandsOnVault(app: App, g: Guards) {
         detail: "Printable activity instructions are included with Family Membership." }, 402);
     }
     c.header("Cache-Control", "private, no-store");
-    return c.json({ ...q, parentLearning: PARENT_GUIDES[q.id], runbook: RUNBOOKS[q.id] });
+    return c.json({ ...q, steps: revisedQuestSteps[q.id] ?? q.steps,
+      parentLearning: PARENT_GUIDES[q.id], runbook: RUNBOOKS[q.id] });
   });
 }
