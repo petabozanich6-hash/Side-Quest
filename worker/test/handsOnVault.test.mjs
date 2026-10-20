@@ -18,6 +18,8 @@ import { earthParentGuides, civicsParentGuides } from "../src/data/handsOnExpans
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 import { sunParentGuides } from "../src/data/handsOnSun.ts";
 import { bubbleParentGuides } from "../src/data/handsOnBubbles.ts";
+import { makingParentGuides } from "../src/data/handsOnMakers.ts";
+import { kitchenLabParentGuides } from "../src/data/handsOnKitchenLab.ts";
 import { coreRunbooks } from "../src/data/handsOnRunbookCore.ts";
 import { middleRunbooks } from "../src/data/handsOnRunbookMiddle.ts";
 import { expandedRunbooks } from "../src/data/handsOnRunbookExpanded.ts";
@@ -51,20 +53,20 @@ function makeHarness() {
   return { req, parent, db };
 }
 
-test("162 original family activities have practical printable guides and troubleshooting", () => {
-  assert.equal(HANDS_ON_QUESTS.length, 162);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 162);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 27);
+test("174 original family activities have practical printable guides and troubleshooting", () => {
+  assert.equal(HANDS_ON_QUESTS.length, 174);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 174);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 29);
   const guides = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
     ...spaceParentGuides, ...soundParentGuides, ...codingParentGuides,
     ...practicalParentGuides, ...historyParentGuides,
     ...lightParentGuides, ...forcesParentGuides, ...weatherParentGuides, ...plantsParentGuides,
     ...logicParentGuides, ...dramaParentGuides, ...inclusiveParentGuides, ...marketParentGuides,
     ...earthParentGuides, ...civicsParentGuides,
-    ...sunParentGuides, ...bubbleParentGuides };
+    ...sunParentGuides, ...bubbleParentGuides, ...makingParentGuides, ...kitchenLabParentGuides };
   const runbooks = {...coreRunbooks, ...middleRunbooks, ...expandedRunbooks, ...newRunbooks};
-  assert.equal(Object.keys(runbooks).length, 162);
-  assert.equal(Object.keys(guides).length, 162, "each quest needs exactly one custom parent guide");
+  assert.equal(Object.keys(runbooks).length, 174);
+  assert.equal(Object.keys(guides).length, 174, "each quest needs exactly one custom parent guide");
   for (const q of HANDS_ON_QUESTS) {
     assert.match(q.id, /^[a-z0-9-]+$/);
     assert.ok(q.title.length > 6 && q.description.length > 20, q.id);
@@ -95,9 +97,9 @@ test("free preview gets metadata only, but never step-by-step guides", async () 
   assert.match(list.headers.get("cache-control"), /no-store/);
   const data = await list.json();
   assert.equal(data.unlocked, false);
-  assert.equal(data.count, 162);
-  assert.equal(data.items.length, 162);
-  assert.equal(data.categories.length, 27);
+  assert.equal(data.count, 174);
+  assert.equal(data.items.length, 174);
+  assert.equal(data.categories.length, 29);
   assert.ok(!("materials" in data.items[0]));
   assert.ok(!("steps" in data.items[0]));
   const detail = await h.req("/hands-on-quests/oobleck-lab", p.token);
@@ -108,6 +110,7 @@ test("free preview gets metadata only, but never step-by-step guides", async () 
   assert.equal((await h.req("/hands-on-quests/community-survey", p.token)).status, 402);
   assert.equal((await h.req("/hands-on-quests/solar-oven", p.token)).status, 402);
   assert.equal((await h.req("/hands-on-quests/rainbow-bubbles", p.token)).status, 402);
+  assert.equal((await h.req("/hands-on-quests/yeast-bubble-jars", p.token)).status, 402);
   const newItem = data.items.find(q => q.id === "robot-command-maze");
   assert.ok(newItem);
   assert.ok(!("materials" in newItem) && !("steps" in newItem) && !("parentLearning" in newItem) && !("runbook" in newItem));
@@ -146,6 +149,9 @@ test("paid families receive complete guides and own material search metadata", a
   assert.match(solar.runbook.expected, /thermometer/i);
   const rainbow = await (await h.req("/hands-on-quests/rainbow-bubbles", p.token)).json();
   assert.ok(rainbow.steps.length >= 7);
+  const maker = await (await h.req("/hands-on-quests/cardboard-winch-crane", p.token)).json();
+  assert.ok(maker.steps.length >= 7);
+  assert.match(maker.runbook.troubleshoot, /spool/i);
   assert.match(rainbow.parentLearning.explanation, /soap molecules|film/i);
   assert.equal((await h.req("/hands-on-quests/not-a-real-quest", p.token)).status, 404);
 });
