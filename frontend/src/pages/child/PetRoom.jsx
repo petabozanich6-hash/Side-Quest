@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../lib/api";
-import { Pet, Fern, Flower, Branch } from "../../components/shared/Botanical";
+import { Fern, Flower, Branch } from "../../components/shared/Botanical";
 import HalloweenOverlay from "../../components/shared/HalloweenOverlay";
 import SeasonalWorn from "../../components/shared/SeasonalWorn";
 import { Wearable } from "../../components/shared/PetWearables";
@@ -12,13 +12,10 @@ import PetQuests from "../../components/pet/PetQuests";
 import { playSfx, setSfx, sfxOn } from "../../lib/sfx";
 import { ArrowLeft, Apple, Gamepad2, Sparkles, Loader2, Droplets } from "lucide-react";
 
-const SCENE = { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" };
+import "./PetRoom.css";
+import RoomPet from "../../components/shared/RoomPet";
 
-const ACC_EMOJI = {
-  scarf: "🧣", bow: "🎀", flower_crown: "🌸", party_hat: "🎉", bookworm_specs: "👓",
-  backpack: "🎒", cape: "🧥", star_badge: "⭐", crown: "👑",
-  top_hat: "🎩", rainbow: "🌈", magic_wand: "🪄", headphones: "🎧", shades: "🕶️", butterfly: "🦋",
-};
+const SCENE = { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" };
 
 const EGG_FALLBACK = { base: "#E9C8A0", accent: "#FFFFFF", pattern: "spots", glow: "#FFF0DC" };
 
@@ -82,13 +79,13 @@ const SpeciesEgg = ({ style, size = 200, reaction, cold, children }) => {
 // The original pet is a 120x120 SVG. Attach accessories in the same SVG
 // coordinate system so they follow the character without image overlays.
 const CLASSIC_SPOTS = {
-  head: [60, 21, 39], face: [60, 48, 43], neck: [60, 74, 48],
+  head: [60, 21, 39], face: [60, 48, 43], neck: [60, 76, 37],
   chest: [72, 88, 28], right: [103, 81, 38],
 };
 const CLASSIC_BACK_SPOTS = {
-  backpack: [90, 82, 45], cape: [60, 84, 103], butterfly: [60, 71, 117],
+  backpack: [90, 82, 45], cape: [60, 78, 90], butterfly: [60, 71, 117],
 };
-const CLASSIC_EMOJI = { rainbow: "🌈", magic_wand: "🪄" };
+
 
 function ClassicWearables({ equipped = [], behind = false }) {
   const ids = equipped.filter((id) => (ACCESSORY_SLOTS[id] === "back") === behind);
@@ -99,9 +96,7 @@ function ClassicWearables({ equipped = [], behind = false }) {
         const placement = behind ? CLASSIC_BACK_SPOTS[id] : CLASSIC_SPOTS[ACCESSORY_SLOTS[id]];
         if (!placement) return null;
         const [x, y, size] = placement;
-        return CLASSIC_EMOJI[id]
-          ? <text key={id} x={x} y={y} textAnchor="middle" dominantBaseline="central" fontSize={size * 0.8}>{CLASSIC_EMOJI[id]}</text>
-          : <svg key={id} x={x - size / 2} y={y - size / 2} width={size} height={size} viewBox="0 0 100 100" overflow="visible">
+        return <svg key={id} x={x - size / 2} y={y - size / 2} width={size} height={size} viewBox="0 0 100 100" overflow="visible">
               <Wearable id={id} />
             </svg>;
       })}
@@ -280,13 +275,14 @@ export default function PetRoom() {
   }[status];
 
   return (
-    <div className="space-y-5 animate-in" data-testid="pet-room">
+    <div className="pet-room space-y-5 animate-in" data-testid="pet-room">
       <style>{PET_CSS}</style>
       <button onClick={() => nav("/child")} className="text-sm font-bold flex items-center gap-1" style={{ color: "#4A5D3A" }} data-testid="back-home"><ArrowLeft size={14} /> Back</button>
 
-      <header>
+      <header className="pet-room-heading">
         <div className="font-script text-2xl" style={{ color: "#C77B5B" }}>Welcome to</div>
         <h1 className="font-display text-4xl font-bold" style={{ color: "#1F3B2D" }}>{pet.name}'s room</h1>
+        <p className="mt-2 text-sm text-stone-600">A little home for your learning companion.</p>
       </header>
 
       {statusText && (
@@ -296,9 +292,9 @@ export default function PetRoom() {
         <div className="paper-card p-3 text-sm" style={{ color: "#1F3B2D" }}>Your parent has paused pet care. Enjoy the break!</div>
       )}
 
-      <div className="paper-card overflow-hidden relative" data-testid="pet-stage">
-        <div ref={stageRef} className={`relative flex items-end justify-center overflow-hidden ${illustrated ? "h-[22rem] md:h-[30rem]" : "h-80"}`} style={bgStyle} data-testid="pet-scene" data-scene={bgOpt.id}>
-          <button type="button" onClick={toggleSound} className="absolute right-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={sound} data-testid="sound-toggle">{sound ? "🔊 Sounds on" : "🔇 Sounds off"}</button>
+      <div className="paper-card pet-room-stage overflow-hidden relative" data-testid="pet-stage">
+        <div ref={stageRef} className="pet-room-scene relative flex items-end justify-center overflow-hidden" style={bgStyle} data-testid="pet-scene" data-scene={bgOpt.id}>
+          <button type="button" onClick={toggleSound} className="pet-room-sound absolute right-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={sound} data-testid="sound-toggle">{sound ? "🔊 Sounds on" : "🔇 Sounds off"}</button>
           {fx.map((f) => <span key={f.key} className="fx absolute z-20 text-3xl" style={{ left: `${f.left}%`, bottom: "35%" }} aria-hidden>{f.emoji}</span>)}
           <HalloweenOverlay />
           {!illustrated && <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />}
@@ -306,46 +302,48 @@ export default function PetRoom() {
           {!illustrated && <Flower className="absolute left-28 bottom-6" size={28} color="#D4857A" />}
           {!illustrated && <Flower className="absolute right-32 bottom-10" size={24} color="#C77B5B" />}
           {!illustrated && <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />}
-          <div className="relative z-10 mb-2 flex flex-col items-center">
+          <div className="pet-room-resident relative z-10 flex flex-col items-center">
             {hatched && quests?.mood && <div className="mb-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} data-testid="pet-mood">{quests.mood.text}</div>}
-            <div className={`relative pet-art-shadow ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood.mood}` : ""}`} onClick={() => { react(hatched ? "hop" : "wobble"); if (hatched) { setActFx("hello"); burst("sparkle"); setTimeout(() => setActFx(""), 900); } }} role="button" tabIndex={0} aria-label={`Say hello to ${pet.name}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }} data-testid="pet-body"
+            <div className={`relative pet-art-shadow ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood?.mood || "calm"}` : ""}`} onClick={() => { react(hatched ? "hop" : "wobble"); if (hatched) { setActFx("hello"); burst("sparkle"); setTimeout(() => setActFx(""), 900); } }} role="button" tabIndex={0} aria-label={`Say hello to ${pet.name}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }} data-testid="pet-body"
               data-form={pet.level_name}
-              style={{ filter: sick ? "grayscale(0.7)" : asleep ? "brightness(0.75)" : "none", cursor: "pointer" }}>
+              style={{ filter: `drop-shadow(0 8px 5px rgba(45, 30, 16, .22))${sick ? " grayscale(0.7)" : asleep ? " brightness(0.75)" : ""}`, cursor: "pointer" }}>
               {hatched
-                ? <Pet species={pet.species} size={220} happy={!sad && pet.happiness > 40}
+                ? <RoomPet species={pet.species} size={220} happy={!sad && pet.happiness > 40}
                     backChildren={<ClassicWearables equipped={worn} behind />}>
                     <ClassicWearables equipped={worn} />
                     <SeasonalWorn />
-                  </Pet>
+                  </RoomPet>
                 : <SpeciesEgg style={pet.egg_style} size={150} reaction={reaction} cold={status === "cold" || status === "chilly"}>
                     <SeasonalWorn layout="egg" />
                   </SpeciesEgg>}
 
               {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
               {sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
-              {care.needs_cleaning && hatched && (
-                <button onClick={(e) => { e.stopPropagation(); act("/pet/care/clean", null, "All clean!", "hop"); }}
-                  className="absolute bottom-0 -right-10 text-4xl hover:scale-110 transition" aria-label="Clean up" data-testid="poop">💩</button>
-              )}
             </div>
+            {care.needs_cleaning && hatched && (
+              <button disabled={loading} onClick={() => act("/pet/care/clean", null, "All clean!", "hop")}
+                className="pet-room-mess absolute bottom-0 right-0 text-4xl disabled:opacity-50" aria-label="Clean up" data-testid="poop">💩</button>
+            )}
+          </div>
+        </div>
+        <div className="pet-room-nameplate">
             {hatched && <p className="mb-2 rounded-full bg-[#FBF7EC]/90 px-3 py-1 text-xs font-bold text-[#1F3B2D] shadow-sm">✨ Tap {pet.name} to say hello</p>}
-            <div className="mt-1 paper-card px-4 py-2 flex items-center gap-2">
+            <div className="pet-room-name flex items-center justify-center gap-3">
               {!renaming ? (
                 <>
-                  <span className="font-script text-2xl" style={{ color: "#C77B5B" }}>{pet.name}</span>
+                  <span className="font-display text-xl font-bold" style={{ color: "#1F3B2D" }}>{pet.name}</span>
                   <button onClick={() => setRenaming(true)} className="text-[10px] font-bold uppercase tracking-widest text-stone-500" data-testid="rename-btn">rename</button>
                 </>
               ) : (
                 <>
-                  <input value={newName} onChange={e => setNewName(e.target.value)} className="font-script text-xl text-center rounded border px-2 py-0.5 w-32 bg-paper" style={{ borderColor: "#D4C8A8" }} data-testid="rename-input" />
+                  <input aria-label="Pet name" maxLength={30} value={newName} onChange={e => setNewName(e.target.value)} className="font-script text-xl text-center rounded border px-2 py-0.5 w-32 bg-paper" style={{ borderColor: "#D4C8A8" }} data-testid="rename-input" />
                   <button onClick={saveName} className="text-[10px] font-bold uppercase text-emerald-700" data-testid="save-name">save</button>
-                  <button onClick={() => { setRenaming(false); setNewName(pet.name); }} className="text-[10px] text-stone-400">x</button>
+                  <button onClick={() => { setRenaming(false); setNewName(pet.name); }} aria-label="Cancel rename" className="text-xs text-stone-600">Cancel</button>
                 </>
               )}
             </div>
-          </div>
         </div>
-        <div className="p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 bg-white">
+        <div className="pet-room-stats p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 bg-white">
           <StatBar label="Level" value={pet.level_name} badge={pet.level_icon} />
           <ProgressBar label="XP" value={pet.xp} max={pet.next_xp || pet.xp} pct={pct} color="#059669" />
           <ProgressBar label="Happiness" value={pet.happiness} max={100} pct={pet.happiness} color="#D4857A" />
@@ -357,7 +355,7 @@ export default function PetRoom() {
         )}
       </div>
 
-      <section className="grid md:grid-cols-4 gap-4">
+      <section aria-label="Care for your companion" className={`pet-room-care grid gap-3 ${hatched ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
         <ActionCard title={hatched ? "Feed" : "Warm up"} subtitle={hatched ? "Keep tummies full each day" : "Keep your egg snug"} icon={Apple} tint="#C77B5B"
           onClick={() => act("/pet/care/feed", "/pet/feed", hatched ? `${pet.name} loved that!` : "The egg feels warm and cosy", hatched ? "hop" : "glow")} loading={loading} testid="feed-btn" />
         <ActionCard title={hatched ? "Play" : "Cuddle"} subtitle="A quick game, a happier friend" icon={Gamepad2} tint="#6B8A5B"
@@ -374,15 +372,15 @@ export default function PetRoom() {
         <section className="paper-card p-5" data-testid="wardrobe">
           <h2 className="font-display text-lg font-bold mb-1" style={{ color: "#1F3B2D" }}>Wardrobe</h2>
           <p className="text-sm text-stone-600 mb-3">Dress up your pet! Wear up to three accessories, one per body area. New outfits stay in place while your pet moves.</p>
-          <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {catalog.map(a => {
               const on = worn.includes(a.id);
               return (
                 <button key={a.id} disabled={!a.unlocked || !hatched || loading} onClick={() => toggleAcc(a.id)} aria-pressed={on}
-                  className="rounded-xl border-2 p-3 text-center disabled:opacity-40"
+                  className="pet-room-accessory rounded-xl border-2 p-3 text-center disabled:opacity-60"
                   style={{ borderColor: on ? "#1F3B2D" : "#D4C8A8", background: on ? "#ECFCCB" : "#fff" }}
                   data-testid={`acc-${a.id}`}>
-                  <div className="text-3xl">{a.unlocked ? (ACC_EMOJI[a.id] || "✨") : "🔒"}</div>
+                  <div className="pet-product-preview" aria-hidden="true">{a.unlocked ? <svg viewBox="0 0 100 100"><Wearable id={a.id} /></svg> : <span className="text-3xl">🔒</span>}</div>
                   <div className="text-[11px] font-bold mt-1" style={{ color: "#1F3B2D" }}>{a.label}</div>
                   {on && <div className="text-[10px] font-bold text-green-800">✓ Wearing</div>}
                   {!a.unlocked && <div className="text-[10px] text-stone-500 mt-0.5">{ruleText(a.rule)}</div>}
@@ -436,7 +434,7 @@ const ruleText = (rule = "") => {
 };
 
 const ActionCard = ({ title, subtitle, icon: Icon, tint, onClick, loading, testid }) => (
-  <button onClick={onClick} disabled={loading} className="paper-card p-5 text-left hover:translate-y-[-2px] transition disabled:opacity-50" data-testid={testid}>
+  <button onClick={onClick} disabled={loading} className="pet-room-action paper-card p-5 text-left transition disabled:opacity-50" data-testid={testid}>
     <div className="h-11 w-11 rounded-xl grid place-items-center mb-3" style={{ backgroundColor: tint + "22", color: tint }}>
       {loading ? <Loader2 size={20} className="animate-spin" /> : <Icon size={20} />}
     </div>
@@ -453,6 +451,6 @@ const StatBar = ({ label, value, badge }) => (
 const ProgressBar = ({ label, value, max, pct, color }) => (
   <div>
     <div className="flex items-baseline justify-between"><div className="text-[10px] font-bold uppercase tracking-widest text-stone-500">{label}</div><div className="text-[10px] font-mono text-stone-500">{value}{max ? ` / ${max}` : ""}</div></div>
-    <div className="mt-1 h-2.5 rounded-full bg-stone-200 overflow-hidden"><div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }}></div></div>
+    <div role="progressbar" aria-label={label} aria-valuenow={value} aria-valuemin={0} aria-valuemax={max || 100} className="mt-1 h-2.5 rounded-full bg-stone-200 overflow-hidden"><div className="h-full" style={{ width: `${pct}%`, backgroundColor: color }}></div></div>
   </div>
 );
