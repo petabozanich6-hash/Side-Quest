@@ -36,7 +36,7 @@ const printStyles = `
   #hands-on-print .print-footer { display: block !important; }
   #hands-on-print .print-only { display: block !important; }
   #hands-on-print .print-sections { gap: 9px !important; }
-  #hands-on-print .print-section { padding: 8px !important; }
+  #hands-on-print .print-section { padding: 8px !important; }\n  #hands-on-print .print-section h3 { font-size: 9pt !important; }
 }
 `;
 
@@ -250,6 +250,29 @@ export default function HandsOnVault() {
                   <ul className="mt-2 space-y-1.5 text-sm text-stone-700">{detail.wonder.map((w,i)=><li key={i}>✦ {w}</li>)}</ul>
                   <p className="text-xs font-semibold text-stone-600 mt-2">Learning in disguise: {detail.skills.join(" • ")}</p>
                 </section>
+                {detail.parentLearning && <section className="print-section print-tile rounded-xl border-2 p-4 space-y-3" style={{borderColor:"#A6BDA4",background:"#F4F8F1"}}>
+                  <div>
+                    <div className="text-[10px] font-extrabold uppercase tracking-widest" style={{color:"#A16C4D"}}>A parent guide for purposeful play</div>
+                    <h2 className="font-display text-base font-bold mt-1" style={{color:"#1F3B2D"}}>🐉 For the Grown-Ups: What They're Really Learning</h2>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider" style={{color:"#1F3B2D"}}>The learning objective</h3>
+                    <p className="text-sm leading-relaxed text-stone-700 mt-1">{detail.parentLearning.objective}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider" style={{color:"#1F3B2D"}}>Why this works educationally</h3>
+                    <p className="text-sm leading-relaxed text-stone-700 mt-1">{detail.parentLearning.explanation}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider" style={{color:"#1F3B2D"}}>What a parent can say or demonstrate</h3>
+                    <p className="text-sm leading-relaxed text-stone-700 mt-1">{detail.parentLearning.parentPrompt}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider" style={{color:"#1F3B2D"}}>What learning you could record</h3>
+                    <p className="text-sm leading-relaxed text-stone-700 mt-1">{detail.parentLearning.evidence}</p>
+                  </div>
+                  <p className="text-[11px] italic text-stone-600">These are suggested educational opportunities, not proof an outcome was achieved. Record what your child actually demonstrated.</p>
+                </section>}
                 <section className="print-section rounded-xl border border-amber-200 p-3">
                   <h2 className="font-display text-sm font-bold flex items-center gap-2" style={{color:"#8B4F20"}}><ShieldAlert size={16}/> Grown-up safety check</h2>
                   <p className="mt-1 text-xs text-stone-700 leading-relaxed">{detail.safety}</p>
