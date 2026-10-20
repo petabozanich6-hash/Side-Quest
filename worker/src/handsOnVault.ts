@@ -24,6 +24,8 @@ import { inclusiveQuests, inclusiveParentGuides, marketQuests, marketParentGuide
 import { earthQuests, earthParentGuides, civicsQuests, civicsParentGuides } from "./data/handsOnExpansionEarthCivic";
 import { sunQuests, sunParentGuides } from "./data/handsOnSun";
 import { bubbleQuests, bubbleParentGuides } from "./data/handsOnBubbles";
+import { makingQuests, makingParentGuides } from "./data/handsOnMakers";
+import { kitchenLabQuests, kitchenLabParentGuides } from "./data/handsOnKitchenLab";
 import { coreRunbooks } from "./data/handsOnRunbookCore";
 import { middleRunbooks } from "./data/handsOnRunbookMiddle";
 import { expandedRunbooks } from "./data/handsOnRunbookExpanded";
@@ -40,6 +42,7 @@ export const HANDS_ON_QUESTS: readonly HandsOnQuest[] = [
   ...lightQuests, ...forcesQuests, ...weatherQuests, ...plantsQuests,
   ...logicQuests, ...dramaQuests, ...inclusiveQuests, ...marketQuests,
   ...earthQuests, ...civicsQuests, ...sunQuests, ...bubbleQuests,
+  ...makingQuests, ...kitchenLabQuests,
 ];
 const QUEST_BY_ID = new Map(HANDS_ON_QUESTS.map(quest => [quest.id, quest]));
 const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
@@ -47,7 +50,7 @@ const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDE
   ...practicalParentGuides, ...historyParentGuides,
   ...lightParentGuides, ...forcesParentGuides, ...weatherParentGuides, ...plantsParentGuides,
   ...logicParentGuides, ...dramaParentGuides, ...inclusiveParentGuides, ...marketParentGuides,
-  ...earthParentGuides, ...civicsParentGuides, ...sunParentGuides, ...bubbleParentGuides };
+  ...earthParentGuides, ...civicsParentGuides, ...sunParentGuides, ...bubbleParentGuides, ...makingParentGuides, ...kitchenLabParentGuides };
 const RUNBOOKS = { ...coreRunbooks, ...middleRunbooks, ...expandedRunbooks, ...newRunbooks };
 if (QUEST_BY_ID.size !== HANDS_ON_QUESTS.length) throw new Error("Duplicate hands-on quest IDs");
 if (HANDS_ON_QUESTS.some(q => !PARENT_GUIDES[q.id])) throw new Error("Missing parent teaching guide for a hands-on quest");
