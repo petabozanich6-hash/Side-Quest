@@ -22,6 +22,12 @@ import { weatherQuests, weatherParentGuides, plantsQuests, plantsParentGuides } 
 import { logicQuests, logicParentGuides, dramaQuests, dramaParentGuides } from "./data/handsOnExpansionCreative";
 import { inclusiveQuests, inclusiveParentGuides, marketQuests, marketParentGuides } from "./data/handsOnExpansionDesign";
 import { earthQuests, earthParentGuides, civicsQuests, civicsParentGuides } from "./data/handsOnExpansionEarthCivic";
+import { sunQuests, sunParentGuides } from "./data/handsOnSun";
+import { bubbleQuests, bubbleParentGuides } from "./data/handsOnBubbles";
+import { coreRunbooks } from "./data/handsOnRunbookCore";
+import { middleRunbooks } from "./data/handsOnRunbookMiddle";
+import { expandedRunbooks } from "./data/handsOnRunbookExpanded";
+import { newRunbooks } from "./data/handsOnRunbookNew";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 
@@ -33,7 +39,7 @@ export const HANDS_ON_QUESTS: readonly HandsOnQuest[] = [
   ...spaceQuests, ...soundQuests, ...codingQuests, ...practicalQuests, ...historyQuests,
   ...lightQuests, ...forcesQuests, ...weatherQuests, ...plantsQuests,
   ...logicQuests, ...dramaQuests, ...inclusiveQuests, ...marketQuests,
-  ...earthQuests, ...civicsQuests,
+  ...earthQuests, ...civicsQuests, ...sunQuests, ...bubbleQuests,
 ];
 const QUEST_BY_ID = new Map(HANDS_ON_QUESTS.map(quest => [quest.id, quest]));
 const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
@@ -41,10 +47,13 @@ const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDE
   ...practicalParentGuides, ...historyParentGuides,
   ...lightParentGuides, ...forcesParentGuides, ...weatherParentGuides, ...plantsParentGuides,
   ...logicParentGuides, ...dramaParentGuides, ...inclusiveParentGuides, ...marketParentGuides,
-  ...earthParentGuides, ...civicsParentGuides };
+  ...earthParentGuides, ...civicsParentGuides, ...sunParentGuides, ...bubbleParentGuides };
+const RUNBOOKS = { ...coreRunbooks, ...middleRunbooks, ...expandedRunbooks, ...newRunbooks };
 if (QUEST_BY_ID.size !== HANDS_ON_QUESTS.length) throw new Error("Duplicate hands-on quest IDs");
 if (HANDS_ON_QUESTS.some(q => !PARENT_GUIDES[q.id])) throw new Error("Missing parent teaching guide for a hands-on quest");
 if (Object.keys(PARENT_GUIDES).length !== HANDS_ON_QUESTS.length) throw new Error("Parent guides must match quests one-to-one");
+if (HANDS_ON_QUESTS.some(q => !RUNBOOKS[q.id])) throw new Error("Missing practical setup or troubleshooting for a hands-on quest");
+if (Object.keys(RUNBOOKS).length !== HANDS_ON_QUESTS.length) throw new Error("Practical guide count must match quests one-to-one");
 
 /** Free preview lists only titles and short descriptors, never proprietary instructions. */
 export function previewQuest(q: HandsOnQuest) {
@@ -78,6 +87,6 @@ export function registerHandsOnVault(app: App, g: Guards) {
         detail: "Printable activity instructions are included with Family Membership." }, 402);
     }
     c.header("Cache-Control", "private, no-store");
-    return c.json({ ...q, parentLearning: PARENT_GUIDES[q.id] });
+    return c.json({ ...q, parentLearning: PARENT_GUIDES[q.id], runbook: RUNBOOKS[q.id] });
   });
 }
