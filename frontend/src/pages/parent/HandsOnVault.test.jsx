@@ -90,6 +90,8 @@ test("paid parent sees A4 guide with explicit education, safety and evidence lin
   expect(guide.textContent).toContain(fullQuest.parentLearning.parentPrompt);
   expect(guide.textContent).toContain(fullQuest.parentLearning.evidence);
   expect(guide.textContent).toContain(fullQuest.safety);
+  expect(guide.textContent.indexOf("Grown-up safety check")).toBeLessThan(guide.textContent.indexOf("Gather your treasure"));
+  expect(guide.textContent.indexOf("Grown-up safety check")).toBeLessThan(guide.textContent.indexOf("Your quest, step by step"));
   expect(guide.textContent).toContain("Before you start: set up for success");
   expect(guide.textContent).toContain(fullQuest.runbook.prepare);
   expect(guide.textContent).toContain(fullQuest.runbook.expected);
