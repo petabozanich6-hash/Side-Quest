@@ -1432,6 +1432,13 @@ await step("S. flagged questions round-trip from parent review to child correcti
     await cp.fill("[data-testid=child-login-username]", user);
     await cp.fill("[data-testid=child-login-pin]", "4682");
     await cp.click("[data-testid=child-login-submit]"); await cp.waitForURL("**/child");
+    // First sign-in is gated by choosing a pet. Complete the genuine onboarding
+    // before asserting anything about the returned lesson's contents.
+    await cp.waitForSelector("[data-testid=pet-picker]", { timeout: 10000 });
+    await cp.click("[data-testid=pet-fox]");
+    await cp.fill("[data-testid=pet-name]", "Ember");
+    await cp.click("[data-testid=create-pet]");
+    await cp.waitForSelector("[data-testid=child-shell]", { timeout: 15000 });
     await cp.goto(BASE + "/child/lesson/" + aid);
     await cp.waitForSelector("[data-testid=flagged-questions-summary]");
     await cp.click('[data-testid="jump-flag-question:0"]');
