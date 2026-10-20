@@ -17,6 +17,11 @@ import { soundQuests, soundParentGuides } from "./data/handsOnSound";
 import { codingQuests, codingParentGuides } from "./data/handsOnCoding";
 import { practicalQuests, practicalParentGuides } from "./data/handsOnPractical";
 import { historyQuests, historyParentGuides } from "./data/handsOnHistory";
+import { lightQuests, lightParentGuides, forcesQuests, forcesParentGuides } from "./data/handsOnExpansionPhysics";
+import { weatherQuests, weatherParentGuides, plantsQuests, plantsParentGuides } from "./data/handsOnExpansionNatural";
+import { logicQuests, logicParentGuides, dramaQuests, dramaParentGuides } from "./data/handsOnExpansionCreative";
+import { inclusiveQuests, inclusiveParentGuides, marketQuests, marketParentGuides } from "./data/handsOnExpansionDesign";
+import { earthQuests, earthParentGuides, civicsQuests, civicsParentGuides } from "./data/handsOnExpansionEarthCivic";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 
@@ -26,11 +31,17 @@ export const HANDS_ON_QUESTS: readonly HandsOnQuest[] = [
   ...engineeringQuests, ...natureQuests, ...artQuests, ...mathsQuests,
   ...storiesQuests, ...movementQuests,
   ...spaceQuests, ...soundQuests, ...codingQuests, ...practicalQuests, ...historyQuests,
+  ...lightQuests, ...forcesQuests, ...weatherQuests, ...plantsQuests,
+  ...logicQuests, ...dramaQuests, ...inclusiveQuests, ...marketQuests,
+  ...earthQuests, ...civicsQuests,
 ];
 const QUEST_BY_ID = new Map(HANDS_ON_QUESTS.map(quest => [quest.id, quest]));
 const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
   ...spaceParentGuides, ...soundParentGuides, ...codingParentGuides,
-  ...practicalParentGuides, ...historyParentGuides };
+  ...practicalParentGuides, ...historyParentGuides,
+  ...lightParentGuides, ...forcesParentGuides, ...weatherParentGuides, ...plantsParentGuides,
+  ...logicParentGuides, ...dramaParentGuides, ...inclusiveParentGuides, ...marketParentGuides,
+  ...earthParentGuides, ...civicsParentGuides };
 if (QUEST_BY_ID.size !== HANDS_ON_QUESTS.length) throw new Error("Duplicate hands-on quest IDs");
 if (HANDS_ON_QUESTS.some(q => !PARENT_GUIDES[q.id])) throw new Error("Missing parent teaching guide for a hands-on quest");
 if (Object.keys(PARENT_GUIDES).length !== HANDS_ON_QUESTS.length) throw new Error("Parent guides must match quests one-to-one");
