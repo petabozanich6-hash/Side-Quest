@@ -1,5 +1,6 @@
 // Seasonal prizes and room decorations drawn to match the pets (100 x 100 boxes).
 // Prizes without artwork yet fall back to their emoji, placed on the same anchors.
+import { MORE_PRIZES, MORE_DECOR } from "./petSeasonalMore.js";
 const INK = "#3A2A1A";
 const s = (d, fill, w = 3, stroke = INK, extra = "") =>
   `<path d="${d}" fill="${fill}" stroke="${stroke}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"${extra ? " " + extra : ""}/>`;
@@ -159,6 +160,8 @@ Object.assign(PRIZES, {
     ${shine("M24,24 C28,18 34,14 40,12", 4, 0.7)}` },
 });
 
+Object.assign(PRIZES, MORE_PRIZES);
+
 export function seasonalArt(id) {
   return PRIZES[id] || null;
 }
@@ -204,6 +207,8 @@ export const DECOR = {
   leaf: `${s("M50,4 L58,26 78,16 72,38 94,40 76,56 86,74 62,68 56,90 50,72 44,90 38,68 14,74 24,56 6,40 28,38 22,16 42,26Z", "#E0782F", 2.4, "#8A3E10")}<path d="M50,30 L50,96" stroke="#8A3E10" stroke-width="2.6" stroke-linecap="round"/>`,
   bat: `${s("M50,40 C42,30 28,24 8,30 C16,36 16,44 10,52 C22,48 30,52 34,60 C40,54 46,54 50,60 C54,54 60,54 66,60 C70,52 78,48 90,52 C84,44 84,36 92,30 C72,24 58,30 50,40Z", "#3A2E4A", 2.4, "#1A1222")}<circle cx="46" cy="44" r="2" fill="#FFD86A"/><circle cx="54" cy="44" r="2" fill="#FFD86A"/>`,
 };
+
+Object.assign(DECOR, MORE_DECOR);
 
 export function decorSvg(key) {
   return DECOR[key] ? `<svg viewBox="0 0 100 100" width="100%" height="100%" overflow="visible" aria-hidden="true">${DECOR[key]}</svg>` : "";
