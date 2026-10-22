@@ -144,7 +144,8 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       "SELECT * FROM cheers WHERE student_id = ? AND seen = 0 ORDER BY created_at DESC LIMIT 20"
     ).bind(u.id).all<any>();
     const student = await db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE id = ?"
+      // No "notes": those are the parent's private notes about the child (child-login strips them too).
+      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, created_at, extra FROM students WHERE id = ?"
     ).bind(u.id).first<any>();
     const { results: doneRows } = await db.prepare(
       "SELECT * FROM assignments WHERE student_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
@@ -501,7 +502,9 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const out = [];
     for (const r of results) {
       const s: any = subOut(r);
-      s.lesson = lessonSummary(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+      const summary = lessonSummary(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+      // A child's list must never carry answer keys, quiz answers or parent notes (same rule as every other child route).
+      s.lesson = u.role === "child" ? lb.childSafeLesson(summary) : summary;
       const st: any = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
       s.student = st;
       out.push(s);

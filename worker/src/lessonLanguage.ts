@@ -58,7 +58,10 @@ export function australianSpelling(text: string): string {
 function skipConversion(area: string, topic: string, hasParentSource: boolean): boolean {
   if (hasParentSource) return true;
   if (/\b(?:American (?:English|spelling)|U\.S\. spelling|US spelling|US vs (?:UK|AU|Australian)|British vs American|colour vs color|favorite vs favourite)\b/i.test(topic)) return true;
-  if (/\b(?:computer|coding|programming|software|web development|technolog|CSS|JavaScript|Python)\b/i.test(area)) return true;
+  // "technolog\w*" so "Technologies" / "Digital Technologies" match (a bare "technolog\b" never did,
+  // which rewrote CSS such as `color: red` into invalid `colour: red`). Coding topics in any area are protected too.
+  const technical = /\b(?:computer\w*|coding|programming|software|web development|technolog\w*|CSS|HTML|JavaScript|Python)\b/i;
+  if (technical.test(area) || technical.test(topic)) return true;
   return false;
 }
 /** Model-created draft JSON only, never an assigned lesson or submission. */

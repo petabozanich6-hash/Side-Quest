@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [dev/sidequest-execution]
+    branches: [main, dev/sidequest-execution]
   pull_request:
   workflow_dispatch:
 

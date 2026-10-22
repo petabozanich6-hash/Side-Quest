@@ -519,7 +519,10 @@ export function registerFamily(app: App, g: Guards) {
         .first<StudentRow>(),
       actor.role === "parent"
     );
-    return student ? c.json(student) : c.json({ detail: "Not found" }, 404);
+    if (!student) return c.json({ detail: "Not found" }, 404);
+    // Parent's private notes about the child stay with the parent.
+    if (actor.role === "child") { const { notes: _notes, ...childView } = student; return c.json(childView); }
+    return c.json(student);
   });
 
   app.put("/api/students/:sid", g.auth, g.parent, async (c) => {
