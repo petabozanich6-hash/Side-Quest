@@ -648,6 +648,15 @@ await step("Pet room shows goals (no shop or decorating) and sound toggle, and s
     await pp.waitForSelector("[data-testid=pet-quests]", { timeout: 15000 });
     await pp.waitForSelector("[data-testid=sound-toggle]");
     ok((await pp.getAttribute("[data-testid=pet-scene]", "data-scene")) === "cozy", "cosy room is not the default scene");
+    await pp.waitForSelector("[data-testid=pet-body] svg.sq-pet", { timeout: 15000 });
+    ok((await pp.getAttribute("[data-testid=pet-body] svg", "viewBox")) === "0 0 400 430", "pet room is not using the companion artwork");
+    await pp.setViewportSize({ width: 390, height: 844 });
+    await pp.waitForTimeout(400);
+    await pp.locator("[data-testid=pet-stage]").screenshot({ path: `${SHOTS}/pet-room-mobile.png` }).catch(() => {});
+    await pp.click("[data-testid=pet-body]");
+    await pp.waitForTimeout(250);
+    await pp.locator("[data-testid=pet-stage]").screenshot({ path: `${SHOTS}/pet-room-mobile-tap.png` }).catch(() => {});
+    await pp.setViewportSize({ width: 1280, height: 900 });
     const img = await pp.request.get(`${BASE}/pet-room/cozy-room.webp`);
     ok(img.status() === 200 && /image/.test(img.headers()["content-type"] || ""), "room picture not served: " + img.status());
     ok((await pp.locator("[data-testid=daily-goals] li").count()) === 3, "three goals expected");

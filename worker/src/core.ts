@@ -65,6 +65,18 @@ function lessonSummary(r: any) {
   delete l.worked_example;
   return l;
 }
+/** Rows keyed by id for `${sqlPrefix} (?, ?, ...)`, in chunks that stay under D1's 100 bound parameters per query. */
+async function rowsById(db: D1Database, sqlPrefix: string, ids: unknown[], leading: unknown[] = []): Promise<Map<string, any>> {
+  const unique = [...new Set(ids.filter((x): x is string => typeof x === "string" && x.length > 0))];
+  const out = new Map<string, any>();
+  for (let i = 0; i < unique.length; i += 90) {
+    const chunk = unique.slice(i, i + 90);
+    const { results } = await db.prepare(`${sqlPrefix} (${chunk.map(() => "?").join(", ")})`).bind(...leading, ...chunk).all<any>();
+    for (const row of results) out.set(row.id, row);
+  }
+  return out;
+}
+
 function subOut(r: any) {
   return {
     ...r,
@@ -499,14 +511,17 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (c.req.query("status")) { sql += " AND status = ?"; b.push(c.req.query("status")); }
     sql += " ORDER BY submitted_at DESC LIMIT 500";
     const { results } = await c.env.DB.prepare(sql).bind(...b).all<any>();
+    // Look lessons and children up in batches: one query per row would pass D1's
+    // 1,000-queries-per-request limit for a family with a few hundred submissions.
+    const lessons = await rowsById(c.env.DB, "SELECT * FROM lessons WHERE id IN", results.map((r: any) => r.lesson_id));
+    const students = await rowsById(c.env.DB, "SELECT id, name, username, stage, year_level, theme FROM students WHERE family_id = ? AND id IN", results.map((r: any) => r.student_id), [u.family_id]);
     const out = [];
     for (const r of results) {
       const s: any = subOut(r);
-      const summary = lessonSummary(await c.env.DB.prepare("SELECT * FROM lessons WHERE id = ?").bind(r.lesson_id).first());
+      const summary = lessonSummary(lessons.get(r.lesson_id) ?? null);
       // A child's list must never carry answer keys, quiz answers or parent notes (same rule as every other child route).
       s.lesson = u.role === "child" ? lb.childSafeLesson(summary) : summary;
-      const st: any = await c.env.DB.prepare("SELECT id, name, username, stage, year_level, theme FROM students WHERE id = ?").bind(r.student_id).first();
-      s.student = st;
+      s.student = students.get(r.student_id) ?? null;
       out.push(s);
     }
     return c.json(out);
