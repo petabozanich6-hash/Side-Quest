@@ -14,6 +14,9 @@ import { ArrowLeft, Apple, Gamepad2, Sparkles, Loader2, Droplets } from "lucide-
 
 import "./PetRoom.css";
 import RoomPet from "../../components/shared/RoomPet";
+import PetFigure, { NEW_ART_SPECIES } from "../../components/pets/PetFigure";
+import { decorSvg } from "../../components/pets/petSeasonal";
+import useSeasonal from "../../components/shared/useSeasonal";
 
 const SCENE = { id: "cozy", label: "Cosy room", bg: "#C98B4B", image: "/pet-room/cozy-room.webp", fallback: "/pet-room/cozy-room.jpg" };
 
@@ -166,6 +169,7 @@ export default function PetRoom() {
   const [actFx, setActFx] = useState("");
   const [sound, setSound] = useState(sfxOn());
   const stageRef = useRef(null);
+  const { keepsakes } = useSeasonal();
 
   const apply = (data) => {
     if (!data || data.needs_pet) return;
@@ -192,7 +196,7 @@ export default function PetRoom() {
   const react = (kind) => { setReaction(kind); setTimeout(() => setReaction(null), 1000); };
 
   // little bursts of emoji and a matching move for the pet, with a quiet sound
-  const FX = { feed: ["🍎", "🍓", "🥕"], play: ["⚽", "🎾", "⭐"], clean: ["✨", "🫧", "✨"], coin: ["🪙", "🪙", "✨"], party: ["🎉", "⭐", "🎊", "✨"], sparkle: ["✨", "💫", "✨"] };
+  const FX = { feed: ["apple", "berry", "carrot"], play: ["ball", "star", "heart"], clean: ["sparkle", "bubble", "sparkle"], coin: ["coin", "coin", "sparkle"], party: ["confetti", "star", "confetti", "sparkle"], sparkle: ["sparkle", "heart", "sparkle"] };
   const burst = (kind) => {
     const list = FX[kind] || FX.sparkle;
     const id = Date.now();
@@ -264,6 +268,13 @@ export default function PetRoom() {
   const hatch = pet.hatch;
   const worn = maxThreeBySlot(pet.accessories || []);
   const catalog = pet.accessory_catalog || [];
+  const newArt = NEW_ART_SPECIES.includes(pet.species);
+  const wornSeasonal = (keepsakes || []).filter((k) => k.worn);
+  const cheering = ["hello", "feed", "play", "party"].includes(actFx);
+  const questMood = quests?.mood?.mood;
+  const artMood = cheering ? "joy" : asleep ? "sleepy" : sick ? "sick"
+    : ["calm", "happy", "sad", "sleepy", "sick"].includes(questMood) ? questMood
+    : sad ? "sad" : pet.happiness >= 75 ? "happy" : "calm";
 
   const statusText = {
     ok: null,
@@ -295,7 +306,7 @@ export default function PetRoom() {
       <div className="paper-card pet-room-stage overflow-hidden relative" data-testid="pet-stage">
         <div ref={stageRef} className="pet-room-scene relative flex items-end justify-center overflow-hidden" style={bgStyle} data-testid="pet-scene" data-scene={bgOpt.id}>
           <button type="button" onClick={toggleSound} className="pet-room-sound absolute right-3 top-3 z-20 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} aria-pressed={sound} data-testid="sound-toggle">{sound ? "🔊 Sounds on" : "🔇 Sounds off"}</button>
-          {fx.map((f) => <span key={f.key} className="fx absolute z-20 text-3xl" style={{ left: `${f.left}%`, bottom: "35%" }} aria-hidden>{f.emoji}</span>)}
+          {fx.map((f) => <span key={f.key} className="fx absolute z-20 block" style={{ left: `${f.left}%`, bottom: "35%", width: 40, height: 40 }} aria-hidden dangerouslySetInnerHTML={{ __html: decorSvg(f.emoji) }} />)}
           <HalloweenOverlay />
           {!illustrated && <Fern className="absolute left-4 bottom-0" size={160} color="#4A5D3A" />}
           {!illustrated && <Fern className="absolute right-4 bottom-0" size={140} color="#6B8A5B" />}
@@ -304,10 +315,15 @@ export default function PetRoom() {
           {!illustrated && <Branch className="absolute right-10 top-4" size={120} color="#4A5D3A" />}
           <div className="pet-room-resident relative z-10 flex flex-col items-center">
             {hatched && quests?.mood && <div className="mb-2 rounded-full bg-white/90 px-3 py-1 text-xs font-bold shadow" style={{ color: "#1F3B2D" }} data-testid="pet-mood">{quests.mood.text}</div>}
-            <div className={`relative pet-art-shadow ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood?.mood || "calm"}` : ""}`} onClick={() => { react(hatched ? "hop" : "wobble"); if (hatched) { setActFx("hello"); burst("sparkle"); setTimeout(() => setActFx(""), 900); } }} role="button" tabIndex={0} aria-label={`Say hello to ${pet.name}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }} data-testid="pet-body"
+            <div className={newArt ? `relative ${actFx ? `act-${actFx}` : ""} ${!hatched && reaction ? `egg egg-${reaction}` : ""}` : `relative pet-art-shadow ${actFx ? `act-${actFx}` : hatched && quests ? `mood-${quests.mood?.mood || "calm"}` : ""}`} onClick={() => { react(hatched ? "hop" : "wobble"); if (hatched) { setActFx("hello"); burst("sparkle"); setTimeout(() => setActFx(""), 900); } }} role="button" tabIndex={0} aria-label={`Say hello to ${pet.name}`} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.currentTarget.click(); } }} data-testid="pet-body"
               data-form={pet.level_name}
-              style={{ filter: `drop-shadow(0 8px 5px rgba(45, 30, 16, .22))${sick ? " grayscale(0.7)" : asleep ? " brightness(0.75)" : ""}`, cursor: "pointer" }}>
-              {hatched
+              style={newArt ? { cursor: "pointer" } : { filter: `drop-shadow(0 8px 5px rgba(45, 30, 16, .22))${sick ? " grayscale(0.7)" : asleep ? " brightness(0.75)" : ""}`, cursor: "pointer" }}>
+              {newArt
+                ? <PetFigure species={pet.species} stage={hatched ? pet.level_name : "egg"} mood={artMood}
+                    worn={hatched ? worn : []} seasonal={wornSeasonal} follow live
+                    cold={status === "cold" || status === "chilly"}
+                    size={hatched ? "clamp(220px, 32vw, 300px)" : "clamp(250px, 36vw, 340px)"} />
+                : hatched
                 ? <RoomPet species={pet.species} size={220} happy={!sad && pet.happiness > 40}
                     backChildren={<ClassicWearables equipped={worn} behind />}>
                     <ClassicWearables equipped={worn} />
@@ -317,12 +333,12 @@ export default function PetRoom() {
                     <SeasonalWorn layout="egg" />
                   </SpeciesEgg>}
 
-              {asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
-              {sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
+              {!newArt && asleep && <div className="zzz absolute -top-4 right-0 text-3xl font-bold" style={{ color: "#4A5D3A" }}>Zzz</div>}
+              {!newArt && sick && <div className="absolute top-0 right-0 text-3xl">🤒</div>}
             </div>
             {care.needs_cleaning && hatched && (
               <button disabled={loading} onClick={() => act("/pet/care/clean", null, "All clean!", "hop")}
-                className="pet-room-mess absolute bottom-0 right-0 text-4xl disabled:opacity-50" aria-label="Clean up" data-testid="poop">💩</button>
+                className="pet-room-mess absolute bottom-0 right-0 disabled:opacity-50" style={{ width: 56, height: 56 }} aria-label="Clean up" data-testid="poop"><span className="block h-full w-full" aria-hidden="true" dangerouslySetInnerHTML={{ __html: decorSvg("mess") }} /></button>
             )}
           </div>
         </div>

@@ -3,11 +3,17 @@ import { api } from "../../lib/api";
 import { toast } from "sonner";
 import { playSfx } from "../../lib/sfx";
 import useSeasonal, { notifySeasonal } from "./useSeasonal";
+import { decorSvg } from "../pets/petSeasonal";
+
+// "art:<key>" draws the matching room decoration; anything else is shown as an emoji.
+const Deco = ({ item, size }) => item.startsWith("art:")
+  ? <span className="block" style={{ width: size, height: size }} dangerouslySetInnerHTML={{ __html: decorSvg(item.slice(4)) }} />
+  : item;
 
 // Each season: a soft light over the cosy room, things falling gently, a few props sitting in the room, and a gift to open.
 const THEMES = {
-  halloween: { tint: "linear-gradient(180deg, rgba(60,25,90,0.38), rgba(255,130,20,0.16))", fall: ["🍂", "🦇", "🍁"], props: [["🎃", 8, 4, 54], ["🕸️", 2, 70, 60], ["🕯️", 86, 6, 40], ["👻", 70, 52, 44]], gift: "🎃" },
-  christmas: { tint: "linear-gradient(180deg, rgba(160,25,40,0.14), rgba(255,255,255,0.2))", fall: ["❄️", "❅", "❄️"], props: [["🎄", 6, 3, 78], ["🎁", 20, 2, 40], ["🔔", 88, 58, 36], ["⭐", 48, 74, 36]], gift: "🎁" },
+  halloween: { tint: "linear-gradient(180deg, rgba(60,25,90,0.30), rgba(255,130,20,0.12))", fall: ["art:leaf", "art:bat", "art:leaf"], props: [["art:jack", 6, 3, 70], ["art:cobweb", 0, 74, 90], ["art:candle", 86, 5, 52], ["art:ghost", 74, 54, 56]], gift: "🎃" },
+  christmas: { tint: "linear-gradient(180deg, rgba(160,25,40,0.12), rgba(255,255,255,0.16))", fall: ["art:snowflake", "art:snowflake", "art:snowflake"], props: [["art:tree", 3, 3, 110], ["art:present", 22, 2, 48], ["art:present2", 30, 2, 36], ["art:bell", 84, 56, 64], ["art:gold_star", 47, 76, 40]], gift: "🎁" },
   new_year: { tint: "linear-gradient(180deg, rgba(25,25,90,0.3), rgba(212,165,116,0.18))", fall: ["✨", "🎊", "⭐"], props: [["🕛", 10, 55, 48], ["🥂", 8, 3, 42], ["🎆", 78, 56, 52], ["🎈", 90, 6, 48]], gift: "🎉" },
   easter: { tint: "linear-gradient(180deg, rgba(255,235,130,0.22), rgba(180,230,190,0.18))", fall: ["🌸", "🌼", "🦋"], props: [["🧺", 8, 3, 54], ["🐰", 86, 4, 52], ["🌷", 20, 2, 40], ["🥚", 74, 3, 34]], gift: "🥚" },
   lunar_new_year: { tint: "linear-gradient(180deg, rgba(200,30,30,0.18), rgba(255,200,60,0.14))", fall: ["🧧", "✨", "🌸"], props: [["🏮", 8, 58, 54], ["🏮", 86, 58, 54], ["🍊", 10, 3, 40], ["🐉", 76, 3, 48]], gift: "🧧" },
@@ -54,10 +60,10 @@ export default function SeasonalOverlay() {
         <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 4 }} aria-hidden="true" data-testid="seasonal-overlay">
           <div className="absolute inset-0" style={{ background: theme.tint }} />
           {Array.from({ length: 14 }, (_, n) => (
-            <span key={`f${n}`} className="sq-fall text-xl" style={{ left: `${(n * 29 + 7) % 96}%`, "--dx": `${(n % 2 ? 1 : -1) * (14 + (n % 4) * 8)}px`, animationDuration: `${7 + (n % 5) * 1.6}s`, animationDelay: `${-(n * 1.3) % 9}s`, fontSize: 14 + (n % 3) * 6 }}>{theme.fall[n % theme.fall.length]}</span>
+            <span key={`f${n}`} className="sq-fall text-xl" style={{ left: `${(n * 29 + 7) % 96}%`, "--dx": `${(n % 2 ? 1 : -1) * (14 + (n % 4) * 8)}px`, animationDuration: `${7 + (n % 5) * 1.6}s`, animationDelay: `${-(n * 1.3) % 9}s`, fontSize: 14 + (n % 3) * 6 }}><Deco item={theme.fall[n % theme.fall.length]} size={14 + (n % 3) * 8} /></span>
           ))}
           {theme.props.map(([emoji, x, y, size], i) => (
-            <span key={`p${i}`} className="absolute select-none" style={{ left: `${x}%`, bottom: `${y}%`, fontSize: size, filter: "drop-shadow(0 4px 4px rgba(0,0,0,.3))" }}>{emoji}</span>
+            <span key={`p${i}`} className="absolute select-none" style={{ left: `${x}%`, bottom: `${y}%`, fontSize: size, filter: "drop-shadow(0 4px 4px rgba(0,0,0,.3))" }}><Deco item={emoji} size={size} /></span>
           ))}
         </div>
       )}

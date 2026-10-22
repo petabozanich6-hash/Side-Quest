@@ -1,4 +1,5 @@
 import React from "react";
+import PetFigure, { NEW_ART_SPECIES } from "../pets/PetFigure";
 
 export const Leaf = ({ className = "", color = "#6B8A5B", size = 60 }) => (
   <svg width={size} height={size} viewBox="0 0 100 100" className={className} fill="none">
@@ -40,7 +41,7 @@ export const Flower = ({ className = "", color = "#D4857A", size = 40 }) => (
 );
 
 // children are drawn on top of the pet inside its 120x120 drawing (used for worn prizes).
-export const Pet = ({ species = "fox", size = 120, happy = true, children, backChildren }) => {
+const LegacyPet = ({ species = "fox", size = 120, happy = true, children, backChildren }) => {
   const bodyColor = {
     fox: "#C77B5B", owl: "#8B6F47", turtle: "#6B8A5B", hedgehog: "#9B7E5C",
     fawn: "#D4A574", squirrel: "#B8755A", rabbit: "#E8E2D1", dragon: "#4A6D5A", goblin: "#91B36D"
@@ -115,3 +116,9 @@ export const Pet = ({ species = "fox", size = 120, happy = true, children, backC
     </svg>
   );
 };
+
+// Marketing and sign-in pages use the companion artwork for the current species.
+export const Pet = ({ species = "fox", size = 120, happy = true, children, backChildren }) =>
+  NEW_ART_SPECIES.includes(species) && !children && !backChildren
+    ? <PetFigure species={species} stage="companion" size={size} mood={happy ? "calm" : "sad"} />
+    : <LegacyPet species={species} size={size} happy={happy} backChildren={backChildren}>{children}</LegacyPet>;
