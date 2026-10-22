@@ -1,6 +1,7 @@
 import React from "react";
 import { toast } from "sonner";
 import useSeasonal, { setWornPrizes } from "./useSeasonal";
+import { seasonalArt } from "../pets/petSeasonal";
 
 const SLOT_LABEL = {
   head: "Head", face: "Face", neck: "Neck", chest: "Chest", left: "Left side",
@@ -33,7 +34,9 @@ export default function SeasonalWardrobeItems({ hatched }) {
           className="rounded-xl border-2 p-3 text-center disabled:opacity-40"
           style={{ borderColor: k.worn ? "#1F3B2D" : "#D4C8A8", background: k.worn ? "#ECFCCB" : "#fff" }}
           data-testid={`seasonal-acc-${k.id}`}>
-          <div className="text-3xl">{k.emoji}</div>
+          {seasonalArt(k.id)
+            ? <svg viewBox="0 0 100 100" className="mx-auto" style={{ width: 48, height: 48, overflow: "visible" }} aria-hidden="true" dangerouslySetInnerHTML={{ __html: seasonalArt(k.id).svg }} />
+            : <div className="text-3xl">{k.emoji}</div>}
           <div className="text-[11px] font-bold mt-1" style={{ color: "#1F3B2D" }}>{k.name}</div>
           <div className="text-[10px] text-stone-500 mt-0.5">{SLOT_LABEL[k.slot] || ""} · {k.label} {k.year}</div>
         </button>

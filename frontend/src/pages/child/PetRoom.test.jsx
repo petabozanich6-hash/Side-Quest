@@ -23,7 +23,8 @@ afterEach(async () => { await act(async () => root.unmount()); host.remove(); })
 const render = () => act(async () => root.render(<PetRoom />));
 test.each(['fox', 'owl', 'turtle', 'hedgehog', 'fawn', 'squirrel', 'rabbit', 'dragon', 'goblin'])('%s retains pet art and front, back and seasonal accessory layers', async species => {
   pet.species = species; await render();
-  expect(find('pet-body').querySelector('svg').getAttribute('viewBox')).toBe('0 0 120 120');
+  const drawn = ['fox', 'owl', 'turtle', 'dragon', 'goblin'].includes(species);
+  expect(find('pet-body').querySelector('svg').getAttribute('viewBox')).toBe(drawn ? '0 0 400 430' : '0 0 120 120');
   expect(find('pet-body').querySelector('svg').getAttribute('data-species')).toBe(species);
   expect(find('worn-accessories')).not.toBeNull(); expect(find('worn-accessories-back')).not.toBeNull(); expect(find('worn-seasonal')).not.toBeNull();
   expect(find('pet-scene').getAttribute('data-scene')).toBe('cozy');
@@ -46,4 +47,21 @@ test('egg keeps warming, cuddling, hatch progress and seasonal prizes', async ()
 test('wardrobe changes preserve remaining accessories', async () => {
   await render(); await click('acc-scarf');
   expect(api.put).toHaveBeenCalledWith('/pet/care/wear', { accessories: ['cape', 'flower_crown'] });
+});
+test('current species use the companion artwork with their growth stage and mood', async () => {
+  pet.species = 'dragon'; pet.happiness = 50; await render();
+  const svg = find('pet-body').querySelector('svg');
+  expect(svg.getAttribute('data-stage')).toBe('companion');
+  expect(svg.getAttribute('data-mood')).toBe('calm');
+  expect(find('poop').textContent).not.toContain('\u{1F4A9}');
+  await act(async () => find('pet-body').dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true })));
+  expect(find('pet-body').querySelector('svg').getAttribute('data-mood')).toBe('joy');
+});
+test('sleeping pets look asleep and eggs use the species egg', async () => {
+  pet.species = 'owl'; pet.care_status = 'asleep'; await render();
+  expect(find('pet-body').querySelector('svg').getAttribute('data-mood')).toBe('sleepy');
+  await act(async () => root.unmount()); root = createRoot(host);
+  pet.hatched = false; pet.level_name = 'Egg'; await render();
+  expect(find('pet-body').querySelector('svg').getAttribute('data-stage')).toBe('egg');
+  expect(find('pet-body').querySelector('svg').getAttribute('data-species')).toBe('owl');
 });
