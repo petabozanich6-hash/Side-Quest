@@ -563,8 +563,10 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.post("/api/resources", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
     const title = String(b.title || "").trim();
-    const url = String(b.url || "").trim();
+    let url = String(b.url || "").trim();
     if (!title || !url) return c.json({ detail: "Title and URL are required" }, 400);
+    // Saved links are opened as <a href>: only web addresses, never javascript: or data: URLs.
+    try { url = lb.safeUrl(url, "Resource link"); } catch (e) { return c.json({ detail: e instanceof Error ? e.message : "Invalid link" }, 400); }
     const id = newId();
     await c.env.DB.prepare(
       "INSERT INTO resources (id, family_id, title, url, provider, resource_type, learning_area, stage, purpose, licence, attribution, response_task, offline_alternative, age_suitability, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
