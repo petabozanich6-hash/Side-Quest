@@ -14,10 +14,10 @@ const Deco = ({ item, size }) => item.startsWith("art:")
 const THEMES = {
   halloween: { tint: "linear-gradient(180deg, rgba(60,25,90,0.30), rgba(255,130,20,0.12))", fall: ["art:leaf", "art:bat", "art:leaf"], props: [["art:jack", 6, 3, 70], ["art:cobweb", 0, 74, 90], ["art:candle", 86, 5, 52], ["art:ghost", 74, 54, 56]], gift: "🎃" },
   christmas: { tint: "linear-gradient(180deg, rgba(160,25,40,0.12), rgba(255,255,255,0.16))", fall: ["art:snowflake", "art:snowflake", "art:snowflake"], props: [["art:tree", 3, 3, 110], ["art:present", 22, 2, 48], ["art:present2", 30, 2, 36], ["art:bell", 84, 56, 64], ["art:gold_star", 47, 76, 40]], gift: "🎁" },
-  new_year: { tint: "linear-gradient(180deg, rgba(25,25,90,0.3), rgba(212,165,116,0.18))", fall: ["✨", "🎊", "⭐"], props: [["🕛", 10, 55, 48], ["🥂", 8, 3, 42], ["🎆", 78, 56, 52], ["🎈", 90, 6, 48]], gift: "🎉" },
-  easter: { tint: "linear-gradient(180deg, rgba(255,235,130,0.22), rgba(180,230,190,0.18))", fall: ["🌸", "🌼", "🦋"], props: [["🧺", 8, 3, 54], ["🐰", 86, 4, 52], ["🌷", 20, 2, 40], ["🥚", 74, 3, 34]], gift: "🥚" },
-  lunar_new_year: { tint: "linear-gradient(180deg, rgba(200,30,30,0.18), rgba(255,200,60,0.14))", fall: ["🧧", "✨", "🌸"], props: [["🏮", 8, 58, 54], ["🏮", 86, 58, 54], ["🍊", 10, 3, 40], ["🐉", 76, 3, 48]], gift: "🧧" },
-  birthday: { tint: "linear-gradient(180deg, rgba(255,120,200,0.14), rgba(120,200,255,0.14))", fall: ["🎊", "🎈", "✨"], props: [["🎂", 8, 3, 52], ["🎈", 4, 56, 56], ["🎈", 90, 56, 56], ["🎁", 80, 3, 42]], gift: "🎁" },
+  new_year: { tint: "linear-gradient(180deg, rgba(25,25,90,0.3), rgba(212,165,116,0.18))", fall: ["art:gold_sparkle", "art:confetti_bits", "art:star"], props: [["art:clock", 8, 56, 60], ["art:glasses", 6, 3, 58], ["art:firework", 76, 60, 70], ["art:firework2", 58, 74, 46], ["art:balloon_gold", 88, 5, 62]], gift: "🎉" },
+  easter: { tint: "linear-gradient(180deg, rgba(255,235,130,0.22), rgba(180,230,190,0.18))", fall: ["art:blossom", "art:daisy", "art:butterfly"], props: [["art:basket", 5, 3, 70], ["art:bunny", 84, 3, 64], ["art:tulips", 22, 2, 56], ["art:egg_blue", 72, 3, 38], ["art:egg_pink", 66, 2, 30]], gift: "🥚" },
+  lunar_new_year: { tint: "linear-gradient(180deg, rgba(200,30,30,0.18), rgba(255,200,60,0.14))", fall: ["art:envelope", "art:gold_sparkle", "art:blossom"], props: [["art:lantern", 6, 56, 66], ["art:lantern", 84, 56, 66], ["art:mandarin", 10, 3, 46], ["art:mandarin", 18, 2, 38], ["art:firecrackers", 86, 4, 70]], gift: "🧧" },
+  birthday: { tint: "linear-gradient(180deg, rgba(255,120,200,0.14), rgba(120,200,255,0.14))", fall: ["art:confetti_bits", "art:balloon_red", "art:gold_sparkle"], props: [["art:cake", 6, 3, 72], ["art:balloon_red", 3, 54, 66], ["art:balloon_blue", 88, 54, 66], ["art:present_pink", 80, 3, 50], ["art:present_gold", 70, 2, 38]], gift: "🎁" },
 };
 
 const CSS = `
