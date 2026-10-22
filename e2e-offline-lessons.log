@@ -1,0 +1,9 @@
+PASS online: the child's open lessons are saved on the device and marked Ready offline
+PASS no signal: the app still opens from the home-screen icon and shows the saved quests
+PASS no signal: a lesson can be worked through, answers save on the device, and it can be handed in
+PASS no signal: a handed-in lesson stays ready to send after the app is closed and reopened
+PASS signing out with unsent work warns first
+PASS back online: the work is sent and marked automatically; a failed quest check goes back to the child
+PASS signing out deletes everything saved on the device
+
+7/7 offline-lesson steps passed

@@ -1,0 +1,86 @@
+
+> frontend@0.1.0 build
+> craco build
+
+Creating an optimized production build...
+Compiled with warnings.
+
+[eslint] 
+src/components/child/PetWelcome.jsx
+  Line 87:6:  React Hook useEffect has missing dependencies: 'ctxOf' and 'key'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/parent/ScheduleModal.jsx
+  Line 49:6:  React Hook useEffect has a missing dependency: 'defaultDate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/child/PetRoom.jsx
+  Line 194:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/ChildOverview.jsx
+  Line 21:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/HomeschoolCompass.jsx
+  Line 72:6:  React Hook useEffect has a missing dependency: 'searchParams'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/InternationalGoalTracker.jsx
+  Line 155:47:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/LessonBuilder.jsx
+  Line 148:163:  React Hook useEffect has a missing dependency: 'id'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 150:134:  React Hook useEffect has a missing dependency: 'f'. Either include it or remove the dependency array   react-hooks/exhaustive-deps
+
+src/pages/parent/Lessons.jsx
+  Line 32:63:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/MakeLesson.jsx
+  Line 53:6:  React Hook useEffect has a missing dependency: 'qs'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/OutcomeDetail.jsx
+  Line 181:75:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/OutcomeTracker.jsx
+  Line 69:78:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/ParentFeedback.jsx
+  Line 47:146:  React Hook useEffect has missing dependencies: 'expandedId', 'openThread', 'params', and 'reports'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 47:162:  React Hook useEffect has a complex expression in the dependency array. Extract it to a separate variable so it can be statically checked                react-hooks/exhaustive-deps
+
+src/pages/parent/PrintableVault.jsx
+  Line 120:9:  The 'items' logical expression could make the dependencies of useMemo Hook (at line 121) change on every render. To fix this, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+  Line 120:9:  The 'items' logical expression could make the dependencies of useMemo Hook (at line 122) change on every render. To fix this, wrap the initialization of 'items' in its own useMemo() Hook  react-hooks/exhaustive-deps
+
+src/pages/parent/ReadingLog.jsx
+  Line 58:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqFeedback.jsx
+  Line 43:27:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/shared/SiteSearch.jsx
+  Line 63:6:  React Hook useMemo has a missing dependency: 'pages'. Either include it or remove the dependency array       react-hooks/exhaustive-deps
+  Line 83:6:  React Hook useEffect has a missing dependency: 'q.length'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  505.63 kB  build/static/js/main.8c2ef2db.js
+  15.27 kB   build/static/css/main.1b55d377.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
