@@ -83,6 +83,82 @@ const PRIZES = {
     ${shine("M32,32 C36,24 42,20 48,18", 3, 0.7)}` },
 };
 
+// Christmas
+const tree = `
+  ${s("M50,4 L64,28 L58,28 L74,50 L66,50 L84,76 L16,76 L34,50 L26,50 L42,28 L36,28Z", "#3E8A4E", 3, "#1E4A2A")}
+  <path d="M50,8 L40,28 M50,30 L32,50 M50,52 L24,74" stroke="#5FAE6A" stroke-width="3" fill="none" stroke-linecap="round" opacity=".7"/>
+  ${s("M42,76 L58,76 L58,90 L42,90Z", "#8A5A32", 2.6, "#4A2E14")}
+  <path d="M30,62 Q50,70 72,60 M38,40 Q50,46 62,38" stroke="#F2C95B" stroke-width="2.6" fill="none"/>
+  <g stroke="#3A2A1A" stroke-width="1.4"><circle cx="40" cy="58" r="4" fill="#E0473A"/><circle cx="62" cy="66" r="4" fill="#6A97CF"/><circle cx="56" cy="44" r="3.5" fill="#F6CA52"/><circle cx="34" cy="70" r="3.5" fill="#C98AE6"/><circle cx="46" cy="34" r="3" fill="#E0473A"/></g>`;
+const star5 = (fill, line) => s("M50,6 L62,36 94,38 70,58 78,90 50,72 22,90 30,58 6,38 38,36Z", fill, 3, line);
+const present = (box, ribbon) => `
+  ${s("M10,40 L90,40 L90,92 L10,92Z", box, 3, "#3A2A1A")}
+  ${s("M4,28 L96,28 L96,42 L4,42Z", box, 3, "#3A2A1A")}
+  <path d="M44,28 L44,92 L56,92 L56,28Z" fill="${ribbon}" stroke="#3A2A1A" stroke-width="2"/>
+  ${s("M50,28 C40,10 22,10 24,22 C26,30 40,30 50,28Z", ribbon, 2.6, "#3A2A1A")}
+  ${s("M50,28 C60,10 78,10 76,22 C74,30 60,30 50,28Z", ribbon, 2.6, "#3A2A1A")}
+  ${shine("M16,50 L16,84", 4, 0.35)}`;
+Object.assign(PRIZES, {
+  "christmas-1": { attach: [0.5, 0.86], scale: 1.35, svg: tree },
+  "christmas-2": { attach: [0.5, 0.95], scale: 0.8, svg: `<circle cx="50" cy="48" r="44" fill="#FFE7A0" opacity=".35"/>${star5("#FFD24A", "#9A7420")}<circle cx="50" cy="52" r="10" fill="#FFF6C8"/>${shine("M38,24 L44,12", 4, 0.7)}` },
+  "christmas-3": { attach: [0.5, 0.5], svg: `
+    <path d="M4,46 Q50,30 96,46" fill="none" stroke="#C8553D" stroke-width="7" stroke-linecap="round"/>
+    ${s("M10,36 Q30,28 48,36 L46,60 Q30,72 14,60 Q6,50 10,36Z", "#8FD3EE", 3, "#2E5A76")}
+    ${s("M52,36 Q70,28 90,36 Q94,50 86,60 Q70,72 54,60Z", "#8FD3EE", 3, "#2E5A76")}
+    <path d="M48,42 L52,42" stroke="#2E5A76" stroke-width="4" stroke-linecap="round"/>
+    ${shine("M18,44 L32,40 M60,44 L74,40", 4, 0.85)}` },
+  "christmas-4": { attach: [0.5, 0.3], svg: `
+    ${s("M60,40 C64,58 68,76 74,96 L56,98 C54,80 50,62 46,46Z", "#2F7A48", 3, "#163C22")}
+    <path d="M50,60 L67,57 M53,76 L71,73" stroke="#F4F0E6" stroke-width="5"/>
+    <g stroke="#163C22" stroke-width="2.4" stroke-linecap="round"><path d="M58,98 L57,104"/><path d="M64,97 L64,103"/><path d="M70,96 L72,102"/></g>
+    ${s("M2,18 C30,42 70,42 98,18 L100,38 C72,66 28,66 0,38Z", "#C8343A", 3, "#6A1418")}
+    <path d="M4,30 C32,52 68,52 96,30" stroke="#F4F0E6" stroke-width="5" stroke-dasharray="8 6" fill="none"/>
+    ${shine("M8,26 C22,38 36,44 48,46", 3, 0.4)}` },
+  "christmas-5": { attach: [0.5, 0.22], svg: `
+    <path d="M4,14 C30,40 70,40 96,14" fill="none" stroke="#C8343A" stroke-width="7" stroke-linecap="round"/>
+    ${s("M38,36 C38,28 44,24 50,24 C56,24 62,28 62,36 L66,58 L34,58Z", "#F6CA52", 3, "#8A6420")}
+    <circle cx="50" cy="62" r="5" fill="#C9952E" stroke="#8A6420" stroke-width="2"/>
+    ${shine("M42,32 L40,52", 3, 0.6)}` },
+  "christmas-6": { attach: [0.5, 0.5], scale: 1.3, svg: `
+    ${s("M50,8 C58,8 64,14 64,22 C64,26 62,28 60,30 L84,40 C90,42 90,50 84,52 L66,48 L66,62 L80,86 C82,92 76,96 72,92 L54,72 L46,72 L28,92 C24,96 18,92 20,86 L34,62 L34,48 L16,52 C10,50 10,42 16,40 L40,30 C38,28 36,26 36,22 C36,14 42,8 50,8Z", "#C98A4E", 3, "#6A3E18")}
+    <path d="M22,44 Q26,40 30,44 M70,44 Q74,40 78,44 M36,82 Q38,78 42,80 M58,80 Q62,78 64,82" stroke="#FFF6E6" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="45" cy="20" r="2.4" fill="#3A2A1A"/><circle cx="55" cy="20" r="2.4" fill="#3A2A1A"/><path d="M45,26 Q50,29 55,26" stroke="#3A2A1A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="50" cy="44" r="3.4" fill="#E0473A"/><circle cx="50" cy="56" r="3.4" fill="#7DAB86"/>` },
+  "christmas-7": { attach: [0.5, 0.5], scale: 1.2, svg: `
+    ${s("M38,40 L62,40 L62,84 L38,84Z", "#E0473A", 3, "#6A1418")}
+    ${s("M30,82 L70,82 L70,94 L30,94Z", "#F6CA52", 2.6, "#8A6420")}
+    ${s("M30,34 C38,28 44,40 50,34 C56,28 62,40 70,34 L66,44 L34,44Z", "#3E8A4E", 2.4, "#1E4A2A")}
+    <path d="M50,40 L50,32" stroke="#3A2A1A" stroke-width="2.4"/>
+    <path d="M50,8 C57,17 58,24 53,29 C51,31 49,31 47,29 C42,24 43,17 50,8Z" fill="#FFB43C" stroke="#C9661E" stroke-width="2"/>
+    <circle cx="50" cy="22" r="18" fill="#FFD27A" opacity=".25"/>` },
+  "christmas-8": { attach: [0.5, 0.75], scale: 0.95, svg: present("#E0473A", "#F6CA52") },
+  "christmas-9": { attach: [0.5, 0.86], svg: `
+    <circle cx="50" cy="70" r="26" fill="#FBFCFF" stroke="#7A8AA6" stroke-width="3"/>
+    <circle cx="50" cy="32" r="18" fill="#FBFCFF" stroke="#7A8AA6" stroke-width="3"/>
+    ${s("M30,22 Q50,10 70,22 L66,30 Q50,24 34,30Z", "#C8343A", 2.4, "#6A1418")}<circle cx="50" cy="12" r="5" fill="#FBFCFF" stroke="#7A8AA6" stroke-width="2"/>
+    <circle cx="44" cy="30" r="2.4" fill="#2A2638"/><circle cx="56" cy="30" r="2.4" fill="#2A2638"/>
+    ${s("M50,34 L62,37 L50,39Z", "#F08A2E", 1.6, "#8A3E10")}
+    ${s("M30,46 Q50,56 70,46 L72,54 Q50,64 28,54Z", "#2F7A48", 2.4, "#163C22")}
+    <g fill="#2A2638"><circle cx="50" cy="64" r="2.6"/><circle cx="50" cy="74" r="2.6"/><circle cx="50" cy="84" r="2.6"/></g>
+    ${shine("M32,62 C32,54 36,50 40,48", 4, 0.7)}` },
+  "christmas-10": { attach: [0.5, 0.5], mirror: true, scale: 1.1, svg: `
+    <g stroke="#6FB6D8" stroke-width="6" stroke-linecap="round"><path d="M50,8 L50,92"/><path d="M14,29 L86,71"/><path d="M14,71 L86,29"/></g>
+    <g stroke="#E8F6FC" stroke-width="3" stroke-linecap="round" fill="none"><path d="M50,8 L50,92 M14,29 L86,71 M14,71 L86,29"/><path d="M40,16 L50,26 L60,16 M40,84 L50,74 L60,84"/></g>
+    <circle cx="50" cy="50" r="8" fill="#FFFFFF" stroke="#6FB6D8" stroke-width="3"/>` },
+  "christmas-11": { attach: [0.5, 0.58], mirror: true, scale: 1.05, svg: `
+    ${s("M26,10 L60,10 L60,52 C76,56 90,62 94,72 C96,80 88,84 78,84 L20,84 C12,84 8,80 10,72 L14,52Z", "#F4F0E6", 3, "#7A7066")}
+    ${s("M24,10 L62,10 L62,22 L24,22Z", "#C8343A", 2.4, "#6A1418")}
+    <path d="M32,30 L52,34 M30,40 L52,44" stroke="#C8343A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M14,92 L96,92" stroke="#9AA6B8" stroke-width="5" stroke-linecap="round"/>
+    <path d="M30,84 L30,92 M76,84 L76,92" stroke="#9AA6B8" stroke-width="4"/>
+    ${shine("M32,14 L32,48", 3, 0.5)}` },
+  "christmas-12": { attach: [0.5, 0.5], mirror: true, svg: `
+    <path d="M56,52 L70,90" stroke="#F4F0E6" stroke-width="7" stroke-linecap="round"/><path d="M56,52 L70,90" stroke="#C9B8A0" stroke-width="2"/>
+    <circle cx="44" cy="40" r="30" fill="#FFF6F0" stroke="#A8323A" stroke-width="3"/>
+    <path d="M44,40 m-20,0 a20,20 0 1,1 20,20 a12,12 0 1,1 -12,-12 a5,5 0 1,1 5,5" fill="none" stroke="#E0473A" stroke-width="6" stroke-linecap="round"/>
+    ${shine("M24,24 C28,18 34,14 40,12", 4, 0.7)}` },
+});
+
 export function seasonalArt(id) {
   return PRIZES[id] || null;
 }
@@ -107,6 +183,12 @@ export const DECOR = {
     <circle cx="50" cy="22" r="22" fill="#FFD27A" opacity=".22"/>
     ${shine("M42,48 L42,84", 3, 0.5)}`,
   ghost: PRIZES["halloween-8"].svg,
+  tree: tree,
+  present: present("#3E8A4E", "#E0473A"),
+  present2: present("#6A97CF", "#F4F0E6"),
+  bell: PRIZES["christmas-5"].svg.replace(/<path d="M4,14[^>]*>/, ""),
+  snowflake: PRIZES["christmas-10"].svg,
+  gold_star: PRIZES["christmas-2"].svg,
   // care effects and the mess to clean up
   heart: `${s("M50,90 C22,70 6,54 6,34 C6,20 17,10 30,10 C39,10 46,15 50,23 C54,15 61,10 70,10 C83,10 94,20 94,34 C94,54 78,70 50,90Z", "#E8604C", 3.5, "#7A2418")}${shine("M22,28 C24,22 28,19 34,18", 5, 0.6)}`,
   sparkle: `${s("M50,4 C54,34 66,46 96,50 C66,54 54,66 50,96 C46,66 34,54 4,50 C34,46 46,34 50,4Z", "#FFE07A", 3, "#B8861E")}<circle cx="50" cy="50" r="8" fill="#FFF8D6"/>`,

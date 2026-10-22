@@ -13,7 +13,7 @@ const Deco = ({ item, size }) => item.startsWith("art:")
 // Each season: a soft light over the cosy room, things falling gently, a few props sitting in the room, and a gift to open.
 const THEMES = {
   halloween: { tint: "linear-gradient(180deg, rgba(60,25,90,0.30), rgba(255,130,20,0.12))", fall: ["art:leaf", "art:bat", "art:leaf"], props: [["art:jack", 6, 3, 70], ["art:cobweb", 0, 74, 90], ["art:candle", 86, 5, 52], ["art:ghost", 74, 54, 56]], gift: "🎃" },
-  christmas: { tint: "linear-gradient(180deg, rgba(160,25,40,0.14), rgba(255,255,255,0.2))", fall: ["❄️", "❅", "❄️"], props: [["🎄", 6, 3, 78], ["🎁", 20, 2, 40], ["🔔", 88, 58, 36], ["⭐", 48, 74, 36]], gift: "🎁" },
+  christmas: { tint: "linear-gradient(180deg, rgba(160,25,40,0.12), rgba(255,255,255,0.16))", fall: ["art:snowflake", "art:snowflake", "art:snowflake"], props: [["art:tree", 3, 3, 110], ["art:present", 22, 2, 48], ["art:present2", 30, 2, 36], ["art:bell", 84, 56, 64], ["art:gold_star", 47, 76, 40]], gift: "🎁" },
   new_year: { tint: "linear-gradient(180deg, rgba(25,25,90,0.3), rgba(212,165,116,0.18))", fall: ["✨", "🎊", "⭐"], props: [["🕛", 10, 55, 48], ["🥂", 8, 3, 42], ["🎆", 78, 56, 52], ["🎈", 90, 6, 48]], gift: "🎉" },
   easter: { tint: "linear-gradient(180deg, rgba(255,235,130,0.22), rgba(180,230,190,0.18))", fall: ["🌸", "🌼", "🦋"], props: [["🧺", 8, 3, 54], ["🐰", 86, 4, 52], ["🌷", 20, 2, 40], ["🥚", 74, 3, 34]], gift: "🥚" },
   lunar_new_year: { tint: "linear-gradient(180deg, rgba(200,30,30,0.18), rgba(255,200,60,0.14))", fall: ["🧧", "✨", "🌸"], props: [["🏮", 8, 58, 54], ["🏮", 86, 58, 54], ["🍊", 10, 3, 40], ["🐉", 76, 3, 48]], gift: "🧧" },
