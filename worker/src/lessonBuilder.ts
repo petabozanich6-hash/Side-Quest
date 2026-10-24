@@ -649,6 +649,11 @@ export async function assignLesson(
 
 const mcQuestions = (lesson: any): any[] => (Array.isArray(lesson?.quiz) ? lesson.quiz : []).filter((q: any) => q && q.type !== "short_answer" && Array.isArray(q.options));
 const neededFor = (total: number, passMark: number) => Math.ceil(total * passMark - 1e-9);
+/** Starting checks (startingCheck.ts) are placement quizzes, not pass/fail: any attempt lets the child carry on. */
+async function isStartingCheck(db: DB, assignmentId: string): Promise<boolean> {
+  try { return !!(await db.prepare("SELECT 1 AS x FROM starting_checks WHERE assignment_id = ?").bind(assignmentId).first()); }
+  catch { return false; } // table not created yet, so no checks exist
+}
 
 async function assignmentForChild(db: DB, user: { id: string; family_id: string }, assignmentId: unknown) {
   const a = await db.prepare("SELECT * FROM assignments WHERE id = ? AND student_id = ? AND family_id = ? AND status != 'revoked'").bind(String(assignmentId ?? ""), user.id, user.family_id).first<any>();
@@ -686,7 +691,7 @@ export async function checkQuiz(
     .run();
   if (!inserted.meta.changes) return fail(409, "This assignment has been revoked.", "REVOKED");
   await safely("quiz", () => trackAssignmentQuiz(db, user.family_id, a.id, now));
-  return { ok: true, score, total, needed, passed: score >= needed, attempt, results };
+  return { ok: true, score, total, needed, passed: score >= needed || (await isStartingCheck(db, a.id)), attempt, results };
 }
 
 /**
@@ -722,7 +727,7 @@ export async function checkPractice(
 export async function quizPassed(db: DB, user: { id: string }, a: any, lesson: any): Promise<boolean | null> {
   const qs = mcQuestions(lesson);
   if (!qs.length) return null; // no scored quiz
-  const needed = neededFor(qs.length, Number(lesson?.pass_mark) || 0.9);
+  const needed = (await isStartingCheck(db, a.id)) ? 0 : neededFor(qs.length, Number(lesson?.pass_mark) || 0.9);
   return (await count(db, "SELECT COUNT(*) n FROM quiz_results WHERE assignment_id = ? AND child_id = ? AND score >= ?", a.id, user.id, needed)) > 0;
 }
 

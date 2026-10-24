@@ -14,20 +14,21 @@ const today = () => new Date().toISOString().slice(0, 10);
 /**
  * Recognise outcomes a child met before Side-Quest. Either read a school report or NAPLAN result (AI suggests outcomes
  * from the child's own list, each starting unticked) or tick outcomes by hand. The parent decides; the server records it.
+ * `preset` opens straight on the review step with suggestions already found (starting check results).
  */
-export default function PriorLearningDialog({ data, onClose, onDone }) {
+export default function PriorLearningDialog({ data, onClose, onDone, preset = null }) {
   const sid = data.student.id;
   const first = (data.student.name || "your child").split(" ")[0];
   const open = useMemo(() => data.outcomes.filter((o) => o.in_stage && !MET.includes(o.status)), [data]);
-  const [step, setStep] = useState("start"); // start | read | review
+  const [step, setStep] = useState(preset ? "review" : "start"); // start | read | review
   const [text, setText] = useState("");
   const [file, setFile] = useState(null); // { id, name }
   const [busy, setBusy] = useState("");
-  const [found, setFound] = useState(null); // { suggestions, summary, document_type }
+  const [found, setFound] = useState(preset); // { suggestions, summary, document_type }
   const [picked, setPicked] = useState({});
   const [showAll, setShowAll] = useState(false);
   const [query, setQuery] = useState("");
-  const [source, setSource] = useState("");
+  const [source, setSource] = useState(preset?.source || "");
   const [occurred, setOccurred] = useState(today());
   const [note, setNote] = useState("");
 
@@ -127,7 +128,7 @@ export default function PriorLearningDialog({ data, onClose, onDone }) {
               {found?.suggestions?.length > 0 && (
                 <div className="space-y-2" data-testid="prior-suggestions">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-display font-bold" style={{ color: "#1F3B2D" }}>Suggested from the document ({found.suggestions.length})</h3>
+                    <h3 className="font-display font-bold" style={{ color: "#1F3B2D" }}>{preset ? "Answered correctly" : "Suggested from the document"} ({found.suggestions.length})</h3>
                     <button type="button" className="text-xs font-semibold underline" onClick={() => setPicked((p) => ({ ...p, ...Object.fromEntries(found.suggestions.filter((s) => s.confidence === "high").map((s) => [s.code, true])) }))} data-testid="prior-tick-strong">Tick all strong matches</button>
                   </div>
                   <p className="text-xs text-stone-500">Nothing is ticked for you. Tick each one you agree {first} has already met.</p>
@@ -138,7 +139,7 @@ export default function PriorLearningDialog({ data, onClose, onDone }) {
                         <span className="flex flex-wrap items-center gap-2"><span className="font-mono text-xs font-bold">{s.code}</span><span className="text-xs text-stone-500">{s.subject}</span>
                           <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${CONFIDENCE[s.confidence][1]}`}>{CONFIDENCE[s.confidence][0]}</span></span>
                         <span className="block text-stone-800">{s.summary}</span>
-                        {s.evidence && <span className="block text-xs text-stone-600 mt-0.5"><b>From the document:</b> {s.evidence}</span>}
+                        {s.evidence && <span className="block text-xs text-stone-600 mt-0.5">{preset ? s.evidence : <><b>From the document:</b> {s.evidence}</>}</span>}
                       </span>
                     </label>
                   ))}
