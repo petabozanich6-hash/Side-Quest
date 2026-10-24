@@ -420,6 +420,7 @@ await step("D. library shows the lesson; duplicate and edit-as-draft work", asyn
   await page.goto(BASE + "/parent/lessons");
   await page.waitForSelector(`[data-testid=lesson-${lessonId}]`);
   ok(!(await page.textContent("body")).includes("upgrade coming later"), "obsolete ready-made lessons notice is still displayed");
+  await page.click(`[data-testid=more-${lessonId}] summary`);
   await page.click(`[data-testid=dup-${lessonId}]`);
   await page.waitForURL(/\/parent\/lessons\/[^/]+\/edit/, { timeout: 15000 });
   ok((await page.inputValue('[data-testid=b-title]')).includes("(copy)"), "copy title");
@@ -451,6 +452,9 @@ await step("parent can permanently delete an unassigned draft without losing oth
   const draft = before.json.find(x => x.id !== lessonId && x.status === "draft");
   ok(draft?.id, "missing unassigned draft for delete test");
   await page.goto(BASE + "/parent/lessons");
+  // Drafts live on their own tab, and Delete is in each card's menu.
+  await page.click("[data-testid=lib-tab-review]");
+  await page.click(`[data-testid=more-${draft.id}] summary`);
   await page.waitForSelector(`[data-testid=delete-${draft.id}]`);
   page.once("dialog", d => d.accept());
   await page.click(`[data-testid=delete-${draft.id}]`);
@@ -484,6 +488,10 @@ await step("E2. My lessons shows who has the lesson, and the assign dialog won't
   const kids = await api("GET", "/students", parentToken);
   const kid = kids.json[0];
   await page.goto(BASE + "/parent/lessons");
+  // A lesson a child is working on moves from "Ready to use" to "In use".
+  await page.waitForSelector("[data-testid=lib-tabs]");
+  ok(await page.locator(`[data-testid=lesson-${lessonId}]`).count() === 0, "assigned lesson still listed as ready to use");
+  await page.click("[data-testid=lib-tab-in_use]");
   await page.waitForSelector(`[data-testid=assignee-${lessonId}-${kid.id}]`, { timeout: 10000 });
   ok((await page.textContent(`[data-testid=assigned-to-${lessonId}]`)).includes(kid.name), "child's name not shown on the lesson");
   await page.click(`[data-testid=assign-${lessonId}]`);
@@ -997,7 +1005,9 @@ await step("rich lesson: the Year 3 garden addition lesson teaches in the child'
   await page.screenshot({ path: `${SHOTS}/builder-split-desktop.png` });
   ok(await page.isVisible("[data-testid=builder-paper-print]"), "editing screen has visible paper print options");
   await page.goto(BASE + "/parent/lessons");
+  await page.click("[data-testid=lib-tab-all]");
   await page.waitForSelector(`[data-testid=lesson-${les.json.id}]`);
+  await page.click(`[data-testid=more-${les.json.id}] summary`);
   ok(await page.isVisible(`[data-testid=print-student-${les.json.id}]`), "lesson card missing student print");
   ok(await page.isVisible(`[data-testid=print-parent-${les.json.id}]`), "lesson card missing parent print");
   ok((await page.locator(`[data-testid=print-parent-${les.json.id}]`).getAttribute("href")).endsWith("?answers=1"), "parent print action must open answer edition");
