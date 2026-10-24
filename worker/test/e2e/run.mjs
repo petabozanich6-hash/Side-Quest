@@ -1243,7 +1243,7 @@ await step("P. outcome tracker: hand-in, review and evidence update it; only the
   await ctx.close();
 });
 
-await step("Q. Auto-Quest: plan the week from the timetable, approve a reused lesson, and it is assigned on that day", async () => {
+await step("Q. Plan My Week: a library lesson and a reviewed draft each go into their own timetable slot", async () => {
   const em = `autoquest-${stamp}@example.com`;
   const reg = await api("POST", "/auth/register", null, { name: "Quest Fam", email: em, password: pw, jurisdiction: "NSW" });
   ok(reg.status === 200, "register " + reg.status);
@@ -1265,25 +1265,45 @@ await step("Q. Auto-Quest: plan the week from the timetable, approve a reused le
   await qp.goto(BASE + "/login");
   await qp.fill('[data-testid=login-email]', em); await qp.fill('[data-testid=login-password]', pw);
   await qp.click('[data-testid=login-submit]'); await qp.waitForURL("**/parent");
+  // A second slot that same morning gets a reviewed draft rather than a library lesson.
+  const ev2 = await api("POST", "/calendar", pt, { title: "Science", date: d, student_id: ch.json.id, event_type: "timetable", start_time: "11:00", duration_minutes: 40 });
+  ok(ev2.status === 200, "second slot " + ev2.status);
+  const draft = await api("POST", "/lessons", pt, { title: "Quest floating and sinking", learning_area: "Science", stage: "S2", status: "draft", sections: [{ heading: "Floating", body: "Some things float." }] });
+  ok(draft.status === 200 && draft.json.status === "draft", "draft lesson");
+  const planned = await api("POST", "/auto-quest/plan", pt, { student_id: ch.json.id, from: d, to: d });
+  const p2 = planned.json.proposals.find((x) => x.calendar_event_id === ev2.json.id);
+  ok(p2 && (await api("PUT", `/auto-quest/proposals/${p2.id}/lesson`, pt, { lesson_id: draft.json.id })).status === 200, "draft not attached to its slot");
+  const day = new Date(d + "T12:00:00"); day.setDate(day.getDate() - ((day.getDay() + 6) % 7));
+  const monday = [day.getFullYear(), String(day.getMonth() + 1).padStart(2, "0"), String(day.getDate()).padStart(2, "0")].join("-");
+  qp.on("dialog", (dl) => dl.accept());
   await qp.goto(BASE + "/parent/calendar");
-  await qp.getByText("More planning tools").click();
-  await qp.click("[data-testid=autoquest-open-btn]");
-  await qp.click("[data-testid=autoquest-preview]");
-  await qp.waitForSelector("[data-testid=autoquest-decisions] li");
-  const li = qp.locator("[data-testid=autoquest-decisions] li").first();
-  ok((await li.getAttribute("data-action")) === "reuse_draft", "saved lesson not reused: " + (await li.getAttribute("data-action")));
-  ok((await li.textContent()).includes(codes[0]), "verified code not shown");
-  await shot("autoquest-plan", qp);
-  await li.locator("[data-testid=aq-approve]").click();
-  // Assigned sessions are deliberately collapsed by default in the calmer
-  // Auto-Quest preview. Reveal them before checking the persisted decision.
-  await qp.locator("[data-testid=autoquest-show-assigned]").check();
-  await qp.waitForSelector('[data-testid=autoquest-decisions] li[data-status="assigned"]');
+  await qp.click("[data-testid=plan-week-open]");
+  await qp.fill("[data-testid=plan-week-start]", monday);
+  await qp.waitForSelector("[data-testid=plan-review-week]:not([disabled])");
+  await qp.click("[data-testid=plan-review-week]");
+  await qp.waitForSelector(`[data-testid=plan-row-${ev.json.id}]`);
+  ok((await qp.textContent(`[data-testid=plan-row-${ev.json.id}]`)).includes("Quest place value"), "saved lesson not offered for its slot");
+  await shot("plan-week", qp);
+  await qp.click("[data-testid=plan-assign-selected]");
+  await qp.waitForFunction((id) => document.querySelector(`[data-testid=plan-row-${id}]`)?.textContent.includes("Already on the calendar"), ev.json.id);
   const asg = (await api("GET", `/assignments?student_id=${ch.json.id}`, pt)).json;
   ok(asg.length === 1 && asg[0].lesson_id === les.json.id && asg[0].scheduled_date === d, "assignment " + JSON.stringify(asg).slice(0, 200));
+  // The draft is reviewed on its own page and put into its slot from there, then the parent is back in the planner.
+  await qp.click("[data-testid=plan-review-first]");
+  await qp.waitForSelector("[data-testid=week-nav]");
+  await qp.waitForSelector("[data-testid=r-week-assign]");
+  await shot("week-review", qp);
+  ok((await qp.textContent("[data-testid=week-nav-pos]")).includes("Draft 1 of 1"), "week position " + await qp.textContent("[data-testid=week-nav-pos]"));
+  ok((await qp.textContent("[data-testid=r-week-assign]")).includes("11:00"), "slot time missing from the assign button");
+  await qp.click("[data-testid=r-week-assign]");
+  await qp.waitForSelector("[data-testid=plan-my-week]");
+  await qp.waitForFunction((id) => document.querySelector(`[data-testid=plan-row-${id}]`)?.textContent.includes("Already on the calendar"), ev2.json.id);
+  const both = (await api("GET", `/assignments?student_id=${ch.json.id}`, pt)).json;
+  ok(both.length === 2 && both.some((x) => x.lesson_id === draft.json.id && x.scheduled_date === d), "reviewed draft not assigned to its slot");
+  ok((await api("GET", `/lessons/${draft.json.id}`, pt)).json.status === "ready", "reviewed draft is still a draft");
   // Planning again never duplicates, and a child can't use Auto-Quest.
   const again = await api("POST", "/auto-quest/plan", pt, { student_id: ch.json.id, from: d, to: d });
-  ok(again.json.proposals.length === 1 && again.json.proposals[0].status === "assigned", "re-plan changed a decision");
+  ok(again.json.proposals.length === 2 && again.json.proposals.every((x) => x.status === "assigned"), "re-plan changed a decision");
   const ct = (await api("POST", "/auth/child-login", null, { username: `aq${stamp}`.slice(0, 14), pin: "2468" })).json.token;
   ok((await api("POST", "/auto-quest/plan", ct, { student_id: ch.json.id, from: d, to: d })).status === 403, "child reached Auto-Quest");
   ok((await api("POST", "/auto-quest/plan", parentToken, { student_id: ch.json.id, from: d, to: d })).status === 404, "another family planned for this child");

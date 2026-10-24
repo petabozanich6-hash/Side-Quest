@@ -10,6 +10,8 @@ jest.mock("../../lib/api", () => ({
 }));
 jest.mock("sonner", () => ({ toast: { success: jest.fn(), error: jest.fn() } }));
 jest.mock("./TimetableGenerator", () => () => null);
+// CRA's Jest resolver cannot import React Router 7's react-router/dom entrypoint.
+jest.mock("react-router-dom", () => ({ Link: ({ children, to, ...props }) => <a href={to} {...props}>{children}</a> }));
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
 const first = { id: "first", name: "Mason" }, second = { id: "second", name: "Oliver" };
@@ -130,4 +132,43 @@ test("copies last week's times for both children without carrying over old assig
   expect(call[1].blocks.map(b => b.student_id).sort()).toEqual(["first", "second"]);
   expect(call[1].blocks.every(b => b.date === "2026-10-19" && !("linked_assignment_id" in b) && !("linked_lesson_id" in b))).toBe(true);
   expect(confirmed).toHaveBeenCalledTimes(1);
+});
+
+// Both children's slots have no matching lesson, or a draft waiting for review.
+const useProposals = make => {
+  const get = api.get.getMockImplementation();
+  const post = api.post.getMockImplementation();
+  const listed = options => ({ data: { proposals: [make(options.params?.student_id ?? options.student_id)] } });
+  api.get.mockImplementation((path, options) => path === "/auto-quest/proposals" ? Promise.resolve(listed(options)) : get(path, options));
+  api.post.mockImplementation((path, body) => path === "/auto-quest/plan" ? Promise.resolve(listed({ student_id: body.student_id })) : post(path, body));
+};
+const missingFor = child => ({ id: "p-" + child, calendar_event_id: child === "first" ? "slot-m" : "slot-o", status: "proposed",
+  action: "needs_generation", learning_area: "Mathematics", outcome_codes: [], lesson: null });
+
+test("missing lessons are written in the background, several at once, and the planner can still be closed", async () => {
+  useProposals(missingFor);
+  const finish = [];
+  const post = api.post.getMockImplementation();
+  api.post.mockImplementation((path, body) => path.endsWith("/generate")
+    ? new Promise(resolve => finish.push(() => resolve({ data: {} }))) : post(path, body));
+  await click('[data-testid="plan-review-week"]');
+  await click('[data-testid="plan-draft-missing"]');
+  expect(confirmed).toHaveBeenCalledTimes(1);
+  // Both drafts start without waiting for each other.
+  expect(api.post.mock.calls.filter(([path]) => path.endsWith("/generate"))).toHaveLength(2);
+  expect(host.querySelector('[data-testid="plan-drafting"]').textContent).toMatch(/Writing 2 lessons/);
+  expect(host.textContent).toMatch(/Writing the lesson…/);
+  expect(host.querySelector('[aria-label="Close weekly planner"]').disabled).toBe(false);
+  await act(async () => { finish.forEach(f => f()); });
+  expect(host.querySelector('[data-testid="plan-drafting"]')).toBeNull();
+});
+
+test("drafts waiting for review link to a review page that can put them in their slot", async () => {
+  useProposals(child => ({ ...missingFor(child), action: "reuse_draft", lesson: { id: "draft-" + child, title: "Draft", status: "draft" } }));
+  await click('[data-testid="plan-review-week"]');
+  expect(host.querySelector('[data-testid="plan-review-banner"]').textContent).toMatch(/2 drafts ready for your review/);
+  expect(host.querySelector('[data-testid="plan-review-first"]').getAttribute("href"))
+    .toBe("/parent/lessons/draft-first/review?week=2026-10-19&child=first");
+  expect(host.querySelector('[data-testid="plan-review-slot-o"]').getAttribute("href"))
+    .toBe("/parent/lessons/draft-second/review?week=2026-10-19&child=second");
 });

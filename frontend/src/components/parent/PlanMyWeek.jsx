@@ -1,8 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { api, apiErrorMessage } from "../../lib/api";
 import { toast } from "sonner";
 import TimetableGenerator from "./TimetableGenerator";
 import { buildWeeklyLessonRows } from "../../lib/weeklyLessonPlan";
+import { onWeekDraftChange, runWeekDrafts, weekDraftError, weekDraftState, weekDraftSummary, weekDraftsStopped } from "../../lib/weekDraftRunner";
 
 const iso = d => [d.getFullYear(), String(d.getMonth() + 1).padStart(2, "0"), String(d.getDate()).padStart(2, "0")].join("-");
 const fromIso = date => new Date(date + "T12:00:00");
@@ -10,6 +12,8 @@ const monday = date => { const d = fromIso(date); d.setDate(d.getDate() - ((d.ge
 const plusDays = (date, n) => { const d = fromIso(date); d.setDate(d.getDate() + n); return iso(d); };
 const suggestedWeek = date => { const day = fromIso(date).getDay(); const start = monday(date); return day === 0 || day === 6 ? plusDays(start, 7) : start; };
 const dateLabel = date => fromIso(date).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" });
+/** Where a draft made for this week is reviewed; the review page can put it straight into its timetable slot. */
+export const weekReviewPath = (lessonId, week, child) => `/parent/lessons/${lessonId}/review?week=${week}&child=${child}`;
 const STATUS = {
   scheduled: ["Already on the calendar", "text-emerald-800"],
   ready: ["Matching lesson ready", "text-teal-800"],
@@ -19,7 +23,7 @@ const STATUS = {
   attention: ["Needs your choice", "text-amber-800"],
 };
 
-export default function PlanMyWeek({ students = [], initialDate, initialChild = "", onClose, onDone }) {
+export default function PlanMyWeek({ students = [], initialDate, initialChild = "", autoLoad = false, onClose, onDone }) {
   const [week, setWeek] = useState(suggestedWeek(initialDate || iso(new Date())));
   const [children, setChildren] = useState(initialChild ? [initialChild] : students.map(s => s.id));
   const [calendar, setCalendar] = useState(null);
@@ -39,7 +43,10 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
   ), [calendar, plans, children]);
   const ready = rows.filter(r => r.state === "ready");
   const chosen = ready.filter(r => selected.includes(r.id));
-  const missing = rows.filter(r => r.state === "missing");
+  // Slots whose draft is being written in the background are not "missing" any more.
+  const drafting = r => ["queued", "writing"].includes(weekDraftState(r.proposal?.id));
+  const missing = rows.filter(r => r.state === "missing" && !drafting(r));
+  const writing = rows.filter(r => r.state === "missing" && drafting(r));
   const reviewing = rows.filter(r => r.state === "review");
   const attention = rows.filter(r => r.state === "attention");
   const clashes = rows.filter(r => r.state === "conflict");
@@ -47,6 +54,8 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
     (e.event_type === "timetable" || (e.event_type === "lesson" && String(e.notes || "").startsWith("Suggested by Side-Quest"))));
   const hasSlots = slots.length > 0;
   const [timetableOpen, setTimetableOpen] = useState(false);
+  const [, rerender] = useReducer(n => n + 1, 0);
+  const finished = useRef(weekDraftSummary().done + weekDraftSummary().failed);
 
   useEffect(() => {
     let active = true;
@@ -76,6 +85,31 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
     } catch (e) { toast.error(apiErrorMessage(e, "Couldn't review the learning week")); }
     finally { setLoading(false); }
   };
+
+  // Background drafts: redraw as they progress, and re-read the week when one finishes so its slot shows the draft.
+  // This quiet reload keeps the parent's ticked choices.
+  useEffect(() => onWeekDraftChange(() => {
+    rerender();
+    const { done, failed } = weekDraftSummary();
+    if (done + failed === finished.current) return;
+    finished.current = done + failed;
+    if (!children.length) return;
+    Promise.all([
+      api.get("/calendar", { params: { from: week, to: end } }),
+      ...children.map(child => api.get("/auto-quest/proposals", { params: { student_id: child, from: week, to: end } })),
+    ]).then(([cal, ...lists]) => {
+      setCalendar(cal.data || []);
+      setPlans(Object.fromEntries(children.map((child, i) => [child, lists[i].data?.proposals || []])));
+    }).catch(() => { /* the next finished draft or a manual refresh tries again */ });
+  }), [children, week, end]);
+
+  // Coming back from reviewing a draft: show the week's saved plan straight away (no replanning, no AI).
+  const autoLoaded = useRef(false);
+  useEffect(() => {
+    if (!autoLoad || autoLoaded.current || !calendar) return;
+    autoLoaded.current = true;
+    refresh(false);
+  }, [autoLoad, calendar]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const copyLastWeek = async () => {
     if (!children.length || saving || copying) return;
@@ -138,29 +172,16 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
     finally { setSaving(false); setProgress(""); }
   };
 
-  const draftMissing = async () => {
-    if (!missing.length || saving) return;
-    if (missing.some(r => /^languages?\b/i.test(r.proposal?.learning_area || r.slot.title)) && !topic.trim()) {
+  const draftMissing = (only) => {
+    const todo = only ? [only] : missing;
+    if (!todo.length) return;
+    if (todo.some(r => /^languages?\b/i.test(r.proposal?.learning_area || r.slot.title)) && !topic.trim()) {
       toast.error("Enter the language and topic first (for example, Latin greetings)."); return;
     }
-    if (!window.confirm(`Create ${missing.length} AI draft(s)? This uses your normal allowance. You'll review each draft before it's assigned.`)) return;
-    setSaving(true); setErrors([]);
-    const failed = [];
-    let drafted = 0;
-    try {
-      for (const [i, row] of missing.entries()) {
-        setProgress(`Drafting lesson ${i + 1} of ${missing.length}…`);
-        try { await api.post(`/auto-quest/proposals/${row.proposal.id}/generate`, { topic: topic.trim() }); drafted++; }
-        catch (e) {
-          failed.push(`${row.slot.title} (${dateLabel(row.slot.date)}): ${apiErrorMessage(e)}`);
-          if ([402, 429].includes(e.response?.status)) break;
-        }
-      }
-      if (drafted) toast.success(`${drafted} draft(s) saved to your library for review.`);
-      setErrors(failed);
-      await refresh(false);
-    } catch (e) { toast.error(apiErrorMessage(e, "Couldn't refresh your week")); }
-    finally { setSaving(false); setProgress(""); }
+    if (!only && !window.confirm(`Write ${todo.length} AI draft(s)? This uses your normal allowance. You'll review each draft before it's assigned.`)) return;
+    setErrors([]);
+    runWeekDrafts(todo.map(r => ({ id: r.proposal.id, label: `${childName(r.child)}: ${r.slot.title}, ${dateLabel(r.slot.date)}` })), topic.trim());
+    if (!only) toast.success("Writing your lessons. You can close this window; they keep going while Side-Quest is open.");
   };
 
   const changeChildren = next => { setChildren(next); setPlans(null); setSelected([]); setErrors([]); };
@@ -218,7 +239,7 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
                 {copying ? "Copying learning times…" : "Copy last week's times"}
               </button>
               <button type="button" onClick={() => setTimetableOpen(true)} disabled={!children.length || saving || copying}
-                className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-bold">
+                className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-bold" data-testid="plan-adjust-times">
                 {hasSlots ? "Adjust learning times" : "Choose different learning times"}
               </button>
             </div>
@@ -234,17 +255,28 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
         {plans && <div className="space-y-4" data-testid="plan-week-results">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
             {[[rows.filter(r => r.state === "scheduled").length, "Already scheduled"],
-              [ready.length, "Ready to assign"], [missing.length, "Need a lesson"],
+              [ready.length, "Ready to assign"], [missing.length + writing.length, "Need a lesson"],
               [reviewing.length + clashes.length + attention.length, "Need attention"]].map(([n, title]) =>
               <div key={title} className="rounded-lg bg-stone-50 p-3"><p className="text-xl font-bold">{n}</p><p className="text-xs">{title}</p></div>)}
           </div>
+          {(writing.length > 0 || weekDraftsStopped()) && <div role="status" className="rounded-xl border border-violet-200 bg-violet-50 p-3 text-sm text-violet-950" data-testid="plan-drafting">
+            {writing.length > 0 && <p className="font-semibold">Writing {writing.length} lesson{writing.length === 1 ? "" : "s"}… each takes one to three minutes.</p>}
+            {writing.length > 0 && <p className="text-xs mt-1">You can close this window and keep using Side-Quest. Finished drafts appear here, ready to review.</p>}
+            {weekDraftsStopped() && <p className="mt-1 text-amber-900">Stopped: {weekDraftsStopped()}</p>}
+          </div>}
+          {reviewing.length > 0 && <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 flex flex-wrap items-center justify-between gap-2 text-sm" data-testid="plan-review-banner">
+            <p><b>{reviewing.length} draft{reviewing.length === 1 ? "" : "s"} ready for your review.</b> Read each one, then put it into its timetable slot from the same page.</p>
+            <Link to={weekReviewPath(reviewing[0].proposal.lesson.id, week, reviewing[0].child)} className="rounded-full bg-amber-600 px-4 py-2 text-white font-semibold" data-testid="plan-review-first">Start reviewing</Link>
+          </div>}
           {children.map(child => {
             const mine = rows.filter(r => r.child === child);
             return <div key={child} className="rounded-xl border overflow-hidden">
               <h3 className="p-3 font-display font-bold bg-stone-50 border-b">{childName(child)}</h3>
               {!mine.length && <p className="p-3 text-sm text-slate-600">No learning times for this child yet. Adjust learning times above.</p>}
               <div className="divide-y">{mine.map(r => {
-                const [status, colour] = STATUS[r.state];
+                const job = r.state === "missing" ? weekDraftState(r.proposal?.id) : "";
+                const [status, colour] = job === "queued" || job === "writing" ? ["Writing the lesson…", "text-violet-800"]
+                  : job === "failed" ? [`Draft failed: ${weekDraftError(r.proposal?.id)}`, "text-red-800"] : STATUS[r.state];
                 return <div key={r.id} className="p-3 flex items-center gap-3" data-testid={`plan-row-${r.id}`}>
                   {r.state === "ready" && <input type="checkbox" aria-label={`Assign ${r.proposal.lesson.title} to ${childName(child)}`}
                     checked={selected.includes(r.id)} disabled={saving}
@@ -257,7 +289,8 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
                       {r.state === "attention" && r.proposal?.reason ? ` — ${r.proposal.reason}` : ""}</p>
                   </div>
                   {r.state === "review" && r.proposal?.lesson?.id &&
-                    <a href={`/parent/lessons/${r.proposal.lesson.id}/edit`} className="text-xs font-semibold underline text-teal-900">Review draft</a>}
+                    <Link to={weekReviewPath(r.proposal.lesson.id, week, child)} className="rounded-full border border-amber-500 px-3 py-1 text-xs font-semibold text-amber-900" data-testid={`plan-review-${r.id}`}>Review &amp; assign</Link>}
+                  {job === "failed" && <button type="button" onClick={() => draftMissing(r)} className="text-xs font-semibold underline text-teal-900" data-testid={`plan-retry-${r.id}`}>Try again</button>}
                 </div>;
               })}</div>
             </div>;
@@ -266,9 +299,9 @@ export default function PlanMyWeek({ students = [], initialDate, initialChild = 
             <button type="button" disabled={!chosen.length || saving} onClick={commit}
               className="rounded-full bg-teal-800 px-5 py-2.5 text-white text-sm font-bold disabled:opacity-50"
               data-testid="plan-assign-selected">Assign {chosen.length} ready lesson(s)</button>
-            <button type="button" disabled={!missing.length || saving} onClick={draftMissing}
+            <button type="button" disabled={!missing.length || saving} onClick={() => draftMissing()}
               className="rounded-full border border-teal-800 px-4 py-2.5 text-teal-900 text-sm font-semibold disabled:opacity-50"
-              data-testid="plan-draft-missing">Draft {missing.length} missing lesson(s)</button>
+              data-testid="plan-draft-missing">Write {missing.length} missing lesson(s) with AI</button>
           </div>
           <p className="text-xs text-slate-600">No existing work will be overwritten. Drafts always need parent review, and the AI button uses your normal lesson allowance. Time conflicts and unclear matches aren't assigned automatically.</p>
         </div>}

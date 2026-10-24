@@ -4,10 +4,8 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { Plus, X, ChevronLeft, ChevronRight, CalendarPlus } from "lucide-react";
 import ScheduleModal, { isoLocal } from "../../components/parent/ScheduleModal";
-import TimetableGenerator from "../../components/parent/TimetableGenerator";
-import AutoQuestPreview from "../../components/parent/AutoQuestPreview";
-import FillMyWeek from "../../components/parent/FillMyWeek";
 import PlanMyWeek from "../../components/parent/PlanMyWeek";
+import { onWeekDraftChange, weekDraftSummary, weekDraftsRunning } from "../../lib/weekDraftRunner";
 import CalendarEventEditor from "../../components/parent/CalendarEventEditor";
 import CalendarWeekAgenda from "../../components/parent/CalendarWeekAgenda";
 
@@ -29,8 +27,11 @@ function monthMatrix(year, month) {
 }
 
 export default function CalendarPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const focused = searchParams.get("event");
+  // "Back to Plan My Week" from a draft review opens the planner on the same week and child.
+  const planParam = searchParams.get("plan");
+  const planChild = searchParams.get("child") || "";
   const [events, setEvents] = useState([]);
   const [students, setStudents] = useState([]);
   const [lessons, setLessons] = useState([]);
@@ -39,10 +40,13 @@ export default function CalendarPage() {
   const [open, setOpen] = useState(false);
   const [schedOpen, setSchedOpen] = useState(false);
   const [scheduleDate, setScheduleDate] = useState(null);
-  const [generatorOpen, setGeneratorOpen] = useState(false);
-  const [autoQuestOpen, setAutoQuestOpen] = useState(false);
-  const [weekFillOpen, setWeekFillOpen] = useState(false);
-  const [planWeekOpen, setPlanWeekOpen] = useState(false);
+  const [planWeekOpen, setPlanWeekOpen] = useState(/^\d{4}-\d{2}-\d{2}$/.test(planParam || ""));
+  const [drafts, setDrafts] = useState(weekDraftSummary());
+  useEffect(() => onWeekDraftChange(() => setDrafts(weekDraftSummary())), []);
+  // Finished drafts are announced until the parent has looked at the planner once since they finished.
+  const [draftsSeen, setDraftsSeen] = useState(0);
+  const finishedDrafts = drafts.done + drafts.failed;
+  const closePlanner = () => { setPlanWeekOpen(false); setDraftsSeen(finishedDrafts); if (planParam) setSearchParams({}, { replace: true }); };
   const [dayOpen, setDayOpen] = useState(null);
   const [editing, setEditing] = useState(null);
   const [removingDay, setRemovingDay] = useState(false);
@@ -289,13 +293,17 @@ export default function CalendarPage() {
           <button onClick={()=>setPlanWeekOpen(true)} className="rounded-full bg-teal-800 text-white px-5 py-2.5 text-sm font-bold" data-testid="plan-week-open">🐉 Plan My Week</button>
           <button onClick={()=>{setScheduleDate(null);setSchedOpen(true);}} className="rounded-full border border-teal-700 text-teal-900 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="schedule-lesson-btn"><CalendarPlus size={14}/> Add a lesson</button>
           <button onClick={()=>setOpen(true)} className="rounded-full border border-slate-400 px-4 py-2 text-sm font-semibold flex items-center gap-1.5" data-testid="add-event-btn"><Plus size={14}/> Add event</button>
-          <details className="relative text-sm"><summary className="cursor-pointer rounded-full border border-slate-300 px-3 py-2 font-semibold">More planning tools</summary><div className="absolute right-0 top-full z-20 mt-2 w-56 rounded-xl bg-white border border-slate-200 shadow-lg p-2 flex flex-col gap-1">
-            <button onClick={()=>setWeekFillOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="fill-week-open">Fill My Week (original)</button>
-            <button onClick={()=>setAutoQuestOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="autoquest-open-btn">Auto-Quest (advanced)</button>
-            <button onClick={()=>setGeneratorOpen(true)} className="text-left p-2 hover:bg-stone-50 rounded-lg" data-testid="generate-timetable-btn">Weekly timetable (original)</button>
-          </div></details>
         </div>
       </div>
+
+      {drafts.total > 0 && (weekDraftsRunning() || finishedDrafts > draftsSeen) && !planWeekOpen && (
+        <div role="status" className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm text-violet-950 flex flex-wrap items-center justify-between gap-2" data-testid="calendar-drafting">
+          <span>{weekDraftsRunning()
+            ? `Writing lessons for your timetable: ${drafts.done + drafts.failed} of ${drafts.total} done.`
+            : `${drafts.done} new draft${drafts.done === 1 ? "" : "s"} ready for your review${drafts.failed ? ` · ${drafts.failed} could not be written` : ""}.`}</span>
+          <button type="button" onClick={() => setPlanWeekOpen(true)} className="rounded-full bg-violet-700 px-4 py-1.5 text-white font-semibold">Open Plan My Week</button>
+        </div>
+      )}
 
       {students.length > 0 && (
         <div className="flex flex-wrap gap-3 text-xs">
@@ -369,12 +377,7 @@ export default function CalendarPage() {
       )}
 
       {editing && <CalendarEventEditor event={editing} students={students} lessons={lessons} onClose={()=>setEditing(null)} onSaved={afterCalendarChange}/>}
-      {planWeekOpen && <PlanMyWeek students={students} initialChild={filter} initialDate={isoLocal(cur)} onClose={()=>setPlanWeekOpen(false)} onDone={afterWeeklyPlanning} />}
-      {weekFillOpen && <FillMyWeek students={students} initialChild={filter || rescheduleChild}
-        initialDate={isoLocal(cur)} onClose={()=>setWeekFillOpen(false)} onDone={afterCalendarChange}
-        onOpenDay={date=>{setWeekFillOpen(false);setDayOpen(date);}} />}
-      {autoQuestOpen && <AutoQuestPreview students={students} onClose={()=>setAutoQuestOpen(false)} onChanged={afterCalendarChange} />}
-      {generatorOpen && <TimetableGenerator students={students} events={events} onClose={()=>setGeneratorOpen(false)} onDone={load} />}
+      {planWeekOpen && students.length > 0 && <PlanMyWeek students={students} initialChild={planChild || filter} initialDate={planParam || isoLocal(cur)} autoLoad={!!planParam || drafts.total > 0} onClose={closePlanner} onDone={afterWeeklyPlanning} />}
       {schedOpen && <ScheduleModal lessons={lessons} students={students}
         defaultDate={scheduleDate} defaultStudents={scheduleDate && (filter || rescheduleChild) ? [filter || rescheduleChild] : []}
         onClose={()=>setSchedOpen(false)} onDone={afterCalendarChange} />}
