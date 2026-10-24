@@ -285,7 +285,10 @@ guided practice, questions/quiz or every activity fails the draft exactly as bef
 Generation reports `generation.pipeline = "split_stages"`. A 60-minute lesson
 makes about 21 requests instead of 17, at similar total tokens.
 
-**Off by default.** Benchmark first, with the same fixture and model:
+**Enabled in `wrangler.jsonc`** (`"AI_SPLIT_STAGES": "true"`) for a live owner trial with real lessons, rather than a
+benchmark run. To turn it off, set it to `"false"` in `wrangler.jsonc` and merge, or use the
+`AI_FAST_PIPELINE_STOP=true` emergency switch. The code default is off, so removing the variable also disables it.
+To benchmark instead, use the same fixture and model:
 
 ```sh
 BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false BENCH_FAST_PIPELINE=true \
@@ -296,6 +299,6 @@ BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false BE
 
 Human-review that activities are distinct, practice still matches the taught
 methods and the parent guidance is complete. To enable, add `AI_SPLIT_STAGES=true`
-under Worker Variables and Secrets (or in `wrangler.jsonc` `vars`). The existing
+in `wrangler.jsonc` `vars` (or under Worker Variables and Secrets). The existing
 `AI_FAST_PIPELINE_STOP=true` emergency switch turns it off too, and the Owner HQ
 "use original generation" comparison bypasses it.

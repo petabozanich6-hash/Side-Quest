@@ -7,7 +7,7 @@
   // Pace special Owner HQ emails: up to 12 recipients every five minutes.
   "triggers": { "crons": ["*/5 * * * *"] },
   "keep_vars": true,
-  "vars": { "STRIPE_LIVE_ENABLED": "true", "AI_FAST_PIPELINE": "true" },
+  "vars": { "STRIPE_LIVE_ENABLED": "true", "AI_FAST_PIPELINE": "true", "AI_SPLIT_STAGES": "true" },
   "build": {
     "command": "node worker/scripts/guard-build-branch.mjs && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
   },
@@ -38,6 +38,8 @@
   // for paid families (single lessons, batches and Auto-Quest). Approved after owner quality/speed trial.
   // Emergency rollback: add AI_FAST_PIPELINE_STOP=true under Worker dashboard Variables and Secrets;
   // keep_vars preserves the dashboard kill switch and other existing variables on future deploys.
+  // AI_SPLIT_STAGES=true asks for the same lesson content in shorter, more parallel requests (see docs/AI-PERFORMANCE-ROLLOUT.md).
+  // To turn it off, set it to "false" here and merge; AI_FAST_PIPELINE_STOP=true also stops it.
   // AI_COMPACT_GENERATION stays OFF so original teaching depth and prompts do not change.
   "ai": { "binding": "AI" },
   // R2 storage for family files (paid membership). Match BUCKET in worker/src/types.ts.
