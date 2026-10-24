@@ -29,6 +29,7 @@ import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
+import { processPaymentNotices } from "./paymentNotices";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
@@ -340,6 +341,8 @@ export default {
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
     try { await processTrialReminders(env); } catch (e) { console.error("trial reminder cron failed", e); }
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
+    // After reconciling, so the notices see each family's latest plan.
+    try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };
