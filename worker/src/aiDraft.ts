@@ -556,7 +556,7 @@ function standardExcerpt(delivery: Spec["delivery"]): string {
   return `THE STANDARD OF TEACHING EXPECTED (an excerpt from a different lesson. Match its depth, directness and completeness, but never copy its topic, numbers or wording):\nEXPLANATION: ${JSON.stringify(sec)}\nWORKED EXAMPLE: ${JSON.stringify(w)}`;
 }
 
-export function designPrompt(sp: Spec): string {
+export function designPrompt(sp: Spec, askReading = false): string {
   const z = sizeFor(sp.minutes);
   return [
     `STAGE 1: EDUCATIONAL DESIGN for one lesson of about ${sp.minutes} minutes. Do not write the lesson yet. Decide precisely what will be taught and in what order.`,
@@ -574,8 +574,9 @@ export function designPrompt(sp: Spec): string {
     ` "hoard_words":[5-10 objects {"word":string,"hint":string}] the SPELLING words the student should learn from this lesson: single words only (no spaces or numbers), the lesson's key vocabulary and any tricky words in it, suited to the year level; the hint is a short memory trick for spelling that word,
  "worked_examples":[exactly ${z.workedExamples} objects {"title":string,"problem":string (the exact problem with real numbers or words),"skill":string (what this example models)}] from easiest to hardest, each modelling a different skill or situation,`,
     ' "misconceptions":[{"mistake":string,"fix":string (the correct reasoning)}] 2-4 genuine likely errors,',
+    askReading ? ' "needs_reading":boolean (true ONLY if the student must work from a reading passage, primary source or data table written out in full in the lesson),' : "",
     ' "practice_plan":string (which skills guided practice and independent practice must cover, easiest to hardest)}',
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 }
 
 const designBrief = (design: any) => JSON.stringify({ concept: design.concept, key_words: design.key_words, sequence: (design.sequence || []).map((s: any) => ({ heading: s.heading, idea: s.idea, how: s.how, key_points: s.key_points })), worked_examples: (design.worked_examples || []).map((w: any) => ({ title: w.title, problem: w.problem, skill: w.skill })), misconceptions: design.misconceptions });
@@ -590,6 +591,31 @@ export function framePrompt(sp: Spec, design: any): string {
     ' "texts":[optional: {"title":string,"kind":"text"|"source"|"data","content":string}] ONLY if the subject needs a reading, source or data table that you write in full (original writing only),',
     ' "consolidation":string (a thorough wrap-up of 120-200 words: restate each essential idea in order in plain words, tie them together, correct the likely mistakes, and say what the student can now do)}',
   ].join("\n");
+}
+
+
+/** Split pipeline: only the readings block the teaching, so they get their own request. */
+export function readingsPrompt(sp: Spec, design: any): string {
+  return [
+    `STAGE 2, READINGS for a ${sp.minutes}-minute lesson. The design is settled. Write in full every reading, source or data table the lesson needs; the teaching, practice and assessment are all built on it. Separate requests write the opening and the wrap-up.`,
+    ...contextBlock(sp),
+    `DESIGN:\n${designBrief(design)}`,
+    "JSON shape:",
+    '{"texts":[{"title":string,"kind":"text"|"source"|"data","content":string}] (original writing only; [] if the lesson truly needs none)}',
+  ].join("\n");
+}
+
+/** Split pipeline: the opening and wrap-up depend only on the design (and readings), so they run alongside the teaching. */
+export function openingPrompt(sp: Spec, design: any, texts: any[]): string {
+  return [
+    `STAGE 2, OPENING AND WRAP-UP for a ${sp.minutes}-minute lesson. The design is settled. Write the opening and the closing the student reads.`,
+    ...contextBlock(sp),
+    `DESIGN:\n${designBrief(design)}`,
+    texts.length ? `READINGS THE LESSON USES (already written; refer to them where useful but do not rewrite them):\n${texts.map((t: any) => `${t.title}: ${t.content}`).join("\n")}` : "",
+    "JSON shape:",
+    '{"introduction":string (4-7 sentences: a concrete scenario or question that makes the learning feel needed, then exactly what the student will learn and how the lesson will go),',
+    ' "consolidation":string (a thorough wrap-up of 120-200 words: restate each essential idea in order in plain words, tie them together, correct the likely mistakes, and say what the student can now do)}',
+  ].filter(Boolean).join("\n");
 }
 
 export function sectionPrompt(sp: Spec, design: any, i: number, texts: any[]): string {
@@ -671,6 +697,81 @@ export function assessmentPrompt(sp: Spec, design: any, taught: any): string {
   ].join("\n");
 }
 
+// Split pipeline: the practice and assessment above as several smaller requests run together. The longest single reply,
+// not the number of requests, sets how long a lesson takes, so the same content is asked for in shorter pieces.
+const NO_ANSWER_IN_PROMPT = "IMPORTANT: The student sees prompt, hint and activity instructions BEFORE responding. Never place an answer or solution in those fields, not even as Answer:, Check:, a completed calculation, or an example solving that same question. Only the private answer field holds the solution. Use new numbers and scenarios rather than copying the worked example problem.";
+const practiceContext = (sp: Spec, design: any, taught: any) => [
+  ...contextBlock(sp),
+  `KEY WORDS: ${JSON.stringify(design.key_words || [])}`,
+  `PRACTICE PLAN: ${design.practice_plan || ""}`,
+  `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
+  `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
+];
+
+export function guidedPracticePrompt(sp: Spec, design: any, taught: any): string {
+  const z = sizeFor(sp.minutes);
+  return [
+    `STAGE 4, GUIDED PRACTICE for a ${sp.minutes}-minute lesson. The student has just been taught the material below. Write guided practice that exactly matches it. Separate requests write the independent activities and the assessment, so write only the guided practice.`,
+    ...practiceContext(sp, design, taught),
+    "Guided practice begins with a NEW problem requiring the exact method just shown in a worked example, then gradually becomes harder. Hints remind the child of the FIRST demonstrated step and why it works, never the final answer. No question may require a new unexplained rule or technique. Every item has a complete and checked private answer.",
+    NO_ANSWER_IN_PROMPT,
+    `JSON shape: {"guided_practice":[ITEM] (${z.guided} items)}`,
+    `${ITEM_FORMAT} ${VISUAL_FORMAT}`,
+  ].join("\n");
+}
+
+/** One independent activity. Each request is given different worked-example skills so the activities do not repeat each other. */
+export function activityPrompt(sp: Spec, design: any, taught: any, k: number, n: number): string {
+  const z = sizeFor(sp.minutes);
+  const exs: any[] = design.worked_examples || [];
+  const focus = exs.filter((_, i) => i % n === k).map((w: any) => w.skill).filter(Boolean);
+  return [
+    `STAGE 4, ACTIVITY ${k + 1} OF ${n}: one independent practice activity for a ${sp.minutes}-minute lesson. The student has just been taught the material below. Separate requests write the guided practice and the other activities, so write only this one.`,
+    ...practiceContext(sp, design, taught),
+    `THIS ACTIVITY: ${focus.length ? `focus on ${focus.join("; ")}.` : "practise the lesson's main skill."} ${k === 0 ? "It is the first activity, so keep it the most straightforward." : k === n - 1 ? "It is the last activity, so it is the hardest and may combine skills from the whole lesson." : "It sits between an easier and a harder activity."}`,
+    k === n - 1 && n > 1
+      ? "It may be a hands-on activity (offline true) if the subject truly suits one; then its tasks record a prediction, observations, results and a reflection. Otherwise it is on screen (offline false)."
+      : "It is on screen (offline false).",
+    `The activity applies ONLY methods actually taught, with ${z.tasksPerActivity} or more distinct on-screen tasks. No task may require a new unexplained rule or technique. Every item has a complete and checked private answer.`,
+    NO_ANSWER_IN_PROMPT,
+    `JSON shape: {"activities":[ONE {"title":string,"instructions":string (what the student does and why, in 2-5 sentences),"offline":boolean,"visual":optional,"tasks":[ITEM]}]}`,
+    `${ITEM_FORMAT} ${VISUAL_FORMAT}`,
+  ].join("\n");
+}
+
+export function assessmentQuestionsPrompt(sp: Spec, design: any, taught: any): string {
+  const z = sizeFor(sp.minutes);
+  return [
+    `STAGE 4, ASSESSMENT QUESTIONS: written questions and a quiz for a ${sp.minutes}-minute lesson. The student has just been taught the material below. Assess only what was taught. A separate request writes the parent guidance.`,
+    ...contextBlock(sp),
+    `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
+    `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
+    "Assess only understanding and techniques that were actually DEMONSTRATED, not merely named. Move from recall to explanation and application. At least one written question and one quiz question probe a likely mistake. Quiz options should reflect real errors. If a method was not taught, do not ask it. Every question needs a complete private answer or marking guidance.",
+    "Never reveal the correct response in a question prompt or quiz question, including by adding Answer:, Solution:, Check: or a worked calculation. Put it only in answer_key, correct_index or explanation. Write questions different from the exact worked-example problems.",
+    "JSON shape:",
+    `{"questions":[{"prompt":string,"type":"short"|"long","answer_key":string (a complete correct answer or marking guidance)}] (${z.questions} items),`,
+    ` "quiz":[{"question":string,"options":[3 or 4 plausible strings],"correct_index":number (zero-based),"explanation":string}] (${z.quiz} items; vary which option is correct)}`,
+  ].join("\n");
+}
+
+export function lessonGuidancePrompt(sp: Spec, design: any, taught: any): string {
+  return [
+    `STAGE 4, LESSON GUIDANCE: the support, extension and parent guidance around a ${sp.minutes}-minute lesson. The student has just been taught the material below. Separate requests write the practice and the assessment questions.`,
+    ...contextBlock(sp),
+    `LIKELY MISTAKES: ${JSON.stringify(design.misconceptions || [])}`,
+    `WHAT WAS TAUGHT:\n${taughtSummary(taught)}`,
+    "Base everything on what was actually taught. Every teaching question needs the answer a parent should expect.",
+    "JSON shape:",
+    '{"support":string (3-5 specific ideas if the student is struggling),',
+    ' "extension":string (2-3 specific challenge tasks, written out in full),',
+    ' "materials":[strings: simple items needed, usually none],',
+    ' "teaching_questions":[{"ask":string,"expected":string}] 4-6 questions a parent could ask afterwards to check understanding, and the answer to expect,',
+    ' "parent_script":string (see the delivery mode above),',
+    ' "evidence_suggestions":[3-4 strings],',
+    ` "duration_minutes":number}`,
+  ].join("\n");
+}
+
 /** Models often put real line breaks inside JSON strings (long explanations) or leave trailing commas; both are harmless to repair without changing any words. */
 export function tidyJson(t: string): string {
   let out = "", inStr = false, esc = false;
@@ -720,7 +821,7 @@ export function generationReport(st: GenStats, model: string) {
 }
 
 export type GenStats = { calls: number; input_tokens: number; output_tokens: number; stages: string[]; failed?: string;
-  elapsed_ms?: number; stage_timings_ms?: { stage: string; ms: number }[]; pipeline?: "standard" | "parallel_frame" | "concurrent_teaching" };
+  elapsed_ms?: number; stage_timings_ms?: { stage: string; ms: number }[]; pipeline?: "standard" | "parallel_frame" | "concurrent_teaching" | "split_stages" };
 
 /** The parent answer key is assembled from the items themselves, so it always agrees with the lesson. */
 export function buildAnswerKey(l: any): string {
@@ -750,6 +851,8 @@ export function canOverlapLessonFrame(spec: Spec): boolean {
 }
 
 const SMALL_POOL = 4;
+/** Split pipeline: every teaching section and worked example of even a 2-hour lesson in one round. */
+const SPLIT_POOL = 12;
 async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T[]> {
   const out: T[] = new Array(jobs.length);
   let next = 0;
@@ -763,6 +866,9 @@ async function pool<T>(jobs: (() => Promise<T>)[], size = SMALL_POOL): Promise<T
  * Builds the lesson in focused requests so each part gets the model's full attention:
  *   1 design, 2 frame (introduction, readings, wrap-up), 3 one request per teaching section and per worked example (run a few at a time),
  *   4 practice and assessment (two requests). `call(messages, maxTokens)` returns the raw model reply and throws only if the model cannot be reached.
+ * `split` (AI_SPLIT_STAGES) keeps every prompt's teaching requirements but shortens the critical path: readings get their own request
+ * (only when the design needs one) and the opening/wrap-up run alongside the teaching; all teaching requests run in one round;
+ * practice and assessment are written as several shorter parallel requests (guided practice, each activity, questions and quiz, guidance).
  */
 export async function generateStaged(
   call: (messages: { role: string; content: string }[], maxTokens: number) => Promise<unknown>,
@@ -770,7 +876,8 @@ export async function generateStaged(
   stats: GenStats,
   flags: string[],
   compact = false,
-  fastPipeline = false
+  fastPipeline = false,
+  split = false
 ): Promise<Record<string, any> | null> {
   const sys = { role: "system", content: stageSystem() };
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
@@ -797,12 +904,13 @@ export async function generateStaged(
     return null;
   };
 
-  const design = await go("design", designPrompt(spec), 2800, ["sequence", "worked_examples"]);
+  const design = await go("design", designPrompt(spec, split), 2800, ["sequence", "worked_examples"]);
   if (!design) return null;
   const seq: any[] = (design.sequence || []).filter((s: any) => s && s.heading && s.idea).slice(0, 10);
   const exs: any[] = (design.worked_examples || []).filter((w: any) => w && w.problem).slice(0, 8);
   if (!seq.length || !exs.length) return null;
   design.sequence = seq; design.worked_examples = exs;
+  const teachingPool = split ? SPLIT_POOL : fastPipeline ? (canOverlapLessonFrame(spec) ? 5 : 6) : SMALL_POOL;
 
   const teaching = async (texts: any[]): Promise<{ sections: any[]; examples: any[] } | null> => {
   let sections: any[] = [];
@@ -834,7 +942,7 @@ export async function generateStaged(
     const grouped = await pool<any>([
       ...sChunks.map(ids => () => go(`sections ${ids[0] + 1}-${ids.at(-1)! + 1}`, sPrompt(ids), 3800, ["sections"])),
       ...eChunks.map(ids => () => go(`examples ${ids[0] + 1}-${ids.at(-1)! + 1}`, ePrompt(ids), 3300, ["worked_examples"])),
-    ], fastPipeline ? (canOverlapLessonFrame(spec) ? 5 : 6) : SMALL_POOL);
+    ], teachingPool);
     const unpack = async (type: "sections" | "worked_examples", chunksToRead: number[][], offset: number) => {
       const resolved = await Promise.all(chunksToRead.map(async (ids, k) => {
         const items = grouped[offset + k]?.[type];
@@ -857,7 +965,7 @@ export async function generateStaged(
     const results = await pool<any>([
       ...seq.map((_, i) => () => go(`section ${i + 1}`, sectionPrompt(spec, design, i, texts), 1700, ["heading", "body"])),
       ...exs.map((_, i) => () => go(`example ${i + 1}`, examplePrompt(spec, design, i, texts), 1500, ["problem", "steps"])),
-    ], fastPipeline ? (canOverlapLessonFrame(spec) ? 5 : 6) : SMALL_POOL);
+    ], teachingPool);
     sections = results.slice(0, seq.length);
     examples = results.slice(seq.length);
   }
@@ -865,6 +973,50 @@ export async function generateStaged(
   if (sections.some((s) => !s) || examples.some((s) => !s)) return null;
   return { sections, examples };
   };
+  const assemble = (frame: any, texts: any[], sections: any[], examples: any[], pa: any, pb: any) => {
+    const merged: Record<string, any> = {
+      title: design.title, teaching_plan: design.teaching_plan, why_it_matters: design.why_it_matters, prior_knowledge: design.prior_knowledge,
+      objectives: design.objectives, key_words: design.key_words, hoard_words: design.hoard_words, misconceptions: design.misconceptions,
+      introduction: frame.introduction, consolidation: frame.consolidation, texts,
+      sections, worked_examples: examples, ...pa, ...pb,
+    };
+    merged.answer_key = buildAnswerKey({ ...merged, quiz: (pb.quiz || []) });
+    return merged;
+  };
+
+  if (split) {
+    stats.pipeline = "split_stages";
+    // A parent's own resource always becomes a reading. A missing answer falls back to the old rule: anything but
+    // source-free maths gets its readings written first.
+    const wantsReading = !!spec.source?.trim() || design.needs_reading === true || (design.needs_reading !== false && !canOverlapLessonFrame(spec));
+    let texts: any[] = [];
+    if (wantsReading) {
+      const readings = await go("readings", readingsPrompt(spec, design), 1800, []);
+      if (!readings) return null;
+      texts = Array.isArray(readings.texts) ? readings.texts.filter((t: any) => t?.content) : [];
+    }
+    const opening = go("frame", openingPrompt(spec, design, texts), 1800, ["introduction", "consolidation"]);
+    opening.catch(() => { /* awaited below; this only stops an early teaching failure leaving it unhandled */ });
+    const built = await teaching(texts);
+    if (!built) return null;
+    const taught = { sections: built.sections, worked_examples: built.examples, texts };
+    const n = sizeFor(spec.minutes).activities;
+    const [frame, guided, acts, qq, guide] = await Promise.all([
+      opening,
+      go("guided practice", guidedPracticePrompt(spec, design, taught), 3500, ["guided_practice"]),
+      Promise.all(Array.from({ length: n }, (_, k) => go(`activity ${k + 1}`, activityPrompt(spec, design, taught, k, n), 3000, ["activities"]))),
+      go("assessment", assessmentQuestionsPrompt(spec, design, taught), 3500, ["questions", "quiz"]),
+      go("guidance", lessonGuidancePrompt(spec, design, taught), 3000, ["parent_script"]),
+    ]);
+    const activities = acts.map((a) => (Array.isArray(a?.activities) ? a.activities[0] : null)).filter(Boolean);
+    if (!frame || !guided || !qq || !activities.length) return null;
+    if (activities.length < n) flags.push(`Only ${activities.length} of ${n} practice activities could be written. Please check the practice before assigning.`);
+    if (!guide) flags.push("The parent guidance step did not come back, so support, extension and the parent guide may be missing. Please add them before assigning.");
+    return assemble(frame, texts, built.sections, built.examples,
+      { guided_practice: guided.guided_practice, activities },
+      { ...(guide || {}), questions: qq.questions, quiz: qq.quiz });
+  }
+
   const parallelFrame = fastPipeline && canOverlapLessonFrame(spec);
   stats.pipeline = !fastPipeline ? "standard" : parallelFrame ? "parallel_frame" : "concurrent_teaching";
   const [frame, prebuilt] = parallelFrame
@@ -890,20 +1042,13 @@ export async function generateStaged(
     go("assessment", assessmentPrompt(spec, design, taught), 4500, ["questions", "quiz"]),
   ]);
   if (!pa || !pb) return null;
-  const merged: Record<string, any> = {
-    title: design.title, teaching_plan: design.teaching_plan, why_it_matters: design.why_it_matters, prior_knowledge: design.prior_knowledge,
-    objectives: design.objectives, key_words: design.key_words, hoard_words: design.hoard_words, misconceptions: design.misconceptions,
-    introduction: frame.introduction, consolidation: frame.consolidation, texts,
-    sections, worked_examples: examples, ...pa, ...pb,
-  };
-  merged.answer_key = buildAnswerKey({ ...merged, quiz: (pb.quiz || []) });
-  return merged;
+  return assemble(frame, texts, sections, examples, pa, pb);
 }
 
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; request: AiRequest },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; request: AiRequest },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -1007,7 +1152,8 @@ export async function draftLessonWithAi(
     const ownerStandard = verifiedOwner && (request as any).owner_standard_preview === true;
     const legacyOwnerFast = verifiedOwner && (request as any).owner_fast_preview === true;
     const useFast = !ownerStandard && (opts.fastPipeline === true || legacyOwnerFast);
-    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, useFast);
+    const useSplit = !ownerStandard && opts.splitStages === true;
+    raw = await generateStaged(call, spec, stats, stageFlags, opts.compact === true, useFast, useSplit);
     if (raw) {
       draft = normaliseDraft(raw, spec);
       issues = qualityIssues(draft, spec);

@@ -35,6 +35,8 @@ export type Env = {
   AI_FAST_PIPELINE?: string;
   /** Emergency dashboard kill switch; true reverts all lesson drafts to standard pipeline. */
   AI_FAST_PIPELINE_STOP?: string;
+  /** Opt-in shorter, more parallel lesson stages; off unless set to true. AI_FAST_PIPELINE_STOP also stops it. */
+  AI_SPLIT_STAGES?: string;
   HELP_PER_CHILD_DAY?: string;
   HELP_PER_FAMILY_DAY?: string;
   HELP_PER_FAMILY_MONTH?: string;

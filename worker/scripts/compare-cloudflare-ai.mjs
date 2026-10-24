@@ -244,10 +244,11 @@ export async function compare({ dryRun = false, fixtureId = process.env.BENCHMAR
   if (dryRun) {
     return { dryRun: true, models: modelList, fixture: fixtureId,
       hardMaxCalls: maxCalls, grossUsdCeiling: maxGrossUsd, modelRequests: 0,
-      pipeline: process.env.BENCH_FAST_PIPELINE === "true" ? "fast" : "standard" };
+      pipeline: process.env.BENCH_SPLIT_STAGES === "true" ? "split" : process.env.BENCH_FAST_PIPELINE === "true" ? "fast" : "standard" };
   }
   const { account, token } = credentials();
   const fastPipeline = process.env.BENCH_FAST_PIPELINE === "true";
+  const splitStages = process.env.BENCH_SPLIT_STAGES === "true";
   const compact = process.env.BENCH_COMPACT !== "false";
   let calls = 0;
   let reservedGross = 0;
@@ -289,7 +290,7 @@ export async function compare({ dryRun = false, fixtureId = process.env.BENCHMAR
     let lesson = null;
     let failure = null;
     try {
-      lesson = await generateStaged(call, spec, stats, warnings, compact, fastPipeline);
+      lesson = await generateStaged(call, spec, stats, warnings, compact, fastPipeline, splitStages);
     } catch (e) {
       failure = e instanceof Error ? e.message : "Unknown model generation failure";
     }
@@ -298,6 +299,7 @@ export async function compare({ dryRun = false, fixtureId = process.env.BENCHMAR
       fixture: fixtureId,
       compact,
       fastPipeline,
+      splitStages,
       durationMs: Date.now() - started,
       modelCalls: stats.calls,
       error: failure ?? stats.failed ?? null,
