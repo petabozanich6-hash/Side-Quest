@@ -197,6 +197,9 @@ export default function LessonBuilder() {
 
   // Opened from a set of AI lessons: every way out leads back to that set, never to an unrelated page.
   const batch = qs.get("batch") || "";
+  // Opened from a draft in Plan My Week: lead back to that draft's review, which can put it in its timetable slot.
+  const week = !batch && /^\d{4}-\d{2}-\d{2}$/.test(qs.get("week") || "") ? qs.get("week") : "";
+  const reviewQuery = batch ? `?batch=${batch}` : week ? `?week=${week}&child=${qs.get("child") || ""}` : "";
   const guard = e => { if (dirty && !window.confirm("You have unsaved changes. Leave without saving?")) e.preventDefault(); };
   if (qs.get("ai") && !id) return <Navigate to="/parent/lessons/make" replace />;
   if (!loaded) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
@@ -209,6 +212,8 @@ export default function LessonBuilder() {
             <Link to={`/parent/lessons/${lessonId}/review?batch=${batch}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> Back to this lesson</Link>
             <Link to={`/parent/lessons/drafts/${batch}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900" data-testid="builder-all-drafts">All lessons in this set</Link>
           </div>
+        ) : week && lessonId ? (
+          <Link to={`/parent/lessons/${lessonId}/review${reviewQuery}`} onClick={guard} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900" data-testid="builder-week-back"><ArrowLeft size={14} /> Back to reviewing this draft</Link>
         ) : <Link to="/parent/lessons" onClick={guard} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>}
         <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : "Build a lesson myself"}</h1>
         <p className="text-sm text-slate-600 mt-1"><>Write the lesson in your own words. Save a draft any time. Prefer not to write it? <Link className="underline font-semibold" to="/parent/lessons/make">Let Side-Quest make it for you</Link>. To see how complete lessons look: <Link className="underline" to="/parent/lessons/new?example=1">Year 3 parent-guided example</Link> · <Link className="underline" to="/parent/lessons/new?example=y7">Year 7 independent example</Link>.</></p>
@@ -522,7 +527,7 @@ export default function LessonBuilder() {
 
       <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap items-center gap-2 justify-end">
         <span className="mr-auto text-xs text-slate-500" data-testid="save-state">{dirty ? "Unsaved changes" : autosaved ? `Draft autosaved at ${autosaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</span>
-        {lessonId && <button disabled={busy} onClick={async () => { const r = await save(f.status === "ready" ? "ready" : "draft"); if (r) nav(`/parent/lessons/${r.id}/review${batch ? `?batch=${batch}` : ""}`); }} className="rounded-full border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-review-ai">Review and ask AI to change something</button>}
+        {lessonId && <button disabled={busy} onClick={async () => { const r = await save(f.status === "ready" ? "ready" : "draft"); if (r) nav(`/parent/lessons/${r.id}/review${reviewQuery}`); }} className="rounded-full border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-review-ai">Review and ask AI to change something</button>}
         <button disabled={busy} onClick={() => save("draft")} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-draft"><Save size={14} /> Save draft</button>
         <button disabled={busy} onClick={() => save("ready")} className="rounded-full border border-slate-900 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-library">Save to library</button>
         <button disabled={busy} onClick={saveAndAssign} className="rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-assign"><Send size={14} /> Save and assign</button>

@@ -92,8 +92,8 @@ let weekStart;
 await step("paying parent: plan one week; it is saved as free timetable slots", async () => {
   await login(page, paidEmail);
   await page.goto(BASE + "/parent/calendar");
-  await page.getByText("More planning tools").click();
-  await page.click("[data-testid=generate-timetable-btn]");
+  await page.click("[data-testid=plan-week-open]");
+  await page.click("[data-testid=plan-adjust-times]");
   await page.waitForSelector("[data-testid=tt-generate]:not([disabled])");
   weekStart = await page.inputValue("[data-testid=tt-week]");
   await page.click("[data-testid=tt-generate]");
@@ -215,8 +215,8 @@ await step("un-assigning a lesson frees its slot; the timetable stays", async ()
 
 await step("Repeat last week copies the timetable into the next week", async () => {
   await page.goto(BASE + "/parent/calendar");
-  await page.getByText("More planning tools").click();
-  await page.click("[data-testid=generate-timetable-btn]");
+  await page.click("[data-testid=plan-week-open]");
+  await page.click("[data-testid=plan-adjust-times]");
   const next = new Date(weekStart + "T12:00:00"); next.setDate(next.getDate() + 7);
   const nextStart = next.toISOString().slice(0, 10);
   await page.fill("[data-testid=tt-week]", nextStart);
@@ -234,8 +234,8 @@ await step("free-preview family: timetable shows the membership message; assigni
   const fp = await fctx.newPage();
   await login(fp, freeEmail);
   await fp.goto(BASE + "/parent/calendar");
-  await fp.getByText("More planning tools").click();
-  await fp.click("[data-testid=generate-timetable-btn]");
+  await fp.click("[data-testid=plan-week-open]");
+  await fp.click("[data-testid=plan-adjust-times]");
   await fp.waitForSelector("[data-testid=timetable-upsell]");
   ok(await fp.locator("[data-testid=tt-generate]").count() === 0, "free family can generate a timetable");
   await fp.goto(BASE + "/parent/lessons");
