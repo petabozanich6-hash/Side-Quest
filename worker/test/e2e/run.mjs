@@ -1250,6 +1250,27 @@ await step("P. outcome tracker: hand-in, review and evidence update it; only the
   const h = await tp.textContent("[data-testid=history]");
   ok(h.includes("Confirmed as Achieved by you") && h.includes("Demonstrated"), "history: " + h.slice(0, 300));
   await noOverflow(tp, "/parent/outcomes detail");
+
+  // Prior learning, chosen by hand: the outcome gets its own status and leaves the gaps.
+  const AR = "MA2-AR-01";
+  await tp.goto(BASE + `/parent/outcomes/${sid}`);
+  await tp.waitForSelector(`[data-testid=status-${AR}]`);
+  await tp.click("[data-testid=prior-open]");
+  await tp.click("[data-testid=prior-manual]");
+  await tp.fill("[data-testid=prior-search]", AR);
+  await tp.check(`[data-testid=prior-option-${AR}] input`);
+  await tp.fill("[data-testid=prior-source]", "Year 3 Semester 1 school report");
+  await tp.screenshot({ path: `${SHOTS}/prior-learning.png` });
+  await tp.click("[data-testid=prior-save]");
+  await tp.waitForSelector(`[data-testid=status-${AR}][data-status=prior_learning]`, { timeout: 15000 });
+  await tp.click(`[data-testid=outcome-row-${AR}]`);
+  await tp.waitForSelector("[data-testid=prior-box]");
+  ok((await tp.textContent("[data-testid=prior-box]")).includes("Year 3 Semester 1 school report"), "prior learning source not shown");
+  ok((await tp.textContent("[data-testid=history]")).includes("Recognised by you as prior learning"), "prior learning not in the history");
+  // Without an AI connection, reading a report fails politely and nothing is recorded.
+  const read = await api("POST", `/outcomes/students/${sid}/prior-learning/analyse`, pt, { text: "Mathematics: A. Confident with place value and addition strategies this semester." });
+  ok(read.status === 503 && read.json.code === "AI_UNAVAILABLE", "analyse without AI: " + read.status);
+  ok((await api("POST", `/outcomes/students/${sid}/prior-learning`, ct, { codes: [AR], source: "x" })).status === 403, "child recorded prior learning");
   await ctx.close();
 });
 

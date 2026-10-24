@@ -27,15 +27,15 @@ const CSS = `
   .pb { break-before: page; }
   .bar { display: flex; height: 10px; width: 100%; border: 1px solid #999; border-radius: 2px; overflow: hidden; background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .bar span { display: block; height: 100%; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .s-achieved { background: #1f3b2d; } .s-demonstrated { background: #4a7c59; } .s-developing { background: #9dbf9e; } .s-introduced { background: #d9e5d6; }
+  .s-achieved { background: #1f3b2d; } .s-prior_learning { background: #818cf8; } .s-demonstrated { background: #4a7c59; } .s-developing { background: #9dbf9e; } .s-introduced { background: #d9e5d6; }
   .key span { display: inline-block; width: 10px; height: 10px; border: 1px solid #777; margin: 0 3px 0 10px; vertical-align: middle; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .num { text-align: right; white-space: nowrap; }
   @media print { body { margin: 0; } .noprint { display: none; } th, .meta td:first-child { background: #f3f3f3; } h1, h2 { color: #243a2d; } thead { display: table-header-group; } tr { break-inside: avoid; } }
 `;
 
 // Outcome Tracker statuses. "Achieved" here always means the parent confirmed it in the tracker.
-const MASTERY = { not_started: "Not started", introduced: "Introduced", developing: "Developing", demonstrated: "Demonstrated", achieved: "Achieved (parent confirmed)" };
-const BAR_ORDER = ["achieved", "demonstrated", "developing", "introduced"];
+const MASTERY = { not_started: "Not started", introduced: "Introduced", developing: "Developing", demonstrated: "Demonstrated", prior_learning: "Prior learning (met before Side-Quest, parent recognised)", achieved: "Achieved (parent confirmed)" };
+const BAR_ORDER = ["achieved", "prior_learning", "demonstrated", "developing", "introduced"];
 const GAP_TEXT = { limited_evidence: "limited evidence", not_revisited: "not revisited", needs_consolidation: "needs consolidation", confirmed_evidence_changed: "evidence changed since confirmed" };
 // Per piece of work: what the parent judged at review. Older records may say "achieved", which meant the same thing.
 const shownIn = (o) => o.status === "shown" || o.status === "achieved";
@@ -57,14 +57,14 @@ function progressSection(p) {
   if (!pr.available) return `<p class="banner">${esc(pr.note || "The Outcome Tracker is not available for this curriculum.")}</p>`;
   const t = pr.totals;
   const key = `<p class="key muted">${BAR_ORDER.map((k) => `<span class="s-${k}"></span>${esc(MASTERY[k])}`).join("")}<span></span>Not started</p>`;
-  const rows = pr.areas.map((a) => `<tr><td>${esc(a.learning_area)}</td><td class="num">${a.total}</td>${["introduced", "developing", "demonstrated", "achieved"].map((k) => `<td class="num">${a.counts[k] || 0}</td>`).join("")}<td class="num">${a.total - a.with_evidence}</td><td style="width:22%">${bar(a.counts, a.total)}</td></tr>`).join("");
+  const rows = pr.areas.map((a) => `<tr><td>${esc(a.learning_area)}</td><td class="num">${a.total}</td>${["introduced", "developing", "demonstrated", "prior_learning", "achieved"].map((k) => `<td class="num">${a.counts[k] || 0}</td>`).join("")}<td class="num">${a.total - a.with_evidence}</td><td style="width:22%">${bar(a.counts, a.total)}</td></tr>`).join("");
   const needs = pr.needs_evidence || [];
   const needsByArea = new Map();
   for (const n of needs) { if (!needsByArea.has(n.learning_area)) needsByArea.set(n.learning_area, []); needsByArea.get(n.learning_area).push(n); }
   return `
   <p class="muted">All-time snapshot as at ${fmt(pr.as_at)}, for the outcomes ${esc(p.student.name)} is covering in the ${esc(pr.framework || p.framework)}: ${esc(pr.program?.level || "their level")}${pr.program?.areas ? `, ${esc(pr.program.courses.map((c) => c.name).join(", "))}` : ", all learning areas"} (from the child's profile). Unlike the dated entries later in this record, it is not limited to the reporting period. Statuses follow Side-Quest's evidence guidelines (two pieces of reviewed work showing understanding on separate days, or one comprehensive assessment, for Demonstrated); only the parent can confirm Achieved. These are not official curriculum-authority standards.</p>
-  <table><tr><th>Overall</th><th class="num">Outcomes</th><th class="num">Introduced</th><th class="num">Developing</th><th class="num">Demonstrated</th><th class="num">Achieved</th><th class="num">No evidence yet</th><th>Distribution</th></tr>
-    <tr><td><strong>All learning areas</strong></td><td class="num">${t.total}</td>${["introduced", "developing", "demonstrated", "achieved"].map((k) => `<td class="num"><strong>${t.counts[k] || 0}</strong></td>`).join("")}<td class="num">${t.total - t.with_evidence}</td><td>${bar(t.counts, t.total)}</td></tr>
+  <table><tr><th>Overall</th><th class="num">Outcomes</th><th class="num">Introduced</th><th class="num">Developing</th><th class="num">Demonstrated</th><th class="num">Prior learning</th><th class="num">Achieved</th><th class="num">No evidence yet</th><th>Distribution</th></tr>
+    <tr><td><strong>All learning areas</strong></td><td class="num">${t.total}</td>${["introduced", "developing", "demonstrated", "prior_learning", "achieved"].map((k) => `<td class="num"><strong>${t.counts[k] || 0}</strong></td>`).join("")}<td class="num">${t.total - t.with_evidence}</td><td>${bar(t.counts, t.total)}</td></tr>
     ${rows}</table>
   ${key}
   ${(pr.unsupported || []).length ? `<p class="muted">Not tracked (no verified outcome list held by Side-Quest): ${pr.unsupported.map(esc).join(", ")}. Evidence for these subjects still appears in the dated entries below.</p>` : ""}

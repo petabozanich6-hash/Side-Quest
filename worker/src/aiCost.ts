@@ -104,6 +104,8 @@ export function meterWorkersAi(env: Env, ctx?: Pick<ExecutionContext, "waitUntil
   return {
     ...env,
     AI: {
+      // Document conversion (school reports for prior learning) is passed straight through; it isn't a text model call.
+      ...(typeof (original as any).toMarkdown === "function" ? { toMarkdown: (...args: unknown[]) => (original as any).toMarkdown(...args) } : {}),
       run: async (model: string, input: Record<string, unknown>, options?: Record<string, unknown>) => {
         let raw: any;
         let ok = false;

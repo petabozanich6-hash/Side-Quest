@@ -71,7 +71,8 @@ export function planAutoQuest(input: QuestInputs): QuestDecision[] {
   const approved = new Set(input.allowedOutcomeCodes);
   const childProgramCodes = input.outcomes ? new Set(input.outcomes.map(o => o.code)) : approved;
   const prog = new Map(input.progress.map((p) => [p.code, p]));
-  const achieved = new Set(input.progress.filter((p) => p.status === "achieved").map((p) => p.code));
+  // Achieved or recognised prior learning: already met, so never taught again.
+  const achieved = new Set(input.progress.filter((p) => p.status === "achieved" || p.status === "prior_learning").map((p) => p.code));
   const mine = input.assignments.filter((a) => a.student_id === input.studentId);
   // Lessons this child has open now (never assigned twice) and lessons already finished (only reused for revision).
   const open = new Set(mine.filter((a) => !DONE.has(a.status || "") && a.status !== "revoked").map((a) => a.lesson_id));

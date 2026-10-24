@@ -9,6 +9,8 @@
 // - The system can move an outcome up to Demonstrated, and only on parent-reviewed evidence of understanding.
 //   Auto-marked quizzes count as practice; AI suggestions are never evidence.
 // - A parent's confirmation is never removed automatically. If its evidence later changes, it is flagged instead.
+// - Prior learning (met before Side-Quest: a school report, NAPLAN, earlier schooling) is also only ever a parent's
+//   decision. It is its own status, below a confirmed Achieved, and clears the outcome from gaps and planning.
 // - Outcomes come only from a verified catalogue for the family's state or territory. Where Side-Quest has no
 //   verified list (every jurisdiction except NSW today), the tracker says so instead of inventing outcomes.
 import { NSW_OUTCOMES, NSW_LA_LINKS, NSW_SOURCE_LINKS } from "./data/curriculum";
@@ -380,11 +382,13 @@ export function programFor(cat: Catalogue, student: { stage?: string | null; yea
 
 // ---------------------------------------------------------------- mastery rules
 
-export const STATUSES = ["not_started", "introduced", "developing", "demonstrated", "achieved"] as const;
+export const STATUSES = ["not_started", "introduced", "developing", "demonstrated", "prior_learning", "achieved"] as const;
 export type Status = (typeof STATUSES)[number];
 export const STATUS_LABELS: Record<Status, string> = {
-  not_started: "Not Started", introduced: "Introduced", developing: "Developing", demonstrated: "Demonstrated", achieved: "Achieved",
+  not_started: "Not Started", introduced: "Introduced", developing: "Developing", demonstrated: "Demonstrated", prior_learning: "Prior learning", achieved: "Achieved",
 };
+/** Statuses that mean "already met": not taught again, not a gap. */
+export const MET_STATUSES: readonly string[] = ["prior_learning", "achieved"];
 const rank = (s: string) => Math.max(0, STATUSES.indexOf(s as Status));
 
 export type Level = "participation" | "practice" | "demonstrated";
@@ -457,8 +461,8 @@ export const GAP_LABELS: Record<GapKind, string> = {
 const active = (e: EvidenceRow) => !e.removed_at && !e.excluded_at;
 const daysBetween = (a: string, b: string) => Math.floor((Date.parse(b.slice(0, 10)) - Date.parse(a.slice(0, 10))) / 86400000);
 
-/** Pure rule evaluation. Never returns "achieved": only a parent confirmation can do that. */
-export function evaluate(evidence: EvidenceRow[], rules: MasteryRules, opts: { confirmed?: boolean; now?: Date } = {}) {
+/** Pure rule evaluation. Never returns "achieved" or "prior_learning" by itself: only a parent's decision can do that. */
+export function evaluate(evidence: EvidenceRow[], rules: MasteryRules, opts: { confirmed?: boolean; prior?: boolean; now?: Date } = {}) {
   const today = (opts.now || new Date()).toISOString().slice(0, 10);
   const live = evidence.filter(active).sort((a, b) => a.occurred_on.localeCompare(b.occurred_on) || String(a.created_at || "").localeCompare(String(b.created_at || "")));
   const meaningful = live.filter((e) => e.level === "demonstrated" && (e.support !== "significant" || rules.significant_support_counts));
@@ -500,12 +504,14 @@ export function evaluate(evidence: EvidenceRow[], rules: MasteryRules, opts: { c
   }
   if (status === "demonstrated" && !opts.confirmed) gaps.push("awaiting_confirmation");
   if (opts.confirmed && status !== "demonstrated") gaps.push("confirmed_evidence_changed");
+  // Recognised prior learning is cleared from every gap (unless later confirmed, which keeps its own check).
+  const shownGaps = opts.prior && !opts.confirmed ? [] : gaps;
 
   return {
     computed: status,
-    status: (opts.confirmed ? "achieved" : status) as Status,
+    status: (opts.confirmed ? "achieved" : opts.prior ? "prior_learning" : status) as Status,
     reason,
-    gaps,
+    gaps: shownGaps,
     counts: { evidence: live.length, meaningful: meaningful.length, occasions, all_occasions: allOccasions },
     first_on: live[0]?.occurred_on || null,
     last_on: latest?.occurred_on || null,
@@ -530,12 +536,17 @@ const SCHEMA = [
   `CREATE INDEX IF NOT EXISTS idx_outcome_history_student ON outcome_status_history (family_id, student_id, framework, outcome_code, created_at)`,
 ];
 export const TRACKER_SCHEMA = SCHEMA;
+// Added after 0057 (migration 0071). Same order as the migration so runtime-built and migrated tables match.
+const PRIOR_COLUMNS = ["prior_learning_at", "prior_learning_by", "prior_learning_source", "prior_learning_note"];
 
 const ready = new WeakSet<object>();
 /** Deploys don't run migrations, so the tables are created here too if migration 0057 hasn't been applied. */
 export async function ensureTracker(db: DB) {
   if (ready.has(db)) return;
   for (const sql of SCHEMA) await db.prepare(sql).run();
+  for (const col of PRIOR_COLUMNS) {
+    try { await db.prepare(`ALTER TABLE outcome_progress ADD COLUMN ${col} TEXT`).run(); } catch { /* already there */ }
+  }
   ready.add(db);
 }
 
@@ -602,7 +613,7 @@ export async function recompute(db: DB, familyId: string, studentId: string, fra
   const area = existing?.learning_area || known?.outcome.learning_area || null;
   const rules = resolveRules({ framework, learning_area: area, code }, learner);
   const confirmed = !!existing?.parent_confirmed_at;
-  const ev = evaluate(evidence, rules, { confirmed, now });
+  const ev = evaluate(evidence, rules, { confirmed, prior: !!existing?.prior_learning_at, now });
   const from = existing?.status || "not_started";
   const fromComputed = existing?.computed_status || "not_started";
   if (!existing) {
@@ -875,7 +886,7 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
     const k = cat.byCode.get(code);
     const p = byCode.get(code);
     const rules = resolveRules({ framework: cat.framework, learning_area: p?.learning_area || k?.learning_area, code }, learner);
-    const e = evaluate(evByCode.get(code) || [], rules, { confirmed: !!p?.parent_confirmed_at, now });
+    const e = evaluate(evByCode.get(code) || [], rules, { confirmed: !!p?.parent_confirmed_at, prior: !!p?.prior_learning_at, now });
     return {
       code,
       // Official wording isn't republished: the row shows the code with its source, strand and level, and a link.
@@ -891,6 +902,7 @@ export async function trackerFor(db: DB, familyId: string, studentId: string, o:
       reason: e.reason,
       last_change_reason: p?.status_reason || null,
       parent_confirmed_at: p?.parent_confirmed_at || null,
+      prior_learning: p?.prior_learning_at ? { at: p.prior_learning_at, source: p.prior_learning_source || "" } : null,
       evidence_count: e.counts.evidence,
       last_evidence_on: e.last_on,
       gaps: e.gaps,
@@ -942,7 +954,7 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
   const { results: rows } = await db.prepare("SELECT * FROM outcome_evidence WHERE family_id = ? AND student_id = ? AND framework = ? AND outcome_code = ? ORDER BY occurred_on DESC, created_at DESC").bind(familyId, studentId, cat.framework, code).all();
   const area = p?.learning_area || k?.learning_area || "Other";
   const rules = resolveRules({ framework: cat.framework, learning_area: area, code }, learner);
-  const e = evaluate((rows || []) as EvidenceRow[], rules, { confirmed: !!p?.parent_confirmed_at, now });
+  const e = evaluate((rows || []) as EvidenceRow[], rules, { confirmed: !!p?.parent_confirmed_at, prior: !!p?.prior_learning_at, now });
 
   const evidence = [];
   for (const r of (rows || []) as any[]) {
@@ -955,7 +967,7 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
     let link: { label: string; to: string } | null = null;
     // Lesson work opens in the review window (by submission id) on the outcome page itself.
     if (r.source_type === "life_learning") link = { label: "Open in Life learning", to: "/parent/life-learning" };
-    else if (r.source_type === "evidence_note") link = { label: "Open in Evidence Backpack", to: "/parent/evidence" };
+    else if (r.source_type === "evidence_note" || (r.source_type === "prior_learning" && fileIds.length)) link = { label: "Open in Evidence Backpack", to: "/parent/evidence" };
     evidence.push({
       id: r.id, source_type: r.source_type, source_id: r.source_id, origin: r.origin, lesson_id: r.lesson_id, assignment_id: r.assignment_id,
       submission_id: r.source_type === "lesson_review" ? r.source_id
@@ -980,6 +992,7 @@ export async function outcomeDetail(db: DB, familyId: string, studentId: string,
     catalogue_changed: !!(p?.catalogue_version && p.catalogue_version !== cat.version) ? { recorded_version: p.catalogue_version, current_version: cat.version } : null,
     status: e.status, computed_status: e.computed, reason: e.reason, last_change_reason: p?.status_reason || null,
     confirmed: p?.parent_confirmed_at ? { at: p.parent_confirmed_at, note: p.confirmation_note || "" } : null,
+    prior_learning: p?.prior_learning_at ? { at: p.prior_learning_at, source: p.prior_learning_source || "", note: p.prior_learning_note || "" } : null,
     criteria: e.criteria, gaps: e.gaps, counts: e.counts, rules, learner_support: learner,
     evidence, history: history || [], planned,
     suggestions: suggestionsFor(outcome, e.gaps, student),
@@ -1143,6 +1156,80 @@ export async function setLearnerSupport(db: DB, familyId: string, studentId: str
 }
 
 /** Per-child headline numbers for the Parent Hub. No sync here: it reads what the hooks keep up to date. */
+/**
+ * The parent recognises outcomes as already met before Side-Quest (a school report, NAPLAN, earlier schooling, the
+ * starting check). Each becomes "Prior learning", backed by one evidence row per outcome pointing at the same source.
+ * Files (the report itself) are also kept as one Evidence Backpack note for the child's records.
+ */
+export async function recordPriorLearning(db: DB, familyId: string, parentId: string, studentId: string, body: any, now: Date = new Date()): Promise<R<{ recorded: number; skipped: number; evidence_note_id: string | null }>> {
+  await ensureTracker(db);
+  const cat = await frameworkForFamily(db, familyId);
+  if (!cat) return bad(409, "The outcome tracker isn't available for your curriculum yet.", "NO_CATALOGUE");
+  if (!(await getStudent(db, familyId, studentId))) return bad(404, "Child not found");
+  const source = clip(body?.source, 200);
+  if (source.length < 3) return bad(400, "Say where this prior learning comes from, for example \"Term 2 school report\".", "SOURCE_REQUIRED");
+  const codes = [...new Set((Array.isArray(body?.codes) ? body.codes : []).filter((c: unknown) => typeof c === "string"))].slice(0, 500) as string[];
+  if (!codes.length) return bad(400, "Choose at least one outcome.", "NO_OUTCOMES");
+  const unknown = codes.filter((c) => !cat.byCode.has(c));
+  if (unknown.length) return bad(400, `These outcomes aren't in your curriculum: ${unknown.slice(0, 5).join(", ")}.`, "UNKNOWN_OUTCOME");
+  const fileIds: string[] = (Array.isArray(body?.file_ids) ? body.file_ids : []).filter((x: unknown) => typeof x === "string").slice(0, 10);
+  for (const fid of fileIds) {
+    const f = await db.prepare("SELECT id FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fid, familyId).first();
+    if (!f) return bad(400, "One of the files could not be found.");
+  }
+  const note = clip(body?.note, 2000);
+  const occurred = day(body?.occurred_on) || now.toISOString().slice(0, 10);
+  const ts = now.toISOString();
+  const batch = newId();
+
+  let noteId: string | null = null;
+  if (fileIds.length) {
+    noteId = newId();
+    await db.prepare("INSERT INTO evidence_notes (id, family_id, student_id, title, learning_area, notes, occurred_on, file_ids, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+      .bind(noteId, familyId, studentId, `Prior learning: ${source}`, null,
+        [note, `Recognised as prior learning in the Outcome tracker: ${codes.join(", ")}.`].filter(Boolean).join("\n\n"),
+        occurred, JSON.stringify(fileIds), ts).run();
+  }
+
+  let recorded = 0, skipped = 0;
+  for (const code of codes) {
+    const k = cat.byCode.get(code)!;
+    const p = await db.prepare("SELECT prior_learning_at, parent_confirmed_at FROM outcome_progress WHERE family_id = ? AND student_id = ? AND framework = ? AND outcome_code = ?").bind(familyId, studentId, cat.framework, code).first();
+    if (p?.prior_learning_at || p?.parent_confirmed_at) { skipped++; continue; }
+    const touched: Touched = new Set();
+    await upsertEvidence(db, familyId, studentId, {
+      framework: cat.framework, code, source_type: "prior_learning", source_id: batch, origin: "parent", level: "demonstrated", support: null,
+      consolidate: false, summary: `Prior learning: ${source}`, note: note || null, file_ids: fileIds, occurred_on: occurred, created_by: parentId,
+    }, ts, touched);
+    await db.prepare(
+      "INSERT INTO outcome_progress (id, family_id, student_id, framework, outcome_code, learning_area, stage, description, catalogue_version, computed_status, status, status_reason, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'not_started', 'not_started', '', ?) ON CONFLICT (student_id, framework, outcome_code) DO NOTHING"
+    ).bind(newId(), familyId, studentId, cat.framework, code, k.learning_area, k.stage, k.description, cat.version, ts).run();
+    await db.prepare("UPDATE outcome_progress SET prior_learning_at = ?, prior_learning_by = ?, prior_learning_source = ?, prior_learning_note = ? WHERE family_id = ? AND student_id = ? AND framework = ? AND outcome_code = ?")
+      .bind(ts, parentId, source, note || null, familyId, studentId, cat.framework, code).run();
+    await recompute(db, familyId, studentId, cat.framework, code, { now, actor: "parent", actorId: parentId,
+      reason: `Recognised by you as prior learning: ${source}.${note ? ` Note: ${note}` : ""}` });
+    recorded++;
+  }
+  return { ok: true, recorded, skipped, evidence_note_id: noteId };
+}
+
+/** Undo prior learning for one outcome. Its evidence stops counting (kept with the reason); other evidence is untouched. */
+export async function removePriorLearning(db: DB, familyId: string, parentId: string, studentId: string, code: string, body: { note?: unknown }, now: Date = new Date()): Promise<R> {
+  await ensureTracker(db);
+  const cat = await frameworkForFamily(db, familyId);
+  if (!cat) return bad(409, "The outcome tracker isn't available for your curriculum yet.", "NO_CATALOGUE");
+  const p = await db.prepare("SELECT id, prior_learning_at FROM outcome_progress WHERE family_id = ? AND student_id = ? AND framework = ? AND outcome_code = ?").bind(familyId, studentId, cat.framework, code).first();
+  if (!p?.prior_learning_at) return bad(409, "This outcome isn't marked as prior learning.", "NOT_PRIOR");
+  const note = clip(body.note, 2000);
+  const ts = now.toISOString();
+  await db.prepare("UPDATE outcome_progress SET prior_learning_at = NULL, prior_learning_by = NULL, prior_learning_source = NULL, prior_learning_note = NULL WHERE id = ?").bind(p.id).run();
+  await db.prepare("UPDATE outcome_evidence SET removed_at = ?, removed_reason = ? WHERE family_id = ? AND student_id = ? AND framework = ? AND outcome_code = ? AND source_type = 'prior_learning' AND removed_at IS NULL")
+    .bind(ts, "You removed the prior learning", familyId, studentId, cat.framework, code).run();
+  await recompute(db, familyId, studentId, cat.framework, code, { now, actor: "parent", actorId: parentId,
+    reason: `You removed the prior learning.${note ? ` Note: ${note}` : ""}` });
+  return { ok: true };
+}
+
 export async function familySummary(db: DB, familyId: string, now: Date = new Date()) {
   await ensureTracker(db);
   const jurisdiction = await getFamilyJurisdiction(db, familyId).catch(() => null);
@@ -1199,6 +1286,16 @@ export function registerOutcomes(app: App, g: Guards) {
     const u = c.get("user");
     const r = await addEvidence(c.env.DB, u.family_id, u.id, c.req.param("sid"), decodeURIComponent(c.req.param("code")), await c.req.json().catch(() => ({})));
     return r.ok ? c.json({ ok: true, id: r.id }) : send(c, r);
+  });
+  app.post("/api/outcomes/students/:sid/prior-learning", g.auth, g.parent, async (c) => {
+    const u = c.get("user");
+    const r = await recordPriorLearning(c.env.DB, u.family_id, u.id, c.req.param("sid"), await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ ok: true, recorded: r.recorded, skipped: r.skipped, evidence_note_id: r.evidence_note_id }) : send(c, r);
+  });
+  app.post("/api/outcomes/students/:sid/outcomes/:code/prior-learning/remove", g.auth, g.parent, async (c) => {
+    const u = c.get("user");
+    const r = await removePriorLearning(c.env.DB, u.family_id, u.id, c.req.param("sid"), decodeURIComponent(c.req.param("code")), await c.req.json().catch(() => ({})));
+    return r.ok ? c.json({ ok: true }) : send(c, r);
   });
   app.put("/api/outcomes/evidence/:eid", g.auth, g.parent, async (c) => {
     const r = await editEvidence(c.env.DB, c.get("user").family_id, c.req.param("eid"), await c.req.json().catch(() => ({})));
