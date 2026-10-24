@@ -256,3 +256,49 @@ switch off the faster pipeline.
 
 Do not promise every lesson will complete in 70 seconds. If families report
 more failures, throttling or poorer content, enable the emergency stop.
+
+
+## Split-stage scheduling (`AI_SPLIT_STAGES`) — 24 October 2026
+
+Lesson wall time is set by the longest reply on each step of the chain, not by
+the number of requests (which is why `AI_COMPACT_GENERATION` did not help).
+The opt-in `AI_SPLIT_STAGES=true` keeps the model and every teaching requirement,
+but asks for the same content in shorter, more parallel requests:
+
+1. **Practice and assessment are split.** The single 6,000-token practice request
+   becomes one guided-practice request plus one request per activity (each told
+   which worked-example skills to focus on, so they do not repeat each other;
+   only the last may be hands-on). Assessment becomes questions + quiz, and a
+   separate guidance request (support, extension, teaching questions, parent
+   script, evidence). All run together.
+2. **The frame leaves the critical path.** The design reports `needs_reading`.
+   Only when a reading is needed does a dedicated readings request run before
+   teaching; the opening and wrap-up then run *alongside* the teaching. If the
+   design omits the field, the old rule applies (readings first except for
+   source-free maths).
+3. **One teaching round.** Up to 12 teaching sections and worked examples are
+   in flight at once instead of 4–6, so a 60-minute lesson no longer needs two rounds.
+
+A failed activity or guidance request keeps the rest of the lesson and adds a
+review flag; the existing quality gate and targeted repair still run. Missing
+guided practice, questions/quiz or every activity fails the draft exactly as before.
+Generation reports `generation.pipeline = "split_stages"`. A 60-minute lesson
+makes about 21 requests instead of 17, at similar total tokens.
+
+**Enabled in `wrangler.jsonc`** (`"AI_SPLIT_STAGES": "true"`) for a live owner trial with real lessons, rather than a
+benchmark run. To turn it off, set it to `"false"` in `wrangler.jsonc` and merge, or use the
+`AI_FAST_PIPELINE_STOP=true` emergency switch. The code default is off, so removing the variable also disables it.
+To benchmark instead, use the same fixture and model:
+
+```sh
+BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false BENCH_FAST_PIPELINE=true \
+  node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs
+BENCHMARK_MODELS=@cf/meta/llama-3.3-70b-instruct-fp8-fast BENCH_COMPACT=false BENCH_FAST_PIPELINE=true BENCH_SPLIT_STAGES=true \
+  node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs
+```
+
+Human-review that activities are distinct, practice still matches the taught
+methods and the parent guidance is complete. To enable, add `AI_SPLIT_STAGES=true`
+in `wrangler.jsonc` `vars` (or under Worker Variables and Secrets). The existing
+`AI_FAST_PIPELINE_STOP=true` emergency switch turns it off too, and the Owner HQ
+"use original generation" comparison bypasses it.

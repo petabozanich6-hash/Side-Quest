@@ -25,6 +25,15 @@ on:
           - year7-history
           - year5-technologies
           - year4-arts
+      pipeline:
+        description: "Lesson pipeline: compact (original benchmark default), fast (current production), or split (AI_SPLIT_STAGES trial)"
+        type: choice
+        required: true
+        default: compact
+        options:
+          - compact
+          - fast
+          - split
       confirm_charge:
         description: "Type RUN to authorise a small real inference test (possibly billable)"
         required: true
@@ -54,15 +63,31 @@ jobs:
             all-three) echo "models=@cf/meta/llama-3.3-70b-instruct-fp8-fast,@cf/qwen/qwen3-30b-a3b-fp8,@cf/google/gemma-4-26b-a4b-it" >> "$GITHUB_OUTPUT" ;;
             *) exit 1 ;;
           esac
+      - name: Select pipeline flags
+        id: pipeline
+        env:
+          INPUT_PIPELINE: ${{ inputs.pipeline }}
+        run: |
+          case "$INPUT_PIPELINE" in
+            compact) echo "compact=true" >> "$GITHUB_OUTPUT"; echo "fast=false" >> "$GITHUB_OUTPUT"; echo "split=false" >> "$GITHUB_OUTPUT" ;;
+            fast) echo "compact=false" >> "$GITHUB_OUTPUT"; echo "fast=true" >> "$GITHUB_OUTPUT"; echo "split=false" >> "$GITHUB_OUTPUT" ;;
+            split) echo "compact=false" >> "$GITHUB_OUTPUT"; echo "fast=true" >> "$GITHUB_OUTPUT"; echo "split=true" >> "$GITHUB_OUTPUT" ;;
+            *) exit 1 ;;
+          esac
       - name: Show zero-call dry run
         env:
           BENCHMARK_FIXTURE: ${{ inputs.fixture }}
+          BENCH_FAST_PIPELINE: ${{ steps.pipeline.outputs.fast }}
+          BENCH_SPLIT_STAGES: ${{ steps.pipeline.outputs.split }}
         run: node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs --dry-run
       - name: Run bounded real synthetic test
         env:
           BENCHMARK_MODELS: ${{ steps.choose.outputs.models }}
           BENCHMARK_FIXTURE: ${{ inputs.fixture }}
           BENCH_REPORT_DIR: ${{ runner.temp }}/sidequest-ai-benchmark
+          BENCH_COMPACT: ${{ steps.pipeline.outputs.compact }}
+          BENCH_FAST_PIPELINE: ${{ steps.pipeline.outputs.fast }}
+          BENCH_SPLIT_STAGES: ${{ steps.pipeline.outputs.split }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node --import ./worker/test/register.mjs worker/scripts/compare-cloudflare-ai.mjs

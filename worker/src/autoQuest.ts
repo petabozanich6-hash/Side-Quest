@@ -16,7 +16,7 @@
  */
 import * as lb from "./lessonBuilder";
 import * as aid from "./aiDraft";
-import { fastLessonPipelineEnabled } from "./aiPipeline";
+import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 import { catalogueFor, trackerFor, programFor, DEFAULT_RULES, type Catalogue } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { normArea } from "./outcomeMatch";
@@ -353,7 +353,7 @@ async function ownProposal(db: DB, familyId: string, id: string) {
 }
 
 /** Drafts a lesson for a proposal with AI (paid plans, normal limits). The draft is saved unassigned for review. */
-export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
+export async function generateForProposal(db: DB, ai: any, o: { familyId: string; userId: string; id: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; topic?: string }, now: Date = new Date()): Promise<R<{ proposal: any }>> {
   // The one-time preview exception applies ONLY to the single-lesson endpoint.
   // Guard this internal call as well as the HTTP route so proposals can never
   // spend the free sample or circumvent Auto-Quest's paid entitlement.
@@ -382,7 +382,7 @@ export async function generateForProposal(db: DB, ai: any, o: { familyId: string
   const focus = codes.length ? goal || codes.join(", ") : customTopic || area;
   const topic = codes.length ? `${area}: ${focus}` : `${focus}: ${String(p.reason || "").match(/Session \d+: ([^.]+)/)?.[1] || "learn and practise key skills"}`;
   const r: any = await aid.draftLessonWithAi(db, ai, {
-    familyId: o.familyId, userId: o.userId, model: o.model, gatewayId: o.gatewayId, compact: o.compact, fastPipeline: o.fastPipeline,
+    familyId: o.familyId, userId: o.userId, model: o.model, gatewayId: o.gatewayId, compact: o.compact, fastPipeline: o.fastPipeline, splitStages: o.splitStages,
     request: { student_id: p.student_id, learning_area: area, topic: topic.slice(0, 250),
       goal: codes.length ? `${purpose} ${goal}`.slice(0, 400) :
       `${purpose} ${focus}. This is a subject-based draft with NO verified curriculum outcome codes; do not invent any.`.slice(0, 400),
@@ -545,7 +545,7 @@ export function registerAutoQuest(app: App, g: Guards) {
   app.post("/api/auto-quest/proposals/:id/generate", g.auth, g.parent, async (c) => {
     const u = c.get("user");
     const body = await c.req.json().catch(() => ({})) as { topic?: string };
-    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env), topic: body.topic });
+    const r = await generateForProposal(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, id: c.req.param("id"), model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env), splitStages: splitLessonStagesEnabled(c.env), topic: body.topic });
     return r.ok ? c.json(r.proposal) : send(c, r);
   });
   app.put("/api/auto-quest/proposals/:id/lesson", g.auth, g.parent, async (c) => {
