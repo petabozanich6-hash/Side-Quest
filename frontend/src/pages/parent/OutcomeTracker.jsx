@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { Map as MapIcon, RefreshCw, Search, ShieldCheck, ChevronRight, Info, History } from "lucide-react";
+import { Map as MapIcon, RefreshCw, Search, ShieldCheck, ChevronRight, Info, History, ClipboardCheck } from "lucide-react";
 import { api } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import InternationalGoalTracker from "./InternationalGoalTracker";
 import { STATUS, STATUS_ORDER, GAPS, StatusBadge, StatusBar } from "../../lib/outcomes";
 import PriorLearningDialog from "../../components/parent/PriorLearningDialog";
+import StartingCheckDialog from "../../components/parent/StartingCheckDialog";
 
 const GAP_FILTERS = ["awaiting_confirmation", "needs_consolidation", "limited_evidence", "not_revisited", "not_introduced", "confirmed_evidence_changed"];
 
@@ -58,6 +59,20 @@ export default function OutcomeTracker() {
   const [showOther, setShowOther] = useState(false);
   const [busy, setBusy] = useState(false);
   const [priorOpen, setPriorOpen] = useState(false);
+  const [checkOpen, setCheckOpen] = useState(false);
+  const [priorPreset, setPriorPreset] = useState(null);
+  // Correct first answers in a starting check are offered as prior learning; the parent still ticks each one.
+  const applyCheckResults = (c) => {
+    const date = new Date(c.answered_at).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
+    const right = c.items.filter((i) => i.correct);
+    setPriorPreset({
+      source: `Starting check: ${c.subject} (${date})`,
+      summary: `${(data.student.name || "Your child").split(" ")[0]} answered ${right.length} of ${c.items.length} questions right first time on ${date}. ${c.items.length - right.length ? `The other ${c.items.length - right.length} outcome${c.items.length - right.length === 1 ? "" : "s"} stay open for teaching.` : ""}`,
+      suggestions: right.map((i) => ({ code: i.code, subject: c.subject, summary: i.summary, evidence: "Answered correctly first time in the starting check.", confidence: "medium" })),
+    });
+    setCheckOpen(false);
+    setPriorOpen(true);
+  };
 
   useEffect(() => { api.get("/students").then((r) => setStudents(r.data || [])).catch(() => setStudents([])); }, []);
   useEffect(() => { if (!sid && students?.length) nav(`/parent/outcomes/${students[0].id}`, { replace: true }); }, [sid, students, nav]);
@@ -123,7 +138,8 @@ export default function OutcomeTracker() {
             </select>
           )}
           {data?.available && <button onClick={rebuild} disabled={busy} className="inline-flex items-center gap-1.5 rounded-full border border-stone-300 bg-white px-4 py-2 text-xs font-bold disabled:opacity-50" data-testid="tracker-rebuild"><RefreshCw size={13} className={busy ? "animate-spin" : ""} /> Recheck all records</button>}
-          {data?.available && <button onClick={() => setPriorOpen(true)} className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-white" style={{ backgroundColor: "#3730A3" }} data-testid="prior-open"><History size={13} /> Add prior learning</button>}
+          {data?.available && <button onClick={() => setCheckOpen(true)} className="inline-flex items-center gap-1.5 rounded-full border border-stone-300 bg-white px-4 py-2 text-xs font-bold" data-testid="check-open"><ClipboardCheck size={13} /> Starting check</button>}
+          {data?.available && <button onClick={() => { setPriorPreset(null); setPriorOpen(true); }} className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-white" style={{ backgroundColor: "#3730A3" }} data-testid="prior-open"><History size={13} /> Add prior learning</button>}
           {data?.available && <SupportSettings data={data} onSaved={() => load()} />}
         </div>
       </header>
@@ -241,7 +257,8 @@ export default function OutcomeTracker() {
           </section>
         </>
       )}
-      {priorOpen && data?.available && <PriorLearningDialog data={data} onClose={() => setPriorOpen(false)} onDone={() => { setPriorOpen(false); load(); }} />}
+      {priorOpen && data?.available && <PriorLearningDialog data={data} preset={priorPreset} onClose={() => setPriorOpen(false)} onDone={() => { setPriorOpen(false); load(); }} />}
+      {checkOpen && data?.available && <StartingCheckDialog data={data} onClose={() => setCheckOpen(false)} onUseResults={applyCheckResults} />}
     </div>
   );
 }

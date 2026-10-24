@@ -1271,6 +1271,14 @@ await step("P. outcome tracker: hand-in, review and evidence update it; only the
   const read = await api("POST", `/outcomes/students/${sid}/prior-learning/analyse`, pt, { text: "Mathematics: A. Confident with place value and addition strategies this semester." });
   ok(read.status === 503 && read.json.code === "AI_UNAVAILABLE", "analyse without AI: " + read.status);
   ok((await api("POST", `/outcomes/students/${sid}/prior-learning`, ct, { codes: [AR], source: "x" })).status === 403, "child recorded prior learning");
+  // Starting checks: the dialog lists none yet, and making one without AI fails politely.
+  await tp.goto(BASE + `/parent/outcomes/${sid}`);
+  await tp.click("[data-testid=check-open]");
+  await tp.waitForSelector("[data-testid=check-create]");
+  ok(await tp.locator("[data-testid=check-list]").count() === 0, "checks listed before any were made");
+  const made = await api("POST", `/outcomes/students/${sid}/starting-checks`, pt, { subject: "Mathematics" });
+  ok(made.status === 503 && made.json.code === "AI_UNAVAILABLE", "starting check without AI: " + made.status);
+  ok((await api("GET", `/outcomes/students/${sid}/starting-checks`, parentToken)).status === 404, "another family listed this child's checks");
   await ctx.close();
 });
 

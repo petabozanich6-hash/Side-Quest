@@ -103,6 +103,23 @@ separately. A parent can still confirm it as Achieved later (Achieved wins), or 
 * `POST …/outcomes/:code/prior-learning/remove` undoes it; its evidence is kept with the reason and stops counting.
 * All routes are parent-only and need Family Membership.
 
+### Starting check
+
+**Starting check** on the tracker makes a short placement quiz per subject (`startingCheck.ts`,
+`POST /api/outcomes/students/:sid/starting-checks` with `{ subject }`; `GET` lists them with results).
+
+* One AI call per subject writes one multiple-choice question for each of up to 8 of the child's unmet program
+  outcomes, picked across strands and described with plain-English summaries (no codes sent). Malformed, duplicate and
+  out-of-list questions are dropped; fewer than 3 usable questions fails without using the allowance. Limit: 16 per
+  family per day (`ai_usage` kind `starting_check`); the owner account is exempt.
+* It becomes an ordinary ready lesson ("Starting check: Mathematics"), labelled AI-generated, with **no outcome codes**,
+  assigned to the child for today. `starting_checks` (created at runtime) links each question to its outcome.
+* The quiz never blocks hand-in (`checkQuiz` / `quizPassed` treat any attempt as passed), and **only the first attempt**
+  is used for results, so retries can't inflate them.
+* Answered checks show "N of M right first time". **Use results** opens the prior-learning dialog with the correctly
+  answered outcomes suggested (unticked) and the source filled in ("Starting check: Mathematics (21 Oct 2026)"). Wrong
+  answers stay open for teaching. The check is never recorded as tracker evidence by itself.
+
 ## Data integrity
 
 * **No duplicates**: unique key per child, outcome, source type and source id. Re-reviews, repeated quiz attempts and resyncs update the same row.

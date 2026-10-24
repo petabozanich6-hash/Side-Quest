@@ -61,3 +61,17 @@ test("choosing by hand lists only outcomes not already met, and needs a source",
   await click("prior-save");
   expect(api.post).toHaveBeenCalledWith("/outcomes/students/kid/prior-learning", expect.objectContaining({ codes: ["MA2-AR-01"], source: "Previous school, Term 1" }));
 });
+
+test("starting check results open straight on the review step, still unticked, with the source filled in", async () => {
+  await act(async () => root.unmount());
+  root = createRoot(box);
+  const preset = { source: "Starting check: Mathematics (21 Oct 2026)", summary: "Mia answered 1 of 2 right first time.",
+    suggestions: [{ code: "MA2-RN-01", subject: "Mathematics", summary: "Place value", evidence: "Answered correctly first time in the starting check.", confidence: "medium" }] };
+  await act(async () => { root.render(<PriorLearningDialog data={data} preset={preset} onClose={jest.fn()} onDone={done} />); });
+  expect(box.querySelector('[data-testid="prior-summary"]').textContent).toContain("1 of 2");
+  expect(box.querySelector('[data-testid="prior-suggestion-MA2-RN-01"] input').checked).toBe(false);
+  expect(box.querySelector('[data-testid="prior-source"]').value).toBe("Starting check: Mathematics (21 Oct 2026)");
+  await act(async () => box.querySelector('[data-testid="prior-suggestion-MA2-RN-01"] input').click());
+  await act(async () => box.querySelector('[data-testid="prior-save"]').click());
+  expect(api.post).toHaveBeenCalledWith("/outcomes/students/kid/prior-learning", expect.objectContaining({ codes: ["MA2-RN-01"], source: "Starting check: Mathematics (21 Oct 2026)" }));
+});

@@ -43,6 +43,7 @@ export function accessPolicy(method: string, path: string): AccessPolicy | null 
     /^\/api\/life-evidence\/[^/]+\/review$/.test(p) ||
     /^\/api\/outcomes\/students\/[^/]+\/(rebuild|outcomes\/[^/]+\/(confirm|unconfirm|evidence|prior-learning\/remove))$/.test(p) ||
     /^\/api\/outcomes\/students\/[^/]+\/prior-learning(\/analyse)?$/.test(p) ||
+    /^\/api\/outcomes\/students\/[^/]+\/starting-checks$/.test(p) ||
     /^\/api\/outcomes\/evidence\/[^/]+\/(exclude|include)$/.test(p) ||
     /^\/api\/assignments\/[^/]+\/place$/.test(p)
   )) return "paid";
