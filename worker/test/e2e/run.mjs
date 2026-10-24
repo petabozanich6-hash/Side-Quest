@@ -1374,6 +1374,27 @@ await step("L. users cannot grant themselves a paid plan", async () => {
   ok(p.json.effective_plan === "FREE_PREVIEW", "plan set from request body");
 });
 
+await step("M0. missed payment: every parent page warns until the grace period ends, and access is unchanged", async () => {
+  const fam = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
+  const graceEnd = new Date(Date.now() + 5 * 86400000).toISOString();
+  sql(`UPDATE families SET plan='PAST_DUE', plan_period_end='${graceEnd}' WHERE id='${fam}';`);
+  ok((await api("GET", "/account/plan", parentToken)).json.effective_plan === "PAST_DUE", "plan not past due");
+  for (const path of ["/parent", "/parent/calendar", "/parent/lessons"]) {
+    await page.goto(BASE + path);
+    await page.waitForSelector("[data-testid=past-due-banner]");
+  }
+  ok((await page.textContent("[data-testid=past-due-banner]")).includes("Update your card by"), "banner missing the deadline");
+  await shot("past-due-banner");
+  // Full access continues during grace.
+  const kids = await api("GET", "/students", parentToken);
+  ok((await api("GET", `/assignments?student_id=${kids.json[0].id}`, parentToken)).status === 200, "assignments unreadable while past due");
+  // The plan page has its own, fuller notice, so the banner is not repeated there.
+  await page.goto(BASE + "/parent/plan");
+  await page.waitForSelector("[data-testid=membership-status]");
+  ok((await page.textContent("body")).includes("Your last payment did not go through"), "plan page lacks the past-due notice");
+  ok(await page.locator("[data-testid=past-due-banner]").count() === 0, "banner repeated on the plan page");
+});
+
 await step("M. expired preview: cannot create or assign, but nothing is lost", async () => {
   const fam = JSON.parse(Buffer.from(parentToken.split(".")[1], "base64url").toString()).family_id;
   sql(`UPDATE families SET plan='FREE_PREVIEW', trial_started_at='2020-01-01T00:00:00Z', trial_ends_at='2020-01-08T00:00:00Z' WHERE id='${fam}';`);

@@ -86,6 +86,14 @@ Register a fresh parent (it starts on the 7-day preview, no card). On **Your pla
 - **Failed payment:** Manage billing → replace the card with `4000 0000 0000 0341`. Force a renewal now with the Stripe
   CLI: `stripe subscriptions update sub_... --billing-cycle-anchor=now --proration-behavior=none`. The invoice fails →
   plan shows "payment needed" (access kept 7 days). Put `4242…` back and pay the invoice in Stripe → returns to active.
+- **What the family and owner are told** (`worker/src/paymentNotices.ts`, on the 5-minute cron, after billing
+  reconciliation): while `PAST_DUE`, every parent page except Your plan shows a "Your last payment didn't go
+  through" banner with an **Update card** button (opens the Stripe portal). The parent gets one "payment didn't go
+  through" email per missed payment, and one "membership is paused" email if that payment is never fixed (grace ran
+  out, or Stripe ended the subscription). Paying again in time means no second email. The owner gets one alert per
+  missed payment when `OWNER_NOTIFICATION_EMAIL` is set and live payments are on; it contains no family details.
+  Deliveries are recorded in `payment_notice_deliveries` (created at runtime) and are never retried, so nobody is
+  emailed twice. Stripe's own failed-payment emails are separate: turn them off in Stripe if you don't want both.
 - **Declined at checkout:** `4000 0000 0000 9995` → Checkout shows the error, plan unchanged.
 - **Duplicates:** In Stripe, resend any delivered event → returns 200, nothing changes.
 

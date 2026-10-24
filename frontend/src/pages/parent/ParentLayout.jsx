@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
-import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon, Beaker } from "lucide-react";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon, Beaker, CreditCard } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -62,8 +62,11 @@ export default function ParentLayout() {
     route.startsWith("/parent/learning-plans") ? "The free preview includes one basic learning plan. More plans and AI planning need Family Membership." :
     route.startsWith("/parent/lessons/drafts") ? "Creating AI lesson sets and requesting AI refinements needs Family Membership. Your seven-day preview includes one complete AI-generated single lesson per family from Make a lesson." : "";
   const doLogout = async () => { await logout(); navigate("/"); };
+  // The plan is read once at sign-in (for the missed-payment banner) and again on pages with a membership notice.
+  const planRead = useRef("");
   useEffect(() => {
-    if (!user?.id || !paidNotice) return;
+    if (!user?.id || (!paidNotice && planRead.current === user.id)) return;
+    planRead.current = user.id;
     let alive = true;
     api.get("/account/plan").then(r => { if (alive) setPlanState(r.data); }).catch(() => { if (alive) setPlanState(null); });
     return () => { alive = false; };
@@ -142,6 +145,12 @@ export default function ParentLayout() {
         {unreadReplies>0 && route!=="/parent/feedback" && route!=="/parent" && <Link to="/parent/feedback" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-2 text-sm text-amber-950 font-semibold" data-testid="parent-feedback-new-reply-banner"><MessageSquare size={17}/>{unreadReplies} new {unreadReplies===1?"reply":"replies"} from Side-Quest · Read your messages →</Link>}
         <HelpAlertBar />
         <JurisdictionGate />
+        {planState?.effective_plan === "PAST_DUE" && !route.startsWith("/parent/plan") && <div role="alert" className="mx-4 sm:mx-8 mt-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 flex flex-wrap items-center gap-3 text-sm text-rose-950" data-testid="past-due-banner">
+          <CreditCard size={18} className="shrink-0"/>
+          <p className="flex-1 min-w-[180px]"><strong>Your last payment didn't go through.</strong> Update your card{planState.period_end ? ` by ${new Date(planState.period_end).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short" })}` : ""} to keep full access. Everything works as normal until then.</p>
+          <button type="button" onClick={() => api.post("/billing/portal", {}).then(r => { if (r.data?.url) window.location.assign(r.data.url); else navigate("/parent/plan"); }).catch(() => navigate("/parent/plan"))}
+            className="shrink-0 rounded-full bg-rose-700 px-4 py-1.5 font-bold text-white" data-testid="past-due-update-card">Update card</button>
+        </div>}
         {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
         <Outlet context={{ unreadFeedbackReplies: unreadReplies, latestUnreadFeedbackReply: latestUnreadReply }} />
       </main>
