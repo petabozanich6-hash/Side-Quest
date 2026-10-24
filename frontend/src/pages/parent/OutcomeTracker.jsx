@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { Map as MapIcon, RefreshCw, Search, ShieldCheck, ChevronRight, Info } from "lucide-react";
+import { Map as MapIcon, RefreshCw, Search, ShieldCheck, ChevronRight, Info, History } from "lucide-react";
 import { api } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import InternationalGoalTracker from "./InternationalGoalTracker";
 import { STATUS, STATUS_ORDER, GAPS, StatusBadge, StatusBar } from "../../lib/outcomes";
+import PriorLearningDialog from "../../components/parent/PriorLearningDialog";
 
 const GAP_FILTERS = ["awaiting_confirmation", "needs_consolidation", "limited_evidence", "not_revisited", "not_introduced", "confirmed_evidence_changed"];
 
@@ -56,6 +57,7 @@ export default function OutcomeTracker() {
   const [q, setQ] = useState("");
   const [showOther, setShowOther] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [priorOpen, setPriorOpen] = useState(false);
 
   useEffect(() => { api.get("/students").then((r) => setStudents(r.data || [])).catch(() => setStudents([])); }, []);
   useEffect(() => { if (!sid && students?.length) nav(`/parent/outcomes/${students[0].id}`, { replace: true }); }, [sid, students, nav]);
@@ -121,6 +123,7 @@ export default function OutcomeTracker() {
             </select>
           )}
           {data?.available && <button onClick={rebuild} disabled={busy} className="inline-flex items-center gap-1.5 rounded-full border border-stone-300 bg-white px-4 py-2 text-xs font-bold disabled:opacity-50" data-testid="tracker-rebuild"><RefreshCw size={13} className={busy ? "animate-spin" : ""} /> Recheck all records</button>}
+          {data?.available && <button onClick={() => setPriorOpen(true)} className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-white" style={{ backgroundColor: "#3730A3" }} data-testid="prior-open"><History size={13} /> Add prior learning</button>}
           {data?.available && <SupportSettings data={data} onSaved={() => load()} />}
         </div>
       </header>
@@ -160,7 +163,7 @@ export default function OutcomeTracker() {
                 </div>
                 <div className="mt-2"><StatusBar counts={a.counts} total={a.total} /></div>
                 <div className="mt-2 text-xs text-stone-600">
-                  {a.counts.achieved} achieved · {a.counts.demonstrated} demonstrated · {a.counts.developing + a.counts.introduced} on the way
+                  {a.counts.achieved} achieved{a.counts.prior_learning ? ` · ${a.counts.prior_learning} prior learning` : ""} · {a.counts.demonstrated} demonstrated · {a.counts.developing + a.counts.introduced} on the way
                   {a.awaiting_confirmation > 0 && <span className="block font-semibold text-emerald-800">{a.awaiting_confirmation} ready for your confirmation</span>}
                 </div>
               </button>
@@ -231,12 +234,14 @@ export default function OutcomeTracker() {
             <ul className="list-disc pl-5 space-y-1">
               <li><b>Introduced</b>: met in a learning experience. <b>Developing</b>: practised (an approved lesson, a passed quiz, or more than one experience).</li>
               <li><b>Demonstrated</b>: understanding shown in at least {data.rules.min_evidence} pieces of reviewed work on {data.rules.min_occasions} separate days, done independently or with some help (or one comprehensive assessment you flag).</li>
+              <li><b>Prior learning</b>: met before Side-Quest (a school report, NAPLAN result or earlier schooling), recognised by you. It isn't a gap and isn't planned again.</li>
               <li><b>Achieved</b>: only when you confirm it. Side-Quest never removes your confirmation; if its evidence changes, it is flagged for you.</li>
             </ul>
             <p className="flex items-start gap-2"><Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" /> {data.note} Curriculum: {data.framework.name}.</p>
           </section>
         </>
       )}
+      {priorOpen && data?.available && <PriorLearningDialog data={data} onClose={() => setPriorOpen(false)} onDone={() => { setPriorOpen(false); load(); }} />}
     </div>
   );
 }

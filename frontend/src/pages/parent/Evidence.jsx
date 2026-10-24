@@ -102,11 +102,11 @@ function VisitPrep({ students, range, setRange, bump }) {
             <div className="mt-3 rounded-lg border border-slate-200 p-3" data-testid="visit-progress">
               <p className="text-xs font-semibold text-slate-700">Outcome Tracker snapshot (all time, as at today) · {data.progress.totals.total} outcomes for this year level</p>
               <div className="mt-2 flex h-3 w-full overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
-                {["achieved", "demonstrated", "developing", "introduced"].map((k, i) => (
-                  <div key={k} style={{ width: `${(100 * (data.progress.totals.counts[k] || 0)) / Math.max(1, data.progress.totals.total)}%`, backgroundColor: ["#1F3B2D", "#4A7C59", "#9DBF9E", "#D9E5D6"][i] }} />
+                {["achieved", "prior_learning", "demonstrated", "developing", "introduced"].map((k, i) => (
+                  <div key={k} style={{ width: `${(100 * (data.progress.totals.counts[k] || 0)) / Math.max(1, data.progress.totals.total)}%`, backgroundColor: ["#1F3B2D", "#818CF8", "#4A7C59", "#9DBF9E", "#D9E5D6"][i] }} />
                 ))}
               </div>
-              <p className="mt-1 text-xs text-slate-600">{["achieved", "demonstrated", "developing", "introduced", "not_started"].map(k => `${data.progress.status_labels[k]}: ${data.progress.totals.counts[k] || 0}`).join(" · ")}</p>
+              <p className="mt-1 text-xs text-slate-600">{["achieved", "prior_learning", "demonstrated", "developing", "introduced", "not_started"].map(k => `${data.progress.status_labels[k]}: ${data.progress.totals.counts[k] || 0}`).join(" · ")}</p>
             </div>
           )}
           {data?.progress && !data.progress.available && <p className="text-xs text-slate-600 mt-2" data-testid="visit-progress-unavailable">{data.progress.note}</p>}

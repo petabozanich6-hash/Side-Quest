@@ -1,13 +1,16 @@
-// Shared labels for the Outcome Tracker. The five statuses are fixed; only a parent confirmation reaches Achieved.
-import { Circle, Sprout, Leaf, TreeDeciduous, Award } from "lucide-react";
+// Shared labels for the Outcome Tracker. Only a parent can set Prior learning (met before Side-Quest) or Achieved.
+import { Circle, Sprout, Leaf, TreeDeciduous, Award, History } from "lucide-react";
 
-export const STATUS_ORDER = ["not_started", "introduced", "developing", "demonstrated", "achieved"];
+export const STATUS_ORDER = ["not_started", "introduced", "developing", "demonstrated", "prior_learning", "achieved"];
+/** Already met: not a gap, not taught again. */
+export const MET = ["prior_learning", "achieved"];
 
 export const STATUS = {
   not_started: { label: "Not Started", short: "Not started", icon: Circle, bg: "#F1EEE6", fg: "#57534E", border: "#D6D3D1", bar: "#D6D3D1", hint: "No learning evidence yet." },
   introduced: { label: "Introduced", short: "Introduced", icon: Sprout, bg: "#F0F7FF", fg: "#1E4E79", border: "#A9CBEA", bar: "#8DB8E0", hint: "Met in a learning experience." },
   developing: { label: "Developing", short: "Developing", icon: Leaf, bg: "#FFF7E6", fg: "#7A4B0B", border: "#E8C27A", bar: "#D4A574", hint: "Practised, building towards understanding." },
   demonstrated: { label: "Demonstrated", short: "Demonstrated", icon: TreeDeciduous, bg: "#ECF7EF", fg: "#1F5A36", border: "#8CC4A0", bar: "#6B8A5B", hint: "Understanding shown in reviewed work. Waiting for your confirmation." },
+  prior_learning: { label: "Prior learning", short: "Prior learning", icon: History, bg: "#EEF0FB", fg: "#3730A3", border: "#A5B4FC", bar: "#818CF8", hint: "Met before Side-Quest (school report, NAPLAN or earlier schooling), recognised by you." },
   achieved: { label: "Achieved", short: "Achieved", icon: Award, bg: "#1F3B2D", fg: "#F5EFE0", border: "#1F3B2D", bar: "#1F3B2D", hint: "Confirmed by you." },
 };
 
@@ -38,6 +41,7 @@ export const SOURCE = {
   life_learning: "Life learning",
   evidence_note: "Evidence Backpack note",
   parent_observation: "Your observation",
+  prior_learning: "Prior learning",
 };
 
 export const ORIGIN = { ai: "AI-drafted lesson", manual: "Lesson you built", life: "Everyday learning", parent: "Added by you" };

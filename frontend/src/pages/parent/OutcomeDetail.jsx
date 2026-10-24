@@ -63,6 +63,28 @@ function UnconfirmBox({ d, sid, code, onDone }) {
   );
 }
 
+/** Prior learning: met before Side-Quest and recognised by the parent. It can be removed (logged with a note). */
+function PriorBox({ d, sid, code, onDone }) {
+  const [open, setOpen] = useState(false);
+  const [note, setNote] = useState("");
+  const go = async () => {
+    try { await api.post(`/outcomes/students/${sid}/outcomes/${encodeURIComponent(code)}/prior-learning/remove`, { note }); toast.success("Prior learning removed"); onDone(); }
+    catch (e) { toast.error(e.response?.data?.detail || "Could not change this"); }
+  };
+  return (
+    <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 space-y-2" data-testid="prior-box">
+      <p className="text-sm text-indigo-950"><b>Prior learning:</b> {d.prior_learning.source}, recorded {new Date(d.prior_learning.at).toLocaleDateString()}.{d.prior_learning.note ? ` “${d.prior_learning.note}”` : ""}</p>
+      <p className="text-xs text-indigo-900">Met before Side-Quest, so it isn't counted as a gap or planned again. You can still confirm it as Achieved once you've seen it yourself.</p>
+      {!open ? <button onClick={() => setOpen(true)} className="text-xs font-semibold underline text-indigo-900" data-testid="prior-remove-open">Remove prior learning</button> : (
+        <div className="space-y-2">
+          <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Why? (kept in the history)" className={field} data-testid="prior-remove-note" />
+          <button onClick={go} className="rounded-full border border-indigo-400 px-4 py-1.5 text-xs font-bold" data-testid="prior-remove-btn">Remove</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function AddEvidence({ sid, code, onDone }) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState("observation");
@@ -224,6 +246,7 @@ export default function OutcomeDetail() {
           </ul>
           <p className="text-[11px] text-stone-500 mt-3">These are Side-Quest's guidelines, not official curriculum-authority thresholds.{d.learner_support?.documented_adjustments ? " Documented adjustments apply for this child." : ""}</p>
         </section>
+        {d.prior_learning && !d.confirmed && <PriorBox d={d} sid={sid} code={code} onDone={load} />}
         <ConfirmBox d={d} sid={sid} code={code} onDone={load} />
       </div>
 

@@ -336,7 +336,7 @@ export function progressSnapshot(tracker: any, fw: Framework | null, stage: stri
     if (x.gaps.includes("awaiting_confirmation")) { a.awaiting_confirmation++; totals.awaiting_confirmation++; }
     areas.set(area, a);
     const g = (x.gaps as string[]).filter((k) => NEEDS_EVIDENCE_GAPS.includes(k));
-    if (x.evidence_count > 0 && g.length && x.status !== "achieved") needs.push({ code: x.code, learning_area: area, status: x.status, gaps: g });
+    if (x.evidence_count > 0 && g.length && x.status !== "achieved" && x.status !== "prior_learning") needs.push({ code: x.code, learning_area: area, status: x.status, gaps: g });
   }
   // Chosen subjects with no verified outcomes are listed so the record shows the limitation, not silence.
   const unsupported = (tracker.areas || []).filter((a: any) => a.unsupported).map((a: any) => a.subject);

@@ -4,7 +4,7 @@ Status: built on branch `feat/outcome-mastery-tracker`, **not merged or deployed
 
 ## What it does
 
-Each child has one record per curriculum outcome showing how far along they are (**Not Started, Introduced, Developing, Demonstrated, Achieved**), the evidence behind it, and why it last changed. It updates itself as children hand in work and parents review it. Parents never have to fill it in, and finishing a lesson never marks anything Achieved.
+Each child has one record per curriculum outcome showing how far along they are (**Not Started, Introduced, Developing, Demonstrated, Prior learning, Achieved**), the evidence behind it, and why it last changed. It updates itself as children hand in work and parents review it. Parents never have to fill it in, and finishing a lesson never marks anything Achieved.
 
 ## Audit findings it is built on
 
@@ -79,6 +79,29 @@ Support comes from the review (per outcome), else the assignment's support level
 Refinement: `DEFAULT_RULES` and `RULE_OVERRIDES` (by framework, learning area or outcome code prefix) in `outcomeTracker.ts`, plus per-child documented adjustments. No overrides are set today.
 
 Gaps flagged per outcome: not introduced, introduced but not revisited (one occasion, 28+ days ago), limited evidence, needs consolidation (latest evidence says so), ready for confirmation, and confirmed but its evidence changed. Gap suggestions link to an AI lesson draft (paid plans; prompt pre-filled), a manual lesson pre-linked to the outcome, or an everyday Life Learning idea for that learning area. All only for outcomes in the family's catalogue.
+
+## Prior learning (met before Side-Quest)
+
+Children who join part-way through the year, or who covered work at school, can have outcomes recognised as **Prior
+learning**: its own status, between Demonstrated and Achieved. Like Achieved, only a parent can set it. It clears the
+outcome from every gap, Plan My Week stops scheduling it, and the Evidence Backpack and printed record count it
+separately. A parent can still confirm it as Achieved later (Achieved wins), or remove it with a note.
+
+* **Add prior learning** on the tracker opens a dialog with two routes:
+  * **Read a report or NAPLAN result** (`POST /api/outcomes/students/:sid/prior-learning/analyse`, `priorLearning.ts`):
+    upload a PDF or photo (converted to text with Workers AI `toMarkdown`) or paste the text. One AI call picks, by
+    number, from the child's own program outcomes not already met, described with Side-Quest's plain-English summaries
+    (never official wording, never codes). Out-of-list picks are dropped and codes stripped. NAPLAN gives a level per
+    domain, not per outcome, so its picks are capped at medium confidence. Nothing is recorded; every suggestion starts
+    unticked. Limit: 10 documents per family per day (`ai_usage` kind `prior_learning_scan`); the owner account is
+    exempt.
+  * **Choose outcomes myself**: tick outcomes from the child's program.
+* Saving (`POST /api/outcomes/students/:sid/prior-learning`) needs a source ("Year 4 Semester 1 school report") and
+  records one `prior_learning` evidence row per outcome, sets `prior_learning_*` on `outcome_progress` (migration
+  `0071`, also added at runtime) and logs the change as the parent's. An uploaded report is kept as one Evidence
+  Backpack note listing the outcomes. Outcomes already Achieved or recognised are skipped.
+* `POST …/outcomes/:code/prior-learning/remove` undoes it; its evidence is kept with the reason and stops counting.
+* All routes are parent-only and need Family Membership.
 
 ## Data integrity
 
