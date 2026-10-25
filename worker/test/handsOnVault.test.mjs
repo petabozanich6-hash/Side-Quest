@@ -25,6 +25,8 @@ import { electricParentGuides, electricRunbooks } from "../src/data/handsOnElect
 import { animalParentGuides, animalRunbooks } from "../src/data/handsOnAnimals.ts";
 import { oceanParentGuides, oceanRunbooks } from "../src/data/handsOnOceans.ts";
 import { geometryParentGuides, geometryRunbooks } from "../src/data/handsOnGeometry.ts";
+import { topUpAQuests, topUpAParentGuides, topUpARunbooks } from "../src/data/handsOnTopUpA.ts";
+import { topUpBQuests, topUpBParentGuides, topUpBRunbooks } from "../src/data/handsOnTopUpB.ts";
 import { coreRunbooks } from "../src/data/handsOnRunbookCore.ts";
 import { middleRunbooks } from "../src/data/handsOnRunbookMiddle.ts";
 import { expandedRunbooks } from "../src/data/handsOnRunbookExpanded.ts";
@@ -61,9 +63,9 @@ function makeHarness() {
   return { req, parent, db };
 }
 
-test("230 original family activities have practical printable guides and troubleshooting", () => {
-  assert.equal(HANDS_ON_QUESTS.length, 230);
-  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 230);
+test("254 original family activities have practical printable guides and troubleshooting", () => {
+  assert.equal(HANDS_ON_QUESTS.length, 254);
+  assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.id)).size, 254);
   assert.equal(new Set(HANDS_ON_QUESTS.map(q => q.category)).size, 36);
   const guides = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
     ...spaceParentGuides, ...soundParentGuides, ...codingParentGuides,
@@ -73,10 +75,12 @@ test("230 original family activities have practical printable guides and trouble
     ...earthParentGuides, ...civicsParentGuides,
     ...sunParentGuides, ...bubbleParentGuides, ...makingParentGuides, ...kitchenLabParentGuides,
     ...halloweenCraftParentGuides, ...halloweenDiscoveryParentGuides,
-    ...bodyParentGuides, ...electricParentGuides, ...animalParentGuides, ...oceanParentGuides, ...geometryParentGuides };
+    ...bodyParentGuides, ...electricParentGuides, ...animalParentGuides, ...oceanParentGuides, ...geometryParentGuides,
+    ...topUpAParentGuides, ...topUpBParentGuides };
   const runbooks = {...coreRunbooks, ...middleRunbooks, ...expandedRunbooks, ...newRunbooks,
     ...halloweenCraftRunbooks, ...halloweenDiscoveryRunbooks,
-    ...bodyRunbooks, ...electricRunbooks, ...animalRunbooks, ...oceanRunbooks, ...geometryRunbooks};
+    ...bodyRunbooks, ...electricRunbooks, ...animalRunbooks, ...oceanRunbooks, ...geometryRunbooks,
+    ...topUpARunbooks, ...topUpBRunbooks};
   const halloween = [...halloweenCraftQuests, ...halloweenDiscoveryQuests];
   assert.equal(halloween.length, 16);
   assert.equal(new Set(halloween.map(q => q.id)).size, 16);
@@ -87,18 +91,20 @@ test("230 original family activities have practical printable guides and trouble
   }
   const curriculum = HANDS_ON_QUESTS.filter(q => ["Human Body & Health", "Electricity & Magnets", "Animals & Minibeasts", "Oceans & Waterways", "Shapes & Geometry"].includes(q.category));
   assert.equal(curriculum.length, 40);
-  for (const q of curriculum) {
+  const topUps = [...topUpAQuests, ...topUpBQuests];
+  assert.equal(topUps.length, 24);
+  for (const q of [...curriculum, ...topUps]) {
     assert.ok(q.steps.length >= 7 && q.steps.every(step => step.length >= 55), `Steps must be actionable: ${q.id}`);
     assert.ok(q.materials.length >= 5, `Supplies must be clear: ${q.id}`);
     assert.match(q.safety, /adult|supervis|avoid|never|safe|wash|protect|toddler|keep/i);
   }
-  assert.equal(Object.keys(runbooks).length, 230);
+  assert.equal(Object.keys(runbooks).length, 254);
   assert.equal(Object.keys(revisedQuestSteps).length, 15);
   for (const [id, steps] of Object.entries(revisedQuestSteps)) {
     assert.ok(HANDS_ON_QUESTS.some(q => q.id === id), "unknown upgraded quest " + id);
     assert.ok(steps.length >= 7 && steps.every(step => step.length > 60), id + " must have executable instructions");
   }
-  assert.equal(Object.keys(guides).length, 230, "each quest needs exactly one custom parent guide");
+  assert.equal(Object.keys(guides).length, 254, "each quest needs exactly one custom parent guide");
   for (const q of HANDS_ON_QUESTS) {
     assert.match(q.id, /^[a-z0-9-]+$/);
     assert.ok(q.title.length > 6 && q.description.length > 20, q.id);
@@ -129,8 +135,8 @@ test("free preview gets metadata only, but never step-by-step guides", async () 
   assert.match(list.headers.get("cache-control"), /no-store/);
   const data = await list.json();
   assert.equal(data.unlocked, false);
-  assert.equal(data.count, 230);
-  assert.equal(data.items.length, 230);
+  assert.equal(data.count, 254);
+  assert.equal(data.items.length, 254);
   assert.equal(data.categories.length, 36);
   assert.ok(data.categories.includes("Halloween Crafts"));
   assert.ok(data.categories.includes("Halloween Discovery & Games"));
