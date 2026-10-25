@@ -135,7 +135,7 @@ export async function createStartingCheck(
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   // One retry when the reply can't be used: Llama occasionally returns truncated or oddly shaped JSON.
   let quiz: any[] = [], items: { index: number; code: string; summary: string }[] = [];
-  let reached = false;
+  let reached = false, why = "";
   for (let attempt = 0; attempt < 2 && quiz.length < 3; attempt++) {
     let reply: any;
     try {
@@ -145,12 +145,14 @@ export async function createStartingCheck(
       reply = extractJson(out);
     } catch { continue; }
     ({ quiz, items } = readQuestions(reply, pool, per));
+    const got = Array.isArray(reply) ? reply : reply?.questions ?? reply?.quiz;
+    why = !reply ? "its reply couldn't be read" : Array.isArray(got) ? `it wrote ${got.length} question${got.length === 1 ? "" : "s"}, ${quiz.length} usable` : "its reply had no questions";
   }
   if (!reached) {
     await mark("failed");
     return fail(502, "The AI service didn't respond. Nothing was used from your allowance; please try again.", "AI_FAILED");
   }
-  if (quiz.length < 3) { await mark("failed"); return fail(502, "The AI couldn't write a usable check for that subject. Nothing was used from your allowance; please try again.", "AI_FAILED"); }
+  if (quiz.length < 3) { await mark("failed"); return fail(502, `The AI couldn't write a usable check for that subject (${why}). Nothing was used from your allowance; please try again.`, "AI_FAILED"); }
 
   const first = String(tracker.student.name || "").split(" ")[0] || "you";
   const made = await lb.createLesson(db, o.familyId, {
