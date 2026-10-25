@@ -51,6 +51,53 @@ const SYSTEM = [
   'Reply with ONE JSON object only: {"questions":[{"n":number,"question":string,"options":[string],"correct_index":number (zero-based),"explanation":string (one sentence, shown after answering)}]}',
 ].join("\n");
 
+const LETTERS = "ABCDEF";
+const optionText = (v: unknown) => {
+  const raw = typeof v === "string" || typeof v === "number" ? String(v) : v && typeof v === "object" ? String((v as any).text ?? (v as any).option ?? (v as any).label ?? (v as any).value ?? "") : "";
+  // "A) 12", "b. 12", "(C) 12" → "12"
+  return stripCodes(clip(raw.replace(/^\s*\(?[A-Fa-f][).:]\s+/, ""), 200));
+};
+/** The zero-based correct option, from correct_index or the other ways the model sometimes says it ("B", "12", 1-based). */
+function correctIndex(q: any, rawOptions: unknown[], options: string[]): number {
+  const n = Number(q?.correct_index ?? q?.correctIndex ?? q?.answer_index);
+  if (Number.isInteger(n) && n >= 0 && n < options.length) return n;
+  if (Number.isInteger(n) && n === options.length) return n - 1; // 1-based
+  for (const key of ["correct_index", "correct", "correct_answer", "answer"]) {
+    const v = q?.[key];
+    if (typeof v !== "string" && typeof v !== "number") continue;
+    const t = String(v).trim();
+    if (/^[A-Fa-f]$/.test(t) && LETTERS.indexOf(t.toUpperCase()) < options.length) return LETTERS.indexOf(t.toUpperCase());
+    const m = t.match(/^\(?([A-Fa-f])[).:]\s/);
+    if (m && LETTERS.indexOf(m[1].toUpperCase()) < options.length) return LETTERS.indexOf(m[1].toUpperCase());
+    const want = optionText(t).toLowerCase();
+    const i = options.findIndex((x) => x.toLowerCase() === want);
+    if (i >= 0) return i;
+  }
+  const flagged = rawOptions.findIndex((x: any) => x && typeof x === "object" && (x.correct === true || x.is_correct === true));
+  return flagged;
+}
+
+/** Well-formed questions for outcomes in the pool, one per outcome. Unnumbered questions are taken in list order. */
+export function readQuestions(reply: any, pool: { code: string; summary: string }[]) {
+  const list = Array.isArray(reply) ? reply : Array.isArray(reply?.questions) ? reply.questions : Array.isArray(reply?.quiz) ? reply.quiz : [];
+  const seen = new Set<string>();
+  const quiz: any[] = [], items: { index: number; code: string; summary: string }[] = [];
+  list.forEach((q: any, i: number) => {
+    const num = Number(q?.n ?? q?.number ?? q?.outcome);
+    const x = pool[(Number.isInteger(num) && num >= 1 ? num : i + 1) - 1];
+    const rawOptions: unknown[] = Array.isArray(q?.options) ? q.options : Array.isArray(q?.choices) ? q.choices : [];
+    const options = rawOptions.map(optionText).filter(Boolean);
+    const ci = correctIndex(q, rawOptions, options);
+    if (!x || seen.has(x.code) || options.length < 3 || options.length > 5 || new Set(options.map((v) => v.toLowerCase())).size !== options.length || ci < 0) return;
+    const question = stripCodes(clip(q?.question ?? q?.prompt ?? q?.text, 600));
+    if (question.length < 8) return;
+    seen.add(x.code);
+    items.push({ index: quiz.length, code: x.code, summary: x.summary });
+    quiz.push({ question, options, correct_index: ci, explanation: stripCodes(clip(q?.explanation, 300)) });
+  });
+  return { quiz, items };
+}
+
 export async function createStartingCheck(
   env: Env, ai: AiBinding | undefined,
   o: { familyId: string; userId: string; studentId: string; subject: unknown; model?: string; gatewayId?: string },
@@ -79,29 +126,22 @@ export async function createStartingCheck(
   const usageId = crypto.randomUUID();
   await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'starting_check', 'pending', ?)").bind(usageId, o.familyId, o.userId, now.toISOString()).run();
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
-  let reply: any;
-  try {
-    const out = await ai.run(o.model || DEFAULT_MODEL, { messages: [{ role: "system", content: SYSTEM }, { role: "user", content: user }], max_tokens: 3500, temperature: 0.3 },
-      o.gatewayId ? { gateway: { id: o.gatewayId } } : undefined);
-    reply = extractJson(out);
-  } catch {
+  // One retry when the reply can't be used: Llama occasionally returns truncated or oddly shaped JSON.
+  let quiz: any[] = [], items: { index: number; code: string; summary: string }[] = [];
+  let reached = false;
+  for (let attempt = 0; attempt < 2 && quiz.length < 3; attempt++) {
+    let reply: any;
+    try {
+      const out = await ai.run(o.model || DEFAULT_MODEL, { messages: [{ role: "system", content: SYSTEM }, { role: "user", content: user }], max_tokens: 3500, temperature: attempt ? 0.2 : 0.3 },
+        o.gatewayId ? { gateway: { id: o.gatewayId } } : undefined);
+      reached = true;
+      reply = extractJson(out);
+    } catch { continue; }
+    ({ quiz, items } = readQuestions(reply, pool));
+  }
+  if (!reached) {
     await mark("failed");
     return fail(502, "The AI service didn't respond. Nothing was used from your allowance; please try again.", "AI_FAILED");
-  }
-
-  // Keep only well-formed questions for outcomes in the list, one per outcome.
-  const seen = new Set<string>();
-  const quiz: any[] = [], items: { index: number; code: string; summary: string }[] = [];
-  for (const q of Array.isArray(reply?.questions) ? reply.questions : []) {
-    const x = pool[Number(q?.n) - 1];
-    const options = (Array.isArray(q?.options) ? q.options : []).map((v: unknown) => stripCodes(clip(v, 200))).filter(Boolean);
-    const ci = Number(q?.correct_index);
-    if (!x || seen.has(x.code) || options.length < 3 || options.length > 4 || new Set(options).size !== options.length || !Number.isInteger(ci) || ci < 0 || ci >= options.length) continue;
-    const question = stripCodes(clip(q.question, 600));
-    if (question.length < 8) continue;
-    seen.add(x.code);
-    items.push({ index: quiz.length, code: x.code, summary: x.summary });
-    quiz.push({ question, options, correct_index: ci, explanation: stripCodes(clip(q.explanation, 300)) });
   }
   if (quiz.length < 3) { await mark("failed"); return fail(502, "The AI couldn't write a usable check for that subject. Nothing was used from your allowance; please try again.", "AI_FAILED"); }
 

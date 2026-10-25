@@ -20,7 +20,9 @@ const CATEGORY_ICONS = { "Kitchen Science":"🧪", "Crystal Lab":"💎", "Dough 
   "Earth & Landforms":"🌍", "Community & Civics":"🏛️",
   "Sun & Energy":"☀️", "Bubbles & Water Play":"🫧",
   "Mini Makers & Machines":"🏗️", "Kitchen Reaction Lab":"🧪",
-  "Halloween Crafts":"🎃", "Halloween Discovery & Games":"👻" };
+  "Halloween Crafts":"🎃", "Halloween Discovery & Games":"👻",
+  "Human Body & Health":"🫀", "Electricity & Magnets":"🧲", "Animals & Minibeasts":"🐞",
+  "Oceans & Waterways":"🌊", "Shapes & Geometry":"🔷" };
 function ageOverlap(ages, filter) {
   if (filter === "all") return true;
   const range = String(ages).match(/(\d+)[^\d]+(\d+)/);

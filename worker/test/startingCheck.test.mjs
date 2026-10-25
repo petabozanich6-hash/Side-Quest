@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import * as ot from "../src/outcomeTracker.ts";
 import * as lb from "../src/lessonBuilder.ts";
-import { createStartingCheck, listStartingChecks, pickAcrossStrands } from "../src/startingCheck.ts";
+import { createStartingCheck, listStartingChecks, pickAcrossStrands, readQuestions } from "../src/startingCheck.ts";
 import { trialEndFrom } from "../src/entitlements.ts";
 
 const NOW = new Date("2026-10-24T02:00:00Z");
@@ -95,4 +95,29 @@ test("outcomes already met are not checked, and an unusable AI reply uses nothin
   const bad = await createStartingCheck(h.env, { run: async () => ({ response: "{\"questions\":[]}" }) }, { familyId: h.fam, userId: h.parent, studentId: h.kid, subject }, NOW);
   assert.equal(bad.code, "AI_FAILED");
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE kind='starting_check' AND status='failed'").get().n, 1);
+});
+
+test("questions are read from the shapes the model actually returns", () => {
+  const pool = ["a", "b", "c", "d", "e", "f"].map((code) => ({ code, summary: `Outcome ${code}` }));
+  const { quiz, items } = readQuestions({ questions: [
+    { question: "Lettered answer, labelled options?", options: ["A) 10", "B) 12", "C) 14"], correct_answer: "B" },
+    { question: "Answer given as the option text?", options: ["cat", "dog", "emu"], answer: "emu" },
+    { question: "One-based correct index?", options: ["1", "2", "3"], correct_index: 3 },
+    { question: "Options as objects?", choices: [{ text: "red" }, { text: "blue", correct: true }, { text: "green" }] },
+    { question: "No answer at all?", options: ["x", "y", "z"] },
+  ] }, pool);
+  assert.deepEqual(quiz.map((q) => q.correct_index), [1, 2, 2, 1]);
+  assert.deepEqual(quiz[0].options, ["10", "12", "14"]);
+  assert.deepEqual(items.map((i) => i.code), ["a", "b", "c", "d"], "unnumbered questions follow the outcome list order");
+});
+
+test("an unusable first reply is retried once", async () => {
+  const h = setup();
+  const subject = await mathsSubject(h);
+  let calls = 0;
+  const good = fakeAi();
+  const ai = { run: async (m, input) => (++calls === 1 ? { response: "Sorry, here you go: {\"questions\": [" } : good.run(m, input)) };
+  const r = await createStartingCheck(h.env, ai, { familyId: h.fam, userId: h.parent, studentId: h.kid, subject }, NOW);
+  assert.equal(calls, 2);
+  assert.ok(r.ok, JSON.stringify(r));
 });
