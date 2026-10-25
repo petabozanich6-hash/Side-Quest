@@ -1,0 +1,26 @@
+
+> side-quest@1.0.0 test:support-copy
+> node --test worker/test/supportCopy.test.mjs
+
+TAP version 13
+# Subtest: privacy policy prioritises private in-app feedback with email fallback
+ok 1 - privacy policy prioritises private in-app feedback with email fallback
+  ---
+  duration_ms: 0.915115
+  type: 'test'
+  ...
+# Subtest: branded email footer points signed-in families to the private feedback tool
+ok 2 - branded email footer points signed-in families to the private feedback tool
+  ---
+  duration_ms: 0.27352
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 60.923676

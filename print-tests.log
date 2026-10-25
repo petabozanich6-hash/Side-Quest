@@ -1,0 +1,343 @@
+
+> frontend@0.1.0 test
+> craco test --watchAll=false --runInBand
+
+PASS src/components/parent/PlanMyWeek.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 69 |[39m   host [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(host)[33m;[39m
+     [90m 70 |[39m   root [33m=[39m createRoot(host)[33m;[39m
+    [31m[1m>[22m[39m[90m 71 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mPlanMyWeek[39m students[33m=[39m{[first[33m,[39m second]} initialDate[33m=[39m{date}
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 72 |[39m     onClose[33m=[39m{jest[33m.[39mfn()} onDone[33m=[39m{done} [33m/[39m[33m>[39m))[33m;[39m
+     [90m 73 |[39m })[33m;[39m
+     [90m 74 |[39m afterEach([36masync[39m () [33m=>[39m { [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39munmount())[33m;[39m host[33m.[39mremove()[33m;[39m })[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/PlanMyWeek.test.jsx:71:12)
+
+PASS src/pages/parent/MakeLesson.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 53 |[39m [36mconst[39m mount [33m=[39m [36masync[39m prompt [33m=>[39m {
+     [90m 54 |[39m   mockSearch [33m=[39m [36mnew[39m [33mURLSearchParams[39m([32m`prompt=${encodeURIComponent(prompt)}&student=kid-7`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 55 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mMakeLesson[39m [33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 56 |[39m }[33m;[39m
+     [90m 57 |[39m [36mconst[39m click [33m=[39m [36masync[39m selector [33m=>[39m act([36masync[39m () [33m=>[39m node[33m.[39mquerySelector(selector)[33m.[39mclick())[33m;[39m
+     [90m 58 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at mount (src/pages/parent/MakeLesson.test.jsx:55:12)
+      at Object.<anonymous> (src/pages/parent/MakeLesson.test.jsx:60:9)
+
+PASS src/pages/parent/CalendarPage.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 53 |[39m     [36mthrow[39m [33mError[39m([32m"Unexpected request: "[39m[33m+[39mpath)[33m;[39m
+     [90m 54 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 55 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mCalendarPage[39m [33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 56 |[39m   [36mconst[39m day[33m=[39mnode[33m.[39mquerySelector([32m`[aria-label="View and edit ${date}"]`[39m)[33m;[39m
+     [90m 57 |[39m   expect(day)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 58 |[39m   [36mawait[39m click(day)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/pages/parent/CalendarPage.test.jsx:55:12)
+
+PASS src/components/shared/lessonPrint.test.js
+PASS src/pages/parent/HandsOnVault.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 50 |[39m   container [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(container)[33m;[39m
+     [90m 51 |[39m   root [33m=[39m createRoot(container)[33m;[39m
+    [31m[1m>[22m[39m[90m 52 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m { root[33m.[39mrender([33m<[39m[33mHandsOnVault[39m [33m/[39m[33m>[39m)[33m;[39m })[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 53 |[39m })[33m;[39m
+     [90m 54 |[39m afterEach(() [33m=>[39m {
+     [90m 55 |[39m   act(() [33m=>[39m root[33m.[39munmount())[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/pages/parent/HandsOnVault.test.jsx:52:12)
+
+PASS src/components/parent/ReviewModal.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 36 |[39m   document[33m.[39mbody[33m.[39mappendChild(box)[33m;[39m
+     [90m 37 |[39m   root [33m=[39m createRoot(box)[33m;[39m
+    [31m[1m>[22m[39m[90m 38 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m { root[33m.[39mrender([33m<[39m[33mReviewModal[39m submissionId[33m=[39m[32m"sub-1"[39m onDone[33m=[39m{done} onClose[33m=[39m{close} [33m/[39m[33m>[39m)[33m;[39m })[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 39 |[39m })[33m;[39m
+     [90m 40 |[39m afterEach([36masync[39m () [33m=>[39m { [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39munmount())[33m;[39m box[33m.[39mremove()[33m;[39m })[33m;[39m
+     [90m 41 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/ReviewModal.test.jsx:38:12)
+
+PASS src/components/parent/ParentGuidedTour.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 60 |[39m })[33m;[39m
+     [90m 61 |[39m afterEach([36masync[39m () [33m=>[39m {
+    [31m[1m>[22m[39m[90m 62 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39munmount())[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 63 |[39m   host[33m.[39mremove()[33m;[39m
+     [90m 64 |[39m })[33m;[39m
+     [90m 65 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/ParentGuidedTour.test.jsx:62:12)
+
+PASS src/components/parent/PriorLearningDialog.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 25 |[39m   box [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(box)[33m;[39m
+     [90m 26 |[39m   root [33m=[39m createRoot(box)[33m;[39m
+    [31m[1m>[22m[39m[90m 27 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m { root[33m.[39mrender([33m<[39m[33mPriorLearningDialog[39m data[33m=[39m{data} onClose[33m=[39m{jest[33m.[39mfn()} onDone[33m=[39m{done} [33m/[39m[33m>[39m)[33m;[39m })[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 28 |[39m })[33m;[39m
+     [90m 29 |[39m afterEach([36masync[39m () [33m=>[39m { [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39munmount())[33m;[39m box[33m.[39mremove()[33m;[39m })[33m;[39m
+     [90m 30 |[39m [36mconst[39m click [33m=[39m [36masync[39m (id) [33m=>[39m act([36masync[39m () [33m=>[39m box[33m.[39mquerySelector([32m`[data-testid="${id}"]`[39m)[33m.[39mclick())[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/PriorLearningDialog.test.jsx:27:12)
+
+PASS src/pages/child/PetRoom.test.jsx
+PASS src/pages/parent/PrintableVault.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 19 |[39m  container[33m=[39mdocument[33m.[39mcreateElement([32m"div"[39m)[33m;[39mdocument[33m.[39mbody[33m.[39mappendChild(container)[33m;[39m
+     [90m 20 |[39m  root[33m=[39mcreateRoot(container)[33m;[39m
+    [31m[1m>[22m[39m[90m 21 |[39m  [36mawait[39m act([36masync[39m()[33m=>[39mroot[33m.[39mrender([33m<[39m[33mPrintableVault[39m[33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 22 |[39m })[33m;[39m
+     [90m 23 |[39m afterEach(()[33m=>[39m{act(()[33m=>[39mroot[33m.[39munmount())[33m;[39mcontainer[33m.[39mremove()[33m;[39m})[33m;[39m
+     [90m 24 |[39m test([32m"locked parent may browse only metadata, never image actions"[39m[33m,[39m()[33m=>[39m{[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/pages/parent/PrintableVault.test.jsx:21:11)
+
+PASS src/pages/child/ChildHome.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 55 |[39m   })[33m;[39m
+     [90m 56 |[39m
+    [31m[1m>[22m[39m[90m 57 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mChildHome[39m [33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 58 |[39m
+     [90m 59 |[39m   expect(host[33m.[39mquerySelectorAll([32m'[data-testid^="task-assignment-"]'[39m))[33m.[39mtoHaveLength([35m7[39m)[33m;[39m
+     [90m 60 |[39m   expect(host[33m.[39mquerySelector([32m'[data-testid="task-assignment-6"]'[39m))[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/pages/child/ChildHome.test.jsx:57:12)
+
+PASS src/components/parent/CalendarSlotQuest.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 42 |[39m   box [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(box)[33m;[39m
+     [90m 43 |[39m   root [33m=[39m createRoot(box)[33m;[39m
+    [31m[1m>[22m[39m[90m 44 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mCalendarSlotQuest[39m event[33m=[39m{event} onAssigned[33m=[39m{done} [33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 45 |[39m })[33m;[39m
+     [90m 46 |[39m afterEach([36masync[39m () [33m=>[39m { [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39munmount())[33m;[39m box[33m.[39mremove()[33m;[39m })[33m;[39m
+     [90m 47 |[39m [36mconst[39m click [33m=[39m [36masync[39m selector [33m=>[39m act([36masync[39m () [33m=>[39m box[33m.[39mquerySelector(selector)[33m.[39mclick())[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/CalendarSlotQuest.test.jsx:44:12)
+
+PASS src/components/parent/FillMyWeek.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 48 |[39m   holder[33m=[39mdocument[33m.[39mcreateElement([32m"div"[39m)[33m;[39mdocument[33m.[39mbody[33m.[39mappendChild(holder)[33m;[39m
+     [90m 49 |[39m   root[33m=[39mcreateRoot(holder)[33m;[39m
+    [31m[1m>[22m[39m[90m 50 |[39m   [36mawait[39m act([36masync[39m ()[33m=>[39mroot[33m.[39mrender([33m<[39m[33mFillMyWeek[39m students[33m=[39m{[{id[33m:[39m[32m"mason"[39m[33m,[39mname[33m:[39m[32m"Mason"[39m}]} initialChild[33m=[39m[32m"mason"[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 51 |[39m     initialDate[33m=[39m{day} onClose[33m=[39m{closed} onDone[33m=[39m{done} onOpenDay[33m=[39m{jest[33m.[39mfn()}[33m/[39m[33m>[39m))[33m;[39m
+     [90m 52 |[39m })[33m;[39m
+     [90m 53 |[39m afterEach([36masync[39m ()[33m=>[39m{[36mawait[39m act([36masync[39m()[33m=>[39mroot[33m.[39munmount())[33m;[39mholder[33m.[39mremove()[33m;[39m})[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/FillMyWeek.test.jsx:50:12)
+
+PASS src/pages/parent/Lessons.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 21 |[39m   box [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(box)[33m;[39m
+     [90m 22 |[39m   root [33m=[39m createRoot(box)[33m;[39m
+    [31m[1m>[22m[39m[90m 23 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m { root[33m.[39mrender([33m<[39m[33mLessonsPage[39m [33m/[39m[33m>[39m)[33m;[39m })[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 24 |[39m }[33m;[39m
+     [90m 25 |[39m beforeEach(() [33m=>[39m {
+     [90m 26 |[39m   jest[33m.[39mclearAllMocks()[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at render (src/pages/parent/Lessons.test.jsx:23:12)
+      at Object.<anonymous> (src/pages/parent/Lessons.test.jsx:40:9)
+
+PASS src/pages/parent/HandwritingBook.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 16 |[39m   data[33m:[39mpath[33m===[39m[32m"/handwriting-book"[39m[33m?[39m{unlocked[33m,[39mpages[33m:[39m[35m56[39m[33m,[39mtitle[33m:[39m[32m"The Little Letter Quest"[39m}[33m:[39mblankPage
+     [90m 17 |[39m  }))[33m;[39m
+    [31m[1m>[22m[39m[90m 18 |[39m  [36mawait[39m act([36masync[39m()[33m=>[39mroot[33m.[39mrender([33m<[39m[33mHandwritingBook[39m[33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 19 |[39m }[33m;[39m
+     [90m 20 |[39m beforeEach(()[33m=>[39m{
+     [90m 21 |[39m  localStorage[33m.[39mclear()[33m;[39mcontainer[33m=[39mdocument[33m.[39mcreateElement([32m"div"[39m)[33m;[39mdocument[33m.[39mbody[33m.[39mappendChild(container)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at mount (src/pages/parent/HandwritingBook.test.jsx:18:11)
+      at Object.<anonymous> (src/pages/parent/HandwritingBook.test.jsx:34:8)
+
+PASS src/lib/lessonRequestIntent.test.js
+PASS src/pages/parent/Assignments.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 19 |[39m   container [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(container)[33m;[39m
+     [90m 20 |[39m   root [33m=[39m createRoot(container)[33m;[39m
+    [31m[1m>[22m[39m[90m 21 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mAssignmentsPage[39m [33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 22 |[39m })[33m;[39m
+     [90m 23 |[39m afterEach(() [33m=>[39m { act(() [33m=>[39m root[33m.[39munmount())[33m;[39m container[33m.[39mremove()[33m;[39m })[33m;[39m
+     [90m 24 |[39m [36mconst[39m button [33m=[39m () [33m=>[39m container[33m.[39mquerySelector([32m'[data-testid="asg-cancel-a"]'[39m)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/pages/parent/Assignments.test.jsx:21:12)
+
+PASS src/components/parent/StartingCheckDialog.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 23 |[39m   box [33m=[39m document[33m.[39mcreateElement([32m"div"[39m)[33m;[39m document[33m.[39mbody[33m.[39mappendChild(box)[33m;[39m
+     [90m 24 |[39m   root [33m=[39m createRoot(box)[33m;[39m
+    [31m[1m>[22m[39m[90m 25 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m { root[33m.[39mrender([33m<[39m[33mStartingCheckDialog[39m data[33m=[39m{data} onClose[33m=[39m{jest[33m.[39mfn()} onUseResults[33m=[39m{useResults} [33m/[39m[33m>[39m)[33m;[39m })[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 26 |[39m })[33m;[39m
+     [90m 27 |[39m afterEach([36masync[39m () [33m=>[39m { [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39munmount())[33m;[39m box[33m.[39mremove()[33m;[39m })[33m;[39m
+     [90m 28 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/parent/StartingCheckDialog.test.jsx:25:12)
+
+PASS src/lib/weeklyLessonPlan.test.js
+PASS src/lib/childDashboard.test.js
+PASS src/data/dragonLibrary.test.js
+PASS src/components/shared/petAccessoryPositions.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 23 |[39m   document[33m.[39mbody[33m.[39mappendChild(div)[33m;[39m
+     [90m 24 |[39m   [36mconst[39m root [33m=[39m createRoot(div)[33m;[39m
+    [31m[1m>[22m[39m[90m 25 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m {
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 26 |[39m     root[33m.[39mrender([33m<[39m[33mPetWearables[39m species[33m=[39m[32m"turtle"[39m equipped[33m=[39m{[[32m"scarf"[39m[33m,[39m[32m"bookworm_specs"[39m[33m,[39m[32m"backpack"[39m]}[33m/[39m[33m>[39m)[33m;[39m
+     [90m 27 |[39m   })[33m;[39m
+     [90m 28 |[39m   [36mconst[39m placed [33m=[39m div[33m.[39mquerySelector([32m"[data-testid=worn-accessories]"[39m)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/components/shared/petAccessoryPositions.test.jsx:25:12)
+
+PASS src/pages/child/ChildStuff.test.jsx
+  ● Console
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 19 |[39m   document[33m.[39mbody[33m.[39mappendChild(host)[33m;[39m
+     [90m 20 |[39m   [36mconst[39m root [33m=[39m createRoot(host)[33m;[39m
+    [31m[1m>[22m[39m[90m 21 |[39m   [36mawait[39m act([36masync[39m () [33m=>[39m root[33m.[39mrender([33m<[39m[33mChildStuff[39m [33m/[39m[33m>[39m))[33m;[39m
+     [90m    |[39m            [31m[1m^[22m[39m
+     [90m 22 |[39m   [36mconst[39m childDestinations [33m=[39m [[33m...[39mhost[33m.[39mquerySelectorAll([32m"a"[39m)][33m.[39mmap(a [33m=>[39m a[33m.[39mgetAttribute([32m"href"[39m))[33m;[39m
+     [90m 23 |[39m   expect(childDestinations)[33m.[39mtoContain([32m"/child/reading"[39m)[33m;[39m
+     [90m 24 |[39m   expect(childDestinations)[33m.[39mtoContain([32m"/child/word-hoard"[39m)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at Object.<anonymous> (src/pages/child/ChildStuff.test.jsx:21:12)
+
+PASS src/lib/lessonAvailability.test.js
+
+Test Suites: 24 passed, 24 total
+Tests:       117 passed, 117 total
+Snapshots:   0 total
+Time:        6.167 s
+Ran all test suites.

@@ -1,0 +1,13 @@
+PASS an ordinary parent never sees or reaches Owner HQ (UI and API)
+PASS the promotion script refuses without a match, then promotes the Owner once (local database)
+PASS Owner adds a passkey (password re-check) and unlocks HQ with it
+PASS feedback regression: parent sends, Owner replies, dashboard alerts and clears on read
+PASS Dragon's Hoard appears and gifting preview days reaches the parent
+PASS announcement composer previews active parent count, but never sends without email binding and confirmation
+PASS HQ layout fits phone, tablet and desktop without sideways scrolling
+PASS customers: find a family, see metadata only, suspend it with a reason, and it is locked out
+PASS settings: announcement reaches everyone; switching AI off needs a second confirmation
+PASS audit log lists every change; cross-site requests are blocked
+PASS locking HQ requires the passkey again
+
+11/11 Owner HQ steps passed

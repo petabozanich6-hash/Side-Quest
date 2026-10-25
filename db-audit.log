@@ -1,0 +1,38 @@
+
+> side-quest@1.0.0 test:db-audit
+> node --test worker/test/schemaAudit.test.mjs
+
+TAP version 13
+# Subtest: complete schema with an unrecorded migration produces drift only
+ok 1 - complete schema with an unrecorded migration produces drift only
+  ---
+  duration_ms: 2.531318
+  type: 'test'
+  ...
+# Subtest: reports missing columns, tables and indexes without modifying fixtures
+ok 2 - reports missing columns, tables and indexes without modifying fixtures
+  ---
+  duration_ms: 0.746972
+  type: 'test'
+  ...
+# Subtest: approval-critical tables and columns are checked without database writes
+ok 3 - approval-critical tables and columns are checked without database writes
+  ---
+  duration_ms: 0.358999
+  type: 'test'
+  ...
+# Subtest: identifies migrations recorded but absent in repository
+ok 4 - identifies migrations recorded but absent in repository
+  ---
+  duration_ms: 0.241259
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 65.855597

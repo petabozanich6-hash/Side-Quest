@@ -1,0 +1,12 @@
+install=success
+test=success
+db_audit=success
+support_copy=success
+typecheck=success
+print_tests=success
+build=success
+e2e=success
+e2e_timetable=success
+e2e_owner_hq=success
+e2e_install_app=success
+e2e_offline_lessons=success
