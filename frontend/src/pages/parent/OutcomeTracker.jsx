@@ -64,10 +64,14 @@ export default function OutcomeTracker() {
   // Correct first answers in a starting check are offered as prior learning; the parent still ticks each one.
   const applyCheckResults = (c) => {
     const date = new Date(c.answered_at).toLocaleDateString("en-AU", { day: "numeric", month: "short", year: "numeric" });
-    const right = c.items.filter((i) => i.correct);
+    const rightQs = c.items.filter((i) => i.correct).length;
+    // Several questions can check one outcome; it's offered only when all of them were right.
+    const outcomes = c.outcomes || c.items;
+    const right = outcomes.filter((i) => i.correct);
+    const open = outcomes.length - right.length;
     setPriorPreset({
       source: `Starting check: ${c.subject} (${date})`,
-      summary: `${(data.student.name || "Your child").split(" ")[0]} answered ${right.length} of ${c.items.length} questions right first time on ${date}. ${c.items.length - right.length ? `The other ${c.items.length - right.length} outcome${c.items.length - right.length === 1 ? "" : "s"} stay open for teaching.` : ""}`,
+      summary: `${(data.student.name || "Your child").split(" ")[0]} answered ${rightQs} of ${c.items.length} questions right first time on ${date}. ${open ? `The other ${open} outcome${open === 1 ? "" : "s"} stay open for teaching.` : ""}`,
       suggestions: right.map((i) => ({ code: i.code, subject: c.subject, summary: i.summary, evidence: "Answered correctly first time in the starting check.", confidence: "medium" })),
     });
     setCheckOpen(false);

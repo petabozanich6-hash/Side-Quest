@@ -17,6 +17,9 @@ import * as lb from "./lessonBuilder";
 
 type DB = D1Database;
 export const QUESTIONS_PER_SUBJECT = 8;
+/** Subjects with only a few outcomes (secondary English has 6) get several questions on each, so a check still has enough. */
+export const MAX_PER_OUTCOME = 3;
+export const perOutcome = (outcomes: number) => Math.min(MAX_PER_OUTCOME, Math.max(1, Math.ceil(QUESTIONS_PER_SUBJECT / Math.max(1, outcomes))));
 export const STARTING_CHECK_LIMITS = { perFamilyDay: 16 };
 type Fail = { ok: false; status: number; detail: string; code?: string };
 const fail = (status: number, detail: string, code?: string): Fail => ({ ok: false, status, detail, code });
@@ -43,12 +46,13 @@ export function pickAcrossStrands<T extends { strand?: string }>(outcomes: T[], 
 
 const SYSTEM = [
   "You write a short starting check for an Australian child who is new to homeschooling, to find out what they can ALREADY do. It is not a test to pass.",
-  "You are given the child's year level and a numbered list of curriculum outcomes in plain English. For each one, write ONE multiple-choice question that a child who has met that outcome would answer correctly, and a child who hasn't usually would not.",
+  "You are given the child's year level and a numbered list of curriculum outcomes in plain English. For each one, write the number of multiple-choice questions asked for, each one a question that a child who has met that outcome would answer correctly, and a child who hasn't usually would not. Questions on the same outcome must check different things.",
   "Each question must be complete and answerable on screen with no pictures, audio, props or outside text: include any numbers, words, sentences or short passages it needs. Use simple wording for the year level, Australian spelling and metric units.",
   "Give 3 or 4 options with exactly one correct answer. Wrong options should be common mistakes, not silly ones. No trick questions and no 'all of the above'.",
-  "If an outcome can't be fairly checked with one multiple-choice question (for example performing, making, or a long piece of writing), leave it out.",
+  "If an outcome is mostly about performing, making or writing at length, check a knowable part of it instead (for example choosing the best edit of a sentence, spotting a language technique, or picking the clearest topic sentence). Leave it out only if nothing about it can be checked fairly.",
+  "Inside JSON strings, quote words or passages with single quotes ('like this'), never with double quotes.",
   "Check every answer is right before you reply. Do NOT write curriculum codes.",
-  'Reply with ONE JSON object only: {"questions":[{"n":number,"question":string,"options":[string],"correct_index":number (zero-based),"explanation":string (one sentence, shown after answering)}]}',
+  'Reply with ONE JSON object only: {"questions":[{"n":number (the outcome number),"question":string,"options":[string],"correct_index":number (zero-based),"explanation":string (one sentence, shown after answering)}]}',
 ].join("\n");
 
 const LETTERS = "ABCDEF";
@@ -78,20 +82,22 @@ function correctIndex(q: any, rawOptions: unknown[], options: string[]): number 
 }
 
 /** Well-formed questions for outcomes in the pool, one per outcome. Unnumbered questions are taken in list order. */
-export function readQuestions(reply: any, pool: { code: string; summary: string }[]) {
+export function readQuestions(reply: any, pool: { code: string; summary: string }[], per = 1) {
   const list = Array.isArray(reply) ? reply : Array.isArray(reply?.questions) ? reply.questions : Array.isArray(reply?.quiz) ? reply.quiz : [];
-  const seen = new Set<string>();
+  const used = new Map<string, number>(), asked = new Set<string>();
   const quiz: any[] = [], items: { index: number; code: string; summary: string }[] = [];
   list.forEach((q: any, i: number) => {
+    if (quiz.length >= QUESTIONS_PER_SUBJECT) return;
     const num = Number(q?.n ?? q?.number ?? q?.outcome);
-    const x = pool[(Number.isInteger(num) && num >= 1 ? num : i + 1) - 1];
+    const x = pool[(Number.isInteger(num) && num >= 1 ? num : Math.floor(i / per) + 1) - 1];
     const rawOptions: unknown[] = Array.isArray(q?.options) ? q.options : Array.isArray(q?.choices) ? q.choices : [];
     const options = rawOptions.map(optionText).filter(Boolean);
     const ci = correctIndex(q, rawOptions, options);
-    if (!x || seen.has(x.code) || options.length < 3 || options.length > 5 || new Set(options.map((v) => v.toLowerCase())).size !== options.length || ci < 0) return;
+    if (!x || (used.get(x.code) || 0) >= per || options.length < 3 || options.length > 5 || new Set(options.map((v) => v.toLowerCase())).size !== options.length || ci < 0) return;
     const question = stripCodes(clip(q?.question ?? q?.prompt ?? q?.text, 600));
-    if (question.length < 8) return;
-    seen.add(x.code);
+    if (question.length < 8 || asked.has(question.toLowerCase())) return;
+    asked.add(question.toLowerCase());
+    used.set(x.code, (used.get(x.code) || 0) + 1);
     items.push({ index: quiz.length, code: x.code, summary: x.summary });
     quiz.push({ question, options, correct_index: ci, explanation: stripCodes(clip(q?.explanation, 300)) });
   });
@@ -121,7 +127,8 @@ export async function createStartingCheck(
   if (!open.length) return fail(400, `There's nothing left to check in ${subject || "that subject"}: every outcome is already met or has no description yet.`, "NOTHING_TO_CHECK");
   const pool = pickAcrossStrands(open, QUESTIONS_PER_SUBJECT);
   const year = tracker.student.year_level || tracker.student.stage || "";
-  const user = `CHILD: ${year}\nSUBJECT: ${subject}\n\nOUTCOMES:\n${pool.map((x, i) => `${i + 1}. ${x.summary}`).join("\n")}`;
+  const per = perOutcome(pool.length);
+  const user = `CHILD: ${year}\nSUBJECT: ${subject}\nQUESTIONS PER OUTCOME: ${per}\n\nOUTCOMES:\n${pool.map((x, i) => `${i + 1}. ${x.summary}`).join("\n")}`;
 
   const usageId = crypto.randomUUID();
   await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'starting_check', 'pending', ?)").bind(usageId, o.familyId, o.userId, now.toISOString()).run();
@@ -137,7 +144,7 @@ export async function createStartingCheck(
       reached = true;
       reply = extractJson(out);
     } catch { continue; }
-    ({ quiz, items } = readQuestions(reply, pool));
+    ({ quiz, items } = readQuestions(reply, pool, per));
   }
   if (!reached) {
     await mark("failed");
@@ -177,6 +184,14 @@ export async function listStartingChecks(db: DB, familyId: string, studentId: st
       assignment_status: c.assignment_status || "revoked", answered_at: firstTry?.completed_at || null,
       items: items.map((it) => ({ code: it.code, summary: it.summary, correct: firstTry ? marks.find((m) => m.question_index === it.index)?.is_correct === true : null })),
     });
+    // One row per outcome: met only when every question on it was right first time.
+    const row = out[out.length - 1];
+    const byCode = new Map<string, { code: string; summary: string; correct: boolean | null }>();
+    for (const it of row.items) {
+      const prev = byCode.get(it.code);
+      byCode.set(it.code, prev ? { ...prev, correct: prev.correct === null ? null : prev.correct && it.correct === true } : { ...it });
+    }
+    (row as any).outcomes = [...byCode.values()];
   }
   return out;
 }

@@ -33,6 +33,8 @@ import { electricQuests, electricParentGuides, electricRunbooks } from "./data/h
 import { animalQuests, animalParentGuides, animalRunbooks } from "./data/handsOnAnimals";
 import { oceanQuests, oceanParentGuides, oceanRunbooks } from "./data/handsOnOceans";
 import { geometryQuests, geometryParentGuides, geometryRunbooks } from "./data/handsOnGeometry";
+import { topUpAQuests, topUpAParentGuides, topUpARunbooks } from "./data/handsOnTopUpA";
+import { topUpBQuests, topUpBParentGuides, topUpBRunbooks } from "./data/handsOnTopUpB";
 import { coreRunbooks } from "./data/handsOnRunbookCore";
 import { middleRunbooks } from "./data/handsOnRunbookMiddle";
 import { expandedRunbooks } from "./data/handsOnRunbookExpanded";
@@ -53,6 +55,7 @@ export const HANDS_ON_QUESTS: readonly HandsOnQuest[] = [
   ...makingQuests, ...kitchenLabQuests,
   ...halloweenCraftQuests, ...halloweenDiscoveryQuests,
   ...bodyQuests, ...electricQuests, ...animalQuests, ...oceanQuests, ...geometryQuests,
+  ...topUpAQuests, ...topUpBQuests,
 ];
 const QUEST_BY_ID = new Map(HANDS_ON_QUESTS.map(quest => [quest.id, quest]));
 const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDES,
@@ -62,10 +65,12 @@ const PARENT_GUIDES = { ...PARENT_LEARNING_GUIDES, ...MORE_PARENT_LEARNING_GUIDE
   ...logicParentGuides, ...dramaParentGuides, ...inclusiveParentGuides, ...marketParentGuides,
   ...earthParentGuides, ...civicsParentGuides, ...sunParentGuides, ...bubbleParentGuides, ...makingParentGuides, ...kitchenLabParentGuides,
   ...halloweenCraftParentGuides, ...halloweenDiscoveryParentGuides,
-  ...bodyParentGuides, ...electricParentGuides, ...animalParentGuides, ...oceanParentGuides, ...geometryParentGuides };
+  ...bodyParentGuides, ...electricParentGuides, ...animalParentGuides, ...oceanParentGuides, ...geometryParentGuides,
+  ...topUpAParentGuides, ...topUpBParentGuides };
 const RUNBOOKS = { ...coreRunbooks, ...middleRunbooks, ...expandedRunbooks, ...newRunbooks,
   ...halloweenCraftRunbooks, ...halloweenDiscoveryRunbooks,
-  ...bodyRunbooks, ...electricRunbooks, ...animalRunbooks, ...oceanRunbooks, ...geometryRunbooks };
+  ...bodyRunbooks, ...electricRunbooks, ...animalRunbooks, ...oceanRunbooks, ...geometryRunbooks,
+  ...topUpARunbooks, ...topUpBRunbooks };
 if (QUEST_BY_ID.size !== HANDS_ON_QUESTS.length) throw new Error("Duplicate hands-on quest IDs");
 if (HANDS_ON_QUESTS.some(q => !PARENT_GUIDES[q.id])) throw new Error("Missing parent teaching guide for a hands-on quest");
 if (Object.keys(PARENT_GUIDES).length !== HANDS_ON_QUESTS.length) throw new Error("Parent guides must match quests one-to-one");

@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import * as ot from "../src/outcomeTracker.ts";
 import * as lb from "../src/lessonBuilder.ts";
-import { createStartingCheck, listStartingChecks, pickAcrossStrands, readQuestions } from "../src/startingCheck.ts";
+import { createStartingCheck, listStartingChecks, pickAcrossStrands, readQuestions, perOutcome } from "../src/startingCheck.ts";
 import { trialEndFrom } from "../src/entitlements.ts";
 
 const NOW = new Date("2026-10-24T02:00:00Z");
@@ -120,4 +120,18 @@ test("an unusable first reply is retried once", async () => {
   const r = await createStartingCheck(h.env, ai, { familyId: h.fam, userId: h.parent, studentId: h.kid, subject }, NOW);
   assert.equal(calls, 2);
   assert.ok(r.ok, JSON.stringify(r));
+});
+
+test("subjects with few outcomes get several questions on each", () => {
+  assert.equal(perOutcome(8), 1);
+  assert.equal(perOutcome(6), 2);
+  assert.equal(perOutcome(2), 3);
+  const pool = ["w", "r", "u"].map((code) => ({ code, summary: `Outcome ${code}` }));
+  const q = (n, text) => ({ n, question: text, options: ["one", "two", "three"], correct_index: 0 });
+  const { quiz, items } = readQuestions({ questions: [
+    q(1, "First question on w?"), q(1, "Second question on w?"), q(1, "Third question on w?"),
+    q(2, "First question on r?"), q(2, "First question on r?"), q(3, "Only question on u?"),
+  ] }, pool, 2);
+  assert.equal(quiz.length, 4, "third on w and the repeated question are dropped");
+  assert.deepEqual(items.map((i) => i.code), ["w", "w", "r", "u"]);
 });
