@@ -18,6 +18,7 @@ import * as lb from "./lessonBuilder";
 type DB = D1Database;
 export const PRIOR_SCAN_LIMITS = { perFamilyDay: 10 };
 const MAX_DOC_CHARS = 14000;
+export const MAX_PAGES = 20;
 const MAX_POOL = 350;
 
 export type PriorSuggestion = { code: string; subject: string; summary: string; evidence: string; confidence: "high" | "medium" | "low" };
@@ -95,7 +96,7 @@ async function readFile(env: Env, ai: AiBinding, familyId: string, fileId: strin
 
 export async function analysePriorLearning(
   env: Env, ai: AiBinding | undefined,
-  o: { familyId: string; userId: string; studentId: string; text?: unknown; fileId?: unknown; model?: string; gatewayId?: string },
+  o: { familyId: string; userId: string; studentId: string; text?: unknown; fileId?: unknown; fileIds?: unknown; model?: string; gatewayId?: string },
   now: Date = new Date(),
 ): Promise<{ ok: true; suggestions: PriorSuggestion[]; document_type: string; summary: string } | Fail> {
   const db: DB = env.DB;
@@ -112,10 +113,19 @@ export async function analysePriorLearning(
   if (!tracker.available) return fail(409, "The outcome tracker isn't available for your curriculum yet.", "NO_CATALOGUE");
 
   let doc = clip(o.text, MAX_DOC_CHARS * 2);
-  if (!doc && typeof o.fileId === "string" && o.fileId) {
-    const read = await readFile(env, ai, o.familyId, o.fileId);
-    if ("ok" in read) return read;
-    doc = clip(read.text, MAX_DOC_CHARS * 2);
+  // Several pages (a scanned PDF turned into page pictures in the browser) are read four at a time, each page getting
+  // an equal share of the document limit.
+  const ids = (Array.isArray(o.fileIds) ? o.fileIds : typeof o.fileId === "string" ? [o.fileId] : [])
+    .filter((x): x is string => typeof x === "string" && !!x).slice(0, MAX_PAGES);
+  if (!doc && ids.length) {
+    const reads: ({ text: string } | Fail)[] = new Array(ids.length);
+    let next = 0;
+    const worker = async () => { while (next < ids.length) { const i = next++; reads[i] = await readFile(env, ai, o.familyId, ids[i]); } };
+    await Promise.all([worker(), worker(), worker(), worker()]);
+    const share = Math.floor(MAX_DOC_CHARS / ids.length);
+    const pages = reads.map((r, i) => ("ok" in r ? "" : ids.length > 1 ? `--- Page ${i + 1} ---\n${r.text.slice(0, share)}` : r.text)).filter(Boolean);
+    if (!pages.length) return reads[0] as Fail;
+    doc = clip(pages.join("\n\n"), MAX_DOC_CHARS * 2);
   }
   if (doc.length < 40) return fail(400, "Upload the report, or paste its text (at least a few lines).", "NO_TEXT");
   doc = doc.slice(0, MAX_DOC_CHARS);
@@ -161,7 +171,7 @@ export function registerPriorLearning(app: import("./types").App, g: import("./t
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
     const r = await analysePriorLearning(c.env, c.env.AI as AiBinding | undefined, {
-      familyId: u.family_id, userId: u.id, studentId: c.req.param("sid"), text: b.text, fileId: b.file_id,
+      familyId: u.family_id, userId: u.id, studentId: c.req.param("sid"), text: b.text, fileId: b.file_id, fileIds: b.file_ids,
       model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
     });
     return r.ok ? c.json(r) : c.json({ detail: r.detail, code: r.code }, r.status as any);

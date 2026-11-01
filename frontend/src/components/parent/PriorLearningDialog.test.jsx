@@ -3,9 +3,11 @@ import { act } from "react-dom/test-utils";
 import { createRoot } from "react-dom/client";
 import PriorLearningDialog from "./PriorLearningDialog";
 import { api } from "../../lib/api";
+import { readPdfPages, turnedPage } from "../../lib/pdfPages";
 
 jest.mock("../../lib/api", () => ({ api: { post: jest.fn() } }));
 jest.mock("sonner", () => ({ toast: { success: jest.fn(), error: jest.fn() } }));
+jest.mock("../../lib/pdfPages", () => ({ readPdfPages: jest.fn(), turnedPage: jest.fn(async () => "turned-blob") }));
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
 const outcome = (code, subject, status = "not_started") => ({ code, subject, learning_area: subject, in_stage: true, status, summary: `Summary of ${code}` });
@@ -74,4 +76,24 @@ test("starting check results open straight on the review step, still unticked, w
   await act(async () => box.querySelector('[data-testid="prior-suggestion-MA2-RN-01"] input').click());
   await act(async () => box.querySelector('[data-testid="prior-save"]').click());
   expect(api.post).toHaveBeenCalledWith("/outcomes/students/kid/prior-learning", expect.objectContaining({ codes: ["MA2-RN-01"], source: "Starting check: Mathematics (21 Oct 2026)" }));
+});
+
+test("a scanned PDF is read as page pictures, with upside-down pages turned first", async () => {
+  readPdfPages.mockResolvedValue({ hasText: false, total: 2, pages: [{ blob: new Blob(["a"]), url: "blob:1" }, { blob: new Blob(["b"]), url: "blob:2" }] });
+  let uploads = 0;
+  api.post.mockImplementation((path) => {
+    if (path === "/files/upload") return Promise.resolve({ data: { id: `f${++uploads}` } });
+    if (path.endsWith("/analyse")) return Promise.resolve({ data: { document_type: "work_sample", summary: "Science workbook.", suggestions: [] } });
+    return Promise.resolve({ data: { recorded: 0, skipped: 0 } });
+  });
+  await click("prior-read");
+  const input = box.querySelector('[data-testid="prior-file"]');
+  const pdf = new File(["%PDF"], "workbook.pdf", { type: "application/pdf" });
+  await act(async () => { Object.defineProperty(input, "files", { value: [pdf] }); input.dispatchEvent(new Event("change", { bubbles: true })); });
+  expect(box.querySelector('[data-testid="prior-scan"]').textContent).toMatch(/its 2 pages/);
+  await click("prior-turn-all");
+  await click("prior-analyse");
+  expect(turnedPage).toHaveBeenCalledTimes(2);
+  // The original PDF (f1) is kept as evidence; the two page pictures (f2, f3) are what gets read.
+  expect(api.post).toHaveBeenCalledWith("/outcomes/students/kid/prior-learning/analyse", { file_ids: ["f2", "f3"] });
 });
