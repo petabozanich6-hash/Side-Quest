@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { FileText, ListChecks, Loader2, Upload, X } from "lucide-react";
+import { FileText, ListChecks, Loader2, RotateCw, Upload, X } from "lucide-react";
 import { api } from "../../lib/api";
+import { readPdfPages, turnedPage } from "../../lib/pdfPages";
 import { MET } from "../../lib/outcomes";
 
 const CONFIDENCE = {
@@ -46,10 +47,19 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
   const [source, setSource] = useState(preset?.source || "");
   const [occurred, setOccurred] = useState(today());
   const [note, setNote] = useState("");
+  // A scanned PDF, shown as page pictures the parent can turn the right way up before they're read.
+  const [scan, setScan] = useState(null); // { pages: [{ blob, url, turned }], total }
 
   const upload = async (f) => {
     if (!f) return;
     setBusy("upload");
+    setScan(null);
+    if (f.type === "application/pdf") {
+      try {
+        const pdf = await readPdfPages(f);
+        if (!pdf.hasText && pdf.pages.length) setScan({ total: pdf.total, pages: pdf.pages.map((p) => ({ ...p, turned: false })) });
+      } catch { /* not readable here; the server will say so */ }
+    }
     f = await shrinkPhoto(f);
     const fd = new FormData(); fd.append("file", f); fd.append("context", "evidence");
     try {
@@ -62,7 +72,18 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
   const analyse = async () => {
     setBusy("analyse");
     try {
-      const { data: r } = await api.post(`/outcomes/students/${sid}/prior-learning/analyse`, file && !text.trim() ? { file_id: file.id } : { text });
+      let body = file && !text.trim() ? { file_id: file.id } : { text };
+      if (scan && !text.trim()) {
+        // Page pictures are uploaded separately to be read; the original PDF stays the evidence.
+        const ids = [];
+        for (const [i, p] of scan.pages.entries()) {
+          const blob = p.turned ? await turnedPage(p.blob) : p.blob;
+          const fd = new FormData(); fd.append("file", new File([blob], `page-${i + 1}.jpg`, { type: "image/jpeg" })); fd.append("context", "prior_learning_page");
+          ids.push((await api.post("/files/upload", fd, { headers: { "Content-Type": "multipart/form-data" } })).data.id);
+        }
+        body = { file_ids: ids };
+      }
+      const { data: r } = await api.post(`/outcomes/students/${sid}/prior-learning/analyse`, body);
       setFound(r);
       if (!source) setSource(SOURCES[r.document_type] || "School report");
       setStep("review");
@@ -123,6 +144,24 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
                 <span className="text-sm"><b>{file ? file.name : "Upload a report or a piece of work"}</b><span className="block text-stone-600">A typed PDF, or a clear photo of each page. Scanned PDFs can't be read, so photograph those pages instead. It's kept in {first}'s Evidence Backpack.</span></span>
                 <input type="file" accept="application/pdf,image/*" className="sr-only" onChange={(e) => upload(e.target.files?.[0])} data-testid="prior-file" />
               </label>
+              {scan && (
+                <div className="rounded-2xl border border-stone-200 p-3 space-y-2" data-testid="prior-scan">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-sm text-stone-700">This PDF is a scan, so Side-Quest will read {scan.pages.length === scan.total ? `its ${scan.total} page${scan.total === 1 ? "" : "s"}` : `the first ${scan.pages.length} of its ${scan.total} pages`} as pictures. Tap any page that's upside down.</p>
+                    <button type="button" onClick={() => setScan((sc) => ({ ...sc, pages: sc.pages.map((p) => ({ ...p, turned: !p.turned })) }))}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-stone-300 px-3 py-1.5 text-xs font-bold" data-testid="prior-turn-all"><RotateCw size={13} /> Turn all pages</button>
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
+                    {scan.pages.map((p, i) => (
+                      <button key={p.url} type="button" onClick={() => setScan((sc) => ({ ...sc, pages: sc.pages.map((q, j) => (j === i ? { ...q, turned: !q.turned } : q)) }))}
+                        className="rounded border border-stone-200 overflow-hidden bg-white" aria-label={`Page ${i + 1}${p.turned ? ", turned" : ""}`}>
+                        <img src={p.url} alt="" className="w-full" style={{ transform: p.turned ? "rotate(180deg)" : "none" }} />
+                      </button>
+                    ))}
+                  </div>
+                  {scan.total > scan.pages.length && <p className="text-xs text-stone-500">Only the first 20 pages can be read at once. Split longer PDFs, or photograph the most important pages.</p>}
+                </div>
+              )}
               <p className="text-center text-xs text-stone-500">or</p>
               <textarea value={text} onChange={(e) => setText(e.target.value)} rows={6} maxLength={28000}
                 placeholder="Paste the report's text, NAPLAN results such as 'Numeracy: Strong', or describe the work, e.g. 'Year 3 fractions worksheet, 18 of 20 correct without help'."
@@ -131,7 +170,7 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
               <div className="flex gap-2">
                 <button type="button" disabled={!!busy || (!file && text.trim().length < 40)} onClick={analyse}
                   className="rounded-full px-5 py-2.5 text-sm font-bold text-white disabled:opacity-50 flex items-center gap-2" style={{ backgroundColor: "#1F3B2D" }} data-testid="prior-analyse">
-                  {busy === "analyse" && <Loader2 size={16} className="animate-spin" />}{busy === "analyse" ? "Reading… up to a minute" : "Find outcomes"}
+                  {busy === "analyse" && <Loader2 size={16} className="animate-spin" />}{busy === "analyse" ? (scan ? "Reading the pages… up to two minutes" : "Reading… up to a minute") : "Find outcomes"}
                 </button>
                 <button type="button" onClick={() => setStep("start")} className="rounded-full border border-stone-300 px-4 py-2.5 text-sm font-semibold">Back</button>
               </div>

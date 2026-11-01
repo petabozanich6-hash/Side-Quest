@@ -163,3 +163,17 @@ test("photos of work are transcribed by the vision model, accepting its licence 
   assert.match(prompt, /Fractions worksheet/);
   assert.equal(calls.filter((m) => m === VISION_MODEL).length, 3, "first try, agree, retry");
 });
+
+test("several scanned pages are read and joined in page order", async () => {
+  const h = setup();
+  ["p1", "p2", "p3"].forEach((id) => addFile(h, id, `${id}.jpg`, "image/jpeg"));
+  let prompt = "", page = 0;
+  const ai = { run: async (model, input) => {
+    if (model === VISION_MODEL) return { response: `Transcribed text from a scanned workbook page number ${++page}. Investigation question: does water affect growth?` };
+    prompt = input.messages[1].content;
+    return { response: JSON.stringify(pickNothing) };
+  } };
+  const r = await analysePriorLearning({ DB: h.db, BUCKET: bucket }, ai, { familyId: h.fam, userId: h.parent, studentId: h.kid, fileIds: ["p1", "p2", "p3"] }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.match(prompt, /--- Page 1 ---[\s\S]*--- Page 2 ---[\s\S]*--- Page 3 ---/);
+});
