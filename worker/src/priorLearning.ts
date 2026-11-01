@@ -1,6 +1,7 @@
-// Reading a school report or NAPLAN result to suggest which of a child's outcomes look already met (prior learning).
-// One document conversion (PDF or photo to text, when a file is given) and one Workers AI call per request; paid plans
-// only; metered in ai_usage as "prior_learning_scan".
+// Reading a school report, NAPLAN result or samples of the child's work to suggest which of a child's outcomes look
+// already met (prior learning). When a file is given: photos are transcribed by a vision model, PDFs by document
+// conversion (a scanned PDF has no text, and the parent is asked for photos instead). Then one Workers AI call per
+// request; paid plans only; metered in ai_usage as "prior_learning_scan".
 //
 // Honesty rules, as for life learning:
 // - The model only PICKS from the child's own outcomes (by number, with Side-Quest's plain-English summary of each).
@@ -26,30 +27,70 @@ const clip = (v: unknown, n: number) => (typeof v === "string" ? v.replace(/\s+/
 const CONF = (v: unknown): PriorSuggestion["confidence"] => (v === "high" || v === "medium" || v === "low" ? v : "low");
 
 const SYSTEM = [
-  "You help an Australian homeschooling parent recognise learning their child had already completed before homeschooling, using a school report, NAPLAN result or similar document.",
+  "You help an Australian homeschooling parent recognise learning their child had already completed before homeschooling, using a school report, NAPLAN result, samples of the child's own work, or a similar document.",
   "You are given the document and a numbered list of the child's curriculum outcomes, each described in plain English. Pick only outcomes the document gives real grounds for.",
   "School reports: a subject grade or achievement level (for example A/B, High/Sound, Above/At expected level) supports outcomes of that subject only where the report says what was taught or assessed that period. A comment that names a skill is stronger evidence. Below-expected or 'working towards' results do NOT support an outcome.",
+  "Work samples (completed worksheets, tests, projects or writing the child did): a task done correctly and independently shows the skill it practises. One correct sample is medium confidence; several samples, or a marked test, can be high. Mostly incorrect work, or work copied from a model answer, does NOT support an outcome.",
   "NAPLAN: results are a proficiency level per domain (Reading, Writing, Spelling, Grammar and Punctuation, Numeracy). Only 'Exceeding' or 'Strong' can support outcomes, only in the matching area, and never with high confidence.",
   "Never guess. Prefer fewer, well-supported picks. If the document doesn't support anything, return no matches.",
   "For each pick, \"evidence\" is one sentence in plain Australian English naming what in the document supports it (quote a short phrase where possible). Do NOT write curriculum codes.",
   "Confidence: high = the document directly states the skill was achieved; medium = a good grade in a subject period that clearly covered it; low = only indirectly supported.",
-  'Reply with ONE JSON object only: {"document_type":"school_report"|"naplan"|"other","summary":string (one or two sentences describing the document),"matches":[{"n":number,"evidence":string,"confidence":"high"|"medium"|"low"}]}',
+  'Reply with ONE JSON object only: {"document_type":"school_report"|"naplan"|"work_sample"|"other","summary":string (one or two sentences describing the document),"matches":[{"n":number,"evidence":string,"confidence":"high"|"medium"|"low"}]}',
 ].join("\n");
 
-/** PDF or photo to text with Workers AI's document conversion. Null when it can't be read. */
-async function readFile(env: Env, ai: AiBinding, familyId: string, fileId: string): Promise<string | null> {
+// Photos (and scans) are read by a vision model told to transcribe; document conversion only describes an image.
+export const VISION_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct";
+const MAX_VISION_BYTES = 3_000_000;
+const VISION_PROMPT = "This is a photo of a child's schoolwork, a school report or a test result. Transcribe all the readable text exactly, " +
+  "including questions, the child's answers, ticks, crosses, marks, grades and teacher comments. Then add one line starting 'Looks like:' " +
+  "saying what the page is (for example a Year 3 maths worksheet on fractions, mostly correct). Do not invent anything you can't read.";
+
+/**
+ * Document conversion turns a PDF into "# name", a "## Metadata" list ("- Title=…") and the page text. A scanned PDF has
+ * pictures instead of text, so only the metadata comes back. Keep just the readable page text.
+ */
+export function pageText(markdown: string): string {
+  return markdown.split("\n")
+    .filter((l) => !/^\s*[-*]\s*[A-Za-z][\w ]*=/.test(l) && !/^#{1,6}\s*(Metadata|Contents|Page\s+\d+)\b/i.test(l) && !/^#\s+\S+\.(pdf|jpe?g|png|heic|webp)\s*$/i.test(l))
+    .join("\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+async function readImage(ai: AiBinding, bytes: Uint8Array): Promise<string> {
+  if (bytes.length > MAX_VISION_BYTES) return "";
+  const input = { image: Array.from(bytes), prompt: VISION_PROMPT, max_tokens: 1500, temperature: 0.1 };
+  const once = async () => { const out: any = await ai.run(VISION_MODEL, input); return typeof out?.response === "string" ? out.response.trim() : ""; };
+  try { return await once(); } catch (e: any) {
+    // Meta's licence has to be accepted once per account before the model answers.
+    if (!/agree/i.test(String(e?.message || e))) return "";
+    try { await ai.run(VISION_MODEL, { prompt: "agree" }); return await once(); } catch { return ""; }
+  }
+}
+
+/** PDF or photo to text. Fails with a reason the parent can act on (a scanned PDF needs photos instead). */
+async function readFile(env: Env, ai: AiBinding, familyId: string, fileId: string): Promise<{ text: string } | Fail> {
   const f: any = await env.DB.prepare("SELECT storage_path, original_filename, content_type FROM files WHERE id = ? AND family_id = ? AND is_deleted = 0").bind(fileId, familyId).first();
-  if (!f || !env.BUCKET) return null;
+  if (!f || !env.BUCKET) return fail(404, "That file couldn't be found. Please upload it again.", "UNREADABLE");
   const obj = await env.BUCKET.get(String(f.storage_path));
-  if (!obj) return null;
-  const blob = new Blob([await obj.arrayBuffer()], { type: f.content_type || "application/octet-stream" });
+  if (!obj) return fail(404, "That file couldn't be found. Please upload it again.", "UNREADABLE");
+  const bytes = new Uint8Array(await obj.arrayBuffer());
+  const type = String(f.content_type || "");
+  const isImage = type.startsWith("image/");
+  if (isImage) {
+    const seen = await readImage(ai, bytes);
+    if (seen.length >= 40) return { text: seen };
+  }
   const convert = (ai as any).toMarkdown;
-  if (typeof convert !== "function") return null;
-  try {
-    const out: any = await convert.call(ai, { name: f.original_filename || "report", blob });
-    const res = Array.isArray(out) ? out[0] : out;
-    return typeof res?.data === "string" && res.format !== "error" ? res.data : null;
-  } catch { return null; }
+  let text = "";
+  if (typeof convert === "function") {
+    try {
+      const out: any = await convert.call(ai, { name: f.original_filename || "document", blob: new Blob([bytes], { type: type || "application/octet-stream" }) });
+      const res = Array.isArray(out) ? out[0] : out;
+      if (typeof res?.data === "string" && res.format !== "error") text = pageText(res.data);
+    } catch { /* fall through */ }
+  }
+  if (text.length >= 40) return { text };
+  if (!isImage) return fail(422, "This PDF looks like a scan (pictures of pages), so its text can't be read. Upload clear photos of the pages instead, or type a short summary of the work below.", "SCANNED");
+  return fail(422, "That photo couldn't be read. Try a closer, well-lit photo of one page, or type a short summary of the work below.", "UNREADABLE");
 }
 
 export async function analysePriorLearning(
@@ -72,8 +113,9 @@ export async function analysePriorLearning(
 
   let doc = clip(o.text, MAX_DOC_CHARS * 2);
   if (!doc && typeof o.fileId === "string" && o.fileId) {
-    doc = clip(await readFile(env, ai, o.familyId, o.fileId), MAX_DOC_CHARS * 2);
-    if (!doc) return fail(422, "That file couldn't be read. Try a PDF, or copy the report's text and paste it instead.", "UNREADABLE");
+    const read = await readFile(env, ai, o.familyId, o.fileId);
+    if ("ok" in read) return read;
+    doc = clip(read.text, MAX_DOC_CHARS * 2);
   }
   if (doc.length < 40) return fail(400, "Upload the report, or paste its text (at least a few lines).", "NO_TEXT");
   doc = doc.slice(0, MAX_DOC_CHARS);
@@ -111,7 +153,7 @@ export async function analysePriorLearning(
   await mark("ok");
   const order = { high: 0, medium: 1, low: 2 };
   suggestions.sort((a, b) => order[a.confidence] - order[b.confidence] || a.subject.localeCompare(b.subject));
-  return { ok: true, suggestions, document_type: ["school_report", "naplan"].includes(reply.document_type) ? reply.document_type : "other", summary: stripCodes(clip(reply.summary, 400)) };
+  return { ok: true, suggestions, document_type: ["school_report", "naplan", "work_sample"].includes(reply.document_type) ? reply.document_type : "other", summary: stripCodes(clip(reply.summary, 400)) };
 }
 
 export function registerPriorLearning(app: import("./types").App, g: import("./types").Guards) {
