@@ -3,7 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import * as ot from "../src/outcomeTracker.ts";
-import { analysePriorLearning } from "../src/priorLearning.ts";
+import { analysePriorLearning, pageText, VISION_MODEL } from "../src/priorLearning.ts";
 import { planAutoQuest } from "../src/autoQuest.ts";
 import { trialEndFrom } from "../src/entitlements.ts";
 
@@ -115,4 +115,51 @@ test("Plan My Week's planner treats prior learning like Achieved and doesn't tea
   };
   assert.equal(planAutoQuest(input)[0].action, "needs_parent_plan", "a prior-learning lesson was offered again");
   assert.equal(planAutoQuest({ ...input, progress: [{ code: "PRIOR", status: "developing" }] })[0].action, "reuse_draft");
+});
+
+const addFile = (h, id, name, type) => h.db.raw.prepare("INSERT INTO files (id,family_id,uploader_id,uploader_role,storage_path,original_filename,content_type,size,context,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)")
+  .run(id, h.fam, h.parent, "parent", `k/${id}`, name, type, 3, "evidence", NOW.toISOString());
+const bucket = { get: async () => ({ arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer }) };
+const pickNothing = { document_type: "work_sample", summary: "A maths worksheet.", matches: [] };
+
+test("document conversion metadata is not mistaken for page text", () => {
+  const scanned = "# work.pdf\n## Metadata\n- PDFFormatVersion=1.7\n- IsLinearized=false\n- Producer=Scanner App\n- Title=work\n## Contents\n### Page 1\n\n### Page 2\n";
+  assert.equal(pageText(scanned), "");
+  const typed = "# report.pdf\n## Metadata\n- Title=Report\n## Contents\n### Page 1\nMathematics: A. Mia confidently uses place value to 10 000.";
+  assert.equal(pageText(typed), "Mathematics: A. Mia confidently uses place value to 10 000.");
+});
+
+test("a scanned PDF asks for photos instead of reporting an empty document", async () => {
+  const h = setup();
+  addFile(h, "f1", "work.pdf", "application/pdf");
+  let ran = 0;
+  const ai = { run: async () => { ran++; return { response: JSON.stringify(pickNothing) }; },
+    toMarkdown: async () => ({ format: "markdown", data: "# work.pdf\n## Metadata\n- PDFFormatVersion=1.7\n- Title=work\n" }) };
+  const r = await analysePriorLearning({ DB: h.db, BUCKET: bucket }, ai, { familyId: h.fam, userId: h.parent, studentId: h.kid, fileId: "f1" }, NOW);
+  assert.equal(r.code, "SCANNED");
+  assert.match(r.detail, /photos/);
+  assert.equal(ran, 0, "nothing was sent to the AI");
+});
+
+test("photos of work are transcribed by the vision model, accepting its licence once", async () => {
+  const h = setup();
+  addFile(h, "f2", "worksheet.jpg", "image/jpeg");
+  const calls = [];
+  let agreed = false, prompt = "";
+  const ai = { run: async (model, input) => {
+    calls.push(model);
+    if (model === VISION_MODEL) {
+      if (input.prompt === "agree") { agreed = true; return { response: "Thank you" }; }
+      if (!agreed) throw new Error("5016: Prior to using this model, you must submit the prompt 'agree'");
+      assert.ok(Array.isArray(input.image));
+      return { response: "Fractions worksheet. 1/2 + 1/4 = 3/4 (tick). Looks like: a Year 3 maths worksheet, mostly correct." };
+    }
+    prompt = input.messages[1].content;
+    return { response: JSON.stringify(pickNothing) };
+  }, toMarkdown: async () => { throw new Error("should not be needed"); } };
+  const r = await analysePriorLearning({ DB: h.db, BUCKET: bucket }, ai, { familyId: h.fam, userId: h.parent, studentId: h.kid, fileId: "f2" }, NOW);
+  assert.ok(r.ok, JSON.stringify(r));
+  assert.equal(r.document_type, "work_sample");
+  assert.match(prompt, /Fractions worksheet/);
+  assert.equal(calls.filter((m) => m === VISION_MODEL).length, 3, "first try, agree, retry");
 });

@@ -10,6 +10,21 @@ const CONFIDENCE = {
   low: ["Possible", "bg-stone-100 text-stone-700"],
 };
 const today = () => new Date().toISOString().slice(0, 10);
+const SOURCES = { naplan: "NAPLAN result", work_sample: "Work sample", school_report: "School report" };
+
+/** Phone photos are several megabytes; the reader only needs about 1600px, so shrink them before uploading. */
+async function shrinkPhoto(f) {
+  if (!f.type.startsWith("image/") || f.size < 1500000 || typeof createImageBitmap !== "function") return f;
+  try {
+    const img = await createImageBitmap(f);
+    const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.width * scale); canvas.height = Math.round(img.height * scale);
+    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.85));
+    return blob ? new File([blob], f.name.replace(/\.\w+$/, "") + ".jpg", { type: "image/jpeg" }) : f;
+  } catch { return f; }
+}
 
 /**
  * Recognise outcomes a child met before Side-Quest. Either read a school report or NAPLAN result (AI suggests outcomes
@@ -35,11 +50,12 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
   const upload = async (f) => {
     if (!f) return;
     setBusy("upload");
+    f = await shrinkPhoto(f);
     const fd = new FormData(); fd.append("file", f); fd.append("context", "evidence");
     try {
       const { data: up } = await api.post("/files/upload", fd, { headers: { "Content-Type": "multipart/form-data" } });
       setFile({ id: up.id, name: f.name });
-      if (!source) setSource(/naplan/i.test(f.name) ? "NAPLAN result" : "School report");
+      if (!source && /naplan/i.test(f.name)) setSource("NAPLAN result");
     } catch (e) { toast.error(e.response?.data?.detail || "Upload failed"); }
     finally { setBusy(""); }
   };
@@ -48,7 +64,7 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
     try {
       const { data: r } = await api.post(`/outcomes/students/${sid}/prior-learning/analyse`, file && !text.trim() ? { file_id: file.id } : { text });
       setFound(r);
-      if (!source) setSource(r.document_type === "naplan" ? "NAPLAN result" : "School report");
+      if (!source) setSource(SOURCES[r.document_type] || "School report");
       setStep("review");
     } catch (e) { toast.error(e.response?.data?.detail || "Couldn't read that document."); }
     finally { setBusy(""); }
@@ -89,7 +105,7 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
             <div className="grid sm:grid-cols-2 gap-3">
               <button type="button" className={card} onClick={() => setStep("read")} data-testid="prior-read">
                 <FileText size={22} className="text-emerald-800" />
-                <p className="font-display font-bold mt-2" style={{ color: "#1F3B2D" }}>Read a report or NAPLAN result</p>
+                <p className="font-display font-bold mt-2" style={{ color: "#1F3B2D" }}>Read a report, NAPLAN result or past work</p>
                 <p className="text-sm text-stone-600 mt-1">Upload it or paste the text. Side-Quest suggests outcomes from {first}'s list for you to tick.</p>
               </button>
               <button type="button" className={card} onClick={() => { setFound({ suggestions: [] }); setShowAll(true); setStep("review"); }} data-testid="prior-manual">
@@ -104,12 +120,12 @@ export default function PriorLearningDialog({ data, onClose, onDone, preset = nu
             <div className="space-y-3">
               <label className="flex items-center gap-3 rounded-2xl border-2 border-dashed border-stone-300 p-4 cursor-pointer hover:border-emerald-700">
                 {busy === "upload" ? <Loader2 size={20} className="animate-spin" /> : <Upload size={20} className="text-emerald-800" />}
-                <span className="text-sm"><b>{file ? file.name : "Upload the report"}</b><span className="block text-stone-600">PDF works best. A clear photo also works. It's kept in {first}'s Evidence Backpack.</span></span>
+                <span className="text-sm"><b>{file ? file.name : "Upload a report or a piece of work"}</b><span className="block text-stone-600">A typed PDF, or a clear photo of each page. Scanned PDFs can't be read, so photograph those pages instead. It's kept in {first}'s Evidence Backpack.</span></span>
                 <input type="file" accept="application/pdf,image/*" className="sr-only" onChange={(e) => upload(e.target.files?.[0])} data-testid="prior-file" />
               </label>
               <p className="text-center text-xs text-stone-500">or</p>
               <textarea value={text} onChange={(e) => setText(e.target.value)} rows={6} maxLength={28000}
-                placeholder="Paste the report's text here: subject grades, comments, or NAPLAN results such as 'Numeracy: Strong'."
+                placeholder="Paste the report's text, NAPLAN results such as 'Numeracy: Strong', or describe the work, e.g. 'Year 3 fractions worksheet, 18 of 20 correct without help'."
                 className="w-full rounded-lg border border-stone-300 px-3 py-2 text-sm" data-testid="prior-text" />
               <p className="text-xs text-stone-500">NAPLAN gives a level per area (for example "Strong" in Numeracy), not results for each outcome, so its suggestions are only ever "Likely" or "Possible".</p>
               <div className="flex gap-2">
