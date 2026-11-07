@@ -56,14 +56,3 @@ export async function recordQuestBookPurchase(db: DB, session: any, livemode: bo
     .run();
   return `quest book ${bookId} purchased`;
 }
-
-/** True when this library lesson came from a Quest Book the family bought: it stays assignable without a membership. */
-export async function isPurchasedBookLesson(db: DB, familyId: string, lessonRow: any): Promise<boolean> {
-  try {
-    const data = typeof lessonRow?.data === "string" ? JSON.parse(lessonRow.data) : lessonRow?.data;
-    const bookId = typeof data?.quest_book_id === "string" ? data.quest_book_id : "";
-    return bookId ? await familyOwnsBook(db, familyId, bookId) : false;
-  } catch {
-    return false;
-  }
-}
