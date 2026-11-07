@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useViewAs, ViewAsPicker, ViewAsBanner } from "../../components/parent/OwnerViewAs";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
@@ -49,6 +50,7 @@ export default function ParentLayout() {
   const [latestUnreadReply,setLatestUnreadReply] = useState(null);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
+  const viewAs = useViewAs(isOwner);
   const paidPlans = ["ACTIVE_WEEKLY","ACTIVE_FORTNIGHTLY","ACTIVE_MONTHLY","ACTIVE_ANNUAL","PAST_DUE","INTERNAL"];
   const hasMembership = planState && paidPlans.includes(planState.effective_plan);
   const route = location.pathname;
@@ -122,6 +124,7 @@ export default function ParentLayout() {
             <div className="text-xs font-bold truncate" style={{color:"#1F3B2D"}}>{user?.name}</div>
             <div className="text-[11px] text-stone-500 truncate">{user?.email}</div>
           </div>
+          {isOwner && <ViewAsPicker {...viewAs} />}
           <InstallApp />
           <button onClick={doLogout} className="w-full flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-white/80" data-testid="parent-logout">
             <LogOut size={16} /> Sign out
@@ -132,6 +135,7 @@ export default function ParentLayout() {
         </div>
       </aside>
       <main className="flex-1 min-w-0 relative">
+        <ViewAsBanner {...viewAs} />
         <div className="lg:hidden sticky top-0 z-20 flex items-center gap-3 px-4 py-3 border-b" style={{backgroundColor:"#F5EFE0", borderColor:"#D4C8A8"}}>
           <button onClick={() => setMenuOpen(v => !v)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} className="p-1" data-testid="menu-toggle">{menuOpen ? <X size={22}/> : <Menu size={22}/>}</button>
           <span className="font-display font-bold" style={{color:"#1F3B2D"}}>Side-Quest</span>

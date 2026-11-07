@@ -10,6 +10,7 @@
 import type { App, Guards } from "./types";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
+import { ownerPowers } from "./viewAs";
 import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
 import { familyOwnsBook, ownedBookIds } from "./questBookPurchases";
@@ -129,7 +130,7 @@ async function readMeta(bucket: R2Bucket, id: string): Promise<QuestBookMeta | n
 
 /** member: every book. Otherwise a family can download books it bought, plus every sample. */
 async function accessFor(db: DB, familyId: string, userId: string | null) {
-  const owner = userId ? await isPlatformOwner(db, userId) : false;
+  const owner = userId ? await ownerPowers(db, { id: userId, family_id: familyId }) : false;
   const { plan, limits } = await getEntitlement(db, familyId);
   const member = owner || limits.aiGeneration; // the paid-plan marker, as the Printable Vault uses
   return { owner, member, preview: plan === "FREE_PREVIEW", owned: member ? new Set<string>() : await ownedBookIds(db, familyId) };

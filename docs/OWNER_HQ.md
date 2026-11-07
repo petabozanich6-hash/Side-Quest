@@ -85,3 +85,13 @@ The Owner opens **Owner HQ → Feedback inbox**, selects a submission and can ch
 Parents see an unread badge in their Parent Hub and can open the **Ideas & Feedback** section to read and acknowledge responses. This works for free previews and lapsed members as well as active subscriptions. Other families, siblings and different parent accounts cannot see the replies. Internal owner notes remain private and are never in parent replies or outgoing email.
 
 If the Cloudflare Email Service binding is configured, a content-free email invites the parent to sign in to read their message. A missing or failed email does not undo the in-app reply, and Owner HQ reports that email was not sent. Message text is not included in the email or the administrative audit log. Table `parent_feedback_replies` is created by additive migration `0064_parent_feedback_replies.sql` or at runtime when the endpoints are first called.
+
+## View site as (owner only)
+
+At the bottom of the sidebar, owners get a **View site as** menu: Owner (normal), Family member, Free preview or
+Preview ended. It changes only the owner's own family, so the owner sees exactly what that kind of family sees
+(plan limits, locked features, Quest Books buy buttons, Printable Vault and Hands-on Vault locks). Owner-only
+shortcuts and uploader panels are hidden while it's on. A yellow banner shows the current view with a
+**Back to owner view** button, and the view switches itself off after 2 hours. Owner HQ and admin endpoints keep
+checking the real owner role throughout. Code: `worker/src/viewAs.ts`, `frontend/src/components/parent/OwnerViewAs.jsx`;
+migration `0073` (the Worker also creates the table itself).
