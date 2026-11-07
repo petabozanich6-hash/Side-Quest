@@ -348,7 +348,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const saved = await c.env.BUCKET!.get(key, isCover ? undefined : { range: { offset: 0, length: 5 } } as any);
     if (!saved) return c.json({ detail: "Storage confirmation failed; please retry this file." }, 502);
     if (!isCover) {
-      const start = new Uint8Array(await new Response(saved.body).arrayBuffer()).slice(0, 5);
+      const start = new Uint8Array(await new Response((saved as R2ObjectBody).body).arrayBuffer()).slice(0, 5);
       if (String.fromCharCode(...start) !== "%PDF-") {
         await c.env.BUCKET!.delete(key);
         return c.json({ detail: "That file isn't a PDF. Export your book from Canva as “PDF Standard” or “PDF Print”." }, 400);
