@@ -31,7 +31,7 @@ A book with no price is for members only. The owner sets each book's price on th
 
 1. **Upload book files**: one `.json` file per book (format below). Every lesson is checked before anything is saved;
    an error names the lesson that needs fixing. Tick **Replace existing books** to update a book.
-2. **Add cover**: a portrait PNG (at least 600 × 800, roughly 3:4). Books without one show a designed cover.
+2. **Add cover**: a portrait PNG (at least 600 × 800, roughly 3:4). Books without one show a plain card with the title until a cover is added. The site never draws cover art itself.
 3. **Price**: type a price in dollars and Save. Leave it empty to keep the book for members only.
 4. **Remove**: takes the book off Quest Books. Families keep lessons they already added.
 
@@ -45,7 +45,6 @@ A book with no price is for members only. The owner sets each book's price on th
   "title": "Number Navigators",
   "subtitle": "Year 3 Mathematics",
   "description": "A short description parents see on the book page.",
-  "theme": "ocean",
   "sample_key": "u1-l1",
   "lessons": [
     {
@@ -73,8 +72,7 @@ A book with no price is for members only. The owner sets each book's price on th
 ```
 
 - `id`: lowercase letters, numbers and dashes. `year`: 0 (Foundation) to 10. `subject`: `mathematics`, `english`,
-  `science`, `history` or `geography`. `theme` (designed-cover colours): `meadow`, `ocean`, `sunset`, `forest`,
-  `twilight` or `desert`.
+  `science`, `history` or `geography`.
 - `key`: unique within the book and never changed once families have the book (it's how re-adding avoids duplicates).
 - `sample_key`: optional; the free sample lesson. Defaults to the first lesson.
 - `lesson` uses the same fields as the parent Lesson Builder (`sanitizeLessonInput` in `worker/src/lessonBuilder.ts`).

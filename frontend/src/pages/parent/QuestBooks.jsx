@@ -82,7 +82,7 @@ function OwnerPanel({ data, reload }) {
     <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Upload each book as a <strong>.json</strong> file (id, year, subject, title, lessons, and optionally <code>sample_key</code> to choose the free sample lesson; otherwise it's the first lesson). Set each book's price below; leave it empty to keep a book for members only. Every lesson is checked before anything is saved. Add a portrait <strong>PNG</strong> cover to any book; books without one get a designed cover. Updating a book never changes lessons families have already added; they can add new lessons from it.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Upload each book as a <strong>.json</strong> file (id, year, subject, title, lessons, and optionally <code>sample_key</code> to choose the free sample lesson; otherwise it's the first lesson). Set each book's price below; leave it empty to keep a book for members only. Every lesson is checked before anything is saved. Add a portrait <strong>PNG</strong> cover to any book; books without one show a plain card with the title until you add one. Updating a book never changes lessons families have already added; they can add new lessons from it.</p>
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <label className="inline-flex items-center gap-2 rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold cursor-pointer">
@@ -98,7 +98,7 @@ function OwnerPanel({ data, reload }) {
             <QuestBookCover book={{ ...b, year_label: data.years.find((y) => y.year === b.year)?.label }} size="sm" />
             <div className="flex-1 min-w-[160px]">
               <p className="font-semibold text-slate-900">{b.title}</p>
-              <p className="text-xs text-stone-500">{b.id} · {data.years.find((y) => y.year === b.year)?.label} · {b.lesson_count} lessons · {b.price_cents == null ? "Members only" : `${money(b.price_cents)} to buy`} · {b.has_cover ? "Cover uploaded" : "Designed cover"}</p>
+              <p className="text-xs text-stone-500">{b.id} · {data.years.find((y) => y.year === b.year)?.label} · {b.lesson_count} lessons · {b.price_cents == null ? "Members only" : `${money(b.price_cents)} to buy`} · {b.has_cover ? "Cover uploaded" : "No cover yet"}</p>
             </div>
             <form className="flex items-center gap-1" onSubmit={(e) => { e.preventDefault(); void savePrice(b, new FormData(e.currentTarget).get("price")); }}>
               <label className="text-xs font-semibold text-emerald-900" htmlFor={`price-${b.id}`}>Price $</label>
@@ -149,7 +149,7 @@ function ShelfView() {
     if (!data) return [];
     return data.subjects.map((s) => {
       const books = data.books.filter((b) => b.year === year && b.subject === s.id);
-      return books.length ? books.map((b) => ({ ...b, year_label: yearLabel })) : [{ placeholder: true, subject: s.id, subjectLabel: s.label, yearLabel, id: `${s.id}-soon`, theme: "meadow" }];
+      return books.length ? books.map((b) => ({ ...b, year_label: yearLabel })) : [{ placeholder: true, subject: s.id, subjectLabel: s.label, yearLabel, id: `${s.id}-soon` }];
     }).flat();
   }, [data, year, yearLabel]);
   const countByYear = useMemo(() => {
