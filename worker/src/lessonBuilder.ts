@@ -10,7 +10,6 @@ import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { cleanItemKind, cleanVisual, cleanKeyWords, childItem, childFacingPrompt, markItem, modelAnswer, estimateMinutes } from "./items";
 import { effectivePlan, limitsFor, trialEndFrom, UPGRADE_MESSAGE } from "./entitlements";
 import type { Plan, Limits } from "./entitlements";
-import { isPurchasedBookLesson } from "./questBookPurchases";
 
 type DB = D1Database;
 
@@ -63,8 +62,7 @@ export const countLessons = (db: DB, familyId: string) =>
  */
 export const countManualLessons = (db: DB, familyId: string) =>
   count(db, `SELECT COUNT(*) n FROM lessons WHERE family_id = ? AND archived_at IS NULL
-    AND COALESCE(CASE WHEN json_valid(data) THEN json_extract(data, '$.ai_generated') ELSE 0 END, 0) != 1
-    AND COALESCE(CASE WHEN json_valid(data) THEN json_extract(data, '$.quest_book_id') ELSE NULL END, '') = ''`, familyId);
+    AND COALESCE(CASE WHEN json_valid(data) THEN json_extract(data, '$.ai_generated') ELSE 0 END, 0) != 1`, familyId);
 export const countChildren = (db: DB, familyId: string) =>
   count(db, "SELECT COUNT(*) n FROM students WHERE family_id = ?", familyId);
 export const countActiveAssignments = (db: DB, familyId: string) =>
@@ -467,13 +465,6 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
   });
 }
 
-/** Quest Book lessons keep their book link when a parent edits them (adding the book again won't duplicate them). */
-const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_lesson_key", "quest_unit", "quest_position", "source", "review_status"];
-function questTags(data: any): Record<string, unknown> {
-  if (!data?.quest_book_id) return {};
-  return Object.fromEntries(QUEST_KEYS.filter((k) => data[k] !== undefined).map((k) => [k, data[k]]));
-}
-
 export const AI_FLAGS = { source: "ai", ai_generated: true, review_status: "ai_draft_needs_review" };
 
 /** Keeps only outcome codes from the family's own verified catalogue: the server decides, never the client. */
@@ -523,7 +514,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (bad) return bad;
   await db
     .prepare("UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?")
-    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...questTags(parseJson<any>(row.data, {})), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : parseJson<any>(row.data, {}).ai_flags || [] } : {}) }), nowIso(now), id, familyId)
+    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : parseJson<any>(row.data, {}).ai_flags || [] } : {}) }), nowIso(now), id, familyId)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)), assigned_copies_unchanged: true };
 }
@@ -543,9 +534,7 @@ export async function duplicateLesson(db: DB, familyId: string, id: string, now:
   const copyId = newId();
   const ts = nowIso(now);
   const title = `${String(row.title).slice(0, 190)} (copy)`;
-  // A copy is the family's own lesson: it is no longer part of a Quest Book.
-  const { quest_book_id, quest_book_title, quest_lesson_key, quest_unit, quest_position, ...data } = parseJson<Record<string, unknown>>(row.data, {});
-  if (quest_book_id) Object.assign(data, { source: "parent", review_status: "parent_created" });
+  const data = parseJson<Record<string, unknown>>(row.data, {});
   await db
     .prepare(
       "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, 'draft', ?, 1, ?, ?)"
@@ -630,15 +619,13 @@ export async function assignLesson(
   if (lesson.archived_at) return fail(409, "This lesson is archived. Restore it before assigning.", "ARCHIVED");
   if (lesson.status !== "ready") return fail(409, "Save this lesson to your library (mark it ready) before assigning it.", "NOT_READY");
   const { limits } = await getEntitlement(db, familyId, now);
-  // Lessons from a Quest Book the family bought stay assignable without a membership, and don't use preview slots.
-  const boughtBook = !limits.aiGeneration && (await isPurchasedBookLesson(db, familyId, lesson));
-  if (!limits.canAssign && !boughtBook) return paywall("Your free preview has ended. Your children's progress is kept; upgrade to assign more lessons.");
+  if (!limits.canAssign) return paywall("Your free preview has ended. Your children's progress is kept; upgrade to assign more lessons.");
   const prior = await priorAssignment(db, familyId, input.student_id, input.lesson_id);
   if (prior === "open") return fail(409, "This lesson is already assigned to this child and not finished yet.", "ALREADY_ASSIGNED");
   if (prior === "done" && input.again !== true) {
     return fail(409, "This child has already finished this lesson. Choose \"assign again\" if you want them to repeat it.", "ALREADY_COMPLETED");
   }
-  if (!boughtBook && (await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
+  if ((await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
     return paywall(`The free preview includes ${limits.maxActiveAssignments} active assignments. ${UPGRADE_MESSAGE}`);
   }
   const id = newId();

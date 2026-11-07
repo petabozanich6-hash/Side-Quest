@@ -1,77 +1,107 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, BookOpen, Check, Clock, Gift, ImagePlus, Lock, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
-import { api, apiErrorMessage } from "../../lib/api";
+import { ArrowLeft, BookOpen, Check, Download, FileText, Gift, ImagePlus, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
-import LessonPrintActions from "../../components/parent/LessonPrintActions";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
-
+const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
 const YEAR_KEY = "sq_quest_books_year";
 const rememberYear = (y) => { try { localStorage.setItem(YEAR_KEY, String(y)); } catch {} };
 const storedYear = () => { try { const v = localStorage.getItem(YEAR_KEY); return v === null ? null : Number(v); } catch { return null; } };
+/** A plain link lets the browser save even a large PDF directly; it carries the files-only token, never the sign-in token. */
+export const pdfLink = (id, kind) => {
+  let token = "";
+  try { token = localStorage.getItem(FILE_TOKEN) || ""; } catch {}
+  return `${API}/quest-books/books/${encodeURIComponent(id)}/${kind === "sample" ? "sample" : "download"}?ft=${encodeURIComponent(token)}`;
+};
 
 function Shelf({ children }) {
   return (
     <div className="relative pt-6">
       <div className="flex flex-wrap gap-x-6 gap-y-10 sm:gap-x-9 px-3 sm:px-6 pb-3 justify-center sm:justify-start relative z-10">{children}</div>
-      {/* wooden ledge */}
       <div className="h-4 rounded-md bg-gradient-to-b from-amber-700 to-amber-900 shadow-[0_8px_14px_-6px_rgba(60,30,5,.55)]" />
       <div className="h-2 mx-3 rounded-b-md bg-amber-950/40" />
     </div>
   );
 }
 
+const EMPTY = { title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "" };
+const toForm = (b) => ({ id: b.id, title: b.title, subtitle: b.subtitle || "", year: b.year, subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: b.price_cents == null ? "" : (b.price_cents / 100).toFixed(2) });
+
+function BookForm({ data, initial, onSaved, onCancel }) {
+  const [f, setF] = useState(initial || EMPTY);
+  const [busy, setBusy] = useState(false);
+  const set = (k) => (e) => setF((x) => ({ ...x, [k]: e.target.value }));
+  const save = async (e) => {
+    e.preventDefault();
+    const priceText = String(f.price).replace(/[$\s]/g, "");
+    const price_cents = priceText === "" ? null : Math.round(Number(priceText) * 100);
+    if (price_cents !== null && (!Number.isFinite(price_cents) || price_cents < 100)) { toast.error("Enter a price of at least $1, or leave it empty for members only."); return; }
+    setBusy(true);
+    try {
+      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), title: f.title, subtitle: f.subtitle, year: Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents });
+      toast.success(r.data.created ? `Created “${r.data.book.title}”. Now upload its files.` : `Saved “${r.data.book.title}”`);
+      await onSaved(r.data.book);
+    } catch (err) { toast.error(apiErrorMessage(err, "Could not save the book")); }
+    finally { setBusy(false); }
+  };
+  const field = "mt-1 block w-full rounded-lg border border-emerald-300 bg-white px-3 py-2 text-sm";
+  return (
+    <form onSubmit={save} className="rounded-xl border border-emerald-300 bg-white p-4 grid sm:grid-cols-2 gap-3" data-testid="quest-book-form">
+      <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Title<input required value={f.title} onChange={set("title")} className={field} maxLength={120} /></label>
+      <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Subtitle<input value={f.subtitle} onChange={set("subtitle")} className={field} maxLength={160} placeholder="e.g. A year of number adventures" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Year level
+        <select value={f.year} onChange={set("year")} className={field}>{data.years.map((y) => <option key={y.year} value={y.year}>{y.label}</option>)}</select>
+      </label>
+      <label className="text-sm font-semibold text-emerald-950">Subject
+        <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}</select>
+      </label>
+      <label className="text-sm font-semibold text-emerald-950">Pages<input value={f.pages} onChange={set("pages")} inputMode="numeric" className={field} placeholder="optional" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Price to buy without membership ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = members only" /></label>
+      <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Description (what parents see)<textarea value={f.description} onChange={set("description")} rows={4} className={field} maxLength={2000} /></label>
+      <div className="sm:col-span-2 flex gap-2">
+        <button type="submit" disabled={busy} className="rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-60">{busy ? "Saving…" : f.id ? "Save changes" : "Create book"}</button>
+        {onCancel && <button type="button" onClick={onCancel} className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold">Cancel</button>}
+      </div>
+    </form>
+  );
+}
+
+const FILES = [
+  { kind: "book", label: "Book PDF", accept: "application/pdf,.pdf", type: "application/pdf", icon: FileText },
+  { kind: "sample", label: "Sample PDF", accept: "application/pdf,.pdf", type: "application/pdf", icon: Gift },
+  { kind: "cover", label: "Cover PNG", accept: "image/png", type: "image/png", icon: ImagePlus },
+];
+
 function OwnerPanel({ data, reload }) {
   const [busy, setBusy] = useState("");
-  const [replace, setReplace] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [adding, setAdding] = useState(false);
+  const [editing, setEditing] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const importBooks = async (files) => {
-    setBusy("import");
-    let done = 0;
+  const upload = async (book, spec, file) => {
+    if (spec.type === "application/pdf" && !/\.pdf$/i.test(file.name) && file.type !== "application/pdf") { toast.error("Choose a PDF file."); return; }
+    setBusy(`${book.id}-${spec.kind}`); setProgress(0);
     try {
-      for (const file of files) {
-        const text = await file.text();
-        const r = await api.post(`/quest-books/admin/books${replace ? "?replace=1" : ""}`, text, { headers: { "Content-Type": "application/json" }, timeout: 120000 });
-        if (!r.data?.ok) throw new Error(`Quest Books did not confirm ${file.name}.`);
-        done++;
-        toast.success(`${r.data.replaced ? "Updated" : "Added"} “${r.data.title}” (${r.data.lessons} lessons)`);
-      }
+      const r = await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/files/${spec.kind}`, file, {
+        headers: { "Content-Type": spec.type }, timeout: 15 * 60 * 1000,
+        onUploadProgress: (e) => { if (e.total) setProgress(Math.round((e.loaded / e.total) * 100)); },
+      });
+      if (!r.data?.ok) throw new Error("The upload wasn't confirmed.");
+      toast.success(`${spec.label} saved for “${book.title}”`);
       await reload();
-    } catch (e) {
-      toast.error(`${done ? done + " book(s) saved before the error. " : ""}${e?.response ? apiErrorMessage(e, "Import stopped") : e?.message || "Import stopped"}`, { duration: 9000 });
-    } finally { setBusy(""); }
-  };
-  const uploadCover = async (book, file) => {
-    setBusy("cover-" + book.id);
-    try {
-      const r = await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/cover`, file, { headers: { "Content-Type": "image/png" }, timeout: 120000 });
-      if (!r.data?.ok) throw new Error("The cover was not confirmed.");
-      toast.success(`Cover saved for “${book.title}”`);
-      await reload();
-    } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Could not save the cover") : e.message); }
-    finally { setBusy(""); }
-  };
-  const savePrice = async (book, text) => {
-    const trimmed = String(text || "").replace(/[$\s]/g, "");
-    const cents = trimmed === "" ? null : Math.round(Number(trimmed) * 100);
-    if (cents !== null && (!Number.isFinite(cents) || cents < 100)) { toast.error("Enter a price of at least $1, or leave it empty for members only."); return; }
-    setBusy("price-" + book.id);
-    try {
-      await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/price`, { price_cents: cents });
-      toast.success(cents === null ? `“${book.title}” is now members only` : `“${book.title}” can be bought for ${money(cents)}`);
-      await reload();
-    } catch (e) { toast.error(apiErrorMessage(e, "Could not save the price")); }
-    finally { setBusy(""); }
+    } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); }
+    finally { setBusy(""); setProgress(0); }
   };
   const remove = async () => {
     const book = deleteTarget;
-    setBusy("delete-" + book.id);
+    setBusy("delete");
     try {
       await api.delete(`/quest-books/admin/books/${encodeURIComponent(book.id)}`);
-      toast.success(`Removed “${book.title}”. Families keep any lessons they already added.`);
+      toast.success(`Removed “${book.title}”.`);
       setDeleteTarget(null);
       await reload();
     } catch (e) { toast.error(apiErrorMessage(e, "Could not remove the book")); }
@@ -82,43 +112,47 @@ function OwnerPanel({ data, reload }) {
     <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Upload each book as a <strong>.json</strong> file (id, year, subject, title, lessons, and optionally <code>sample_key</code> to choose the free sample lesson; otherwise it's the first lesson). Set each book's price below; leave it empty to keep a book for members only. Every lesson is checked before anything is saved. Add a portrait <strong>PNG</strong> cover to any book; books without one show a plain card with the title until you add one. Updating a book never changes lessons families have already added; they can add new lessons from it.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (what members and buyers download), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <label className="inline-flex items-center gap-2 rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold cursor-pointer">
-          <Upload size={16} /> {busy === "import" ? "Uploading…" : "Upload book files"}
-          <input type="file" accept=".json,application/json" multiple disabled={!!busy} className="sr-only" data-testid="quest-books-import"
-            onChange={(e) => { const f = [...(e.target.files || [])]; if (f.length) void importBooks(f); e.target.value = ""; }} />
-        </label>
-        <label className="flex gap-2 items-center text-sm text-emerald-900"><input type="checkbox" checked={replace} onChange={(e) => setReplace(e.target.checked)} disabled={!!busy} /> Replace existing books with the same id</label>
-      </div>
+      {adding ? (
+        <BookForm data={data} onCancel={() => setAdding(false)} onSaved={async () => { setAdding(false); await reload(); }} />
+      ) : (
+        <button type="button" onClick={() => setAdding(true)} className="inline-flex items-center gap-2 rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold"><Plus size={16} /> Add a book</button>
+      )}
       <div className="rounded-xl border border-emerald-300 bg-white divide-y divide-stone-100">
-        {!data.books.length ? <p className="p-3 text-sm text-stone-600">No books uploaded yet.</p> : data.books.map((b) => (
-          <div key={b.id} className="flex flex-wrap items-center gap-3 p-3">
-            <QuestBookCover book={{ ...b, year_label: data.years.find((y) => y.year === b.year)?.label }} size="sm" />
-            <div className="flex-1 min-w-[160px]">
-              <p className="font-semibold text-slate-900">{b.title}</p>
-              <p className="text-xs text-stone-500">{b.id} · {data.years.find((y) => y.year === b.year)?.label} · {b.lesson_count} lessons · {b.price_cents == null ? "Members only" : `${money(b.price_cents)} to buy`} · {b.has_cover ? "Cover uploaded" : "No cover yet"}</p>
+        {!data.books.length ? <p className="p-3 text-sm text-stone-600">No books yet.</p> : data.books.map((b) => (
+          <div key={b.id} className="p-3 space-y-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <QuestBookCover book={b} size="sm" />
+              <div className="flex-1 min-w-[180px]">
+                <p className="font-semibold text-slate-900">{b.title} {!b.has_book && <span className="ml-1 rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase">Draft: hidden from families</span>}</p>
+                <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `${money(b.price_cents)} to buy`}</p>
+                <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_sample ? `Sample ${mb(b.sample_bytes)} ✓` : "No sample"} · {b.has_cover ? "Cover ✓" : "No cover"}</p>
+              </div>
+              <button type="button" disabled={!!busy} onClick={() => setEditing(editing === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-emerald-400 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50"><Pencil size={15} /> Details</button>
+              <button type="button" disabled={!!busy} onClick={() => setDeleteTarget(b)} className="inline-flex gap-1 items-center rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 disabled:opacity-50"><Trash2 size={15} /> Remove</button>
             </div>
-            <form className="flex items-center gap-1" onSubmit={(e) => { e.preventDefault(); void savePrice(b, new FormData(e.currentTarget).get("price")); }}>
-              <label className="text-xs font-semibold text-emerald-900" htmlFor={`price-${b.id}`}>Price $</label>
-              <input id={`price-${b.id}`} name="price" inputMode="decimal" placeholder="members only" defaultValue={b.price_cents == null ? "" : (b.price_cents / 100).toFixed(2)} key={`${b.id}-${b.price_cents}`}
-                className="w-24 rounded-lg border border-emerald-400 px-2 py-1.5 text-sm" disabled={!!busy} />
-              <button type="submit" disabled={!!busy} className="rounded-lg bg-emerald-800 text-white px-2.5 py-1.5 text-xs font-bold disabled:opacity-50">{busy === "price-" + b.id ? "…" : "Save"}</button>
-            </form>
-            <label className="inline-flex items-center gap-1 rounded-lg border border-emerald-400 px-3 py-2 text-sm font-semibold text-emerald-900 cursor-pointer hover:bg-emerald-50">
-              <ImagePlus size={15} /> {busy === "cover-" + b.id ? "Saving…" : b.has_cover ? "Replace cover" : "Add cover"}
-              <input type="file" accept="image/png" className="sr-only" disabled={!!busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void uploadCover(b, f); e.target.value = ""; }} />
-            </label>
-            <button type="button" disabled={!!busy} onClick={() => setDeleteTarget(b)} className="inline-flex gap-1 items-center rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 disabled:opacity-50">
-              <Trash2 size={15} /> Remove
-            </button>
+            <div className="flex flex-wrap gap-2">
+              {FILES.map((spec) => {
+                const has = spec.kind === "book" ? b.has_book : spec.kind === "sample" ? b.has_sample : b.has_cover;
+                const mine = busy === `${b.id}-${spec.kind}`;
+                const Icon = spec.icon;
+                return (
+                  <label key={spec.kind} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold cursor-pointer ${has ? "border border-emerald-400 text-emerald-900 hover:bg-emerald-50" : "bg-emerald-800 text-white hover:bg-emerald-700"}`} data-testid={`quest-upload-${b.id}-${spec.kind}`}>
+                    {mine ? <Upload size={15} /> : <Icon size={15} />}
+                    {mine ? `Uploading ${progress}%…` : `${has ? "Replace" : "Upload"} ${spec.label}`}
+                    <input type="file" accept={spec.accept} className="sr-only" disabled={!!busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(b, spec, f); e.target.value = ""; }} />
+                  </label>
+                );
+              })}
+            </div>
+            {editing === b.id && <BookForm data={data} initial={toForm(b)} onCancel={() => setEditing(null)} onSaved={async () => { setEditing(null); await reload(); }} />}
           </div>
         ))}
       </div>
       {deleteTarget && (
         <div className="rounded-xl border-2 border-red-300 bg-red-50 p-4 space-y-3" role="alertdialog" aria-label="Confirm removal">
-          <p className="text-sm text-red-900">Remove <strong>{deleteTarget.title}</strong> and its cover from Quest Books? Families keep the lessons they already added.</p>
+          <p className="text-sm text-red-900">Remove <strong>{deleteTarget.title}</strong> and all its files from Quest Books? Families who bought it will no longer be able to download it from the site.</p>
           <div className="flex gap-2">
             <button type="button" onClick={remove} disabled={!!busy} className="rounded-lg bg-red-700 text-white px-4 py-2 text-sm font-bold">{busy ? "Removing…" : "Remove book"}</button>
             <button type="button" onClick={() => setDeleteTarget(null)} disabled={!!busy} className="rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-semibold">Cancel</button>
@@ -147,14 +181,14 @@ function ShelfView() {
   const yearLabel = data?.years.find((y) => y.year === year)?.label || "";
   const shelf = useMemo(() => {
     if (!data) return [];
-    return data.subjects.map((s) => {
-      const books = data.books.filter((b) => b.year === year && b.subject === s.id);
-      return books.length ? books.map((b) => ({ ...b, year_label: yearLabel })) : [{ placeholder: true, subject: s.id, subjectLabel: s.label, yearLabel, id: `${s.id}-soon` }];
-    }).flat();
+    return data.subjects.flatMap((s) => {
+      const books = data.books.filter((b) => b.year === year && b.subject === s.id && (b.has_book || data.owner));
+      return books.length ? books : [{ placeholder: true, subject: s.id, subjectLabel: s.label, yearLabel, id: `${s.id}-soon` }];
+    });
   }, [data, year, yearLabel]);
   const countByYear = useMemo(() => {
     const m = new Map();
-    for (const b of data?.books || []) m.set(b.year, (m.get(b.year) || 0) + 1);
+    for (const b of data?.books || []) if (b.has_book) m.set(b.year, (m.get(b.year) || 0) + 1);
     return m;
   }, [data]);
 
@@ -164,7 +198,7 @@ function ShelfView() {
         <div className="relative z-10 max-w-2xl">
           <div className="text-xs font-bold tracking-widest uppercase text-emerald-800">Side-Quest · Year-by-year subject books</div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold mt-2 text-slate-900">Quest Books</h1>
-          <p className="mt-3 text-stone-700">Beautiful subject books for Maths, English, Science, History and Geography, written for each year level and aligned to the Australian Curriculum v9. Add a book and its lessons go straight into My lessons, ready to assign to your child.</p>
+          <p className="mt-3 text-stone-700">Beautiful downloadable books for Maths, English, Science, History and Geography, made for each year level. Download a book as a PDF to print at home or use on a tablet.</p>
         </div>
         <Sparkles className="absolute right-6 top-6 text-amber-300" size={44} />
         <BookOpen className="absolute right-[-18px] bottom-[-26px] text-emerald-800/10 rotate-[-12deg]" size={170} />
@@ -176,7 +210,7 @@ function ShelfView() {
         {!data.member && (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-4 flex gap-3 items-start text-amber-950 text-sm">
             <Gift size={18} className="mt-0.5 shrink-0" />
-            <p>{data.preview ? "Look inside any book and try its free sample lesson with your child. " : "Look inside any book. "}Every Quest Book is included with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ", or you can buy a single book to keep." : "."}</p>
+            <p>Download a free sample of any book. Every Quest Book is included with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ", or you can buy a single book to keep." : "."}</p>
           </div>
         )}
 
@@ -192,7 +226,7 @@ function ShelfView() {
 
         <section className="rounded-3xl bg-gradient-to-b from-[#fbf6ec] to-[#f1e6d2] border border-amber-200 p-4 sm:p-7 space-y-2">
           <h2 className="font-display text-2xl font-bold text-slate-900">{yearLabel} Quest Books</h2>
-          <p className="text-sm text-stone-600">{shelf.some((b) => !b.placeholder) ? "Tap a book to see what's inside." : "The books for this year level are being written. They'll appear here as each one is ready."}</p>
+          <p className="text-sm text-stone-600">{shelf.some((b) => !b.placeholder) ? "Tap a book to see what's inside." : "The books for this year level are on their way. They'll appear here as each one is ready."}</p>
           <Shelf>
             {shelf.map((b) => b.placeholder ? (
               <div key={b.id} className="flex flex-col items-center gap-2 w-36 sm:w-40">
@@ -204,7 +238,7 @@ function ShelfView() {
                 className="group flex flex-col items-center gap-2 w-36 sm:w-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-xl">
                 <QuestBookCover book={b} className="transition-transform duration-300 group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]" />
                 <span className="text-xs font-bold text-slate-800 text-center leading-tight">{b.title}</span>
-                <span className="text-[11px] text-stone-600">{b.lesson_count} lessons{b.owned ? <span className="text-emerald-800 font-semibold"> · yours</span> : b.added_count ? <span className="text-emerald-800 font-semibold"> · {b.added_count} added</span> : null}</span>
+                <span className="text-[11px] text-stone-600">{b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
               </Link>
             ))}
           </Shelf>
@@ -217,11 +251,10 @@ function ShelfView() {
 }
 
 function BookView({ id }) {
-  const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState("");
+  const [busy, setBusy] = useState(false);
   const [confirming, setConfirming] = useState(params.get("purchase") === "success");
   const load = () => api.get(`/quest-books/books/${encodeURIComponent(id)}`, { params: { _: Date.now() } })
     .then(({ data: d }) => { setData(d); return d; }).catch((e) => { setError(apiErrorMessage(e, "Could not open this book")); return null; });
@@ -235,7 +268,7 @@ function BookView({ id }) {
     const tick = async () => {
       const d = await load();
       if (!live) return;
-      if (d?.owned || d?.member) { setConfirming(false); setParams({}, { replace: true }); toast.success("Payment received. This book is yours!"); return; }
+      if (d?.book?.can_download) { setConfirming(false); setParams({}, { replace: true }); toast.success("Payment received. This book is yours to download!"); return; }
       if (++tries < 15) setTimeout(tick, 2000);
       else { setConfirming(false); toast("Your payment is still being confirmed. Refresh this page in a minute.", { duration: 9000 }); }
     };
@@ -244,42 +277,15 @@ function BookView({ id }) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const book = data?.book;
-  const added = book ? book.lessons.filter((l) => l.lesson_id).length : 0;
-  const archived = book ? book.lessons.filter((l) => l.archived).length : 0;
-  const remaining = book ? book.lessons.length - added - archived : 0;
-  const units = useMemo(() => {
-    const out = [];
-    for (const l of book?.lessons || []) {
-      const last = out[out.length - 1];
-      if (last && last.unit === l.unit) last.lessons.push(l); else out.push({ unit: l.unit, lessons: [l] });
-    }
-    return out;
-  }, [book]);
-
-  const sample = book?.lessons.find((l) => l.sample);
-  const full = data?.access === "full";
-
-  const addLessons = async () => {
-    setBusy("add");
-    try {
-      const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/add`, {}, { timeout: 180000 });
-      if (r.data.sample_only) toast.success(r.data.added ? "Free sample lesson added to My lessons" : "The free sample is already in My lessons");
-      else toast.success(r.data.added ? `Added ${r.data.added} lesson${r.data.added === 1 ? "" : "s"} to My lessons` : "You already have every lesson from this book");
-      await load();
-    } catch (e) {
-      if (e?.response?.status === 402 && e.response.data?.code === "UPGRADE_REQUIRED") navigate("/parent/plan");
-      toast.error(apiErrorMessage(e, "Could not add this book"));
-    } finally { setBusy(""); }
-  };
   const buy = async () => {
-    setBusy("buy");
+    setBusy(true);
     try {
       const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/checkout`, {});
       if (!r.data?.url) throw new Error("Checkout did not open.");
       window.location.assign(r.data.url);
     } catch (e) {
       toast.error(e?.response ? apiErrorMessage(e, "Could not start checkout") : e.message);
-      setBusy("");
+      setBusy(false);
     }
   };
 
@@ -288,7 +294,7 @@ function BookView({ id }) {
       <Link to="/parent/quest-books" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> All Quest Books</Link>
       {!data && !error && <p role="status">Opening the book…</p>}
       {error && <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
-      {book && <>
+      {book && (
         <section className="rounded-3xl bg-gradient-to-br from-[#fbf6ec] to-[#efe2c9] border border-amber-200 p-6 sm:p-9 flex flex-col sm:flex-row gap-8 items-center sm:items-start">
           <QuestBookCover book={book} size="lg" />
           <div className="flex-1 space-y-3">
@@ -297,89 +303,42 @@ function BookView({ id }) {
             {book.subtitle && <p className="italic text-stone-700" style={{ fontFamily: "Georgia, serif" }}>{book.subtitle}</p>}
             {book.description && <p className="text-stone-700 whitespace-pre-line">{book.description}</p>}
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
-              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.lesson_count} lessons</span>
-              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{units.length} unit{units.length === 1 ? "" : "s"}</span>
-              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">Australian Curriculum v9 aligned</span>
+              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">Digital download · PDF</span>
+              {book.pages && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.pages} pages</span>}
+              {book.book_bytes && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{mb(book.book_bytes)}</span>}
             </div>
             {confirming && <p role="status" className="rounded-xl bg-white/80 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-900">Payment received. Unlocking your book…</p>}
             <div className="pt-2 flex flex-wrap gap-3 items-center">
-              {full ? (
-                remaining > 0 ? (
-                  <button type="button" onClick={addLessons} disabled={!!busy} data-testid="quest-book-add"
-                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
-                    <Plus size={18} /> {busy === "add" ? "Adding lessons…" : added ? `Add ${remaining} new lesson${remaining === 1 ? "" : "s"}` : `Add all ${remaining} lessons to My lessons`}
-                  </button>
-                ) : (
-                  <span className="inline-flex items-center gap-2 rounded-xl bg-emerald-100 text-emerald-900 px-4 py-3 font-bold"><Check size={18} /> This book is in My lessons</span>
-                )
+              {book.can_download ? (
+                <a href={pdfLink(book.id, "book")} download data-testid="quest-book-download"
+                  className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800">
+                  <Download size={18} /> Download the book
+                </a>
               ) : (
                 <>
-                  {data.can_buy && (
-                    <button type="button" onClick={buy} disabled={!!busy || confirming} data-testid="quest-book-buy"
+                  {book.can_buy && (
+                    <button type="button" onClick={buy} disabled={busy || confirming} data-testid="quest-book-buy"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
-                      <ShoppingBag size={18} /> {busy === "buy" ? "Opening checkout…" : `Buy this book · ${money(book.price_cents)}`}
+                      <ShoppingBag size={18} /> {busy ? "Opening checkout…" : `Buy this book · ${money(book.price_cents)}`}
                     </button>
                   )}
-                  <Link to="/parent/plan" className={data.can_buy ? "text-sm font-semibold text-emerald-900 underline" : "inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold"}>
-                    {data.can_buy ? "Or get every Quest Book with Family Membership" : <><Lock size={16} /> Unlock with Family Membership</>}
+                  <Link to="/parent/plan" className={book.can_buy ? "text-sm font-semibold text-emerald-900 underline" : "inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold"}>
+                    {book.can_buy ? "Or get every Quest Book with Family Membership" : "Included with Family Membership"}
                   </Link>
                 </>
               )}
-              {full && added > 0 && <Link to="/parent/lessons" className="text-sm font-semibold text-emerald-900 underline">Assign from My lessons →</Link>}
+              {book.has_sample && (
+                <a href={pdfLink(book.id, "sample")} download data-testid="quest-book-sample"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-amber-500 bg-white text-amber-900 px-4 py-2.5 text-sm font-bold hover:bg-amber-50">
+                  <Gift size={16} /> Free sample
+                </a>
+              )}
             </div>
-            {data.owned && <p className="text-xs text-stone-600">You bought this book. Its lessons stay yours to assign, even without a membership.</p>}
-            {data.access === "sample" && sample && (
-              <div className="rounded-2xl border-2 border-dashed border-amber-400 bg-white/80 p-4 space-y-3" data-testid="quest-book-sample">
-                <p className="font-bold text-slate-900 inline-flex items-center gap-2"><Gift size={17} className="text-amber-600" /> Free sample lesson: {sample.title}</p>
-                {sample.lesson_id ? (
-                  <>
-                    <p className="text-sm text-stone-700">It's in My lessons. Assign it to your child, or print it as a write-on workbook (choose “Save as PDF” in the print window to download it).</p>
-                    <div className="flex flex-wrap gap-2 items-center">
-                      <Link to={`/parent/lessons/${sample.lesson_id}`} className="inline-flex items-center gap-1 rounded-xl border-2 border-emerald-800 px-4 py-2.5 text-sm font-bold text-emerald-900"><BookOpen size={16} /> Open &amp; assign</Link>
-                      <LessonPrintActions lessonId={sample.lesson_id} />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm text-stone-700">Try one full lesson from this book for free: add it to My lessons, assign it to your child, or print it as a write-on PDF.</p>
-                    <button type="button" onClick={addLessons} disabled={!!busy} data-testid="quest-book-add-sample"
-                      className="inline-flex items-center gap-2 rounded-xl bg-amber-500 text-amber-950 px-4 py-2.5 text-sm font-bold hover:bg-amber-400 disabled:opacity-60">
-                      <Plus size={16} /> {busy === "add" ? "Adding…" : "Add the free sample lesson"}
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
-            {archived > 0 && <p className="text-xs text-stone-600">{archived} lesson{archived === 1 ? " is" : "s are"} archived in My lessons. Restore {archived === 1 ? "it" : "them"} from the archive to use {archived === 1 ? "it" : "them"} again.</p>}
+            {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book. Download it again any time.</p>}
+            {book.can_download && <p className="text-xs text-stone-600">Print it at home or open it on a tablet. For a family's own use only, please don't share the file.</p>}
           </div>
         </section>
-
-        <section className="space-y-5">
-          <h2 className="font-display text-2xl font-bold text-slate-900">Inside this book</h2>
-          {units.map((u, ui) => (
-            <div key={ui} className="rounded-2xl border border-stone-200 bg-white overflow-hidden">
-              {u.unit && <div className="bg-stone-50 border-b border-stone-200 px-5 py-3 font-bold text-slate-800">{u.unit}</div>}
-              <ol className="divide-y divide-stone-100">
-                {u.lessons.map((l) => (
-                  <li key={l.key} className="px-5 py-4 flex gap-4 items-start">
-                    <span className="mt-0.5 h-8 w-8 shrink-0 rounded-full bg-amber-100 text-amber-900 font-bold text-sm grid place-items-center">{l.position}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-slate-900">{l.title}{l.sample && !full && <span className="ml-2 align-middle rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide">Free sample</span>}</p>
-                      {l.objectives?.length > 0 && <p className="text-sm text-stone-600 mt-0.5">{l.objectives.join(" · ")}</p>}
-                      {l.duration_minutes && <p className="text-xs text-stone-500 mt-1 inline-flex items-center gap-1"><Clock size={12} /> about {l.duration_minutes} min</p>}
-                    </div>
-                    {l.lesson_id ? (
-                      <Link to={`/parent/lessons/${l.lesson_id}`} title="Open, assign or print this lesson" className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-900 px-3 py-1.5 text-xs font-bold hover:bg-emerald-100"><Check size={14} /> Open</Link>
-                    ) : l.archived ? (
-                      <span className="shrink-0 text-xs text-stone-500">Archived</span>
-                    ) : !full && !l.sample ? <Lock size={15} className="shrink-0 mt-1 text-stone-400" aria-label="Locked" /> : null}
-                  </li>
-                ))}
-              </ol>
-            </div>
-          ))}
-        </section>
-      </>}
+      )}
     </div>
   );
 }
