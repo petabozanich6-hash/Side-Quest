@@ -37,6 +37,7 @@ import UpgradePage from "./pages/parent/Upgrade";
 import AssignmentsPage from "./pages/parent/Assignments";
 import ResourcesPage from "./pages/parent/Resources";
 import PrintableVault from "./pages/parent/PrintableVault";
+import QuestBooks from "./pages/parent/QuestBooks";
 import HandwritingBook from "./pages/parent/HandwritingBook";
 import HandsOnVault from "./pages/parent/HandsOnVault";
 import HomeschoolCompass from "./pages/parent/HomeschoolCompass";
@@ -130,6 +131,8 @@ function Router() {
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
+        <Route path="quest-books" element={<QuestBooks />} />
+        <Route path="quest-books/:bookId" element={<QuestBooks />} />
         <Route path="printable-vault" element={<PrintableVault />} />
         <Route path="handwriting-book" element={<HandwritingBook />} />
         <Route path="hands-on-vault" element={<HandsOnVault />} />
