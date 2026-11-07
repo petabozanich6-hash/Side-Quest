@@ -602,3 +602,31 @@ test("reconcile: a missed cancellation webhook is caught once the period ends; f
   assert.deepEqual(await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, NOW), [], "not re-checked straight away");
   assert.deepEqual(await b.reconcileSubscriptions(db, {}, f, NOW), [], "billing off: nothing");
 });
+
+test("reconcile: a subscription Stripe doesn't have is marked not_found once and never asked about again", async () => {
+  const db = makeDb();
+  const ended = new Date(NOW.getTime() - DAY);
+  seedFamily(db, "f1", "ACTIVE_MONTHLY", { stripe_customer_id: "cus_1", stripe_subscription_id: "sub_gone", subscription_status: "active", plan_period_end: ended.toISOString() });
+  const seen = [];
+  const f = async (url, init) => { seen.push(url); return fakeStripe({})(url, init); }; // Stripe: 404 for everything
+  const out = await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, NOW);
+  assert.equal(out.length, 1);
+  assert.match(out[0], /not found sub_gone/);
+  assert.equal(fam(db, "f1").subscription_status, "not_found");
+  assert.equal(fam(db, "f1").plan, "ACTIVE_MONTHLY", "plan is left for the owner to review, not changed automatically");
+  assert.equal(fam(db, "f1").stripe_subscription_id, "sub_gone", "the id is kept so the owner can look it up");
+  // Hours later (past the one-hour retry window) it is still not asked about again.
+  const later = new Date(NOW.getTime() + 5 * 3600_000);
+  assert.deepEqual(await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, later), []);
+  assert.equal(seen.length, 1, "Stripe was called exactly once");
+});
+
+test("reconcile: other Stripe errors are still retried after the hour", async () => {
+  const db = makeDb();
+  seedFamily(db, "f1", "ACTIVE_MONTHLY", { stripe_customer_id: "cus_1", stripe_subscription_id: "sub_1", subscription_status: "active", plan_period_end: new Date(NOW.getTime() - DAY).toISOString() });
+  const f = async () => new Response(JSON.stringify({ error: { message: "busy" } }), { status: 500 });
+  assert.match((await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, NOW))[0], /failed sub_1: 500/);
+  assert.equal(fam(db, "f1").subscription_status, "active", "a temporary error doesn't mark the family");
+  const later = new Date(NOW.getTime() + 2 * 3600_000);
+  assert.equal((await b.reconcileSubscriptions(db, { STRIPE_SECRET_KEY: "sk_test_dummy" }, f, later)).length, 1, "retried after the hour");
+});
