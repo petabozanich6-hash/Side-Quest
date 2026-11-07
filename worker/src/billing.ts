@@ -12,6 +12,7 @@ import { ACTIVE_PLANS, PAST_DUE_GRACE_DAYS } from "./entitlements";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
 import { resolveHoardDiscount, previewHoardDiscount } from "./dragonHoard";
+import { recordQuestBookPurchase } from "./questBookPurchases";
 import type { Plan } from "./entitlements";
 import type { App, Env, Guards } from "./types";
 
@@ -343,6 +344,11 @@ export async function handleEvent(
   }
   const subId = subscriptionIdFromEvent(event);
   if (subId) outcome = await syncSubscription(db, cfg, subId, fetchImpl, now);
+  // One-off Quest Book purchases (checkout mode "payment"): recorded only from this verified event.
+  if ((event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded")
+    && obj?.object === "checkout.session" && obj.mode === "payment") {
+    outcome = (await recordQuestBookPurchase(db, obj, cfg.mode === "live", now)) || outcome;
+  }
 
   // Only a genuine completed checkout (or its delayed-payment success) sends the
   // first-membership email. A redirect alone never sends it. The event is marked
@@ -422,7 +428,7 @@ export async function billingSummary(db: DB, env: Env, familyId: string) {
 
 // ---------------------------------------------------------------- routes
 
-function appOrigin(env: Env, reqUrl: string): string {
+export function appOrigin(env: Env, reqUrl: string): string {
   const configured = (env.APP_URL || "").replace(/\/+$/, "");
   return /^https:\/\//.test(configured) ? configured : new URL(reqUrl).origin;
 }
