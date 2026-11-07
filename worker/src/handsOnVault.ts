@@ -1,4 +1,5 @@
 import type { App, Guards } from "./types";
+import { ownerPowers } from "./viewAs";
 import type { HandsOnQuest } from "./data/handsOnTypes";
 import { PARENT_LEARNING_GUIDES } from "./data/handsOnParentGuides";
 import { MORE_PARENT_LEARNING_GUIDES } from "./data/handsOnParentGuidesMore";
@@ -86,7 +87,7 @@ export function previewQuest(q: HandsOnQuest) {
   };
 }
 export async function canOpenHandsOnVault(db: D1Database, user: { id: string; family_id: string }): Promise<boolean> {
-  if (await isPlatformOwner(db, user.id)) return true;
+  if (await ownerPowers(db, user)) return true;
   const entitlement = await getEntitlement(db, user.family_id);
   return entitlement.limits.aiGeneration;
 }

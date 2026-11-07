@@ -27,6 +27,7 @@ import { registerSiteSearch } from "./siteSearch";
 import { registerPrintableVault } from "./printableVault";
 import { registerHandwritingBook } from "./handwritingBook";
 import { registerQuestBooks } from "./questBooks";
+import { registerViewAs, viewAsState } from "./viewAs";
 import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
@@ -260,7 +261,7 @@ app.get("/api/auth/me", requireAuth, async (c) => {
   const hasPassword = u.role === "parent"
     ? !!(await c.env.DB.prepare("SELECT password_hash FROM users WHERE id = ?").bind(u.id).first<{ password_hash: string | null }>())?.password_hash
     : undefined;
-  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id), file_token: await issueFileToken(c.env, u), ...(hasPassword === undefined ? {} : { has_password: hasPassword }), ...(owner ? { is_platform_owner: true } : {}) });
+  return c.json({ ...u, jurisdiction: await jurisdictionOrNull(c.env.DB, u.family_id), file_token: await issueFileToken(c.env, u), ...(hasPassword === undefined ? {} : { has_password: hasPassword }), ...(owner ? { is_platform_owner: true, view_as: await viewAsState(c.env.DB, u.family_id) } : {}) });
 });
 
 
@@ -318,6 +319,7 @@ registerSiteSearch(app, guards);
 registerPrintableVault(app, guards);
 registerHandwritingBook(app, guards);
 registerQuestBooks(app, guards);
+registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
 registerAnnouncementPreferences(app, guards);

@@ -1,4 +1,5 @@
 import type { App, Guards } from "./types";
+import { ownerPowers } from "./viewAs";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 import { renderVaultSvg, type VaultPicture } from "./printableVaultSvg";
@@ -128,11 +129,11 @@ async function getInventory(bucket:R2Bucket|undefined):Promise<InventoryItem[]>{
 
 export async function canAccessPrintableVault(db:D1Database,user:{id:string;family_id:string}){
  const {limits}=await getEntitlement(db,user.family_id);
- return await isPlatformOwner(db,user.id)||(!VAULT_ART_REVIEW_ONLY&&limits.aiGeneration);
+ return await ownerPowers(db,user)||(!VAULT_ART_REVIEW_ONLY&&limits.aiGeneration);
 }
 export function registerPrintableVault(app:App,g:Guards){
  app.get("/api/printables",g.auth,g.parent,async c=>{
-  const owner=await isPlatformOwner(c.env.DB,c.get("user").id);
+  const owner=await ownerPowers(c.env.DB,c.get("user"));
   const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
   const inventory=await getInventory(c.env.BUCKET);
   const newUploads=inventory.filter(x=>!premiumSet.has(x.id)&&x.colour)

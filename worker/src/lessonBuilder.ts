@@ -1,6 +1,7 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { viewAsPlan } from "./viewAs";
 import { publicLesson } from "./syllabusText";
 import { recordPetEvent } from "./data/petQuests";
 import { knownOutcomeCodes } from "./outcomeMatch";
@@ -44,7 +45,8 @@ export async function getEntitlement(db: DB, familyId: string, now: Date = new D
     .prepare("SELECT plan, created_at, trial_started_at, trial_ends_at, plan_period_end FROM families WHERE id = ?")
     .bind(familyId)
     .first<any>();
-  const plan: Plan = effectivePlan(row, now);
+  // The owner's "View site as" switch can simulate another plan for the owner's own family only.
+  const plan: Plan = (await viewAsPlan(db, familyId, now)) ?? effectivePlan(row, now);
   const limits: Limits = limitsFor(plan);
   return { plan, limits, row };
 }
