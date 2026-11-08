@@ -1091,13 +1091,16 @@ export function registerQuestBooks(app: App, g: Guards) {
     const chapters = await readChapters(c.env.BUCKET!, id);
     const published = await readPublished(c.env.BUCKET!, id);
     const { results } = await c.env.DB.prepare(`SELECT id, title, status, version, updated_at, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision,
-        json_extract(data, '$.book_reviewed_version') AS reviewed_version, json_extract(data, '$.book_reviewed_at') AS reviewed_at FROM lessons
+        json_extract(data, '$.book_reviewed_version') AS reviewed_version, json_extract(data, '$.book_reviewed_at') AS reviewed_at,
+        json_extract(data, '$.book_plan_saved_version') AS plan_saved_version, json_extract(data, '$.book_plan_saved_at') AS plan_saved_at FROM lessons
       WHERE family_id = ? AND archived_at IS NULL AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
       AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book' ORDER BY updated_at DESC`).bind(user.family_id, id).all<any>();
     const drafts = new Map<string, any>();
     for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, {
       lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision,
       version: r.version, reviewed_at: r.reviewed_at,
+      plan_saved_at: r.plan_saved_at,
+      saved_to_plan: r.plan_saved_version !== null && Number(r.plan_saved_version) === Number(r.version),
       reviewed: r.status === "ready" && r.reviewed_version !== null && Number(r.reviewed_version) === Number(r.version),
     });
     c.header("Cache-Control", "no-store");
@@ -1106,10 +1109,47 @@ export function registerQuestBooks(app: App, g: Guards) {
         revision: chapterRevision({ ...ch, text }), draft: drafts.get(ch.id) ? {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
           reviewed: drafts.get(ch.id).reviewed && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
+          saved_to_plan: drafts.get(ch.id).saved_to_plan && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
         } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
       draft_count: (results || []).length,
     });
+  });
+
+  // A book plan stores the ID and saved version of its ORIGINAL companion lesson.
+  // Never overwrite the PDF source/chapters, silently publish, or copy family lessons.
+  app.post("/api/quest-books/admin/books/:id/chapters/:cid/save-to-plan", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), cid = c.req.param("cid");
+    const body: any = await c.req.json().catch(() => ({}));
+    if (!VALID_ID.test(id) || !body?.lesson_id || !Number.isInteger(body?.expected_version))
+      return c.json({ detail: "Choose a valid book lesson and its current saved version." }, 400);
+    const chapter = (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid);
+    if (!chapter) return c.json({ detail: "The book plan no longer contains this chapter." }, 404);
+    const user = c.get("user");
+    const row = await ownLesson(c.env.DB, user.family_id, body.lesson_id);
+    if (!row || row.archived_at) return c.json({ detail: "The working lesson was not found." }, 404);
+    let data: Record<string, any>;
+    try { data = JSON.parse(row.data || "{}"); } catch { return c.json({ detail: "The lesson cannot be read." }, 409); }
+    if (data.quest_book_id !== id || data.quest_chapter_id !== cid || data.source === "side_quest_book")
+      return c.json({ detail: "Only an existing official companion lesson can be saved to its own book plan." }, 403);
+    if (data.quest_source_revision !== chapterRevision(chapter))
+      return c.json({ detail: "The PDF chapter source changed. Re-analyse it before saving to the plan." }, 409);
+    if (Number(row.version) !== body.expected_version)
+      return c.json({ detail: "The lesson changed while you were reviewing it. Reopen it before saving to the plan." }, 409);
+    data.book_plan_saved_version = row.version;
+    data.book_plan_saved_at = new Date().toISOString();
+    data.book_plan_saved_by = user.id;
+    const saved = await c.env.DB.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
+      .bind(JSON.stringify(data), row.id, user.family_id, row.version).run();
+    if (!saved.meta?.changes) return c.json({ detail: "Another edit occurred. Reload the lesson and try again." }, 409);
+    const confirm = await ownLesson(c.env.DB, user.family_id, row.id);
+    let confirmed: Record<string, any>;
+    try { confirmed = JSON.parse(confirm?.data || "{}"); } catch { confirmed = {}; }
+    if (Number(confirmed.book_plan_saved_version) !== row.version)
+      return c.json({ detail: "The book plan save could not be verified." }, 502);
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, lesson_id: row.id, book_id: id, chapter_id: cid,
+      saved_version: row.version, saved_at: confirmed.book_plan_saved_at });
   });
 
   // A book review belongs to the owner's working lesson version, not to a browser checkbox.
