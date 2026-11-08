@@ -13,9 +13,10 @@
 //   SQUARE_LOCATION_ID            var
 //   SQUARE_WEBHOOK_URL            var, optional (the exact URL registered with Square; defaults to the request URL)
 import { recordPaidCart } from "./questBookPurchases";
+import { recordPaidShopOrder } from "./shopOrders";
 import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo } from "./squareMembership";
 import type { App, Env } from "./types";
-import { LIVE_PRICE_DETAILS } from "./billing";
+import { LIVE_PRICE_DETAILS, appOrigin } from "./billing";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
 
@@ -101,6 +102,26 @@ export async function createCartPaymentLink(cfg: Extract<SquareConfig, { ok: tru
   return url;
 }
 
+/** Hosted Square checkout for a public shop order (no account). */
+export async function createShopPaymentLink(cfg: Extract<SquareConfig, { ok: true }>, opts: {
+  orderId: string; lines: SquareLine[]; redirectUrl: string; email: string; fetchImpl?: Fetch;
+}): Promise<string> {
+  const r = await squareCall(cfg, "POST", "online-checkout/payment-links", {
+    idempotency_key: `shop-${opts.orderId}`,
+    order: {
+      location_id: cfg.locationId,
+      reference_id: opts.orderId,
+      metadata: { kind: "shop_order", order_id: opts.orderId },
+      line_items: opts.lines.map((l) => ({ name: l.name.slice(0, 500), quantity: "1", base_price_money: { amount: Math.round(l.amount_cents), currency: "AUD" } })),
+    },
+    checkout_options: { redirect_url: opts.redirectUrl, ask_for_shipping_address: false, allow_tipping: false },
+    pre_populated_data: { buyer_email: opts.email },
+  }, opts.fetchImpl);
+  const url = r?.payment_link?.url;
+  if (!url) throw new SquareError(502, "Square did not return a checkout link");
+  return url;
+}
+
 // ---------------------------------------------------------------- webhook handling
 
 const CREATE_EVENTS = `CREATE TABLE IF NOT EXISTS square_events (
@@ -120,7 +141,7 @@ function ensureEvents(db: DB) {
  * Applies one verified Square event. A completed payment is matched to its order; the order (created by us) carries
  * the cart id and family id. The amount actually paid must equal the saved cart total.
  */
-export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>): Promise<string> {
+export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>, shop?: { env: Env; origin: string }): Promise<string> {
   const type = String(event?.type || "");
   const obj = event?.data?.object || {};
   if (type === "subscription.created" || type === "subscription.updated") {
@@ -146,6 +167,11 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   const order = (await squareCall(cfg, "GET", `orders/${encodeURIComponent(fresh.order_id)}`, undefined, fetchImpl))?.order;
   if (!order || order.location_id !== cfg.locationId) return "order not found for this location";
   const meta = order.metadata || {};
+  if (meta.kind === "shop_order") {
+    if (String(fresh.amount_money?.currency || "AUD") !== "AUD") return "unexpected currency";
+    if (!shop) return "shop order without context";
+    return recordPaidShopOrder(db, shop.env, String(order.reference_id || meta.order_id || ""), Number(fresh.amount_money?.amount), `sq_${fresh.id}`, shop.origin, now);
+  }
   if (meta.kind !== "quest_cart") {
     // A membership checkout's first payment (orders we remember by id in square_checkouts).
     return (await linkMembershipPayment(db, cfg, fresh, fetchImpl, now, onActivated)) ?? `ignored order ${order.id}`;
@@ -189,7 +215,8 @@ export function registerSquare(app: App) {
     if (seen?.processed_at) return c.json({ received: true, duplicate: true });
     await c.env.DB.prepare("INSERT OR IGNORE INTO square_events (id, type, received_at) VALUES (?, ?, ?)").bind(id, String(event.type || ""), new Date().toISOString()).run();
     try {
-      const outcome = await handleSquareEvent(c.env.DB, cfg, event, undefined, new Date(), (info) => notifyActivated(c.env, info, cfg.production));
+      const outcome = await handleSquareEvent(c.env.DB, cfg, event, undefined, new Date(), (info) => notifyActivated(c.env, info, cfg.production),
+        { env: c.env, origin: appOrigin(c.env, c.req.url) });
       await c.env.DB.prepare("UPDATE square_events SET processed_at = ?, outcome = ? WHERE id = ?").bind(new Date().toISOString(), outcome.slice(0, 300), id).run();
       console.log("square webhook", event.type, id, outcome);
       return c.json({ received: true });

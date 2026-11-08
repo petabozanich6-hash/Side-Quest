@@ -13,7 +13,9 @@ import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
 import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
-import { squareConfig, createCartPaymentLink } from "./square";
+import { squareConfig, createCartPaymentLink, createShopPaymentLink } from "./square";
+import { loadPlatformSettings } from "./platformSettings";
+import { createShopOrder, shopOrderFor, resendShopLinks, ensureShopOrders, MAX_SHOP_DOWNLOADS } from "./shopOrders";
 
 /** Books can be sold when Square (preferred) or Stripe is configured. */
 const canSell = (env: any) => squareConfig(env).ok || billingConfig(env).ok;
@@ -1380,5 +1382,117 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (after.some(Boolean)) return c.json({ detail: "The book could not be fully deleted. Please retry." }, 502);
     c.header("Cache-Control", "no-store");
     return c.json({ ok: true, id });
+  });
+}
+
+
+// ---------------------------------------------------------------- public shop (no account)
+// Opened and closed by the owner in Owner HQ (features.shopOpen). Sells book PDFs only: lessons need an account.
+const MAX_SHOP_ITEMS = 20;
+const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
+
+async function shopOpen(db: DB) {
+  try { return (await loadPlatformSettings(db)).features.shopOpen === true; } catch { return false; }
+}
+const shopBook = (b: Listed) => ({
+  id: b.id, title: b.title, subtitle: b.subtitle, description: b.description, collection: b.collection,
+  year_label: yearLabel(b.year), subject_label: subjectLabel(b), pages: b.pages, price_cents: b.price_cents,
+  has_cover: b.has_cover, look_pages: b.look_pages,
+});
+
+export function registerShop(app: App) {
+  const closed = (c: any) => c.json({ open: false, detail: "The shop isn't open yet." }, 404);
+
+  app.get("/api/shop", async (c) => {
+    c.header("Cache-Control", "no-store");
+    if (!(await shopOpen(c.env.DB))) return c.json({ open: false, books: [] });
+    const books = (await listBooks(c.env.BUCKET)).filter((b) => b.has_book && b.price_cents !== null);
+    return c.json({ open: true, can_buy: squareConfig(c.env).ok, books: books.map(shopBook) });
+  });
+
+  app.get("/api/shop/books/:id/cover", async (c) => {
+    if (!(await shopOpen(c.env.DB))) return closed(c);
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id) || !c.env.BUCKET) return c.json({ detail: "Cover not found" }, 404);
+    const obj = await c.env.BUCKET.get(keyFor(id, "cover"));
+    if (!obj) return c.json({ detail: "Cover not found" }, 404);
+    c.header("Content-Type", "image/png");
+    c.header("Cache-Control", "public, max-age=300");
+    c.header("X-Content-Type-Options", "nosniff");
+    return c.body(obj.body);
+  });
+
+  app.get("/api/shop/books/:id/look/:n", async (c) => {
+    if (!(await shopOpen(c.env.DB))) return closed(c);
+    const id = c.req.param("id");
+    const n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !Number.isInteger(n) || n < 1 || n > MAX_LOOK_PAGES || !c.env.BUCKET) return c.json({ detail: "Page not found" }, 404);
+    const obj = await c.env.BUCKET.get(lookKey(id, n));
+    if (!obj) return c.json({ detail: "Page not found" }, 404);
+    c.header("Content-Type", "image/jpeg");
+    c.header("Cache-Control", "no-store");
+    c.header("X-Content-Type-Options", "nosniff");
+    return c.body(obj.body);
+  });
+
+  // Body: { book_ids: string[], email }. Prices come from the stored books.
+  app.post("/api/shop/checkout", async (c) => {
+    if (!(await shopOpen(c.env.DB))) return closed(c);
+    const sq = squareConfig(c.env);
+    if (!sq.ok || !c.env.BUCKET) return c.json({ detail: "Checkout isn't available right now." }, 503);
+    const body: any = await c.req.json().catch(() => ({}));
+    const email = String(body?.email || "").trim().toLowerCase();
+    if (!EMAIL_RE.test(email)) return c.json({ detail: "Enter the email address your books should go to." }, 400);
+    const ids: string[] = [...new Set<string>((Array.isArray(body?.book_ids) ? body.book_ids : []).map((x: unknown) => String(x)))].filter((x) => VALID_ID.test(x)).slice(0, MAX_SHOP_ITEMS);
+    const books = new Map((await listBooks(c.env.BUCKET)).map((b) => [b.id, b]));
+    const lines = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null)
+      .map((b) => ({ book_id: b.id, title: b.title, amount_cents: b.price_cents! }));
+    if (!lines.length) return c.json({ detail: "Your cart is empty." }, 400);
+    const total = lines.reduce((n, l) => n + l.amount_cents, 0);
+    if (body?.expected_total_cents != null && Number(body.expected_total_cents) !== total) return c.json({ code: "CART_CHANGED", detail: "Prices changed. Please check the new total.", total_cents: total }, 409);
+    const order = await createShopOrder(c.env.DB, email, lines);
+    const origin = appOrigin(c.env, c.req.url);
+    try {
+      const url = await createShopPaymentLink(sq, {
+        orderId: order.id, email,
+        redirectUrl: `${origin}/shop/order/${order.id}?t=${order.token}`,
+        lines: lines.map((l) => ({ name: `Quest Book: ${l.title}`, amount_cents: l.amount_cents })),
+      });
+      return c.json({ url, order_id: order.id });
+    } catch (e: any) {
+      console.error("shop checkout failed", e?.message);
+      return c.json({ detail: "Could not start checkout. Please try again." }, 502);
+    }
+  });
+
+  // The order page (from Square's redirect or the emailed link): status, then download buttons once paid.
+  app.get("/api/shop/orders/:id", async (c) => {
+    c.header("Cache-Control", "no-store");
+    const o = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
+    if (!o) return c.json({ detail: "This order link isn't valid. Use \"Get my downloads\" to receive a fresh one." }, 404);
+    return c.json({ paid: !!o.paid_at, items: o.lines.map((l: any) => ({ book_id: l.book_id, title: l.title })), total_cents: o.total_cents, downloads_left: Math.max(0, MAX_SHOP_DOWNLOADS - Number(o.downloads || 0)) });
+  });
+
+  app.get("/api/shop/orders/:id/download/:bookId", async (c) => {
+    const o = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
+    const bookId = c.req.param("bookId");
+    if (!o || !o.paid_at || !o.lines.some((l: any) => l.book_id === bookId)) return c.json({ detail: "This download link isn't valid." }, 404);
+    if (Number(o.downloads || 0) >= MAX_SHOP_DOWNLOADS) return c.json({ detail: "This order has reached its download limit. Contact us if you need help." }, 429);
+    const meta = await readMeta(c.env.BUCKET!, bookId);
+    const obj = meta ? await c.env.BUCKET!.get(keyFor(bookId, "book")) : null;
+    if (!meta || !obj) return c.json({ detail: "Book not found" }, 404);
+    await c.env.DB.prepare("UPDATE shop_orders SET downloads = downloads + 1 WHERE id = ?").bind(o.id).run();
+    return pdfResponse(obj, fileName(meta, "book"));
+  });
+
+  // Lost the link: email fresh links for every paid order of this address. Always answers the same, so it can't be
+  // used to find out who has bought something.
+  app.post("/api/shop/resend", async (c) => {
+    const body: any = await c.req.json().catch(() => ({}));
+    const email = String(body?.email || "").trim().toLowerCase();
+    if (!EMAIL_RE.test(email)) return c.json({ detail: "Enter a valid email address." }, 400);
+    await ensureShopOrders(c.env.DB);
+    try { await resendShopLinks(c.env.DB, c.env, email, appOrigin(c.env, c.req.url)); } catch (e: any) { console.error("shop resend failed", e?.message); }
+    return c.json({ ok: true, detail: "If that email has bought from the shop, we've sent its download links." });
   });
 }

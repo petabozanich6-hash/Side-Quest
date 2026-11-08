@@ -5,6 +5,9 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
+import ShopOrder from "./pages/ShopOrder";
+import ShopDownloads from "./pages/ShopDownloads";
+import ShopSection from "./components/shop/ShopSection";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -90,6 +93,9 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/shop" element={<div className="min-h-screen bg-[#F5EFE0]"><ShopSection standalone /></div>} />
+      <Route path="/shop/order/:id" element={<ShopOrder />} />
+      <Route path="/shop/downloads" element={<ShopDownloads />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />

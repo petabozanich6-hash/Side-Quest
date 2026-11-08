@@ -5,6 +5,7 @@ import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
+import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
 
 let seq = 0;
@@ -53,7 +54,7 @@ function harness() {
     assert.equal(r.status, 200);
     return (await r.json()).id;
   }
-  return { req, db, parent, child, makeOwner, storage };
+  return { req, db, env, parent, child, makeOwner, storage };
 }
 
 const pdf = (text) => new TextEncoder().encode("%PDF-1.7\n" + text);
@@ -738,4 +739,34 @@ test("Member reader builds are resumable and only a verified complete generation
   assert.equal(replaced.read_pages, 1);
   assert.equal((await h.req(`/quest-books/books/${id}/read/2`, member.token)).status, 409,
     "old generation pages cannot be accessed after a new generation is committed");
+});
+
+
+test("Public shop: closed by default; when open it lists books and a paid order downloads with its private link only", async () => {
+  const h = harness();
+  const { id } = await publishedBook(h, { price_cents: 399 });
+  const get = (path) => worker.fetch(new Request("http://localhost:8787/api" + path), h.env, { waitUntil() {}, passThroughOnException() {} });
+  assert.equal((await (await get("/shop")).json()).open, false);
+  assert.equal((await get(`/shop/books/${id}/look/1`)).status, 404);
+  h.db.raw.prepare("INSERT OR REPLACE INTO platform_settings (key, value_json) VALUES ('features', ?)")
+    .run(JSON.stringify({ registrationsOpen: true, aiEnabled: true, videoSearch: true, shopOpen: true }));
+  clearSettingsCache();
+  const shop = await (await get("/shop")).json();
+  assert.equal(shop.open, true);
+  assert.deepEqual(shop.books.map((b) => [b.id, b.price_cents]), [[id, 399]]);
+  assert.ok(!("can_download" in shop.books[0]), "no account details in the public list");
+  // No Square configured in tests: checkout refuses rather than falling back to anything else.
+  const co = await worker.fetch(new Request("http://localhost:8787/api/shop/checkout", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ book_ids: [id], email: "a@b.co" }) }), h.env, { waitUntil() {}, passThroughOnException() {} });
+  assert.equal(co.status, 503);
+  // An order (as checkout would create it) unlocks only after the verified payment, and only with its token.
+  const order = await createShopOrder(h.db, "buyer@example.com", [{ book_id: id, title: "Number Navigators", amount_cents: 399 }]);
+  assert.equal((await (await get(`/shop/orders/${order.id}?t=${order.token}`)).json()).paid, false);
+  assert.equal((await get(`/shop/orders/${order.id}/download/${id}?t=${order.token}`)).status, 404);
+  assert.match(await recordPaidShopOrder(h.db, h.env, order.id, 1, "p", "https://x"), /does not match/);
+  assert.match(await recordPaidShopOrder(h.db, h.env, order.id, 399, "p", "https://x"), /paid/);
+  assert.equal((await (await get(`/shop/orders/${order.id}?t=${order.token}`)).json()).paid, true);
+  const dl = await get(`/shop/orders/${order.id}/download/${id}?t=${order.token}`);
+  assert.equal(dl.status, 200);
+  assert.match(await dl.text(), /FULL BOOK/);
+  assert.equal((await get(`/shop/orders/${order.id}/download/${id}?t=${"0".repeat(48)}`)).status, 404, "wrong token");
 });
