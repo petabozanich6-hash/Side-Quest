@@ -381,3 +381,18 @@ export const SHOP_SEED: SeedProduct[] = [
 {"department": "dragon-post", "collection": "One-off personalised mail", "title": "Celebration Letter from Ignis for a Grown-Up", "description": "A personalised letter from Ignis celebrating a special grown-up.", "fulfilment": "personalised", "tags": ["ignis", "grown-ups"], "variants": ["Mother's Day", "Father's Day", "Grandparents Day", "Carer thank-you", "Just because"]},
 {"department": "digital", "collection": "Digital products", "title": "Printable Celebration Cards for Grown-Ups", "description": "Printable cards children can colour and write for the grown-ups in their life.", "fulfilment": "digital", "tags": ["grown-ups"], "variants": ["Mother's Day", "Father's Day", "Grandparents Day", "Carer thank-you"]}
 ];
+
+/**
+ * Products added after the first seed. Each batch is added once (as hidden drafts) the first time the shop loads
+ * after it ships, so new ideas reach the live catalogue without touching anything the owner has already edited.
+ */
+export const SHOP_ADDITIONS: { key: string; products: SeedProduct[] }[] = [
+  {
+    key: "growing-up-2026-11",
+    products: [
+      { department: "gifts", collection: "Growing Up", title: "Growing Up Care Box (Girls)", description: "A gentle, private care box for when she gets her first period: period essentials, comfort treats and a simple, kind guide to what's happening, plus a note from you. Packed discreetly.", fulfilment: "physical", tags: ["growing-up", "puberty", "care-box"], variants: ["Ages 9–12", "Ages 13+"], personalisation: [{ key: "note", label: "A note to include (optional)", max: 200, required: false }] },
+      { department: "gifts", collection: "Growing Up", title: "Growing Up Care Box (Boys)", description: "A thoughtful care box for when puberty starts: personal-care essentials, a confidence boost and a straight-talking, kind guide to the changes ahead, plus a note from you. Packed discreetly.", fulfilment: "physical", tags: ["growing-up", "puberty", "care-box"], variants: ["Ages 10–12", "Ages 13+"], personalisation: [{ key: "note", label: "A note to include (optional)", max: 200, required: false }] },
+      { department: "digital", collection: "Growing Up", title: "Talking About Growing Up: Parent Guide (printable)", description: "A printable guide for parents and carers to help start honest, age-appropriate conversations about puberty and growing up.", fulfilment: "digital", tags: ["growing-up", "puberty", "parents"] },
+    ],
+  },
+];
