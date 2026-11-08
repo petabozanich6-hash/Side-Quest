@@ -787,6 +787,31 @@ export function registerQuestBooks(app: App, g: Guards) {
 
   // ---------------------------------------------------------------- owner
 
+  // Explicitly COPY an owner's family lesson to an isolated official standalone
+  // working draft. This is NOT publication: no catalogue or purchase access is granted.
+  app.post("/api/quest-books/admin/lessons/:id/copy-to-standalone", g.auth, g.parent, ownerOnly, async (c) => {
+    const user = c.get("user");
+    const original = await ownLesson(c.env.DB, user.family_id, c.req.param("id"));
+    if (!original || original.archived_at) return c.json({ detail: "Restore the lesson before copying it into the official library." }, 404);
+    let data: Record<string, any>;
+    try { data = JSON.parse(original.data || "{}"); } catch { return c.json({ detail: "The original lesson data could not be read." }, 409); }
+    for (const key of ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title",
+      "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal",
+      "quest_source_revision", "book_reviewed_version", "book_reviewed_at", "book_reviewed_by"]) delete data[key];
+    data.source = "side_quest_standalone";
+    data.review_status = "official_standalone_draft";
+    const lessonId = crypto.randomUUID();
+    const now = new Date().toISOString();
+    const title = (String(original.title).slice(0, 183) + " (official draft)").slice(0, 200);
+    await c.env.DB.prepare(`INSERT INTO lessons
+      (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, NULL, 'draft', ?, 1, ?, ?)`)
+      .bind(lessonId, user.family_id, title, original.stage, original.learning_area, JSON.stringify(data), now, now).run();
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, lesson: { id: lessonId, title, status: "draft", source: "side_quest_standalone" },
+      message: "Official standalone draft created. The original lesson remains private and unchanged. Nothing has been published." });
+  });
+
   // Create a book or update its details. Body: { id?, title, subtitle, description, year, subject, pages, price_cents }.
   // A new book gets its id from the title; editing an existing book sends its id.
   app.post("/api/quest-books/admin/books", g.auth, g.parent, ownerOnly, async (c) => {
