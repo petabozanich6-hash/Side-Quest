@@ -32,7 +32,7 @@ const CREATE_LESSONS = `CREATE TABLE IF NOT EXISTS quest_lesson_purchases (
   amount_cents INTEGER NOT NULL, currency TEXT NOT NULL, livemode INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL,
   UNIQUE (family_id, book_id, lesson_key))`;
 const ensuredLessons = new WeakMap<object, Promise<void>>();
-function ensureLessonTable(db: DB) {
+export function ensureLessonTable(db: DB) {
   let p = ensuredLessons.get(db);
   if (!p) {
     p = db.prepare(CREATE_LESSONS).run().then(() => undefined).catch((e) => { ensuredLessons.delete(db); throw e; });
