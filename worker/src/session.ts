@@ -100,3 +100,12 @@ export async function verifyFileToken(env: Env, token: string): Promise<string |
   if (!row || row.family_id !== p.family_id || row.family_status === "suspended") return null;
   return Number(p.av ?? -1) === Number(row.auth_version) ? row.family_id : null;
 }
+
+/** Like verifyFileToken, but also says which parent the files-only token belongs to (null for a child's token). */
+export async function verifyFileTokenUser(env: Env, token: string): Promise<{ familyId: string; userId: string | null } | null> {
+  const familyId = await verifyFileToken(env, token);
+  if (!familyId) return null;
+  let p: any;
+  try { p = await verify(token, env.JWT_SECRET, "HS256"); } catch { return null; }
+  return { familyId, userId: p?.for === "parent" && typeof p.sub === "string" ? p.sub : null };
+}

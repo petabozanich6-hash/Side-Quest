@@ -1123,3 +1123,17 @@ test("New specialist shelves accept books", () => {
     assert.equal(validateMeta({ collection, title: `A ${collection} book`, year: "all", topic: "Something" }).ok, true, collection);
   }
 });
+
+test("The owner can download a book through the browser download link (files-only token)", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h);
+  const ft = (await (await h.req("/auth/me", owner.token)).json()).file_token;
+  assert.ok(ft);
+  const r = await h.req(`/quest-books/books/${id}/download?ft=${encodeURIComponent(ft)}`);
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get("content-type"), "application/pdf");
+  // A family that hasn't bought it still can't.
+  const other = await h.parent("ACTIVE_MONTHLY");
+  const oft = (await (await h.req("/auth/me", other.token)).json()).file_token;
+  assert.equal((await h.req(`/quest-books/books/${id}/download?ft=${encodeURIComponent(oft)}`)).status, 402);
+});
