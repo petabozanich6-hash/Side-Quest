@@ -535,7 +535,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
     ...(oldData.ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : oldData.ai_flags || [] } : {}),
     ...(oldData.source === "side_quest_standalone" ? { source: "side_quest_standalone", review_status: "official_standalone_draft" } : {}),
   });
-  const values = [clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, newData, nowIso(now), id, familyId];
+  const values: (string | number | null)[] = [clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, newData, nowIso(now), id, familyId];
   if (expectedVersion !== undefined) values.push(expectedVersion);
   const written = await db.prepare(sql).bind(...values).run();
   if (!written.meta?.changes) return fail(409, "The lesson changed while you were editing it. Reopen the lesson and retry.", "LESSON_VERSION_CHANGED");
