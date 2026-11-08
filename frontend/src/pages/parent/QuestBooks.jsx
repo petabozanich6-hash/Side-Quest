@@ -101,6 +101,7 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
   useEffect(() => { if (draft) { setAdding(true); panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); } }, [draft]);
   const [editing, setEditing] = useState(null);
   const [lessonsFor, setLessonsFor] = useState(null);
+  const [readerJobs, setReaderJobs] = useState({});
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const upload = async (book, spec, file) => {
@@ -114,12 +115,22 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
       if (!r.data?.ok) throw new Error("The upload wasn't confirmed.");
       toast.success(`${spec.label} saved for “${book.title}”`);
       if (spec.kind === "book") {
-        try { await makeLookInside(book, file); } catch { toast.error("Couldn't make the look-inside pages. Open the book space and press “Make them”."); }
-        try {
-          const id = toast.loading("Making reader pages for members…");
-          await makeReaderPages(book, file, (n, total) => toast.loading(`Making reader pages for members… ${n} of ${total}`, { id }));
-          toast.success("Reader pages ready. Members can read and print this book.", { id });
-        } catch { toast.error("Couldn't finish the reader pages. Open the book space and press “Make again”."); }
+        setReaderJobs((j) => ({ ...j, [book.id]: "Queued — keep this browser tab open" }));
+        // Upload is COMPLETE already. Continue preparation without locking the
+        // owner out of the screen; pages are resumable if the tab closes.
+        void (async () => {
+          try {
+            await makeLookInside(book, file);
+            await reload();
+          } catch { toast.error("Look-inside preview needs retrying. The PDF is safely uploaded."); }
+          try {
+            await makeReaderPages(book, file, (n, total) => setReaderJobs((j) => ({ ...j, [book.id]: `${n} of ${total} pages uploaded` })));
+            toast.success(`Members' reader is ready for “${book.title}”.`);
+            await reload();
+          } catch (e) {
+            toast.error(apiErrorMessage(e, "Reader preparation stopped. Reopen the book space and press Make again to resume."), { duration: 9000 });
+          } finally { setReaderJobs((j) => { const copy = { ...j }; delete copy[book.id]; return copy; }); }
+        })();
       }
       await reload();
     } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); }
@@ -177,7 +188,10 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
                 );
               })}
             </div>
-            {lessonsFor === b.id && <QuestBookLessonsAdmin book={b} onChanged={reload} />}
+            {readerJobs[b.id] && <p role="status" data-testid={`quest-reader-progress-${b.id}`} className="text-xs font-semibold text-emerald-900">
+              Preparing the online reader: {readerJobs[b.id]}. You can keep using Side-Quest, but leave this browser tab open for rendering.
+            </p>}
+            {lessonsFor === b.id && <QuestBookLessonsAdmin book={b} onChanged={reload} />
             {editing === b.id && <BookForm data={data} initial={toForm(b)} onCancel={() => setEditing(null)} onSaved={async () => { setEditing(null); await reload(); }} />}
           </div>
         ))}
@@ -473,6 +487,8 @@ function BookWorkspace({ book, reload }) {
   const [opts, setOpts] = useState(null);
   const [busy, setBusy] = useState("");
   const [progress, setProgress] = useState(0);
+  const [readerBusy, setReaderBusy] = useState(false);
+  const [readProgress, setReadProgress] = useState("");
   const [workspaceParams] = useSearchParams();
   const [open, setOpen] = useState(() => workspaceParams.get("workspace") === "lessons" ? "lessons" : null); // "details" | "lessons"
   useEffect(() => { api.get("/quest-books").then((r) => setOpts(r.data)).catch(() => {}); }, []);
@@ -483,18 +499,22 @@ function BookWorkspace({ book, reload }) {
     setBusy(kind); setProgress(0);
     const ok = await uploadBookFile(book, spec, file, setProgress);
     if (ok && kind === "book") {
-      setBusy("look");
-      try { const n = await makeLookInside(book, file); toast.success(`Made ${n} look-inside pages.`); }
-      catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the look-inside pages. Use “Make again” to retry.")); }
-      setBusy("read");
-      try { await makeReaderPages(book, file, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); }
-      catch (e) { toast.error(apiErrorMessage(e, "Couldn't finish the reader pages. Use “Make again” to retry.")); }
-      setReadProgress("");
+      setReaderBusy(true);
+      setReadProgress("Starting — keep this browser tab open");
+      void (async () => {
+        try { await makeLookInside(book, file); toast.success("Look-inside preview ready."); await reload(); }
+        catch (e) { toast.error(apiErrorMessage(e, "Couldn't prepare the look-inside preview. Retry from the book workspace.")); }
+        try {
+          await makeReaderPages(book, file, (n, total) => setReadProgress(`${n} of ${total} uploaded`));
+          toast.success("All members' reader pages have been verified.");
+          await reload();
+        } catch (e) { toast.error(apiErrorMessage(e, "Reader preparation paused. Press Make again to resume."), { duration: 9000 }); }
+        finally { setReaderBusy(false); setReadProgress(""); }
+      })();
     }
     setBusy(""); setProgress(0);
     if (ok) await reload();
   };
-  const [readProgress, setReadProgress] = useState("");
   const remakeRead = async () => {
     setBusy("read");
     try { await makeReaderPages(book, null, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); await reload(); }
@@ -525,9 +545,12 @@ function BookWorkspace({ book, reload }) {
       action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
     { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "What families download. The book stays hidden until this is uploaded.",
       action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
-    { id: "read", title: "Reader pages for members", done: book.read_pages > 0, needs: book.has_book,
-      info: busy === "read" ? `Making the pages… ${readProgress}` : book.read_pages ? `${book.read_pages} pages: members read and print them in Side-Quest` : "Made automatically from the Book PDF. Members read and print these instead of downloading.",
-      action: book.has_book && btn(busy === "read" ? "Making…" : book.read_pages ? "Make again" : "Make them", remakeRead) },
+    { id: "read", title: "Online reader for members", done: book.read_pages > 0, needs: book.has_book,
+      info: readerBusy || busy === "read" ? `Preparing reader pages… ${readProgress || "starting"} — leave this tab open` : book.read_pages ? `${book.read_pages} verified pages: members read and print selected pages online` : "After PDF upload, prepare the member-only reader. It resumes after interrupted uploads.",
+      action: book.has_book && <button type="button" disabled={!!busy || readerBusy} onClick={remakeRead}
+        className="inline-flex items-center rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-bold text-emerald-900 disabled:opacity-50">
+        {busy === "read" || readerBusy ? "Preparing…" : book.read_pages ? "Make again" : "Make / resume"}
+      </button> },
     { id: "look", title: "Look-inside pages", done: book.look_pages > 0, needs: book.has_book,
       info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
