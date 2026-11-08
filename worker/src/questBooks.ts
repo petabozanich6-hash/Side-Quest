@@ -346,16 +346,35 @@ const lookKey = (id: string, n: number) => `${ROOT}${id}/look-${n}.jpg`;
 const MAX_READ_PAGES = 400;
 const MAX_READ_BYTES = 2_500_000;
 const readKey = (id: string, n: number) => `${ROOT}${id}/read/${n}.jpg`;
+const READER_ID = /^[a-f0-9-]{36}$/i;
+const readerManifestKey = (id: string) => `${ROOT}${id}/reader.json`;
+const readerBuildKey = (id: string, generation: string, n: number) => `${ROOT}${id}/read-build/${generation}/${n}.jpg`;
+type ReaderManifest = { generation: string; pages: number; source_id: string; created_at: string };
+const pdfSourceId = (head: R2Object | null) => head ? String(head.etag || `size-${head.size}`) : "";
+async function readerManifest(bucket: R2Bucket, id: string): Promise<ReaderManifest | null> {
+  const obj = await bucket.get(readerManifestKey(id));
+  if (!obj) return null;
+  try {
+    const parsed: any = JSON.parse(await new Response(obj.body).text());
+    return READER_ID.test(String(parsed.generation)) && Number.isInteger(parsed.pages) && parsed.pages > 0 &&
+      parsed.pages <= MAX_READ_PAGES && typeof parsed.source_id === "string" ? parsed as ReaderManifest : null;
+  } catch { return null; }
+}
+
 type Listed = QuestBookMeta & { look_pages: number; read_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
 
 async function deleteReadPages(bucket: R2Bucket, id: string) {
   let cursor: string | undefined;
-  do {
-    const page = await bucket.list({ prefix: `${ROOT}${id}/read/`, limit: 1000, cursor });
-    const keys = page.objects.map((o) => o.key);
-    if (keys.length) await bucket.delete(keys);
-    cursor = page.truncated ? (page as any).cursor : undefined;
-  } while (cursor);
+  for (const prefix of [`${ROOT}${id}/read/`, `${ROOT}${id}/read-build/`]) {
+    cursor = undefined;
+    do {
+      const page = await bucket.list({ prefix, limit: 1000, cursor });
+      const keys = page.objects.map((o) => o.key);
+      if (keys.length) await bucket.delete(keys);
+      cursor = page.truncated ? (page as any).cursor : undefined;
+    } while (cursor);
+  }
+  await bucket.delete(readerManifestKey(id));
 }
 
 async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
@@ -364,14 +383,16 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
   const metaIds: string[] = [];
   const looks = new Map<string, number>();
   const reads = new Map<string, number>();
+  const manifests = new Set<string>();
   let cursor: string | undefined;
   do {
     const page = await bucket.list({ prefix: ROOT, limit: 1000, cursor });
     for (const obj of page.objects) {
-      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg|read\/[0-9]{1,3}\.jpg)$/.exec(obj.key.slice(ROOT.length));
+      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg|read\/[0-9]{1,3}\.jpg|reader\.json)$/.exec(obj.key.slice(ROOT.length));
       if (!m || !VALID_ID.test(m[1])) continue;
       if (m[2].startsWith("look-")) { looks.set(m[1], (looks.get(m[1]) || 0) + 1); continue; }
       if (m[2].startsWith("read/")) { reads.set(m[1], Math.max(reads.get(m[1]) || 0, Number(m[2].slice(5, -4)))); continue; }
+      if (m[2] === "reader.json") { manifests.add(m[1]); continue; }
       if (m[2] === "meta.json") { metaIds.push(m[1]); continue; }
       const kind = m[2].split(".")[0] as FileKind | "chapters" | "lessons";
       files.set(m[1], { ...(files.get(m[1]) || {}), [kind]: obj.size });
@@ -379,11 +400,16 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
     cursor = page.truncated ? (page as any).cursor : undefined;
   } while (cursor);
   const metas = await Promise.all(metaIds.map((id) => readMeta(bucket, id)));
+  const activeReaders = new Map<string, number>();
+  await Promise.all([...manifests].map(async (id) => {
+    const [manifest, source] = await Promise.all([readerManifest(bucket, id), bucket.head(keyFor(id, "book"))]);
+    if (manifest && source && manifest.source_id === pdfSourceId(source)) activeReaders.set(id, manifest.pages);
+  }));
   return metas
     .filter((m): m is QuestBookMeta => !!m)
     .map((m) => {
       const f = files.get(m.id) || {};
-      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: reads.get(m.id) || 0, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
+      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: manifests.has(m.id) ? (activeReaders.get(m.id) || 0) : (reads.get(m.id) || 0), has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
     })
     .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
