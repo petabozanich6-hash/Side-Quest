@@ -259,7 +259,7 @@ const strs = (v: unknown, max: number, len: number) => arr(v, max).map((x) => st
 const randInt = (n: number) => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
 
 /** Turn whatever the model returned into the shape the lesson builder accepts. Drops malformed items instead of failing. */
-export function normaliseDraft(p: any, spec: Spec) {
+export function normaliseDraft(p: any, spec: Spec, options: { shuffleQuiz?: boolean } = {}) {
   // Normalise only model-authored prose, preserving parent source, authentic
   // quotations, code and lessons that compare spelling conventions.
   p = localiseGeneratedDraft(p, spec.area, [spec.topic, spec.goal, spec.original || ""].join(" "), Boolean(spec.source));
@@ -288,7 +288,9 @@ export function normaliseDraft(p: any, spec: Spec) {
     if (!question || options.length < 2 || !Number.isInteger(ci) || ci < 0 || ci >= options.length) continue;
     // Models favour certain answer positions; shuffle so the right answer isn't predictable.
     const order = options.map((_, i) => i);
-    for (let i = order.length - 1; i > 0; i--) { const j = randInt(i + 1); [order[i], order[j]] = [order[j], order[i]]; }
+    if (options.shuffleQuiz !== false) {
+      for (let i = order.length - 1; i > 0; i--) { const j = randInt(i + 1); [order[i], order[j]] = [order[j], order[i]]; }
+    }
     quiz.push({ question, options: order.map((i) => options[i]), correct_index: order.indexOf(ci), explanation: str(q?.explanation, 1000) });
   }
   const minutes = Number.isInteger(Number(p.duration_minutes)) && Number(p.duration_minutes) > 0 ? Number(p.duration_minutes) : spec.minutes;
@@ -1255,6 +1257,28 @@ export async function draftLessonWithAi(
 // Conversational changes: "make it easier", "add more worked examples", "use a dinosaur theme"...
 // The model only returns the parts that must change. Nothing is saved until the parent accepts the preview.
 export const REFINABLE = ["title", "teaching_plan", "why_it_matters", "prior_knowledge", "objectives", "introduction", "sections", "worked_examples", "guided_practice", "misconceptions", "texts", "activities", "questions", "quiz", "consolidation", "support", "extension", "materials", "teaching_questions", "parent_script", "evidence_suggestions", "answer_key"];
+
+/** The whole-lesson SCHEMA says every field is required. That instruction
+ * directly conflicts with the refine endpoint's "change only a few fields".
+ * Use a PATCH schema that cannot encourage repeating an unchanged lesson. */
+const REFINE_PATCH_SCHEMA = [
+  "Return ONLY a JSON PATCH containing fields you actually changed. Do NOT generate a new lesson or copy the original lesson back unchanged.",
+  "Allowed string fields: title, teaching_plan, why_it_matters, introduction, consolidation, support, extension, parent_script, answer_key.",
+  "Allowed string arrays: prior_knowledge, objectives, materials, evidence_suggestions.",
+  "sections: [{heading:string, body:string, visual?:optional existing diagram data}].",
+  "worked_examples: [{title:string, problem:string, steps:string[], answer:string, visual?:optional existing diagram data}].",
+  "guided_practice: [{prompt:string, hint:string, answer:string, kind?:string, options?:string[], pairs?:{left:string,right:string}[]}].",
+  "misconceptions: [{mistake:string, fix:string}].",
+  "texts: [{title:string, kind:'text'|'source'|'data', content:string}].",
+  "activities: [{title:string, instructions:string, offline:boolean, tasks:[{prompt:string, hint?:string, answer:string, kind?:string, options?:string[], pairs?:{left:string,right:string}[]}], visual?:optional existing diagram data}].",
+  "questions: [{prompt:string, type:'short'|'long', answer_key:string}].",
+  "quiz: [{question:string, options:string[], correct_index:number, explanation:string}].",
+  "teaching_questions: [{ask:string, expected:string}].",
+  "For a changed list, return the COMPLETE list, keeping every unchanged item intact.",
+  "Write the actual improvement the parent requested. A rearrangement, unchanged copy or generic assurance is not a correction.",
+  "If you change a question, worked example, hint or numerical answer, update the linked answer fields so everything remains consistent.",
+  "Use only the requested keys or other keys strictly needed to keep the changed content accurate. Preserve all unrelated fields.",
+].join("\n");
 
 async function reserve(db: DB, familyId: string, userId: string, kind: string, now: Date) {
   const id = crypto.randomUUID();
