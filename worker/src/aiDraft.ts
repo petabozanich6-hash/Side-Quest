@@ -892,7 +892,7 @@ export async function generateStaged(
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
     let best: StageRun | null = null;
     let lastWhy = "";
-    const isWorkedExample = /^example \\d+$/.test(name);
+    const isWorkedExample = /^example \d+$/.test(name);
     // A missing steps array is a known model-format error. Give ONLY that
     // stage one extra bounded, targeted attempt, never regenerate other stages.
     const attempts = isWorkedExample ? 3 : 2;
