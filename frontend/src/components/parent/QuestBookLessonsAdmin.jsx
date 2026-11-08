@@ -43,13 +43,23 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       else {
         const previous = data?.chapters || [];
         const used = new Set();
-        // Match unchanged sessions to their old keys, so purchases never attach to another lesson
-        // merely because the owner re-read or split the PDF.
-        const sessions = r.chapters.map((ch) => {
-          const match = previous.find((p) => !used.has(p.id) &&
-            p.start === ch.start && p.end === ch.end && p.title === ch.title);
-          if (match) used.add(match.id);
-          return { ...ch, id: match?.id || ("s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20)) };
+        const freshId = () => "s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20);
+        // Reconstruct existing page splits when re-reading a PDF; do not renumber
+        // paid lesson keys just because the PDF has broad chapter bookmarks.
+        const sessions = r.chapters.flatMap((ch) => {
+          const candidates = previous.filter((p) => !used.has(p.id) && p.start >= ch.start && p.end <= ch.end)
+            .sort((a, b) => a.start - b.start);
+          const contiguous = candidates.length && candidates[0].start === ch.start &&
+            candidates[candidates.length - 1].end === ch.end &&
+            candidates.every((p, i) => i === 0 || candidates[i - 1].end + 1 === p.start);
+          if (!contiguous) return [{ ...ch, id: freshId() }];
+          return candidates.map((p) => {
+            used.add(p.id);
+            const page_texts = ch.page_texts.filter((page) => page.page >= p.start && page.page <= p.end);
+            return { ...ch, id: p.id, title: p.title, start: p.start, end: p.end,
+              skill_goal: p.skill_goal || p.title, exercise_ref: p.exercise_ref || "",
+              page_texts, text: page_texts.map((page) => page.text).join("\n\n") };
+          });
         });
         setScan(sessions);
       }
