@@ -486,6 +486,8 @@ test("Owner-only chapter planning does not save lessons or chapter data", async 
 test("Owner can reset an unpublished collection without re-uploading the PDF", async () => {
   const h = harness();
   const { owner, id } = await bookWithLessons(h);
+  // The owner works on an internal plan (a free preview family can only hand-make two lessons).
+  h.db.raw.prepare("UPDATE families SET plan='INTERNAL' WHERE id=?").run(owner.id);
   const lessonId = (await (await h.req("/lessons", owner.token, "POST", lessonBody("Outdated AI draft"))).json()).id;
   const row = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lessonId);
   const tagged = { ...JSON.parse(row.data), ai_generated: true, source: "ai", quest_book_id: id, quest_chapter_id: "c1" };
@@ -526,6 +528,8 @@ test("A purchased book cannot have its published lesson identifiers reset", asyn
 test("Remaking a generated lesson archives earlier AI drafts but retains new and manually authored lessons", async () => {
   const h = harness();
   const { owner, id } = await publishedBook(h);
+  // The owner works on an internal plan (a free preview family can only hand-make two lessons).
+  h.db.raw.prepare("UPDATE families SET plan='INTERNAL' WHERE id=?").run(owner.id);
   const add = async (title, aiGenerated) => {
     const lid = (await (await h.req("/lessons", owner.token, "POST", lessonBody(title)))).json().id;
     const row = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lid);
