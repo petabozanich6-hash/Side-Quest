@@ -16,8 +16,9 @@ const TARGETS = [
   [/parent.guided|questions to ask/i, ["teaching_questions"]],
 ];
 
-export function planBookAiRepair(aiWarnings = [], contentIssues = []) {
-  const issues = [...new Set([...(Array.isArray(contentIssues) ? contentIssues : []),
+export function planBookAiRepair(aiWarnings: unknown = [], contentIssues: unknown = [], ownerNote: unknown = "") {
+  const issues = [...new Set([...(typeof ownerNote === "string" && ownerNote.trim() ? [`Owner reported an error: ${ownerNote.trim()}`] : []),
+    ...(Array.isArray(contentIssues) ? contentIssues : []),
     ...(Array.isArray(aiWarnings) ? aiWarnings : [])].map((v) => String(v || "").trim()).filter(Boolean))];
   if (!issues.length) return { issues: [], target: [], instruction: "", selected: [] };
   const picked = [];
@@ -34,8 +35,8 @@ export function planBookAiRepair(aiWarnings = [], contentIssues = []) {
   // An unknown AI flag is still a real warning. Leave the target unrestricted
   // so the model can change the specific field actually responsible.
   const target = selected.some((issue) => !TARGETS.some(([pattern]) => pattern.test(issue))) ? [] : picked;
-  const preface = "Fix ALL listed issues in this EXISTING saved lesson. Return real corrected content, complete lists, correct answers and explanations. Keep good teaching and manual edits; do not invent missing external resources. Issues: ";
-  const suffix = " Verify the lesson is self-contained, accurate and usable on screen.";
+  const preface = "Repair ALL these identified errors in the EXISTING saved lesson. Make real, accurate changes, include complete revised lists and correct answer keys. Preserve good teaching, saved edits and other lessons. Issues: ";
+  const suffix = " Keep it self-contained and teachable on screen.";
   const allowed = 600 - preface.length - suffix.length;
   const details = selected.join(" | ").slice(0, Math.max(80, allowed));
   return { issues, selected, target, instruction: preface + details + suffix };
