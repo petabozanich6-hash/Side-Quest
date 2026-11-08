@@ -6,6 +6,7 @@ import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
+import { plannedFor } from "../../lib/questBookPlan";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
 const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
@@ -29,9 +30,9 @@ function Shelf({ children }) {
   );
 }
 
-const EMPTY = { title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "", bundle: "", lesson: "" };
+const EMPTY = { collection: "core", topic: "", title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "", bundle: "", lesson: "" };
 const dollars = (c) => (c == null ? "" : (c / 100).toFixed(2));
-const toForm = (b) => ({ id: b.id, title: b.title, subtitle: b.subtitle || "", year: b.year, subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: dollars(b.price_cents), bundle: dollars(b.lessons_price_cents), lesson: dollars(b.lesson_price_cents) });
+const toForm = (b) => ({ id: b.id, collection: b.collection || "core", topic: b.topic || "", title: b.title, subtitle: b.subtitle || "", year: b.year ?? "all", subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: dollars(b.price_cents), bundle: dollars(b.lessons_price_cents), lesson: dollars(b.lesson_price_cents) });
 const cents = (v) => { const t = String(v || "").replace(/[$\s]/g, ""); return t === "" ? null : Math.round(Number(t) * 100); };
 
 function BookForm({ data, initial, onSaved, onCancel }) {
@@ -44,7 +45,7 @@ function BookForm({ data, initial, onSaved, onCancel }) {
     if ([price_cents, lessons_price_cents, lesson_price_cents].some((v) => v !== null && !Number.isFinite(v))) { toast.error("Prices must be numbers, like 3.99."); return; }
     setBusy(true);
     try {
-      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), title: f.title, subtitle: f.subtitle, year: Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents, lessons_price_cents, lesson_price_cents });
+      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), collection: f.collection, topic: f.collection === "core" ? "" : f.topic, title: f.title, subtitle: f.subtitle, year: f.year === "all" ? "all" : Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents, lessons_price_cents, lesson_price_cents });
       toast.success(r.data.created ? `Created “${r.data.book.title}”. Now upload its files.` : `Saved “${r.data.book.title}”`);
       await onSaved(r.data.book);
     } catch (err) { toast.error(apiErrorMessage(err, "Could not save the book")); }
@@ -55,11 +56,20 @@ function BookForm({ data, initial, onSaved, onCancel }) {
     <form onSubmit={save} className="rounded-xl border border-emerald-300 bg-white p-4 grid sm:grid-cols-2 gap-3" data-testid="quest-book-form">
       <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Title<input required value={f.title} onChange={set("title")} className={field} maxLength={120} /></label>
       <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Subtitle<input value={f.subtitle} onChange={set("subtitle")} className={field} maxLength={160} placeholder="e.g. A year of number adventures" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Shelf
+        <select value={f.collection} onChange={(e) => setF((x) => ({ ...x, collection: e.target.value, ...(e.target.value === "core" && (x.year === "all" || Number(x.year) > 10) ? { year: 3 } : {}), ...(e.target.value === "core" && x.subject === "other" ? { subject: "mathematics" } : {}) }))} className={field}>
+          {data.collections.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
+        </select>
+      </label>
+      {f.collection !== "core" && <label className="text-sm font-semibold text-emerald-950">Topic (shown instead of the subject)<input value={f.topic} onChange={set("topic")} className={field} maxLength={60} placeholder="e.g. Numeracy, Mathematics Advanced" /></label>}
       <label className="text-sm font-semibold text-emerald-950">Year level
-        <select value={f.year} onChange={set("year")} className={field}>{data.years.map((y) => <option key={y.year} value={y.year}>{y.label}</option>)}</select>
+        <select value={f.year} onChange={set("year")} className={field}>
+          {f.collection !== "core" && <option value="all">All ages</option>}
+          {(f.collection === "core" ? data.years : data.specialist_years).map((y) => <option key={y.year} value={y.year}>{y.label}</option>)}
+        </select>
       </label>
       <label className="text-sm font-semibold text-emerald-950">Subject
-        <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}</select>
+        <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}{f.collection !== "core" && <option value="other">Other</option>}</select>
       </label>
       <label className="text-sm font-semibold text-emerald-950">Pages<input value={f.pages} onChange={set("pages")} inputMode="numeric" className={field} placeholder="optional" /></label>
       <label className="text-sm font-semibold text-emerald-950">Book price ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = members only" /></label>
@@ -81,10 +91,12 @@ const FILES = [
   { kind: "cover", label: "Cover PNG", accept: "image/png", type: "image/png", icon: ImagePlus },
 ];
 
-function OwnerPanel({ data, reload }) {
+function OwnerPanel({ data, reload, draft, clearDraft }) {
   const [busy, setBusy] = useState("");
   const [progress, setProgress] = useState(0);
   const [adding, setAdding] = useState(false);
+  const panelRef = React.useRef(null);
+  useEffect(() => { if (draft) { setAdding(true); panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); } }, [draft]);
   const [editing, setEditing] = useState(null);
   const [lessonsFor, setLessonsFor] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -116,13 +128,13 @@ function OwnerPanel({ data, reload }) {
   };
 
   return (
-    <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4" data-testid="quest-books-owner">
+    <section ref={panelRef} className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
         <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (what members and buyers download), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
-        <BookForm data={data} onCancel={() => setAdding(false)} onSaved={async () => { setAdding(false); await reload(); }} />
+        <BookForm key={draft ? JSON.stringify(draft) : "new"} data={data} initial={draft ? { ...EMPTY, ...draft } : undefined} onCancel={() => { setAdding(false); clearDraft?.(); }} onSaved={async () => { setAdding(false); clearDraft?.(); await reload(); }} />
       ) : (
         <button type="button" onClick={() => setAdding(true)} className="inline-flex items-center gap-2 rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold"><Plus size={16} /> Add a book</button>
       )}
@@ -172,10 +184,38 @@ function OwnerPanel({ data, reload }) {
   );
 }
 
+function BookTile({ b, data }) {
+  return (
+    <Link to={`/parent/quest-books/${b.id}`} data-testid={`quest-book-${b.id}`}
+      className="group flex flex-col items-center gap-2 w-36 sm:w-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-xl">
+      <QuestBookCover book={b} className="transition-transform duration-300 group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]" />
+      <span className="text-xs font-bold text-slate-800 text-center leading-tight">{b.title}</span>
+      <span className="text-[11px] text-stone-600">{!b.has_book ? <span className="text-amber-700 font-semibold">Draft</span> : b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
+    </Link>
+  );
+}
+
+function PlannedTile({ p, onClick }) {
+  return (
+    <button type="button" onClick={onClick} data-testid="quest-planned"
+      className="flex flex-col items-center gap-2 w-36 sm:w-40 text-left">
+      <div className="w-36 sm:w-40 aspect-[3/4] rounded-xl border-2 border-dashed border-violet-400 bg-violet-50/70 grid place-items-center p-3 text-center hover:bg-violet-100">
+        <div><div className="text-[10px] font-bold uppercase tracking-wider text-violet-700">Planned · only you see this</div>
+          <div className="font-display font-bold text-slate-800 mt-1 leading-tight">{p.topic}</div>
+          <div className="text-xs text-stone-600 mt-1">{p.year === null ? "All ages" : p.year === 0 ? "Foundation" : `Year ${p.year}`}</div>
+          <div className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-violet-800"><Plus size={12} /> Create</div></div>
+      </div>
+    </button>
+  );
+}
+
 function ShelfView() {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [year, setYear] = useState(null);
+  const [mode, setMode] = useState("core");
+  const [collection, setCollection] = useState("naplan");
+  const [draft, setDraft] = useState(null);
   const load = () => api.get("/quest-books", { params: { _: Date.now() } }).then(({ data: d }) => {
     setData(d);
     setYear((cur) => {
@@ -191,23 +231,28 @@ function ShelfView() {
   const shelf = useMemo(() => {
     if (!data) return [];
     return data.subjects.flatMap((s) => {
-      const books = data.books.filter((b) => b.year === year && b.subject === s.id && (b.has_book || data.owner));
+      const books = data.books.filter((b) => (b.collection || "core") === "core" && b.year === year && b.subject === s.id && (b.has_book || data.owner));
       return books.length ? books : [{ placeholder: true, subject: s.id, subjectLabel: s.label, yearLabel, id: `${s.id}-soon` }];
     });
   }, [data, year, yearLabel]);
   const countByYear = useMemo(() => {
     const m = new Map();
-    for (const b of data?.books || []) if (b.has_book) m.set(b.year, (m.get(b.year) || 0) + 1);
+    for (const b of data?.books || []) if (b.has_book && (b.collection || "core") === "core") m.set(b.year, (m.get(b.year) || 0) + 1);
     return m;
   }, [data]);
+  const specialistBooks = (data?.books || []).filter((b) => b.collection === collection && (b.has_book || data.owner));
+  const planned = data?.owner ? plannedFor(collection, data.books) : [];
+  const currentCollection = data?.collections?.find((c) => c.id === collection);
+  const createPlanned = (p) => setDraft({ collection, year: p.year === null ? "all" : p.year, topic: p.topic, subject: p.subject,
+    title: `${p.year === null ? "" : p.year === 0 ? "Foundation " : `Year ${p.year} `}${p.topic}`.trim() });
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="quest-books">
       <header className="rounded-3xl bg-gradient-to-br from-amber-50 via-rose-50 to-emerald-100 border border-amber-200 p-6 sm:p-9 relative overflow-hidden">
         <div className="relative z-10 max-w-2xl">
-          <div className="text-xs font-bold tracking-widest uppercase text-emerald-800">Side-Quest · Year-by-year subject books</div>
+          <div className="text-xs font-bold tracking-widest uppercase text-emerald-800">Side-Quest · Subject books and exam prep</div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold mt-2 text-slate-900">Quest Books</h1>
-          <p className="mt-3 text-stone-700">Beautiful downloadable books for Maths, English, Science, History and Geography, made for each year level. Download a book as a PDF to print at home or use on a tablet.</p>
+          <p className="mt-3 text-stone-700">Beautiful downloadable books for every year level, plus specialist books for NAPLAN, HSC, selective school tests and more. Download a book as a PDF to print at home or use on a tablet.</p>
         </div>
         <Sparkles className="absolute right-6 top-6 text-amber-300" size={44} />
         <BookOpen className="absolute right-[-18px] bottom-[-26px] text-emerald-800/10 rotate-[-12deg]" size={170} />
@@ -223,6 +268,39 @@ function ShelfView() {
           </div>
         )}
 
+        <div className="inline-flex rounded-full border border-stone-300 bg-white p-1" role="tablist" aria-label="Quest Books shelves">
+          {[["core", "Year-level books"], ["specialist", "Specialist"]].map(([id, label]) => (
+            <button key={id} type="button" role="tab" aria-selected={mode === id} onClick={() => setMode(id)} data-testid={`quest-mode-${id}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-bold ${mode === id ? "bg-emerald-900 text-white" : "text-slate-700"}`}>{label}</button>
+          ))}
+        </div>
+
+        {mode === "specialist" ? (
+          <section className="space-y-4" data-testid="quest-specialist">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {data.collections.filter((c) => c.id !== "core").map((c) => {
+                const n = data.books.filter((b) => b.collection === c.id && b.has_book).length;
+                return (
+                  <button key={c.id} type="button" onClick={() => setCollection(c.id)} data-testid={`quest-collection-${c.id}`}
+                    className={`text-left rounded-2xl border p-4 transition ${collection === c.id ? "border-emerald-800 bg-emerald-50 shadow" : "border-stone-200 bg-white hover:border-emerald-600"}`}>
+                    <div className="font-display font-bold text-slate-900">{c.label}{n ? <span className="ml-1 text-xs text-emerald-700">· {n}</span> : null}</div>
+                    <div className="text-xs text-stone-600 mt-1">{c.blurb}</div>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="rounded-3xl bg-gradient-to-b from-[#fbf6ec] to-[#f1e6d2] border border-amber-200 p-4 sm:p-7 space-y-2">
+              <h2 className="font-display text-2xl font-bold text-slate-900">{currentCollection?.label}</h2>
+              <p className="text-sm text-stone-600">{specialistBooks.length ? currentCollection?.blurb : "Books for this shelf are on their way."}</p>
+              {(specialistBooks.length > 0 || planned.length > 0) && (
+                <Shelf>
+                  {specialistBooks.map((b) => <BookTile key={b.id} b={b} data={data} />)}
+                  {planned.map((p, i) => <PlannedTile key={`p${i}`} p={p} onClick={() => createPlanned(p)} />)}
+                </Shelf>
+              )}
+            </div>
+          </section>
+        ) : <>
         <nav aria-label="Year level" className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
           {data.years.map((y) => (
             <button key={y.year} type="button" data-testid={`quest-year-${y.year}`}
@@ -242,18 +320,12 @@ function ShelfView() {
                 <QuestBookCover book={b} />
                 <span className="text-xs font-semibold text-stone-500">{b.subjectLabel} · coming soon</span>
               </div>
-            ) : (
-              <Link key={b.id} to={`/parent/quest-books/${b.id}`} data-testid={`quest-book-${b.id}`}
-                className="group flex flex-col items-center gap-2 w-36 sm:w-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-xl">
-                <QuestBookCover book={b} className="transition-transform duration-300 group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]" />
-                <span className="text-xs font-bold text-slate-800 text-center leading-tight">{b.title}</span>
-                <span className="text-[11px] text-stone-600">{b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
-              </Link>
-            ))}
+            ) : <BookTile key={b.id} b={b} data={data} />)}
           </Shelf>
         </section>
+        </>}
 
-        {data.owner && <OwnerPanel data={data} reload={load} />}
+        {data.owner && <OwnerPanel data={data} reload={load} draft={draft} clearDraft={() => setDraft(null)} />}
       </>}
     </div>
   );

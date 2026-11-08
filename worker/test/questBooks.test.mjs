@@ -222,3 +222,24 @@ test("Bundle, upgrade and single-lesson purchases unlock the right lessons, whic
   assert.equal(ids.length, 2);
   for (const lessonId of ids) assert.equal((await h.req("/assignments", fam.token, "POST", { student_id: kid, lesson_id: lessonId })).status, 200);
 });
+
+test("Specialist books: NAPLAN and HSC collections with topics, Years 11-12 and all ages", async () => {
+  const naplan = validateMeta({ collection: "naplan", title: "Year 9 Numeracy Practice", year: 9, subject: "mathematics", topic: "Numeracy" });
+  assert.equal(naplan.ok, true);
+  assert.deepEqual([naplan.meta.collection, naplan.meta.topic], ["naplan", "Numeracy"]);
+  assert.equal(validateMeta({ collection: "hsc", title: "Maths Advanced", year: 12, topic: "Mathematics Advanced" }).meta.year, 12);
+  assert.equal(validateMeta({ collection: "study-skills", title: "Exam technique", year: "all", topic: "Exam technique" }).meta.year, null);
+  assert.equal(validateMeta({ collection: "core", title: "x", year: 12, subject: "mathematics" }).ok, false, "core books stop at Year 10");
+  assert.equal(validateMeta({ collection: "hsc", title: "x", year: 12 }).ok, false, "a specialist book needs a topic");
+  assert.equal(validateMeta({ ...details }).meta.collection, "core", "old books default to the year-level shelf");
+
+  const h = harness();
+  const owner = await h.parent("FREE_PREVIEW"); h.makeOwner(owner);
+  const r = await (await h.req("/quest-books/admin/books", owner.token, "POST", { collection: "hsc", title: "HSC English Standard", year: 12, topic: "English Standard", price_cents: 999 })).json();
+  await h.req(`/quest-books/admin/books/${r.book.id}/files/book`, owner.token, "PUT", pdf("HSC"), "application/pdf");
+  const member = await h.parent("ACTIVE_MONTHLY");
+  const list = await (await h.req("/quest-books", member.token)).json();
+  assert.ok(list.collections.some((c) => c.id === "naplan") && list.collections.some((c) => c.id === "hsc"));
+  const b = list.books.find((x) => x.id === r.book.id);
+  assert.deepEqual([b.collection, b.year_label, b.subject_label], ["hsc", "Year 12", "English Standard"]);
+});
