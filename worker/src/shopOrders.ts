@@ -18,7 +18,7 @@ const CREATE = `CREATE TABLE IF NOT EXISTS shop_orders (
   id TEXT PRIMARY KEY, email TEXT NOT NULL, lines TEXT NOT NULL, total_cents INTEGER NOT NULL, token_hash TEXT NOT NULL,
   created_at TEXT NOT NULL, paid_at TEXT, payment_ref TEXT, downloads INTEGER NOT NULL DEFAULT 0, emailed_at TEXT)`;
 const ready = new WeakMap<object, Promise<void>>();
-const COLUMNS = ["status TEXT NOT NULL DEFAULT 'pending'", "shipping TEXT", "postage_cents INTEGER NOT NULL DEFAULT 0", "tracking TEXT", "notes TEXT", "updated_at TEXT"];
+const COLUMNS = ["status TEXT NOT NULL DEFAULT 'pending'", "shipping TEXT", "postage_cents INTEGER NOT NULL DEFAULT 0", "tracking TEXT", "notes TEXT", "updated_at TEXT", "quoted_postcode TEXT", "shipping_service TEXT"];
 export function ensureShopOrders(db: DB): Promise<void> {
   let p = ready.get(db);
   if (!p) {
@@ -36,13 +36,13 @@ export const MAX_SHOP_DOWNLOADS = 25;
 const hex = (b: ArrayBuffer | Uint8Array) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 export const hashToken = async (t: string) => hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)));
 
-export async function createShopOrder(db: DB, email: string, lines: ShopLine[], now: Date = new Date(), postageCents = 0): Promise<{ id: string; token: string; total: number }> {
+export async function createShopOrder(db: DB, email: string, lines: ShopLine[], now: Date = new Date(), postageCents = 0, quotedPostcode: string | null = null): Promise<{ id: string; token: string; total: number }> {
   await ensureShopOrders(db);
   const id = crypto.randomUUID();
   const token = hex(crypto.getRandomValues(new Uint8Array(24)));
   const total = lines.reduce((n, l) => n + l.amount_cents, 0) + postageCents;
-  await db.prepare("INSERT INTO shop_orders (id, email, lines, total_cents, token_hash, created_at, postage_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')")
-    .bind(id, email, JSON.stringify(lines), total, await hashToken(token), now.toISOString(), postageCents).run();
+  await db.prepare("INSERT INTO shop_orders (id, email, lines, total_cents, token_hash, created_at, postage_cents, status, quoted_postcode, shipping_service) VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?)")
+    .bind(id, email, JSON.stringify(lines), total, await hashToken(token), now.toISOString(), postageCents, quotedPostcode, quotedPostcode ? "Parcel Post" : null).run();
   return { id, token, total };
 }
 
@@ -60,14 +60,18 @@ export async function shopOrderFor(db: DB, id: string, token: string) {
 /** Called only after Square's signed webhook: marks the order paid (if the amount matches) and emails the receipt once. */
 export async function recordPaidShopOrder(db: DB, env: Env, orderId: string, paidCents: number, ref: string, origin: string, now: Date = new Date(), shipping?: unknown): Promise<string> {
   await ensureShopOrders(db);
-  const row = await db.prepare("SELECT id, email, lines, total_cents, paid_at, emailed_at FROM shop_orders WHERE id = ?").bind(orderId).first<any>();
+  const row = await db.prepare("SELECT id, email, lines, total_cents, paid_at, emailed_at, quoted_postcode FROM shop_orders WHERE id = ?").bind(orderId).first<any>();
   if (!row) return "shop order not found";
   if (Number(row.total_cents) !== paidCents) return `shop order ${orderId} paid ${paidCents} does not match ${row.total_cents}`;
   let parsed: ShopLine[] = [];
   try { parsed = JSON.parse(row.lines); } catch { parsed = []; }
   const physical = parsed.some((l) => l.physical);
+  // Square collects the final address after our postcode-specific quote.
+  // Do not auto-fulfil a paid order if the buyer changed their postcode at Square.
+  const receivedPostcode = shipping && typeof shipping === "object" ? String((shipping as any).postal_code || "") : "";
+  const addressMismatch = physical && !!row.quoted_postcode && receivedPostcode !== String(row.quoted_postcode);
   const first = await db.prepare(`UPDATE shop_orders SET paid_at = ?, payment_ref = ?, status = ?, shipping = ?, updated_at = ? WHERE id = ? AND paid_at IS NULL`)
-    .bind(now.toISOString(), ref, physical ? "to_fulfil" : "complete", shipping ? JSON.stringify(shipping).slice(0, 2000) : null, now.toISOString(), orderId).run();
+    .bind(now.toISOString(), ref, addressMismatch ? "address_review" : physical ? "to_fulfil" : "complete", shipping ? JSON.stringify(shipping).slice(0, 2000) : null, now.toISOString(), orderId).run();
   // Stock comes off once, on the first confirmation only.
   if ((first as any)?.meta?.changes) await takeStock(db, env, parsed);
   if (!row.emailed_at) {
