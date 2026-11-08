@@ -691,7 +691,11 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!meta) return c.json({ detail: "Book not found" }, 404);
     const a = await accessFor(c.env.DB, user.family_id, user.id);
     if (!canReadBook(a, meta)) return c.json({ code: "UPGRADE_REQUIRED", detail: "Reading this book in Side-Quest comes with Family Membership or buying the book." }, 402);
-    const obj = await c.env.BUCKET.get(readKey(id, n));
+    const manifest = await readerManifest(c.env.BUCKET, id);
+    const source = manifest ? await c.env.BUCKET.head(keyFor(id, "book")) : null;
+    if (manifest && (!source || manifest.source_id !== pdfSourceId(source) || n > manifest.pages))
+      return c.json({ detail: "These reader pages are being updated. Please return to the book." }, 409);
+    const obj = await c.env.BUCKET.get(manifest ? readerBuildKey(id, manifest.generation, n) : readKey(id, n));
     if (!obj) return c.json({ detail: "Page not found" }, 404);
     c.header("Content-Type", "image/jpeg");
     c.header("Cache-Control", "private, no-store");
@@ -971,6 +975,62 @@ export function registerQuestBooks(app: App, g: Guards) {
     await c.env.BUCKET!.put(lookKey(id, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
     return c.json({ ok: true, n });
   });
+  // Two-phase reader preparation: browser rendering happens in a bounded
+  // upload pipeline; the existing reader stays live until ALL pages have been
+  // uploaded and the owner explicitly commits the new generation.
+  app.get("/api/quest-books/admin/books/:id/read-source", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id)) return c.json({ detail: "Invalid book ID" }, 400);
+    const source = await c.env.BUCKET!.head(keyFor(id, "book"));
+    if (!source) return c.json({ detail: "Upload the book PDF first." }, 404);
+    c.header("Cache-Control", "no-store");
+    return c.json({ source_id: pdfSourceId(source), max_pages: MAX_READ_PAGES });
+  });
+  app.get("/api/quest-books/admin/books/:id/read-build/:generation/progress", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), generation = c.req.param("generation");
+    if (!VALID_ID.test(id) || !READER_ID.test(generation)) return c.json({ detail: "Invalid reader generation." }, 400);
+    const prefix = `${ROOT}${id}/read-build/${generation}/`;
+    const page = await c.env.BUCKET!.list({ prefix, limit: 1000 });
+    const uploaded = page.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\\.jpg$/, "")))
+      .filter((n) => Number.isInteger(n) && n >= 1 && n <= MAX_READ_PAGES);
+    c.header("Cache-Control", "no-store");
+    return c.json({ uploaded });
+  });
+  app.put("/api/quest-books/admin/books/:id/read-build/:generation/:n", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), generation = c.req.param("generation"), n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !READER_ID.test(generation) || !Number.isInteger(n) || n < 1 || n > MAX_READ_PAGES)
+      return c.json({ detail: "Invalid reader page." }, 400);
+    if (!(await c.env.BUCKET!.head(keyFor(id, "book")))) return c.json({ detail: "Book PDF is missing." }, 404);
+    if (c.req.header("content-type")?.split(";")[0].trim().toLowerCase() !== "image/jpeg")
+      return c.json({ detail: "Reader pages must be JPEG images." }, 415);
+    const bytes = await c.req.arrayBuffer();
+    const head = new Uint8Array(bytes.slice(0, 3));
+    if (!bytes.byteLength || bytes.byteLength > MAX_READ_BYTES || head[0] !== 0xff || head[1] !== 0xd8 || head[2] !== 0xff)
+      return c.json({ detail: "This page is empty, too large, or not a JPEG." }, 400);
+    await c.env.BUCKET!.put(readerBuildKey(id, generation, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
+    return c.json({ ok: true, n });
+  });
+  app.post("/api/quest-books/admin/books/:id/read-build/:generation/finish", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), generation = c.req.param("generation");
+    const body: any = await c.req.json().catch(() => ({}));
+    const total = Number(body?.total);
+    if (!VALID_ID.test(id) || !READER_ID.test(generation) || !Number.isInteger(total) || total < 1 || total > MAX_READ_PAGES ||
+        typeof body?.source_id !== "string") return c.json({ detail: "Invalid reader job or page count." }, 400);
+    const source = await c.env.BUCKET!.head(keyFor(id, "book"));
+    if (!source || pdfSourceId(source) !== body.source_id)
+      return c.json({ detail: "The book PDF changed during rendering. Reopen it and rebuild the members' reader." }, 409);
+    const prefix = `${ROOT}${id}/read-build/${generation}/`;
+    const objects = await c.env.BUCKET!.list({ prefix, limit: 1000 });
+    if (objects.truncated) return c.json({ detail: "Too many reader objects were uploaded." }, 409);
+    const received = new Set(objects.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\\.jpg$/, ""))));
+    for (let i = 1; i <= total; i++) if (!received.has(i))
+      return c.json({ detail: `Page ${i} has not finished uploading. Resume reader preparation.` }, 409);
+    const ready: ReaderManifest = { generation, pages: total, source_id: body.source_id, created_at: new Date().toISOString() };
+    await c.env.BUCKET!.put(readerManifestKey(id), JSON.stringify(ready), { httpMetadata: { contentType: "application/json" } });
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, pages: total, generation });
+  });
+
   // Reader pages, uploaded one at a time (page n). DELETE clears them all before a fresh set is made.
   app.put("/api/quest-books/admin/books/:id/read/:n", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
