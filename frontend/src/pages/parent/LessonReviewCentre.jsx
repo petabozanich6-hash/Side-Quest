@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Link, Navigate } from "react-router-dom";
 import { ArrowLeft, BookMarked, House, Library, RefreshCw } from "lucide-react";
 import { api, apiErrorMessage } from "../../lib/api";
@@ -45,11 +46,25 @@ export default function LessonReviewCentre() {
     ["standalone", "Official standalone lessons", standalone.length],
     ["personal", "My family lessons", personal.length],
   ];
-  const lessonCard = (l) => (
+  const copyToOfficial = async (lesson) => {
+    if (!window.confirm(`Create a separate official standalone draft from “${lesson.title}”? Your family lesson will stay private and nothing will be published.`)) return;
+    try {
+      const r = await api.post(`/quest-books/admin/lessons/${encodeURIComponent(lesson.id)}/copy-to-standalone`);
+      await load();
+      setTab("standalone");
+      toast.success(r.data.message || "Official standalone draft created.");
+    } catch (e) {
+      toast.error(apiErrorMessage(e, "Could not copy this family lesson"));
+    }
+  };
+  const lessonCard = (l, allowCopy = false) => (
     <div key={l.id} className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
       <h3 className="font-semibold text-emerald-950">{l.title}</h3>
       <p className="text-xs text-stone-600">{[l.year_level, l.learning_area, l.status === "ready" ? "Saved Ready" : "Draft"].filter(Boolean).join(" · ")}</p>
-      <Link className="inline-block text-sm font-bold text-emerald-800 underline" to={`/parent/lessons/${l.id}/review`}>Open lesson</Link>
+      <div className="flex items-center gap-3 flex-wrap">
+        <Link className="inline-block text-sm font-bold text-emerald-800 underline" to={`/parent/lessons/${l.id}/review`}>Open lesson</Link>
+        {allowCopy && <button type="button" onClick={() => void copyToOfficial(l)} className="text-sm font-bold text-violet-800 underline">Copy to official standalone drafts</button>}
+      </div>
     </div>
   );
   return (
@@ -104,13 +119,13 @@ export default function LessonReviewCentre() {
         {tab === "standalone" && <section className="space-y-3">
           <h2 className="font-bold text-emerald-950 flex items-center gap-2"><Library size={18} /> Official standalone content</h2>
           <p className="text-sm text-stone-600">Only lessons explicitly designated as official standalone content belong here. A lesson made for your family is never automatically commercial.</p>
-          <div className="grid sm:grid-cols-2 gap-3">{standalone.map(lessonCard)}</div>
+          <div className="grid sm:grid-cols-2 gap-3">{standalone.map((l) => lessonCard(l))}</div>
           {!standalone.length && <p className="text-sm border border-dashed rounded-xl p-4 text-stone-600">No official standalone lessons are designated yet. This workspace does not publish private lessons or create a public listing automatically.</p>}
         </section>}
         {tab === "personal" && <section className="space-y-3">
           <h2 className="font-bold text-emerald-950 flex items-center gap-2"><House size={18} /> Private family lessons</h2>
           <p className="text-sm text-stone-600">Your personal homeschooling lessons stay in your own library. Opening, editing or reviewing one here does not add it to a book or make it available to other families.</p>
-          <div className="grid sm:grid-cols-2 gap-3">{personal.map(lessonCard)}</div>
+          <div className="grid sm:grid-cols-2 gap-3">{personal.map((l) => lessonCard(l, true))}</div>
           {!personal.length && <p className="text-sm text-stone-600">No personal lessons in your active library.</p>}
         </section>}
       </>}
