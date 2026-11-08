@@ -73,9 +73,10 @@ export async function readPdfChapters(file) {
   for (let i = 0; i < marks.length; i++) {
     const start = marks[i].start;
     const end = Math.max(start, (marks[i + 1]?.start || doc.numPages + 1) - 1);
-    const parts = [];
-    for (let p = start; p <= end && p <= doc.numPages; p++) parts.push(await pageText(p));
-    chapters.push({ title: marks[i].title, start, end, text: parts.join("\n\n").slice(0, 30000), include: !SKIP_CHAPTER.test(marks[i].title) });
+    const page_texts = [];
+    for (let p = start; p <= end && p <= doc.numPages; p++) page_texts.push({ page: p, text: await pageText(p) });
+    chapters.push({ title: marks[i].title, start, end, text: page_texts.map((part) => part.text).join("\n\n").slice(0, 30000),
+      page_texts, skill_goal: marks[i].title, exercise_ref: "", include: !SKIP_CHAPTER.test(marks[i].title) });
   }
   return { total: doc.numPages, chapters };
 }
