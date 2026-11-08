@@ -651,7 +651,13 @@ test("VIC and WA families receive their OWN outcomes when adding an older book w
   // Simulate a book already published before VIC and WA mappings were stored.
   const key = `quest-books/v1/${id}/lessons.json`;
   const snapshot = JSON.parse(new TextDecoder().decode(h.storage.get(key)));
-  snapshot.lessons[0].codes = { NSW: snapshot.lessons[0].codes?.NSW || [] };
+  snapshot.lessons[0].codes = {
+    NSW: snapshot.lessons[0].codes?.NSW || [],
+    // Legacy books can have an official state code that nevertheless belongs
+    // to the wrong subject. Neither code may be applied to this Maths lesson.
+    VIC: ["VC2HH4K01"], // Year 3-4 History
+    WA: ["WA3HAKUG1"], // Year 3 Geography
+  };
   h.storage.set(key, new TextEncoder().encode(JSON.stringify(snapshot)));
   const cat = (await import("../src/outcomeTracker.ts")).catalogueFor;
   for (const jurisdiction of ["VIC", "WA", "QLD"]) {
