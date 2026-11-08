@@ -1361,7 +1361,7 @@ export async function applyLessonPatch(db: DB, familyId: string, lessonId: strin
   const valid = lb.sanitizeLessonInput(candidate);
   if (!valid.ok) return valid;
   const expected = { ...lb.toLessonData(valid.value), title: valid.value.title };
-  if (Object.keys(picked).every((key) => JSON.stringify(cur[key]) === JSON.stringify(expected[key])))
+  if (Object.keys(picked).every((key) => JSON.stringify(cur[key]) === JSON.stringify((expected as Record<string, unknown>)[key])))
     return lb.fail(409, "The suggested correction did not change the lesson. Ask AI for a more specific fix.", "PATCH_NO_CHANGE");
   // A patch can contain fields the editor will discard. Fail rather than
   // reporting "Change applied" when the substantive correction did not stick.
