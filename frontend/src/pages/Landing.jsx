@@ -1,4 +1,5 @@
 import React from "react";
+import ShopSection from "../components/shop/ShopSection";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { isKidsDevice, isKidsHost, isStandalone } from "../lib/pwa";
@@ -215,6 +216,8 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      <ShopSection />
 
       <section className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 py-14" aria-labelledby="membership-heading">
         <div className="text-center mb-8">

@@ -97,6 +97,7 @@ export default function HqSettings() {
             <Toggle label="New family sign-ups" hint="Existing families can always sign in." checked={d.registrationsOpen} onChange={(v) => set({ ...d, registrationsOpen: v })} testid="hq-feature-registrations" />
             <Toggle label="AI features" hint="Lesson drafting, help hints, planning. Off = templates only, no AI cost." checked={d.aiEnabled} onChange={(v) => set({ ...d, aiEnabled: v })} testid="hq-feature-ai" />
             <Toggle label="YouTube video suggestions" hint="Uses the YouTube API quota." checked={d.videoSearch} onChange={(v) => set({ ...d, videoSearch: v })} testid="hq-feature-video" />
+            <Toggle label="Public shop" hint="A shop on the front page where anyone can buy books without an account. Off until you're ready." checked={!!d.shopOpen} onChange={(v) => set({ ...d, shopOpen: v })} testid="hq-feature-shop" />
           </>
         )}
       </Section>
