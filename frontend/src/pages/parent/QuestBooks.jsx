@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { toast } from "sonner";
 import { ArrowLeft, BookText, ChevronLeft, ChevronRight, Printer, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
+import { useAuth } from "../../context/AuthContext";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
@@ -633,11 +634,13 @@ function LookInside({ book, onClose, children }) {
 /** Members read and print a book from its page pictures. The PDF itself is never sent. */
 function BookReader({ book, onClose }) {
   const total = book.read_pages;
+  const { user } = useAuth();
+  const maxPrint = 12;
   const urls = React.useRef(new Map());
   const [, force] = useState(0);
   const [page, setPage] = useState(1);
   const [printOpen, setPrintOpen] = useState(false);
-  const [range, setRange] = useState({ from: 1, to: total });
+  const [range, setRange] = useState({ from: 1, to: Math.min(total, 8) });
   const [printing, setPrinting] = useState("");
   const scroller = React.useRef(null);
   const load = React.useCallback(async (n) => {
@@ -671,6 +674,10 @@ function BookReader({ book, onClose }) {
   const print = async () => {
     const from = Math.max(1, Math.min(total, Number(range.from) || 1));
     const to = Math.max(from, Math.min(total, Number(range.to) || total));
+    if (to - from + 1 > maxPrint) {
+      toast.error(`Members can print up to ${maxPrint} pages at a time. Choose a smaller activity range, or purchase the PDF for unlimited personal printing.`);
+      return;
+    }
     setPrinting(`Getting pages ready… 0 of ${to - from + 1}`);
     try {
       const list = [];
@@ -683,9 +690,15 @@ function BookReader({ book, onClose }) {
       const rootEl = document.createElement("div");
       rootEl.id = "sq-print-root";
       const style = document.createElement("style");
-      style.textContent = "@media screen{#sq-print-root{display:none}}@media print{body>*:not(#sq-print-root){display:none!important}#sq-print-root img{display:block;width:100%;height:auto;page-break-after:always;break-after:page}@page{margin:0}}";
+      style.textContent = "@media screen{#sq-print-root{display:none}}@media print{body>*:not(#sq-print-root){display:none!important}#sq-print-root .sq-print-page{page-break-after:always;break-after:page;position:relative;width:100%;}#sq-print-root img{display:block;width:100%;height:auto;}#sq-print-root .sq-print-label{font:11px sans-serif;text-align:right;color:#666;padding:4px 12px;}@page{margin:0}}";
       rootEl.appendChild(style);
-      for (const u of list) { const img = document.createElement("img"); img.src = u; img.alt = ""; rootEl.appendChild(img); }
+      for (const u of list) {
+        const pageEl = document.createElement("div"); pageEl.className = "sq-print-page";
+        const img = document.createElement("img"); img.src = u; img.alt = "";
+        const label = document.createElement("div"); label.className = "sq-print-label";
+        label.textContent = `Side-Quest membership print · Licensed to ${user?.name || "this family account"} · Not for redistribution`;
+        pageEl.appendChild(img); pageEl.appendChild(label); rootEl.appendChild(pageEl);
+      }
       document.body.appendChild(rootEl);
       await Promise.all([...rootEl.querySelectorAll("img")].map((img) => (img.complete ? null : new Promise((r) => { img.onload = r; img.onerror = r; }))));
       const done = () => { rootEl.remove(); window.removeEventListener("afterprint", done); };
@@ -713,7 +726,7 @@ function BookReader({ book, onClose }) {
           <span>to</span>
           <input type="number" min={1} max={total} value={range.to} onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))} className="w-20 rounded border border-stone-300 px-2 py-1" aria-label="To page" />
           <button type="button" onClick={() => setRange({ from: page, to: page })} className="underline">Just this page</button>
-          <button type="button" onClick={() => setRange({ from: 1, to: total })} className="underline">Whole book</button>
+          <span className="text-xs text-stone-600">Up to {maxPrint} pages per print job. Full PDF printing is included with a purchased book.</span>
           <button type="button" onClick={print} disabled={!!printing} className="ml-auto rounded-lg bg-emerald-900 text-white px-3 py-1.5 font-bold disabled:opacity-60">{printing || "Print"}</button>
         </div>
       )}
