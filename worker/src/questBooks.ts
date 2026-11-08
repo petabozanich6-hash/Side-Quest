@@ -3,7 +3,7 @@
 // Ground rules
 // - Each book is a finished PDF the platform owner uploads, with an optional sample PDF and cover PNG. Everything lives
 //   only in the private R2 bucket (quest-books/v1/<id>/...), never in this public repository.
-// - Family Membership (and the owner) can download every book. Any parent can download a book's sample.
+// - Active Family Membership reads core books online and prints selected pages. Only the owner or buyers can download full PDFs; signed-in families can get samples.
 //   A family without membership can buy one whole book (owner-set price, Stripe Checkout); only the signature-verified
 //   webhook records the purchase (questBookPurchases.ts), and the family can then download that book for good.
 // - Books without a full PDF yet are drafts: only the owner sees them.
