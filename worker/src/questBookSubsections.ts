@@ -68,7 +68,7 @@ export function normaliseSubsections(chapterTitle: string, pages: BookPage[], pr
   if (!candidates.size) throw new Error("The AI did not return usable subsection boundaries.");
   const firstSuggestion = candidates.get(first) || { title: chapterTitle, skill_goal: chapterTitle };
   candidates.set(first, firstSuggestion);
-  const minimumSpan = pages.length >= 9 ? MIN_PAGES_FOR_LONG_CHAPTER : pages.length >= 4 ? 2 : 1;
+  const minimumSpan = pages.length >= 9 ? MIN_PAGES_FOR_LONG_CHAPTER : pages.length >= 2 ? 2 : 1;
   const starts = [...candidates.keys()].sort((a, b) => a - b);
   const kept: number[] = [first];
   const similar = (a: any, b: any) => {
