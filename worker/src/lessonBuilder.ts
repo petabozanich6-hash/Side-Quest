@@ -550,7 +550,7 @@ export async function duplicateLesson(db: DB, familyId: string, id: string, now:
   const ts = nowIso(now);
   const title = `${String(row.title).slice(0, 190)} (copy)`;
   // A copy is the family's own lesson, no longer part of a Quest Book.
-  const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, quest_page_start, quest_page_end, quest_exercise_ref, quest_skill_goal, quest_source_revision, ...data } = parseJson<Record<string, unknown>>(row.data, {});
+  const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, quest_page_start, quest_page_end, quest_exercise_ref, quest_skill_goal, quest_source_revision, book_reviewed_version, book_reviewed_at, book_reviewed_by, ...data } = parseJson<Record<string, unknown>>(row.data, {});
   if (quest_book_id && data.source === "side_quest_book") Object.assign(data, { source: "parent", review_status: "parent_created" });
   await db
     .prepare(
