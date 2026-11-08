@@ -61,13 +61,15 @@ export const FILE_KINDS = ["book", "sample", "cover"] as const;
 type FileKind = (typeof FILE_KINDS)[number];
 const keyFor = (id: string, kind: FileKind | "meta" | "chapters" | "lessons") =>
   `${ROOT}${id}/${kind === "meta" ? "meta.json" : kind === "chapters" ? "chapters.json" : kind === "lessons" ? "lessons.json" : kind === "cover" ? "cover.png" : `${kind}.pdf`}`;
-const MAX_CHAPTERS = 120; // A multi-skill secondary unit can need several 40–60-minute lessons.
+const MAX_CHAPTERS = 250; // Workbook chapters are divided into multiple skill-level subsections.
 const MAX_CHAPTER_TEXT = 30000;
 type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string; unit_title?: string };
 
 /** Stable fingerprint of the exact session source and its page references. A changed plan needs a new draft. */
 export function chapterRevision(ch: Chapter): string {
-  const input = JSON.stringify([ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || "", ch.unit_title || ""]);
+  const parts: (string | number)[] = [ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || ""];
+  if (ch.unit_title) parts.push(ch.unit_title); // Do not stale pre-existing lessons without chapter metadata.
+  const input = JSON.stringify(parts);
   let hash = 2166136261;
   for (let i = 0; i < input.length; i++) hash = Math.imul(hash ^ input.charCodeAt(i), 16777619);
   return (hash >>> 0).toString(36);
