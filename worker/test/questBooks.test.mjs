@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
-import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
+import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase } from "../src/questBookPurchases.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
 
@@ -417,13 +417,26 @@ test("Automatic chapter planner returns ordered, skill-level, source-bounded sub
   assert.throws(() => normaliseSubsections("Place value", pages, [{ start_page: 9000, title: "Fake" }]), /usable subsection boundaries/);
 });
 
-test("Automatic planner subdivides long content but never invents or drops pages", () => {
+test("A single teaching skill spanning twelve PDF pages is ONE subsection, not six lessons", () => {
   const pages = Array.from({ length: 12 }, (_, i) => ({ page: i + 1, text: "Count and write. ".repeat(220) }));
   const out = normaliseSubsections("Counting", pages, [{ start_page: 1, title: "Count and write", skill_goal: "Fluent counting" }]);
-  assert.ok(out.length >= 6);
-  assert.deepEqual(out.map((s) => [s.start, s.end]), Array.from({ length: 6 }, (_, i) => [i*2+1, i*2+2]));
-  assert.throws(() => normaliseSubsections("Counting", [{ page: 1, text: "x".repeat(8001) }], [{ start_page: 1 }]),
-    /8,000/);
+  assert.deepEqual(out.map((s) => [s.start, s.end]), [[1, 12]]);
+  const single = normaliseSubsections("Counting", [{ page: 1, text: "x".repeat(8001) }],
+    [{ start_page: 1, title: "Counting" }]);
+  assert.deepEqual(single.map((s) => [s.start, s.end]), [[1, 1]], "source length does not invent more lessons");
+});
+
+test("Overzealous AI cannot create a 45-minute lesson for each workbook page", () => {
+  const pages = Array.from({ length: 12 }, (_, i) => ({ page: i + 21, text: "Instructions and practice for this topic ".repeat(15) }));
+  const proposed = pages.map((page, i) => ({
+    start_page: page.page, title: `Page topic ${i + 1}`, skill_goal: `Distinct page skill ${i + 1}`,
+  }));
+  const sections = normaliseSubsections("Place value", pages, proposed);
+  assert.ok(sections.length <= 4, "one suggestion per page must be condensed to teaching sequences");
+  assert.ok(sections.every((part) => part.end - part.start + 1 >= 3));
+  assert.equal(sections[0].start, 21);
+  assert.equal(sections.at(-1).end, 32);
+  for (let i = 1; i < sections.length; i++) assert.equal(sections[i].start, sections[i-1].end + 1);
 });
 
 test("Owner-only chapter planning does not save lessons or chapter data", async () => {
@@ -439,4 +452,64 @@ test("Owner-only chapter planning does not save lessons or chapter data", async 
   assert.equal(noAi.status, 503);
   const storageKeys = [...h.storage.keys()];
   assert.equal(storageKeys.some((key) => key.endsWith("/chapters.json")), false);
+});
+
+test("Owner can reset an unpublished collection without re-uploading the PDF", async () => {
+  const h = harness();
+  const { owner, id } = await bookWithLessons(h);
+  const lessonId = (await (await h.req("/lessons", owner.token, "POST", lessonBody("Outdated AI draft"))).json()).id;
+  const row = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lessonId);
+  const tagged = { ...JSON.parse(row.data), ai_generated: true, source: "ai", quest_book_id: id, quest_chapter_id: "c1" };
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(tagged), lessonId);
+  const url = `/quest-books/admin/books/${id}/lessons/reset`;
+  const member = await h.parent("ACTIVE_MONTHLY");
+  assert.equal((await h.req(url, member.token, "POST", { confirm: "REBUILD_FROM_PDF" })).status, 403);
+  assert.equal((await h.req(url, owner.token, "POST", { confirm: "anything" })).status, 400);
+  const reset = await h.req(url, owner.token, "POST", { confirm: "REBUILD_FROM_PDF" });
+  assert.equal(reset.status, 200);
+  const result = await reset.json();
+  assert.equal(result.cleared_plan, true);
+  assert.equal(result.cleared_published, true);
+  assert.equal(h.storage.has(`quest-books/v1/${id}/book.pdf`), true, "the original PDF is unchanged");
+  assert.equal(h.storage.has(`quest-books/v1/${id}/chapters.json`), false);
+  assert.equal(h.storage.has(`quest-books/v1/${id}/lessons.json`), false);
+  assert.ok([...h.storage.keys()].some((key) => key.includes("rebuild-backup-")));
+  const oldDraft = h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(lessonId);
+  assert.ok(oldDraft.archived_at, "AI draft archived rather than deleted");
+  assert.equal((await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters.length, 0);
+});
+
+test("A purchased book cannot have its published lesson identifiers reset", async () => {
+  const h = harness();
+  const { owner, id } = await bookWithLessons(h);
+  const fam = await h.parent("FREE_PREVIEW");
+  await recordQuestBookPurchase(h.db, {
+    object: "checkout.session", id: "cs_rebuild_guard", mode: "payment", payment_status: "paid",
+    amount_total: 999, currency: "aud",
+    metadata: { kind: "quest_book", family_id: fam.id, book_id: id, tier: "plus" },
+  }, false);
+  const reset = await h.req(`/quest-books/admin/books/${id}/lessons/reset`, owner.token, "POST", { confirm: "REBUILD_FROM_PDF" });
+  assert.equal(reset.status, 409);
+  assert.equal((await reset.json()).code, "QUEST_BOOK_ALREADY_DISTRIBUTED");
+  assert.equal(h.storage.has(`quest-books/v1/${id}/lessons.json`), true);
+});
+
+test("Remaking a generated lesson archives earlier AI drafts but retains new and manually authored lessons", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h);
+  const add = async (title, aiGenerated) => {
+    const lid = (await (await h.req("/lessons", owner.token, "POST", lessonBody(title)))).json().id;
+    const row = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lid);
+    h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
+      ...JSON.parse(row.data), quest_book_id: id, quest_chapter_id: "c1", ai_generated: aiGenerated, source: aiGenerated ? "ai" : "parent",
+    }), lid);
+    return lid;
+  };
+  const old = await add("Old AI draft", true);
+  const edited = await add("Handmade lesson", false);
+  const latest = await add("New AI lesson", true);
+  assert.equal(await retireSupersededBookDrafts(h.db, owner.id, id, "c1", latest), 1);
+  assert.ok(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(old).archived_at);
+  assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(edited).archived_at, null);
+  assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(latest).archived_at, null);
 });
