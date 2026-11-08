@@ -97,3 +97,9 @@ test("owner edits are validated; readiness and profit come from the owner's own 
   assert.equal(typeof validateRecipient({ name: "Sam" }), "string");
   assert.equal(validateRecipient({ name: "Sam", address_line_1: "1 Rd", locality: "Town", state: "NSW", postcode: "2000" }).country, "Australia");
 });
+
+test("Owner HQ shop routes are registered before the admin catch-all", async () => {
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../src/adminRoutes.ts", import.meta.url), "utf8");
+  assert.ok(src.indexOf("registerShopAdmin(admin") > 0 && src.indexOf("registerShopAdmin(admin") < src.indexOf('admin.all("*"'));
+});

@@ -586,9 +586,9 @@ export function createAdminRoutes() {
     return c.json({cancelled:true});
   });
 
-  admin.all("*", (c) => notFound(c));
   // ---------------------------------------------------------------- shop catalogue
   registerShopAdmin(admin, { requirePermission, actor, readJson });
 
+  admin.all("*", (c) => notFound(c));
   return admin;
 }
