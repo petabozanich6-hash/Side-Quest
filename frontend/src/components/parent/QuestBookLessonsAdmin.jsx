@@ -21,6 +21,8 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [batchProgress, setBatchProgress] = useState(null);
   const [batchSummary, setBatchSummary] = useState(null);
+  const [approvalProgress, setApprovalProgress] = useState(null);
+  const [approvalFailures, setApprovalFailures] = useState([]);
   const stopDraftQueue = React.useRef(false);
   const batchRunning = React.useRef(false);
   const failureKey = `sq-quest-book-draft-failures:${book.id}`;
@@ -234,11 +236,11 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     setBusy(`review:${chapter.id}`);
     try {
       await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/review`,
-        { lesson_id: chapter.draft.lesson_id, approved, expected_version: Number(chapter.draft.version) });
+        { lesson_id: chapter.draft.lesson_id, approved, complete_review: approved, expected_version: Number(chapter.draft.version) });
       const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } });
       const saved = response.data?.chapters?.find((item) => item.id === chapter.id)?.draft;
       if (!saved || saved.reviewed !== approved || saved.lesson_id !== chapter.draft.lesson_id ||
-          (approved && (!saved.saved_to_plan || Number(saved.version) !== Number(chapter.draft.version)))) {
+          (approved && (saved.status !== "ready" || !saved.saved_to_plan || Number(saved.version) !== Number(chapter.draft.version)))) {
         throw new Error("The book's saved review status could not be verified. Reload the review queue.");
       }
       setData(response.data);
@@ -246,6 +248,53 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     } catch (e) {
       toast.error(apiErrorMessage(e, "Could not save the review"), { duration: 9000 });
     } finally { setBusy(""); }
+  };
+  const approveAlreadyChecked = async () => {
+    const candidates = data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale);
+    if (!candidates.length || busy || batchProgress) return;
+    if (!window.confirm(
+      `You are confirming that you have PERSONALLY CHECKED all ${candidates.length} remaining saved lessons, including their explanations, activities and answers. Side-Quest will mark complete lessons Ready and Reviewed. Any incomplete lessons will be reported for correction. This does NOT publish anything. Continue?`
+    )) return;
+    setBusy("approve-all");
+    setApprovalFailures([]);
+    const problems = [];
+    let approved = 0;
+    setApprovalProgress({ done: 0, total: candidates.length, approved: 0, failed: 0 });
+    try {
+      for (const chapter of candidates) {
+        try {
+          await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/review`, {
+            lesson_id: chapter.draft.lesson_id, approved: true, complete_review: true,
+            expected_version: Number(chapter.draft.version),
+          });
+          approved++;
+        } catch (error) {
+          problems.push({ id: chapter.id, title: chapter.title,
+            reason: apiErrorMessage(error, "Approval failed; open this lesson to check it") });
+        }
+        setApprovalProgress({ done: approved + problems.length, total: candidates.length, approved, failed: problems.length });
+      }
+      const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } });
+      setData(response.data);
+      // A successful POST must also be reflected in the actual saved book plan.
+      for (const chapter of candidates) {
+        if (problems.some((p) => p.id === chapter.id)) continue;
+        const current = response.data?.chapters?.find((c) => c.id === chapter.id)?.draft;
+        if (!current?.reviewed || !current.saved_to_plan || current.status !== "ready" ||
+            current.lesson_id !== chapter.draft.lesson_id || Number(current.version) !== Number(chapter.draft.version)) {
+          problems.push({ id: chapter.id, title: chapter.title, reason: "The database did not confirm this review. Reopen the lesson." });
+        }
+      }
+      setApprovalFailures(problems);
+      const confirmed = candidates.length - problems.length;
+      if (problems.length) toast.warning(`${confirmed} of ${candidates.length} reviews confirmed. Check the remaining issues below.`, { duration: 10000 });
+      else toast.success(`All ${confirmed} saved lessons are now marked Ready & Reviewed. You can publish them when ready.`);
+    } catch (error) {
+      toast.error(apiErrorMessage(error, "Could not verify the review results. Reload your book workspace."), { duration: 9000 });
+    } finally {
+      setBusy("");
+      setApprovalProgress(null);
+    }
   };
   const publish = async () => {
     const drafts = data.chapters.filter((c) => c.draft);
@@ -351,7 +400,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       {!data.chapters.length ? (
         <p className="text-sm text-stone-600">{book.has_book ? "Side-Quest automatically identifies chapters and their teachable subsections, with learning goals and workbook page references. You only decide which lessons to generate." : "Upload the Book PDF first, then its sessions can be read here."}</p>
       ) : <>
-        <p className="text-sm text-stone-600">These are <b>official book companion lessons</b>, not the private lessons you make for your own children. Open a lesson, edit and save it as Ready, then approve that saved version for this book. Editing after approval returns it to the review queue. Publishing is a separate step.</p>
+        <p className="text-sm text-stone-600">These are <b>official book companion lessons</b>, not private family lessons. Once you've checked a lesson, tick <b>Reviewed and saved</b> to mark its saved version Ready and approved in one action. You can also confirm all previously checked lessons below. Editing after approval returns that version to review. Publishing is a separate step.</p>
         <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 space-y-2" data-testid="book-readiness">
           <div className="flex flex-wrap justify-between gap-2 text-sm text-emerald-950">
             <b>Book readiness: {reviewed} of {total} lessons approved</b>
@@ -362,6 +411,21 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           </div>
           <p className="text-xs text-emerald-900">{reviewed === total && total ? "Every planned lesson has been reviewed. Publishing still requires your approval." : `${total - reviewed} companion lesson${total - reviewed === 1 ? "" : "s"} still need${total - reviewed === 1 ? "s" : ""} review.`}</p>
         </div>
+        {reviewed < drafted && <div className="rounded-xl border border-emerald-300 bg-white p-3 space-y-2" data-testid="quest-confirm-reviewed">
+          <p className="text-sm font-semibold text-emerald-950">Already checked the lessons? You don't have to open and re-save each one.</p>
+          <p className="text-xs text-stone-600">Only use this after personally checking the teaching and answer keys. Complete lessons will be marked Ready and Reviewed; incomplete lessons stay unapproved and you'll see why. Nothing will publish automatically.</p>
+          <button type="button" disabled={!!busy || !!batchProgress} onClick={approveAlreadyChecked}
+            className="rounded-lg bg-emerald-800 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"
+            data-testid="quest-approve-checked">Confirm review of {data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale).length} saved lesson(s)</button>
+          {approvalProgress && <p role="status" className="text-xs text-emerald-900">
+            Checking {approvalProgress.done} of {approvalProgress.total} · {approvalProgress.approved} approved · {approvalProgress.failed} need attention
+          </p>}
+        </div>}
+        {approvalFailures.length > 0 && <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 space-y-2" data-testid="quest-approval-errors">
+          <b className="text-sm text-amber-950">{approvalFailures.length} lesson(s) need attention before approval</b>
+          <ul className="list-disc pl-5 space-y-1 text-xs text-amber-900">{approvalFailures.map((failure) =>
+            <li key={failure.id}><b>{failure.title}:</b> {failure.reason}</li>)}</ul>
+        </div>}
         {batchSummary && <p className="text-sm font-semibold text-emerald-950" data-testid="quest-draft-batch-summary">
           {batchSummary.label}: {batchSummary.completed} made, {batchSummary.failed.length} failed{batchSummary.stopped ? ", stopped after the last completed request" : ""}.
         </p>}
@@ -396,7 +460,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
                 </span>}</span>
               {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review?book=${encodeURIComponent(book.id)}&chapter=${encodeURIComponent(c.id)}`} className="text-sm font-semibold text-emerald-900 underline">{c.draft.reviewed ? "Reopen" : "Review"} “{c.draft.title}”</Link>}
               {c.draft && <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-950">
-                <input type="checkbox" disabled={c.draft.stale || c.draft.status !== "ready" || !!busy || !!batchProgress} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
+                <input type="checkbox" disabled={c.draft.stale || !!busy || !!batchProgress} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
                 Reviewed and saved{c.draft.reviewed_at && c.draft.reviewed ? ` · ${new Date(c.draft.reviewed_at).toLocaleDateString()}` : ""}
               </label>}
               <button type="button" disabled={!!busy || !!batchProgress} onClick={() => draft(c)} className="inline-flex items-center gap-1 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50 disabled:opacity-50">
