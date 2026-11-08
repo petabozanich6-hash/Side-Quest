@@ -1771,3 +1771,65 @@ test("question review flags validate targets, stay with the return and preserve 
   assert.deepEqual(JSON.parse(db.raw.prepare("SELECT review_flags FROM submissions WHERE id = ?").get(second.id).review_flags), [],
     "the next attempt begins without stale flags");
 });
+
+test("AI repair retries one service interruption and persisted changes retain manual content", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const draft = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.ok(draft.ok);
+  const edited = await lb.updateLesson(db, fam, draft.lesson.id, { ...draft.lesson,
+    title: "Owner's revised title", parent_notes: "Keep my handwritten teaching note" }, NOW);
+  assert.ok(edited.ok);
+  let calls = 0;
+  const support = edited.lesson.support + " Use counters to model each step together.";
+  const ai = { run: async () => { if (++calls === 1) throw new Error("temporary service failure");
+    return { response: JSON.stringify({ support }) }; } };
+  const proposed = await aid.refineLessonWithAi(db, ai, { familyId: fam, userId: "u",
+    lessonId: draft.lesson.id, instruction: "Improve support", target: ["support"] }, NOW);
+  assert.ok(proposed.ok, JSON.stringify(proposed));
+  assert.equal(calls, 2);
+  const saved = await aid.applyLessonPatch(db, fam, draft.lesson.id, proposed.patch, NOW, proposed.base_version);
+  assert.ok(saved.ok, JSON.stringify(saved));
+  const reloaded = lb.lessonOut(await lb.ownLesson(db, fam, draft.lesson.id));
+  assert.equal(reloaded.support, support);
+  assert.equal(reloaded.title, "Owner's revised title");
+  assert.equal(reloaded.parent_notes, "Keep my handwritten teaching note");
+  assert.deepEqual(reloaded.quiz, edited.lesson.quiz);
+  assert.equal((await aid.aiUsage(db, fam, NOW)).changes_today, 1);
+});
+
+test("AI repair preserves a concurrent approval even when content version is unchanged", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const draft = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  const original = await lb.ownLesson(db, fam, draft.lesson.id);
+  db.raw.prepare("UPDATE lessons SET status='ready' WHERE id=?").run(original.id);
+  const approved = await lb.ownLesson(db, fam, original.id);
+  const result = await aid.applyLessonPatch(db, fam, original.id,
+    { support: "An unwanted concurrent correction" }, NOW, original.version, original);
+  assert.equal(result.status, 409);
+  assert.deepEqual(await lb.ownLesson(db, fam, original.id), approved);
+});
+
+test("A metadata change during the save cannot be overwritten by an AI patch", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const draft = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  const original = await lb.ownLesson(db, fam, draft.lesson.id);
+  const prepare = db.prepare;
+  let raced = false;
+  db.prepare = (sql) => {
+    if (!raced && sql.startsWith("UPDATE lessons SET title")) {
+      raced = true;
+      db.raw.prepare("UPDATE lessons SET status='ready' WHERE id=?").run(original.id);
+    }
+    return prepare(sql);
+  };
+  const result = await aid.applyLessonPatch(db, fam, original.id,
+    { support: "An unwanted concurrent correction" }, NOW, original.version);
+  assert.equal(result.status, 409);
+  const saved = await lb.ownLesson(db, fam, original.id);
+  assert.equal(saved.status, "ready");
+  assert.equal(saved.data, original.data);
+  assert.equal(saved.version, original.version);
+});

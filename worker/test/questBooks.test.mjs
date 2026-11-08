@@ -7,7 +7,7 @@ import { validateMeta, validateChapters, chapterRevision, companionLessonIssues,
 import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
-import { processQuestOvernight } from "../src/questBookOvernight.ts";
+import { processQuestOvernight, ensureOvernightTables } from "../src/questBookOvernight.ts";
 
 let seq = 0;
 // Quest Books aren't included with membership: families (members or not) buy the book or the pack.
@@ -962,4 +962,22 @@ test("PDHPE and Creative Arts year-level books are for the primary years only", 
     assert.equal(validateMeta({ collection: "core", title: `Book ${subject} 7`, year: 7, subject }).ok, false, `${subject} isn't a secondary year-level book`);
   }
   assert.equal(validateMeta({ collection: "core", title: "Maths 8", year: 8, subject: "mathematics" }).ok, true);
+});
+
+
+test("Overnight finalization is per job and interrupted preparation releases the queue", async () => {
+  const h = harness();
+  await ensureOvernightTables(h.db);
+  const old = "2026-11-08T00:00:00Z";
+  for (const [id, status] of [["finished", "running"], ["busy", "running"], ["abandoned", "building"]]) {
+    h.db.raw.prepare(`INSERT INTO quest_overnight_jobs
+      (id,owner_user_id,family_id,status,total,created_at,updated_at) VALUES (?,?,?, ?,1,?,?)`)
+      .run(id,"owner",id,status,old,old);
+  }
+  h.db.raw.prepare(`INSERT INTO quest_overnight_items
+    (id,job_id,position,book_id,book_title,chapter_id,chapter_title,revision,status,attempts,lease_until,updated_at)
+    VALUES ('item','busy',0,'book','Book','c1','Chapter','rev','running',1,'2026-11-09T01:00:00Z',?)`).run(old);
+  await processQuestOvernight(h.env,new Date("2026-11-09T00:00:00Z"));
+  const state = Object.fromEntries(h.db.raw.prepare("SELECT id,status FROM quest_overnight_jobs").all().map(r=>[r.id,r.status]));
+  assert.deepEqual(state,{finished:"completed",busy:"running",abandoned:"cancelled"});
 });

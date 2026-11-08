@@ -128,7 +128,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
     const user=c.get("user"),body:any=await c.req.json().catch(()=>({}));
     await ensureOvernightTables(c.env.DB);
     const kind=body.mode==="repair"?"repair":"generate";
-    const ids=Array.isArray(body.book_ids)?[...new Set(body.book_ids.map(String))]:[];
+    const ids: string[]=Array.isArray(body.book_ids)?[...new Set<string>(body.book_ids.map(String))]:[];
     if (!ids.length || ids.length>100 || ids.some((id)=>!/^[a-z0-9-]{1,64}$/.test(id)))
       return c.json({detail:"Select your uploaded books to generate."},400);
     if(!c.env.AI)return c.json({detail:"AI generation is unavailable."},503);
@@ -202,7 +202,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
 async function approveNewAiCleared(env:Env, job:Job, item:Item, lessonId:string, now:string) {
   const row=await env.DB.prepare(`SELECT id, family_id, version, status, data FROM lessons
     WHERE id=? AND family_id=? AND archived_at IS NULL`).bind(lessonId,job.family_id).first<any>();
-  if(!row || row.status!=="draft")return false;
+  if(!row || row.status!=="draft" || Number(row.version)!==1)return false;
   let data:any;
   try{data=JSON.parse(row.data||"{}");}catch{return false;}
   if(data.quest_book_id!==item.book_id || data.quest_chapter_id!==item.chapter_id ||
@@ -227,6 +227,11 @@ export async function processQuestOvernight(env: Env, now = new Date(),
   if(!env.DB || !env.BUCKET)return {processed:0,unavailable:true};
   await ensureOvernightTables(env.DB);
   const time=now.toISOString(),lease=new Date(now.getTime()+LEASE_MS).toISOString();
+  // A terminated start request must not lock this family out forever.
+  await env.DB.prepare(`UPDATE quest_overnight_jobs SET status='cancelled',
+    last_error='Queue preparation was interrupted. Start a new queue.',updated_at=?
+    WHERE status='building' AND updated_at<?`)
+    .bind(time,new Date(now.getTime()-LEASE_MS).toISOString()).run();
   await env.DB.prepare(`UPDATE quest_overnight_items SET status='failed',
     last_error='Interrupted repeatedly. Use Retry failed from Owner HQ.',
     lease_until=NULL,updated_at=? WHERE status='running' AND attempts>=? AND lease_until<?`)
@@ -309,14 +314,13 @@ export async function processQuestOvernight(env: Env, now = new Date(),
         String(e?.message||"Generation interrupted").slice(0,360),null);
     }
   }
-  const active=await env.DB.prepare(`SELECT COUNT(*) AS count FROM quest_overnight_items i
-    JOIN quest_overnight_jobs j ON j.id=i.job_id WHERE j.status='running'
-    AND i.status IN ('pending','running')`).first<{count:number}>();
-  if(!active?.count)await env.DB.prepare(`UPDATE quest_overnight_jobs
+  await env.DB.prepare(`UPDATE quest_overnight_jobs
     SET status=CASE WHEN EXISTS(SELECT 1 FROM quest_overnight_items i
        WHERE i.job_id=quest_overnight_jobs.id AND i.status='failed')
       THEN 'completed_with_errors' ELSE 'completed' END,
-      finished_at=?,updated_at=? WHERE status='running'`)
+      finished_at=?,updated_at=? WHERE status='running' AND NOT EXISTS(
+      SELECT 1 FROM quest_overnight_items i WHERE i.job_id=quest_overnight_jobs.id
+      AND i.status IN ('pending','running'))`)
     .bind(time,time).run();
   return {processed:item?1:0};
 }
