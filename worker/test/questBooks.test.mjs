@@ -531,7 +531,7 @@ test("Remaking a generated lesson archives earlier AI drafts but retains new and
   // The owner works on an internal plan (a free preview family can only hand-make two lessons).
   h.db.raw.prepare("UPDATE families SET plan='INTERNAL' WHERE id=?").run(owner.id);
   const add = async (title, aiGenerated) => {
-    const lid = (await (await h.req("/lessons", owner.token, "POST", lessonBody(title)))).json().id;
+    const lid = (await (await h.req("/lessons", owner.token, "POST", lessonBody(title))).json()).id;
     const row = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lid);
     h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
       ...JSON.parse(row.data), quest_book_id: id, quest_chapter_id: "c1", ai_generated: aiGenerated, source: aiGenerated ? "ai" : "parent",
