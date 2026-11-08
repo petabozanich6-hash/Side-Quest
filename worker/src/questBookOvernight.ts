@@ -1,0 +1,235 @@
+import type { App, Guards, Env } from "./types";
+import { isPlatformOwner } from "./access";
+import { listBooks, readChapters, chapterRevision, generateQuestCompanionLesson, subjectLabel, yearLabel } from "./questBooks";
+
+type DB = D1Database;
+type Job = { id: string; owner_user_id: string; family_id: string; status: string; total: number };
+type Item = { id: string; job_id: string; book_id: string; book_title: string; chapter_id: string;
+  chapter_title: string; revision: string; status: string; attempts: number; lease_until: string | null };
+const MAX_ITEMS = 2000;
+const RETRIES = 3;
+const LEASE_MS = 30 * 60_000;
+
+/** D1-backed jobs survive tab closure, Cloudflare restarts, and interrupted cron runs. */
+export async function ensureOvernightTables(db: DB) {
+  await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_jobs (
+    id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL, family_id TEXT NOT NULL,
+    status TEXT NOT NULL, total INTEGER NOT NULL, created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL, finished_at TEXT, last_error TEXT
+  )`).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_items (
+    id TEXT PRIMARY KEY, job_id TEXT NOT NULL, position INTEGER NOT NULL,
+    book_id TEXT NOT NULL, book_title TEXT NOT NULL,
+    chapter_id TEXT NOT NULL, chapter_title TEXT NOT NULL,
+    revision TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'pending',
+    attempts INTEGER NOT NULL DEFAULT 0, lease_until TEXT,
+    lesson_id TEXT, last_error TEXT, updated_at TEXT NOT NULL,
+    UNIQUE(job_id, book_id, chapter_id)
+  )`).run();
+  await db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS quest_one_active_overnight_job
+    ON quest_overnight_jobs(family_id) WHERE status IN ('building','running','paused')`).run();
+  await db.prepare(`CREATE INDEX IF NOT EXISTS quest_overnight_item_pick
+    ON quest_overnight_items(job_id,status,position)`).run();
+}
+
+/** A real working draft in ANY status counts as generated; never remake it overnight. */
+async function existingIds(db: DB, familyId: string, bookId: string) {
+  const { results } = await db.prepare(`SELECT json_extract(data,'$.quest_chapter_id') AS chapter_id
+    FROM lessons WHERE family_id=? AND archived_at IS NULL AND json_valid(data)
+    AND json_extract(data,'$.quest_book_id')=?
+    AND COALESCE(json_extract(data,'$.source'),'') != 'side_quest_book'`)
+    .bind(familyId, bookId).all<{ chapter_id: string }>();
+  return new Set((results || []).map((r) => r.chapter_id).filter(Boolean));
+}
+export async function overnightCandidates(env: Env, familyId: string) {
+  const books = (await listBooks(env.BUCKET)).filter((book) => book.has_book);
+  const grouped = [];
+  for (const book of books) {
+    const chapters = book.has_chapters ? await readChapters(env.BUCKET!, book.id) : [];
+    const existing = await existingIds(env.DB, familyId, book.id);
+    const missing = chapters.filter((ch) => !existing.has(ch.id));
+    grouped.push({
+      id: book.id, title: book.title, year_subject: `${yearLabel(book.year)} · ${subjectLabel(book)}`,
+      has_chapters: chapters.length > 0, total: chapters.length,
+      generated: chapters.length - missing.length, missing: missing.length,
+      items: missing.map((ch) => ({ book_id: book.id, book_title: book.title, chapter_id: ch.id,
+        chapter_title: ch.title, revision: chapterRevision(ch) })),
+    });
+  }
+  return grouped;
+}
+async function snapshot(db: DB, familyId: string, userId: string) {
+  const job = await db.prepare(`SELECT * FROM quest_overnight_jobs
+    WHERE family_id=? AND owner_user_id=? ORDER BY created_at DESC LIMIT 1`)
+    .bind(familyId,userId).first<any>();
+  if (!job) return null;
+  const counts = await db.prepare(`SELECT
+    SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) pending,
+    SUM(CASE WHEN status='running' THEN 1 ELSE 0 END) processing,
+    SUM(CASE WHEN status='done' THEN 1 ELSE 0 END) generated,
+    SUM(CASE WHEN status='skipped' THEN 1 ELSE 0 END) skipped,
+    SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) failed
+    FROM quest_overnight_items WHERE job_id=?`).bind(job.id).first<any>();
+  const books = await db.prepare(`SELECT book_id,MAX(book_title) book_title,COUNT(*) total,
+    SUM(CASE WHEN status='done' THEN 1 ELSE 0 END) generated,
+    SUM(CASE WHEN status='skipped' THEN 1 ELSE 0 END) skipped,
+    SUM(CASE WHEN status='failed' THEN 1 ELSE 0 END) failed
+    FROM quest_overnight_items WHERE job_id=? GROUP BY book_id ORDER BY MIN(position)`)
+    .bind(job.id).all<any>();
+  const failures = await db.prepare(`SELECT book_title,chapter_title,last_error FROM quest_overnight_items
+    WHERE job_id=? AND status='failed' ORDER BY position LIMIT 25`).bind(job.id).all<any>();
+  return { id: job.id, status: job.status, total: job.total, updated_at: job.updated_at,
+    finished_at: job.finished_at, last_error: job.last_error,
+    counts: counts || {}, books: books.results || [], failures: failures.results || [] };
+}
+
+export function registerQuestOvernight(app: App, g: Guards) {
+  const ownerOnly = async (c: any, next: any) => {
+    if (!(await isPlatformOwner(c.env.DB,c.get("user").id)))
+      return c.json({ detail:"Platform-owner access required" },403);
+    if (!c.env.BUCKET) return c.json({ detail:"Private book storage is unavailable" },503);
+    return next();
+  };
+  app.get("/api/quest-books/admin/overnight",g.auth,g.parent,ownerOnly,async(c)=>{
+    const user=c.get("user");
+    await ensureOvernightTables(c.env.DB);
+    const [books,job]=await Promise.all([overnightCandidates(c.env,user.family_id),
+      snapshot(c.env.DB,user.family_id,user.id)]);
+    c.header("Cache-Control","no-store");
+    return c.json({ books: books.map(({items,...rest})=>rest),job,interval_minutes:5 });
+  });
+  app.post("/api/quest-books/admin/overnight/start",g.auth,g.parent,ownerOnly,async(c)=>{
+    const user=c.get("user"),body:any=await c.req.json().catch(()=>({}));
+    await ensureOvernightTables(c.env.DB);
+    const ids=Array.isArray(body.book_ids)?[...new Set(body.book_ids.map(String))]:[];
+    if (!ids.length || ids.length>100 || ids.some((id)=>!/^[a-z0-9-]{1,64}$/.test(id)))
+      return c.json({detail:"Select your uploaded books to generate."},400);
+    if(!c.env.AI)return c.json({detail:"AI generation is unavailable."},503);
+    const all=await overnightCandidates(c.env,user.family_id);
+    const chosen=all.filter((b)=>ids.includes(b.id));
+    if(chosen.length!==ids.length)return c.json({detail:"A selected book was not found."},400);
+    if(chosen.some((b)=>!b.has_chapters))
+      return c.json({detail:"Analyse the selected book's chapter plan first."},409);
+    const items=chosen.flatMap((b)=>b.items);
+    if(!items.length)return c.json({detail:"All selected lessons have already been generated."},409);
+    if(items.length>MAX_ITEMS)return c.json({detail:"Too many lessons for one queue. Select fewer books."},400);
+    const id=crypto.randomUUID(),time=new Date().toISOString();
+    try {
+      await c.env.DB.prepare(`INSERT INTO quest_overnight_jobs
+        (id,owner_user_id,family_id,status,total,created_at,updated_at)
+        VALUES (?,?,?,'building',?,?,?)`)
+        .bind(id,user.id,user.family_id,items.length,time,time).run();
+    } catch { return c.json({detail:"A queue is already active. Open it instead."},409); }
+    try {
+      for(let i=0;i<items.length;i+=40) {
+        await c.env.DB.batch(items.slice(i,i+40).map((ch,offset)=>
+          c.env.DB.prepare(`INSERT INTO quest_overnight_items
+          (id,job_id,position,book_id,book_title,chapter_id,chapter_title,revision,status,updated_at)
+          VALUES (?,?,?,?,?,?,?,?,'pending',?)`)
+          .bind(crypto.randomUUID(),id,i+offset,ch.book_id,ch.book_title,ch.chapter_id,
+            ch.chapter_title,ch.revision,time)));
+      }
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?
+        WHERE id=? AND status='building'`).bind(time,id).run();
+    } catch {
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='cancelled',
+        last_error='Failed to prepare queue',updated_at=? WHERE id=?`).bind(time,id).run();
+      return c.json({detail:"Queue preparation failed. No lessons were generated."},503);
+    }
+    c.header("Cache-Control","no-store");
+    return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id)});
+  });
+  app.post("/api/quest-books/admin/overnight/:id/control",g.auth,g.parent,ownerOnly,async(c)=>{
+    const user=c.get("user"),id=c.req.param("id"),body:any=await c.req.json().catch(()=>({}));
+    if (!/^[a-f0-9-]{36}$/i.test(id) || !["pause","resume","retry_failed"].includes(body.action))
+      return c.json({detail:"Unknown queue action."},400);
+    await ensureOvernightTables(c.env.DB);
+    const job=await c.env.DB.prepare(`SELECT * FROM quest_overnight_jobs
+      WHERE id=? AND owner_user_id=? AND family_id=?`)
+      .bind(id,user.id,user.family_id).first<Job>();
+    if(!job)return c.json({detail:"Queue not found."},404);
+    const time=new Date().toISOString();
+    if(body.action==="pause" && job.status==="running")
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='paused',updated_at=?
+        WHERE id=? AND status='running'`).bind(time,id).run();
+    else if(body.action==="resume" && job.status==="paused")
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?
+        WHERE id=? AND status='paused'`).bind(time,id).run();
+    else if(body.action==="retry_failed" && ["completed","completed_with_errors","paused"].includes(job.status)) {
+      await c.env.DB.prepare(`UPDATE quest_overnight_items SET status='pending',attempts=0,
+        last_error=NULL,lease_until=NULL,updated_at=? WHERE job_id=? AND status='failed'`)
+        .bind(time,id).run();
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?,
+        finished_at=NULL WHERE id=?`).bind(time,id).run();
+    } else return c.json({detail:"This action isn't available for the queue's current status."},409);
+    c.header("Cache-Control","no-store");
+    return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id)});
+  });
+}
+
+/** One item per cron tick. Lease avoids overlapping generation, and replay skips
+ * lessons already saved by an earlier tick or interactive work. */
+export async function processQuestOvernight(env: Env, now = new Date(),
+  generate: typeof generateQuestCompanionLesson = generateQuestCompanionLesson) {
+  if(!env.DB || !env.BUCKET)return {processed:0,unavailable:true};
+  await ensureOvernightTables(env.DB);
+  const time=now.toISOString(),lease=new Date(now.getTime()+LEASE_MS).toISOString();
+  await env.DB.prepare(`UPDATE quest_overnight_items SET status='failed',
+    last_error='Interrupted repeatedly. Use Retry failed from Owner HQ.',
+    lease_until=NULL,updated_at=? WHERE status='running' AND attempts>=? AND lease_until<?`)
+    .bind(time,RETRIES,time).run();
+  const item=await env.DB.prepare(`UPDATE quest_overnight_items SET status='running',
+    attempts=attempts+1,lease_until=?,updated_at=?
+    WHERE id=(SELECT i.id FROM quest_overnight_items i
+      JOIN quest_overnight_jobs j ON j.id=i.job_id WHERE j.status='running'
+      AND i.attempts<? AND (i.status='pending' OR (i.status='running' AND i.lease_until<?))
+      ORDER BY j.created_at,i.position LIMIT 1) RETURNING *`)
+    .bind(lease,time,RETRIES,time).first<Item>();
+  if(item){
+    const job=await env.DB.prepare(`SELECT * FROM quest_overnight_jobs WHERE id=?`)
+      .bind(item.job_id).first<Job>();
+    const mark=async(status:string,error:string|null,lesson:string|null)=>{
+      await env.DB.prepare(`UPDATE quest_overnight_items SET status=?,last_error=?,lesson_id=?,
+        lease_until=NULL,updated_at=? WHERE id=? AND status='running' AND lease_until=?`)
+        .bind(status,error,lesson,time,item.id,lease).run();
+    };
+    try{
+      if(!job || !(await isPlatformOwner(env.DB,job.owner_user_id))) {
+        await mark("failed","Owner access no longer valid.",null);
+        if(job)await env.DB.prepare(`UPDATE quest_overnight_jobs SET status='paused',
+          last_error='Owner access changed',updated_at=? WHERE id=?`).bind(time,job.id).run();
+      } else if(!env.AI) {
+        await mark("pending","AI unavailable; generation paused",null);
+        await env.DB.prepare(`UPDATE quest_overnight_jobs SET status='paused',
+          last_error='AI unavailable',updated_at=? WHERE id=?`).bind(time,job.id).run();
+      } else {
+        const chapters=await readChapters(env.BUCKET!,item.book_id);
+        const current=chapters.find((ch)=>ch.id===item.chapter_id);
+        if(!current || chapterRevision(current)!==item.revision) {
+          await mark("failed","Chapter source changed; check the book plan.",null);
+        } else {
+          const result=await generate(env,{id:job.owner_user_id,family_id:job.family_id},
+            item.book_id,item.chapter_id,true);
+          if(result.ok) await mark(result.skipped?"skipped":"done",null,
+            result.skipped?result.lesson_id:String(result.lesson.id));
+          else if(item.attempts>=RETRIES || (result.status && result.status<500 && result.status!==429))
+            await mark("failed",String(result.detail||"Generation failed").slice(0,360),null);
+          else await mark("pending",String(result.detail||"Temporary AI issue").slice(0,360),null);
+        }
+      }
+    }catch(e:any){
+      await mark(item.attempts>=RETRIES?"failed":"pending",
+        String(e?.message||"Generation interrupted").slice(0,360),null);
+    }
+  }
+  const active=await env.DB.prepare(`SELECT COUNT(*) AS count FROM quest_overnight_items i
+    JOIN quest_overnight_jobs j ON j.id=i.job_id WHERE j.status='running'
+    AND i.status IN ('pending','running')`).first<{count:number}>();
+  if(!active?.count)await env.DB.prepare(`UPDATE quest_overnight_jobs
+    SET status=CASE WHEN EXISTS(SELECT 1 FROM quest_overnight_items i
+       WHERE i.job_id=quest_overnight_jobs.id AND i.status='failed')
+      THEN 'completed_with_errors' ELSE 'completed' END,
+      finished_at=?,updated_at=? WHERE status='running'`)
+    .bind(time,time).run();
+  return {processed:item?1:0};
+}
