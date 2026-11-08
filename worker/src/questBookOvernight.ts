@@ -3,7 +3,7 @@ import { isPlatformOwner } from "./access";
 import { listBooks, readChapters, chapterRevision, companionLessonIssues, generateQuestCompanionLesson, repairQuestCompanionLessonPass, subjectLabel, yearLabel } from "./questBooks";
 
 type DB = D1Database;
-type Job = { id: string; owner_user_id: string; family_id: string; status: string; kind: "generate" | "repair"; total: number };
+type Job = { id: string; owner_user_id: string; family_id: string; status: string; kind: "generate" | "repair"; auto_approve: number; total: number };
 type Item = { id: string; job_id: string; book_id: string; book_title: string; chapter_id: string;
   chapter_title: string; revision: string; status: string; attempts: number; lease_until: string | null; lesson_id: string | null };
 const MAX_ITEMS = 2000;
@@ -14,7 +14,7 @@ const LEASE_MS = 30 * 60_000;
 export async function ensureOvernightTables(db: DB) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_jobs (
     id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL, family_id TEXT NOT NULL,
-    status TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'generate', total INTEGER NOT NULL, created_at TEXT NOT NULL,
+    status TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'generate', auto_approve INTEGER NOT NULL DEFAULT 0, total INTEGER NOT NULL, created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL, finished_at TEXT, last_error TEXT
   )`).run();
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_items (
@@ -104,7 +104,7 @@ async function snapshot(db: DB, familyId: string, userId: string) {
     .bind(job.id).all<any>();
   const failures = await db.prepare(`SELECT book_title,chapter_title,last_error FROM quest_overnight_items
     WHERE job_id=? AND status='failed' ORDER BY position LIMIT 25`).bind(job.id).all<any>();
-  return { id: job.id, status: job.status, kind: job.kind||"generate", total: job.total, updated_at: job.updated_at,
+  return { id: job.id, status: job.status, kind: job.kind||"generate", auto_approve: job.auto_approve===1, total: job.total, updated_at: job.updated_at,
     finished_at: job.finished_at, last_error: job.last_error,
     counts: counts || {}, books: books.results || [], failures: failures.results || [] };
 }
@@ -144,9 +144,9 @@ export function registerQuestOvernight(app: App, g: Guards) {
     const id=crypto.randomUUID(),time=new Date().toISOString();
     try {
       await c.env.DB.prepare(`INSERT INTO quest_overnight_jobs
-        (id,owner_user_id,family_id,status,kind,total,created_at,updated_at)
-        VALUES (?,?,?,'building',?,?,?,?)`)
-        .bind(id,user.id,user.family_id,kind,items.length,time,time).run();
+        (id,owner_user_id,family_id,status,kind,auto_approve,total,created_at,updated_at)
+        VALUES (?,?,?,'building',?,?,?,?,?)`)
+        .bind(id,user.id,user.family_id,kind,kind==="generate" && body.auto_approve===true?1:0,items.length,time,time).run();
     } catch { return c.json({detail:"A queue is already active. Open it instead."},409); }
     try {
       for(let i=0;i<items.length;i+=40) {
@@ -193,6 +193,30 @@ export function registerQuestOvernight(app: App, g: Guards) {
     c.header("Cache-Control","no-store");
     return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id)});
   });
+}
+
+/** Accept only a newly generated, unflagged and content-complete lesson at its
+ * exact database version. Never auto approve a working lesson edited by its owner.
+ * This mirrors the per-book fast-approval safety rules, without publishing.
+ */
+async function approveNewAiCleared(env:Env, job:Job, item:Item, lessonId:string, now:string) {
+  const row=await env.DB.prepare(`SELECT id, family_id, version, status, data FROM lessons
+    WHERE id=? AND family_id=? AND archived_at IS NULL`).bind(lessonId,job.family_id).first<any>();
+  if(!row || row.status!=="draft")return false;
+  let data:any;
+  try{data=JSON.parse(row.data||"{}");}catch{return false;}
+  if(data.quest_book_id!==item.book_id || data.quest_chapter_id!==item.chapter_id ||
+    data.quest_source_revision!==item.revision || data.ai_generated!==true ||
+    data.book_repair_requested===true || !Array.isArray(data.ai_flags) ||
+    data.ai_flags.length!==0 || companionLessonIssues(data).length>0)return false;
+  const next={...data,review_status:"parent_reviewed",
+    book_plan_saved_version:row.version,book_plan_saved_at:now,book_plan_saved_by:job.owner_user_id,
+    book_reviewed_version:row.version,book_reviewed_at:now,book_reviewed_by:job.owner_user_id,
+    book_review_method:"owner_opt_in_ai_cleared_overnight"};
+  const changed=await env.DB.prepare(`UPDATE lessons SET status='ready',data=?,updated_at=?
+    WHERE id=? AND family_id=? AND version=? AND status='draft' AND data=?
+    AND archived_at IS NULL`).bind(JSON.stringify(next),now,row.id,job.family_id,row.version,row.data).run();
+  return !!changed.meta?.changes;
 }
 
 /** One item per cron tick. Lease avoids overlapping generation, and replay skips
@@ -264,8 +288,17 @@ export async function processQuestOvernight(env: Env, now = new Date(),
         } else {
           const result=await generate(env,{id:job.owner_user_id,family_id:job.family_id},
             item.book_id,item.chapter_id,true);
-          if(result.ok) await mark(result.skipped?"skipped":"done",null,
-            result.skipped?result.lesson_id:String(result.lesson.id));
+          if(result.ok) {
+            // The owner explicitly opted into fast approval of clean, NEW lessons.
+            // Existing working lessons (skipped) are never auto-approved.
+            let note:string|null=null;
+            if(job.auto_approve===1 && !result.skipped) {
+              const approved=await approveNewAiCleared(env,job,item,String(result.lesson.id),time);
+              if(!approved)note="Generated as Draft: needs review or AI repair before approval.";
+            }
+            await mark(result.skipped?"skipped":"done",note,
+              result.skipped?result.lesson_id:String(result.lesson.id));
+          }
           else if(item.attempts>=RETRIES || (result.status && result.status<500 && result.status!==429))
             await mark("failed",String(result.detail||"Generation failed").slice(0,360),null);
           else await mark("pending",String(result.detail||"Temporary AI issue").slice(0,360),null);
