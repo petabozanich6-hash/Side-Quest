@@ -1151,6 +1151,16 @@ export function registerQuestBooks(app: App, g: Guards) {
       const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ai_flags, ...clean } = data as any;
       lessons.push({ key: ch.id, chapter_id: ch.id, chapter_title: ch.unit_title || ch.title, title: String(row.title), stage: String(row.stage || ""), learning_area: String(row.learning_area || ""), data: clean });
     }
+    // Publishing replaces the book's R2 snapshot. Never silently remove purchased
+    // lesson keys when only a subset of working drafts was submitted.
+    const priorPublished = await readPublished(c.env.BUCKET!, id);
+    const incomingKeys = new Set(lessons.map((l) => l.key));
+    if (incomingKeys.size !== lessons.length) return c.json({ detail: "A companion lesson was selected more than once." }, 400);
+    const missingPublished = priorPublished.find((l) => !incomingKeys.has(l.key));
+    if (missingPublished) return c.json({
+      detail: `Publishing would remove the previously published lesson “${missingPublished.title}”. Restore its chapter and lesson in this publishing batch instead of silently removing a lesson families may have purchased.`,
+      code: "PUBLISHED_LESSON_KEY_REMOVED",
+    }, 409);
     // Match every lesson to each state's curriculum now, so families anywhere get their own codes when they add it.
     const meta = await readMeta(c.env.BUCKET!, id);
     await Promise.all(lessons.map(async (l) => {
