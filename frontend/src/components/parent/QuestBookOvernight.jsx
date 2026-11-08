@@ -38,10 +38,11 @@ export default function QuestBookOvernight() {
   const repairSelected=repairBooks.reduce((n,b)=>n+b.repairable,0);
   const clearedSelected=chosen.reduce((n,b)=>n+(b.ai_cleared||0),0);
   const remaining=(data?.books||[]).reduce((n,b)=>n+b.missing,0);
-  const job=data?.job;
-  const counts=job?.counts||{};
-  const done=Number(counts.generated||0)+Number(counts.skipped||0)+Number(counts.failed||0);
-  const active=["running","paused","building"].includes(job?.status);
+  const jobs=data?.jobs || (data?.job?[data.job]:[]);
+  const isActive=job=>["running","paused","building"].includes(job?.status);
+  const generationActive=jobs.some(job=>job.kind!=="repair"&&isActive(job));
+  const repairActive=jobs.some(job=>job.kind==="repair"&&isActive(job));
+  const active=generationActive||repairActive;
   const approveCleared=async()=>{
     if(!clearedSelected || active || !!busy)return;
     if(!window.confirm(`Approve the ${clearedSelected} AI-cleared lesson(s) across your selected books? Side-Quest will independently verify the saved lesson content, AI warnings and source before approving. Nothing will be published, and AI can miss errors.`))return;
@@ -65,14 +66,14 @@ export default function QuestBookOvernight() {
     }catch(e){setError(apiErrorMessage(e,"Could not verify the bulk approval."));}
     finally{setBusy("");}
   };
-  const action=async(kind)=>{
+  const action=async(kind,jobId)=>{
     if((kind==="start" || kind==="repair") && !window.confirm(kind==="start"
       ? `Queue ${totalSelected} missing lessons for unattended AI generation? Workers AI resources may incur charges. Existing lessons remain untouched. ${autoApprove?"New AI-cleared lessons will be approved automatically; flagged ones stay Draft.":"New lessons stay Draft until reviewed."} Nothing is published. The queue can be paused.`
       : `Run AI repair on ${repairSelected} flagged lesson(s) across selected books? This can incur AI charges. Repaired lessons remain unapproved until checked. Stubborn problems stay in the attention queue.`))return;
     setBusy(kind);setError("");
     try{
       const queued=kind==="start"||kind==="repair";
-      const path=queued?"/quest-books/admin/overnight/start":`/quest-books/admin/overnight/${encodeURIComponent(job.id)}/control`;
+      const path=queued?"/quest-books/admin/overnight/start":`/quest-books/admin/overnight/${encodeURIComponent(jobId)}/control`;
       await api.post(path,queued?{book_ids:(kind==="repair"?repairBooks:generateBooks).map(b=>b.id),
         mode:kind==="repair"?"repair":"generate",auto_approve:kind==="start"&&autoApprove}:{action:kind});
       await load();
@@ -97,7 +98,7 @@ export default function QuestBookOvernight() {
       <div className="border border-stone-200 rounded-xl divide-y divide-stone-100 overflow-hidden">
         {data.books.map((book)=><label key={book.id} className="flex gap-3 items-center p-3 text-sm cursor-pointer">
           <input type="checkbox" checked={selected.includes(book.id)}
-            disabled={!book.has_chapters || (book.missing===0 && !book.repairable && !book.ai_cleared) || !!busy || active}
+            disabled={!book.has_chapters || (book.missing===0 && !book.repairable && !book.ai_cleared) || !!busy}
             onChange={(e)=>setSelected(prev=>e.target.checked?[...prev,book.id]:prev.filter(id=>id!==book.id))}
             aria-label={`Generate missing lessons in ${book.title}`} />
           <span className="flex-1 min-w-0">
@@ -109,28 +110,31 @@ export default function QuestBookOvernight() {
           <span className="text-xs font-bold text-violet-900">{book.missing? `${book.missing} missing` : "Generated"}</span>
         </label>)}
       </div>
-      {!active && (totalSelected>0 || repairSelected>0 || clearedSelected>0) && <div className="rounded-xl border border-violet-200 p-3 space-y-2">
+      {(totalSelected>0 || repairSelected>0 || clearedSelected>0) && <div className="rounded-xl border border-violet-200 p-3 space-y-2">
         <p className="font-bold text-violet-950 text-sm">Bulk actions for selected books</p>
-        <p className="text-xs text-slate-700">1. Generate missing lessons. 2. Approve AI-cleared drafts. 3. Repair flagged drafts. Recheck and approve repaired lessons when they pass.</p>
-        {totalSelected>0 && <label className="flex items-start gap-2 rounded-lg bg-stone-50 p-2 text-xs text-slate-800">
+        <p className="text-xs text-slate-700">Generation and repairs can both be queued. They take turns, one lesson per five-minute server cycle. Recheck and approve repaired lessons when they pass.</p>
+        {!generationActive && totalSelected>0 && <label className="flex items-start gap-2 rounded-lg bg-stone-50 p-2 text-xs text-slate-800">
           <input type="checkbox" checked={autoApprove} onChange={e=>setAutoApprove(e.target.checked)}
             disabled={!!busy} data-testid="quest-overnight-auto-approve" />
           <span>Automatically approve newly generated AI-cleared lessons (zero warnings and all required content). Existing lessons are untouched. Any lesson with an issue stays a draft for bulk repair. This is not publication.</span>
         </label>}
         <div className="flex flex-wrap items-center gap-2">
-          {totalSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("start")}
+          {!generationActive && totalSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("start")}
             className="rounded-lg bg-violet-800 px-3 py-2 text-sm font-bold text-white disabled:opacity-50"
             data-testid="quest-start-overnight">Generate {totalSelected} missing lessons</button>}
-          {clearedSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void approveCleared()}
+          {!active && clearedSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void approveCleared()}
             className="rounded-lg border border-emerald-700 px-3 py-2 text-sm font-bold text-emerald-950 disabled:opacity-50"
             data-testid="quest-approve-across-books">Approve {clearedSelected} AI-cleared lessons</button>}
-          {repairSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("repair")}
+          {!repairActive && repairSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("repair")}
             className="rounded-lg border border-amber-700 px-3 py-2 text-sm font-bold text-amber-950 disabled:opacity-50"
             data-testid="quest-repair-across-books">Repair all {repairSelected} flagged lessons</button>}
         </div>
       </div>}
 
-      {job && <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3" data-testid="quest-overnight-status">
+      {jobs.map(job=>{
+        const counts=job.counts||{};
+        const done=Number(counts.generated||0)+Number(counts.skipped||0)+Number(counts.failed||0);
+        return <div key={job.id} className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3" data-testid="quest-overnight-status">
         <div className="flex justify-between gap-2 flex-wrap items-center">
           <p className="font-bold text-violet-950">{job.kind==="repair"?"Repair":"Generation"} queue: {job.status.replaceAll("_"," ")}</p>
           {job.kind==="generate"&&job.auto_approve&&<p className="text-xs text-emerald-900">Auto-approval is enabled only for new AI-cleared lessons.</p>}
@@ -142,12 +146,12 @@ export default function QuestBookOvernight() {
         </div>
         <p className="text-sm text-violet-950">{Number(counts.generated||0)} {job.kind==="repair"?"repaired":"new"} · {Number(counts.skipped||0)} skipped · {Number(counts.processing||0)} processing · {Number(counts.failed||0)} failed · {Number(counts.pending||0)} waiting</p>
         <div className="flex flex-wrap gap-2">
-          {job.status==="running"&&<button type="button" disabled={!!busy} onClick={()=>void action("pause")}
-            className="rounded-lg border border-violet-600 px-3 py-1.5 text-xs font-bold">Pause queue</button>}
-          {job.status==="paused"&&<button type="button" disabled={!!busy} onClick={()=>void action("resume")}
+          {job.status==="running"&&<button type="button" disabled={!!busy} onClick={()=>void action("pause",job.id)}
+            className="rounded-lg border border-violet-600 px-3 py-1.5 text-xs font-bold">Pause {job.kind==="repair"?"repairs":"generation"}</button>}
+          {job.status==="paused"&&<button type="button" disabled={!!busy} onClick={()=>void action("resume",job.id)}
             className="rounded-lg bg-violet-800 text-white px-3 py-1.5 text-xs font-bold">Resume queue</button>}
           {["completed_with_errors","paused","completed"].includes(job.status)&&Number(counts.failed||0)>0&&
-            <button type="button" disabled={!!busy} onClick={()=>void action("retry_failed")}
+            <button type="button" disabled={!!busy} onClick={()=>void action("retry_failed",job.id)}
               className="rounded-lg border border-amber-600 px-3 py-1.5 text-xs font-bold">Retry failed lessons</button>}
           <button type="button" disabled={!!busy} onClick={()=>void load()}
             className="rounded-lg border border-stone-300 px-3 py-1.5 text-xs font-bold">Refresh progress</button>
@@ -159,7 +163,7 @@ export default function QuestBookOvernight() {
         {(job.failures||[]).length>0&&<details className="text-xs text-red-900"><summary className="cursor-pointer font-bold">See {job.failures.length} failed lesson(s)</summary>
           <ul className="list-disc pl-5 mt-2 space-y-1">{job.failures.map((f,i)=><li key={i}>{f.book_title} · {f.chapter_title}: {f.last_error}</li>)}</ul>
         </details>}
-      </div>}
+      </div>;})}
     </>}
   </section>;
 }

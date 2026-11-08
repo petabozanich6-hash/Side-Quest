@@ -1035,3 +1035,49 @@ test("Fix All repair endpoint retries interruption, saves its Book Plan version 
   assert.equal(plan.chapters[0].draft.saved_to_plan,true);
   assert.equal(plan.chapters[0].draft.version,result.version);
 });
+
+test("Running generation survives the upgrade and accepts a separate repair queue", async () => {
+  const h=harness();
+  const {owner,id}=await publishedBook(h);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[
+    {title:"First skill",start:1,end:2,text:chapterText},
+    {title:"Second skill",start:3,end:4,text:chapterText+" Count again."},
+    {title:"Third skill",start:5,end:6,text:chapterText+" Count once more."},
+  ]});
+  const chapter=(await readChapters(h.env.BUCKET,id))[0];
+  const made=await (await h.req("/lessons",owner.token,"POST",{...lessonBody("Needs repair"),status:"draft"})).json();
+  const row=h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(made.id);
+  const data=JSON.stringify({...JSON.parse(row.data),ai_generated:true,ai_flags:["Check support"],
+    quest_book_id:id,quest_chapter_id:chapter.id,quest_source_revision:chapterRevision(chapter)});
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(data,made.id);
+  h.env.AI={run:async()=>({})};
+  const url="/quest-books/admin/overnight";
+  const start=await h.req(url+"/start",owner.token,"POST",{book_ids:[id]});
+  assert.equal(start.status,200);
+  const generation=(await start.json()).job;
+  // Reproduce the deployed schema while an existing generation queue runs.
+  h.db.raw.exec("DROP INDEX quest_one_active_overnight_kind; CREATE UNIQUE INDEX quest_one_active_overnight_job ON quest_overnight_jobs(family_id) WHERE status IN ('building','running','paused')");
+  const before=h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=? ORDER BY position").all(generation.id);
+  const repairResponse=await h.req(url+"/start",owner.token,"POST",{book_ids:[id],mode:"repair"});
+  assert.equal(repairResponse.status,200,await repairResponse.clone().text());
+  const repair=(await repairResponse.json()).job;
+  assert.equal(repair.kind,"repair");
+  assert.notEqual(repair.id,generation.id);
+  assert.deepEqual(h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=? ORDER BY position").all(generation.id),before);
+  assert.equal((await h.req(url+"/start",owner.token,"POST",{book_ids:[id],mode:"repair"})).status,409);
+  assert.equal((await h.req(url+"/start",owner.token,"POST",{book_ids:[id]})).status,409);
+  const dashboard=await (await h.req(url,owner.token)).json();
+  assert.deepEqual(dashboard.jobs.map(j=>j.kind),["generate","repair"]);
+  const calls=[];
+  const generate=async()=>{calls.push("generate");return {ok:true,lesson:{id:"new-draft"}};};
+  const fix=async()=>{calls.push("repair");return {ok:true,changed:true,remaining_count:0};};
+  await processQuestOvernight(h.env,new Date("2026-12-01T00:00:00Z"),generate,fix);
+  await processQuestOvernight(h.env,new Date("2026-12-01T00:05:00Z"),generate,fix);
+  assert.deepEqual(calls,["generate","repair"],"repairs do not wait for the entire generation queue");
+  const current=await (await h.req(url,owner.token)).json();
+  assert.equal(current.jobs.find(j=>j.kind==="generate").status,"running");
+  assert.equal(current.jobs.find(j=>j.kind==="repair").status,"completed");
+  assert.equal((await h.req(`${url}/${generation.id}/control`,owner.token,"POST",{action:"pause"})).status,200);
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-12-01T00:10:00Z"),generate,fix)).processed,0);
+  assert.equal(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(made.id).data,data);
+});

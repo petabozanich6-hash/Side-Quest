@@ -26,8 +26,9 @@ export async function ensureOvernightTables(db: DB) {
     lesson_id TEXT, last_error TEXT, updated_at TEXT NOT NULL,
     UNIQUE(job_id, book_id, chapter_id)
   )`).run();
-  await db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS quest_one_active_overnight_job
-    ON quest_overnight_jobs(family_id) WHERE status IN ('building','running','paused')`).run();
+  await db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS quest_one_active_overnight_kind
+    ON quest_overnight_jobs(family_id,kind) WHERE status IN ('building','running','paused')`).run();
+  await db.prepare(`DROP INDEX IF EXISTS quest_one_active_overnight_job`).run();
   await db.prepare(`CREATE INDEX IF NOT EXISTS quest_overnight_item_pick
     ON quest_overnight_items(job_id,status,position)`).run();
 }
@@ -84,10 +85,11 @@ export async function overnightCandidates(env: Env, familyId: string) {
   }
   return grouped;
 }
-async function snapshot(db: DB, familyId: string, userId: string) {
+async function snapshot(db: DB, familyId: string, userId: string, kind?: "generate" | "repair") {
   const job = await db.prepare(`SELECT * FROM quest_overnight_jobs
-    WHERE family_id=? AND owner_user_id=? ORDER BY created_at DESC LIMIT 1`)
-    .bind(familyId,userId).first<any>();
+    WHERE family_id=? AND owner_user_id=? AND (? IS NULL OR kind=?)
+    ORDER BY CASE WHEN status IN ('building','running','paused') THEN 0 ELSE 1 END, created_at DESC LIMIT 1`)
+    .bind(familyId,userId,kind??null,kind??null).first<any>();
   if (!job) return null;
   const counts = await db.prepare(`SELECT
     SUM(CASE WHEN status='pending' THEN 1 ELSE 0 END) pending,
@@ -119,10 +121,11 @@ export function registerQuestOvernight(app: App, g: Guards) {
   app.get("/api/quest-books/admin/overnight",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user");
     await ensureOvernightTables(c.env.DB);
-    const [books,job]=await Promise.all([overnightCandidates(c.env,user.family_id),
-      snapshot(c.env.DB,user.family_id,user.id)]);
+    const [books,generation,repair]=await Promise.all([overnightCandidates(c.env,user.family_id),
+      snapshot(c.env.DB,user.family_id,user.id,"generate"),snapshot(c.env.DB,user.family_id,user.id,"repair")]);
+    const jobs=[generation,repair].filter(Boolean);
     c.header("Cache-Control","no-store");
-    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job,interval_minutes:5 });
+    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job:jobs[0]??null,jobs,interval_minutes:5 });
   });
   app.post("/api/quest-books/admin/overnight/start",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user"),body:any=await c.req.json().catch(()=>({}));
@@ -147,7 +150,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
         (id,owner_user_id,family_id,status,kind,auto_approve,total,created_at,updated_at)
         VALUES (?,?,?,'building',?,?,?,?,?)`)
         .bind(id,user.id,user.family_id,kind,kind==="generate" && body.auto_approve===true?1:0,items.length,time,time).run();
-    } catch { return c.json({detail:"A queue is already active. Open it instead."},409); }
+    } catch { return c.json({detail:"A queue of this type is already active. Open it instead."},409); }
     try {
       for(let i=0;i<items.length;i+=40) {
         await c.env.DB.batch(items.slice(i,i+40).map((ch,offset)=>
@@ -165,7 +168,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
       return c.json({detail:"Queue preparation failed. No lessons were generated."},503);
     }
     c.header("Cache-Control","no-store");
-    return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id)});
+    return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id,kind)});
   });
   app.post("/api/quest-books/admin/overnight/:id/control",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user"),id=c.req.param("id"),body:any=await c.req.json().catch(()=>({}));
@@ -191,7 +194,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
         finished_at=NULL WHERE id=?`).bind(time,id).run();
     } else return c.json({detail:"This action isn't available for the queue's current status."},409);
     c.header("Cache-Control","no-store");
-    return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id)});
+    return c.json({ok:true,job:await snapshot(c.env.DB,user.family_id,user.id,job.kind)});
   });
 }
 
@@ -241,7 +244,7 @@ export async function processQuestOvernight(env: Env, now = new Date(),
     WHERE id=(SELECT i.id FROM quest_overnight_items i
       JOIN quest_overnight_jobs j ON j.id=i.job_id WHERE j.status='running'
       AND i.attempts<? AND (i.status='pending' OR (i.status='running' AND i.lease_until<?))
-      ORDER BY j.created_at,i.position LIMIT 1) RETURNING *`)
+      ORDER BY j.updated_at,j.created_at,i.position LIMIT 1) RETURNING *`)
     .bind(lease,time,RETRIES,time).first<Item>();
   if(item){
     const job=await env.DB.prepare(`SELECT * FROM quest_overnight_jobs WHERE id=?`)
@@ -250,6 +253,7 @@ export async function processQuestOvernight(env: Env, now = new Date(),
       await env.DB.prepare(`UPDATE quest_overnight_items SET status=?,last_error=?,lesson_id=COALESCE(?,lesson_id),
         lease_until=NULL,updated_at=? WHERE id=? AND status='running' AND lease_until=?`)
         .bind(status,error,lesson,time,item.id,lease).run();
+      await env.DB.prepare(`UPDATE quest_overnight_jobs SET updated_at=? WHERE id=?`).bind(time,item.job_id).run();
     };
     try{
       if(!job || !(await isPlatformOwner(env.DB,job.owner_user_id))) {
