@@ -250,6 +250,111 @@ export function registerQuestOvernight(app: App, g: Guards) {
   });
 }
 
+
+/** Refresh active watch queues from the saved book plans, independent of browser tabs.
+ * Scans are throttled to two minutes and queue inserts are idempotent. Stopped jobs
+ * cannot be refilled; completed/failed items are kept for audit and owner action. */
+export async function syncOvernightWork(env: Env, now = new Date()) {
+  if(!env.DB || !env.BUCKET)return {added:0};
+  await ensureOvernightTables(env.DB);
+  const time=now.toISOString(),cutoff=new Date(now.getTime()-SYNC_MS).toISOString();
+  const {results:watchers}=await env.DB.prepare(`SELECT * FROM quest_overnight_jobs
+    WHERE status IN ('running','paused') AND auto_follow=1 ORDER BY created_at`).all<Job>();
+  const families=new Map<string,Job[]>();
+  for(const job of watchers||[]) {
+    const items=families.get(job.family_id)||[];
+    items.push(job);families.set(job.family_id,items);
+  }
+  let added=0;
+  for(const [familyId,original] of families) {
+    const jobs=[...original];
+    const generate=jobs.find(j=>j.kind==="generate" && j.status==="running");
+    const repair=jobs.find(j=>j.kind==="repair");
+    if(generate && !repair && await isPlatformOwner(env.DB,generate.owner_user_id)) {
+      // Stopping repairs is a real opt-out for this generation run.
+      const lastRepair=await env.DB.prepare(`SELECT status,finished_at FROM quest_overnight_jobs
+        WHERE family_id=? AND kind='repair' ORDER BY created_at DESC LIMIT 1`)
+        .bind(familyId).first<any>();
+      if(!(lastRepair?.status==="stopped" && lastRepair.finished_at>=generate.created_at)) {
+        const id=crypto.randomUUID();
+        try {
+          await env.DB.prepare(`INSERT INTO quest_overnight_jobs
+            (id,owner_user_id,family_id,status,kind,auto_approve,auto_follow,total,created_at,updated_at)
+            VALUES (?,?,?,'running','repair',0,1,0,?,?)`)
+            .bind(id,generate.owner_user_id,familyId,time,time).run();
+          const started=await env.DB.prepare(`SELECT * FROM quest_overnight_jobs WHERE id=?`).bind(id).first<Job>();
+          if(started)jobs.push(started);
+        }catch {
+          // Another cron or owner request already started a repair queue.
+        }
+      }
+    }
+    const due=jobs.filter(j=>!j.last_scan_at || j.last_scan_at<=cutoff);
+    if(!due.length)continue;
+    if(!await isPlatformOwner(env.DB,due[0].owner_user_id))continue;
+    const books=await overnightCandidates(env,familyId);
+    for(const job of due) {
+      // Only the same active queue that opted in may accept new work.
+      const active=await env.DB.prepare(`SELECT status,auto_follow FROM quest_overnight_jobs
+        WHERE id=?`).bind(job.id).first<{status:string;auto_follow:number}>();
+      if(!active || !["running","paused"].includes(active.status) || active.auto_follow!==1)continue;
+      const all=books.flatMap(b=>job.kind==="repair"?b.repair_items:b.items);
+      const {results:stored}=await env.DB.prepare(`SELECT id,book_id,chapter_id,status,lesson_id,updated_at,revision
+        FROM quest_overnight_items WHERE job_id=?`).bind(job.id).all<any>();
+      const existing=new Map((stored||[]).map(i=>[`${i.book_id}::${i.chapter_id}`,i]));
+      const outstanding=(stored||[]).filter(i=>i.status==="pending"||i.status==="running").length;
+      let slots=Math.max(0,Math.min(MAX_SYNC_ITEMS,MAX_ITEMS-outstanding));
+      let next=(await env.DB.prepare(`SELECT COALESCE(MAX(position),-1)+1 AS n
+        FROM quest_overnight_items WHERE job_id=?`).bind(job.id).first<{n:number}>())?.n??0;
+      const toInsert:Array<any>=[];
+      for(const entry of all) {
+        const previous=existing.get(`${entry.book_id}::${entry.chapter_id}`);
+        if(previous) {
+          // A newly reported quality problem is a fresh piece of work even if
+          // that chapter passed an earlier repair. Never revive failed items.
+          if(job.kind==="repair" && slots>0 && ["done","skipped"].includes(previous.status)
+             && "lesson_updated_at" in entry && entry.lesson_updated_at>previous.updated_at) {
+            const changed=await env.DB.prepare(`UPDATE quest_overnight_items SET status='pending',attempts=0,
+              lesson_id=?,revision=?,book_title=?,chapter_title=?,last_error=NULL,lease_until=NULL,updated_at=?
+              WHERE id=? AND job_id=? AND status IN ('done','skipped') AND updated_at<? AND
+              EXISTS(SELECT 1 FROM quest_overnight_jobs WHERE id=? AND auto_follow=1 AND status IN ('running','paused'))`)
+              .bind(entry.lesson_id,entry.revision,entry.book_title,entry.chapter_title,time,
+                previous.id,job.id,entry.lesson_updated_at,job.id).run();
+            if(changed.meta?.changes){slots--;added++;}
+          } else if(previous.status==="pending" && previous.revision!==entry.revision) {
+            await env.DB.prepare(`UPDATE quest_overnight_items SET revision=?,chapter_title=?,book_title=?
+              WHERE id=? AND job_id=? AND status='pending'`)
+              .bind(entry.revision,entry.chapter_title,entry.book_title,previous.id,job.id).run();
+          }
+          continue;
+        }
+        if(slots<=0)break;
+        toInsert.push({...entry,id:crypto.randomUUID(),position:next++});
+        slots--;
+      }
+      for(let i=0;i<toInsert.length;i+=40) {
+        const rows=toInsert.slice(i,i+40);
+        const results=await env.DB.batch(rows.map(ch=>env.DB.prepare(`INSERT OR IGNORE INTO quest_overnight_items
+          (id,job_id,position,book_id,book_title,chapter_id,chapter_title,revision,lesson_id,status,updated_at)
+          SELECT ?,?,?,?,?,?,?,?,?,'pending',?
+          WHERE EXISTS(SELECT 1 FROM quest_overnight_jobs
+            WHERE id=? AND auto_follow=1 AND status IN ('running','paused'))`)
+          .bind(ch.id,job.id,ch.position,ch.book_id,ch.book_title,ch.chapter_id,ch.chapter_title,
+            ch.revision,"lesson_id" in ch?ch.lesson_id:null,time,job.id)));
+        const written=results.reduce((n,r)=>n+Number(r.meta?.changes||0),0);
+        if(written){
+          added+=written;
+          await env.DB.prepare(`UPDATE quest_overnight_jobs SET total=total+? WHERE id=?`)
+            .bind(written,job.id).run();
+        }
+      }
+      await env.DB.prepare(`UPDATE quest_overnight_jobs SET last_scan_at=?
+        WHERE id=? AND status IN ('running','paused') AND auto_follow=1`).bind(time,job.id).run();
+    }
+  }
+  return {added};
+}
+
 /** Accept only a newly generated, unflagged and content-complete lesson at its
  * exact database version. Never auto approve a working lesson edited by its owner.
  * This mirrors the per-book fast-approval safety rules, without publishing.
@@ -281,6 +386,10 @@ export async function processQuestOvernight(env: Env, now = new Date(),
   repair: typeof repairQuestCompanionLessonPass = repairQuestCompanionLessonPass) {
   if(!env.DB || !env.BUCKET)return {processed:0,unavailable:true};
   await ensureOvernightTables(env.DB);
+  // Book and repair discovery is independent of AI availability; a disabled AI
+  // allowance must not prevent newly uploaded books entering their saved queue.
+  try { await syncOvernightWork(env,now); }
+  catch(e) { console.error("Quest Book live queue discovery failed",e); }
   const time=now.toISOString(),lease=new Date(now.getTime()+LEASE_MS).toISOString();
   // A terminated start request must not lock this family out forever.
   await env.DB.prepare(`UPDATE quest_overnight_jobs SET status='cancelled',
