@@ -1,0 +1,392 @@
+import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import { api } from "../../../lib/api";
+import { adminApi, errorText } from "../../../lib/adminApi";
+import { Alert, Button, Card, fmtDate, GREEN, Stat } from "./ui";
+import { useAdmin } from "./useAdmin";
+
+// Owner HQ → Shop: the launch dashboard, every product (switch on/off, edit, photos, variants), orders to post,
+// interest lists and subscriptions. Nothing here opens the shop: that's the "Public shop" switch in Settings.
+const money = (c) => (c == null ? "—" : `$${(c / 100).toFixed(2)}`);
+const toCents = (v) => (v === "" || v == null ? null : Math.round(Number(v) * 100));
+const toDollars = (c) => (c == null ? "" : (c / 100).toFixed(2));
+const input = "mt-1 w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm font-normal";
+const readFile = (file) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+const VIEWS = [["dashboard", "Launch dashboard"], ["products", "Products"], ["orders", "Orders"], ["interest", "Interest lists"], ["subscriptions", "Subscriptions"]];
+
+export default function HqShop() {
+  const [view, setView] = useState("dashboard");
+  return (
+    <div className="space-y-5" data-testid="hq-shop">
+      <header className="paper-card p-5 space-y-1">
+        <h2 className="font-display text-2xl font-bold" style={{ color: GREEN }}>Shop</h2>
+        <p className="text-sm text-stone-700">Products only appear when you switch them on <em>and</em> give them a status other than Draft. They only take payment with a price and a status of In Stock, Made to Order or Pre-order. The whole shop stays hidden until you turn on <Link to="/parent/command-centre/settings" className="underline">Public shop in Settings</Link>.</p>
+      </header>
+      <div className="flex flex-wrap gap-2" role="tablist">
+        {VIEWS.map(([id, label]) => <button key={id} type="button" role="tab" aria-selected={view === id} onClick={() => setView(id)} className="rounded-full px-3 py-1 text-sm font-semibold border" style={view === id ? { backgroundColor: GREEN, color: "white", borderColor: GREEN } : { borderColor: "#D4C8A8", color: GREEN }} data-testid={`hq-shop-view-${id}`}>{label}</button>)}
+      </div>
+      {view === "dashboard" && <Dashboard />}
+      {view === "products" && <Products />}
+      {view === "orders" && <Orders />}
+      {view === "interest" && <Interest />}
+      {view === "subscriptions" && <Subscriptions />}
+    </div>
+  );
+}
+
+function Dashboard() {
+  const { data, error, loading } = useAdmin("/shop/dashboard");
+  if (loading && !data) return <p>Loading…</p>;
+  if (error) return <Alert>{error}</Alert>;
+  const s = data.by_status;
+  const toFulfil = (data.orders.to_fulfil?.count || 0) + (data.orders.packing?.count || 0);
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <Stat label="Public shop" value={data.shop_open ? "Open" : "Off"} note={data.can_take_payments ? "Square connected" : "Square not configured"} />
+        <Stat label="Products" value={data.total} note={`${data.visible} switched on · ${data.on_sale} on sale`} />
+        <Stat label="Drafts" value={s.draft} note={`${s.coming_soon} coming soon · ${s.register_interest} register interest`} />
+        <Stat label="Interest sign-ups" value={data.interest.signups} note={`${data.interest.people} people`} />
+        <Stat label="Pre-orders" value={s.pre_order} note={`${data.preorders.filter((p) => p.reached).length} reached target`} />
+        <Stat label="Orders to post" value={toFulfil} />
+        <Stat label="Ready to launch" value={data.ready_to_launch.length} note="Complete but switched off" />
+        <Stat label="Subscriptions" value={(data.subscriptions.active || 0) + (data.subscriptions.past_due || 0)} note={data.subscriptions.past_due ? `${data.subscriptions.past_due} need attention` : "active"} />
+      </div>
+      {data.low_stock.length > 0 && <Card title="Low stock"><ul className="text-sm space-y-1">{data.low_stock.map((x, i) => <li key={i}>{x.title}: <strong>{x.stock}</strong> left</li>)}</ul></Card>}
+      <Card title="Ready to launch">
+        {data.ready_to_launch.length ? <ul className="text-sm space-y-1">{data.ready_to_launch.map((p) => <li key={p.id}>{p.title} <span className="text-stone-500">· {data.status_labels[p.status]}</span></li>)}</ul>
+          : <p className="text-sm text-stone-600">Nothing yet. A product is ready once it has a price, photo, description, postage, supplier, unit cost and a status that isn't Draft.</p>}
+      </Card>
+      {data.nearly_ready.length > 0 && <Card title="Nearly ready"><ul className="text-sm space-y-1">{data.nearly_ready.map((p) => <li key={p.id}>{p.title} <span className="text-stone-500">· needs {p.missing.join(", ")}</span></li>)}</ul></Card>}
+      {data.preorders.length > 0 && <Card title="Pre-orders"><ul className="text-sm space-y-1">{data.preorders.map((p) => <li key={p.id}>{p.title}: {p.sold}{p.target ? ` / ${p.target}` : ""} {p.reached && <strong className="text-emerald-800">· target reached</strong>}{p.closes_at && <span className="text-stone-500"> · closes {fmtDate(p.closes_at)}</span>}</li>)}</ul></Card>}
+      {data.interest.top.length > 0 && <Card title="Most wanted"><ul className="text-sm space-y-1">{data.interest.top.map((p) => <li key={p.id}>{p.title}: <strong>{p.interest}</strong></li>)}</ul></Card>}
+      <Card title="By department">
+        <ul className="text-sm grid sm:grid-cols-2 gap-1">{data.by_department.map((d) => <li key={d.id}>{d.label}: {d.visible} of {d.total} on</li>)}</ul>
+      </Card>
+    </div>
+  );
+}
+
+function Products() {
+  const { data, error, loading, reload } = useAdmin("/shop/products");
+  const [q, setQ] = useState("");
+  const [dept, setDept] = useState("");
+  const [status, setStatus] = useState("");
+  const [onOff, setOnOff] = useState("");
+  const [picked, setPicked] = useState([]);
+  const [editing, setEditing] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const products = useMemo(() => data?.products || [], [data]);
+  const shown = useMemo(() => products.filter((p) => (!dept || p.department === dept) && (!status || p.status === status) && (!onOff || (onOff === "on") === p.visible)
+    && (!q || `${p.title} ${p.collection} ${p.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()))), [products, q, dept, status, onOff]);
+  if (loading && !data) return <p>Loading…</p>;
+  if (error) return <Alert>{error}</Alert>;
+  const bulk = async (change, ids = picked) => {
+    setBusy(true);
+    try { await adminApi.post("/shop/products/bulk", { ids, ...change }); await reload(); toast.success("Saved"); }
+    catch (e) { toast.error(errorText(e)); } finally { setBusy(false); }
+  };
+  const dLabel = Object.fromEntries(data.departments.map((d) => [d.id, d.label]));
+  return (
+    <div className="space-y-3">
+      <div className="paper-card p-3 flex flex-wrap gap-2 items-end">
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products" aria-label="Search products" className="rounded-xl border border-stone-300 px-3 py-2 text-sm flex-1 min-w-[160px]" />
+        <select value={dept} onChange={(e) => setDept(e.target.value)} aria-label="Department" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">All departments</option>{data.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}</select>
+        <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">All statuses</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
+        <select value={onOff} onChange={(e) => setOnOff(e.target.value)} aria-label="On or off" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">On and off</option><option value="on">Switched on</option><option value="off">Switched off</option></select>
+        <Button onClick={() => setEditing({})}>New product</Button>
+      </div>
+      {picked.length > 0 && (
+        <div className="paper-card p-3 flex flex-wrap gap-2 items-center text-sm">
+          <strong>{picked.length} selected</strong>
+          <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: true })}>Switch on</Button>
+          <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: false })}>Switch off</Button>
+          <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ status: e.target.value })} aria-label="Set status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">Set status…</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
+          <Button tone="plain" onClick={() => setPicked([])}>Clear</Button>
+        </div>
+      )}
+      <p className="text-xs text-stone-600">{shown.length} of {products.length} products · <button type="button" className="underline" onClick={() => setPicked(shown.map((p) => p.id))}>select all shown</button></p>
+      <div className="paper-card overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">Product</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th><th className="p-2">On</th></tr></thead>
+          <tbody>
+            {shown.map((p) => (
+              <tr key={p.id} className="border-b border-stone-100 align-top" data-testid={`hq-shop-row-${p.slug}`}>
+                <td className="p-2"><input type="checkbox" aria-label={`Select ${p.title}`} checked={picked.includes(p.id)} onChange={() => setPicked((x) => (x.includes(p.id) ? x.filter((y) => y !== p.id) : [...x, p.id]))} /></td>
+                <td className="p-2 min-w-[220px]">
+                  <button type="button" onClick={() => setEditing(p)} className="font-semibold text-left underline-offset-2 hover:underline" style={{ color: GREEN }}>{p.title}</button>
+                  <div className="text-xs text-stone-500">{dLabel[p.department]}{p.collection ? ` · ${p.collection}` : ""}{p.variants.length ? ` · ${p.variants.length} options` : ""}</div>
+                  {p.missing.length > 0 && <div className="text-xs text-amber-800">Needs {p.missing.join(", ")}</div>}
+                </td>
+                <td className="p-2 whitespace-nowrap">{data.status_labels[p.status]}</td>
+                <td className="p-2 whitespace-nowrap">{money(p.price_cents)}</td>
+                <td className="p-2 whitespace-nowrap">{p.profit ? `${money(p.profit.profit_cents)}${p.profit.cost_known ? "" : "*"}` : "—"}</td>
+                <td className="p-2">{p.interest || ""}</td>
+                <td className="p-2">
+                  <label className="inline-flex items-center gap-1 cursor-pointer">
+                    <input type="checkbox" checked={p.visible} disabled={busy} onChange={() => bulk({ visible: !p.visible }, [p.id])} data-testid={`hq-shop-toggle-${p.slug}`} />
+                    <span className="text-xs">{p.visible ? "On" : "Off"}</span>
+                  </label>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-xs text-stone-500">Profit = price − Square's 2.2% fee − your unit cost. * no unit cost entered yet.</p>
+      {editing && <Editor product={editing} meta={data} all={products} onClose={() => setEditing(null)} onSaved={reload} />}
+    </div>
+  );
+}
+
+function AdminImage({ id, n }) {
+  const [src, setSrc] = useState("");
+  useEffect(() => {
+    let url = "";
+    api.get(`/admin/shop/products/${id}/images/${n}`, { responseType: "blob", headers: { "X-SideQuest-Admin": "1" } })
+      .then((r) => { url = URL.createObjectURL(r.data); setSrc(url); }).catch(() => setSrc(""));
+    return () => url && URL.revokeObjectURL(url);
+  }, [id, n]);
+  return src ? <img src={src} alt="" className="h-20 w-20 rounded-lg object-cover border" /> : <div className="h-20 w-20 rounded-lg bg-stone-100 border" />;
+}
+
+const blank = { title: "", department: "books", collection: "", description: "", tags: [], status: "draft", fulfilment: "physical", personalisation: [], variants: [], bundle_items: [], addons: [], gift_months: [] };
+
+function Editor({ product, meta, all, onClose, onSaved }) {
+  const isNew = !product.id;
+  const [f, setF] = useState(() => {
+    const p = { ...blank, ...product };
+    return {
+      ...p, tags: (p.tags || []).join(", "),
+      price: toDollars(p.price_cents), wholesale: toDollars(p.wholesale_cents), postage: toDollars(p.postage_cents),
+      preorder_closes_at: p.preorder_closes_at ? p.preorder_closes_at.slice(0, 10) : "",
+      variants: (p.variants || []).map((v) => ({ ...v, price: toDollars(v.price_cents) })),
+    };
+  });
+  const [images, setImages] = useState(product.images || 0);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const set = (k, v) => setF((x) => ({ ...x, [k]: v }));
+  const setVar = (i, k, v) => setF((x) => ({ ...x, variants: x.variants.map((y, j) => (j === i ? { ...y, [k]: v } : y)) }));
+  const setField = (i, k, v) => setF((x) => ({ ...x, personalisation: x.personalisation.map((y, j) => (j === i ? { ...y, [k]: v } : y)) }));
+  const others = all.filter((p) => p.id !== product.id);
+
+  const save = async () => {
+    setBusy(true); setErr("");
+    const body = {
+      ...f, tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
+      price_cents: toCents(f.price), wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage),
+      preorder_closes_at: f.preorder_closes_at ? new Date(`${f.preorder_closes_at}T23:59:00`).toISOString() : null,
+      variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id })),
+    };
+    try {
+      if (isNew) await adminApi.post("/shop/products", body); else await adminApi.put(`/shop/products/${product.id}`, body);
+      toast.success("Saved"); await onSaved(); onClose();
+    } catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
+  };
+  const addImage = async (file) => {
+    if (!file) return;
+    setBusy(true); setErr("");
+    try { const r = await adminApi.post(`/shop/products/${product.id}/images`, { image: await readFile(file) }); setImages(r.images); await onSaved(); }
+    catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
+  };
+  const removeImage = async (n) => {
+    setBusy(true);
+    try { const r = await adminApi.del(`/shop/products/${product.id}/images/${n}`); setImages(r.images); await onSaved(); }
+    catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
+  };
+  const uploadFile = async (file) => {
+    if (!file) return;
+    setBusy(true); setErr("");
+    try { await adminApi.post(`/shop/products/${product.id}/file`, { file: await readFile(file), name: file.name }); toast.success("File uploaded"); await onSaved(); }
+    catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
+  };
+  const addBooks = async () => {
+    setBusy(true); setErr("");
+    try { const r = await adminApi.post(`/shop/products/${product.id}/book-variants`); toast.success(`Added ${r.added} Quest Books`); await onSaved(); onClose(); }
+    catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
+  };
+  const remove = async () => {
+    if (!window.confirm(`Delete "${product.title}"? This can't be undone.`)) return;
+    setBusy(true);
+    try { await adminApi.del(`/shop/products/${product.id}`); await onSaved(); onClose(); } catch (e) { setErr(errorText(e)); setBusy(false); }
+  };
+  const pick = (k, id) => set(k, f[k].includes(id) ? f[k].filter((x) => x !== id) : [...f[k], id]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center p-3 overflow-y-auto" role="dialog" aria-modal="true" aria-label={isNew ? "New product" : `Edit ${product.title}`}>
+      <div className="w-full max-w-3xl rounded-2xl bg-white p-5 space-y-4 my-6" data-testid="hq-shop-editor">
+        <div className="flex items-center gap-2"><h3 className="font-display text-xl font-bold mr-auto" style={{ color: GREEN }}>{isNew ? "New product" : product.title}</h3><Button tone="plain" onClick={onClose}>Close</Button></div>
+        <div className="grid sm:grid-cols-2 gap-3 text-sm">
+          <label className="font-semibold sm:col-span-2">Title<input value={f.title} onChange={(e) => set("title", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Department<select value={f.department} onChange={(e) => set("department", e.target.value)} className={input}>{meta.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}</select></label>
+          <label className="font-semibold">Collection<input value={f.collection} onChange={(e) => set("collection", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Status<select value={f.status} onChange={(e) => set("status", e.target.value)} className={input}>{meta.statuses.map((s) => <option key={s} value={s}>{meta.status_labels[s]}</option>)}</select></label>
+          <label className="font-semibold">Fulfilment<select value={f.fulfilment} onChange={(e) => set("fulfilment", e.target.value)} className={input}>{Object.entries(meta.fulfilment_labels).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
+          <label className="font-semibold sm:col-span-2">Description<textarea rows={4} value={f.description} onChange={(e) => set("description", e.target.value)} className={input} /></label>
+          <label className="font-semibold sm:col-span-2">Tags (comma separated; "seasonal" puts it in the Seasonal filter)<input value={f.tags} onChange={(e) => set("tags", e.target.value)} className={input} /></label>
+        </div>
+        <fieldset className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm border-t pt-3">
+          <legend className="font-display font-bold" style={{ color: GREEN }}>Money</legend>
+          <label className="font-semibold">Sale price ($){f.fulfilment === "postal_subscription" || f.fulfilment === "subscription_box" ? " / month incl. postage" : ""}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Unit cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Postage ($)<input inputMode="decimal" value={f.postage} onChange={(e) => set("postage", e.target.value)} className={input} /></label>
+          {f.price !== "" && <p className="col-span-full text-xs text-stone-600">Square fee {money(Math.round(toCents(f.price) * 0.022))} · profit per sale {money(toCents(f.price) - Math.round(toCents(f.price) * 0.022) - (toCents(f.wholesale) || 0))}{f.wholesale === "" ? " (add your unit cost)" : ""}</p>}
+        </fieldset>
+        <fieldset className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm border-t pt-3">
+          <legend className="font-display font-bold" style={{ color: GREEN }}>Stock, supplier and timing</legend>
+          <label className="font-semibold">Stock<input type="number" min={0} value={f.stock ?? ""} onChange={(e) => set("stock", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Low-stock alert at<input type="number" min={0} value={f.low_stock_at ?? ""} onChange={(e) => set("low_stock_at", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Max per order<input type="number" min={1} value={f.max_per_order ?? ""} onChange={(e) => set("max_per_order", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Supplier<input value={f.supplier || ""} onChange={(e) => set("supplier", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Lead time (days)<input type="number" min={0} value={f.lead_time_days ?? ""} onChange={(e) => set("lead_time_days", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Dispatch estimate<input value={f.dispatch_estimate || ""} placeholder="e.g. Ships in 2 weeks" onChange={(e) => set("dispatch_estimate", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Pre-order closes<input type="date" value={f.preorder_closes_at} onChange={(e) => set("preorder_closes_at", e.target.value)} className={input} /></label>
+          <label className="font-semibold">Pre-order target<input type="number" min={0} value={f.preorder_target ?? ""} onChange={(e) => set("preorder_target", e.target.value)} className={input} /></label>
+          <label className="font-semibold flex items-center gap-2 mt-6"><input type="checkbox" checked={!!f.safety_checked} onChange={(e) => set("safety_checked", e.target.checked)} />Safety checked</label>
+          <label className="font-semibold col-span-full">Supplier notes (private)<textarea rows={2} value={f.supplier_notes || ""} onChange={(e) => set("supplier_notes", e.target.value)} className={input} /></label>
+        </fieldset>
+        <fieldset className="text-sm border-t pt-3 space-y-2">
+          <legend className="font-display font-bold" style={{ color: GREEN }}>Options (sizes, colours, who it's for, which book)</legend>
+          {f.variants.map((v, i) => (
+            <div key={v.id || i} className="flex flex-wrap gap-2 items-center">
+              <input value={v.name} onChange={(e) => setVar(i, "name", e.target.value)} aria-label="Option name" className="rounded-xl border border-stone-300 px-2 py-1 flex-1 min-w-[140px]" />
+              <input value={v.price ?? ""} onChange={(e) => setVar(i, "price", e.target.value)} placeholder="Price $" aria-label="Option price" className="rounded-xl border border-stone-300 px-2 py-1 w-24" />
+              <input type="number" min={0} value={v.stock ?? ""} onChange={(e) => setVar(i, "stock", e.target.value)} placeholder="Stock" aria-label="Option stock" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />
+              <label className="flex items-center gap-1"><input type="checkbox" checked={v.active !== false} onChange={(e) => setVar(i, "active", e.target.checked)} />On</label>
+              <button type="button" className="text-rose-700" aria-label="Remove option" onClick={() => set("variants", f.variants.filter((_, j) => j !== i))}>✕</button>
+            </div>
+          ))}
+          <div className="flex flex-wrap gap-2">
+            <Button tone="plain" onClick={() => set("variants", [...f.variants, { name: "", price: "", stock: "", active: true }])}>Add option</Button>
+            {!isNew && <Button tone="plain" disabled={busy} onClick={addBooks}>Add every Quest Book as an option</Button>}
+          </div>
+          <p className="text-xs text-stone-500">Blank option price uses the sale price. "Add every Quest Book" is for printed books: it saves and closes, then shows the printed option on each book in the shop.</p>
+        </fieldset>
+        <fieldset className="text-sm border-t pt-3 space-y-2">
+          <legend className="font-display font-bold" style={{ color: GREEN }}>Personalisation fields</legend>
+          {f.personalisation.map((x, i) => (
+            <div key={i} className="flex flex-wrap gap-2 items-center">
+              <input value={x.label} onChange={(e) => setField(i, "label", e.target.value)} placeholder="e.g. Child's name" aria-label="Field label" className="rounded-xl border border-stone-300 px-2 py-1 flex-1" />
+              <input type="number" min={1} max={200} value={x.max} onChange={(e) => setField(i, "max", Number(e.target.value))} aria-label="Max characters" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />
+              <label className="flex items-center gap-1"><input type="checkbox" checked={!!x.required} onChange={(e) => setField(i, "required", e.target.checked)} />Required</label>
+              <button type="button" className="text-rose-700" aria-label="Remove field" onClick={() => set("personalisation", f.personalisation.filter((_, j) => j !== i))}>✕</button>
+            </div>
+          ))}
+          <Button tone="plain" onClick={() => set("personalisation", [...f.personalisation, { label: "", max: 30, required: true }])}>Add field</Button>
+        </fieldset>
+        <fieldset className="text-sm border-t pt-3 space-y-2">
+          <legend className="font-display font-bold" style={{ color: GREEN }}>Gift subscriptions, bundles and add-ons</legend>
+          <div className="flex flex-wrap gap-3">Prepaid gift lengths: {[1, 3, 6, 12].map((m) => <label key={m} className="flex items-center gap-1"><input type="checkbox" checked={f.gift_months.includes(m)} onChange={() => set("gift_months", f.gift_months.includes(m) ? f.gift_months.filter((x) => x !== m) : [...f.gift_months, m])} />{m} month{m > 1 ? "s" : ""}</label>)}</div>
+          <PickList label="Bundle contains" ids={f.bundle_items} others={others} onPick={(id) => pick("bundle_items", id)} />
+          <PickList label="Suggested add-ons" ids={f.addons} others={others} onPick={(id) => pick("addons", id)} />
+        </fieldset>
+        {!isNew && (
+          <fieldset className="text-sm border-t pt-3 space-y-2">
+            <legend className="font-display font-bold" style={{ color: GREEN }}>Photos and files</legend>
+            <div className="flex flex-wrap gap-2">
+              {Array.from({ length: images }, (_, i) => <div key={i} className="relative"><AdminImage id={product.id} n={i + 1} /><button type="button" onClick={() => removeImage(i + 1)} className="absolute -top-2 -right-2 rounded-full bg-white border px-1.5 text-xs text-rose-700" aria-label={`Remove photo ${i + 1}`}>✕</button></div>)}
+            </div>
+            {images < 6 && <label className="block font-semibold">Add a photo (JPEG, PNG or WebP, up to 3 MB)<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(e) => addImage(e.target.files?.[0])} className="mt-1 block" /></label>}
+            {f.fulfilment === "digital" && <label className="block font-semibold">Download file (PDF or ZIP, up to 25 MB){product.has_file ? " · uploaded ✓" : ""}<input type="file" accept="application/pdf,application/zip" disabled={busy} onChange={(e) => uploadFile(e.target.files?.[0])} className="mt-1 block" /></label>}
+          </fieldset>
+        )}
+        {isNew && <p className="text-xs text-stone-500">Save first, then add photos.</p>}
+        {err && <Alert>{err}</Alert>}
+        <div className="flex flex-wrap gap-2 justify-end border-t pt-3">
+          {!isNew && <Button tone="danger" disabled={busy} onClick={remove}>Delete</Button>}
+          <Button disabled={busy} onClick={save} data-testid="hq-shop-save">{busy ? "Saving…" : "Save"}</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PickList({ label, ids, others, onPick }) {
+  const [q, setQ] = useState("");
+  const chosen = others.filter((p) => ids.includes(p.id));
+  const matches = q.length > 1 ? others.filter((p) => !ids.includes(p.id) && p.title.toLowerCase().includes(q.toLowerCase())).slice(0, 8) : [];
+  return (
+    <div>
+      <p className="font-semibold">{label}</p>
+      <div className="flex flex-wrap gap-1 my-1">{chosen.map((p) => <button key={p.id} type="button" onClick={() => onPick(p.id)} className="rounded-full bg-stone-100 px-2 py-0.5 text-xs">{p.title} ✕</button>)}</div>
+      <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products to add" aria-label={`${label}: search`} className="rounded-xl border border-stone-300 px-2 py-1 w-full" />
+      {matches.map((p) => <button key={p.id} type="button" onClick={() => { onPick(p.id); setQ(""); }} className="block text-left text-xs underline py-0.5">{p.title}</button>)}
+    </div>
+  );
+}
+
+const ORDER_LABELS = { to_fulfil: "To post", packing: "Packing", shipped: "Posted", complete: "Complete", cancelled: "Cancelled" };
+function Orders() {
+  const [status, setStatus] = useState("to_fulfil");
+  const { data, error, loading, reload } = useAdmin("/shop/orders", status ? { status } : undefined);
+  const [tracking, setTracking] = useState({});
+  const update = async (o, next) => {
+    try { const r = await adminApi.put(`/shop/orders/${o.id}`, { status: next, tracking: tracking[o.id] ?? undefined }); toast.success(r.emailed ? "Saved and customer emailed" : "Saved"); await reload(); }
+    catch (e) { toast.error(errorText(e)); }
+  };
+  return (
+    <div className="space-y-3">
+      <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Order status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">All paid orders</option>{Object.entries(ORDER_LABELS).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>
+      {loading && !data ? <p>Loading…</p> : error ? <Alert>{error}</Alert> : !data.orders.length ? <p className="text-sm text-stone-600">No orders here.</p> : data.orders.map((o) => (
+        <Card key={o.id}>
+          <div className="flex flex-wrap gap-2 text-sm"><strong className="mr-auto">{o.email}</strong><span>{fmtDate(o.paid_at)}</span><span className="font-semibold">{money(o.total_cents)}</span><span className="rounded-full bg-stone-100 px-2">{ORDER_LABELS[o.status] || o.status}</span></div>
+          <ul className="text-sm mt-2 list-disc pl-5">{o.lines.map((l, i) => <li key={i}>{l.qty > 1 ? `${l.qty} × ` : ""}{l.title}{l.book_id ? " (PDF)" : ""}{Object.entries(l.personalisation || {}).length ? <span className="text-stone-600"> · {Object.entries(l.personalisation).map(([k, v]) => `${k}: ${v}`).join("; ")}</span> : null}</li>)}</ul>
+          {o.shipping && <p className="text-sm mt-2 whitespace-pre-line text-stone-700">{[o.shipping.name, [o.shipping.first_name, o.shipping.last_name].filter(Boolean).join(" "), o.shipping.address_line_1, o.shipping.address_line_2, [o.shipping.locality, o.shipping.administrative_district_level_1, o.shipping.postal_code].filter(Boolean).join(" ")].filter(Boolean).join("\n")}</p>}
+          {o.lines.some((l) => l.physical) && o.status !== "cancelled" && (
+            <div className="flex flex-wrap gap-2 mt-3 items-center">
+              <input value={tracking[o.id] ?? o.tracking ?? ""} onChange={(e) => setTracking({ ...tracking, [o.id]: e.target.value })} placeholder="Tracking number" aria-label="Tracking number" className="rounded-xl border border-stone-300 px-2 py-1 text-sm" />
+              {o.status === "to_fulfil" && <Button tone="plain" onClick={() => update(o, "packing")}>Mark packing</Button>}
+              {o.status !== "shipped" && o.status !== "complete" && <Button onClick={() => update(o, "shipped")}>Mark posted &amp; email customer</Button>}
+              {o.status === "shipped" && <Button tone="plain" onClick={() => update(o, "complete")}>Mark complete</Button>}
+            </div>
+          )}
+        </Card>
+      ))}
+      <p className="text-xs text-stone-500">Refunds are done in your Square dashboard; then mark the order cancelled here.</p>
+    </div>
+  );
+}
+
+function Interest() {
+  const { data, error, loading } = useAdmin("/shop/interest");
+  if (loading && !data) return <p>Loading…</p>;
+  if (error) return <Alert>{error}</Alert>;
+  const csv = () => {
+    const rows = [["product", "email", "date"], ...data.interest.map((r) => [r.title, r.email, r.created_at])];
+    const blob = new Blob([rows.map((r) => r.map((x) => `"${String(x).replace(/"/g, '""')}"`).join(",")).join("\n")], { type: "text/csv" });
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "shop-interest.csv"; a.click();
+  };
+  return (
+    <Card title={`Interest sign-ups (${data.interest.length})`}>
+      {data.interest.length ? <><Button tone="plain" onClick={csv}>Download CSV</Button>
+        <ul className="text-sm mt-3 divide-y">{data.interest.map((r, i) => <li key={i} className="py-1 flex flex-wrap gap-2"><span className="mr-auto">{r.title}</span><span>{r.email}</span><span className="text-stone-500">{fmtDate(r.created_at)}</span></li>)}</ul></>
+        : <p className="text-sm text-stone-600">No sign-ups yet. Set a product to Coming Soon or Register Interest and switch it on to start collecting emails.</p>}
+    </Card>
+  );
+}
+
+function Subscriptions() {
+  const { data, error, loading, reload } = useAdmin("/shop/subscriptions");
+  const cancel = async (s) => {
+    if (!window.confirm(`Cancel ${s.title} for ${s.recipient?.name}?`)) return;
+    try { await adminApi.post(`/shop/subscriptions/${s.id}/cancel`); toast.success("Cancelled"); await reload(); } catch (e) { toast.error(errorText(e)); }
+  };
+  if (loading && !data) return <p>Loading…</p>;
+  if (error) return <Alert>{error}</Alert>;
+  return (
+    <div className="space-y-3">
+      {!data.subscriptions.length && <p className="text-sm text-stone-600">No subscriptions yet.</p>}
+      {data.subscriptions.map((s) => (
+        <Card key={s.id}>
+          <div className="flex flex-wrap gap-2 text-sm"><strong className="mr-auto">{s.title}</strong><span>{money(s.price_cents)}/month</span><span className="rounded-full bg-stone-100 px-2">{s.status}</span></div>
+          <p className="text-sm mt-1">For <strong>{s.recipient?.name}</strong> · {[s.recipient?.address_line_1, s.recipient?.address_line_2, s.recipient?.locality, s.recipient?.state, s.recipient?.postcode].filter(Boolean).join(", ")}</p>
+          <p className="text-xs text-stone-600">Buyer {s.email} · started {fmtDate(s.created_at)}{s.charged_through ? ` · paid to ${s.charged_through}` : ""}</p>
+          {Object.keys(s.personalisation || {}).length > 0 && <p className="text-xs text-stone-600">{Object.entries(s.personalisation).map(([k, v]) => `${k}: ${v}`).join("; ")}</p>}
+          {["active", "past_due"].includes(s.status) && <Button tone="plain" className="mt-2" onClick={() => cancel(s)}>Cancel</Button>}
+        </Card>
+      ))}
+    </div>
+  );
+}

@@ -15,6 +15,7 @@
 import { recordPaidCart } from "./questBookPurchases";
 import { recordPaidShopOrder } from "./shopOrders";
 import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo } from "./squareMembership";
+import { attachShopSubscription, linkShopSubscriptionPayment, markShopSubscriptionPastDue, syncShopSubscription } from "./shopSubscriptions";
 import type { App, Env } from "./types";
 import { LIVE_PRICE_DETAILS, appOrigin } from "./billing";
 import { membershipActivatedEmail, sendEmail } from "./email";
@@ -76,7 +77,7 @@ export async function verifySquareSignature(rawBody: string, header: string | un
 
 // ---------------------------------------------------------------- checkout
 
-export type SquareLine = { name: string; amount_cents: number; note?: string };
+export type SquareLine = { name: string; amount_cents: number; note?: string; quantity?: number };
 
 /** One hosted Square checkout for a saved, server-priced cart. Returns the URL to send the parent to. */
 export async function createCartPaymentLink(cfg: Extract<SquareConfig, { ok: true }>, opts: {
@@ -104,7 +105,7 @@ export async function createCartPaymentLink(cfg: Extract<SquareConfig, { ok: tru
 
 /** Hosted Square checkout for a public shop order (no account). */
 export async function createShopPaymentLink(cfg: Extract<SquareConfig, { ok: true }>, opts: {
-  orderId: string; lines: SquareLine[]; redirectUrl: string; email: string; fetchImpl?: Fetch;
+  orderId: string; lines: SquareLine[]; redirectUrl: string; email: string; askShipping?: boolean; fetchImpl?: Fetch;
 }): Promise<string> {
   const r = await squareCall(cfg, "POST", "online-checkout/payment-links", {
     idempotency_key: `shop-${opts.orderId}`,
@@ -112,9 +113,9 @@ export async function createShopPaymentLink(cfg: Extract<SquareConfig, { ok: tru
       location_id: cfg.locationId,
       reference_id: opts.orderId,
       metadata: { kind: "shop_order", order_id: opts.orderId },
-      line_items: opts.lines.map((l) => ({ name: l.name.slice(0, 500), quantity: "1", base_price_money: { amount: Math.round(l.amount_cents), currency: "AUD" } })),
+      line_items: opts.lines.map((l) => ({ name: l.name.slice(0, 500), quantity: String(Math.max(1, l.quantity || 1)), base_price_money: { amount: Math.round(l.amount_cents), currency: "AUD" }, ...(l.note ? { note: l.note.slice(0, 2000) } : {}) })),
     },
-    checkout_options: { redirect_url: opts.redirectUrl, ask_for_shipping_address: false, allow_tipping: false },
+    checkout_options: { redirect_url: opts.redirectUrl, ask_for_shipping_address: !!opts.askShipping, allow_tipping: false },
     pre_populated_data: { buyer_email: opts.email },
   }, opts.fetchImpl);
   const url = r?.payment_link?.url;
@@ -146,15 +147,20 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   const obj = event?.data?.object || {};
   if (type === "subscription.created" || type === "subscription.updated") {
     const id = String(obj.subscription?.id || event?.data?.id || "");
-    return id ? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated) : "subscription event without id";
+    if (!id) return "subscription event without id";
+    // Shop subscriptions (Dragon Post letters, Monthly Quest boxes) first; everything else is a membership.
+    await attachShopSubscription(db, cfg, obj.subscription);
+    return (await syncShopSubscription(db, cfg, id, fetchImpl)) ?? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated);
   }
   if (type === "invoice.payment_made") {
     const id = String(obj.invoice?.subscription_id || "");
-    return id ? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated) : "invoice without subscription";
+    if (!id) return "invoice without subscription";
+    return (await syncShopSubscription(db, cfg, id, fetchImpl)) ?? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated);
   }
   if (type === "invoice.scheduled_charge_failed") {
     const id = String(obj.invoice?.subscription_id || "");
-    return id ? markPastDue(db, id, now) : "invoice without subscription";
+    if (!id) return "invoice without subscription";
+    return (await markShopSubscriptionPastDue(db, id)) ?? markPastDue(db, id, now);
   }
   if (type !== "payment.created" && type !== "payment.updated") return `ignored ${type}`;
   const payment = event?.data?.object?.payment;
@@ -170,10 +176,14 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   if (meta.kind === "shop_order") {
     if (String(fresh.amount_money?.currency || "AUD") !== "AUD") return "unexpected currency";
     if (!shop) return "shop order without context";
-    return recordPaidShopOrder(db, shop.env, String(order.reference_id || meta.order_id || ""), Number(fresh.amount_money?.amount), `sq_${fresh.id}`, shop.origin, now);
+    const ship = fresh.shipping_address || order.fulfillments?.[0]?.shipment_details?.recipient?.address || null;
+    const recipient = order.fulfillments?.[0]?.shipment_details?.recipient?.display_name || null;
+    return recordPaidShopOrder(db, shop.env, String(order.reference_id || meta.order_id || ""), Number(fresh.amount_money?.amount), `sq_${fresh.id}`, shop.origin, now, ship ? { name: recipient, ...ship } : undefined);
   }
   if (meta.kind !== "quest_cart") {
-    // A membership checkout's first payment (orders we remember by id in square_checkouts).
+    // A shop subscription's first payment, else a membership checkout's (orders we remember by id).
+    const shopSub = await linkShopSubscriptionPayment(db, cfg, fresh, fetchImpl);
+    if (shopSub) return shopSub;
     return (await linkMembershipPayment(db, cfg, fresh, fetchImpl, now, onActivated)) ?? `ignored order ${order.id}`;
   }
   const cartId = String(order.reference_id || meta.cart_id || "");

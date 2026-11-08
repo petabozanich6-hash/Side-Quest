@@ -28,22 +28,31 @@ export default function ShopOrder() {
     <div className="min-h-screen bg-[#F5EFE0] px-5 py-12">
       <div className="mx-auto max-w-xl paper-card p-6 space-y-4" data-testid="shop-order">
         <Link to="/" className="text-sm font-semibold underline">← Side-Quest</Link>
-        <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>Your books</h1>
+        <h1 className="font-display text-3xl font-bold" style={{ color: "#1F3B2D" }}>Your order</h1>
         {error && <p className="text-rose-700" role="alert">{error} <Link to="/shop/downloads" className="underline">Get my downloads</Link></p>}
         {!error && !order && <p>Loading your order…</p>}
         {order && !order.paid && <p className="text-stone-700">Thanks! We're confirming your payment with Square. This usually takes a few seconds…</p>}
         {order?.paid && (
           <>
-            <p className="text-stone-700">Payment received. Download your books below. We've also emailed you a receipt. Keep this page's link if you'd like to download again later.</p>
+            <p className="text-stone-700">Payment received. We've emailed you a receipt.{order.items.some((it) => it.download) ? " Download below, and keep this page's link if you'd like to download again later." : ""}</p>
             <ul className="space-y-2">
-              {order.items.map((it) => (
-                <li key={it.book_id} className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3">
-                  <span className="mr-auto font-semibold">{it.title}</span>
-                  <a href={`${API}/shop/orders/${encodeURIComponent(id)}/download/${encodeURIComponent(it.book_id)}?t=${encodeURIComponent(t)}`} className="rounded-lg px-3 py-1.5 text-sm font-bold text-white" style={{ backgroundColor: "#1F3B2D" }} data-testid={`shop-download-${it.book_id}`}>Download PDF</a>
-                </li>
-              ))}
+              {order.items.map((it, i) => {
+                const href = it.book_id
+                  ? `${API}/shop/orders/${encodeURIComponent(id)}/download/${encodeURIComponent(it.book_id)}?t=${encodeURIComponent(t)}`
+                  : `${API}/shop/orders/${encodeURIComponent(id)}/file/${encodeURIComponent(it.product_id)}?t=${encodeURIComponent(t)}`;
+                return (
+                  <li key={i} className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3">
+                    <span className="mr-auto font-semibold">{it.qty > 1 ? `${it.qty} × ` : ""}{it.title}</span>
+                    {it.download
+                      ? <a href={href} className="rounded-lg px-3 py-1.5 text-sm font-bold text-white" style={{ backgroundColor: "#1F3B2D" }} data-testid={`shop-download-${it.book_id || it.product_id}`}>Download</a>
+                      : <span className="text-sm text-stone-600">{order.status === "shipped" || order.status === "complete" ? "Posted" : "Being prepared"}</span>}
+                  </li>
+                );
+              })}
             </ul>
-            <p className="text-xs text-stone-500">For your family's own use. Please don't share the files.</p>
+            {order.tracking && <p className="text-sm text-stone-700">Tracking: <span className="font-semibold">{order.tracking}</span></p>}
+            {order.items.some((it) => it.physical) && <p className="text-sm text-stone-700">We'll email you when your parcel is on its way.</p>}
+            {order.items.some((it) => it.download) && <p className="text-xs text-stone-500">For your family's own use. Please don't share the files.</p>}
           </>
         )}
       </div>

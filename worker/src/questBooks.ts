@@ -15,7 +15,8 @@ import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
 import { squareConfig, createCartPaymentLink, createShopPaymentLink } from "./square";
 import { loadPlatformSettings } from "./platformSettings";
-import { createShopOrder, shopOrderFor, resendShopLinks, ensureShopOrders, MAX_SHOP_DOWNLOADS } from "./shopOrders";
+import { createShopOrder, shopOrderFor, resendShopLinks, ensureShopOrders, MAX_SHOP_DOWNLOADS, type ShopLine } from "./shopOrders";
+import { priceItems, publicCatalog, squareLinesFor } from "./shopRoutes";
 
 /** Books can be sold when Square (preferred) or Stripe is configured. */
 const canSell = (env: any) => squareConfig(env).ok || billingConfig(env).ok;
@@ -379,7 +380,7 @@ async function deleteReadPages(bucket: R2Bucket, id: string) {
   await bucket.delete(readerManifestKey(id));
 }
 
-async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
+export async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
   if (!bucket) return [];
   const files = new Map<string, Partial<Record<FileKind | "chapters" | "lessons", number>>>();
   const metaIds: string[] = [];
@@ -1414,9 +1415,13 @@ export function registerShop(app: App) {
 
   app.get("/api/shop", async (c) => {
     c.header("Cache-Control", "no-store");
-    if (!(await shopOpen(c.env.DB))) return c.json({ open: false, books: [] });
+    if (!(await shopOpen(c.env.DB))) return c.json({ open: false, books: [], products: [], departments: [] });
     const books = (await listBooks(c.env.BUCKET)).filter((b) => b.has_book && b.price_cents !== null);
-    return c.json({ open: true, can_buy: squareConfig(c.env).ok, books: books.map(shopBook) });
+    const catalog = await publicCatalog(c.env.DB).catch((e) => { console.error("shop catalogue failed", e?.message); return { departments: [], collections: [], products: [] as any[] }; });
+    // Printed copies: which switched-on print products offer each book.
+    const printed = (id: string) => catalog.products.filter((p: any) => p.prints_books).flatMap((p: any) => p.variants.filter((v: any) => v.book_id === id && v.price_cents != null)
+      .map((v: any) => ({ product_id: p.id, variant_id: v.id, title: p.title, price_cents: v.price_cents, can_buy: p.can_buy && v.available })));
+    return c.json({ open: true, can_buy: squareConfig(c.env).ok, books: books.map((b) => ({ ...shopBook(b), printed: printed(b.id) })), ...catalog });
   });
 
   app.get("/api/shop/books/:id/cover", async (c) => {
@@ -1454,18 +1459,22 @@ export function registerShop(app: App) {
     if (!EMAIL_RE.test(email)) return c.json({ detail: "Enter the email address your books should go to." }, 400);
     const ids: string[] = [...new Set<string>((Array.isArray(body?.book_ids) ? body.book_ids : []).map((x: unknown) => String(x)))].filter((x) => VALID_ID.test(x)).slice(0, MAX_SHOP_ITEMS);
     const books = new Map((await listBooks(c.env.BUCKET)).map((b) => [b.id, b]));
-    const lines = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null)
+    const bookLines: ShopLine[] = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null)
       .map((b) => ({ book_id: b.id, title: b.title, amount_cents: b.price_cents! }));
+    // Catalogue products (physical, made to order, printed books, digital): priced from the database.
+    const priced = await priceItems(c.env.DB, Array.isArray(body?.items) ? body.items : []);
+    if (!priced.ok) return c.json({ detail: priced.detail }, 409);
+    const lines = [...bookLines, ...priced.lines];
     if (!lines.length) return c.json({ detail: "Your cart is empty." }, 400);
-    const total = lines.reduce((n, l) => n + l.amount_cents, 0);
+    const total = lines.reduce((n, l) => n + l.amount_cents, 0) + priced.postage;
     if (body?.expected_total_cents != null && Number(body.expected_total_cents) !== total) return c.json({ code: "CART_CHANGED", detail: "Prices changed. Please check the new total.", total_cents: total }, 409);
-    const order = await createShopOrder(c.env.DB, email, lines);
+    const order = await createShopOrder(c.env.DB, email, lines, new Date(), priced.postage);
     const origin = appOrigin(c.env, c.req.url);
     try {
       const url = await createShopPaymentLink(sq, {
-        orderId: order.id, email,
+        orderId: order.id, email, askShipping: priced.physical,
         redirectUrl: `${origin}/shop/order/${order.id}?t=${order.token}`,
-        lines: lines.map((l) => ({ name: `Quest Book: ${l.title}`, amount_cents: l.amount_cents })),
+        lines: squareLinesFor(lines, priced.postage),
       });
       return c.json({ url, order_id: order.id });
     } catch (e: any) {
@@ -1479,7 +1488,11 @@ export function registerShop(app: App) {
     c.header("Cache-Control", "no-store");
     const o = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
     if (!o) return c.json({ detail: "This order link isn't valid. Use \"Get my downloads\" to receive a fresh one." }, 404);
-    return c.json({ paid: !!o.paid_at, items: o.lines.map((l: any) => ({ book_id: l.book_id, title: l.title })), total_cents: o.total_cents, downloads_left: Math.max(0, MAX_SHOP_DOWNLOADS - Number(o.downloads || 0)) });
+    return c.json({
+      paid: !!o.paid_at, status: o.status, tracking: o.tracking || null, postage_cents: o.postage_cents || 0,
+      items: o.lines.map((l: any) => ({ book_id: l.book_id || null, product_id: l.product_id || null, title: l.title, qty: l.qty || 1, physical: !!l.physical, download: !!l.book_id || (!!l.product_id && !l.physical) })),
+      total_cents: o.total_cents, downloads_left: Math.max(0, MAX_SHOP_DOWNLOADS - Number(o.downloads || 0)),
+    });
   });
 
   app.get("/api/shop/orders/:id/download/:bookId", async (c) => {

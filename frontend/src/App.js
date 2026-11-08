@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
 import ShopOrder from "./pages/ShopOrder";
+import ShopSubscription from "./pages/ShopSubscription";
 import ShopDownloads from "./pages/ShopDownloads";
 import ShopSection from "./components/shop/ShopSection";
 import Login from "./pages/Login";
@@ -63,6 +64,7 @@ import SiteSearch from "./pages/shared/SiteSearch";
 import HqFeedback from "./pages/parent/hq/HqFeedback";
 import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
 import HqHoard from "./pages/parent/hq/HqHoard";
+import HqShop from "./pages/parent/hq/HqShop";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -95,6 +97,7 @@ function Router() {
       <Route path="/" element={<Landing />} />
       <Route path="/shop" element={<div className="min-h-screen bg-[#F5EFE0]"><ShopSection standalone /></div>} />
       <Route path="/shop/order/:id" element={<ShopOrder />} />
+      <Route path="/shop/subscription/:id" element={<ShopSubscription />} />
       <Route path="/shop/downloads" element={<ShopDownloads />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -129,6 +132,7 @@ function Router() {
           <Route path="feedback" element={<HqFeedback />} />
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="dragon-hoard" element={<HqHoard />} />
+          <Route path="shop" element={<HqShop />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />

@@ -34,6 +34,7 @@ import { billingConfig } from "./billing";
 import { createHoardOffer, disableHoardOffer, giftPreviewDays, listHoardOffers } from "./dragonHoard";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
+import { registerShopAdmin } from "./shopRoutes";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -586,5 +587,8 @@ export function createAdminRoutes() {
   });
 
   admin.all("*", (c) => notFound(c));
+  // ---------------------------------------------------------------- shop catalogue
+  registerShopAdmin(admin, { requirePermission, actor, readJson });
+
   return admin;
 }
