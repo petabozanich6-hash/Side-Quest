@@ -381,3 +381,37 @@ export const SHOP_SEED: SeedProduct[] = [
 {"department": "dragon-post", "collection": "One-off personalised mail", "title": "Celebration Letter from Ignis for a Grown-Up", "description": "A personalised letter from Ignis celebrating a special grown-up.", "fulfilment": "personalised", "tags": ["ignis", "grown-ups"], "variants": ["Mother's Day", "Father's Day", "Grandparents Day", "Carer thank-you", "Just because"]},
 {"department": "digital", "collection": "Digital products", "title": "Printable Celebration Cards for Grown-Ups", "description": "Printable cards children can colour and write for the grown-ups in their life.", "fulfilment": "digital", "tags": ["grown-ups"], "variants": ["Mother's Day", "Father's Day", "Grandparents Day", "Carer thank-you"]}
 ];
+
+/**
+ * Products added after the first seed. Each batch is added once (as hidden drafts) the first time the shop loads
+ * after it ships, so new ideas reach the live catalogue without touching anything the owner has already edited.
+ */
+export const SHOP_ADDITIONS: { key: string; products: SeedProduct[] }[] = [
+  {
+    key: "growing-up-2026-11",
+    products: [
+      { department: "gifts", collection: "Growing Up", title: "Growing Up Care Box (Girls)", description: "A gentle, private care box for when she gets her first period: period essentials, comfort treats and a simple, kind guide to what's happening, plus a note from you. Packed discreetly.", fulfilment: "physical", tags: ["growing-up", "puberty", "care-box"], variants: ["Ages 9–12", "Ages 13+"], personalisation: [{ key: "note", label: "A note to include (optional)", max: 200, required: false }] },
+      { department: "gifts", collection: "Growing Up", title: "Growing Up Care Box (Boys)", description: "A thoughtful care box for when puberty starts: personal-care essentials, a confidence boost and a straight-talking, kind guide to the changes ahead, plus a note from you. Packed discreetly.", fulfilment: "physical", tags: ["growing-up", "puberty", "care-box"], variants: ["Ages 10–12", "Ages 13+"], personalisation: [{ key: "note", label: "A note to include (optional)", max: 200, required: false }] },
+      { department: "digital", collection: "Growing Up", title: "Talking About Growing Up: Parent Guide (printable)", description: "A printable guide for parents and carers to help start honest, age-appropriate conversations about puberty and growing up.", fulfilment: "digital", tags: ["growing-up", "puberty", "parents"] },
+    ],
+  },
+  {
+    key: "sensory-2026-11",
+    products: [
+      { department: "arts", collection: "Sensory & Calm", title: "Fidget Tool Kit", description: "A mix of quiet fidgets for busy hands during lessons and reading time.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Sensory Putty & Therapy Dough", description: "Squeezable putty and dough for calming hands and building finger strength.", fulfilment: "physical", tags: ["sensory"], variants: ["Soft", "Medium", "Firm"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Calm-Down Sensory Bottles", description: "Glitter and bead bottles to watch while breathing slowly and settling.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Sensory Bin Kit", description: "A themed tub with fillers, scoops and small figures for hands-on play and learning.", fulfilment: "physical", tags: ["sensory"], variants: ["Ocean", "Dinosaur", "Farm", "Seasonal"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Textured Sensory Cards", description: "Touch-and-feel cards with different textures for exploring, sorting and matching.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Chewable Pencil Toppers & Necklaces", description: "Safe chewables for children who need something to chew while they focus.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Weighted Lap Pad", description: "A soft weighted pad for the lap during reading, lessons or quiet time.", fulfilment: "physical", tags: ["sensory"], variants: ["Small", "Medium"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Noise-Reducing Earmuffs (kids)", description: "Comfortable earmuffs for loud places or when quiet helps them concentrate.", fulfilment: "physical", tags: ["sensory"], variants: ["Ages 3–7", "Ages 8+"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Wobble Cushion", description: "An air-filled seat cushion that lets wriggly learners move while they sit.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Calm Corner Kit", description: "Everything for a cosy calm-down corner: cushions, visual feelings cards and calming tools.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Sensory Light-Up Toys", description: "Soft-glow and light-up toys for calming, winding down and dark-room play.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "boxes", collection: "Sensory & Calm", title: "The Sensory Quest Box", description: "A monthly box of sensory and calming tools, fidgets and activities, with a new theme each month.", fulfilment: "subscription_box", tags: ["sensory"] },
+      { department: "digital", collection: "Sensory & Calm", title: "Feelings & Regulation Visual Cards (printable)", description: "Printable visual cards to help children name feelings and choose a calming strategy.", fulfilment: "digital", tags: ["sensory"] },
+      { department: "digital", collection: "Sensory & Calm", title: "Sensory Break Activity Cards (printable)", description: "Printable movement and sensory break cards for between lessons.", fulfilment: "digital", tags: ["sensory"] },
+    ],
+  },
+];

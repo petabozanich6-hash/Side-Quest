@@ -7,7 +7,7 @@
 // - A product only takes payment when it's visible, priced, and its status is In Stock, Made to Order or Pre-order
 //   (and, for pre-orders, before the closing date). Everything else can collect "register interest" emails instead.
 // - The public shop itself is off until the owner opens it (platform setting features.shopOpen).
-import { SHOP_SEED } from "./data/shopCatalogue";
+import { SHOP_ADDITIONS, SHOP_SEED, type SeedProduct } from "./data/shopCatalogue";
 
 type DB = D1Database;
 
@@ -75,26 +75,43 @@ export function ensureShopCatalog(db: DB): Promise<void> {
 
 export const slugify = (s: string) => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 70).replace(/-+$/, "");
 
-/** Seeds the owner's catalogue once, as hidden drafts with no prices. Never re-adds products the owner deleted. */
-async function seedCatalog(db: DB) {
-  const done = await db.prepare("SELECT value FROM shop_meta WHERE key = 'seeded_v1'").first();
-  if (done) return;
-  const now = new Date().toISOString();
-  const used = new Set<string>();
+/** Hidden draft rows (and their no-price options) for seed products. */
+function seedStatements(db: DB, list: SeedProduct[], used: Set<string>, startSort: number, now: string): D1PreparedStatement[] {
   const stmts: D1PreparedStatement[] = [];
-  SHOP_SEED.forEach((p, i) => {
-    let slug = slugify(p.title) || `product-${i + 1}`;
+  list.forEach((p, i) => {
+    let slug = slugify(p.title) || `product-${startSort + i + 1}`;
     if (used.has(slug)) slug = `${slug}-${p.department}`.slice(0, 80);
+    if (used.has(slug)) return; // already in the catalogue
     used.add(slug);
     const id = crypto.randomUUID();
     stmts.push(db.prepare(`INSERT OR IGNORE INTO shop_products (id, slug, department, collection, title, description, tags, status, fulfilment, visible, sort, personalisation, prints_books, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, 'draft', ?, 0, ?, ?, ?, ?, ?)`)
-      .bind(id, slug, p.department, p.collection, p.title, p.description, JSON.stringify(p.tags), p.fulfilment, i, JSON.stringify(p.personalisation || []), p.prints_books ? 1 : 0, now, now));
-    // "Who it's for" options (Mum, Dad, Nan, Pop, Carer ...) as variants with no price or stock yet.
+      .bind(id, slug, p.department, p.collection, p.title, p.description, JSON.stringify(p.tags), p.fulfilment, startSort + i, JSON.stringify(p.personalisation || []), p.prints_books ? 1 : 0, now, now));
+    // "Who it's for", age bands and similar options, with no price or stock yet.
     (p.variants || []).forEach((name, j) => stmts.push(db.prepare("INSERT OR IGNORE INTO shop_variants (id, product_id, name, sort) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), id, name, j)));
   });
-  for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
-  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES ('seeded_v1', ?)").bind(now).run();
+  return stmts;
+}
+
+/**
+ * Seeds the owner's catalogue once, as hidden drafts with no prices, then adds each later batch once.
+ * Never re-adds products the owner deleted.
+ */
+async function seedCatalog(db: DB) {
+  const now = new Date().toISOString();
+  const run = async (stmts: D1PreparedStatement[], key: string) => {
+    for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
+    await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, now).run();
+  };
+  if (!(await db.prepare("SELECT value FROM shop_meta WHERE key = 'seeded_v1'").first())) {
+    await run(seedStatements(db, SHOP_SEED, new Set(), 0, now), "seeded_v1");
+  }
+  for (const batch of SHOP_ADDITIONS) {
+    const key = `added:${batch.key}`;
+    if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) continue;
+    const { results } = await db.prepare("SELECT slug FROM shop_products").all<{ slug: string }>();
+    await run(seedStatements(db, batch.products, new Set((results || []).map((r) => r.slug)), 1000, now), key);
+  }
 }
 
 // ---------------------------------------------------------------- reading
