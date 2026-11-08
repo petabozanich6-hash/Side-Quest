@@ -604,3 +604,28 @@ test("A paid cart unlocks every item once, and its status turns paid", async () 
   const other = await h.parent("FREE_PREVIEW");
   assert.equal((await (await h.req(`/quest-books/cart/${cartId}/status`, other.token)).json()).paid, false);
 });
+
+
+test("Only the owner can copy a private family lesson into a separate unpublished standalone draft", async () => {
+  const h = harness();
+  const owner = await h.parent("ACTIVE_MONTHLY"); h.makeOwner(owner);
+  const other = await h.parent("ACTIVE_MONTHLY");
+  const created = await h.req("/lessons", owner.token, "POST", lessonBody("For my children"));
+  assert.equal(created.status, 200);
+  const originalId = (await created.json()).id;
+  const route = `/quest-books/admin/lessons/${originalId}/copy-to-standalone`;
+  assert.equal((await h.req(route, other.token, "POST")).status, 403);
+  const copied = await h.req(route, owner.token, "POST");
+  assert.equal(copied.status, 200);
+  const copyId = (await copied.json()).lesson.id;
+  assert.notEqual(copyId, originalId);
+  const familyOriginal = await (await h.req(`/lessons/${originalId}`, owner.token)).json();
+  const standaloneCopy = await (await h.req(`/lessons/${copyId}`, owner.token)).json();
+  assert.equal(familyOriginal.source, "parent", "the original must remain a family lesson");
+  assert.equal(standaloneCopy.source, "side_quest_standalone");
+  assert.equal(standaloneCopy.status, "draft", "copy is not automatically approved or published");
+  const edited = await h.req(`/lessons/${copyId}`, owner.token, "PUT", lessonBody("Edited official standalone draft"));
+  assert.equal(edited.status, 200);
+  assert.equal((await edited.json()).source, "side_quest_standalone", "editing should not reclassify official drafts as personal");
+  assert.equal((await (await h.req(`/lessons/${originalId}`, owner.token)).json()).title, "For my children");
+});
