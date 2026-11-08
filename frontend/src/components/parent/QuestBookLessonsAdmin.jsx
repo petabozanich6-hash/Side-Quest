@@ -204,6 +204,10 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     if (!chapter.draft) return;
     setBusy(`review:${chapter.id}`);
     try {
+      if (approved && !chapter.draft.saved_to_plan) {
+        await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/save-to-plan`,
+          { lesson_id: chapter.draft.lesson_id, expected_version: Number(chapter.draft.version) });
+      }
       await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/review`,
         { lesson_id: chapter.draft.lesson_id, approved });
       await load();
