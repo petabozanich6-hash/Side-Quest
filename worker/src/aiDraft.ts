@@ -259,7 +259,7 @@ const strs = (v: unknown, max: number, len: number) => arr(v, max).map((x) => st
 const randInt = (n: number) => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
 
 /** Turn whatever the model returned into the shape the lesson builder accepts. Drops malformed items instead of failing. */
-export function normaliseDraft(p: any, spec: Spec) {
+export function normaliseDraft(p: any, spec: Spec, settings: { shuffleQuiz?: boolean } = {}) {
   // Normalise only model-authored prose, preserving parent source, authentic
   // quotations, code and lessons that compare spelling conventions.
   p = localiseGeneratedDraft(p, spec.area, [spec.topic, spec.goal, spec.original || ""].join(" "), Boolean(spec.source));
@@ -288,7 +288,9 @@ export function normaliseDraft(p: any, spec: Spec) {
     if (!question || options.length < 2 || !Number.isInteger(ci) || ci < 0 || ci >= options.length) continue;
     // Models favour certain answer positions; shuffle so the right answer isn't predictable.
     const order = options.map((_, i) => i);
-    for (let i = order.length - 1; i > 0; i--) { const j = randInt(i + 1); [order[i], order[j]] = [order[j], order[i]]; }
+    if (settings.shuffleQuiz !== false) {
+      for (let i = order.length - 1; i > 0; i--) { const j = randInt(i + 1); [order[i], order[j]] = [order[j], order[i]]; }
+    }
     quiz.push({ question, options: order.map((i) => options[i]), correct_index: order.indexOf(ci), explanation: str(q?.explanation, 1000) });
   }
   const minutes = Number.isInteger(Number(p.duration_minutes)) && Number(p.duration_minutes) > 0 ? Number(p.duration_minutes) : spec.minutes;
@@ -1256,6 +1258,28 @@ export async function draftLessonWithAi(
 // The model only returns the parts that must change. Nothing is saved until the parent accepts the preview.
 export const REFINABLE = ["title", "teaching_plan", "why_it_matters", "prior_knowledge", "objectives", "introduction", "sections", "worked_examples", "guided_practice", "misconceptions", "texts", "activities", "questions", "quiz", "consolidation", "support", "extension", "materials", "teaching_questions", "parent_script", "evidence_suggestions", "answer_key"];
 
+/** The whole-lesson SCHEMA says every field is required. That instruction
+ * directly conflicts with the refine endpoint's "change only a few fields".
+ * Use a PATCH schema that cannot encourage repeating an unchanged lesson. */
+const REFINE_PATCH_SCHEMA = [
+  "Return ONLY a JSON PATCH containing fields you actually changed. Do NOT generate a new lesson or copy the original lesson back unchanged.",
+  "Allowed string fields: title, teaching_plan, why_it_matters, introduction, consolidation, support, extension, parent_script, answer_key.",
+  "Allowed string arrays: prior_knowledge, objectives, materials, evidence_suggestions.",
+  "sections: [{heading:string, body:string, visual?:optional existing diagram data}].",
+  "worked_examples: [{title:string, problem:string, steps:string[], answer:string, visual?:optional existing diagram data}].",
+  "guided_practice: [{prompt:string, hint:string, answer:string, kind?:string, options?:string[], pairs?:{left:string,right:string}[]}].",
+  "misconceptions: [{mistake:string, fix:string}].",
+  "texts: [{title:string, kind:'text'|'source'|'data', content:string}].",
+  "activities: [{title:string, instructions:string, offline:boolean, tasks:[{prompt:string, hint?:string, answer:string, kind?:string, options?:string[], pairs?:{left:string,right:string}[]}], visual?:optional existing diagram data}].",
+  "questions: [{prompt:string, type:'short'|'long', answer_key:string}].",
+  "quiz: [{question:string, options:string[], correct_index:number, explanation:string}].",
+  "teaching_questions: [{ask:string, expected:string}].",
+  "For a changed list, return the COMPLETE list, keeping every unchanged item intact.",
+  "Write the actual improvement the parent requested. A rearrangement, unchanged copy or generic assurance is not a correction.",
+  "If you change a question, worked example, hint or numerical answer, update the linked answer fields so everything remains consistent.",
+  "Use only the requested keys or other keys strictly needed to keep the changed content accurate. Preserve all unrelated fields.",
+].join("\n");
+
 async function reserve(db: DB, familyId: string, userId: string, kind: string, now: Date) {
   const id = crypto.randomUUID();
   await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, ?, 'pending', ?)").bind(id, familyId, userId, kind, now.toISOString()).run();
@@ -1293,58 +1317,98 @@ export async function refineLessonWithAi(
 
   const done = await reserve(db, familyId, userId, "lesson_refine", now);
   const model = opts.model || DEFAULT_MODEL;
-  let patchRaw: any = null;
-  try {
-    const messages = [
-      { role: "system", content: systemPrompt() },
-      { role: "user", content: [
-        `Here is an existing lesson (JSON):\n${JSON.stringify(ordered(current))}`,
-        `The parent asks: "${instruction}"`,
-        targets.length ? `Only these parts may change: ${targets.join(", ")}.` : "Change only the parts of the lesson that this request affects.",
-        "Make ONLY the requested change and keep everything else exactly as it is. Return ONE JSON object containing only the keys that must change, each fully rewritten in the same format as the lesson above (for lists, include ALL items, keeping unchanged items exactly as they are). If you change difficulty, theme, numbers or facts, also update every dependent hint, answer, quiz question, worked example and the answer_key so nothing contradicts. Keep the quality of the original: real explanations and complete working, no padding, no links, and no references to materials that are not included.",
-        modeText(spec.delivery),
-        `Subject approach: ${subjectGuide(spec.area)}`,
-        AU_LANGUAGE_RULE,
-        mathsTeachingFocus(spec),
-        SCHEMA,
-      ].join("\n\n") },
-    ];
-    const out = await ai.run(model, { messages, max_tokens: 6000, temperature: 0.4 }, opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
-    const parsed: any = extractJson(out);
-    patchRaw = parsed && typeof parsed === "object" ? parsed : null;
-  } catch {
+  // Canonicalise the ORIGINAL as well as the proposed patch. Comparing a
+  // generated object with raw DB JSON produces false changes due to defaults,
+  // ordering and optional fields.
+  const base = lb.sanitizeLessonInput(lesson);
+  if (!base.ok) {
     await done("failed");
-    return lb.fail(502, "The AI service didn't respond. Nothing was used from your allowance; please try again.", "AI_FAILED");
+    return lb.fail(409, "This draft needs a manual edit before AI can safely revise it.", "REFINE_SOURCE_INVALID");
   }
-  const keys = patchRaw ? REFINABLE.filter((k) => patchRaw[k] !== undefined && (!targets.length || targets.includes(k))) : [];
-  if (!keys.length) {
-    await done("failed");
-    return lb.fail(502, "The AI couldn't make that change. Nothing was used from your allowance. Try describing it a little differently.", "AI_FAILED");
+  const baseline = { ...lb.toLessonData(base.value), title: base.value.title };
+  const coreInstruction = [
+    `Existing lesson (JSON):\n${JSON.stringify(ordered(current))}`,
+    `The parent asks: "${instruction}"`,
+    targets.length ? `Change only: ${targets.join(", ")}.` : "Choose only the fields strictly needed to answer the request.",
+    "Make a real, observable improvement, not a description of an improvement. Keep all sound original teaching and unchanged list items.",
+    "For every changed list, return its complete revised list so no existing questions or teaching disappear.",
+    "Update dependent hints, answers and marking guidance if the new content requires them.",
+    REFINE_PATCH_SCHEMA,
+    modeText(spec.delivery),
+    `Subject approach: ${subjectGuide(spec.area)}`,
+    AU_LANGUAGE_RULE,
+    mathsTeachingFocus(spec),
+  ].join("\n\n");
+
+  let retryFeedback = "";
+  let sawEditablePatch = false;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    let patchRaw: any = null;
+    try {
+      const messages = [
+        { role: "system", content: "You are an experienced Australian teacher editing a saved lesson. Return ONE valid JSON object with ONLY the existing lesson fields you substantively changed. Never claim an improvement without actually rewriting the required teaching or questions. Preserve correct material and answer accuracy. No markdown or commentary." },
+        { role: "user", content: coreInstruction + (attempt
+          ? `\n\nIMPORTANT RETRY: The previous response did not produce a safely savable, substantive correction: ${retryFeedback}. Do not repeat the original. Return changed field values containing the requested actual improvement, with no omitted list items.`
+          : "") },
+      ];
+      const out = await ai.run(model, { messages, max_tokens: 6000, temperature: attempt ? 0.55 : 0.35 },
+        opts.gatewayId ? { gateway: { id: opts.gatewayId } } : undefined);
+      const parsed: any = extractJson(out);
+      patchRaw = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
+    } catch {
+      await done("failed");
+      return lb.fail(502, "The AI service did not respond. Nothing was charged to your lesson-change allowance.", "AI_FAILED");
+    }
+    const keys = patchRaw ? REFINABLE.filter((k) => patchRaw[k] !== undefined && (!targets.length || targets.includes(k))) : [];
+    if (!keys.length) {
+      retryFeedback = targets.length ? `No requested fields were changed (${targets.join(", ")})` : "No editable fields were changed";
+      continue;
+    }
+    sawEditablePatch = true;
+
+    // Normalise only the AI-proposed fields, then validate those fields in the
+    // actual saved lesson. Never overwrite its untouched file resources,
+    // curriculum references or parent notes with generation defaults.
+    // Never reshuffle an unchanged quiz while refining it.
+    const normalized = normaliseDraft(
+      { ...current, ...Object.fromEntries(keys.map((k) => [k, patchRaw[k]])) }, spec, { shuffleQuiz: false });
+    const proposed = Object.fromEntries(keys.map((k) => [k, (normalized as any)[k]]));
+    const valid = lb.sanitizeLessonInput({ ...lesson, ...proposed, status: lesson.status });
+    if (!valid.ok) {
+      retryFeedback = `The revised fields were not valid for saving: ${valid.detail}`;
+      continue;
+    }
+    const canonical = { ...lb.toLessonData(valid.value), title: valid.value.title };
+    const changedKeys = keys.filter((k) =>
+      JSON.stringify((baseline as Record<string, any>)[k]) !== JSON.stringify((canonical as Record<string, any>)[k]));
+    if (!changedKeys.length) {
+      retryFeedback = `The values of ${keys.join(", ")} were identical to the saved lesson after validation`;
+      continue;
+    }
+
+    const candidate: any = normaliseDraft(
+      { ...current, ...Object.fromEntries(changedKeys.map((k) => [k, (canonical as Record<string, any>)[k]])) },
+      spec, { shuffleQuiz: false });
+    const touched = qualityIssues(candidate, spec).filter((i) => i.keys.some((k) => changedKeys.includes(k)));
+    const hard = touched.filter((i) => i.hard);
+    if (hard.length) {
+      retryFeedback = `The revised teaching still had these serious problems: ${hard.map((i) => i.msg).join("; ").slice(0, 600)}`;
+      continue;
+    }
+    const patch = Object.fromEntries(changedKeys.map((k) => [k, (canonical as Record<string, any>)[k]]));
+    const before = Object.fromEntries(changedKeys.map((k) => [k, lesson[k] ?? null]));
+    await done("ok");
+    return {
+      ok: true, patch, keys: changedKeys, before, base_version: Number(row.version),
+      warnings: touched.map((i) => i.msg), usage: await aiUsage(db, familyId, now), model,
+    };
   }
-  const candidate: any = normaliseDraft({ ...current, ...Object.fromEntries(keys.map((k) => [k, patchRaw[k]])) }, spec);
-  const touched = qualityIssues(candidate, spec).filter((i) => i.keys.some((k) => keys.includes(k)));
-  const hard = touched.filter((i) => i.hard);
-  if (hard.length) {
-    await done("failed");
-    return lb.fail(502, `The AI's change wasn't good enough to offer (${hard.map((i) => i.msg).join("; ")}). Nothing was used from your allowance. Your lesson is unchanged.`, "AI_FAILED");
-  }
-  // Preview the exact canonical values that the lesson editor can STORE.
-  // Without this step an AI patch can look correct in the preview but lose
-  // fields when the builder sanitises it at acceptance time.
-  const safe = lb.sanitizeLessonInput({ ...lesson, ...candidate, status: lesson.status });
-  if (!safe.ok) {
-    await done("failed");
-    return lb.fail(409, `The AI correction could not be saved safely: ${safe.detail}. Ask AI for a smaller change.`, "AI_PATCH_INVALID");
-  }
-  const canonical = { ...lb.toLessonData(safe.value), title: safe.value.title };
-  const patch = Object.fromEntries(keys.map((k) => [k, (canonical as any)[k]]));
-  if (keys.every((k) => JSON.stringify(lesson[k]) === JSON.stringify(patch[k]))) {
-    await done("failed");
-    return lb.fail(409, "The AI did not produce any actual improvement to save. Try a more specific instruction.", "AI_PATCH_UNCHANGED");
-  }
-  await done("ok");
-  const before = Object.fromEntries(keys.map((k) => [k, lesson[k] ?? null]));
-  return { ok: true, patch, keys, before, base_version: Number(row.version), warnings: touched.map((i) => i.msg), usage: await aiUsage(db, familyId, now), model };
+  await done("failed");
+  return lb.fail(502,
+    sawEditablePatch
+      ? "The AI tried twice but did not create a usable correction. Your lesson was not changed and your AI change allowance was not used. You can edit this part manually or try again."
+      : "The AI did not return a valid correction after two attempts. Your lesson is unchanged, and your AI change allowance was not used. Try a focused correction or edit the lesson manually.",
+    sawEditablePatch ? "AI_PATCH_UNCHANGED" : "AI_FAILED");
 }
 
 /** Save an accepted change: only the named parts are replaced; everything else, including manual edits, stays. */

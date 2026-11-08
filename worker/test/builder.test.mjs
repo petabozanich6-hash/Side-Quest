@@ -1058,6 +1058,67 @@ test("changes are previewed first, touch only the named parts, count separately,
   void free;
 });
 
+test("AI refinement retries a no-op once and saves a genuinely changed field", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const draft = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.ok(draft.ok);
+  const id = draft.lesson.id;
+  const original = draft.lesson.support;
+  assert.equal(typeof original, "string");
+  const improved = original + " Model one short example with the child, then have them explain why each step works.";
+  let requests = 0;
+  const ai = stub(() => ({ response: JSON.stringify({
+    support: ++requests === 1 ? original : improved,
+  }) }));
+  const proposed = await aid.refineLessonWithAi(db, ai, {
+    familyId: fam, userId: "parent", lessonId: id,
+    instruction: "Add specific support for a child who has lost track of the steps", target: ["support"],
+  }, NOW);
+  assert.ok(proposed.ok, JSON.stringify(proposed));
+  assert.equal(ai.calls.length, 2, "repeat an unchanged proposal automatically with focused retry feedback");
+  assert.deepEqual(proposed.keys, ["support"]);
+  assert.equal(proposed.patch.support, improved);
+  assert.equal(proposed.before.support, original);
+  assert.match(ai.calls[0][1].messages[1].content, /Return ONLY a JSON PATCH/);
+  assert.doesNotMatch(ai.calls[0][1].messages[1].content, /every field is required/i);
+  assert.match(ai.calls[1][1].messages[1].content, /IMPORTANT RETRY/);
+  assert.equal((await aid.aiUsage(db, fam, NOW)).changes_today, 1, "one successful refine, not two charges");
+  const saved = await aid.applyLessonPatch(db, fam, id, proposed.patch, NOW, proposed.base_version);
+  assert.ok(saved.ok, JSON.stringify(saved));
+  assert.equal(saved.lesson.support, improved);
+  assert.equal(lb.lessonOut(await lb.ownLesson(db, fam, id)).support, improved);
+});
+
+test("refinement normalisation keeps quiz options and answer index in exactly the original order", () => {
+  const spec = { topic: "Place value", area: "Mathematics", year: "Year 3", goal: "",
+    minutes: 45, delivery: "independent", interests: "", needs: "", notes: "" };
+  const source = { title: "Place value", quiz: [
+    { question: "Which number is greatest?", options: ["18", "81", "11", "8"], correct_index: 1, explanation: "81 has 8 tens." },
+    { question: "What is 2 + 3?", options: ["4", "6", "5", "7"], correct_index: 2, explanation: "2 plus 3 is 5." },
+  ] };
+  const unchanged = aid.normaliseDraft(source, spec, { shuffleQuiz: false });
+  assert.deepEqual(unchanged.quiz, source.quiz, "refining unrelated fields must not shuffle correct existing answers");
+});
+
+test("unchanged AI patches do not consume allowance or shuffle a correct quiz", async () => {
+  const db = makeDb();
+  const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
+  const draft = await aid.draftLessonWithAi(db, stub(), req(fam), NOW);
+  assert.ok(draft.ok);
+  const originalQuiz = draft.lesson.quiz;
+  const ai = stub(() => ({ response: JSON.stringify({ quiz: originalQuiz }) }));
+  const proposed = await aid.refineLessonWithAi(db, ai, {
+    familyId: fam, userId: "parent", lessonId: draft.lesson.id,
+    instruction: "Check the quiz answers for mistakes", target: ["quiz"],
+  }, NOW);
+  assert.equal(proposed.code, "AI_PATCH_UNCHANGED");
+  assert.equal(ai.calls.length, 2);
+  assert.equal((await aid.aiUsage(db, fam, NOW)).changes_today, 0);
+  const stored = lb.lessonOut(await lb.ownLesson(db, fam, draft.lesson.id));
+  assert.deepEqual(stored.quiz, originalQuiz, "no extra shuffle of existing correct answers");
+});
+
 test("series planning checks the allowance up front and returns the right number of lessons", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
