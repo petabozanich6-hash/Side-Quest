@@ -874,6 +874,15 @@ test("maths quality gate rejects summaries that look like teaching but contain n
   assert.ok(issues.some((i) => /without showing any real calculation/i.test(i.msg) && i.hard && i.repair));
 });
 
+test("shape and position lessons pass the maths working check without + or = signs", () => {
+  const spec = { topic: "Shapes and position", area: "Mathematics", year: "Foundation", goal: "Name 2D shapes and describe where things are", minutes: 60, delivery: "parent_guided", interests: "", needs: "", notes: "" };
+  const good = aid.normaliseDraft(GARDEN, spec);
+  const shapes = { ...good, worked_examples: good.worked_examples.map((x) => ({ ...x, steps: ["Look at the shape and count the sides: it has 3 sides.", "Count the corners: 3 corners, so it is a triangle.", "The ball is beside the box and under the table."] })) };
+  assert.ok(!aid.qualityIssues(shapes, spec).some((i) => /without showing any real calculation/i.test(i.msg)));
+  const generic = { ...good, worked_examples: good.worked_examples.map((x) => ({ ...x, steps: ["First apply the strategy.", "Finally check your work."] })) };
+  assert.ok(aid.qualityIssues(generic, spec).some((i) => /without showing any real calculation/i.test(i.msg)));
+});
+
 test("equation lessons must demonstrate why an operation works and check the result", () => {
   const spec = { topic: "Solving one-step algebra equations", area: "Mathematics", year: "Year 7", goal: "Solve x + a = b", minutes: 60, delivery: "independent", interests: "", needs: "", notes: "" };
   const original = aid.normaliseDraft(GARDEN, spec);
