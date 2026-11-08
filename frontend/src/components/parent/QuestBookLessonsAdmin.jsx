@@ -23,6 +23,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [batchSummary, setBatchSummary] = useState(null);
   const [approvalProgress, setApprovalProgress] = useState(null);
   const [approvalFailures, setApprovalFailures] = useState([]);
+  const [fastReviewSummary, setFastReviewSummary] = useState(null);
   const stopDraftQueue = React.useRef(false);
   const batchRunning = React.useRef(false);
   const failureKey = `sq-quest-book-draft-failures:${book.id}`;
@@ -249,6 +250,36 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       toast.error(apiErrorMessage(e, "Could not save the review"), { duration: 9000 });
     } finally { setBusy(""); }
   };
+  const approveAiCleared = async () => {
+    const candidates = data.chapters.filter((chapter) => chapter.draft?.ai_cleared && !chapter.draft?.reviewed && !chapter.draft?.stale);
+    if (!candidates.length || busy || batchProgress) return;
+    if (!window.confirm(
+      `Approve ${candidates.length} AI-cleared book lessons without opening them one by one? Side-Quest will independently check the saved content again, reject lessons with AI warnings, missing content or changed workbook sources, and record your acceptance. AI checks cannot guarantee factual accuracy. NOTHING will be published automatically. Continue?`
+    )) return;
+    setBusy("approve-clean");
+    setFastReviewSummary(null);
+    setApprovalFailures([]);
+    try {
+      const response = await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/lessons/approve-ai-cleared`,
+        { confirm: "APPROVE_AI_CLEARED" }, { timeout: 120000 });
+      const result = response.data;
+      const check = await api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } });
+      setData(check.data);
+      const errors = (result.skipped || []).map((entry) => ({ id: entry.id, title: entry.title, reason: entry.reason }));
+      for (const entry of result.approved || []) {
+        const saved = check.data?.chapters?.find((chapter) => chapter.id === entry.id)?.draft;
+        if (!saved?.reviewed || !saved?.saved_to_plan || saved.status !== "ready" || saved.lesson_id !== entry.lesson_id)
+          errors.push({ id: entry.id, title: entry.title, reason: "Review approval could not be verified. Reload and check this lesson." });
+      }
+      setApprovalFailures(errors);
+      const confirmed = (result.approved || []).length - errors.filter((e) => (result.approved || []).some((a) => a.id === e.id)).length;
+      setFastReviewSummary({ confirmed, skipped: errors.length });
+      if (errors.length) toast.warning(`${confirmed} AI-cleared lessons approved; ${errors.length} need attention. See details below.`, { duration: 10000 });
+      else toast.success(`${confirmed} AI-cleared lessons approved and linked to the Book Plan. Publishing is still up to you.`);
+    } catch (error) {
+      toast.error(apiErrorMessage(error, "Could not approve AI-cleared lessons"), { duration: 9000 });
+    } finally { setBusy(""); }
+  };
   const approveAlreadyChecked = async () => {
     const candidates = data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale);
     if (!candidates.length || busy || batchProgress) return;
@@ -363,6 +394,8 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   if (!data) return <p className="text-sm text-stone-500" role="status">Loading chapters…</p>;
   const drafted = data.chapters.filter((c) => c.draft).length;
   const reviewed = data.chapters.filter((c) => c.draft?.reviewed && !c.draft?.stale).length;
+  const aiCleared = data.chapters.filter((c) => c.draft?.ai_cleared && !c.draft?.reviewed && !c.draft?.stale).length;
+  const needsAttention = data.chapters.filter((c) => c.draft && !c.draft.reviewed && !c.draft.ai_cleared).length;
   const ready = data.chapters.filter((c) => c.draft?.status === "ready" && !c.draft?.stale).length;
   const total = data.chapters.length;
   const failedEntries = data.chapters.filter((ch) => !!failures[ch.id]);
@@ -370,6 +403,8 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     const matches = !reviewSearch.trim() || [c.title, c.unit_title, c.skill_goal, c.draft?.title].some((value) => String(value || "").toLowerCase().includes(reviewSearch.trim().toLowerCase()));
     if (!matches) return false;
     if (reviewFilter === "pending") return !c.draft?.reviewed || c.draft?.stale;
+    if (reviewFilter === "ai-cleared") return !!c.draft?.ai_cleared && !c.draft?.reviewed;
+    if (reviewFilter === "attention") return !!c.draft && !c.draft.reviewed && !c.draft.ai_cleared;
     if (reviewFilter === "reviewed") return c.draft?.reviewed && !c.draft?.stale;
     if (reviewFilter === "published") return !!c.published;
     return true;
@@ -411,6 +446,22 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           </div>
           <p className="text-xs text-emerald-900">{reviewed === total && total ? "Every planned lesson has been reviewed. Publishing still requires your approval." : `${total - reviewed} companion lesson${total - reviewed === 1 ? "" : "s"} still need${total - reviewed === 1 ? "s" : ""} review.`}</p>
         </div>
+        {drafted > reviewed && <div className="rounded-xl border border-emerald-300 bg-emerald-50 p-3 space-y-2" data-testid="quest-approve-ai-cleared">
+          <p className="text-sm font-bold text-emerald-950">Quick approval: no need to open every clean lesson</p>
+          <p className="text-xs text-emerald-900">
+            <b>{aiCleared} AI-cleared</b> and eligible for fast approval · <b>{needsAttention} need attention</b> · {total - drafted} not drafted.
+            Only lessons with zero saved AI warnings, complete teaching and current workbook sources qualify.
+          </p>
+          <button type="button" disabled={!!busy || !!batchProgress || aiCleared === 0} onClick={approveAiCleared}
+            className="rounded-lg bg-emerald-800 px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+            data-testid="quest-fast-approve">
+            {busy === "approve-clean" ? "Approving AI-cleared lessons…" : `Approve all ${aiCleared} AI-cleared lesson${aiCleared === 1 ? "" : "s"}`}
+          </button>
+          {fastReviewSummary && <p role="status" className="text-xs font-semibold text-emerald-950">
+            {fastReviewSummary.confirmed} approved and verified · {fastReviewSummary.skipped} flagged or needing attention
+          </p>}
+          <p className="text-xs text-emerald-900">This records your acceptance of the AI-cleared lessons. AI checks are not a guarantee of accuracy, and publishing remains a separate action.</p>
+        </div>}
         {reviewed < drafted && <div className="rounded-xl border border-emerald-300 bg-white p-3 space-y-2" data-testid="quest-confirm-reviewed">
           <p className="text-sm font-semibold text-emerald-950">Already checked the lessons? You don't have to open and re-save each one.</p>
           <p className="text-xs text-stone-600">Only use this after personally checking the teaching and answer keys. Complete lessons will be marked Ready and Reviewed; incomplete lessons stay unapproved and you'll see why. Nothing will publish automatically.</p>
@@ -447,7 +498,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         <div className="flex gap-2 flex-wrap items-center">
           <input aria-label="Search book lessons" placeholder="Search chapter or lesson…" value={reviewSearch} onChange={(e) => setReviewSearch(e.target.value)} className="flex-1 min-w-[170px] rounded-lg border border-stone-300 px-3 py-2 text-sm" />
           <select aria-label="Filter book lessons" value={reviewFilter} onChange={(e) => setReviewFilter(e.target.value)} className="rounded-lg border border-stone-300 px-3 py-2 text-sm">
-            <option value="all">All lessons</option><option value="pending">Needs review</option><option value="reviewed">Reviewed</option><option value="published">Published</option>
+            <option value="all">All lessons</option><option value="ai-cleared">AI-cleared</option><option value="attention">Needs attention</option><option value="pending">Needs review</option><option value="reviewed">Reviewed</option><option value="published">Published</option>
           </select>
         </div>
         {!visible.length && <p className="text-sm text-stone-600">No lessons match this filter.</p>}
@@ -458,6 +509,12 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
                 {c.draft && !c.draft.stale && <span className={`ml-2 text-[10px] font-bold uppercase ${c.draft.saved_to_plan ? "text-emerald-700" : "text-amber-700"}`}>
                   {c.draft.saved_to_plan ? "Saved to book plan" : "Needs book-plan save"}
                 </span>}</span>
+              {c.draft?.ai_cleared && !c.draft.reviewed && (
+                <span className="text-xs font-bold text-emerald-800">AI-cleared · Fast approval available</span>
+              )}
+              {c.draft?.ai_warning_count > 0 && !c.draft.reviewed && (
+                <span className="text-xs font-bold text-amber-800">AI flagged {c.draft.ai_warning_count} warning(s) · Review required</span>
+              )}
               {c.draft?.quality_issues?.length > 0 && !c.draft.reviewed && (
                 <span className="w-full rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-950" data-testid={`quest-quality-${c.id}`}>
                   <b>Needs content:</b> {c.draft.quality_issues.join("; ")}.
