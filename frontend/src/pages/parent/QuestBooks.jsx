@@ -448,9 +448,9 @@ function BookWorkspace({ book, reload }) {
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
     { id: "cover", title: "Cover", done: book.has_cover, info: book.has_cover ? "Uploaded" : "Portrait PNG, at least 600 × 800.", action: filePick("cover", book.has_cover ? "Replace" : "Upload PNG") },
     { id: "sample", title: "Free sample PDF", optional: true, done: book.has_sample, info: book.has_sample ? "Uploaded" : "Optional: a few pages anyone can download.", action: filePick("sample", book.has_sample ? "Replace" : "Upload PDF") },
-    { id: "chapters", title: "Chapters read", done: book.has_chapters, needs: book.has_book, info: book.has_chapters ? "Done" : "Read from the PDF's bookmarks.",
+    { id: "chapters", title: "Teaching sessions mapped", done: book.has_chapters, needs: book.has_book, info: book.has_chapters ? "Mapped to the book" : "Read PDF bookmarks and split by skill and page.",
       action: book.has_book && btn(open === "lessons" ? "Close" : "Open", () => setOpen(open === "lessons" ? null : "lessons")) },
-    { id: "lessons", title: "Lessons made and published", done: book.has_lessons, needs: book.has_chapters, info: book.has_lessons ? "Published to the book" : "Make one lesson per chapter, review, then publish.",
+    { id: "lessons", title: "Lessons made and published", done: book.has_lessons, needs: book.has_chapters, info: book.has_lessons ? "Published to the book" : "Make complete lessons for each skill session, review, then publish.",
       action: book.has_chapters && btn(open === "lessons" ? "Close" : "Open", () => setOpen(open === "lessons" ? null : "lessons")) },
   ];
   const required = steps.filter((s) => !s.optional);
@@ -656,7 +656,7 @@ function BookView({ id }) {
         <section className="space-y-3" data-testid="quest-book-lessons">
           <div className="flex flex-wrap items-end gap-3">
             <div className="mr-auto"><h2 className="font-display text-2xl font-bold text-slate-900">Ready-made lessons</h2>
-              <p className="text-sm text-stone-600">One lesson for each chapter, ready to assign. Children complete them on screen and you review their work as usual.</p></div>
+              <p className="text-sm text-stone-600">Complete lessons matched to workbook skills and pages. Assign online or print, then review as usual.</p></div>
             {lessons.some((l) => l.unlocked && !l.lesson_id) && (
               <button type="button" onClick={() => addLessons()} disabled={!!adding} data-testid="quest-book-add-lessons"
                 className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60">
