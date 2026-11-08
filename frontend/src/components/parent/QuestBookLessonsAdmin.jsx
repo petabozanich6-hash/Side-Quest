@@ -6,6 +6,7 @@ import { api, apiErrorMessage } from "../../lib/api";
 import { readPdfChapters } from "../../lib/pdfPages";
 import { compileBookSubsectionSource } from "../../lib/questBookSource";
 import { runBookDraftQueue } from "../../lib/questBookDraftQueue.mjs";
+import { outstandingBookChapters, outstandingBookReason } from "../../lib/questBookOutstanding.mjs";
 
 /**
  * Owner-only: the PDF chapter analyser proposes skill-based subsections automatically.
@@ -18,6 +19,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [scanProgress, setScanProgress] = useState("");
   const [reviewFilter, setReviewFilter] = useState("all");
   const [reviewSearch, setReviewSearch] = useState("");
+  const reviewListRef = React.useRef(null);
   const [confirmReset, setConfirmReset] = useState(false);
   const [batchProgress, setBatchProgress] = useState(null);
   const [batchSummary, setBatchSummary] = useState(null);
@@ -398,6 +400,15 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const needsAttention = data.chapters.filter((c) => c.draft && !c.draft.reviewed && !c.draft.ai_cleared).length;
   const ready = data.chapters.filter((c) => c.draft?.status === "ready" && !c.draft?.stale).length;
   const total = data.chapters.length;
+  const outstanding = outstandingBookChapters(data.chapters);
+  const outstandingPreview = outstanding.slice(0, 6);
+  const nextOutstandingDraft = outstanding.find((ch) => !!ch.draft);
+  const reviewUrl = (ch) => `/parent/lessons/${ch.draft.lesson_id}/review?book=${encodeURIComponent(book.id)}&chapter=${encodeURIComponent(ch.id)}`;
+  const focusOutstandingList = () => {
+    setReviewSearch("");
+    setReviewFilter("pending");
+    reviewListRef.current?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+  };
   const failedEntries = data.chapters.filter((ch) => !!failures[ch.id]);
   const visible = data.chapters.filter((c) => {
     const matches = !reviewSearch.trim() || [c.title, c.unit_title, c.skill_goal, c.draft?.title].some((value) => String(value || "").toLowerCase().includes(reviewSearch.trim().toLowerCase()));
@@ -446,7 +457,35 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           </div>
           <p className="text-xs text-emerald-900">{reviewed === total && total ? "Every planned lesson has been reviewed. Publishing still requires your approval." : `${total - reviewed} companion lesson${total - reviewed === 1 ? "" : "s"} still need${total - reviewed === 1 ? "s" : ""} review.`}</p>
         </div>
-        {drafted > reviewed && <div className="rounded-xl border border-emerald-300 bg-emerald-50 p-3 space-y-2" data-testid="quest-approve-ai-cleared">
+        {outstanding.length > 0 && <section className="rounded-xl border border-amber-300 bg-amber-50 p-3 space-y-3" data-testid="quest-outstanding-lessons">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-sm font-bold text-amber-950">{outstanding.length} lesson{outstanding.length === 1 ? "" : "s"} still need{outstanding.length === 1 ? "s" : ""} attention</p>
+              <p className="text-xs text-amber-900">Open them directly here. No searching through your approved lessons.</p>
+            </div>
+            {nextOutstandingDraft && <Link to={reviewUrl(nextOutstandingDraft)}
+              className="rounded-lg bg-amber-900 px-3 py-2 text-xs font-bold text-white"
+              data-testid="quest-review-next-outstanding">Review next unfinished lesson</Link>}
+          </div>
+          <ol className="space-y-2" data-testid="quest-outstanding-items">
+            {outstandingPreview.map((ch) => <li key={ch.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-amber-200 bg-white p-2.5">
+              <div className="min-w-[200px] flex-1">
+                <p className="text-sm font-semibold text-stone-900">{ch.unit_title && ch.unit_title !== ch.title ? `${ch.unit_title} · ` : ""}{ch.title}</p>
+                <p className="text-xs text-amber-900">{outstandingBookReason(ch)}</p>
+              </div>
+              {ch.draft ? <Link to={reviewUrl(ch)}
+                className="shrink-0 rounded-lg border border-amber-600 px-3 py-1.5 text-xs font-bold text-amber-950 hover:bg-amber-100"
+                data-testid={`quest-review-outstanding-${ch.id}`}>Open &amp; review</Link>
+                : <button type="button" disabled={!!busy || !!batchProgress} onClick={() => draft(ch)}
+                  className="shrink-0 rounded-lg border border-amber-600 px-3 py-1.5 text-xs font-bold text-amber-950 disabled:opacity-50"
+                  data-testid={`quest-make-outstanding-${ch.id}`}>Make lesson</button>}
+            </li>)}
+          </ol>
+          {outstanding.length > outstandingPreview.length && <button type="button" onClick={focusOutstandingList}
+            className="text-xs font-bold text-amber-950 underline"
+            data-testid="quest-view-all-outstanding">Show all {outstanding.length} unfinished lessons in the list</button>}
+        </section>}
+        {aiCleared > 0 && drafted > reviewed && <div className="rounded-xl border border-emerald-300 bg-emerald-50 p-3 space-y-2" data-testid="quest-approve-ai-cleared">
           <p className="text-sm font-bold text-emerald-950">Quick approval: no need to open every clean lesson</p>
           <p className="text-xs text-emerald-900">
             <b>{aiCleared} AI-cleared</b> and eligible for fast approval · <b>{needsAttention} need attention</b> · {total - drafted} not drafted.
@@ -495,7 +534,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
             </li>)}
           </ul>
         </div>}
-        <div className="flex gap-2 flex-wrap items-center">
+        <div ref={reviewListRef} className="flex gap-2 flex-wrap items-center scroll-mt-28">
           <input aria-label="Search book lessons" placeholder="Search chapter or lesson…" value={reviewSearch} onChange={(e) => setReviewSearch(e.target.value)} className="flex-1 min-w-[170px] rounded-lg border border-stone-300 px-3 py-2 text-sm" />
           <select aria-label="Filter book lessons" value={reviewFilter} onChange={(e) => setReviewFilter(e.target.value)} className="rounded-lg border border-stone-300 px-3 py-2 text-sm">
             <option value="all">All lessons</option><option value="ai-cleared">AI-cleared</option><option value="attention">Needs attention</option><option value="pending">Needs review</option><option value="reviewed">Reviewed</option><option value="published">Published</option>
