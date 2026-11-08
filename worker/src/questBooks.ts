@@ -1269,6 +1269,12 @@ export function registerQuestBooks(app: App, g: Guards) {
         return c.json({ detail: "Confirm that you checked this draft before marking it Ready and Reviewed." }, 409);
       const issues = companionLessonIssues(data);
       if (issues.length) return c.json({ detail: `Complete the lesson before approving it: ${issues.join("; ")}.` }, 409);
+      // Match the normal Save as Ready action only after the owner has explicitly
+      // confirmed that the AI draft was checked; do not clear warnings on save alone.
+      if (confirmCheckedDraft && data.ai_generated === true) {
+        data.review_status = "parent_reviewed";
+        data.ai_flags = [];
+      }
       // Approving a saved lesson also links that exact version to the book plan.
       // Commit both flags in one UPDATE so a successful approval cannot leave
       // the lesson in a "reviewed but not saved to plan" state.
