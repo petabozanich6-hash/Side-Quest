@@ -72,7 +72,7 @@ export async function quoteStandardPost(env: Env, lines: ShopLine[], destination
   const data: any = await response.json().catch(() => null);
   if (!response.ok || data?.error || data?.errors) throw new ShippingQuoteError("Australia Post couldn't quote this parcel. Check the postcode or contact Side-Quest.", response.status === 400 ? 400 : 503);
   const price = Number(data?.postage_result?.total_cost);
-  if (!Number.isFinite(price) || price <= 0 || price > 500 || !/^(?:\d+)(?:\\.\d{1,2})?$/.test(String(data?.postage_result?.total_cost)))
+  if (!Number.isFinite(price) || price <= 0 || price > 500 || !/^(?:\d+)(?:\.\d{1,2})?$/.test(String(data?.postage_result?.total_cost)))
     throw new ShippingQuoteError("Australia Post returned an invalid postage price. Please try again.", 503);
   return { postcode: destination, dispatch_postcode: from, service: "Parcel Post", service_code: AUSPOST_SERVICE, postage_cents: Math.round(price * 100), parcel };
 }
