@@ -589,6 +589,80 @@ function pdfResponse(obj: R2ObjectBody, name: string) {
   });
 }
 
+/** One guarded repair pass reused by individual review and unattended cross-book repairs.
+ * Review and publication are NEVER automatic; each pass saves exact existing version.
+ */
+export async function repairQuestCompanionLessonPass(
+  env: Env, user: { id: string; family_id: string },
+  id: string, cid: string, lessonId: string, expectedVersion: number
+): Promise<any> {
+  if (!env.BUCKET || !VALID_ID.test(id) || !lessonId || !Number.isInteger(expectedVersion))
+    return { ok: false, status: 400, detail: "Choose a current working book lesson." };
+    const chapter = (await readChapters(env.BUCKET!, id)).find((ch) => ch.id === cid);
+    if (!chapter) return { ...{ detail: "The book lesson plan changed. Reload before repairing." }, ok: false, status: 409 };
+    const original = await ownLesson(env.DB, user.family_id, lessonId);
+    if (!original || original.archived_at) return { ...{ detail: "The working lesson no longer exists." }, ok: false, status: 404 };
+    if (original.version !== expectedVersion)
+      return { ...{ detail: "The lesson changed since the last repair. Reload before continuing." }, ok: false, status: 409 };
+    let before: Record<string, any>;
+    try { before = JSON.parse(original.data || "{}"); } catch { return { ...{ detail: "The lesson cannot be read." }, ok: false, status: 409 }; }
+    if (before.quest_book_id !== id || before.quest_chapter_id !== cid ||
+      before.source === "side_quest_book" || before.ai_generated !== true)
+      return { ...{ detail: "Only this book's original AI working lesson can be repaired here." }, ok: false, status: 403 };
+    if (before.quest_source_revision !== chapterRevision(chapter))
+      return { ...{ detail: "The workbook source changed. Re-analyse this lesson before repairing." }, ok: false, status: 409 };
+    if (original.status !== "draft")
+      return { ...{ detail: "Mark this lesson as Needs Repair to unlock AI repair without editing approved content." }, ok: false, status: 409 };
+    const note = before.book_repair_requested === true && before.book_repair_ai_attempted !== true
+      ? String(before.book_repair_note || "") : "";
+    const plan = planBookAiRepair(before.ai_flags, companionLessonIssues(before), note);
+    if (!plan.issues.length) {
+        return { ok: true, changed: false, lesson_id: original.id, version: original.version,
+        remaining: [], remaining_count: 0, owner_recheck: before.book_repair_requested === true };
+    }
+    const refined = await refineLessonWithAi(env.DB, env.AI, {
+      familyId: user.family_id, userId: user.id, model: env.AI_MODEL, gatewayId: env.AI_GATEWAY_ID,
+      lessonId: original.id, instruction: plan.instruction, target: plan.target,
+    });
+    if (!refined.ok) return { ...{ detail: refined.detail, code: (refined as any).code }, ok: false, status: refined.status };
+    if (refined.base_version !== original.version)
+      return { ...{ detail: "Another edit occurred during AI repair. The proposed changes were not applied." }, ok: false, status: 409 };
+    const applied = await applyLessonPatch(env.DB, user.family_id, original.id,
+      refined.patch, new Date(), original.version);
+    if (!applied.ok) return { ...{ detail: applied.detail, code: (applied as any).code }, ok: false, status: applied.status };
+    const saved = await ownLesson(env.DB, user.family_id, original.id);
+    if (!saved || saved.version !== applied.lesson.version)
+      return { ...{ detail: "AI edits saved, but the final version could not be verified. Reload the lesson." }, ok: false, status: 502 };
+    let current: Record<string, any>;
+    try { current = JSON.parse(saved.data || "{}"); } catch {
+      return { ...{ detail: "AI edits saved, but the lesson record could not be verified. Reload the lesson." }, ok: false, status: 502 };
+    }
+    if (current.quest_book_id !== id || current.quest_chapter_id !== cid ||
+      current.quest_source_revision !== chapterRevision(chapter))
+      return { ...{ detail: "AI edits saved, but the book link changed. Reload the lesson plan." }, ok: false, status: 409 };
+    // Save the exact changed version to the Book Plan as part of this repair.
+    // A manually reported error remains in Needs Repair until the owner reviews it.
+    current.book_plan_saved_version = saved.version;
+    current.book_plan_saved_at = new Date().toISOString();
+    current.book_plan_saved_by = user.id;
+    if (note) current.book_repair_ai_attempted = true;
+    const changed = await env.DB.prepare(`UPDATE lessons SET data = ? WHERE id = ?
+      AND family_id = ? AND version = ? AND status = 'draft' AND data = ? AND archived_at IS NULL`)
+      .bind(JSON.stringify(current), saved.id, user.family_id, saved.version, saved.data).run();
+    if (!changed.meta?.changes)
+      return { ...{ detail: "The AI repair was saved, but the Book Plan link was not confirmed. Reload and inspect the lesson." }, ok: false, status: 409 };
+    const confirmed = await ownLesson(env.DB, user.family_id, original.id);
+    let finalData: Record<string, any>;
+    try { finalData = JSON.parse(confirmed?.data || "{}"); } catch { finalData = {}; }
+    if (!confirmed || Number(finalData.book_plan_saved_version) !== confirmed.version)
+      return { ...{ detail: "The updated lesson was saved, but the Book Plan confirmation failed. Reload before continuing." }, ok: false, status: 502 };
+    const remaining = planBookAiRepair(finalData.ai_flags, companionLessonIssues(finalData),
+      finalData.book_repair_requested === true && finalData.book_repair_ai_attempted !== true ? finalData.book_repair_note : "");
+    return { ok: true, changed: true, lesson_id: original.id, version: confirmed.version,
+      repaired: plan.selected, remaining: remaining.issues, remaining_count: remaining.issues.length,
+      owner_recheck: finalData.book_repair_requested === true, saved_to_plan: true };
+}
+
 export function registerQuestBooks(app: App, g: Guards) {
   const ownerOnly = async (c: any, next: any) => {
     if (!(await isPlatformOwner(c.env.DB, c.get("user").id))) return c.json({ detail: "Platform-owner access required" }, 403);
@@ -1424,76 +1498,12 @@ export function registerQuestBooks(app: App, g: Guards) {
   // sequence in the browser; each pass rereads the latest saved warning list.
   // No approval, publication, source replacement or changes to family copies.
   app.post("/api/quest-books/admin/books/:id/chapters/:cid/repair-pass", g.auth, g.parent, ownerOnly, async (c) => {
-    const id = c.req.param("id"), cid = c.req.param("cid");
     const body: any = await c.req.json().catch(() => ({}));
-    if (!VALID_ID.test(id) || typeof body?.lesson_id !== "string" || !Number.isInteger(body?.expected_version))
-      return c.json({ detail: "Choose a saved book lesson and its current version." }, 400);
-    const chapter = (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid);
-    if (!chapter) return c.json({ detail: "The book lesson plan changed. Reload before repairing." }, 409);
-    const user = c.get("user");
-    const original = await ownLesson(c.env.DB, user.family_id, body.lesson_id);
-    if (!original || original.archived_at) return c.json({ detail: "The working lesson no longer exists." }, 404);
-    if (original.version !== body.expected_version)
-      return c.json({ detail: "The lesson changed since the last repair. Reload before continuing." }, 409);
-    let before: Record<string, any>;
-    try { before = JSON.parse(original.data || "{}"); } catch { return c.json({ detail: "The lesson cannot be read." }, 409); }
-    if (before.quest_book_id !== id || before.quest_chapter_id !== cid ||
-      before.source === "side_quest_book" || before.ai_generated !== true)
-      return c.json({ detail: "Only this book's original AI working lesson can be repaired here." }, 403);
-    if (before.quest_source_revision !== chapterRevision(chapter))
-      return c.json({ detail: "The workbook source changed. Re-analyse this lesson before repairing." }, 409);
-    if (original.status !== "draft")
-      return c.json({ detail: "Mark this lesson as Needs Repair to unlock AI repair without editing approved content." }, 409);
-    const note = before.book_repair_requested === true && before.book_repair_ai_attempted !== true
-      ? String(before.book_repair_note || "") : "";
-    const plan = planBookAiRepair(before.ai_flags, companionLessonIssues(before), note);
-    if (!plan.issues.length) {
-      c.header("Cache-Control", "no-store");
-      return c.json({ ok: true, changed: false, lesson_id: original.id, version: original.version,
-        remaining: [], remaining_count: 0, owner_recheck: before.book_repair_requested === true });
-    }
-    const refined = await refineLessonWithAi(c.env.DB, c.env.AI, {
-      familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
-      lessonId: original.id, instruction: plan.instruction, target: plan.target,
-    });
-    if (!refined.ok) return c.json({ detail: refined.detail, code: (refined as any).code }, refined.status as any);
-    if (refined.base_version !== original.version)
-      return c.json({ detail: "Another edit occurred during AI repair. The proposed changes were not applied." }, 409);
-    const applied = await applyLessonPatch(c.env.DB, user.family_id, original.id,
-      refined.patch, new Date(), original.version);
-    if (!applied.ok) return c.json({ detail: applied.detail, code: (applied as any).code }, applied.status as any);
-    const saved = await ownLesson(c.env.DB, user.family_id, original.id);
-    if (!saved || saved.version !== applied.lesson.version)
-      return c.json({ detail: "AI edits saved, but the final version could not be verified. Reload the lesson." }, 502);
-    let current: Record<string, any>;
-    try { current = JSON.parse(saved.data || "{}"); } catch {
-      return c.json({ detail: "AI edits saved, but the lesson record could not be verified. Reload the lesson." }, 502);
-    }
-    if (current.quest_book_id !== id || current.quest_chapter_id !== cid ||
-      current.quest_source_revision !== chapterRevision(chapter))
-      return c.json({ detail: "AI edits saved, but the book link changed. Reload the lesson plan." }, 409);
-    // Save the exact changed version to the Book Plan as part of this repair.
-    // A manually reported error remains in Needs Repair until the owner reviews it.
-    current.book_plan_saved_version = saved.version;
-    current.book_plan_saved_at = new Date().toISOString();
-    current.book_plan_saved_by = user.id;
-    if (note) current.book_repair_ai_attempted = true;
-    const changed = await c.env.DB.prepare(`UPDATE lessons SET data = ? WHERE id = ?
-      AND family_id = ? AND version = ? AND status = 'draft' AND data = ? AND archived_at IS NULL`)
-      .bind(JSON.stringify(current), saved.id, user.family_id, saved.version, saved.data).run();
-    if (!changed.meta?.changes)
-      return c.json({ detail: "The AI repair was saved, but the Book Plan link was not confirmed. Reload and inspect the lesson." }, 409);
-    const confirmed = await ownLesson(c.env.DB, user.family_id, original.id);
-    let finalData: Record<string, any>;
-    try { finalData = JSON.parse(confirmed?.data || "{}"); } catch { finalData = {}; }
-    if (!confirmed || Number(finalData.book_plan_saved_version) !== confirmed.version)
-      return c.json({ detail: "The updated lesson was saved, but the Book Plan confirmation failed. Reload before continuing." }, 502);
-    const remaining = planBookAiRepair(finalData.ai_flags, companionLessonIssues(finalData),
-      finalData.book_repair_requested === true && finalData.book_repair_ai_attempted !== true ? finalData.book_repair_note : "");
+    const result = await repairQuestCompanionLessonPass(
+      c.env, c.get("user"), c.req.param("id"), c.req.param("cid"),
+      String(body.lesson_id || ""), Number(body.expected_version));
     c.header("Cache-Control", "no-store");
-    return c.json({ ok: true, changed: true, lesson_id: original.id, version: confirmed.version,
-      repaired: plan.selected, remaining: remaining.issues, remaining_count: remaining.issues.length,
-      owner_recheck: finalData.book_repair_requested === true, saved_to_plan: true });
+    return result.ok ? c.json(result) : c.json({ detail: result.detail, code: result.code }, (result.status || 500) as any);
   });
 
 /** Shared, exact source-grounded AI draft pipeline for interactive and overnight generation.
