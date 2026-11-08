@@ -710,6 +710,15 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (Number(c.req.header("content-length") || "0") > 3_000_000) return c.json({ detail: "Too much chapter text." }, 413);
     const checked = validateChapters(await c.req.json().catch(() => null));
     if (!checked.ok) return c.json({ detail: checked.detail }, checked.status as any);
+    // Published keys may already be owned individually. Removing or silently
+    // renumbering them during a rescan would orphan existing lesson purchases.
+    const published = await readPublished(c.env.BUCKET!, id);
+    const newKeys = new Set(checked.chapters.map((ch) => ch.id));
+    const removed = published.find((lesson) => !newKeys.has(lesson.key));
+    if (removed) return c.json({
+      detail: `Keep the existing published session ID for “${removed.chapter_title}”. Families may already own this lesson. Edit its content or publish a new book edition rather than removing its purchase key.`,
+      code: "PUBLISHED_LESSON_KEY_REMOVED",
+    }, 409);
     await c.env.BUCKET!.put(keyFor(id, "chapters"), JSON.stringify({ chapters: checked.chapters }), { httpMetadata: { contentType: "application/json" } });
     return c.json({ ok: true, chapters: checked.chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length })) });
   });
