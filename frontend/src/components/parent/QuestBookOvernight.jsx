@@ -32,6 +32,8 @@ export default function QuestBookOvernight() {
     return ()=>{mounted.current=false;clearInterval(interval);};
   },[load]);
   const chosen=(data?.books||[]).filter((b)=>selected.includes(b.id) && b.has_chapters);
+  const visibleBooks=(data?.books||[]).filter(b=>b.missing>0||b.repairable>0||b.ai_cleared>0||!b.has_chapters);
+  const hiddenCompleted=(data?.books||[]).length-visibleBooks.length;
   const generateBooks=chosen.filter((b)=>b.missing>0);
   const repairBooks=chosen.filter((b)=>b.repairable>0);
   const totalSelected=generateBooks.reduce((n,b)=>n+b.missing,0);
@@ -48,7 +50,7 @@ export default function QuestBookOvernight() {
   const attention=data?.attention||[];
   const timeOf=(value)=>value?new Date(value).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
   const approveCleared=async()=>{
-    if(!clearedSelected || active || !!busy)return;
+    if(!clearedSelected || !!busy)return;
     if(!window.confirm(`Approve the ${clearedSelected} AI-cleared lesson(s) across your selected books? Side-Quest will independently verify the saved lesson content, AI warnings and source before approving. Nothing will be published, and AI can miss errors.`))return;
     setBusy("approve");setError("");
     let approved=0,skipped=0;
@@ -182,7 +184,7 @@ export default function QuestBookOvernight() {
         </li>)}</ul>
       </details>}
       <div className="border border-stone-200 rounded-xl divide-y divide-stone-100 overflow-hidden">
-        {data.books.map((book)=><label key={book.id} className="flex gap-3 items-center p-3 text-sm cursor-pointer">
+        {visibleBooks.map((book)=><label key={book.id} className="flex gap-3 items-center p-3 text-sm cursor-pointer">
           <input type="checkbox" checked={selected.includes(book.id)}
             disabled={!book.has_chapters || (book.missing===0 && !book.repairable && !book.ai_cleared) || !!busy}
             onChange={(e)=>setSelected(prev=>e.target.checked?[...prev,book.id]:prev.filter(id=>id!==book.id))}
@@ -196,6 +198,7 @@ export default function QuestBookOvernight() {
           <span className="text-xs font-bold text-violet-900">{book.missing? `${book.missing} missing` : "Generated"}</span>
         </label>)}
       </div>
+      {hiddenCompleted>0&&<p className="text-xs text-slate-600">{hiddenCompleted} completed book{hiddenCompleted===1?"":"s"} hidden from this work list.</p>}
       {(totalSelected>0 || repairSelected>0 || clearedSelected>0) && <div className="rounded-xl border border-violet-200 p-3 space-y-2">
         <p className="font-bold text-violet-950 text-sm">Bulk actions for selected books</p>
         <p className="text-xs text-slate-700">Generation and repairs can both be queued. They take turns, one lesson attempt per minute, independently of your browser. Recheck and approve repaired lessons when they pass.</p>
@@ -208,9 +211,9 @@ export default function QuestBookOvernight() {
           {!generationActive && totalSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("start")}
             className="rounded-lg bg-violet-800 px-3 py-2 text-sm font-bold text-white disabled:opacity-50"
             data-testid="quest-start-overnight">Generate {totalSelected} missing lessons</button>}
-          {!active && clearedSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void approveCleared()}
+          {clearedSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void approveCleared()}
             className="rounded-lg border border-emerald-700 px-3 py-2 text-sm font-bold text-emerald-950 disabled:opacity-50"
-            data-testid="quest-approve-across-books">Approve {clearedSelected} AI-cleared lessons</button>}
+            data-testid="quest-approve-across-books" >Approve {clearedSelected} existing AI-cleared drafts</button>}
           {!repairActive && repairSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("repair")}
             className="rounded-lg border border-amber-700 px-3 py-2 text-sm font-bold text-amber-950 disabled:opacity-50"
             data-testid="quest-repair-across-books">Repair all {repairSelected} flagged lessons</button>}
