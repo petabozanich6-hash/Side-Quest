@@ -438,7 +438,9 @@ export function registerQuestBooks(app: App, g: Guards) {
     return c.json({
       member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, billingConfig(c.env).ok),
       lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title,
-        book_pages: Number.isInteger(l.data.quest_page_start) && Number.isInteger(l.data.quest_page_end) ? { start: l.data.quest_page_start, end: l.data.quest_page_end } : null,
+        book_pages: typeof l.data.quest_page_start === "number" && typeof l.data.quest_page_end === "number" &&
+          Number.isInteger(l.data.quest_page_start) && Number.isInteger(l.data.quest_page_end)
+          ? { start: l.data.quest_page_start, end: l.data.quest_page_end } : null,
         lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
     });
   });
