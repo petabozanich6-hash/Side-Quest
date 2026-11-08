@@ -73,65 +73,6 @@ async function publishedBook(h, extra = {}) {
   return { owner, id };
 }
 
-test("Overnight queue groups missing lessons across books, skips saved drafts and keeps running without a browser", async () => {
-  const h=harness();
-  const {owner,id:first}=await publishedBook(h);
-  const chaptersA=[
-    {title:"Counting 1 to 10",start:2,end:3,text:chapterText,skill_goal:"Count objects"},
-    {title:"Counting 11 to 20",start:4,end:5,text:chapterText,skill_goal:"Count more objects"},
-  ];
-  assert.equal((await h.req(`/quest-books/admin/books/${first}/chapters`,owner.token,"PUT",{chapters:chaptersA})).status,200);
-  const another=await h.req("/quest-books/admin/books",owner.token,"POST",
-    {...details,title:"Another Overnight Book"});
-  assert.equal(another.status,200);
-  const second=(await another.json()).book.id;
-  assert.equal((await h.req(`/quest-books/admin/books/${second}/files/book`,owner.token,"PUT",pdf("SECOND BOOK"),"application/pdf")).status,200);
-  assert.equal((await h.req(`/quest-books/admin/books/${second}/chapters`,owner.token,"PUT",
-    {chapters:[{title:"Letter recognition",start:4,end:5,text:chapterText,skill_goal:"Find letters"}]})).status,200);
-  // One existing draft must not be remade or counted in missing.
-  const created=(await (await h.req("/lessons",owner.token,"POST",lessonBody("Existing lesson"))).json()).id;
-  const row=h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(created);
-  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
-    ...JSON.parse(row.data),quest_book_id:first,quest_chapter_id:"c1",quest_source_revision:"any",
-    ai_generated:true,ai_flags:[],
-  }),created);
-  const otherOwner=await h.parent("ACTIVE_MONTHLY");
-  const url="/quest-books/admin/overnight";
-  assert.equal((await h.req(url,otherOwner.token)).status,403);
-  const initial=await h.req(url,owner.token);
-  assert.equal(initial.status,200);
-  const plan=await initial.json();
-  const grouped=Object.fromEntries(plan.books.map((b)=>[b.id,b]));
-  assert.equal(grouped[first].missing,1);
-  assert.equal(grouped[first].generated,1);
-  assert.equal(grouped[second].missing,1);
-  h.env.AI={run:async()=>({})}; // Enabled, but the fake Cron generator avoids model calls.
-  const started=await h.req(url+"/start",owner.token,"POST",{book_ids:[first,second]});
-  assert.equal(started.status,200,await started.text().catch(()=>""));
-  const job=(await started.clone().json()).job;
-  assert.equal(job.total,2);
-  assert.equal(job.status,"running");
-  assert.equal((await h.req(url+"/start",owner.token,"POST",{book_ids:[first]})).status,409,
-    "only one active queue is allowed");
-  const control=url+"/"+job.id+"/control";
-  assert.equal((await h.req(control,owner.token,"POST",{action:"pause"})).status,200);
-  let calls=0;
-  const fake=async(_env,_user,_book,cid,skip)=>{assert.equal(skip,true);calls++;return {
-    ok:true,lesson:{id:`generated-${cid}-${calls}`},
-  };};
-  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:00:00Z"),fake)).processed,0,
-    "paused queue never generates a lesson");
-  assert.equal((await h.req(control,owner.token,"POST",{action:"resume"})).status,200);
-  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:05:00Z"),fake)).processed,1);
-  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:10:00Z"),fake)).processed,1);
-  const finished=(await (await h.req(url,owner.token)).json()).job;
-  assert.equal(finished.status,"completed");
-  assert.equal(finished.counts.generated,2);
-  assert.equal(calls,2);
-  assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(created).archived_at,null,
-    "existing drafts stay untouched");
-});
-
 test("Book details validate and get an id from the title", () => {
   assert.equal(slugify("Number Navigators: Year 3!"), "number-navigators-year-3");
   assert.equal(validateMeta(details).ok, true);
@@ -235,6 +176,67 @@ const lessonBody = (title) => ({
   quiz: [{ question: "How many?", options: ["3", "4"], correct_index: 0, explanation: "Count them." }],
 });
 const chapterText = "Numbers to 10. Look, count, recognise and show. Count the dragon eggs one at a time and say each number.";
+
+test("Overnight queue groups missing lessons across books, skips saved drafts and keeps running without a browser", async () => {
+  const h=harness();
+  const {owner,id:first}=await publishedBook(h);
+  const chaptersA=[
+    {title:"Counting 1 to 10",start:2,end:3,text:chapterText,skill_goal:"Count objects"},
+    {title:"Counting 11 to 20",start:4,end:5,text:chapterText,skill_goal:"Count more objects"},
+  ];
+  assert.equal((await h.req(`/quest-books/admin/books/${first}/chapters`,owner.token,"PUT",{chapters:chaptersA})).status,200);
+  const another=await h.req("/quest-books/admin/books",owner.token,"POST",
+    {...details,title:"Another Overnight Book"});
+  assert.equal(another.status,200);
+  const second=(await another.json()).book.id;
+  assert.equal((await h.req(`/quest-books/admin/books/${second}/files/book`,owner.token,"PUT",pdf("SECOND BOOK"),"application/pdf")).status,200);
+  assert.equal((await h.req(`/quest-books/admin/books/${second}/chapters`,owner.token,"PUT",
+    {chapters:[{title:"Letter recognition",start:4,end:5,text:chapterText,skill_goal:"Find letters"}]})).status,200);
+  // One existing draft must not be remade or counted in missing.
+  const created=(await (await h.req("/lessons",owner.token,"POST",lessonBody("Existing lesson"))).json()).id;
+  const row=h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(created);
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
+    ...JSON.parse(row.data),quest_book_id:first,quest_chapter_id:"c1",quest_source_revision:"any",
+    ai_generated:true,ai_flags:[],
+  }),created);
+  const otherOwner=await h.parent("ACTIVE_MONTHLY");
+  const url="/quest-books/admin/overnight";
+  assert.equal((await h.req(url,otherOwner.token)).status,403);
+  const initial=await h.req(url,owner.token);
+  assert.equal(initial.status,200);
+  const plan=await initial.json();
+  const grouped=Object.fromEntries(plan.books.map((b)=>[b.id,b]));
+  assert.equal(grouped[first].missing,1);
+  assert.equal(grouped[first].generated,1);
+  assert.equal(grouped[second].missing,1);
+  h.env.AI={run:async()=>({})}; // Enabled, but the fake Cron generator avoids model calls.
+  const started=await h.req(url+"/start",owner.token,"POST",{book_ids:[first,second]});
+  assert.equal(started.status,200);
+  const job=(await started.json()).job;
+  assert.equal(job.total,2);
+  assert.equal(job.status,"running");
+  assert.equal((await h.req(url+"/start",owner.token,"POST",{book_ids:[first]})).status,409,
+    "only one active queue is allowed");
+  const control=url+"/"+job.id+"/control";
+  assert.equal((await h.req(control,owner.token,"POST",{action:"pause"})).status,200);
+  let calls=0;
+  const fake=async(_env,_user,_book,cid,skip)=>{assert.equal(skip,true);calls++;return {
+    ok:true,lesson:{id:`generated-${cid}-${calls}`},
+  };};
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:00:00Z"),fake)).processed,0,
+    "paused queue never generates a lesson");
+  assert.equal((await h.req(control,owner.token,"POST",{action:"resume"})).status,200);
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:05:00Z"),fake)).processed,1);
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:10:00Z"),fake)).processed,1);
+  const finished=(await (await h.req(url,owner.token)).json()).job;
+  assert.equal(finished.status,"completed");
+  assert.equal(finished.counts.generated,2);
+  assert.equal(calls,2);
+  assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(created).archived_at,null,
+    "existing drafts stay untouched");
+});
+
+
 
 async function bookWithLessons(h) {
   const { owner, id } = await publishedBook(h, { price_cents: 399, lessons_price_cents: 1500, lesson_price_cents: 100 });
