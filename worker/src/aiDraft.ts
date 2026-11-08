@@ -1328,8 +1328,21 @@ export async function refineLessonWithAi(
     await done("failed");
     return lb.fail(502, `The AI's change wasn't good enough to offer (${hard.map((i) => i.msg).join("; ")}). Nothing was used from your allowance. Your lesson is unchanged.`, "AI_FAILED");
   }
+  // Preview the exact canonical values that the lesson editor can STORE.
+  // Without this step an AI patch can look correct in the preview but lose
+  // fields when the builder sanitises it at acceptance time.
+  const safe = lb.sanitizeLessonInput({ ...lesson, ...candidate, status: lesson.status });
+  if (!safe.ok) {
+    await done("failed");
+    return lb.fail(409, `The AI correction could not be saved safely: ${safe.detail}. Ask AI for a smaller change.`, "AI_PATCH_INVALID");
+  }
+  const canonical = { ...lb.toLessonData(safe.value), title: safe.value.title };
+  const patch = Object.fromEntries(keys.map((k) => [k, (canonical as any)[k]]));
+  if (keys.every((k) => JSON.stringify(lesson[k]) === JSON.stringify(patch[k]))) {
+    await done("failed");
+    return lb.fail(409, "The AI did not produce any actual improvement to save. Try a more specific instruction.", "AI_PATCH_UNCHANGED");
+  }
   await done("ok");
-  const patch = Object.fromEntries(keys.map((k) => [k, candidate[k]]));
   const before = Object.fromEntries(keys.map((k) => [k, lesson[k] ?? null]));
   return { ok: true, patch, keys, before, base_version: Number(row.version), warnings: touched.map((i) => i.msg), usage: await aiUsage(db, familyId, now), model };
 }
