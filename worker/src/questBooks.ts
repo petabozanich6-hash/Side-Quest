@@ -13,6 +13,10 @@ import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
 import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
+import { squareConfig, createCartPaymentLink } from "./square";
+
+/** Books can be sold when Square (preferred) or Stripe is configured. */
+const canSell = (env: any) => squareConfig(env).ok || billingConfig(env).ok;
 import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, saveCart, cartPaid, type Tier, type CartLine } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
 import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
@@ -529,7 +533,7 @@ export function registerQuestBooks(app: App, g: Guards) {
   app.get("/api/quest-books", g.auth, g.parent, async (c) => {
     const user = c.get("user");
     const a = await accessFor(c.env.DB, user.family_id, user.id);
-    const canBuy = billingConfig(c.env).ok;
+    const canBuy = canSell(c.env);
     const books = (await listBooks(c.env.BUCKET)).filter((b) => a.owner || b.has_book);
     c.header("Cache-Control", "private, no-store");
     return c.json({
@@ -556,7 +560,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const boughtKeys = published.length && !allLessons ? await ownedLessonKeys(c.env.DB, user.family_id, id) : new Set<string>();
     c.header("Cache-Control", "private, no-store");
     return c.json({
-      member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, billingConfig(c.env).ok),
+      member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, canSell(c.env)),
       lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title,
         book_pages: typeof l.data.quest_page_start === "number" && typeof l.data.quest_page_end === "number" &&
           Number.isInteger(l.data.quest_page_start) && Number.isInteger(l.data.quest_page_end)
@@ -742,12 +746,13 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const body: any = await c.req.json().catch(() => ({}));
     c.header("Cache-Control", "private, no-store");
-    return c.json({ ...(await quoteCart(c.env.DB, c.env.BUCKET, user.family_id, user.id, body?.items)), can_buy: billingConfig(c.env).ok });
+    return c.json({ ...(await quoteCart(c.env.DB, c.env.BUCKET, user.family_id, user.id, body?.items)), can_buy: canSell(c.env) });
   });
 
   app.post("/api/quest-books/cart/checkout", g.auth, g.parent, async (c) => {
+    const sq = squareConfig(c.env);
     const cfg = billingConfig(c.env);
-    if (!cfg.ok) return c.json({ code: "BILLING_NOT_CONFIGURED", detail: "Buying books isn't available yet." }, 503);
+    if (!sq.ok && !cfg.ok) return c.json({ code: "BILLING_NOT_CONFIGURED", detail: "Buying books isn't available yet." }, 503);
     if (!c.env.BUCKET) return c.json({ detail: "Cart is empty." }, 400);
     const user = c.get("user");
     const body: any = await c.req.json().catch(() => ({}));
@@ -759,6 +764,16 @@ export function registerQuestBooks(app: App, g: Guards) {
     try {
       const parentRow = await c.env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(user.id).first<{ email: string }>();
       const origin = appOrigin(c.env, c.req.url);
+      if (sq.ok) {
+        // Square: one hosted checkout for the whole cart (2.2%, no fixed fee per sale).
+        const url = await createCartPaymentLink(sq, {
+          cartId, familyId: user.family_id, email: parentRow?.email,
+          redirectUrl: `${origin}/parent/quest-books/cart?purchase=success&cart=${cartId}`,
+          lines: q.lines.map((l) => ({ name: l.title, amount_cents: l.amount_cents, note: l.note ? `${l.book_title} · ${l.note}` : l.book_title })),
+        });
+        return c.json({ url, cart_id: cartId });
+      }
+      if (!cfg.ok) throw new Error("no payment provider");
       const session = await stripeCall(cfg.key, "POST", "checkout/sessions", {
         mode: "payment",
         client_reference_id: user.family_id,

@@ -121,6 +121,28 @@ async function recordItem(db: DB, familyId: string, bookId: string, tier: Tier |
 }
 
 /**
+ * Records every item of a paid cart once (Stripe or Square). `ref` is the payment's own id; each line gets ref#n.
+ * Called only after the payment provider's signed notification has been verified. Idempotent.
+ */
+export async function recordPaidCart(db: DB, familyId: string, cartId: string, ref: string, currency: string, livemode: boolean, now: Date = new Date(), expectedTotal?: number): Promise<string> {
+  await ensureCartTable(db);
+  const cart = await db.prepare("SELECT lines, total_cents FROM quest_carts WHERE id = ? AND family_id = ?").bind(cartId, familyId).first<{ lines: string; total_cents: number }>();
+  if (!cart) return "quest cart not found";
+  if (expectedTotal !== undefined && Number(cart.total_cents) !== expectedTotal) return `quest cart ${cartId} paid amount ${expectedTotal} does not match ${cart.total_cents}`;
+  let lines: CartLine[] = [];
+  try { lines = JSON.parse(cart.lines); } catch { return "quest cart unreadable"; }
+  let i = 0;
+  for (const l of lines) {
+    i++;
+    if (!/^[a-z0-9-]{1,64}$/.test(l.book_id)) continue;
+    if (l.tier === "lesson" && !/^[a-z0-9-]{1,40}$/.test(String(l.lesson_key || ""))) continue;
+    await recordItem(db, familyId, l.book_id, l.tier === "plus" ? "plus" : l.tier === "lesson" ? "lesson" : "book", String(l.lesson_key || ""), `${ref}#${i}`, Number(l.amount_cents) || 0, currency, livemode, now);
+  }
+  await db.prepare("UPDATE quest_carts SET paid_at = COALESCE(paid_at, ?) WHERE id = ?").bind(now.toISOString(), cartId).run();
+  return `quest cart ${cartId} purchased (${lines.length} items)`;
+}
+
+/**
  * Called only from a signature-verified webhook. Records a paid Quest Book checkout (one item, or a whole cart).
  * Idempotent: replays write nothing new, and an upgrade from "book" to "plus" updates the existing row once.
  */
@@ -135,23 +157,7 @@ export async function recordQuestBookPurchase(db: DB, session: any, livemode: bo
   const fam = await db.prepare("SELECT id FROM families WHERE id = ?").bind(familyId).first();
   if (!fam) return "quest book checkout for unknown family";
 
-  if (kind === "quest_cart") {
-    const cartId = String(session.metadata?.cart_id || "");
-    await ensureCartTable(db);
-    const cart = await db.prepare("SELECT lines FROM quest_carts WHERE id = ? AND family_id = ?").bind(cartId, familyId).first<{ lines: string }>();
-    if (!cart) return "quest cart not found";
-    let lines: CartLine[] = [];
-    try { lines = JSON.parse(cart.lines); } catch { return "quest cart unreadable"; }
-    let i = 0;
-    for (const l of lines) {
-      i++;
-      if (!/^[a-z0-9-]{1,64}$/.test(l.book_id)) continue;
-      if (l.tier === "lesson" && !/^[a-z0-9-]{1,40}$/.test(String(l.lesson_key || ""))) continue;
-      await recordItem(db, familyId, l.book_id, l.tier === "plus" ? "plus" : l.tier === "lesson" ? "lesson" : "book", String(l.lesson_key || ""), `${session.id}#${i}`, Number(l.amount_cents) || 0, currency, livemode, now);
-    }
-    await db.prepare("UPDATE quest_carts SET paid_at = COALESCE(paid_at, ?) WHERE id = ?").bind(now.toISOString(), cartId).run();
-    return `quest cart ${cartId} purchased (${lines.length} items)`;
-  }
+  if (kind === "quest_cart") return recordPaidCart(db, familyId, String(session.metadata?.cart_id || ""), String(session.id), currency, livemode, now);
 
   const bookId = String(session.metadata?.book_id || "");
   const amount = Number(session.amount_total);
