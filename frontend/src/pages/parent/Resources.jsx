@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, ExternalLink, Check, X, ShieldAlert } from "lucide-react";
+import { Plus, ExternalLink, Check, X, ShieldAlert, Bookmark, Search } from "lucide-react";
+import { FREE_RESOURCES, FREE_SUBJECTS } from "../../data/freeResources";
 
 const LICENCES = [
   { v: "cc_by", l: "CC BY", cls: "badge-cc-by" },
@@ -41,6 +42,9 @@ export default function ResourcesPage() {
         <button onClick={()=>setOpen(true)} className="rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white flex items-center gap-1.5" data-testid="add-resource-btn"><Plus size={14}/> Add resource</button>
       </div>
 
+      <FreeResources saved={resources} onSaved={load} />
+
+      <h2 className="font-display text-xl font-bold text-slate-900 pt-2">Your saved resources</h2>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {resources.map(r => (
           <div key={r.id} className="rounded-2xl border border-slate-200 bg-white p-5" data-testid={`resource-${r.id}`}>
@@ -90,3 +94,67 @@ export default function ResourcesPage() {
   );
 }
 const F = ({ label, children, col=1 }) => (<div className={col===2?"col-span-2":""}><label className="text-xs font-semibold uppercase tracking-wider text-slate-500">{label}</label><div className="mt-1">{children}</div></div>);
+
+/** Free websites for families: browse by subject, open, or save into this family's library. */
+function FreeResources({ saved, onSaved }) {
+  const [subject, setSubject] = useState("");
+  const [q, setQ] = useState("");
+  const [busy, setBusy] = useState("");
+  const [showAll, setShowAll] = useState(false);
+  const have = new Set(saved.map((r) => (r.url || "").replace(/\/+$/, "")));
+  const list = FREE_RESOURCES.filter((r) => (!subject || r.subjects.includes(subject))
+    && (!q || `${r.title} ${r.provider} ${r.purpose}`.toLowerCase().includes(q.toLowerCase())));
+  const shown = showAll || subject || q ? list : list.slice(0, 9);
+  const save = async (r) => {
+    setBusy(r.url);
+    try {
+      await api.post("/resources", { title: r.title, url: r.url, provider: r.provider, licence: r.licence, learning_area: r.subjects.join(", "), purpose: r.purpose, age_suitability: r.ages });
+      toast.success(`${r.title} saved to your library`);
+      await onSaved();
+    } catch { toast.error("Couldn't save that. Please try again."); } finally { setBusy(""); }
+  };
+  return (
+    <section className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-4 sm:p-5 space-y-3" data-testid="free-resources">
+      <div>
+        <h2 className="font-display text-xl font-bold text-slate-900">Free resources for families</h2>
+        <p className="text-sm text-slate-600 mt-1">Trusted free websites and apps, sorted by subject. Open them any time, or save the ones you use to your library. Some ask for a free account or offer paid extras.</p>
+      </div>
+      <div className="flex flex-wrap gap-2 items-center">
+        {["", ...FREE_SUBJECTS].map((sub) => (
+          <button key={sub || "all"} type="button" onClick={() => setSubject(sub)} aria-pressed={subject === sub}
+            className={`rounded-full px-3 py-1 text-xs font-semibold border ${subject === sub ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-700 border-slate-300"}`}>{sub || "All"}</button>
+        ))}
+        <label className="relative ml-auto min-w-[180px]">
+          <Search size={14} className="absolute left-2.5 top-2.5 text-slate-400" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search free resources" aria-label="Search free resources" className="w-full rounded-full border border-slate-300 bg-white pl-8 pr-3 py-1.5 text-sm" />
+        </label>
+      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {shown.map((r) => {
+          const isSaved = have.has(r.url.replace(/\/+$/, ""));
+          return (
+            <div key={r.url} className="rounded-xl border border-slate-200 bg-white p-4 flex flex-col" data-testid={`free-resource-${r.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}>
+              <div className="flex items-start justify-between gap-2">
+                <h3 className="font-semibold text-slate-900 leading-tight">{r.title}</h3>
+                <span className="shrink-0 rounded-full bg-emerald-100 text-emerald-900 px-2 py-0.5 text-[11px] font-bold">{r.note.startsWith("Free") ? "Free" : r.note}</span>
+              </div>
+              <div className="text-xs text-slate-500 mt-1">{r.provider} · Ages {r.ages} · {r.subjects.join(", ")}</div>
+              <p className="mt-2 text-sm text-slate-700">{r.purpose}</p>
+              {r.how && <p className="mt-2 text-sm text-slate-600 flex-1"><span className="font-semibold text-slate-800">How to use it: </span>{r.how}</p>}
+              {r.note !== "Free" && <p className="mt-1 text-xs text-slate-500">{r.note}</p>}
+              <a href={r.url} target="_blank" rel="noreferrer noopener" className="mt-3 text-sm font-semibold text-teal-700 underline break-all flex items-center gap-1">{r.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} <ExternalLink size={13} className="shrink-0" /></a>
+              <div className="mt-3 flex items-center gap-3">
+                <a href={r.url} target="_blank" rel="noreferrer noopener" className="rounded-full bg-slate-900 text-white px-3 py-1 text-xs font-semibold flex items-center gap-1"><ExternalLink size={12} /> Visit website</a>
+                {isSaved ? <span className="ml-auto text-xs font-semibold text-emerald-800 flex items-center gap-1"><Check size={12} /> In your library</span>
+                  : <button type="button" onClick={() => save(r)} disabled={busy === r.url} className="ml-auto rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold flex items-center gap-1 disabled:opacity-60"><Bookmark size={12} /> {busy === r.url ? "Saving…" : "Save"}</button>}
+              </div>
+            </div>
+          );
+        })}
+        {!list.length && <p className="text-sm text-slate-600 col-span-full">No free resources match that yet.</p>}
+      </div>
+      {!showAll && !subject && !q && list.length > shown.length && <button type="button" onClick={() => setShowAll(true)} className="text-sm font-semibold underline text-slate-800">Show all {list.length} free resources</button>}
+      <p className="text-xs text-slate-500">These are links to other organisations' websites. Side-Quest isn't affiliated with them. Check each site's terms before copying or sharing its content.</p>
+    </section>
+  );
+}
