@@ -204,14 +204,16 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     if (!chapter.draft) return;
     setBusy(`review:${chapter.id}`);
     try {
-      if (approved && !chapter.draft.saved_to_plan) {
-        await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/save-to-plan`,
-          { lesson_id: chapter.draft.lesson_id, expected_version: Number(chapter.draft.version) });
-      }
       await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/review`,
-        { lesson_id: chapter.draft.lesson_id, approved });
-      await load();
-      toast.success(approved ? "Book lesson review saved" : "Book lesson returned to review queue");
+        { lesson_id: chapter.draft.lesson_id, approved, expected_version: Number(chapter.draft.version) });
+      const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } });
+      const saved = response.data?.chapters?.find((item) => item.id === chapter.id)?.draft;
+      if (!saved || saved.reviewed !== approved || saved.lesson_id !== chapter.draft.lesson_id ||
+          (approved && (!saved.saved_to_plan || Number(saved.version) !== Number(chapter.draft.version)))) {
+        throw new Error("The book's saved review status could not be verified. Reload the review queue.");
+      }
+      setData(response.data);
+      toast.success(approved ? "Lesson saved to Book Plan and marked Reviewed" : "Book lesson returned to review queue");
     } catch (e) {
       toast.error(apiErrorMessage(e, "Could not save the review"), { duration: 9000 });
     } finally { setBusy(""); }

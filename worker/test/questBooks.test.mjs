@@ -419,9 +419,20 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   assert.equal(linked.version, version);
   assert.equal((await h.req(reviewUrl, nonOwner.token, "POST", { lesson_id: lid, approved: true })).status, 403, "family members cannot approve commercial lessons");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409, "browser checkbox alone cannot approve a book lesson");
-  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true })).status, 200);
+  // Simulate an editor that saved the lesson but did not separately use Save to Book Plan.
+  // Approving it should atomically record BOTH the review and the plan version.
+  const unlinkedData = JSON.parse(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lid).data);
+  delete unlinkedData.book_plan_saved_version;
+  delete unlinkedData.book_plan_saved_at;
+  delete unlinkedData.book_plan_saved_by;
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(unlinkedData), lid);
+  assert.equal((await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft.saved_to_plan, false);
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version - 1 })).status, 409,
+    "a stale review screen must never approve a newer version");
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version })).status, 200);
   let savedReview = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
   assert.equal(savedReview.reviewed, true, "approval survives page reload");
+  assert.equal(savedReview.saved_to_plan, true, "approval saves its lesson version to the book plan atomically");
   assert.ok(savedReview.reviewed_at, "review timestamp is stored");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
   const removal = await h.req(url, owner.token, "POST", { items: [] });

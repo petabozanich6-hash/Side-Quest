@@ -1252,6 +1252,8 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const row = await ownLesson(c.env.DB, user.family_id, body.lesson_id);
     if (!row || row.archived_at) return c.json({ detail: "The working lesson was not found." }, 404);
+    if (body.expected_version !== undefined && (!Number.isInteger(body.expected_version) || Number(row.version) !== body.expected_version))
+      return c.json({ detail: "This lesson changed since you opened it. Reload and review the current saved version." }, 409);
     let data: Record<string, any>;
     try { data = JSON.parse(row.data || "{}"); } catch { return c.json({ detail: "The lesson data could not be read." }, 409); }
     if (data.quest_book_id !== id || data.quest_chapter_id !== cid || data.source === "side_quest_book")
@@ -1262,8 +1264,14 @@ export function registerQuestBooks(app: App, g: Guards) {
       if (row.status !== "ready") return c.json({ detail: "Save this lesson as Ready before approving it for the book." }, 409);
       const issues = companionLessonIssues(data);
       if (issues.length) return c.json({ detail: `Complete the lesson before approving it: ${issues.join("; ")}.` }, 409);
+      // Approving a saved lesson also links that exact version to the book plan.
+      // Commit both flags in one UPDATE so a successful approval cannot leave
+      // the lesson in a "reviewed but not saved to plan" state.
+      data.book_plan_saved_version = Number(row.version);
+      data.book_plan_saved_at = new Date().toISOString();
+      data.book_plan_saved_by = user.id;
       data.book_reviewed_version = Number(row.version);
-      data.book_reviewed_at = new Date().toISOString();
+      data.book_reviewed_at = data.book_plan_saved_at;
       data.book_reviewed_by = user.id;
     } else {
       delete data.book_reviewed_version;
@@ -1275,7 +1283,8 @@ export function registerQuestBooks(app: App, g: Guards) {
       .bind(JSON.stringify(data), row.id, user.family_id, row.version).run();
     if (!changed.meta?.changes) return c.json({ detail: "This lesson changed while you reviewed it. Reload and check the latest version." }, 409);
     c.header("Cache-Control", "no-store");
-    return c.json({ ok: true, reviewed: body.approved, reviewed_at: data.book_reviewed_at || null, version: row.version });
+    return c.json({ ok: true, reviewed: body.approved, reviewed_at: data.book_reviewed_at || null,
+      saved_to_plan: Number(data.book_plan_saved_version) === Number(row.version), version: row.version });
   });
 
   // Draft a lesson from one chapter with the normal AI lesson generator, into the owner's own library for review.

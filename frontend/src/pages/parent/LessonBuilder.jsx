@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams, Link, Navigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft, Plus, Trash2, Eye, Pencil, Save, Send } from "lucide-react";
-import { api } from "../../lib/api";
+import { api, apiErrorMessage } from "../../lib/api";
 import ScheduleModal from "../../components/parent/ScheduleModal";
 import LessonPrintActions from "../../components/parent/LessonPrintActions";
 import ParentLessonPlayer from "../child/ParentLessonPlayer";
@@ -232,6 +232,37 @@ export default function LessonBuilder() {
       setUpgrade(d?.code === "UPGRADE_REQUIRED");
       return null;
     } finally { manualSaving.current = false; setBusy(false); }
+  };
+
+  const saveAndReviewBook = async () => {
+    if (!lessonId || !bookId || !chapterId) return;
+    // Persist and verify the editor's latest fields before approving anything.
+    const saved = await save("ready");
+    if (!saved) return;
+    setBusy(true);
+    try {
+      if (saved.quest_book_id !== bookId || saved.quest_chapter_id !== chapterId)
+        throw new Error("This lesson is not linked to the selected book chapter. No approval was recorded.");
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
+        { lesson_id: saved.id, approved: true, expected_version: Number(saved.version) });
+      // The database-backed chapter list, not the button response, determines success.
+      const confirmation = await api.get(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters`, { params: { _: Date.now() } });
+      const chapters = confirmation.data?.chapters || [];
+      const current = chapters.find((ch) => ch.id === chapterId)?.draft;
+      if (!current?.reviewed || !current?.saved_to_plan || current.lesson_id !== saved.id ||
+          Number(current.version) !== Number(saved.version)) {
+        throw new Error("Your lesson was saved, but the book plan did not confirm approval. Reopen the review queue.");
+      }
+      toast.success("Lesson saved, marked Reviewed and verified in the Book Plan.");
+      const index = chapters.findIndex((ch) => ch.id === chapterId);
+      const next = chapters.slice(index + 1).find((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale);
+      nav(next ? `/parent/lessons/${next.draft.lesson_id}/review?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(next.id)}`
+        : `/parent/quest-books/${encodeURIComponent(bookId)}?workspace=lessons`);
+    } catch (e) {
+      const message = apiErrorMessage(e, e.message || "The lesson was saved, but approval could not be recorded.");
+      setError(message);
+      toast.error(message, { duration: 9000 });
+    } finally { setBusy(false); }
   };
 
   const saveAndAssign = async () => {
@@ -588,6 +619,7 @@ export default function LessonBuilder() {
         {lessonId && <button disabled={busy} onClick={async () => { const r = await save(f.status === "ready" ? "ready" : "draft"); if (r) nav(`/parent/lessons/${r.id}/review${reviewQuery}`); }} className="rounded-full border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-review-ai">Review and ask AI to change something</button>}
         <button disabled={busy} onClick={() => save("draft")} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-draft"><Save size={14} /> Save draft</button>
         <button disabled={busy} onClick={() => save("ready")} className="rounded-full border border-slate-900 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-library">Save to library</button>
+        {bookQuery && lessonId && <button disabled={busy} onClick={saveAndReviewBook} className="rounded-full bg-emerald-800 text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-review-book">Save &amp; Mark Reviewed</button>}
         <button disabled={busy} onClick={saveAndAssign} className="rounded-full bg-slate-900 text-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-assign"><Send size={14} /> Save and assign</button>
       </div>
 
