@@ -31,7 +31,18 @@ function WeekNav({ week, child, childName, drafts, lessonId }) {
   );
 }
 
-const PARTS = [["", "Whole lesson (the AI decides)"], ["sections", "The explanations"], ["worked_examples", "Worked examples"], ["guided_practice", "Practice questions"], ["activities", "Activities"], ["questions", "Written questions"], ["quiz", "The quiz"], ["introduction", "The introduction"], ["consolidation", "The wrap-up"]];
+const PARTS = [["", "Whole lesson (the AI decides)"], ["objectives", "Learning objectives"], ["sections", "The explanations"], ["worked_examples", "Worked examples"], ["guided_practice", "Practice questions"], ["activities", "Activities"], ["questions", "Written questions"], ["quiz", "The quiz"], ["introduction", "The introduction"], ["consolidation", "The wrap-up"]];
+const BOOK_REPAIR_TARGETS = {
+  "at least two learning objectives": "objectives",
+  "two complete teaching explanations": "sections",
+  "two worked examples with complete steps and answers": "worked_examples",
+  "four answered guided practice questions": "guided_practice",
+  "two independent activities with three answered tasks each": "activities",
+  "three written questions with marking guidance": "questions",
+  "three valid assessment questions": "quiz",
+  "parent teaching notes and complete answer key": "",
+};
+
 const CHIPS = [
   ["Make this easier", "Make this less difficult. Use simpler language and smaller steps.", ""],
   ["Make this harder", "Make this more challenging for a confident child.", ""],
@@ -247,10 +258,13 @@ export default function LessonReview() {
     setRefineRequest((n) => n + 1);
     setRefine(true);
   };
-  const fixBookExplanations = () => startRepair(
-    `Repair the saved ${lesson?.year_level || "Foundation"} ${lesson?.learning_area || "Mathematics"} lesson's explanations. Change the sections field to contain at least TWO detailed teaching sections, each with a clear heading and substantive body. Model how and why the skill works in small, age-appropriate steps, with a concrete example and a common mistake. Preserve existing objectives, activities, worked examples, questions and answers.`,
-    "sections"
-  );
+  const fixBookIssue = (issue) => {
+    const target = BOOK_REPAIR_TARGETS[issue] || "";
+    const instruction = issue === "two complete teaching explanations"
+      ? `Repair the saved ${lesson?.year_level || "Foundation"} ${lesson?.learning_area || "Mathematics"} lesson's explanations. Change the sections field to contain at least TWO detailed teaching sections, each with a clear heading and substantive body. Model how and why the skill works in small, age-appropriate steps, with a concrete example and a common mistake. Preserve existing objectives, activities, worked examples, questions and answers.`
+      : `Fix this missing requirement in the existing saved lesson: ${issue}. Make a substantive, accurate change to the relevant teaching, tasks or answer keys so the saved lesson meets this specific requirement. Preserve all other complete explanations, questions, practice and manual corrections. Do not make generic changes or invent unsupported facts.`;
+    startRepair(instruction, target);
+  };
   const refreshBookPlan = async () => {
     if (!bookId || !chapterId) return null;
     const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters`, { params: { _: Date.now() } });
@@ -363,16 +377,17 @@ export default function LessonReview() {
         <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 space-y-2" role="status" data-testid="book-quality-gaps">
           <p className="text-sm font-bold text-amber-950">Before this lesson can be marked Ready & Reviewed</p>
           <p className="text-sm text-amber-900">The saved version is missing these required lesson components. Your existing corrections are preserved.</p>
-          <ul className="list-disc pl-5 text-sm text-amber-950 space-y-1">
-            {bookQualityIssues.map((issue) => <li key={issue}>{issue}</li>)}
+          <ul className="list-disc pl-5 text-sm text-amber-950 space-y-2">
+            {bookQualityIssues.map((issue) => <li key={issue}>
+              <span>{issue}</span>{" "}
+              <button type="button" onClick={() => fixBookIssue(issue)}
+                data-testid={issue === "two complete teaching explanations" ? "book-fix-explanations" : "book-fix-issue"}
+                className="inline-flex items-center gap-1 rounded-lg border border-violet-500 bg-white px-2 py-1 text-xs font-bold text-violet-900 hover:bg-violet-50">
+                <Sparkles size={12} /> Fix with AI
+              </button>
+            </li>)}
           </ul>
-          {bookQualityIssues.includes("two complete teaching explanations") && (
-            <button type="button" onClick={fixBookExplanations} data-testid="book-fix-explanations"
-              className="inline-flex items-center gap-2 rounded-lg bg-violet-700 text-white px-3 py-2 text-sm font-bold">
-              <Sparkles size={15} /> Fix the teaching explanations with AI
-            </button>
-          )}
-          <p className="text-xs text-amber-900">AI will propose a change for you to inspect before saving. Approval stays blocked until the saved lesson meets the checks.</p>
+          <p className="text-xs text-amber-900">Choose Fix with AI beside an issue. The repair starts immediately and brings the proposed change into view. You decide whether to save it. Approval remains blocked until the saved lesson meets the checks.</p>
         </div>
       )}
       {refine && <RefinePanel key={`${id}-${refineRequest}`} lessonId={id} initialInstruction={refineInstruction} initialPart={refinePart}
