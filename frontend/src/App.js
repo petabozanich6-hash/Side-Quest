@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
 import ShopOrder from "./pages/ShopOrder";
 import ShopSubscription from "./pages/ShopSubscription";
+import ParentShop from "./pages/parent/ParentShop";
 import ShopDownloads from "./pages/ShopDownloads";
 import ShopSection from "./components/shop/ShopSection";
 import Login from "./pages/Login";
@@ -143,6 +144,7 @@ function Router() {
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
+        <Route path="shop" element={<ParentShop />} />
         <Route path="quest-books" element={<QuestBooks />} />
         <Route path="quest-books/:bookId" element={<QuestBooks />} />
         <Route path="printable-vault" element={<PrintableVault />} />

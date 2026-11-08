@@ -3,7 +3,7 @@ import { useViewAs, ViewAsPicker, ViewAsBanner } from "../../components/parent/O
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { api } from "../../lib/api";
-import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon, Beaker, CreditCard, BookMarked } from "lucide-react";
+import { Compass, Lock, Search, Crown, LayoutDashboard, Users, BookOpen, Library, Scissors, Camera, Calendar, Wand2, LogOut, GraduationCap, Leaf as LeafIcon, Trees, FileCheck, Sparkles, Trash2, LifeBuoy, MessageSquare, Menu, X, ClipboardList, Map as MapIcon, Beaker, CreditCard, BookMarked, ShoppingBag } from "lucide-react";
 import { Fern } from "../../components/shared/Botanical";
 import DeleteAccountDialog from "../../components/parent/DeleteAccountDialog";
 import HelpPopup from "../../components/parent/HelpPopup";
@@ -50,6 +50,10 @@ export default function ParentLayout() {
   const [latestUnreadReply,setLatestUnreadReply] = useState(null);
   // Cosmetic only: the server answers 404 on every /api/admin route for anyone who isn't the Owner.
   const isOwner = user?.is_platform_owner === true;
+  // The shop shows in the menu once the owner has opened it (the owner always sees it, to check it).
+  const [shopOpen, setShopOpen] = useState(false);
+  useEffect(() => { let live = true; fetch("/api/shop").then((r) => r.json()).then((j) => live && setShopOpen(!!j.open)).catch(() => {}); return () => { live = false; }; }, []);
+  const menu = (shopOpen || isOwner) ? [...nav.slice(0, 7), { to: "/parent/shop", icon: ShoppingBag, label: "Shop", testid: "nav-shop" }, ...nav.slice(7)] : nav;
   const viewAs = useViewAs(isOwner);
   const paidPlans = ["ACTIVE_WEEKLY","ACTIVE_FORTNIGHTLY","ACTIVE_MONTHLY","ACTIVE_ANNUAL","PAST_DUE","INTERNAL"];
   const hasMembership = planState && paidPlans.includes(planState.effective_plan);
@@ -110,7 +114,7 @@ export default function ParentLayout() {
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto p-3 space-y-0.5 relative z-10">
-          {(isOwner ? [...nav, { to: "/parent/lessons/review-centre", icon: FileCheck, label: "Lesson Review Centre", testid: "nav-lesson-review-centre" }, { to: "/parent/command-centre", icon: Crown, label: "Owner HQ", testid: "nav-command-centre" }] : nav).map(n => (
+          {(isOwner ? [...menu, { to: "/parent/lessons/review-centre", icon: FileCheck, label: "Lesson Review Centre", testid: "nav-lesson-review-centre" }, { to: "/parent/command-centre", icon: Crown, label: "Owner HQ", testid: "nav-command-centre" }] : menu).map(n => (
             <NavLink key={n.to} to={n.to} end={n.end} data-testid={n.testid} onClick={() => setMenuOpen(false)}
               className={({isActive}) => `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "" : "text-stone-700 hover:bg-white/80"}`}
               style={({isActive}) => isActive ? {backgroundColor:"#1F3B2D", color:"#F5EFE0"} : {}}>
