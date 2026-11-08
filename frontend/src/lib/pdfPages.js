@@ -75,8 +75,8 @@ export async function readPdfChapters(file) {
     const pageHeads = [];
     for (let p = 1; p <= doc.numPages; p++) {
       const first = (await pageText(p)).slice(0, 220);
-      const match = /^(?:\\s*)(?:(?:unit|chapter)\\s*(?:\\d+|[ivx]+)\\s*[:.\-–]?\\s*[A-Za-z][^\n.]{2,80})/i.exec(first);
-      if (match) pageHeads.push({ title: match[0].replace(/\\s+/g, " ").trim().slice(0, 120), start: p });
+      const match = /^(?:\s*)(?:(?:unit|chapter)\s*(?:\d+|[ivx]+)\s*[:.\-–]?\s*[A-Za-z][^\n.]{2,80})/i.exec(first);
+      if (match) pageHeads.push({ title: match[0].replace(/\s+/g, " ").trim().slice(0, 120), start: p });
     }
     if (pageHeads.length >= 2) marks.push(...pageHeads);
     else {
@@ -95,7 +95,7 @@ export async function readPdfChapters(file) {
     const page_texts = [];
     for (let p = start; p <= end && p <= doc.numPages; p++) page_texts.push({ page: p, text: await pageText(p) });
     chapters.push({ title: distinct[i].title, start, end, text: page_texts.map((part) => part.text).join("\n\n").slice(0, 30000),
-      page_texts, skill_goal: marks[i].title, exercise_ref: "", include: !SKIP_CHAPTER.test(marks[i].title) });
+      page_texts, skill_goal: distinct[i].title, exercise_ref: "", include: !SKIP_CHAPTER.test(distinct[i].title) });
   }
   return { total: doc.numPages, chapters };
 }
