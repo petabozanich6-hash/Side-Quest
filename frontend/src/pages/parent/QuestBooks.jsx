@@ -153,7 +153,7 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
     <section ref={panelRef} className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (what members and buyers download), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it; members read and print selected pages online), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
         <BookForm key={draft ? JSON.stringify(draft) : "new"} data={data} initial={draft ? { ...EMPTY, ...draft } : undefined} onCancel={() => { setAdding(false); clearDraft?.(); }} onSaved={async () => { setAdding(false); clearDraft?.(); await reload(); }} />
@@ -544,7 +544,7 @@ function BookWorkspace({ book, reload }) {
     { id: "details", title: "Details and prices", done: !!book.title && book.price_cents != null,
       info: book.price_cents == null ? "No price yet, so only members can get it." : `Book ${money(book.price_cents)}${book.lessons_price_cents != null ? ` · Pack ${money(book.lessons_price_cents)}` : ""}${book.lesson_price_cents != null ? ` · Lesson ${money(book.lesson_price_cents)}` : ""}`,
       action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
-    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "What families download. The book stays hidden until this is uploaded.",
+    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "The high-quality PDF buyers can keep; members read the separate online version. Hidden until uploaded.",
       action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
     { id: "read", title: "Online reader for members", done: book.read_pages > 0, needs: book.has_book,
       info: readerBusy || busy === "read" ? `Preparing reader pages… ${readProgress || "starting"} — leave this tab open` : book.read_pages ? `${book.read_pages} verified pages: members read and print selected pages online` : "After PDF upload, prepare the member-only reader. It resumes after interrupted uploads.",
@@ -818,7 +818,7 @@ function BookView({ id }) {
             {book.subtitle && <p className="italic text-stone-700" style={{ fontFamily: "Georgia, serif" }}>{book.subtitle}</p>}
             {book.description && <p className="text-stone-700 whitespace-pre-line">{book.description}</p>}
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
-              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">Digital download · PDF</span>
+              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.can_download ? "Your purchased PDF" : book.included ? "Online member reader · selected-page printing" : "PDF available to purchase"}</span>
               {book.pages && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.pages} pages</span>}
               {book.book_bytes && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{mb(book.book_bytes)}</span>}
             </div>
