@@ -266,7 +266,9 @@ export default function LessonReview() {
   if (err) return <div className="p-8 text-rose-700" role="alert">{err}{(bookId || batchId || week) && <> <Link to={home} className="underline">{bookId ? "Back to book" : week ? "Back to Plan My Week" : "Back to all drafts"}</Link></>}</div>;
   if (!lesson) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
   const a = info.assumptions || {};
-  const flags = (lesson.ai_flags || []).concat((info.warnings || []).filter(w => !(lesson.ai_flags || []).includes(w)));
+  // Generator navigation may carry one-time warnings from an OLDER draft.
+  // The saved lesson's flags are authoritative after AI or manual edits.
+  const flags = Array.isArray(lesson.ai_flags) ? lesson.ai_flags : (info.warnings || []);
   const btn = "rounded-full px-5 py-2.5 text-sm font-semibold flex items-center gap-2 disabled:opacity-50";
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-4 max-w-5xl" data-testid="lesson-review">
@@ -303,13 +305,18 @@ export default function LessonReview() {
       )}
       {flags.length > 0 && lesson.status !== "ready" && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
-          <b>Worth a look:</b><ul className="list-disc pl-5 mt-1">{flags.map((x, i) => <li key={i}>{x}</li>)}</ul>
-          <button type="button" className="mt-2 rounded-lg bg-violet-700 text-white px-3 py-1.5 text-xs font-semibold"
-            data-testid="r-fix-warnings" onClick={() => {
-              setRefineInstruction(`Fix these specific issues in this lesson without removing sound teaching or changing unrelated content: ${flags.slice(0, 5).join("; ").slice(0, 450)}`);
-              setRefine(true);
-            }}><Sparkles size={13} className="inline mr-1" /> Ask AI to fix these issues</button>
-          <p className="text-xs mt-1">AI suggestions need your review. After accepting a correction, save it to the book plan and approve the final lesson separately.</p>
+          <b>Worth a look:</b>
+          <ul className="list-disc pl-5 mt-1 space-y-2">
+            {flags.map((x, i) => <li key={i}>
+              <span>{x}</span>{" "}
+              <button type="button" className="inline-flex items-center rounded-md border border-violet-500 bg-white px-2 py-1 text-xs font-semibold text-violet-900 hover:bg-violet-100"
+                data-testid={`r-fix-warning-${i}`} onClick={() => {
+                  setRefineInstruction(`Fix this specific quality problem in my saved lesson: ${x.slice(0, 390)}. Make a substantive change to the actual teaching, examples, or questions so the problem is resolved. Preserve everything else.`);
+                  setRefine(true);
+                }}><Sparkles size={12} className="inline mr-1" /> Fix this with AI</button>
+            </li>)}
+          </ul>
+          <p className="text-xs mt-2">Repair one issue at a time, review the proposed changes, then save. Remaining warnings update from the saved lesson.</p>
         </div>
       )}
 
