@@ -313,7 +313,9 @@ export async function syncOvernightWork(env: Env, now = new Date()) {
           // A newly reported quality problem is a fresh piece of work even if
           // that chapter passed an earlier repair. Never revive failed items.
           if(job.kind==="repair" && slots>0 && ["done","skipped"].includes(previous.status)
-             && "lesson_updated_at" in entry && entry.lesson_updated_at>previous.updated_at) {
+             && "lesson_updated_at" in entry && typeof entry.lesson_updated_at==="string"
+             && "lesson_id" in entry && typeof entry.lesson_id==="string"
+             && entry.lesson_updated_at>previous.updated_at) {
             const changed=await env.DB.prepare(`UPDATE quest_overnight_items SET status='pending',attempts=0,
               lesson_id=?,revision=?,book_title=?,chapter_title=?,last_error=NULL,lease_until=NULL,updated_at=?
               WHERE id=? AND job_id=? AND status IN ('done','skipped') AND updated_at<? AND
