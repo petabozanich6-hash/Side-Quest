@@ -387,7 +387,7 @@ function BookView({ id }) {
                 <span className="h-8 w-8 shrink-0 rounded-full bg-amber-100 text-amber-900 font-bold text-sm grid place-items-center">{l.position}</span>
                 <div className="flex-1 min-w-0"><p className="font-semibold text-slate-900">{l.title}</p><p className="text-xs text-stone-500">Chapter: {l.chapter_title}</p></div>
                 {l.lesson_id ? (
-                  <Link to={`/parent/lessons/${l.lesson_id}`} className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-900 px-3 py-1.5 text-xs font-bold"><Check size={14} /> Open & assign</Link>
+                  <Link to={`/parent/lessons/${l.lesson_id}/review`} className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-900 px-3 py-1.5 text-xs font-bold"><Check size={14} /> Open & assign</Link>
                 ) : l.unlocked ? (
                   <button type="button" onClick={() => addLessons(l.key)} disabled={!!adding} className="shrink-0 rounded-lg border border-emerald-700 px-3 py-1.5 text-xs font-bold text-emerald-900">{adding === l.key ? "Adding…" : "Add"}</button>
                 ) : book.can_buy_lesson ? (
