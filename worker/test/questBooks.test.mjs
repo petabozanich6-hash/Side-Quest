@@ -439,6 +439,16 @@ test("Overzealous AI cannot create a 45-minute lesson for each workbook page", (
   for (let i = 1; i < sections.length; i++) assert.equal(sections[i].start, sections[i-1].end + 1);
 });
 
+test("Short two- or three-page chapters are not split into one lesson per page", () => {
+  for (const count of [2, 3]) {
+    const pages = Array.from({ length: count }, (_, i) => ({ page: i + 1, text: "Teacher explanation and practice examples." }));
+    const tooMany = pages.map((p, i) => ({ start_page: p.page, title: "Mini topic " + i,
+      skill_goal: "Skill number " + i }));
+    const out = normaliseSubsections("Chapter", pages, tooMany);
+    assert.deepEqual(out.map((x) => [x.start, x.end]), [[1, count]]);
+  }
+});
+
 test("Owner-only chapter planning does not save lessons or chapter data", async () => {
   const h = harness();
   const { id, owner } = await publishedBook(h, { price_cents: 399 });
