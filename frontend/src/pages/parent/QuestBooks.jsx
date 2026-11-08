@@ -192,7 +192,7 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
             {readerJobs[b.id] && <p role="status" data-testid={`quest-reader-progress-${b.id}`} className="text-xs font-semibold text-emerald-900">
               Preparing the online reader: {readerJobs[b.id]}. You can keep using Side-Quest, but leave this browser tab open for rendering.
             </p>}
-            {lessonsFor === b.id && <QuestBookLessonsAdmin book={b} onChanged={reload} />
+            {lessonsFor === b.id && <QuestBookLessonsAdmin book={b} onChanged={reload} />}
             {editing === b.id && <BookForm data={data} initial={toForm(b)} onCancel={() => setEditing(null)} onSaved={async () => { setEditing(null); await reload(); }} />}
           </div>
         ))}
