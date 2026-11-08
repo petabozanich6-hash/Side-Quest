@@ -239,7 +239,20 @@ export async function processQuestOvernight(env: Env, now = new Date(),
     last_error='Interrupted repeatedly. Use Retry failed from Owner HQ.',
     lease_until=NULL,updated_at=? WHERE status='running' AND attempts>=? AND lease_until<?`)
     .bind(time,RETRIES,time).run();
-  // A temporarily exhausted AI allowance must not consume attempts or manually
+  const finalizeIdleJobs=async()=> {
+    await env.DB.prepare(`UPDATE quest_overnight_jobs
+      SET status=CASE WHEN EXISTS(SELECT 1 FROM quest_overnight_items i
+         WHERE i.job_id=quest_overnight_jobs.id AND i.status='failed')
+        THEN 'completed_with_errors' ELSE 'completed' END,
+        finished_at=?,updated_at=? WHERE status='running' AND NOT EXISTS(
+        SELECT 1 FROM quest_overnight_items i WHERE i.job_id=quest_overnight_jobs.id
+        AND i.status IN ('pending','running'))`)
+      .bind(time,time).run();
+  };
+  // Finalise already-completed work even if the AI allowance is unavailable.
+  // No pending lesson is claimed or altered by this bookkeeping.
+  await finalizeIdleJobs();
+    // A temporarily exhausted AI allowance must not consume attempts or manually
   // pause the job. Keep the saved work intact and retry on the next cron tick.
   const aiWaitMessage="Waiting for Workers AI access or daily allowance; retrying automatically.";
   if(!env.AI) {
@@ -325,13 +338,6 @@ export async function processQuestOvernight(env: Env, now = new Date(),
         String(e?.message||"Generation interrupted").slice(0,360),null);
     }
   }
-  await env.DB.prepare(`UPDATE quest_overnight_jobs
-    SET status=CASE WHEN EXISTS(SELECT 1 FROM quest_overnight_items i
-       WHERE i.job_id=quest_overnight_jobs.id AND i.status='failed')
-      THEN 'completed_with_errors' ELSE 'completed' END,
-      finished_at=?,updated_at=? WHERE status='running' AND NOT EXISTS(
-      SELECT 1 FROM quest_overnight_items i WHERE i.job_id=quest_overnight_jobs.id
-      AND i.status IN ('pending','running'))`)
-    .bind(time,time).run();
+  await finalizeIdleJobs();
   return {processed:item?1:0};
 }
