@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
@@ -259,11 +259,44 @@ function ShelfView() {
   );
 }
 
+function LessonPeek({ bookId, peek, onClose }) {
+  const [p, setP] = useState(null);
+  const [err, setErr] = useState("");
+  useEffect(() => {
+    api.get(`/quest-books/books/${encodeURIComponent(bookId)}/lessons/${encodeURIComponent(peek.key)}/preview`)
+      .then((r) => setP(r.data)).catch((e) => setErr(apiErrorMessage(e, "Could not load the preview")));
+  }, [bookId, peek.key]);
+  useEffect(() => { const k = (e) => e.key === "Escape" && onClose(); window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [onClose]);
+  const inc = p?.includes || {};
+  const bits = [inc.worked_examples && `${inc.worked_examples} worked example${inc.worked_examples === 1 ? "" : "s"}`, inc.activities && `${inc.activities} activit${inc.activities === 1 ? "y" : "ies"}`, inc.questions && `${inc.questions} practice question${inc.questions === 1 ? "" : "s"}`, inc.quiz && `${inc.quiz}-question quiz`, inc.parent_script && "parent script", inc.answer_key && "answer key"].filter(Boolean);
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 grid place-items-center p-4" onClick={onClose} role="dialog" aria-modal="true" aria-label={`Preview of ${peek.title}`}>
+      <div className="w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl bg-white shadow-xl p-5 space-y-3 text-sm" onClick={(e) => e.stopPropagation()} data-testid="quest-lesson-peek">
+        <div className="flex items-start gap-2">
+          <div className="mr-auto"><div className="text-[11px] font-bold uppercase tracking-wider text-violet-700">Lesson preview</div>
+            <h3 className="font-display text-lg font-bold text-slate-900 leading-tight">{peek.title}</h3>
+            {p && <p className="text-xs text-stone-500">{[p.stage, p.learning_area, p.minutes && `about ${p.minutes} min`].filter(Boolean).join(" · ")}</p>}</div>
+          <button type="button" onClick={onClose} aria-label="Close preview" className="rounded-full p-1 hover:bg-stone-100"><X size={18} /></button>
+        </div>
+        {err ? <p className="text-red-700">{err}</p> : !p ? <p className="text-stone-500">Loading…</p> : <>
+          {p.summary && <p className="text-stone-700">{p.summary}</p>}
+          {p.objectives.length > 0 && <div><p className="font-bold text-slate-800">Your child will learn to</p><ul className="list-disc pl-5 text-stone-700">{p.objectives.map((o, i) => <li key={i}>{o}</li>)}</ul></div>}
+          {p.opening && <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-stone-700 italic">{p.opening}</div>}
+          {p.sections.length > 0 && <div><p className="font-bold text-slate-800">What's inside</p><ol className="list-decimal pl-5 text-stone-700">{p.sections.map((s, i) => <li key={i}>{s}</li>)}</ol></div>}
+          {bits.length > 0 && <p className="text-stone-700"><span className="font-bold text-slate-800">Includes: </span>{bits.join(", ")}.</p>}
+          {p.key_words.length > 0 && <div className="flex flex-wrap gap-1">{p.key_words.map((k) => <span key={k} className="rounded-full bg-stone-100 px-2 py-0.5 text-xs text-stone-700">{k}</span>)}</div>}
+        </>}
+      </div>
+    </div>
+  );
+}
+
 function BookView({ id }) {
   const [params, setParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [peek, setPeek] = useState(null);
   const [confirming, setConfirming] = useState(params.get("purchase") === "success");
   const load = () => api.get(`/quest-books/books/${encodeURIComponent(id)}`, { params: { _: Date.now() } })
     .then(({ data: d }) => { setData(d); return d; }).catch((e) => { setError(apiErrorMessage(e, "Could not open this book")); return null; });
@@ -386,6 +419,8 @@ function BookView({ id }) {
               <li key={l.key} className="px-5 py-3 flex items-center gap-4">
                 <span className="h-8 w-8 shrink-0 rounded-full bg-amber-100 text-amber-900 font-bold text-sm grid place-items-center">{l.position}</span>
                 <div className="flex-1 min-w-0"><p className="font-semibold text-slate-900">{l.title}</p><p className="text-xs text-stone-500">Chapter: {l.chapter_title}</p></div>
+                <button type="button" onClick={() => setPeek({ key: l.key, title: l.title })} data-testid={`quest-lesson-peek-${l.key}`}
+                  className="shrink-0 inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-stone-100"><Eye size={14} /> Peek</button>
                 {l.lesson_id ? (
                   <Link to={`/parent/lessons/${l.lesson_id}/review`} className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-900 px-3 py-1.5 text-xs font-bold"><Check size={14} /> Open & assign</Link>
                 ) : l.unlocked ? (
@@ -396,6 +431,7 @@ function BookView({ id }) {
               </li>
             ))}
           </ol>
+          {peek && <LessonPeek bookId={book.id} peek={peek} onClose={() => setPeek(null)} />}
           {!data.member && <p className="text-xs text-stone-600">Lessons you buy stay yours to assign, even without a membership. Family Membership includes every book and lesson.</p>}
         </section>
       )}

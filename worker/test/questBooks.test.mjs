@@ -174,6 +174,21 @@ test("Only the owner manages chapters and publishes lessons", async () => {
   assert.equal(bad.status, 400, "chapters need readable text");
 });
 
+test("Any family can peek at a published lesson, but the preview leaves out the quiz content", async () => {
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const free = await h.parent("FREE_PREVIEW");
+  const r = await h.req(`/quest-books/books/${id}/lessons/c1/preview`, free.token);
+  assert.equal(r.status, 200);
+  const p = await r.json();
+  assert.equal(p.title, "Counting to 10");
+  assert.deepEqual(p.objectives, ["count to 10"]);
+  assert.deepEqual(p.sections, ["Counting"]);
+  assert.equal(p.includes.quiz, 1);
+  assert.ok(!JSON.stringify(p).includes("How many?"), "quiz questions stay hidden");
+  assert.equal((await h.req(`/quest-books/books/${id}/lessons/nope/preview`, free.token)).status, 404);
+});
+
 test("Members add every chapter lesson once; free and book-only families can't", async () => {
   const h = harness();
   const { id } = await bookWithLessons(h);
