@@ -5,6 +5,7 @@ import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase } from "../src/questBookPurchases.ts";
+import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
 
 let seq = 0;
 function harness() {
@@ -396,4 +397,46 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   const info = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters;
   assert.equal(info[0].draft.stale, true);
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409);
+});
+
+test("Automatic chapter planner returns ordered, skill-level, source-bounded subsections", async () => {
+  const pages = Array.from({ length: 9 }, (_, i) => ({ page: i + 11, text:
+    `Page ${i + 11}. Model and practise the same skill using counters and worked examples. `.repeat(8) }));
+  const cleaned = validatePlanRequest({ chapter_title: "Place value", pages });
+  assert.equal(cleaned.ok, true);
+  assert.equal(validatePlanRequest({ chapter_title: "Place value", pages: [pages[0], pages[2]] }).ok, false,
+    "missing source pages are not silently skipped");
+  const ai = { run: async () => ({ response: JSON.stringify({ subsections: [
+    { start_page: 11, title: "Represent numbers", skill_goal: "Show numbers with tens and ones", exercise_ref: "p. 11 Q1–3" },
+    { start_page: 15, title: "Partition numbers", skill_goal: "Partition numbers into tens and ones", exercise_ref: "p. 15 Q1–5" },
+  ] }) }) };
+  const sections = await suggestBookSubsections(ai, "Place value", pages, "Year 2", "Mathematics", "test");
+  assert.deepEqual(sections.map((s) => [s.start, s.end]), [[11, 14], [15, 19]]);
+  assert.deepEqual(sections.map((s) => s.title), ["Represent numbers", "Partition numbers"]);
+  assert.equal(sections[0].exercise_ref, "p. 11 Q1–3");
+  assert.throws(() => normaliseSubsections("Place value", pages, [{ start_page: 9000, title: "Fake" }]), /usable subsection boundaries/);
+});
+
+test("Automatic planner subdivides long content but never invents or drops pages", () => {
+  const pages = Array.from({ length: 12 }, (_, i) => ({ page: i + 1, text: "Count and write. ".repeat(300) }));
+  const out = normaliseSubsections("Counting", pages, [{ start_page: 1, title: "Count and write", skill_goal: "Fluent counting" }]);
+  assert.ok(out.length >= 6);
+  assert.deepEqual(out.map((s) => [s.start, s.end]), Array.from({ length: 6 }, (_, i) => [i*2+1, i*2+2]));
+  assert.throws(() => normaliseSubsections("Counting", [{ page: 1, text: "x".repeat(8001) }], [{ start_page: 1 }]),
+    /8,000/);
+});
+
+test("Owner-only chapter planning does not save lessons or chapter data", async () => {
+  const h = harness();
+  const { id, owner } = await publishedBook(h, { price_cents: 399 });
+  const user = await h.parent("ACTIVE_MONTHLY");
+  const url = `/quest-books/admin/books/${id}/chapters/plan`;
+  const input = { chapter_title: "Place value", pages: [
+    { page: 4, text: chapterText.repeat(3) }, { page: 5, text: chapterText.repeat(3) },
+  ] };
+  assert.equal((await h.req(url, user.token, "POST", input)).status, 403);
+  const noAi = await h.req(url, owner.token, "POST", input);
+  assert.equal(noAi.status, 503);
+  const storageKeys = [...h.storage.keys()];
+  assert.equal(storageKeys.some((key) => key.endsWith("/chapters.json")), false);
 });
