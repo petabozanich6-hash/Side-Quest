@@ -15,7 +15,8 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [scan, setScan] = useState(null); // chapters read from a PDF, awaiting confirmation
   const [busy, setBusy] = useState("");
   const [scanProgress, setScanProgress] = useState("");
-  const [approved, setApproved] = useState({});
+  const [reviewFilter, setReviewFilter] = useState("all");
+  const [reviewSearch, setReviewSearch] = useState("");
   const [confirmReset, setConfirmReset] = useState(false);
   const [remakeProgress, setRemakeProgress] = useState(null);
   const stopRemake = React.useRef(false);
@@ -128,7 +129,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       }
       if (preserved) toast.message(`${preserved} chapters with published lessons kept their existing subsection structure to protect family purchases.`);
       setScan(planned);
-      setApproved({});
+
       toast.success(`Identified ${chapters.length} chapters and ${planned.length} lesson subsections.`);
     } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Automatic chapter analysis failed") : e.message || "Could not analyse the PDF.", { duration: 11000 }); }
     finally { setScanProgress(""); setBusy(""); }
@@ -153,7 +154,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     try {
       await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${ch.id}/draft`, {}, { timeout: 10 * 60 * 1000 });
       toast.success(`Lesson drafted for “${ch.title}”. Review it before publishing.`);
-      setApproved((prior) => ({ ...prior, [ch.id]: false }));
+
       await load();
       return true;
     } catch (e) { toast.error(`${ch.title}: ${apiErrorMessage(e, "the lesson couldn't be drafted")}`, { duration: 9000 }); return false; }
@@ -171,7 +172,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         { confirm: "REBUILD_FROM_PDF" }, { timeout: 120000 });
       setConfirmReset(false);
       setScan(null);
-      setApproved({});
+
       autoRead.current = false;
       // Setting an empty source plan triggers automatic analysis of the
       // existing uploaded PDF; the owner does not need to upload it again.
@@ -199,11 +200,23 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     setRemakeProgress(null);
     toast.message(`Remade ${done} of ${all.length} lessons. Earlier drafts are in Archived.`);
   };
+  const setReviewed = async (chapter, approved) => {
+    if (!chapter.draft) return;
+    setBusy(`review:${chapter.id}`);
+    try {
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/review`,
+        { lesson_id: chapter.draft.lesson_id, approved });
+      await load();
+      toast.success(approved ? "Book lesson review saved" : "Book lesson returned to review queue");
+    } catch (e) {
+      toast.error(apiErrorMessage(e, "Could not save the review"), { duration: 9000 });
+    } finally { setBusy(""); }
+  };
   const publish = async () => {
     const drafts = data.chapters.filter((c) => c.draft);
     if (drafts.some((c) => c.draft.stale)) { toast.error("One or more lessons have changed workbook sources. Regenerate those sessions before publishing."); return; }
     if (drafts.some((c) => c.draft.status !== "ready")) { toast.error("Review each lesson and mark it Ready before publishing."); return; }
-    if (drafts.some((c) => approved[c.id] !== true)) { toast.error("Tick the review approval for each lesson before publishing."); return; }
+    if (drafts.some((c) => !c.draft.reviewed)) { toast.error("Save the review approval for every lesson before publishing."); return; }
     const items = drafts.map((c) => ({ chapter_id: c.id, lesson_id: c.draft.lesson_id, reviewed: true }));
     setBusy("publish");
     try {
@@ -265,6 +278,17 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   }
   if (!data) return <p className="text-sm text-stone-500" role="status">Loading chapters…</p>;
   const drafted = data.chapters.filter((c) => c.draft).length;
+  const reviewed = data.chapters.filter((c) => c.draft?.reviewed && !c.draft?.stale).length;
+  const ready = data.chapters.filter((c) => c.draft?.status === "ready" && !c.draft?.stale).length;
+  const total = data.chapters.length;
+  const visible = data.chapters.filter((c) => {
+    const matches = !reviewSearch.trim() || [c.title, c.unit_title, c.skill_goal, c.draft?.title].some((value) => String(value || "").toLowerCase().includes(reviewSearch.trim().toLowerCase()));
+    if (!matches) return false;
+    if (reviewFilter === "pending") return !c.draft?.reviewed || c.draft?.stale;
+    if (reviewFilter === "reviewed") return c.draft?.reviewed && !c.draft?.stale;
+    if (reviewFilter === "published") return !!c.published;
+    return true;
+  });
   return (
     <div className="rounded-xl border border-emerald-300 bg-white p-4 space-y-3" data-testid="quest-lessons-admin">
       <div className="flex flex-wrap items-center gap-2">
@@ -291,15 +315,32 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       {!data.chapters.length ? (
         <p className="text-sm text-stone-600">{book.has_book ? "Side-Quest automatically identifies chapters and their teachable subsections, with learning goals and workbook page references. You only decide which lessons to generate." : "Upload the Book PDF first, then its sessions can be read here."}</p>
       ) : <>
-        <p className="text-sm text-stone-600">Each chapter subsection creates one complete Side-Quest lesson, with explicit teaching, worked examples, guided and independent practice, assessment and parent answers. It works online or printed on its own. Workbook page references are additional practice for parents. Review the draft in <b>My lessons</b>, set it to Ready, then tick its approval before publishing.</p>
+        <p className="text-sm text-stone-600">These are <b>official book companion lessons</b>, not the private lessons you make for your own children. Open a lesson, edit and save it as Ready, then approve that saved version for this book. Editing after approval returns it to the review queue. Publishing is a separate step.</p>
+        <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 space-y-2" data-testid="book-readiness">
+          <div className="flex flex-wrap justify-between gap-2 text-sm text-emerald-950">
+            <b>Book readiness: {reviewed} of {total} lessons approved</b>
+            <span>{total ? Math.round(100 * reviewed / total) : 0}% ready · {drafted} drafted · {ready} saved Ready · {data.published_count} published</span>
+          </div>
+          <div className="h-2.5 rounded-full bg-emerald-100 overflow-hidden" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={reviewed} aria-label="Lessons reviewed for this book">
+            <div className="h-full bg-emerald-700 transition-all" style={{ width: `${total ? 100 * reviewed / total : 0}%` }} />
+          </div>
+          <p className="text-xs text-emerald-900">{reviewed === total && total ? "Every planned lesson has been reviewed. Publishing still requires your approval." : `${total - reviewed} companion lesson${total - reviewed === 1 ? "" : "s"} still need${total - reviewed === 1 ? "s" : ""} review.`}</p>
+        </div>
+        <div className="flex gap-2 flex-wrap items-center">
+          <input aria-label="Search book lessons" placeholder="Search chapter or lesson…" value={reviewSearch} onChange={(e) => setReviewSearch(e.target.value)} className="flex-1 min-w-[170px] rounded-lg border border-stone-300 px-3 py-2 text-sm" />
+          <select aria-label="Filter book lessons" value={reviewFilter} onChange={(e) => setReviewFilter(e.target.value)} className="rounded-lg border border-stone-300 px-3 py-2 text-sm">
+            <option value="all">All lessons</option><option value="pending">Needs review</option><option value="reviewed">Reviewed</option><option value="published">Published</option>
+          </select>
+        </div>
+        {!visible.length && <p className="text-sm text-stone-600">No lessons match this filter.</p>}
         <ul className="divide-y divide-stone-100">
-          {data.chapters.map((c, i) => (
+          {visible.map((c, i) => (
             <li key={c.id} className="flex flex-wrap items-center gap-2 py-2">
-              <span className="flex-1 min-w-[160px] text-sm"><span className="text-xs font-semibold text-emerald-800">{i === 0 || (data.chapters[i-1].unit_title || data.chapters[i-1].title) !== (c.unit_title || c.title) ? `Chapter: ${c.unit_title || c.title} · ` : ""}</span><b>{c.title}</b> <span className="text-xs text-stone-500">· PDF pp. {c.start}–{c.end} · {c.skill_goal || "Learning goal not set"}</span>{c.published && <span className="ml-2 text-[10px] font-bold uppercase text-emerald-700">Published</span>}{c.draft?.stale && <span className="ml-2 text-[10px] font-bold uppercase text-rose-700">Source changed — regenerate</span>}</span>
-              {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review`} className="text-sm font-semibold text-emerald-900 underline">Review “{c.draft.title}”</Link>}
+              <span className="flex-1 min-w-[160px] text-sm"><span className="text-xs font-semibold text-emerald-800">{i === 0 || (visible[i-1].unit_title || visible[i-1].title) !== (c.unit_title || c.title) ? `Chapter: ${c.unit_title || c.title} · ` : ""}</span><b>{c.title}</b> <span className="text-xs text-stone-500">· PDF pp. {c.start}–{c.end} · {c.skill_goal || "Learning goal not set"}</span>{c.published && <span className="ml-2 text-[10px] font-bold uppercase text-emerald-700">Published</span>}{c.draft?.stale && <span className="ml-2 text-[10px] font-bold uppercase text-rose-700">Source changed — regenerate</span>}</span>
+              {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review?book=${encodeURIComponent(book.id)}&chapter=${encodeURIComponent(c.id)}`} className="text-sm font-semibold text-emerald-900 underline">{c.draft.reviewed ? "Reopen" : "Review"} “{c.draft.title}”</Link>}
               {c.draft && <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-950">
-                <input type="checkbox" disabled={c.draft.stale || c.draft.status !== "ready" || !!busy} checked={approved[c.id] === true} onChange={(e) => setApproved((v) => ({ ...v, [c.id]: e.target.checked }))} />
-                I checked the lesson and answers
+                <input type="checkbox" disabled={c.draft.stale || c.draft.status !== "ready" || !!busy} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
+                Reviewed and saved{c.draft.reviewed_at && c.draft.reviewed ? ` · ${new Date(c.draft.reviewed_at).toLocaleDateString()}` : ""}
               </label>}
               <button type="button" disabled={!!busy} onClick={() => draft(c)} className="inline-flex items-center gap-1 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50 disabled:opacity-50">
                 {busy === c.id ? <><Loader2 size={13} className="animate-spin" /> Writing (1–3 min)…</> : <><Sparkles size={13} /> {c.draft ? "Remake" : "Make lesson"}</>}
