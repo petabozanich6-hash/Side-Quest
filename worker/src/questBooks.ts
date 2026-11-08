@@ -1179,7 +1179,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const chapters = await readChapters(c.env.BUCKET!, id);
     const published = await readPublished(c.env.BUCKET!, id);
-    const { results } = await c.env.DB.prepare(`SELECT id, title, status, version, updated_at, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision,
+    const { results } = await c.env.DB.prepare(`SELECT id, title, status, version, updated_at, data, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision,
         json_extract(data, '$.book_reviewed_version') AS reviewed_version, json_extract(data, '$.book_reviewed_at') AS reviewed_at,
         json_extract(data, '$.book_plan_saved_version') AS plan_saved_version, json_extract(data, '$.book_plan_saved_at') AS plan_saved_at FROM lessons
       WHERE family_id = ? AND archived_at IS NULL AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
@@ -1187,6 +1187,9 @@ export function registerQuestBooks(app: App, g: Guards) {
     const drafts = new Map<string, any>();
     for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, {
       lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision,
+      // Quality checks are computed from the actual saved lesson, not an AI
+      // flag or whether a parent happened to open the review screen.
+      quality_issues: companionLessonIssues(JSON.parse(r.data || "{}")),
       version: r.version, reviewed_at: r.reviewed_at,
       plan_saved_at: r.plan_saved_at,
       saved_to_plan: r.plan_saved_version !== null && Number(r.plan_saved_version) === Number(r.version),
