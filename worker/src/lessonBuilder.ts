@@ -516,7 +516,7 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
 
-export async function updateLesson(db: DB, familyId: string, id: string, input: unknown, now: Date = new Date(), expectedVersion?: number): Promise<Result<{ lesson: any; assigned_copies_unchanged: boolean }>> {
+export async function updateLesson(db: DB, familyId: string, id: string, input: unknown, now: Date = new Date(), expectedVersion?: number, expectedSnapshot?: { data: string; status: string }): Promise<Result<{ lesson: any; assigned_copies_unchanged: boolean }>> {
   const row = await ownLesson(db, familyId, id);
   if (!row) return fail(404, "Lesson not found");
   if (row.archived_at) return fail(409, "This lesson is archived. Restore it before editing.", "ARCHIVED");
@@ -529,7 +529,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (!limits.canCreate) return paywall("Your free preview has ended. Your lessons are kept; upgrade to keep editing.");
   const bad = await checkFiles(db, familyId, clean.value.file_ids);
   if (bad) return bad;
-  const sql = "UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?" + (expectedVersion === undefined ? "" : " AND version = ?");
+  const sql = "UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?" + (expectedVersion === undefined ? "" : " AND version = ?") + " AND data = ? AND status = ? AND archived_at IS NULL";
   const oldData = parseJson<any>(row.data, {});
   const newData = JSON.stringify({ ...toLessonData(clean.value), ...questTags(oldData),
     ...(oldData.ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : oldData.ai_flags || [] } : {}),
@@ -537,6 +537,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   });
   const values: (string | number | null)[] = [clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, newData, nowIso(now), id, familyId];
   if (expectedVersion !== undefined) values.push(expectedVersion);
+  values.push(expectedSnapshot?.data ?? row.data, expectedSnapshot?.status ?? row.status);
   const written = await db.prepare(sql).bind(...values).run();
   if (!written.meta?.changes) return fail(409, "The lesson changed while you were editing it. Reopen the lesson and retry.", "LESSON_VERSION_CHANGED");
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)), assigned_copies_unchanged: true };

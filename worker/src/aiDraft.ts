@@ -1356,8 +1356,10 @@ export async function refineLessonWithAi(
       const parsed: any = extractJson(out);
       patchRaw = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
     } catch {
+      retryFeedback = "The AI service interrupted the previous request. Return the requested complete JSON patch.";
+      if (attempt === 0) continue;
       await done("failed");
-      return lb.fail(502, "The AI service did not respond. Nothing was charged to your lesson-change allowance.", "AI_FAILED");
+      return lb.fail(502, "The AI service did not respond after two attempts. Nothing was charged to your lesson-change allowance.", "AI_FAILED");
     }
     const keys = patchRaw ? REFINABLE.filter((k) => patchRaw[k] !== undefined && (!targets.length || targets.includes(k))) : [];
     if (!keys.length) {
@@ -1412,7 +1414,7 @@ export async function refineLessonWithAi(
 }
 
 /** Save an accepted change: only the named parts are replaced; everything else, including manual edits, stays. */
-export async function applyLessonPatch(db: DB, familyId: string, lessonId: string, patch: unknown, now: Date = new Date(), expectedVersion?: number): Promise<Result<{ lesson: any }>> {
+export async function applyLessonPatch(db: DB, familyId: string, lessonId: string, patch: unknown, now: Date = new Date(), expectedVersion?: number, expectedSnapshot?: { data: string; status: string }): Promise<Result<{ lesson: any }>> {
   const row = await db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(lessonId, familyId).first<any>();
   if (!row) return lb.fail(404, "Lesson not found");
   const p = patch && typeof patch === "object" ? (patch as Record<string, unknown>) : {};
@@ -1420,6 +1422,8 @@ export async function applyLessonPatch(db: DB, familyId: string, lessonId: strin
   if (!Object.keys(picked).length) return lb.fail(400, "Nothing to apply.");
   if (expectedVersion !== undefined && (!Number.isInteger(expectedVersion) || Number(row.version) !== expectedVersion))
     return lb.fail(409, "This lesson changed since the AI wrote its suggestion. Reopen it and request the correction again.", "LESSON_VERSION_CHANGED");
+  if (expectedSnapshot && (row.data !== expectedSnapshot.data || row.status !== expectedSnapshot.status))
+    return lb.fail(409, "This lesson was reviewed or edited during AI repair. Reload before continuing.", "LESSON_VERSION_CHANGED");
   const cur: any = lb.lessonOut(row);
   const candidate = { ...cur, ...picked, status: cur.status };
   const valid = lb.sanitizeLessonInput(candidate);
@@ -1436,7 +1440,7 @@ export async function applyLessonPatch(db: DB, familyId: string, lessonId: strin
       String(picked[key]).trim() !== String((expected as any)[key] || "").trim());
     if (structural.length) return lb.fail(409, `The AI correction could not be saved without dropping content in: ${structural.join(", ")}. Edit that part manually or ask AI for a smaller correction.`, "PATCH_NOT_PERSISTABLE");
   }
-  const r = await lb.updateLesson(db, familyId, lessonId, candidate, now, expectedVersion);
+  const r = await lb.updateLesson(db, familyId, lessonId, candidate, now, expectedVersion, { data: row.data, status: row.status });
   if (!r.ok) return r;
   const saved = r.lesson;
   const lost = Object.keys(picked).filter((key) => JSON.stringify(saved[key]) !== JSON.stringify((expected as any)[key]));
@@ -1459,8 +1463,8 @@ export async function applyLessonPatch(db: DB, familyId: string, lessonId: strin
       if (existing) {
         const data = JSON.parse(existing.data);
         data.ai_flags = updatedFlags;
-        await db.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
-          .bind(JSON.stringify(data), lessonId, familyId, saved.version).run();
+        await db.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ? AND data = ? AND status = 'draft' AND archived_at IS NULL")
+          .bind(JSON.stringify(data), lessonId, familyId, saved.version, existing.data).run();
       }
     } catch { /* The correction is already saved; a quality check cannot undo it. */ }
   }

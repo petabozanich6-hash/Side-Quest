@@ -137,6 +137,7 @@ export default function LessonBuilder() {
   const [mode, setMode] = useState("edit"); // edit | preview | split
   const preview = mode === "preview";
   const baseline = useRef(null);
+  const savedVersion = useRef(undefined);
   const autosaving = useRef(null);
   const manualSaving = useRef(false);
   const [autosaved, setAutosaved] = useState(null);
@@ -156,6 +157,7 @@ export default function LessonBuilder() {
       setLoaded(false);
       setAutosaved(null);
       api.get(`/lessons/${id}`).then(r => {
+        savedVersion.current = r.data.version;
         const lesson = fromServer(r.data);
         baseline.current = JSON.stringify(lesson);
         setF(lesson);
@@ -182,7 +184,8 @@ export default function LessonBuilder() {
       const task = (async () => {
         try {
           const body = toServer(cur, "draft");
-          await api.put(`/lessons/${lid}`, body);
+          const written = await api.put(`/lessons/${lid}`, { ...body, expected_version: savedVersion.current });
+          savedVersion.current = written.data.version;
           const result = await api.get(`/lessons/${lid}`, { params: { _: Date.now() } });
           if (!verifiedSavedLesson(result.data, body)) throw new Error("The autosaved lesson did not match the draft.");
           baseline.current = JSON.stringify(cur);
@@ -211,7 +214,8 @@ export default function LessonBuilder() {
       if (autosaving.current) await autosaving.current;
       const snapshot = f;
       const body = toServer(snapshot, status);
-      const r = lessonId ? await api.put(`/lessons/${lessonId}`, body) : await api.post("/lessons", body);
+      const r = lessonId ? await api.put(`/lessons/${lessonId}`, { ...body, expected_version: savedVersion.current }) : await api.post("/lessons", body);
+      savedVersion.current = r.data.version;
       // A successful PUT is not proof that every editor field persisted.
       // Read the saved lesson back before clearing the unsaved indicator.
       const confirmation = await api.get(`/lessons/${r.data.id}`, { params: { _: Date.now() } });

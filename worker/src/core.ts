@@ -316,7 +316,9 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
 
   app.put("/api/lessons/:id", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
-    const r = await lb.updateLesson(c.env.DB, c.get("user").family_id, c.req.param("id"), b);
+    const expected = b.expected_version ?? b.version;
+    const r = await lb.updateLesson(c.env.DB, c.get("user").family_id, c.req.param("id"), b, new Date(),
+      expected === undefined ? undefined : Number(expected));
     return r.ok ? c.json({ ...r.lesson, assigned_copies_unchanged: r.assigned_copies_unchanged }) : send(c, r);
   });
 

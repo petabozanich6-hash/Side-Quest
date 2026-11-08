@@ -3,10 +3,11 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
-import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
+import { validateMeta, validateChapters, readChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
+import { processQuestOvernight, ensureOvernightTables } from "../src/questBookOvernight.ts";
 
 let seq = 0;
 // Quest Books aren't included with membership: families (members or not) buy the book or the pack.
@@ -175,6 +176,67 @@ const lessonBody = (title) => ({
   quiz: [{ question: "How many?", options: ["3", "4"], correct_index: 0, explanation: "Count them." }],
 });
 const chapterText = "Numbers to 10. Look, count, recognise and show. Count the dragon eggs one at a time and say each number.";
+
+test("Overnight queue groups missing lessons across books, skips saved drafts and keeps running without a browser", async () => {
+  const h=harness();
+  const {owner,id:first}=await publishedBook(h);
+  const chaptersA=[
+    {title:"Counting 1 to 10",start:2,end:3,text:chapterText,skill_goal:"Count objects"},
+    {title:"Counting 11 to 20",start:4,end:5,text:chapterText,skill_goal:"Count more objects"},
+  ];
+  assert.equal((await h.req(`/quest-books/admin/books/${first}/chapters`,owner.token,"PUT",{chapters:chaptersA})).status,200);
+  const another=await h.req("/quest-books/admin/books",owner.token,"POST",
+    {...details,title:"Another Overnight Book"});
+  assert.equal(another.status,200);
+  const second=(await another.json()).book.id;
+  assert.equal((await h.req(`/quest-books/admin/books/${second}/files/book`,owner.token,"PUT",pdf("SECOND BOOK"),"application/pdf")).status,200);
+  assert.equal((await h.req(`/quest-books/admin/books/${second}/chapters`,owner.token,"PUT",
+    {chapters:[{title:"Letter recognition",start:4,end:5,text:chapterText,skill_goal:"Find letters"}]})).status,200);
+  // One existing draft must not be remade or counted in missing.
+  const created=(await (await h.req("/lessons",owner.token,"POST",lessonBody("Existing lesson"))).json()).id;
+  const row=h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(created);
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
+    ...JSON.parse(row.data),quest_book_id:first,quest_chapter_id:"c1",quest_source_revision:"any",
+    ai_generated:true,ai_flags:[],
+  }),created);
+  const otherOwner=await h.parent("ACTIVE_MONTHLY");
+  const url="/quest-books/admin/overnight";
+  assert.equal((await h.req(url,otherOwner.token)).status,403);
+  const initial=await h.req(url,owner.token);
+  assert.equal(initial.status,200);
+  const plan=await initial.json();
+  const grouped=Object.fromEntries(plan.books.map((b)=>[b.id,b]));
+  assert.equal(grouped[first].missing,1);
+  assert.equal(grouped[first].generated,1);
+  assert.equal(grouped[second].missing,1);
+  h.env.AI={run:async()=>({})}; // Enabled, but the fake Cron generator avoids model calls.
+  const started=await h.req(url+"/start",owner.token,"POST",{book_ids:[first,second]});
+  assert.equal(started.status,200);
+  const job=(await started.json()).job;
+  assert.equal(job.total,2);
+  assert.equal(job.status,"running");
+  assert.equal((await h.req(url+"/start",owner.token,"POST",{book_ids:[first]})).status,409,
+    "only one active queue is allowed");
+  const control=url+"/"+job.id+"/control";
+  assert.equal((await h.req(control,owner.token,"POST",{action:"pause"})).status,200);
+  let calls=0;
+  const fake=async(_env,_user,_book,cid,skip)=>{assert.equal(skip,true);calls++;return {
+    ok:true,lesson:{id:`generated-${cid}-${calls}`},
+  };};
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:00:00Z"),fake)).processed,0,
+    "paused queue never generates a lesson");
+  assert.equal((await h.req(control,owner.token,"POST",{action:"resume"})).status,200);
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:05:00Z"),fake)).processed,1);
+  assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:10:00Z"),fake)).processed,1);
+  const finished=(await (await h.req(url,owner.token)).json()).job;
+  assert.equal(finished.status,"completed");
+  assert.equal(finished.counts.generated,2);
+  assert.equal(calls,2);
+  assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(created).archived_at,null,
+    "existing drafts stay untouched");
+});
+
+
 
 async function bookWithLessons(h) {
   const { owner, id } = await publishedBook(h, { price_cents: 399, lessons_price_cents: 1500, lesson_price_cents: 100 });
@@ -900,4 +962,76 @@ test("PDHPE and Creative Arts year-level books are for the primary years only", 
     assert.equal(validateMeta({ collection: "core", title: `Book ${subject} 7`, year: 7, subject }).ok, false, `${subject} isn't a secondary year-level book`);
   }
   assert.equal(validateMeta({ collection: "core", title: "Maths 8", year: 8, subject: "mathematics" }).ok, true);
+});
+
+
+test("Overnight finalization is per job and interrupted preparation releases the queue", async () => {
+  const h = harness();
+  await ensureOvernightTables(h.db);
+  const old = "2026-11-08T00:00:00Z";
+  for (const [id, status] of [["finished", "running"], ["busy", "running"], ["abandoned", "building"]]) {
+    h.db.raw.prepare(`INSERT INTO quest_overnight_jobs
+      (id,owner_user_id,family_id,status,total,created_at,updated_at) VALUES (?,?,?, ?,1,?,?)`)
+      .run(id,"owner",id,status,old,old);
+  }
+  h.db.raw.prepare(`INSERT INTO quest_overnight_items
+    (id,job_id,position,book_id,book_title,chapter_id,chapter_title,revision,status,attempts,lease_until,updated_at)
+    VALUES ('item','busy',0,'book','Book','c1','Chapter','rev','running',1,'2026-11-09T01:00:00Z',?)`).run(old);
+  await processQuestOvernight(h.env,new Date("2026-11-09T00:00:00Z"));
+  const state = Object.fromEntries(h.db.raw.prepare("SELECT id,status FROM quest_overnight_jobs").all().map(r=>[r.id,r.status]));
+  assert.deepEqual(state,{finished:"completed",busy:"running",abandoned:"cancelled"});
+});
+
+
+test("An older editor cannot overwrite a saved repair, and its latest edits persist", async () => {
+  const h = harness();
+  const owner = await h.parent("ACTIVE_MONTHLY");
+  const created = await (await h.req("/lessons",owner.token,"POST",lessonBody("Original"))).json();
+  const first = await h.req(`/lessons/${created.id}`,owner.token,"PUT",
+    {...created,title:"Repaired title",expected_version:created.version});
+  assert.equal(first.status,200);
+  const saved = await first.json();
+  const stale = await h.req(`/lessons/${created.id}`,owner.token,"PUT",
+    {...created,title:"Stale editor",expected_version:created.version});
+  assert.equal(stale.status,409);
+  const reloaded = await (await h.req(`/lessons/${created.id}`,owner.token)).json();
+  assert.equal(reloaded.title,"Repaired title");
+  assert.equal(reloaded.version,saved.version);
+});
+
+test("Fix All repair endpoint retries interruption, saves its Book Plan version and preserves notes", async () => {
+  const h = harness();
+  const {owner,id} = await publishedBook(h);
+  h.db.raw.prepare("UPDATE families SET plan='INTERNAL' WHERE id=?").run(owner.id);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",
+    {chapters:[{title:"Counting",start:1,end:2,text:chapterText}]});
+  const chapter = (await readChapters(h.env.BUCKET,id))[0];
+  const lesson = await (await h.req("/lessons",owner.token,"POST",
+    {...lessonBody("My lesson"),status:"draft",parent_notes:"Keep my revision"})).json();
+  const stored = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lesson.id);
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
+    ...JSON.parse(stored.data),ai_generated:true,source:"ai",ai_flags:[],
+    quest_book_id:id,quest_chapter_id:chapter.id,quest_source_revision:chapterRevision(chapter),
+    book_repair_requested:true,book_repair_note:"Add support for a struggling child",
+  }),lesson.id);
+  let calls=0;
+  h.env.AI={run:async()=>{
+    if(++calls===1)throw new Error("Temporary service interruption");
+    return {response:JSON.stringify({support:"Use ten counters. Touch each counter once while counting aloud together."})};
+  }};
+  const response=await h.req(`/quest-books/admin/books/${id}/chapters/${chapter.id}/repair-pass`,owner.token,"POST",
+    {lesson_id:lesson.id,expected_version:lesson.version});
+  const result=await response.json();
+  assert.equal(response.status,200,JSON.stringify(result));
+  assert.equal(calls,2);
+  assert.equal(result.changed,true);
+  assert.equal(result.saved_to_plan,true);
+  const reload=await (await h.req(`/lessons/${lesson.id}`,owner.token)).json();
+  assert.match(reload.support,/ten counters/);
+  assert.equal(reload.parent_notes,"Keep my revision");
+  assert.equal(reload.status,"draft");
+  assert.equal(reload.version,result.version);
+  const plan=await (await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token)).json();
+  assert.equal(plan.chapters[0].draft.saved_to_plan,true);
+  assert.equal(plan.chapters[0].draft.version,result.version);
 });
