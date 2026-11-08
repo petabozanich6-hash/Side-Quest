@@ -82,6 +82,26 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
 /** A chapter lesson as published to a book: a snapshot of the owner's reviewed lesson. */
 type Published = { key: string; chapter_id: string; chapter_title: string; title: string; stage: string; learning_area: string; data: Record<string, unknown> };
 
+const clip = (v: unknown, n: number) => { const t = typeof v === "string" ? v.replace(/\s+/g, " ").trim() : ""; return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t; };
+const count = (v: unknown) => (Array.isArray(v) ? v.length : 0);
+
+export function lessonPreview(l: Published) {
+  const d: any = l.data || {};
+  return {
+    title: l.title, chapter_title: l.chapter_title, stage: l.stage, learning_area: l.learning_area,
+    minutes: Number(d.duration_minutes) || null,
+    summary: clip(d.why_it_matters || d.summary || "", 260),
+    objectives: (Array.isArray(d.objectives) ? d.objectives : []).slice(0, 4).map((o: unknown) => clip(o, 160)).filter(Boolean),
+    opening: clip(d.introduction || "", 320),
+    sections: (Array.isArray(d.sections) ? d.sections : []).map((s: any) => clip(s?.heading || s?.title, 90)).filter(Boolean).slice(0, 8),
+    key_words: (Array.isArray(d.key_words) ? d.key_words : []).map((k: any) => clip(typeof k === "string" ? k : k?.word ?? k?.term, 40)).filter(Boolean).slice(0, 8),
+    includes: {
+      worked_examples: count(d.worked_examples), activities: count(d.activities) + count(d.guided_practice),
+      questions: count(d.questions), quiz: count(d.quiz), parent_script: Boolean(d.parent_script), answer_key: Boolean(d.answer_key),
+    },
+  };
+}
+
 async function readPublished(bucket: R2Bucket, id: string): Promise<Published[]> {
   const obj = await bucket.get(keyFor(id, "lessons"));
   if (!obj) return [];
@@ -365,6 +385,21 @@ export function registerQuestBooks(app: App, g: Guards) {
       member: a.member, preview: a.preview, book: out(book, a, billingConfig(c.env).ok),
       lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title, lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
     });
+  });
+
+  // A small "peek inside" for a published lesson, so parents can see what they'd be buying.
+  // Only a taste: goals, the opening, section headings and counts. Never the worked examples, questions or answers.
+  app.get("/api/quest-books/books/:id/lessons/:key/preview", g.auth, g.parent, async (c) => {
+    const id = c.req.param("id");
+    const key = c.req.param("key");
+    if (!VALID_ID.test(id) || !c.env.BUCKET) return c.json({ detail: "Lesson not found" }, 404);
+    const user = c.get("user");
+    const a = await accessFor(c.env.DB, user.family_id, user.id);
+    const book = (await listBooks(c.env.BUCKET)).find((b) => b.id === id && (a.owner || b.has_book));
+    const lesson = book && book.has_lessons ? (await readPublished(c.env.BUCKET, id)).find((l) => l.key === key) : null;
+    if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
+    c.header("Cache-Control", "private, no-store");
+    return c.json(lessonPreview(lesson));
   });
 
   // Copy the book's ready-made chapter lessons into the family's library (members and "book + lessons" buyers).
