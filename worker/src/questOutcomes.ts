@@ -44,12 +44,28 @@ const STOP = new Set(["the", "and", "that", "with", "for", "are", "this", "from"
 const toks = (s: string) => (s.toLowerCase().replace(/[^a-z0-9\s]/g, " ").match(/[a-z0-9]{3,}/g) || []).filter((w) => !STOP.has(w)).map((w) => w.replace(/(ing|ed|es|s)$/, ""));
 const describe = (o: CatalogueOutcome) => o.description || summaryFor(o.code);
 
+/**
+ * Core History and Geography workbooks should only receive outcomes for that
+ * discipline, not unrelated HASS strands. VIC stores the discipline in
+ * subject; WA often stores it in strand instead.
+ */
+const focusedDiscipline = (lesson: { learning_area?: string }): "history" | "geography" | null => {
+  const name = String(lesson.learning_area || "").trim().toLowerCase();
+  return name === "history" || name === "geography" ? name : null;
+};
+
 /** Outcomes for this lesson's year and subject in one catalogue (no languages, EAL or special pathways). */
 export function poolFor(cat: Catalogue, lesson: { learning_area?: string }, year: number | null): CatalogueOutcome[] {
   if (year === null) return [];
   const stage = stageFor(year === 0 ? "Foundation" : `Year ${year}`) || "";
   const area = areaMatcher(cat, stage)(String(lesson.learning_area || ""));
+  const discipline = focusedDiscipline(lesson);
   return cat.outcomes.filter((o) => {
+    if (cat.framework === "VIC" && o.status === "PUBLISHED_V2_BUT_V1_APPLIES_2026" && new Date().getFullYear() < 2027) return false;
+    if (discipline && (cat.framework === "VIC" || cat.framework === "WA")) {
+      const sourceDiscipline = cat.framework === "VIC" ? o.subject : o.strand;
+      if (!new RegExp(`\\b${discipline}\\b`, "i").test(String(sourceDiscipline || ""))) return false;
+    }
     if (o.pathway || o.stage.startsWith("EAL-") || (o.levels || []).some((l) => /^(ABLEWA|FL)/.test(l))) return false;
     if (o.learning_area !== area && !(o.learning_areas || []).includes(area)) return false;
     if (o.from != null && o.to != null) return year >= o.from && year <= o.to;
