@@ -16,6 +16,7 @@ export default function LessonsPage() {
   const [query, setQuery] = useState("");
   const [fSubject, setFSubject] = useState("");
   const [fYear, setFYear] = useState("");
+  const [fOrigin, setFOrigin] = useState("");
   const [sort, setSort] = useState("recent");
   const [fChild, setFChild] = useState("");
   const [assignedTo, setAssignedTo] = useState({});
@@ -56,10 +57,31 @@ export default function LessonsPage() {
   const [tab, setTab] = useState("");
   const current = tab || (!counts.ready && counts.review ? "review" : "ready");
 
+  // Classification is grounded in the existing book link and source metadata,
+  // never guessed from titles or whether a lesson was AI-generated.
+  const kindOf = l => l.quest_book_id ? (l.source === "side_quest_book" ? "book_copy" : "book_companion")
+    : l.source === "side_quest_standalone" ? "official_standalone" : "family";
+  const kindLabel = {
+    family: "Personal / family lesson",
+    book_companion: "Official book companion",
+    book_copy: "Book lesson in your library",
+    official_standalone: "Official standalone lesson",
+  };
+  const reviewLink = l => {
+    const bookContext = kindOf(l) === "book_companion" && l.quest_chapter_id
+      ? `?book=${encodeURIComponent(l.quest_book_id)}&chapter=${encodeURIComponent(l.quest_chapter_id)}` : "";
+    return `/parent/lessons/${l.id}/review${bookContext}`;
+  };
+  const editLink = l => {
+    const bookContext = kindOf(l) === "book_companion" && l.quest_chapter_id
+      ? `?book=${encodeURIComponent(l.quest_book_id)}&chapter=${encodeURIComponent(l.quest_chapter_id)}` : "";
+    return `/parent/lessons/${l.id}/edit${bookContext}`;
+  };
   const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const shown = lessons.filter(l => {
-    const t = [l.title, l.learning_area, ...(l.additional_learning_areas || []), l.year_level, ...(l.objectives || [])].join(" ").toLowerCase();
+    const t = [l.title, l.learning_area, l.quest_book_title, ...(l.additional_learning_areas || []), l.year_level, ...(l.objectives || [])].join(" ").toLowerCase();
     if (!showArchived && current !== "all" && stageOf(l) !== current) return false;
+    if (fOrigin && kindOf(l) !== fOrigin) return false;
     if (fSubject && l.learning_area !== fSubject && !(l.additional_learning_areas || []).includes(fSubject)) return false;
     if (fYear && l.year_level !== fYear) return false;
     if (fChild && !(assignedTo[fChild] && assignedTo[fChild].has(l.id))) return false;
@@ -151,6 +173,13 @@ export default function LessonsPage() {
             className="w-full rounded-xl border border-slate-300 bg-white pl-9 pr-9 py-2.5 text-sm focus:outline-none focus:border-slate-500" data-testid="lesson-search" />
           {query && <button onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"><X size={14} /></button>}
         </div>
+        <select className={sel} value={fOrigin} onChange={e => setFOrigin(e.target.value)} aria-label="Filter by lesson collection" data-testid="filter-origin">
+          <option value="">All lesson collections</option>
+          <option value="family">Personal / family lessons</option>
+          <option value="book_companion">Official book companions</option>
+          <option value="official_standalone">Official standalone lessons</option>
+          <option value="book_copy">Book lessons added to my library</option>
+        </select>
         <select className={sel} value={fSubject} onChange={e => setFSubject(e.target.value)} aria-label="Filter by subject" data-testid="filter-subject"><option value="">All subjects</option>{subjects.map(x => <option key={x}>{x}</option>)}</select>
         <select className={sel} value={fYear} onChange={e => setFYear(e.target.value)} aria-label="Filter by year level" data-testid="filter-year"><option value="">All year levels</option>{years.map(x => <option key={x}>{x}</option>)}</select>
         {students.length > 0 && <select className={sel} value={fChild} onChange={e => setFChild(e.target.value)} aria-label="Filter by child" data-testid="filter-child"><option value="">Any child</option>{students.map(st => <option key={st.id} value={st.id}>Given to {st.name}</option>)}</select>}
@@ -165,6 +194,9 @@ export default function LessonsPage() {
           const stage = stageOf(l);
           return (
           <div key={l.id} className="relative rounded-2xl border border-slate-200 bg-white p-5 flex flex-col hover:border-slate-400 transition-colors" data-testid={`lesson-${l.id}`}>
+            <div className="mb-2"><span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-950" data-testid={`lesson-kind-${l.id}`}>{kindLabel[kindOf(l)]}</span>
+              {kindOf(l) === "book_companion" && <span className="ml-2 text-xs text-stone-600">{l.quest_book_title || "Book collection"}</span>}
+            </div>
             <div className="font-mono text-[10px] uppercase tracking-wider text-slate-500">
               {[l.learning_area, l.year_level, l.duration_minutes && `${l.duration_minutes} min`].filter(Boolean).join(" · ") || "No subject yet"}
               {stage === "review" && <span className="ml-2 rounded-full bg-amber-100 border border-amber-200 px-2 py-0.5 normal-case tracking-normal text-amber-900">{l.ai_generated ? "AI draft" : "Draft"}</span>}
@@ -172,7 +204,7 @@ export default function LessonsPage() {
             </div>
             {/* The whole card opens the lesson; buttons sit above that link. */}
             <h3 className="font-display text-lg font-semibold text-slate-900 mt-1 leading-tight">
-              <Link to={`/parent/lessons/${l.id}/review`} className="after:absolute after:inset-0 after:rounded-2xl focus:outline-none focus-visible:underline" data-testid={`open-${l.id}`}>{l.title}</Link>
+              <Link to={reviewLink(l)} className="after:absolute after:inset-0 after:rounded-2xl focus:outline-none focus-visible:underline" data-testid={`open-${l.id}`}>{l.title}</Link>
             </h3>
             <p className="mt-2 text-sm text-slate-600 line-clamp-2">{(l.objectives || [])[0] || ""}</p>
             {(l.assigned_to || []).length > 0 && (
@@ -190,9 +222,9 @@ export default function LessonsPage() {
                 <button type="button" onClick={() => remove(l)} className={`${small} border-rose-300 text-rose-700`} data-testid={`delete-${l.id}`} aria-label={`Delete ${l.title}`}><Trash2 size={12} /> Delete</button>
               </> : <>
                 {stage === "review"
-                  ? <Link to={`/parent/lessons/${l.id}/review`} className="relative z-10 rounded-lg bg-amber-600 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`review-${l.id}`}><Eye size={12} /> Review</Link>
+                  ? <Link to={reviewLink(l)} className="relative z-10 rounded-lg bg-amber-600 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`review-${l.id}`}><Eye size={12} /> Review</Link>
                   : <button onClick={() => setAssignOpen(l)} className="relative z-10 rounded-lg bg-slate-900 text-white px-3 py-1.5 text-xs font-semibold flex items-center gap-1" data-testid={`assign-${l.id}`}><Send size={12} /> {stage === "ready" ? "Assign" : "Assign again"}</button>}
-                <Link to={`/parent/lessons/${l.id}/edit`} className={small} data-testid={`edit-${l.id}`}><Pencil size={12} /> Edit</Link>
+                <Link to={editLink(l)} className={small} data-testid={`edit-${l.id}`}><Pencil size={12} /> Edit</Link>
                 <details className="relative z-20 ml-auto" data-testid={`more-${l.id}`}>
                   <summary className="list-none cursor-pointer rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-slate-600" aria-label={`More actions for ${l.title}`}><MoreHorizontal size={14} /></summary>
                   <div className="absolute right-0 bottom-full mb-2 w-60 rounded-xl border border-slate-200 bg-white p-2 shadow-lg space-y-1">
@@ -209,11 +241,11 @@ export default function LessonsPage() {
         })}
         {!loading && shown.length === 0 && (
           <div className="col-span-full rounded-2xl border-2 border-dashed border-slate-200 p-6 sm:p-10 text-center text-sm text-slate-600" data-testid="empty-library">
-            {lessons.length && (query || fSubject || fYear || fChild) ? (
+            {lessons.length && (query || fOrigin || fSubject || fYear || fChild) ? (
               <>
                 <p className="font-semibold text-slate-800">No lessons match those filters.</p>
                 <p className="mt-1">Try a different search or show all your lessons.</p>
-                <button type="button" onClick={() => { setQuery(""); setFSubject(""); setFYear(""); setFChild(""); }} className="mt-4 rounded-full border border-slate-400 bg-white px-4 py-2 text-sm font-semibold">Clear filters</button>
+                <button type="button" onClick={() => { setQuery(""); setFOrigin(""); setFSubject(""); setFYear(""); setFChild(""); }} className="mt-4 rounded-full border border-slate-400 bg-white px-4 py-2 text-sm font-semibold">Clear filters</button>
               </>
             ) : lessons.length && !showArchived ? (
               <><p>{EMPTY[current]}</p>{current !== "all" && <button type="button" onClick={() => setTab("all")} className="mt-4 rounded-full border border-slate-400 bg-white px-4 py-2 text-sm font-semibold">Show all lessons</button>}</>
