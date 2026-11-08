@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { toast } from "sonner";
 import { ArrowLeft, BookText, ChevronLeft, ChevronRight, Printer, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
+import { useAuth } from "../../context/AuthContext";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
@@ -101,6 +102,7 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
   useEffect(() => { if (draft) { setAdding(true); panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); } }, [draft]);
   const [editing, setEditing] = useState(null);
   const [lessonsFor, setLessonsFor] = useState(null);
+  const [readerJobs, setReaderJobs] = useState({});
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const upload = async (book, spec, file) => {
@@ -114,12 +116,22 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
       if (!r.data?.ok) throw new Error("The upload wasn't confirmed.");
       toast.success(`${spec.label} saved for “${book.title}”`);
       if (spec.kind === "book") {
-        try { await makeLookInside(book, file); } catch { toast.error("Couldn't make the look-inside pages. Open the book space and press “Make them”."); }
-        try {
-          const id = toast.loading("Making reader pages for members…");
-          await makeReaderPages(book, file, (n, total) => toast.loading(`Making reader pages for members… ${n} of ${total}`, { id }));
-          toast.success("Reader pages ready. Members can read and print this book.", { id });
-        } catch { toast.error("Couldn't finish the reader pages. Open the book space and press “Make again”."); }
+        setReaderJobs((j) => ({ ...j, [book.id]: "Queued — keep this browser tab open" }));
+        // Upload is COMPLETE already. Continue preparation without locking the
+        // owner out of the screen; pages are resumable if the tab closes.
+        void (async () => {
+          try {
+            await makeLookInside(book, file);
+            await reload();
+          } catch { toast.error("Look-inside preview needs retrying. The PDF is safely uploaded."); }
+          try {
+            await makeReaderPages(book, file, (n, total) => setReaderJobs((j) => ({ ...j, [book.id]: `${n} of ${total} pages uploaded` })));
+            toast.success(`Members' reader is ready for “${book.title}”.`);
+            await reload();
+          } catch (e) {
+            toast.error(apiErrorMessage(e, "Reader preparation stopped. Reopen the book space and press Make again to resume."), { duration: 9000 });
+          } finally { setReaderJobs((j) => { const copy = { ...j }; delete copy[book.id]; return copy; }); }
+        })();
       }
       await reload();
     } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); }
@@ -141,7 +153,7 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
     <section ref={panelRef} className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (what members and buyers download), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it; members read and print selected pages online), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
         <BookForm key={draft ? JSON.stringify(draft) : "new"} data={data} initial={draft ? { ...EMPTY, ...draft } : undefined} onCancel={() => { setAdding(false); clearDraft?.(); }} onSaved={async () => { setAdding(false); clearDraft?.(); await reload(); }} />
@@ -177,6 +189,9 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
                 );
               })}
             </div>
+            {readerJobs[b.id] && <p role="status" data-testid={`quest-reader-progress-${b.id}`} className="text-xs font-semibold text-emerald-900">
+              Preparing the online reader: {readerJobs[b.id]}. You can keep using Side-Quest, but leave this browser tab open for rendering.
+            </p>}
             {lessonsFor === b.id && <QuestBookLessonsAdmin book={b} onChanged={reload} />}
             {editing === b.id && <BookForm data={data} initial={toForm(b)} onCancel={() => setEditing(null)} onSaved={async () => { setEditing(null); await reload(); }} />}
           </div>
@@ -397,15 +412,60 @@ async function makeReaderPages(book, file, onProgress) {
     const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
     pdf = new Blob([r.data], { type: "application/pdf" });
   }
-  await api.delete(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read`);
-  return readerPages(pdf, async (blob, n, total) => {
-    let tries = 0;
-    for (;;) {
-      try { await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read/${n}`, blob, { headers: { "Content-Type": "image/jpeg" }, timeout: 120000 }); break; }
-      catch (e) { if (++tries >= 3) throw e; await new Promise((r) => setTimeout(r, 1500 * tries)); }
+  const root = `/quest-books/admin/books/${encodeURIComponent(book.id)}`;
+  const { data: source } = await api.get(`${root}/read-source`);
+  const storageKey = `sq-quest-reader-build:${book.id}`;
+  let previous = null;
+  try { previous = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch { /* no prior build */ }
+  const generation = previous?.source_id === source.source_id && /^[a-f0-9-]{36}$/i.test(previous?.generation)
+    ? previous.generation : crypto.randomUUID();
+  try { localStorage.setItem(storageKey, JSON.stringify({ generation, source_id: source.source_id })); } catch { /* resume only where supported */ }
+  const progress = await api.get(`${root}/read-build/${encodeURIComponent(generation)}/progress`);
+  const already = new Set(progress.data.uploaded || []);
+  let completed = already.size;
+  const uploads = new Set();
+  let failure = null;
+  const send = async (blob, n, total) => {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        await api.put(`${root}/read-build/${encodeURIComponent(generation)}/${n}`, blob, {
+          headers: { "Content-Type": "image/jpeg" }, timeout: 120000,
+        });
+        completed++;
+        onProgress?.(completed, total);
+        return;
+      } catch (e) {
+        if (attempt === 2) throw e;
+        await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)));
+      }
     }
-    onProgress?.(n, total);
-  });
+  };
+  let total = 0;
+  try {
+    total = await readerPages(pdf, async (blob, n, pageTotal) => {
+      if (failure) throw failure;
+      if (already.has(n)) { onProgress?.(completed, pageTotal); return; }
+      // Render the next pages while up to three completed JPEGs upload.
+      // Bounded work avoids hundreds of simultaneous requests or huge memory spikes.
+      while (uploads.size >= 3) {
+        await Promise.race(uploads);
+        if (failure) throw failure;
+      }
+      const task = send(blob, n, pageTotal).catch((e) => { failure = e; }).finally(() => uploads.delete(task));
+      uploads.add(task);
+    }, { skipPages: already });
+    await Promise.all(uploads);
+    if (failure) throw failure;
+    const finished = await api.post(`${root}/read-build/${encodeURIComponent(generation)}/finish`, {
+      source_id: source.source_id, total,
+    }, { timeout: 120000 });
+    if (!finished.data.ok || finished.data.pages !== total)
+      throw new Error("The server did not confirm all reader pages.");
+    try { localStorage.removeItem(storageKey); } catch {}
+    return total;
+  } finally {
+    await Promise.allSettled([...uploads]);
+  }
 }
 
 async function makeLookInside(book, file) {
@@ -428,6 +488,8 @@ function BookWorkspace({ book, reload }) {
   const [opts, setOpts] = useState(null);
   const [busy, setBusy] = useState("");
   const [progress, setProgress] = useState(0);
+  const [readerBusy, setReaderBusy] = useState(false);
+  const [readProgress, setReadProgress] = useState("");
   const [workspaceParams] = useSearchParams();
   const [open, setOpen] = useState(() => workspaceParams.get("workspace") === "lessons" ? "lessons" : null); // "details" | "lessons"
   useEffect(() => { api.get("/quest-books").then((r) => setOpts(r.data)).catch(() => {}); }, []);
@@ -438,18 +500,22 @@ function BookWorkspace({ book, reload }) {
     setBusy(kind); setProgress(0);
     const ok = await uploadBookFile(book, spec, file, setProgress);
     if (ok && kind === "book") {
-      setBusy("look");
-      try { const n = await makeLookInside(book, file); toast.success(`Made ${n} look-inside pages.`); }
-      catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the look-inside pages. Use “Make again” to retry.")); }
-      setBusy("read");
-      try { await makeReaderPages(book, file, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); }
-      catch (e) { toast.error(apiErrorMessage(e, "Couldn't finish the reader pages. Use “Make again” to retry.")); }
-      setReadProgress("");
+      setReaderBusy(true);
+      setReadProgress("Starting — keep this browser tab open");
+      void (async () => {
+        try { await makeLookInside(book, file); toast.success("Look-inside preview ready."); await reload(); }
+        catch (e) { toast.error(apiErrorMessage(e, "Couldn't prepare the look-inside preview. Retry from the book workspace.")); }
+        try {
+          await makeReaderPages(book, file, (n, total) => setReadProgress(`${n} of ${total} uploaded`));
+          toast.success("All members' reader pages have been verified.");
+          await reload();
+        } catch (e) { toast.error(apiErrorMessage(e, "Reader preparation paused. Press Make again to resume."), { duration: 9000 }); }
+        finally { setReaderBusy(false); setReadProgress(""); }
+      })();
     }
     setBusy(""); setProgress(0);
     if (ok) await reload();
   };
-  const [readProgress, setReadProgress] = useState("");
   const remakeRead = async () => {
     setBusy("read");
     try { await makeReaderPages(book, null, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); await reload(); }
@@ -478,11 +544,14 @@ function BookWorkspace({ book, reload }) {
     { id: "details", title: "Details and prices", done: !!book.title && book.price_cents != null,
       info: book.price_cents == null ? "No price yet, so only members can get it." : `Book ${money(book.price_cents)}${book.lessons_price_cents != null ? ` · Pack ${money(book.lessons_price_cents)}` : ""}${book.lesson_price_cents != null ? ` · Lesson ${money(book.lesson_price_cents)}` : ""}`,
       action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
-    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "What families download. The book stays hidden until this is uploaded.",
+    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "The high-quality PDF buyers can keep; members read the separate online version. Hidden until uploaded.",
       action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
-    { id: "read", title: "Reader pages for members", done: book.read_pages > 0, needs: book.has_book,
-      info: busy === "read" ? `Making the pages… ${readProgress}` : book.read_pages ? `${book.read_pages} pages: members read and print them in Side-Quest` : "Made automatically from the Book PDF. Members read and print these instead of downloading.",
-      action: book.has_book && btn(busy === "read" ? "Making…" : book.read_pages ? "Make again" : "Make them", remakeRead) },
+    { id: "read", title: "Online reader for members", done: book.read_pages > 0, needs: book.has_book,
+      info: readerBusy || busy === "read" ? `Preparing reader pages… ${readProgress || "starting"} — leave this tab open` : book.read_pages ? `${book.read_pages} verified pages: members read and print selected pages online` : "After PDF upload, prepare the member-only reader. It resumes after interrupted uploads.",
+      action: book.has_book && <button type="button" disabled={!!busy || readerBusy} onClick={remakeRead}
+        className="inline-flex items-center rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-bold text-emerald-900 disabled:opacity-50">
+        {busy === "read" || readerBusy ? "Preparing…" : book.read_pages ? "Make again" : "Make / resume"}
+      </button> },
     { id: "look", title: "Look-inside pages", done: book.look_pages > 0, needs: book.has_book,
       info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
@@ -565,11 +634,13 @@ function LookInside({ book, onClose, children }) {
 /** Members read and print a book from its page pictures. The PDF itself is never sent. */
 function BookReader({ book, onClose }) {
   const total = book.read_pages;
+  const { user } = useAuth();
+  const maxPrint = 12;
   const urls = React.useRef(new Map());
   const [, force] = useState(0);
   const [page, setPage] = useState(1);
   const [printOpen, setPrintOpen] = useState(false);
-  const [range, setRange] = useState({ from: 1, to: total });
+  const [range, setRange] = useState({ from: 1, to: Math.min(total, 8) });
   const [printing, setPrinting] = useState("");
   const scroller = React.useRef(null);
   const load = React.useCallback(async (n) => {
@@ -603,6 +674,10 @@ function BookReader({ book, onClose }) {
   const print = async () => {
     const from = Math.max(1, Math.min(total, Number(range.from) || 1));
     const to = Math.max(from, Math.min(total, Number(range.to) || total));
+    if (to - from + 1 > maxPrint) {
+      toast.error(`Members can print up to ${maxPrint} pages at a time. Choose a smaller activity range, or purchase the PDF for unlimited personal printing.`);
+      return;
+    }
     setPrinting(`Getting pages ready… 0 of ${to - from + 1}`);
     try {
       const list = [];
@@ -615,9 +690,15 @@ function BookReader({ book, onClose }) {
       const rootEl = document.createElement("div");
       rootEl.id = "sq-print-root";
       const style = document.createElement("style");
-      style.textContent = "@media screen{#sq-print-root{display:none}}@media print{body>*:not(#sq-print-root){display:none!important}#sq-print-root img{display:block;width:100%;height:auto;page-break-after:always;break-after:page}@page{margin:0}}";
+      style.textContent = "@media screen{#sq-print-root{display:none}}@media print{body>*:not(#sq-print-root){display:none!important}#sq-print-root .sq-print-page{page-break-after:always;break-after:page;position:relative;width:100%;}#sq-print-root img{display:block;width:100%;height:auto;}#sq-print-root .sq-print-label{font:11px sans-serif;text-align:right;color:#666;padding:4px 12px;}@page{margin:0}}";
       rootEl.appendChild(style);
-      for (const u of list) { const img = document.createElement("img"); img.src = u; img.alt = ""; rootEl.appendChild(img); }
+      for (const u of list) {
+        const pageEl = document.createElement("div"); pageEl.className = "sq-print-page";
+        const img = document.createElement("img"); img.src = u; img.alt = "";
+        const label = document.createElement("div"); label.className = "sq-print-label";
+        label.textContent = `Side-Quest membership print · Licensed to ${user?.name || "this family account"} · Not for redistribution`;
+        pageEl.appendChild(img); pageEl.appendChild(label); rootEl.appendChild(pageEl);
+      }
       document.body.appendChild(rootEl);
       await Promise.all([...rootEl.querySelectorAll("img")].map((img) => (img.complete ? null : new Promise((r) => { img.onload = r; img.onerror = r; }))));
       const done = () => { rootEl.remove(); window.removeEventListener("afterprint", done); };
@@ -645,7 +726,7 @@ function BookReader({ book, onClose }) {
           <span>to</span>
           <input type="number" min={1} max={total} value={range.to} onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))} className="w-20 rounded border border-stone-300 px-2 py-1" aria-label="To page" />
           <button type="button" onClick={() => setRange({ from: page, to: page })} className="underline">Just this page</button>
-          <button type="button" onClick={() => setRange({ from: 1, to: total })} className="underline">Whole book</button>
+          <span className="text-xs text-stone-600">Up to {maxPrint} pages per print job. Full PDF printing is included with a purchased book.</span>
           <button type="button" onClick={print} disabled={!!printing} className="ml-auto rounded-lg bg-emerald-900 text-white px-3 py-1.5 font-bold disabled:opacity-60">{printing || "Print"}</button>
         </div>
       )}
@@ -737,7 +818,7 @@ function BookView({ id }) {
             {book.subtitle && <p className="italic text-stone-700" style={{ fontFamily: "Georgia, serif" }}>{book.subtitle}</p>}
             {book.description && <p className="text-stone-700 whitespace-pre-line">{book.description}</p>}
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
-              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">Digital download · PDF</span>
+              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.can_download ? "Your purchased PDF" : book.included ? "Online member reader · selected-page printing" : "PDF available to purchase"}</span>
               {book.pages && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.pages} pages</span>}
               {book.book_bytes && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{mb(book.book_bytes)}</span>}
             </div>

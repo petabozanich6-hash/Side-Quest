@@ -1,6 +1,6 @@
 # Quest Books
 
-Side-Quest's own downloadable subject books (Mathematics, English, Science, History, Geography) for Foundation to
+Side-Quest's own subject workbooks (Mathematics, English, Science, History, Geography) for Foundation to
 Year 10. Parents find them under **Quest Books** in the sidebar (`/parent/quest-books`).
 
 Code: `worker/src/questBooks.ts` (routes), `worker/src/questBookPurchases.ts` (single-book purchases), the Stripe
@@ -9,18 +9,20 @@ webhook in `worker/src/billing.ts`, `frontend/src/pages/parent/QuestBooks.jsx`,
 
 ## Who gets what
 
-| Family | Can download |
-| --- | --- |
-| Family Membership (and the owner) | Every book, included |
-| Anyone signed in (including the free preview) | Every book's free sample PDF |
-| Bought a book (any non-member) | That book, for good, even after the preview ends |
-| Bought "book + all lessons" | The book and every published chapter lesson |
-| Bought single lessons | Just those chapter lessons (not the book) |
+| Family | Online reader | Download complete PDF | Companion lessons |
+| --- | --- | --- | --- |
+| Active Family Membership | Core books while subscribed | No, unless separately purchased | Core lessons included |
+| Any signed-in family, including free previews | Free look-inside/sample only | Free sample PDF only | Not unlocked |
+| Purchased book | Purchased book permanently | Yes, permanently | Separate or with bundle |
+| Purchased book + lessons bundle | Purchased book permanently | Yes, permanently | Published lessons for that book |
+| Purchased single lessons | No book access | No | Only the purchased lessons |
+| Platform owner | All books | All books | Review and publishing workspace |
 
-A book with no price is for members only. Books are digital downloads (PDF) the family keeps and prints as needed.
-Lessons a family is entitled to are copied into **My lessons** with one tap and stay assignable even after a free preview
-ends (`assignLesson` checks `isBookLessonGrant`). A book-only buyer upgrades to the bundle for the difference.
+The original book PDF stays in private storage. Members read page images online, and can print selected page ranges, but do not receive the full PDF download. Purchased books include the full PDF and unlimited personal printing. The reader build uses resumable, bounded-concurrency page uploads and is activated only after every page is verified; rendering continues only while the owner's browser tab stays open.
 
+Printing can still be redirected to PDF, and screenshots or browser capture cannot be completely prevented. This is a licensing and convenience distinction rather than foolproof copy protection.
+
+Lessons a family is entitled to are copied into My lessons with one tap and stay assignable even after a free preview ends. Book-only buyers can upgrade to the bundle for the difference.
 ## Rebuilding a pre-release book's lesson collection
 
 The book-space **Start fresh from this PDF** action now lets the owner repair an early or badly divided

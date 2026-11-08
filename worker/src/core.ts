@@ -303,7 +303,8 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
 
   app.post("/api/lessons/:id/apply-patch", auth, parent, async (c) => {
     const b: any = await c.req.json().catch(() => ({}));
-    const r = await aid.applyLessonPatch(c.env.DB, c.get("user").family_id, c.req.param("id"), b.patch);
+    const r = await aid.applyLessonPatch(c.env.DB, c.get("user").family_id, c.req.param("id"), b.patch, new Date(),
+      b.expected_version === undefined ? undefined : Number(b.expected_version));
     return r.ok ? c.json(r.lesson) : send(c, r);
   });
 

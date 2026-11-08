@@ -181,10 +181,16 @@ export async function lookInsidePages(file, { count = 6, width = 560, label = "S
  * Quest Books reader pages: every page as a print-quality JPEG (about 150 dpi on A4), with a small footer, so members
  * can read and print in Side-Quest without the PDF itself. Calls onPage(blob, pageNumber, total) for each page in order.
  */
-export async function readerPages(file, onPage, { width = 1240, quality = 0.8 } = {}) {
+export async function readerPages(file, onPage, { width = 1240, quality = 0.8, skipPages = null } = {}) {
   const doc = await loadPdf(file);
   const n = doc.numPages;
+  if (n > 400) {
+    await doc.destroy();
+    throw new Error("Member readers support up to 400 pages per book. Split this PDF into separate volumes.");
+  }
+  try {
   for (let p = 1; p <= n; p++) {
+    if (skipPages?.has(p)) continue;
     const page = await doc.getPage(p);
     const viewport = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width });
     const canvas = document.createElement("canvas");
@@ -198,6 +204,10 @@ export async function readerPages(file, onPage, { width = 1240, quality = 0.8 } 
     canvas.width = 0; canvas.height = 0;
     if (!blob) throw new Error(`Page ${p} could not be drawn.`);
     await onPage(blob, p, n);
+    page.cleanup();
   }
   return n;
+  } finally {
+    await doc.destroy();
+  }
 }

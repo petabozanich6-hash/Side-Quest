@@ -58,8 +58,8 @@ function summarise(v) {
 }
 const NAMES = { sections: "Explanations", worked_examples: "Worked examples", guided_practice: "Practice questions", activities: "Activities", questions: "Written questions", quiz: "Quiz", introduction: "Introduction", consolidation: "Wrap-up", title: "Title", answer_key: "Answer key", parent_script: "Teaching script", misconceptions: "Common mistakes", texts: "Readings", objectives: "Learning goals", teaching_questions: "Questions to ask", support: "Support ideas", extension: "Challenge", teaching_plan: "Teaching plan", why_it_matters: "Why it matters", materials: "Materials", prior_knowledge: "Prior knowledge", evidence_suggestions: "Evidence ideas" };
 
-export function RefinePanel({ lessonId, onApplied, onClose }) {
-  const [text, setText] = useState("");
+export function RefinePanel({ lessonId, onApplied, onClose, initialInstruction = "", bookContext = null, onPlanSaved }) {
+  const [text, setText] = useState(initialInstruction);
   const [part, setPart] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -75,10 +75,36 @@ export function RefinePanel({ lessonId, onApplied, onClose }) {
     finally { setBusy(false); }
   };
   const accept = async () => {
+    if (!proposal) return;
     setBusy(true);
-    try { const r = await api.post(`/lessons/${lessonId}/apply-patch`, { patch: proposal.patch }); toast.success("Change applied"); setProposal(null); setText(""); onApplied(r.data); }
-    catch (e) { setErr(e.response?.data?.detail || "Could not apply the change."); }
-    finally { setBusy(false); }
+    setErr("");
+    try {
+      const r = await api.post(`/lessons/${lessonId}/apply-patch`,
+        { patch: proposal.patch, expected_version: proposal.base_version });
+      const reloaded = await api.get(`/lessons/${lessonId}`, { params: { _: Date.now() } });
+      const stored = reloaded.data;
+      if (Number(stored.version) !== Number(r.data.version) ||
+          proposal.keys.some((k) => JSON.stringify(stored[k]) !== JSON.stringify(r.data[k]))) {
+        throw new Error("The updated lesson could not be verified after saving. Reopen it before trying again.");
+      }
+      onApplied(stored);
+      setProposal(null);
+      setText("");
+      if (bookContext?.bookId && bookContext?.chapterId) {
+        try {
+          await api.post(`/quest-books/admin/books/${encodeURIComponent(bookContext.bookId)}/chapters/${encodeURIComponent(bookContext.chapterId)}/save-to-plan`,
+            { lesson_id: lessonId, expected_version: Number(stored.version) });
+          await onPlanSaved?.();
+          toast.success("AI correction saved to this book's lesson plan and verified.");
+        } catch (e) {
+          const message = apiErrorMessage(e, "The lesson edit saved, but the book plan was not updated.");
+          setErr(`The AI edit was saved to your lesson, but not confirmed in the book plan: ${message}. Use Save to Book Plan below to retry.`);
+          toast.error("Lesson updated, but book-plan save needs another attempt.", { duration: 9000 });
+        }
+      } else toast.success("AI correction saved and verified. Reopen this lesson to see the change.");
+    } catch (e) {
+      setErr(apiErrorMessage(e, e.message || "Could not save the AI correction."));
+    } finally { setBusy(false); }
   };
   return (
     <div className="rounded-2xl border border-violet-300 bg-violet-50/70 p-4 space-y-3" data-testid="refine-panel">
@@ -104,7 +130,7 @@ export function RefinePanel({ lessonId, onApplied, onClose }) {
           ))}
           {proposal.warnings?.length > 0 && <ul className="list-disc pl-5 text-xs text-amber-900">{proposal.warnings.map((w, i) => <li key={i}>{w}</li>)}</ul>}
           <div className="flex gap-2">
-            <button disabled={busy} onClick={accept} className="rounded-full bg-emerald-700 text-white px-4 py-1.5 text-sm font-semibold disabled:opacity-50" data-testid="refine-accept">Use this change</button>
+            <button disabled={busy} onClick={accept} className="rounded-full bg-emerald-700 text-white px-4 py-1.5 text-sm font-semibold disabled:opacity-50" data-testid="refine-accept">{busy ? "Saving and checking…" : bookContext ? "Use this change & Save to Book Plan" : "Use this change & Save"}</button>
             <button disabled={busy} onClick={() => setProposal(null)} className="rounded-full border border-slate-400 bg-white px-4 py-1.5 text-sm font-semibold" data-testid="refine-reject">Keep what I had</button>
           </div>
         </div>
@@ -161,6 +187,7 @@ export default function LessonReview() {
   const [students, setStudents] = useState([]);
   const [err, setErr] = useState("");
   const [refine, setRefine] = useState(false);
+  const [refineInstruction, setRefineInstruction] = useState("");
   const [assign, setAssign] = useState(null);
   const [busy, setBusy] = useState(false);
   const load = useCallback(() => { setLesson(null); setErr(""); setAssign(null); setRefine(false); return api.get(`/lessons/${id}`).then(r => setLesson(r.data)).catch(e => setErr(e.response?.data?.detail || "Could not open this lesson")); }, [id]);
@@ -182,13 +209,43 @@ export default function LessonReview() {
   const previousBookEntry = bookIndex > 0 ? [...bookEntries.slice(0, bookIndex)].reverse().find((ch) => ch.draft?.lesson_id) : null;
   const bookLessonUrl = (ch) => `/parent/lessons/${ch.draft.lesson_id}/review?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(ch.id)}`;
   const currentBookEntry = bookIndex >= 0 ? bookEntries[bookIndex] : null;
+  const refreshBookPlan = async () => {
+    if (!bookId || !chapterId) return null;
+    const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters`, { params: { _: Date.now() } });
+    setBookReview(response.data);
+    return response.data;
+  };
+  const saveToBookPlan = async () => {
+    if (!bookId || !chapterId || lesson?.quest_book_id !== bookId || lesson?.quest_chapter_id !== chapterId) {
+      toast.error("This lesson is not linked to the selected book plan."); return;
+    }
+    setBusy(true);
+    try {
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/save-to-plan`,
+        { lesson_id: id, expected_version: Number(lesson.version) });
+      const checked = await refreshBookPlan();
+      const draft = checked?.chapters?.find((ch) => ch.id === chapterId)?.draft;
+      if (!draft?.saved_to_plan || draft.lesson_id !== id || Number(draft.version) !== Number(lesson.version))
+        throw new Error("The plan did not confirm the saved version. Reopen the lesson to investigate.");
+      toast.success("Saved and verified in your book plan.");
+    } catch (e) { toast.error(apiErrorMessage(e, e.message || "Could not save to the book plan"), { duration: 9000 }); }
+    finally { setBusy(false); }
+  };
   const approveBook = async () => {
     if (!bookId || !chapterId || !currentBookEntry) { toast.error("Could not verify which book lesson you are reviewing."); return; }
     setBusy(true);
     try {
+      if (!currentBookEntry.draft?.saved_to_plan) {
+        await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/save-to-plan`,
+          { lesson_id: id, expected_version: Number(lesson.version) });
+      }
       await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
         { lesson_id: id, approved: true });
-      toast.success("Review saved for this book.");
+      const confirmed = await refreshBookPlan();
+      const current = confirmed?.chapters?.find((ch) => ch.id === chapterId)?.draft;
+      if (!current?.reviewed || !current?.saved_to_plan || current.lesson_id !== id)
+        throw new Error("The book did not confirm the saved version and approval.");
+      toast.success("Saved to Book Plan and approved for publication.");
       nav(nextBookEntry ? bookLessonUrl(nextBookEntry) : bookHome);
     } catch (e) { toast.error(apiErrorMessage(e, "Could not approve this book lesson")); }
     finally { setBusy(false); }
@@ -247,6 +304,12 @@ export default function LessonReview() {
       {flags.length > 0 && lesson.status !== "ready" && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
           <b>Worth a look:</b><ul className="list-disc pl-5 mt-1">{flags.map((x, i) => <li key={i}>{x}</li>)}</ul>
+          <button type="button" className="mt-2 rounded-lg bg-violet-700 text-white px-3 py-1.5 text-xs font-semibold"
+            data-testid="r-fix-warnings" onClick={() => {
+              setRefineInstruction(`Fix these specific issues in this lesson without removing sound teaching or changing unrelated content: ${flags.slice(0, 5).join("; ").slice(0, 450)}`);
+              setRefine(true);
+            }}><Sparkles size={13} className="inline mr-1" /> Ask AI to fix these issues</button>
+          <p className="text-xs mt-1">AI suggestions need your review. After accepting a correction, save it to the book plan and approve the final lesson separately.</p>
         </div>
       )}
 
@@ -258,13 +321,20 @@ export default function LessonReview() {
           : slot
           ? <button disabled={busy} onClick={putInSlot} className={`${btn} bg-emerald-700 text-white`} data-testid="r-week-assign"><CalendarCheck size={16} /> Looks good — add to {slotLabel(slot.date, startOf(slot))} ({slot.learning_area})</button>
           : <button disabled={busy} onClick={approve} className={`${btn} bg-emerald-700 text-white`} data-testid="r-assign"><CheckCircle2 size={16} /> Looks Good — Assign</button>}
-        <button onClick={() => setRefine(r => !r)} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
+        {bookId && <button disabled={busy || !currentBookEntry || currentBookEntry.draft?.saved_to_plan} onClick={saveToBookPlan}
+          className={`${btn} border border-emerald-700 bg-white text-emerald-900`} data-testid="r-save-book-plan">
+          <Bookmark size={16} /> {currentBookEntry?.draft?.saved_to_plan ? "Saved to Book Plan ✓" : "Save to Book Plan"}
+        </button>}
+        <button onClick={() => { setRefineInstruction(""); setRefine(r => !r); }} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
         <button onClick={() => nav(`/parent/lessons/${id}/edit${batchId ? `?batch=${batchId}` : week ? `?week=${week}&child=${weekChild}` : bookQuery}`)} className={`${btn} border border-slate-900 bg-white`} data-testid="r-edit"><Pencil size={16} /> Edit Manually</button>
         <button onClick={() => { if (!bookId) toast.success(batchId ? "Kept as a draft with the rest of this set" : week ? "Kept as a draft in its timetable slot" : "Saved in your lessons as a draft"); nav(home); }} className={`${btn} border border-slate-400 bg-white`} data-testid="r-later"><Bookmark size={16} /> {bookId ? "Back to book" : "Save for Later"}</button>
         <LessonPrintActions lessonId={id} compact studentTestId="r-print" parentTestId="r-print-parent" />
       </div>
 
-      {refine && <RefinePanel key={id} lessonId={id} onApplied={l => { setLesson(l); }} onClose={() => setRefine(false)} />}
+      {refine && <RefinePanel key={id + refineInstruction} lessonId={id} initialInstruction={refineInstruction}
+        bookContext={bookId && chapterId ? { bookId, chapterId } : null}
+        onPlanSaved={refreshBookPlan} onApplied={l => { setLesson(l); }}
+        onClose={() => setRefine(false)} />}
 
       <OutcomePanel key={lesson.id} lesson={lesson} onSaved={setLesson} />
 

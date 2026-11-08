@@ -3,7 +3,7 @@
 // Ground rules
 // - Each book is a finished PDF the platform owner uploads, with an optional sample PDF and cover PNG. Everything lives
 //   only in the private R2 bucket (quest-books/v1/<id>/...), never in this public repository.
-// - Family Membership (and the owner) can download every book. Any parent can download a book's sample.
+// - Active Family Membership reads core books online and prints selected pages. Only the owner or buyers can download full PDFs; signed-in families can get samples.
 //   A family without membership can buy one whole book (owner-set price, Stripe Checkout); only the signature-verified
 //   webhook records the purchase (questBookPurchases.ts), and the family can then download that book for good.
 // - Books without a full PDF yet are drafts: only the owner sees them.
@@ -346,16 +346,35 @@ const lookKey = (id: string, n: number) => `${ROOT}${id}/look-${n}.jpg`;
 const MAX_READ_PAGES = 400;
 const MAX_READ_BYTES = 2_500_000;
 const readKey = (id: string, n: number) => `${ROOT}${id}/read/${n}.jpg`;
+const READER_ID = /^[a-f0-9-]{36}$/i;
+const readerManifestKey = (id: string) => `${ROOT}${id}/reader.json`;
+const readerBuildKey = (id: string, generation: string, n: number) => `${ROOT}${id}/read-build/${generation}/${n}.jpg`;
+type ReaderManifest = { generation: string; pages: number; source_id: string; created_at: string };
+const pdfSourceId = (head: R2Object | null) => head ? String(head.etag || `size-${head.size}`) : "";
+async function readerManifest(bucket: R2Bucket, id: string): Promise<ReaderManifest | null> {
+  const obj = await bucket.get(readerManifestKey(id));
+  if (!obj) return null;
+  try {
+    const parsed: any = JSON.parse(await new Response(obj.body).text());
+    return READER_ID.test(String(parsed.generation)) && Number.isInteger(parsed.pages) && parsed.pages > 0 &&
+      parsed.pages <= MAX_READ_PAGES && typeof parsed.source_id === "string" ? parsed as ReaderManifest : null;
+  } catch { return null; }
+}
+
 type Listed = QuestBookMeta & { look_pages: number; read_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
 
 async function deleteReadPages(bucket: R2Bucket, id: string) {
   let cursor: string | undefined;
-  do {
-    const page = await bucket.list({ prefix: `${ROOT}${id}/read/`, limit: 1000, cursor });
-    const keys = page.objects.map((o) => o.key);
-    if (keys.length) await bucket.delete(keys);
-    cursor = page.truncated ? (page as any).cursor : undefined;
-  } while (cursor);
+  for (const prefix of [`${ROOT}${id}/read/`, `${ROOT}${id}/read-build/`]) {
+    cursor = undefined;
+    do {
+      const page = await bucket.list({ prefix, limit: 1000, cursor });
+      const keys = page.objects.map((o) => o.key);
+      if (keys.length) await bucket.delete(keys);
+      cursor = page.truncated ? (page as any).cursor : undefined;
+    } while (cursor);
+  }
+  await bucket.delete(readerManifestKey(id));
 }
 
 async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
@@ -364,14 +383,16 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
   const metaIds: string[] = [];
   const looks = new Map<string, number>();
   const reads = new Map<string, number>();
+  const manifests = new Set<string>();
   let cursor: string | undefined;
   do {
     const page = await bucket.list({ prefix: ROOT, limit: 1000, cursor });
     for (const obj of page.objects) {
-      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg|read\/[0-9]{1,3}\.jpg)$/.exec(obj.key.slice(ROOT.length));
+      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg|read\/[0-9]{1,3}\.jpg|reader\.json)$/.exec(obj.key.slice(ROOT.length));
       if (!m || !VALID_ID.test(m[1])) continue;
       if (m[2].startsWith("look-")) { looks.set(m[1], (looks.get(m[1]) || 0) + 1); continue; }
       if (m[2].startsWith("read/")) { reads.set(m[1], Math.max(reads.get(m[1]) || 0, Number(m[2].slice(5, -4)))); continue; }
+      if (m[2] === "reader.json") { manifests.add(m[1]); continue; }
       if (m[2] === "meta.json") { metaIds.push(m[1]); continue; }
       const kind = m[2].split(".")[0] as FileKind | "chapters" | "lessons";
       files.set(m[1], { ...(files.get(m[1]) || {}), [kind]: obj.size });
@@ -379,11 +400,16 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
     cursor = page.truncated ? (page as any).cursor : undefined;
   } while (cursor);
   const metas = await Promise.all(metaIds.map((id) => readMeta(bucket, id)));
+  const activeReaders = new Map<string, number>();
+  await Promise.all([...manifests].map(async (id) => {
+    const [manifest, source] = await Promise.all([readerManifest(bucket, id), bucket.head(keyFor(id, "book"))]);
+    if (manifest && source && manifest.source_id === pdfSourceId(source)) activeReaders.set(id, manifest.pages);
+  }));
   return metas
     .filter((m): m is QuestBookMeta => !!m)
     .map((m) => {
       const f = files.get(m.id) || {};
-      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: reads.get(m.id) || 0, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
+      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: manifests.has(m.id) ? (activeReaders.get(m.id) || 0) : (reads.get(m.id) || 0), has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
     })
     .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
@@ -665,7 +691,11 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!meta) return c.json({ detail: "Book not found" }, 404);
     const a = await accessFor(c.env.DB, user.family_id, user.id);
     if (!canReadBook(a, meta)) return c.json({ code: "UPGRADE_REQUIRED", detail: "Reading this book in Side-Quest comes with Family Membership or buying the book." }, 402);
-    const obj = await c.env.BUCKET.get(readKey(id, n));
+    const manifest = await readerManifest(c.env.BUCKET, id);
+    const source = manifest ? await c.env.BUCKET.head(keyFor(id, "book")) : null;
+    if (manifest && (!source || manifest.source_id !== pdfSourceId(source) || n > manifest.pages))
+      return c.json({ detail: "These reader pages are being updated. Please return to the book." }, 409);
+    const obj = await c.env.BUCKET.get(manifest ? readerBuildKey(id, manifest.generation, n) : readKey(id, n));
     if (!obj) return c.json({ detail: "Page not found" }, 404);
     c.header("Content-Type", "image/jpeg");
     c.header("Cache-Control", "private, no-store");
@@ -945,6 +975,62 @@ export function registerQuestBooks(app: App, g: Guards) {
     await c.env.BUCKET!.put(lookKey(id, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
     return c.json({ ok: true, n });
   });
+  // Two-phase reader preparation: browser rendering happens in a bounded
+  // upload pipeline; the existing reader stays live until ALL pages have been
+  // uploaded and the owner explicitly commits the new generation.
+  app.get("/api/quest-books/admin/books/:id/read-source", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id)) return c.json({ detail: "Invalid book ID" }, 400);
+    const source = await c.env.BUCKET!.head(keyFor(id, "book"));
+    if (!source) return c.json({ detail: "Upload the book PDF first." }, 404);
+    c.header("Cache-Control", "no-store");
+    return c.json({ source_id: pdfSourceId(source), max_pages: MAX_READ_PAGES });
+  });
+  app.get("/api/quest-books/admin/books/:id/read-build/:generation/progress", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), generation = c.req.param("generation");
+    if (!VALID_ID.test(id) || !READER_ID.test(generation)) return c.json({ detail: "Invalid reader generation." }, 400);
+    const prefix = `${ROOT}${id}/read-build/${generation}/`;
+    const page = await c.env.BUCKET!.list({ prefix, limit: 1000 });
+    const uploaded = page.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\.jpg$/, "")))
+      .filter((n) => Number.isInteger(n) && n >= 1 && n <= MAX_READ_PAGES);
+    c.header("Cache-Control", "no-store");
+    return c.json({ uploaded });
+  });
+  app.put("/api/quest-books/admin/books/:id/read-build/:generation/:n", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), generation = c.req.param("generation"), n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !READER_ID.test(generation) || !Number.isInteger(n) || n < 1 || n > MAX_READ_PAGES)
+      return c.json({ detail: "Invalid reader page." }, 400);
+    if (!(await c.env.BUCKET!.head(keyFor(id, "book")))) return c.json({ detail: "Book PDF is missing." }, 404);
+    if (c.req.header("content-type")?.split(";")[0].trim().toLowerCase() !== "image/jpeg")
+      return c.json({ detail: "Reader pages must be JPEG images." }, 415);
+    const bytes = await c.req.arrayBuffer();
+    const head = new Uint8Array(bytes.slice(0, 3));
+    if (!bytes.byteLength || bytes.byteLength > MAX_READ_BYTES || head[0] !== 0xff || head[1] !== 0xd8 || head[2] !== 0xff)
+      return c.json({ detail: "This page is empty, too large, or not a JPEG." }, 400);
+    await c.env.BUCKET!.put(readerBuildKey(id, generation, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
+    return c.json({ ok: true, n });
+  });
+  app.post("/api/quest-books/admin/books/:id/read-build/:generation/finish", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), generation = c.req.param("generation");
+    const body: any = await c.req.json().catch(() => ({}));
+    const total = Number(body?.total);
+    if (!VALID_ID.test(id) || !READER_ID.test(generation) || !Number.isInteger(total) || total < 1 || total > MAX_READ_PAGES ||
+        typeof body?.source_id !== "string") return c.json({ detail: "Invalid reader job or page count." }, 400);
+    const source = await c.env.BUCKET!.head(keyFor(id, "book"));
+    if (!source || pdfSourceId(source) !== body.source_id)
+      return c.json({ detail: "The book PDF changed during rendering. Reopen it and rebuild the members' reader." }, 409);
+    const prefix = `${ROOT}${id}/read-build/${generation}/`;
+    const objects = await c.env.BUCKET!.list({ prefix, limit: 1000 });
+    if (objects.truncated) return c.json({ detail: "Too many reader objects were uploaded." }, 409);
+    const received = new Set(objects.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\.jpg$/, ""))));
+    for (let i = 1; i <= total; i++) if (!received.has(i))
+      return c.json({ detail: `Page ${i} has not finished uploading. Resume reader preparation.` }, 409);
+    const ready: ReaderManifest = { generation, pages: total, source_id: body.source_id, created_at: new Date().toISOString() };
+    await c.env.BUCKET!.put(readerManifestKey(id), JSON.stringify(ready), { httpMetadata: { contentType: "application/json" } });
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, pages: total, generation });
+  });
+
   // Reader pages, uploaded one at a time (page n). DELETE clears them all before a fresh set is made.
   app.put("/api/quest-books/admin/books/:id/read/:n", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
@@ -1091,13 +1177,16 @@ export function registerQuestBooks(app: App, g: Guards) {
     const chapters = await readChapters(c.env.BUCKET!, id);
     const published = await readPublished(c.env.BUCKET!, id);
     const { results } = await c.env.DB.prepare(`SELECT id, title, status, version, updated_at, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision,
-        json_extract(data, '$.book_reviewed_version') AS reviewed_version, json_extract(data, '$.book_reviewed_at') AS reviewed_at FROM lessons
+        json_extract(data, '$.book_reviewed_version') AS reviewed_version, json_extract(data, '$.book_reviewed_at') AS reviewed_at,
+        json_extract(data, '$.book_plan_saved_version') AS plan_saved_version, json_extract(data, '$.book_plan_saved_at') AS plan_saved_at FROM lessons
       WHERE family_id = ? AND archived_at IS NULL AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
       AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book' ORDER BY updated_at DESC`).bind(user.family_id, id).all<any>();
     const drafts = new Map<string, any>();
     for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, {
       lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision,
       version: r.version, reviewed_at: r.reviewed_at,
+      plan_saved_at: r.plan_saved_at,
+      saved_to_plan: r.plan_saved_version !== null && Number(r.plan_saved_version) === Number(r.version),
       reviewed: r.status === "ready" && r.reviewed_version !== null && Number(r.reviewed_version) === Number(r.version),
     });
     c.header("Cache-Control", "no-store");
@@ -1106,10 +1195,47 @@ export function registerQuestBooks(app: App, g: Guards) {
         revision: chapterRevision({ ...ch, text }), draft: drafts.get(ch.id) ? {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
           reviewed: drafts.get(ch.id).reviewed && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
+          saved_to_plan: drafts.get(ch.id).saved_to_plan && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
         } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
       draft_count: (results || []).length,
     });
+  });
+
+  // A book plan stores the ID and saved version of its ORIGINAL companion lesson.
+  // Never overwrite the PDF source/chapters, silently publish, or copy family lessons.
+  app.post("/api/quest-books/admin/books/:id/chapters/:cid/save-to-plan", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), cid = c.req.param("cid");
+    const body: any = await c.req.json().catch(() => ({}));
+    if (!VALID_ID.test(id) || !body?.lesson_id || !Number.isInteger(body?.expected_version))
+      return c.json({ detail: "Choose a valid book lesson and its current saved version." }, 400);
+    const chapter = (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid);
+    if (!chapter) return c.json({ detail: "The book plan no longer contains this chapter." }, 404);
+    const user = c.get("user");
+    const row = await ownLesson(c.env.DB, user.family_id, body.lesson_id);
+    if (!row || row.archived_at) return c.json({ detail: "The working lesson was not found." }, 404);
+    let data: Record<string, any>;
+    try { data = JSON.parse(row.data || "{}"); } catch { return c.json({ detail: "The lesson cannot be read." }, 409); }
+    if (data.quest_book_id !== id || data.quest_chapter_id !== cid || data.source === "side_quest_book")
+      return c.json({ detail: "Only an existing official companion lesson can be saved to its own book plan." }, 403);
+    if (data.quest_source_revision !== chapterRevision(chapter))
+      return c.json({ detail: "The PDF chapter source changed. Re-analyse it before saving to the plan." }, 409);
+    if (Number(row.version) !== body.expected_version)
+      return c.json({ detail: "The lesson changed while you were reviewing it. Reopen it before saving to the plan." }, 409);
+    data.book_plan_saved_version = row.version;
+    data.book_plan_saved_at = new Date().toISOString();
+    data.book_plan_saved_by = user.id;
+    const saved = await c.env.DB.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
+      .bind(JSON.stringify(data), row.id, user.family_id, row.version).run();
+    if (!saved.meta?.changes) return c.json({ detail: "Another edit occurred. Reload the lesson and try again." }, 409);
+    const confirm = await ownLesson(c.env.DB, user.family_id, row.id);
+    let confirmed: Record<string, any>;
+    try { confirmed = JSON.parse(confirm?.data || "{}"); } catch { confirmed = {}; }
+    if (Number(confirmed.book_plan_saved_version) !== row.version)
+      return c.json({ detail: "The book plan save could not be verified." }, 502);
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, lesson_id: row.id, book_id: id, chapter_id: cid,
+      saved_version: row.version, saved_at: confirmed.book_plan_saved_at });
   });
 
   // A book review belongs to the owner's working lesson version, not to a browser checkbox.

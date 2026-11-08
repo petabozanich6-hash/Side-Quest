@@ -1267,7 +1267,7 @@ export async function refineLessonWithAi(
   ai: AiBinding | undefined,
   opts: { familyId: string; userId: string; model?: string; gatewayId?: string; lessonId: string; instruction: unknown; target?: unknown },
   now: Date = new Date()
-): Promise<Result<{ patch: Record<string, any>; keys: string[]; before: Record<string, any>; warnings: string[]; usage: Awaited<ReturnType<typeof aiUsage>>; model: string }>> {
+): Promise<Result<{ patch: Record<string, any>; keys: string[]; before: Record<string, any>; base_version: number; warnings: string[]; usage: Awaited<ReturnType<typeof aiUsage>>; model: string }>> {
   const { familyId, userId } = opts;
   const { limits } = await lb.getEntitlement(db, familyId, now);
   if (!limits.aiGeneration) return lb.paywall("Asking the AI to change a lesson is part of the paid plan. You can still edit lessons by hand.");
@@ -1328,22 +1328,80 @@ export async function refineLessonWithAi(
     await done("failed");
     return lb.fail(502, `The AI's change wasn't good enough to offer (${hard.map((i) => i.msg).join("; ")}). Nothing was used from your allowance. Your lesson is unchanged.`, "AI_FAILED");
   }
+  // Preview the exact canonical values that the lesson editor can STORE.
+  // Without this step an AI patch can look correct in the preview but lose
+  // fields when the builder sanitises it at acceptance time.
+  const safe = lb.sanitizeLessonInput({ ...lesson, ...candidate, status: lesson.status });
+  if (!safe.ok) {
+    await done("failed");
+    return lb.fail(409, `The AI correction could not be saved safely: ${safe.detail}. Ask AI for a smaller change.`, "AI_PATCH_INVALID");
+  }
+  const canonical = { ...lb.toLessonData(safe.value), title: safe.value.title };
+  const patch = Object.fromEntries(keys.map((k) => [k, (canonical as any)[k]]));
+  if (keys.every((k) => JSON.stringify(lesson[k]) === JSON.stringify(patch[k]))) {
+    await done("failed");
+    return lb.fail(409, "The AI did not produce any actual improvement to save. Try a more specific instruction.", "AI_PATCH_UNCHANGED");
+  }
   await done("ok");
-  const patch = Object.fromEntries(keys.map((k) => [k, candidate[k]]));
   const before = Object.fromEntries(keys.map((k) => [k, lesson[k] ?? null]));
-  return { ok: true, patch, keys, before, warnings: touched.map((i) => i.msg), usage: await aiUsage(db, familyId, now), model };
+  return { ok: true, patch, keys, before, base_version: Number(row.version), warnings: touched.map((i) => i.msg), usage: await aiUsage(db, familyId, now), model };
 }
 
 /** Save an accepted change: only the named parts are replaced; everything else, including manual edits, stays. */
-export async function applyLessonPatch(db: DB, familyId: string, lessonId: string, patch: unknown, now: Date = new Date()): Promise<Result<{ lesson: any }>> {
+export async function applyLessonPatch(db: DB, familyId: string, lessonId: string, patch: unknown, now: Date = new Date(), expectedVersion?: number): Promise<Result<{ lesson: any }>> {
   const row = await db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(lessonId, familyId).first<any>();
   if (!row) return lb.fail(404, "Lesson not found");
   const p = patch && typeof patch === "object" ? (patch as Record<string, unknown>) : {};
   const picked = Object.fromEntries(Object.entries(p).filter(([k]) => REFINABLE.includes(k)));
   if (!Object.keys(picked).length) return lb.fail(400, "Nothing to apply.");
+  if (expectedVersion !== undefined && (!Number.isInteger(expectedVersion) || Number(row.version) !== expectedVersion))
+    return lb.fail(409, "This lesson changed since the AI wrote its suggestion. Reopen it and request the correction again.", "LESSON_VERSION_CHANGED");
   const cur: any = lb.lessonOut(row);
-  const r = await lb.updateLesson(db, familyId, lessonId, { ...cur, ...picked, status: cur.status }, now);
-  return r.ok ? { ok: true, lesson: r.lesson } : r;
+  const candidate = { ...cur, ...picked, status: cur.status };
+  const valid = lb.sanitizeLessonInput(candidate);
+  if (!valid.ok) return valid;
+  const expected = { ...lb.toLessonData(valid.value), title: valid.value.title };
+  if (Object.keys(picked).every((key) => JSON.stringify(cur[key]) === JSON.stringify((expected as Record<string, unknown>)[key])))
+    return lb.fail(409, "The suggested correction did not change the lesson. Ask AI for a more specific fix.", "PATCH_NO_CHANGE");
+  // A patch can contain fields the editor will discard. Fail rather than
+  // reporting "Change applied" when the substantive correction did not stick.
+  const unusable = Object.keys(picked).filter((key) => JSON.stringify((candidate as any)[key]) !== JSON.stringify((expected as any)[key]));
+  if (unusable.length) {
+    // Normalising surrounding whitespace is harmless; structural omissions are not.
+    const structural = unusable.filter((key) => typeof picked[key] !== "string" ||
+      String(picked[key]).trim() !== String((expected as any)[key] || "").trim());
+    if (structural.length) return lb.fail(409, `The AI correction could not be saved without dropping content in: ${structural.join(", ")}. Edit that part manually or ask AI for a smaller correction.`, "PATCH_NOT_PERSISTABLE");
+  }
+  const r = await lb.updateLesson(db, familyId, lessonId, candidate, now, expectedVersion);
+  if (!r.ok) return r;
+  const saved = r.lesson;
+  const lost = Object.keys(picked).filter((key) => JSON.stringify(saved[key]) !== JSON.stringify((expected as any)[key]));
+  if (lost.length) return lb.fail(409, `The server did not retain the correction in: ${lost.join(", ")}. Reopen the lesson to inspect the saved record.`, "PATCH_VERIFICATION_FAILED");
+  // Review flags were captured when the ORIGINAL AI draft was created.
+  // Recalculate them from the SAVED lesson so a corrected problem doesn't
+  // continue to appear as if the user's change was lost.
+  if (saved.ai_generated && saved.status !== "ready") {
+    try {
+      const spec: Spec = {
+        topic: String(saved.title || "Lesson"), area: String(saved.learning_area || ""),
+        year: String(saved.year_level || ""), goal: "",
+        minutes: Math.min(120, Math.max(10, Number(saved.duration_minutes) || 45)),
+        delivery: saved.delivery === "independent" ? "independent" : "parent_guided",
+        interests: "", needs: "", notes: "",
+      };
+      const updatedFlags = [...new Set(qualityIssues(normaliseDraft(saved, spec), spec).map((issue) => issue.msg))].slice(0, 30);
+      const existing = await db.prepare("SELECT data FROM lessons WHERE id = ? AND family_id = ? AND version = ?")
+        .bind(lessonId, familyId, saved.version).first<{ data: string }>();
+      if (existing) {
+        const data = JSON.parse(existing.data);
+        data.ai_flags = updatedFlags;
+        await db.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
+          .bind(JSON.stringify(data), lessonId, familyId, saved.version).run();
+      }
+    } catch { /* The correction is already saved; a quality check cannot undo it. */ }
+  }
+  const finalRow = await db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(lessonId, familyId).first<any>();
+  return { ok: true, lesson: lb.lessonOut(finalRow) };
 }
 
 // ---------------------------------------------------------------------------------------------------------------
