@@ -21,12 +21,17 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const stopRemake = React.useRef(false);
   const load = () => api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } })
     .then((r) => setData(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not load chapters")));
-  useEffect(() => { load(); }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
-  // First time: read the chapters from the uploaded PDF automatically.
   const autoRead = React.useRef(false);
   useEffect(() => {
+    autoRead.current = false;
+    setData(null);
+    load();
+  }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  // First time and following a clean rebuild: analyse the current uploaded
+  // PDF once the request is idle. Include busy so reset cannot miss the trigger.
+  useEffect(() => {
     if (data && !data.chapters.length && book.has_book && !autoRead.current && !busy) { autoRead.current = true; void readUploaded(); }
-  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data, busy, book.has_book]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reads chapters straight from the Book PDF already uploaded for this book.
   const readUploaded = async () => {
