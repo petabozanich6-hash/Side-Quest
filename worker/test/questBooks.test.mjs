@@ -229,7 +229,7 @@ test("Overnight queue groups missing lessons across books, skips saved drafts an
   assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:05:00Z"),fake)).processed,1);
   assert.equal((await processQuestOvernight(h.env,new Date("2026-11-09T00:10:00Z"),fake)).processed,1);
   const finished=(await (await h.req(url,owner.token)).json()).job;
-  assert.equal(finished.status,"completed");
+  assert.equal(finished.status,"running","watch queues remain open for newly saved books");
   assert.equal(finished.counts.generated,2);
   assert.equal(calls,2);
   assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(created).archived_at,null,
@@ -1141,7 +1141,7 @@ test("Live generation picks up chapters from newly uploaded books without replac
   assert.equal(scan.added,2);
   const rows=h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=? ORDER BY position").all(job.id);
   assert.equal(rows.length,3);
-  assert.deepEqual(rows.slice(0,1).map(x=>({id:x.id,position:x.position,status:x.status,attempts:x.attempts})),initial);
+  assert.deepEqual(rows.slice(0,1).map(x=>({id:x.id,position:x.position,status:x.status,attempts:x.attempts})),initial.map(x=>({...x})));
   assert.equal(rows.filter(r=>r.book_id===second).length,2);
   assert.equal((await syncOvernightWork(h.env,new Date("2026-12-01T00:03:00Z"))).added,0);
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) AS n FROM quest_overnight_items WHERE job_id=?").get(job.id).n,3);
@@ -1196,7 +1196,7 @@ test("Owner can enable auto-approval mid-run, retry failures and stop without de
   const stop=await h.req(`${url}/${job.id}/control`,owner.token,"POST",{action:"stop"});
   assert.equal(stop.status,200);
   const stopped=h.db.raw.prepare("SELECT status,auto_follow FROM quest_overnight_jobs WHERE id=?").get(job.id);
-  assert.deepEqual(stopped,{status:"stopped",auto_follow:0});
+  assert.deepEqual({...stopped},{status:"stopped",auto_follow:0});
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM quest_overnight_items WHERE job_id=?").get(job.id).n,1,
     "stopping never deletes history or finished lessons");
   const scan=await syncOvernightWork(h.env,new Date("2026-12-02T00:00:00Z"));
