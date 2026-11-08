@@ -252,7 +252,7 @@ export async function processQuestOvernight(env: Env, now = new Date(),
   // Finalise already-completed work even if the AI allowance is unavailable.
   // No pending lesson is claimed or altered by this bookkeeping.
   await finalizeIdleJobs();
-    // A temporarily exhausted AI allowance must not consume attempts or manually
+  // A temporarily exhausted AI allowance must not consume attempts or manually
   // pause the job. Keep the saved work intact and retry on the next cron tick.
   const aiWaitMessage="Waiting for Workers AI access or daily allowance; retrying automatically.";
   if(!env.AI) {
