@@ -120,6 +120,16 @@ export default function LessonReview() {
   // Opened from a set of AI lessons: keep the parent inside that set (it survives refreshes because it is in the URL).
   const [params] = useSearchParams();
   const batchId = params.get("batch") || "";
+  const bookId = !batchId ? params.get("book") || "" : "";
+  const chapterId = bookId ? params.get("chapter") || "" : "";
+  const bookQuery = bookId && chapterId ? `?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(chapterId)}` : "";
+  const bookHome = bookId ? `/parent/quest-books/${encodeURIComponent(bookId)}` : "/parent/lessons";
+  const [bookReview, setBookReview] = useState(null);
+  useEffect(() => {
+    if (!bookId || !chapterId) { setBookReview(null); return; }
+    api.get(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters`)
+      .then((r) => setBookReview(r.data)).catch(() => setBookReview(null));
+  }, [bookId, chapterId, id]);
   const [batch, setBatch] = useState(null);
   useEffect(() => { if (batchId) api.get(`/ai/batches/${batchId}`).then(r => setBatch(r.data)).catch(() => setBatch(null)); }, [batchId, id]);
   const batchChild = batch?.student?.id || "";
@@ -146,7 +156,7 @@ export default function LessonReview() {
   const item = batch?.items.find(i => i.lesson_id === id);
   const info = loc.state || (item ? { ...item.meta, studentId: batchChild || undefined } : {});
   const planHome = `/parent/calendar?plan=${week}&child=${weekChild}`;
-  const home = batchId ? draftsPath(batchId) : week ? planHome : "/parent/lessons";
+  const home = bookId ? bookHome : batchId ? draftsPath(batchId) : week ? planHome : "/parent/lessons";
   const [lesson, setLesson] = useState(null);
   const [students, setStudents] = useState([]);
   const [err, setErr] = useState("");
@@ -166,6 +176,25 @@ export default function LessonReview() {
     finally { setBusy(false); }
   };
 
+  const bookEntries = bookReview?.chapters || [];
+  const bookIndex = bookEntries.findIndex((ch) => ch.id === chapterId && ch.draft?.lesson_id === id);
+  const nextBookEntry = bookIndex >= 0 ? bookEntries.slice(bookIndex + 1).find((ch) => ch.draft?.lesson_id) : null;
+  const previousBookEntry = bookIndex > 0 ? [...bookEntries.slice(0, bookIndex)].reverse().find((ch) => ch.draft?.lesson_id) : null;
+  const bookLessonUrl = (ch) => `/parent/lessons/${ch.draft.lesson_id}/review?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(ch.id)}`;
+  const currentBookEntry = bookIndex >= 0 ? bookEntries[bookIndex] : null;
+  const approveBook = async () => {
+    if (!bookId || !chapterId || !currentBookEntry) { toast.error("Could not verify which book lesson you are reviewing."); return; }
+    setBusy(true);
+    try {
+      if (!currentBookEntry.draft?.reviewed) {
+        await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
+          { lesson_id: id, approved: true });
+        toast.success("Review saved for this book.");
+      }
+      nav(nextBookEntry ? bookLessonUrl(nextBookEntry) : bookHome);
+    } catch (e) { toast.error(apiErrorMessage(e, "Could not approve this book lesson")); }
+    finally { setBusy(false); }
+  };
   const childName = (students.find(s => s.id === weekChild)?.name || "").split(" ")[0];
   const putInSlot = async () => {
     setBusy(true);
@@ -179,18 +208,27 @@ export default function LessonReview() {
     finally { setBusy(false); }
   };
 
-  if (err) return <div className="p-8 text-rose-700" role="alert">{err}{(batchId || week) && <> <Link to={home} className="underline">{week ? "Back to Plan My Week" : "Back to all drafts"}</Link></>}</div>;
+  if (err) return <div className="p-8 text-rose-700" role="alert">{err}{(bookId || batchId || week) && <> <Link to={home} className="underline">{bookId ? "Back to book" : week ? "Back to Plan My Week" : "Back to all drafts"}</Link></>}</div>;
   if (!lesson) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
   const a = info.assumptions || {};
   const flags = (lesson.ai_flags || []).concat((info.warnings || []).filter(w => !(lesson.ai_flags || []).includes(w)));
   const btn = "rounded-full px-5 py-2.5 text-sm font-semibold flex items-center gap-2 disabled:opacity-50";
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-4 max-w-5xl" data-testid="lesson-review">
-      {batchId ? <BatchNav batch={batch} batchId={batchId} lessonId={id} />
+      {bookId ? <div className="flex items-center justify-between flex-wrap gap-2 text-sm">
+          <Link to={bookHome} className="flex items-center gap-1 text-emerald-900 font-semibold"><ArrowLeft size={14} /> Back to book companion lessons</Link>
+          <div className="flex items-center gap-2">
+            {previousBookEntry && <Link className="rounded-lg border border-stone-300 bg-white px-3 py-1.5" to={bookLessonUrl(previousBookEntry)}>Previous lesson</Link>}
+            {bookIndex >= 0 && <span className="text-stone-600">{bookIndex + 1} of {bookEntries.length}</span>}
+            {nextBookEntry && <Link className="rounded-lg border border-stone-300 bg-white px-3 py-1.5" to={bookLessonUrl(nextBookEntry)}>Next lesson</Link>}
+          </div>
+        </div>
+        : batchId ? <BatchNav batch={batch} batchId={batchId} lessonId={id} />
         : week ? <WeekNav week={week} child={weekChild} childName={childName} drafts={weekDrafts} lessonId={id} />
         : <Link to="/parent/lessons" className="flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>}
       <div>
-        <h1 className="font-display text-3xl font-bold text-slate-900">Here is your lesson</h1>
+        <h1 className="font-display text-3xl font-bold text-slate-900">{bookId ? "Review book companion lesson" : "Here is your lesson"}</h1>
+        {bookId && <p className="text-sm font-semibold text-emerald-900">Official book collection · {lesson.quest_book_title || bookId} · {currentBookEntry?.title || "Lesson"}</p>}
         <p className="text-sm text-slate-600 mt-1" data-testid="review-assumptions">
           {[a.child && `Made for ${a.child}`, a.year, a.minutes && `${a.minutes} minutes`, a.delivery, a.theme && `${a.theme} theme`].filter(Boolean).join(" · ") || "Read it through, then choose what to do next."}
           {" "}Not what you meant? Use <b>Ask AI to change something</b>.
@@ -215,12 +253,16 @@ export default function LessonReview() {
       )}
 
       <div className="sticky top-0 z-20 -mx-1 px-1 py-2 bg-[#F5EFE0]/95 backdrop-blur flex flex-wrap gap-2" data-testid="review-actions">
-        {slot
+        {bookId
+          ? (lesson.status === "ready" && lesson.quest_book_id === bookId && lesson.quest_chapter_id === chapterId
+              ? <button disabled={busy || !currentBookEntry} onClick={approveBook} className={`${btn} bg-emerald-700 text-white`} data-testid="r-book-approve"><CheckCircle2 size={16} /> {currentBookEntry?.draft?.reviewed ? "Already reviewed — next lesson" : "Approve for book & next"}</button>
+              : <button onClick={() => nav(`/parent/lessons/${id}/edit${bookQuery}`)} className={`${btn} bg-emerald-700 text-white`} data-testid="r-book-ready"><Pencil size={16} /> Edit and save as Ready</button>)
+          : slot
           ? <button disabled={busy} onClick={putInSlot} className={`${btn} bg-emerald-700 text-white`} data-testid="r-week-assign"><CalendarCheck size={16} /> Looks good — add to {slotLabel(slot.date, startOf(slot))} ({slot.learning_area})</button>
           : <button disabled={busy} onClick={approve} className={`${btn} bg-emerald-700 text-white`} data-testid="r-assign"><CheckCircle2 size={16} /> Looks Good — Assign</button>}
         <button onClick={() => setRefine(r => !r)} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
-        <button onClick={() => nav(`/parent/lessons/${id}/edit${batchId ? `?batch=${batchId}` : week ? `?week=${week}&child=${weekChild}` : ""}`)} className={`${btn} border border-slate-900 bg-white`} data-testid="r-edit"><Pencil size={16} /> Edit Manually</button>
-        <button onClick={() => { toast.success(batchId ? "Kept as a draft with the rest of this set" : week ? "Kept as a draft in its timetable slot" : "Saved in your lessons as a draft"); nav(home); }} className={`${btn} border border-slate-400 bg-white`} data-testid="r-later"><Bookmark size={16} /> Save for Later</button>
+        <button onClick={() => nav(`/parent/lessons/${id}/edit${batchId ? `?batch=${batchId}` : week ? `?week=${week}&child=${weekChild}` : bookQuery}`)} className={`${btn} border border-slate-900 bg-white`} data-testid="r-edit"><Pencil size={16} /> Edit Manually</button>
+        <button onClick={() => { if (!bookId) toast.success(batchId ? "Kept as a draft with the rest of this set" : week ? "Kept as a draft in its timetable slot" : "Saved in your lessons as a draft"); nav(home); }} className={`${btn} border border-slate-400 bg-white`} data-testid="r-later"><Bookmark size={16} /> {bookId ? "Back to book" : "Save for Later"}</button>
         <LessonPrintActions lessonId={id} compact studentTestId="r-print" parentTestId="r-print-parent" />
       </div>
 
