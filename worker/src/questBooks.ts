@@ -1261,10 +1261,20 @@ export function registerQuestBooks(app: App, g: Guards) {
       return c.json({ detail: "Only this book's original companion lesson may be reviewed here." }, 403);
     if (data.quest_source_revision !== chapterRevision(chapter))
       return c.json({ detail: "The workbook source changed. Regenerate and review the lesson first." }, 409);
+    // Explicit owner review confirmation can promote an already-checked draft to
+    // Ready while approving that exact saved version. This is never automatic.
+    const confirmCheckedDraft = body.approved === true && body.complete_review === true;
     if (body.approved) {
-      if (row.status !== "ready") return c.json({ detail: "Save this lesson as Ready before approving it for the book." }, 409);
+      if (row.status !== "ready" && !(row.status === "draft" && confirmCheckedDraft))
+        return c.json({ detail: "Confirm that you checked this draft before marking it Ready and Reviewed." }, 409);
       const issues = companionLessonIssues(data);
       if (issues.length) return c.json({ detail: `Complete the lesson before approving it: ${issues.join("; ")}.` }, 409);
+      // Match the normal Save as Ready action only after the owner has explicitly
+      // confirmed that the AI draft was checked; do not clear warnings on save alone.
+      if (confirmCheckedDraft && data.ai_generated === true) {
+        data.review_status = "parent_reviewed";
+        data.ai_flags = [];
+      }
       // Approving a saved lesson also links that exact version to the book plan.
       // Commit both flags in one UPDATE so a successful approval cannot leave
       // the lesson in a "reviewed but not saved to plan" state.
@@ -1279,13 +1289,19 @@ export function registerQuestBooks(app: App, g: Guards) {
       delete data.book_reviewed_at;
       delete data.book_reviewed_by;
     }
-    // The version comparison prevents an approval overwriting a simultaneous edit.
-    const changed = await c.env.DB.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
-      .bind(JSON.stringify(data), row.id, user.family_id, row.version).run();
+    // Do not bump the content version for an approval: that would invalidate
+    // the review we just recorded. Also guard against concurrent lesson edits.
+    const promoteDraft = confirmCheckedDraft && row.status === "draft";
+    const changed = promoteDraft
+      ? await c.env.DB.prepare("UPDATE lessons SET status = 'ready', data = ?, updated_at = ? WHERE id = ? AND family_id = ? AND version = ? AND status = 'draft'")
+          .bind(JSON.stringify(data), data.book_reviewed_at, row.id, user.family_id, row.version).run()
+      : await c.env.DB.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ? AND status = ?")
+          .bind(JSON.stringify(data), row.id, user.family_id, row.version, row.status).run();
     if (!changed.meta?.changes) return c.json({ detail: "This lesson changed while you reviewed it. Reload and check the latest version." }, 409);
     c.header("Cache-Control", "no-store");
     return c.json({ ok: true, reviewed: body.approved, reviewed_at: data.book_reviewed_at || null,
-      saved_to_plan: Number(data.book_plan_saved_version) === Number(row.version), version: row.version });
+      saved_to_plan: Number(data.book_plan_saved_version) === Number(row.version), status: promoteDraft ? "ready" : row.status,
+      version: row.version });
   });
 
   // Draft a lesson from one chapter with the normal AI lesson generator, into the owner's own library for review.
