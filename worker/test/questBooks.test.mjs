@@ -324,6 +324,16 @@ test("Companion-session source and depth checks preserve exact workbook referenc
   const one = validateChapters({ chapters: [base] });
   assert.equal(one.ok, true);
   assert.equal(one.chapters[0].exercise_ref, "Page 14, questions 1–7");
+  const fixedId = "s-abcdef0123456789abcd";
+  const split = validateChapters({ chapters: [
+    { ...base, id: fixedId, end: 13 },
+    { ...base, id: "s-1234567890abcdef1234", title: "Regrouping", start: 14, end: 14 },
+  ] });
+  assert.equal(split.ok, true);
+  assert.deepEqual(split.chapters.map((part) => part.id), [fixedId, "s-1234567890abcdef1234"],
+    "splitting a chapter must preserve the assigned purchase keys");
+  assert.equal(validateChapters({ chapters: [{ ...base, id: fixedId }, { ...base, id: fixedId }] }).ok, false,
+    "duplicate paid lesson keys must be rejected");
   const revision = chapterRevision(one.chapters[0]);
   assert.equal(revision, chapterRevision(one.chapters[0]));
   assert.notEqual(revision, chapterRevision({ ...one.chapters[0], exercise_ref: "Page 15, questions 2–7" }));
