@@ -1348,6 +1348,8 @@ export async function applyLessonPatch(db: DB, familyId: string, lessonId: strin
   const valid = lb.sanitizeLessonInput(candidate);
   if (!valid.ok) return valid;
   const expected = { ...lb.toLessonData(valid.value), title: valid.value.title };
+  if (Object.keys(picked).every((key) => JSON.stringify(cur[key]) === JSON.stringify(expected[key])))
+    return lb.fail(409, "The suggested correction did not change the lesson. Ask AI for a more specific fix.", "PATCH_NO_CHANGE");
   // A patch can contain fields the editor will discard. Fail rather than
   // reporting "Change applied" when the substantive correction did not stick.
   const unusable = Object.keys(picked).filter((key) => JSON.stringify((candidate as any)[key]) !== JSON.stringify((expected as any)[key]));
@@ -1362,7 +1364,31 @@ export async function applyLessonPatch(db: DB, familyId: string, lessonId: strin
   const saved = r.lesson;
   const lost = Object.keys(picked).filter((key) => JSON.stringify(saved[key]) !== JSON.stringify((expected as any)[key]));
   if (lost.length) return lb.fail(409, `The server did not retain the correction in: ${lost.join(", ")}. Reopen the lesson to inspect the saved record.`, "PATCH_VERIFICATION_FAILED");
-  return { ok: true, lesson: saved };
+  // Review flags were captured when the ORIGINAL AI draft was created.
+  // Recalculate them from the SAVED lesson so a corrected problem doesn't
+  // continue to appear as if the user's change was lost.
+  if (saved.ai_generated && saved.status !== "ready") {
+    try {
+      const spec: Spec = {
+        topic: String(saved.title || "Lesson"), area: String(saved.learning_area || ""),
+        year: String(saved.year_level || ""), goal: "",
+        minutes: Math.min(120, Math.max(10, Number(saved.duration_minutes) || 45)),
+        delivery: saved.delivery === "independent" ? "independent" : "parent_guided",
+        interests: "", needs: "", notes: "",
+      };
+      const updatedFlags = [...new Set(qualityIssues(normaliseDraft(saved, spec), spec).map((issue) => issue.msg))].slice(0, 30);
+      const existing = await db.prepare("SELECT data FROM lessons WHERE id = ? AND family_id = ? AND version = ?")
+        .bind(lessonId, familyId, saved.version).first<{ data: string }>();
+      if (existing) {
+        const data = JSON.parse(existing.data);
+        data.ai_flags = updatedFlags;
+        await db.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
+          .bind(JSON.stringify(data), lessonId, familyId, saved.version).run();
+      }
+    } catch { /* The correction is already saved; a quality check cannot undo it. */ }
+  }
+  const finalRow = await db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(lessonId, familyId).first<any>();
+  return { ok: true, lesson: lb.lessonOut(finalRow) };
 }
 
 // ---------------------------------------------------------------------------------------------------------------
