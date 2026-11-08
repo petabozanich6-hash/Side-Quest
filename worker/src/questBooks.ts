@@ -17,6 +17,7 @@ import { squareConfig, createCartPaymentLink, createShopPaymentLink } from "./sq
 import { loadPlatformSettings } from "./platformSettings";
 import { createShopOrder, shopOrderFor, resendShopLinks, ensureShopOrders, MAX_SHOP_DOWNLOADS, type ShopLine } from "./shopOrders";
 import { priceItems, publicCatalog, squareLinesFor } from "./shopRoutes";
+import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 
 /** Books can be sold when Square (preferred) or Stripe is configured. */
 const canSell = (env: any) => squareConfig(env).ok || billingConfig(env).ok;
@@ -1714,15 +1715,28 @@ export function registerShop(app: App) {
     if (!priced.ok) return c.json({ detail: priced.detail }, 409);
     const lines = [...bookLines, ...priced.lines];
     if (!lines.length) return c.json({ detail: "Your cart is empty." }, 400);
-    const total = lines.reduce((n, l) => n + l.amount_cents, 0) + priced.postage;
-    if (body?.expected_total_cents != null && Number(body.expected_total_cents) !== total) return c.json({ code: "CART_CHANGED", detail: "Prices changed. Please check the new total.", total_cents: total }, 409);
-    const order = await createShopOrder(c.env.DB, email, lines, new Date(), priced.postage);
+    let postage = 0;
+    let quotedPostcode: string | null = null;
+    if (priced.physical) {
+      try {
+        const quote = await quoteStandardPost(c.env, priced.lines, String(body?.destination_postcode || ""));
+        postage = quote?.postage_cents ?? 0;
+        quotedPostcode = quote?.postcode ?? null;
+      } catch (e) {
+        if (e instanceof ShippingQuoteError) return c.json({ detail: e.message }, e.status as 400 | 409 | 503);
+        console.error("shop postage calculation failed", e);
+        return c.json({ detail: "Postage is temporarily unavailable. Please try again." }, 503);
+      }
+    }
+    const total = lines.reduce((n, l) => n + l.amount_cents, 0) + postage;
+    if (body?.expected_total_cents != null && Number(body.expected_total_cents) !== total) return c.json({ code: "CART_CHANGED", detail: "Prices or postage changed. Please refresh the quote.", total_cents: total }, 409);
+    const order = await createShopOrder(c.env.DB, email, lines, new Date(), postage, quotedPostcode);
     const origin = appOrigin(c.env, c.req.url);
     try {
       const url = await createShopPaymentLink(sq, {
         orderId: order.id, email, askShipping: priced.physical,
         redirectUrl: `${origin}/shop/order/${order.id}?t=${order.token}`,
-        lines: squareLinesFor(lines, priced.postage),
+        lines: squareLinesFor(lines, postage),
       });
       return c.json({ url, order_id: order.id });
     } catch (e: any) {
