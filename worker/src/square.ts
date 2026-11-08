@@ -41,7 +41,8 @@ export function squareConfig(env: Partial<Env>): SquareConfig {
 }
 
 export class SquareError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  status: number;
+  constructor(status: number, message: string) { super(message); this.status = status; }
 }
 
 export async function squareCall(cfg: Extract<SquareConfig, { ok: true }>, method: "GET" | "POST", path: string, body?: unknown, fetchImpl?: Fetch): Promise<any> {
