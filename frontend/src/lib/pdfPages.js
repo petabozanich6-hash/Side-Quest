@@ -64,19 +64,38 @@ export async function readPdfChapters(file) {
       if (item.title && page) marks.push({ title: String(item.title).trim().slice(0, 120), start: page });
     } catch { /* skip a bookmark we can't resolve */ }
   }
-  marks.sort((a, b) => a.start - b.start);
   const pageText = async (n) => {
     const content = await (await doc.getPage(n)).getTextContent();
     return content.items.map((it) => it.str || "").join(" ").replace(/\s+/g, " ").trim();
   };
+  // Some PDF export tools omit bookmarks. Detect obvious Unit/Chapter headings
+  // in the actual page text, then use bounded auto-labelled chapters as a fallback.
+  // The AI planner identifies teachable subsections within these chapter ranges.
+  if (!marks.length) {
+    const pageHeads = [];
+    for (let p = 1; p <= doc.numPages; p++) {
+      const first = (await pageText(p)).slice(0, 220);
+      const match = /^(?:\s*)(?:(?:unit|chapter)\s*(?:\d+|[ivx]+)\s*[:.\-–]?\s*[A-Za-z][^\n.]{2,80})/i.exec(first);
+      if (match) pageHeads.push({ title: match[0].replace(/\s+/g, " ").trim().slice(0, 120), start: p });
+    }
+    if (pageHeads.length >= 2) marks.push(...pageHeads);
+    else {
+      // This still requires readable text; image-only PDFs are not silently guessed.
+      const start = doc.numPages > 4 ? 3 : 1;
+      for (let p = start, n = 1; p <= doc.numPages; p += 12, n++)
+        marks.push({ title: `Chapter ${n} — PDF pages ${p}–${Math.min(p + 11, doc.numPages)}`, start: p });
+    }
+  }
+  marks.sort((a, b) => a.start - b.start);
+  const distinct = marks.filter((mark, i) => i === 0 || mark.start !== marks[i - 1].start);
   const chapters = [];
-  for (let i = 0; i < marks.length; i++) {
-    const start = marks[i].start;
-    const end = Math.max(start, (marks[i + 1]?.start || doc.numPages + 1) - 1);
+  for (let i = 0; i < distinct.length; i++) {
+    const start = distinct[i].start;
+    const end = Math.max(start, (distinct[i + 1]?.start || doc.numPages + 1) - 1);
     const page_texts = [];
     for (let p = start; p <= end && p <= doc.numPages; p++) page_texts.push({ page: p, text: await pageText(p) });
-    chapters.push({ title: marks[i].title, start, end, text: page_texts.map((part) => part.text).join("\n\n").slice(0, 30000),
-      page_texts, skill_goal: marks[i].title, exercise_ref: "", include: !SKIP_CHAPTER.test(marks[i].title) });
+    chapters.push({ title: distinct[i].title, start, end, text: page_texts.map((part) => part.text).join("\n\n").slice(0, 30000),
+      page_texts, skill_goal: distinct[i].title, exercise_ref: "", include: !SKIP_CHAPTER.test(distinct[i].title) });
   }
   return { total: doc.numPages, chapters };
 }

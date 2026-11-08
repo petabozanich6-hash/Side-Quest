@@ -18,7 +18,8 @@ import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
 import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
-import { draftLessonWithAi } from "./aiDraft";
+import { draftLessonWithAi, DEFAULT_MODEL } from "./aiDraft";
+import { validatePlanRequest, suggestBookSubsections } from "./questBookSubsections";
 import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 
 type DB = D1Database;
@@ -60,13 +61,15 @@ export const FILE_KINDS = ["book", "sample", "cover"] as const;
 type FileKind = (typeof FILE_KINDS)[number];
 const keyFor = (id: string, kind: FileKind | "meta" | "chapters" | "lessons") =>
   `${ROOT}${id}/${kind === "meta" ? "meta.json" : kind === "chapters" ? "chapters.json" : kind === "lessons" ? "lessons.json" : kind === "cover" ? "cover.png" : `${kind}.pdf`}`;
-const MAX_CHAPTERS = 120; // A multi-skill secondary unit can need several 40–60-minute lessons.
+const MAX_CHAPTERS = 250; // Workbook chapters are divided into multiple skill-level subsections.
 const MAX_CHAPTER_TEXT = 30000;
-type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string };
+type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string; unit_title?: string };
 
 /** Stable fingerprint of the exact session source and its page references. A changed plan needs a new draft. */
 export function chapterRevision(ch: Chapter): string {
-  const input = JSON.stringify([ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || ""]);
+  const parts: (string | number)[] = [ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || ""];
+  if (ch.unit_title) parts.push(ch.unit_title); // Do not stale pre-existing lessons without chapter metadata.
+  const input = JSON.stringify(parts);
   let hash = 2166136261;
   for (let i = 0; i < input.length; i++) hash = Math.imul(hash ^ input.charCodeAt(i), 16777619);
   return (hash >>> 0).toString(36);
@@ -103,13 +106,14 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
     if (text.replace(/\s/g, "").length < 40) return fail(400, `Chapter “${title}” has no readable text. Make sure the PDF has real text, not just pictures of pages.`);
     const skill_goal = clip(c?.skill_goal, 220);
     const exercise_ref = clip(c?.exercise_ref, 160);
+    const unit_title = clip(c?.unit_title, 120);
     // Preserve IDs on rescans/splits. Lesson purchases and family copies are keyed by this ID.
     const suppliedId = clip(c?.id, 40);
     const sessionId = suppliedId || `c${i + 1}`; // Backward compatibility for older clients and saved books.
     if (!/^(?:c[1-9][0-9]*|s-[a-z0-9]{20})$/.test(sessionId) || ids.has(sessionId))
       return fail(400, `Chapter “${title}” has a missing, duplicate or invalid stable lesson ID. Re-read the PDF and try again.`);
     ids.add(sessionId);
-    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}) });
+    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}), ...(unit_title ? { unit_title } : {}) });
   }
   return { ok: true, chapters };
 }
@@ -723,6 +727,28 @@ export function registerQuestBooks(app: App, g: Guards) {
     return c.json({ ok: true, chapters: checked.chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length })) });
   });
 
+  // Analyse ONE source chapter into focused subsections. This does not save or draft any lessons.
+  // The owner's browser reads the already-uploaded PDF; only text from the selected chapter is sent to AI.
+  app.post("/api/quest-books/admin/books/:id/chapters/plan", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    const meta = VALID_ID.test(id) ? await readMeta(c.env.BUCKET!, id) : null;
+    if (!meta || !(await c.env.BUCKET!.head(keyFor(id, "book")))) return c.json({ detail: "Book PDF not found" }, 404);
+    if (!c.env.AI) return c.json({ detail: "The lesson planner is not enabled. No chapters have been changed." }, 503);
+    if (Number(c.req.header("content-length") || "0") > 230_000) return c.json({ detail: "Chapter text is too large to plan at once." }, 413);
+    const checked = validatePlanRequest(await c.req.json().catch(() => null));
+    if (!checked.ok) return c.json({ detail: checked.detail }, 400);
+    try {
+      const subsections = await suggestBookSubsections(
+        c.env.AI, checked.title, checked.pages, yearLabel(meta.year), subjectLabel(meta),
+        c.env.AI_MODEL || DEFAULT_MODEL, c.env.AI_GATEWAY_ID,
+      );
+      return c.json({ chapter_title: checked.title, subsections });
+    } catch (e: any) {
+      console.warn("quest book chapter planning failed", e?.message || e);
+      return c.json({ detail: "Could not identify reliable subsections for this chapter. No changes were saved. Try analysing this chapter again." }, 502);
+    }
+  });
+
   // The owner's working view: chapters, the owner's draft lesson for each, and what's published.
   app.get("/api/quest-books/admin/books/:id/chapters", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
@@ -763,12 +789,12 @@ export function registerQuestBooks(app: App, g: Guards) {
         topic: chapter.title, learning_area: subjectLabel(meta), year_level: level, duration_minutes: 60,
         delivery: meta.year !== null && meta.year <= 3 ? "parent_guided" : "independent",
         goal: chapter.skill_goal || chapter.title,
-        request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson for the skill "${chapter.title}" from "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other sessions.`,
+        request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson teaching subsection "${chapter.title}" from chapter "${chapter.unit_title || chapter.title}" in "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other subsections.`,
         notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary.`,
         source_text: chapter.text,
         link_outcomes: true,
       } as any,
-      questBook: { bookId: id, bookTitle: meta.title, chapterId: chapter.id, chapterTitle: chapter.title,
+      questBook: { bookId: id, bookTitle: meta.title, chapterId: chapter.id, chapterTitle: chapter.unit_title || chapter.title,
         pageStart: chapter.start, pageEnd: chapter.end, exerciseRef: chapter.exercise_ref || "", skillGoal: chapter.skill_goal || chapter.title, sourceRevision: chapterRevision(chapter) },
     });
     if (!r.ok) return c.json({ detail: r.detail, code: (r as any).code }, r.status as any);
@@ -801,7 +827,7 @@ export function registerQuestBooks(app: App, g: Guards) {
         if (issues.length) return c.json({ detail: `“${ch.title}” cannot be published yet: ${issues.join("; ")}.` }, 409);
       }
       const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ai_flags, ...clean } = data as any;
-      lessons.push({ key: ch.id, chapter_id: ch.id, chapter_title: ch.title, title: String(row.title), stage: String(row.stage || ""), learning_area: String(row.learning_area || ""), data: clean });
+      lessons.push({ key: ch.id, chapter_id: ch.id, chapter_title: ch.unit_title || ch.title, title: String(row.title), stage: String(row.stage || ""), learning_area: String(row.learning_area || ""), data: clean });
     }
     // Match every lesson to each state's curriculum now, so families anywhere get their own codes when they add it.
     const meta = await readMeta(c.env.BUCKET!, id);
