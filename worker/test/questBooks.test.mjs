@@ -386,6 +386,11 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   };
   h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(thorough), lid);
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
+  const missingPaidKey = await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", {
+    chapters: [{ ...raw, id: "s-1234567890abcdef1234" }],
+  });
+  assert.equal(missingPaidKey.status, 409, "a published lesson key cannot disappear during a rescan");
+  assert.equal((await missingPaidKey.json()).code, "PUBLISHED_LESSON_KEY_REMOVED");
   const changed = { ...raw, exercise_ref: "Page 8 questions 6–9" };
   assert.equal((await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", { chapters: [changed] })).status, 200);
   const info = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters;
