@@ -237,7 +237,7 @@ export default function LessonBuilder() {
         {bookQuery && lessonId ? (
           <>
             <Link to={`/parent/lessons/${lessonId}/review${bookQuery}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> Back to book lesson review</Link>
-            <Link to={`/parent/quest-books/${encodeURIComponent(bookId)}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900">All lessons in this book</Link>
+            <Link to={`/parent/quest-books/${encodeURIComponent(bookId)}?workspace=lessons`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900">All lessons in this book</Link>
           </>
         ) : batch && lessonId ? (
           <div className="mb-2 flex flex-wrap gap-4 text-sm" data-testid="builder-batch-links">
