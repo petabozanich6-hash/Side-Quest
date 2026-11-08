@@ -97,6 +97,13 @@ function toServer(f, status) {
 }
 const lines = (t) => String(t || "").split("\n").map(x => x.trim()).filter(Boolean);
 
+/** Do not clear the unsaved indicator until the server returns the edited content. */
+function verifiedSavedLesson(persisted, body) {
+  const fields = ["title", "status", "introduction", "teaching_plan", "parent_script", "answer_key", "parent_notes", "consolidation"];
+  return fields.every((k) => String(persisted[k] || "").trim() === String(body[k] || "").trim()) &&
+    ["sections", "activities", "questions", "quiz", "resources"].every((k) => (persisted[k] || []).length === body[k].length);
+}
+
 const previewItem = (it) => ({ prompt: it.prompt, hint: it.hint, kind: it.kind, options: it.options, lefts: it.pairs?.map(p => p.left), rights: it.pairs?.map(p => p.right) });
 
 /** The lesson as the child will see it: no answers, no parent guide. */
@@ -130,6 +137,8 @@ export default function LessonBuilder() {
   const [mode, setMode] = useState("edit"); // edit | preview | split
   const preview = mode === "preview";
   const baseline = useRef(null);
+  const autosaving = useRef(null);
+  const manualSaving = useRef(false);
   const [autosaved, setAutosaved] = useState(null);
   const [busy, setBusy] = useState(false);
   const [assign, setAssign] = useState(null);
@@ -169,8 +178,19 @@ export default function LessonBuilder() {
     // Autosave drafts that already exist; never touches lessons marked ready.
     const t = setInterval(async () => {
       const { f: cur, lessonId: lid, busy: b } = live.current;
-      if (!lid || b || cur.status === "ready" || !cur.title.trim() || JSON.stringify(cur) === baseline.current) return;
-      try { await api.put(`/lessons/${lid}`, toServer(cur, "draft")); baseline.current = JSON.stringify(cur); setAutosaved(new Date()); } catch { /* keep the unsaved warning */ }
+      if (!lid || b || manualSaving.current || autosaving.current || cur.status === "ready" || !cur.title.trim() || JSON.stringify(cur) === baseline.current) return;
+      const task = (async () => {
+        try {
+          const body = toServer(cur, "draft");
+          await api.put(`/lessons/${lid}`, body);
+          const result = await api.get(`/lessons/${lid}`, { params: { _: Date.now() } });
+          if (!verifiedSavedLesson(result.data, body)) throw new Error("The autosaved lesson did not match the draft.");
+          baseline.current = JSON.stringify(cur);
+          setAutosaved(new Date());
+        } catch { /* never claim an unverified autosave succeeded; leave the unsaved warning */ }
+        finally { autosaving.current = null; }
+      })();
+      autosaving.current = task;
     }, 30000);
     return () => { window.removeEventListener("beforeunload", warn); clearInterval(t); };
   }, []);
@@ -182,10 +202,13 @@ export default function LessonBuilder() {
   const del = (k, i) => setF(p => ({ ...p, [k]: p[k].filter((_, j) => j !== i) }));
 
   const save = async (status) => {
+    if (manualSaving.current) return null;
     setError("");
     if (!f.title.trim()) { setError("Give your lesson a title first."); return null; }
+    manualSaving.current = true;
     setBusy(true);
     try {
+      if (autosaving.current) await autosaving.current;
       const snapshot = f;
       const body = toServer(snapshot, status);
       const r = lessonId ? await api.put(`/lessons/${lessonId}`, body) : await api.post("/lessons", body);
@@ -193,13 +216,7 @@ export default function LessonBuilder() {
       // Read the saved lesson back before clearing the unsaved indicator.
       const confirmation = await api.get(`/lessons/${r.data.id}`, { params: { _: Date.now() } });
       const persisted = confirmation.data;
-      const fields = ["title", "status", "introduction", "teaching_plan", "parent_script", "answer_key", "parent_notes", "consolidation"];
-      if (fields.some(k => String(persisted[k] || "").trim() !== String(body[k] || "").trim()) ||
-          (persisted.sections || []).length !== body.sections.length ||
-          (persisted.activities || []).length !== body.activities.length ||
-          (persisted.questions || []).length !== body.questions.length ||
-          (persisted.quiz || []).length !== body.quiz.length ||
-          (persisted.resources || []).length !== body.resources.length) {
+      if (!verifiedSavedLesson(persisted, body)) {
         throw new Error("The server did not retain all edits. Your changes are still shown here; please try saving again.");
       }
       setLessonId(r.data.id);
@@ -214,7 +231,7 @@ export default function LessonBuilder() {
       setError(d?.detail || e.message || "Could not save. Please try again.");
       setUpgrade(d?.code === "UPGRADE_REQUIRED");
       return null;
-    } finally { setBusy(false); }
+    } finally { manualSaving.current = false; setBusy(false); }
   };
 
   const saveAndAssign = async () => {
