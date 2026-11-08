@@ -469,7 +469,7 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
 }
 
 /** Quest Book lessons keep their book link when edited, so adding the book again won't duplicate them. */
-const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "source", "review_status"];
+const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal", "quest_source_revision", "source", "review_status"];
 function questTags(data: any): Record<string, unknown> {
   if (!data?.quest_book_id) return {};
   return Object.fromEntries(QUEST_KEYS.filter((k) => data[k] !== undefined).map((k) => [k, data[k]]));
@@ -484,7 +484,7 @@ export async function familyOutcomeCodes(db: DB, familyId: string, codes: string
   return cat.available ? codes.filter((c) => cat.byCode.has(c)) : [];
 }
 
-export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[]; questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string } } = {}): Promise<Result<{ lesson: any }>> {
+export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[]; questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string; pageStart?: number; pageEnd?: number; exerciseRef?: string; skillGoal?: string; sourceRevision?: string } } = {}): Promise<Result<{ lesson: any }>> {
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
@@ -506,7 +506,12 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
     .prepare(
       "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
     )
-    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}), ...(opts.questBook ? { quest_book_id: opts.questBook.bookId, quest_book_title: opts.questBook.bookTitle, quest_chapter_id: opts.questBook.chapterId, quest_chapter_title: opts.questBook.chapterTitle } : {}) }), ts, ts)
+    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}), ...(opts.questBook ? { quest_book_id: opts.questBook.bookId, quest_book_title: opts.questBook.bookTitle, quest_chapter_id: opts.questBook.chapterId, quest_chapter_title: opts.questBook.chapterTitle,
+      quest_page_start: opts.questBook.pageStart, quest_page_end: opts.questBook.pageEnd,
+      quest_exercise_ref: opts.questBook.exerciseRef || "", quest_skill_goal: opts.questBook.skillGoal || "",
+      quest_source_revision: opts.questBook.sourceRevision || "",
+      parent_notes: [`Companion to ${opts.questBook.bookTitle}, printed pages ${opts.questBook.pageStart ?? "?"}–${opts.questBook.pageEnd ?? "?"}.`,
+        opts.questBook.exerciseRef ? `Optional extra workbook practice: ${opts.questBook.exerciseRef}.` : ""].filter(Boolean).join(" ") } : {}) }), ts, ts)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
@@ -545,7 +550,7 @@ export async function duplicateLesson(db: DB, familyId: string, id: string, now:
   const ts = nowIso(now);
   const title = `${String(row.title).slice(0, 190)} (copy)`;
   // A copy is the family's own lesson, no longer part of a Quest Book.
-  const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ...data } = parseJson<Record<string, unknown>>(row.data, {});
+  const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, quest_page_start, quest_page_end, quest_exercise_ref, quest_skill_goal, quest_source_revision, ...data } = parseJson<Record<string, unknown>>(row.data, {});
   if (quest_book_id && data.source === "side_quest_book") Object.assign(data, { source: "parent", review_status: "parent_created" });
   await db
     .prepare(

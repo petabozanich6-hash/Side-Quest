@@ -60,9 +60,32 @@ export const FILE_KINDS = ["book", "sample", "cover"] as const;
 type FileKind = (typeof FILE_KINDS)[number];
 const keyFor = (id: string, kind: FileKind | "meta" | "chapters" | "lessons") =>
   `${ROOT}${id}/${kind === "meta" ? "meta.json" : kind === "chapters" ? "chapters.json" : kind === "lessons" ? "lessons.json" : kind === "cover" ? "cover.png" : `${kind}.pdf`}`;
-const MAX_CHAPTERS = 60;
+const MAX_CHAPTERS = 120; // A multi-skill secondary unit can need several 40–60-minute lessons.
 const MAX_CHAPTER_TEXT = 30000;
-type Chapter = { id: string; title: string; start: number; end: number; text: string };
+type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string };
+
+/** Stable fingerprint of the exact session source and its page references. A changed plan needs a new draft. */
+export function chapterRevision(ch: Chapter): string {
+  const input = JSON.stringify([ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || ""]);
+  let hash = 2166136261;
+  for (let i = 0; i < input.length; i++) hash = Math.imul(hash ^ input.charCodeAt(i), 16777619);
+  return (hash >>> 0).toString(36);
+}
+
+/** New book-companion lessons must be full teachable and printable lessons, not chapter summaries. */
+export function companionLessonIssues(d: any): string[] {
+  const n = (value: any) => Array.isArray(value) ? value.length : 0;
+  const issues: string[] = [];
+  if (n(d.objectives) < 2) issues.push("at least two learning objectives");
+  if (n(d.sections) < 2 || (d.sections || []).some((x: any) => !String(x?.body || "").trim())) issues.push("two complete teaching explanations");
+  if (n(d.worked_examples) < 2 || (d.worked_examples || []).some((x: any) => n(x?.steps) < 2 || !x?.answer)) issues.push("two worked examples with complete steps and answers");
+  if (n(d.guided_practice) < 4 || (d.guided_practice || []).some((x: any) => !x?.prompt || !x?.answer)) issues.push("four answered guided practice questions");
+  if (n(d.activities) < 2 || (d.activities || []).some((a: any) => n(a?.tasks) < 3 || a.tasks.some((t: any) => !t?.prompt || !t?.answer))) issues.push("two independent activities with three answered tasks each");
+  if (n(d.questions) < 3 || (d.questions || []).some((q: any) => !q?.answer_key)) issues.push("three written questions with marking guidance");
+  if (n(d.quiz) < 3 || (d.quiz || []).some((q: any) => !Array.isArray(q?.options) || q.options.length < 2 || !Number.isInteger(q?.correct_index) || q.correct_index < 0 || q.correct_index >= q.options.length)) issues.push("three valid assessment questions");
+  if (!String(d.parent_script || "").trim() || !String(d.answer_key || "").trim()) issues.push("parent teaching notes and complete answer key");
+  return issues;
+}
 
 /** Owner-supplied chapters (read from the PDF's bookmarks in the owner's browser). */
 export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] } | Fail {
@@ -70,6 +93,7 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
   if (!Array.isArray(list)) return fail(400, "Chapters are missing.");
   if (list.length > MAX_CHAPTERS) return fail(400, `A book can have at most ${MAX_CHAPTERS} chapters.`);
   const chapters: Chapter[] = [];
+  const ids = new Set<string>();
   for (const [i, c] of list.entries()) {
     const title = clip(c?.title, 120);
     const start = Number(c?.start), end = Number(c?.end);
@@ -77,7 +101,15 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
     if (!Number.isInteger(start) || !Number.isInteger(end) || start < 1 || end < start || end > 5000) return fail(400, `Chapter ${i + 1} has invalid pages.`);
     const text = typeof c?.text === "string" ? c.text.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g, " ").slice(0, MAX_CHAPTER_TEXT) : "";
     if (text.replace(/\s/g, "").length < 40) return fail(400, `Chapter “${title}” has no readable text. Make sure the PDF has real text, not just pictures of pages.`);
-    chapters.push({ id: `c${i + 1}`, title, start, end, text });
+    const skill_goal = clip(c?.skill_goal, 220);
+    const exercise_ref = clip(c?.exercise_ref, 160);
+    // Preserve IDs on rescans/splits. Lesson purchases and family copies are keyed by this ID.
+    const suppliedId = clip(c?.id, 40);
+    const sessionId = suppliedId || `c${i + 1}`; // Backward compatibility for older clients and saved books.
+    if (!/^(?:c[1-9][0-9]*|s-[a-z0-9]{20})$/.test(sessionId) || ids.has(sessionId))
+      return fail(400, `Chapter “${title}” has a missing, duplicate or invalid stable lesson ID. Re-read the PDF and try again.`);
+    ids.add(sessionId);
+    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}) });
   }
   return { ok: true, chapters };
 }
@@ -93,6 +125,8 @@ export function lessonPreview(l: Published) {
   return {
     title: l.title, chapter_title: l.chapter_title, stage: l.stage, learning_area: l.learning_area,
     minutes: Number(d.duration_minutes) || null,
+    book_pages: Number.isInteger(d.quest_page_start) && Number.isInteger(d.quest_page_end) ? { start: d.quest_page_start, end: d.quest_page_end } : null,
+    skill_goal: snip(d.quest_skill_goal || "", 200),
     summary: snip(d.why_it_matters || d.summary || "", 260),
     objectives: (Array.isArray(d.objectives) ? d.objectives : []).slice(0, 4).map((o: unknown) => snip(o, 160)).filter(Boolean),
     opening: snip(d.introduction || "", 320),
@@ -410,7 +444,11 @@ export function registerQuestBooks(app: App, g: Guards) {
     c.header("Cache-Control", "private, no-store");
     return c.json({
       member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, billingConfig(c.env).ok),
-      lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title, lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
+      lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title,
+        book_pages: typeof l.data.quest_page_start === "number" && typeof l.data.quest_page_end === "number" &&
+          Number.isInteger(l.data.quest_page_start) && Number.isInteger(l.data.quest_page_end)
+          ? { start: l.data.quest_page_start, end: l.data.quest_page_end } : null,
+        lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
     });
   });
 
@@ -672,6 +710,15 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (Number(c.req.header("content-length") || "0") > 3_000_000) return c.json({ detail: "Too much chapter text." }, 413);
     const checked = validateChapters(await c.req.json().catch(() => null));
     if (!checked.ok) return c.json({ detail: checked.detail }, checked.status as any);
+    // Published keys may already be owned individually. Removing or silently
+    // renumbering them during a rescan would orphan existing lesson purchases.
+    const published = await readPublished(c.env.BUCKET!, id);
+    const newKeys = new Set(checked.chapters.map((ch) => ch.id));
+    const removed = published.find((lesson) => !newKeys.has(lesson.key));
+    if (removed) return c.json({
+      detail: `Keep the existing published session ID for “${removed.chapter_title}”. Families may already own this lesson. Edit its content or publish a new book edition rather than removing its purchase key.`,
+      code: "PUBLISHED_LESSON_KEY_REMOVED",
+    }, 409);
     await c.env.BUCKET!.put(keyFor(id, "chapters"), JSON.stringify({ chapters: checked.chapters }), { httpMetadata: { contentType: "application/json" } });
     return c.json({ ok: true, chapters: checked.chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length })) });
   });
@@ -683,14 +730,17 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const chapters = await readChapters(c.env.BUCKET!, id);
     const published = await readPublished(c.env.BUCKET!, id);
-    const { results } = await c.env.DB.prepare(`SELECT id, title, status, updated_at, json_extract(data, '$.quest_chapter_id') AS ch FROM lessons
+    const { results } = await c.env.DB.prepare(`SELECT id, title, status, updated_at, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision FROM lessons
       WHERE family_id = ? AND archived_at IS NULL AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
       AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book' ORDER BY updated_at DESC`).bind(user.family_id, id).all<any>();
     const drafts = new Map<string, any>();
-    for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, { lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at });
+    for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, { lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision });
     c.header("Cache-Control", "no-store");
     return c.json({
-      chapters: chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length, draft: drafts.get(ch.id) || null, published: published.some((p) => p.chapter_id === ch.id) })),
+      chapters: chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length,
+        revision: chapterRevision({ ...ch, text }), draft: drafts.get(ch.id) ? {
+          ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
+        } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
     });
   });
@@ -702,17 +752,24 @@ export function registerQuestBooks(app: App, g: Guards) {
     const meta = VALID_ID.test(id) ? await readMeta(c.env.BUCKET!, id) : null;
     const chapter = meta ? (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid) : null;
     if (!meta || !chapter) return c.json({ detail: "Chapter not found" }, 404);
+    if (chapter.text.length > 8000) return c.json({ detail: "This session is too long for one accurate lesson (over 8,000 characters). Re-read the PDF and split the chapter by pages and skill before drafting. No source text will be silently omitted." }, 400);
     const user = c.get("user");
     const level = yearLabel(meta.year);
+    const exerciseRef = chapter.exercise_ref || "Exercises on the specified workbook pages";
     const r = await draftLessonWithAi(c.env.DB, c.env.AI, {
       familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
       compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env as any), splitStages: splitLessonStagesEnabled(c.env as any),
       request: {
-        request: `Create one complete ${level} ${subjectLabel(meta)} lesson teaching the chapter "${chapter.title}" from the workbook "${meta.title}". Base the lesson on the chapter text provided: teach the same skills, in the same order, at the same level.`,
+        topic: chapter.title, learning_area: subjectLabel(meta), year_level: level, duration_minutes: 60,
+        delivery: meta.year !== null && meta.year <= 3 ? "parent_guided" : "independent",
+        goal: chapter.skill_goal || chapter.title,
+        request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson for the skill "${chapter.title}" from "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other sessions.`,
+        notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary.`,
         source_text: chapter.text,
         link_outcomes: true,
       } as any,
-      questBook: { bookId: id, bookTitle: meta.title, chapterId: chapter.id, chapterTitle: chapter.title },
+      questBook: { bookId: id, bookTitle: meta.title, chapterId: chapter.id, chapterTitle: chapter.title,
+        pageStart: chapter.start, pageEnd: chapter.end, exerciseRef: chapter.exercise_ref || "", skillGoal: chapter.skill_goal || chapter.title, sourceRevision: chapterRevision(chapter) },
     });
     if (!r.ok) return c.json({ detail: r.detail, code: (r as any).code }, r.status as any);
     return c.json({ lesson: r.lesson, warnings: r.warnings });
@@ -735,6 +792,14 @@ export function registerQuestBooks(app: App, g: Guards) {
       if (!row || row.archived_at) return c.json({ detail: `The lesson for “${ch.title}” wasn't found in your library.` }, 400);
       let data: Record<string, unknown> = {};
       try { data = JSON.parse(row.data || "{}"); } catch {}
+      if (data.quest_book_id === id) {
+        if (data.quest_chapter_id !== ch.id || data.quest_source_revision !== chapterRevision(ch))
+          return c.json({ detail: `“${ch.title}” has changed since its lesson was generated. Remake and review the lesson before publishing.` }, 409);
+        if (row.status !== "ready" || it?.reviewed !== true)
+          return c.json({ detail: `Review “${ch.title}”, mark it ready, then tick its publish approval.` }, 409);
+        const issues = companionLessonIssues(data);
+        if (issues.length) return c.json({ detail: `“${ch.title}” cannot be published yet: ${issues.join("; ")}.` }, 409);
+      }
       const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ai_flags, ...clean } = data as any;
       lessons.push({ key: ch.id, chapter_id: ch.id, chapter_title: ch.title, title: String(row.title), stage: String(row.stage || ""), learning_area: String(row.learning_area || ""), data: clean });
     }

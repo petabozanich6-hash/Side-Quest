@@ -21,16 +21,34 @@ A book with no price is for members only. Books are digital downloads (PDF) the 
 Lessons a family is entitled to are copied into **My lessons** with one tap and stay assignable even after a free preview
 ends (`assignLesson` checks `isBookLessonGrant`). A book-only buyer upgrades to the bundle for the difference.
 
-## Chapter lessons (owner)
+## Workbook companion lessons (owner)
 
-On a book in the uploader, **Lessons** opens the chapter tools:
+On a book in the uploader, **Lessons** opens the session builder:
 
-1. **Read chapters from the PDF**: chapters come from the PDF's bookmarks (read in the owner's browser). Untick
-   non-teaching chapters (welcome, answers, parent notes) and rename if needed.
-2. **Make lesson** (or **Make all missing lessons**): each chapter's text goes through the normal AI lesson generator
-   (same settings as Make a lesson). Drafts land in the owner's **My lessons** for review and editing.
-3. **Publish lessons to the book**: snapshots the reviewed lessons into private R2 (`lessons.json`). Families only see
-   published lessons; republish after editing to update what new buyers get (existing copies don't change).
+1. **Read bookmarked sections from the uploaded PDF**. Non-teaching sections (welcome, answers, parent notes) are
+   unticked by default. For a chapter covering multiple skills, enter a PDF page number and **Split into two sessions**.
+   Each session has one specific learning goal and optional **exact workbook exercise reference** (such as
+   "Page 18, questions 1–8"). Session IDs are stable across a re-read or split, so previously purchased
+   individual lesson keys do not shift to different content. For clean extraction, each session may contain at
+   most 8,000 characters of source text. The app rejects larger sessions before generating; it never silently
+   drops the end of a chapter.
+2. **Make lesson** for each session. The AI receives the Year, subject, exact selected source, goal and page range.
+   It creates a **complete Side-Quest lesson**: actual teaching, worked models, guided practice, independent tasks,
+   written questions, assessment, answers and parent teaching notes. The online lesson must be self-contained
+   and printable without the PDF; workbook questions are *additional parent-guided practice* rather than
+   a dependency. Drafts go into **My lessons** and keep their book/page/exercise metadata when edited.
+3. **Review every lesson**, mark its status **Ready**, and tick **I checked the lesson and answers** beside it in
+   the book space. Book-generated lessons cannot be published if the source changes, the lesson remains a draft,
+   required instructional components are missing, or the owner has not explicitly approved that lesson.
+   Re-reading and changing a unit's goal, pages, exercises or text will flag earlier drafts as stale.
+4. **Publish** to snapshot approved lessons into private R2 (`lessons.json`). Families see only published lessons,
+   and may assign them online or print the student and parent editions using the existing lesson player/print
+   system. Republish after editing to update what *new* buyers get; existing family copies remain unchanged.
+
+**Known limits:** Splitting works from PDF page text extracted while scanning a file. For a saved chapter, re-read
+the PDF to make additional splits. This workflow does not run OCR on scanned/image-only PDFs and does not
+independently certify the educational accuracy of AI-generated content. A human must check all answers, spelling,
+phonics progressions, curriculum suitability and copyright before publishing.
 
 Prices (owner sets per book, all optional): **book**, **book + all lessons** (at least 50c more than the book), and
 **single lesson**.

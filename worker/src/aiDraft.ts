@@ -1055,7 +1055,7 @@ export async function draftLessonWithAi(
   ai: AiBinding | undefined,
   opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; request: AiRequest;
     /** Set only by the owner's Quest Books "make a lesson from this chapter": tags the draft with its book and chapter. */
-    questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string } },
+    questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string; pageStart?: number; pageEnd?: number; exerciseRef?: string; skillGoal?: string; sourceRevision?: string } },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
