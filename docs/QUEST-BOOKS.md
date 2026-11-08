@@ -116,3 +116,5 @@ the difference for the pack (at least 50c). Members get everything free.
 When lessons are published, each one is matched to the outcomes of every curriculum Side-Quest holds (NSW, Australian
 Curriculum v9 for QLD/SA/TAS/ACT/NT, WA; VIC once loaded). A family adding the lessons gets its own state's codes.
 Lessons added before this change keep the codes they had; publishing again doesn't change copies already added.
+
+Deploys: pushes to main build on Cloudflare (Workers Builds, production branch main). Retrying an old build redeploys that old commit.
