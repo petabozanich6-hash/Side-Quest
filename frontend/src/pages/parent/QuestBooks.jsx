@@ -94,12 +94,11 @@ const FILES = [
   { kind: "cover", label: "Cover PNG", accept: "image/png", type: "image/png", icon: ImagePlus },
 ];
 
-function OwnerPanel({ data, reload, draft, clearDraft }) {
+function OwnerPanel({ data, reload }) {
   const [busy, setBusy] = useState("");
   const [progress, setProgress] = useState(0);
   const [adding, setAdding] = useState(false);
-  const panelRef = React.useRef(null);
-  useEffect(() => { if (draft) { setAdding(true); panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); } }, [draft]);
+
   const [editing, setEditing] = useState(null);
   const [lessonsFor, setLessonsFor] = useState(null);
   const [readerJobs, setReaderJobs] = useState({});
@@ -150,13 +149,13 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
   };
 
   return (
-    <section ref={panelRef} className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
+    <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
         <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it; members read and print selected pages online), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
-        <BookForm key={draft ? JSON.stringify(draft) : "new"} data={data} initial={draft ? { ...EMPTY, ...draft } : undefined} onCancel={() => { setAdding(false); clearDraft?.(); }} onSaved={async () => { setAdding(false); clearDraft?.(); await reload(); }} />
+        <BookForm data={data} onCancel={() => setAdding(false)} onSaved={async () => { setAdding(false); await reload(); }} />
       ) : (
         <button type="button" onClick={() => setAdding(true)} className="inline-flex items-center gap-2 rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold"><Plus size={16} /> Add a book</button>
       )}
@@ -236,6 +235,7 @@ function PlannedTile({ p, onClick }) {
 }
 
 function ShelfView() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [year, setYear] = useState(null);
@@ -271,6 +271,19 @@ function ShelfView() {
   const currentCollection = data?.collections?.find((c) => c.id === collection);
   const createPlanned = (p) => setDraft({ collection, year: p.year === null ? "all" : p.year, topic: p.topic, subject: p.subject,
     title: `${p.year === null ? "" : p.year === 0 ? "Foundation " : `Year ${p.year} `}${p.topic}`.trim() });
+  const createCore = (subject, subjectLabel) => setDraft({ collection: "core", year, subject,
+    title: `${yearLabel} ${subjectLabel}`.trim() });
+  const inlineForm = (selected) => (
+    <div className="mt-5 rounded-xl border-2 border-emerald-500 bg-emerald-50 p-4 space-y-3" data-testid="quest-inline-create">
+      <div>
+        <h3 className="font-display font-bold text-emerald-950">Create {selected.collection === "core" ? `${yearLabel} ${data.subjects.find((s) => s.id === selected.subject)?.label || "book"}` : selected.topic}</h3>
+        <p className="text-sm text-emerald-900">Your chosen year and subject are filled in below. Give the book its title, then you'll go straight to its own upload and lesson workspace.</p>
+      </div>
+      <BookForm key={JSON.stringify(selected)} data={data} initial={{ ...EMPTY, ...selected }}
+        onCancel={() => setDraft(null)}
+        onSaved={(book) => { setDraft(null); navigate(`/parent/quest-books/${encodeURIComponent(book.id)}`); }} />
+    </div>
+  );
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="quest-books">
@@ -297,7 +310,7 @@ function ShelfView() {
 
         <div className="inline-flex rounded-full border border-stone-300 bg-white p-1" role="tablist" aria-label="Quest Books shelves">
           {[["core", "Year-level books"], ["specialist", "Specialist"]].map(([id, label]) => (
-            <button key={id} type="button" role="tab" aria-selected={mode === id} onClick={() => setMode(id)} data-testid={`quest-mode-${id}`}
+            <button key={id} type="button" role="tab" aria-selected={mode === id} onClick={() => { setMode(id); setDraft(null); }} data-testid={`quest-mode-${id}`}
               className={`rounded-full px-4 py-1.5 text-sm font-bold ${mode === id ? "bg-emerald-900 text-white" : "text-slate-700"}`}>{label}</button>
           ))}
         </div>
@@ -308,7 +321,7 @@ function ShelfView() {
               {data.collections.filter((c) => c.id !== "core").map((c) => {
                 const n = data.books.filter((b) => b.collection === c.id && b.has_book).length;
                 return (
-                  <button key={c.id} type="button" onClick={() => setCollection(c.id)} data-testid={`quest-collection-${c.id}`}
+                  <button key={c.id} type="button" onClick={() => { setCollection(c.id); setDraft(null); }} data-testid={`quest-collection-${c.id}`}
                     className={`text-left rounded-2xl border p-4 transition ${collection === c.id ? "border-emerald-800 bg-emerald-50 shadow" : "border-stone-200 bg-white hover:border-emerald-600"}`}>
                     <div className="font-display font-bold text-slate-900">{c.label}{n ? <span className="ml-1 text-xs text-emerald-700">· {n}</span> : null}</div>
                     <div className="text-xs text-stone-600 mt-1">{c.blurb}</div>
@@ -325,13 +338,14 @@ function ShelfView() {
                   {planned.map((p, i) => <PlannedTile key={`p${i}`} p={p} onClick={() => createPlanned(p)} />)}
                 </Shelf>
               )}
+              {data.owner && draft && draft.collection !== "core" && inlineForm(draft)}
             </div>
           </section>
         ) : <>
         <nav aria-label="Year level" className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
           {data.years.map((y) => (
             <button key={y.year} type="button" data-testid={`quest-year-${y.year}`}
-              onClick={() => { setYear(y.year); rememberYear(y.year); }}
+              onClick={() => { setYear(y.year); rememberYear(y.year); setDraft(null); }}
               className={`shrink-0 rounded-full px-4 py-2 text-sm font-bold border transition ${y.year === year ? "bg-emerald-900 text-white border-emerald-900 shadow" : "bg-white text-slate-700 border-stone-300 hover:border-emerald-700"}`}>
               {y.label}{countByYear.get(y.year) ? <span className={`ml-1.5 text-[11px] ${y.year === year ? "text-emerald-200" : "text-emerald-700"}`}>· {countByYear.get(y.year)}</span> : null}
             </button>
@@ -343,16 +357,23 @@ function ShelfView() {
           <p className="text-sm text-stone-600">{shelf.some((b) => !b.placeholder) ? "Tap a book to see what's inside." : "The books for this year level are on their way. They'll appear here as each one is ready."}</p>
           <Shelf>
             {shelf.map((b) => b.placeholder ? (
-              <div key={b.id} className="flex flex-col items-center gap-2 w-36 sm:w-40">
+              data.owner ? <button key={b.id} type="button" onClick={() => createCore(b.subject, b.subjectLabel)}
+                data-testid={`quest-create-${year}-${b.subject}`}
+                aria-label={`Create ${yearLabel} ${b.subjectLabel} book`}
+                className="flex flex-col items-center gap-2 w-36 sm:w-40 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700 hover:-translate-y-1 transition-transform">
+                <QuestBookCover book={b} />
+                <span className="text-xs font-bold text-emerald-800">+ Create {b.subjectLabel}</span>
+              </button> : <div key={b.id} className="flex flex-col items-center gap-2 w-36 sm:w-40">
                 <QuestBookCover book={b} />
                 <span className="text-xs font-semibold text-stone-500">{b.subjectLabel} · coming soon</span>
               </div>
             ) : <BookTile key={b.id} b={b} data={data} />)}
           </Shelf>
+          {data.owner && draft?.collection === "core" && inlineForm(draft)}
         </section>
         </>}
 
-        {data.owner && <OwnerPanel data={data} reload={load} draft={draft} clearDraft={() => setDraft(null)} />}
+        {data.owner && <OwnerPanel data={data} reload={load} />}
       </>}
     </div>
   );
