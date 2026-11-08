@@ -45,7 +45,7 @@ test("postage refuses incomplete packing data rather than guessing a price", asy
   await assert.rejects(quoteStandardPost({ DB: db, AUSPOST_PAC_API_KEY: "x" }, [line(id)], "not-a-postcode"), /four-digit/i);
   await assert.rejects(quoteStandardPost({ DB: db }, [line(id)], "2000"), /not configured/i);
   await assert.rejects(quoteStandardPost({ DB: db, AUSPOST_PAC_API_KEY: "x" }, [line(id)], "2000", async () => Response.json({ postage_result: { total_cost: "NaN" } })), /invalid postage/i);
-  await assert.rejects(parcelForCart(db, [line(id, 30)]), /custom shipping quote/i);
+  await assert.rejects(parcelForCart(db, [line(id, 40)]), /custom shipping quote/i);
   assert.equal(await quoteStandardPost({ DB: db }, [{ title: "PDF", amount_cents: 200 }], "2000"), null);
 });
 
