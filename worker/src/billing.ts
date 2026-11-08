@@ -665,7 +665,7 @@ export async function reconcileSubscriptions(db: DB, env: Env, fetchImpl?: Fetch
     ({ results: rows } = await db.prepare(
       `SELECT id, stripe_subscription_id FROM families
        WHERE stripe_subscription_id IS NOT NULL AND COALESCE(plan, '') != 'INTERNAL'
-         AND COALESCE(subscription_status, '') NOT IN ('canceled', 'incomplete_expired')
+         AND COALESCE(subscription_status, '') NOT IN ('canceled', 'incomplete_expired', 'not_found')
          AND (plan_period_end IS NULL OR plan_period_end < ?)
          AND (billing_updated_at IS NULL OR billing_updated_at < ?)
        ORDER BY billing_updated_at LIMIT ?`
@@ -678,7 +678,17 @@ export async function reconcileSubscriptions(db: DB, env: Env, fetchImpl?: Fetch
     try {
       out.push(await syncSubscription(db, cfg, r.stripe_subscription_id, fetchImpl, now));
     } catch (e: any) {
-      out.push(`failed ${r.stripe_subscription_id}: ${e?.status || "error"}`);
+      if (e instanceof StripeError && e.status === 404) {
+        // Stripe has no such subscription (deleted, other Stripe mode or account). Retrying can never
+        // succeed, so stop asking. Plan and access are left as they are; the status shows in Owner HQ.
+        // A later webhook for a real subscription overwrites this status as normal.
+        await db.prepare("UPDATE families SET subscription_status = 'not_found' WHERE id = ? AND stripe_subscription_id = ?")
+          .bind(r.id, r.stripe_subscription_id).run();
+        console.warn(`billing reconcile: Stripe has no subscription ${r.stripe_subscription_id} for family ${r.id}; marked not_found`);
+        out.push(`not found ${r.stripe_subscription_id}: marked not_found, will not retry`);
+      } else {
+        out.push(`failed ${r.stripe_subscription_id}: ${e?.status || "error"}`);
+      }
     }
     // Ignored or failed syncs must not be retried every five minutes.
     await db.prepare("UPDATE families SET billing_updated_at = ? WHERE id = ? AND (billing_updated_at IS NULL OR billing_updated_at < ?)")
