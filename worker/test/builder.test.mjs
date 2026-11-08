@@ -1032,16 +1032,21 @@ test("changes are previewed first, touch only the named parts, count separately,
   const r = await aid.refineLessonWithAi(db, ai, { familyId: fam, userId: "u", lessonId: id, instruction: "Add more worked examples" }, NOW);
   assert.ok(r.ok, JSON.stringify(r));
   assert.deepEqual(r.keys, ["worked_examples"]);
+  assert.equal(r.base_version, 2, "AI proposal is pinned to the lesson version it reviewed");
   assert.equal(r.patch.worked_examples.length, GARDEN.worked_examples.length + 1);
   const stored = db.raw.prepare("SELECT data FROM lessons WHERE id = ?").get(id);
   assert.equal(JSON.parse(stored.data).worked_examples.length, GARDEN.worked_examples.length); // nothing saved yet
   const used = await aid.aiUsage(db, fam, NOW);
   assert.deepEqual([used.today, used.changes_today], [1, 1]);
-  const ap = await aid.applyLessonPatch(db, fam, id, { ...r.patch, owner: "x", status: "archived" }, NOW);
+  const ap = await aid.applyLessonPatch(db, fam, id, { ...r.patch, owner: "x", status: "archived" }, NOW, r.base_version);
   assert.ok(ap.ok, JSON.stringify(ap));
   assert.equal(ap.lesson.title, "My own title");
   assert.equal(ap.lesson.worked_examples.length, GARDEN.worked_examples.length + 1);
   assert.equal(ap.lesson.status, "draft");
+  assert.equal((await aid.applyLessonPatch(db, fam, id, r.patch, NOW, r.base_version)).code, "LESSON_VERSION_CHANGED",
+    "stale AI suggestions must not overwrite subsequent manual edits");
+  assert.equal((await aid.applyLessonPatch(db, fam, id, { worked_examples: [{ problem: "Missing steps" }] }, NOW, ap.lesson.version)).code,
+    "PATCH_NOT_PERSISTABLE", "invalid AI content must not be silently dropped");
   // empty/failed reply leaves the lesson alone and costs nothing
   const bad = await aid.refineLessonWithAi(db, stub(() => ({ response: "no" })), { familyId: fam, userId: "u", lessonId: id, instruction: "Make it easier" }, NOW);
   assert.equal(bad.code, "AI_FAILED");
