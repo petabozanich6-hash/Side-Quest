@@ -9,6 +9,8 @@ import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
 
 let seq = 0;
+// Quest Books aren't included with membership: families (members or not) buy the book or the pack.
+const buy = (h, familyId, bookId, tier = "plus") => recordQuestBookPurchase(h.db, { object: "checkout.session", id: `cs_${tier}_${familyId}_${bookId}`, mode: "payment", payment_status: "paid", amount_total: 100, currency: "aud", metadata: { kind: "quest_book", family_id: familyId, book_id: bookId, tier } }, false);
 function harness() {
   const db = makeDb();
   const storage = new Map();
@@ -109,7 +111,7 @@ test("Only the owner manages books; drafts without a PDF are hidden from familie
   assert.equal(h.storage.size, 0);
 });
 
-test("Members read and print year-level books in Side-Quest; only buyers get the PDF; free preview gets the sample", async () => {
+test("Quest Books aren't included with membership: buyers read, print and download; free preview gets the sample", async () => {
   const h = harness();
   const { owner, id } = await publishedBook(h, { price_cents: 1495 });
   const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 9, 9]);
@@ -118,8 +120,12 @@ test("Members read and print year-level books in Side-Quest; only buyers get the
   const member = await h.parent("ACTIVE_ANNUAL");
   assert.equal((await h.req(`/quest-books/admin/books/${id}/read/3`, member.token, "PUT", jpeg, "image/jpeg")).status, 403);
   const mb = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
-  assert.deepEqual([mb.included, mb.can_read, mb.read_pages, mb.can_download, mb.can_buy], [true, true, 2, false, true]);
-  assert.equal((await h.req(`/quest-books/books/${id}/download`, member.token)).status, 402, "members don't get the PDF");
+  assert.deepEqual([mb.included, mb.can_read, mb.can_download, mb.can_buy], [false, false, false, true]);
+  assert.equal((await h.req(`/quest-books/books/${id}/read/2`, member.token)).status, 402, "membership doesn't include books");
+  assert.equal((await h.req(`/quest-books/books/${id}/download`, member.token)).status, 402);
+  await buy(h, member.id, id, "book");
+  const bought = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
+  assert.deepEqual([bought.can_read, bought.read_pages, bought.can_download], [true, 2, true]);
   const page = await h.req(`/quest-books/books/${id}/read/2`, member.token);
   assert.equal(page.status, 200);
   assert.equal(page.headers.get("content-type"), "image/jpeg");
@@ -137,9 +143,9 @@ test("Members read and print year-level books in Side-Quest; only buyers get the
   assert.equal(sample.status, 200);
   assert.match(await sample.text(), /SAMPLE/);
   assert.equal((await h.req(`/quest-books/books/${id}/download`)).status, 401);
-  // When membership ends, reading stops.
+  // A bought book stays readable when membership ends.
   h.db.raw.prepare("UPDATE families SET plan='CANCELLED' WHERE id=?").run(member.id);
-  assert.equal((await h.req(`/quest-books/books/${id}/read/1`, member.token)).status, 402);
+  assert.equal((await h.req(`/quest-books/books/${id}/read/1`, member.token)).status, 200);
   // Removing the book removes its reader pages too.
   assert.equal((await h.req(`/quest-books/admin/books/${id}`, owner.token, "DELETE")).status, 200);
   assert.ok(![...h.storage.keys()].some((k) => k.includes("/read/")));
@@ -208,10 +214,14 @@ test("Any family can peek at a published lesson, but the preview leaves out the 
   assert.equal((await h.req(`/quest-books/books/${id}/lessons/nope/preview`, free.token)).status, 404);
 });
 
-test("Members add every chapter lesson once; free and book-only families can't", async () => {
+test("Pack buyers add every chapter lesson once; members without the pack and free families can't", async () => {
   const h = harness();
   const { id } = await bookWithLessons(h);
   const member = await h.parent("ACTIVE_ANNUAL");
+  const without = await (await h.req(`/quest-books/books/${id}`, member.token)).json();
+  assert.ok(without.lessons.every((l) => !l.unlocked) && !without.book.can_add_lessons, "membership doesn't include book lessons");
+  assert.equal((await h.req(`/quest-books/books/${id}/lessons/add`, member.token, "POST", {})).status, 402);
+  await buy(h, member.id, id);
   const detail = await (await h.req(`/quest-books/books/${id}`, member.token)).json();
   assert.equal(detail.lessons.length, 2);
   assert.ok(detail.lessons.every((l) => l.unlocked && !l.lesson_id));
@@ -330,6 +340,7 @@ test("Published lessons carry codes for every state's curriculum; each family ge
   assert.ok(codes.AC9.every((c) => c.startsWith("AC9")));
   const qld = await h.parent("ACTIVE_MONTHLY");
   h.db.raw.prepare("UPDATE families SET jurisdiction='QLD' WHERE id=?").run(qld.id);
+  await buy(h, qld.id, id);
   assert.equal((await (await h.req(`/quest-books/books/${id}/lessons/add`, qld.token, "POST", {})).json()).added, 1);
   const row = h.db.raw.prepare("SELECT data FROM lessons WHERE family_id=?").get(qld.id);
   const got = JSON.parse(row.data).outcome_codes;
@@ -601,10 +612,10 @@ test("Cart: the server prices it, a pack replaces the same book and its lessons,
   const changed = await h.req("/quest-books/cart/checkout", fam.token, "POST", { items, expected_total_cents: 100 });
   assert.equal(changed.status, 409);
   assert.equal((await changed.json()).code, "CART_CHANGED");
-  // Members can buy the PDFs to keep, but never the lessons membership already includes.
+  // Members pay the same as everyone else: membership doesn't include books or their lessons.
   const member = await h.parent("ACTIVE_MONTHLY");
   const mq = await (await h.req("/quest-books/cart/quote", member.token, "POST", { items })).json();
-  assert.deepEqual(mq.lines.map((l) => [l.book_id, l.tier]), [[id, "book"], [id2, "book"]]);
+  assert.deepEqual(mq.lines.map((l) => [l.book_id, l.tier]), q.lines.map((l) => [l.book_id, l.tier]));
 });
 
 test("A paid cart unlocks every item once, and its status turns paid", async () => {
@@ -686,6 +697,7 @@ test("VIC and WA families receive their OWN outcomes when adding an older book w
   const cat = (await import("../src/outcomeTracker.ts")).catalogueFor;
   for (const jurisdiction of ["VIC", "WA", "QLD"]) {
     const parent = await h.parent("ACTIVE_MONTHLY", jurisdiction);
+    await buy(h, parent.id, id);
     const added = await h.req(`/quest-books/books/${id}/lessons/add`, parent.token, "POST", {});
     assert.equal(added.status, 200, jurisdiction + ": book lesson import");
     const info = await added.json();
@@ -727,6 +739,7 @@ test("Member reader builds are resumable and only a verified complete generation
   assert.deepEqual((await (await h.req(route(one, "progress"), owner.token)).json()).uploaded, [1]);
   assert.equal((await h.req(route(one, "finish"), owner.token, "POST", { total: 2, source_id })).status, 409,
     "incomplete reader must not appear to members");
+  await buy(h, member.id, id, "book");
   const before = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
   assert.equal(before.can_read, false);
   assert.equal(before.read_pages, 0);
@@ -736,7 +749,6 @@ test("Member reader builds are resumable and only a verified complete generation
   assert.equal(live.can_read, true);
   assert.equal(live.read_pages, 2);
   assert.equal((await h.req(`/quest-books/books/${id}/read/2`, member.token)).status, 200);
-  assert.equal((await h.req(`/quest-books/books/${id}/download`, member.token)).status, 402);
   assert.equal((await h.req(`/quest-books/books/${id}/read/2`, visitor.token)).status, 402);
 
   // A replacement uploads to a new path, leaving the old complete reader

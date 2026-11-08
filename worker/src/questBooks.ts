@@ -457,7 +457,8 @@ const packsOwned = (a: Access, exceptId?: string) => [...a.tiers].filter(([id, t
  * Specialist books (NAPLAN, HSC ...) are always bought separately. Only a purchase (or the owner) gets the PDF to keep.
  */
 type BookLike = { id: string; collection?: string | null };
-const included = (a: Access, b: BookLike) => a.owner || (a.member && (b.collection || "core") === "core");
+// Quest Books are bought separately by everyone (not included with membership). Only the owner gets them free.
+const included = (a: Access, _b: BookLike) => a.owner;
 const ownsPdf = (a: Access, id: string) => a.owner || a.tiers.has(id);
 const canReadBook = (a: Access, b: BookLike) => included(a, b) || a.tiers.has(b.id);
 const hasLessons = (a: Access, b: BookLike) => included(a, b) || a.tiers.get(b.id) === "plus";
@@ -748,7 +749,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const tier: Tier | "lesson" = body?.tier === "plus" ? "plus" : body?.tier === "lesson" ? "lesson" : "book";
     const lessonKey = tier === "lesson" ? clip(body?.lesson_key, 40) : "";
     let lessonTitle = "";
-    if (meta.price_cents === null) return c.json({ code: "MEMBERS_ONLY", detail: "This book is included with Family Membership and isn't sold separately." }, 409);
+    if (meta.price_cents === null) return c.json({ code: "MEMBERS_ONLY", detail: "This book isn't on sale yet." }, 409);
     const a = await accessFor(c.env.DB, user.family_id, user.id);
     if (tier !== "book" && included(a, meta)) return c.json({ code: "ALREADY_INCLUDED", detail: "Your Family Membership already includes this book's lessons." }, 409);
     const owned = a.tiers.get(id);

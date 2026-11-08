@@ -75,10 +75,10 @@ function BookForm({ data, initial, onSaved, onCancel }) {
         <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}{f.collection !== "core" && <option value="other">Other</option>}</select>
       </label>
       <label className="text-sm font-semibold text-emerald-950">Pages<input value={f.pages} onChange={set("pages")} inputMode="numeric" className={field} placeholder="optional" /></label>
-      <label className="text-sm font-semibold text-emerald-950">Book price ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = members only" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Book price ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = not on sale yet" /></label>
       <label className="text-sm font-semibold text-emerald-950">Book + all lessons price ($)<input value={f.bundle} onChange={set("bundle")} inputMode="decimal" className={field} placeholder="e.g. 15.00 (optional)" /></label>
       <label className="text-sm font-semibold text-emerald-950">Single lesson price ($)<input value={f.lesson} onChange={set("lesson")} inputMode="decimal" className={field} placeholder="e.g. 1.00 (optional)" /></label>
-      <p className="sm:col-span-2 text-xs text-stone-600">Prices are only for families without a membership. Members get the book and its lessons included. Lesson prices apply once you publish lessons to the book.</p>
+      <p className="sm:col-span-2 text-xs text-stone-600">Every family pays these prices, members included. Lesson prices apply once you publish lessons to the book.</p>
       <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Description (what parents see)<textarea value={f.description} onChange={set("description")} rows={4} className={field} maxLength={2000} /></label>
       <div className="sm:col-span-2 flex gap-2">
         <button type="submit" disabled={busy} className="rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-60">{busy ? "Saving…" : f.id ? "Save changes" : "Create book"}</button>
@@ -152,7 +152,7 @@ function OwnerPanel({ data, reload }) {
     <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it; members read and print selected pages online), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it and can also read and print it here), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
         <BookForm data={data} onCancel={() => setAdding(false)} onSaved={async () => { setAdding(false); await reload(); }} />
@@ -301,10 +301,10 @@ function ShelfView() {
       {!data && !error && <p role="status">Opening Quest Books…</p>}
       {error && <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
       {data && <>
-        {!data.member && (
+        {data.can_buy && (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-4 flex gap-3 items-start text-amber-950 text-sm">
             <Gift size={18} className="mt-0.5 shrink-0" />
-            <p>Members read and print every year-level book in Side-Quest with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ". Buy any book to keep the PDF. Specialist books are bought separately." : "."}</p>
+            <p>Buy a book to keep the PDF, or the pack to get its ready-made lessons too. Each extra pack is 10% cheaper again, up to 50% off.</p>
           </div>
         )}
 
@@ -563,12 +563,12 @@ function BookWorkspace({ book, reload }) {
 
   const steps = [
     { id: "details", title: "Details and prices", done: !!book.title && book.price_cents != null,
-      info: book.price_cents == null ? "No price yet, so only members can get it." : `Book ${money(book.price_cents)}${book.lessons_price_cents != null ? ` · Pack ${money(book.lessons_price_cents)}` : ""}${book.lesson_price_cents != null ? ` · Lesson ${money(book.lesson_price_cents)}` : ""}`,
+      info: book.price_cents == null ? "No price yet, so it isn't on sale." : `Book ${money(book.price_cents)}${book.lessons_price_cents != null ? ` · Pack ${money(book.lessons_price_cents)}` : ""}${book.lesson_price_cents != null ? ` · Lesson ${money(book.lesson_price_cents)}` : ""}`,
       action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
-    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "The high-quality PDF buyers can keep; members read the separate online version. Hidden until uploaded.",
+    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "The high-quality PDF buyers can keep; buyers can also read the online version. Hidden until uploaded.",
       action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
-    { id: "read", title: "Online reader for members", done: book.read_pages > 0, needs: book.has_book,
-      info: readerBusy || busy === "read" ? `Preparing reader pages… ${readProgress || "starting"} — leave this tab open` : book.read_pages ? `${book.read_pages} verified pages: members read and print selected pages online` : "After PDF upload, prepare the member-only reader. It resumes after interrupted uploads.",
+    { id: "read", title: "Online reader", done: book.read_pages > 0, needs: book.has_book,
+      info: readerBusy || busy === "read" ? `Preparing reader pages… ${readProgress || "starting"} — leave this tab open` : book.read_pages ? `${book.read_pages} verified pages: buyers read and print selected pages online` : "After PDF upload, prepare the online reader. It resumes after interrupted uploads.",
       action: book.has_book && <button type="button" disabled={!!busy || readerBusy} onClick={remakeRead}
         className="inline-flex items-center rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-bold text-emerald-900 disabled:opacity-50">
         {busy === "read" || readerBusy ? "Preparing…" : book.read_pages ? "Make again" : "Make / resume"}
@@ -839,7 +839,7 @@ function BookView({ id }) {
             {book.subtitle && <p className="italic text-stone-700" style={{ fontFamily: "Georgia, serif" }}>{book.subtitle}</p>}
             {book.description && <p className="text-stone-700 whitespace-pre-line">{book.description}</p>}
             <div className="flex flex-wrap gap-2 text-xs font-semibold">
-              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.can_download ? "Your purchased PDF" : book.included ? "Online member reader · selected-page printing" : "PDF available to purchase"}</span>
+              <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.can_download ? "Your purchased PDF" : book.included ? "Online reader · selected-page printing" : "PDF available to purchase"}</span>
               {book.pages && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{book.pages} pages</span>}
               {book.book_bytes && <span className="rounded-full bg-white/80 border border-amber-200 px-3 py-1.5">{mb(book.book_bytes)}</span>}
             </div>
@@ -871,9 +871,7 @@ function BookView({ id }) {
                       {has("book") ? <><Check size={18} /> In your cart · view cart</> : <><ShoppingBag size={18} /> Buy this book · {money(book.price_cents)}</>}
                     </button>
                   )}
-                  <Link to="/parent/plan" className={book.can_buy ? "text-sm font-semibold text-emerald-900 underline" : "inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold"}>
-                    {book.collection && book.collection !== "core" ? null : book.can_buy ? "Or read every year-level book with Family Membership" : "Included with Family Membership"}
-                  </Link>
+                  {!book.can_buy && <span className="text-sm text-stone-600">Not on sale yet. Check back soon.</span>}
                 </>
               )}
               {book.look_pages > 0 && !book.can_download && (
@@ -901,9 +899,7 @@ function BookView({ id }) {
             )}
             {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book{book.owned_tier === "plus" ? " and its lessons" : ""}. Download it again any time.</p>}
             {book.can_download && <p className="text-xs text-stone-600">Print it at home or open it on a tablet. For a family's own use only, please don't share the file.</p>}
-            {!book.can_download && book.can_read && <p className="text-xs text-stone-600">Included with your membership: read it here and print any pages you need while you're a member. Buy the PDF if you'd like a copy to keep.</p>}
-            {!book.can_download && book.included && !book.can_read && <p className="text-xs text-stone-600">Included with your membership. The on-screen version is being prepared; check back soon.</p>}
-            {book.collection && book.collection !== "core" && !book.can_download && <p className="text-xs text-stone-600">Specialist books are bought separately, including for members.</p>}
+
           </div>
         </section>
       )}
@@ -947,7 +943,7 @@ function BookView({ id }) {
             ))}
           </ol>
           {peek && <LessonPeek bookId={book.id} peek={peek} onClose={() => setPeek(null)} />}
-          {!data.member && <p className="text-xs text-stone-600">Lessons you buy stay yours to assign, even without a membership. Family Membership includes every book and lesson.</p>}
+          <p className="text-xs text-stone-600">Lessons you buy stay yours to assign, even without a membership.</p>
         </section>
       )}
     </div>
