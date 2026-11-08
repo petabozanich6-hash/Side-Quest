@@ -121,7 +121,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           {data.chapters.map((c) => (
             <li key={c.id} className="flex flex-wrap items-center gap-2 py-2">
               <span className="flex-1 min-w-[160px] text-sm"><b>{c.title}</b> <span className="text-xs text-stone-500">· pages {c.start}–{c.end}</span>{c.published && <span className="ml-2 text-[10px] font-bold uppercase text-emerald-700">Published</span>}</span>
-              {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}`} className="text-sm font-semibold text-emerald-900 underline">Review “{c.draft.title}”</Link>}
+              {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review`} className="text-sm font-semibold text-emerald-900 underline">Review “{c.draft.title}”</Link>}
               <button type="button" disabled={!!busy} onClick={() => draft(c)} className="inline-flex items-center gap-1 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50 disabled:opacity-50">
                 {busy === c.id ? <><Loader2 size={13} className="animate-spin" /> Writing (1–3 min)…</> : <><Sparkles size={13} /> {c.draft ? "Remake" : "Make lesson"}</>}
               </button>
