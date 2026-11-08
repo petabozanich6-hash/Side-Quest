@@ -221,22 +221,30 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
             onProgress: setBatchProgress,
           });
           // Keep the first attempt's failures unless the explicit retry succeeded.
-          const remaining = new Set(retryResult.failed.map((item) => item.id));
+          const attemptedRetryIds = new Set(queued.map((ch) => ch.id));
           finalResult = {
             ...result,
             completed: result.completed + retryResult.completed,
             attempted: result.attempted + retryResult.attempted,
-            failed: [...result.failed.filter((item) => !ids.includes(item.id) || remaining.has(item.id)),
-              ...retryResult.failed.filter((item) => !result.failed.some((previous) => previous.id === item.id))],
+            failed: [...result.failed.filter((item) => !attemptedRetryIds.has(item.id)), ...retryResult.failed],
             stopped: result.stopped || retryResult.stopped,
           };
         }
       }
+      if (ids.length && stopDraftQueue.current)
+        toast.message("Stopped at your request. Queued retries were cancelled; you can retry them when ready.");
       setBatchSummary({ ...finalResult, label });
       const details = `${finalResult.completed} successful draft requests, ${finalResult.failed.length} failed${finalResult.stopped ? ", stopped early" : ""}.`;
       if (finalResult.failed.length) toast.warning(`${label}: ${details} Retry the remaining failed lessons individually.`, { duration: 10000 });
       else toast.success(`${label}: ${details}`);
     } finally {
+      // If a new queue request arrived during the queued retry pass, don't
+      // leave an unavailable "Queued" button on screen after the batch ends.
+      if (queuedRetryIds.current.size) {
+        queuedRetryIds.current.clear();
+        setQueuedRetryList([]);
+        toast.message("New retry requests made during retry processing can now be run individually.");
+      }
       batchRunning.current = false;
       stopDraftQueue.current = false;
       setBatchProgress(null);
