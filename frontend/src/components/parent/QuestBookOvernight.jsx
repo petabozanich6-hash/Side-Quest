@@ -7,6 +7,7 @@ import { api, apiErrorMessage } from "../../lib/api";
 export default function QuestBookOvernight() {
   const [data,setData] = useState(null);
   const [selected,setSelected] = useState([]);
+  const [autoApprove,setAutoApprove] = useState(false);
   const [busy,setBusy] = useState("");
   const [error,setError] = useState("");
   const initialized = useRef(false);
@@ -66,14 +67,14 @@ export default function QuestBookOvernight() {
   };
   const action=async(kind)=>{
     if((kind==="start" || kind==="repair") && !window.confirm(kind==="start"
-      ? `Queue ${totalSelected} missing lessons for unattended AI generation? Workers AI resources may incur charges. Existing lessons remain untouched; new lessons stay drafts. The queue can be paused.`
+      ? `Queue ${totalSelected} missing lessons for unattended AI generation? Workers AI resources may incur charges. Existing lessons remain untouched. ${autoApprove?"New AI-cleared lessons will be approved automatically; flagged ones stay Draft.":"New lessons stay Draft until reviewed."} Nothing is published. The queue can be paused.`
       : `Run AI repair on ${repairSelected} flagged lesson(s) across selected books? This can incur AI charges. Repaired lessons remain unapproved until checked. Stubborn problems stay in the attention queue.`))return;
     setBusy(kind);setError("");
     try{
       const queued=kind==="start"||kind==="repair";
       const path=queued?"/quest-books/admin/overnight/start":`/quest-books/admin/overnight/${encodeURIComponent(job.id)}/control`;
       await api.post(path,queued?{book_ids:(kind==="repair"?repairBooks:generateBooks).map(b=>b.id),
-        mode:kind==="repair"?"repair":"generate"}:{action:kind});
+        mode:kind==="repair"?"repair":"generate",auto_approve:kind==="start"&&autoApprove}:{action:kind});
       await load();
       toast.success(kind==="start"?"Missing lessons queued. You can close your browser.":kind==="repair"?
         "Bulk AI repair queued. Each lesson is processed independently.":kind==="pause"?
@@ -110,7 +111,12 @@ export default function QuestBookOvernight() {
       </div>
       {!active && (totalSelected>0 || repairSelected>0 || clearedSelected>0) && <div className="rounded-xl border border-violet-200 p-3 space-y-2">
         <p className="font-bold text-violet-950 text-sm">Bulk actions for selected books</p>
-        <p className="text-xs text-slate-700">1. Generate missing lessons. 2. Approve AI-cleared drafts. 3. Repair the flagged drafts. Recheck and approve any repaired lessons when they pass.</p>
+        <p className="text-xs text-slate-700">1. Generate missing lessons. 2. Approve AI-cleared drafts. 3. Repair flagged drafts. Recheck and approve repaired lessons when they pass.</p>
+        {totalSelected>0 && <label className="flex items-start gap-2 rounded-lg bg-stone-50 p-2 text-xs text-slate-800">
+          <input type="checkbox" checked={autoApprove} onChange={e=>setAutoApprove(e.target.checked)}
+            disabled={!!busy} data-testid="quest-overnight-auto-approve" />
+          <span>Automatically approve newly generated AI-cleared lessons (zero warnings and all required content). Existing lessons are untouched. Any lesson with an issue stays a draft for bulk repair. This is not publication.</span>
+        </label>}
         <div className="flex flex-wrap items-center gap-2">
           {totalSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("start")}
             className="rounded-lg bg-violet-800 px-3 py-2 text-sm font-bold text-white disabled:opacity-50"
@@ -127,6 +133,7 @@ export default function QuestBookOvernight() {
       {job && <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3" data-testid="quest-overnight-status">
         <div className="flex justify-between gap-2 flex-wrap items-center">
           <p className="font-bold text-violet-950">{job.kind==="repair"?"Repair":"Generation"} queue: {job.status.replaceAll("_"," ")}</p>
+          {job.kind==="generate"&&job.auto_approve&&<p className="text-xs text-emerald-900">Auto-approval is enabled only for new AI-cleared lessons.</p>}
           <span className="text-sm font-semibold text-violet-900">{done} of {job.total} processed</span>
         </div>
         <div className="h-2 bg-violet-200 rounded-full overflow-hidden" role="progressbar"
