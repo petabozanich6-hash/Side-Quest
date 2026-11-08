@@ -52,6 +52,8 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
         </div>}
       </header>
 
+      {parent && l.quest_book_title && <><H>Matching Quest Book</H><Para>{`${l.quest_book_title}${Number.isInteger(l.quest_page_start) && Number.isInteger(l.quest_page_end) ? ` · PDF pages ${l.quest_page_start}–${l.quest_page_end}` : ""}${l.quest_exercise_ref ? ` · Optional workbook practice: ${l.quest_exercise_ref}` : ""}`}</Para></>}
+      {parent && l.parent_notes && <><H>Parent notes</H><Para>{l.parent_notes}</Para></>}
       {parent && list(l.curriculum_refs).length > 0 && <><H>Curriculum links</H><ul className="list-disc pl-5 text-[15px]">{list(l.curriculum_refs).map((c, i) => <li key={i}>{c}</li>)}</ul></>}
       {parent && l.teaching_plan && <><H>Teaching plan</H><Para>{l.teaching_plan}</Para></>}
       {list(l.objectives).length > 0 && <><H>Learning goals</H><ul className="list-disc pl-5 space-y-1 text-[15px]">{list(l.objectives).map((o, i) => <li key={i}>{o}</li>)}</ul></>}
