@@ -480,6 +480,69 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409);
 });
 
+test("Owner can approve only genuinely AI-cleared book lessons in one request", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h);
+  h.db.raw.prepare("UPDATE families SET plan = 'ACTIVE_MONTHLY' WHERE id = ?").run(owner.id);
+  const entries = [1, 2, 3, 4].map((i) => ({
+    title: `Learning skill ${i}`, start: i * 2 + 5, end: i * 2 + 6,
+    text: chapterText + ` Investigate learning skill ${i} with a specific worked example.`,
+    skill_goal: `Teach learning skill ${i}`,
+  }));
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT",
+    { chapters: entries })).status, 200);
+  const lessonIds = [];
+  for (let i = 0; i < entries.length; i++) {
+    const created = await h.req("/lessons", owner.token, "POST", lessonBody(`Lesson ${i + 1}`));
+    assert.equal(created.status, 200);
+    const lessonId = (await created.json()).id;
+    lessonIds.push(lessonId);
+    const prior = JSON.parse(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lessonId).data);
+    const complete = {
+      ...prior,
+      objectives: ["Identify a strategy", "Explain a strategy"],
+      sections: [{ heading: "Explain", body: "Teach the first idea and show the steps." }, { heading: "Reason", body: "Explain how the model works." }],
+      worked_examples: [1, 2].map((n) => ({ problem: `Model ${n}`, steps: ["Show the actual model", "Explain the result"], answer: "The verified result" })),
+      guided_practice: [1, 2, 3, 4].map((n) => ({ prompt: `Try ${n}`, answer: `Answer ${n}` })),
+      activities: [1, 2].map((n) => ({ title: `Task ${n}`, tasks: [1, 2, 3].map((m) => ({ prompt: `Task ${m}`, answer: `Answer ${m}` })) })),
+      questions: [1, 2, 3].map((n) => ({ prompt: `Question ${n}`, answer_key: `Answer ${n}` })),
+      quiz: [1, 2, 3].map(() => ({ question: "Choose the correct model", options: ["One", "Two"], correct_index: 0 })),
+      parent_script: "Model the method together", answer_key: "Check the answers on the activities.",
+      ai_generated: true, ai_flags: i === 1 ? ["The AI found an issue with this lesson."] : [],
+      quest_book_id: id, quest_chapter_id: `c${i + 1}`,
+      quest_source_revision: chapterRevision({ ...entries[i], id: `c${i + 1}` }),
+    };
+    if (i === 2) complete.worked_examples = [{ problem: "Incomplete", steps: [], answer: "" }];
+    if (i === 3) complete.quest_source_revision = "old-source";
+    h.db.raw.prepare("UPDATE lessons SET data=?, status='draft' WHERE id=?").run(JSON.stringify(complete), lessonId);
+  }
+  const endpoint = `/quest-books/admin/books/${id}/lessons/approve-ai-cleared`;
+  const nonOwner = await h.parent("ACTIVE_MONTHLY");
+  assert.equal((await h.req(endpoint, nonOwner.token, "POST", { confirm: "APPROVE_AI_CLEARED" })).status, 403);
+  assert.equal((await h.req(endpoint, owner.token, "POST", {})).status, 400);
+  const before = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters;
+  assert.deepEqual(before.map((ch) => ch.draft.ai_cleared), [true, false, false, false],
+    "only complete, unflagged lessons from the current PDF can be fast-approved");
+  const reply = await h.req(endpoint, owner.token, "POST", { confirm: "APPROVE_AI_CLEARED" });
+  assert.equal(reply.status, 200);
+  const result = await reply.json();
+  assert.equal(result.approved_count, 1);
+  assert.equal(result.skipped_count, 3);
+  assert.equal(result.already_reviewed, 0);
+  const after = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters;
+  assert.deepEqual(after.map((ch) => ch.draft.reviewed), [true, false, false, false]);
+  assert.equal(after[0].draft.status, "ready");
+  assert.equal(after[0].draft.saved_to_plan, true, "fast approval links the exact saved version");
+  assert.equal((await h.req(endpoint, owner.token, "POST", { confirm: "APPROVE_AI_CLEARED" })).status, 200,
+    "repeated fast approval is idempotent");
+  assert.equal(h.db.raw.prepare("SELECT status FROM lessons WHERE id=?").get(lessonIds[1]).status, "draft",
+    "flagged lesson remains a draft");
+  assert.deepEqual(JSON.parse(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lessonIds[1]).data).ai_flags,
+    ["The AI found an issue with this lesson."], "warnings are never silently cleared");
+  assert.equal((await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).published_count, 0,
+    "bulk approval never publishes any paid content");
+});
+
 test("Automatic chapter planner returns ordered, skill-level, source-bounded subsections", async () => {
   const pages = Array.from({ length: 9 }, (_, i) => ({ page: i + 11, text:
     `Page ${i + 11}. Model and practise the same skill using counters and worked examples. `.repeat(8) }));
