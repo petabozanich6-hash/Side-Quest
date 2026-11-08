@@ -7,7 +7,7 @@
 //   A family without membership can buy one whole book (owner-set price, Stripe Checkout); only the signature-verified
 //   webhook records the purchase (questBookPurchases.ts), and the family can then download that book for good.
 // - Books without a full PDF yet are drafts: only the owner sees them.
-import type { App, Guards } from "./types";
+import type { App, Guards, Env } from "./types";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
@@ -253,7 +253,7 @@ export async function retireSupersededBookDrafts(db: DB, familyId: string, bookI
   return Number((result as any)?.meta?.changes || 0);
 }
 
-async function readChapters(bucket: R2Bucket, id: string): Promise<Chapter[]> {
+export async function readChapters(bucket: R2Bucket, id: string): Promise<Chapter[]> {
   const obj = await bucket.get(keyFor(id, "chapters"));
   if (!obj) return [];
   try {
@@ -426,7 +426,7 @@ export async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]>
     .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
 
-async function readMeta(bucket: R2Bucket, id: string): Promise<QuestBookMeta | null> {
+export async function readMeta(bucket: R2Bucket, id: string): Promise<QuestBookMeta | null> {
   const obj = await bucket.get(keyFor(id, "meta"));
   if (!obj) return null;
   try {
@@ -1496,44 +1496,63 @@ export function registerQuestBooks(app: App, g: Guards) {
       owner_recheck: finalData.book_repair_requested === true, saved_to_plan: true });
   });
 
+/** Shared, exact source-grounded AI draft pipeline for interactive and overnight generation.
+ * Overnight requests SKIP existing working lessons; they never remake or archive
+ * something the owner has generated or reviewed already.
+ */
+export async function generateQuestCompanionLesson(
+  env: Env,
+  user: { id: string; family_id: string },
+  id: string,
+  cid: string,
+  skipExisting = false
+): Promise<any> {
+  const meta = VALID_ID.test(id) && env.BUCKET ? await readMeta(env.BUCKET, id) : null;
+  const chapter = meta && env.BUCKET ? (await readChapters(env.BUCKET, id)).find((ch) => ch.id === cid) : null;
+  if (!meta || !chapter) return { ok: false, status: 404, detail: "Book chapter no longer exists." };
+  if (chapter.text.length > 8000) return { ok: false, status: 400,
+    detail: "This subsection contains over 8,000 source characters. Analyse and split it into smaller skills before generating." };
+  if (skipExisting) {
+    const existing = await env.DB.prepare(`SELECT id FROM lessons
+      WHERE family_id = ? AND archived_at IS NULL AND json_valid(data)
+      AND json_extract(data, '$.quest_book_id') = ?
+      AND json_extract(data, '$.quest_chapter_id') = ?
+      AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'
+      LIMIT 1`).bind(user.family_id, id, cid).first<{ id: string }>();
+    if (existing) return { ok: true, skipped: true, lesson_id: existing.id };
+  }
+  const level = yearLabel(meta.year);
+  const exerciseRef = chapter.exercise_ref || "Exercises on the specified workbook pages";
+  const sourceNote = chapter.source_abbreviated ? "SOURCE LIMIT: The excerpt contains labelled samples from ALL pages in the subsection, not their full text. Base explanations on the stated skill; never invent quotations or claim to reproduce workbook text that was not provided." : "";
+  const r = await draftLessonWithAi(env.DB, env.AI, {
+    familyId: user.family_id, userId: user.id, model: env.AI_MODEL, gatewayId: env.AI_GATEWAY_ID,
+    compact: env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(env), splitStages: splitLessonStagesEnabled(env),
+    request: {
+      topic: chapter.title, learning_area: subjectLabel(meta), year_level: level, duration_minutes: 60,
+      delivery: meta.year !== null && meta.year <= 3 ? "parent_guided" : "independent",
+      goal: chapter.skill_goal || chapter.title,
+      request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson teaching subsection "${chapter.title}" from chapter "${chapter.unit_title || chapter.title}" in "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other subsections.`,
+      notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary. ${sourceNote}`,
+      source_text: chapter.text,
+      link_outcomes: true,
+    } as any,
+    questBook: { bookId: id, bookTitle: meta.title, chapterId: chapter.id, chapterTitle: chapter.unit_title || chapter.title,
+      pageStart: chapter.start, pageEnd: chapter.end, exerciseRef: chapter.exercise_ref || "", skillGoal: chapter.skill_goal || chapter.title, sourceRevision: chapterRevision(chapter) },
+  });
+  if (!r.ok) return r;
+  if (!skipExisting) {
+    try { await retireSupersededBookDrafts(env.DB, user.family_id, id, cid, String(r.lesson.id)); }
+    catch (e: any) { console.error("Could not retire older Quest Book lesson drafts", e?.message || e); }
+  }
+  return { ok: true, lesson: r.lesson, warnings: r.warnings, skipped: false };
+}
+
   // Draft a lesson from one chapter with the normal AI lesson generator, into the owner's own library for review.
   app.post("/api/quest-books/admin/books/:id/chapters/:cid/draft", g.auth, g.parent, ownerOnly, async (c) => {
-    const id = c.req.param("id");
-    const cid = c.req.param("cid");
-    const meta = VALID_ID.test(id) ? await readMeta(c.env.BUCKET!, id) : null;
-    const chapter = meta ? (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid) : null;
-    if (!meta || !chapter) return c.json({ detail: "Chapter not found" }, 404);
-    if (chapter.text.length > 8000) return c.json({ detail: "This session is too long for one accurate lesson (over 8,000 characters). Re-read the PDF and split the chapter by pages and skill before drafting. No source text will be silently omitted." }, 400);
     const user = c.get("user");
-    const level = yearLabel(meta.year);
-    const exerciseRef = chapter.exercise_ref || "Exercises on the specified workbook pages";
-    const sourceNote = chapter.source_abbreviated ? "SOURCE LIMIT: The excerpt contains labelled samples from ALL pages in the subsection, not their full text. Base explanations on the stated skill; never invent quotations or claim to reproduce workbook text that was not provided." : "";
-    const r = await draftLessonWithAi(c.env.DB, c.env.AI, {
-      familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
-      compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env as any), splitStages: splitLessonStagesEnabled(c.env as any),
-      request: {
-        topic: chapter.title, learning_area: subjectLabel(meta), year_level: level, duration_minutes: 60,
-        delivery: meta.year !== null && meta.year <= 3 ? "parent_guided" : "independent",
-        goal: chapter.skill_goal || chapter.title,
-        request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson teaching subsection "${chapter.title}" from chapter "${chapter.unit_title || chapter.title}" in "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other subsections.`,
-        notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary. ${sourceNote}`,
-        source_text: chapter.text,
-        link_outcomes: true,
-      } as any,
-      questBook: { bookId: id, bookTitle: meta.title, chapterId: chapter.id, chapterTitle: chapter.unit_title || chapter.title,
-        pageStart: chapter.start, pageEnd: chapter.end, exerciseRef: chapter.exercise_ref || "", skillGoal: chapter.skill_goal || chapter.title, sourceRevision: chapterRevision(chapter) },
-    });
-    if (!r.ok) return c.json({ detail: r.detail, code: (r as any).code }, r.status as any);
-    // A successful Remake replaces the working draft, not the book PDF.
-    // Keep the earlier version in Archived rather than accumulating duplicates.
-    let retired = 0;
-    try {
-      retired = await retireSupersededBookDrafts(c.env.DB, user.family_id, id, cid, String(r.lesson.id));
-    } catch (e: any) {
-      console.error("Could not retire older Quest Book lesson drafts", e?.message || e);
-      // No data loss: the new lesson exists, but the older drafts remain.
-    }
-    return c.json({ lesson: r.lesson, warnings: r.warnings, retired_previous_drafts: retired });
+    const r = await generateQuestCompanionLesson(c.env, user, c.req.param("id"), c.req.param("cid"));
+    return r.ok ? c.json({ lesson: r.lesson, warnings: r.warnings, retired_previous_drafts: 0 })
+      : c.json({ detail: r.detail, code: r.code }, r.status as any);
   });
 
   // Publish the owner's reviewed lessons to the book. Body: { items: [{ chapter_id, lesson_id }] } in chapter order.
