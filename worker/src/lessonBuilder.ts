@@ -469,7 +469,7 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
 }
 
 /** Quest Book lessons keep their book link when edited, so adding the book again won't duplicate them. */
-const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal", "quest_source_revision", "source", "review_status", "book_reviewed_version", "book_reviewed_at", "book_reviewed_by"];
+const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal", "quest_source_revision", "source", "review_status", "book_reviewed_version", "book_reviewed_at", "book_reviewed_by", "book_plan_saved_version", "book_plan_saved_at", "book_plan_saved_by"];
 function questTags(data: any): Record<string, unknown> {
   if (!data?.quest_book_id) return {};
   return Object.fromEntries(QUEST_KEYS.filter((k) => data[k] !== undefined).map((k) => [k, data[k]]));
@@ -516,10 +516,12 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
 
-export async function updateLesson(db: DB, familyId: string, id: string, input: unknown, now: Date = new Date()): Promise<Result<{ lesson: any; assigned_copies_unchanged: boolean }>> {
+export async function updateLesson(db: DB, familyId: string, id: string, input: unknown, now: Date = new Date(), expectedVersion?: number): Promise<Result<{ lesson: any; assigned_copies_unchanged: boolean }>> {
   const row = await ownLesson(db, familyId, id);
   if (!row) return fail(404, "Lesson not found");
   if (row.archived_at) return fail(409, "This lesson is archived. Restore it before editing.", "ARCHIVED");
+  if (expectedVersion !== undefined && (!Number.isInteger(expectedVersion) || Number(row.version) !== expectedVersion))
+    return fail(409, "This lesson was changed elsewhere. Reopen it before applying your AI correction.", "LESSON_VERSION_CHANGED");
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
@@ -527,10 +529,16 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (!limits.canCreate) return paywall("Your free preview has ended. Your lessons are kept; upgrade to keep editing.");
   const bad = await checkFiles(db, familyId, clean.value.file_ids);
   if (bad) return bad;
-  await db
-    .prepare("UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?")
-    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...questTags(parseJson<any>(row.data, {})), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : parseJson<any>(row.data, {}).ai_flags || [] } : {}), ...(parseJson<any>(row.data, {}).source === "side_quest_standalone" ? { source: "side_quest_standalone", review_status: "official_standalone_draft" } : {}) }), nowIso(now), id, familyId)
-    .run();
+  const sql = "UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?" + (expectedVersion === undefined ? "" : " AND version = ?");
+  const oldData = parseJson<any>(row.data, {});
+  const newData = JSON.stringify({ ...toLessonData(clean.value), ...questTags(oldData),
+    ...(oldData.ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : oldData.ai_flags || [] } : {}),
+    ...(oldData.source === "side_quest_standalone" ? { source: "side_quest_standalone", review_status: "official_standalone_draft" } : {}),
+  });
+  const values = [clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, newData, nowIso(now), id, familyId];
+  if (expectedVersion !== undefined) values.push(expectedVersion);
+  const written = await db.prepare(sql).bind(...values).run();
+  if (!written.meta?.changes) return fail(409, "The lesson changed while you were editing it. Reopen the lesson and retry.", "LESSON_VERSION_CHANGED");
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)), assigned_copies_unchanged: true };
 }
 
