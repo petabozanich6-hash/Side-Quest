@@ -63,12 +63,13 @@ const keyFor = (id: string, kind: FileKind | "meta" | "chapters" | "lessons") =>
   `${ROOT}${id}/${kind === "meta" ? "meta.json" : kind === "chapters" ? "chapters.json" : kind === "lessons" ? "lessons.json" : kind === "cover" ? "cover.png" : `${kind}.pdf`}`;
 const MAX_CHAPTERS = 250; // Workbook chapters are divided into multiple skill-level subsections.
 const MAX_CHAPTER_TEXT = 30000;
-type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string; unit_title?: string };
+type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string; unit_title?: string; source_abbreviated?: boolean };
 
 /** Stable fingerprint of the exact session source and its page references. A changed plan needs a new draft. */
 export function chapterRevision(ch: Chapter): string {
   const parts: (string | number)[] = [ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || ""];
   if (ch.unit_title) parts.push(ch.unit_title); // Do not stale pre-existing lessons without chapter metadata.
+  if (ch.source_abbreviated) parts.push("SELECTED_EXCERPTS");
   const input = JSON.stringify(parts);
   let hash = 2166136261;
   for (let i = 0; i < input.length; i++) hash = Math.imul(hash ^ input.charCodeAt(i), 16777619);
@@ -107,13 +108,14 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
     const skill_goal = clip(c?.skill_goal, 220);
     const exercise_ref = clip(c?.exercise_ref, 160);
     const unit_title = clip(c?.unit_title, 120);
+    const source_abbreviated = c?.source_abbreviated === true;
     // Preserve IDs on rescans/splits. Lesson purchases and family copies are keyed by this ID.
     const suppliedId = clip(c?.id, 40);
     const sessionId = suppliedId || `c${i + 1}`; // Backward compatibility for older clients and saved books.
     if (!/^(?:c[1-9][0-9]*|s-[a-z0-9]{20})$/.test(sessionId) || ids.has(sessionId))
       return fail(400, `Chapter “${title}” has a missing, duplicate or invalid stable lesson ID. Re-read the PDF and try again.`);
     ids.add(sessionId);
-    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}), ...(unit_title ? { unit_title } : {}) });
+    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}), ...(unit_title ? { unit_title } : {}), ...(source_abbreviated ? { source_abbreviated } : {}) });
   }
   return { ok: true, chapters };
 }
@@ -205,7 +207,8 @@ export async function retireSupersededBookDrafts(db: DB, familyId: string, bookI
     WHERE family_id = ? AND archived_at IS NULL AND id != ? AND json_valid(data)
       AND json_extract(data, '$.quest_book_id') = ?
       AND json_extract(data, '$.quest_chapter_id') = ?
-      AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'`)
+      AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'
+      AND json_extract(data, '$.ai_generated') = 1`)
     .bind(now.toISOString(), now.toISOString(), familyId, newestId, bookId, chapterId).run();
   return Number((result as any)?.meta?.changes || 0);
 }
@@ -816,7 +819,8 @@ export function registerQuestBooks(app: App, g: Guards) {
         await c.env.DB.prepare(`UPDATE lessons SET archived_at = ?, updated_at = ?
           WHERE family_id = ? AND archived_at IS NULL AND json_valid(data)
             AND json_extract(data, '$.quest_book_id') = ?
-            AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'`)
+            AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'
+            AND json_extract(data, '$.ai_generated') = 1`)
           .bind(new Date().toISOString(), new Date().toISOString(), user.family_id, id).run();
       } catch (e) {
         // If archiving fails, restore the published list and plan.
@@ -867,6 +871,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const level = yearLabel(meta.year);
     const exerciseRef = chapter.exercise_ref || "Exercises on the specified workbook pages";
+    const sourceNote = chapter.source_abbreviated ? "SOURCE LIMIT: The excerpt contains labelled samples from ALL pages in the subsection, not their full text. Base explanations on the stated skill; never invent quotations or claim to reproduce workbook text that was not provided." : "";
     const r = await draftLessonWithAi(c.env.DB, c.env.AI, {
       familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
       compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env as any), splitStages: splitLessonStagesEnabled(c.env as any),
@@ -875,7 +880,7 @@ export function registerQuestBooks(app: App, g: Guards) {
         delivery: meta.year !== null && meta.year <= 3 ? "parent_guided" : "independent",
         goal: chapter.skill_goal || chapter.title,
         request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson teaching subsection "${chapter.title}" from chapter "${chapter.unit_title || chapter.title}" in "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other subsections.`,
-        notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary.`,
+        notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary. ${sourceNote}`,
         source_text: chapter.text,
         link_outcomes: true,
       } as any,
