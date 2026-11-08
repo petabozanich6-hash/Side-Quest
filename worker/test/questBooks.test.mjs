@@ -414,6 +414,9 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   assert.equal(savedReview.reviewed, true, "approval survives page reload");
   assert.ok(savedReview.reviewed_at, "review timestamp is stored");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
+  const removal = await h.req(url, owner.token, "POST", { items: [] });
+  assert.equal(removal.status, 409, "publishing an incomplete selection must not unpublish previously sold lessons");
+  assert.equal((await removal.json()).code, "PUBLISHED_LESSON_KEY_REMOVED");
   const edited = await h.req(`/lessons/${lid}`, owner.token, "PUT", lessonBody("Place value revised"));
   assert.equal(edited.status, 200);
   savedReview = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
