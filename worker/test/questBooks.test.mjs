@@ -7,7 +7,7 @@ import { validateMeta, validateChapters, readChapters, chapterRevision, companio
 import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
-import { processQuestOvernight, ensureOvernightTables } from "../src/questBookOvernight.ts";
+import { processQuestOvernight, syncOvernightWork, ensureOvernightTables } from "../src/questBookOvernight.ts";
 
 let seq = 0;
 // Quest Books aren't included with membership: families (members or not) buy the book or the pack.
@@ -1076,7 +1076,7 @@ test("Running generation survives the upgrade and accepts a separate repair queu
   assert.deepEqual(calls,["generate","repair"],"repairs do not wait for the entire generation queue");
   const current=await (await h.req(url,owner.token)).json();
   assert.equal(current.jobs.find(j=>j.kind==="generate").status,"running");
-  assert.equal(current.jobs.find(j=>j.kind==="repair").status,"completed");
+  assert.equal(current.jobs.find(j=>j.kind==="repair").status,"running","watch queue stays open for new flagged drafts");
   assert.equal((await h.req(`${url}/${generation.id}/control`,owner.token,"POST",{action:"pause"})).status,200);
   assert.equal((await processQuestOvernight(h.env,new Date("2026-12-01T00:10:00Z"),generate,fix)).processed,0);
   assert.equal(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(made.id).data,data);
@@ -1111,9 +1111,96 @@ test("Overnight queue survives a temporary AI budget pause and resumes without u
   assert.equal(resumed.processed,1);
   assert.equal(invocations,1);
   const final=h.db.raw.prepare("SELECT status,last_error FROM quest_overnight_jobs WHERE id=?").get(job.id);
-  assert.equal(final.status,"completed");
+  assert.equal(final.status,"running","watch queue stays open for new chapter plans");
   assert.equal(final.last_error,null);
   const completed=h.db.raw.prepare("SELECT status,attempts FROM quest_overnight_items WHERE job_id=?").get(job.id);
   assert.equal(completed.status,"done");
   assert.equal(completed.attempts,1);
+});
+
+
+test("Live generation picks up chapters from newly uploaded books without replacing current work",async()=>{
+  const h=harness();
+  const {owner,id}=await publishedBook(h);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[{title:"Old lesson",start:1,end:2,text:chapterText}]});
+  h.env.AI={run:async()=>({})};
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  assert.equal(started.status,200);
+  const job=(await started.json()).job;
+  assert.equal(job.auto_follow,true);
+  const initial=h.db.raw.prepare("SELECT id,position,status,attempts FROM quest_overnight_items WHERE job_id=?").all(job.id);
+  const created=await h.req("/quest-books/admin/books",owner.token,"POST",{...details,title:"Year Three Science Explorer",subject:"science"});
+  assert.equal(created.status,200);
+  const second=(await created.json()).book.id;
+  assert.equal((await h.req(`/quest-books/admin/books/${second}/files/book`,owner.token,"PUT",pdf("NEW BOOK"),"application/pdf")).status,200);
+  await h.req(`/quest-books/admin/books/${second}/chapters`,owner.token,"PUT",{chapters:[
+    {title:"New topic one",start:1,end:2,text:chapterText},
+    {title:"New topic two",start:3,end:4,text:chapterText+" Two."},
+  ]});
+  const scan=await syncOvernightWork(h.env,new Date("2026-12-01T00:00:00Z"));
+  assert.equal(scan.added,2);
+  const rows=h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=? ORDER BY position").all(job.id);
+  assert.equal(rows.length,3);
+  assert.deepEqual(rows.slice(0,1).map(x=>({id:x.id,position:x.position,status:x.status,attempts:x.attempts})),initial);
+  assert.equal(rows.filter(r=>r.book_id===second).length,2);
+  assert.equal((await syncOvernightWork(h.env,new Date("2026-12-01T00:03:00Z"))).added,0);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) AS n FROM quest_overnight_items WHERE job_id=?").get(job.id).n,3);
+  const snap=(await (await h.req("/quest-books/admin/overnight",owner.token)).json()).jobs.find(j=>j.id===job.id);
+  assert.equal(snap.total,3);
+  assert.equal(snap.next.book_title,details.title);
+});
+
+test("Live generation automatically opens a watch queue for newly flagged AI lessons",async()=>{
+  const h=harness();
+  const {owner,id}=await publishedBook(h);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[{title:"Needs a repair",start:1,end:2,text:chapterText}]});
+  h.env.AI={run:async()=>({})};
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  assert.equal(started.status,200);
+  const chapter=(await readChapters(h.env.BUCKET,id))[0];
+  const lesson=await (await h.req("/lessons",owner.token,"POST",{...lessonBody("Flagged draft"),status:"draft"})).json();
+  const original=h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lesson.id);
+  h.db.raw.prepare("UPDATE lessons SET data=?,updated_at=? WHERE id=?").run(JSON.stringify({
+    ...JSON.parse(original.data),ai_generated:true,ai_flags:["Needs clearer instruction"],
+    quest_book_id:id,quest_chapter_id:chapter.id,quest_source_revision:chapterRevision(chapter),
+  }),"2026-12-01T00:00:01Z",lesson.id);
+  const result=await syncOvernightWork(h.env,new Date("2026-12-01T00:01:00Z"));
+  assert.equal(result.added,1);
+  const repair=h.db.raw.prepare("SELECT * FROM quest_overnight_jobs WHERE kind='repair' AND status='running'").get();
+  assert.ok(repair,"watching generation automatically creates a repair queue");
+  assert.equal(repair.auto_follow,1);
+  const entry=h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=?").get(repair.id);
+  assert.equal(entry.lesson_id,lesson.id);
+  assert.equal(entry.status,"pending");
+  assert.equal((await syncOvernightWork(h.env,new Date("2026-12-01T00:04:00Z"))).added,0);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM quest_overnight_items WHERE job_id=?").get(repair.id).n,1);
+});
+
+test("Owner can enable auto-approval mid-run, retry failures and stop without deleting finished lessons",async()=>{
+  const h=harness();
+  const {owner,id}=await publishedBook(h);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[{title:"One",start:1,end:2,text:chapterText}]});
+  h.env.AI={run:async()=>({})};
+  const url="/quest-books/admin/overnight";
+  const started=await h.req(url+"/start",owner.token,"POST",{book_ids:[id]});
+  const job=(await started.json()).job;
+  assert.equal(job.auto_approve,false);
+  const enable=await h.req(`${url}/${job.id}/control`,owner.token,"POST",{action:"set_auto_approve",enabled:true});
+  assert.equal(enable.status,200);
+  assert.equal((await enable.json()).job.auto_approve,true);
+  assert.equal(h.db.raw.prepare("SELECT auto_approve FROM quest_overnight_jobs WHERE id=?").get(job.id).auto_approve,1);
+  h.db.raw.prepare("UPDATE quest_overnight_items SET status='failed',last_error='Provider error' WHERE job_id=?").run(job.id);
+  const retry=await h.req(`${url}/${job.id}/control`,owner.token,"POST",{action:"retry_failed"});
+  assert.equal(retry.status,200);
+  assert.equal(h.db.raw.prepare("SELECT status,attempts FROM quest_overnight_items WHERE job_id=?").get(job.id).status,"pending");
+  const stop=await h.req(`${url}/${job.id}/control`,owner.token,"POST",{action:"stop"});
+  assert.equal(stop.status,200);
+  const stopped=h.db.raw.prepare("SELECT status,auto_follow FROM quest_overnight_jobs WHERE id=?").get(job.id);
+  assert.deepEqual(stopped,{status:"stopped",auto_follow:0});
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM quest_overnight_items WHERE job_id=?").get(job.id).n,1,
+    "stopping never deletes history or finished lessons");
+  const scan=await syncOvernightWork(h.env,new Date("2026-12-02T00:00:00Z"));
+  assert.equal(scan.added,0);
+  const dashboard=await (await h.req(url,owner.token)).json();
+  assert.equal(dashboard.jobs.find(j=>j.id===job.id).status,"stopped");
 });
