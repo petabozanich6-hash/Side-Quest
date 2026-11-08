@@ -49,7 +49,17 @@ export const QUEST_COLLECTIONS = [
   { id: "reading", label: "Reading & phonics", blurb: "Learning to read, phonics, sight words and spelling." },
   { id: "handwriting", label: "Handwriting", blurb: "Letter formation, neat print and cursive." },
   { id: "study-skills", label: "Study skills", blurb: "Note-taking, research, essay writing, time management and exam technique." },
-  { id: "life-skills", label: "Life skills", blurb: "Money, budgeting, everyday maths and practical literacy." },
+  { id: "life-skills", label: "Life skills", blurb: "Money, cooking, first aid, safety and everyday maths and literacy." },
+  { id: "unit-studies", label: "Unit studies", blurb: "Themed books that weave several subjects together: space, the ocean, dinosaurs, ancient Egypt and more." },
+  { id: "first-nations", label: "First Nations perspectives", blurb: "Country and place, seasons, languages and stories of Aboriginal and Torres Strait Islander peoples." },
+  { id: "coding", label: "Coding & digital tech", blurb: "Scratch, Python, micro:bit, how computers work and staying safe online." },
+  { id: "nature", label: "Nature & outdoor learning", blurb: "Nature journals, bush walks, backyard science and citizen science." },
+  { id: "wellbeing", label: "Wellbeing & feelings", blurb: "Emotions, calm-down strategies, friendships and resilience." },
+  { id: "growing-up", label: "Growing up", blurb: "Gentle, age-appropriate books about puberty and body changes for girls and boys." },
+  { id: "languages", label: "Languages", blurb: "Beginner workbooks for Japanese, Indonesian, French, Auslan and more." },
+  { id: "early-learning", label: "Early learning (ages 3–5)", blurb: "Fine motor skills, pre-writing, counting, colours and shapes before school." },
+  { id: "learning-support", label: "Learning support", blurb: "Dyslexia-friendly reading, maths foundations and visual supports for learners who need a different path." },
+  { id: "seasonal", label: "Seasonal & events", blurb: "Activity books for the monthly themes and special weeks like NAIDOC Week and Science Week." },
 ] as const;
 const COLLECTION_IDS = QUEST_COLLECTIONS.map((c) => c.id) as string[];
 export const SPECIALIST_YEARS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

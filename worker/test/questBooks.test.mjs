@@ -1117,3 +1117,9 @@ test("Overnight queue survives a temporary AI budget pause and resumes without u
   assert.equal(completed.status,"done");
   assert.equal(completed.attempts,1);
 });
+
+test("New specialist shelves accept books", () => {
+  for (const collection of ["unit-studies", "first-nations", "coding", "nature", "wellbeing", "growing-up", "languages", "early-learning", "learning-support", "seasonal"]) {
+    assert.equal(validateMeta({ collection, title: `A ${collection} book`, year: "all", topic: "Something" }).ok, true, collection);
+  }
+});

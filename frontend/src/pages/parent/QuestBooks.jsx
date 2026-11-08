@@ -270,6 +270,9 @@ function ShelfView() {
   }, [data]);
   const specialistBooks = (data?.books || []).filter((b) => b.collection === collection && (b.has_book || data.owner));
   const planned = data?.owner ? plannedFor(collection, data.books) : [];
+  // Families only see specialist shelves that have books; the owner sees every shelf, including empty ones to fill.
+  const shelves = (data?.collections || []).filter((c) => c.id !== "core" && (data.owner || data.books.some((b) => b.collection === c.id && b.has_book)));
+  useEffect(() => { if (shelves.length && !shelves.some((c) => c.id === collection)) setCollection(shelves[0].id); }, [shelves, collection]);
   const currentCollection = data?.collections?.find((c) => c.id === collection);
   const createPlanned = (p) => setDraft({ collection, year: p.year === null ? "all" : p.year, topic: p.topic, subject: p.subject,
     title: `${p.year === null ? "" : p.year === 0 ? "Foundation " : `Year ${p.year} `}${p.topic}`.trim() });
@@ -320,7 +323,7 @@ function ShelfView() {
         {mode === "specialist" ? (
           <section className="space-y-4" data-testid="quest-specialist">
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {data.collections.filter((c) => c.id !== "core").map((c) => {
+              {shelves.map((c) => {
                 const n = data.books.filter((b) => b.collection === c.id && b.has_book).length;
                 return (
                   <button key={c.id} type="button" onClick={() => { setCollection(c.id); setDraft(null); }} data-testid={`quest-collection-${c.id}`}
