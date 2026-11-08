@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, BookText, ChevronLeft, ChevronRight, Printer, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
 import { plannedFor } from "../../lib/questBookPlan";
-import { lookInsidePages } from "../../lib/pdfPages";
+import { lookInsidePages, readerPages } from "../../lib/pdfPages";
 import { addToCart, clearCart, inCart, removeFromCart, setCart, useCart } from "../../lib/questCart";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
@@ -115,6 +115,11 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
       toast.success(`${spec.label} saved for “${book.title}”`);
       if (spec.kind === "book") {
         try { await makeLookInside(book, file); } catch { toast.error("Couldn't make the look-inside pages. Open the book space and press “Make them”."); }
+        try {
+          const id = toast.loading("Making reader pages for members…");
+          await makeReaderPages(book, file, (n, total) => toast.loading(`Making reader pages for members… ${n} of ${total}`, { id }));
+          toast.success("Reader pages ready. Members can read and print this book.", { id });
+        } catch { toast.error("Couldn't finish the reader pages. Open the book space and press “Make again”."); }
       }
       await reload();
     } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); }
@@ -196,7 +201,7 @@ function BookTile({ b, data }) {
       className="group flex flex-col items-center gap-2 w-36 sm:w-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-xl">
       <QuestBookCover book={b} className="transition-transform duration-300 group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]" />
       <span className="text-xs font-bold text-slate-800 text-center leading-tight">{b.title}</span>
-      <span className="text-[11px] text-stone-600">{!b.has_book ? <span className="text-amber-700 font-semibold">Draft</span> : b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
+      <span className="text-[11px] text-stone-600">{!b.has_book ? <span className="text-amber-700 font-semibold">Draft</span> : b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Yours" : b.included ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
     </Link>
   );
 }
@@ -271,7 +276,7 @@ function ShelfView() {
         {!data.member && (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-4 flex gap-3 items-start text-amber-950 text-sm">
             <Gift size={18} className="mt-0.5 shrink-0" />
-            <p>Download a free sample of any book. Every Quest Book is included with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ", or you can buy a single book to keep." : "."}</p>
+            <p>Members read and print every year-level book in Side-Quest with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ". Buy any book to keep the PDF. Specialist books are bought separately." : "."}</p>
           </div>
         )}
 
@@ -385,6 +390,24 @@ async function uploadBookFile(book, spec, file, onProgress) {
 }
 
 // Makes the watermarked "look inside" pages from the uploaded Book PDF (owner's browser) and stores them.
+// Makes the reader pages (every page as a picture) so members can read and print in Side-Quest without the PDF.
+async function makeReaderPages(book, file, onProgress) {
+  let pdf = file;
+  if (!pdf) {
+    const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
+    pdf = new Blob([r.data], { type: "application/pdf" });
+  }
+  await api.delete(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read`);
+  return readerPages(pdf, async (blob, n, total) => {
+    let tries = 0;
+    for (;;) {
+      try { await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read/${n}`, blob, { headers: { "Content-Type": "image/jpeg" }, timeout: 120000 }); break; }
+      catch (e) { if (++tries >= 3) throw e; await new Promise((r) => setTimeout(r, 1500 * tries)); }
+    }
+    onProgress?.(n, total);
+  });
+}
+
 async function makeLookInside(book, file) {
   let pdf = file;
   if (!pdf) {
@@ -417,9 +440,20 @@ function BookWorkspace({ book, reload }) {
       setBusy("look");
       try { const n = await makeLookInside(book, file); toast.success(`Made ${n} look-inside pages.`); }
       catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the look-inside pages. Use “Make again” to retry.")); }
+      setBusy("read");
+      try { await makeReaderPages(book, file, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); }
+      catch (e) { toast.error(apiErrorMessage(e, "Couldn't finish the reader pages. Use “Make again” to retry.")); }
+      setReadProgress("");
     }
     setBusy(""); setProgress(0);
     if (ok) await reload();
+  };
+  const [readProgress, setReadProgress] = useState("");
+  const remakeRead = async () => {
+    setBusy("read");
+    try { await makeReaderPages(book, null, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); await reload(); }
+    catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the reader pages")); }
+    finally { setBusy(""); setReadProgress(""); }
   };
   const remakeLook = async () => {
     setBusy("look");
@@ -445,6 +479,9 @@ function BookWorkspace({ book, reload }) {
       action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
     { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "What families download. The book stays hidden until this is uploaded.",
       action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
+    { id: "read", title: "Reader pages for members", done: book.read_pages > 0, needs: book.has_book,
+      info: busy === "read" ? `Making the pages… ${readProgress}` : book.read_pages ? `${book.read_pages} pages: members read and print them in Side-Quest` : "Made automatically from the Book PDF. Members read and print these instead of downloading.",
+      action: book.has_book && btn(busy === "read" ? "Making…" : book.read_pages ? "Make again" : "Make them", remakeRead) },
     { id: "look", title: "Look-inside pages", done: book.look_pages > 0, needs: book.has_book,
       info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
@@ -524,12 +561,114 @@ function LookInside({ book, onClose, children }) {
   );
 }
 
+/** Members read and print a book from its page pictures. The PDF itself is never sent. */
+function BookReader({ book, onClose }) {
+  const total = book.read_pages;
+  const urls = React.useRef(new Map());
+  const [, force] = useState(0);
+  const [page, setPage] = useState(1);
+  const [printOpen, setPrintOpen] = useState(false);
+  const [range, setRange] = useState({ from: 1, to: total });
+  const [printing, setPrinting] = useState("");
+  const scroller = React.useRef(null);
+  const load = React.useCallback(async (n) => {
+    if (urls.current.has(n)) return urls.current.get(n);
+    urls.current.set(n, null);
+    try {
+      const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/read/${n}`, { responseType: "blob" });
+      const u = URL.createObjectURL(r.data);
+      urls.current.set(n, u); force((x) => x + 1);
+      return u;
+    } catch { urls.current.delete(n); return null; }
+  }, [book.id]);
+  useEffect(() => () => { for (const u of urls.current.values()) if (u) URL.revokeObjectURL(u); }, []);
+  useEffect(() => { const k = (e) => e.key === "Escape" && !printing && onClose(); window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [onClose, printing]);
+  // Load pages as they scroll into view (and the next couple ahead).
+  useEffect(() => {
+    const root = scroller.current;
+    if (!root) return undefined;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) {
+        const n = Number(e.target.dataset.page);
+        setPage(n);
+        for (let k = n; k <= Math.min(total, n + 2); k++) void load(k);
+      }
+    }, { root, rootMargin: "400px 0px" });
+    root.querySelectorAll("[data-page]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [load, total]);
+  const goTo = (n) => scroller.current?.querySelector(`[data-page="${Math.max(1, Math.min(total, n))}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const print = async () => {
+    const from = Math.max(1, Math.min(total, Number(range.from) || 1));
+    const to = Math.max(from, Math.min(total, Number(range.to) || total));
+    setPrinting(`Getting pages ready… 0 of ${to - from + 1}`);
+    try {
+      const list = [];
+      for (let n = from; n <= to; n++) {
+        const u = await load(n);
+        if (!u) throw new Error(`Page ${n} didn't load`);
+        list.push(u);
+        setPrinting(`Getting pages ready… ${n - from + 1} of ${to - from + 1}`);
+      }
+      const rootEl = document.createElement("div");
+      rootEl.id = "sq-print-root";
+      const style = document.createElement("style");
+      style.textContent = "@media screen{#sq-print-root{display:none}}@media print{body>*:not(#sq-print-root){display:none!important}#sq-print-root img{display:block;width:100%;height:auto;page-break-after:always;break-after:page}@page{margin:0}}";
+      rootEl.appendChild(style);
+      for (const u of list) { const img = document.createElement("img"); img.src = u; img.alt = ""; rootEl.appendChild(img); }
+      document.body.appendChild(rootEl);
+      await Promise.all([...rootEl.querySelectorAll("img")].map((img) => (img.complete ? null : new Promise((r) => { img.onload = r; img.onerror = r; }))));
+      const done = () => { rootEl.remove(); window.removeEventListener("afterprint", done); };
+      window.addEventListener("afterprint", done);
+      setPrinting(""); setPrintOpen(false);
+      window.print();
+      setTimeout(() => { if (document.body.contains(rootEl)) done(); }, 60000);
+    } catch (e) { toast.error(e.message || "Couldn't prepare the pages to print"); setPrinting(""); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-stone-800/95 flex flex-col" role="dialog" aria-modal="true" aria-label={`Reading ${book.title}`} data-testid="quest-reader">
+      <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-white border-b">
+        <h3 className="mr-auto font-display font-bold text-slate-900 truncate max-w-[50%]">{book.title}</h3>
+        <button type="button" onClick={() => goTo(page - 1)} aria-label="Previous page" className="rounded-full p-1.5 hover:bg-stone-100"><ChevronLeft size={18} /></button>
+        <span className="text-sm text-stone-700 tabular-nums">Page {page} of {total}</span>
+        <button type="button" onClick={() => goTo(page + 1)} aria-label="Next page" className="rounded-full p-1.5 hover:bg-stone-100"><ChevronRight size={18} /></button>
+        <button type="button" onClick={() => setPrintOpen((x) => !x)} data-testid="quest-reader-print" className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900 text-white px-3 py-1.5 text-sm font-bold"><Printer size={15} /> Print</button>
+        <button type="button" onClick={onClose} aria-label="Close" className="rounded-full p-1.5 hover:bg-stone-100"><X size={18} /></button>
+      </div>
+      {printOpen && (
+        <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-emerald-50 border-b text-sm">
+          <span className="font-semibold text-emerald-950">Print pages</span>
+          <input type="number" min={1} max={total} value={range.from} onChange={(e) => setRange((r) => ({ ...r, from: e.target.value }))} className="w-20 rounded border border-stone-300 px-2 py-1" aria-label="From page" />
+          <span>to</span>
+          <input type="number" min={1} max={total} value={range.to} onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))} className="w-20 rounded border border-stone-300 px-2 py-1" aria-label="To page" />
+          <button type="button" onClick={() => setRange({ from: page, to: page })} className="underline">Just this page</button>
+          <button type="button" onClick={() => setRange({ from: 1, to: total })} className="underline">Whole book</button>
+          <button type="button" onClick={print} disabled={!!printing} className="ml-auto rounded-lg bg-emerald-900 text-white px-3 py-1.5 font-bold disabled:opacity-60">{printing || "Print"}</button>
+        </div>
+      )}
+      <div ref={scroller} className="flex-1 overflow-y-auto py-4 space-y-4 select-none" onContextMenu={(e) => e.preventDefault()}>
+        {Array.from({ length: total }, (_, i) => i + 1).map((n) => {
+          const u = urls.current.get(n);
+          return (
+            <div key={n} data-page={n} className="mx-auto w-[min(95vw,820px)] aspect-[1/1.414] bg-white shadow-lg grid place-items-center">
+              {u ? <img src={u} alt={`Page ${n}`} draggable={false} className="w-full h-full object-contain pointer-events-none" /> : <span className="text-sm text-stone-400">Page {n}</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function BookView({ id }) {
   const [params, setParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [peek, setPeek] = useState(null);
   const [look, setLook] = useState(false);
+  const [reading, setReading] = useState(false);
   const [confirming, setConfirming] = useState(params.get("purchase") === "success");
   const load = () => api.get(`/quest-books/books/${encodeURIComponent(id)}`, { params: { _: Date.now() } })
     .then(({ data: d }) => { setData(d); return d; }).catch((e) => { setError(apiErrorMessage(e, "Could not open this book")); return null; });
@@ -605,6 +744,19 @@ function BookView({ id }) {
                   className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800">
                   <Download size={18} /> Download the book
                 </a>
+              ) : book.can_read ? (
+                <>
+                  <button type="button" onClick={() => setReading(true)} data-testid="quest-book-read"
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800">
+                    <BookText size={18} /> Read and print
+                  </button>
+                  {book.can_buy && (
+                    <button type="button" onClick={() => add("book")} data-testid="quest-book-buy-keep"
+                      className="inline-flex items-center gap-2 rounded-xl border-2 border-emerald-800 bg-white text-emerald-900 px-4 py-2.5 text-sm font-bold hover:bg-emerald-50">
+                      {has("book") ? <><Check size={16} /> In your cart</> : <><ShoppingCart size={16} /> Buy the PDF to keep · {money(book.price_cents)}</>}
+                    </button>
+                  )}
+                </>
               ) : (
                 <>
                   {book.can_buy && (
@@ -614,7 +766,7 @@ function BookView({ id }) {
                     </button>
                   )}
                   <Link to="/parent/plan" className={book.can_buy ? "text-sm font-semibold text-emerald-900 underline" : "inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold"}>
-                    {book.can_buy ? "Or get every Quest Book with Family Membership" : "Included with Family Membership"}
+                    {book.collection && book.collection !== "core" ? null : book.can_buy ? "Or read every year-level book with Family Membership" : "Included with Family Membership"}
                   </Link>
                 </>
               )}
@@ -643,10 +795,14 @@ function BookView({ id }) {
             )}
             {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book{book.owned_tier === "plus" ? " and its lessons" : ""}. Download it again any time.</p>}
             {book.can_download && <p className="text-xs text-stone-600">Print it at home or open it on a tablet. For a family's own use only, please don't share the file.</p>}
+            {!book.can_download && book.can_read && <p className="text-xs text-stone-600">Included with your membership: read it here and print any pages you need while you're a member. Buy the PDF if you'd like a copy to keep.</p>}
+            {!book.can_download && book.included && !book.can_read && <p className="text-xs text-stone-600">Included with your membership. The on-screen version is being prepared; check back soon.</p>}
+            {book.collection && book.collection !== "core" && !book.can_download && <p className="text-xs text-stone-600">Specialist books are bought separately, including for members.</p>}
           </div>
         </section>
       )}
       {data?.owner && book && <BookWorkspace book={book} reload={load} />}
+      {reading && book && <BookReader book={book} onClose={() => setReading(false)} />}
       {look && book && (
         <LookInside book={book} onClose={() => setLook(false)}>
           {book.can_buy && <button type="button" onClick={() => add("book")} data-testid="quest-look-buy" className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60"><ShoppingCart size={16} /> {has("book") ? "In your cart" : `Add book to cart · ${money(book.price_cents)}`}</button>}

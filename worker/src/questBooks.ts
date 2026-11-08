@@ -311,20 +311,36 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
 const MAX_LOOK_PAGES = 8;
 const MAX_LOOK_BYTES = 900_000;
 const lookKey = (id: string, n: number) => `${ROOT}${id}/look-${n}.jpg`;
-type Listed = QuestBookMeta & { look_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
+// Reader pages: every page of the book as a picture, for members to read and print in the site (no PDF).
+const MAX_READ_PAGES = 400;
+const MAX_READ_BYTES = 2_500_000;
+const readKey = (id: string, n: number) => `${ROOT}${id}/read/${n}.jpg`;
+type Listed = QuestBookMeta & { look_pages: number; read_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
+
+async function deleteReadPages(bucket: R2Bucket, id: string) {
+  let cursor: string | undefined;
+  do {
+    const page = await bucket.list({ prefix: `${ROOT}${id}/read/`, limit: 1000, cursor });
+    const keys = page.objects.map((o) => o.key);
+    if (keys.length) await bucket.delete(keys);
+    cursor = page.truncated ? (page as any).cursor : undefined;
+  } while (cursor);
+}
 
 async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
   if (!bucket) return [];
   const files = new Map<string, Partial<Record<FileKind | "chapters" | "lessons", number>>>();
   const metaIds: string[] = [];
   const looks = new Map<string, number>();
+  const reads = new Map<string, number>();
   let cursor: string | undefined;
   do {
     const page = await bucket.list({ prefix: ROOT, limit: 1000, cursor });
     for (const obj of page.objects) {
-      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg)$/.exec(obj.key.slice(ROOT.length));
+      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg|read\/[0-9]{1,3}\.jpg)$/.exec(obj.key.slice(ROOT.length));
       if (!m || !VALID_ID.test(m[1])) continue;
       if (m[2].startsWith("look-")) { looks.set(m[1], (looks.get(m[1]) || 0) + 1); continue; }
+      if (m[2].startsWith("read/")) { reads.set(m[1], Math.max(reads.get(m[1]) || 0, Number(m[2].slice(5, -4)))); continue; }
       if (m[2] === "meta.json") { metaIds.push(m[1]); continue; }
       const kind = m[2].split(".")[0] as FileKind | "chapters" | "lessons";
       files.set(m[1], { ...(files.get(m[1]) || {}), [kind]: obj.size });
@@ -336,7 +352,7 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
     .filter((m): m is QuestBookMeta => !!m)
     .map((m) => {
       const f = files.get(m.id) || {};
-      return { ...m, look_pages: looks.get(m.id) || 0, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
+      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: reads.get(m.id) || 0, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
     })
     .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
@@ -358,7 +374,8 @@ async function accessFor(db: DB, familyId: string, userId: string | null) {
   const owner = userId ? await ownerPowers(db, { id: userId, family_id: familyId }) : false;
   const { plan, limits } = await getEntitlement(db, familyId);
   const member = owner || limits.aiGeneration; // the paid-plan marker, as the Printable Vault uses
-  const tiers = member ? new Map<string, Tier>() : await ownedTiers(db, familyId);
+  // Members can buy books too (specialist books, or a year-level PDF to keep), so purchases always count.
+  const tiers = await ownedTiers(db, familyId);
   return { owner, member, preview: plan === "FREE_PREVIEW", owned: new Set(tiers.keys()), tiers };
 }
 type Access = Awaited<ReturnType<typeof accessFor>>;
@@ -375,27 +392,38 @@ export function plusPriceFor(meta: { price_cents: number | null; lessons_price_c
   return ownedTier === "book" ? Math.max(50, pack - (meta.price_cents ?? 0)) : pack;
 }
 const packsOwned = (a: Access, exceptId?: string) => [...a.tiers].filter(([id, t]) => t === "plus" && id !== exceptId).length;
-const hasBook = (a: Access, id: string) => a.member || a.tiers.has(id);
-const hasLessons = (a: Access, id: string) => a.member || a.tiers.get(id) === "plus";
+/**
+ * Membership includes the year-level (core) books and their lessons, to read and print in the site while subscribed.
+ * Specialist books (NAPLAN, HSC ...) are always bought separately. Only a purchase (or the owner) gets the PDF to keep.
+ */
+type BookLike = { id: string; collection?: string | null };
+const included = (a: Access, b: BookLike) => a.owner || (a.member && (b.collection || "core") === "core");
+const ownsPdf = (a: Access, id: string) => a.owner || a.tiers.has(id);
+const canReadBook = (a: Access, b: BookLike) => included(a, b) || a.tiers.has(b.id);
+const hasLessons = (a: Access, b: BookLike) => included(a, b) || a.tiers.get(b.id) === "plus";
 
 const fileName = (m: QuestBookMeta, kind: "book" | "sample") =>
   `Side-Quest ${yearLabel(m.year)} ${subjectLabel(m)} - ${m.title}${kind === "sample" ? " (sample)" : ""}.pdf`.replace(/[\\/:*?"<>|]/g, "");
 
 function out(b: Listed, a: Access, canBuy: boolean) {
-  const full = hasBook(a, b.id);
+  const inc = included(a, b);
   const tier = a.tiers.get(b.id);
-  const plusOnSale = !a.member && b.has_book && b.has_lessons && b.lessons_price_cents !== null && canBuy && tier !== "plus";
+  const plusOnSale = !inc && b.has_book && b.has_lessons && b.lessons_price_cents !== null && canBuy && tier !== "plus";
   return {
     id: b.id, collection: b.collection, topic: b.topic, year: b.year, year_label: yearLabel(b.year), subject: b.subject, subject_label: subjectLabel(b),
     title: b.title, subtitle: b.subtitle, description: b.description, pages: b.pages, price_cents: b.price_cents,
     has_book: b.has_book, has_sample: b.has_sample, has_cover: b.has_cover, book_bytes: b.book_bytes, look_pages: b.look_pages,
-    can_download: full && b.has_book,
+    read_pages: b.read_pages,
+    included: inc,
+    can_download: ownsPdf(a, b.id) && b.has_book,
+    can_read: canReadBook(a, b) && b.read_pages > 0,
     owned: a.owned.has(b.id),
-    can_buy: !full && b.has_book && b.price_cents !== null && canBuy,
+    // Members can still buy a year-level book to keep the PDF.
+    can_buy: !a.tiers.has(b.id) && !a.owner && b.has_book && b.price_cents !== null && canBuy,
     lessons_price_cents: b.lessons_price_cents, lesson_price_cents: b.lesson_price_cents, has_lessons: b.has_lessons, has_chapters: b.has_chapters,
     owned_tier: tier || null,
-    can_add_lessons: b.has_lessons && hasLessons(a, b.id),
-    can_buy_lesson: !a.member && b.has_lessons && b.lesson_price_cents !== null && canBuy && tier !== "plus",
+    can_add_lessons: b.has_lessons && hasLessons(a, b),
+    can_buy_lesson: !inc && b.has_lessons && b.lesson_price_cents !== null && canBuy && tier !== "plus",
     // A family that bought the book alone upgrades for the difference.
     can_buy_plus: plusOnSale,
     plus_price_cents: plusOnSale ? plusPriceFor(b, tier, packsOwned(a, b.id)) : null,
@@ -420,7 +448,8 @@ export async function quoteCart(db: DB, bucket: R2Bucket, familyId: string, user
     book_id: clip(x?.book_id, 64), tier: x?.tier === "plus" ? "plus" : x?.tier === "lesson" ? "lesson" : "book", lesson_key: clip(x?.lesson_key, 40) || undefined,
   })).filter((x) => VALID_ID.test(x.book_id) && (x.tier !== "lesson" || !!x.lesson_key));
   const books = new Map((await listBooks(bucket)).map((b) => [b.id, b]));
-  const packIn = new Set(items.filter((x) => x.tier === "plus").map((x) => x.book_id));
+  // A pack in the cart covers that book and its lessons (unless membership already includes the lessons).
+  const packIn = new Set(items.filter((x) => x.tier === "plus" && !(books.get(x.book_id) && included(a, books.get(x.book_id)!))).map((x) => x.book_id));
   const lines: (CartLine & { book_title: string; full_cents: number; note?: string })[] = [];
   const removed: { book_id: string; tier: string; lesson_key?: string; reason: string }[] = [];
   const seen = new Set<string>();
@@ -433,7 +462,7 @@ export async function quoteCart(db: DB, bucket: R2Bucket, familyId: string, user
     const b = books.get(it.book_id);
     const drop = (reason: string) => removed.push({ book_id: it.book_id, tier: it.tier, ...(it.lesson_key ? { lesson_key: it.lesson_key } : {}), reason });
     if (!b || !b.has_book) { drop("This book isn't available any more."); continue; }
-    if (a.member) { drop("Your Family Membership already includes this."); continue; }
+    if (it.tier !== "book" && included(a, b)) { drop("Your Family Membership already includes this book's lessons."); continue; }
     if (b.price_cents === null) { drop("This book is only available with Family Membership."); continue; }
     const owned = a.tiers.get(b.id);
     if (it.tier !== "plus" && packIn.has(b.id)) continue; // the pack in the cart covers it
@@ -518,8 +547,8 @@ export function registerQuestBooks(app: App, g: Guards) {
     // The lesson list (titles only) is shown to everyone; adding lessons needs membership or a "book + lessons" purchase.
     const published = book.has_lessons ? await readPublished(c.env.BUCKET, id) : [];
     const mine = published.length ? await familyBookLessons(c.env.DB, user.family_id, id) : new Map();
-    const boughtKeys = published.length && !a.member ? await ownedLessonKeys(c.env.DB, user.family_id, id) : new Set<string>();
-    const allLessons = hasLessons(a, id);
+    const allLessons = hasLessons(a, book);
+    const boughtKeys = published.length && !allLessons ? await ownedLessonKeys(c.env.DB, user.family_id, id) : new Set<string>();
     c.header("Cache-Control", "private, no-store");
     return c.json({
       member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, billingConfig(c.env).ok),
@@ -556,11 +585,12 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!published.length) return c.json({ detail: "This book doesn't have lessons yet." }, 404);
     const body: any = await c.req.json().catch(() => ({}));
     const wanted = typeof body?.key === "string" ? published.filter((l) => l.key === body.key) : published;
-    const bought = hasLessons(a, id) ? null : await ownedLessonKeys(c.env.DB, user.family_id, id);
+    const meta0 = await readMeta(c.env.BUCKET, id);
+    const bought = meta0 && hasLessons(a, meta0) ? null : await ownedLessonKeys(c.env.DB, user.family_id, id);
     const allowed = bought ? wanted.filter((l) => bought.has(l.key)) : wanted;
     if (!allowed.length) return c.json({ code: "UPGRADE_REQUIRED", detail: "This book's lessons come with Family Membership, the book + lessons bundle, or one at a time." }, 402);
     const meta = await readMeta(c.env.BUCKET, id);
-    const r = await addPublishedLessons(c.env.DB, user.family_id, id, meta?.title || id, allowed, a.member);
+    const r = await addPublishedLessons(c.env.DB, user.family_id, id, meta?.title || id, allowed, !!meta && included(a, meta) && !a.owner);
     if (!r.ok) return c.json({ detail: r.detail }, r.status as any);
     return c.json(r);
   });
@@ -589,6 +619,24 @@ export function registerQuestBooks(app: App, g: Guards) {
     return c.body(obj.body);
   });
 
+  // Reader pages: members (year-level books), buyers and the owner read and print in the site.
+  app.get("/api/quest-books/books/:id/read/:n", g.auth, g.parent, async (c) => {
+    const id = c.req.param("id");
+    const n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !Number.isInteger(n) || n < 1 || n > MAX_READ_PAGES || !c.env.BUCKET) return c.json({ detail: "Page not found" }, 404);
+    const user = c.get("user");
+    const meta = await readMeta(c.env.BUCKET, id);
+    if (!meta) return c.json({ detail: "Book not found" }, 404);
+    const a = await accessFor(c.env.DB, user.family_id, user.id);
+    if (!canReadBook(a, meta)) return c.json({ code: "UPGRADE_REQUIRED", detail: "Reading this book in Side-Quest comes with Family Membership or buying the book." }, 402);
+    const obj = await c.env.BUCKET.get(readKey(id, n));
+    if (!obj) return c.json({ detail: "Page not found" }, 404);
+    c.header("Content-Type", "image/jpeg");
+    c.header("Cache-Control", "private, no-store");
+    c.header("X-Content-Type-Options", "nosniff");
+    return c.body(obj.body);
+  });
+
   // The sample is free for every signed-in parent.
   app.get("/api/quest-books/books/:id/sample", async (c) => {
     const who = await familyFromRequest(c);
@@ -601,15 +649,15 @@ export function registerQuestBooks(app: App, g: Guards) {
     return pdfResponse(obj, fileName(meta, "sample"));
   });
 
-  // The full book: members, the owner, or a family that bought it.
+  // The full book PDF: the owner, or a family that bought it.
   app.get("/api/quest-books/books/:id/download", async (c) => {
     const who = await familyFromRequest(c);
     if (!who) return c.json({ detail: "This link has expired. Refresh the page and try again." }, 401);
     const id = c.req.param("id");
     if (!VALID_ID.test(id) || !c.env.BUCKET) return c.json({ detail: "Book not found" }, 404);
     const a = await accessFor(c.env.DB, who.familyId, who.userId);
-    if (!hasBook(a, id)) {
-      return c.json({ code: "UPGRADE_REQUIRED", detail: "This book is included with Family Membership, or you can buy it on its own." }, 402);
+    if (!ownsPdf(a, id)) {
+      return c.json({ code: "UPGRADE_REQUIRED", detail: "The PDF comes with buying the book. Members can read and print it in Side-Quest." }, 402);
     }
     const meta = await readMeta(c.env.BUCKET, id);
     const obj = meta ? await c.env.BUCKET.get(keyFor(id, "book")) : null;
@@ -633,7 +681,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     let lessonTitle = "";
     if (meta.price_cents === null) return c.json({ code: "MEMBERS_ONLY", detail: "This book is included with Family Membership and isn't sold separately." }, 409);
     const a = await accessFor(c.env.DB, user.family_id, user.id);
-    if (a.member) return c.json({ code: "ALREADY_INCLUDED", detail: "Your Family Membership already includes every Quest Book." }, 409);
+    if (tier !== "book" && included(a, meta)) return c.json({ code: "ALREADY_INCLUDED", detail: "Your Family Membership already includes this book's lessons." }, 409);
     const owned = a.tiers.get(id);
     let amount = meta.price_cents;
     if (tier === "lesson") {
@@ -824,6 +872,25 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!bytes.byteLength || bytes.byteLength > MAX_LOOK_BYTES || head[0] !== 0xff || head[1] !== 0xd8 || head[2] !== 0xff) return c.json({ detail: "That page picture is empty, too large or not a JPEG." }, 400);
     await c.env.BUCKET!.put(lookKey(id, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
     return c.json({ ok: true, n });
+  });
+  // Reader pages, uploaded one at a time (page n). DELETE clears them all before a fresh set is made.
+  app.put("/api/quest-books/admin/books/:id/read/:n", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    const n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !Number.isInteger(n) || n < 1 || n > MAX_READ_PAGES) return c.json({ detail: "Unknown book or page" }, 400);
+    if (!(await c.env.BUCKET!.head(keyFor(id, "meta")))) return c.json({ detail: "Book not found" }, 404);
+    if (c.req.header("content-type")?.split(";")[0].trim().toLowerCase() !== "image/jpeg") return c.json({ detail: "Reader pages must be JPEG images." }, 415);
+    const bytes = await c.req.arrayBuffer();
+    const head = new Uint8Array(bytes.slice(0, 3));
+    if (!bytes.byteLength || bytes.byteLength > MAX_READ_BYTES || head[0] !== 0xff || head[1] !== 0xd8 || head[2] !== 0xff) return c.json({ detail: "That page picture is empty, too large or not a JPEG." }, 400);
+    await c.env.BUCKET!.put(readKey(id, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
+    return c.json({ ok: true, n });
+  });
+  app.delete("/api/quest-books/admin/books/:id/read", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id)) return c.json({ detail: "Invalid book id" }, 400);
+    await deleteReadPages(c.env.BUCKET!, id);
+    return c.json({ ok: true });
   });
   app.delete("/api/quest-books/admin/books/:id/look", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
@@ -1054,6 +1121,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const id = c.req.param("id");
     if (!VALID_ID.test(id)) return c.json({ detail: "Invalid book id" }, 400);
     if (!(await c.env.BUCKET!.head(keyFor(id, "meta")))) return c.json({ detail: "No book with that id is stored." }, 404);
+    await deleteReadPages(c.env.BUCKET!, id);
     const keys = [...(["meta", "chapters", "lessons", ...FILE_KINDS] as const).map((k) => keyFor(id, k)), ...Array.from({ length: MAX_LOOK_PAGES }, (_, i) => lookKey(id, i + 1))];
     await c.env.BUCKET!.delete(keys);
     const after = await Promise.all(keys.map((k) => c.env.BUCKET!.head(k)));
