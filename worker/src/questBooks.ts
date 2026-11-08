@@ -93,6 +93,7 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
   if (!Array.isArray(list)) return fail(400, "Chapters are missing.");
   if (list.length > MAX_CHAPTERS) return fail(400, `A book can have at most ${MAX_CHAPTERS} chapters.`);
   const chapters: Chapter[] = [];
+  const ids = new Set<string>();
   for (const [i, c] of list.entries()) {
     const title = clip(c?.title, 120);
     const start = Number(c?.start), end = Number(c?.end);
@@ -102,7 +103,13 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
     if (text.replace(/\s/g, "").length < 40) return fail(400, `Chapter “${title}” has no readable text. Make sure the PDF has real text, not just pictures of pages.`);
     const skill_goal = clip(c?.skill_goal, 220);
     const exercise_ref = clip(c?.exercise_ref, 160);
-    chapters.push({ id: `c${i + 1}`, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}) });
+    // Preserve IDs on rescans/splits. Lesson purchases and family copies are keyed by this ID.
+    const suppliedId = clip(c?.id, 40);
+    const sessionId = suppliedId || `c${i + 1}`; // Backward compatibility for older clients and saved books.
+    if (!/^(?:c[1-9][0-9]*|s-[a-z0-9]{20})$/.test(sessionId) || ids.has(sessionId))
+      return fail(400, `Chapter “${title}” has a missing, duplicate or invalid stable lesson ID. Re-read the PDF and try again.`);
+    ids.add(sessionId);
+    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}) });
   }
   return { ok: true, chapters };
 }
@@ -724,7 +731,7 @@ export function registerQuestBooks(app: App, g: Guards) {
       chapters: chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length,
         revision: chapterRevision({ ...ch, text }), draft: drafts.get(ch.id) ? {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
-        } : null, published: published.some((p) => p.chapter_id === ch.id) })),
+        } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
     });
   });
