@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
-import { validateMeta, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
+import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase } from "../src/questBookPurchases.ts";
 
 let seq = 0;
@@ -314,4 +314,71 @@ test("Published lessons carry codes for every state's curriculum; each family ge
   const got = JSON.parse(row.data).outcome_codes;
   assert.deepEqual(got, codes.AC9);
   assert.ok(got.every((c) => c.startsWith("AC9")), "no NSW codes for a QLD family");
+});
+
+
+test("Companion-session source and depth checks preserve exact workbook references", () => {
+  const base = { id: "c1", title: "Build two-digit numbers", start: 12, end: 14,
+    skill_goal: "Partition numbers into tens and ones", exercise_ref: "Page 14, questions 1–7",
+    text: "Teach one focused skill, then explain tens and ones with blocks and practise reading place value." };
+  const one = validateChapters({ chapters: [base] });
+  assert.equal(one.ok, true);
+  assert.equal(one.chapters[0].exercise_ref, "Page 14, questions 1–7");
+  const revision = chapterRevision(one.chapters[0]);
+  assert.equal(revision, chapterRevision(one.chapters[0]));
+  assert.notEqual(revision, chapterRevision({ ...one.chapters[0], exercise_ref: "Page 15, questions 2–7" }));
+  assert.notEqual(revision, chapterRevision({ ...one.chapters[0], text: base.text + " New example." }));
+  assert.ok(companionLessonIssues(lessonBody("Too short")).length > 0);
+  const full = {
+    objectives: ["I can represent a number with blocks", "I can explain tens and ones"],
+    sections: [{ heading: "Tens", body: "Each ten is ten ones." }, { heading: "Ones", body: "Extra ones stay separate." }],
+    worked_examples: [
+      { problem: "23", steps: ["Build two tens", "Add three ones"], answer: "2 tens and 3 ones" },
+      { problem: "41", steps: ["Build four tens", "Add one one"], answer: "4 tens and 1 one" },
+    ],
+    guided_practice: Array.from({ length: 4 }, (_, i) => ({ prompt: "Build " + (20 + i), answer: "2 tens, " + i + " ones" })),
+    activities: ["Place-value models", "Place-value words"].map((title) => ({
+      title, instructions: "Complete these problems",
+      tasks: Array.from({ length: 3 }, (_, i) => ({ prompt: "Model " + (30 + i), answer: "3 tens, " + i + " ones" })),
+    })),
+    questions: Array.from({ length: 3 }, (_, i) => ({ prompt: "Explain " + (40 + i), answer_key: "4 tens, " + i + " ones" })),
+    quiz: Array.from({ length: 3 }, () => ({ question: "How many tens?", options: ["2", "3", "4"], correct_index: 2 })),
+    parent_script: "Show a concrete model, then ask the student to explain the tens and ones.",
+    answer_key: "Guided answers, activities, questions and quiz answers above.",
+  };
+  assert.deepEqual(companionLessonIssues(full), []);
+});
+
+test("Book-generated lessons require owner approval, complete teaching and fresh source before publication", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h, { price_cents: 399, lessons_price_cents: 999, lesson_price_cents: 100 });
+  const raw = { title: "Place value", start: 7, end: 8, text: chapterText,
+    skill_goal: "Represent tens and ones", exercise_ref: "Page 8 questions 1–5" };
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", { chapters: [raw] })).status, 200);
+  const revision = chapterRevision({ ...raw, id: "c1" });
+  const lid = (await (await h.req("/lessons", owner.token, "POST", lessonBody("Place value"))).json()).id;
+  const old = JSON.parse(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lid).data);
+  const tagged = { ...old, quest_book_id: id, quest_chapter_id: "c1", quest_source_revision: revision };
+  h.db.raw.prepare("UPDATE lessons SET data=?, status='ready' WHERE id=?").run(JSON.stringify(tagged), lid);
+  const url = `/quest-books/admin/books/${id}/lessons/publish`;
+  const item = { chapter_id: "c1", lesson_id: lid, reviewed: true };
+  assert.equal((await h.req(url, owner.token, "POST", { items: [{ ...item, reviewed: false }] })).status, 409);
+  assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409, "thin lessons cannot be published");
+  const thorough = {
+    ...tagged, objectives: ["I can use tens", "I can use ones"],
+    sections: [{ heading: "Tens", body: "Ten ones make a ten" }, { heading: "Ones", body: "One ones remain as units" }],
+    worked_examples: [1, 2].map((i) => ({ problem: String(20 + i), steps: ["Build tens", "Add ones"], answer: "Two tens and extra ones" })),
+    guided_practice: Array.from({ length: 4 }, (_, i) => ({ prompt: "Model " + i, answer: "Worked answer " + i })),
+    activities: [1, 2].map((a) => ({ title: "Activity " + a, tasks: [1, 2, 3].map((i) => ({ prompt: "Prompt " + i, answer: "Answer " + i })) })),
+    questions: [1, 2, 3].map((i) => ({ prompt: "Question " + i, answer_key: "Answer " + i })),
+    quiz: [1, 2, 3].map((i) => ({ question: "Choose one", options: ["a", "b", "c"], correct_index: 1 })),
+    parent_script: "Guide, model and review the student's response.", answer_key: "The complete answers are stored per task.",
+  };
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(thorough), lid);
+  assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
+  const changed = { ...raw, exercise_ref: "Page 8 questions 6–9" };
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", { chapters: [changed] })).status, 200);
+  const info = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters;
+  assert.equal(info[0].draft.stale, true);
+  assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409);
 });
