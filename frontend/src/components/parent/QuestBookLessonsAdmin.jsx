@@ -5,6 +5,7 @@ import { BookOpenCheck, Check, FileSearch, Loader2, Sparkles, Upload } from "luc
 import { api, apiErrorMessage } from "../../lib/api";
 import { readPdfChapters } from "../../lib/pdfPages";
 import { compileBookSubsectionSource } from "../../lib/questBookSource";
+import { runBookDraftQueue } from "../../lib/questBookDraftQueue.mjs";
 
 /**
  * Owner-only: the PDF chapter analyser proposes skill-based subsections automatically.
@@ -18,8 +19,28 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [reviewFilter, setReviewFilter] = useState("all");
   const [reviewSearch, setReviewSearch] = useState("");
   const [confirmReset, setConfirmReset] = useState(false);
-  const [remakeProgress, setRemakeProgress] = useState(null);
-  const stopRemake = React.useRef(false);
+  const [batchProgress, setBatchProgress] = useState(null);
+  const [batchSummary, setBatchSummary] = useState(null);
+  const stopDraftQueue = React.useRef(false);
+  const batchRunning = React.useRef(false);
+  const failureKey = `sq-quest-book-draft-failures:${book.id}`;
+  const readFailures = () => {
+    try { return JSON.parse(localStorage.getItem(failureKey) || "{}") || {}; }
+    catch { return {}; }
+  };
+  const [failures, setFailures] = useState(readFailures);
+  useEffect(() => { setFailures(readFailures()); setBatchSummary(null); }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const recordFailure = (ch, error) => setFailures((prev) => {
+    const next = { ...prev, [ch.id]: String(error || "Lesson generation failed") };
+    try { localStorage.setItem(failureKey, JSON.stringify(next)); } catch {}
+    return next;
+  });
+  const clearFailure = (id) => setFailures((prev) => {
+    const next = { ...prev };
+    delete next[id];
+    try { localStorage.setItem(failureKey, JSON.stringify(next)); } catch {}
+    return next;
+  });
   const load = () => api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } })
     .then((r) => setData(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not load chapters")));
   const autoRead = React.useRef(false);
@@ -149,22 +170,44 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     } catch (e) { toast.error(apiErrorMessage(e, "Could not save the chapters")); }
     finally { setBusy(""); }
   };
-  const draft = async (ch) => {
+  const draft = async (ch, quiet = false) => {
     setBusy(ch.id);
     try {
-      await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${ch.id}/draft`, {}, { timeout: 10 * 60 * 1000 });
-      toast.success(`Lesson drafted for “${ch.title}”. Review it before publishing.`);
-
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(ch.id)}/draft`, {}, { timeout: 10 * 60 * 1000 });
+      clearFailure(ch.id);
+      if (!quiet) toast.success(`Lesson drafted for “${ch.title}”. Review it before publishing.`);
       await load();
-      return true;
-    } catch (e) { toast.error(`${ch.title}: ${apiErrorMessage(e, "the lesson couldn't be drafted")}`, { duration: 9000 }); return false; }
-    finally { setBusy(""); }
+      return { ok: true };
+    } catch (e) {
+      const error = apiErrorMessage(e, "The lesson couldn't be drafted");
+      recordFailure(ch, error);
+      if (!quiet) toast.error(`${ch.title}: ${error}`, { duration: 9000 });
+      return { ok: false, error };
+    } finally { setBusy(""); }
   };
-  const draftAll = async () => {
-    for (const ch of data.chapters.filter((c) => !c.draft)) {
-      if (!(await draft(ch))) break;
+  const runBatch = async (chapters, label) => {
+    if (batchRunning.current || !chapters.length) return;
+    batchRunning.current = true;
+    stopDraftQueue.current = false;
+    setBatchSummary(null);
+    try {
+      const result = await runBookDraftQueue(chapters, (ch) => draft(ch, true), {
+        shouldStop: () => stopDraftQueue.current,
+        onProgress: setBatchProgress,
+      });
+      setBatchSummary({ ...result, label });
+      const details = `${result.completed} succeeded, ${result.failed.length} failed${result.stopped ? ", stopped early" : ""}.`;
+      if (result.failed.length) toast.warning(`${label}: ${details} Failed lessons are listed below for retry.`, { duration: 10000 });
+      else toast.success(`${label}: ${details}`);
+    } finally {
+      batchRunning.current = false;
+      stopDraftQueue.current = false;
+      setBatchProgress(null);
+      await load();
     }
   };
+  const draftAll = () => runBatch(data.chapters.filter((ch) => !ch.draft), "Make missing lessons");
+  const retryFailed = () => runBatch(data.chapters.filter((ch) => failures[ch.id]), "Retry failed lessons");
   const startFresh = async () => {
     setBusy("reset");
     try {
@@ -172,7 +215,9 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         { confirm: "REBUILD_FROM_PDF" }, { timeout: 120000 });
       setConfirmReset(false);
       setScan(null);
-
+      setFailures({});
+      setBatchSummary(null);
+      try { localStorage.removeItem(failureKey); } catch {}
       autoRead.current = false;
       // Setting an empty source plan triggers automatic analysis of the
       // existing uploaded PDF; the owner does not need to upload it again.
@@ -183,23 +228,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       toast.error(apiErrorMessage(e, "Could not reset the book lessons safely"), { duration: 10000 });
     } finally { setBusy(""); }
   };
-  const remakeAll = async () => {
-    const all = data.chapters;
-    if (!all.length) return;
-    stopRemake.current = false;
-    let done = 0;
-    setRemakeProgress({ done: 0, total: all.length });
-    for (const section of all) {
-      if (stopRemake.current) break;
-      const ok = await draft(section);
-      if (!ok) break;
-      done++;
-      setRemakeProgress({ done, total: all.length });
-    }
-    stopRemake.current = false;
-    setRemakeProgress(null);
-    toast.message(`Remade ${done} of ${all.length} lessons. Earlier drafts are in Archived.`);
-  };
+  const remakeAll = () => runBatch(data.chapters, "Remake lessons");
   const setReviewed = async (chapter, approved) => {
     if (!chapter.draft) return;
     setBusy(`review:${chapter.id}`);
@@ -287,6 +316,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const reviewed = data.chapters.filter((c) => c.draft?.reviewed && !c.draft?.stale).length;
   const ready = data.chapters.filter((c) => c.draft?.status === "ready" && !c.draft?.stale).length;
   const total = data.chapters.length;
+  const failedEntries = data.chapters.filter((ch) => !!failures[ch.id]);
   const visible = data.chapters.filter((c) => {
     const matches = !reviewSearch.trim() || [c.title, c.unit_title, c.skill_goal, c.draft?.title].some((value) => String(value || "").toLowerCase().includes(reviewSearch.trim().toLowerCase()));
     if (!matches) return false;
@@ -304,7 +334,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         </button>}
         {!book.has_book && pdfPicker("Read chapters from a PDF")}
         {book.has_book && (data?.chapters?.length > 0 || data?.published_count > 0) &&
-          <button type="button" onClick={() => setConfirmReset(true)} disabled={!!busy || !!remakeProgress}
+          <button type="button" onClick={() => setConfirmReset(true)} disabled={!!busy || !!batchProgress}
             className="rounded-lg border border-amber-500 px-3 py-2 text-sm font-bold text-amber-900 hover:bg-amber-50 disabled:opacity-50">
             Start fresh from this PDF
           </button>}
@@ -332,6 +362,24 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           </div>
           <p className="text-xs text-emerald-900">{reviewed === total && total ? "Every planned lesson has been reviewed. Publishing still requires your approval." : `${total - reviewed} companion lesson${total - reviewed === 1 ? "" : "s"} still need${total - reviewed === 1 ? "s" : ""} review.`}</p>
         </div>
+        {batchSummary && <p className="text-sm font-semibold text-emerald-950" data-testid="quest-draft-batch-summary">
+          {batchSummary.label}: {batchSummary.completed} made, {batchSummary.failed.length} failed{batchSummary.stopped ? ", stopped after the last completed request" : ""}.
+        </p>}
+        {failedEntries.length > 0 && <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 space-y-2" data-testid="quest-draft-failures">
+          <div className="flex flex-wrap items-center gap-2 justify-between">
+            <p className="text-sm font-bold text-amber-950">{failedEntries.length} lesson{failedEntries.length === 1 ? "" : "s"} need a retry</p>
+            <button type="button" disabled={!!busy || !!batchProgress} onClick={retryFailed}
+              className="rounded-lg bg-amber-800 text-white px-3 py-1.5 text-xs font-bold disabled:opacity-50">Retry failed lessons</button>
+          </div>
+          <p className="text-xs text-amber-900">Other lessons will keep drafting even when one fails. Each failed lesson can be retried without remaking the successful ones.</p>
+          <ul className="space-y-1.5">
+            {failedEntries.map((ch) => <li key={ch.id} className="flex gap-2 items-start justify-between text-xs text-amber-950">
+              <span><b>{ch.title}</b>: {failures[ch.id]}{ch.draft ? " (Previous saved draft retained.)" : ""}</span>
+              <button type="button" disabled={!!busy || !!batchProgress} onClick={() => draft(ch)}
+                className="shrink-0 underline font-bold disabled:opacity-50">Retry</button>
+            </li>)}
+          </ul>
+        </div>}
         <div className="flex gap-2 flex-wrap items-center">
           <input aria-label="Search book lessons" placeholder="Search chapter or lesson…" value={reviewSearch} onChange={(e) => setReviewSearch(e.target.value)} className="flex-1 min-w-[170px] rounded-lg border border-stone-300 px-3 py-2 text-sm" />
           <select aria-label="Filter book lessons" value={reviewFilter} onChange={(e) => setReviewFilter(e.target.value)} className="rounded-lg border border-stone-300 px-3 py-2 text-sm">
@@ -348,23 +396,23 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
                 </span>}</span>
               {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review?book=${encodeURIComponent(book.id)}&chapter=${encodeURIComponent(c.id)}`} className="text-sm font-semibold text-emerald-900 underline">{c.draft.reviewed ? "Reopen" : "Review"} “{c.draft.title}”</Link>}
               {c.draft && <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-950">
-                <input type="checkbox" disabled={c.draft.stale || c.draft.status !== "ready" || !!busy} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
+                <input type="checkbox" disabled={c.draft.stale || c.draft.status !== "ready" || !!busy || !!batchProgress} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
                 Reviewed and saved{c.draft.reviewed_at && c.draft.reviewed ? ` · ${new Date(c.draft.reviewed_at).toLocaleDateString()}` : ""}
               </label>}
-              <button type="button" disabled={!!busy} onClick={() => draft(c)} className="inline-flex items-center gap-1 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50 disabled:opacity-50">
+              <button type="button" disabled={!!busy || !!batchProgress} onClick={() => draft(c)} className="inline-flex items-center gap-1 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50 disabled:opacity-50">
                 {busy === c.id ? <><Loader2 size={13} className="animate-spin" /> Writing (1–3 min)…</> : <><Sparkles size={13} /> {c.draft ? "Remake" : "Make lesson"}</>}
               </button>
             </li>
           ))}
         </ul>
         <div className="flex flex-wrap gap-2 items-center">
-          {drafted < data.chapters.length && <button type="button" disabled={!!busy || !!remakeProgress} onClick={draftAll} className="inline-flex items-center gap-1.5 rounded-lg bg-violet-700 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"><Sparkles size={15} /> Make all missing lessons ({data.chapters.length - drafted})</button>}
-          <button type="button" disabled={!!busy || !drafted || !!remakeProgress} onClick={publish} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-50">{busy === "publish" ? "Publishing…" : <><Upload size={15} /> Publish {drafted} lesson{drafted === 1 ? "" : "s"} to the book</>}</button>
-          {!!drafted && !remakeProgress && <button type="button" disabled={!!busy} onClick={remakeAll}
+          {drafted < data.chapters.length && <button type="button" disabled={!!busy || !!batchProgress} onClick={draftAll} className="inline-flex items-center gap-1.5 rounded-lg bg-violet-700 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"><Sparkles size={15} /> Make all missing lessons ({data.chapters.length - drafted})</button>}
+          <button type="button" disabled={!!busy || !drafted || !!batchProgress} onClick={publish} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-50">{busy === "publish" ? "Publishing…" : <><Upload size={15} /> Publish {drafted} lesson{drafted === 1 ? "" : "s"} to the book</>}</button>
+          {!!drafted && !batchProgress && <button type="button" disabled={!!busy} onClick={remakeAll}
              className="rounded-lg border border-violet-400 px-4 py-2 text-sm font-bold text-violet-900">Remake all lessons ({data.chapters.length})</button>}
-          {remakeProgress && <div className="flex items-center gap-2 text-sm text-violet-900">
-            <Loader2 size={15} className="animate-spin" /> Remaking lesson {Math.min(remakeProgress.done + 1, remakeProgress.total)} of {remakeProgress.total}
-            <button type="button" className="rounded border border-stone-300 px-2 py-1" onClick={() => { stopRemake.current = true; }}>Stop after current lesson</button>
+          {batchProgress && <div className="flex items-center gap-2 text-sm text-violet-900" role="status" data-testid="quest-draft-batch-progress">
+            <Loader2 size={15} className="animate-spin" /> Processing {Math.min(batchProgress.attempted + 1, batchProgress.total)} of {batchProgress.total} · {batchProgress.completed} made · {batchProgress.failed.length} failed
+            <button type="button" className="rounded border border-stone-300 px-2 py-1" onClick={() => { stopDraftQueue.current = true; }}>Stop after current lesson</button>
           </div>}
           {data.published_count > 0 && <span className="text-xs text-emerald-800 inline-flex items-center gap-1"><Check size={13} /> {data.published_count} published</span>}
         </div>
