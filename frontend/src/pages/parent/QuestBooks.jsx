@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, BookText, ChevronLeft, ChevronRight, Printer, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
 import { plannedFor } from "../../lib/questBookPlan";
-import { lookInsidePages } from "../../lib/pdfPages";
+import { lookInsidePages, readerPages } from "../../lib/pdfPages";
+import { addToCart, clearCart, inCart, removeFromCart, setCart, useCart } from "../../lib/questCart";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
 const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
@@ -114,6 +115,11 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
       toast.success(`${spec.label} saved for “${book.title}”`);
       if (spec.kind === "book") {
         try { await makeLookInside(book, file); } catch { toast.error("Couldn't make the look-inside pages. Open the book space and press “Make them”."); }
+        try {
+          const id = toast.loading("Making reader pages for members…");
+          await makeReaderPages(book, file, (n, total) => toast.loading(`Making reader pages for members… ${n} of ${total}`, { id }));
+          toast.success("Reader pages ready. Members can read and print this book.", { id });
+        } catch { toast.error("Couldn't finish the reader pages. Open the book space and press “Make again”."); }
       }
       await reload();
     } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); }
@@ -195,7 +201,7 @@ function BookTile({ b, data }) {
       className="group flex flex-col items-center gap-2 w-36 sm:w-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700 rounded-xl">
       <QuestBookCover book={b} className="transition-transform duration-300 group-hover:-translate-y-2 group-hover:rotate-[-1.5deg]" />
       <span className="text-xs font-bold text-slate-800 text-center leading-tight">{b.title}</span>
-      <span className="text-[11px] text-stone-600">{!b.has_book ? <span className="text-amber-700 font-semibold">Draft</span> : b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
+      <span className="text-[11px] text-stone-600">{!b.has_book ? <span className="text-amber-700 font-semibold">Draft</span> : b.owned ? <span className="text-emerald-800 font-semibold">Yours</span> : b.can_download ? "Yours" : b.included ? "Included" : b.price_cents != null && data.can_buy ? money(b.price_cents) : "Members"}{b.pages ? ` · ${b.pages} pages` : ""}</span>
     </Link>
   );
 }
@@ -254,6 +260,7 @@ function ShelfView() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="quest-books">
       <header className="rounded-3xl bg-gradient-to-br from-amber-50 via-rose-50 to-emerald-100 border border-amber-200 p-6 sm:p-9 relative overflow-hidden">
+        <div className="absolute top-4 right-4 z-20"><CartButton /></div>
         <div className="relative z-10 max-w-2xl">
           <div className="text-xs font-bold tracking-widest uppercase text-emerald-800">Side-Quest · Subject books and exam prep</div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold mt-2 text-slate-900">Quest Books</h1>
@@ -269,7 +276,7 @@ function ShelfView() {
         {!data.member && (
           <div className="rounded-2xl border border-amber-300 bg-amber-50 p-4 flex gap-3 items-start text-amber-950 text-sm">
             <Gift size={18} className="mt-0.5 shrink-0" />
-            <p>Download a free sample of any book. Every Quest Book is included with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ", or you can buy a single book to keep." : "."}</p>
+            <p>Members read and print every year-level book in Side-Quest with <Link to="/parent/plan" className="underline font-semibold">Family Membership</Link>{data.can_buy ? ". Buy any book to keep the PDF. Specialist books are bought separately." : "."}</p>
           </div>
         )}
 
@@ -383,6 +390,24 @@ async function uploadBookFile(book, spec, file, onProgress) {
 }
 
 // Makes the watermarked "look inside" pages from the uploaded Book PDF (owner's browser) and stores them.
+// Makes the reader pages (every page as a picture) so members can read and print in Side-Quest without the PDF.
+async function makeReaderPages(book, file, onProgress) {
+  let pdf = file;
+  if (!pdf) {
+    const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
+    pdf = new Blob([r.data], { type: "application/pdf" });
+  }
+  await api.delete(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read`);
+  return readerPages(pdf, async (blob, n, total) => {
+    let tries = 0;
+    for (;;) {
+      try { await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read/${n}`, blob, { headers: { "Content-Type": "image/jpeg" }, timeout: 120000 }); break; }
+      catch (e) { if (++tries >= 3) throw e; await new Promise((r) => setTimeout(r, 1500 * tries)); }
+    }
+    onProgress?.(n, total);
+  });
+}
+
 async function makeLookInside(book, file) {
   let pdf = file;
   if (!pdf) {
@@ -415,9 +440,20 @@ function BookWorkspace({ book, reload }) {
       setBusy("look");
       try { const n = await makeLookInside(book, file); toast.success(`Made ${n} look-inside pages.`); }
       catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the look-inside pages. Use “Make again” to retry.")); }
+      setBusy("read");
+      try { await makeReaderPages(book, file, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); }
+      catch (e) { toast.error(apiErrorMessage(e, "Couldn't finish the reader pages. Use “Make again” to retry.")); }
+      setReadProgress("");
     }
     setBusy(""); setProgress(0);
     if (ok) await reload();
+  };
+  const [readProgress, setReadProgress] = useState("");
+  const remakeRead = async () => {
+    setBusy("read");
+    try { await makeReaderPages(book, null, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); await reload(); }
+    catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the reader pages")); }
+    finally { setBusy(""); setReadProgress(""); }
   };
   const remakeLook = async () => {
     setBusy("look");
@@ -443,6 +479,9 @@ function BookWorkspace({ book, reload }) {
       action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
     { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "What families download. The book stays hidden until this is uploaded.",
       action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
+    { id: "read", title: "Reader pages for members", done: book.read_pages > 0, needs: book.has_book,
+      info: busy === "read" ? `Making the pages… ${readProgress}` : book.read_pages ? `${book.read_pages} pages: members read and print them in Side-Quest` : "Made automatically from the Book PDF. Members read and print these instead of downloading.",
+      action: book.has_book && btn(busy === "read" ? "Making…" : book.read_pages ? "Make again" : "Make them", remakeRead) },
     { id: "look", title: "Look-inside pages", done: book.look_pages > 0, needs: book.has_book,
       info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
@@ -522,13 +561,114 @@ function LookInside({ book, onClose, children }) {
   );
 }
 
+/** Members read and print a book from its page pictures. The PDF itself is never sent. */
+function BookReader({ book, onClose }) {
+  const total = book.read_pages;
+  const urls = React.useRef(new Map());
+  const [, force] = useState(0);
+  const [page, setPage] = useState(1);
+  const [printOpen, setPrintOpen] = useState(false);
+  const [range, setRange] = useState({ from: 1, to: total });
+  const [printing, setPrinting] = useState("");
+  const scroller = React.useRef(null);
+  const load = React.useCallback(async (n) => {
+    if (urls.current.has(n)) return urls.current.get(n);
+    urls.current.set(n, null);
+    try {
+      const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/read/${n}`, { responseType: "blob" });
+      const u = URL.createObjectURL(r.data);
+      urls.current.set(n, u); force((x) => x + 1);
+      return u;
+    } catch { urls.current.delete(n); return null; }
+  }, [book.id]);
+  useEffect(() => () => { for (const u of urls.current.values()) if (u) URL.revokeObjectURL(u); }, []);
+  useEffect(() => { const k = (e) => e.key === "Escape" && !printing && onClose(); window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [onClose, printing]);
+  // Load pages as they scroll into view (and the next couple ahead).
+  useEffect(() => {
+    const root = scroller.current;
+    if (!root) return undefined;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) {
+        const n = Number(e.target.dataset.page);
+        setPage(n);
+        for (let k = n; k <= Math.min(total, n + 2); k++) void load(k);
+      }
+    }, { root, rootMargin: "400px 0px" });
+    root.querySelectorAll("[data-page]").forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [load, total]);
+  const goTo = (n) => scroller.current?.querySelector(`[data-page="${Math.max(1, Math.min(total, n))}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const print = async () => {
+    const from = Math.max(1, Math.min(total, Number(range.from) || 1));
+    const to = Math.max(from, Math.min(total, Number(range.to) || total));
+    setPrinting(`Getting pages ready… 0 of ${to - from + 1}`);
+    try {
+      const list = [];
+      for (let n = from; n <= to; n++) {
+        const u = await load(n);
+        if (!u) throw new Error(`Page ${n} didn't load`);
+        list.push(u);
+        setPrinting(`Getting pages ready… ${n - from + 1} of ${to - from + 1}`);
+      }
+      const rootEl = document.createElement("div");
+      rootEl.id = "sq-print-root";
+      const style = document.createElement("style");
+      style.textContent = "@media screen{#sq-print-root{display:none}}@media print{body>*:not(#sq-print-root){display:none!important}#sq-print-root img{display:block;width:100%;height:auto;page-break-after:always;break-after:page}@page{margin:0}}";
+      rootEl.appendChild(style);
+      for (const u of list) { const img = document.createElement("img"); img.src = u; img.alt = ""; rootEl.appendChild(img); }
+      document.body.appendChild(rootEl);
+      await Promise.all([...rootEl.querySelectorAll("img")].map((img) => (img.complete ? null : new Promise((r) => { img.onload = r; img.onerror = r; }))));
+      const done = () => { rootEl.remove(); window.removeEventListener("afterprint", done); };
+      window.addEventListener("afterprint", done);
+      setPrinting(""); setPrintOpen(false);
+      window.print();
+      setTimeout(() => { if (document.body.contains(rootEl)) done(); }, 60000);
+    } catch (e) { toast.error(e.message || "Couldn't prepare the pages to print"); setPrinting(""); }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-stone-800/95 flex flex-col" role="dialog" aria-modal="true" aria-label={`Reading ${book.title}`} data-testid="quest-reader">
+      <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-white border-b">
+        <h3 className="mr-auto font-display font-bold text-slate-900 truncate max-w-[50%]">{book.title}</h3>
+        <button type="button" onClick={() => goTo(page - 1)} aria-label="Previous page" className="rounded-full p-1.5 hover:bg-stone-100"><ChevronLeft size={18} /></button>
+        <span className="text-sm text-stone-700 tabular-nums">Page {page} of {total}</span>
+        <button type="button" onClick={() => goTo(page + 1)} aria-label="Next page" className="rounded-full p-1.5 hover:bg-stone-100"><ChevronRight size={18} /></button>
+        <button type="button" onClick={() => setPrintOpen((x) => !x)} data-testid="quest-reader-print" className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900 text-white px-3 py-1.5 text-sm font-bold"><Printer size={15} /> Print</button>
+        <button type="button" onClick={onClose} aria-label="Close" className="rounded-full p-1.5 hover:bg-stone-100"><X size={18} /></button>
+      </div>
+      {printOpen && (
+        <div className="flex flex-wrap items-center gap-2 px-3 py-2 bg-emerald-50 border-b text-sm">
+          <span className="font-semibold text-emerald-950">Print pages</span>
+          <input type="number" min={1} max={total} value={range.from} onChange={(e) => setRange((r) => ({ ...r, from: e.target.value }))} className="w-20 rounded border border-stone-300 px-2 py-1" aria-label="From page" />
+          <span>to</span>
+          <input type="number" min={1} max={total} value={range.to} onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))} className="w-20 rounded border border-stone-300 px-2 py-1" aria-label="To page" />
+          <button type="button" onClick={() => setRange({ from: page, to: page })} className="underline">Just this page</button>
+          <button type="button" onClick={() => setRange({ from: 1, to: total })} className="underline">Whole book</button>
+          <button type="button" onClick={print} disabled={!!printing} className="ml-auto rounded-lg bg-emerald-900 text-white px-3 py-1.5 font-bold disabled:opacity-60">{printing || "Print"}</button>
+        </div>
+      )}
+      <div ref={scroller} className="flex-1 overflow-y-auto py-4 space-y-4 select-none" onContextMenu={(e) => e.preventDefault()}>
+        {Array.from({ length: total }, (_, i) => i + 1).map((n) => {
+          const u = urls.current.get(n);
+          return (
+            <div key={n} data-page={n} className="mx-auto w-[min(95vw,820px)] aspect-[1/1.414] bg-white shadow-lg grid place-items-center">
+              {u ? <img src={u} alt={`Page ${n}`} draggable={false} className="w-full h-full object-contain pointer-events-none" /> : <span className="text-sm text-stone-400">Page {n}</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function BookView({ id }) {
   const [params, setParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
   const [peek, setPeek] = useState(null);
   const [look, setLook] = useState(false);
+  const [reading, setReading] = useState(false);
   const [confirming, setConfirming] = useState(params.get("purchase") === "success");
   const load = () => api.get(`/quest-books/books/${encodeURIComponent(id)}`, { params: { _: Date.now() } })
     .then(({ data: d }) => { setData(d); return d; }).catch((e) => { setError(apiErrorMessage(e, "Could not open this book")); return null; });
@@ -565,21 +705,23 @@ function BookView({ id }) {
     } catch (e) { toast.error(apiErrorMessage(e, "Could not add the lessons")); }
     finally { setAdding(""); }
   };
-  const buy = async (tier = "book", lessonKey) => {
-    setBusy(true);
-    try {
-      const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/checkout`, { tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
-      if (!r.data?.url) throw new Error("Checkout did not open.");
-      window.location.assign(r.data.url);
-    } catch (e) {
-      toast.error(e?.response ? apiErrorMessage(e, "Could not start checkout") : e.message);
-      setBusy(false);
-    }
+  const navigate = useNavigate();
+  const cart = useCart();
+  const has = (tier, lessonKey) => inCart(cart, { book_id: id, tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
+  // "Buy" adds to the cart; checkout happens once for everything in the cart.
+  const add = (tier = "book", lessonKey) => {
+    if (has(tier, lessonKey)) { navigate("/parent/quest-books/cart"); return; }
+    addToCart({ book_id: id, tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
+    setLook(false);
+    toast.success(tier === "plus" ? "Book + lessons added to your cart" : tier === "lesson" ? "Lesson added to your cart" : "Book added to your cart",
+      { action: { label: "View cart", onClick: () => navigate("/parent/quest-books/cart") } });
   };
-
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="quest-book-detail">
-      <Link to="/parent/quest-books" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> All Quest Books</Link>
+      <div className="flex items-center gap-3">
+        <Link to="/parent/quest-books" className="mr-auto inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> All Quest Books</Link>
+        <CartButton />
+      </div>
       {!data && !error && <p role="status">Opening the book…</p>}
       {error && <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
       {book && (
@@ -602,16 +744,29 @@ function BookView({ id }) {
                   className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800">
                   <Download size={18} /> Download the book
                 </a>
+              ) : book.can_read ? (
+                <>
+                  <button type="button" onClick={() => setReading(true)} data-testid="quest-book-read"
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800">
+                    <BookText size={18} /> Read and print
+                  </button>
+                  {book.can_buy && (
+                    <button type="button" onClick={() => add("book")} data-testid="quest-book-buy-keep"
+                      className="inline-flex items-center gap-2 rounded-xl border-2 border-emerald-800 bg-white text-emerald-900 px-4 py-2.5 text-sm font-bold hover:bg-emerald-50">
+                      {has("book") ? <><Check size={16} /> In your cart</> : <><ShoppingCart size={16} /> Buy the PDF to keep · {money(book.price_cents)}</>}
+                    </button>
+                  )}
+                </>
               ) : (
                 <>
                   {book.can_buy && (
-                    <button type="button" onClick={() => (book.look_pages ? setLook(true) : buy("book"))} disabled={busy || confirming} data-testid="quest-book-buy"
+                    <button type="button" onClick={() => (book.look_pages && !has("book") ? setLook(true) : add("book"))} disabled={confirming} data-testid="quest-book-buy"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
-                      <ShoppingBag size={18} /> {busy ? "Opening checkout…" : `Buy this book · ${money(book.price_cents)}`}
+                      {has("book") ? <><Check size={18} /> In your cart · view cart</> : <><ShoppingBag size={18} /> Buy this book · {money(book.price_cents)}</>}
                     </button>
                   )}
                   <Link to="/parent/plan" className={book.can_buy ? "text-sm font-semibold text-emerald-900 underline" : "inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold"}>
-                    {book.can_buy ? "Or get every Quest Book with Family Membership" : "Included with Family Membership"}
+                    {book.collection && book.collection !== "core" ? null : book.can_buy ? "Or read every year-level book with Family Membership" : "Included with Family Membership"}
                   </Link>
                 </>
               )}
@@ -630,9 +785,9 @@ function BookView({ id }) {
             </div>
             {book.can_buy_plus && (
               <div className="space-y-1">
-                <button type="button" onClick={() => buy("plus")} disabled={busy || confirming} data-testid="quest-book-buy-plus"
+                <button type="button" onClick={() => add("plus")} disabled={confirming} data-testid="quest-book-buy-plus"
                   className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold hover:bg-violet-100 disabled:opacity-60">
-                  <BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons` : `Book + all ${lessons.length} lessons`} · {book.pack_discount_pct > 0 && <s className="font-normal opacity-60">{money(book.plus_full_price_cents)}</s>} {money(book.plus_price_cents)}
+                  {has("plus") ? <><Check size={16} /> Book + lessons in your cart · view cart</> : <><BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons` : `Book + all ${lessons.length} lessons`} · {book.pack_discount_pct > 0 && <s className="font-normal opacity-60">{money(book.plus_full_price_cents)}</s>} {money(book.plus_price_cents)}</>}
                 </button>
                 {book.pack_discount_pct > 0 && <p className="text-xs font-semibold text-violet-800">{book.pack_discount_pct}% off because you already have {book.pack_discount_pct / 10} pack{book.pack_discount_pct === 10 ? "" : "s"}.</p>}
                 {book.pack_discount_pct === 0 && book.owned_tier !== "book" && <p className="text-xs text-stone-600">Each extra pack you buy is 10% cheaper again, up to 50% off.</p>}
@@ -640,14 +795,18 @@ function BookView({ id }) {
             )}
             {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book{book.owned_tier === "plus" ? " and its lessons" : ""}. Download it again any time.</p>}
             {book.can_download && <p className="text-xs text-stone-600">Print it at home or open it on a tablet. For a family's own use only, please don't share the file.</p>}
+            {!book.can_download && book.can_read && <p className="text-xs text-stone-600">Included with your membership: read it here and print any pages you need while you're a member. Buy the PDF if you'd like a copy to keep.</p>}
+            {!book.can_download && book.included && !book.can_read && <p className="text-xs text-stone-600">Included with your membership. The on-screen version is being prepared; check back soon.</p>}
+            {book.collection && book.collection !== "core" && !book.can_download && <p className="text-xs text-stone-600">Specialist books are bought separately, including for members.</p>}
           </div>
         </section>
       )}
       {data?.owner && book && <BookWorkspace book={book} reload={load} />}
+      {reading && book && <BookReader book={book} onClose={() => setReading(false)} />}
       {look && book && (
         <LookInside book={book} onClose={() => setLook(false)}>
-          {book.can_buy && <button type="button" onClick={() => buy("book")} disabled={busy} data-testid="quest-look-buy" className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60"><ShoppingBag size={16} /> {busy ? "Opening checkout…" : `Buy the book · ${money(book.price_cents)}`}</button>}
-          {book.can_buy_plus && <button type="button" onClick={() => buy("plus")} disabled={busy} className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold disabled:opacity-60"><BookOpenCheck size={16} /> Book + lessons · {money(book.plus_price_cents)}</button>}
+          {book.can_buy && <button type="button" onClick={() => add("book")} data-testid="quest-look-buy" className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60"><ShoppingCart size={16} /> {has("book") ? "In your cart" : `Add book to cart · ${money(book.price_cents)}`}</button>}
+          {book.can_buy_plus && <button type="button" onClick={() => add("plus")} className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold disabled:opacity-60"><BookOpenCheck size={16} /> {has("plus") ? "Pack in your cart" : `Add book + lessons · ${money(book.plus_price_cents)}`}</button>}
           <button type="button" onClick={() => setLook(false)} className="ml-auto text-sm font-semibold text-stone-600 underline">Not now</button>
         </LookInside>
       )}
@@ -676,7 +835,7 @@ function BookView({ id }) {
                 ) : l.unlocked ? (
                   <button type="button" onClick={() => addLessons(l.key)} disabled={!!adding} className="shrink-0 rounded-lg border border-emerald-700 px-3 py-1.5 text-xs font-bold text-emerald-900">{adding === l.key ? "Adding…" : "Add"}</button>
                 ) : book.can_buy_lesson ? (
-                  <button type="button" onClick={() => buy("lesson", l.key)} disabled={busy || confirming} className="shrink-0 inline-flex items-center gap-1 rounded-lg border border-violet-400 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50"><ShoppingBag size={13} /> Buy · {money(book.lesson_price_cents)}</button>
+                  <button type="button" onClick={() => add("lesson", l.key)} disabled={confirming} className="shrink-0 inline-flex items-center gap-1 rounded-lg border border-violet-400 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50">{has("lesson", l.key) ? <><Check size={13} /> In cart</> : <><ShoppingCart size={13} /> Add · {money(book.lesson_price_cents)}</>}</button>
                 ) : <Lock size={15} className="shrink-0 text-stone-400" aria-label="Included with Family Membership" />}
               </li>
             ))}
@@ -689,7 +848,112 @@ function BookView({ id }) {
   );
 }
 
+function CartButton() {
+  const cart = useCart();
+  return (
+    <Link to="/parent/quest-books/cart" data-testid="quest-cart-button"
+      className="relative inline-flex items-center gap-2 rounded-full border border-emerald-700 bg-white px-4 py-2 text-sm font-bold text-emerald-900 hover:bg-emerald-50">
+      <ShoppingCart size={16} /> Cart
+      {cart.length > 0 && <span className="rounded-full bg-emerald-900 text-white text-xs px-2 py-0.5">{cart.length}</span>}
+    </Link>
+  );
+}
+
+function CartView() {
+  const cart = useCart();
+  const [params, setParams] = useSearchParams();
+  const [quote, setQuote] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState(params.get("purchase") === "success");
+  const [done, setDone] = useState(false);
+  const cartKey = JSON.stringify(cart);
+  useEffect(() => {
+    if (!cart.length) { setQuote({ lines: [], removed: [], total_cents: 0 }); return; }
+    api.post("/quest-books/cart/quote", { items: cart }).then((r) => setQuote(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not price your cart")));
+  }, [cartKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Back from Stripe: wait for the verified payment, then empty the cart.
+  useEffect(() => {
+    if (params.get("purchase") === "cancelled") { toast("Checkout cancelled. Nothing was charged, and your cart is still here."); setParams({}, { replace: true }); return undefined; }
+    const id = params.get("cart");
+    if (params.get("purchase") !== "success" || !id) return undefined;
+    let tries = 0, live = true;
+    const tick = async () => {
+      const r = await api.get(`/quest-books/cart/${encodeURIComponent(id)}/status`).catch(() => null);
+      if (!live) return;
+      if (r?.data?.paid) { clearCart(); setConfirming(false); setDone(true); setParams({}, { replace: true }); toast.success("Payment received. Everything is yours!"); return; }
+      if (++tries < 20) setTimeout(tick, 2000);
+      else { setConfirming(false); toast("Your payment is still being confirmed. Check your books again in a minute.", { duration: 9000 }); }
+    };
+    tick();
+    return () => { live = false; };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const checkout = async () => {
+    setBusy(true);
+    try {
+      const r = await api.post("/quest-books/cart/checkout", { items: cart, expected_total_cents: quote?.total_cents });
+      if (!r.data?.url) throw new Error("Checkout did not open.");
+      window.location.assign(r.data.url);
+    } catch (e) {
+      if (e?.response?.data?.code === "CART_CHANGED") { setQuote(e.response.data.quote); toast("Prices changed. Check the new total, then press Checkout again."); }
+      else toast.error(e?.response ? apiErrorMessage(e, "Could not start checkout") : e.message);
+      setBusy(false);
+    }
+  };
+  // Tidy the cart to what the server says can be bought (owned items, replaced lessons and so on drop out).
+  const tidy = () => setCart(quote.lines.map((l) => ({ book_id: l.book_id, tier: l.tier, ...(l.lesson_key ? { lesson_key: l.lesson_key } : {}) })));
+  const tierLabel = (t) => (t === "plus" ? "Book + all lessons" : t === "lesson" ? "Single lesson" : "Book (PDF)");
+
+  return (
+    <div className="p-4 sm:p-8 lg:p-10 space-y-6 max-w-3xl" data-testid="quest-cart">
+      <Link to="/parent/quest-books" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> Keep browsing Quest Books</Link>
+      <h1 className="font-display text-3xl font-bold text-slate-900 inline-flex items-center gap-3"><ShoppingCart size={28} /> Your cart</h1>
+      {confirming && <p role="status" className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-900">Payment received. Unlocking everything…</p>}
+      {done && <p className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-900">All done. Open any book you bought to download it, or add its lessons to My lessons.</p>}
+      {!quote ? <p role="status">Working out your total…</p> : !quote.lines.length && !quote.removed.length ? (
+        !done && <p className="text-stone-600">Your cart is empty. Open a book and press Buy to add it.</p>
+      ) : (
+        <>
+          {quote.lines.length > 0 && (
+            <ul className="rounded-2xl border border-stone-200 bg-white divide-y divide-stone-100">
+              {quote.lines.map((l) => (
+                <li key={`${l.book_id}-${l.tier}-${l.lesson_key || ""}`} className="flex items-center gap-3 px-4 py-3">
+                  <div className="flex-1 min-w-0">
+                    <Link to={`/parent/quest-books/${l.book_id}`} className="font-semibold text-slate-900 hover:underline">{l.tier === "lesson" ? l.title.replace(/^Lesson: /, "") : l.book_title}</Link>
+                    <p className="text-xs text-stone-500">{tierLabel(l.tier)}{l.tier === "lesson" ? ` · ${l.book_title}` : ""}{/upgrade/.test(l.title) ? " · upgrade from the book you own" : ""}</p>
+                    {l.note && <p className="text-xs font-semibold text-violet-800">{l.note}</p>}
+                  </div>
+                  <div className="text-right text-sm font-bold text-slate-900">{l.full_cents > l.amount_cents && <s className="block text-xs font-normal text-stone-400">{money(l.full_cents)}</s>}{money(l.amount_cents)}</div>
+                  <button type="button" aria-label="Remove" onClick={() => removeFromCart({ book_id: l.book_id, tier: l.tier, lesson_key: l.lesson_key })} className="rounded-full p-1.5 text-stone-500 hover:bg-stone-100"><X size={16} /></button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {quote.removed.length > 0 && (
+            <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900 space-y-1">
+              {quote.removed.map((r, i) => <p key={i}>One item was taken out: {r.reason}</p>)}
+              <button type="button" onClick={tidy} className="font-semibold underline">OK, tidy my cart</button>
+            </div>
+          )}
+          {quote.lines.length > 0 && (
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="mr-auto text-lg font-bold text-slate-900">Total {money(quote.total_cents)} <span className="text-xs font-normal text-stone-500">AUD</span></div>
+              <button type="button" onClick={checkout} disabled={busy || confirming || quote.can_buy === false} data-testid="quest-cart-checkout"
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-6 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
+                <ShoppingBag size={18} /> {busy ? "Opening checkout…" : "Checkout"}
+              </button>
+            </div>
+          )}
+          <p className="text-xs text-stone-600">Each extra book + lessons pack is 10% cheaper again, up to 50% off. Family Membership includes every book and lesson.</p>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function QuestBooks() {
   const { bookId } = useParams();
+  if (bookId === "cart") return <CartView />;
   return bookId ? <BookView id={bookId} /> : <ShelfView />;
 }

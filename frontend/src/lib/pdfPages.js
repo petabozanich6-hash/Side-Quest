@@ -176,3 +176,28 @@ export async function lookInsidePages(file, { count = 6, width = 560, label = "S
   }
   return out;
 }
+
+/**
+ * Quest Books reader pages: every page as a print-quality JPEG (about 150 dpi on A4), with a small footer, so members
+ * can read and print in Side-Quest without the PDF itself. Calls onPage(blob, pageNumber, total) for each page in order.
+ */
+export async function readerPages(file, onPage, { width = 1240, quality = 0.8 } = {}) {
+  const doc = await loadPdf(file);
+  const n = doc.numPages;
+  for (let p = 1; p <= n; p++) {
+    const page = await doc.getPage(p);
+    const viewport = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    ctx.fillStyle = "rgba(90,90,90,0.55)"; ctx.font = "16px sans-serif"; ctx.textAlign = "right";
+    ctx.fillText("Side-Quest member copy · sidequestlearning.app", canvas.width - 24, canvas.height - 14);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+    canvas.width = 0; canvas.height = 0;
+    if (!blob) throw new Error(`Page ${p} could not be drawn.`);
+    await onPage(blob, p, n);
+  }
+  return n;
+}
