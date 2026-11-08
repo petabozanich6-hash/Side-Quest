@@ -76,6 +76,7 @@ function Products() {
   const [onOff, setOnOff] = useState("");
   const [picked, setPicked] = useState([]);
   const [editing, setEditing] = useState(null);
+  const [walk, setWalk] = useState(null); // { ids, index } when working through a list one by one
   const [busy, setBusy] = useState(false);
   const products = useMemo(() => data?.products || [], [data]);
   const shown = useMemo(() => products.filter((p) => (!dept || p.department === dept) && (!status || p.status === status) && (!onOff || (onOff === "on") === p.visible)
@@ -95,7 +96,8 @@ function Products() {
         <select value={dept} onChange={(e) => setDept(e.target.value)} aria-label="Department" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">All departments</option>{data.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}</select>
         <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="Status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">All statuses</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
         <select value={onOff} onChange={(e) => setOnOff(e.target.value)} aria-label="On or off" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">On and off</option><option value="on">Switched on</option><option value="off">Switched off</option></select>
-        <Button onClick={() => setEditing({})}>New product</Button>
+        <Button tone="plain" onClick={() => setEditing({})}>New product</Button>
+        <Button disabled={!shown.length} onClick={() => setWalk({ ids: shown.map((p) => p.id), index: 0 })} data-testid="hq-shop-work-through">Work through these one by one ({shown.length})</Button>
       </div>
       {picked.length > 0 && (
         <div className="paper-card p-3 flex flex-wrap gap-2 items-center text-sm">
@@ -106,7 +108,7 @@ function Products() {
           <Button tone="plain" onClick={() => setPicked([])}>Clear</Button>
         </div>
       )}
-      <p className="text-xs text-stone-600">{shown.length} of {products.length} products · <button type="button" className="underline" onClick={() => setPicked(shown.map((p) => p.id))}>select all shown</button></p>
+      <p className="text-xs text-stone-600">Tip: pick a department first, then "Work through these" to fill each product in turn. {shown.length} of {products.length} products · <button type="button" className="underline" onClick={() => setPicked(shown.map((p) => p.id))}>select all shown</button></p>
       <div className="paper-card overflow-x-auto">
         <table className="w-full text-sm">
           <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">Product</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th><th className="p-2">On</th></tr></thead>
@@ -136,6 +138,16 @@ function Products() {
       </div>
       <p className="text-xs text-stone-500">Profit = price − Square's 2.2% fee − your unit cost. * no unit cost entered yet.</p>
       {editing && <Editor product={editing} meta={data} all={products} onClose={() => setEditing(null)} onSaved={reload} />}
+      {walk && (() => {
+        const current = products.find((p) => p.id === walk.ids[walk.index]);
+        if (!current) return null;
+        const next = (removed) => {
+          const ids = removed ? walk.ids.filter((x) => x !== current.id) : walk.ids;
+          const index = removed ? walk.index : walk.index + 1;
+          if (index >= ids.length) { setWalk(null); toast.success("That's the lot!"); } else setWalk({ ids, index });
+        };
+        return <Editor key={current.id} product={current} meta={data} all={products} onClose={() => setWalk(null)} onSaved={reload} queue={{ index: walk.index, total: walk.ids.length, next }} />;
+      })()}
     </div>
   );
 }
@@ -153,53 +165,81 @@ function AdminImage({ id, n }) {
 
 const blank = { title: "", department: "books", collection: "", description: "", tags: [], status: "draft", fulfilment: "physical", personalisation: [], variants: [], bundle_items: [], addons: [], gift_months: [] };
 
-function Editor({ product, meta, all, onClose, onSaved }) {
+// What each kind of product needs. Everything else is tucked under "More settings".
+const KIND = {
+  physical: { posted: true, stock: true, supplier: true },
+  pre_order: { posted: true, supplier: true, timing: true },
+  made_to_order: { posted: true, supplier: true, timing: true, personal: true },
+  personalised: { posted: true, supplier: true, timing: true, personal: true },
+  digital: { file: true },
+  postal_subscription: { monthly: true, personal: true, supplier: true },
+  subscription_box: { monthly: true, personal: true, supplier: true },
+};
+
+function Section({ title, hint, children }) {
+  return (
+    <section className="border-t pt-3 space-y-2 text-sm">
+      <h4 className="font-display font-bold" style={{ color: GREEN }}>{title}</h4>
+      {hint && <p className="text-xs text-stone-500 -mt-1">{hint}</p>}
+      {children}
+    </section>
+  );
+}
+
+function Editor({ product, meta, all, onClose, onSaved, queue }) {
   const isNew = !product.id;
-  const [f, setF] = useState(() => {
-    const p = { ...blank, ...product };
+  const init = (prod) => {
+    const p = { ...blank, ...prod };
     return {
       ...p, tags: (p.tags || []).join(", "),
       price: toDollars(p.price_cents), wholesale: toDollars(p.wholesale_cents), postage: toDollars(p.postage_cents),
       preorder_closes_at: p.preorder_closes_at ? p.preorder_closes_at.slice(0, 10) : "",
       variants: (p.variants || []).map((v) => ({ ...v, price: toDollars(v.price_cents) })),
     };
-  });
+  };
+  const [f, setF] = useState(() => init(product));
   const [images, setImages] = useState(product.images || 0);
+  const [more, setMore] = useState(isNew);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const set = (k, v) => setF((x) => ({ ...x, [k]: v }));
   const setVar = (i, k, v) => setF((x) => ({ ...x, variants: x.variants.map((y, j) => (j === i ? { ...y, [k]: v } : y)) }));
   const setField = (i, k, v) => setF((x) => ({ ...x, personalisation: x.personalisation.map((y, j) => (j === i ? { ...y, [k]: v } : y)) }));
   const others = all.filter((p) => p.id !== product.id);
+  const kind = KIND[f.fulfilment] || KIND.physical;
+  const dLabel = meta.departments.find((d) => d.id === f.department)?.label;
+  const priceCents = toCents(f.price);
+  const fee = priceCents != null ? Math.round(priceCents * 0.022) : null;
 
-  const save = async () => {
+  const body = () => ({
+    ...f, tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
+    price_cents: priceCents, wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage),
+    preorder_closes_at: f.preorder_closes_at ? new Date(`${f.preorder_closes_at}T23:59:00`).toISOString() : null,
+    variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id })),
+  });
+  const save = async (thenNext) => {
     setBusy(true); setErr("");
-    const body = {
-      ...f, tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
-      price_cents: toCents(f.price), wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage),
-      preorder_closes_at: f.preorder_closes_at ? new Date(`${f.preorder_closes_at}T23:59:00`).toISOString() : null,
-      variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id })),
-    };
     try {
-      if (isNew) await adminApi.post("/shop/products", body); else await adminApi.put(`/shop/products/${product.id}`, body);
-      toast.success("Saved"); await onSaved(); onClose();
+      if (isNew) await adminApi.post("/shop/products", body()); else await adminApi.put(`/shop/products/${product.id}`, body());
+      toast.success("Saved"); await onSaved();
+      if (thenNext && queue?.next) queue.next(); else onClose();
     } catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
   };
   const addImage = async (file) => {
     if (!file) return;
     setBusy(true); setErr("");
-    try { const r = await adminApi.post(`/shop/products/${product.id}/images`, { image: await readFile(file) }); setImages(r.images); await onSaved(); }
+    try { const r = await adminApi.post(`/shop/products/${product.id}/images`, { image: await readFile(file) }); setImages(r.images); }
     catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
   };
   const removeImage = async (n) => {
     setBusy(true);
-    try { const r = await adminApi.del(`/shop/products/${product.id}/images/${n}`); setImages(r.images); await onSaved(); }
+    try { const r = await adminApi.del(`/shop/products/${product.id}/images/${n}`); setImages(r.images); }
     catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
   };
   const uploadFile = async (file) => {
     if (!file) return;
     setBusy(true); setErr("");
-    try { await adminApi.post(`/shop/products/${product.id}/file`, { file: await readFile(file), name: file.name }); toast.success("File uploaded"); await onSaved(); }
+    try { await adminApi.post(`/shop/products/${product.id}/file`, { file: await readFile(file), name: file.name }); toast.success("File uploaded"); }
     catch (e) { setErr(errorText(e)); } finally { setBusy(false); }
   };
   const addBooks = async () => {
@@ -210,93 +250,151 @@ function Editor({ product, meta, all, onClose, onSaved }) {
   const remove = async () => {
     if (!window.confirm(`Delete "${product.title}"? This can't be undone.`)) return;
     setBusy(true);
-    try { await adminApi.del(`/shop/products/${product.id}`); await onSaved(); onClose(); } catch (e) { setErr(errorText(e)); setBusy(false); }
+    try { await adminApi.del(`/shop/products/${product.id}`); await onSaved(); if (queue?.next) queue.next(true); else onClose(); } catch (e) { setErr(errorText(e)); setBusy(false); }
   };
   const pick = (k, id) => set(k, f[k].includes(id) ? f[k].filter((x) => x !== id) : [...f[k], id]);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-start justify-center p-3 overflow-y-auto" role="dialog" aria-modal="true" aria-label={isNew ? "New product" : `Edit ${product.title}`}>
-      <div className="w-full max-w-3xl rounded-2xl bg-white p-5 space-y-4 my-6" data-testid="hq-shop-editor">
-        <div className="flex items-center gap-2"><h3 className="font-display text-xl font-bold mr-auto" style={{ color: GREEN }}>{isNew ? "New product" : product.title}</h3><Button tone="plain" onClick={onClose}>Close</Button></div>
-        <div className="grid sm:grid-cols-2 gap-3 text-sm">
-          <label className="font-semibold sm:col-span-2">Title<input value={f.title} onChange={(e) => set("title", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Department<select value={f.department} onChange={(e) => set("department", e.target.value)} className={input}>{meta.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}</select></label>
-          <label className="font-semibold">Collection<input value={f.collection} onChange={(e) => set("collection", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Status<select value={f.status} onChange={(e) => set("status", e.target.value)} className={input}>{meta.statuses.map((s) => <option key={s} value={s}>{meta.status_labels[s]}</option>)}</select></label>
-          <label className="font-semibold">Fulfilment<select value={f.fulfilment} onChange={(e) => set("fulfilment", e.target.value)} className={input}>{Object.entries(meta.fulfilment_labels).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
-          <label className="font-semibold sm:col-span-2">Description<textarea rows={4} value={f.description} onChange={(e) => set("description", e.target.value)} className={input} /></label>
-          <label className="font-semibold sm:col-span-2">Tags (comma separated; "seasonal" puts it in the Seasonal filter)<input value={f.tags} onChange={(e) => set("tags", e.target.value)} className={input} /></label>
-        </div>
-        <fieldset className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm border-t pt-3">
-          <legend className="font-display font-bold" style={{ color: GREEN }}>Money</legend>
-          <label className="font-semibold">Sale price ($){f.fulfilment === "postal_subscription" || f.fulfilment === "subscription_box" ? " / month incl. postage" : ""}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Unit cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Postage ($)<input inputMode="decimal" value={f.postage} onChange={(e) => set("postage", e.target.value)} className={input} /></label>
-          {f.price !== "" && <p className="col-span-full text-xs text-stone-600">Square fee {money(Math.round(toCents(f.price) * 0.022))} · profit per sale {money(toCents(f.price) - Math.round(toCents(f.price) * 0.022) - (toCents(f.wholesale) || 0))}{f.wholesale === "" ? " (add your unit cost)" : ""}</p>}
-        </fieldset>
-        <fieldset className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm border-t pt-3">
-          <legend className="font-display font-bold" style={{ color: GREEN }}>Stock, supplier and timing</legend>
-          <label className="font-semibold">Stock<input type="number" min={0} value={f.stock ?? ""} onChange={(e) => set("stock", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Low-stock alert at<input type="number" min={0} value={f.low_stock_at ?? ""} onChange={(e) => set("low_stock_at", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Max per order<input type="number" min={1} value={f.max_per_order ?? ""} onChange={(e) => set("max_per_order", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Supplier<input value={f.supplier || ""} onChange={(e) => set("supplier", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Lead time (days)<input type="number" min={0} value={f.lead_time_days ?? ""} onChange={(e) => set("lead_time_days", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Dispatch estimate<input value={f.dispatch_estimate || ""} placeholder="e.g. Ships in 2 weeks" onChange={(e) => set("dispatch_estimate", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Pre-order closes<input type="date" value={f.preorder_closes_at} onChange={(e) => set("preorder_closes_at", e.target.value)} className={input} /></label>
-          <label className="font-semibold">Pre-order target<input type="number" min={0} value={f.preorder_target ?? ""} onChange={(e) => set("preorder_target", e.target.value)} className={input} /></label>
-          <label className="font-semibold flex items-center gap-2 mt-6"><input type="checkbox" checked={!!f.safety_checked} onChange={(e) => set("safety_checked", e.target.checked)} />Safety checked</label>
-          <label className="font-semibold col-span-full">Supplier notes (private)<textarea rows={2} value={f.supplier_notes || ""} onChange={(e) => set("supplier_notes", e.target.value)} className={input} /></label>
-        </fieldset>
-        <fieldset className="text-sm border-t pt-3 space-y-2">
-          <legend className="font-display font-bold" style={{ color: GREEN }}>Options (sizes, colours, who it's for, which book)</legend>
-          {f.variants.map((v, i) => (
-            <div key={v.id || i} className="flex flex-wrap gap-2 items-center">
-              <input value={v.name} onChange={(e) => setVar(i, "name", e.target.value)} aria-label="Option name" className="rounded-xl border border-stone-300 px-2 py-1 flex-1 min-w-[140px]" />
-              <input value={v.price ?? ""} onChange={(e) => setVar(i, "price", e.target.value)} placeholder="Price $" aria-label="Option price" className="rounded-xl border border-stone-300 px-2 py-1 w-24" />
-              <input type="number" min={0} value={v.stock ?? ""} onChange={(e) => setVar(i, "stock", e.target.value)} placeholder="Stock" aria-label="Option stock" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />
-              <label className="flex items-center gap-1"><input type="checkbox" checked={v.active !== false} onChange={(e) => setVar(i, "active", e.target.checked)} />On</label>
-              <button type="button" className="text-rose-700" aria-label="Remove option" onClick={() => set("variants", f.variants.filter((_, j) => j !== i))}>✕</button>
-            </div>
-          ))}
-          <div className="flex flex-wrap gap-2">
-            <Button tone="plain" onClick={() => set("variants", [...f.variants, { name: "", price: "", stock: "", active: true }])}>Add option</Button>
-            {!isNew && <Button tone="plain" disabled={busy} onClick={addBooks}>Add every Quest Book as an option</Button>}
+      <div className="w-full max-w-2xl rounded-2xl bg-white p-5 space-y-4 my-6" data-testid="hq-shop-editor">
+        <div className="flex items-start gap-2">
+          <div className="mr-auto min-w-0">
+            {queue && <p className="text-xs font-semibold text-stone-500">{queue.index + 1} of {queue.total}</p>}
+            <h3 className="font-display text-xl font-bold" style={{ color: GREEN }}>{isNew ? "New product" : product.title}</h3>
+            {!isNew && <p className="text-xs text-stone-500">{dLabel}{f.collection ? ` · ${f.collection}` : ""} · {meta.fulfilment_labels[f.fulfilment]}</p>}
           </div>
-          <p className="text-xs text-stone-500">Blank option price uses the sale price. "Add every Quest Book" is for printed books: it saves and closes, then shows the printed option on each book in the shop.</p>
-        </fieldset>
-        <fieldset className="text-sm border-t pt-3 space-y-2">
-          <legend className="font-display font-bold" style={{ color: GREEN }}>Personalisation fields</legend>
-          {f.personalisation.map((x, i) => (
-            <div key={i} className="flex flex-wrap gap-2 items-center">
-              <input value={x.label} onChange={(e) => setField(i, "label", e.target.value)} placeholder="e.g. Child's name" aria-label="Field label" className="rounded-xl border border-stone-300 px-2 py-1 flex-1" />
-              <input type="number" min={1} max={200} value={x.max} onChange={(e) => setField(i, "max", Number(e.target.value))} aria-label="Max characters" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />
-              <label className="flex items-center gap-1"><input type="checkbox" checked={!!x.required} onChange={(e) => setField(i, "required", e.target.checked)} />Required</label>
-              <button type="button" className="text-rose-700" aria-label="Remove field" onClick={() => set("personalisation", f.personalisation.filter((_, j) => j !== i))}>✕</button>
-            </div>
-          ))}
-          <Button tone="plain" onClick={() => set("personalisation", [...f.personalisation, { label: "", max: 30, required: true }])}>Add field</Button>
-        </fieldset>
-        <fieldset className="text-sm border-t pt-3 space-y-2">
-          <legend className="font-display font-bold" style={{ color: GREEN }}>Gift subscriptions, bundles and add-ons</legend>
-          <div className="flex flex-wrap gap-3">Prepaid gift lengths: {[1, 3, 6, 12].map((m) => <label key={m} className="flex items-center gap-1"><input type="checkbox" checked={f.gift_months.includes(m)} onChange={() => set("gift_months", f.gift_months.includes(m) ? f.gift_months.filter((x) => x !== m) : [...f.gift_months, m])} />{m} month{m > 1 ? "s" : ""}</label>)}</div>
-          <PickList label="Bundle contains" ids={f.bundle_items} others={others} onPick={(id) => pick("bundle_items", id)} />
-          <PickList label="Suggested add-ons" ids={f.addons} others={others} onPick={(id) => pick("addons", id)} />
-        </fieldset>
+          <Button tone="plain" onClick={onClose}>Close</Button>
+        </div>
+        {product.missing?.length > 0 && <p className="rounded-xl bg-amber-50 border border-amber-200 p-2 text-xs text-amber-900">Still needed before launch: {product.missing.join(", ")}</p>}
+
+        <Section title="The basics">
+          {isNew && <label className="block font-semibold">Title<input value={f.title} onChange={(e) => set("title", e.target.value)} className={input} /></label>}
+          <label className="block font-semibold">Description customers see<textarea rows={3} value={f.description} onChange={(e) => set("description", e.target.value)} className={input} /></label>
+          <label className="block font-semibold">Status
+            <select value={f.status} onChange={(e) => set("status", e.target.value)} className={input}>{meta.statuses.map((s) => <option key={s} value={s}>{meta.status_labels[s]}</option>)}</select>
+          </label>
+        </Section>
+
+        <Section title={kind.monthly ? "Monthly price" : "Price"} hint={kind.monthly ? "What subscribers pay each month, including postage." : null}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <label className="font-semibold">{kind.monthly ? "Per month ($)" : "Sale price ($)"}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} data-testid="hq-shop-price" /></label>
+            {f.fulfilment !== "digital" && <label className="font-semibold">Your cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>}
+            {kind.posted && <label className="font-semibold">Postage ($)<input inputMode="decimal" value={f.postage} onChange={(e) => set("postage", e.target.value)} className={input} /></label>}
+          </div>
+          {priceCents != null && <p className="text-xs text-stone-600">Square fee {money(fee)} · you keep {money(priceCents - fee - (toCents(f.wholesale) || 0))}{f.fulfilment !== "digital" && f.wholesale === "" ? " before your cost" : ""}</p>}
+        </Section>
+
         {!isNew && (
-          <fieldset className="text-sm border-t pt-3 space-y-2">
-            <legend className="font-display font-bold" style={{ color: GREEN }}>Photos and files</legend>
+          <Section title="Photos" hint="Up to 6. The first is the one shown in the shop.">
             <div className="flex flex-wrap gap-2">
               {Array.from({ length: images }, (_, i) => <div key={i} className="relative"><AdminImage id={product.id} n={i + 1} /><button type="button" onClick={() => removeImage(i + 1)} className="absolute -top-2 -right-2 rounded-full bg-white border px-1.5 text-xs text-rose-700" aria-label={`Remove photo ${i + 1}`}>✕</button></div>)}
+              {images < 6 && <label className="h-20 w-20 rounded-lg border-2 border-dashed border-stone-300 grid place-items-center text-xs text-stone-500 cursor-pointer text-center">+ Photo<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(e) => addImage(e.target.files?.[0])} className="hidden" /></label>}
             </div>
-            {images < 6 && <label className="block font-semibold">Add a photo (JPEG, PNG or WebP, up to 3 MB)<input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={(e) => addImage(e.target.files?.[0])} className="mt-1 block" /></label>}
-            {f.fulfilment === "digital" && <label className="block font-semibold">Download file (PDF or ZIP, up to 25 MB){product.has_file ? " · uploaded ✓" : ""}<input type="file" accept="application/pdf,application/zip" disabled={busy} onChange={(e) => uploadFile(e.target.files?.[0])} className="mt-1 block" /></label>}
-          </fieldset>
+          </Section>
         )}
+
+        {kind.file && !isNew && (
+          <Section title="The download" hint="The PDF or ZIP buyers get after paying (up to 25 MB).">
+            <p>{product.has_file ? "✓ A file is uploaded. Choose another to replace it." : "No file yet."}</p>
+            <input type="file" accept="application/pdf,application/zip" disabled={busy} onChange={(e) => uploadFile(e.target.files?.[0])} />
+          </Section>
+        )}
+
+        {(f.variants.length > 0 || product.prints_books) && (
+          <Section title={product.prints_books ? "Which books" : "Options"} hint="Leave an option's price blank to use the main price.">
+            {f.variants.map((v, i) => (
+              <div key={v.id || i} className="flex flex-wrap gap-2 items-center">
+                <input value={v.name} onChange={(e) => setVar(i, "name", e.target.value)} aria-label="Option name" className="rounded-xl border border-stone-300 px-2 py-1 flex-1 min-w-[140px]" />
+                <input value={v.price ?? ""} onChange={(e) => setVar(i, "price", e.target.value)} placeholder="$" aria-label="Option price" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />
+                {kind.stock && <input type="number" min={0} value={v.stock ?? ""} onChange={(e) => setVar(i, "stock", e.target.value)} placeholder="Stock" aria-label="Option stock" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />}
+                <label className="flex items-center gap-1"><input type="checkbox" checked={v.active !== false} onChange={(e) => setVar(i, "active", e.target.checked)} />On</label>
+                <button type="button" className="text-rose-700" aria-label="Remove option" onClick={() => set("variants", f.variants.filter((_, j) => j !== i))}>✕</button>
+              </div>
+            ))}
+            <div className="flex flex-wrap gap-2">
+              <Button tone="plain" onClick={() => set("variants", [...f.variants, { name: "", price: "", stock: "", active: true }])}>Add option</Button>
+              {product.prints_books && !isNew && <Button tone="plain" disabled={busy} onClick={addBooks}>Add every Quest Book</Button>}
+            </div>
+          </Section>
+        )}
+
+        {kind.stock && f.status === "in_stock" && f.variants.length === 0 && (
+          <Section title="Stock">
+            <div className="grid grid-cols-2 gap-3">
+              <label className="font-semibold">In stock<input type="number" min={0} value={f.stock ?? ""} onChange={(e) => set("stock", e.target.value)} className={input} /></label>
+              <label className="font-semibold">Email me when it gets to<input type="number" min={0} value={f.low_stock_at ?? ""} onChange={(e) => set("low_stock_at", e.target.value)} className={input} /></label>
+            </div>
+          </Section>
+        )}
+
+        {(kind.timing || f.status === "pre_order") && (
+          <Section title="Timing">
+            <div className="grid grid-cols-2 gap-3">
+              <label className="font-semibold">Dispatch estimate<input value={f.dispatch_estimate || ""} placeholder="e.g. Posted within 2 weeks" onChange={(e) => set("dispatch_estimate", e.target.value)} className={input} /></label>
+              <label className="font-semibold">Lead time (days)<input type="number" min={0} value={f.lead_time_days ?? ""} onChange={(e) => set("lead_time_days", e.target.value)} className={input} /></label>
+              {f.status === "pre_order" && <>
+                <label className="font-semibold">Pre-orders close<input type="date" value={f.preorder_closes_at} onChange={(e) => set("preorder_closes_at", e.target.value)} className={input} /></label>
+                <label className="font-semibold">Pre-order target<input type="number" min={0} value={f.preorder_target ?? ""} onChange={(e) => set("preorder_target", e.target.value)} className={input} /></label>
+              </>}
+            </div>
+          </Section>
+        )}
+
+        {kind.supplier && (
+          <Section title="Supplier (private)">
+            <label className="block font-semibold">Who makes or supplies it<input value={f.supplier || ""} onChange={(e) => set("supplier", e.target.value)} className={input} /></label>
+          </Section>
+        )}
+
+        {(kind.personal || f.personalisation.length > 0) && (
+          <Section title="Personalisation" hint="Things the customer types in, like a child's name.">
+            {f.personalisation.map((x, i) => (
+              <div key={i} className="flex flex-wrap gap-2 items-center">
+                <input value={x.label} onChange={(e) => setField(i, "label", e.target.value)} placeholder="e.g. Child's name" aria-label="Field label" className="rounded-xl border border-stone-300 px-2 py-1 flex-1" />
+                <input type="number" min={1} max={200} value={x.max} onChange={(e) => setField(i, "max", Number(e.target.value))} aria-label="Max characters" title="Max characters" className="rounded-xl border border-stone-300 px-2 py-1 w-16" />
+                <label className="flex items-center gap-1"><input type="checkbox" checked={!!x.required} onChange={(e) => setField(i, "required", e.target.checked)} />Required</label>
+                <button type="button" className="text-rose-700" aria-label="Remove field" onClick={() => set("personalisation", f.personalisation.filter((_, j) => j !== i))}>✕</button>
+              </div>
+            ))}
+            <Button tone="plain" onClick={() => set("personalisation", [...f.personalisation, { label: "", max: 30, required: true }])}>Add field</Button>
+          </Section>
+        )}
+
+        {kind.monthly && (
+          <Section title="Gift versions" hint="Sell it as a one-off prepaid gift as well as a monthly subscription.">
+            <div className="flex flex-wrap gap-3">{[1, 3, 6, 12].map((m) => <label key={m} className="flex items-center gap-1"><input type="checkbox" checked={f.gift_months.includes(m)} onChange={() => set("gift_months", f.gift_months.includes(m) ? f.gift_months.filter((x) => x !== m) : [...f.gift_months, m])} />{m} month{m > 1 ? "s" : ""}</label>)}</div>
+          </Section>
+        )}
+
+        <div className="border-t pt-3">
+          <button type="button" onClick={() => setMore((x) => !x)} className="text-sm font-semibold underline" style={{ color: GREEN }}>{more ? "Hide more settings" : "More settings"}</button>
+          {more && (
+            <div className="space-y-3 mt-3 text-sm">
+              {!isNew && <label className="block font-semibold">Title<input value={f.title} onChange={(e) => set("title", e.target.value)} className={input} /></label>}
+              <div className="grid sm:grid-cols-2 gap-3">
+                <label className="font-semibold">Department<select value={f.department} onChange={(e) => set("department", e.target.value)} className={input}>{meta.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}</select></label>
+                <label className="font-semibold">Collection<input value={f.collection} onChange={(e) => set("collection", e.target.value)} className={input} /></label>
+                <label className="font-semibold">Kind of product<select value={f.fulfilment} onChange={(e) => set("fulfilment", e.target.value)} className={input}>{Object.entries(meta.fulfilment_labels).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></label>
+                <label className="font-semibold">Max per order<input type="number" min={1} value={f.max_per_order ?? ""} onChange={(e) => set("max_per_order", e.target.value)} className={input} /></label>
+              </div>
+              <label className="block font-semibold">Tags (comma separated; "seasonal" puts it in the Seasonal filter)<input value={f.tags} onChange={(e) => set("tags", e.target.value)} className={input} /></label>
+              {f.variants.length === 0 && !product.prints_books && <Button tone="plain" onClick={() => set("variants", [{ name: "", price: "", stock: "", active: true }])}>Add options (sizes, colours…)</Button>}
+              {!kind.personal && f.personalisation.length === 0 && <Button tone="plain" className="ml-2" onClick={() => set("personalisation", [{ label: "", max: 30, required: true }])}>Add personalisation</Button>}
+              <label className="block font-semibold">Supplier notes (private)<textarea rows={2} value={f.supplier_notes || ""} onChange={(e) => set("supplier_notes", e.target.value)} className={input} /></label>
+              <label className="flex items-center gap-2 font-semibold"><input type="checkbox" checked={!!f.safety_checked} onChange={(e) => set("safety_checked", e.target.checked)} />Safety checked</label>
+              <PickList label="Bundle contains" ids={f.bundle_items} others={others} onPick={(id) => pick("bundle_items", id)} />
+              <PickList label="Suggested add-ons" ids={f.addons} others={others} onPick={(id) => pick("addons", id)} />
+              {!isNew && <Button tone="danger" disabled={busy} onClick={remove}>Delete this product</Button>}
+            </div>
+          )}
+        </div>
+
         {isNew && <p className="text-xs text-stone-500">Save first, then add photos.</p>}
         {err && <Alert>{err}</Alert>}
         <div className="flex flex-wrap gap-2 justify-end border-t pt-3">
-          {!isNew && <Button tone="danger" disabled={busy} onClick={remove}>Delete</Button>}
-          <Button disabled={busy} onClick={save} data-testid="hq-shop-save">{busy ? "Saving…" : "Save"}</Button>
+          {queue && <Button tone="plain" disabled={busy} onClick={() => queue.next()}>Skip</Button>}
+          <Button tone={queue ? "plain" : "primary"} disabled={busy} onClick={() => save(false)} data-testid="hq-shop-save">{busy ? "Saving…" : queue ? "Save & stop" : "Save"}</Button>
+          {queue && <Button disabled={busy} onClick={() => save(true)} data-testid="hq-shop-save-next">{busy ? "Saving…" : "Save & next"}</Button>}
         </div>
       </div>
     </div>

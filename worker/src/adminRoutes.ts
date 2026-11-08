@@ -95,7 +95,9 @@ export function createAdminRoutes() {
   // ----------------------------------------------------------- 3. rate limits
   admin.use("*", async (c, next) => {
     const write = isMutation(c.req.method);
-    const limit = await hitRateLimit(c.env.DB, `admin:${write ? "w" : "r"}:${c.get("user").id}`, write ? 30 : 300, 300);
+    // Shop editing (saving products and photos one after another) gets its own, larger allowance.
+    const shop = c.req.path.startsWith("/api/admin/shop/");
+    const limit = await hitRateLimit(c.env.DB, `admin:${write ? "w" : "r"}${shop ? ":shop" : ""}:${c.get("user").id}`, write ? (shop ? 150 : 30) : 300, 300);
     if (!limit.ok) {
       c.header("Retry-After", String(limit.retryAfter));
       return c.json({ detail: "Too many requests. Please slow down for a moment." }, 429);
