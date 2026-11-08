@@ -237,13 +237,13 @@ export default function LessonReview() {
     try {
       // The server commits the Book Plan link and review approval together.
       await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
-        { lesson_id: id, approved: true, expected_version: Number(lesson.version) });
+        { lesson_id: id, approved: true, complete_review: true, expected_version: Number(lesson.version) });
       const confirmed = await refreshBookPlan();
       const current = confirmed?.chapters?.find((ch) => ch.id === chapterId)?.draft;
       if (!current?.reviewed || !current?.saved_to_plan || current.lesson_id !== id ||
           Number(current.version) !== Number(lesson.version))
         throw new Error("The book did not confirm the saved version and approval.");
-      toast.success("Saved to Book Plan and approved for publication.");
+      toast.success("Confirmed: this saved lesson is Ready, Reviewed and linked to the Book Plan.");
       nav(nextBookEntry ? bookLessonUrl(nextBookEntry) : bookHome);
     } catch (e) { toast.error(apiErrorMessage(e, "Could not approve this book lesson")); }
     finally { setBusy(false); }
@@ -320,9 +320,12 @@ export default function LessonReview() {
 
       <div className="sticky top-0 z-20 -mx-1 px-1 py-2 bg-[#F5EFE0]/95 backdrop-blur flex flex-wrap gap-2" data-testid="review-actions">
         {bookId
-          ? (lesson.status === "ready" && lesson.quest_book_id === bookId && lesson.quest_chapter_id === chapterId
-              ? <button disabled={busy || !currentBookEntry} onClick={approveBook} className={`${btn} bg-emerald-700 text-white`} data-testid="r-book-approve"><CheckCircle2 size={16} /> {currentBookEntry?.draft?.reviewed ? "Already reviewed — next lesson" : "Approve for book & next"}</button>
-              : <button onClick={() => nav(`/parent/lessons/${id}/edit${bookQuery}`)} className={`${btn} bg-emerald-700 text-white`} data-testid="r-book-ready"><Pencil size={16} /> Edit and save as Ready</button>)
+          ? <button disabled={busy || !currentBookEntry || currentBookEntry?.draft?.stale || lesson.quest_book_id !== bookId || lesson.quest_chapter_id !== chapterId}
+              onClick={currentBookEntry?.draft?.reviewed ? () => nav(nextBookEntry ? bookLessonUrl(nextBookEntry) : bookHome) : approveBook}
+              className={`${btn} bg-emerald-700 text-white`} data-testid="r-book-approve">
+              <CheckCircle2 size={16} />
+              {currentBookEntry?.draft?.reviewed ? "Already reviewed — next lesson" : "I've checked this — mark Ready & Reviewed"}
+            </button>
           : slot
           ? <button disabled={busy} onClick={putInSlot} className={`${btn} bg-emerald-700 text-white`} data-testid="r-week-assign"><CalendarCheck size={16} /> Looks good — add to {slotLabel(slot.date, startOf(slot))} ({slot.learning_area})</button>
           : <button disabled={busy} onClick={approve} className={`${btn} bg-emerald-700 text-white`} data-testid="r-assign"><CheckCircle2 size={16} /> Looks Good — Assign</button>}
