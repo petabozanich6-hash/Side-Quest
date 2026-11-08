@@ -21,6 +21,35 @@ A book with no price is for members only. Books are digital downloads (PDF) the 
 Lessons a family is entitled to are copied into **My lessons** with one tap and stay assignable even after a free preview
 ends (`assignLesson` checks `isBookLessonGrant`). A book-only buyer upgrades to the bundle for the difference.
 
+## Rebuilding a pre-release book's lesson collection
+
+The book-space **Start fresh from this PDF** action now lets the owner repair an early or badly divided
+collection without deleting or re-uploading the book. The server checks the actual purchase tables AND lesson
+copies held by other families before allowing any reset; an owner's assumption that nobody has bought anything
+is not sufficient. If distributed, the server returns `QUEST_BOOK_ALREADY_DISTRIBUTED` and keeps the plan.
+Otherwise it backs up the former private plan/publication snapshot, clears those two objects, and archives
+the owner's AI-generated drafts. It deliberately leaves the PDF, cover, sample, look-inside images, pricing,
+manually authored lessons and assignments unchanged. Then the existing PDF is re-analysed automatically.
+Old AI drafts remain recoverable under Archived.
+
+**Remake all lessons** regenerates every chapter subsection sequentially, including ones with existing drafts.
+The owner may stop after the current lesson. A successfully remade lesson archives its superseded AI drafts;
+the earlier draft remains intact if the AI generation attempt fails.
+
+### Lesson planning is about skills, not PDF page counts
+
+A PDF page is a teaching SOURCE, never automatically a 45- or 60-minute lesson. Fine-grained per-page bookmarks
+are grouped into broader chapter ranges before AI planning. Within a chapter, AI is instructed to combine
+related explanations, examples and workbook exercises into one coherent skill, even if that skill spans many pages.
+The server also clamps spurious one-subsection-per-page proposals. Lesson count should follow distinct learning
+objectives, not page count or extracted-text size.
+
+The standard AI lesson maker accepts 8,000 characters of source per generation. When one skill spans more
+text than that, the system supplies **balanced, labelled excerpts from each page** rather than either truncating
+at the start or splitting that same skill into many artificial lessons. These excerpts are explicitly labelled
+as incomplete source: full quotations and readings should not be invented. Review literacy passages and answers
+in the final lesson before publishing.
+
 ## Workbook companion lessons (owner)
 
 When the owner opens **Lessons**, Side-Quest now builds a two-level plan automatically:
