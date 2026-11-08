@@ -396,6 +396,8 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   const info = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters;
   assert.equal(info[0].draft.stale, true);
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409);
+});
+
 test("Cart: the server prices it, a pack replaces the same book and its lessons, unsellable items drop out", async () => {
   const h = harness();
   const { id } = await bookWithLessons(h);
