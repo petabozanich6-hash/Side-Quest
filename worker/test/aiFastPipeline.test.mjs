@@ -266,3 +266,43 @@ test("split stages off: design and existing stage prompts are unchanged", async 
   assert.ok(!requests.some(r => r.includes("needs_reading")));
   assert.ok(requests.some(r => r.startsWith("STAGE 4, PRACTICE")));
 });
+
+test("malformed worked-example steps receive a bounded targeted repair rather than failing the whole lesson", async () => {
+  const baseline = stub();
+  const prompts = [];
+  const ai = async (messages, maxTokens) => {
+    const user = String(messages.at(-1)?.content || "");
+    if (user.startsWith("STAGE 3, WORKED EXAMPLE 2 OF")) {
+      prompts.push({ user, maxTokens });
+      if (prompts.length < 3) return { response: JSON.stringify({ title: "Compare", problem: "250 vs 350", answer: "350 is greater" }) };
+      return { response: JSON.stringify({ title: "Compare", problem: "250 vs 350",
+        steps: ["Count hundreds in both numbers", "Three hundreds exceed two hundreds"], answer: "350 is greater" }) };
+    }
+    return baseline(messages, maxTokens);
+  };
+  const result = await generateStaged(ai, spec(), stats(), [], false, false);
+  assert.ok(result, "a bounded third correction should salvage a malformed example");
+  assert.equal(prompts.length, 3, "targeted repair happens once after the two ordinary attempts");
+  assert.ok(prompts[1].user.includes("missing steps"));
+  assert.ok(prompts[2].user.includes('"steps"'));
+  assert.ok(prompts[1].maxTokens > prompts[0].maxTokens);
+  assert.equal(result.worked_examples[1].steps.length, 2);
+});
+
+test("repeated malformed worked examples fail safely without inventing teaching steps", async () => {
+  const baseline = stub();
+  let badAttempts = 0;
+  const ai = async (messages, maxTokens) => {
+    const user = String(messages.at(-1)?.content || "");
+    if (user.startsWith("STAGE 3, WORKED EXAMPLE 2 OF")) {
+      badAttempts++;
+      return { response: JSON.stringify({ problem: "250 vs 350", answer: "350 is greater" }) };
+    }
+    return baseline(messages, maxTokens);
+  };
+  const report = stats();
+  const result = await generateStaged(ai, spec(), report, [], false, false);
+  assert.equal(result, null);
+  assert.equal(badAttempts, 3);
+  assert.ok(report.failed.includes("missing steps"));
+});
