@@ -10,28 +10,35 @@ const CREATE = `CREATE TABLE IF NOT EXISTS quest_book_purchases (
   tier TEXT NOT NULL DEFAULT 'book')`;
 const INDEX = "CREATE UNIQUE INDEX IF NOT EXISTS idx_quest_book_purchases_family_book ON quest_book_purchases (family_id, book_id)";
 
-let ensured: Promise<void> | null = null;
-/** Migrations 0072/0074 create the table and tier column; this keeps purchases working if they haven't been applied. */
+// Once per database binding (the binding is reused for the life of a Worker isolate).
+const ensured = new WeakMap<object, Promise<void>>();
+/** Migration 0072 creates the table; this adds the tier column and keeps purchases working if it hasn't been applied. */
 export function ensurePurchaseTable(db: DB): Promise<void> {
-  if (!ensured) {
-    ensured = (async () => {
+  let p = ensured.get(db);
+  if (!p) {
+    p = (async () => {
       await db.prepare(CREATE).run();
       await db.prepare(INDEX).run();
       // Tables created before the "book + lessons" tier lack the column.
       await db.prepare("ALTER TABLE quest_book_purchases ADD COLUMN tier TEXT NOT NULL DEFAULT 'book'").run().catch(() => undefined);
-    })().catch((e) => { ensured = null; throw e; });
+    })().catch((e) => { ensured.delete(db); throw e; });
+    ensured.set(db, p);
   }
-  return ensured;
+  return p;
 }
 
 const CREATE_LESSONS = `CREATE TABLE IF NOT EXISTS quest_lesson_purchases (
   id TEXT PRIMARY KEY, family_id TEXT NOT NULL, book_id TEXT NOT NULL, lesson_key TEXT NOT NULL, stripe_session_id TEXT NOT NULL UNIQUE,
   amount_cents INTEGER NOT NULL, currency TEXT NOT NULL, livemode INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL,
   UNIQUE (family_id, book_id, lesson_key))`;
-let ensuredLessons: Promise<void> | null = null;
+const ensuredLessons = new WeakMap<object, Promise<void>>();
 function ensureLessonTable(db: DB) {
-  if (!ensuredLessons) ensuredLessons = db.prepare(CREATE_LESSONS).run().then(() => undefined).catch((e) => { ensuredLessons = null; throw e; });
-  return ensuredLessons;
+  let p = ensuredLessons.get(db);
+  if (!p) {
+    p = db.prepare(CREATE_LESSONS).run().then(() => undefined).catch((e) => { ensuredLessons.delete(db); throw e; });
+    ensuredLessons.set(db, p);
+  }
+  return p;
 }
 
 /** Lesson keys this family bought one at a time for a book. */

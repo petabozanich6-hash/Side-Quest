@@ -12,7 +12,7 @@ function harness() {
   const storage = new Map();
   const toBytes = async (v) => (v instanceof ArrayBuffer ? new Uint8Array(v) : typeof v === "string" ? new TextEncoder().encode(v) : new Uint8Array(await new Response(v).arrayBuffer()));
   const env = {
-    DB: db, JWT_SECRET: "quest-books-test-secret",
+    DB: db, JWT_SECRET: "quest-books-test-secret", STRIPE_SECRET_KEY: "sk_test_quest_books",
     BUCKET: {
       head: async (key) => (storage.has(key) ? { key, size: storage.get(key).length } : null),
       get: async (key, opts) => {

@@ -23,10 +23,14 @@ const LABEL: Record<string, string> = { owner: "Owner (normal)", member: "Family
 const CREATE = `CREATE TABLE IF NOT EXISTS owner_view_as (
   family_id TEXT PRIMARY KEY, mode TEXT NOT NULL, user_id TEXT NOT NULL, started_at TEXT NOT NULL, expires_at TEXT NOT NULL)`;
 
-let ensured: Promise<void> | null = null;
+const ensured = new WeakMap<object, Promise<void>>();
 function ensureTable(db: DB) {
-  if (!ensured) ensured = db.prepare(CREATE).run().then(() => undefined).catch((e) => { ensured = null; throw e; });
-  return ensured;
+  let p = ensured.get(db);
+  if (!p) {
+    p = db.prepare(CREATE).run().then(() => undefined).catch((e) => { ensured.delete(db); throw e; });
+    ensured.set(db, p);
+  }
+  return p;
 }
 
 // A short in-isolate cache keeps this to (at most) one cheap query every few seconds for everyone else.
