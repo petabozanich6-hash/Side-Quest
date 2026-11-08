@@ -1,9 +1,9 @@
 import type { App, Guards, Env } from "./types";
 import { isPlatformOwner } from "./access";
-import { listBooks, readChapters, chapterRevision, generateQuestCompanionLesson, subjectLabel, yearLabel } from "./questBooks";
+import { listBooks, readChapters, chapterRevision, companionLessonIssues, generateQuestCompanionLesson, repairQuestCompanionLessonPass, subjectLabel, yearLabel } from "./questBooks";
 
 type DB = D1Database;
-type Job = { id: string; owner_user_id: string; family_id: string; status: string; total: number };
+type Job = { id: string; owner_user_id: string; family_id: string; status: string; kind: "generate" | "repair"; total: number };
 type Item = { id: string; job_id: string; book_id: string; book_title: string; chapter_id: string;
   chapter_title: string; revision: string; status: string; attempts: number; lease_until: string | null };
 const MAX_ITEMS = 2000;
@@ -14,7 +14,7 @@ const LEASE_MS = 30 * 60_000;
 export async function ensureOvernightTables(db: DB) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_jobs (
     id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL, family_id TEXT NOT NULL,
-    status TEXT NOT NULL, total INTEGER NOT NULL, created_at TEXT NOT NULL,
+    status TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'generate', total INTEGER NOT NULL, created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL, finished_at TEXT, last_error TEXT
   )`).run();
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_items (
@@ -48,12 +48,38 @@ export async function overnightCandidates(env: Env, familyId: string) {
     const chapters = book.has_chapters ? await readChapters(env.BUCKET!, book.id) : [];
     const existing = await existingIds(env.DB, familyId, book.id);
     const missing = chapters.filter((ch) => !existing.has(ch.id));
+    const { results: rows } = await env.DB.prepare(`SELECT id,status,version,updated_at,data,
+      json_extract(data,'$.quest_chapter_id') AS chapter_id
+      FROM lessons WHERE family_id=? AND archived_at IS NULL AND json_valid(data)
+      AND json_extract(data,'$.quest_book_id')=?
+      AND COALESCE(json_extract(data,'$.source'),'')!='side_quest_book'
+      ORDER BY updated_at DESC`).bind(familyId,book.id).all<any>();
+    const latest = new Map<string,any>();
+    for (const row of rows || []) if(row.chapter_id && !latest.has(row.chapter_id))latest.set(row.chapter_id,row);
+    const repairItems: Array<{book_id:string;book_title:string;chapter_id:string;chapter_title:string;revision:string;lesson_id:string}> = [];
+    let cleared=0, blocked=0;
+    for(const chapter of chapters) {
+      const row=latest.get(chapter.id);
+      if(!row)continue;
+      const saved=JSON.parse(row.data||"{}"),rev=chapterRevision(chapter);
+      if(saved.quest_source_revision!==rev){blocked++;continue;}
+      const flags=Array.isArray(saved.ai_flags)?saved.ai_flags:[],gaps=companionLessonIssues(saved);
+      const manual=saved.book_repair_requested===true;
+      if(row.status==="draft" && saved.ai_generated===true && (flags.length||gaps.length||manual))
+        repairItems.push({book_id:book.id,book_title:book.title,chapter_id:chapter.id,
+          chapter_title:chapter.title,revision:rev,lesson_id:row.id});
+      else if(row.status==="draft" && saved.ai_generated===true &&
+        Array.isArray(saved.ai_flags) && !flags.length && !gaps.length && !manual)cleared++;
+      else if(row.status==="draft" && (manual||flags.length||gaps.length))blocked++;
+    }
     grouped.push({
-      id: book.id, title: book.title, year_subject: `${yearLabel(book.year)} · ${subjectLabel(book)}`,
-      has_chapters: chapters.length > 0, total: chapters.length,
-      generated: chapters.length - missing.length, missing: missing.length,
-      items: missing.map((ch) => ({ book_id: book.id, book_title: book.title, chapter_id: ch.id,
-        chapter_title: ch.title, revision: chapterRevision(ch) })),
+      id: book.id,title:book.title,year_subject:`${yearLabel(book.year)} · ${subjectLabel(book)}`,
+      has_chapters:chapters.length>0,total:chapters.length,
+      generated:chapters.length-missing.length,missing:missing.length,
+      repairable:repairItems.length,ai_cleared:cleared,blocked,
+      items:missing.map((ch)=>({book_id:book.id,book_title:book.title,chapter_id:ch.id,
+        chapter_title:ch.title,revision:chapterRevision(ch)})),
+      repair_items:repairItems,
     });
   }
   return grouped;
@@ -78,7 +104,7 @@ async function snapshot(db: DB, familyId: string, userId: string) {
     .bind(job.id).all<any>();
   const failures = await db.prepare(`SELECT book_title,chapter_title,last_error FROM quest_overnight_items
     WHERE job_id=? AND status='failed' ORDER BY position LIMIT 25`).bind(job.id).all<any>();
-  return { id: job.id, status: job.status, total: job.total, updated_at: job.updated_at,
+  return { id: job.id, status: job.status, kind: job.kind||"generate", total: job.total, updated_at: job.updated_at,
     finished_at: job.finished_at, last_error: job.last_error,
     counts: counts || {}, books: books.results || [], failures: failures.results || [] };
 }
@@ -96,11 +122,12 @@ export function registerQuestOvernight(app: App, g: Guards) {
     const [books,job]=await Promise.all([overnightCandidates(c.env,user.family_id),
       snapshot(c.env.DB,user.family_id,user.id)]);
     c.header("Cache-Control","no-store");
-    return c.json({ books: books.map(({items,...rest})=>rest),job,interval_minutes:5 });
+    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job,interval_minutes:5 });
   });
   app.post("/api/quest-books/admin/overnight/start",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user"),body:any=await c.req.json().catch(()=>({}));
     await ensureOvernightTables(c.env.DB);
+    const kind=body.mode==="repair"?"repair":"generate";
     const ids=Array.isArray(body.book_ids)?[...new Set(body.book_ids.map(String))]:[];
     if (!ids.length || ids.length>100 || ids.some((id)=>!/^[a-z0-9-]{1,64}$/.test(id)))
       return c.json({detail:"Select your uploaded books to generate."},400);
@@ -110,24 +137,25 @@ export function registerQuestOvernight(app: App, g: Guards) {
     if(chosen.length!==ids.length)return c.json({detail:"A selected book was not found."},400);
     if(chosen.some((b)=>!b.has_chapters))
       return c.json({detail:"Analyse the selected book's chapter plan first."},409);
-    const items=chosen.flatMap((b)=>b.items);
-    if(!items.length)return c.json({detail:"All selected lessons have already been generated."},409);
+    const items=chosen.flatMap((b)=>kind==="repair"?b.repair_items:b.items);
+    if(!items.length)return c.json({detail:kind==="repair"?
+      "No flagged draft lessons in these books.":"All selected lessons have already been generated."},409);
     if(items.length>MAX_ITEMS)return c.json({detail:"Too many lessons for one queue. Select fewer books."},400);
     const id=crypto.randomUUID(),time=new Date().toISOString();
     try {
       await c.env.DB.prepare(`INSERT INTO quest_overnight_jobs
-        (id,owner_user_id,family_id,status,total,created_at,updated_at)
-        VALUES (?,?,?,'building',?,?,?)`)
-        .bind(id,user.id,user.family_id,items.length,time,time).run();
+        (id,owner_user_id,family_id,status,kind,total,created_at,updated_at)
+        VALUES (?,?,?,'building',?,?,?,?)`)
+        .bind(id,user.id,user.family_id,kind,items.length,time,time).run();
     } catch { return c.json({detail:"A queue is already active. Open it instead."},409); }
     try {
       for(let i=0;i<items.length;i+=40) {
         await c.env.DB.batch(items.slice(i,i+40).map((ch,offset)=>
           c.env.DB.prepare(`INSERT INTO quest_overnight_items
-          (id,job_id,position,book_id,book_title,chapter_id,chapter_title,revision,status,updated_at)
-          VALUES (?,?,?,?,?,?,?,?,'pending',?)`)
+          (id,job_id,position,book_id,book_title,chapter_id,chapter_title,revision,lesson_id,status,updated_at)
+          VALUES (?,?,?,?,?,?,?,?,?,'pending',?)`)
           .bind(crypto.randomUUID(),id,i+offset,ch.book_id,ch.book_title,ch.chapter_id,
-            ch.chapter_title,ch.revision,time)));
+            ch.chapter_title,ch.revision,"lesson_id" in ch?ch.lesson_id:null,time)));
       }
       await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?
         WHERE id=? AND status='building'`).bind(time,id).run();
