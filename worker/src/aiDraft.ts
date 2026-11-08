@@ -1048,7 +1048,9 @@ export async function generateStaged(
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; request: AiRequest },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; request: AiRequest;
+    /** Set only by the owner's Quest Books "make a lesson from this chapter": tags the draft with its book and chapter. */
+    questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string } },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -1129,7 +1131,7 @@ export async function draftLessonWithAi(
     }
   } else {
     // Paid requests keep their existing rolling fair-use allowance.
-    await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, 'lesson_draft', 'pending', ?)").bind(usageId, familyId, userId, now.toISOString()).run();
+    await db.prepare("INSERT INTO ai_usage (id, family_id, user_id, kind, status, created_at) VALUES (?, ?, ?, ?, 'pending', ?)").bind(usageId, familyId, userId, 'lesson_draft', now.toISOString()).run();
   }
   const mark = (s: string) => db.prepare("UPDATE ai_usage SET status = ? WHERE id = ?").bind(s, usageId).run();
   const model = opts.model || DEFAULT_MODEL;
@@ -1215,7 +1217,7 @@ export async function draftLessonWithAi(
   }
   // Apply reviewable subject links after repair so no repaired draft loses them.
   (draft as any).additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
-  const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
+  const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags, questBook: opts.questBook });
   if (!created.ok) {
     await mark("failed");
     return created;

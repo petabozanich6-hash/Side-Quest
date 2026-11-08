@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, BookOpen, Check, Download, FileText, Gift, ImagePlus, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
+import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
 const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
@@ -27,8 +28,10 @@ function Shelf({ children }) {
   );
 }
 
-const EMPTY = { title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "" };
-const toForm = (b) => ({ id: b.id, title: b.title, subtitle: b.subtitle || "", year: b.year, subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: b.price_cents == null ? "" : (b.price_cents / 100).toFixed(2) });
+const EMPTY = { title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "", bundle: "", lesson: "" };
+const dollars = (c) => (c == null ? "" : (c / 100).toFixed(2));
+const toForm = (b) => ({ id: b.id, title: b.title, subtitle: b.subtitle || "", year: b.year, subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: dollars(b.price_cents), bundle: dollars(b.lessons_price_cents), lesson: dollars(b.lesson_price_cents) });
+const cents = (v) => { const t = String(v || "").replace(/[$\s]/g, ""); return t === "" ? null : Math.round(Number(t) * 100); };
 
 function BookForm({ data, initial, onSaved, onCancel }) {
   const [f, setF] = useState(initial || EMPTY);
@@ -36,12 +39,11 @@ function BookForm({ data, initial, onSaved, onCancel }) {
   const set = (k) => (e) => setF((x) => ({ ...x, [k]: e.target.value }));
   const save = async (e) => {
     e.preventDefault();
-    const priceText = String(f.price).replace(/[$\s]/g, "");
-    const price_cents = priceText === "" ? null : Math.round(Number(priceText) * 100);
-    if (price_cents !== null && (!Number.isFinite(price_cents) || price_cents < 100)) { toast.error("Enter a price of at least $1, or leave it empty for members only."); return; }
+    const price_cents = cents(f.price), lessons_price_cents = cents(f.bundle), lesson_price_cents = cents(f.lesson);
+    if ([price_cents, lessons_price_cents, lesson_price_cents].some((v) => v !== null && !Number.isFinite(v))) { toast.error("Prices must be numbers, like 3.99."); return; }
     setBusy(true);
     try {
-      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), title: f.title, subtitle: f.subtitle, year: Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents });
+      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), title: f.title, subtitle: f.subtitle, year: Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents, lessons_price_cents, lesson_price_cents });
       toast.success(r.data.created ? `Created “${r.data.book.title}”. Now upload its files.` : `Saved “${r.data.book.title}”`);
       await onSaved(r.data.book);
     } catch (err) { toast.error(apiErrorMessage(err, "Could not save the book")); }
@@ -59,7 +61,10 @@ function BookForm({ data, initial, onSaved, onCancel }) {
         <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}</select>
       </label>
       <label className="text-sm font-semibold text-emerald-950">Pages<input value={f.pages} onChange={set("pages")} inputMode="numeric" className={field} placeholder="optional" /></label>
-      <label className="text-sm font-semibold text-emerald-950">Price to buy without membership ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = members only" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Book price ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = members only" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Book + all lessons price ($)<input value={f.bundle} onChange={set("bundle")} inputMode="decimal" className={field} placeholder="e.g. 15.00 (optional)" /></label>
+      <label className="text-sm font-semibold text-emerald-950">Single lesson price ($)<input value={f.lesson} onChange={set("lesson")} inputMode="decimal" className={field} placeholder="e.g. 1.00 (optional)" /></label>
+      <p className="sm:col-span-2 text-xs text-stone-600">Prices are only for families without a membership. Members get the book and its lessons included. Lesson prices apply once you publish lessons to the book.</p>
       <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Description (what parents see)<textarea value={f.description} onChange={set("description")} rows={4} className={field} maxLength={2000} /></label>
       <div className="sm:col-span-2 flex gap-2">
         <button type="submit" disabled={busy} className="rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-60">{busy ? "Saving…" : f.id ? "Save changes" : "Create book"}</button>
@@ -80,6 +85,7 @@ function OwnerPanel({ data, reload }) {
   const [progress, setProgress] = useState(0);
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [lessonsFor, setLessonsFor] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   const upload = async (book, spec, file) => {
@@ -126,9 +132,10 @@ function OwnerPanel({ data, reload }) {
               <QuestBookCover book={b} size="sm" />
               <div className="flex-1 min-w-[180px]">
                 <p className="font-semibold text-slate-900">{b.title} {!b.has_book && <span className="ml-1 rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase">Draft: hidden from families</span>}</p>
-                <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `${money(b.price_cents)} to buy`}</p>
+                <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `Book ${money(b.price_cents)}`}{b.lessons_price_cents != null ? ` · Bundle ${money(b.lessons_price_cents)}` : ""}{b.lesson_price_cents != null ? ` · Lesson ${money(b.lesson_price_cents)}` : ""}{b.has_lessons ? " · Lessons published" : ""}</p>
                 <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_sample ? `Sample ${mb(b.sample_bytes)} ✓` : "No sample"} · {b.has_cover ? "Cover ✓" : "No cover"}</p>
               </div>
+              <button type="button" disabled={!!busy} onClick={() => setLessonsFor(lessonsFor === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-violet-300 px-3 py-2 text-sm font-semibold text-violet-900 hover:bg-violet-50"><BookOpenCheck size={15} /> Lessons</button>
               <button type="button" disabled={!!busy} onClick={() => setEditing(editing === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-emerald-400 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50"><Pencil size={15} /> Details</button>
               <button type="button" disabled={!!busy} onClick={() => setDeleteTarget(b)} className="inline-flex gap-1 items-center rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 disabled:opacity-50"><Trash2 size={15} /> Remove</button>
             </div>
@@ -146,6 +153,7 @@ function OwnerPanel({ data, reload }) {
                 );
               })}
             </div>
+            {lessonsFor === b.id && <QuestBookLessonsAdmin book={b} onChanged={reload} />}
             {editing === b.id && <BookForm data={data} initial={toForm(b)} onCancel={() => setEditing(null)} onSaved={async () => { setEditing(null); await reload(); }} />}
           </div>
         ))}
@@ -268,7 +276,9 @@ function BookView({ id }) {
     const tick = async () => {
       const d = await load();
       if (!live) return;
-      if (d?.book?.can_download) { setConfirming(false); setParams({}, { replace: true }); toast.success("Payment received. This book is yours to download!"); return; }
+      const tier = params.get("tier"), key = params.get("key");
+      const done = tier === "plus" ? d?.book?.owned_tier === "plus" : tier === "lesson" ? d?.lessons?.some((l) => l.key === key && l.unlocked) : d?.book?.can_download;
+      if (done) { setConfirming(false); setParams({}, { replace: true }); toast.success("Payment received. It's yours!"); return; }
       if (++tries < 15) setTimeout(tick, 2000);
       else { setConfirming(false); toast("Your payment is still being confirmed. Refresh this page in a minute.", { duration: 9000 }); }
     };
@@ -277,10 +287,21 @@ function BookView({ id }) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const book = data?.book;
-  const buy = async () => {
+  const lessons = data?.lessons || [];
+  const [adding, setAdding] = useState("");
+  const addLessons = async (key) => {
+    setAdding(key || "all");
+    try {
+      const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/lessons/add`, key ? { key } : {}, { timeout: 120000 });
+      toast.success(r.data.added ? `Added ${r.data.added} lesson${r.data.added === 1 ? "" : "s"} to My lessons` : "Those lessons are already in My lessons");
+      await load();
+    } catch (e) { toast.error(apiErrorMessage(e, "Could not add the lessons")); }
+    finally { setAdding(""); }
+  };
+  const buy = async (tier = "book", lessonKey) => {
     setBusy(true);
     try {
-      const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/checkout`, {});
+      const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/checkout`, { tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
       if (!r.data?.url) throw new Error("Checkout did not open.");
       window.location.assign(r.data.url);
     } catch (e) {
@@ -317,7 +338,7 @@ function BookView({ id }) {
               ) : (
                 <>
                   {book.can_buy && (
-                    <button type="button" onClick={buy} disabled={busy || confirming} data-testid="quest-book-buy"
+                    <button type="button" onClick={() => buy("book")} disabled={busy || confirming} data-testid="quest-book-buy"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
                       <ShoppingBag size={18} /> {busy ? "Opening checkout…" : `Buy this book · ${money(book.price_cents)}`}
                     </button>
@@ -334,9 +355,45 @@ function BookView({ id }) {
                 </a>
               )}
             </div>
-            {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book. Download it again any time.</p>}
+            {book.can_buy_plus && (
+              <button type="button" onClick={() => buy("plus")} disabled={busy || confirming} data-testid="quest-book-buy-plus"
+                className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold hover:bg-violet-100 disabled:opacity-60">
+                <BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons · ${money(book.plus_price_cents)}` : `Book + all ${lessons.length} lessons · ${money(book.plus_price_cents)}`}
+              </button>
+            )}
+            {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book{book.owned_tier === "plus" ? " and its lessons" : ""}. Download it again any time.</p>}
             {book.can_download && <p className="text-xs text-stone-600">Print it at home or open it on a tablet. For a family's own use only, please don't share the file.</p>}
           </div>
+        </section>
+      )}
+      {book && lessons.length > 0 && (
+        <section className="space-y-3" data-testid="quest-book-lessons">
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="mr-auto"><h2 className="font-display text-2xl font-bold text-slate-900">Ready-made lessons</h2>
+              <p className="text-sm text-stone-600">One lesson for each chapter, ready to assign. Children complete them on screen and you review their work as usual.</p></div>
+            {lessons.some((l) => l.unlocked && !l.lesson_id) && (
+              <button type="button" onClick={() => addLessons()} disabled={!!adding} data-testid="quest-book-add-lessons"
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60">
+                <Plus size={16} /> {adding === "all" ? "Adding…" : `Add ${lessons.filter((l) => l.unlocked && !l.lesson_id).length} lessons to My lessons`}
+              </button>
+            )}
+          </div>
+          <ol className="rounded-2xl border border-stone-200 bg-white divide-y divide-stone-100 overflow-hidden">
+            {lessons.map((l) => (
+              <li key={l.key} className="px-5 py-3 flex items-center gap-4">
+                <span className="h-8 w-8 shrink-0 rounded-full bg-amber-100 text-amber-900 font-bold text-sm grid place-items-center">{l.position}</span>
+                <div className="flex-1 min-w-0"><p className="font-semibold text-slate-900">{l.title}</p><p className="text-xs text-stone-500">Chapter: {l.chapter_title}</p></div>
+                {l.lesson_id ? (
+                  <Link to={`/parent/lessons/${l.lesson_id}`} className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-900 px-3 py-1.5 text-xs font-bold"><Check size={14} /> Open & assign</Link>
+                ) : l.unlocked ? (
+                  <button type="button" onClick={() => addLessons(l.key)} disabled={!!adding} className="shrink-0 rounded-lg border border-emerald-700 px-3 py-1.5 text-xs font-bold text-emerald-900">{adding === l.key ? "Adding…" : "Add"}</button>
+                ) : book.can_buy_lesson ? (
+                  <button type="button" onClick={() => buy("lesson", l.key)} disabled={busy || confirming} className="shrink-0 inline-flex items-center gap-1 rounded-lg border border-violet-400 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50"><ShoppingBag size={13} /> Buy · {money(book.lesson_price_cents)}</button>
+                ) : <Lock size={15} className="shrink-0 text-stone-400" aria-label="Included with Family Membership" />}
+              </li>
+            ))}
+          </ol>
+          {!data.member && <p className="text-xs text-stone-600">Lessons you buy stay yours to assign, even without a membership. Family Membership includes every book and lesson.</p>}
         </section>
       )}
     </div>

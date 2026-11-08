@@ -12,7 +12,7 @@ function harness() {
   const storage = new Map();
   const toBytes = async (v) => (v instanceof ArrayBuffer ? new Uint8Array(v) : typeof v === "string" ? new TextEncoder().encode(v) : new Uint8Array(await new Response(v).arrayBuffer()));
   const env = {
-    DB: db, JWT_SECRET: "quest-books-test-secret",
+    DB: db, JWT_SECRET: "quest-books-test-secret", STRIPE_SECRET_KEY: "sk_test_quest_books",
     BUCKET: {
       head: async (key) => (storage.has(key) ? { key, size: storage.get(key).length } : null),
       get: async (key, opts) => {
@@ -46,7 +46,13 @@ function harness() {
   function makeOwner(p) {
     db.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','test','test')").run(crypto.randomUUID(), p.userId);
   }
-  return { req, db, parent, makeOwner, storage };
+  async function child(p) {
+    const n = ++seq;
+    const r = await req("/students", p.token, "POST", { name: "Child " + n, username: "qbkid" + n, pin: "1234", stage: "S2" });
+    assert.equal(r.status, 200);
+    return (await r.json()).id;
+  }
+  return { req, db, parent, child, makeOwner, storage };
 }
 
 const pdf = (text) => new TextEncoder().encode("%PDF-1.7\n" + text);
@@ -69,6 +75,9 @@ test("Book details validate and get an id from the title", () => {
   assert.equal(validateMeta({ ...details, year: 11 }).ok, false);
   assert.equal(validateMeta({ ...details, price_cents: 50 }).ok, false);
   assert.equal(validateMeta({ ...details, title: "" }).ok, false);
+  assert.equal(validateMeta({ ...details, price_cents: 399, lessons_price_cents: 1500, lesson_price_cents: 100 }).ok, true);
+  assert.equal(validateMeta({ ...details, price_cents: 399, lessons_price_cents: 420 }).ok, false, "bundle must be at least 50c more");
+  assert.equal(validateMeta({ ...details, lessons_price_cents: 1500 }).ok, false, "bundle needs a book price");
 });
 
 test("Only the owner manages books; drafts without a PDF are hidden from families", async () => {
@@ -131,4 +140,85 @@ test("A bought book can be downloaded for good, even after the preview ends", as
   const book = (await (await h.req(`/quest-books/books/${id}`, fam.token)).json()).book;
   assert.deepEqual([book.owned, book.can_download, book.can_buy], [true, true, false]);
   assert.equal((await h.req(`/quest-books/books/${id}/download`, fam.token)).status, 200);
+});
+
+
+const lessonBody = (title) => ({
+  title, status: "ready",
+  objectives: ["count to 10"],
+  sections: [{ heading: "Counting", body: "Count each object once, touching it as you say the number." }],
+  quiz: [{ question: "How many?", options: ["3", "4"], correct_index: 0, explanation: "Count them." }],
+});
+const chapterText = "Numbers to 10. Look, count, recognise and show. Count the dragon eggs one at a time and say each number.";
+
+async function bookWithLessons(h) {
+  const { owner, id } = await publishedBook(h, { price_cents: 399, lessons_price_cents: 1500, lesson_price_cents: 100 });
+  const ch = await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", { chapters: [
+    { title: "Numbers to 10", start: 7, end: 15, text: chapterText }, { title: "Numbers to 20", start: 16, end: 24, text: chapterText + " Twenty." }] });
+  assert.equal(ch.status, 200);
+  const l1 = (await (await h.req("/lessons", owner.token, "POST", lessonBody("Counting to 10"))).json()).id;
+  const l2 = (await (await h.req("/lessons", owner.token, "POST", lessonBody("Counting to 20"))).json()).id;
+  const pub = await h.req(`/quest-books/admin/books/${id}/lessons/publish`, owner.token, "POST", { items: [{ chapter_id: "c1", lesson_id: l1 }, { chapter_id: "c2", lesson_id: l2 }] });
+  assert.equal(pub.status, 200);
+  assert.equal((await pub.json()).published, 2);
+  return { owner, id };
+}
+
+test("Only the owner manages chapters and publishes lessons", async () => {
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const member = await h.parent("ACTIVE_MONTHLY");
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/chapters`, member.token)).status, 403);
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/lessons/publish`, member.token, "POST", { items: [] })).status, 403);
+  const bad = await h.req(`/quest-books/admin/books/${id}/chapters`, (await (async () => { const o = await h.parent("FREE_PREVIEW"); h.makeOwner(o); return o; })()).token, "PUT", { chapters: [{ title: "Empty", start: 1, end: 1, text: "" }] });
+  assert.equal(bad.status, 400, "chapters need readable text");
+});
+
+test("Members add every chapter lesson once; free and book-only families can't", async () => {
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const member = await h.parent("ACTIVE_ANNUAL");
+  const detail = await (await h.req(`/quest-books/books/${id}`, member.token)).json();
+  assert.equal(detail.lessons.length, 2);
+  assert.ok(detail.lessons.every((l) => l.unlocked && !l.lesson_id));
+  assert.equal(detail.book.can_add_lessons, true);
+  const first = await (await h.req(`/quest-books/books/${id}/lessons/add`, member.token, "POST", {})).json();
+  assert.equal(first.added, 2);
+  assert.equal((await (await h.req(`/quest-books/books/${id}/lessons/add`, member.token, "POST", {})).json()).added, 0);
+  const rows = h.db.raw.prepare("SELECT title, status, data FROM lessons WHERE family_id=?").all(member.id);
+  assert.equal(rows.length, 2);
+  assert.ok(rows.every((r) => r.status === "ready" && JSON.parse(r.data).source === "side_quest_book"));
+  const free = await h.parent("FREE_PREVIEW");
+  const freeDetail = await (await h.req(`/quest-books/books/${id}`, free.token)).json();
+  assert.ok(freeDetail.lessons.every((l) => !l.unlocked));
+  assert.equal(freeDetail.book.plus_price_cents, 1500);
+  assert.equal((await h.req(`/quest-books/books/${id}/lessons/add`, free.token, "POST", {})).status, 402);
+});
+
+test("Bundle, upgrade and single-lesson purchases unlock the right lessons, which stay assignable after the preview", async () => {
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const fam = await h.parent("FREE_PREVIEW");
+  const kid = await h.child(fam);
+  const paid = (sid, tier, extra = {}) => ({ object: "checkout.session", id: sid, mode: "payment", payment_status: "paid", amount_total: 100, currency: "aud", metadata: { kind: "quest_book", family_id: fam.id, book_id: id, tier, ...extra } });
+  // One lesson on its own.
+  await recordQuestBookPurchase(h.db, paid("cs_l1", "lesson", { lesson_key: "c2" }), false);
+  let d = await (await h.req(`/quest-books/books/${id}`, fam.token)).json();
+  assert.deepEqual(d.lessons.map((l) => l.unlocked), [false, true]);
+  assert.equal(d.book.can_download, false, "a single lesson doesn't include the book");
+  const one = await (await h.req(`/quest-books/books/${id}/lessons/add`, fam.token, "POST", {})).json();
+  assert.equal(one.added, 1);
+  // Book only, then upgrade to the bundle for the difference.
+  await recordQuestBookPurchase(h.db, paid("cs_b", "book"), false);
+  d = await (await h.req(`/quest-books/books/${id}`, fam.token)).json();
+  assert.deepEqual([d.book.can_download, d.book.can_add_lessons, d.book.plus_price_cents], [true, false, 1101]);
+  await recordQuestBookPurchase(h.db, paid("cs_p", "plus"), false);
+  await recordQuestBookPurchase(h.db, paid("cs_p", "plus"), false); // replay
+  d = await (await h.req(`/quest-books/books/${id}`, fam.token)).json();
+  assert.deepEqual([d.book.owned_tier, d.book.can_add_lessons, d.book.can_buy_plus], ["plus", true, false]);
+  assert.equal((await (await h.req(`/quest-books/books/${id}/lessons/add`, fam.token, "POST", {})).json()).added, 1);
+  h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(fam.id);
+  const ids = h.db.raw.prepare("SELECT id FROM lessons WHERE family_id=?").all(fam.id).map((r) => r.id);
+  assert.equal(ids.length, 2);
+  for (const lessonId of ids) assert.equal((await h.req("/assignments", fam.token, "POST", { student_id: kid, lesson_id: lessonId })).status, 200);
 });
