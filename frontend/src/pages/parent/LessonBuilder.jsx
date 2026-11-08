@@ -567,7 +567,7 @@ export default function LessonBuilder() {
       )}
 
       <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap items-center gap-2 justify-end">
-        <span className="mr-auto text-xs text-slate-500" data-testid="save-state">{dirty ? "Unsaved changes" : autosaved ? `Draft autosaved at ${autosaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</span>
+        <span className="mr-auto text-xs text-slate-500" data-testid="save-state">{dirty ? "Unsaved changes" : autosaved ? `${f.status === "ready" ? "Saved" : "Draft saved"} at ${autosaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</span>
         {lessonId && <button disabled={busy} onClick={async () => { const r = await save(f.status === "ready" ? "ready" : "draft"); if (r) nav(`/parent/lessons/${r.id}/review${reviewQuery}`); }} className="rounded-full border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-review-ai">Review and ask AI to change something</button>}
         <button disabled={busy} onClick={() => save("draft")} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-draft"><Save size={14} /> Save draft</button>
         <button disabled={busy} onClick={() => save("ready")} className="rounded-full border border-slate-900 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-library">Save to library</button>
