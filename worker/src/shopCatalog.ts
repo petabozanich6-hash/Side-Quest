@@ -46,6 +46,7 @@ const SCHEMA = [
     title TEXT NOT NULL, description TEXT NOT NULL DEFAULT '', tags TEXT NOT NULL DEFAULT '[]',
     status TEXT NOT NULL DEFAULT 'draft', fulfilment TEXT NOT NULL DEFAULT 'physical', visible INTEGER NOT NULL DEFAULT 0,
     price_cents INTEGER, wholesale_cents INTEGER, postage_cents INTEGER, supplier TEXT NOT NULL DEFAULT '', supplier_notes TEXT NOT NULL DEFAULT '',
+    parcel_weight_g INTEGER, parcel_length_cm INTEGER, parcel_width_cm INTEGER, parcel_height_cm INTEGER,
     lead_time_days INTEGER, stock INTEGER, low_stock_at INTEGER, max_per_order INTEGER,
     preorder_closes_at TEXT, preorder_target INTEGER, dispatch_estimate TEXT NOT NULL DEFAULT '',
     personalisation TEXT NOT NULL DEFAULT '[]', images INTEGER NOT NULL DEFAULT 0, bundle_items TEXT NOT NULL DEFAULT '[]',
@@ -65,6 +66,10 @@ export function ensureShopCatalog(db: DB): Promise<void> {
   if (!p) {
     const made: Promise<void> = (async () => {
       for (const q of SCHEMA) await db.prepare(q).run();
+      // Additive migration: preserve every saved shop product and existing order.
+      for (const name of ["parcel_weight_g", "parcel_length_cm", "parcel_width_cm", "parcel_height_cm"]) {
+        await db.prepare(`ALTER TABLE shop_products ADD COLUMN ${name} INTEGER`).run().catch(() => undefined);
+      }
       await seedCatalog(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
@@ -211,7 +216,7 @@ export function validateProduct(b: any): { ok: true; value: Record<string, unkno
   }
   if (money.price_cents !== null && money.price_cents < 50 && money.price_cents !== 0) return { ok: false, detail: "Prices under 50c can't be charged by card." };
   const ints: Record<string, number | null> = {};
-  for (const [k, max] of [["lead_time_days", 365], ["stock", 100000], ["low_stock_at", 100000], ["max_per_order", 1000], ["preorder_target", 100000]] as const) {
+  for (const [k, max] of [["lead_time_days", 365], ["stock", 100000], ["low_stock_at", 100000], ["max_per_order", 1000], ["preorder_target", 100000], ["parcel_weight_g", 22000], ["parcel_length_cm", 105], ["parcel_width_cm", 105], ["parcel_height_cm", 105]] as const) {
     const v = intOrNull(b[k], max);
     if (v === "bad") return { ok: false, detail: `${k.replace(/_/g, " ")} must be a whole number.` };
     ints[k] = v;

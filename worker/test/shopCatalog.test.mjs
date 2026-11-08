@@ -90,7 +90,7 @@ test("owner edits are validated; readiness and profit come from the owner's own 
   assert.equal(v.ok, true);
   assert.equal(v.variants[0].name, "Dad");
   const p = { status: "in_stock", visible: 1, price_cents: 2500, wholesale_cents: 900, postage_cents: 800, images: 0, description: "x", fulfilment: "physical", supplier: "", stock: 3 };
-  assert.deepEqual(readiness(p, []), ["photo", "supplier"]);
+  assert.deepEqual(readiness(p, []), ["photo", "packed weight & dimensions", "supplier"]);
   assert.deepEqual(profitFor(p), { fee_cents: 55, profit_cents: 1545, postage_cents: 800, cost_known: true });
   assert.equal(buyable({ ...p, stock: 0 }, []).ok, false);
   assert.equal(publicProduct({ ...p, tags: [], personalisation: [], bundle_items: [], addons: [], gift_months: [] }).can_buy, true);

@@ -49,14 +49,14 @@ function Dashboard() {
         <Stat label="Drafts" value={s.draft} note={`${s.coming_soon} coming soon · ${s.register_interest} register interest`} />
         <Stat label="Interest sign-ups" value={data.interest.signups} note={`${data.interest.people} people`} />
         <Stat label="Pre-orders" value={s.pre_order} note={`${data.preorders.filter((p) => p.reached).length} reached target`} />
-        <Stat label="Orders to post" value={toFulfil} />
+        <Stat label="Orders to post" value={toFulfil} note={data.orders.address_review?.count ? `${data.orders.address_review.count} need address review` : undefined} />
         <Stat label="Ready to launch" value={data.ready_to_launch.length} note="Complete but switched off" />
         <Stat label="Subscriptions" value={(data.subscriptions.active || 0) + (data.subscriptions.past_due || 0)} note={data.subscriptions.past_due ? `${data.subscriptions.past_due} need attention` : "active"} />
       </div>
       {data.low_stock.length > 0 && <Card title="Low stock"><ul className="text-sm space-y-1">{data.low_stock.map((x, i) => <li key={i}>{x.title}: <strong>{x.stock}</strong> left</li>)}</ul></Card>}
       <Card title="Ready to launch">
         {data.ready_to_launch.length ? <ul className="text-sm space-y-1">{data.ready_to_launch.map((p) => <li key={p.id}>{p.title} <span className="text-stone-500">· {data.status_labels[p.status]}</span></li>)}</ul>
-          : <p className="text-sm text-stone-600">Nothing yet. A product is ready once it has a price, photo, description, postage, supplier, unit cost and a status that isn't Draft.</p>}
+          : <p className="text-sm text-stone-600">Nothing yet. Physical products need a price, photo, description, supplier, unit cost, packed parcel measurements and a status that isn't Draft.</p>}
       </Card>
       {data.nearly_ready.length > 0 && <Card title="Nearly ready"><ul className="text-sm space-y-1">{data.nearly_ready.map((p) => <li key={p.id}>{p.title} <span className="text-stone-500">· needs {p.missing.join(", ")}</span></li>)}</ul></Card>}
       {data.preorders.length > 0 && <Card title="Pre-orders"><ul className="text-sm space-y-1">{data.preorders.map((p) => <li key={p.id}>{p.title}: {p.sold}{p.target ? ` / ${p.target}` : ""} {p.reached && <strong className="text-emerald-800">· target reached</strong>}{p.closes_at && <span className="text-stone-500"> · closes {fmtDate(p.closes_at)}</span>}</li>)}</ul></Card>}
@@ -279,10 +279,23 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <label className="font-semibold">{kind.monthly ? "Per month ($)" : "Sale price ($)"}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} data-testid="hq-shop-price" /></label>
             {f.fulfilment !== "digital" && <label className="font-semibold">Your cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>}
-            {kind.posted && <label className="font-semibold">Postage ($)<input inputMode="decimal" value={f.postage} onChange={(e) => set("postage", e.target.value)} className={input} /></label>}
+            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">Postage is calculated at checkout using Australia Post Parcel Post, not entered here.</div>}}
           </div>
           {priceCents != null && <p className="text-xs text-stone-600">Square fee {money(fee)} · you keep {money(priceCents - fee - (toCents(f.wholesale) || 0))}{f.fulfilment !== "digital" && f.wholesale === "" ? " before your cost" : ""}</p>}
         </Section>
+
+        {kind.posted && (
+          <Section title="Postage measurements" hint="One finished product, including its protective packaging. Enter actual packed dimensions before selling. Standard Parcel Post only, dispatched from postcode 2340. Leave blank while sourcing supplies.">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[["parcel_weight_g", "Packed weight (g)"], ["parcel_length_cm", "Length (cm)"], ["parcel_width_cm", "Width (cm)"], ["parcel_height_cm", "Height (cm)"]].map(([key, label]) => (
+                <label key={key} className="font-semibold">{label}
+                  <input type="number" min="1" step="1" value={f[key] ?? ""} onChange={(e) => set(key, e.target.value)} className={input} />
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-stone-600">For combined orders, Side-Quest estimates a single parcel by stacking products. Large orders requiring more than one parcel need a manual quote. Packaging and preparation time are separate from delivery.</p>
+          </Section>
+        )}
 
         {!isNew && (
           <Section title="Photos" hint="Up to 6. The first is the one shown in the shop.">
@@ -415,9 +428,9 @@ function PickList({ label, ids, others, onPick }) {
   );
 }
 
-const ORDER_LABELS = { to_fulfil: "To post", packing: "Packing", shipped: "Posted", complete: "Complete", cancelled: "Cancelled" };
+const ORDER_LABELS = { address_review: "Check shipping address", to_fulfil: "To post", packing: "Packing", shipped: "Posted", complete: "Complete", cancelled: "Cancelled" };
 function Orders() {
-  const [status, setStatus] = useState("to_fulfil");
+  const [status, setStatus] = useState("");
   const { data, error, loading, reload } = useAdmin("/shop/orders", status ? { status } : undefined);
   const [tracking, setTracking] = useState({});
   const update = async (o, next) => {
@@ -431,12 +444,15 @@ function Orders() {
         <Card key={o.id}>
           <div className="flex flex-wrap gap-2 text-sm"><strong className="mr-auto">{o.email}</strong><span>{fmtDate(o.paid_at)}</span><span className="font-semibold">{money(o.total_cents)}</span><span className="rounded-full bg-stone-100 px-2">{ORDER_LABELS[o.status] || o.status}</span></div>
           <ul className="text-sm mt-2 list-disc pl-5">{o.lines.map((l, i) => <li key={i}>{l.qty > 1 ? `${l.qty} × ` : ""}{l.title}{l.book_id ? " (PDF)" : ""}{Object.entries(l.personalisation || {}).length ? <span className="text-stone-600"> · {Object.entries(l.personalisation).map(([k, v]) => `${k}: ${v}`).join("; ")}</span> : null}</li>)}</ul>
+          {o.quoted_postcode && <p className="text-xs text-stone-600 mt-2">Quoted for {o.shipping_service || "Parcel Post"} to postcode {o.quoted_postcode}.</p>}
+          {o.status === "address_review" && <p className="text-sm mt-2 p-2 border rounded-lg text-rose-800 border-rose-300 bg-rose-50">The address entered at Square does not match the postage postcode quoted before payment (or is missing). Verify the address and any extra postage before fulfilling this order.</p>}
           {o.shipping && <p className="text-sm mt-2 whitespace-pre-line text-stone-700">{[o.shipping.name, [o.shipping.first_name, o.shipping.last_name].filter(Boolean).join(" "), o.shipping.address_line_1, o.shipping.address_line_2, [o.shipping.locality, o.shipping.administrative_district_level_1, o.shipping.postal_code].filter(Boolean).join(" ")].filter(Boolean).join("\n")}</p>}
           {o.lines.some((l) => l.physical) && o.status !== "cancelled" && (
             <div className="flex flex-wrap gap-2 mt-3 items-center">
               <input value={tracking[o.id] ?? o.tracking ?? ""} onChange={(e) => setTracking({ ...tracking, [o.id]: e.target.value })} placeholder="Tracking number" aria-label="Tracking number" className="rounded-xl border border-stone-300 px-2 py-1 text-sm" />
+              {o.status === "address_review" && <Button tone="plain" onClick={() => update(o, "to_fulfil")}>Address checked, release for packing</Button>}
               {o.status === "to_fulfil" && <Button tone="plain" onClick={() => update(o, "packing")}>Mark packing</Button>}
-              {o.status !== "shipped" && o.status !== "complete" && <Button onClick={() => update(o, "shipped")}>Mark posted &amp; email customer</Button>}
+              {o.status !== "address_review" && o.status !== "shipped" && o.status !== "complete" && <Button onClick={() => update(o, "shipped")}>Mark posted &amp; email customer</Button>}
               {o.status === "shipped" && <Button tone="plain" onClick={() => update(o, "complete")}>Mark complete</Button>}
             </div>
           )}

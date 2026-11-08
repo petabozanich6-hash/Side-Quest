@@ -17,6 +17,7 @@ import { appOrigin } from "./billing";
 import { sendEmail } from "./email";
 import type { App, Env } from "./types";
 import { listBooks } from "./questBooks";
+import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -133,7 +134,7 @@ export function readiness(p: any, variants: any[]): string[] {
   if (!priced) missing.push("price");
   if (!p.images) missing.push("photo");
   if (!p.description) missing.push("description");
-  if (p.fulfilment !== "digital" && !SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && p.postage_cents == null) missing.push("postage");
+  if (p.fulfilment !== "digital" && !SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && ![p.parcel_weight_g, p.parcel_length_cm, p.parcel_width_cm, p.parcel_height_cm].every((n) => Number.isInteger(Number(n)) && Number(n) > 0)) missing.push("packed weight & dimensions");
   if (p.fulfilment !== "digital" && !p.supplier) missing.push("supplier");
   if (p.fulfilment !== "digital" && p.wholesale_cents == null) missing.push("unit cost");
   if (p.fulfilment === "digital" && !p.has_file) missing.push("download file");
@@ -162,6 +163,25 @@ export function registerShopCatalog(app: App) {
     c.header("Cache-Control", "public, max-age=300");
     c.header("X-Content-Type-Options", "nosniff");
     return c.body(obj.body);
+  });
+
+  // Return server-priced domestic Standard Parcel Post rate; never expose the PAC key or trust client weights.
+  app.post("/api/shop/postage/quote", async (c) => {
+    if (!(await shopIsOpen(c.env.DB))) return closed(c);
+    const limit = await hitRateLimit(c.env.DB, `shop-postage:${c.req.header("CF-Connecting-IP") || "?"}`, 60, 3600);
+    if (!limit.ok) return c.json({ detail: "Too many postage requests. Please try later." }, 429);
+    const b: any = await c.req.json().catch(() => ({}));
+    const priced = await priceItems(c.env.DB, Array.isArray(b.items) ? b.items : []);
+    if (!priced.ok) return c.json({ detail: priced.detail }, 409);
+    try {
+      const q = await quoteStandardPost(c.env, priced.lines, String(b.postcode || ""));
+      c.header("Cache-Control", "no-store");
+      return c.json({ ...q, postage_cents: q?.postage_cents ?? 0, service: q?.service || null });
+    } catch (e) {
+      if (e instanceof ShippingQuoteError) return c.json({ detail: e.message }, e.status as 400 | 409 | 503);
+      console.error("shop postage quote failed", e);
+      return c.json({ detail: "Postage is temporarily unavailable. Please try again." }, 503);
+    }
   });
 
   // "Tell me when it's ready": an email list per product. No payment, no account.
@@ -540,8 +560,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     await ensureShopOrders(db);
     const status = c.req.query("status") || "";
     const q = status
-      ? db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at FROM shop_orders WHERE paid_at IS NOT NULL AND status = ? ORDER BY paid_at DESC LIMIT 300").bind(status)
-      : db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at FROM shop_orders WHERE paid_at IS NOT NULL ORDER BY paid_at DESC LIMIT 300");
+      ? db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at, quoted_postcode, shipping_service FROM shop_orders WHERE paid_at IS NOT NULL AND status = ? ORDER BY paid_at DESC LIMIT 300").bind(status)
+      : db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at, quoted_postcode, shipping_service FROM shop_orders WHERE paid_at IS NOT NULL ORDER BY paid_at DESC LIMIT 300");
     const rows = ((await q.all<any>()).results || []).map((r) => {
       const parse = (s: string | null, f: any) => { try { return s ? JSON.parse(s) : f; } catch { return f; } };
       return { ...r, lines: parse(r.lines, []), shipping: parse(r.shipping, null) };
@@ -549,7 +569,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     return c.json({ orders: rows });
   });
 
-  const ORDER_STATUSES = ["to_fulfil", "packing", "shipped", "complete", "cancelled"];
+  const ORDER_STATUSES = ["address_review", "to_fulfil", "packing", "shipped", "complete", "cancelled"];
   admin.put("/shop/orders/:id", W, async (c: Context<any>) => {
     const env = c.env as Env;
     await ensureShopOrders(env.DB);
@@ -559,6 +579,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const body = await readJson(c);
     const status = String(body.status || row.status);
     if (!ORDER_STATUSES.includes(status)) return c.json({ detail: "Unknown order status." }, 400);
+    if (row.status === "address_review" && ["shipped", "complete", "packing"].includes(status)) return c.json({ detail: "Check the delivery address and release the order before posting." }, 409);
     const tracking = typeof body.tracking === "string" ? body.tracking.replace(/[\x00-\x1f\x7f<>]/g, " ").trim().slice(0, 200) : null;
     const notes = typeof body.notes === "string" ? body.notes.replace(/[\x00-\x1f\x7f<>]/g, " ").trim().slice(0, 2000) : null;
     await env.DB.prepare("UPDATE shop_orders SET status = ?, tracking = COALESCE(?, tracking), notes = COALESCE(?, notes), updated_at = ? WHERE id = ?").bind(status, tracking, notes, new Date().toISOString(), id).run();

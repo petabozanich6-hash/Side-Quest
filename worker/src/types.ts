@@ -20,6 +20,10 @@ export type Env = {
   BUCKET?: R2Bucket;
   /** Opt-in verification for new parent signups, only after migration 0069 and email delivery are ready. */
   EMAIL_VERIFICATION_REQUIRED?: string;
+  /** Private Australia Post Postage Assessment Calculator key: AUTH-KEY; stored in Cloudflare secrets. */
+  AUSPOST_PAC_API_KEY?: string;
+  /** Postcode we dispatch physical shop orders from (currently 2340). */
+  AUSPOST_FROM_POSTCODE?: string;
   /** Optional Cloudflare Email Service binding for outgoing email. */
   EMAIL?: EmailBinding;
   /** Optional Cloudflare Workers AI binding (bind as AI). Paid-plan lesson drafting only. */
