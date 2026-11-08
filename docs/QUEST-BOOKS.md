@@ -23,32 +23,35 @@ ends (`assignLesson` checks `isBookLessonGrant`). A book-only buyer upgrades to 
 
 ## Workbook companion lessons (owner)
 
-On a book in the uploader, **Lessons** opens the session builder:
+When the owner opens **Lessons**, Side-Quest now builds a two-level plan automatically:
 
-1. **Read bookmarked sections from the uploaded PDF**. Non-teaching sections (welcome, answers, parent notes) are
-   unticked by default. For a chapter covering multiple skills, enter a PDF page number and **Split into two sessions**.
-   Each session has one specific learning goal and optional **exact workbook exercise reference** (such as
-   "Page 18, questions 1–8"). Session IDs are stable across a re-read or split, so previously purchased
-   individual lesson keys do not shift to different content. For clean extraction, each session may contain at
-   most 8,000 characters of source text. The app rejects larger sessions before generating; it never silently
-   drops the end of a chapter.
-2. **Make lesson** for each session. The AI receives the Year, subject, exact selected source, goal and page range.
-   It creates a **complete Side-Quest lesson**: actual teaching, worked models, guided practice, independent tasks,
-   written questions, assessment, answers and parent teaching notes. The online lesson must be self-contained
-   and printable without the PDF; workbook questions are *additional parent-guided practice* rather than
-   a dependency. Drafts go into **My lessons** and keep their book/page/exercise metadata when edited.
-3. **Review every lesson**, mark its status **Ready**, and tick **I checked the lesson and answers** beside it in
-   the book space. Book-generated lessons cannot be published if the source changes, the lesson remains a draft,
-   required instructional components are missing, or the owner has not explicitly approved that lesson.
-   Re-reading and changing a unit's goal, pages, exercises or text will flag earlier drafts as stale.
-4. **Publish** to snapshot approved lessons into private R2 (`lessons.json`). Families see only published lessons,
-   and may assign them online or print the student and parent editions using the existing lesson player/print
-   system. Republish after editing to update what *new* buyers get; existing family copies remain unchanged.
+1. **Analyse chapters and subsections** reads the already-uploaded text-based Book PDF in the owner's browser.
+   It uses PDF chapter bookmarks when present, then tries Unit/Chapter text headings, and finally falls back to
+   labelled ranges of readable PDF pages. The owner is not required to set chapter or subsection boundaries.
+2. The owner-only AI planning route `POST /api/quest-books/admin/books/:id/chapters/plan` takes one chapter
+   (or a bounded continuous batch of long chapter pages) and proposes **teachable subsections** with titles,
+   learning goals, original PDF page boundaries and optional printed exercise references. The server verifies
+   every suggested page range and automatically divides anything too long for one lesson. The analysis stage
+   **does not** create or publish lessons.
+3. A clear **Chapter → Subsections** view lets the owner see the entire suggested structure. Titles and learning
+   goals may be corrected if the AI misunderstood a topic, but manual splitting and creating learning objectives
+   are not required. The owner saves the plan once.
+4. **Make lesson** on each subsection invokes the established complete Side-Quest AI lesson generator. Its lessons
+   are self-contained for both online assignment and student/parent printing. The book's exact relevant pages
+   and practice reference are parent-facing extra practice, not mandatory external content.
+5. The owner reviews lessons in **My lessons**, marks them Ready, explicitly confirms their answers, then
+   publishes the collection. The existing completeness, outdated-source and approval gates remain intact.
 
-**Known limits:** Splitting works from PDF page text extracted while scanning a file. For a saved chapter, re-read
-the PDF to make additional splits. This workflow does not run OCR on scanned/image-only PDFs and does not
-independently certify the educational accuracy of AI-generated content. A human must check all answers, spelling,
-phonics progressions, curriculum suitability and copyright before publishing.
+Published or previously sold lesson keys are protected. When an uploaded book is re-analysed, an existing chapter
+with published lessons retains its prior subsection structure instead of silently remapping family purchases;
+new chapters are analysed normally. To rework purchased lessons' structure, publish a new book edition.
+
+**Known limits:** Planning needs extractable PDF text and an enabled AI binding. Image-only scanned books need
+OCR before the planner can use them. AI analyses focus on page text, and a subsection boundary is at a PDF page,
+not partway through a page; multiple genuinely different skills printed together on a single page cannot be
+separated with perfect precision. The tool does not guarantee curriculum or answer accuracy; independently
+review phonics progression, literacy texts, mathematical answers, curriculum alignment and copyright before sale.
+
 
 Prices (owner sets per book, all optional): **book**, **book + all lessons** (at least 50c more than the book), and
 **single lesson**.
