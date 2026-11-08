@@ -38,6 +38,9 @@ export default function QuestBookOvernight() {
   const done=Number(counts.generated||0)+Number(counts.skipped||0)+Number(counts.failed||0);
   const active=["running","paused","building"].includes(job?.status);
   const action=async(kind)=>{
+    if(kind==="start" && !window.confirm(
+      `Queue ${totalSelected} new book lessons for unattended AI generation? Each lesson uses Workers AI resources and may incur provider charges. Existing lessons will be skipped; new lessons remain unapproved drafts. The queue runs approximately once every five minutes and can be paused. Start?`
+    ))return;
     setBusy(kind);setError("");
     try{
       const path=kind==="start"?"/quest-books/admin/overnight/start":`/quest-books/admin/overnight/${encodeURIComponent(job.id)}/control`;
