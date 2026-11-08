@@ -1087,7 +1087,7 @@ test("AI refinement retries a no-op once and saves a genuinely changed field", a
   const saved = await aid.applyLessonPatch(db, fam, id, proposed.patch, NOW, proposed.base_version);
   assert.ok(saved.ok, JSON.stringify(saved));
   assert.equal(saved.lesson.support, improved);
-  assert.equal((await lb.getLesson(db, fam, id)).lesson.support, improved);
+  assert.equal(lb.lessonOut(await lb.ownLesson(db, fam, id)).support, improved);
 });
 
 test("unchanged AI patches do not consume allowance or shuffle a correct quiz", async () => {
@@ -1104,8 +1104,8 @@ test("unchanged AI patches do not consume allowance or shuffle a correct quiz", 
   assert.equal(proposed.code, "AI_PATCH_UNCHANGED");
   assert.equal(ai.calls.length, 2);
   assert.equal((await aid.aiUsage(db, fam, NOW)).changes_today, 0);
-  const stored = await lb.getLesson(db, fam, draft.lesson.id);
-  assert.deepEqual(stored.lesson.quiz, originalQuiz, "no extra shuffle of existing correct answers");
+  const stored = lb.lessonOut(await lb.ownLesson(db, fam, draft.lesson.id));
+  assert.deepEqual(stored.quiz, originalQuiz, "no extra shuffle of existing correct answers");
 });
 
 test("series planning checks the allowance up front and returns the right number of lessons", async () => {
