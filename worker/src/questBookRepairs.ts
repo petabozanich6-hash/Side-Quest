@@ -2,7 +2,7 @@
  * Pure planning helper: the server rechecks the latest saved lesson after each pass.
  * Never declare an issue solved merely because the AI said it made a change.
  */
-const TARGETS = [
+const TARGETS: Array<[RegExp, string[]]> = [
   [/guided.practice|guided practice|answered guided|practice questions|question has no answer/i, ["guided_practice"]],
   [/worksheets?|handouts?|printables?|download|off.screen|child off.screen|no such material|resource/i, ["sections", "activities"]],
   [/independent activit|activities|activity|tasks|on.screen/i, ["activities"]],
@@ -21,8 +21,8 @@ export function planBookAiRepair(aiWarnings: unknown = [], contentIssues: unknow
     ...(Array.isArray(contentIssues) ? contentIssues : []),
     ...(Array.isArray(aiWarnings) ? aiWarnings : [])].map((v) => String(v || "").trim()).filter(Boolean))];
   if (!issues.length) return { issues: [], target: [], instruction: "", selected: [] };
-  const picked = [];
-  const selected = [];
+  const picked: string[] = [];
+  const selected: string[] = [];
   for (const issue of issues) {
     const fields = TARGETS.find(([pattern]) => pattern.test(issue))?.[1] || [];
     // If we encounter another related issue, keep it in the same repair; if
