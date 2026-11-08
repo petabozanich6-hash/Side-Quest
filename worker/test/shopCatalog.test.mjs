@@ -110,6 +110,7 @@ test("later product batches reach an already-seeded shop once, as hidden drafts"
   const girls = await one(db, "Growing Up Care Box (Girls)");
   assert.ok(girls && girls.visible === 0 && girls.status === "draft" && girls.price_cents === null);
   assert.ok(await one(db, "Growing Up Care Box (Boys)"));
+  assert.ok(await one(db, "Weighted Lap Pad") && await one(db, "The Sensory Quest Box"));
   // An owner who deletes it doesn't get it back.
   await db.prepare("DELETE FROM shop_products WHERE id = ?").bind(girls.id).run();
   const again = await import("../src/shopCatalog.ts?again");

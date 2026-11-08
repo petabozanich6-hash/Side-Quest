@@ -395,4 +395,23 @@ export const SHOP_ADDITIONS: { key: string; products: SeedProduct[] }[] = [
       { department: "digital", collection: "Growing Up", title: "Talking About Growing Up: Parent Guide (printable)", description: "A printable guide for parents and carers to help start honest, age-appropriate conversations about puberty and growing up.", fulfilment: "digital", tags: ["growing-up", "puberty", "parents"] },
     ],
   },
+  {
+    key: "sensory-2026-11",
+    products: [
+      { department: "arts", collection: "Sensory & Calm", title: "Fidget Tool Kit", description: "A mix of quiet fidgets for busy hands during lessons and reading time.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Sensory Putty & Therapy Dough", description: "Squeezable putty and dough for calming hands and building finger strength.", fulfilment: "physical", tags: ["sensory"], variants: ["Soft", "Medium", "Firm"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Calm-Down Sensory Bottles", description: "Glitter and bead bottles to watch while breathing slowly and settling.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Sensory Bin Kit", description: "A themed tub with fillers, scoops and small figures for hands-on play and learning.", fulfilment: "physical", tags: ["sensory"], variants: ["Ocean", "Dinosaur", "Farm", "Seasonal"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Textured Sensory Cards", description: "Touch-and-feel cards with different textures for exploring, sorting and matching.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "arts", collection: "Sensory & Calm", title: "Chewable Pencil Toppers & Necklaces", description: "Safe chewables for children who need something to chew while they focus.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Weighted Lap Pad", description: "A soft weighted pad for the lap during reading, lessons or quiet time.", fulfilment: "physical", tags: ["sensory"], variants: ["Small", "Medium"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Noise-Reducing Earmuffs (kids)", description: "Comfortable earmuffs for loud places or when quiet helps them concentrate.", fulfilment: "physical", tags: ["sensory"], variants: ["Ages 3–7", "Ages 8+"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Wobble Cushion", description: "An air-filled seat cushion that lets wriggly learners move while they sit.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Calm Corner Kit", description: "Everything for a cosy calm-down corner: cushions, visual feelings cards and calming tools.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "homewares", collection: "Sensory & Calm", title: "Sensory Light-Up Toys", description: "Soft-glow and light-up toys for calming, winding down and dark-room play.", fulfilment: "physical", tags: ["sensory"] },
+      { department: "boxes", collection: "Sensory & Calm", title: "The Sensory Quest Box", description: "A monthly box of sensory and calming tools, fidgets and activities, with a new theme each month.", fulfilment: "subscription_box", tags: ["sensory"] },
+      { department: "digital", collection: "Sensory & Calm", title: "Feelings & Regulation Visual Cards (printable)", description: "Printable visual cards to help children name feelings and choose a calming strategy.", fulfilment: "digital", tags: ["sensory"] },
+      { department: "digital", collection: "Sensory & Calm", title: "Sensory Break Activity Cards (printable)", description: "Printable movement and sensory break cards for between lessons.", fulfilment: "digital", tags: ["sensory"] },
+    ],
+  },
 ];
