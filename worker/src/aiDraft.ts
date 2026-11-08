@@ -259,7 +259,7 @@ const strs = (v: unknown, max: number, len: number) => arr(v, max).map((x) => st
 const randInt = (n: number) => { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] % n; };
 
 /** Turn whatever the model returned into the shape the lesson builder accepts. Drops malformed items instead of failing. */
-export function normaliseDraft(p: any, spec: Spec, options: { shuffleQuiz?: boolean } = {}) {
+export function normaliseDraft(p: any, spec: Spec, settings: { shuffleQuiz?: boolean } = {}) {
   // Normalise only model-authored prose, preserving parent source, authentic
   // quotations, code and lessons that compare spelling conventions.
   p = localiseGeneratedDraft(p, spec.area, [spec.topic, spec.goal, spec.original || ""].join(" "), Boolean(spec.source));
@@ -288,7 +288,7 @@ export function normaliseDraft(p: any, spec: Spec, options: { shuffleQuiz?: bool
     if (!question || options.length < 2 || !Number.isInteger(ci) || ci < 0 || ci >= options.length) continue;
     // Models favour certain answer positions; shuffle so the right answer isn't predictable.
     const order = options.map((_, i) => i);
-    if (options.shuffleQuiz !== false) {
+    if (settings.shuffleQuiz !== false) {
       for (let i = order.length - 1; i > 0; i--) { const j = randInt(i + 1); [order[i], order[j]] = [order[j], order[i]]; }
     }
     quiz.push({ question, options: order.map((i) => options[i]), correct_index: order.indexOf(ci), explanation: str(q?.explanation, 1000) });
