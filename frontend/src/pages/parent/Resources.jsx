@@ -139,10 +139,12 @@ function FreeResources({ saved, onSaved }) {
                 <span className="shrink-0 rounded-full bg-emerald-100 text-emerald-900 px-2 py-0.5 text-[11px] font-bold">{r.note.startsWith("Free") ? "Free" : r.note}</span>
               </div>
               <div className="text-xs text-slate-500 mt-1">{r.provider} · Ages {r.ages} · {r.subjects.join(", ")}</div>
-              <p className="mt-2 text-sm text-slate-700 flex-1">{r.purpose}</p>
+              <p className="mt-2 text-sm text-slate-700">{r.purpose}</p>
+              {r.how && <p className="mt-2 text-sm text-slate-600 flex-1"><span className="font-semibold text-slate-800">How to use it: </span>{r.how}</p>}
               {r.note !== "Free" && <p className="mt-1 text-xs text-slate-500">{r.note}</p>}
+              <a href={r.url} target="_blank" rel="noreferrer noopener" className="mt-3 text-sm font-semibold text-teal-700 underline break-all flex items-center gap-1">{r.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} <ExternalLink size={13} className="shrink-0" /></a>
               <div className="mt-3 flex items-center gap-3">
-                <a href={r.url} target="_blank" rel="noreferrer noopener" className="text-xs font-semibold text-teal-700 flex items-center gap-1"><ExternalLink size={12} /> Open</a>
+                <a href={r.url} target="_blank" rel="noreferrer noopener" className="rounded-full bg-slate-900 text-white px-3 py-1 text-xs font-semibold flex items-center gap-1"><ExternalLink size={12} /> Visit website</a>
                 {isSaved ? <span className="ml-auto text-xs font-semibold text-emerald-800 flex items-center gap-1"><Check size={12} /> In your library</span>
                   : <button type="button" onClick={() => save(r)} disabled={busy === r.url} className="ml-auto rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold flex items-center gap-1 disabled:opacity-60"><Bookmark size={12} /> {busy === r.url ? "Saving…" : "Save"}</button>}
               </div>
