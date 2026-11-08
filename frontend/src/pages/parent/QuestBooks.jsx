@@ -453,7 +453,7 @@ async function makeReaderPages(book, file, onProgress) {
       }
       const task = send(blob, n, pageTotal).catch((e) => { failure = e; }).finally(() => uploads.delete(task));
       uploads.add(task);
-    });
+    }, { skipPages: already });
     await Promise.all(uploads);
     if (failure) throw failure;
     const finished = await api.post(`${root}/read-build/${encodeURIComponent(generation)}/finish`, {
