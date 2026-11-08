@@ -6,14 +6,14 @@ import { api, apiErrorMessage } from "../../lib/api";
 import { readPdfChapters } from "../../lib/pdfPages";
 
 /**
- * Owner-only: split bookmarked PDF chapters into focused, page-grounded teaching sessions.
- * Draft complete assignable/printable companion lessons, review them, then explicitly approve publication.
+ * Owner-only: the PDF chapter analyser proposes skill-based subsections automatically.
+ * Owner chooses which ready-made subsection lessons to generate, review and publish.
  */
 export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [data, setData] = useState(null);
   const [scan, setScan] = useState(null); // chapters read from a PDF, awaiting confirmation
   const [busy, setBusy] = useState("");
-  const [splitAfter, setSplitAfter] = useState({});
+  const [scanProgress, setScanProgress] = useState("");
   const [approved, setApproved] = useState({});
   const load = () => api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } })
     .then((r) => setData(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not load chapters")));
@@ -39,55 +39,51 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     if (!already) setBusy("scan");
     try {
       const r = await readPdfChapters(file);
-      if (!r.chapters.length) toast.error("This PDF has no bookmarks, so chapters can't be found. Export it again with headings saved as bookmarks (some tools call this an outline or table of contents).", { duration: 12000 });
-      else {
-        const previous = data?.chapters || [];
-        const used = new Set();
-        const freshId = () => "s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20);
-        // Reconstruct existing page splits when re-reading a PDF; do not renumber
-        // paid lesson keys just because the PDF has broad chapter bookmarks.
-        const sessions = r.chapters.flatMap((ch) => {
-          const candidates = previous.filter((p) => !used.has(p.id) && p.start >= ch.start && p.end <= ch.end)
-            .sort((a, b) => a.start - b.start);
-          const contiguous = candidates.length && candidates[0].start === ch.start &&
-            candidates[candidates.length - 1].end === ch.end &&
-            candidates.every((p, i) => i === 0 || candidates[i - 1].end + 1 === p.start);
-          if (!contiguous) return [{ ...ch, id: freshId() }];
-          return candidates.map((p) => {
-            used.add(p.id);
-            const page_texts = ch.page_texts.filter((page) => page.page >= p.start && page.page <= p.end);
-            return { ...ch, id: p.id, title: p.title, start: p.start, end: p.end,
-              skill_goal: p.skill_goal || p.title, exercise_ref: p.exercise_ref || "",
-              page_texts, text: page_texts.map((page) => page.text).join("\n\n") };
-          });
-        });
-        setScan(sessions);
+      const chapters = r.chapters.filter((chapter) => chapter.include);
+      if (!chapters.length) {
+        toast.error("No teachable chapters were found. The PDF needs bookmarks or recognisable Unit/Chapter headings.", { duration: 12000 });
+        return;
       }
-    } catch (e) { toast.error("Could not read that PDF."); }
-    finally { setBusy(""); }
-  };
-  const splitSession = (index) => {
-    const ch = scan[index];
-    const point = Number(splitAfter[index]);
-    if (!Number.isInteger(point) || point < ch.start || point >= ch.end) {
-      toast.error("Enter a page inside this session, before its last page."); return;
-    }
-    const leftPages = ch.page_texts?.filter((p) => p.page <= point) || [];
-    const rightPages = ch.page_texts?.filter((p) => p.page > point) || [];
-    if (!leftPages.length || !rightPages.length || leftPages.some((p) => typeof p.text !== "string")) {
-      toast.error("Re-read the book PDF to split this chapter by page."); return;
-    }
-    const joined = (pages) => pages.map((p) => p.text).join("\n\n");
-    if (joined(leftPages).replace(/\s/g, "").length < 40 || joined(rightPages).replace(/\s/g, "").length < 40) {
-      toast.error("Each session needs enough readable teaching text."); return;
-    }
-    setScan((old) => old.flatMap((item, j) => j === index ? [
-      { ...item, end: point, page_texts: leftPages, text: joined(leftPages) },
-      { ...item, id: "s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20),
-        title: item.title + " — next skill", start: point + 1, page_texts: rightPages,
-        text: joined(rightPages), skill_goal: "", exercise_ref: "" },
-    ] : [item]));
-    setSplitAfter({});
+      const previous = data?.chapters || [];
+      const used = new Set();
+      const freshId = () => "s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20);
+      // Previously published keys must remain attached to the exact page range they were sold for.
+      const priorId = (unit, start, end) => {
+        const matched = previous.find((p) => !used.has(p.id) && (p.unit_title || p.title) === unit &&
+          p.start === start && p.end === end);
+        if (matched) used.add(matched.id);
+        return matched?.id || freshId();
+      };
+      const planned = [];
+      let step = 0;
+      const total = chapters.reduce((n, ch) => n + Math.ceil(ch.page_texts.length / 30), 0);
+      for (const chapter of chapters) {
+        // A long chapter is analysed in automatic batches. The owner never chooses split points.
+        for (let pos = 0; pos < chapter.page_texts.length; pos += 30) {
+          const pages = chapter.page_texts.slice(pos, pos + 30);
+          setScanProgress(`Analysing chapter “${chapter.title}” (${++step} of ${total})`);
+          const res = await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/plan`,
+            { chapter_title: chapter.title, pages }, { timeout: 180000 });
+          const suggestions = res.data?.subsections || [];
+          if (!suggestions.length) throw new Error(`No teachable subsections were identified in “${chapter.title}”.`);
+          for (const sub of suggestions) {
+            const selected = pages.filter((p) => p.page >= sub.start && p.page <= sub.end);
+            const text = selected.map((p) => p.text).join("\n\n");
+            if (text.replace(/\s/g, "").length < 40 || text.length > 8000)
+              throw new Error(`Subsection “${sub.title}” could not be prepared within the lesson source limit. Please check the PDF text.`);
+            planned.push({
+              id: priorId(chapter.title, sub.start, sub.end), unit_title: chapter.title,
+              title: sub.title, skill_goal: sub.skill_goal || sub.title, exercise_ref: sub.exercise_ref || "",
+              start: sub.start, end: sub.end, text, page_texts: selected, include: true,
+            });
+          }
+        }
+      }
+      setScan(planned);
+      setApproved({});
+      toast.success(`Identified ${chapters.length} chapters and ${planned.length} lesson subsections.`);
+    } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Automatic chapter analysis failed") : e.message || "Could not analyse the PDF.", { duration: 11000 }); }
+    finally { setScanProgress(""); setBusy(""); }
   };
   const saveScan = async () => {
     const chosen = scan.filter((c) => c.include).map(({ include, page_texts, ...c }) => c);
@@ -99,7 +95,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     setBusy("save");
     try {
       await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { chapters: chosen }, { timeout: 120000 });
-      toast.success(`Saved ${chosen.length} focused lesson sessions`);
+      toast.success(`Saved ${chosen.length} chapter subsections, ready for lesson generation`);
       setScan(null); await load(); onChanged?.();
     } catch (e) { toast.error(apiErrorMessage(e, "Could not save the chapters")); }
     finally { setBusy(""); }
@@ -142,33 +138,47 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     </label>
   );
 
-  if (scan) return (
-    <div className="rounded-xl border border-emerald-300 bg-white p-4 space-y-3" data-testid="quest-chapter-scan">
-      <p className="text-sm text-emerald-950"><b>{scan.length} bookmarked sections found.</b> Untick non-teaching sections, split multi-skill chapters by PDF page and give each session one learning goal. Keep sessions short enough for thorough lessons; their exact source text is preserved.</p>
-      <ul className="divide-y divide-stone-100">
-        {scan.map((c, i) => (
-          <li key={i} className="py-3 space-y-2">
-            <div className="flex items-center gap-2">
-              <input aria-label={`Include session ${i + 1}`} type="checkbox" checked={c.include} onChange={(e) => setScan((v) => v.map((x, j) => j === i ? { ...x, include: e.target.checked } : x))} />
-              <input aria-label="Lesson title" value={c.title} onChange={(e) => setScan((v) => v.map((x, j) => j === i ? { ...x, title: e.target.value } : x))} className="min-w-0 flex-1 rounded border border-stone-200 px-2 py-1 text-sm" />
-              <span className="text-xs text-stone-500 whitespace-nowrap">PDF pp. {c.start}–{c.end}</span>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-2 pl-5">
-              <input aria-label="One skill to teach" placeholder="Specific skill or learning goal (required)" value={c.skill_goal || ""} onChange={(e) => setScan((v) => v.map((x, j) => j === i ? { ...x, skill_goal: e.target.value } : x))} className="rounded border border-stone-200 px-2 py-1 text-sm" />
-              <input aria-label="Workbook exercise reference" placeholder="Workbook exercises (e.g. Q1–8, p. 16)" value={c.exercise_ref || ""} onChange={(e) => setScan((v) => v.map((x, j) => j === i ? { ...x, exercise_ref: e.target.value } : x))} className="rounded border border-stone-200 px-2 py-1 text-sm" />
-            </div>
-            <div className="flex items-center gap-2 pl-5 text-xs text-stone-600">
-              <span>{c.text.length.toLocaleString()} source characters {c.text.length > 8000 ? "(split required)" : ""}</span>
-              {c.end > c.start && <><label className="ml-auto">Split after PDF page <input type="number" min={c.start} max={c.end - 1} value={splitAfter[i] ?? ""} onChange={(e) => setSplitAfter((v) => ({ ...v, [i]: e.target.value }))} className="w-16 rounded border border-stone-200 px-1 py-1 ml-1" /></label>
-                <button type="button" onClick={() => splitSession(i)} className="rounded border border-emerald-400 px-2 py-1 font-semibold">Split into two sessions</button></>}
-            </div>
-          </li>
+  if (scan) {
+    const groups = [];
+    for (const entry of scan) {
+      const title = entry.unit_title || entry.title;
+      let group = groups.find((g) => g.title === title);
+      if (!group) { group = { title, entries: [] }; groups.push(group); }
+      group.entries.push(entry);
+    }
+    return (
+      <div className="rounded-xl border border-emerald-300 bg-white p-4 space-y-4" data-testid="quest-chapter-scan">
+        <p className="text-sm text-emerald-950"><b>Automatic workbook lesson plan:</b> {groups.length} chapters, {scan.length} suggested subsections. The system chose the learning skills and page boundaries. You can optionally correct a title or learning goal, but do not have to split anything yourself.</p>
+        {groups.map((group, gi) => (
+          <section key={gi} className="rounded-lg border border-stone-200 p-3 space-y-2">
+            <h5 className="font-bold text-emerald-950">Chapter {gi + 1}: {group.title}</h5>
+            <ol className="list-decimal pl-5 space-y-3">
+              {group.entries.map((c) => {
+                const index = scan.indexOf(c);
+                return (
+                  <li key={c.id} className="space-y-1.5 text-sm">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" aria-label={`Include ${c.title}`} checked={c.include} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, include: e.target.checked } : x))} />
+                      <input aria-label="Subsection lesson title" value={c.title} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, title: e.target.value } : x))} className="flex-1 min-w-0 rounded border border-stone-200 px-2 py-1" />
+                      <span className="text-xs text-stone-500 whitespace-nowrap">PDF pp. {c.start}–{c.end}</span>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      <input aria-label="Learning objective" value={c.skill_goal} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, skill_goal: e.target.value } : x))} className="rounded border border-stone-200 px-2 py-1" />
+                      <input aria-label="Workbook practice reference" placeholder="Optional workbook exercises" value={c.exercise_ref} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, exercise_ref: e.target.value } : x))} className="rounded border border-stone-200 px-2 py-1" />
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
         ))}
-      </ul>
-      <div className="flex gap-2"><button type="button" onClick={saveScan} disabled={!!busy} className="rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold">{busy === "save" ? "Saving…" : "Save lesson sessions"}</button>
-        <button type="button" onClick={() => setScan(null)} className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold">Cancel</button></div>
-    </div>
-  );
+        <div className="flex flex-wrap gap-2">
+          <button type="button" onClick={saveScan} disabled={!!busy} className="rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold">{busy === "save" ? "Saving…" : "Save chapter and subsection plan"}</button>
+          <button type="button" onClick={() => setScan(null)} className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold">Cancel</button>
+        </div>
+      </div>
+    );
+  }
   if (!data) return <p className="text-sm text-stone-500" role="status">Loading chapters…</p>;
   const drafted = data.chapters.filter((c) => c.draft).length;
   return (
@@ -176,18 +186,19 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       <div className="flex flex-wrap items-center gap-2">
         <h4 className="font-bold text-emerald-950 flex items-center gap-1.5 mr-auto"><BookOpenCheck size={16} /> Book companion lessons</h4>
         {book.has_book && <button type="button" onClick={readUploaded} disabled={!!busy} className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-400 bg-white px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50 disabled:opacity-50">
-          {busy === "scan" ? <Loader2 size={15} className="animate-spin" /> : <FileSearch size={15} />} {busy === "scan" ? "Reading the book…" : data.chapters.length ? "Re-read chapters" : "Read chapters"}
+          {busy === "scan" ? <Loader2 size={15} className="animate-spin" /> : <FileSearch size={15} />} {busy === "scan" ? "Analysing the book…" : data.chapters.length ? "Re-analyse chapter structure" : "Analyse chapters and subsections"}
         </button>}
         {!book.has_book && pdfPicker("Read chapters from a PDF")}
       </div>
+      {scanProgress && <p className="text-sm font-semibold text-violet-900" role="status">{scanProgress}</p>}
       {!data.chapters.length ? (
-        <p className="text-sm text-stone-600">{book.has_book ? "Side-Quest reads the PDF bookmarks, then you can split chapters into individual teachable sessions with exact page and exercise references." : "Upload the Book PDF first, then its sessions can be read here."}</p>
+        <p className="text-sm text-stone-600">{book.has_book ? "Side-Quest automatically identifies chapters and their teachable subsections, with learning goals and workbook page references. You only decide which lessons to generate." : "Upload the Book PDF first, then its sessions can be read here."}</p>
       ) : <>
-        <p className="text-sm text-stone-600">Each session creates one complete Side-Quest lesson, with explicit teaching, worked examples, guided and independent practice, assessment and parent answers. It works online or printed on its own. Workbook page references are additional practice for parents. Review the draft in <b>My lessons</b>, set it to Ready, then tick its approval before publishing.</p>
+        <p className="text-sm text-stone-600">Each chapter subsection creates one complete Side-Quest lesson, with explicit teaching, worked examples, guided and independent practice, assessment and parent answers. It works online or printed on its own. Workbook page references are additional practice for parents. Review the draft in <b>My lessons</b>, set it to Ready, then tick its approval before publishing.</p>
         <ul className="divide-y divide-stone-100">
-          {data.chapters.map((c) => (
+          {data.chapters.map((c, i) => (
             <li key={c.id} className="flex flex-wrap items-center gap-2 py-2">
-              <span className="flex-1 min-w-[160px] text-sm"><b>{c.title}</b> <span className="text-xs text-stone-500">· PDF pp. {c.start}–{c.end} · {c.skill_goal || "Learning goal not set"}</span>{c.published && <span className="ml-2 text-[10px] font-bold uppercase text-emerald-700">Published</span>}{c.draft?.stale && <span className="ml-2 text-[10px] font-bold uppercase text-rose-700">Source changed — regenerate</span>}</span>
+              <span className="flex-1 min-w-[160px] text-sm"><span className="text-xs font-semibold text-emerald-800">{i === 0 || (data.chapters[i-1].unit_title || data.chapters[i-1].title) !== (c.unit_title || c.title) ? `Chapter: ${c.unit_title || c.title} · ` : ""}</span><b>{c.title}</b> <span className="text-xs text-stone-500">· PDF pp. {c.start}–{c.end} · {c.skill_goal || "Learning goal not set"}</span>{c.published && <span className="ml-2 text-[10px] font-bold uppercase text-emerald-700">Published</span>}{c.draft?.stale && <span className="ml-2 text-[10px] font-bold uppercase text-rose-700">Source changed — regenerate</span>}</span>
               {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review`} className="text-sm font-semibold text-emerald-900 underline">Review “{c.draft.title}”</Link>}
               {c.draft && <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-950">
                 <input type="checkbox" disabled={c.draft.stale || c.draft.status !== "ready" || !!busy} checked={approved[c.id] === true} onChange={(e) => setApproved((v) => ({ ...v, [c.id]: e.target.checked }))} />
