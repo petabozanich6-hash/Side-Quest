@@ -10,6 +10,27 @@ const H = ({ children }) => <h2 className="sq-paper-heading mt-6 mb-3 font-displ
 const Lines = ({ n = 2 }) => <div className="sq-paper-writing-lines mt-1 mb-3">{Array.from({ length: n }).map((_, i) => <div key={i} className="h-7 border-b border-slate-400" />)}</div>;
 const Ans = ({ children }) => <p className="mt-2 rounded-lg bg-[#EFF3EA] border-l-[3px] border-[#4A6D5A] px-3 py-2 text-sm text-[#1F3B2D] whitespace-pre-line"><b>Answer:</b> {children}</p>;
 
+// The print view must include the options a child needs, without leaking
+// correctly ordered sequences or the matching pair key.
+function PaperChoices({ item }) {
+  const options = list(item?.options);
+  const pairs = list(item?.pairs);
+  if (item?.kind === "match" && pairs.length) {
+    const bank = pairs.map((p) => p.right);
+    const shuffled = bank.length > 1 ? [...bank.slice(1), bank[0]] : bank;
+    return <div className="text-sm text-slate-800 my-2 grid grid-cols-2 gap-3">
+      <div><b>Match each word:</b><ol className="list-decimal pl-5">{pairs.map((p, i) => <li key={i}>{p.left}</li>)}</ol></div>
+      <div><b>To one meaning:</b><ol className="list-[upper-alpha] pl-5">{shuffled.map((value, i) => <li key={i}>{value}</li>)}</ol></div>
+    </div>;
+  }
+  if (!options.length) return null;
+  const shown = item?.kind === "order" ? [...options].reverse() : options;
+  return <div className="text-sm text-slate-800 my-1">
+    {item?.kind === "order" && <span className="font-semibold">Write these in the correct order:</span>}
+    <ul className="pl-3">{shown.map((o, i) => <li key={i}>{item?.kind === "order" ? `${i + 1}.` : "☐"} {o}</li>)}</ul>
+  </div>;
+}
+
 export default function LessonDocument({ lesson: l, view = "parent" }) {
   const parent = view === "parent";
   const student = view === "student";
@@ -53,7 +74,7 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
       </header>
 
       {parent && l.quest_book_title && <><H>Matching Quest Book</H><Para>{`${l.quest_book_title}${Number.isInteger(l.quest_page_start) && Number.isInteger(l.quest_page_end) ? ` · PDF pages ${l.quest_page_start}–${l.quest_page_end}` : ""}${l.quest_exercise_ref ? ` · Optional workbook practice: ${l.quest_exercise_ref}` : ""}`}</Para></>}
-      {parent && l.parent_notes && <><H>Parent notes</H><Para>{l.parent_notes}</Para></>}
+      {parent && l.parent_notes && !l.quest_book_title && <><H>Parent notes</H><Para>{l.parent_notes}</Para></>}
       {parent && list(l.curriculum_refs).length > 0 && <><H>Curriculum links</H><ul className="list-disc pl-5 text-[15px]">{list(l.curriculum_refs).map((c, i) => <li key={i}>{c}</li>)}</ul></>}
       {parent && l.teaching_plan && <><H>Teaching plan</H><Para>{l.teaching_plan}</Para></>}
       {list(l.objectives).length > 0 && <><H>Learning goals</H><ul className="list-disc pl-5 space-y-1 text-[15px]">{list(l.objectives).map((o, i) => <li key={i}>{o}</li>)}</ul></>}
@@ -93,7 +114,8 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
       {list(l.guided_practice).map((g, i) => (
         <div key={i} className="mb-2 break-inside-avoid">
           <p className="text-[15px]"><b>{i + 1}.</b> {g.prompt}</p>
-          {student ? <Lines n={2} /> : <>{list(g.options).length > 0 && <p className="text-sm text-slate-600">Options: {g.options.join(" · ")}</p>}{g.hint && <p className="text-sm text-slate-600">Hint: {g.hint}</p>}{parent && g.answer && <Ans>{g.answer}</Ans>}</>}
+          <PaperChoices item={g} />
+          {student ? <Lines n={2} /> : <>{g.hint && <p className="text-sm text-slate-600">Hint: {g.hint}</p>}{g.answer && <Ans>{g.answer}</Ans>}</>}
         </div>
       ))}
 
@@ -106,7 +128,8 @@ export default function LessonDocument({ lesson: l, view = "parent" }) {
           {list(a.tasks).map((t, j) => (
             <div key={j} className="mt-1">
               <p className="text-[15px]"><b>{String.fromCharCode(97 + (j % 26))}.</b> {t.prompt}</p>
-              {student ? <Lines n={1} /> : parent && t.answer && <Ans>{t.answer}</Ans>}
+              <PaperChoices item={t} />
+              {student ? <Lines n={t.kind === "long" ? 4 : 1} /> : parent && t.answer && <Ans>{t.answer}</Ans>}
             </div>
           ))}
         </div>
