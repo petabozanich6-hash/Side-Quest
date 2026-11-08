@@ -560,8 +560,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     await ensureShopOrders(db);
     const status = c.req.query("status") || "";
     const q = status
-      ? db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at FROM shop_orders WHERE paid_at IS NOT NULL AND status = ? ORDER BY paid_at DESC LIMIT 300").bind(status)
-      : db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at FROM shop_orders WHERE paid_at IS NOT NULL ORDER BY paid_at DESC LIMIT 300");
+      ? db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at, quoted_postcode, shipping_service FROM shop_orders WHERE paid_at IS NOT NULL AND status = ? ORDER BY paid_at DESC LIMIT 300").bind(status)
+      : db.prepare("SELECT id, email, lines, total_cents, postage_cents, status, shipping, tracking, notes, created_at, paid_at, quoted_postcode, shipping_service FROM shop_orders WHERE paid_at IS NOT NULL ORDER BY paid_at DESC LIMIT 300");
     const rows = ((await q.all<any>()).results || []).map((r) => {
       const parse = (s: string | null, f: any) => { try { return s ? JSON.parse(s) : f; } catch { return f; } };
       return { ...r, lines: parse(r.lines, []), shipping: parse(r.shipping, null) };
@@ -569,7 +569,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     return c.json({ orders: rows });
   });
 
-  const ORDER_STATUSES = ["to_fulfil", "packing", "shipped", "complete", "cancelled"];
+  const ORDER_STATUSES = ["address_review", "to_fulfil", "packing", "shipped", "complete", "cancelled"];
   admin.put("/shop/orders/:id", W, async (c: Context<any>) => {
     const env = c.env as Env;
     await ensureShopOrders(env.DB);
@@ -579,6 +579,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const body = await readJson(c);
     const status = String(body.status || row.status);
     if (!ORDER_STATUSES.includes(status)) return c.json({ detail: "Unknown order status." }, 400);
+    if (row.status === "address_review" && ["shipped", "complete", "packing"].includes(status)) return c.json({ detail: "Check the delivery address and release the order before posting." }, 409);
     const tracking = typeof body.tracking === "string" ? body.tracking.replace(/[\x00-\x1f\x7f<>]/g, " ").trim().slice(0, 200) : null;
     const notes = typeof body.notes === "string" ? body.notes.replace(/[\x00-\x1f\x7f<>]/g, " ").trim().slice(0, 2000) : null;
     await env.DB.prepare("UPDATE shop_orders SET status = ?, tracking = COALESCE(?, tracking), notes = COALESCE(?, notes), updated_at = ? WHERE id = ?").bind(status, tracking, notes, new Date().toISOString(), id).run();
