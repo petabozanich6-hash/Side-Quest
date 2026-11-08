@@ -2,6 +2,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { AC9_OUTCOMES } from "../src/data/ac9-outcomes.ts";
 import { catalogueFor, programFor } from "../src/outcomeTracker.ts";
+import { FRAMEWORKS } from "../src/data/jurisdictions.ts";
+import { poolFor } from "../src/questOutcomes.ts";
 
 test("ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands", () => {
   assert.ok(AC9_OUTCOMES.length >= 2678, "Official MRAC/2024/04 import must not lose any eight-area descriptors");
@@ -64,4 +66,29 @@ test("selected Chinese learner pathway must not mix distinct official pathway co
   const plan = programFor(catalogue, { stage: "S4", year_level: "Year 8", extra: { electives: [{ name: "Chinese (Second Language Learner)", learning_area: "Languages" }] } });
   assert.equal(plan.includes(second), true);
   assert.equal(plan.includes(background), false, "a different learner pathway cannot be silently assigned");
+});
+
+
+test("VIC and WA expose state-specific source catalogues as references, not as unavailable or compliance guarantees", () => {
+  for (const state of ["VIC", "WA"]) {
+    assert.equal(FRAMEWORKS[state].codes, "reference");
+    const catalogue = catalogueFor(state);
+    assert.equal(catalogue.available, true);
+    assert.equal(catalogue.framework, state);
+    assert.ok(catalogue.outcomes.length > 100, state + " source-derived catalogue must remain loaded");
+    assert.ok(catalogue.outcomes.every((o) => Boolean(o.official_url)), "every state identifier needs an official source");
+  }
+});
+
+test("VIC and WA book matching separates History from Geography within Humanities", () => {
+  for (const state of ["VIC", "WA"]) {
+    const cat = catalogueFor(state);
+    const hist = poolFor(cat, { learning_area: "History" }, 3);
+    const geo = poolFor(cat, { learning_area: "Geography" }, 3);
+    assert.ok(hist.length > 0, state + " should have Year 3 History identifiers");
+    assert.ok(geo.length > 0, state + " should have Year 3 Geography identifiers");
+    const describe = (o) => state === "VIC" ? o.subject || "" : o.strand || "";
+    assert.ok(hist.every((o) => /history/i.test(describe(o))), state + " History book must not map Geography strand");
+    assert.ok(geo.every((o) => /geography/i.test(describe(o))), state + " Geography book must not map History strand");
+  }
 });
