@@ -16,9 +16,25 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const load = () => api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } })
     .then((r) => setData(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not load chapters")));
   useEffect(() => { load(); }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  // First time: read the chapters from the uploaded PDF automatically.
+  const autoRead = React.useRef(false);
+  useEffect(() => {
+    if (data && !data.chapters.length && book.has_book && !autoRead.current && !busy) { autoRead.current = true; void readUploaded(); }
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const readFile = async (file) => {
+  // Reads chapters straight from the Book PDF already uploaded for this book.
+  const readUploaded = async () => {
     setBusy("scan");
+    try {
+      const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
+      await readFile(new Blob([r.data], { type: "application/pdf" }), true);
+    } catch (e) {
+      toast.error(e?.response ? "Could not open the uploaded PDF." : "Could not read the uploaded PDF.");
+      setBusy("");
+    }
+  };
+  const readFile = async (file, already) => {
+    if (!already) setBusy("scan");
     try {
       const r = await readPdfChapters(file);
       if (!r.chapters.length) toast.error("This PDF has no bookmarks, so chapters can't be found. Export it again with headings saved as bookmarks (some tools call this an outline or table of contents).", { duration: 12000 });
@@ -92,10 +108,13 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     <div className="rounded-xl border border-emerald-300 bg-white p-4 space-y-3" data-testid="quest-lessons-admin">
       <div className="flex flex-wrap items-center gap-2">
         <h4 className="font-bold text-emerald-950 flex items-center gap-1.5 mr-auto"><BookOpenCheck size={16} /> Chapter lessons</h4>
-        {pdfPicker(data.chapters.length ? "Re-read chapters from the PDF" : "Read chapters from the PDF")}
+        {book.has_book && <button type="button" onClick={readUploaded} disabled={!!busy} className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-400 bg-white px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50 disabled:opacity-50">
+          {busy === "scan" ? <Loader2 size={15} className="animate-spin" /> : <FileSearch size={15} />} {busy === "scan" ? "Reading the book…" : data.chapters.length ? "Re-read chapters" : "Read chapters"}
+        </button>}
+        {!book.has_book && pdfPicker("Read chapters from a PDF")}
       </div>
       {!data.chapters.length ? (
-        <p className="text-sm text-stone-600">Choose this book's PDF. Side-Quest reads its chapters from the PDF's bookmarks, then you can make one lesson per chapter.</p>
+        <p className="text-sm text-stone-600">{book.has_book ? "Side-Quest reads the chapters from the book you uploaded (from its bookmarks), then you can make one lesson per chapter." : "Upload the Book PDF first, then its chapters can be read here."}</p>
       ) : <>
         <p className="text-sm text-stone-600">Each lesson is written by the normal lesson generator from that chapter's text and saved in <b>My lessons</b> for you to review and edit. When you're happy, publish them to the book. Families only ever see published lessons.</p>
         <ul className="divide-y divide-stone-100">

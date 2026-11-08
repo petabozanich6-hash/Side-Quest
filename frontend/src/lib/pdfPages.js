@@ -79,3 +79,19 @@ export async function readPdfChapters(file) {
   }
   return { total: doc.numPages, chapters };
 }
+
+/** Every page (up to maxPages) as a picture, for an in-page preview that works the same on every device. */
+export async function pdfPageImages(file, { maxPages = 30, width = 1100, onPage } = {}) {
+  const doc = await loadPdf(file);
+  const pages = [];
+  for (let i = 1; i <= Math.min(doc.numPages, maxPages); i++) {
+    const page = await doc.getPage(i);
+    const viewport = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+    await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+    const blob = await canvasBlob(canvas);
+    if (blob) { pages.push(URL.createObjectURL(blob)); onPage?.([...pages]); }
+  }
+  return { total: doc.numPages, pages };
+}

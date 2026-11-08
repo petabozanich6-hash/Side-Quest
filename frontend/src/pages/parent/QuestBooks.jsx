@@ -5,6 +5,7 @@ import { ArrowLeft, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, Im
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
+import PdfPreview from "../../components/parent/PdfPreview";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
 const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
@@ -289,6 +290,7 @@ function BookView({ id }) {
   const book = data?.book;
   const lessons = data?.lessons || [];
   const [adding, setAdding] = useState("");
+  const [preview, setPreview] = useState(false);
   const addLessons = async (key) => {
     setAdding(key || "all");
     try {
@@ -349,10 +351,10 @@ function BookView({ id }) {
                 </>
               )}
               {book.has_sample && (
-                <a href={pdfLink(book.id, "sample")} download data-testid="quest-book-sample"
+                <button type="button" onClick={() => setPreview(true)} data-testid="quest-book-sample"
                   className="inline-flex items-center gap-2 rounded-xl border-2 border-amber-500 bg-white text-amber-900 px-4 py-2.5 text-sm font-bold hover:bg-amber-50">
-                  <Gift size={16} /> Free sample
-                </a>
+                  <Gift size={16} /> Preview free sample
+                </button>
               )}
             </div>
             {book.can_buy_plus && (
@@ -366,6 +368,7 @@ function BookView({ id }) {
           </div>
         </section>
       )}
+      {preview && book && <PdfPreview title={`${book.title} · free sample`} fetchPath={`/quest-books/books/${encodeURIComponent(book.id)}/sample`} downloadHref={pdfLink(book.id, "sample")} onClose={() => setPreview(false)} />}
       {book && lessons.length > 0 && (
         <section className="space-y-3" data-testid="quest-book-lessons">
           <div className="flex flex-wrap items-end gap-3">
