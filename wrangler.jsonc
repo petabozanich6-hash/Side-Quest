@@ -7,7 +7,7 @@
   // Pace special Owner HQ emails: up to 12 recipients every five minutes.
   "triggers": { "crons": ["*/5 * * * *"] },
   "keep_vars": true,
-  "vars": { "STRIPE_LIVE_ENABLED": "true", "AI_FAST_PIPELINE": "true", "AI_SPLIT_STAGES": "true" },
+  "vars": { "SQUARE_APPLICATION_ID": "sq0idp-m6mTHLzi5hBk9T3M7XvoGg", "SQUARE_LOCATION_ID": "LP9AZ4PNMFW60", "SQUARE_WEBHOOK_URL": "https://sidequestlearning.app/api/billing/square-webhook", "STRIPE_LIVE_ENABLED": "true", "AI_FAST_PIPELINE": "true", "AI_SPLIT_STAGES": "true" },
   "build": {
     "command": "node worker/scripts/guard-build-branch.mjs && npm --prefix worker install && npm --prefix frontend install --legacy-peer-deps && CI=false npm --prefix frontend run build"
   },

@@ -4,6 +4,7 @@
  * Promotions are scoped to the exact Stripe environment that created them.
  */
 import { billingConfig, stripeCall, type Mode, type Fetch } from "./billing";
+import { squareConfig } from "./square";
 import type { Env } from "./types";
 import { newId, nowIso } from "./types";
 
@@ -128,9 +129,24 @@ export async function createHoardOffer(db: D1Database, env: Env, input: Record<s
   const checked = validateHoardOffer(input);
   if (!checked.ok) return { ok: false as const, status: 400 as const, detail: checked.error };
   const cfg = billingConfig(env);
-  if (!cfg.ok) return { ok: false as const, status: 503 as const, detail: "Stripe checkout must be configured before creating a discount." };
+  if (!cfg.ok && !squareConfig(env).ok) return { ok: false as const, status: 503 as const, detail: "Payments must be configured before creating a discount." };
   const v = checked.value;
   await ensureHoardSchema(db);
+  // Square: the site applies the discount itself (a discounted first phase on the Square plan), so the code lives here only.
+  const sq = squareConfig(env);
+  if (sq.ok) {
+    const mode: Mode = sq.production ? "live" : "test";
+    if (await db.prepare("SELECT id FROM dragon_hoard_offers WHERE mode = ? AND code = ?").bind(mode, v.code).first()) {
+      return { ok: false as const, status: 409 as const, detail: "This code already exists." };
+    }
+    const id = newId();
+    await db.prepare(
+      "INSERT INTO dragon_hoard_offers (id, mode, code, label, percent_off, duration_months, max_redemptions, expires_at, stripe_coupon_id, stripe_promotion_id, active, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'square', ?, 1, ?, ?)"
+    ).bind(id, mode, v.code, v.label, v.percent_off, v.duration_months, v.max_redemptions, v.expires_at, "square:" + v.code, ownerId, nowIso()).run();
+    await db.prepare("INSERT INTO dragon_hoard_terms (offer_id, duration_type) VALUES (?, ?)").bind(id, v.duration_type).run();
+    return { ok: true as const, id, code: v.code, mode };
+  }
+  if (!cfg.ok) return { ok: false as const, status: 503 as const, detail: "Payments must be configured before creating a discount." };
   const exists = await db.prepare("SELECT id FROM dragon_hoard_offers WHERE mode = ? AND code = ?").bind(cfg.mode, v.code).first();
   if (exists) return { ok: false as const, status: 409 as const, detail: "This code already exists in the current Stripe mode." };
 
@@ -174,6 +190,10 @@ export async function disableHoardOffer(db: D1Database, env: Env, id: string) {
   const offer = await db.prepare("SELECT * FROM dragon_hoard_offers WHERE id = ?").bind(id).first<HoardOffer>();
   if (!offer) return { ok: false as const, status: 404 as const, detail: "Scroll not found." };
   if (!offer.active) return { ok: false as const, status: 409 as const, detail: "This scroll has already been retired." };
+  if (offer.stripe_coupon_id === "square") {
+    await db.prepare("UPDATE dragon_hoard_offers SET active = 0, disabled_at = ? WHERE id = ?").bind(nowIso(), id).run();
+    return { ok: true as const, code: offer.code, mode: offer.mode };
+  }
   const cfg = billingConfig(env);
   if (!cfg.ok || cfg.mode !== offer.mode) return { ok: false as const, status: 409 as const, detail: "Switch to the original Stripe mode before retiring this scroll." };
   await stripeCall(cfg.key, "POST", "promotion_codes/" + encodeURIComponent(offer.stripe_promotion_id), { active: false }, { idempotencyKey: "sq-hoard-disable-" + id });

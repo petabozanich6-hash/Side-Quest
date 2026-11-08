@@ -65,6 +65,12 @@ export type Env = {
   STRIPE_LIVE_PRICE_FORTNIGHTLY?: string;
   STRIPE_LIVE_PRICE_MONTHLY?: string;
   STRIPE_LIVE_PRICE_YEARLY?: string;
+  /** Square payments. Access token and webhook signature key are Cloudflare secrets; the ids are plain configuration. */
+  SQUARE_ACCESS_TOKEN?: string;
+  SQUARE_WEBHOOK_SIGNATURE_KEY?: string;
+  SQUARE_APPLICATION_ID?: string;
+  SQUARE_LOCATION_ID?: string;
+  SQUARE_WEBHOOK_URL?: string;
   /** Optional https origin used for Stripe redirect URLs (defaults to the request origin). */
   APP_URL?: string;
   /** Extra origins (comma-separated) allowed to make Owner HQ changes, e.g. the private staging workers.dev URL. */
