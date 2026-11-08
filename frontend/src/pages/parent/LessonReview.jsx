@@ -123,7 +123,7 @@ export default function LessonReview() {
   const bookId = !batchId ? params.get("book") || "" : "";
   const chapterId = bookId ? params.get("chapter") || "" : "";
   const bookQuery = bookId && chapterId ? `?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(chapterId)}` : "";
-  const bookHome = bookId ? `/parent/quest-books/${encodeURIComponent(bookId)}` : "/parent/lessons";
+  const bookHome = bookId ? `/parent/quest-books/${encodeURIComponent(bookId)}?workspace=lessons` : "/parent/lessons";
   const [bookReview, setBookReview] = useState(null);
   useEffect(() => {
     if (!bookId || !chapterId) { setBookReview(null); return; }
