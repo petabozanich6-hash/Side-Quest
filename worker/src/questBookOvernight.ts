@@ -270,7 +270,11 @@ export async function syncOvernightWork(env: Env, now = new Date()) {
     const jobs=[...original];
     const generate=jobs.find(j=>j.kind==="generate" && j.status==="running");
     const repair=jobs.find(j=>j.kind==="repair");
-    if(generate && !repair && await isPlatformOwner(env.DB,generate.owner_user_id)) {
+    const due=jobs.filter(j=>!j.last_scan_at || j.last_scan_at<=cutoff);
+    if(!due.length)continue;
+    if(!await isPlatformOwner(env.DB,due[0].owner_user_id))continue;
+    const books=await overnightCandidates(env,familyId);
+    if(generate && !repair && books.some(b=>b.repair_items.length>0) && await isPlatformOwner(env.DB,generate.owner_user_id)) {
       // Stopping repairs is a real opt-out for this generation run.
       const lastRepair=await env.DB.prepare(`SELECT status,finished_at FROM quest_overnight_jobs
         WHERE family_id=? AND kind='repair' ORDER BY created_at DESC LIMIT 1`)
@@ -283,16 +287,12 @@ export async function syncOvernightWork(env: Env, now = new Date()) {
             VALUES (?,?,?,'running','repair',0,1,0,?,?)`)
             .bind(id,generate.owner_user_id,familyId,time,time).run();
           const started=await env.DB.prepare(`SELECT * FROM quest_overnight_jobs WHERE id=?`).bind(id).first<Job>();
-          if(started)jobs.push(started);
+          if(started){jobs.push(started);due.push(started);}
         }catch {
           // Another cron or owner request already started a repair queue.
         }
       }
     }
-    const due=jobs.filter(j=>!j.last_scan_at || j.last_scan_at<=cutoff);
-    if(!due.length)continue;
-    if(!await isPlatformOwner(env.DB,due[0].owner_user_id))continue;
-    const books=await overnightCandidates(env,familyId);
     for(const job of due) {
       // Only the same active queue that opted in may accept new work.
       const active=await env.DB.prepare(`SELECT status,auto_follow FROM quest_overnight_jobs
