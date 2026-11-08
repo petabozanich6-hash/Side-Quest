@@ -13,10 +13,14 @@
 //   SQUARE_LOCATION_ID            var
 //   SQUARE_WEBHOOK_URL            var, optional (the exact URL registered with Square; defaults to the request URL)
 import { recordPaidCart } from "./questBookPurchases";
+import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo } from "./squareMembership";
 import type { App, Env } from "./types";
+import { LIVE_PRICE_DETAILS } from "./billing";
+import { membershipActivatedEmail, sendEmail } from "./email";
+import { sendOwnerNewMemberAlert } from "./ownerNotifications";
 
 type DB = D1Database;
-export type Fetch = typeof fetch;
+export type Fetch = (input: any, init?: any) => Promise<Response>;
 export const SQUARE_VERSION = "2024-10-17";
 
 export type SquareConfig =
@@ -115,8 +119,21 @@ function ensureEvents(db: DB) {
  * Applies one verified Square event. A completed payment is matched to its order; the order (created by us) carries
  * the cart id and family id. The amount actually paid must equal the saved cart total.
  */
-export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date()): Promise<string> {
+export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>): Promise<string> {
   const type = String(event?.type || "");
+  const obj = event?.data?.object || {};
+  if (type === "subscription.created" || type === "subscription.updated") {
+    const id = String(obj.subscription?.id || event?.data?.id || "");
+    return id ? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated) : "subscription event without id";
+  }
+  if (type === "invoice.payment_made") {
+    const id = String(obj.invoice?.subscription_id || "");
+    return id ? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated) : "invoice without subscription";
+  }
+  if (type === "invoice.scheduled_charge_failed") {
+    const id = String(obj.invoice?.subscription_id || "");
+    return id ? markPastDue(db, id, now) : "invoice without subscription";
+  }
   if (type !== "payment.created" && type !== "payment.updated") return `ignored ${type}`;
   const payment = event?.data?.object?.payment;
   if (!payment?.id || !payment?.order_id) return "payment without order";
@@ -128,13 +145,28 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   const order = (await squareCall(cfg, "GET", `orders/${encodeURIComponent(fresh.order_id)}`, undefined, fetchImpl))?.order;
   if (!order || order.location_id !== cfg.locationId) return "order not found for this location";
   const meta = order.metadata || {};
-  if (meta.kind !== "quest_cart") return `ignored order kind ${meta.kind || "none"}`;
+  if (meta.kind !== "quest_cart") {
+    // A membership checkout's first payment (orders we remember by id in square_checkouts).
+    return (await linkMembershipPayment(db, cfg, fresh, fetchImpl, now, onActivated)) ?? `ignored order ${order.id}`;
+  }
   const cartId = String(order.reference_id || meta.cart_id || "");
   const familyId = String(meta.family_id || "");
   if (!cartId || !familyId) return "order missing cart";
   const paid = Number(fresh.amount_money?.amount);
   if (String(fresh.amount_money?.currency || "AUD") !== "AUD") return "unexpected currency";
   return recordPaidCart(db, familyId, cartId, `sq_${fresh.id}`, "aud", cfg.production, now, paid);
+}
+
+/** New member: confirmation email to the parent and (live only) the owner alert. Never blocks activation. */
+async function notifyActivated(env: Env, info: ActivatedInfo, live: boolean) {
+  try {
+    const owner = await env.DB.prepare("SELECT email, name FROM users WHERE family_id = ? AND is_owner = 1 LIMIT 1").bind(info.familyId).first<{ email: string; name: string }>();
+    const price = LIVE_PRICE_DETAILS[info.interval];
+    if (owner?.email) await sendEmail(env, membershipActivatedEmail(owner.email, owner.name, { interval: info.interval, amountCents: price.amount_cents, nextBillingAt: info.periodEnd, testMode: !live }));
+    await sendOwnerNewMemberAlert(env.DB, env, live ? "live" : "test", { familyId: info.familyId, subscriptionId: info.subscriptionId, interval: info.interval, amountCents: price.amount_cents });
+  } catch (e: any) {
+    console.error("square membership notification failed", e?.message);
+  }
 }
 
 export function registerSquare(app: App) {
@@ -156,7 +188,7 @@ export function registerSquare(app: App) {
     if (seen?.processed_at) return c.json({ received: true, duplicate: true });
     await c.env.DB.prepare("INSERT OR IGNORE INTO square_events (id, type, received_at) VALUES (?, ?, ?)").bind(id, String(event.type || ""), new Date().toISOString()).run();
     try {
-      const outcome = await handleSquareEvent(c.env.DB, cfg, event);
+      const outcome = await handleSquareEvent(c.env.DB, cfg, event, undefined, new Date(), (info) => notifyActivated(c.env, info, cfg.production));
       await c.env.DB.prepare("UPDATE square_events SET processed_at = ?, outcome = ? WHERE id = ?").bind(new Date().toISOString(), outcome.slice(0, 300), id).run();
       console.log("square webhook", event.type, id, outcome);
       return c.json({ received: true });

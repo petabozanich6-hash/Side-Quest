@@ -81,3 +81,91 @@ test("a completed Square payment unlocks the cart once; wrong amounts and other 
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM quest_book_purchases").get().n, 1);
   assert.equal(await cartPaid(db, "fam-1", cartId), true);
 });
+
+import { startMembershipCheckout, findSquareOffer, discountPeriods, discounted, cancelMembership } from "../src/squareMembership.ts";
+import { ensureHoardSchema } from "../src/dragonHoard.ts";
+
+function fakeSquareMembership() {
+  const calls = [];
+  const state = { sub: null, payment: null, order: { id: "o-member", location_id: "LTEST123456" } };
+  let n = 0;
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status });
+  const fetchImpl = async (url, init) => {
+    const path = url.replace(/^https:\/\/[^/]+\/v2\//, "");
+    const body = init?.body ? JSON.parse(init.body) : null;
+    calls.push({ path, method: init?.method, body });
+    if (path === "catalog/object") return json({ catalog_object: { id: body.object.type === "SUBSCRIPTION_PLAN" ? "PLAN1" : `VAR${++n}` } });
+    if (path === "online-checkout/payment-links") return json({ payment_link: { url: "https://square.link/u/member", order_id: "o-member" } });
+    if (path.startsWith("payments/")) return json({ payment: state.payment });
+    if (path.startsWith("orders/")) return json({ order: state.order });
+    if (path === "subscriptions/search") return json({ subscriptions: state.sub ? [state.sub] : [] });
+    if (/^subscriptions\/[^/]+\/cancel$/.test(path)) { state.sub = { ...state.sub, canceled_date: state.sub.charged_through_date }; return json({ subscription: state.sub }); }
+    if (path.startsWith("subscriptions/")) return json({ subscription: state.sub });
+    return json({}, 404);
+  };
+  return { fetchImpl, calls, state };
+}
+
+test("Square membership: checkout creates the plan once, the first payment links the family, and the subscription grants the plan", async () => {
+  const db = makeDb();
+  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan) VALUES ('fam-m','F','u','2026-01-01','FREE_PREVIEW')").run();
+  const cfg = squareConfig(ENV);
+  const sq = fakeSquareMembership();
+  const url = await startMembershipCheckout(db, cfg, { familyId: "fam-m", interval: "monthly", offer: null, redirectUrl: "https://x/plan", fetchImpl: sq.fetchImpl });
+  assert.equal(url, "https://square.link/u/member");
+  const link = sq.calls.find((c) => c.path === "online-checkout/payment-links").body;
+  assert.equal(link.quick_pay.price_money.amount, 1300);
+  assert.ok(link.checkout_options.subscription_plan_id);
+  // Second checkout reuses the stored plan variation (no new catalog objects).
+  const before = sq.calls.filter((c) => c.path === "catalog/object").length;
+  await startMembershipCheckout(db, cfg, { familyId: "fam-m", interval: "monthly", offer: null, redirectUrl: "https://x/plan", fetchImpl: sq.fetchImpl });
+  assert.equal(sq.calls.filter((c) => c.path === "catalog/object").length, before);
+
+  // Square creates the subscription and the first payment completes.
+  sq.state.sub = { id: "SUB1", customer_id: "CUST1", location_id: "LTEST123456", plan_variation_id: link.checkout_options.subscription_plan_id, status: "ACTIVE", charged_through_date: "2026-12-08" };
+  sq.state.payment = { id: "PAY1", order_id: "o-member", customer_id: "CUST1", status: "COMPLETED", amount_money: { amount: 1300, currency: "AUD" } };
+  const activated = [];
+  const out = await handleSquareEvent(db, cfg, { type: "payment.updated", data: { object: { payment: sq.state.payment } } }, sq.fetchImpl, new Date("2026-11-08T00:00:00Z"), async (i) => { activated.push(i); });
+  assert.match(out, /synced square SUB1 -> ACTIVE_MONTHLY/);
+  const fam = db.raw.prepare("SELECT plan, plan_period_end, billing_interval, subscription_status, stripe_subscription_id FROM families WHERE id='fam-m'").get();
+  assert.equal(fam.plan, "ACTIVE_MONTHLY");
+  assert.equal(fam.billing_interval, "monthly");
+  assert.equal(fam.stripe_subscription_id, "sq:SUB1");
+  assert.ok(fam.plan_period_end > "2026-12-08");
+  assert.equal(activated.length, 1);
+
+  // Cancel: access stays until the period ends, flagged as cancelling.
+  await cancelMembership(db, cfg, "fam-m", sq.fetchImpl);
+  assert.equal(db.raw.prepare("SELECT cancel_at_period_end, plan FROM families WHERE id='fam-m'").get().cancel_at_period_end, 1);
+  assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id='fam-m'").get().plan, "ACTIVE_MONTHLY");
+
+  // A failed renewal: past due with grace; the subscription ending: cancelled.
+  await handleSquareEvent(db, cfg, { type: "invoice.scheduled_charge_failed", data: { object: { invoice: { subscription_id: "SUB1" } } } }, sq.fetchImpl);
+  assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id='fam-m'").get().plan, "PAST_DUE");
+  sq.state.sub = { ...sq.state.sub, status: "CANCELED" };
+  await handleSquareEvent(db, cfg, { type: "subscription.updated", data: { object: { subscription: { id: "SUB1" } } } }, sq.fetchImpl);
+  assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id='fam-m'").get().plan, "CANCELLED");
+});
+
+test("Square promo codes: a discounted first phase on its own plan variation, and redemption limits are enforced", async () => {
+  assert.equal(discounted(1300, 20), 1040);
+  assert.equal(discountPeriods("monthly", "month3"), 3);
+  assert.equal(discountPeriods("weekly", "month1"), 4);
+  assert.equal(discountPeriods("yearly", "month6"), 1);
+  const db = makeDb();
+  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan) VALUES ('fam-p','F','u','2026-01-01','FREE_PREVIEW')").run();
+  await ensureHoardSchema(db);
+  db.raw.prepare("INSERT INTO dragon_hoard_offers (id, mode, code, label, percent_off, duration_months, max_redemptions, expires_at, stripe_coupon_id, stripe_promotion_id, active, created_at) VALUES ('off1','test','DRAGON20','Launch',20,1,1,'2099-01-01T00:00:00Z','square','square:DRAGON20',1,'2026-01-01')").run();
+  db.raw.prepare("INSERT INTO dragon_hoard_terms (offer_id, duration_type) VALUES ('off1','once')").run();
+  const cfg = squareConfig(ENV);
+  const offer = await findSquareOffer(db, cfg, "dragon20");
+  assert.equal(offer.percent_off, 20);
+  const sq = fakeSquareMembership();
+  await startMembershipCheckout(db, cfg, { familyId: "fam-p", interval: "monthly", offer, redirectUrl: "https://x/plan", fetchImpl: sq.fetchImpl });
+  const variation = sq.calls.filter((c) => c.path === "catalog/object").at(-1).body.object.subscription_plan_variation_data;
+  assert.deepEqual(variation.phases.map((p) => [p.periods ?? null, p.pricing.price_money.amount]), [[1, 1040], [null, 1300]]);
+  assert.equal(sq.calls.find((c) => c.path === "online-checkout/payment-links").body.quick_pay.price_money.amount, 1040);
+  // Once used (paid), a one-use code is gone.
+  db.raw.prepare("UPDATE square_checkouts SET paid_at = '2026-11-08' WHERE offer_id = 'off1'").run();
+  assert.equal(await findSquareOffer(db, cfg, "DRAGON20"), null);
+});

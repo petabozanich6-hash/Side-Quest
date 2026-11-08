@@ -78,6 +78,14 @@ export default function UpgradePage() {
     }
   };
 
+  // Square memberships are managed here (Square has no hosted billing page).
+  const memberAction = async (action) => {
+    setBusy(action); setError("");
+    try { await api.post(`/billing/membership/${action}`, {}); await load(); }
+    catch (e) { setError(e?.response?.data?.detail || "Something went wrong. Please try again."); }
+    finally { setBusy(""); }
+  };
+
   if (!plan) return <div className="p-8 text-stone-500">Loading…</div>;
   const eff = plan.effective_plan;
   const billing = plan.billing || { enabled: false, options: [] };
@@ -114,10 +122,10 @@ export default function UpgradePage() {
         </section>
       )}
       {preview && plan.preview_gift && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="preview-gift-notice"><strong>🐉 A little something from the Dragon’s Hoard!</strong> You’ve been gifted {plan.preview_gift.days} extra preview day{plan.preview_gift.days === 1 ? "" : "s"}. Your free preview now runs until {day(plan.preview_gift.ends_at)}. All the usual preview limits still apply.</div>}
-      {checkout === "success" && !paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirming">Thanks! We are confirming your payment with Stripe. This usually takes a few seconds.</div>}
+      {checkout === "success" && !paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirming">Thanks! We are confirming your payment. This usually takes a few seconds.</div>}
       {checkout === "success" && paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirmed">Your Family Membership is active. Welcome!</div>}
       {checkout === "cancelled" && <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">Checkout was cancelled. Nothing was charged.</div>}
-      {eff === "PAST_DUE" && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">Your last payment did not go through. Please update your card in Manage billing{plan.period_end ? ` before ${day(plan.period_end)}` : ""} to keep full access.</div>}
+      {eff === "PAST_DUE" && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">Your last payment did not go through. {billing.provider === "square" ? "Square has emailed you an invoice you can pay with another card" : "Please update your card in Manage billing"}{plan.period_end ? ` before ${day(plan.period_end)}` : ""} to keep full access.</div>}
       {expired && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">{eff === "CANCELLED" ? "Your membership has ended." : "Your free preview has ended."} Your family account and saved records are kept. Existing lessons and records remain viewable, children may finish assigned lessons and parents can review that work. New learning records, lessons and assignments need a Family Membership.</div>}
       {error && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900" role="alert">{error}</div>}
 
@@ -127,8 +135,21 @@ export default function UpgradePage() {
           {eff !== "PAST_DUE" && plan.period_end && (
             <p className="text-sm text-stone-700">{billing.cancel_at_period_end ? `Cancelled. Full access continues until ${day(plan.period_end)}.` : `Renews on ${day(plan.period_end)}.`}</p>
           )}
-          {billing.can_manage && <button type="button" className={BTN} style={BTN_STYLE} disabled={!!busy} onClick={() => go("/billing/portal", {}, "portal")} data-testid="manage-billing">{busy === "portal" ? "Opening…" : "Manage billing"}</button>}
-          <p className="text-xs text-stone-500">Update your card, see invoices or cancel. Cancelling keeps access until the end of the period you have paid for.</p>
+          {billing.provider === "square" ? (billing.can_manage && (
+            <>
+              <div className="flex flex-wrap gap-2">
+                {billing.cancel_at_period_end
+                  ? <button type="button" className={BTN} style={BTN_STYLE} disabled={!!busy} onClick={() => memberAction("keep")} data-testid="keep-membership">{busy === "keep" ? "Saving…" : "Keep my membership"}</button>
+                  : <button type="button" className="rounded-xl px-4 py-2 text-sm font-bold border border-stone-400 text-stone-800 disabled:opacity-60" disabled={!!busy} onClick={() => { if (window.confirm("Cancel your Family Membership? You keep full access until the end of the period you've paid for.")) memberAction("cancel"); }} data-testid="cancel-membership">{busy === "cancel" ? "Cancelling…" : "Cancel membership"}</button>}
+              </div>
+              <p className="text-xs text-stone-500">Payments are handled securely by Square. Cancelling keeps access until the end of the period you've paid for. Receipts come from Square by email. To change how often you pay, cancel and choose a new option once this one ends.</p>
+            </>
+          )) : (
+            <>
+              {billing.can_manage && <button type="button" className={BTN} style={BTN_STYLE} disabled={!!busy} onClick={() => go("/billing/portal", {}, "portal")} data-testid="manage-billing">{busy === "portal" ? "Opening…" : "Manage billing"}</button>}
+              <p className="text-xs text-stone-500">Update your card, see invoices or cancel. Cancelling keeps access until the end of the period you have paid for.</p>
+            </>
+          )}
         </div>
       )}
 

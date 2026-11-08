@@ -14,6 +14,8 @@ import { sendOwnerNewMemberAlert } from "./ownerNotifications";
 import { resolveHoardDiscount, previewHoardDiscount } from "./dragonHoard";
 import { recordQuestBookPurchase } from "./questBookPurchases";
 import type { Plan } from "./entitlements";
+import { squareConfig } from "./square";
+import { membershipOptions, findSquareOffer, startMembershipCheckout, membershipFor, cancelMembership, keepMembership, squareRenewing } from "./squareMembership";
 import type { App, Env, Guards } from "./types";
 
 type DB = D1Database;
@@ -51,7 +53,7 @@ const LIVE_PRICE_VARS = {
   monthly: "STRIPE_LIVE_PRICE_MONTHLY",
   yearly: "STRIPE_LIVE_PRICE_YEARLY",
 } as const;
-const LIVE_PRICE_DETAILS: Record<Interval, Omit<PriceInfo, "interval" | "price">> = {
+export const LIVE_PRICE_DETAILS: Record<Interval, Omit<PriceInfo, "interval" | "price">> = {
   weekly: { amount_cents: 300, label: "Weekly", every: "per week" },
   fortnightly: { amount_cents: 600, label: "Fortnightly", every: "every 2 weeks" },
   monthly: { amount_cents: 1300, label: "Monthly", every: "per month" },
@@ -400,6 +402,20 @@ export async function handleEvent(
 // ---------------------------------------------------------------- summary for the upgrade page
 
 export async function billingSummary(db: DB, env: Env, familyId: string) {
+  const sq = squareConfig(env);
+  if (sq.ok) {
+    let row: any = null;
+    try { row = await db.prepare("SELECT billing_interval, subscription_status, cancel_at_period_end FROM families WHERE id = ?").bind(familyId).first<any>(); } catch { row = null; }
+    const m = await membershipFor(db, familyId).catch(() => null);
+    return {
+      enabled: true, provider: "square", mode: sq.production ? "live" : "test",
+      options: membershipOptions(),
+      interval: row?.billing_interval ?? null,
+      subscription_status: row?.subscription_status ?? null,
+      cancel_at_period_end: !!row?.cancel_at_period_end,
+      can_manage: !!m?.subscription_id,
+    };
+  }
   const cfg = billingConfig(env);
   let row: any = null;
   try {
@@ -443,6 +459,12 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
     if (!code || code.length > 24) return c.json({ valid: false, message: "Enter a Dragon's Hoard code." }, 400);
     try {
       c.header("Cache-Control", "no-store");
+      const sq = squareConfig(c.env);
+      if (sq.ok) {
+        const offer = await findSquareOffer(c.env.DB, sq, code);
+        return c.json(offer ? { valid: true, code: offer.code, percent_off: offer.percent_off, duration_type: offer.duration_type }
+          : { valid: false, message: "This code isn't currently available. Check the spelling or try another." });
+      }
       return c.json(await previewHoardDiscount(c.env.DB, c.env, code, fetchImpl));
     } catch {
       return c.json({ valid: false, message: "We couldn't check this code right now. Try again shortly." }, 503);
@@ -452,6 +474,33 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
   // Start a subscription. Body: { interval: "weekly" | "fortnightly" | "monthly" | "yearly", promo_code?: string }.
   // Promotion IDs come exclusively from active, mode-scoped Dragon\u2019s Hoard records on the server.
   app.post("/api/billing/checkout", auth, parent, async (c) => {
+    const sq = squareConfig(c.env);
+    if (sq.ok) {
+      const body: any = await c.req.json().catch(() => ({}));
+      const interval = String(body?.interval || "") as Interval;
+      if (!INTERVALS.includes(interval)) return c.json({ detail: "Choose weekly, fortnightly, monthly or yearly." }, 400);
+      const promo = typeof body?.promo_code === "string" ? body.promo_code.trim().toUpperCase() : "";
+      if (promo.length > 24) return c.json({ detail: "Enter a valid Dragon\u2019s Hoard code." }, 400);
+      const u = c.get("user");
+      const fam = await c.env.DB.prepare("SELECT id, plan, subscription_status FROM families WHERE id = ?").bind(u.family_id).first<any>();
+      if (!fam) return c.json({ detail: "Family not found" }, 404);
+      if (fam.plan === "INTERNAL") return c.json({ detail: "This early-access family already has full access. Use a separate test family to try checkout.", code: "INTERNAL_FAMILY" }, 409);
+      const existing = await membershipFor(c.env.DB, u.family_id).catch(() => null);
+      if (ACTIVE_PLANS.includes(fam.plan) || (existing?.subscription_id && existing.status === "ACTIVE")) {
+        return c.json({ detail: "You already have a Family Membership. Use Manage membership to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
+      }
+      const offer = promo ? await findSquareOffer(c.env.DB, sq, promo) : null;
+      if (promo && !offer) return c.json({ detail: "This Dragon\u2019s Hoard code is invalid, inactive or expired." }, 400);
+      try {
+        const parentRow = await c.env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(u.id).first<{ email: string }>();
+        const url = await startMembershipCheckout(c.env.DB, sq, { familyId: u.family_id, email: parentRow?.email, interval, offer,
+          redirectUrl: `${appOrigin(c.env, c.req.url)}/parent/plan?checkout=success`, fetchImpl });
+        return c.json({ url });
+      } catch (e: any) {
+        console.error("square membership checkout failed", e?.message);
+        return c.json({ detail: "Could not start checkout. Please try again." }, 502);
+      }
+    }
     const cfg = billingConfig(c.env);
     if (!cfg.ok) return c.json(notConfigured(cfg.reason), 503);
     const body = await c.req.json().catch(() => ({}));
@@ -549,6 +598,8 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
 
   // Stripe Customer Portal: update card, view invoices, cancel (configured in Stripe to cancel at period end).
   app.post("/api/billing/portal", auth, parent, async (c) => {
+    // Square has no hosted portal: members manage their membership on Side-Quest's own page.
+    if (squareConfig(c.env).ok) return c.json({ url: `${appOrigin(c.env, c.req.url)}/parent/plan?manage=1` });
     const cfg = billingConfig(c.env);
     if (!cfg.ok) return c.json(notConfigured(cfg.reason), 503);
     const fam = await c.env.DB.prepare("SELECT stripe_customer_id FROM families WHERE id = ?").bind(c.get("user").family_id).first<{ stripe_customer_id: string | null }>();
@@ -562,6 +613,30 @@ export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: 
     } catch (e: any) {
       console.error("billing portal failed", e?.message);
       return c.json({ detail: "Could not open billing. Please try again." }, 502);
+    }
+  });
+
+  // Square membership: what the family has, cancel at period end, or keep it after cancelling.
+  app.get("/api/billing/membership", auth, parent, async (c) => {
+    const sq = squareConfig(c.env);
+    if (!sq.ok) return c.json({ provider: "stripe" });
+    const m = await membershipFor(c.env.DB, c.get("user").family_id).catch(() => null);
+    c.header("Cache-Control", "no-store");
+    return c.json({ provider: "square", has: !!m?.subscription_id, interval: m?.interval ?? null, status: m?.status ?? null,
+      next_charge: m?.canceled_date ? null : m?.charged_through ?? null, ends_on: m?.canceled_date ?? null,
+      options: membershipOptions() });
+  });
+  app.post("/api/billing/membership/:action", auth, parent, async (c) => {
+    const sq = squareConfig(c.env);
+    if (!sq.ok) return c.json(notConfigured("Square is not configured"), 503);
+    const action = c.req.param("action");
+    if (action !== "cancel" && action !== "keep") return c.json({ detail: "Unknown action" }, 400);
+    try {
+      const outcome = action === "cancel" ? await cancelMembership(c.env.DB, sq, c.get("user").family_id, fetchImpl) : await keepMembership(c.env.DB, sq, c.get("user").family_id, fetchImpl);
+      return c.json({ ok: true, outcome });
+    } catch (e: any) {
+      console.error("square membership action failed", action, e?.message);
+      return c.json({ detail: action === "cancel" ? "Could not cancel just now. Please try again." : "Could not keep your membership just now. Please try again." }, 502);
     }
   });
 
@@ -623,6 +698,9 @@ const renews = (s: any) => !NOT_RENEWING.has(String(s?.status || "")) && !(s?.ca
  * Returns null when deletion may go ahead.
  */
 export async function deletionBillingBlock(db: DB, env: Env, familyId: string, fetchImpl?: Fetch): Promise<DeletionBlock | null> {
+  if (await squareRenewing(db, familyId)) {
+    return { status: 409, code: "SUBSCRIPTION_RENEWING", detail: "Your Family Membership is still set to renew. Cancel it in Manage membership first (you keep access until the paid period ends), then delete your account." };
+  }
   let row: { stripe_customer_id: string | null; subscription_status: string | null; cancel_at_period_end: number | null } | null = null;
   try {
     row = await db.prepare("SELECT stripe_customer_id, subscription_status, cancel_at_period_end FROM families WHERE id = ?")
@@ -664,7 +742,7 @@ export async function reconcileSubscriptions(db: DB, env: Env, fetchImpl?: Fetch
   try {
     ({ results: rows } = await db.prepare(
       `SELECT id, stripe_subscription_id FROM families
-       WHERE stripe_subscription_id IS NOT NULL AND COALESCE(plan, '') != 'INTERNAL'
+       WHERE stripe_subscription_id IS NOT NULL AND stripe_subscription_id NOT LIKE 'sq:%' AND COALESCE(plan, '') != 'INTERNAL'
          AND COALESCE(subscription_status, '') NOT IN ('canceled', 'incomplete_expired')
          AND (plan_period_end IS NULL OR plan_period_end < ?)
          AND (billing_updated_at IS NULL OR billing_updated_at < ?)
