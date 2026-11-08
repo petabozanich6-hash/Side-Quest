@@ -326,7 +326,7 @@ async function ownerProducts(env: Env) {
 
 async function saveVariants(db: DB, productId: string, variants: any[]) {
   const stmts = [db.prepare("DELETE FROM shop_variants WHERE product_id = ?").bind(productId)];
-  for (const v of variants) stmts.push(db.prepare("INSERT INTO shop_variants (id, product_id, name, sku, price_cents, stock, active, sort, book_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(v.id, productId, v.name, v.sku, v.price_cents, v.stock, v.active, v.sort, v.book_id ?? null));
+  for (const v of variants) stmts.push(db.prepare("INSERT INTO shop_variants (id, product_id, name, sku, price_cents, stock, active, sort, book_id, details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(v.id, productId, v.name, v.sku, v.price_cents, v.stock, v.active, v.sort, v.book_id ?? null, v.details ?? ""));
   await db.batch(stmts);
 }
 

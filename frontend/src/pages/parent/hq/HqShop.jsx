@@ -215,7 +215,7 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
     ...f, tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
     price_cents: priceCents, wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage),
     preorder_closes_at: f.preorder_closes_at ? new Date(`${f.preorder_closes_at}T23:59:00`).toISOString() : null,
-    variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id })),
+    variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id, details: v.details || "" })),
   });
   const save = async (thenNext) => {
     setBusy(true); setErr("");
@@ -279,9 +279,13 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <label className="font-semibold">{kind.monthly ? "Per month ($)" : "Sale price ($)"}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} data-testid="hq-shop-price" /></label>
             {f.fulfilment !== "digital" && <label className="font-semibold">Your cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>}
-            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">Postage is calculated at checkout using Australia Post Parcel Post, not entered here.</div>}}
+            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">Postage is calculated at checkout using Australia Post Parcel Post, not entered here.</div>}
           </div>
           {priceCents != null && <p className="text-xs text-stone-600">Square fee {money(fee)} · you keep {money(priceCents - fee - (toCents(f.wholesale) || 0))}{f.fulfilment !== "digital" && f.wholesale === "" ? " before your cost" : ""}</p>}
+          {!f.variants.some((v) => /basic|full/i.test(v.name)) && (
+            <button type="button" onClick={() => set("variants", [...f.variants, { name: "Basics", price: f.price, stock: "", active: true, details: "" }, { name: "Full package", price: "", stock: "", active: true, details: "" }])}
+              className="text-xs font-semibold underline" style={{ color: GREEN }} data-testid="hq-shop-add-tiers">+ Offer two tiers (Basics and Full package)</button>
+          )}
         </Section>
 
         {kind.posted && (
@@ -314,7 +318,7 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
         )}
 
         {(f.variants.length > 0 || product.prints_books) && (
-          <Section title={product.prints_books ? "Which books" : "Options"} hint="Leave an option's price blank to use the main price.">
+          <Section title={product.prints_books ? "Which books" : "Options and tiers"} hint="Each option can have its own price and its own list of what's included. Leave a price blank to use the main price.">
             {f.variants.map((v, i) => (
               <div key={v.id || i} className="flex flex-wrap gap-2 items-center">
                 <input value={v.name} onChange={(e) => setVar(i, "name", e.target.value)} aria-label="Option name" className="rounded-xl border border-stone-300 px-2 py-1 flex-1 min-w-[140px]" />
@@ -322,10 +326,11 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
                 {kind.stock && <input type="number" min={0} value={v.stock ?? ""} onChange={(e) => setVar(i, "stock", e.target.value)} placeholder="Stock" aria-label="Option stock" className="rounded-xl border border-stone-300 px-2 py-1 w-20" />}
                 <label className="flex items-center gap-1"><input type="checkbox" checked={v.active !== false} onChange={(e) => setVar(i, "active", e.target.checked)} />On</label>
                 <button type="button" className="text-rose-700" aria-label="Remove option" onClick={() => set("variants", f.variants.filter((_, j) => j !== i))}>✕</button>
+                {!product.prints_books && <textarea rows={2} value={v.details || ""} onChange={(e) => setVar(i, "details", e.target.value)} placeholder="What's included in this option (optional, one item per line)" aria-label={`What's included in ${v.name || "this option"}`} className="w-full rounded-xl border border-stone-300 px-2 py-1 text-xs" />}
               </div>
             ))}
             <div className="flex flex-wrap gap-2">
-              <Button tone="plain" onClick={() => set("variants", [...f.variants, { name: "", price: "", stock: "", active: true }])}>Add option</Button>
+              <Button tone="plain" onClick={() => set("variants", [...f.variants, { name: "", price: "", stock: "", active: true, details: "" }])}>Add option</Button>
               {product.prints_books && !isNew && <Button tone="plain" disabled={busy} onClick={addBooks}>Add every Quest Book</Button>}
             </div>
           </Section>
