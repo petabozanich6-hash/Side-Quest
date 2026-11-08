@@ -1090,6 +1090,17 @@ test("AI refinement retries a no-op once and saves a genuinely changed field", a
   assert.equal(lb.lessonOut(await lb.ownLesson(db, fam, id)).support, improved);
 });
 
+test("refinement normalisation keeps quiz options and answer index in exactly the original order", () => {
+  const spec = { topic: "Place value", area: "Mathematics", year: "Year 3", goal: "",
+    minutes: 45, delivery: "independent", interests: "", needs: "", notes: "" };
+  const source = { title: "Place value", quiz: [
+    { question: "Which number is greatest?", options: ["18", "81", "11", "8"], correct_index: 1, explanation: "81 has 8 tens." },
+    { question: "What is 2 + 3?", options: ["4", "6", "5", "7"], correct_index: 2, explanation: "2 plus 3 is 5." },
+  ] };
+  const unchanged = aid.normaliseDraft(source, spec, { shuffleQuiz: false });
+  assert.deepEqual(unchanged.quiz, source.quiz, "refining unrelated fields must not shuffle correct existing answers");
+});
+
 test("unchanged AI patches do not consume allowance or shuffle a correct quiz", async () => {
   const db = makeDb();
   const fam = seed(db, { plan: "ACTIVE_MONTHLY" });
