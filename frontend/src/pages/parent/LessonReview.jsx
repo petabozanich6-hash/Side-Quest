@@ -229,6 +229,8 @@ export default function LessonReview() {
   const [refinePart, setRefinePart] = useState("");
   const [refineAutoStart, setRefineAutoStart] = useState(false);
   const [refineRequest, setRefineRequest] = useState(0);
+  const [bulkRepair, setBulkRepair] = useState(null);
+  const bulkRepairStop = useRef(false);
   const [assign, setAssign] = useState(null);
   const [busy, setBusy] = useState(false);
   const load = useCallback(() => { setLesson(null); setErr(""); setAssign(null); setRefine(false); return api.get(`/lessons/${id}`).then(r => setLesson(r.data)).catch(e => setErr(e.response?.data?.detail || "Could not open this lesson")); }, [id]);
@@ -287,6 +289,93 @@ export default function LessonReview() {
     } catch (e) { toast.error(apiErrorMessage(e, e.message || "Could not save to the book plan"), { duration: 9000 }); }
     finally { setBusy(false); }
   };
+  // A mistaken approval must be reversible and must never vanish from the
+  // repair queue just because the AI flags were cleared on approval.
+  const markBookNeedsRepair = async () => {
+    if (!bookId || !chapterId || !lesson) return;
+    const reason = window.prompt("What needs repairing in this lesson? (optional, but helps AI fix the actual mistake)", "");
+    if (reason === null) return;
+    setBusy(true);
+    try {
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
+        { lesson_id: id, approved: false, needs_repair: true, repair_note: reason.trim(),
+          expected_version: Number(lesson.version) });
+      const [fresh, confirmed] = await Promise.all([
+        api.get(`/lessons/${id}`, { params: { _: Date.now() } }),
+        refreshBookPlan(),
+      ]);
+      const draft = confirmed?.chapters?.find((ch) => ch.id === chapterId)?.draft;
+      if (!draft || draft.reviewed || !draft.repair_requested || draft.status !== "draft")
+        throw new Error("Could not verify that this lesson was returned to Needs Repair.");
+      setLesson(fresh.data);
+      toast.success("Returned to Needs Repair. It will stay in the unfinished lessons list until you approve it again.");
+    } catch (e) {
+      toast.error(apiErrorMessage(e, "Could not mark the lesson as needing repair"), { duration: 9000 });
+    } finally { setBusy(false); }
+  };
+
+  // One click: work through multiple saved AI warnings and content checks,
+  // automatically save each verified patch and re-check newly surfaced issues.
+  // A bounded sequence prevents recursive repair loops; approval is NEVER automatic.
+  const fixAllBookIssues = async () => {
+    if (!bookId || !chapterId || !lesson || bulkRepair?.running || busy) return;
+    bulkRepairStop.current = false;
+    setRefine(false);
+    const maxPasses = 4;
+    let version = Number(lesson.version);
+    let savedPasses = 0;
+    let remaining = [];
+    let stoppedBecause = "";
+    const seen = new Set();
+    setBulkRepair({ running: true, pass: 1, maxPasses, savedPasses: 0, remaining: null, error: "" });
+    try {
+      for (let pass = 1; pass <= maxPasses; pass++) {
+        if (bulkRepairStop.current) { stoppedBecause = "Stopped after the last saved repair."; break; }
+        setBulkRepair({ running: true, pass, maxPasses, savedPasses, remaining: remaining.length || null, error: "" });
+        const result = await api.post(
+          `/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/repair-pass`,
+          { lesson_id: id, expected_version: version }, { timeout: 120000 });
+        if (!result.data?.ok) throw new Error("The repair could not be verified.");
+        version = Number(result.data.version);
+        remaining = Array.isArray(result.data.remaining) ? result.data.remaining : [];
+        if (!result.data.changed) break;
+        savedPasses++;
+        setBulkRepair({ running: true, pass, maxPasses, savedPasses, remaining: remaining.length, error: "" });
+        if (!remaining.length) break;
+        const fingerprint = [...remaining].sort().join(" | ");
+        if (seen.has(fingerprint)) {
+          stoppedBecause = "The same warnings keep recurring. The remaining issues need closer inspection.";
+          break;
+        }
+        seen.add(fingerprint);
+      }
+      if (remaining.length && savedPasses === maxPasses && !stoppedBecause)
+        stoppedBecause = "Reached the repair limit for this run. Remaining issues are listed below.";
+      const [fresh, confirmed] = await Promise.all([
+        api.get(`/lessons/${id}`, { params: { _: Date.now() } }),
+        refreshBookPlan(),
+      ]);
+      const current = confirmed?.chapters?.find((ch) => ch.id === chapterId)?.draft;
+      if (current?.lesson_id !== id || Number(current.version) !== Number(fresh.data.version) || !current.saved_to_plan && savedPasses)
+        throw new Error("Repairs were saved but the Book Plan could not be fully verified. Reload before continuing.");
+      setLesson(fresh.data);
+      setBulkRepair({ running: false, savedPasses, remaining, error: stoppedBecause,
+        ownerRecheck: current?.repair_requested === true });
+      if (!remaining.length)
+        toast.success(`AI repairs saved (${savedPasses} pass${savedPasses === 1 ? "" : "es"}). Review the lesson, then approve it yourself.`);
+      else toast.warning(`${savedPasses} repair pass${savedPasses === 1 ? "" : "es"} saved; ${remaining.length} issue${remaining.length === 1 ? "" : "s"} still need attention.`, { duration: 9000 });
+    } catch (e) {
+      const message = apiErrorMessage(e, "The AI could not complete all corrections.");
+      // A failed later pass must never hide successful changes from earlier passes.
+      try {
+        const [fresh] = await Promise.all([api.get(`/lessons/${id}`, { params: { _: Date.now() } }), refreshBookPlan()]);
+        setLesson(fresh.data);
+      } catch { /* The server may be temporarily unavailable; user can reload. */ }
+      setBulkRepair({ running: false, savedPasses, remaining, error: message });
+      toast.error(message, { duration: 9000 });
+    }
+  };
+
   const approveBook = async () => {
     if (!bookId || !chapterId || !currentBookEntry) { toast.error("Could not verify which book lesson you are reviewing."); return; }
     setBusy(true);
@@ -323,6 +412,9 @@ export default function LessonReview() {
   // Generator navigation may carry one-time warnings from an OLDER draft.
   // The saved lesson's flags are authoritative after AI or manual edits.
   const flags = Array.isArray(lesson.ai_flags) ? lesson.ai_flags : (info.warnings || []);
+  const bulkRepairRunning = !!bulkRepair?.running;
+  const hasRepairIssues = flags.length > 0 || bookQualityIssues.length > 0 ||
+    currentBookEntry?.draft?.repair_requested === true;
   const btn = "rounded-full px-5 py-2.5 text-sm font-semibold flex items-center gap-2 disabled:opacity-50";
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-4 max-w-5xl" data-testid="lesson-review">
@@ -357,19 +449,51 @@ export default function LessonReview() {
           <b>AI-generated draft.</b> Have a read before your child sees it. It has not been checked against any curriculum, and it can make mistakes.
         </p>
       )}
+      {bookId && chapterId && lesson.ai_generated && lesson.status === "draft" && (hasRepairIssues || bulkRepair) && (
+        <div className="rounded-xl border border-violet-300 bg-violet-50 p-4 space-y-2 scroll-mt-24" data-testid="book-fix-all-panel">
+          <div className="flex flex-wrap gap-3 items-center justify-between">
+            <div>
+              <p className="text-sm font-bold text-violet-950">Fix all lesson issues with AI</p>
+              <p className="text-xs text-violet-900">AI works through all known issues, saves each verified correction to the Book Plan and rechecks the lesson. It may take several passes. It will NOT approve or publish the lesson.</p>
+            </div>
+            <button type="button" disabled={bulkRepairRunning || !!busy || !hasRepairIssues}
+              onClick={fixAllBookIssues}
+              className="inline-flex items-center gap-2 rounded-lg bg-violet-800 px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+              data-testid="book-fix-all-ai"><Sparkles size={15} />
+              {bulkRepairRunning ? "Fixing all issues…" : "Fix ALL issues with AI"}
+            </button>
+          </div>
+          {currentBookEntry?.draft?.repair_requested && <p className="text-xs font-semibold text-amber-900">
+            You marked this lesson as needing repair: {currentBookEntry.draft.repair_note || "Owner review requested"}.
+            It stays in Needs Repair until you approve it after checking the result.
+          </p>}
+          {bulkRepairRunning && <div role="status" className="text-sm text-violet-900" data-testid="book-fix-all-progress">
+            Pass {bulkRepair.pass} of {bulkRepair.maxPasses} · {bulkRepair.savedPasses} saved · {bulkRepair.remaining ?? "checking"} outstanding issues
+            <button type="button" onClick={() => { bulkRepairStop.current = true; }}
+              className="ml-3 font-bold underline">Stop after current fix</button>
+          </div>}
+          {bulkRepair && !bulkRepairRunning && <div role="status" className="text-sm text-violet-950" data-testid="book-fix-all-summary">
+            {bulkRepair.savedPasses} correction pass{bulkRepair.savedPasses === 1 ? "" : "es"} saved.
+            {bulkRepair.remaining?.length ? ` ${bulkRepair.remaining.length} issue(s) remain:` : " No remaining automatically detected issues."}
+            {bulkRepair.remaining?.length > 0 && <ul className="list-disc pl-5 mt-1">{bulkRepair.remaining.map((item, i) => <li key={i}>{item}</li>)}</ul>}
+            {bulkRepair.error && <p className="mt-1 text-amber-900">{bulkRepair.error}</p>}
+            <p className="text-xs mt-1">Review the saved lesson before approving. AI checks cannot guarantee every answer is correct.</p>
+          </div>}
+        </div>
+      )}
       {flags.length > 0 && lesson.status !== "ready" && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
           <b>Worth a look:</b>
           <ul className="list-disc pl-5 mt-1 space-y-2">
             {flags.map((x, i) => <li key={i}>
               <span>{x}</span>{" "}
-              <button type="button" className="inline-flex items-center rounded-md border border-violet-500 bg-white px-2 py-1 text-xs font-semibold text-violet-900 hover:bg-violet-100"
+              <button type="button" disabled={bulkRepairRunning} className="inline-flex items-center rounded-md border border-violet-500 bg-white px-2 py-1 text-xs font-semibold text-violet-900 hover:bg-violet-100 disabled:opacity-50"
                 data-testid={`r-fix-warning-${i}`} onClick={() => {
                   startRepair(`Fix this specific quality problem in my saved lesson: ${x.slice(0, 390)}. Make a substantive change to the actual teaching, examples, or questions so the problem is resolved. Preserve everything else.`);
                 }}><Sparkles size={12} className="inline mr-1" /> Fix this with AI</button>
             </li>)}
           </ul>
-          <p className="text-xs mt-2">Repair one issue at a time, review the proposed changes, then save. Remaining warnings update from the saved lesson.</p>
+          <p className="text-xs mt-2">Use Fix ALL issues above to repair the warnings together, or choose an individual fix when needed.</p>
         </div>
       )}
 
@@ -380,14 +504,14 @@ export default function LessonReview() {
           <ul className="list-disc pl-5 text-sm text-amber-950 space-y-2">
             {bookQualityIssues.map((issue) => <li key={issue}>
               <span>{issue}</span>{" "}
-              <button type="button" onClick={() => fixBookIssue(issue)}
+              <button type="button" disabled={bulkRepairRunning} onClick={() => fixBookIssue(issue)}
                 data-testid={issue === "two complete teaching explanations" ? "book-fix-explanations" : "book-fix-issue"}
                 className="inline-flex items-center gap-1 rounded-lg border border-violet-500 bg-white px-2 py-1 text-xs font-bold text-violet-900 hover:bg-violet-50">
                 <Sparkles size={12} /> Fix with AI
               </button>
             </li>)}
           </ul>
-          <p className="text-xs text-amber-900">Choose Fix with AI beside an issue. The repair starts immediately and brings the proposed change into view. You decide whether to save it. Approval remains blocked until the saved lesson meets the checks.</p>
+          <p className="text-xs text-amber-900">Use Fix ALL issues above, or target one requirement with its Fix with AI button. Approval remains blocked until the saved lesson meets the checks.</p>
         </div>
       )}
       {refine && <RefinePanel key={`${id}-${refineRequest}`} lessonId={id} initialInstruction={refineInstruction} initialPart={refinePart}
@@ -398,7 +522,7 @@ export default function LessonReview() {
         onClose={() => setRefine(false)} />}
       <div className="sticky top-0 z-20 -mx-1 px-1 py-2 bg-[#F5EFE0]/95 backdrop-blur flex flex-wrap gap-2" data-testid="review-actions">
         {bookId
-          ? <button disabled={busy || !currentBookEntry || currentBookEntry?.draft?.stale || lesson.quest_book_id !== bookId || lesson.quest_chapter_id !== chapterId}
+          ? <button disabled={busy || bulkRepairRunning || !currentBookEntry || currentBookEntry?.draft?.stale || lesson.quest_book_id !== bookId || lesson.quest_chapter_id !== chapterId}
               onClick={currentBookEntry?.draft?.reviewed ? () => nav(nextBookEntry ? bookLessonUrl(nextBookEntry) : bookHome) : approveBook}
               className={`${btn} bg-emerald-700 text-white`} data-testid="r-book-approve">
               <CheckCircle2 size={16} />
@@ -407,11 +531,14 @@ export default function LessonReview() {
           : slot
           ? <button disabled={busy} onClick={putInSlot} className={`${btn} bg-emerald-700 text-white`} data-testid="r-week-assign"><CalendarCheck size={16} /> Looks good — add to {slotLabel(slot.date, startOf(slot))} ({slot.learning_area})</button>
           : <button disabled={busy} onClick={approve} className={`${btn} bg-emerald-700 text-white`} data-testid="r-assign"><CheckCircle2 size={16} /> Looks Good — Assign</button>}
-        {bookId && <button disabled={busy || !currentBookEntry || currentBookEntry.draft?.saved_to_plan} onClick={saveToBookPlan}
+        {bookId && currentBookEntry?.draft?.reviewed && <button type="button" disabled={busy || bulkRepairRunning}
+          onClick={markBookNeedsRepair} className={`${btn} border border-amber-600 bg-amber-50 text-amber-950`}
+          data-testid="r-book-needs-repair">Mark as Needs Repair</button>}
+        {bookId && <button disabled={busy || bulkRepairRunning || !currentBookEntry || currentBookEntry.draft?.saved_to_plan} onClick={saveToBookPlan}
           className={`${btn} border border-emerald-700 bg-white text-emerald-900`} data-testid="r-save-book-plan">
           <Bookmark size={16} /> {currentBookEntry?.draft?.saved_to_plan ? "Saved to Book Plan ✓" : "Save to Book Plan"}
         </button>}
-        <button onClick={() => { setRefineInstruction(""); setRefinePart(""); setRefineAutoStart(false); setRefineRequest((n) => n + 1); setRefine(r => !r); }} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
+        <button disabled={bulkRepairRunning} onClick={() => { setRefineInstruction(""); setRefinePart(""); setRefineAutoStart(false); setRefineRequest((n) => n + 1); setRefine(r => !r); }} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
         <button onClick={() => nav(`/parent/lessons/${id}/edit${batchId ? `?batch=${batchId}` : week ? `?week=${week}&child=${weekChild}` : bookQuery}`)} className={`${btn} border border-slate-900 bg-white`} data-testid="r-edit"><Pencil size={16} /> Edit Manually</button>
         <button onClick={() => { if (!bookId) toast.success(batchId ? "Kept as a draft with the rest of this set" : week ? "Kept as a draft in its timetable slot" : "Saved in your lessons as a draft"); nav(home); }} className={`${btn} border border-slate-400 bg-white`} data-testid="r-later"><Bookmark size={16} /> {bookId ? "Back to book" : "Save for Later"}</button>
         <LessonPrintActions lessonId={id} compact studentTestId="r-print" parentTestId="r-print-parent" />

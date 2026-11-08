@@ -25,7 +25,8 @@ import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
 import { codesForAllFrameworks, lessonYears, poolFor, suggestFromCatalogue, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
-import { draftLessonWithAi, DEFAULT_MODEL } from "./aiDraft";
+import { draftLessonWithAi, refineLessonWithAi, applyLessonPatch, DEFAULT_MODEL } from "./aiDraft";
+import { planBookAiRepair } from "./questBookRepairs";
 import { validatePlanRequest, suggestBookSubsections } from "./questBookSubsections";
 import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 
@@ -1204,7 +1205,9 @@ export function registerQuestBooks(app: App, g: Guards) {
         quality_issues: issues,
         // An AI-clear lesson is eligible for a separate owner-confirmed fast approval.
         // Never infer "clear" from missing AI flags or from the browser checkbox.
-        ai_cleared: data.ai_generated === true && !flagged && issues.length === 0,
+        ai_cleared: data.ai_generated === true && !flagged && issues.length === 0 && data.book_repair_requested !== true,
+        repair_requested: data.book_repair_requested === true,
+        repair_note: data.book_repair_requested === true ? String(data.book_repair_note || "").slice(0, 420) : "",
         ai_warning_count: Array.isArray(data.ai_flags) ? data.ai_flags.length : null,
         version: r.version, reviewed_at: r.reviewed_at,
         plan_saved_at: r.plan_saved_at,
@@ -1266,6 +1269,7 @@ export function registerQuestBooks(app: App, g: Guards) {
       }
       if (row.status !== "draft" && row.status !== "ready") { skip("The lesson has an unsupported status."); continue; }
       if (saved.ai_generated !== true || !Array.isArray(saved.ai_flags)) { skip("This lesson has no verified AI quality-check result."); continue; }
+      if (saved.book_repair_requested === true) { skip("The owner marked this lesson as needing repair."); continue; }
       if (saved.ai_flags.length) { skip("The AI flagged issues that need attention."); continue; }
       const issues = companionLessonIssues(saved);
       if (issues.length) { skip(`Missing required content: ${issues.join("; ")}`); continue; }
@@ -1345,6 +1349,30 @@ export function registerQuestBooks(app: App, g: Guards) {
       return c.json({ detail: "Only this book's original companion lesson may be reviewed here." }, 403);
     if (data.quest_source_revision !== chapterRevision(chapter))
       return c.json({ detail: "The workbook source changed. Regenerate and review the lesson first." }, 409);
+    // If a previously approved lesson contains an error, return the exact
+    // saved version to the repair queue without deleting any teaching content.
+    // A written note is optional but helps the AI find a problem automatic
+    // quality checks cannot detect (e.g. an incorrect answer).
+    if (!body.approved && body.needs_repair === true) {
+      if (row.status !== "draft" && row.status !== "ready")
+        return c.json({ detail: "Only an editable working lesson can be returned to repair." }, 409);
+      const note = typeof body.repair_note === "string" ? body.repair_note.trim().slice(0, 420) : "";
+      data.book_repair_requested = true;
+      data.book_repair_note = note || "Check this lesson for the error I spotted, especially teaching examples and answer keys.";
+      data.book_repair_ai_attempted = false;
+      if (data.ai_generated === true) data.review_status = "ai_draft_needs_review";
+      delete data.book_reviewed_version;
+      delete data.book_reviewed_at;
+      delete data.book_reviewed_by;
+      const now = new Date().toISOString();
+      const updated = await c.env.DB.prepare(`UPDATE lessons SET status = 'draft', data = ?, updated_at = ?
+        WHERE id = ? AND family_id = ? AND version = ? AND status = ? AND data = ? AND archived_at IS NULL`)
+        .bind(JSON.stringify(data), now, row.id, user.family_id, row.version, row.status, row.data).run();
+      if (!updated.meta?.changes)
+        return c.json({ detail: "The lesson changed while it was being returned to repair. Reload and retry." }, 409);
+      c.header("Cache-Control", "no-store");
+      return c.json({ ok: true, reviewed: false, needs_repair: true, status: "draft", version: row.version });
+    }
     // Explicit owner review confirmation can promote an already-checked draft to
     // Ready while approving that exact saved version. This is never automatic.
     const confirmCheckedDraft = body.approved === true && body.complete_review === true;
@@ -1359,6 +1387,10 @@ export function registerQuestBooks(app: App, g: Guards) {
         data.review_status = "parent_reviewed";
         data.ai_flags = [];
       }
+      // Only the owner's explicit review can clear a manually flagged error.
+      delete data.book_repair_requested;
+      delete data.book_repair_note;
+      delete data.book_repair_ai_attempted;
       // Approving a saved lesson also links that exact version to the book plan.
       // Commit both flags in one UPDATE so a successful approval cannot leave
       // the lesson in a "reviewed but not saved to plan" state.
@@ -1386,6 +1418,82 @@ export function registerQuestBooks(app: App, g: Guards) {
     return c.json({ ok: true, reviewed: body.approved, reviewed_at: data.book_reviewed_at || null,
       saved_to_plan: Number(data.book_plan_saved_version) === Number(row.version), status: promoteDraft ? "ready" : row.status,
       version: row.version });
+  });
+
+  // One server-verified pass of "Fix all with AI". The owner starts a bounded
+  // sequence in the browser; each pass rereads the latest saved warning list.
+  // No approval, publication, source replacement or changes to family copies.
+  app.post("/api/quest-books/admin/books/:id/chapters/:cid/repair-pass", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), cid = c.req.param("cid");
+    const body: any = await c.req.json().catch(() => ({}));
+    if (!VALID_ID.test(id) || typeof body?.lesson_id !== "string" || !Number.isInteger(body?.expected_version))
+      return c.json({ detail: "Choose a saved book lesson and its current version." }, 400);
+    const chapter = (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid);
+    if (!chapter) return c.json({ detail: "The book lesson plan changed. Reload before repairing." }, 409);
+    const user = c.get("user");
+    const original = await ownLesson(c.env.DB, user.family_id, body.lesson_id);
+    if (!original || original.archived_at) return c.json({ detail: "The working lesson no longer exists." }, 404);
+    if (original.version !== body.expected_version)
+      return c.json({ detail: "The lesson changed since the last repair. Reload before continuing." }, 409);
+    let before: Record<string, any>;
+    try { before = JSON.parse(original.data || "{}"); } catch { return c.json({ detail: "The lesson cannot be read." }, 409); }
+    if (before.quest_book_id !== id || before.quest_chapter_id !== cid ||
+      before.source === "side_quest_book" || before.ai_generated !== true)
+      return c.json({ detail: "Only this book's original AI working lesson can be repaired here." }, 403);
+    if (before.quest_source_revision !== chapterRevision(chapter))
+      return c.json({ detail: "The workbook source changed. Re-analyse this lesson before repairing." }, 409);
+    if (original.status !== "draft")
+      return c.json({ detail: "Mark this lesson as Needs Repair to unlock AI repair without editing approved content." }, 409);
+    const note = before.book_repair_requested === true && before.book_repair_ai_attempted !== true
+      ? String(before.book_repair_note || "") : "";
+    const plan = planBookAiRepair(before.ai_flags, companionLessonIssues(before), note);
+    if (!plan.issues.length) {
+      c.header("Cache-Control", "no-store");
+      return c.json({ ok: true, changed: false, lesson_id: original.id, version: original.version,
+        remaining: [], remaining_count: 0, owner_recheck: before.book_repair_requested === true });
+    }
+    const refined = await refineLessonWithAi(c.env.DB, c.env.AI, {
+      familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
+      lessonId: original.id, instruction: plan.instruction, target: plan.target,
+    });
+    if (!refined.ok) return c.json({ detail: refined.detail, code: (refined as any).code }, refined.status as any);
+    if (refined.base_version !== original.version)
+      return c.json({ detail: "Another edit occurred during AI repair. The proposed changes were not applied." }, 409);
+    const applied = await applyLessonPatch(c.env.DB, user.family_id, original.id,
+      refined.patch, new Date(), original.version);
+    if (!applied.ok) return c.json({ detail: applied.detail, code: (applied as any).code }, applied.status as any);
+    const saved = await ownLesson(c.env.DB, user.family_id, original.id);
+    if (!saved || saved.version !== applied.lesson.version)
+      return c.json({ detail: "AI edits saved, but the final version could not be verified. Reload the lesson." }, 502);
+    let current: Record<string, any>;
+    try { current = JSON.parse(saved.data || "{}"); } catch {
+      return c.json({ detail: "AI edits saved, but the lesson record could not be verified. Reload the lesson." }, 502);
+    }
+    if (current.quest_book_id !== id || current.quest_chapter_id !== cid ||
+      current.quest_source_revision !== chapterRevision(chapter))
+      return c.json({ detail: "AI edits saved, but the book link changed. Reload the lesson plan." }, 409);
+    // Save the exact changed version to the Book Plan as part of this repair.
+    // A manually reported error remains in Needs Repair until the owner reviews it.
+    current.book_plan_saved_version = saved.version;
+    current.book_plan_saved_at = new Date().toISOString();
+    current.book_plan_saved_by = user.id;
+    if (note) current.book_repair_ai_attempted = true;
+    const changed = await c.env.DB.prepare(`UPDATE lessons SET data = ? WHERE id = ?
+      AND family_id = ? AND version = ? AND status = 'draft' AND data = ? AND archived_at IS NULL`)
+      .bind(JSON.stringify(current), saved.id, user.family_id, saved.version, saved.data).run();
+    if (!changed.meta?.changes)
+      return c.json({ detail: "The AI repair was saved, but the Book Plan link was not confirmed. Reload and inspect the lesson." }, 409);
+    const confirmed = await ownLesson(c.env.DB, user.family_id, original.id);
+    let finalData: Record<string, any>;
+    try { finalData = JSON.parse(confirmed?.data || "{}"); } catch { finalData = {}; }
+    if (!confirmed || Number(finalData.book_plan_saved_version) !== confirmed.version)
+      return c.json({ detail: "The updated lesson was saved, but the Book Plan confirmation failed. Reload before continuing." }, 502);
+    const remaining = planBookAiRepair(finalData.ai_flags, companionLessonIssues(finalData),
+      finalData.book_repair_requested === true && finalData.book_repair_ai_attempted !== true ? finalData.book_repair_note : "");
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, changed: true, lesson_id: original.id, version: confirmed.version,
+      repaired: plan.selected, remaining: remaining.issues, remaining_count: remaining.issues.length,
+      owner_recheck: finalData.book_repair_requested === true, saved_to_plan: true });
   });
 
   // Draft a lesson from one chapter with the normal AI lesson generator, into the owner's own library for review.
