@@ -391,6 +391,10 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   const old = JSON.parse(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lid).data);
   const tagged = { ...old, quest_book_id: id, quest_chapter_id: "c1", quest_source_revision: revision };
   h.db.raw.prepare("UPDATE lessons SET data=?, status='ready' WHERE id=?").run(JSON.stringify(tagged), lid);
+  const initialQueue = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.ok(Array.isArray(initialQueue.quality_issues), "owner review queue reports saved lesson quality gaps");
+  assert.ok(initialQueue.quality_issues.includes("two complete teaching explanations"),
+    "missing teaching sections appear in the queue before approval");
   const url = `/quest-books/admin/books/${id}/lessons/publish`;
   const item = { chapter_id: "c1", lesson_id: lid, reviewed: true };
   assert.equal((await h.req(url, owner.token, "POST", { items: [{ ...item, reviewed: false }] })).status, 409);
@@ -406,6 +410,8 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
     parent_script: "Guide, model and review the student's response.", answer_key: "The complete answers are stored per task.",
   };
   h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(thorough), lid);
+  const completeQueue = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.deepEqual(completeQueue.quality_issues, [], "quality gaps disappear after content is repaired and saved");
   const reviewUrl = `/quest-books/admin/books/${id}/chapters/c1/review`;
   const saveUrl = `/quest-books/admin/books/${id}/chapters/c1/save-to-plan`;
   const version = (await (await h.req(`/lessons/${lid}`, owner.token)).json()).version;
