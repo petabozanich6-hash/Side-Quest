@@ -296,6 +296,12 @@ export default function LessonReview() {
       {flags.length > 0 && lesson.status !== "ready" && (
         <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900" data-testid="ai-warnings">
           <b>Worth a look:</b><ul className="list-disc pl-5 mt-1">{flags.map((x, i) => <li key={i}>{x}</li>)}</ul>
+          <button type="button" className="mt-2 rounded-lg bg-violet-700 text-white px-3 py-1.5 text-xs font-semibold"
+            data-testid="r-fix-warnings" onClick={() => {
+              setRefineInstruction(`Fix these specific issues in this lesson without removing sound teaching or changing unrelated content: ${flags.slice(0, 5).join("; ").slice(0, 450)}`);
+              setRefine(true);
+            }}><Sparkles size={13} className="inline mr-1" /> Ask AI to fix these issues</button>
+          <p className="text-xs mt-1">AI suggestions need your review. After accepting a correction, save it to the book plan and approve the final lesson separately.</p>
         </div>
       )}
 
