@@ -1,6 +1,7 @@
 // Parent lesson builder, assignment snapshots, submissions, review and entitlement checks.
 // Plain functions over a D1-shaped database so they can be tested without the Worker runtime.
 // Every function that touches family data takes the family id from the authenticated user, never from the request body.
+import { isBookLessonGrant } from "./questBookPurchases";
 import { viewAsPlan } from "./viewAs";
 import { publicLesson } from "./syllabusText";
 import { recordPetEvent } from "./data/petQuests";
@@ -434,7 +435,7 @@ export function assignmentLesson(a: any, liveRow: any) {
 
 // ---------------------------------------------------------------- lessons
 
-async function ownLesson(db: DB, familyId: string, id: string) {
+export async function ownLesson(db: DB, familyId: string, id: string) {
   return db.prepare("SELECT * FROM lessons WHERE id = ? AND family_id = ?").bind(id, familyId).first<any>();
 }
 
@@ -467,6 +468,13 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
   });
 }
 
+/** Quest Book lessons keep their book link when edited, so adding the book again won't duplicate them. */
+const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "source", "review_status"];
+function questTags(data: any): Record<string, unknown> {
+  if (!data?.quest_book_id) return {};
+  return Object.fromEntries(QUEST_KEYS.filter((k) => data[k] !== undefined).map((k) => [k, data[k]]));
+}
+
 export const AI_FLAGS = { source: "ai", ai_generated: true, review_status: "ai_draft_needs_review" };
 
 /** Keeps only outcome codes from the family's own verified catalogue: the server decides, never the client. */
@@ -476,7 +484,7 @@ export async function familyOutcomeCodes(db: DB, familyId: string, codes: string
   return cat.available ? codes.filter((c) => cat.byCode.has(c)) : [];
 }
 
-export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[] } = {}): Promise<Result<{ lesson: any }>> {
+export async function createLesson(db: DB, familyId: string, input: unknown, now: Date = new Date(), opts: { ai?: boolean; flags?: string[]; questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string } } = {}): Promise<Result<{ lesson: any }>> {
   const clean = sanitizeLessonInput(input);
   if (!clean.ok) return clean;
   clean.value.builder.outcome_codes = await familyOutcomeCodes(db, familyId, (clean.value.builder.outcome_codes as string[]) || []);
@@ -498,7 +506,7 @@ export async function createLesson(db: DB, familyId: string, input: unknown, now
     .prepare(
       "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, ?, ?, 1, ?, ?)"
     )
-    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}) }), ts, ts)
+    .bind(id, familyId, clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(opts.ai ? { ...AI_FLAGS, ai_flags: opts.flags || [] } : {}), ...(opts.questBook ? { quest_book_id: opts.questBook.bookId, quest_book_title: opts.questBook.bookTitle, quest_chapter_id: opts.questBook.chapterId, quest_chapter_title: opts.questBook.chapterTitle } : {}) }), ts, ts)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)) };
 }
@@ -516,7 +524,7 @@ export async function updateLesson(db: DB, familyId: string, id: string, input: 
   if (bad) return bad;
   await db
     .prepare("UPDATE lessons SET title = ?, stage = ?, learning_area = ?, status = ?, data = ?, version = version + 1, updated_at = ? WHERE id = ? AND family_id = ?")
-    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : parseJson<any>(row.data, {}).ai_flags || [] } : {}) }), nowIso(now), id, familyId)
+    .bind(clean.value.title, clean.value.stage, clean.value.learning_area, clean.value.status, JSON.stringify({ ...toLessonData(clean.value), ...questTags(parseJson<any>(row.data, {})), ...(parseJson<any>(row.data, {}).ai_generated ? { source: "ai", ai_generated: true, review_status: clean.value.status === "ready" ? "parent_reviewed" : "ai_draft_needs_review", ai_flags: clean.value.status === "ready" ? [] : parseJson<any>(row.data, {}).ai_flags || [] } : {}) }), nowIso(now), id, familyId)
     .run();
   return { ok: true, lesson: lessonOut(await ownLesson(db, familyId, id)), assigned_copies_unchanged: true };
 }
@@ -536,7 +544,9 @@ export async function duplicateLesson(db: DB, familyId: string, id: string, now:
   const copyId = newId();
   const ts = nowIso(now);
   const title = `${String(row.title).slice(0, 190)} (copy)`;
-  const data = parseJson<Record<string, unknown>>(row.data, {});
+  // A copy is the family's own lesson, no longer part of a Quest Book.
+  const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ...data } = parseJson<Record<string, unknown>>(row.data, {});
+  if (quest_book_id && data.source === "side_quest_book") Object.assign(data, { source: "parent", review_status: "parent_created" });
   await db
     .prepare(
       "INSERT INTO lessons (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NULL, 'draft', ?, 1, ?, ?)"
@@ -621,13 +631,15 @@ export async function assignLesson(
   if (lesson.archived_at) return fail(409, "This lesson is archived. Restore it before assigning.", "ARCHIVED");
   if (lesson.status !== "ready") return fail(409, "Save this lesson to your library (mark it ready) before assigning it.", "NOT_READY");
   const { limits } = await getEntitlement(db, familyId, now);
-  if (!limits.canAssign) return paywall("Your free preview has ended. Your children's progress is kept; upgrade to assign more lessons.");
+  // Lessons made from a "book + lessons" Quest Book purchase stay assignable without a membership and use no preview slots.
+  const bookLesson = !limits.aiGeneration && (await isBookLessonGrant(db, familyId, lesson));
+  if (!limits.canAssign && !bookLesson) return paywall("Your free preview has ended. Your children's progress is kept; upgrade to assign more lessons.");
   const prior = await priorAssignment(db, familyId, input.student_id, input.lesson_id);
   if (prior === "open") return fail(409, "This lesson is already assigned to this child and not finished yet.", "ALREADY_ASSIGNED");
   if (prior === "done" && input.again !== true) {
     return fail(409, "This child has already finished this lesson. Choose \"assign again\" if you want them to repeat it.", "ALREADY_COMPLETED");
   }
-  if ((await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
+  if (!bookLesson && (await countActiveAssignments(db, familyId)) >= limits.maxActiveAssignments) {
     return paywall(`The free preview includes ${limits.maxActiveAssignments} active assignments. ${UPGRADE_MESSAGE}`);
   }
   const id = newId();

@@ -44,3 +44,38 @@ export async function turnedPage(blob) {
   ctx.drawImage(img, 0, 0);
   return (await canvasBlob(canvas)) || blob;
 }
+
+const SKIP_CHAPTER = /welcome|contents|journey|toolkit|answer|solution|parent|teaching tip|certificate|progress|how to use/i;
+
+/**
+ * Reads a book PDF's chapters for Quest Books "make a lesson from a chapter".
+ * Uses the PDF's bookmarks (Canva, Word and most design tools export them from headings). Each chapter runs from its
+ * bookmark's page to the page before the next bookmark. Returns [{ title, start, end, text, include }].
+ */
+export async function readPdfChapters(file) {
+  const doc = await loadPdf(file);
+  const outline = (await doc.getOutline()) || [];
+  const marks = [];
+  for (const item of outline) {
+    try {
+      const dest = typeof item.dest === "string" ? await doc.getDestination(item.dest) : item.dest;
+      if (!dest || !dest[0]) continue;
+      const page = (await doc.getPageIndex(dest[0])) + 1;
+      if (item.title && page) marks.push({ title: String(item.title).trim().slice(0, 120), start: page });
+    } catch { /* skip a bookmark we can't resolve */ }
+  }
+  marks.sort((a, b) => a.start - b.start);
+  const pageText = async (n) => {
+    const content = await (await doc.getPage(n)).getTextContent();
+    return content.items.map((it) => it.str || "").join(" ").replace(/\s+/g, " ").trim();
+  };
+  const chapters = [];
+  for (let i = 0; i < marks.length; i++) {
+    const start = marks[i].start;
+    const end = Math.max(start, (marks[i + 1]?.start || doc.numPages + 1) - 1);
+    const parts = [];
+    for (let p = start; p <= end && p <= doc.numPages; p++) parts.push(await pageText(p));
+    chapters.push({ title: marks[i].title, start, end, text: parts.join("\n\n").slice(0, 30000), include: !SKIP_CHAPTER.test(marks[i].title) });
+  }
+  return { total: doc.numPages, chapters };
+}
