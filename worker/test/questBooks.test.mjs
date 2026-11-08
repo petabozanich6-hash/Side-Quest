@@ -1081,3 +1081,39 @@ test("Running generation survives the upgrade and accepts a separate repair queu
   assert.equal((await processQuestOvernight(h.env,new Date("2026-12-01T00:10:00Z"),generate,fix)).processed,0);
   assert.equal(h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(made.id).data,data);
 });
+
+
+test("Overnight queue survives a temporary AI budget pause and resumes without using retries", async () => {
+  const h=harness();
+  const {owner,id}=await publishedBook(h);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[
+    {title:"First skill",start:1,end:2,text:chapterText},
+  ]});
+  h.env.AI={run:async()=>({})};
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  assert.equal(started.status,200);
+  const job=(await started.json()).job;
+  const noAi={...h.env,AI:undefined};
+  let invocations=0;
+  const generate=async()=>{invocations++;return {ok:true,lesson:{id:"new-draft"}};};
+  for(let minute=0;minute<6;minute++) {
+    const result=await processQuestOvernight(noAi,new Date(Date.UTC(2026,11,1,0,minute)),generate);
+    assert.equal(result.processed,0);
+    assert.equal(result.waiting_for_ai,true);
+  }
+  const pending=h.db.raw.prepare("SELECT status,attempts FROM quest_overnight_items WHERE job_id=?").get(job.id);
+  assert.equal(pending.status,"pending");
+  assert.equal(pending.attempts,0,"temporary allowance exhaustion cannot consume a retry");
+  const waiting=h.db.raw.prepare("SELECT status,last_error FROM quest_overnight_jobs WHERE id=?").get(job.id);
+  assert.equal(waiting.status,"running","manual pause state stays reserved for the owner");
+  assert.match(waiting.last_error,/retrying automatically/);
+  const resumed=await processQuestOvernight(h.env,new Date("2026-12-01T00:06:00Z"),generate);
+  assert.equal(resumed.processed,1);
+  assert.equal(invocations,1);
+  const final=h.db.raw.prepare("SELECT status,last_error FROM quest_overnight_jobs WHERE id=?").get(job.id);
+  assert.equal(final.status,"completed");
+  assert.equal(final.last_error,null);
+  const completed=h.db.raw.prepare("SELECT status,attempts FROM quest_overnight_items WHERE job_id=?").get(job.id);
+  assert.equal(completed.status,"done");
+  assert.equal(completed.attempts,1);
+});

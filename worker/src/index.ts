@@ -351,16 +351,21 @@ export default {
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env), ctx), ctx);
   },
-  scheduled: async (_event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
-    // The two independent mail queues must not prevent each other running.
+  scheduled: async (event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
+    // A dedicated one-minute trigger keeps book work moving without a browser and
+    // without waiting for the five-minute email/billing tasks to finish.
+    if (event.cron === "* * * * *") {
+      try { await processQuestOvernight(await applyPlatformSettings(env)); }
+      catch (e) { console.error("Quest Book overnight queue cron failed", e); }
+      return;
+    }
+    if (event.cron !== "*/5 * * * *") return;
+    // Preserve the five-minute cadence of every existing maintenance task.
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
     try { await processTrialReminders(env); } catch (e) { console.error("trial reminder cron failed", e); }
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
-    // After reconciling, so the notices see each family's latest plan.
+    // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
-    // Server-side queue continues without the owner's browser or a logged-in session.
-    try { await processQuestOvernight(await applyPlatformSettings(env)); }
-    catch (e) { console.error("Quest Book overnight queue cron failed", e); }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };
