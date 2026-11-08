@@ -4,7 +4,7 @@ import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
 import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
-import { recordQuestBookPurchase } from "../src/questBookPurchases.ts";
+import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
 
 let seq = 0;
@@ -522,4 +522,46 @@ test("Remaking a generated lesson archives earlier AI drafts but retains new and
   assert.ok(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(old).archived_at);
   assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(edited).archived_at, null);
   assert.equal(h.db.raw.prepare("SELECT archived_at FROM lessons WHERE id=?").get(latest).archived_at, null);
+});
+
+test("Cart: the server prices it, a pack replaces the same book and its lessons, unsellable items drop out", async () => {
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const { id: id2 } = await publishedBook(h, { title: "Second Book", price_cents: 399, lessons_price_cents: 999 });
+  const fam = await h.parent("FREE_PREVIEW");
+  const items = [{ book_id: id, tier: "book" }, { book_id: id, tier: "plus" }, { book_id: id, tier: "lesson", lesson_key: "c1" }, { book_id: id2, tier: "book" }, { book_id: id2, tier: "plus" }, { book_id: id2, tier: "book" }];
+  const q = await (await h.req("/quest-books/cart/quote", fam.token, "POST", { items })).json();
+  assert.deepEqual(q.lines.map((l) => [l.book_id, l.tier, l.amount_cents]), [[id, "plus", 1500], [id2, "book", 399]]);
+  assert.equal(q.total_cents, 1899);
+  assert.equal(q.removed.length, 1, "the second book has no lessons to sell");
+  // Changed prices are caught before charging.
+  const changed = await h.req("/quest-books/cart/checkout", fam.token, "POST", { items, expected_total_cents: 100 });
+  assert.equal(changed.status, 409);
+  assert.equal((await changed.json()).code, "CART_CHANGED");
+  // Members don't buy anything.
+  const member = await h.parent("ACTIVE_MONTHLY");
+  const mq = await (await h.req("/quest-books/cart/quote", member.token, "POST", { items })).json();
+  assert.equal(mq.lines.length, 0);
+});
+
+test("A paid cart unlocks every item once, and its status turns paid", async () => {
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const { id: id2 } = await publishedBook(h, { title: "Second Book", price_cents: 399 });
+  const fam = await h.parent("FREE_PREVIEW");
+  const cartId = await saveCart(h.db, fam.id, [
+    { book_id: id, tier: "plus", amount_cents: 1500, title: "pack" },
+    { book_id: id2, tier: "book", amount_cents: 399, title: "book" },
+  ], 1899);
+  assert.equal((await (await h.req(`/quest-books/cart/${cartId}/status`, fam.token)).json()).paid, false);
+  const session = { object: "checkout.session", id: "cs_cart1", mode: "payment", payment_status: "paid", amount_total: 1899, currency: "aud", metadata: { kind: "quest_cart", family_id: fam.id, cart_id: cartId } };
+  assert.match(await recordQuestBookPurchase(h.db, session, false), /2 items/);
+  await recordQuestBookPurchase(h.db, session, false); // a replay changes nothing
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) AS n FROM quest_book_purchases WHERE family_id=?").get(fam.id).n, 2);
+  assert.equal((await (await h.req(`/quest-books/books/${id}`, fam.token)).json()).book.owned_tier, "plus");
+  assert.equal((await (await h.req(`/quest-books/books/${id2}`, fam.token)).json()).book.can_download, true);
+  assert.equal((await (await h.req(`/quest-books/cart/${cartId}/status`, fam.token)).json()).paid, true);
+  // Someone else's cart id tells them nothing.
+  const other = await h.parent("FREE_PREVIEW");
+  assert.equal((await (await h.req(`/quest-books/cart/${cartId}/status`, other.token)).json()).paid, false);
 });

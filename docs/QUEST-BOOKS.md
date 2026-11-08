@@ -150,3 +150,9 @@ Curriculum v9 for QLD/SA/TAS/ACT/NT, WA; VIC once loaded). A family adding the l
 Lessons added before this change keep the codes they had; publishing again doesn't change copies already added.
 
 Deploys: pushes to main build on Cloudflare (Workers Builds, production branch main). Retrying an old build redeploys that old commit.
+## Cart
+
+Buy buttons add to a cart (kept in the browser). The cart page (/parent/quest-books/cart) asks the server to price
+everything (pack discounts stack within the cart too), then one Stripe checkout covers all of it. The priced lines are
+saved in `quest_carts`; the verified webhook reads them back and records each item. Items already owned, or covered by
+a pack in the same cart, drop out automatically.

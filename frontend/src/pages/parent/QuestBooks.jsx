@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
 import { plannedFor } from "../../lib/questBookPlan";
 import { lookInsidePages } from "../../lib/pdfPages";
+import { addToCart, clearCart, inCart, removeFromCart, setCart, useCart } from "../../lib/questCart";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
 const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
@@ -254,6 +255,7 @@ function ShelfView() {
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-7" data-testid="quest-books">
       <header className="rounded-3xl bg-gradient-to-br from-amber-50 via-rose-50 to-emerald-100 border border-amber-200 p-6 sm:p-9 relative overflow-hidden">
+        <div className="absolute top-4 right-4 z-20"><CartButton /></div>
         <div className="relative z-10 max-w-2xl">
           <div className="text-xs font-bold tracking-widest uppercase text-emerald-800">Side-Quest · Subject books and exam prep</div>
           <h1 className="font-display text-3xl sm:text-4xl font-bold mt-2 text-slate-900">Quest Books</h1>
@@ -526,7 +528,6 @@ function BookView({ id }) {
   const [params, setParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
   const [peek, setPeek] = useState(null);
   const [look, setLook] = useState(false);
   const [confirming, setConfirming] = useState(params.get("purchase") === "success");
@@ -565,21 +566,23 @@ function BookView({ id }) {
     } catch (e) { toast.error(apiErrorMessage(e, "Could not add the lessons")); }
     finally { setAdding(""); }
   };
-  const buy = async (tier = "book", lessonKey) => {
-    setBusy(true);
-    try {
-      const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/checkout`, { tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
-      if (!r.data?.url) throw new Error("Checkout did not open.");
-      window.location.assign(r.data.url);
-    } catch (e) {
-      toast.error(e?.response ? apiErrorMessage(e, "Could not start checkout") : e.message);
-      setBusy(false);
-    }
+  const navigate = useNavigate();
+  const cart = useCart();
+  const has = (tier, lessonKey) => inCart(cart, { book_id: id, tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
+  // "Buy" adds to the cart; checkout happens once for everything in the cart.
+  const add = (tier = "book", lessonKey) => {
+    if (has(tier, lessonKey)) { navigate("/parent/quest-books/cart"); return; }
+    addToCart({ book_id: id, tier, ...(lessonKey ? { lesson_key: lessonKey } : {}) });
+    setLook(false);
+    toast.success(tier === "plus" ? "Book + lessons added to your cart" : tier === "lesson" ? "Lesson added to your cart" : "Book added to your cart",
+      { action: { label: "View cart", onClick: () => navigate("/parent/quest-books/cart") } });
   };
-
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-6" data-testid="quest-book-detail">
-      <Link to="/parent/quest-books" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> All Quest Books</Link>
+      <div className="flex items-center gap-3">
+        <Link to="/parent/quest-books" className="mr-auto inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> All Quest Books</Link>
+        <CartButton />
+      </div>
       {!data && !error && <p role="status">Opening the book…</p>}
       {error && <div className="p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-900" role="alert">{error}</div>}
       {book && (
@@ -605,9 +608,9 @@ function BookView({ id }) {
               ) : (
                 <>
                   {book.can_buy && (
-                    <button type="button" onClick={() => (book.look_pages ? setLook(true) : buy("book"))} disabled={busy || confirming} data-testid="quest-book-buy"
+                    <button type="button" onClick={() => (book.look_pages && !has("book") ? setLook(true) : add("book"))} disabled={confirming} data-testid="quest-book-buy"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
-                      <ShoppingBag size={18} /> {busy ? "Opening checkout…" : `Buy this book · ${money(book.price_cents)}`}
+                      {has("book") ? <><Check size={18} /> In your cart · view cart</> : <><ShoppingBag size={18} /> Buy this book · {money(book.price_cents)}</>}
                     </button>
                   )}
                   <Link to="/parent/plan" className={book.can_buy ? "text-sm font-semibold text-emerald-900 underline" : "inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold"}>
@@ -630,9 +633,9 @@ function BookView({ id }) {
             </div>
             {book.can_buy_plus && (
               <div className="space-y-1">
-                <button type="button" onClick={() => buy("plus")} disabled={busy || confirming} data-testid="quest-book-buy-plus"
+                <button type="button" onClick={() => add("plus")} disabled={confirming} data-testid="quest-book-buy-plus"
                   className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold hover:bg-violet-100 disabled:opacity-60">
-                  <BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons` : `Book + all ${lessons.length} lessons`} · {book.pack_discount_pct > 0 && <s className="font-normal opacity-60">{money(book.plus_full_price_cents)}</s>} {money(book.plus_price_cents)}
+                  {has("plus") ? <><Check size={16} /> Book + lessons in your cart · view cart</> : <><BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons` : `Book + all ${lessons.length} lessons`} · {book.pack_discount_pct > 0 && <s className="font-normal opacity-60">{money(book.plus_full_price_cents)}</s>} {money(book.plus_price_cents)}</>}
                 </button>
                 {book.pack_discount_pct > 0 && <p className="text-xs font-semibold text-violet-800">{book.pack_discount_pct}% off because you already have {book.pack_discount_pct / 10} pack{book.pack_discount_pct === 10 ? "" : "s"}.</p>}
                 {book.pack_discount_pct === 0 && book.owned_tier !== "book" && <p className="text-xs text-stone-600">Each extra pack you buy is 10% cheaper again, up to 50% off.</p>}
@@ -646,8 +649,8 @@ function BookView({ id }) {
       {data?.owner && book && <BookWorkspace book={book} reload={load} />}
       {look && book && (
         <LookInside book={book} onClose={() => setLook(false)}>
-          {book.can_buy && <button type="button" onClick={() => buy("book")} disabled={busy} data-testid="quest-look-buy" className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60"><ShoppingBag size={16} /> {busy ? "Opening checkout…" : `Buy the book · ${money(book.price_cents)}`}</button>}
-          {book.can_buy_plus && <button type="button" onClick={() => buy("plus")} disabled={busy} className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold disabled:opacity-60"><BookOpenCheck size={16} /> Book + lessons · {money(book.plus_price_cents)}</button>}
+          {book.can_buy && <button type="button" onClick={() => add("book")} data-testid="quest-look-buy" className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60"><ShoppingCart size={16} /> {has("book") ? "In your cart" : `Add book to cart · ${money(book.price_cents)}`}</button>}
+          {book.can_buy_plus && <button type="button" onClick={() => add("plus")} className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold disabled:opacity-60"><BookOpenCheck size={16} /> {has("plus") ? "Pack in your cart" : `Add book + lessons · ${money(book.plus_price_cents)}`}</button>}
           <button type="button" onClick={() => setLook(false)} className="ml-auto text-sm font-semibold text-stone-600 underline">Not now</button>
         </LookInside>
       )}
@@ -676,7 +679,7 @@ function BookView({ id }) {
                 ) : l.unlocked ? (
                   <button type="button" onClick={() => addLessons(l.key)} disabled={!!adding} className="shrink-0 rounded-lg border border-emerald-700 px-3 py-1.5 text-xs font-bold text-emerald-900">{adding === l.key ? "Adding…" : "Add"}</button>
                 ) : book.can_buy_lesson ? (
-                  <button type="button" onClick={() => buy("lesson", l.key)} disabled={busy || confirming} className="shrink-0 inline-flex items-center gap-1 rounded-lg border border-violet-400 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50"><ShoppingBag size={13} /> Buy · {money(book.lesson_price_cents)}</button>
+                  <button type="button" onClick={() => add("lesson", l.key)} disabled={confirming} className="shrink-0 inline-flex items-center gap-1 rounded-lg border border-violet-400 px-3 py-1.5 text-xs font-bold text-violet-900 hover:bg-violet-50">{has("lesson", l.key) ? <><Check size={13} /> In cart</> : <><ShoppingCart size={13} /> Add · {money(book.lesson_price_cents)}</>}</button>
                 ) : <Lock size={15} className="shrink-0 text-stone-400" aria-label="Included with Family Membership" />}
               </li>
             ))}
@@ -689,7 +692,112 @@ function BookView({ id }) {
   );
 }
 
+function CartButton() {
+  const cart = useCart();
+  return (
+    <Link to="/parent/quest-books/cart" data-testid="quest-cart-button"
+      className="relative inline-flex items-center gap-2 rounded-full border border-emerald-700 bg-white px-4 py-2 text-sm font-bold text-emerald-900 hover:bg-emerald-50">
+      <ShoppingCart size={16} /> Cart
+      {cart.length > 0 && <span className="rounded-full bg-emerald-900 text-white text-xs px-2 py-0.5">{cart.length}</span>}
+    </Link>
+  );
+}
+
+function CartView() {
+  const cart = useCart();
+  const [params, setParams] = useSearchParams();
+  const [quote, setQuote] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [confirming, setConfirming] = useState(params.get("purchase") === "success");
+  const [done, setDone] = useState(false);
+  const cartKey = JSON.stringify(cart);
+  useEffect(() => {
+    if (!cart.length) { setQuote({ lines: [], removed: [], total_cents: 0 }); return; }
+    api.post("/quest-books/cart/quote", { items: cart }).then((r) => setQuote(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not price your cart")));
+  }, [cartKey]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Back from Stripe: wait for the verified payment, then empty the cart.
+  useEffect(() => {
+    if (params.get("purchase") === "cancelled") { toast("Checkout cancelled. Nothing was charged, and your cart is still here."); setParams({}, { replace: true }); return undefined; }
+    const id = params.get("cart");
+    if (params.get("purchase") !== "success" || !id) return undefined;
+    let tries = 0, live = true;
+    const tick = async () => {
+      const r = await api.get(`/quest-books/cart/${encodeURIComponent(id)}/status`).catch(() => null);
+      if (!live) return;
+      if (r?.data?.paid) { clearCart(); setConfirming(false); setDone(true); setParams({}, { replace: true }); toast.success("Payment received. Everything is yours!"); return; }
+      if (++tries < 20) setTimeout(tick, 2000);
+      else { setConfirming(false); toast("Your payment is still being confirmed. Check your books again in a minute.", { duration: 9000 }); }
+    };
+    tick();
+    return () => { live = false; };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const checkout = async () => {
+    setBusy(true);
+    try {
+      const r = await api.post("/quest-books/cart/checkout", { items: cart, expected_total_cents: quote?.total_cents });
+      if (!r.data?.url) throw new Error("Checkout did not open.");
+      window.location.assign(r.data.url);
+    } catch (e) {
+      if (e?.response?.data?.code === "CART_CHANGED") { setQuote(e.response.data.quote); toast("Prices changed. Check the new total, then press Checkout again."); }
+      else toast.error(e?.response ? apiErrorMessage(e, "Could not start checkout") : e.message);
+      setBusy(false);
+    }
+  };
+  // Tidy the cart to what the server says can be bought (owned items, replaced lessons and so on drop out).
+  const tidy = () => setCart(quote.lines.map((l) => ({ book_id: l.book_id, tier: l.tier, ...(l.lesson_key ? { lesson_key: l.lesson_key } : {}) })));
+  const tierLabel = (t) => (t === "plus" ? "Book + all lessons" : t === "lesson" ? "Single lesson" : "Book (PDF)");
+
+  return (
+    <div className="p-4 sm:p-8 lg:p-10 space-y-6 max-w-3xl" data-testid="quest-cart">
+      <Link to="/parent/quest-books" className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-900 hover:underline"><ArrowLeft size={16} /> Keep browsing Quest Books</Link>
+      <h1 className="font-display text-3xl font-bold text-slate-900 inline-flex items-center gap-3"><ShoppingCart size={28} /> Your cart</h1>
+      {confirming && <p role="status" className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-semibold text-emerald-900">Payment received. Unlocking everything…</p>}
+      {done && <p className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-900">All done. Open any book you bought to download it, or add its lessons to My lessons.</p>}
+      {!quote ? <p role="status">Working out your total…</p> : !quote.lines.length && !quote.removed.length ? (
+        !done && <p className="text-stone-600">Your cart is empty. Open a book and press Buy to add it.</p>
+      ) : (
+        <>
+          {quote.lines.length > 0 && (
+            <ul className="rounded-2xl border border-stone-200 bg-white divide-y divide-stone-100">
+              {quote.lines.map((l) => (
+                <li key={`${l.book_id}-${l.tier}-${l.lesson_key || ""}`} className="flex items-center gap-3 px-4 py-3">
+                  <div className="flex-1 min-w-0">
+                    <Link to={`/parent/quest-books/${l.book_id}`} className="font-semibold text-slate-900 hover:underline">{l.tier === "lesson" ? l.title.replace(/^Lesson: /, "") : l.book_title}</Link>
+                    <p className="text-xs text-stone-500">{tierLabel(l.tier)}{l.tier === "lesson" ? ` · ${l.book_title}` : ""}{/upgrade/.test(l.title) ? " · upgrade from the book you own" : ""}</p>
+                    {l.note && <p className="text-xs font-semibold text-violet-800">{l.note}</p>}
+                  </div>
+                  <div className="text-right text-sm font-bold text-slate-900">{l.full_cents > l.amount_cents && <s className="block text-xs font-normal text-stone-400">{money(l.full_cents)}</s>}{money(l.amount_cents)}</div>
+                  <button type="button" aria-label="Remove" onClick={() => removeFromCart({ book_id: l.book_id, tier: l.tier, lesson_key: l.lesson_key })} className="rounded-full p-1.5 text-stone-500 hover:bg-stone-100"><X size={16} /></button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {quote.removed.length > 0 && (
+            <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-sm text-amber-900 space-y-1">
+              {quote.removed.map((r, i) => <p key={i}>One item was taken out: {r.reason}</p>)}
+              <button type="button" onClick={tidy} className="font-semibold underline">OK, tidy my cart</button>
+            </div>
+          )}
+          {quote.lines.length > 0 && (
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="mr-auto text-lg font-bold text-slate-900">Total {money(quote.total_cents)} <span className="text-xs font-normal text-stone-500">AUD</span></div>
+              <button type="button" onClick={checkout} disabled={busy || confirming || quote.can_buy === false} data-testid="quest-cart-checkout"
+                className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-6 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
+                <ShoppingBag size={18} /> {busy ? "Opening checkout…" : "Checkout"}
+              </button>
+            </div>
+          )}
+          <p className="text-xs text-stone-600">Each extra book + lessons pack is 10% cheaper again, up to 50% off. Family Membership includes every book and lesson.</p>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function QuestBooks() {
   const { bookId } = useParams();
+  if (bookId === "cart") return <CartView />;
   return bookId ? <BookView id={bookId} /> : <ShelfView />;
 }

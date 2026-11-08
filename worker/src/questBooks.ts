@@ -13,7 +13,7 @@ import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
 import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
-import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, type Tier } from "./questBookPurchases";
+import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, saveCart, cartPaid, type Tier, type CartLine } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
 import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
@@ -262,6 +262,7 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   if (!title) return fail(400, "The book needs a title.");
   const id = clip(b.id, 64) || slugify(title);
   if (!VALID_ID.test(id)) return fail(400, "The book id must use lowercase letters, numbers and dashes.");
+  if (id === "cart") return fail(400, "“Cart” is reserved. Give the book a longer title.");
   const collection = COLLECTION_IDS.includes(String(b.collection)) ? String(b.collection) : "core";
   const core = collection === "core";
   const allAges = !core && (b.year === null || b.year === "" || b.year === "all" || b.year === undefined);
@@ -402,6 +403,62 @@ function out(b: Listed, a: Access, canBuy: boolean) {
     pack_discount_pct: plusOnSale ? packDiscountPct(packsOwned(a, b.id)) : 0,
     ...(a.owner ? { sample_bytes: b.sample_bytes, updated_at: b.updated_at } : {}),
   };
+}
+
+/** A cart item as the browser sends it. */
+type CartItem = { book_id: string; tier: Tier | "lesson"; lesson_key?: string };
+const MAX_CART = 30;
+
+/**
+ * Prices a cart on the server (the browser's prices are never trusted). Tidies it first: a pack replaces the same
+ * book and its single lessons; things already owned are dropped. Each pack after the family's first is 10% cheaper
+ * again, counting packs earlier in this cart too.
+ */
+export async function quoteCart(db: DB, bucket: R2Bucket, familyId: string, userId: string, raw: unknown) {
+  const a = await accessFor(db, familyId, userId);
+  const items: CartItem[] = (Array.isArray(raw) ? raw : []).slice(0, MAX_CART).map((x: any): CartItem => ({
+    book_id: clip(x?.book_id, 64), tier: x?.tier === "plus" ? "plus" : x?.tier === "lesson" ? "lesson" : "book", lesson_key: clip(x?.lesson_key, 40) || undefined,
+  })).filter((x) => VALID_ID.test(x.book_id) && (x.tier !== "lesson" || !!x.lesson_key));
+  const books = new Map((await listBooks(bucket)).map((b) => [b.id, b]));
+  const packIn = new Set(items.filter((x) => x.tier === "plus").map((x) => x.book_id));
+  const lines: (CartLine & { book_title: string; full_cents: number; note?: string })[] = [];
+  const removed: { book_id: string; tier: string; lesson_key?: string; reason: string }[] = [];
+  const seen = new Set<string>();
+  let packs = packsOwned(a);
+  const published = new Map<string, Published[]>();
+  for (const it of items) {
+    const key = `${it.book_id}|${it.tier}|${it.lesson_key || ""}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const b = books.get(it.book_id);
+    const drop = (reason: string) => removed.push({ book_id: it.book_id, tier: it.tier, ...(it.lesson_key ? { lesson_key: it.lesson_key } : {}), reason });
+    if (!b || !b.has_book) { drop("This book isn't available any more."); continue; }
+    if (a.member) { drop("Your Family Membership already includes this."); continue; }
+    if (b.price_cents === null) { drop("This book is only available with Family Membership."); continue; }
+    const owned = a.tiers.get(b.id);
+    if (it.tier !== "plus" && packIn.has(b.id)) continue; // the pack in the cart covers it
+    if (it.tier === "book") {
+      if (owned) { drop("You already own this book."); continue; }
+      lines.push({ book_id: b.id, tier: "book", amount_cents: b.price_cents, full_cents: b.price_cents, title: `Quest Book: ${b.title}`, book_title: b.title });
+    } else if (it.tier === "plus") {
+      if (owned === "plus") { drop("You already have this book and its lessons."); continue; }
+      if (!b.has_lessons || b.lessons_price_cents === null) { drop("This book's lessons aren't for sale yet."); continue; }
+      const amount = plusPriceFor(b, owned, packs)!;
+      const full = owned === "book" ? Math.max(50, b.lessons_price_cents - b.price_cents) : b.lessons_price_cents;
+      lines.push({ book_id: b.id, tier: "plus", amount_cents: amount, full_cents: full, title: `Quest Book + lessons: ${b.title}${owned === "book" ? " (upgrade)" : ""}`, book_title: b.title,
+        ...(packDiscountPct(packs) ? { note: `${packDiscountPct(packs)}% pack discount` } : {}) });
+      packs++;
+    } else {
+      if (owned === "plus") { drop("Your pack already includes this lesson."); continue; }
+      if (b.lesson_price_cents === null) { drop("This lesson isn't for sale on its own."); continue; }
+      if (!published.has(b.id)) published.set(b.id, b.has_lessons ? await readPublished(bucket, b.id) : []);
+      const l = published.get(b.id)!.find((x) => x.key === it.lesson_key);
+      if (!l) { drop("This lesson isn't available any more."); continue; }
+      if ((await ownedLessonKeys(db, familyId, b.id)).has(l.key)) { drop("You already have this lesson."); continue; }
+      lines.push({ book_id: b.id, tier: "lesson", lesson_key: l.key, amount_cents: b.lesson_price_cents, full_cents: b.lesson_price_cents, title: `Lesson: ${l.title}`, book_title: b.title });
+    }
+  }
+  return { member: a.member, lines, removed, total_cents: lines.reduce((n, l) => n + l.amount_cents, 0) };
 }
 
 /** Download links carry the files-only token (?ft=) so the browser can save a large PDF directly. */
@@ -623,6 +680,56 @@ export function registerQuestBooks(app: App, g: Guards) {
       console.error("quest book checkout failed", e?.message);
       return c.json({ detail: "Could not start checkout. Please try again." }, 502);
     }
+  });
+
+  // ---------------------------------------------------------------- cart
+  // The cart itself lives in the browser; the server prices it and starts one checkout for everything.
+  app.post("/api/quest-books/cart/quote", g.auth, g.parent, async (c) => {
+    if (!c.env.BUCKET) return c.json({ lines: [], removed: [], total_cents: 0 });
+    const user = c.get("user");
+    const body: any = await c.req.json().catch(() => ({}));
+    c.header("Cache-Control", "private, no-store");
+    return c.json({ ...(await quoteCart(c.env.DB, c.env.BUCKET, user.family_id, user.id, body?.items)), can_buy: billingConfig(c.env).ok });
+  });
+
+  app.post("/api/quest-books/cart/checkout", g.auth, g.parent, async (c) => {
+    const cfg = billingConfig(c.env);
+    if (!cfg.ok) return c.json({ code: "BILLING_NOT_CONFIGURED", detail: "Buying books isn't available yet." }, 503);
+    if (!c.env.BUCKET) return c.json({ detail: "Cart is empty." }, 400);
+    const user = c.get("user");
+    const body: any = await c.req.json().catch(() => ({}));
+    const q = await quoteCart(c.env.DB, c.env.BUCKET, user.family_id, user.id, body?.items);
+    if (!q.lines.length) return c.json({ code: "CART_EMPTY", detail: q.removed[0]?.reason || "Your cart is empty.", removed: q.removed }, 409);
+    // The browser sends the total it showed: if prices changed since, show the new ones before charging.
+    if (body?.expected_total_cents != null && Number(body.expected_total_cents) !== q.total_cents) return c.json({ code: "CART_CHANGED", detail: "Prices in your cart changed. Please check the new total.", quote: q }, 409);
+    const cartId = await saveCart(c.env.DB, user.family_id, q.lines.map(({ book_id, tier, lesson_key, amount_cents, title }) => ({ book_id, tier, lesson_key, amount_cents, title })), q.total_cents);
+    try {
+      const parentRow = await c.env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(user.id).first<{ email: string }>();
+      const origin = appOrigin(c.env, c.req.url);
+      const session = await stripeCall(cfg.key, "POST", "checkout/sessions", {
+        mode: "payment",
+        client_reference_id: user.family_id,
+        ...(parentRow?.email ? { customer_email: parentRow.email } : {}),
+        line_items: q.lines.map((l) => ({
+          quantity: 1,
+          price_data: { currency: "aud", unit_amount: l.amount_cents, product_data: { name: l.title.slice(0, 250), description: (l.note ? `${l.book_title} · ${l.note}` : l.book_title).slice(0, 250) } },
+        })),
+        metadata: { kind: "quest_cart", family_id: user.family_id, cart_id: cartId, total_cents: String(q.total_cents) },
+        payment_intent_data: { metadata: { kind: "quest_cart", family_id: user.family_id, cart_id: cartId } },
+        success_url: `${origin}/parent/quest-books/cart?purchase=success&cart=${cartId}`,
+        cancel_url: `${origin}/parent/quest-books/cart?purchase=cancelled`,
+      }, { idempotencyKey: `sq-cart-${cartId}` });
+      return c.json({ url: session.url, cart_id: cartId });
+    } catch (e: any) {
+      console.error("quest cart checkout failed", e?.message);
+      return c.json({ detail: "Could not start checkout. Please try again." }, 502);
+    }
+  });
+
+  app.get("/api/quest-books/cart/:id/status", g.auth, g.parent, async (c) => {
+    const user = c.get("user");
+    c.header("Cache-Control", "private, no-store");
+    return c.json({ paid: await cartPaid(c.env.DB, user.family_id, clip(c.req.param("id"), 64)) });
   });
 
   // ---------------------------------------------------------------- owner
