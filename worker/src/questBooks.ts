@@ -15,7 +15,7 @@ import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
 import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, saveCart, cartPaid, type Tier, type CartLine } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
-import { codesForAllFrameworks, suggestFromCatalogue, type FrameworkCodes } from "./questOutcomes";
+import { codesForAllFrameworks, lessonYears, poolFor, suggestFromCatalogue, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { draftLessonWithAi, DEFAULT_MODEL } from "./aiDraft";
@@ -185,14 +185,23 @@ export async function addPublishedLessons(db: DB, familyId: string, bookId: stri
     // Always use this family's catalogue. Published books can predate the
     // multi-framework snapshot, or the publishing-time matcher may have found
     // nothing. Never borrow NSW codes as the fallback for another state.
+    const lesson = {
+      ...l.data,
+      title: l.title, stage: l.stage, learning_area: l.learning_area,
+      ...(bookYear !== null ? { year_level: bookYear === 0 ? "Foundation" : `Year ${bookYear}` } : {}),
+    };
+    // Even a code from the correct state can be for the wrong YEAR or HASS
+    // discipline in an older snapshot. Check it against this book's actual
+    // year/subject pool, including VIC edition availability, before importing.
+    const eligible = cat.available ? new Set(
+      (bookYear !== null ? [bookYear] : lessonYears(lesson))
+        .flatMap((year) => poolFor(cat, lesson, year).map((outcome) => outcome.code)),
+    ) : new Set<string>();
     let mapped = framework && l.codes && Array.isArray(l.codes[framework]) ? l.codes[framework] : [];
+    mapped = mapped.filter((code) => eligible.has(code));
     if (cat.available && !mapped.length) {
-      const lesson = {
-        ...l.data,
-        title: l.title, stage: l.stage, learning_area: l.learning_area,
-        ...(bookYear !== null ? { year_level: bookYear === 0 ? "Foundation" : `Year ${bookYear}` } : {}),
-      };
-      mapped = (await suggestFromCatalogue(cat, lesson, undefined, {}, 3)).suggestions.map((suggestion) => suggestion.code);
+      mapped = (await suggestFromCatalogue(cat, lesson, undefined, {}, 3)).suggestions
+        .map((suggestion) => suggestion.code).filter((code) => eligible.has(code));
     }
     const codes = await familyOutcomeCodes(db, familyId, mapped);
     if (codes.length) matched++; else without_matches++;
