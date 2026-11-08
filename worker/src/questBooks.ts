@@ -15,7 +15,7 @@ import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
 import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, saveCart, cartPaid, type Tier, type CartLine } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
-import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
+import { codesForAllFrameworks, suggestFromCatalogue, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
 import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { draftLessonWithAi, DEFAULT_MODEL } from "./aiDraft";
@@ -165,7 +165,7 @@ async function familyBookLessons(db: DB, familyId: string, bookId: string): Prom
 }
 
 /** Copies every published lesson the family doesn't already have (including archived copies). Re-checks per insert. */
-export async function addPublishedLessons(db: DB, familyId: string, bookId: string, bookTitle: string, published: Published[], member: boolean, now: Date = new Date()) {
+export async function addPublishedLessons(db: DB, familyId: string, bookId: string, bookTitle: string, published: Published[], member: boolean, now: Date = new Date(), bookYear: number | null = null) {
   const { results } = await db.prepare(`SELECT json_extract(data, '$.quest_lesson_key') AS k FROM lessons WHERE family_id = ? AND json_valid(data)
     AND json_extract(data, '$.quest_book_id') = ? AND json_extract(data, '$.source') = 'side_quest_book'`).bind(familyId, bookId).all<any>();
   const have = new Set((results || []).map((r) => String(r.k)));
@@ -179,9 +179,23 @@ export async function addPublishedLessons(db: DB, familyId: string, bookId: stri
   // Each family gets the outcome codes for its own state's curriculum (matched when the owner published).
   const cat = catalogueFor(await getFamilyJurisdiction(db, familyId).catch(() => null));
   const framework = cat.available ? cat.framework : null;
+  let matched = 0;
+  let without_matches = 0;
   for (const l of missing) {
-    const mapped = framework && l.codes && Array.isArray(l.codes[framework]) ? l.codes[framework] : (Array.isArray(l.data.outcome_codes) ? (l.data.outcome_codes as unknown[]).map(String) : []);
+    // Always use this family's catalogue. Published books can predate the
+    // multi-framework snapshot, or the publishing-time matcher may have found
+    // nothing. Never borrow NSW codes as the fallback for another state.
+    let mapped = framework && l.codes && Array.isArray(l.codes[framework]) ? l.codes[framework] : [];
+    if (cat.available && !mapped.length) {
+      const lesson = {
+        ...l.data,
+        title: l.title, stage: l.stage, learning_area: l.learning_area,
+        ...(bookYear !== null ? { year_level: bookYear === 0 ? "Foundation" : `Year ${bookYear}` } : {}),
+      };
+      mapped = (await suggestFromCatalogue(cat, lesson, undefined, {}, 3)).suggestions.map((suggestion) => suggestion.code);
+    }
     const codes = await familyOutcomeCodes(db, familyId, mapped);
+    if (codes.length) matched++; else without_matches++;
     const data = {
       ...l.data, outcome_codes: codes, curriculum_refs: codes,
       source: "side_quest_book", ai_generated: false, review_status: "side_quest_book", ai_flags: [],
@@ -194,7 +208,11 @@ export async function addPublishedLessons(db: DB, familyId: string, bookId: stri
       .bind(crypto.randomUUID(), familyId, l.title, l.stage, l.learning_area, JSON.stringify(data), ts, ts, familyId, bookId, l.key).run();
     if ((r as any)?.meta?.changes) added++;
   }
-  return { ok: true as const, added, already: have.size, total: published.length };
+  return { ok: true as const, added, already: have.size, total: published.length,
+    framework, catalogue_name: cat.available ? cat.name : null, matched, without_matches,
+    mapping_note: !cat.available
+      ? "No state curriculum catalogue is available for your family. No NSW outcomes have been substituted."
+      : "Links are suggested planning references, not certification that a lesson fully meets the curriculum." };
 }
 
 /**
@@ -595,7 +613,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const allowed = bought ? wanted.filter((l) => bought.has(l.key)) : wanted;
     if (!allowed.length) return c.json({ code: "UPGRADE_REQUIRED", detail: "This book's lessons come with Family Membership, the book + lessons bundle, or one at a time." }, 402);
     const meta = await readMeta(c.env.BUCKET, id);
-    const r = await addPublishedLessons(c.env.DB, user.family_id, id, meta?.title || id, allowed, !!meta && included(a, meta) && !a.owner);
+    const r = await addPublishedLessons(c.env.DB, user.family_id, id, meta?.title || id, allowed, !!meta && included(a, meta) && !a.owner, new Date(), meta?.year ?? null);
     if (!r.ok) return c.json({ detail: r.detail }, r.status as any);
     return c.json(r);
   });
