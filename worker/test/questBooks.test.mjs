@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
-import { validateMeta, slugify } from "../src/questBooks.ts";
+import { validateMeta, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase } from "../src/questBookPurchases.ts";
 
 let seq = 0;
@@ -257,4 +257,61 @@ test("Specialist books: NAPLAN and HSC collections with topics, Years 11-12 and 
   assert.ok(list.collections.some((c) => c.id === "naplan") && list.collections.some((c) => c.id === "hsc"));
   const b = list.books.find((x) => x.id === r.book.id);
   assert.deepEqual([b.collection, b.year_label, b.subject_label], ["hsc", "Year 12", "English Standard"]);
+});
+
+
+test("Pack pricing: each extra pack is 10% cheaper again, capped at 50% off; book owners pay the difference", async () => {
+  assert.deepEqual([0, 1, 2, 3, 4, 5, 9].map((n) => packPrice(999, n)), [999, 899, 799, 699, 599, 499, 499]);
+  const meta = { price_cents: 399, lessons_price_cents: 999 };
+  assert.equal(plusPriceFor(meta, undefined, 0), 999);
+  assert.equal(plusPriceFor(meta, "book", 0), 600);
+  assert.equal(plusPriceFor(meta, "book", 5), 100);
+  const h = harness();
+  const { id } = await bookWithLessons(h);
+  const fam = await h.parent("FREE_PREVIEW");
+  let b = (await (await h.req(`/quest-books/books/${id}`, fam.token)).json()).book;
+  assert.deepEqual([b.plus_price_cents, b.pack_discount_pct], [1500, 0]);
+  for (const other of ["other-pack-a", "other-pack-b"]) {
+    await recordQuestBookPurchase(h.db, { object: "checkout.session", id: "cs_" + other, mode: "payment", payment_status: "paid", amount_total: 999, currency: "aud", metadata: { kind: "quest_book", family_id: fam.id, book_id: other, tier: "plus" } }, false);
+  }
+  b = (await (await h.req(`/quest-books/books/${id}`, fam.token)).json()).book;
+  assert.deepEqual([b.plus_price_cents, b.plus_full_price_cents, b.pack_discount_pct], [1200, 1500, 20]);
+});
+
+test("Look-inside pages: the owner uploads watermarked JPEGs, any parent can view them", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h);
+  const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3, 4]);
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/look/1`, owner.token, "PUT", jpeg, "image/jpeg")).status, 200);
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/look/2`, owner.token, "PUT", jpeg, "image/jpeg")).status, 200);
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/look/3`, owner.token, "PUT", pdf("nope"), "image/jpeg")).status, 400);
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/look/9`, owner.token, "PUT", jpeg, "image/jpeg")).status, 400);
+  const fam = await h.parent("FREE_PREVIEW");
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/look/1`, fam.token, "PUT", jpeg, "image/jpeg")).status, 403);
+  assert.equal((await (await h.req(`/quest-books/books/${id}`, fam.token)).json()).book.look_pages, 2);
+  const page = await h.req(`/quest-books/books/${id}/look/1`, fam.token);
+  assert.equal(page.status, 200);
+  assert.equal(page.headers.get("content-type"), "image/jpeg");
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/look`, owner.token, "DELETE")).status, 200);
+  assert.equal((await (await h.req(`/quest-books/books/${id}`, fam.token)).json()).book.look_pages, 0);
+});
+
+test("Published lessons carry codes for every state's curriculum; each family gets its own state's codes", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h, { price_cents: 399, lessons_price_cents: 999, lesson_price_cents: 100 });
+  await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", { chapters: [{ title: "Place value", start: 7, end: 15, text: chapterText }] });
+  const body = { ...lessonBody("Place value to 10 000"), learning_area: "Mathematics", stage: "S2", objectives: ["recognise, represent and order numbers to at least tens of thousands using place value"], key_words: [{ word: "place value" }, { word: "thousands" }] };
+  const lid = (await (await h.req("/lessons", owner.token, "POST", body)).json()).id;
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/lessons/publish`, owner.token, "POST", { items: [{ chapter_id: "c1", lesson_id: lid }] })).status, 200);
+  const stored = JSON.parse(new TextDecoder().decode(h.storage.get(`quest-books/v1/${id}/lessons.json`)));
+  const codes = stored.lessons[0].codes;
+  assert.ok(codes && Array.isArray(codes.NSW) && Array.isArray(codes.AC9) && Array.isArray(codes.WA), "codes for each framework");
+  assert.ok(codes.AC9.every((c) => c.startsWith("AC9")));
+  const qld = await h.parent("ACTIVE_MONTHLY");
+  h.db.raw.prepare("UPDATE families SET jurisdiction='QLD' WHERE id=?").run(qld.id);
+  assert.equal((await (await h.req(`/quest-books/books/${id}/lessons/add`, qld.token, "POST", {})).json()).added, 1);
+  const row = h.db.raw.prepare("SELECT data FROM lessons WHERE family_id=?").get(qld.id);
+  const got = JSON.parse(row.data).outcome_codes;
+  assert.deepEqual(got, codes.AC9);
+  assert.ok(got.every((c) => c.startsWith("AC9")), "no NSW codes for a QLD family");
 });

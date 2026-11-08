@@ -95,3 +95,42 @@ export async function pdfPageImages(file, { maxPages = 30, width = 1100, onPage 
   }
   return { total: doc.numPages, pages };
 }
+
+/**
+ * Quest Books "look inside": a few small page pictures with a heavy watermark burned in, for parents to see before
+ * buying. Low resolution on purpose (readable on screen, poor to print). Picks the first pages plus a spread from
+ * the first half of the book, never the end (answers usually live there). Returns JPEG blobs.
+ */
+export async function lookInsidePages(file, { count = 6, width = 560, label = "SIDE-QUEST PREVIEW" } = {}) {
+  const doc = await loadPdf(file);
+  const n = doc.numPages;
+  const picks = new Set([1, 2, 3].filter((p) => p <= n));
+  const half = Math.max(4, Math.floor(n / 2));
+  for (let i = 1; picks.size < Math.min(count, n) && i <= count; i++) picks.add(Math.min(n, Math.round(4 + ((half - 4) * i) / count)));
+  const out = [];
+  for (const p of [...picks].sort((a, b) => a - b).slice(0, count)) {
+    const page = await doc.getPage(p);
+    const viewport = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+    const ctx = canvas.getContext("2d");
+    await page.render({ canvasContext: ctx, viewport }).promise;
+    // Diagonal repeated watermark across the whole page.
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(-Math.PI / 5);
+    ctx.font = `bold ${Math.round(width / 14)}px sans-serif`;
+    ctx.textAlign = "center";
+    ctx.fillStyle = "rgba(120, 40, 160, 0.22)";
+    const step = Math.round(width / 5);
+    for (let y = -canvas.height; y <= canvas.height; y += step) ctx.fillText(label, (y / step) % 2 ? width / 6 : -width / 6, y);
+    ctx.restore();
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillRect(0, canvas.height - 26, canvas.width, 26);
+    ctx.fillStyle = "#4c1d95"; ctx.font = "bold 13px sans-serif"; ctx.textAlign = "center";
+    ctx.fillText(`Preview · page ${p} of ${n} · sidequestlearning.app`, canvas.width / 2, canvas.height - 9);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", 0.7));
+    if (blob) out.push(blob);
+  }
+  return out;
+}

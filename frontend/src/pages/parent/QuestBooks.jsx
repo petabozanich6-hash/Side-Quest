@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import PdfPreview from "../../components/parent/PdfPreview";
 import { plannedFor } from "../../lib/questBookPlan";
+import { lookInsidePages } from "../../lib/pdfPages";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
 const mb = (bytes) => (bytes ? `${(bytes / 1048576).toFixed(bytes < 10485760 ? 1 : 0)} MB` : "");
@@ -30,7 +31,7 @@ function Shelf({ children }) {
   );
 }
 
-const EMPTY = { collection: "core", topic: "", title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "", bundle: "", lesson: "" };
+const EMPTY = { collection: "core", topic: "", title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "3.99", bundle: "9.99", lesson: "1.00" };
 const dollars = (c) => (c == null ? "" : (c / 100).toFixed(2));
 const toForm = (b) => ({ id: b.id, collection: b.collection || "core", topic: b.topic || "", title: b.title, subtitle: b.subtitle || "", year: b.year ?? "all", subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: dollars(b.price_cents), bundle: dollars(b.lessons_price_cents), lesson: dollars(b.lesson_price_cents) });
 const cents = (v) => { const t = String(v || "").replace(/[$\s]/g, ""); return t === "" ? null : Math.round(Number(t) * 100); };
@@ -111,6 +112,9 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
       });
       if (!r.data?.ok) throw new Error("The upload wasn't confirmed.");
       toast.success(`${spec.label} saved for “${book.title}”`);
+      if (spec.kind === "book") {
+        try { await makeLookInside(book, file); } catch { toast.error("Couldn't make the look-inside pages. Open the book space and press “Make them”."); }
+      }
       await reload();
     } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); }
     finally { setBusy(""); setProgress(0); }
@@ -148,6 +152,7 @@ function OwnerPanel({ data, reload, draft, clearDraft }) {
                 <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `Book ${money(b.price_cents)}`}{b.lessons_price_cents != null ? ` · Bundle ${money(b.lessons_price_cents)}` : ""}{b.lesson_price_cents != null ? ` · Lesson ${money(b.lesson_price_cents)}` : ""}{b.has_lessons ? " · Lessons published" : ""}</p>
                 <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_sample ? `Sample ${mb(b.sample_bytes)} ✓` : "No sample"} · {b.has_cover ? "Cover ✓" : "No cover"}</p>
               </div>
+              <Link to={`/parent/quest-books/${b.id}`} className="inline-flex gap-1 items-center rounded-lg bg-emerald-900 text-white px-3 py-2 text-sm font-semibold hover:bg-emerald-800" data-testid={`quest-open-space-${b.id}`}><BookOpen size={15} /> Open book space</Link>
               <button type="button" disabled={!!busy} onClick={() => setLessonsFor(lessonsFor === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-violet-300 px-3 py-2 text-sm font-semibold text-violet-900 hover:bg-violet-50"><BookOpenCheck size={15} /> Lessons</button>
               <button type="button" disabled={!!busy} onClick={() => setEditing(editing === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-emerald-400 px-3 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50"><Pencil size={15} /> Details</button>
               <button type="button" disabled={!!busy} onClick={() => setDeleteTarget(b)} className="inline-flex gap-1 items-center rounded-lg border border-red-300 px-3 py-2 text-sm font-semibold text-red-800 hover:bg-red-50 disabled:opacity-50"><Trash2 size={15} /> Remove</button>
@@ -363,12 +368,167 @@ function LessonPeek({ bookId, peek, onClose }) {
   );
 }
 
+// Uploads one file for a book (owner). Returns true when the server confirmed it.
+async function uploadBookFile(book, spec, file, onProgress) {
+  if (spec.type === "application/pdf" && !/\.pdf$/i.test(file.name || "") && file.type !== "application/pdf") { toast.error("Choose a PDF file."); return false; }
+  try {
+    const r = await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/files/${spec.kind}`, file, {
+      headers: { "Content-Type": spec.type }, timeout: 15 * 60 * 1000,
+      onUploadProgress: (e) => { if (e.total) onProgress?.(Math.round((e.loaded / e.total) * 100)); },
+    });
+    if (!r.data?.ok) throw new Error("The upload wasn't confirmed.");
+    toast.success(`${spec.label} saved for “${book.title}”`);
+    return true;
+  } catch (e) { toast.error(e?.response ? apiErrorMessage(e, "Upload failed") : e.message, { duration: 9000 }); return false; }
+}
+
+// Makes the watermarked "look inside" pages from the uploaded Book PDF (owner's browser) and stores them.
+async function makeLookInside(book, file) {
+  let pdf = file;
+  if (!pdf) {
+    const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
+    pdf = new Blob([r.data], { type: "application/pdf" });
+  }
+  const pages = await lookInsidePages(pdf);
+  if (!pages.length) throw new Error("No pages could be read from the book.");
+  await api.delete(`/quest-books/admin/books/${encodeURIComponent(book.id)}/look`);
+  for (let i = 0; i < pages.length; i++) {
+    await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/look/${i + 1}`, pages[i], { headers: { "Content-Type": "image/jpeg" }, timeout: 120000 });
+  }
+  return pages.length;
+}
+
+/** Owner-only working space inside a book's own page: one checklist, each step with its action. */
+function BookWorkspace({ book, reload }) {
+  const [opts, setOpts] = useState(null);
+  const [busy, setBusy] = useState("");
+  const [progress, setProgress] = useState(0);
+  const [open, setOpen] = useState(null); // "details" | "lessons"
+  useEffect(() => { api.get("/quest-books").then((r) => setOpts(r.data)).catch(() => {}); }, []);
+  const full = opts?.books?.find((b) => b.id === book.id) || book;
+
+  const doUpload = async (kind, file) => {
+    const spec = FILES.find((f) => f.kind === kind);
+    setBusy(kind); setProgress(0);
+    const ok = await uploadBookFile(book, spec, file, setProgress);
+    if (ok && kind === "book") {
+      setBusy("look");
+      try { const n = await makeLookInside(book, file); toast.success(`Made ${n} look-inside pages.`); }
+      catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the look-inside pages. Use “Make again” to retry.")); }
+    }
+    setBusy(""); setProgress(0);
+    if (ok) await reload();
+  };
+  const remakeLook = async () => {
+    setBusy("look");
+    try { const n = await makeLookInside(book); toast.success(`Made ${n} look-inside pages.`); await reload(); }
+    catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the look-inside pages")); }
+    finally { setBusy(""); }
+  };
+
+  const filePick = (kind, label) => {
+    const spec = FILES.find((f) => f.kind === kind);
+    return (
+      <label className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold cursor-pointer ${busy ? "opacity-50 pointer-events-none" : ""} border border-emerald-600 text-emerald-900 hover:bg-emerald-50`}>
+        <Upload size={13} /> {busy === kind ? `Uploading ${progress}%…` : label}
+        <input type="file" accept={spec.accept} className="sr-only" disabled={!!busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void doUpload(kind, f); e.target.value = ""; }} />
+      </label>
+    );
+  };
+  const btn = (label, onClick) => <button type="button" disabled={!!busy} onClick={onClick} className="inline-flex items-center gap-1 rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-bold text-emerald-900 hover:bg-emerald-50 disabled:opacity-50">{label}</button>;
+
+  const steps = [
+    { id: "details", title: "Details and prices", done: !!book.title && book.price_cents != null,
+      info: book.price_cents == null ? "No price yet, so only members can get it." : `Book ${money(book.price_cents)}${book.lessons_price_cents != null ? ` · Pack ${money(book.lessons_price_cents)}` : ""}${book.lesson_price_cents != null ? ` · Lesson ${money(book.lesson_price_cents)}` : ""}`,
+      action: btn(open === "details" ? "Close" : "Edit", () => setOpen(open === "details" ? null : "details")) },
+    { id: "book", title: "Book PDF", done: book.has_book, info: book.has_book ? `Uploaded${book.book_bytes ? ` · ${mb(book.book_bytes)}` : ""}` : "What families download. The book stays hidden until this is uploaded.",
+      action: filePick("book", book.has_book ? "Replace" : "Upload PDF") },
+    { id: "look", title: "Look-inside pages", done: book.look_pages > 0, needs: book.has_book,
+      info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
+      action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
+    { id: "cover", title: "Cover", done: book.has_cover, info: book.has_cover ? "Uploaded" : "Portrait PNG, at least 600 × 800.", action: filePick("cover", book.has_cover ? "Replace" : "Upload PNG") },
+    { id: "sample", title: "Free sample PDF", optional: true, done: book.has_sample, info: book.has_sample ? "Uploaded" : "Optional: a few pages anyone can download.", action: filePick("sample", book.has_sample ? "Replace" : "Upload PDF") },
+    { id: "chapters", title: "Chapters read", done: book.has_chapters, needs: book.has_book, info: book.has_chapters ? "Done" : "Read from the PDF's bookmarks.",
+      action: book.has_book && btn(open === "lessons" ? "Close" : "Open", () => setOpen(open === "lessons" ? null : "lessons")) },
+    { id: "lessons", title: "Lessons made and published", done: book.has_lessons, needs: book.has_chapters, info: book.has_lessons ? "Published to the book" : "Make one lesson per chapter, review, then publish.",
+      action: book.has_chapters && btn(open === "lessons" ? "Close" : "Open", () => setOpen(open === "lessons" ? null : "lessons")) },
+  ];
+  const required = steps.filter((s) => !s.optional);
+  const doneCount = required.filter((s) => s.done).length;
+  const next = steps.find((s) => !s.done && !s.optional && s.needs !== false);
+
+  return (
+    <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50/60 p-4 sm:p-5 space-y-3" data-testid="quest-book-workspace">
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="mr-auto">
+          <h2 className="font-bold text-emerald-950">Your book space <span className="text-xs font-semibold text-emerald-800">· only you see this</span></h2>
+          <p className="text-xs text-emerald-900">{book.has_book ? "Families can see this book." : "Hidden from families until the Book PDF is uploaded."}</p>
+        </div>
+        <div className="text-sm font-bold text-emerald-950">{doneCount} of {required.length} done</div>
+      </div>
+      <div className="h-2 rounded-full bg-emerald-100 overflow-hidden"><div className="h-full bg-emerald-700 transition-all" style={{ width: `${(doneCount / required.length) * 100}%` }} /></div>
+      <ol className="rounded-xl bg-white border border-emerald-200 divide-y divide-stone-100">
+        {steps.map((st) => (
+          <li key={st.id} className={`flex flex-wrap items-center gap-3 px-3 py-2.5 ${next?.id === st.id ? "bg-amber-50" : ""}`}>
+            {st.done ? <CircleCheck size={20} className="text-emerald-700 shrink-0" /> : <Circle size={20} className="text-stone-300 shrink-0" />}
+            <div className="flex-1 min-w-[160px]">
+              <p className={`text-sm font-semibold ${st.done ? "text-slate-700" : "text-slate-900"}`}>{st.title}{st.optional && <span className="ml-1 text-[11px] font-normal text-stone-500">(optional)</span>}{next?.id === st.id && <span className="ml-2 rounded-full bg-amber-200 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase">Next</span>}</p>
+              <p className="text-xs text-stone-500">{st.info}</p>
+            </div>
+            {st.action || null}
+          </li>
+        ))}
+      </ol>
+      {open === "details" && opts && <BookForm data={opts} initial={toForm(full)} onCancel={() => setOpen(null)} onSaved={async () => { setOpen(null); await reload(); }} />}
+      {open === "lessons" && <QuestBookLessonsAdmin book={book} onChanged={reload} />}
+    </section>
+  );
+}
+
+/** Watermarked page pictures shown before buying. Images only: the real PDF is never sent. */
+function LookInside({ book, onClose, children }) {
+  const [urls, setUrls] = useState([]);
+  const [err, setErr] = useState("");
+  useEffect(() => {
+    let live = true; const made = [];
+    (async () => {
+      try {
+        for (let n = 1; n <= book.look_pages; n++) {
+          const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/look/${n}`, { responseType: "blob" });
+          const u = URL.createObjectURL(r.data); made.push(u);
+          if (live) setUrls((x) => [...x, u]);
+        }
+      } catch (e) { if (live) setErr("Could not load the preview pages."); }
+    })();
+    return () => { live = false; made.forEach((u) => URL.revokeObjectURL(u)); };
+  }, [book.id, book.look_pages]);
+  useEffect(() => { const k = (e) => e.key === "Escape" && onClose(); window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [onClose]);
+  return (
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-3" onClick={onClose} role="dialog" aria-modal="true" aria-label={`Look inside ${book.title}`}>
+      <div className="w-full max-w-2xl max-h-[92vh] flex flex-col rounded-2xl bg-white shadow-xl overflow-hidden" onClick={(e) => e.stopPropagation()} data-testid="quest-look-inside">
+        <div className="flex items-center gap-2 px-4 py-3 border-b">
+          <div className="mr-auto"><div className="text-[11px] font-bold uppercase tracking-wider text-violet-700">Look inside</div><h3 className="font-display font-bold text-slate-900 leading-tight">{book.title}</h3></div>
+          <button type="button" onClick={onClose} aria-label="Close" className="rounded-full p-1 hover:bg-stone-100"><X size={18} /></button>
+        </div>
+        <div className="flex-1 overflow-y-auto bg-stone-100 p-3 space-y-3 select-none" onContextMenu={(e) => e.preventDefault()}>
+          {err && <p className="text-red-700 text-sm">{err}</p>}
+          {!urls.length && !err && <p className="text-sm text-stone-500">Loading pages…</p>}
+          {urls.map((u, i) => <img key={u} src={u} alt={`Preview page ${i + 1}`} draggable={false} className="mx-auto w-full max-w-[560px] rounded shadow pointer-events-none" />)}
+          {urls.length > 0 && urls.length === book.look_pages && <p className="text-center text-xs text-stone-500 py-2">That's the preview. The full book{book.pages ? ` has ${book.pages} pages` : " has many more pages"}, in full quality with no watermark.</p>}
+        </div>
+        <div className="border-t bg-white px-4 py-3 flex flex-wrap gap-2 items-center">{children}</div>
+      </div>
+    </div>
+  );
+}
+
 function BookView({ id }) {
   const [params, setParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [peek, setPeek] = useState(null);
+  const [look, setLook] = useState(false);
   const [confirming, setConfirming] = useState(params.get("purchase") === "success");
   const load = () => api.get(`/quest-books/books/${encodeURIComponent(id)}`, { params: { _: Date.now() } })
     .then(({ data: d }) => { setData(d); return d; }).catch((e) => { setError(apiErrorMessage(e, "Could not open this book")); return null; });
@@ -445,7 +605,7 @@ function BookView({ id }) {
               ) : (
                 <>
                   {book.can_buy && (
-                    <button type="button" onClick={() => buy("book")} disabled={busy || confirming} data-testid="quest-book-buy"
+                    <button type="button" onClick={() => (book.look_pages ? setLook(true) : buy("book"))} disabled={busy || confirming} data-testid="quest-book-buy"
                       className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-5 py-3 font-bold shadow hover:bg-emerald-800 disabled:opacity-60">
                       <ShoppingBag size={18} /> {busy ? "Opening checkout…" : `Buy this book · ${money(book.price_cents)}`}
                     </button>
@@ -455,6 +615,12 @@ function BookView({ id }) {
                   </Link>
                 </>
               )}
+              {book.look_pages > 0 && !book.can_download && (
+                <button type="button" onClick={() => setLook(true)} data-testid="quest-book-look"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-500 bg-white text-violet-900 px-4 py-2.5 text-sm font-bold hover:bg-violet-50">
+                  <Eye size={16} /> Look inside
+                </button>
+              )}
               {book.has_sample && (
                 <button type="button" onClick={() => setPreview(true)} data-testid="quest-book-sample"
                   className="inline-flex items-center gap-2 rounded-xl border-2 border-amber-500 bg-white text-amber-900 px-4 py-2.5 text-sm font-bold hover:bg-amber-50">
@@ -463,15 +629,27 @@ function BookView({ id }) {
               )}
             </div>
             {book.can_buy_plus && (
-              <button type="button" onClick={() => buy("plus")} disabled={busy || confirming} data-testid="quest-book-buy-plus"
-                className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold hover:bg-violet-100 disabled:opacity-60">
-                <BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons · ${money(book.plus_price_cents)}` : `Book + all ${lessons.length} lessons · ${money(book.plus_price_cents)}`}
-              </button>
+              <div className="space-y-1">
+                <button type="button" onClick={() => buy("plus")} disabled={busy || confirming} data-testid="quest-book-buy-plus"
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold hover:bg-violet-100 disabled:opacity-60">
+                  <BookOpenCheck size={16} /> {book.owned_tier === "book" ? `Add all ${lessons.length} lessons` : `Book + all ${lessons.length} lessons`} · {book.pack_discount_pct > 0 && <s className="font-normal opacity-60">{money(book.plus_full_price_cents)}</s>} {money(book.plus_price_cents)}
+                </button>
+                {book.pack_discount_pct > 0 && <p className="text-xs font-semibold text-violet-800">{book.pack_discount_pct}% off because you already have {book.pack_discount_pct / 10} pack{book.pack_discount_pct === 10 ? "" : "s"}.</p>}
+                {book.pack_discount_pct === 0 && book.owned_tier !== "book" && <p className="text-xs text-stone-600">Each extra pack you buy is 10% cheaper again, up to 50% off.</p>}
+              </div>
             )}
             {book.owned && <p className="text-xs text-stone-600 inline-flex items-center gap-1"><Check size={14} /> You bought this book{book.owned_tier === "plus" ? " and its lessons" : ""}. Download it again any time.</p>}
             {book.can_download && <p className="text-xs text-stone-600">Print it at home or open it on a tablet. For a family's own use only, please don't share the file.</p>}
           </div>
         </section>
+      )}
+      {data?.owner && book && <BookWorkspace book={book} reload={load} />}
+      {look && book && (
+        <LookInside book={book} onClose={() => setLook(false)}>
+          {book.can_buy && <button type="button" onClick={() => buy("book")} disabled={busy} data-testid="quest-look-buy" className="inline-flex items-center gap-2 rounded-xl bg-emerald-900 text-white px-4 py-2.5 text-sm font-bold disabled:opacity-60"><ShoppingBag size={16} /> {busy ? "Opening checkout…" : `Buy the book · ${money(book.price_cents)}`}</button>}
+          {book.can_buy_plus && <button type="button" onClick={() => buy("plus")} disabled={busy} className="inline-flex items-center gap-2 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-900 px-4 py-2.5 text-sm font-bold disabled:opacity-60"><BookOpenCheck size={16} /> Book + lessons · {money(book.plus_price_cents)}</button>}
+          <button type="button" onClick={() => setLook(false)} className="ml-auto text-sm font-semibold text-stone-600 underline">Not now</button>
+        </LookInside>
       )}
       {preview && book && <PdfPreview title={`${book.title} · free sample`} fetchPath={`/quest-books/books/${encodeURIComponent(book.id)}/sample`} downloadHref={pdfLink(book.id, "sample")} onClose={() => setPreview(false)} />}
       {book && lessons.length > 0 && (
