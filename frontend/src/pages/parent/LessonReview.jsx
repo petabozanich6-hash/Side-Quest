@@ -58,9 +58,9 @@ function summarise(v) {
 }
 const NAMES = { sections: "Explanations", worked_examples: "Worked examples", guided_practice: "Practice questions", activities: "Activities", questions: "Written questions", quiz: "Quiz", introduction: "Introduction", consolidation: "Wrap-up", title: "Title", answer_key: "Answer key", parent_script: "Teaching script", misconceptions: "Common mistakes", texts: "Readings", objectives: "Learning goals", teaching_questions: "Questions to ask", support: "Support ideas", extension: "Challenge", teaching_plan: "Teaching plan", why_it_matters: "Why it matters", materials: "Materials", prior_knowledge: "Prior knowledge", evidence_suggestions: "Evidence ideas" };
 
-export function RefinePanel({ lessonId, onApplied, onClose, initialInstruction = "", bookContext = null, onPlanSaved }) {
+export function RefinePanel({ lessonId, onApplied, onClose, initialInstruction = "", initialPart = "", bookContext = null, onPlanSaved }) {
   const [text, setText] = useState(initialInstruction);
-  const [part, setPart] = useState("");
+  const [part, setPart] = useState(initialPart);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [proposal, setProposal] = useState(null);
@@ -188,6 +188,7 @@ export default function LessonReview() {
   const [err, setErr] = useState("");
   const [refine, setRefine] = useState(false);
   const [refineInstruction, setRefineInstruction] = useState("");
+  const [refinePart, setRefinePart] = useState("");
   const [assign, setAssign] = useState(null);
   const [busy, setBusy] = useState(false);
   const load = useCallback(() => { setLesson(null); setErr(""); setAssign(null); setRefine(false); return api.get(`/lessons/${id}`).then(r => setLesson(r.data)).catch(e => setErr(e.response?.data?.detail || "Could not open this lesson")); }, [id]);
@@ -209,6 +210,14 @@ export default function LessonReview() {
   const previousBookEntry = bookIndex > 0 ? [...bookEntries.slice(0, bookIndex)].reverse().find((ch) => ch.draft?.lesson_id) : null;
   const bookLessonUrl = (ch) => `/parent/lessons/${ch.draft.lesson_id}/review?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(ch.id)}`;
   const currentBookEntry = bookIndex >= 0 ? bookEntries[bookIndex] : null;
+  const bookQualityIssues = currentBookEntry?.draft?.quality_issues || [];
+  const fixBookExplanations = () => {
+    setRefinePart("sections");
+    setRefineInstruction(
+      `Fix the incomplete teaching explanations in this existing ${lesson?.year_level || "Foundation"} ${lesson?.learning_area || "Mathematics"} lesson. Revise the actual sections field: provide at least TWO substantive teaching sections, each with a clear heading and full, accurate, age-appropriate body. Demonstrate the concept using real numbers, pictures or concrete objects appropriate to the lesson, explain WHAT, HOW and WHY in simple steps, and address a common mistake. Preserve the saved objectives, the worked examples, all existing activities, questions and correct answer keys; do not replace the lesson with generic notes. Ensure both section bodies are nonempty and useful for parent-guided teaching.`
+    );
+    setRefine(true);
+  };
   const refreshBookPlan = async () => {
     if (!bookId || !chapterId) return null;
     const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters`, { params: { _: Date.now() } });
@@ -318,6 +327,22 @@ export default function LessonReview() {
         </div>
       )}
 
+      {bookId && bookQualityIssues.length > 0 && !currentBookEntry?.draft?.reviewed && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 space-y-2" role="status" data-testid="book-quality-gaps">
+          <p className="text-sm font-bold text-amber-950">Before this lesson can be marked Ready & Reviewed</p>
+          <p className="text-sm text-amber-900">The saved version is missing these required lesson components. Your existing corrections are preserved.</p>
+          <ul className="list-disc pl-5 text-sm text-amber-950 space-y-1">
+            {bookQualityIssues.map((issue) => <li key={issue}>{issue}</li>)}
+          </ul>
+          {bookQualityIssues.includes("two complete teaching explanations") && (
+            <button type="button" onClick={fixBookExplanations} data-testid="book-fix-explanations"
+              className="inline-flex items-center gap-2 rounded-lg bg-violet-700 text-white px-3 py-2 text-sm font-bold">
+              <Sparkles size={15} /> Fix the teaching explanations with AI
+            </button>
+          )}
+          <p className="text-xs text-amber-900">AI will propose a change for you to inspect before saving. Approval stays blocked until the saved lesson meets the checks.</p>
+        </div>
+      )}
       <div className="sticky top-0 z-20 -mx-1 px-1 py-2 bg-[#F5EFE0]/95 backdrop-blur flex flex-wrap gap-2" data-testid="review-actions">
         {bookId
           ? <button disabled={busy || !currentBookEntry || currentBookEntry?.draft?.stale || lesson.quest_book_id !== bookId || lesson.quest_chapter_id !== chapterId}
@@ -333,13 +358,13 @@ export default function LessonReview() {
           className={`${btn} border border-emerald-700 bg-white text-emerald-900`} data-testid="r-save-book-plan">
           <Bookmark size={16} /> {currentBookEntry?.draft?.saved_to_plan ? "Saved to Book Plan ✓" : "Save to Book Plan"}
         </button>}
-        <button onClick={() => { setRefineInstruction(""); setRefine(r => !r); }} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
+        <button onClick={() => { setRefineInstruction(""); setRefinePart(""); setRefine(r => !r); }} className={`${btn} bg-violet-700 text-white`} data-testid="r-refine"><Sparkles size={16} /> Ask AI to Change Something</button>
         <button onClick={() => nav(`/parent/lessons/${id}/edit${batchId ? `?batch=${batchId}` : week ? `?week=${week}&child=${weekChild}` : bookQuery}`)} className={`${btn} border border-slate-900 bg-white`} data-testid="r-edit"><Pencil size={16} /> Edit Manually</button>
         <button onClick={() => { if (!bookId) toast.success(batchId ? "Kept as a draft with the rest of this set" : week ? "Kept as a draft in its timetable slot" : "Saved in your lessons as a draft"); nav(home); }} className={`${btn} border border-slate-400 bg-white`} data-testid="r-later"><Bookmark size={16} /> {bookId ? "Back to book" : "Save for Later"}</button>
         <LessonPrintActions lessonId={id} compact studentTestId="r-print" parentTestId="r-print-parent" />
       </div>
 
-      {refine && <RefinePanel key={id + refineInstruction} lessonId={id} initialInstruction={refineInstruction}
+      {refine && <RefinePanel key={id + refineInstruction + refinePart} lessonId={id} initialInstruction={refineInstruction} initialPart={refinePart}
         bookContext={bookId && chapterId ? { bookId, chapterId } : null}
         onPlanSaved={refreshBookPlan} onApplied={l => { setLesson(l); }}
         onClose={() => setRefine(false)} />}

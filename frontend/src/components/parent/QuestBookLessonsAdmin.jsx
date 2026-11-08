@@ -458,6 +458,12 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
                 {c.draft && !c.draft.stale && <span className={`ml-2 text-[10px] font-bold uppercase ${c.draft.saved_to_plan ? "text-emerald-700" : "text-amber-700"}`}>
                   {c.draft.saved_to_plan ? "Saved to book plan" : "Needs book-plan save"}
                 </span>}</span>
+              {c.draft?.quality_issues?.length > 0 && !c.draft.reviewed && (
+                <span className="w-full rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-950" data-testid={`quest-quality-${c.id}`}>
+                  <b>Needs content:</b> {c.draft.quality_issues.join("; ")}.
+                  {" "}Open Review to inspect the targeted repair option.
+                </span>
+              )}
               {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review?book=${encodeURIComponent(book.id)}&chapter=${encodeURIComponent(c.id)}`} className="text-sm font-semibold text-emerald-900 underline">{c.draft.reviewed ? "Reopen" : "Review"} “{c.draft.title}”</Link>}
               {c.draft && <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-950">
                 <input type="checkbox" disabled={c.draft.stale || !!busy || !!batchProgress} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
