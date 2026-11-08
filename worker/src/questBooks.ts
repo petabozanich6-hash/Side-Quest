@@ -11,7 +11,7 @@ import type { App, Guards, Env } from "./types";
 import { getEntitlement } from "./lessonBuilder";
 import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
-import { authenticateToken, verifyFileToken } from "./session";
+import { authenticateToken, verifyFileTokenUser } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
 import { squareConfig, createCartPaymentLink, createShopPaymentLink } from "./square";
 import { loadPlatformSettings } from "./platformSettings";
@@ -582,9 +582,9 @@ async function familyFromRequest(c: any): Promise<{ familyId: string; userId: st
     const auth = await authenticateToken(c.env, header.slice(7));
     return auth.ok && auth.user.role === "parent" ? { familyId: auth.user.family_id, userId: auth.user.id } : null;
   }
+  // The files-only token names the parent too, so the owner (who never "buys" a book) can download it.
   const ft = c.req.query("ft");
-  const familyId = ft ? await verifyFileToken(c.env, ft) : null;
-  return familyId ? { familyId, userId: null } : null;
+  return ft ? await verifyFileTokenUser(c.env, ft) : null;
 }
 
 function pdfResponse(obj: R2ObjectBody, name: string) {
