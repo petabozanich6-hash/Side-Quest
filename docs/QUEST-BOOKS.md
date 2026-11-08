@@ -64,3 +64,14 @@ Purchases are recorded only by the verified Stripe webhook: `quest_book_purchase
 
 Apply migration `0072_quest_book_purchases.sql` after a D1 backup (`docs/RELEASE.md`). The Worker also creates the
 table itself if the migration hasn't run yet.
+
+## Specialist shelf
+
+Quest Books has two tabs: **Year-level books** (the core subjects, Foundation to Year 10) and **Specialist**.
+Specialist shelves: NAPLAN prep, HSC prep, VCE/QCE/WACE/SACE, Selective & OC tests, Reading & spelling,
+Handwriting, Study skills and Life skills. Specialist books can be Years 0–12 or "All ages", and carry a
+**topic** (e.g. "Numeracy", "Mathematics Advanced") that shows in place of the subject.
+
+The owner sees dashed **Planned** cards on each specialist shelf (from `frontend/src/lib/questBookPlan.js`).
+Only the owner sees them. Clicking one opens "Add a book" already filled in. A planned card disappears once a
+book with the same shelf, year and topic exists. Edit `questBookPlan.js` to change the list.

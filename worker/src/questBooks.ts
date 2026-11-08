@@ -21,6 +21,23 @@ import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipelin
 type DB = D1Database;
 
 export const QUEST_SUBJECTS = ["mathematics", "english", "science", "history", "geography"] as const;
+/** Specialist books may also use "other" with their own topic label. */
+const SPECIALIST_SUBJECTS = [...QUEST_SUBJECTS, "other"] as const;
+
+/** "core" is the year-by-year shelf (Foundation to Year 10, five core subjects). The rest are specialist collections. */
+export const QUEST_COLLECTIONS = [
+  { id: "core", label: "Year-level books", blurb: "Maths, English, Science, History and Geography for each year." },
+  { id: "naplan", label: "NAPLAN prep", blurb: "Reading, writing, language conventions and numeracy practice for Years 3, 5, 7 and 9." },
+  { id: "hsc", label: "HSC prep", blurb: "NSW Year 11 and 12 courses: revision, practice questions and exam technique." },
+  { id: "senior", label: "Senior certificates (other states)", blurb: "VCE, QCE, SACE, WACE and other senior secondary courses." },
+  { id: "selective", label: "Selective, OC & scholarship tests", blurb: "Reasoning, reading, maths and writing practice for selective school, Opportunity Class and scholarship tests." },
+  { id: "reading", label: "Reading & phonics", blurb: "Learning to read, phonics, sight words and spelling." },
+  { id: "handwriting", label: "Handwriting", blurb: "Letter formation, neat print and cursive." },
+  { id: "study-skills", label: "Study skills", blurb: "Note-taking, research, essay writing, time management and exam technique." },
+  { id: "life-skills", label: "Life skills", blurb: "Money, budgeting, everyday maths and practical literacy." },
+] as const;
+const COLLECTION_IDS = QUEST_COLLECTIONS.map((c) => c.id) as string[];
+export const SPECIALIST_YEARS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 export type QuestSubject = (typeof QUEST_SUBJECTS)[number];
 export const SUBJECT_LABEL: Record<QuestSubject, string> = {
   mathematics: "Mathematics",
@@ -31,7 +48,8 @@ export const SUBJECT_LABEL: Record<QuestSubject, string> = {
 };
 /** Foundation is year 0. */
 export const QUEST_YEARS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-export const yearLabel = (y: number) => (y === 0 ? "Foundation" : `Year ${y}`);
+export const subjectLabel = (m: { subject: string; topic?: string }) => m.topic || SUBJECT_LABEL[m.subject as QuestSubject] || "Specialist";
+export const yearLabel = (y: number | null) => (y === null ? "All ages" : y === 0 ? "Foundation" : `Year ${y}`);
 
 const ROOT = "quest-books/v1/";
 const VALID_ID = /^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$/;
@@ -130,8 +148,13 @@ export const slugify = (s: string) => s.toLowerCase().normalize("NFKD").replace(
 
 export type QuestBookMeta = {
   id: string;
-  year: number;
-  subject: QuestSubject;
+  /** Shelf: "core" or a specialist collection id. */
+  collection: string;
+  /** Null for specialist books suited to all ages. */
+  year: number | null;
+  subject: QuestSubject | "other";
+  /** Specialist books: the label shown instead of the subject (e.g. "Numeracy", "Mathematics Advanced"). */
+  topic: string;
   title: string;
   subtitle: string;
   description: string;
@@ -156,10 +179,19 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   if (!title) return fail(400, "The book needs a title.");
   const id = clip(b.id, 64) || slugify(title);
   if (!VALID_ID.test(id)) return fail(400, "The book id must use lowercase letters, numbers and dashes.");
-  const year = Number(b.year);
-  if (!QUEST_YEARS.includes(year)) return fail(400, "Choose a year level from Foundation to Year 10.");
-  const subject = String(b.subject || "").toLowerCase() as QuestSubject;
-  if (!QUEST_SUBJECTS.includes(subject)) return fail(400, "Choose Mathematics, English, Science, History or Geography.");
+  const collection = COLLECTION_IDS.includes(String(b.collection)) ? String(b.collection) : "core";
+  const core = collection === "core";
+  const allAges = !core && (b.year === null || b.year === "" || b.year === "all" || b.year === undefined);
+  const year = allAges ? null : Number(b.year);
+  if (core ? !QUEST_YEARS.includes(year as number) : !(allAges || SPECIALIST_YEARS.includes(year as number))) {
+    return fail(400, core ? "Choose a year level from Foundation to Year 10." : "Choose a year level from Foundation to Year 12, or All ages.");
+  }
+  const subject = String(b.subject || (core ? "" : "other")).toLowerCase() as QuestSubject | "other";
+  if (core ? !QUEST_SUBJECTS.includes(subject as QuestSubject) : !(SPECIALIST_SUBJECTS as readonly string[]).includes(subject)) {
+    return fail(400, "Choose Mathematics, English, Science, History or Geography.");
+  }
+  const topic = core ? "" : clip(b.topic, 60);
+  if (!core && !topic && subject === "other") return fail(400, "Give a specialist book a topic, for example Numeracy or Mathematics Advanced.");
   let price_cents: number | null = null;
   if (b.price_cents !== undefined && b.price_cents !== null && b.price_cents !== "") {
     const p = Number(b.price_cents);
@@ -188,7 +220,7 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   }
   return {
     ok: true,
-    meta: { id, year, subject, title, subtitle: clip(b.subtitle, 160), description: clip(b.description, 2000), pages, price_cents, lessons_price_cents, lesson_price_cents, updated_at: now.toISOString() },
+    meta: { id, collection, year, subject, topic, title, subtitle: clip(b.subtitle, 160), description: clip(b.description, 2000), pages, price_cents, lessons_price_cents, lesson_price_cents, updated_at: now.toISOString() },
   };
 }
 
@@ -217,7 +249,7 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
       const f = files.get(m.id) || {};
       return { ...m, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
     })
-    .sort((a, b) => a.year - b.year || QUEST_SUBJECTS.indexOf(a.subject) - QUEST_SUBJECTS.indexOf(b.subject) || a.title.localeCompare(b.title));
+    .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
 
 async function readMeta(bucket: R2Bucket, id: string): Promise<QuestBookMeta | null> {
@@ -245,14 +277,14 @@ const hasBook = (a: Access, id: string) => a.member || a.tiers.has(id);
 const hasLessons = (a: Access, id: string) => a.member || a.tiers.get(id) === "plus";
 
 const fileName = (m: QuestBookMeta, kind: "book" | "sample") =>
-  `Side-Quest ${yearLabel(m.year)} ${SUBJECT_LABEL[m.subject]} - ${m.title}${kind === "sample" ? " (sample)" : ""}.pdf`.replace(/[\\/:*?"<>|]/g, "");
+  `Side-Quest ${yearLabel(m.year)} ${subjectLabel(m)} - ${m.title}${kind === "sample" ? " (sample)" : ""}.pdf`.replace(/[\\/:*?"<>|]/g, "");
 
 function out(b: Listed, a: Access, canBuy: boolean) {
   const full = hasBook(a, b.id);
   const tier = a.tiers.get(b.id);
   const plusOnSale = !a.member && b.has_book && b.has_lessons && b.lessons_price_cents !== null && canBuy && tier !== "plus";
   return {
-    id: b.id, year: b.year, year_label: yearLabel(b.year), subject: b.subject, subject_label: SUBJECT_LABEL[b.subject],
+    id: b.id, collection: b.collection, topic: b.topic, year: b.year, year_label: yearLabel(b.year), subject: b.subject, subject_label: subjectLabel(b),
     title: b.title, subtitle: b.subtitle, description: b.description, pages: b.pages, price_cents: b.price_cents,
     has_book: b.has_book, has_sample: b.has_sample, has_cover: b.has_cover, book_bytes: b.book_bytes,
     can_download: full && b.has_book,
@@ -310,6 +342,8 @@ export function registerQuestBooks(app: App, g: Guards) {
       member: a.member, preview: a.preview, owner: a.owner, can_buy: canBuy,
       subjects: QUEST_SUBJECTS.map((s) => ({ id: s, label: SUBJECT_LABEL[s] })),
       years: QUEST_YEARS.map((y) => ({ year: y, label: yearLabel(y) })),
+      specialist_years: SPECIALIST_YEARS.map((y) => ({ year: y, label: yearLabel(y) })),
+      collections: QUEST_COLLECTIONS,
       books: books.map((b) => out(b, a, canBuy)),
     });
   });
@@ -438,9 +472,9 @@ export function registerQuestBooks(app: App, g: Guards) {
             unit_amount: amount,
             product_data: {
               name: tier === "lesson" ? `Quest Book lesson: ${lessonTitle}`.slice(0, 250) : tier === "plus" ? `Quest Book + lessons: ${meta.title}` : `Quest Book: ${meta.title}`,
-              description: (tier === "lesson" ? `${meta.title} · ${yearLabel(meta.year)} ${SUBJECT_LABEL[meta.subject]} · ready-made lesson` : tier === "plus"
-                ? `${yearLabel(meta.year)} ${SUBJECT_LABEL[meta.subject]} · PDF book and ready-made lessons${owned === "book" ? " (upgrade)" : ""}`
-                : `${yearLabel(meta.year)} ${SUBJECT_LABEL[meta.subject]} · digital download (PDF)`).slice(0, 250),
+              description: (tier === "lesson" ? `${meta.title} · ${yearLabel(meta.year)} ${subjectLabel(meta)} · ready-made lesson` : tier === "plus"
+                ? `${yearLabel(meta.year)} ${subjectLabel(meta)} · PDF book and ready-made lessons${owned === "book" ? " (upgrade)" : ""}`
+                : `${yearLabel(meta.year)} ${subjectLabel(meta)} · digital download (PDF)`).slice(0, 250),
             },
           },
         }],
@@ -579,7 +613,7 @@ export function registerQuestBooks(app: App, g: Guards) {
       familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
       compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env as any), splitStages: splitLessonStagesEnabled(c.env as any),
       request: {
-        request: `Create one complete ${level} ${SUBJECT_LABEL[meta.subject]} lesson teaching the chapter "${chapter.title}" from the workbook "${meta.title}". Base the lesson on the chapter text provided: teach the same skills, in the same order, at the same level.`,
+        request: `Create one complete ${level} ${subjectLabel(meta)} lesson teaching the chapter "${chapter.title}" from the workbook "${meta.title}". Base the lesson on the chapter text provided: teach the same skills, in the same order, at the same level.`,
         source_text: chapter.text,
         link_outcomes: true,
       } as any,
