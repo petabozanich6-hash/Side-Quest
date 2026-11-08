@@ -6,6 +6,7 @@ import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
+import QuestBookOvernight from "../../components/parent/QuestBookOvernight";
 import PdfPreview from "../../components/parent/PdfPreview";
 import { plannedFor } from "../../lib/questBookPlan";
 import { lookInsidePages, readerPages } from "../../lib/pdfPages";
@@ -159,6 +160,7 @@ function OwnerPanel({ data, reload }) {
       ) : (
         <button type="button" onClick={() => setAdding(true)} className="inline-flex items-center gap-2 rounded-full bg-emerald-900 text-white px-4 py-2 text-sm font-bold"><Plus size={16} /> Add a book</button>
       )}
+      <QuestBookOvernight />
       <div className="rounded-xl border border-emerald-300 bg-white divide-y divide-stone-100">
         {!data.books.length ? <p className="p-3 text-sm text-stone-600">No books yet.</p> : data.books.map((b) => (
           <div key={b.id} className="p-3 space-y-3">
