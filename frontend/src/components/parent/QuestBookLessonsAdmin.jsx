@@ -40,7 +40,19 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     try {
       const r = await readPdfChapters(file);
       if (!r.chapters.length) toast.error("This PDF has no bookmarks, so chapters can't be found. Export it again with headings saved as bookmarks (some tools call this an outline or table of contents).", { duration: 12000 });
-      else setScan(r.chapters);
+      else {
+        const previous = data?.chapters || [];
+        const used = new Set();
+        // Match unchanged sessions to their old keys, so purchases never attach to another lesson
+        // merely because the owner re-read or split the PDF.
+        const sessions = r.chapters.map((ch) => {
+          const match = previous.find((p) => !used.has(p.id) &&
+            p.start === ch.start && p.end === ch.end && p.title === ch.title);
+          if (match) used.add(match.id);
+          return { ...ch, id: match?.id || ("s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20)) };
+        });
+        setScan(sessions);
+      }
     } catch (e) { toast.error("Could not read that PDF."); }
     finally { setBusy(""); }
   };
@@ -61,7 +73,8 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     }
     setScan((old) => old.flatMap((item, j) => j === index ? [
       { ...item, end: point, page_texts: leftPages, text: joined(leftPages) },
-      { ...item, title: item.title + " — next skill", start: point + 1, page_texts: rightPages,
+      { ...item, id: "s-" + crypto.randomUUID().replace(/-/g, "").slice(0, 20),
+        title: item.title + " — next skill", start: point + 1, page_texts: rightPages,
         text: joined(rightPages), skill_goal: "", exercise_ref: "" },
     ] : [item]));
     setSplitAfter({});
