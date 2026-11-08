@@ -405,8 +405,13 @@ export function qualityIssues(d: Draft, spec: Spec): Issue[] {
     const model = d.sections.some((section) =>
       /\d/.test(section.body) && /(?:[=+×÷−*/]|\b(?:because|means|represents|add|subtract|multiply|divide|number line)\b)/i.test(section.body));
     if (d.sections.length && !model) add({ keys: ["sections"], msg: "the maths explanations describe the topic but never actually demonstrate a calculation or numerical model; teach a complete concrete example with reasons", hard: true, repair: true });
+    // Shape, position, pattern, measurement and data topics are modelled by counting sides,
+    // reading a grid or describing a position, which is real working with no + or = sign.
+    const spatialTopic = /\b(?:shapes?|2d|3d|position|positional|location|direction|left|right|grid|map|maps|symmetry|angles?|patterns?|sort(?:ing)?|measur\w*|length|mass|capacity|time|clock|calendar|data|graphs?|tally|chance)\b/i
+      .test([spec.topic, spec.goal, spec.original || ""].join(" "));
+    const spatialStep = /\b(?:\d+|one|two|three|four|five|six|seven|eight)\s+(?:sides?|corners?|vertices|vertex|faces?|edges?|squares?|steps?|units?|blocks?|lines?|curves?)\b|\b(?:above|below|beside|next to|behind|in front of|between|under|over|inside|outside|left of|right of|turn|row|column|longer|shorter|heavier|lighter|o'clock|half past)\b/i;
     const hasWorking = d.worked_examples.some((ex) => ex.steps.some((st) =>
-      /\d/.test(st) && /[=+×÷−*/-]/.test(st)));
+      (/\d/.test(st) && /[=+×÷−*/-]/.test(st)) || (spatialTopic && spatialStep.test(st))));
     if (d.worked_examples.length && !hasWorking) add({ keys: ["worked_examples"], msg: "worked examples describe what to do without showing any real calculation steps; write the actual working", hard: true, repair: true });
     const topic = [spec.topic, spec.goal, spec.original || ""].join(" ");
     if (/\b(?:algebra|algebraic|equation|equations|variable)\b/i.test(topic) &&
