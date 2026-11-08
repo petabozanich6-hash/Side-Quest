@@ -642,7 +642,7 @@ test("AI lesson drafting follows family jurisdiction without inventing non-NSW c
   assert.match(designPrompt, /Victorian Curriculum F/);
   assert.match(designPrompt, /Mathematics/);
   assert.match(designPrompt, /Do not|Never invent/i);
-  assert.deepEqual(v.lesson.outcome_codes, []);
+  assert.ok(v.lesson.outcome_codes.every((c) => /^VC2/.test(c)), JSON.stringify(v.lesson.outcome_codes));
   assert.match(v.lesson.curriculum_refs.join(" "), /https:\/\/f10\.vcaa\.vic\.edu\.au/);
   assert.doesNotMatch(v.lesson.curriculum_refs.join(" "), /curriculum\.nsw/);
 
@@ -1566,15 +1566,14 @@ test("state or territory: codes are validated, and families outside NSW never ge
   assert.equal(j.usesNswOutcomes(null), false, "no state chosen must not default to NSW");
   db.raw.prepare("UPDATE families SET jurisdiction='VIC' WHERE id=?").run(fam);
   assert.equal(await j.getFamilyJurisdiction(db, fam), "VIC");
-  // existing lesson: no suggestions, no AI call, honest note
+  // existing lesson: suggestions come from Victoria's own codes, never NSW
   const l = (await lb.createLesson(db, fam, { ...Y7L, status: "ready" }, NOW)).lesson;
   const ai = stub((m, input) => ({ response: '{"matches":[1]}' }));
   const r = await aid.matchLessonOutcomes(db, ai, { familyId: fam, userId: "u", lessonId: l.id }, NOW);
-  assert.ok(r.ok); assert.deepEqual(r.suggestions, []); assert.match(r.note, /VIC/);
-  assert.equal(ai.calls.length, 0);
+  assert.ok(r.ok); assert.ok(r.suggestions.every((o) => /^VC2/.test(o.code)), JSON.stringify(r.suggestions)); assert.match(r.note, /Victorian/);
   // AI-drafted lesson: no NSW codes attached
   const d = await aid.draftLessonWithAi(db, stub(), { familyId: fam, userId: "u", request: { topic: "Fractions" } }, NOW);
-  assert.ok(d.ok, JSON.stringify(d)); assert.deepEqual(d.lesson.outcome_codes, []); assert.deepEqual(d.outcomes, []);
+  assert.ok(d.ok, JSON.stringify(d)); assert.ok(d.lesson.outcome_codes.every((c) => /^VC2/.test(c))); assert.deepEqual(d.outcomes, []);
   // NSW families keep outcome matching
   db.raw.prepare("UPDATE families SET jurisdiction='NSW' WHERE id=?").run(fam);
   const n = await aid.matchLessonOutcomes(db, ai, { familyId: fam, userId: "u", lessonId: l.id }, NOW);

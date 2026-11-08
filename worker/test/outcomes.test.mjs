@@ -305,7 +305,7 @@ test("state catalogues are isolated; switching states preserves historical evide
   const fam = family(db, { jurisdiction: "VIC" });
   const kid = child(db, fam);
   const t = await ot.trackerFor(db, fam, kid, { now: D(2) });
-  assert.equal(t.available, false, "VCAA source module is missing: never provide inferred outcomes");
+  assert.equal(t.available, true, "Victoria's codes are loaded (codes and Side-Quest summaries only)");
   assert.equal(t.framework?.key, "VIC");
   const wrongStateCode = await ot.confirmOutcome(db, fam, `u-${fam}`, kid, RN, {}, D(2));
   assert.ok(!wrongStateCode.ok, "reject an NSW outcome in a Victorian family");
@@ -447,7 +447,7 @@ test("lessons keep only codes from the family's own catalogue (AC9 states can li
   const v = await makeLesson(db, vic, "V", ["AC9M3N01", RN]);
   assert.deepEqual(q.outcome_codes, ["AC9M3N01"]);
   assert.deepEqual(n.outcome_codes, [RN]);
-  assert.deepEqual(v.outcome_codes, [], "no verified Victorian catalogue: nothing is attached rather than borrowing another framework");
+  assert.deepEqual(v.outcome_codes, [], "a Victorian family never borrows another framework's codes");
   const kid = child(db, qld);
   const w = await doLesson(db, qld, kid, q, 1);
   await review(db, qld, w.sub, 1, "demonstrated", [{ code: "AC9M3N01", mark: "shown" }]);
@@ -548,7 +548,7 @@ test("a chosen subject is never filled with another subject's outcomes", async (
 });
 
 
-test("lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, none for VIC", async () => {
+test("lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, VC2 for VIC", async () => {
   const { suggestFromCatalogue, lessonYears } = await import("../src/questOutcomes.ts");
   const { catalogueFor } = await import("../src/outcomeTracker.ts");
   const lesson = { title: "Adding two-digit numbers with regrouping", learning_area: "Mathematics", stage: "S2",
@@ -559,5 +559,6 @@ test("lesson outcome suggestions use each state's own list: AC9 for QLD, WA's co
   assert.ok(qld.suggestions.length > 0 && qld.suggestions.every((o) => /^AC9M[34]/.test(o.code)), JSON.stringify(qld.suggestions));
   const wa = await suggestFromCatalogue(catalogueFor("WA"), lesson, undefined, {});
   assert.ok(wa.suggestions.length > 0 && wa.suggestions.every((o) => /^WA[34]M/.test(o.code)), JSON.stringify(wa.suggestions));
-  assert.equal(catalogueFor("VIC").available, false);
+  const vic = await suggestFromCatalogue(catalogueFor("VIC"), lesson, undefined, {});
+  assert.ok(vic.suggestions.length > 0 && vic.suggestions.every((o) => /^VC2M[34]/.test(o.code)), JSON.stringify(vic.suggestions));
 });
