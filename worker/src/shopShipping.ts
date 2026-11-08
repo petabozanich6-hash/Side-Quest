@@ -11,7 +11,8 @@ export const AUSPOST_SERVICE = "AUS_PARCEL_REGULAR";
 export const DISPATCH_POSTCODE = "2340";
 
 export class ShippingQuoteError extends Error {
-  constructor(message: string, public readonly status = 400) { super(message); }
+  readonly status: number;
+  constructor(message: string, status = 400) { super(message); this.status = status; }
 }
 
 export type Parcel = { weight_g: number; length_cm: number; width_cm: number; height_cm: number };
