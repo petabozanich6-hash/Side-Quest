@@ -217,6 +217,39 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
   const [email, setEmail] = useState(defaultEmail);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [shippingQuote, setShippingQuote] = useState(null);
+  const [shippingBusy, setShippingBusy] = useState(false);
+  const [shippingError, setShippingError] = useState("");
+  const posted = cart.items.some((x) => x.physical && !x.gift_months);
+  const itemsKey = JSON.stringify(cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null })));
+  const validQuote = posted && shippingQuote?.postcode === postcode && shippingQuote?.itemsKey === itemsKey ? shippingQuote : null;
+
+  useEffect(() => {
+    if (!posted || !/^[0-9]{4}$/.test(postcode)) {
+      setShippingQuote(null); setShippingBusy(false); setShippingError(""); return;
+    }
+    const controller = new AbortController();
+    setShippingBusy(true); setShippingQuote(null); setShippingError("");
+    const delay = setTimeout(async () => {
+      try {
+        const response = await fetch(`${API}/shop/postage/quote`, {
+          method: "POST", headers: { "Content-Type": "application/json" }, signal: controller.signal,
+          body: JSON.stringify({ postcode, items: JSON.parse(itemsKey) }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !Number.isInteger(result.postage_cents) || result.postage_cents <= 0)
+          throw new Error(result.detail || "Couldn't calculate postage. Please check your postcode.");
+        if (!controller.signal.aborted) setShippingQuote({ ...result, postcode, itemsKey });
+      } catch (e) {
+        if (!controller.signal.aborted) setShippingError(e.message || "Postage is temporarily unavailable.");
+      } finally {
+        if (!controller.signal.aborted) setShippingBusy(false);
+      }
+    }, 350);
+    return () => { clearTimeout(delay); controller.abort(); };
+  }, [posted, postcode, itemsKey]);
+
   useEffect(() => { fetch(`${API}/shop`).then((r) => r.json()).then(setData).catch(() => setData({ open: false })); }, []);
   useEffect(() => writeCart(cart), [cart]);
   const products = useMemo(() => data?.products || [], [data]);
@@ -232,18 +265,18 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
   const addItems = (items) => { setCart((c) => ({ ...c, items: [...c.items, ...items].slice(0, 30) })); setOpen(null); };
   const removeItem = (i) => setCart((c) => ({ ...c, items: c.items.filter((_, j) => j !== i) }));
   const chosen = books.filter((b) => cart.books.includes(b.id));
-  const postage = Math.max(0, ...cart.items.filter((x) => x.physical).map((x) => x.postage_cents || 0));
+  const postage = validQuote?.postage_cents || 0;
   const total = chosen.reduce((n, b) => n + b.price_cents, 0) + cart.items.reduce((n, x) => n + x.unit_cents * x.qty, 0) + postage;
-  const posted = cart.items.some((x) => x.physical);
   const empty = !chosen.length && !cart.items.length;
 
   const checkout = async () => {
     setError("");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setError("Enter your email address for the receipt and download links."); return; }
+    if (posted && !validQuote) { setError("Enter your delivery postcode and obtain a Parcel Post quote before paying."); return; }
     setBusy(true);
     try {
       const r = await fetch(`${API}/shop/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-        book_ids: chosen.map((b) => b.id), email: email.trim(), expected_total_cents: total,
+        book_ids: chosen.map((b) => b.id), email: email.trim(), expected_total_cents: total, destination_postcode: posted ? postcode : null,
         items: cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null })),
       }) });
       const j = await r.json().catch(() => ({}));
@@ -313,14 +346,25 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
                 <button type="button" onClick={() => removeItem(i)} className="text-stone-500 hover:text-rose-700" aria-label={`Remove ${x.title}`}>✕</button>
               </li>
             ))}
-            {posted && <li className="flex items-center gap-3 py-2 text-sm"><span className="mr-auto">Postage (one parcel)</span><span className="font-semibold">{postage ? money(postage) : "Free"}</span></li>}
+            {posted && <li className="flex items-center gap-3 py-2 text-sm"><span className="mr-auto">Standard Parcel Post (one parcel)</span><span className="font-semibold">{validQuote ? money(postage) : "Enter postcode"}</span></li>}
           </ul>
+          {posted && (
+            <div className="border-t pt-3 space-y-2">
+              <label className="block text-sm font-semibold max-w-xs">Australian delivery postcode
+                <input inputMode="numeric" autoComplete="postal-code" maxLength={4} value={postcode} onChange={(e) => setPostcode(e.target.value.replace(/[^0-9]/g, "").slice(0, 4))} placeholder="e.g. 2340" className={field} aria-label="Delivery postcode" />
+              </label>
+              <p className="text-xs text-stone-600">Standard tracked Parcel Post only. Please enter the same postcode on Square's secure payment page. Orders are prepared before weekly dispatch; delivery time begins after dispatch.</p>
+              {shippingBusy && <p className="text-sm text-stone-600">Calculating Australia Post postage…</p>}
+              {validQuote && <p className="text-sm font-semibold text-emerald-800">Parcel Post to {postcode}: {money(validQuote.postage_cents)}</p>}
+              {shippingError && <p className="text-sm text-rose-700" role="alert">{shippingError}</p>}
+            </div>
+          )}
           <div className="flex flex-wrap items-end gap-3">
             <label className="text-sm font-semibold flex-1 min-w-[220px]">Your email
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className={field} />
             </label>
             <div className="text-lg font-bold" style={{ color: GREEN }}>Total {money(total)}</div>
-            <button type="button" onClick={checkout} disabled={busy || !data.can_buy} className="rounded-xl px-5 py-2.5 font-bold text-white disabled:opacity-60" style={{ backgroundColor: GREEN }} data-testid="shop-checkout">{busy ? "Opening checkout…" : "Checkout securely"}</button>
+            <button type="button" onClick={checkout} disabled={busy || !data.can_buy || (posted && !validQuote)} className="rounded-xl px-5 py-2.5 font-bold text-white disabled:opacity-60" style={{ backgroundColor: GREEN }} data-testid="shop-checkout">{busy ? "Opening checkout…" : "Checkout securely"}</button>
           </div>
           {error && <p className="text-sm text-rose-700" role="alert">{error}</p>}
           <p className="text-xs text-stone-500">You'll pay on Square's secure checkout page{posted ? " and add your postal address there" : ""}, then come straight back here. Downloads are for your family's own use.</p>
