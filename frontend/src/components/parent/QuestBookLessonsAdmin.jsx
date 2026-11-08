@@ -25,13 +25,19 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [approvalFailures, setApprovalFailures] = useState([]);
   const stopDraftQueue = React.useRef(false);
   const batchRunning = React.useRef(false);
+  const queuedRetryIds = React.useRef(new Set());
+  const [queuedRetryList, setQueuedRetryList] = useState([]);
+  const [activeDraftTitle, setActiveDraftTitle] = useState("");
   const failureKey = `sq-quest-book-draft-failures:${book.id}`;
   const readFailures = () => {
     try { return JSON.parse(localStorage.getItem(failureKey) || "{}") || {}; }
     catch { return {}; }
   };
   const [failures, setFailures] = useState(readFailures);
-  useEffect(() => { setFailures(readFailures()); setBatchSummary(null); }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setFailures(readFailures()); setBatchSummary(null);
+    queuedRetryIds.current.clear(); setQueuedRetryList([]); setActiveDraftTitle("");
+  }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
   const recordFailure = (ch, error) => setFailures((prev) => {
     const next = { ...prev, [ch.id]: String(error || "Lesson generation failed") };
     try { localStorage.setItem(failureKey, JSON.stringify(next)); } catch {}
@@ -173,6 +179,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     finally { setBusy(""); }
   };
   const draft = async (ch, quiet = false) => {
+    setActiveDraftTitle(ch.title);
     setBusy(ch.id);
     try {
       await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(ch.id)}/draft`, {}, { timeout: 10 * 60 * 1000 });
@@ -185,7 +192,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       recordFailure(ch, error);
       if (!quiet) toast.error(`${ch.title}: ${error}`, { duration: 9000 });
       return { ok: false, error };
-    } finally { setBusy(""); }
+    } finally { setBusy(""); setActiveDraftTitle(""); }
   };
   const runBatch = async (chapters, label) => {
     if (batchRunning.current || !chapters.length) return;
@@ -197,19 +204,58 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         shouldStop: () => stopDraftQueue.current,
         onProgress: setBatchProgress,
       });
-      setBatchSummary({ ...result, label });
-      const details = `${result.completed} succeeded, ${result.failed.length} failed${result.stopped ? ", stopped early" : ""}.`;
-      if (result.failed.length) toast.warning(`${label}: ${details} Failed lessons are listed below for retry.`, { duration: 10000 });
+      let finalResult = result;
+      // An owner may request a retry while the original batch is still going.
+      // Drain that queue ONCE after the batch, never as parallel AI requests.
+      // Do not re-create a lesson that was successful during this same batch.
+      const ids = [...queuedRetryIds.current];
+      queuedRetryIds.current.clear();
+      setQueuedRetryList([]);
+      if (ids.length && !stopDraftQueue.current) {
+        const successful = new Set(chapters.filter((ch) =>
+          !result.failed.some((item) => item.id === ch.id)).map((ch) => ch.id));
+        const queued = data.chapters.filter((ch) => ids.includes(ch.id) && !successful.has(ch.id));
+        if (queued.length) {
+          const retryResult = await runBookDraftQueue(queued, (ch) => draft(ch, true), {
+            shouldStop: () => stopDraftQueue.current,
+            onProgress: setBatchProgress,
+          });
+          // Keep the first attempt's failures unless the explicit retry succeeded.
+          const remaining = new Set(retryResult.failed.map((item) => item.id));
+          finalResult = {
+            ...result,
+            completed: result.completed + retryResult.completed,
+            attempted: result.attempted + retryResult.attempted,
+            failed: [...result.failed.filter((item) => !ids.includes(item.id) || remaining.has(item.id)),
+              ...retryResult.failed.filter((item) => !result.failed.some((previous) => previous.id === item.id))],
+            stopped: result.stopped || retryResult.stopped,
+          };
+        }
+      }
+      setBatchSummary({ ...finalResult, label });
+      const details = `${finalResult.completed} successful draft requests, ${finalResult.failed.length} failed${finalResult.stopped ? ", stopped early" : ""}.`;
+      if (finalResult.failed.length) toast.warning(`${label}: ${details} Retry the remaining failed lessons individually.`, { duration: 10000 });
       else toast.success(`${label}: ${details}`);
     } finally {
       batchRunning.current = false;
       stopDraftQueue.current = false;
       setBatchProgress(null);
+      setActiveDraftTitle("");
       await load();
     }
   };
   const draftAll = () => runBatch(data.chapters.filter((ch) => !ch.draft), "Make missing lessons");
-  const retryFailed = () => runBatch(data.chapters.filter((ch) => failures[ch.id]), "Retry failed lessons");
+  const requestRetries = (chapters) => {
+    if (!chapters.length) return;
+    if (batchRunning.current) {
+      chapters.forEach((ch) => queuedRetryIds.current.add(ch.id));
+      setQueuedRetryList([...queuedRetryIds.current]);
+      toast.message(`${chapters.length} lesson retry request(s) queued to run after the current batch.`);
+    } else if (!busy) {
+      void runBatch(chapters, "Retry failed lessons");
+    } else toast.message("Finish the current operation before retrying.");
+  };
+  const retryFailed = () => requestRetries(data.chapters.filter((ch) => failures[ch.id]));
   const startFresh = async () => {
     setBusy("reset");
     try {
@@ -366,6 +412,8 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const ready = data.chapters.filter((c) => c.draft?.status === "ready" && !c.draft?.stale).length;
   const total = data.chapters.length;
   const failedEntries = data.chapters.filter((ch) => !!failures[ch.id]);
+  const queueActive = !!batchProgress || batchRunning.current;
+  const canRetry = !busy || queueActive;
   const visible = data.chapters.filter((c) => {
     const matches = !reviewSearch.trim() || [c.title, c.unit_title, c.skill_goal, c.draft?.title].some((value) => String(value || "").toLowerCase().includes(reviewSearch.trim().toLowerCase()));
     if (!matches) return false;
@@ -411,6 +459,12 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           </div>
           <p className="text-xs text-emerald-900">{reviewed === total && total ? "Every planned lesson has been reviewed. Publishing still requires your approval." : `${total - reviewed} companion lesson${total - reviewed === 1 ? "" : "s"} still need${total - reviewed === 1 ? "s" : ""} review.`}</p>
         </div>
+        {batchProgress && <div className="rounded-xl border border-violet-300 bg-violet-50 p-3 space-y-1 text-sm text-violet-950" role="status" data-testid="quest-batch-top-progress">
+          <p className="font-bold"><Loader2 size={15} className="inline animate-spin mr-2" />Lesson creation is still running</p>
+          <p>{activeDraftTitle || "Preparing next lesson"} · {batchProgress.attempted} of {batchProgress.total} attempted · {batchProgress.completed} succeeded · {batchProgress.failed.length} failed.</p>
+          <p className="text-xs">You can queue a retry now. It will run after the current batch completes, without interrupting other lessons.</p>
+          {queuedRetryList.length > 0 && <p className="font-semibold">{queuedRetryList.length} retry request(s) queued</p>}
+        </div>}
         {reviewed < drafted && <div className="rounded-xl border border-emerald-300 bg-white p-3 space-y-2" data-testid="quest-confirm-reviewed">
           <p className="text-sm font-semibold text-emerald-950">Already checked the lessons? You don't have to open and re-save each one.</p>
           <p className="text-xs text-stone-600">Only use this after personally checking the teaching and answer keys. Complete lessons will be marked Ready and Reviewed; incomplete lessons stay unapproved and you'll see why. Nothing will publish automatically.</p>
@@ -432,15 +486,19 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         {failedEntries.length > 0 && <div className="rounded-xl border border-amber-300 bg-amber-50 p-3 space-y-2" data-testid="quest-draft-failures">
           <div className="flex flex-wrap items-center gap-2 justify-between">
             <p className="text-sm font-bold text-amber-950">{failedEntries.length} lesson{failedEntries.length === 1 ? "" : "s"} need a retry</p>
-            <button type="button" disabled={!!busy || !!batchProgress} onClick={retryFailed}
-              className="rounded-lg bg-amber-800 text-white px-3 py-1.5 text-xs font-bold disabled:opacity-50">Retry failed lessons</button>
+            <button type="button" disabled={!canRetry || failedEntries.every((ch) => queuedRetryList.includes(ch.id))} onClick={retryFailed}
+              className="rounded-lg bg-amber-800 text-white px-3 py-1.5 text-xs font-bold disabled:opacity-50">
+              {queuedRetryList.length && failedEntries.every((ch) => queuedRetryList.includes(ch.id)) ? "Retry queued" : queueActive ? "Queue failed retries" : "Retry failed lessons"}
+            </button>
           </div>
-          <p className="text-xs text-amber-900">Other lessons will keep drafting even when one fails. Each failed lesson can be retried without remaking the successful ones.</p>
+          <p className="text-xs text-amber-900">Other lessons will keep drafting even when one fails. Retry runs immediately when idle, or is queued until the current batch finishes. Your successful lessons are preserved.</p>
           <ul className="space-y-1.5">
             {failedEntries.map((ch) => <li key={ch.id} className="flex gap-2 items-start justify-between text-xs text-amber-950">
               <span><b>{ch.title}</b>: {failures[ch.id]}{ch.draft ? " (Previous saved draft retained.)" : ""}</span>
-              <button type="button" disabled={!!busy || !!batchProgress} onClick={() => draft(ch)}
-                className="shrink-0 underline font-bold disabled:opacity-50">Retry</button>
+              <button type="button" disabled={!canRetry || queuedRetryList.includes(ch.id)} onClick={() => requestRetries([ch])}
+                className="shrink-0 underline font-bold disabled:opacity-50">
+                {queuedRetryList.includes(ch.id) ? "Queued" : queueActive ? "Queue retry" : "Retry"}
+              </button>
             </li>)}
           </ul>
         </div>}
