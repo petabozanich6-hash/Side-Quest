@@ -28,8 +28,10 @@ On a book in the uploader, **Lessons** opens the session builder:
 1. **Read bookmarked sections from the uploaded PDF**. Non-teaching sections (welcome, answers, parent notes) are
    unticked by default. For a chapter covering multiple skills, enter a PDF page number and **Split into two sessions**.
    Each session has one specific learning goal and optional **exact workbook exercise reference** (such as
-   "Page 18, questions 1–8"). For clean extraction, each session may contain at most 8,000 characters of source
-   text. The app rejects larger sessions before generating; it never silently drops the end of a chapter.
+   "Page 18, questions 1–8"). Session IDs are stable across a re-read or split, so previously purchased
+   individual lesson keys do not shift to different content. For clean extraction, each session may contain at
+   most 8,000 characters of source text. The app rejects larger sessions before generating; it never silently
+   drops the end of a chapter.
 2. **Make lesson** for each session. The AI receives the Year, subject, exact selected source, goal and page range.
    It creates a **complete Side-Quest lesson**: actual teaching, worked models, guided practice, independent tasks,
    written questions, assessment, answers and parent teaching notes. The online lesson must be self-contained
