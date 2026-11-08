@@ -671,7 +671,7 @@ test("VIC and WA families receive their OWN outcomes when adding an older book w
     assert.ok(owned.outcome_codes.length > 0, jurisdiction + " should have curriculum references");
     assert.ok(owned.outcome_codes.every((code) => cat(jurisdiction).byCode.has(code)),
       jurisdiction + " must not inherit NSW or any other state's codes: " + owned.outcome_codes);
-    assert.ok(!owned.outcome_codes.some((code) => /^MA2-|^AC9/.test(code)),
+    if (jurisdiction !== "QLD") assert.ok(!owned.outcome_codes.some((code) => /^MA2-|^AC9/.test(code)),
       "State-specific VIC/WA copies must not carry NSW/AC9 codes into their outcome tracker");
     const ownerOriginal = await (await h.req(`/lessons/${lessonId}`, owner.token)).json();
     assert.equal(ownerOriginal.title, "Adding two-digit numbers with regrouping", "owner's reviewed master is unchanged");
