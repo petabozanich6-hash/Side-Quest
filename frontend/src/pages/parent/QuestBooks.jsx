@@ -397,15 +397,60 @@ async function makeReaderPages(book, file, onProgress) {
     const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
     pdf = new Blob([r.data], { type: "application/pdf" });
   }
-  await api.delete(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read`);
-  return readerPages(pdf, async (blob, n, total) => {
-    let tries = 0;
-    for (;;) {
-      try { await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/read/${n}`, blob, { headers: { "Content-Type": "image/jpeg" }, timeout: 120000 }); break; }
-      catch (e) { if (++tries >= 3) throw e; await new Promise((r) => setTimeout(r, 1500 * tries)); }
+  const root = `/quest-books/admin/books/${encodeURIComponent(book.id)}`;
+  const { data: source } = await api.get(`${root}/read-source`);
+  const storageKey = `sq-quest-reader-build:${book.id}`;
+  let previous = null;
+  try { previous = JSON.parse(localStorage.getItem(storageKey) || "null"); } catch { /* no prior build */ }
+  const generation = previous?.source_id === source.source_id && /^[a-f0-9-]{36}$/i.test(previous?.generation)
+    ? previous.generation : crypto.randomUUID();
+  try { localStorage.setItem(storageKey, JSON.stringify({ generation, source_id: source.source_id })); } catch { /* resume only where supported */ }
+  const progress = await api.get(`${root}/read-build/${encodeURIComponent(generation)}/progress`);
+  const already = new Set(progress.data.uploaded || []);
+  let completed = already.size;
+  const uploads = new Set();
+  let failure = null;
+  const send = async (blob, n, total) => {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        await api.put(`${root}/read-build/${encodeURIComponent(generation)}/${n}`, blob, {
+          headers: { "Content-Type": "image/jpeg" }, timeout: 120000,
+        });
+        completed++;
+        onProgress?.(completed, total);
+        return;
+      } catch (e) {
+        if (attempt === 2) throw e;
+        await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)));
+      }
     }
-    onProgress?.(n, total);
-  });
+  };
+  let total = 0;
+  try {
+    total = await readerPages(pdf, async (blob, n, pageTotal) => {
+      if (failure) throw failure;
+      if (already.has(n)) { onProgress?.(completed, pageTotal); return; }
+      // Render the next pages while up to three completed JPEGs upload.
+      // Bounded work avoids hundreds of simultaneous requests or huge memory spikes.
+      while (uploads.size >= 3) {
+        await Promise.race(uploads);
+        if (failure) throw failure;
+      }
+      const task = send(blob, n, pageTotal).catch((e) => { failure = e; }).finally(() => uploads.delete(task));
+      uploads.add(task);
+    });
+    await Promise.all(uploads);
+    if (failure) throw failure;
+    const finished = await api.post(`${root}/read-build/${encodeURIComponent(generation)}/finish`, {
+      source_id: source.source_id, total,
+    }, { timeout: 120000 });
+    if (!finished.data.ok || finished.data.pages !== total)
+      throw new Error("The server did not confirm all reader pages.");
+    try { localStorage.removeItem(storageKey); } catch {}
+    return total;
+  } finally {
+    await Promise.allSettled([...uploads]);
+  }
 }
 
 async function makeLookInside(book, file) {
