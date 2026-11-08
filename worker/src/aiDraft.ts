@@ -892,9 +892,16 @@ export async function generateStaged(
   const go = async (name: string, user: string, maxTokens: number, need: string[]): Promise<any | null> => {
     let best: StageRun | null = null;
     let lastWhy = "";
-    for (let attempt = 0; attempt < 2; attempt++) {
+    const isWorkedExample = /^example \\d+$/.test(name);
+    // A missing steps array is a known model-format error. Give ONLY that
+    // stage one extra bounded, targeted attempt, never regenerate other stages.
+    const attempts = isWorkedExample ? 3 : 2;
+    for (let attempt = 0; attempt < attempts; attempt++) {
       const started = Date.now();
-      const raw: any = await call([sys, { role: "user", content: attempt ? `${user}\n\nYour previous reply could not be used (it was cut off or not valid JSON). Reply again with the complete JSON object, a little more concisely.` : user }], maxTokens);
+      const retryInstruction = attempt === 0 ? "" : lastWhy.includes("reply was missing")
+        ? `\n\nThe previous JSON reply was unusable: ${lastWhy}. Return a COMPLETE JSON object with every required key: ${need.join(", ")}. ${isWorkedExample ? 'For a worked example, include "problem":string, "steps":[at least two substantive, individually explained step strings], and "answer":string. Never omit steps or replace them with a vague summary.' : "Ensure all required fields are nonempty."} Do not invent missing teaching or copy a generic template; demonstrate the specified problem with accurate reasoning.`
+        : "\n\nYour previous reply was cut off or was not valid JSON. Return a complete valid JSON object, more concisely while preserving the actual teaching.";
+      const raw: any = await call([sys, { role: "user", content: user + retryInstruction }], maxTokens + (attempt > 0 && isWorkedExample ? 450 : 0));
       (stats.stage_timings_ms ??= []).push({ stage: name, ms: Date.now() - started });
       stats.calls++;
       stats.input_tokens += Number(raw?.usage?.prompt_tokens) || 0;
@@ -902,8 +909,15 @@ export async function generateStaged(
       stats.stages.push(name);
       const r = parseReply(raw);
       if (r) r.value = aliasKeys(r.value);
-      lastWhy = r ? `${name}: reply was missing ${need.filter((k) => !hasKeys(r.value, [k])).join(", ")}` : `${name}: reply was not valid JSON${raw?.usage?.completion_tokens ? ` (${raw.usage.completion_tokens} tokens)` : ""}`;
-      if (r && hasKeys(r.value, need)) {
+      const missing = r ? need.filter((k) => !hasKeys(r.value, [k])) : [];
+      // An array called "steps" must actually contain meaningful modelled
+      // working, not a string or an empty placeholder value.
+      if (r && isWorkedExample && (!Array.isArray(r.value?.steps) || r.value.steps.length < 2 ||
+          r.value.steps.some((step: unknown) => typeof step !== "string" || !step.trim()))) {
+        if (!missing.includes("steps")) missing.push("steps");
+      }
+      lastWhy = r ? `${name}: reply was missing ${missing.join(", ")}` : `${name}: reply was not valid JSON${raw?.usage?.completion_tokens ? ` (${raw.usage.completion_tokens} tokens)` : ""}`;
+      if (r && missing.length === 0) {
         if (!r.salvaged) return r.value;
         best = r;
       }
