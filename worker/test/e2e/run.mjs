@@ -1174,7 +1174,7 @@ await step("AI lesson set: open, edit, assign, move around and refresh without l
   await pctx.close();
 });
 
-await step("O. outcome tracker: VIC family sees the honest gap, not invented outcomes", async () => {
+await step("O. outcome tracker: a VIC family sees Victorian codes, never NSW ones", async () => {
   // Use a separate VIC family: the primary e2e account was deliberately switched back to NSW earlier.
   // Otherwise this test asks a NSW family's tracker to show the VIC-only unavailable message.
   const email = `outcomes-vic-${stamp}@example.com`;
@@ -1193,9 +1193,10 @@ await step("O. outcome tracker: VIC family sees the honest gap, not invented out
     await qpage.click('[data-testid=login-submit]');
     await qpage.waitForURL("**/parent", { timeout: 20000 });
     await qpage.goto(BASE + `/parent/outcomes/${child.json.id}`);
-    await qpage.waitForSelector("[data-testid=tracker-unavailable]", { timeout: 15000 });
-    ok(/verified outcome list/.test(await qpage.textContent("[data-testid=tracker-unavailable]")), "gap not explained");
-    ok(await qpage.locator("[data-testid=tracker-list]").count() === 0, "outcomes listed for a curriculum Side-Quest doesn't hold");
+    await qpage.waitForSelector("[data-testid=tracker-list]", { timeout: 15000 });
+    const listed = await qpage.textContent("[data-testid=tracker-list]");
+    ok(/VC2/.test(listed), "Victorian codes not shown");
+    ok(!/\b[A-Z]{2,3}\d-[A-Z]{2,4}-\d{2}\b/.test(listed), "NSW codes shown to a Victorian family");
   } finally {
     await qctx.close();
   }
