@@ -418,7 +418,7 @@ test("Automatic chapter planner returns ordered, skill-level, source-bounded sub
 });
 
 test("Automatic planner subdivides long content but never invents or drops pages", () => {
-  const pages = Array.from({ length: 12 }, (_, i) => ({ page: i + 1, text: "Count and write. ".repeat(300) }));
+  const pages = Array.from({ length: 12 }, (_, i) => ({ page: i + 1, text: "Count and write. ".repeat(220) }));
   const out = normaliseSubsections("Counting", pages, [{ start_page: 1, title: "Count and write", skill_goal: "Fluent counting" }]);
   assert.ok(out.length >= 6);
   assert.deepEqual(out.map((s) => [s.start, s.end]), Array.from({ length: 6 }, (_, i) => [i*2+1, i*2+2]));
