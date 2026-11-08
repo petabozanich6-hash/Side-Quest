@@ -428,7 +428,8 @@ function BookWorkspace({ book, reload }) {
   const [opts, setOpts] = useState(null);
   const [busy, setBusy] = useState("");
   const [progress, setProgress] = useState(0);
-  const [open, setOpen] = useState(null); // "details" | "lessons"
+  const [workspaceParams] = useSearchParams();
+  const [open, setOpen] = useState(() => workspaceParams.get("workspace") === "lessons" ? "lessons" : null); // "details" | "lessons"
   useEffect(() => { api.get("/quest-books").then((r) => setOpts(r.data)).catch(() => {}); }, []);
   const full = opts?.books?.find((b) => b.id === book.id) || book;
 
