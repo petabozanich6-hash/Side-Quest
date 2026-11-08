@@ -105,7 +105,7 @@ test("Only the owner manages books; drafts without a PDF are hidden from familie
   assert.equal((await h.req("/quest-books/admin/books", owner.token, "POST", { ...details, id: "number-navigators", price_cents: 1995 })).status, 200);
   const list = await (await h.req("/quest-books", member.token)).json();
   assert.equal(list.books.length, 1);
-  assert.deepEqual([list.books[0].has_cover, list.books[0].price_cents, list.books[0].can_download, list.books[0].included], [true, 1995, false, true]);
+  assert.deepEqual([list.books[0].has_cover, list.books[0].price_cents, list.books[0].can_download, list.books[0].included], [true, 1995, false, false], "membership doesn't include books");
   assert.equal((await h.req("/quest-books/admin/books/number-navigators", member.token, "DELETE")).status, 403);
   assert.equal((await h.req("/quest-books/admin/books/number-navigators", owner.token, "DELETE")).status, 200);
   assert.equal(h.storage.size, 0);
