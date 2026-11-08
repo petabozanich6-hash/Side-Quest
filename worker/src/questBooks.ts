@@ -13,7 +13,7 @@ import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
 import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
-import { ownedTiers, ownedLessonKeys, type Tier } from "./questBookPurchases";
+import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, type Tier } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
 import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
@@ -193,6 +193,21 @@ export async function addPublishedLessons(db: DB, familyId: string, bookId: stri
     if ((r as any)?.meta?.changes) added++;
   }
   return { ok: true as const, added, already: have.size, total: published.length };
+}
+
+/**
+ * Retire an outdated working AI draft only after its replacement has been
+ * generated successfully. Never delete previously assigned or reviewed work.
+ * Archived drafts are still available from the owner's archived library.
+ */
+export async function retireSupersededBookDrafts(db: DB, familyId: string, bookId: string, chapterId: string, newestId: string, now = new Date()) {
+  const result = await db.prepare(`UPDATE lessons SET archived_at = ?, updated_at = ?
+    WHERE family_id = ? AND archived_at IS NULL AND id != ? AND json_valid(data)
+      AND json_extract(data, '$.quest_book_id') = ?
+      AND json_extract(data, '$.quest_chapter_id') = ?
+      AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'`)
+    .bind(now.toISOString(), now.toISOString(), familyId, newestId, bookId, chapterId).run();
+  return Number((result as any)?.meta?.changes || 0);
 }
 
 async function readChapters(bucket: R2Bucket, id: string): Promise<Chapter[]> {
@@ -749,6 +764,75 @@ export function registerQuestBooks(app: App, g: Guards) {
     }
   });
 
+  // Clean pre-launch rebuild. Leaves the Book PDF, cover, preview, metadata,
+  // pricing and student assignment history untouched; only the owner's
+  // generated lesson workspace and published lesson list are reset.
+  app.post("/api/quest-books/admin/books/:id/lessons/reset", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id) || !(await c.env.BUCKET!.head(keyFor(id, "meta"))))
+      return c.json({ detail: "Book not found." }, 404);
+    const body: any = await c.req.json().catch(() => ({}));
+    if (body?.confirm !== "REBUILD_FROM_PDF")
+      return c.json({ detail: "Confirm that you want to retire the working lesson collection." }, 400);
+    const user = c.get("user");
+    try {
+      // Fail closed: do not rely on the owner's UI or a statement that
+      // purchases are not live. This must be checked against both tables.
+      await ensurePurchaseTable(c.env.DB);
+      await ensureLessonTable(c.env.DB);
+      const [books, singles, familyCopies] = await Promise.all([
+        c.env.DB.prepare("SELECT COUNT(*) AS n FROM quest_book_purchases WHERE book_id = ?").bind(id).first<{ n: number }>(),
+        c.env.DB.prepare("SELECT COUNT(*) AS n FROM quest_lesson_purchases WHERE book_id = ?").bind(id).first<{ n: number }>(),
+        c.env.DB.prepare(`SELECT COUNT(*) AS n FROM lessons
+          WHERE family_id != ? AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
+            AND json_extract(data, '$.source') = 'side_quest_book'`).bind(user.family_id, id).first<{ n: number }>(),
+      ]);
+      if (Number(books?.n || 0) + Number(singles?.n || 0) + Number(familyCopies?.n || 0) > 0)
+        return c.json({
+          code: "QUEST_BOOK_ALREADY_DISTRIBUTED",
+          detail: "This book has a recorded purchase or a lesson copied into another family's library. Its lesson identifiers cannot be reset. Remake individual lessons instead, or create a new book edition.",
+        }, 409);
+
+      const keys = [keyFor(id, "chapters"), keyFor(id, "lessons")];
+      const originals = await Promise.all(keys.map(async (key) => {
+        const file = await c.env.BUCKET!.get(key);
+        return file ? await new Response(file.body).text() : null;
+      }));
+      // Keep private last-version snapshots for recovery. Never publish backup
+      // keys as ordinary book files.
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+      for (let i = 0; i < originals.length; i++) {
+        if (originals[i] !== null)
+          await c.env.BUCKET!.put(`${ROOT}${id}/rebuild-backup-${stamp}-${i === 0 ? "chapters" : "lessons"}.json`,
+            originals[i]!, { httpMetadata: { contentType: "application/json" } });
+      }
+      await c.env.BUCKET!.delete(keys);
+      if ((await Promise.all(keys.map((k) => c.env.BUCKET!.head(k)))).some(Boolean))
+        throw new Error("Could not clear the old lesson plan.");
+
+      try {
+        // Archive (never delete) only the owner's linked working drafts.
+        // Retain manually created lessons and all assignment history.
+        await c.env.DB.prepare(`UPDATE lessons SET archived_at = ?, updated_at = ?
+          WHERE family_id = ? AND archived_at IS NULL AND json_valid(data)
+            AND json_extract(data, '$.quest_book_id') = ?
+            AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'`)
+          .bind(new Date().toISOString(), new Date().toISOString(), user.family_id, id).run();
+      } catch (e) {
+        // If archiving fails, restore the published list and plan.
+        for (let i = 0; i < originals.length; i++)
+          if (originals[i] !== null) await c.env.BUCKET!.put(keys[i], originals[i]!, { httpMetadata: { contentType: "application/json" } });
+        throw e;
+      }
+      c.header("Cache-Control", "no-store");
+      return c.json({ ok: true, cleared_plan: !!originals[0], cleared_published: !!originals[1],
+        message: "Old lesson drafts archived. Re-analyse the uploaded book to make a new plan." });
+    } catch (e: any) {
+      console.error("Quest Books lesson rebuild failed", e?.message || e);
+      return c.json({ detail: "Could not safely reset this book's lessons. The existing book files have not been deleted." }, 503);
+    }
+  });
+
   // The owner's working view: chapters, the owner's draft lesson for each, and what's published.
   app.get("/api/quest-books/admin/books/:id/chapters", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
@@ -768,6 +852,7 @@ export function registerQuestBooks(app: App, g: Guards) {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
         } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
+      draft_count: (results || []).length,
     });
   });
 
@@ -798,7 +883,16 @@ export function registerQuestBooks(app: App, g: Guards) {
         pageStart: chapter.start, pageEnd: chapter.end, exerciseRef: chapter.exercise_ref || "", skillGoal: chapter.skill_goal || chapter.title, sourceRevision: chapterRevision(chapter) },
     });
     if (!r.ok) return c.json({ detail: r.detail, code: (r as any).code }, r.status as any);
-    return c.json({ lesson: r.lesson, warnings: r.warnings });
+    // A successful Remake replaces the working draft, not the book PDF.
+    // Keep the earlier version in Archived rather than accumulating duplicates.
+    let retired = 0;
+    try {
+      retired = await retireSupersededBookDrafts(c.env.DB, user.family_id, id, cid, String(r.lesson.id));
+    } catch (e: any) {
+      console.error("Could not retire older Quest Book lesson drafts", e?.message || e);
+      // No data loss: the new lesson exists, but the older drafts remain.
+    }
+    return c.json({ lesson: r.lesson, warnings: r.warnings, retired_previous_drafts: retired });
   });
 
   // Publish the owner's reviewed lessons to the book. Body: { items: [{ chapter_id, lesson_id }] } in chapter order.
