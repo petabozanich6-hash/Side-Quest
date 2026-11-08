@@ -456,6 +456,32 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version })).status, 200,
     "the original ready-lesson approval workflow remains supported");
   assert.ok(savedReview.reviewed_at, "review timestamp is stored");
+  // A mistaken approval must be reversible, visible in Needs Repair and
+  // ineligible for both manual bulk and AI-cleared fast approval.
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", {
+    lesson_id: lid, approved: false, needs_repair: true, repair_note: "The example has an incorrect answer",
+    expected_version: version - 1,
+  })).status, 409, "stale owner cannot revoke the current approval");
+  assert.equal((await h.req(reviewUrl, nonOwner.token, "POST", {
+    lesson_id: lid, approved: false, needs_repair: true, repair_note: "Wrong answer",
+    expected_version: version,
+  })).status, 403);
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", {
+    lesson_id: lid, approved: false, needs_repair: true,
+    repair_note: "The example has an incorrect answer", expected_version: version,
+  })).status, 200);
+  const repairQueue = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.deepEqual([repairQueue.status, repairQueue.reviewed, repairQueue.repair_requested, repairQueue.ai_cleared],
+    ["draft", false, true, false], "returned approved lesson must appear in Needs Repair and be excluded from fast approval");
+  assert.match(repairQueue.repair_note, /incorrect answer/);
+  assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409,
+    "previously approved lesson cannot be published while returned to Needs Repair");
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", {
+    lesson_id: lid, approved: true, complete_review: true, expected_version: version,
+  })).status, 200, "owner can explicitly reapprove after correcting and checking the lesson");
+  const reapproved = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.deepEqual([reapproved.reviewed, reapproved.repair_requested], [true, false],
+    "only explicit owner review clears Needs Repair");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
   const removal = await h.req(url, owner.token, "POST", { items: [] });
   assert.equal(removal.status, 409, "publishing an incomplete selection must not unpublish previously sold lessons");
