@@ -702,6 +702,9 @@ function BookView({ id }) {
     try {
       const r = await api.post(`/quest-books/books/${encodeURIComponent(id)}/lessons/add`, key ? { key } : {}, { timeout: 120000 });
       toast.success(r.data.added ? `Added ${r.data.added} lesson${r.data.added === 1 ? "" : "s"} to My lessons` : "Those lessons are already in My lessons");
+      if (r.data.added && r.data.without_matches > 0) {
+        toast.message(`${r.data.without_matches} lesson${r.data.without_matches === 1 ? " has" : "s have"} no suggested outcome codes for your family's curriculum yet. The lesson is still available; check the official curriculum before recording progress.`, { duration: 9000 });
+      }
       await load();
     } catch (e) { toast.error(apiErrorMessage(e, "Could not add the lessons")); }
     finally { setAdding(""); }

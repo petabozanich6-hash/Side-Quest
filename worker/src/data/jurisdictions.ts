@@ -1,7 +1,8 @@
 // Which curriculum framework applies to a family, by the state or territory the parent chose.
-// NSW holds a NESA syllabus outcome seed. Five other jurisdictions can use the verified ACARA v9
-// content-description REFERENCE catalogue; this is not a certification of local compliance.
-// VIC data are quarantined until the source-generated catalogue is restored and verified; do not advertise coverage.\n// WA still requires an accessible state-specific official catalogue. Never invent identifiers.
+// NSW has its own NESA syllabus catalogue. VIC and WA have source-derived
+// state-specific code catalogues; QLD/SA/TAS/ACT/NT use Australian Curriculum v9
+// references. State mappings are planning references, never compliance certification.
+// Some subject editions and implementation dates remain under source audit.
 
 export type JurisdictionCode = "NSW" | "VIC" | "QLD" | "WA" | "SA" | "TAS" | "ACT" | "NT" | "OTHER";
 
@@ -32,7 +33,7 @@ export const FRAMEWORKS: Record<JurisdictionCode, Framework> = {
   },
   VIC: {
     jurisdiction: "VIC", jurisdiction_name: "Victoria", name: "Victorian Curriculum F–10 Version 2.0", short: "Victorian Curriculum 2.0",
-    url: "https://f10.vcaa.vic.edu.au/", codes: "none", level_kind: "year",
+    url: "https://f10.vcaa.vic.edu.au/", codes: "reference", level_kind: "year",
     learning_areas: {
       primary: ["English", "Mathematics", "Science", "Humanities", "Health and Physical Education", "The Arts", "Technologies", "Languages"],
       secondary: ["English", "Mathematics", "Science", "Humanities", "Health and Physical Education", "The Arts", "Technologies", "Languages"],
@@ -40,7 +41,7 @@ export const FRAMEWORKS: Record<JurisdictionCode, Framework> = {
   },
   WA: {
     jurisdiction: "WA", jurisdiction_name: "Western Australia", name: "Western Australian Curriculum (SCSA)", short: "WA Curriculum",
-    url: "https://k10outline.scsa.wa.edu.au/", codes: "none", level_kind: "year",
+    url: "https://k10outline.scsa.wa.edu.au/", codes: "reference", level_kind: "year",
     learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS },
   },
   QLD: { jurisdiction: "QLD", jurisdiction_name: "Queensland", ...AC9, codes: "reference", level_kind: "year", learning_areas: { primary: AC9_AREAS, secondary: AC9_AREAS } },
@@ -104,13 +105,14 @@ export async function setFamilyJurisdiction(db: D1Database, familyId: string, j:
 }
 
 /**
- * Lesson outcome suggestions and the plan writer use the NSW syllabus list, the only verified outcome list loaded.
- * Families in any other state or territory, or who haven't chosen yet, never get NSW codes from them (matching the
- * Evidence Backpack, which never defaults to NSW). Parents without a state are asked the next time they sign in.
+ * The NSW-only matcher is used solely for NESA-specific drafting. Other
+ * jurisdictions use their own catalogues in outcomeTracker.ts.
  */
 export const usesNswOutcomes = (j: JurisdictionCode | null) => j === "NSW";
 
 export const outcomesNotLoadedNote = (j: JurisdictionCode) =>
   j === "OTHER"
-    ? "Official outcome codes are not automatically assigned outside Australia. Use the parent-defined Outcome tracker to record your own goals and evidence."
-    : `Lesson outcome suggestions are not available for ${j} yet. Side-Quest does not automatically assign unverified outcome codes. Check your local curriculum in Curriculum.`;
+    ? "Official outcome codes are not automatically assigned outside Australia. Use parent-defined learning goals instead."
+    : FRAMEWORKS[j].codes === "none"
+      ? `Outcome mapping is not currently available for ${j}. Check official curriculum sources before linking codes.`
+      : `Side-Quest holds ${FRAMEWORKS[j].name} reference identifiers. Confirm suggested links against the official curriculum; they do not certify curriculum compliance.`;

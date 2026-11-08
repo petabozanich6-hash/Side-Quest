@@ -21,8 +21,8 @@ test("jurisdiction codes normalise and every state has a framework", () => {
   assert.equal(Object.keys(FRAMEWORKS).filter(code => code !== "OTHER").length, 8);
   assert.equal(FRAMEWORKS.OTHER.codes, "none");
   assert.equal(frameworkFor("NSW").codes, "verified");
-  assert.equal(frameworkFor("VIC").codes, "none");
-  assert.equal(frameworkFor("WA").codes, "none", "WA state-specific catalogue remains unavailable");
+  assert.equal(frameworkFor("VIC").codes, "reference", "Victorian codes are available as planning references, not compliance certification");
+  assert.equal(frameworkFor("WA").codes, "reference", "WA source-derived catalogue is available as a planning reference");
   for (const j of ["QLD", "SA", "TAS", "ACT", "NT"]) assert.equal(frameworkFor(j).codes, "reference", j);
 });
 

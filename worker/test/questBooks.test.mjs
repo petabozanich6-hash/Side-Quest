@@ -36,9 +36,9 @@ function harness() {
     const payload = body === undefined ? undefined : contentType ? body : JSON.stringify(body);
     return worker.fetch(new Request("http://localhost:8787/api" + path, { method, headers, body: payload }), env, ctx);
   }
-  async function parent(plan) {
+  async function parent(plan, jurisdiction = "NSW") {
     const n = ++seq;
-    const r = await req("/auth/register", undefined, "POST", { name: "Quest Parent " + n, email: "quest" + n + "@example.test", password: "Test-password-123", jurisdiction: "NSW" });
+    const r = await req("/auth/register", undefined, "POST", { name: "Quest Parent " + n, email: "quest" + n + "@example.test", password: "Test-password-123", jurisdiction });
     assert.equal(r.status, 200);
     const data = await r.json();
     if (plan !== "FREE_PREVIEW") db.raw.prepare("UPDATE families SET plan=? WHERE id=?").run(plan, data.user.family_id);
@@ -628,4 +628,58 @@ test("Only the owner can copy a private family lesson into a separate unpublishe
   assert.equal(edited.status, 200);
   assert.equal((await edited.json()).source, "side_quest_standalone", "editing should not reclassify official drafts as personal");
   assert.equal((await (await h.req(`/lessons/${originalId}`, owner.token)).json()).title, "For my children");
+});
+
+
+test("VIC and WA families receive their OWN outcomes when adding an older book with no per-state snapshot", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h, { price_cents: 399, lessons_price_cents: 999, lesson_price_cents: 100 });
+  const createdPlan = await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", {
+    chapters: [{ title: "Adding two-digit numbers with regrouping", start: 7, end: 9, text: chapterText }],
+  });
+  assert.equal(createdPlan.status, 200);
+  const created = await h.req("/lessons", owner.token, "POST", {
+    ...lessonBody("Adding two-digit numbers with regrouping"), learning_area: "Mathematics", year_level: "Year 3",
+    objectives: ["add two-digit numbers using place value and regrouping"],
+    sections: [{ heading: "Place value", body: "Model adding two-digit numbers and regrouping tens." }],
+  });
+  assert.equal(created.status, 200);
+  const lessonId = (await created.json()).id;
+  assert.equal((await h.req(`/quest-books/admin/books/${id}/lessons/publish`, owner.token, "POST",
+    { items: [{ chapter_id: "c1", lesson_id: lessonId }] })).status, 200);
+
+  // Simulate a book already published before VIC and WA mappings were stored.
+  const key = `quest-books/v1/${id}/lessons.json`;
+  const snapshot = JSON.parse(new TextDecoder().decode(h.storage.get(key)));
+  snapshot.lessons[0].codes = {
+    NSW: snapshot.lessons[0].codes?.NSW || [],
+    // Legacy books can have an official state code that nevertheless belongs
+    // to the wrong subject. Neither code may be applied to this Maths lesson.
+    VIC: ["VC2HH4K01"], // Year 3-4 History
+    WA: ["WA3HAKUG1"], // Year 3 Geography
+  };
+  h.storage.set(key, new TextEncoder().encode(JSON.stringify(snapshot)));
+  const cat = (await import("../src/outcomeTracker.ts")).catalogueFor;
+  for (const jurisdiction of ["VIC", "WA", "QLD"]) {
+    const parent = await h.parent("ACTIVE_MONTHLY", jurisdiction);
+    const added = await h.req(`/quest-books/books/${id}/lessons/add`, parent.token, "POST", {});
+    assert.equal(added.status, 200, jurisdiction + ": book lesson import");
+    const info = await added.json();
+    const expectedFramework = jurisdiction === "QLD" ? "AC9" : jurisdiction;
+    assert.equal(info.framework, expectedFramework);
+    assert.equal(info.added, 1);
+    assert.equal(info.matched, 1, jurisdiction + ": a Year 3 maths lesson should match available source summaries");
+    assert.equal(info.without_matches, 0);
+    const lessons = await (await h.req("/lessons", parent.token)).json();
+    const owned = lessons.find((l) => l.quest_book_id === id);
+    assert.ok(owned, "book copy exists in " + jurisdiction);
+    assert.equal(owned.source, "side_quest_book");
+    assert.ok(owned.outcome_codes.length > 0, jurisdiction + " should have curriculum references");
+    assert.ok(owned.outcome_codes.every((code) => cat(jurisdiction).byCode.has(code)),
+      jurisdiction + " must not inherit NSW or any other state's codes: " + owned.outcome_codes);
+    if (jurisdiction !== "QLD") assert.ok(!owned.outcome_codes.some((code) => /^MA2-|^AC9/.test(code)),
+      "State-specific VIC/WA copies must not carry NSW/AC9 codes into their outcome tracker");
+    const ownerOriginal = await (await h.req(`/lessons/${lessonId}`, owner.token)).json();
+    assert.equal(ownerOriginal.title, "Adding two-digit numbers with regrouping", "owner's reviewed master is unchanged");
+  }
 });
