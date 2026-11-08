@@ -1341,6 +1341,7 @@ export async function refineLessonWithAi(
   ].join("\n\n");
 
   let retryFeedback = "";
+  let sawEditablePatch = false;
   for (let attempt = 0; attempt < 2; attempt++) {
     let patchRaw: any = null;
     try {
@@ -1363,6 +1364,7 @@ export async function refineLessonWithAi(
       retryFeedback = targets.length ? `No requested fields were changed (${targets.join(", ")})` : "No editable fields were changed";
       continue;
     }
+    sawEditablePatch = true;
 
     // Normalise only the AI-proposed fields, then validate those fields in the
     // actual saved lesson. Never overwrite its untouched file resources,
@@ -1403,8 +1405,10 @@ export async function refineLessonWithAi(
   }
   await done("failed");
   return lb.fail(502,
-    "The AI tried twice but did not create a usable correction. Your lesson was not changed and your AI change allowance was not used. You can edit this part manually or try again.",
-    "AI_PATCH_UNCHANGED");
+    sawEditablePatch
+      ? "The AI tried twice but did not create a usable correction. Your lesson was not changed and your AI change allowance was not used. You can edit this part manually or try again."
+      : "The AI did not return a valid correction after two attempts. Your lesson is unchanged, and your AI change allowance was not used. Try a focused correction or edit the lesson manually.",
+    sawEditablePatch ? "AI_PATCH_UNCHANGED" : "AI_FAILED");
 }
 
 /** Save an accepted change: only the named parts are replaced; everything else, including manual edits, stays. */
