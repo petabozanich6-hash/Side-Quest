@@ -5,9 +5,9 @@ import { listBooks, readChapters, chapterRevision, companionLessonIssues, genera
 type DB = D1Database;
 type Job = { id: string; owner_user_id: string; family_id: string; status: string; kind: "generate" | "repair"; total: number };
 type Item = { id: string; job_id: string; book_id: string; book_title: string; chapter_id: string;
-  chapter_title: string; revision: string; status: string; attempts: number; lease_until: string | null };
+  chapter_title: string; revision: string; status: string; attempts: number; lease_until: string | null; lesson_id: string | null };
 const MAX_ITEMS = 2000;
-const RETRIES = 3;
+const RETRIES = 4;
 const LEASE_MS = 30 * 60_000;
 
 /** D1-backed jobs survive tab closure, Cloudflare restarts, and interrupted cron runs. */
@@ -198,7 +198,8 @@ export function registerQuestOvernight(app: App, g: Guards) {
 /** One item per cron tick. Lease avoids overlapping generation, and replay skips
  * lessons already saved by an earlier tick or interactive work. */
 export async function processQuestOvernight(env: Env, now = new Date(),
-  generate: typeof generateQuestCompanionLesson = generateQuestCompanionLesson) {
+  generate: typeof generateQuestCompanionLesson = generateQuestCompanionLesson,
+  repair: typeof repairQuestCompanionLessonPass = repairQuestCompanionLessonPass) {
   if(!env.DB || !env.BUCKET)return {processed:0,unavailable:true};
   await ensureOvernightTables(env.DB);
   const time=now.toISOString(),lease=new Date(now.getTime()+LEASE_MS).toISOString();
@@ -217,7 +218,7 @@ export async function processQuestOvernight(env: Env, now = new Date(),
     const job=await env.DB.prepare(`SELECT * FROM quest_overnight_jobs WHERE id=?`)
       .bind(item.job_id).first<Job>();
     const mark=async(status:string,error:string|null,lesson:string|null)=>{
-      await env.DB.prepare(`UPDATE quest_overnight_items SET status=?,last_error=?,lesson_id=?,
+      await env.DB.prepare(`UPDATE quest_overnight_items SET status=?,last_error=?,lesson_id=COALESCE(?,lesson_id),
         lease_until=NULL,updated_at=? WHERE id=? AND status='running' AND lease_until=?`)
         .bind(status,error,lesson,time,item.id,lease).run();
     };
@@ -235,6 +236,31 @@ export async function processQuestOvernight(env: Env, now = new Date(),
         const current=chapters.find((ch)=>ch.id===item.chapter_id);
         if(!current || chapterRevision(current)!==item.revision) {
           await mark("failed","Chapter source changed; check the book plan.",null);
+        } else if(job.kind==="repair") {
+          const row=item.lesson_id?await env.DB.prepare(`SELECT id,status,version,data
+            FROM lessons WHERE id=? AND family_id=? AND archived_at IS NULL`)
+            .bind(item.lesson_id,job.family_id).first<any>():null;
+          if(!row)await mark("skipped","Lesson no longer exists. Nothing changed.",null);
+          else if(row.status!=="draft")await mark("skipped","Lesson is no longer a draft; approval was preserved.",null);
+          else {
+            const saved=JSON.parse(row.data||"{}");
+            if(saved.quest_book_id!==item.book_id || saved.quest_chapter_id!==item.chapter_id ||
+              saved.quest_source_revision!==item.revision) {
+              await mark("failed","Book source or lesson link changed. Inspect this lesson.",null);
+            } else {
+              const result=await repair(env,{id:job.owner_user_id,family_id:job.family_id},
+                item.book_id,item.chapter_id,row.id,Number(row.version));
+              if(result.ok && !result.remaining_count)
+                await mark(result.changed?"done":"skipped",null,row.id);
+              else if(result.ok && item.attempts<RETRIES)
+                await mark("pending",`Still checking ${result.remaining_count} issue(s)`,row.id);
+              else if(result.ok)
+                await mark("failed",`Remaining issues: ${(result.remaining||[]).join("; ").slice(0,310)}`,row.id);
+              else if(item.attempts>=RETRIES || (result.status && result.status<500 && result.status!==429))
+                await mark("failed",String(result.detail||"AI repair failed").slice(0,360),row.id);
+              else await mark("pending",String(result.detail||"Temporary repair problem").slice(0,360),row.id);
+            }
+          }
         } else {
           const result=await generate(env,{id:job.owner_user_id,family_id:job.family_id},
             item.book_id,item.chapter_id,true);
