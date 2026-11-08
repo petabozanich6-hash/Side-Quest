@@ -55,12 +55,47 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
         return matched?.id || freshId();
       };
       const planned = [];
+      const batchesFor = (pages) => {
+        const batches = [];
+        for (let i = 0; i < pages.length;) {
+          const batch = []; let totalChars = 0;
+          while (i < pages.length && batch.length < 24 && (batch.length === 0 || totalChars + pages[i].text.length < 120000)) {
+            batch.push(pages[i]); totalChars += pages[i].text.length; i++;
+          }
+          batches.push(batch);
+        }
+        return batches;
+      };
+      const total = chapters.reduce((n, chapter) => n + batchesFor(chapter.page_texts).length, 0);
       let step = 0;
-      const total = chapters.reduce((n, ch) => n + Math.ceil(ch.page_texts.length / 30), 0);
+      let preserved = 0;
       for (const chapter of chapters) {
-        // A long chapter is analysed in automatic batches. The owner never chooses split points.
-        for (let pos = 0; pos < chapter.page_texts.length; pos += 30) {
-          const pages = chapter.page_texts.slice(pos, pos + 30);
+        const saved = previous.filter((p) => (p.unit_title || p.title) === chapter.title
+          && p.start >= chapter.start && p.end <= chapter.end);
+        // Do not invalidate purchases by changing the structure of chapters
+        // with published lessons. An existing published chapter keeps its
+        // subsection plan; new chapters can be analysed automatically.
+        if (saved.some((p) => p.published)) {
+          const ordered = [...saved].sort((a, b) => a.start - b.start);
+          if (ordered.some((p, i) => i && ordered[i-1].end >= p.start))
+            throw new Error(`Existing published subsections in “${chapter.title}” overlap. Please review before rescanning.`);
+          for (const prior of ordered) {
+            used.add(prior.id);
+            const selected = chapter.page_texts.filter((p) => p.page >= prior.start && p.page <= prior.end);
+            if (!selected.length || selected.length !== prior.end - prior.start + 1)
+              throw new Error(`The pages of the published lesson “${prior.title}” changed. Its purchase reference must be reviewed.`);
+            planned.push({
+              id: prior.id, unit_title: chapter.title, title: prior.title,
+              skill_goal: prior.skill_goal || prior.title, exercise_ref: prior.exercise_ref || "",
+              start: prior.start, end: prior.end, text: selected.map((p) => p.text).join("\n\n"),
+              page_texts: selected, include: true,
+            });
+          }
+          preserved++;
+          step += batchesFor(chapter.page_texts).length;
+          continue;
+        }
+        for (const pages of batchesFor(chapter.page_texts)) {
           setScanProgress(`Analysing chapter “${chapter.title}” (${++step} of ${total})`);
           const res = await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/plan`,
             { chapter_title: chapter.title, pages }, { timeout: 180000 });
@@ -79,6 +114,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           }
         }
       }
+      if (preserved) toast.message(`${preserved} chapters with published lessons kept their existing subsection structure to protect family purchases.`);
       setScan(planned);
       setApproved({});
       toast.success(`Identified ${chapters.length} chapters and ${planned.length} lesson subsections.`);
@@ -89,7 +125,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     const chosen = scan.filter((c) => c.include).map(({ include, page_texts, ...c }) => c);
     if (!chosen.length) { toast.error("Tick at least one session."); return; }
     const tooLarge = chosen.find((c) => c.text.length > 8000);
-    if (tooLarge) { toast.error(`“${tooLarge.title}” has more than 8,000 characters. Split it into smaller sessions so none of the text is silently lost.`); return; }
+    if (tooLarge) { toast.error(`“${tooLarge.title}” has more than 8,000 characters. Re-analyse the PDF; no lesson source will be silently truncated.`); return; }
     const unclear = chosen.find((c) => !c.skill_goal?.trim());
     if (unclear) { toast.error(`Add a specific learning goal for “${unclear.title}”.`); return; }
     setBusy("save");
