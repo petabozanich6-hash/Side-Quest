@@ -3,19 +3,23 @@ import { isPlatformOwner } from "./access";
 import { listBooks, readChapters, chapterRevision, companionLessonIssues, generateQuestCompanionLesson, repairQuestCompanionLessonPass, subjectLabel, yearLabel } from "./questBooks";
 
 type DB = D1Database;
-type Job = { id: string; owner_user_id: string; family_id: string; status: string; kind: "generate" | "repair"; auto_approve: number; total: number };
+type Kind = "generate" | "repair";
+type Job = { id: string; owner_user_id: string; family_id: string; status: string; kind: Kind; auto_approve: number; auto_follow: number; last_scan_at: string | null; total: number; created_at: string };
 type Item = { id: string; job_id: string; book_id: string; book_title: string; chapter_id: string;
   chapter_title: string; revision: string; status: string; attempts: number; lease_until: string | null; lesson_id: string | null };
 const MAX_ITEMS = 2000;
 const RETRIES = 4;
 const LEASE_MS = 30 * 60_000;
+const SYNC_MS = 2 * 60_000;
+const MAX_SYNC_ITEMS = 120;
 
 /** D1-backed jobs survive tab closure, Cloudflare restarts, and interrupted cron runs. */
 export async function ensureOvernightTables(db: DB) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_jobs (
     id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL, family_id TEXT NOT NULL,
     status TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'generate', auto_approve INTEGER NOT NULL DEFAULT 0, total INTEGER NOT NULL, created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL, finished_at TEXT, last_error TEXT
+    updated_at TEXT NOT NULL, finished_at TEXT, last_error TEXT,
+    auto_follow INTEGER NOT NULL DEFAULT 0, last_scan_at TEXT
   )`).run();
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_items (
     id TEXT PRIMARY KEY, job_id TEXT NOT NULL, position INTEGER NOT NULL,
@@ -26,6 +30,25 @@ export async function ensureOvernightTables(db: DB) {
     lesson_id TEXT, last_error TEXT, updated_at TEXT NOT NULL,
     UNIQUE(job_id, book_id, chapter_id)
   )`).run();
+  // Additive migration: preserve already-running queues and opt them into live pickup.
+  // New legacy/imported test jobs default to non-watching unless explicitly started.
+  const columns = (await db.prepare("PRAGMA table_info(quest_overnight_jobs)").all<{name:string}>()).results || [];
+  if(!columns.some((c)=>c.name==="auto_follow")) {
+    try {
+      await db.prepare("ALTER TABLE quest_overnight_jobs ADD COLUMN auto_follow INTEGER NOT NULL DEFAULT 0").run();
+      await db.prepare("UPDATE quest_overnight_jobs SET auto_follow=1 WHERE status IN ('running','paused')").run();
+    } catch(e) {
+      const refreshed = (await db.prepare("PRAGMA table_info(quest_overnight_jobs)").all<{name:string}>()).results || [];
+      if(!refreshed.some((c)=>c.name==="auto_follow"))throw e;
+    }
+  }
+  if(!columns.some((c)=>c.name==="last_scan_at")) {
+    try { await db.prepare("ALTER TABLE quest_overnight_jobs ADD COLUMN last_scan_at TEXT").run(); }
+    catch(e) {
+      const refreshed = (await db.prepare("PRAGMA table_info(quest_overnight_jobs)").all<{name:string}>()).results || [];
+      if(!refreshed.some((c)=>c.name==="last_scan_at"))throw e;
+    }
+  }
   await db.prepare(`CREATE UNIQUE INDEX IF NOT EXISTS quest_one_active_overnight_kind
     ON quest_overnight_jobs(family_id,kind) WHERE status IN ('building','running','paused')`).run();
   await db.prepare(`DROP INDEX IF EXISTS quest_one_active_overnight_job`).run();
@@ -57,7 +80,7 @@ export async function overnightCandidates(env: Env, familyId: string) {
       ORDER BY updated_at DESC`).bind(familyId,book.id).all<any>();
     const latest = new Map<string,any>();
     for (const row of rows || []) if(row.chapter_id && !latest.has(row.chapter_id))latest.set(row.chapter_id,row);
-    const repairItems: Array<{book_id:string;book_title:string;chapter_id:string;chapter_title:string;revision:string;lesson_id:string}> = [];
+    const repairItems: Array<{book_id:string;book_title:string;chapter_id:string;chapter_title:string;revision:string;lesson_id:string;lesson_updated_at:string}> = [];
     let cleared=0, blocked=0;
     for(const chapter of chapters) {
       const row=latest.get(chapter.id);
@@ -65,12 +88,12 @@ export async function overnightCandidates(env: Env, familyId: string) {
       const saved=JSON.parse(row.data||"{}"),rev=chapterRevision(chapter);
       if(saved.quest_source_revision!==rev){blocked++;continue;}
       const flags=Array.isArray(saved.ai_flags)?saved.ai_flags:[],gaps=companionLessonIssues(saved);
-      const manual=saved.book_repair_requested===true;
+      const manual=saved.book_repair_requested===true && saved.book_repair_ai_attempted!==true;
       if(row.status==="draft" && saved.ai_generated===true && (flags.length||gaps.length||manual))
         repairItems.push({book_id:book.id,book_title:book.title,chapter_id:chapter.id,
-          chapter_title:chapter.title,revision:rev,lesson_id:row.id});
+          chapter_title:chapter.title,revision:rev,lesson_id:row.id,lesson_updated_at:row.updated_at});
       else if(row.status==="draft" && saved.ai_generated===true &&
-        Array.isArray(saved.ai_flags) && !flags.length && !gaps.length && !manual)cleared++;
+        Array.isArray(saved.ai_flags) && !flags.length && !gaps.length && saved.book_repair_requested!==true)cleared++;
       else if(row.status==="draft" && (manual||flags.length||gaps.length))blocked++;
     }
     grouped.push({
@@ -106,7 +129,16 @@ async function snapshot(db: DB, familyId: string, userId: string, kind?: "genera
     .bind(job.id).all<any>();
   const failures = await db.prepare(`SELECT book_title,chapter_title,last_error FROM quest_overnight_items
     WHERE job_id=? AND status='failed' ORDER BY position LIMIT 25`).bind(job.id).all<any>();
-  return { id: job.id, status: job.status, kind: job.kind||"generate", auto_approve: job.auto_approve===1, total: job.total, updated_at: job.updated_at,
+  const current = await db.prepare(`SELECT book_title,chapter_title,status,attempts,updated_at
+    FROM quest_overnight_items WHERE job_id=? AND status='running' ORDER BY updated_at DESC LIMIT 1`).bind(job.id).first<any>();
+  const recent = await db.prepare(`SELECT book_title,chapter_title,status,attempts,last_error,updated_at
+    FROM quest_overnight_items WHERE job_id=? AND status IN ('done','skipped','failed')
+    ORDER BY updated_at DESC,position DESC LIMIT 1`).bind(job.id).first<any>();
+  const next = await db.prepare(`SELECT book_title,chapter_title,status,attempts,updated_at
+    FROM quest_overnight_items WHERE job_id=? AND status='pending' ORDER BY position LIMIT 1`).bind(job.id).first<any>();
+  return { id: job.id, status: job.status, kind: job.kind||"generate", auto_approve: job.auto_approve===1,
+    auto_follow: job.auto_follow===1, last_scan_at:job.last_scan_at, current:current||null, recent:recent||null, next:next||null,
+    total: job.total, updated_at: job.updated_at,
     finished_at: job.finished_at, last_error: job.last_error,
     counts: counts || {}, books: books.results || [], failures: failures.results || [] };
 }
@@ -124,8 +156,12 @@ export function registerQuestOvernight(app: App, g: Guards) {
     const [books,generation,repair]=await Promise.all([overnightCandidates(c.env,user.family_id),
       snapshot(c.env.DB,user.family_id,user.id,"generate"),snapshot(c.env.DB,user.family_id,user.id,"repair")]);
     const jobs=[generation,repair].filter(Boolean);
+    const attention = await c.env.DB.prepare(`SELECT i.job_id,j.kind,i.book_title,i.chapter_title,i.last_error,i.updated_at
+      FROM quest_overnight_items i JOIN quest_overnight_jobs j ON j.id=i.job_id
+      WHERE j.family_id=? AND j.owner_user_id=? AND i.status='failed'
+      ORDER BY i.updated_at DESC LIMIT 25`).bind(user.family_id,user.id).all<any>();
     c.header("Cache-Control","no-store");
-    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job:jobs[0]??null,jobs,interval_minutes:1 });
+    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job:jobs[0]??null,jobs,attention:attention.results||[],interval_minutes:1 });
   });
   app.post("/api/quest-books/admin/overnight/start",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user"),body:any=await c.req.json().catch(()=>({}));
@@ -147,9 +183,9 @@ export function registerQuestOvernight(app: App, g: Guards) {
     const id=crypto.randomUUID(),time=new Date().toISOString();
     try {
       await c.env.DB.prepare(`INSERT INTO quest_overnight_jobs
-        (id,owner_user_id,family_id,status,kind,auto_approve,total,created_at,updated_at)
-        VALUES (?,?,?,'building',?,?,?,?,?)`)
-        .bind(id,user.id,user.family_id,kind,kind==="generate" && body.auto_approve===true?1:0,items.length,time,time).run();
+        (id,owner_user_id,family_id,status,kind,auto_approve,auto_follow,total,created_at,updated_at)
+        VALUES (?,?,?,'building',?,?,?,?,?,?)`)
+        .bind(id,user.id,user.family_id,kind,kind==="generate" && body.auto_approve===true?1:0,1,items.length,time,time).run();
     } catch { return c.json({detail:"A queue of this type is already active. Open it instead."},409); }
     try {
       for(let i=0;i<items.length;i+=40) {
@@ -172,7 +208,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
   });
   app.post("/api/quest-books/admin/overnight/:id/control",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user"),id=c.req.param("id"),body:any=await c.req.json().catch(()=>({}));
-    if (!/^[a-f0-9-]{36}$/i.test(id) || !["pause","resume","retry_failed"].includes(body.action))
+    if (!/^[a-f0-9-]{36}$/i.test(id) || !["pause","resume","retry_failed","stop","set_auto_approve","set_auto_follow"].includes(body.action))
       return c.json({detail:"Unknown queue action."},400);
     await ensureOvernightTables(c.env.DB);
     const job=await c.env.DB.prepare(`SELECT * FROM quest_overnight_jobs
@@ -186,11 +222,27 @@ export function registerQuestOvernight(app: App, g: Guards) {
     else if(body.action==="resume" && job.status==="paused")
       await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?
         WHERE id=? AND status='paused'`).bind(time,id).run();
-    else if(body.action==="retry_failed" && ["completed","completed_with_errors","paused"].includes(job.status)) {
+    else if(body.action==="set_auto_approve" && job.kind==="generate" && ["running","paused"].includes(job.status)
+      && typeof body.enabled==="boolean") {
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET auto_approve=?,updated_at=? WHERE id=?`)
+        .bind(body.enabled?1:0,time,id).run();
+    }
+    else if(body.action==="set_auto_follow" && ["running","paused"].includes(job.status)
+      && typeof body.enabled==="boolean") {
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET auto_follow=?,last_scan_at=NULL WHERE id=?`)
+        .bind(body.enabled?1:0,id).run();
+    }
+    else if(body.action==="stop" && ["running","paused"].includes(job.status)) {
+      // Preserve every item and lesson for audit; stop scheduling after the in-flight item.
+      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='stopped',auto_follow=0,finished_at=?,updated_at=?
+        WHERE id=? AND status IN ('running','paused')`).bind(time,time,id).run();
+    }
+    else if(body.action==="retry_failed" && ["running","paused","completed","completed_with_errors"].includes(job.status)) {
       await c.env.DB.prepare(`UPDATE quest_overnight_items SET status='pending',attempts=0,
         last_error=NULL,lease_until=NULL,updated_at=? WHERE job_id=? AND status='failed'`)
         .bind(time,id).run();
-      await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?,
+      // Retrying failed items never overrides a manual pause.
+      if(job.status!=="paused")await c.env.DB.prepare(`UPDATE quest_overnight_jobs SET status='running',updated_at=?,
         finished_at=NULL WHERE id=?`).bind(time,id).run();
     } else return c.json({detail:"This action isn't available for the queue's current status."},409);
     c.header("Cache-Control","no-store");
@@ -244,7 +296,7 @@ export async function processQuestOvernight(env: Env, now = new Date(),
       SET status=CASE WHEN EXISTS(SELECT 1 FROM quest_overnight_items i
          WHERE i.job_id=quest_overnight_jobs.id AND i.status='failed')
         THEN 'completed_with_errors' ELSE 'completed' END,
-        finished_at=?,updated_at=? WHERE status='running' AND NOT EXISTS(
+        finished_at=?,updated_at=? WHERE status='running' AND auto_follow=0 AND NOT EXISTS(
         SELECT 1 FROM quest_overnight_items i WHERE i.job_id=quest_overnight_jobs.id
         AND i.status IN ('pending','running'))`)
       .bind(time,time).run();
