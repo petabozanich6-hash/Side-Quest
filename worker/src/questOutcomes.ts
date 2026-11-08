@@ -4,10 +4,28 @@
 // lesson it gets the codes for its own state. Codes always come from the verified catalogues: the AI only
 // picks numbers from a list, and a keyword match is the fallback.
 import { catalogueFor, type Catalogue, type CatalogueOutcome } from "./outcomeTracker";
-import { areaMatcher } from "./autoQuest";
+import { normArea } from "./outcomeMatch";
 import { summaryFor } from "./data/outcomeSummaries";
 import { stageFor } from "./aiRequest";
 import { JURISDICTION_CODES } from "./data/jurisdictions";
+
+// Lesson subject -> catalogue learning area (kept here, not imported from autoQuest, to avoid an import cycle with aiDraft).
+const TO_AC9: Record<string, string> = {
+  English: "English", Mathematics: "Mathematics", "Science and Technology": "Science", Science: "Science",
+  HSIE: "Humanities and Social Sciences", PDHPE: "Health and Physical Education", "Creative Arts": "The Arts", TAS: "Technologies",
+};
+function areaMatcher(cat: Catalogue, stage: string) {
+  const areas = new Set(cat.outcomes.map((o) => o.learning_area));
+  return (title: string) => {
+    const t = String(title || "").replace(/\s*·.*$/, "").trim();
+    for (const a of areas) if (a.toLowerCase() === t.toLowerCase()) return a;
+    if (/^technolog/i.test(t) && areas.has("Technologies")) return "Technologies";
+    const nsw = normArea(t, stage);
+    if (!nsw) return t;
+    if (cat.framework === "NSW") return nsw;
+    return TO_AC9[nsw] && areas.has(TO_AC9[nsw]) ? TO_AC9[nsw] : t;
+  };
+}
 
 type AiLike = { run(model: string, input: Record<string, unknown>, options?: Record<string, unknown>): Promise<any> };
 export type FrameworkCodes = Record<string, string[]>;
@@ -96,4 +114,42 @@ export async function codesForAllFrameworks(lesson: any, year: number | null, ai
     out[cat.framework] = codes.filter((c) => cat.byCode.has(c));
   }
   return out;
+}
+
+// ---------------------------------------------------------------- any lesson, any state
+const STAGE_YEARS: Record<string, [number, number]> = { ES1: [0, 0], S1: [1, 2], S2: [3, 4], S3: [5, 6], S4: [7, 8], S5: [9, 10], S6: [11, 12] };
+
+/** School years a lesson is pitched at, from its year level ("Year 3", "Foundation", "Kindergarten") or its stage. */
+export function lessonYears(lesson: any): number[] {
+  const yl = String(lesson?.year_level || lesson?.year || "").trim();
+  if (/^(foundation|kindergarten|kindy|prep|pre-?primary|reception|transition|f)$/i.test(yl)) return [0];
+  const m = /(\d{1,2})/.exec(yl);
+  if (m && Number(m[1]) <= 12) return [Number(m[1])];
+  const range = STAGE_YEARS[String(lesson?.stage || "").toUpperCase()];
+  if (!range) return [];
+  const out: number[] = [];
+  for (let y = range[0]; y <= range[1]; y++) out.push(y);
+  return out;
+}
+
+export type CatalogueSuggestion = { code: string; description: string; stage: string; learning_area: string; source: string; score: number; confidence: "likely" | "possible" };
+
+/** Suggests outcomes from one state's catalogue (AC9, WA, VIC...). The AI picks only from the real list; wording match is the fallback. */
+export async function suggestFromCatalogue(cat: Catalogue, lesson: any, ai: AiLike | undefined, opts: { model?: string; gatewayId?: string }, limit = 3): Promise<{ suggestions: CatalogueSuggestion[]; method: "ai" | "wording" }> {
+  const seen = new Set<string>();
+  const pool: CatalogueOutcome[] = [];
+  for (const y of lessonYears(lesson)) for (const o of poolFor(cat, lesson, y)) if (!seen.has(o.code)) { seen.add(o.code); pool.push(o); }
+  if (!pool.length) return { suggestions: [], method: "wording" };
+  let codes: string[] | null = null;
+  let method: "ai" | "wording" = "wording";
+  if (ai && opts.model) { try { codes = await aiPick(ai, pool, lesson, { model: opts.model, gatewayId: opts.gatewayId }, limit); if (codes?.length) method = "ai"; } catch { codes = null; } }
+  if (!codes || !codes.length) codes = keywordMatch(pool, lesson, limit);
+  const byCode = new Map(pool.map((o) => [o.code, o]));
+  return {
+    method,
+    suggestions: codes.filter((c) => byCode.has(c)).map((c, i) => {
+      const o = byCode.get(c)!;
+      return { code: c, description: describe(o), stage: o.stage, learning_area: o.learning_area, source: cat.name, score: 0, confidence: i === 0 ? "likely" as const : "possible" as const };
+    }),
+  };
 }

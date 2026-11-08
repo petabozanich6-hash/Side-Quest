@@ -654,7 +654,8 @@ test("AI lesson drafting follows family jurisdiction without inventing non-NSW c
   }, NOW);
   assert.ok(q.ok, JSON.stringify(q));
   assert.match(aiQ.calls[0][1].messages.at(-1).content, /Australian Curriculum Version 9/);
-  assert.deepEqual(q.lesson.outcome_codes, []);
+  // QLD uses the Australian Curriculum v9 list: any codes attached come from it, never NSW.
+  assert.ok(q.lesson.outcome_codes.every((c) => /^AC9/.test(c)), JSON.stringify(q.lesson.outcome_codes));
   assert.match(q.lesson.curriculum_refs.join(" "), /australiancurriculum\.edu\.au/);
 });
 

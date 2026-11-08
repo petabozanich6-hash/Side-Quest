@@ -546,3 +546,18 @@ test("a chosen subject is never filled with another subject's outcomes", async (
   assert.ok(t.outcomes.some((o) => o.in_stage && /^GE5/.test(o.code)), "Geography belongs in the student's program");
   assert.ok(!t.outcomes.some((o) => o.in_stage && /Visual Arts/i.test(o.source_title||"")), "no unrelated arts course");
 });
+
+
+test("lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, none for VIC", async () => {
+  const { suggestFromCatalogue, lessonYears } = await import("../src/questOutcomes.ts");
+  const { catalogueFor } = await import("../src/outcomeTracker.ts");
+  const lesson = { title: "Adding two-digit numbers with regrouping", learning_area: "Mathematics", stage: "S2",
+    objectives: ["add two-digit numbers using place value and regrouping"], key_words: [{ word: "regroup" }], sections: [{ heading: "Place value" }] };
+  assert.deepEqual(lessonYears(lesson), [3, 4]);
+  assert.deepEqual(lessonYears({ year_level: "Kindergarten" }), [0]);
+  const qld = await suggestFromCatalogue(catalogueFor("QLD"), lesson, undefined, {});
+  assert.ok(qld.suggestions.length > 0 && qld.suggestions.every((o) => /^AC9M[34]/.test(o.code)), JSON.stringify(qld.suggestions));
+  const wa = await suggestFromCatalogue(catalogueFor("WA"), lesson, undefined, {});
+  assert.ok(wa.suggestions.length > 0 && wa.suggestions.every((o) => /^WA[34]M/.test(o.code)), JSON.stringify(wa.suggestions));
+  assert.equal(catalogueFor("VIC").available, false);
+});
