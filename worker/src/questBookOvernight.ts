@@ -125,7 +125,7 @@ export function registerQuestOvernight(app: App, g: Guards) {
       snapshot(c.env.DB,user.family_id,user.id,"generate"),snapshot(c.env.DB,user.family_id,user.id,"repair")]);
     const jobs=[generation,repair].filter(Boolean);
     c.header("Cache-Control","no-store");
-    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job:jobs[0]??null,jobs,interval_minutes:5 });
+    return c.json({ books: books.map(({items,repair_items,...rest})=>rest),job:jobs[0]??null,jobs,interval_minutes:1 });
   });
   app.post("/api/quest-books/admin/overnight/start",g.auth,g.parent,ownerOnly,async(c)=>{
     const user=c.get("user"),body:any=await c.req.json().catch(()=>({}));
@@ -222,7 +222,7 @@ async function approveNewAiCleared(env:Env, job:Job, item:Item, lessonId:string,
   return !!changed.meta?.changes;
 }
 
-/** One item per cron tick. Lease avoids overlapping generation, and replay skips
+/** One item per dedicated one-minute cron tick. Lease avoids overlapping generation, and replay skips
  * lessons already saved by an earlier tick or interactive work. */
 export async function processQuestOvernight(env: Env, now = new Date(),
   generate: typeof generateQuestCompanionLesson = generateQuestCompanionLesson,
@@ -239,6 +239,17 @@ export async function processQuestOvernight(env: Env, now = new Date(),
     last_error='Interrupted repeatedly. Use Retry failed from Owner HQ.',
     lease_until=NULL,updated_at=? WHERE status='running' AND attempts>=? AND lease_until<?`)
     .bind(time,RETRIES,time).run();
+  // A temporarily exhausted AI allowance must not consume attempts or manually
+  // pause the job. Keep the saved work intact and retry on the next cron tick.
+  const aiWaitMessage="Waiting for Workers AI access or daily allowance; retrying automatically.";
+  if(!env.AI) {
+    await env.DB.prepare(`UPDATE quest_overnight_jobs SET last_error=?
+      WHERE status='running' AND (last_error IS NULL OR last_error!=?)`)
+      .bind(aiWaitMessage,aiWaitMessage).run();
+    return {processed:0,waiting_for_ai:true};
+  }
+  await env.DB.prepare(`UPDATE quest_overnight_jobs SET last_error=NULL
+    WHERE status='running' AND last_error=?`).bind(aiWaitMessage).run();
   const item=await env.DB.prepare(`UPDATE quest_overnight_items SET status='running',
     attempts=attempts+1,lease_until=?,updated_at=?
     WHERE id=(SELECT i.id FROM quest_overnight_items i
@@ -260,10 +271,6 @@ export async function processQuestOvernight(env: Env, now = new Date(),
         await mark("failed","Owner access no longer valid.",null);
         if(job)await env.DB.prepare(`UPDATE quest_overnight_jobs SET status='paused',
           last_error='Owner access changed',updated_at=? WHERE id=?`).bind(time,job.id).run();
-      } else if(!env.AI) {
-        await mark("pending","AI unavailable; generation paused",null);
-        await env.DB.prepare(`UPDATE quest_overnight_jobs SET status='paused',
-          last_error='AI unavailable',updated_at=? WHERE id=?`).bind(time,job.id).run();
       } else {
         const chapters=await readChapters(env.BUCKET!,item.book_id);
         const current=chapters.find((ch)=>ch.id===item.chapter_id);
