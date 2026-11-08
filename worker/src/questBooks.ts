@@ -449,7 +449,12 @@ export async function quoteCart(db: DB, bucket: R2Bucket, familyId: string, user
   })).filter((x) => VALID_ID.test(x.book_id) && (x.tier !== "lesson" || !!x.lesson_key));
   const books = new Map((await listBooks(bucket)).map((b) => [b.id, b]));
   // A pack in the cart covers that book and its lessons (unless membership already includes the lessons).
-  const packIn = new Set(items.filter((x) => x.tier === "plus" && !(books.get(x.book_id) && included(a, books.get(x.book_id)!))).map((x) => x.book_id));
+  const packIn = new Set(items.filter((x) => {
+    const b = books.get(x.book_id);
+    // Only a pack that can actually be bought covers the book: one with lessons for sale, not owned, not already included.
+    return x.tier === "plus" && !!b && b.has_book && b.has_lessons && b.lessons_price_cents !== null && b.price_cents !== null
+      && a.tiers.get(b.id) !== "plus" && !included(a, b);
+  }).map((x) => x.book_id));
   const lines: (CartLine & { book_title: string; full_cents: number; note?: string })[] = [];
   const removed: { book_id: string; tier: string; lesson_key?: string; reason: string }[] = [];
   const seen = new Set<string>();
