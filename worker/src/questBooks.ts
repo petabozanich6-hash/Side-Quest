@@ -13,7 +13,7 @@ import { isPlatformOwner } from "./access";
 import { ownerPowers } from "./viewAs";
 import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
-import { ownedTiers, ownedLessonKeys, type Tier } from "./questBookPurchases";
+import { ownedTiers, ownedLessonKeys, ensurePurchaseTable, ensureLessonTable, type Tier } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
 import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
 import { catalogueFor } from "./outcomeTracker";
@@ -63,12 +63,13 @@ const keyFor = (id: string, kind: FileKind | "meta" | "chapters" | "lessons") =>
   `${ROOT}${id}/${kind === "meta" ? "meta.json" : kind === "chapters" ? "chapters.json" : kind === "lessons" ? "lessons.json" : kind === "cover" ? "cover.png" : `${kind}.pdf`}`;
 const MAX_CHAPTERS = 250; // Workbook chapters are divided into multiple skill-level subsections.
 const MAX_CHAPTER_TEXT = 30000;
-type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string; unit_title?: string };
+type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string; unit_title?: string; source_abbreviated?: boolean };
 
 /** Stable fingerprint of the exact session source and its page references. A changed plan needs a new draft. */
 export function chapterRevision(ch: Chapter): string {
   const parts: (string | number)[] = [ch.title, ch.start, ch.end, ch.text, ch.skill_goal || "", ch.exercise_ref || ""];
   if (ch.unit_title) parts.push(ch.unit_title); // Do not stale pre-existing lessons without chapter metadata.
+  if (ch.source_abbreviated) parts.push("SELECTED_EXCERPTS");
   const input = JSON.stringify(parts);
   let hash = 2166136261;
   for (let i = 0; i < input.length; i++) hash = Math.imul(hash ^ input.charCodeAt(i), 16777619);
@@ -107,13 +108,14 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
     const skill_goal = clip(c?.skill_goal, 220);
     const exercise_ref = clip(c?.exercise_ref, 160);
     const unit_title = clip(c?.unit_title, 120);
+    const source_abbreviated = c?.source_abbreviated === true;
     // Preserve IDs on rescans/splits. Lesson purchases and family copies are keyed by this ID.
     const suppliedId = clip(c?.id, 40);
     const sessionId = suppliedId || `c${i + 1}`; // Backward compatibility for older clients and saved books.
     if (!/^(?:c[1-9][0-9]*|s-[a-z0-9]{20})$/.test(sessionId) || ids.has(sessionId))
       return fail(400, `Chapter “${title}” has a missing, duplicate or invalid stable lesson ID. Re-read the PDF and try again.`);
     ids.add(sessionId);
-    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}), ...(unit_title ? { unit_title } : {}) });
+    chapters.push({ id: sessionId, title, start, end, text, ...(skill_goal ? { skill_goal } : {}), ...(exercise_ref ? { exercise_ref } : {}), ...(unit_title ? { unit_title } : {}), ...(source_abbreviated ? { source_abbreviated } : {}) });
   }
   return { ok: true, chapters };
 }
@@ -193,6 +195,22 @@ export async function addPublishedLessons(db: DB, familyId: string, bookId: stri
     if ((r as any)?.meta?.changes) added++;
   }
   return { ok: true as const, added, already: have.size, total: published.length };
+}
+
+/**
+ * Retire an outdated working AI draft only after its replacement has been
+ * generated successfully. Never delete previously assigned or reviewed work.
+ * Archived drafts are still available from the owner's archived library.
+ */
+export async function retireSupersededBookDrafts(db: DB, familyId: string, bookId: string, chapterId: string, newestId: string, now = new Date()) {
+  const result = await db.prepare(`UPDATE lessons SET archived_at = ?, updated_at = ?
+    WHERE family_id = ? AND archived_at IS NULL AND id != ? AND json_valid(data)
+      AND json_extract(data, '$.quest_book_id') = ?
+      AND json_extract(data, '$.quest_chapter_id') = ?
+      AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'
+      AND json_extract(data, '$.ai_generated') = 1`)
+    .bind(now.toISOString(), now.toISOString(), familyId, newestId, bookId, chapterId).run();
+  return Number((result as any)?.meta?.changes || 0);
 }
 
 async function readChapters(bucket: R2Bucket, id: string): Promise<Chapter[]> {
@@ -749,6 +767,76 @@ export function registerQuestBooks(app: App, g: Guards) {
     }
   });
 
+  // Clean pre-launch rebuild. Leaves the Book PDF, cover, preview, metadata,
+  // pricing and student assignment history untouched; only the owner's
+  // generated lesson workspace and published lesson list are reset.
+  app.post("/api/quest-books/admin/books/:id/lessons/reset", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id) || !(await c.env.BUCKET!.head(keyFor(id, "meta"))))
+      return c.json({ detail: "Book not found." }, 404);
+    const body: any = await c.req.json().catch(() => ({}));
+    if (body?.confirm !== "REBUILD_FROM_PDF")
+      return c.json({ detail: "Confirm that you want to retire the working lesson collection." }, 400);
+    const user = c.get("user");
+    try {
+      // Fail closed: do not rely on the owner's UI or a statement that
+      // purchases are not live. This must be checked against both tables.
+      await ensurePurchaseTable(c.env.DB);
+      await ensureLessonTable(c.env.DB);
+      const [books, singles, familyCopies] = await Promise.all([
+        c.env.DB.prepare("SELECT COUNT(*) AS n FROM quest_book_purchases WHERE book_id = ?").bind(id).first<{ n: number }>(),
+        c.env.DB.prepare("SELECT COUNT(*) AS n FROM quest_lesson_purchases WHERE book_id = ?").bind(id).first<{ n: number }>(),
+        c.env.DB.prepare(`SELECT COUNT(*) AS n FROM lessons
+          WHERE family_id != ? AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
+            AND json_extract(data, '$.source') = 'side_quest_book'`).bind(user.family_id, id).first<{ n: number }>(),
+      ]);
+      if (Number(books?.n || 0) + Number(singles?.n || 0) + Number(familyCopies?.n || 0) > 0)
+        return c.json({
+          code: "QUEST_BOOK_ALREADY_DISTRIBUTED",
+          detail: "This book has a recorded purchase or a lesson copied into another family's library. Its lesson identifiers cannot be reset. Remake individual lessons instead, or create a new book edition.",
+        }, 409);
+
+      const keys = [keyFor(id, "chapters"), keyFor(id, "lessons")];
+      const originals = await Promise.all(keys.map(async (key) => {
+        const file = await c.env.BUCKET!.get(key);
+        return file ? await new Response(file.body).text() : null;
+      }));
+      // Keep private last-version snapshots for recovery. Never publish backup
+      // keys as ordinary book files.
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+      for (let i = 0; i < originals.length; i++) {
+        if (originals[i] !== null)
+          await c.env.BUCKET!.put(`${ROOT}${id}/rebuild-backup-${stamp}-${i === 0 ? "chapters" : "lessons"}.json`,
+            originals[i]!, { httpMetadata: { contentType: "application/json" } });
+      }
+      await c.env.BUCKET!.delete(keys);
+      if ((await Promise.all(keys.map((k) => c.env.BUCKET!.head(k)))).some(Boolean))
+        throw new Error("Could not clear the old lesson plan.");
+
+      try {
+        // Archive (never delete) only the owner's linked working drafts.
+        // Retain manually created lessons and all assignment history.
+        await c.env.DB.prepare(`UPDATE lessons SET archived_at = ?, updated_at = ?
+          WHERE family_id = ? AND archived_at IS NULL AND json_valid(data)
+            AND json_extract(data, '$.quest_book_id') = ?
+            AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'
+            AND json_extract(data, '$.ai_generated') = 1`)
+          .bind(new Date().toISOString(), new Date().toISOString(), user.family_id, id).run();
+      } catch (e) {
+        // If archiving fails, restore the published list and plan.
+        for (let i = 0; i < originals.length; i++)
+          if (originals[i] !== null) await c.env.BUCKET!.put(keys[i], originals[i]!, { httpMetadata: { contentType: "application/json" } });
+        throw e;
+      }
+      c.header("Cache-Control", "no-store");
+      return c.json({ ok: true, cleared_plan: !!originals[0], cleared_published: !!originals[1],
+        message: "Old lesson drafts archived. Re-analyse the uploaded book to make a new plan." });
+    } catch (e: any) {
+      console.error("Quest Books lesson rebuild failed", e?.message || e);
+      return c.json({ detail: "Could not safely reset this book's lessons. The existing book files have not been deleted." }, 503);
+    }
+  });
+
   // The owner's working view: chapters, the owner's draft lesson for each, and what's published.
   app.get("/api/quest-books/admin/books/:id/chapters", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
@@ -768,6 +856,7 @@ export function registerQuestBooks(app: App, g: Guards) {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
         } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
+      draft_count: (results || []).length,
     });
   });
 
@@ -782,6 +871,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const level = yearLabel(meta.year);
     const exerciseRef = chapter.exercise_ref || "Exercises on the specified workbook pages";
+    const sourceNote = chapter.source_abbreviated ? "SOURCE LIMIT: The excerpt contains labelled samples from ALL pages in the subsection, not their full text. Base explanations on the stated skill; never invent quotations or claim to reproduce workbook text that was not provided." : "";
     const r = await draftLessonWithAi(c.env.DB, c.env.AI, {
       familyId: user.family_id, userId: user.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID,
       compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env as any), splitStages: splitLessonStagesEnabled(c.env as any),
@@ -790,7 +880,7 @@ export function registerQuestBooks(app: App, g: Guards) {
         delivery: meta.year !== null && meta.year <= 3 ? "parent_guided" : "independent",
         goal: chapter.skill_goal || chapter.title,
         request: `Create one COMPLETE, self-contained ${level} ${subjectLabel(meta)} lesson teaching subsection "${chapter.title}" from chapter "${chapter.unit_title || chapter.title}" in "${meta.title}". Use the exact source and teach the method before guided and independent practice. Do not try to teach adjacent skills from other subsections.`,
-        notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary.`,
+        notes: `WORKBOOK COMPANION: This lesson matches "${meta.title}", printed PDF pages ${chapter.start}–${chapter.end}. Parent-only optional follow-on practice reference: ${exerciseRef}. Include the workbook reference in parent_script/parent_notes, but teach and reproduce ALL necessary explanations, exercises, readings, data and responses inside the online lesson so it ALSO prints and assigns independently. Never require a child to open the PDF to complete the lesson. Match the depth of a normal Side-Quest lesson, not a chapter summary. ${sourceNote}`,
         source_text: chapter.text,
         link_outcomes: true,
       } as any,
@@ -798,7 +888,16 @@ export function registerQuestBooks(app: App, g: Guards) {
         pageStart: chapter.start, pageEnd: chapter.end, exerciseRef: chapter.exercise_ref || "", skillGoal: chapter.skill_goal || chapter.title, sourceRevision: chapterRevision(chapter) },
     });
     if (!r.ok) return c.json({ detail: r.detail, code: (r as any).code }, r.status as any);
-    return c.json({ lesson: r.lesson, warnings: r.warnings });
+    // A successful Remake replaces the working draft, not the book PDF.
+    // Keep the earlier version in Archived rather than accumulating duplicates.
+    let retired = 0;
+    try {
+      retired = await retireSupersededBookDrafts(c.env.DB, user.family_id, id, cid, String(r.lesson.id));
+    } catch (e: any) {
+      console.error("Could not retire older Quest Book lesson drafts", e?.message || e);
+      // No data loss: the new lesson exists, but the older drafts remain.
+    }
+    return c.json({ lesson: r.lesson, warnings: r.warnings, retired_previous_drafts: retired });
   });
 
   // Publish the owner's reviewed lessons to the book. Body: { items: [{ chapter_id, lesson_id }] } in chapter order.

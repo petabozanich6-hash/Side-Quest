@@ -87,7 +87,29 @@ export async function readPdfChapters(file) {
     }
   }
   marks.sort((a, b) => a.start - b.start);
-  const distinct = marks.filter((mark, i) => i === 0 || mark.start !== marks[i - 1].start);
+  let distinct = marks.filter((mark, i) => i === 0 || mark.start !== marks[i - 1].start);
+  // A long PDF may bookmark EVERY activity or page. Those bookmarks are not
+  // chapters and should NEVER become a 45-minute lesson each. Prefer genuine
+  // unit/chapter headings when they provide broader spans.
+  const chapterHeading = /^(?:unit|chapter|module|topic)\s+(?:\d+|[ivx]+)\b/i;
+  const actualChapters = distinct.filter((mark) => chapterHeading.test(mark.title) && !SKIP_CHAPTER.test(mark.title));
+  if (actualChapters.length >= 2) {
+    const tail = distinct.find((mark) => mark.start > doc.numPages * 0.5 && SKIP_CHAPTER.test(mark.title));
+    distinct = [...actualChapters, ...(tail ? [tail] : [])].sort((a, b) => a.start - b.start);
+  }
+  const closeHeadings = distinct.slice(0, -1).filter((mark, i) => distinct[i + 1].start - mark.start <= 1).length;
+  // If most bookmarks are only one printed page apart, create coarse chapter
+  // ranges for AI to plan by SKILL; don't hand it a one-page "chapter" at all.
+  if (distinct.length >= 8 && closeHeadings / (distinct.length - 1) > 0.55) {
+    const tail = distinct.find((mark) => mark.start > doc.numPages * 0.5 && SKIP_CHAPTER.test(mark.title));
+    const lastTeachingPage = tail ? tail.start - 1 : doc.numPages;
+    const firstTeachingPage = Math.min(3, distinct[0].start);
+    const blocks = [];
+    for (let p = firstTeachingPage, i = 1; p <= lastTeachingPage; p += 10, i++) {
+      blocks.push({ title: `Chapter ${i} — workbook pages ${p}–${Math.min(lastTeachingPage, p + 9)}`, start: p });
+    }
+    distinct = [...blocks, ...(tail ? [tail] : [])];
+  }
   const chapters = [];
   for (let i = 0; i < distinct.length; i++) {
     const start = distinct[i].start;
