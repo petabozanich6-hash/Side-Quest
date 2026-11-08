@@ -276,7 +276,7 @@ function ShelfView() {
   const inlineForm = (selected) => (
     <div className="mt-5 rounded-xl border-2 border-emerald-500 bg-emerald-50 p-4 space-y-3" data-testid="quest-inline-create">
       <div>
-        <h3 className="font-display font-bold text-emerald-950">Create ${selected.collection === "core" ? `${yearLabel} ${data.subjects.find((s) => s.id === selected.subject)?.label || "book"}` : selected.topic}</h3>
+        <h3 className="font-display font-bold text-emerald-950">Create {selected.collection === "core" ? `${yearLabel} ${data.subjects.find((s) => s.id === selected.subject)?.label || "book"}` : selected.topic}</h3>
         <p className="text-sm text-emerald-900">Your chosen year and subject are filled in below. Give the book its title, then you'll go straight to its own upload and lesson workspace.</p>
       </div>
       <BookForm key={JSON.stringify(selected)} data={data} initial={{ ...EMPTY, ...selected }}
