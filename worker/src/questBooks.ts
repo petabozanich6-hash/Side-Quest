@@ -82,7 +82,7 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
 /** A chapter lesson as published to a book: a snapshot of the owner's reviewed lesson. */
 type Published = { key: string; chapter_id: string; chapter_title: string; title: string; stage: string; learning_area: string; data: Record<string, unknown> };
 
-const clip = (v: unknown, n: number) => { const t = typeof v === "string" ? v.replace(/\s+/g, " ").trim() : ""; return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t; };
+const snip = (v: unknown, n: number) => { const t = typeof v === "string" ? v.replace(/\s+/g, " ").trim() : ""; return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t; };
 const count = (v: unknown) => (Array.isArray(v) ? v.length : 0);
 
 export function lessonPreview(l: Published) {
@@ -90,11 +90,11 @@ export function lessonPreview(l: Published) {
   return {
     title: l.title, chapter_title: l.chapter_title, stage: l.stage, learning_area: l.learning_area,
     minutes: Number(d.duration_minutes) || null,
-    summary: clip(d.why_it_matters || d.summary || "", 260),
-    objectives: (Array.isArray(d.objectives) ? d.objectives : []).slice(0, 4).map((o: unknown) => clip(o, 160)).filter(Boolean),
-    opening: clip(d.introduction || "", 320),
-    sections: (Array.isArray(d.sections) ? d.sections : []).map((s: any) => clip(s?.heading || s?.title, 90)).filter(Boolean).slice(0, 8),
-    key_words: (Array.isArray(d.key_words) ? d.key_words : []).map((k: any) => clip(typeof k === "string" ? k : k?.word ?? k?.term, 40)).filter(Boolean).slice(0, 8),
+    summary: snip(d.why_it_matters || d.summary || "", 260),
+    objectives: (Array.isArray(d.objectives) ? d.objectives : []).slice(0, 4).map((o: unknown) => snip(o, 160)).filter(Boolean),
+    opening: snip(d.introduction || "", 320),
+    sections: (Array.isArray(d.sections) ? d.sections : []).map((s: any) => snip(s?.heading || s?.title, 90)).filter(Boolean).slice(0, 8),
+    key_words: (Array.isArray(d.key_words) ? d.key_words : []).map((k: any) => snip(typeof k === "string" ? k : k?.word ?? k?.term, 40)).filter(Boolean).slice(0, 8),
     includes: {
       worked_examples: count(d.worked_examples), activities: count(d.activities) + count(d.guided_practice),
       questions: count(d.questions), quiz: count(d.quiz), parent_script: Boolean(d.parent_script), answer_key: Boolean(d.answer_key),
