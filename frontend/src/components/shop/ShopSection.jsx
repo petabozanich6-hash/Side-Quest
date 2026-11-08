@@ -83,13 +83,13 @@ function LookInside({ book, onClose, onAdd, inCart }) {
 
 const field = "mt-1 w-full rounded-xl border border-stone-300 px-3 py-2 font-normal";
 
-function ProductDialog({ p, all, initialVariant, onClose, onAdd }) {
+function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = "" }) {
   const [variant, setVariant] = useState(initialVariant || (p.variants.length === 1 ? p.variants[0].id : ""));
   const [qty, setQty] = useState(1);
   const [pers, setPers] = useState({});
   const [img, setImg] = useState(1);
   const [addons, setAddons] = useState([]);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
   const [recipient, setRecipient] = useState({ name: "", address_line_1: "", address_line_2: "", locality: "", state: "", postcode: "" });
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -208,19 +208,20 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd }) {
   );
 }
 
-export default function ShopSection({ standalone = false }) {
+export default function ShopSection({ standalone = false, defaultEmail = "", inAccount = false, closedNote = null }) {
   const [data, setData] = useState(null);
   const [cart, setCart] = useState(readCart);
   const [look, setLook] = useState(null);
   const [open, setOpen] = useState(null);
   const [dept, setDept] = useState("all");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   useEffect(() => { fetch(`${API}/shop`).then((r) => r.json()).then(setData).catch(() => setData({ open: false })); }, []);
   useEffect(() => writeCart(cart), [cart]);
   const products = useMemo(() => data?.products || [], [data]);
-  if (!data?.open) return standalone ? <p className="p-8 text-center text-stone-600">The shop isn't open yet. Check back soon!</p> : null;
+  if (!data) return standalone ? <p className="p-8 text-center text-stone-600">Loading the shop…</p> : null;
+  if (!data.open) return standalone ? <p className="p-8 text-center text-stone-600">{closedNote || "The shop isn't open yet. Check back soon!"}</p> : null;
   const books = data.books || [];
   const hasSeasonal = products.some((p) => p.tags.includes("seasonal"));
   const shown = dept === "all" ? products : dept === "seasonal" ? products.filter((p) => p.tags.includes("seasonal")) : products.filter((p) => p.department === dept);
@@ -258,7 +259,7 @@ export default function ShopSection({ standalone = false }) {
     <section id="shop" className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 py-14" aria-labelledby="shop-heading" data-testid="public-shop">
       <div className="text-center mb-6">
         <h2 id="shop-heading" className="font-display text-3xl md:text-4xl font-bold" style={{ color: GREEN }}>The Side-Quest shop</h2>
-        <p className="mt-2 text-stone-700">Printable workbooks, printed books and Side-Quest goodies. No account needed: pay securely on Square.</p>
+        <p className="mt-2 text-stone-700">{inAccount ? "Printable workbooks, printed books and Side-Quest goodies. Pay securely on Square." : "Printable workbooks, printed books and Side-Quest goodies. No account needed: pay securely on Square."}</p>
       </div>
       {chips.length > 2 && (
         <div className="flex flex-wrap justify-center gap-2 mb-6" role="tablist" aria-label="Shop departments">
@@ -327,7 +328,7 @@ export default function ShopSection({ standalone = false }) {
       )}
       <p className="mt-6 text-center text-sm text-stone-600">Already bought something? <Link to="/shop/downloads" className="underline font-semibold">Get my downloads</Link></p>
       {look && <LookInside book={look} onClose={() => setLook(null)} inCart={inCart(look.id)} onAdd={() => { if (!inCart(look.id)) toggle(look.id); setLook(null); }} />}
-      {open && <ProductDialog p={open.p} all={products} initialVariant={open.variant} onClose={() => setOpen(null)} onAdd={addItems} />}
+      {open && <ProductDialog p={open.p} all={products} initialVariant={open.variant} onClose={() => setOpen(null)} onAdd={addItems} defaultEmail={defaultEmail} />}
     </section>
   );
 }
