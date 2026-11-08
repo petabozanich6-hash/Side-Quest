@@ -60,7 +60,7 @@ export const FILE_KINDS = ["book", "sample", "cover"] as const;
 type FileKind = (typeof FILE_KINDS)[number];
 const keyFor = (id: string, kind: FileKind | "meta" | "chapters" | "lessons") =>
   `${ROOT}${id}/${kind === "meta" ? "meta.json" : kind === "chapters" ? "chapters.json" : kind === "lessons" ? "lessons.json" : kind === "cover" ? "cover.png" : `${kind}.pdf`}`;
-const MAX_CHAPTERS = 60;
+const MAX_CHAPTERS = 120; // A multi-skill secondary unit can need several 40–60-minute lessons.
 const MAX_CHAPTER_TEXT = 30000;
 type Chapter = { id: string; title: string; start: number; end: number; text: string; skill_goal?: string; exercise_ref?: string };
 
@@ -118,6 +118,8 @@ export function lessonPreview(l: Published) {
   return {
     title: l.title, chapter_title: l.chapter_title, stage: l.stage, learning_area: l.learning_area,
     minutes: Number(d.duration_minutes) || null,
+    book_pages: Number.isInteger(d.quest_page_start) && Number.isInteger(d.quest_page_end) ? { start: d.quest_page_start, end: d.quest_page_end } : null,
+    skill_goal: snip(d.quest_skill_goal || "", 200),
     summary: snip(d.why_it_matters || d.summary || "", 260),
     objectives: (Array.isArray(d.objectives) ? d.objectives : []).slice(0, 4).map((o: unknown) => snip(o, 160)).filter(Boolean),
     opening: snip(d.introduction || "", 320),
@@ -435,7 +437,9 @@ export function registerQuestBooks(app: App, g: Guards) {
     c.header("Cache-Control", "private, no-store");
     return c.json({
       member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, billingConfig(c.env).ok),
-      lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title, lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
+      lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title,
+        book_pages: Number.isInteger(l.data.quest_page_start) && Number.isInteger(l.data.quest_page_end) ? { start: l.data.quest_page_start, end: l.data.quest_page_end } : null,
+        lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
     });
   });
 
