@@ -133,15 +133,17 @@ export function RefinePanel({ lessonId, onApplied, onClose, onFinished, initialI
         <button onClick={onClose} disabled={busy} className="text-sm underline disabled:opacity-50">Close</button>
       </div>
       {autoStart && <p className="text-sm text-violet-900" role="status">{busy ? "AI is preparing a targeted correction. Your original lesson remains unchanged." : proposal ? "Review the proposed correction below and accept or reject it." : "If the repair failed, you can edit the instruction and try again."}</p>}
-      <div className="flex flex-wrap gap-2">
-        {CHIPS.map(([label, t, p]) => <button key={label} onClick={() => { setText(t); setPart(p); }} className="rounded-full border border-violet-300 bg-white px-3 py-1 text-xs font-semibold" data-testid="refine-chip">{label}</button>)}
-      </div>
-      <textarea value={text} onChange={e => setText(e.target.value)} rows={2} maxLength={600} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" placeholder='Tell Side-Quest what to change, e.g. "Use a dinosaur theme" or "Add a harder worked example"' data-testid="refine-text" />
-      <div className="flex flex-wrap items-center gap-3 text-sm">
-        <label className="flex items-center gap-2">Change only: <select value={part} onChange={e => setPart(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1" data-testid="refine-part">{PARTS.map(([v, n]) => <option key={v} value={v}>{n}</option>)}</select></label>
-        <button disabled={busy || text.trim().length < 3} onClick={() => ask()} className="rounded-full bg-violet-700 text-white px-4 py-1.5 font-semibold disabled:opacity-50" data-testid="refine-go">{busy && !proposal ? "Working on it… up to a minute" : "Show me the change"}</button>
-        {left && <span className="text-xs text-slate-600">{left.unlimited ? "AI changes: unlimited for owner testing" : `AI changes left today: ${Math.max(0, left.changes_limit_per_day - left.changes_today)}`}</span>}
-      </div>
+      {(!autoStart || (!busy && !proposal)) && <>
+        <div className="flex flex-wrap gap-2">
+          {CHIPS.map(([label, t, p]) => <button key={label} onClick={() => { setText(t); setPart(p); }} className="rounded-full border border-violet-300 bg-white px-3 py-1 text-xs font-semibold" data-testid="refine-chip">{label}</button>)}
+        </div>
+        <textarea value={text} onChange={e => setText(e.target.value)} rows={2} maxLength={600} className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm" placeholder='Tell Side-Quest what to change, e.g. "Use a dinosaur theme" or "Add a harder worked example"' data-testid="refine-text" />
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <label className="flex items-center gap-2">Change only: <select value={part} onChange={e => setPart(e.target.value)} className="rounded-lg border border-slate-300 bg-white px-2 py-1" data-testid="refine-part">{PARTS.map(([v, n]) => <option key={v} value={v}>{n}</option>)}</select></label>
+          <button disabled={busy || text.trim().length < 3} onClick={() => ask()} className="rounded-full bg-violet-700 text-white px-4 py-1.5 font-semibold disabled:opacity-50" data-testid="refine-go">{busy && !proposal ? "Working on it…" : proposal ? "Try a different change" : "Show me the change"}</button>
+          {left && <span className="text-xs text-slate-600">{left.unlimited ? "AI changes: unlimited for owner testing" : `AI changes left today: ${Math.max(0, left.changes_limit_per_day - left.changes_today)}`}</span>}
+        </div>
+      </>}
       {err && <p role="alert" className="text-sm text-rose-700" data-testid="refine-error">{err}</p>}
       {proposal && (
         <div ref={proposalRef} className="scroll-mt-28 space-y-3 rounded-xl bg-white border border-violet-200 p-3" data-testid="refine-proposal">
