@@ -469,7 +469,7 @@ export async function listLessons(db: DB, familyId: string, opts: { archived?: b
 }
 
 /** Quest Book lessons keep their book link when edited, so adding the book again won't duplicate them. */
-const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal", "quest_source_revision", "source", "review_status", "book_reviewed_version", "book_reviewed_at", "book_reviewed_by", "book_plan_saved_version", "book_plan_saved_at", "book_plan_saved_by"];
+const QUEST_KEYS = ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title", "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal", "quest_source_revision", "source", "review_status", "book_reviewed_version", "book_reviewed_at", "book_reviewed_by", "book_plan_saved_version", "book_plan_saved_at", "book_plan_saved_by, "book_repair_requested", "book_repair_note", "book_repair_ai_attempted"];
 function questTags(data: any): Record<string, unknown> {
   if (!data?.quest_book_id) return {};
   return Object.fromEntries(QUEST_KEYS.filter((k) => data[k] !== undefined).map((k) => [k, data[k]]));
