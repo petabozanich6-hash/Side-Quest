@@ -29,6 +29,7 @@ import { registerSiteSearch } from "./siteSearch";
 import { registerPrintableVault } from "./printableVault";
 import { registerHandwritingBook } from "./handwritingBook";
 import { registerQuestBooks, registerShop } from "./questBooks";
+import { registerQuestOvernight, processQuestOvernight } from "./questBookOvernight";
 import { registerViewAs, viewAsState } from "./viewAs";
 import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
@@ -324,6 +325,7 @@ registerSiteSearch(app, guards);
 registerPrintableVault(app, guards);
 registerHandwritingBook(app, guards);
 registerQuestBooks(app, guards);
+registerQuestOvernight(app, guards);
 registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
@@ -356,6 +358,9 @@ export default {
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
     // After reconciling, so the notices see each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
+    // Server-side queue continues without the owner's browser or a logged-in session.
+    try { await processQuestOvernight(await applyPlatformSettings(env)); }
+    catch (e) { console.error("Quest Book overnight queue cron failed", e); }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };
