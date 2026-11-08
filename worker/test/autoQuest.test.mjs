@@ -429,7 +429,7 @@ test("family isolation and unsupported curricula", async () => {
   assert.equal(rv.catalogue_available, false);
   assert.equal(rv.proposals[0].action, "needs_generation");
   assert.deepEqual(rv.proposals[0].outcome_codes, []);
-  assert.match(rv.note, /verified outcome list/);
+  assert.match(rv.note, /Outside Australia/);
 
   const qld = family(db, { jurisdiction: "QLD" }); const sq = kid(db, qld); slot(db, qld, sq, 1, "Maths");
   const rq = await plan(db, qld, sq);
