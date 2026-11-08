@@ -406,7 +406,16 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   };
   h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(thorough), lid);
   const reviewUrl = `/quest-books/admin/books/${id}/chapters/c1/review`;
+  const saveUrl = `/quest-books/admin/books/${id}/chapters/c1/save-to-plan`;
+  const version = (await (await h.req(`/lessons/${lid}`, owner.token)).json()).version;
   const nonOwner = await h.parent("ACTIVE_MONTHLY");
+  assert.equal((await h.req(saveUrl, nonOwner.token, "POST", { lesson_id: lid, expected_version: version })).status, 403);
+  assert.equal((await h.req(saveUrl, owner.token, "POST", { lesson_id: lid, expected_version: version - 1 })).status, 409,
+    "outdated review screens cannot save to the book plan");
+  assert.equal((await h.req(saveUrl, owner.token, "POST", { lesson_id: lid, expected_version: version })).status, 200);
+  const linked = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.equal(linked.saved_to_plan, true);
+  assert.equal(linked.version, version);
   assert.equal((await h.req(reviewUrl, nonOwner.token, "POST", { lesson_id: lid, approved: true })).status, 403, "family members cannot approve commercial lessons");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409, "browser checkbox alone cannot approve a book lesson");
   assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true })).status, 200);
@@ -421,6 +430,9 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   assert.equal(edited.status, 200);
   savedReview = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
   assert.equal(savedReview.reviewed, false, "changing the lesson invalidates its previous review");
+  assert.equal(savedReview.saved_to_plan, false, "new edits must be explicitly saved into the book plan");
+  assert.equal((await h.req(saveUrl, owner.token, "POST", { lesson_id: lid, expected_version: Number(savedReview.version) })).status, 200);
+  assert.equal((await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft.saved_to_plan, true);
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409, "unreviewed edits must not silently republish");
   const missingPaidKey = await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", {
     chapters: [{ ...raw, id: "s-1234567890abcdef1234" }],
