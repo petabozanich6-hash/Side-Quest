@@ -86,8 +86,8 @@ export default function QuestBookOvernight() {
   return <section className="rounded-2xl border border-violet-300 bg-white p-4 sm:p-5 space-y-4" data-testid="quest-overnight-queue">
     <div className="space-y-1">
       <h3 className="font-bold text-violet-950 text-lg">Overnight Lesson Queue</h3>
-      <p className="text-sm text-slate-700">Make missing lessons, approve AI-cleared drafts, and bulk-repair the flagged ones across all your uploaded books. Queued work runs on the server even with your browser closed.</p>
-      <p className="text-xs text-slate-600">Books need a saved chapter plan. Generation and repair process one lesson per five-minute server cycle; large collections can take several nights. Nothing is published automatically.</p>
+      <p className="text-sm text-slate-700">Make missing lessons, approve AI-cleared drafts, and bulk-repair the flagged ones across all your uploaded books. Queued work continues on the server while you use the rest of Side-Quest or close the browser. If the AI allowance temporarily runs out, it automatically tries again when available.</p>
+      <p className="text-xs text-slate-600">Books need a saved chapter plan. Generation and repair share a dedicated one-minute server cycle (up to 60 attempts an hour). Actual progress depends on AI availability and retries. You can pause either queue. Nothing is published automatically.</p>
     </div>
     {!data && !error && <p role="status" className="text-sm">Finding missing lessons…</p>}
     {error && <p role="alert" className="text-sm text-red-800">{error} <button type="button" onClick={()=>void load()} className="underline">Reload</button></p>}
@@ -112,7 +112,7 @@ export default function QuestBookOvernight() {
       </div>
       {(totalSelected>0 || repairSelected>0 || clearedSelected>0) && <div className="rounded-xl border border-violet-200 p-3 space-y-2">
         <p className="font-bold text-violet-950 text-sm">Bulk actions for selected books</p>
-        <p className="text-xs text-slate-700">Generation and repairs can both be queued. They take turns, one lesson per five-minute server cycle. Recheck and approve repaired lessons when they pass.</p>
+        <p className="text-xs text-slate-700">Generation and repairs can both be queued. They take turns, one lesson attempt per minute, independently of your browser. Recheck and approve repaired lessons when they pass.</p>
         {!generationActive && totalSelected>0 && <label className="flex items-start gap-2 rounded-lg bg-stone-50 p-2 text-xs text-slate-800">
           <input type="checkbox" checked={autoApprove} onChange={e=>setAutoApprove(e.target.checked)}
             disabled={!!busy} data-testid="quest-overnight-auto-approve" />
