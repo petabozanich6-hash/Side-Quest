@@ -186,11 +186,9 @@ export default function LessonReview() {
     if (!bookId || !chapterId || !currentBookEntry) { toast.error("Could not verify which book lesson you are reviewing."); return; }
     setBusy(true);
     try {
-      if (!currentBookEntry.draft?.reviewed) {
-        await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
-          { lesson_id: id, approved: true });
-        toast.success("Review saved for this book.");
-      }
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(bookId)}/chapters/${encodeURIComponent(chapterId)}/review`,
+        { lesson_id: id, approved: true });
+      toast.success("Review saved for this book.");
       nav(nextBookEntry ? bookLessonUrl(nextBookEntry) : bookHome);
     } catch (e) { toast.error(apiErrorMessage(e, "Could not approve this book lesson")); }
     finally { setBusy(false); }
