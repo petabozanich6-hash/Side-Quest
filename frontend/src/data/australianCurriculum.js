@@ -144,6 +144,8 @@ export const jurisdictionFor = (code) => AUSTRALIAN_JURISDICTIONS.find((j) => j.
 
 /** NSW syllabus outcomes are the only verified outcome list loaded. Never assumed for a family that hasn't chosen. */
 export const usesNswOutcomes = (code) => code === "NSW";
-// States and territories whose outcome codes Side-Quest can verify (NSW syllabus; AC9 reference list elsewhere).
-// Victoria and WA have no verified list yet. The server enforces this; this only decides what the UI offers.
-export const hasVerifiedCodes = (code) => ["NSW", "QLD", "SA", "TAS", "ACT", "NT"].includes(code);
+// States and territories whose outcome codes Side-Quest holds: the NSW syllabus, WA's curriculum (SCSA), and the
+// Australian Curriculum v9 for QLD, SA, TAS, ACT and NT, and the Victorian Curriculum v2.0. All are codes plus
+// Side-Quest's own summaries with links to the official wording. The server enforces this; this only decides what the UI offers.
+export const hasVerifiedCodes = (code) => ["NSW", "VIC", "WA", "QLD", "SA", "TAS", "ACT", "NT"].includes(code);
+export const outcomeListName = (code) => code === "NSW" ? "the NSW syllabus" : code === "VIC" ? "the Victorian Curriculum v2.0" : code === "WA" ? "the Western Australian Curriculum" : ["QLD", "SA", "TAS", "ACT", "NT"].includes(code) ? "the Australian Curriculum v9" : null;

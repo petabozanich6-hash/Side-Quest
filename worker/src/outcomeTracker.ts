@@ -135,8 +135,8 @@ const vicRows: CatalogueOutcome[] = VIC_SOURCE_VERIFIED_IDS.map((o) => ({
 }));
 const VIC_CATALOGUE: Catalogue = {
   available: true, framework: "VIC",
-  name: "VCAA Victorian F–10 v2 and 2026-current v1 EAL (partial reference)",
-  version: "VCAA-v2-source-backed+v1-EAL-2026-PARTIAL",
+  name: "Victorian Curriculum F–10 v2.0 (VCAA)",
+  version: "VCAA-F10-v2-codes-2026-11",
   outcomes: vicRows,
   byCode: new Map(vicRows.map((o) => [o.code,o])),
 };

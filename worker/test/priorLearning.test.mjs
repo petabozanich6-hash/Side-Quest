@@ -77,7 +77,7 @@ test("bad input is refused: no source, unknown outcomes, another family's file, 
   assert.equal((await ot.recordPriorLearning(h.db, h.fam, h.parent, h.kid, { codes: [RN], source: "" }, NOW)).code, "SOURCE_REQUIRED");
   assert.equal((await ot.recordPriorLearning(h.db, h.fam, h.parent, h.kid, { codes: ["AC9MFN01"], source: "Report" }, NOW)).code, "UNKNOWN_OUTCOME");
   assert.equal((await ot.recordPriorLearning(h.db, h.fam, h.parent, h.kid, { codes: [RN], source: "Report", file_ids: ["nope"] }, NOW)).ok, false);
-  const vic = setup({ jurisdiction: "VIC" });
+  const vic = setup({ jurisdiction: "OTHER" });
   assert.equal((await ot.recordPriorLearning(vic.db, vic.fam, vic.parent, vic.kid, { codes: [RN], source: "Report" }, NOW)).code, "NO_CATALOGUE");
 });
 

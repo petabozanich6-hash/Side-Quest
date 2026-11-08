@@ -12,6 +12,8 @@ import { cleanPrefs, resolveRequest, stageFor } from "./aiRequest";
 import { matchOutcomesWithAi, suggestOutcomes, outcomeRef, OUTCOME_FRAMEWORK } from "./outcomeMatch";
 import type { OutcomeSuggestion } from "./outcomeMatch";
 import { getFamilyJurisdiction, frameworkFor, areasFor, usesNswOutcomes, outcomesNotLoadedNote } from "./data/jurisdictions";
+import { catalogueFor } from "./outcomeTracker";
+import { suggestFromCatalogue } from "./questOutcomes";
 import { cleanItemKind, cleanVisual, cleanKeyWords, estimateMinutes, hasEmbeddedAnswer } from "./items";
 import type { StudentInfo } from "./aiRequest";
 import { REFERENCE_INDEPENDENT, REFERENCE_PARENT_GUIDED } from "./data/referenceLessons";
@@ -1219,6 +1221,22 @@ export async function draftLessonWithAi(
     if (!outcomes.length) outcomes = suggestOutcomes(draft, 2).filter((o) => o.confidence === "likely");
     draft.outcome_codes = outcomes.map((o) => o.code);
     draft.curriculum_refs = outcomes.map((o) => outcomeRef(o));
+  } else if ((request as any).link_outcomes !== false) {
+    // Other states and territories: pick from that state's own verified list (AC9, WA ...), never NSW codes.
+    const cat = catalogueFor(jurisdiction);
+    if (cat.available) {
+      const outcomesStarted = Date.now();
+      try {
+        const m = await suggestFromCatalogue(cat, { ...draft, year_level: spec.year }, { run: (mdl: string, input: any, o: any) => ai.run(mdl, input, o) }, { model, gatewayId: opts.gatewayId }, 3);
+        if (m.method === "ai") { stats.calls++; stats.stages.push("outcomes"); }
+        const keep = m.suggestions.filter((o, i) => i === 0 || m.method === "ai");
+        if (keep.length) {
+          draft.outcome_codes = keep.map((o) => o.code);
+          draft.curriculum_refs = [...keep.map((o) => o.code), ...draft.curriculum_refs].slice(0, 10);
+        }
+      } catch { /* optional step */ }
+      finally { (stats.stage_timings_ms ??= []).push({ stage: "outcomes", ms: Date.now() - outcomesStarted }); }
+    }
   }
   // Apply reviewable subject links after repair so no repaired draft loses them.
   (draft as any).additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
@@ -1423,9 +1441,17 @@ export async function matchLessonOutcomes(
   if (!row) return lb.fail(404, "Lesson not found");
   const lesson: any = lb.lessonOut(row);
   const place = await getFamilyJurisdiction(db, opts.familyId).catch(() => null);
-  if (!usesNswOutcomes(place)) return { ok: true, suggestions: [], method: "wording", framework: `${place} outcomes (not loaded yet)`, note: outcomesNotLoadedNote(place!) };
-  const note = "These are suggestions based on what the lesson teaches, checked against the outcome list Side-Quest holds (currently the NSW syllabus; other states are not loaded yet). A lesson contributes to an outcome; it does not complete it. Please confirm against your own curriculum.";
   const { limits } = await lb.getEntitlement(db, opts.familyId, now);
+  if (!usesNswOutcomes(place)) {
+    // Other states and territories: suggestions from that state's own verified list.
+    const cat = catalogueFor(place);
+    if (!cat.available) return { ok: true, suggestions: [], method: "wording", framework: `${place} outcomes (not loaded yet)`, note: place ? outcomesNotLoadedNote(place) : "Choose your state or territory first." };
+    const useAi = !!ai && limits.aiGeneration;
+    const m = await suggestFromCatalogue(cat, lesson, useAi ? ai : undefined, { model: opts.model || DEFAULT_MODEL, gatewayId: opts.gatewayId }, 3);
+    return { ok: true, suggestions: m.suggestions as any, method: m.method, framework: cat.name,
+      note: `These are suggestions from ${cat.name}, based on what the lesson teaches. A lesson contributes to an outcome; it does not complete it. Please confirm them.` };
+  }
+  const note = "These are suggestions from the NSW syllabus, based on what the lesson teaches. A lesson contributes to an outcome; it does not complete it. Please confirm them.";
   if (ai && limits.aiGeneration) {
     const used = Number((await db.prepare("SELECT COUNT(*) n FROM ai_usage WHERE family_id = ? AND kind = 'outcome_match' AND status != 'failed' AND created_at >= ?").bind(opts.familyId, new Date(now.getTime() - 86400000).toISOString()).first<{ n: number }>())?.n ?? 0);
     if (used < OUTCOME_LIMITS.perDay) {

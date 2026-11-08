@@ -143,8 +143,7 @@ test("a Victorian family's record uses Victorian learning areas and invents no c
   assert.equal(p.jurisdiction_name, "Victoria");
   assert.ok(!JSON.stringify(p.entries).includes("EN2-OLC-01"), "NSW codes shown to a Victorian family");
   assert.deepEqual(p.entries[0].outcomes, [], "a NSW outcome is dropped, not passed off as plain-language Victorian wording");
-  assert.equal(p.progress.available, false, "no verified Victorian catalogue: the record says so instead of inventing coverage");
-  assert.match(p.progress.note, /does not hold a verified outcome list/);
+  assert.equal(p.progress.available, true, "Victoria's own codes are loaded (codes and Side-Quest summaries only)");
 });
 
 test("a family that hasn't chosen a state gets the Australian Curriculum, not NSW", async () => {

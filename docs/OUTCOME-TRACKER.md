@@ -159,7 +159,7 @@ catalogued wording from every response (`worker/src/syllabusText.ts`), and lesso
 | --- | --- | --- | --- |
 | NSW | NESA syllabus outcome codes (`nsw-outcomes.ts`) | NESA — limited non-commercial permissions for registered home-schooling parents; commercial republication of syllabus text needs NESA permission (https://www.nsw.gov.au/education-and-training/nesa/copyright) | Codes only; seed not certified complete |
 | QLD, SA, TAS, ACT, NT | ACARA Australian Curriculum v9 content descriptions, MRAC/2024/04 (`ac9-outcomes.ts`, ~1,395 records) | CC BY 4.0 with attribution (https://www.australiancurriculum.edu.au/copyright-and-terms-of-use/) | Partial reference: excludes Languages and achievement standards; not state-specific implementation |
-| VIC | none | VCAA Victorian Curriculum F–10 v2.0 is CC BY-NC; commercial use needs permission (https://f10.vcaa.vic.edu.au/copyright-statement) | Tracker unavailable; the app says so |
+| VIC | Victorian Curriculum F–10 v2.0: official codes and structure only (worker/scripts/build-vic-codes.mjs), Side-Quest's own summaries, link to VCAA for wording | VCAA content is CC BY-NC; no VCAA wording is stored (https://f10.vcaa.vic.edu.au/copyright-statement) | Tracker and lesson matching available |
 | WA | none | SCSA terms to be confirmed (https://k10outline.scsa.wa.edu.au/) | Tracker unavailable; the app says so |
 
 The server enforces the family's jurisdiction everywhere codes are accepted (lessons, reviews, quizzes, life learning,

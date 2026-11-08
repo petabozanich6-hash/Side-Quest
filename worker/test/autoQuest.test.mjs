@@ -423,12 +423,13 @@ test("family isolation and unsupported curricula", async () => {
   const otherLesson = await lesson(db, b, "B's", [S2_MATHS[0]]);
   assert.equal((await aq.setProposalLesson(db, a, r.proposals[0].id, otherLesson.id, NOW)).status, 404, "cannot attach another family's lesson");
 
-  const vic = family(db, { jurisdiction: "VIC" }); const sv = kid(db, vic); slot(db, vic, sv, 1, "Mathematics");
+  // A family outside Australia has no official outcome catalogue.
+  const vic = family(db, { jurisdiction: "OTHER" }); const sv = kid(db, vic); slot(db, vic, sv, 1, "Mathematics");
   const rv = await plan(db, vic, sv);
   assert.equal(rv.catalogue_available, false);
   assert.equal(rv.proposals[0].action, "needs_generation");
   assert.deepEqual(rv.proposals[0].outcome_codes, []);
-  assert.match(rv.note, /verified outcome list/);
+  assert.match(rv.note, /Outside Australia/);
 
   const qld = family(db, { jurisdiction: "QLD" }); const sq = kid(db, qld); slot(db, qld, sq, 1, "Maths");
   const rq = await plan(db, qld, sq);
