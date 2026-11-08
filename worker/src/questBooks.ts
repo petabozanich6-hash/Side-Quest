@@ -1186,27 +1186,99 @@ export function registerQuestBooks(app: App, g: Guards) {
       WHERE family_id = ? AND archived_at IS NULL AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
       AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book' ORDER BY updated_at DESC`).bind(user.family_id, id).all<any>();
     const drafts = new Map<string, any>();
-    for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, {
-      lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision,
-      // Quality checks are computed from the actual saved lesson, not an AI
-      // flag or whether a parent happened to open the review screen.
-      quality_issues: companionLessonIssues(JSON.parse(r.data || "{}")),
-      version: r.version, reviewed_at: r.reviewed_at,
-      plan_saved_at: r.plan_saved_at,
-      saved_to_plan: r.plan_saved_version !== null && Number(r.plan_saved_version) === Number(r.version),
-      reviewed: r.status === "ready" && r.reviewed_version !== null && Number(r.reviewed_version) === Number(r.version),
-    });
+    for (const r of results || []) {
+      if (!r.ch || drafts.has(r.ch)) continue;
+      const data = JSON.parse(r.data || "{}");
+      const issues = companionLessonIssues(data);
+      const flagged = !Array.isArray(data.ai_flags) || data.ai_flags.length !== 0;
+      drafts.set(r.ch, {
+        lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision,
+        quality_issues: issues,
+        // An AI-clear lesson is eligible for a separate owner-confirmed fast approval.
+        // Never infer "clear" from missing AI flags or from the browser checkbox.
+        ai_cleared: data.ai_generated === true && !flagged && issues.length === 0,
+        ai_warning_count: Array.isArray(data.ai_flags) ? data.ai_flags.length : null,
+        version: r.version, reviewed_at: r.reviewed_at,
+        plan_saved_at: r.plan_saved_at,
+        saved_to_plan: r.plan_saved_version !== null && Number(r.plan_saved_version) === Number(r.version),
+        reviewed: r.status === "ready" && r.reviewed_version !== null && Number(r.reviewed_version) === Number(r.version),
+      });
+    }
     c.header("Cache-Control", "no-store");
     return c.json({
       chapters: chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length,
         revision: chapterRevision({ ...ch, text }), draft: drafts.get(ch.id) ? {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
           reviewed: drafts.get(ch.id).reviewed && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
+          ai_cleared: drafts.get(ch.id).ai_cleared && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
           saved_to_plan: drafts.get(ch.id).saved_to_plan && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
         } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
       draft_count: (results || []).length,
     });
+  });
+
+  // Owner-confirmed fast approval: accept only the latest AI-generated draft for
+  // each current subsection when the AI reported NO warnings and the same
+  // content requirements as normal publication are satisfied.
+  // This never publishes the lessons, removes flags or touches family copies.
+  app.post("/api/quest-books/admin/books/:id/lessons/approve-ai-cleared", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    const body: any = await c.req.json().catch(() => ({}));
+    if (!VALID_ID.test(id) || body.confirm !== "APPROVE_AI_CLEARED")
+      return c.json({ detail: "Explicitly confirm approval of AI-cleared lessons." }, 400);
+    const chapters = await readChapters(c.env.BUCKET!, id);
+    if (!chapters.length) return c.json({ detail: "This book has no saved chapter plan." }, 409);
+    const user = c.get("user");
+    const { results } = await c.env.DB.prepare(`SELECT id, title, status, version, updated_at, data
+      FROM lessons WHERE family_id = ? AND archived_at IS NULL AND json_valid(data)
+      AND json_extract(data, '$.quest_book_id') = ?
+      AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book'
+      ORDER BY updated_at DESC`).bind(user.family_id, id).all<any>();
+    const newest = new Map<string, any>();
+    for (const row of results || []) {
+      const saved = JSON.parse(row.data || "{}");
+      if (saved.quest_chapter_id && !newest.has(saved.quest_chapter_id))
+        newest.set(saved.quest_chapter_id, { row, saved });
+    }
+    const approved: { id: string; title: string; lesson_id: string }[] = [];
+    const skipped: { id: string; title: string; reason: string }[] = [];
+    let previouslyReviewed = 0;
+    for (const chapter of chapters) {
+      const found = newest.get(chapter.id);
+      if (!found) continue;
+      const { row, saved } = found;
+      const skip = (reason: string) => skipped.push({ id: chapter.id, title: chapter.title, reason });
+      if (saved.quest_book_id !== id || saved.quest_chapter_id !== chapter.id || saved.source === "side_quest_book") {
+        skip("The lesson is not the original working companion for this chapter."); continue;
+      }
+      if (saved.quest_source_revision !== chapterRevision(chapter)) { skip("Book source changed. Regenerate this lesson."); continue; }
+      if (row.status === "ready" && Number(saved.book_reviewed_version) === Number(row.version)) {
+        previouslyReviewed++; continue;
+      }
+      if (row.status !== "draft" && row.status !== "ready") { skip("The lesson has an unsupported status."); continue; }
+      if (saved.ai_generated !== true || !Array.isArray(saved.ai_flags)) { skip("This lesson has no verified AI quality-check result."); continue; }
+      if (saved.ai_flags.length) { skip("The AI flagged issues that need attention."); continue; }
+      const issues = companionLessonIssues(saved);
+      if (issues.length) { skip(`Missing required content: ${issues.join("; ")}`); continue; }
+      const now = new Date().toISOString();
+      const next = {
+        ...saved, review_status: "parent_reviewed",
+        book_review_method: "owner_bulk_ai_cleared",
+        book_plan_saved_version: Number(row.version), book_plan_saved_at: now, book_plan_saved_by: user.id,
+        book_reviewed_version: Number(row.version), book_reviewed_at: now, book_reviewed_by: user.id,
+      };
+      // Compare the exact data payload, not only the version. Other review actions
+      // can update metadata without bumping the lesson's content version.
+      const updated = await c.env.DB.prepare(`UPDATE lessons SET status = 'ready', data = ?, updated_at = ?
+        WHERE id = ? AND family_id = ? AND version = ? AND status = ? AND data = ? AND archived_at IS NULL`)
+        .bind(JSON.stringify(next), now, row.id, user.family_id, row.version, row.status, row.data).run();
+      if (!updated.meta?.changes) { skip("The saved lesson changed during approval. Reload and retry."); continue; }
+      approved.push({ id: chapter.id, title: chapter.title, lesson_id: row.id });
+    }
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, approved_count: approved.length, approved, already_reviewed: previouslyReviewed,
+      skipped_count: skipped.length, skipped });
   });
 
   // A book plan stores the ID and saved version of its ORIGINAL companion lesson.
