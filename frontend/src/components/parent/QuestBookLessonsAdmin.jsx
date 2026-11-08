@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { BookOpenCheck, Check, FileSearch, Loader2, Sparkles, Upload } from "lucide-react";
 import { api, apiErrorMessage } from "../../lib/api";
 import { readPdfChapters } from "../../lib/pdfPages";
+import { compileBookSubsectionSource } from "../../lib/questBookSource";
 
 /**
  * Owner-only: the PDF chapter analyser proposes skill-based subsections automatically.
@@ -15,6 +16,9 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
   const [busy, setBusy] = useState("");
   const [scanProgress, setScanProgress] = useState("");
   const [approved, setApproved] = useState({});
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [remakeProgress, setRemakeProgress] = useState(null);
+  const stopRemake = React.useRef(false);
   const load = () => api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } })
     .then((r) => setData(r.data)).catch((e) => toast.error(apiErrorMessage(e, "Could not load chapters")));
   useEffect(() => { load(); }, [book.id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -87,7 +91,9 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
             planned.push({
               id: prior.id, unit_title: chapter.title, title: prior.title,
               skill_goal: prior.skill_goal || prior.title, exercise_ref: prior.exercise_ref || "",
-              start: prior.start, end: prior.end, text: selected.map((p) => p.text).join("\n\n"),
+              start: prior.start, end: prior.end,
+              text: compileBookSubsectionSource(selected).text,
+              source_abbreviated: compileBookSubsectionSource(selected).abbreviated,
               page_texts: selected, include: true,
             });
           }
@@ -103,13 +109,14 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           if (!suggestions.length) throw new Error(`No teachable subsections were identified in “${chapter.title}”.`);
           for (const sub of suggestions) {
             const selected = pages.filter((p) => p.page >= sub.start && p.page <= sub.end);
-            const text = selected.map((p) => p.text).join("\n\n");
-            if (text.replace(/\s/g, "").length < 40 || text.length > 8000)
-              throw new Error(`Subsection “${sub.title}” could not be prepared within the lesson source limit. Please check the PDF text.`);
+            const context = compileBookSubsectionSource(selected);
+            if (context.text.replace(/\s/g, "").length < 40)
+              throw new Error(`Subsection “${sub.title}” has insufficient readable content. Please check the PDF text.`);
             planned.push({
               id: priorId(chapter.title, sub.start, sub.end), unit_title: chapter.title,
               title: sub.title, skill_goal: sub.skill_goal || sub.title, exercise_ref: sub.exercise_ref || "",
-              start: sub.start, end: sub.end, text, page_texts: selected, include: true,
+              start: sub.start, end: sub.end, text: context.text,
+              source_abbreviated: context.abbreviated, page_texts: selected, include: true,
             });
           }
         }
@@ -125,7 +132,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     const chosen = scan.filter((c) => c.include).map(({ include, page_texts, ...c }) => c);
     if (!chosen.length) { toast.error("Tick at least one session."); return; }
     const tooLarge = chosen.find((c) => c.text.length > 8000);
-    if (tooLarge) { toast.error(`“${tooLarge.title}” has more than 8,000 characters. Re-analyse the PDF; no lesson source will be silently truncated.`); return; }
+    if (tooLarge) { toast.error(`“${tooLarge.title}” exceeded the source limit. Please re-analyse that chapter.`); return; }
     const unclear = chosen.find((c) => !c.skill_goal?.trim());
     if (unclear) { toast.error(`Add a specific learning goal for “${unclear.title}”.`); return; }
     setBusy("save");
@@ -151,6 +158,41 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     for (const ch of data.chapters.filter((c) => !c.draft)) {
       if (!(await draft(ch))) break;
     }
+  };
+  const startFresh = async () => {
+    setBusy("reset");
+    try {
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/lessons/reset`,
+        { confirm: "REBUILD_FROM_PDF" }, { timeout: 120000 });
+      setConfirmReset(false);
+      setScan(null);
+      setApproved({});
+      autoRead.current = false;
+      // Setting an empty source plan triggers automatic analysis of the
+      // existing uploaded PDF; the owner does not need to upload it again.
+      setData({ chapters: [], published_count: 0, draft_count: 0 });
+      onChanged?.();
+      toast.success("Previous AI lesson drafts archived. Rebuilding chapter and subsection plan from your uploaded PDF.");
+    } catch (e) {
+      toast.error(apiErrorMessage(e, "Could not reset the book lessons safely"), { duration: 10000 });
+    } finally { setBusy(""); }
+  };
+  const remakeAll = async () => {
+    const all = data.chapters;
+    if (!all.length) return;
+    stopRemake.current = false;
+    let done = 0;
+    setRemakeProgress({ done: 0, total: all.length });
+    for (const section of all) {
+      if (stopRemake.current) break;
+      const ok = await draft(section);
+      if (!ok) break;
+      done++;
+      setRemakeProgress({ done, total: all.length });
+    }
+    stopRemake.current = false;
+    setRemakeProgress(null);
+    toast.message(`Remade ${done} of ${all.length} lessons. Earlier drafts are in Archived.`);
   };
   const publish = async () => {
     const drafts = data.chapters.filter((c) => c.draft);
@@ -184,7 +226,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     }
     return (
       <div className="rounded-xl border border-emerald-300 bg-white p-4 space-y-4" data-testid="quest-chapter-scan">
-        <p className="text-sm text-emerald-950"><b>Automatic workbook lesson plan:</b> {groups.length} chapters, {scan.length} suggested subsections. The system chose the learning skills and page boundaries. You can optionally correct a title or learning goal, but do not have to split anything yourself.</p>
+        <p className="text-sm text-emerald-950"><b>Automatic skill-based plan:</b> {groups.length} chapters, {scan.length} teachable subsections. <b>PDF pages are not individual lessons.</b> Related examples and workbook exercises remain together. You can optionally correct a title or learning goal.</p>
         {groups.map((group, gi) => (
           <section key={gi} className="rounded-lg border border-stone-200 p-3 space-y-2">
             <h5 className="font-bold text-emerald-950">Chapter {gi + 1}: {group.title}</h5>
@@ -198,6 +240,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
                       <input aria-label="Subsection lesson title" value={c.title} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, title: e.target.value } : x))} className="flex-1 min-w-0 rounded border border-stone-200 px-2 py-1" />
                       <span className="text-xs text-stone-500 whitespace-nowrap">PDF pp. {c.start}–{c.end}</span>
                     </div>
+                    {c.source_abbreviated && <p className="text-xs text-amber-800">Several pages share this lesson. The AI receives balanced labelled excerpts from all pages, rather than a whole lesson per PDF page.</p>}
                     <div className="grid sm:grid-cols-2 gap-2">
                       <input aria-label="Learning objective" value={c.skill_goal} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, skill_goal: e.target.value } : x))} className="rounded border border-stone-200 px-2 py-1" />
                       <input aria-label="Workbook practice reference" placeholder="Optional workbook exercises" value={c.exercise_ref} onChange={(e) => setScan((v) => v.map((x, i) => i === index ? { ...x, exercise_ref: e.target.value } : x))} className="rounded border border-stone-200 px-2 py-1" />
@@ -225,7 +268,20 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           {busy === "scan" ? <Loader2 size={15} className="animate-spin" /> : <FileSearch size={15} />} {busy === "scan" ? "Analysing the book…" : data.chapters.length ? "Re-analyse chapter structure" : "Analyse chapters and subsections"}
         </button>}
         {!book.has_book && pdfPicker("Read chapters from a PDF")}
+        {book.has_book && (data?.chapters?.length > 0 || data?.published_count > 0) &&
+          <button type="button" onClick={() => setConfirmReset(true)} disabled={!!busy || !!remakeProgress}
+            className="rounded-lg border border-amber-500 px-3 py-2 text-sm font-bold text-amber-900 hover:bg-amber-50 disabled:opacity-50">
+            Start fresh from this PDF
+          </button>}
       </div>
+      {confirmReset && <div className="rounded-lg border border-amber-400 bg-amber-50 p-3 space-y-2 text-sm">
+        <p className="font-bold text-amber-950">Rebuild this book's lesson collection?</p>
+        <p>This archives your existing AI-generated draft lessons and clears this book's published lesson list and subsection plan. Your uploaded PDF, cover, preview, book details and prices stay intact. The PDF will be analysed again automatically. The server will refuse if it finds purchases or copies belonging to other families.</p>
+        <div className="flex gap-2">
+          <button type="button" disabled={!!busy} onClick={startFresh} className="rounded-lg bg-amber-800 px-3 py-2 text-white font-bold">Yes, rebuild the lesson plan</button>
+          <button type="button" disabled={!!busy} onClick={() => setConfirmReset(false)} className="rounded-lg border border-stone-300 px-3 py-2 font-semibold">Cancel</button>
+        </div>
+      </div>}
       {scanProgress && <p className="text-sm font-semibold text-violet-900" role="status">{scanProgress}</p>}
       {!data.chapters.length ? (
         <p className="text-sm text-stone-600">{book.has_book ? "Side-Quest automatically identifies chapters and their teachable subsections, with learning goals and workbook page references. You only decide which lessons to generate." : "Upload the Book PDF first, then its sessions can be read here."}</p>
@@ -247,8 +303,14 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           ))}
         </ul>
         <div className="flex flex-wrap gap-2 items-center">
-          {drafted < data.chapters.length && <button type="button" disabled={!!busy} onClick={draftAll} className="inline-flex items-center gap-1.5 rounded-lg bg-violet-700 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"><Sparkles size={15} /> Make all missing lessons ({data.chapters.length - drafted})</button>}
-          <button type="button" disabled={!!busy || !drafted} onClick={publish} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-50">{busy === "publish" ? "Publishing…" : <><Upload size={15} /> Publish {drafted} lesson{drafted === 1 ? "" : "s"} to the book</>}</button>
+          {drafted < data.chapters.length && <button type="button" disabled={!!busy || !!remakeProgress} onClick={draftAll} className="inline-flex items-center gap-1.5 rounded-lg bg-violet-700 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"><Sparkles size={15} /> Make all missing lessons ({data.chapters.length - drafted})</button>}
+          <button type="button" disabled={!!busy || !drafted || !!remakeProgress} onClick={publish} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-900 text-white px-4 py-2 text-sm font-bold disabled:opacity-50">{busy === "publish" ? "Publishing…" : <><Upload size={15} /> Publish {drafted} lesson{drafted === 1 ? "" : "s"} to the book</>}</button>
+          {!!drafted && !remakeProgress && <button type="button" disabled={!!busy} onClick={remakeAll}
+             className="rounded-lg border border-violet-400 px-4 py-2 text-sm font-bold text-violet-900">Remake all lessons ({data.chapters.length})</button>}
+          {remakeProgress && <div className="flex items-center gap-2 text-sm text-violet-900">
+            <Loader2 size={15} className="animate-spin" /> Remaking lesson {Math.min(remakeProgress.done + 1, remakeProgress.total)} of {remakeProgress.total}
+            <button type="button" className="rounded border border-stone-300 px-2 py-1" onClick={() => { stopRemake.current = true; }}>Stop after current lesson</button>
+          </div>}
           {data.published_count > 0 && <span className="text-xs text-emerald-800 inline-flex items-center gap-1"><Check size={13} /> {data.published_count} published</span>}
         </div>
         {busy && busy !== "publish" && busy !== "save" && <p className="text-xs text-stone-500">Keep this page open while lessons are being written.</p>}
