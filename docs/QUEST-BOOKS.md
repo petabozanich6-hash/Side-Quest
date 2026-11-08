@@ -75,3 +75,26 @@ Handwriting, Study skills and Life skills. Specialist books can be Years 0–12 
 The owner sees dashed **Planned** cards on each specialist shelf (from `frontend/src/lib/questBookPlan.js`).
 Only the owner sees them. Clicking one opens "Add a book" already filled in. A planned card disappears once a
 book with the same shelf, year and topic exists. Edit `questBookPlan.js` to change the list.
+
+## Book space (owner)
+
+Open any book (or press **Open book space** in the uploader) to get a checklist just for that book: details and
+prices, Book PDF, look-inside pages, cover, optional sample, chapters, lessons. The next step to do is highlighted.
+
+## Look inside before buying
+
+When the Book PDF is uploaded, the owner's browser makes up to 6 small page pictures (first pages plus a spread from
+the first half, never the answer pages) with a heavy "SIDE-QUEST PREVIEW" watermark burned in. Pressing **Buy** shows
+these first. Only the pictures are sent to parents, never the PDF. Use "Make again" in the book space to redo them.
+
+## Prices
+
+Defaults for a new book: book $3.99, single lesson $1.00, book + all lessons pack $9.99. Each pack a family buys after
+its first is 10% cheaper again (2nd 10% off, 3rd 20% ... capped at 50% off). A family that bought the book alone pays
+the difference for the pack (at least 50c). Members get everything free.
+
+## Curriculum codes for every state
+
+When lessons are published, each one is matched to the outcomes of every curriculum Side-Quest holds (NSW, Australian
+Curriculum v9 for QLD/SA/TAS/ACT/NT, WA; VIC once loaded). A family adding the lessons gets its own state's codes.
+Lessons added before this change keep the codes they had; publishing again doesn't change copies already added.

@@ -15,6 +15,9 @@ import { authenticateToken, verifyFileToken } from "./session";
 import { billingConfig, stripeCall, appOrigin } from "./billing";
 import { ownedTiers, ownedLessonKeys, type Tier } from "./questBookPurchases";
 import { familyOutcomeCodes, countLessons, ownLesson } from "./lessonBuilder";
+import { codesForAllFrameworks, type FrameworkCodes } from "./questOutcomes";
+import { catalogueFor } from "./outcomeTracker";
+import { getFamilyJurisdiction } from "./data/jurisdictions";
 import { draftLessonWithAi } from "./aiDraft";
 import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 
@@ -80,7 +83,7 @@ export function validateChapters(raw: unknown): { ok: true; chapters: Chapter[] 
 }
 
 /** A chapter lesson as published to a book: a snapshot of the owner's reviewed lesson. */
-type Published = { key: string; chapter_id: string; chapter_title: string; title: string; stage: string; learning_area: string; data: Record<string, unknown> };
+type Published = { key: string; chapter_id: string; chapter_title: string; title: string; stage: string; learning_area: string; data: Record<string, unknown>; codes?: FrameworkCodes };
 
 const snip = (v: unknown, n: number) => { const t = typeof v === "string" ? v.replace(/\s+/g, " ").trim() : ""; return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t; };
 const count = (v: unknown) => (Array.isArray(v) ? v.length : 0);
@@ -133,10 +136,14 @@ export async function addPublishedLessons(db: DB, familyId: string, bookId: stri
   }
   const ts = now.toISOString();
   let added = 0;
+  // Each family gets the outcome codes for its own state's curriculum (matched when the owner published).
+  const cat = catalogueFor(await getFamilyJurisdiction(db, familyId).catch(() => null));
+  const framework = cat.available ? cat.framework : null;
   for (const l of missing) {
-    const codes = Array.isArray(l.data.outcome_codes) ? await familyOutcomeCodes(db, familyId, (l.data.outcome_codes as unknown[]).map(String)) : [];
+    const mapped = framework && l.codes && Array.isArray(l.codes[framework]) ? l.codes[framework] : (Array.isArray(l.data.outcome_codes) ? (l.data.outcome_codes as unknown[]).map(String) : []);
+    const codes = await familyOutcomeCodes(db, familyId, mapped);
     const data = {
-      ...l.data, outcome_codes: codes,
+      ...l.data, outcome_codes: codes, curriculum_refs: codes,
       source: "side_quest_book", ai_generated: false, review_status: "side_quest_book", ai_flags: [],
       quest_book_id: bookId, quest_book_title: bookTitle, quest_chapter_id: l.chapter_id, quest_chapter_title: l.chapter_title, quest_lesson_key: l.key,
     };
@@ -244,18 +251,23 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   };
 }
 
-type Listed = QuestBookMeta & { has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
+const MAX_LOOK_PAGES = 8;
+const MAX_LOOK_BYTES = 900_000;
+const lookKey = (id: string, n: number) => `${ROOT}${id}/look-${n}.jpg`;
+type Listed = QuestBookMeta & { look_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
 
 async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
   if (!bucket) return [];
   const files = new Map<string, Partial<Record<FileKind | "chapters" | "lessons", number>>>();
   const metaIds: string[] = [];
+  const looks = new Map<string, number>();
   let cursor: string | undefined;
   do {
     const page = await bucket.list({ prefix: ROOT, limit: 1000, cursor });
     for (const obj of page.objects) {
-      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json)$/.exec(obj.key.slice(ROOT.length));
+      const m = /^([a-z0-9-]+)\/(meta\.json|book\.pdf|sample\.pdf|cover\.png|chapters\.json|lessons\.json|look-[1-8]\.jpg)$/.exec(obj.key.slice(ROOT.length));
       if (!m || !VALID_ID.test(m[1])) continue;
+      if (m[2].startsWith("look-")) { looks.set(m[1], (looks.get(m[1]) || 0) + 1); continue; }
       if (m[2] === "meta.json") { metaIds.push(m[1]); continue; }
       const kind = m[2].split(".")[0] as FileKind | "chapters" | "lessons";
       files.set(m[1], { ...(files.get(m[1]) || {}), [kind]: obj.size });
@@ -267,7 +279,7 @@ async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]> {
     .filter((m): m is QuestBookMeta => !!m)
     .map((m) => {
       const f = files.get(m.id) || {};
-      return { ...m, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
+      return { ...m, look_pages: looks.get(m.id) || 0, has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
     })
     .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
@@ -293,6 +305,19 @@ async function accessFor(db: DB, familyId: string, userId: string | null) {
   return { owner, member, preview: plan === "FREE_PREVIEW", owned: new Set(tiers.keys()), tiers };
 }
 type Access = Awaited<ReturnType<typeof accessFor>>;
+
+/** Each book + lessons pack after a family's first is 10% cheaper again: 2nd 10% off, 3rd 20% ... capped at 50% off. */
+export const PACK_STEP_PCT = 10;
+export const PACK_MAX_PCT = 50;
+export const packDiscountPct = (packsOwned: number) => Math.min(PACK_MAX_PCT, Math.max(0, packsOwned) * PACK_STEP_PCT);
+export const packPrice = (fullCents: number, packsOwned: number) => Math.floor(fullCents * (100 - packDiscountPct(packsOwned)) / 100 + 1e-6);
+/** What this family pays for this book's pack now. A family that already bought the book alone pays the difference (at least 50c). */
+export function plusPriceFor(meta: { price_cents: number | null; lessons_price_cents: number | null }, ownedTier: Tier | undefined, packsOwned: number) {
+  if (meta.lessons_price_cents === null) return null;
+  const pack = packPrice(meta.lessons_price_cents, packsOwned);
+  return ownedTier === "book" ? Math.max(50, pack - (meta.price_cents ?? 0)) : pack;
+}
+const packsOwned = (a: Access, exceptId?: string) => [...a.tiers].filter(([id, t]) => t === "plus" && id !== exceptId).length;
 const hasBook = (a: Access, id: string) => a.member || a.tiers.has(id);
 const hasLessons = (a: Access, id: string) => a.member || a.tiers.get(id) === "plus";
 
@@ -306,7 +331,7 @@ function out(b: Listed, a: Access, canBuy: boolean) {
   return {
     id: b.id, collection: b.collection, topic: b.topic, year: b.year, year_label: yearLabel(b.year), subject: b.subject, subject_label: subjectLabel(b),
     title: b.title, subtitle: b.subtitle, description: b.description, pages: b.pages, price_cents: b.price_cents,
-    has_book: b.has_book, has_sample: b.has_sample, has_cover: b.has_cover, book_bytes: b.book_bytes,
+    has_book: b.has_book, has_sample: b.has_sample, has_cover: b.has_cover, book_bytes: b.book_bytes, look_pages: b.look_pages,
     can_download: full && b.has_book,
     owned: a.owned.has(b.id),
     can_buy: !full && b.has_book && b.price_cents !== null && canBuy,
@@ -316,7 +341,9 @@ function out(b: Listed, a: Access, canBuy: boolean) {
     can_buy_lesson: !a.member && b.has_lessons && b.lesson_price_cents !== null && canBuy && tier !== "plus",
     // A family that bought the book alone upgrades for the difference.
     can_buy_plus: plusOnSale,
-    plus_price_cents: plusOnSale ? (tier === "book" ? b.lessons_price_cents! - (b.price_cents ?? 0) : b.lessons_price_cents) : null,
+    plus_price_cents: plusOnSale ? plusPriceFor(b, tier, packsOwned(a, b.id)) : null,
+    plus_full_price_cents: plusOnSale ? (tier === "book" ? Math.max(50, b.lessons_price_cents! - (b.price_cents ?? 0)) : b.lessons_price_cents) : null,
+    pack_discount_pct: plusOnSale ? packDiscountPct(packsOwned(a, b.id)) : 0,
     ...(a.owner ? { sample_bytes: b.sample_bytes, updated_at: b.updated_at } : {}),
   };
 }
@@ -382,7 +409,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const allLessons = hasLessons(a, id);
     c.header("Cache-Control", "private, no-store");
     return c.json({
-      member: a.member, preview: a.preview, book: out(book, a, billingConfig(c.env).ok),
+      member: a.member, preview: a.preview, owner: a.owner, book: out(book, a, billingConfig(c.env).ok),
       lessons: published.map((l, i) => ({ key: l.key, position: i + 1, title: l.title, chapter_title: l.chapter_title, lesson_id: mine.get(l.key) || null, unlocked: allLessons || boughtKeys.has(l.key) })),
     });
   });
@@ -428,6 +455,19 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!obj) return c.json({ detail: "Cover not found" }, 404);
     c.header("Content-Type", "image/png");
     c.header("Cache-Control", "private, max-age=300");
+    c.header("X-Content-Type-Options", "nosniff");
+    return c.body(obj.body);
+  });
+
+  // "Look inside": a few low-resolution, watermarked page pictures made in the owner's browser. Any signed-in parent.
+  app.get("/api/quest-books/books/:id/look/:n", g.auth, g.parent, async (c) => {
+    const id = c.req.param("id");
+    const n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !Number.isInteger(n) || n < 1 || n > MAX_LOOK_PAGES || !c.env.BUCKET) return c.json({ detail: "Page not found" }, 404);
+    const obj = await c.env.BUCKET.get(lookKey(id, n));
+    if (!obj) return c.json({ detail: "Page not found" }, 404);
+    c.header("Content-Type", "image/jpeg");
+    c.header("Cache-Control", "private, no-store");
     c.header("X-Content-Type-Options", "nosniff");
     return c.body(obj.body);
   });
@@ -489,7 +529,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     } else if (tier === "plus") {
       if (meta.lessons_price_cents === null || !(await c.env.BUCKET.head(keyFor(id, "lessons")))) return c.json({ code: "NO_LESSONS", detail: "This book's lessons aren't for sale yet." }, 409);
       if (owned === "plus") return c.json({ code: "ALREADY_OWNED", detail: "You already have this book and its lessons." }, 409);
-      amount = owned === "book" ? meta.lessons_price_cents - meta.price_cents : meta.lessons_price_cents;
+      amount = plusPriceFor(meta, owned, packsOwned(a, id))!;
     } else if (owned) {
       return c.json({ code: "ALREADY_OWNED", detail: "You already own this book." }, 409);
     }
@@ -605,6 +645,26 @@ export function registerQuestBooks(app: App, g: Guards) {
     return c.json({ ok: true, id, kind });
   });
 
+  // Look-inside pages, uploaded one at a time as JPEGs (page n of up to 8). DELETE clears them all first.
+  app.put("/api/quest-books/admin/books/:id/look/:n", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    const n = Number(c.req.param("n"));
+    if (!VALID_ID.test(id) || !Number.isInteger(n) || n < 1 || n > MAX_LOOK_PAGES) return c.json({ detail: "Unknown book or page" }, 400);
+    if (!(await c.env.BUCKET!.head(keyFor(id, "meta")))) return c.json({ detail: "Book not found" }, 404);
+    if (c.req.header("content-type")?.split(";")[0].trim().toLowerCase() !== "image/jpeg") return c.json({ detail: "Look-inside pages must be JPEG images." }, 415);
+    const bytes = await c.req.arrayBuffer();
+    const head = new Uint8Array(bytes.slice(0, 3));
+    if (!bytes.byteLength || bytes.byteLength > MAX_LOOK_BYTES || head[0] !== 0xff || head[1] !== 0xd8 || head[2] !== 0xff) return c.json({ detail: "That page picture is empty, too large or not a JPEG." }, 400);
+    await c.env.BUCKET!.put(lookKey(id, n), bytes, { httpMetadata: { contentType: "image/jpeg" } });
+    return c.json({ ok: true, n });
+  });
+  app.delete("/api/quest-books/admin/books/:id/look", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id");
+    if (!VALID_ID.test(id)) return c.json({ detail: "Invalid book id" }, 400);
+    await c.env.BUCKET!.delete(Array.from({ length: MAX_LOOK_PAGES }, (_, i) => lookKey(id, i + 1)));
+    return c.json({ ok: true });
+  });
+
   // Chapters read from the PDF's bookmarks in the owner's browser. Body: { chapters: [{ title, start, end, text }] }.
   app.put("/api/quest-books/admin/books/:id/chapters", g.auth, g.parent, ownerOnly, async (c) => {
     const id = c.req.param("id");
@@ -678,6 +738,11 @@ export function registerQuestBooks(app: App, g: Guards) {
       const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ai_flags, ...clean } = data as any;
       lessons.push({ key: ch.id, chapter_id: ch.id, chapter_title: ch.title, title: String(row.title), stage: String(row.stage || ""), learning_area: String(row.learning_area || ""), data: clean });
     }
+    // Match every lesson to each state's curriculum now, so families anywhere get their own codes when they add it.
+    const meta = await readMeta(c.env.BUCKET!, id);
+    await Promise.all(lessons.map(async (l) => {
+      l.codes = await codesForAllFrameworks({ ...l.data, title: l.title, learning_area: l.learning_area }, meta?.year ?? null, c.env.AI as any, { model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID });
+    }));
     if (!lessons.length) {
       await c.env.BUCKET!.delete(keyFor(id, "lessons"));
       return c.json({ ok: true, published: 0 });
@@ -692,7 +757,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const id = c.req.param("id");
     if (!VALID_ID.test(id)) return c.json({ detail: "Invalid book id" }, 400);
     if (!(await c.env.BUCKET!.head(keyFor(id, "meta")))) return c.json({ detail: "No book with that id is stored." }, 404);
-    const keys = (["meta", "chapters", "lessons", ...FILE_KINDS] as const).map((k) => keyFor(id, k));
+    const keys = [...(["meta", "chapters", "lessons", ...FILE_KINDS] as const).map((k) => keyFor(id, k)), ...Array.from({ length: MAX_LOOK_PAGES }, (_, i) => lookKey(id, i + 1))];
     await c.env.BUCKET!.delete(keys);
     const after = await Promise.all(keys.map((k) => c.env.BUCKET!.head(k)));
     if (after.some(Boolean)) return c.json({ detail: "The book could not be fully deleted. Please retry." }, 502);
