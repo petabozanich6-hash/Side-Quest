@@ -787,6 +787,31 @@ export function registerQuestBooks(app: App, g: Guards) {
 
   // ---------------------------------------------------------------- owner
 
+  // Explicitly COPY an owner's family lesson to an isolated official standalone
+  // working draft. This is NOT publication: no catalogue or purchase access is granted.
+  app.post("/api/quest-books/admin/lessons/:id/copy-to-standalone", g.auth, g.parent, ownerOnly, async (c) => {
+    const user = c.get("user");
+    const original = await ownLesson(c.env.DB, user.family_id, c.req.param("id"));
+    if (!original || original.archived_at) return c.json({ detail: "Restore the lesson before copying it into the official library." }, 404);
+    let data: Record<string, any>;
+    try { data = JSON.parse(original.data || "{}"); } catch { return c.json({ detail: "The original lesson data could not be read." }, 409); }
+    for (const key of ["quest_book_id", "quest_book_title", "quest_chapter_id", "quest_chapter_title",
+      "quest_lesson_key", "quest_page_start", "quest_page_end", "quest_exercise_ref", "quest_skill_goal",
+      "quest_source_revision", "book_reviewed_version", "book_reviewed_at", "book_reviewed_by"]) delete data[key];
+    data.source = "side_quest_standalone";
+    data.review_status = "official_standalone_draft";
+    const lessonId = crypto.randomUUID();
+    const now = new Date().toISOString();
+    const title = (String(original.title).slice(0, 183) + " (official draft)").slice(0, 200);
+    await c.env.DB.prepare(`INSERT INTO lessons
+      (id, family_id, title, stage, learning_area, unit_id, status, data, version, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, NULL, 'draft', ?, 1, ?, ?)`)
+      .bind(lessonId, user.family_id, title, original.stage, original.learning_area, JSON.stringify(data), now, now).run();
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, lesson: { id: lessonId, title, status: "draft", source: "side_quest_standalone" },
+      message: "Official standalone draft created. The original lesson remains private and unchanged. Nothing has been published." });
+  });
+
   // Create a book or update its details. Body: { id?, title, subtitle, description, year, subject, pages, price_cents }.
   // A new book gets its id from the title; editing an existing book sends its id.
   app.post("/api/quest-books/admin/books", g.auth, g.parent, ownerOnly, async (c) => {
@@ -1023,20 +1048,64 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const chapters = await readChapters(c.env.BUCKET!, id);
     const published = await readPublished(c.env.BUCKET!, id);
-    const { results } = await c.env.DB.prepare(`SELECT id, title, status, updated_at, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision FROM lessons
+    const { results } = await c.env.DB.prepare(`SELECT id, title, status, version, updated_at, json_extract(data, '$.quest_chapter_id') AS ch, json_extract(data, '$.quest_source_revision') AS revision,
+        json_extract(data, '$.book_reviewed_version') AS reviewed_version, json_extract(data, '$.book_reviewed_at') AS reviewed_at FROM lessons
       WHERE family_id = ? AND archived_at IS NULL AND json_valid(data) AND json_extract(data, '$.quest_book_id') = ?
       AND COALESCE(json_extract(data, '$.source'), '') != 'side_quest_book' ORDER BY updated_at DESC`).bind(user.family_id, id).all<any>();
     const drafts = new Map<string, any>();
-    for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, { lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision });
+    for (const r of results || []) if (r.ch && !drafts.has(r.ch)) drafts.set(r.ch, {
+      lesson_id: r.id, title: r.title, status: r.status, updated_at: r.updated_at, revision: r.revision,
+      version: r.version, reviewed_at: r.reviewed_at,
+      reviewed: r.status === "ready" && r.reviewed_version !== null && Number(r.reviewed_version) === Number(r.version),
+    });
     c.header("Cache-Control", "no-store");
     return c.json({
       chapters: chapters.map(({ text, ...ch }) => ({ ...ch, chars: text.length,
         revision: chapterRevision({ ...ch, text }), draft: drafts.get(ch.id) ? {
           ...drafts.get(ch.id), stale: drafts.get(ch.id).revision !== chapterRevision({ ...ch, text }),
+          reviewed: drafts.get(ch.id).reviewed && drafts.get(ch.id).revision === chapterRevision({ ...ch, text }),
         } : null, published: published.some((p) => p.chapter_id === ch.id && (!p.data.quest_source_revision || p.data.quest_source_revision === chapterRevision({ ...ch, text }))) })),
       published_count: published.length,
       draft_count: (results || []).length,
     });
+  });
+
+  // A book review belongs to the owner's working lesson version, not to a browser checkbox.
+  // This does not publish anything or change family-owned copies.
+  app.post("/api/quest-books/admin/books/:id/chapters/:cid/review", g.auth, g.parent, ownerOnly, async (c) => {
+    const id = c.req.param("id"), cid = c.req.param("cid");
+    const body: any = await c.req.json().catch(() => ({}));
+    if (!VALID_ID.test(id) || typeof body?.lesson_id !== "string" || typeof body?.approved !== "boolean")
+      return c.json({ detail: "Choose a valid book lesson and review action." }, 400);
+    const chapter = (await readChapters(c.env.BUCKET!, id)).find((ch) => ch.id === cid);
+    if (!chapter) return c.json({ detail: "This book chapter no longer exists." }, 404);
+    const user = c.get("user");
+    const row = await ownLesson(c.env.DB, user.family_id, body.lesson_id);
+    if (!row || row.archived_at) return c.json({ detail: "The working lesson was not found." }, 404);
+    let data: Record<string, any>;
+    try { data = JSON.parse(row.data || "{}"); } catch { return c.json({ detail: "The lesson data could not be read." }, 409); }
+    if (data.quest_book_id !== id || data.quest_chapter_id !== cid || data.source === "side_quest_book")
+      return c.json({ detail: "Only this book's original companion lesson may be reviewed here." }, 403);
+    if (data.quest_source_revision !== chapterRevision(chapter))
+      return c.json({ detail: "The workbook source changed. Regenerate and review the lesson first." }, 409);
+    if (body.approved) {
+      if (row.status !== "ready") return c.json({ detail: "Save this lesson as Ready before approving it for the book." }, 409);
+      const issues = companionLessonIssues(data);
+      if (issues.length) return c.json({ detail: `Complete the lesson before approving it: ${issues.join("; ")}.` }, 409);
+      data.book_reviewed_version = Number(row.version);
+      data.book_reviewed_at = new Date().toISOString();
+      data.book_reviewed_by = user.id;
+    } else {
+      delete data.book_reviewed_version;
+      delete data.book_reviewed_at;
+      delete data.book_reviewed_by;
+    }
+    // The version comparison prevents an approval overwriting a simultaneous edit.
+    const changed = await c.env.DB.prepare("UPDATE lessons SET data = ? WHERE id = ? AND family_id = ? AND version = ?")
+      .bind(JSON.stringify(data), row.id, user.family_id, row.version).run();
+    if (!changed.meta?.changes) return c.json({ detail: "This lesson changed while you reviewed it. Reload and check the latest version." }, 409);
+    c.header("Cache-Control", "no-store");
+    return c.json({ ok: true, reviewed: body.approved, reviewed_at: data.book_reviewed_at || null, version: row.version });
   });
 
   // Draft a lesson from one chapter with the normal AI lesson generator, into the owner's own library for review.
@@ -1099,14 +1168,24 @@ export function registerQuestBooks(app: App, g: Guards) {
       if (data.quest_book_id === id) {
         if (data.quest_chapter_id !== ch.id || data.quest_source_revision !== chapterRevision(ch))
           return c.json({ detail: `“${ch.title}” has changed since its lesson was generated. Remake and review the lesson before publishing.` }, 409);
-        if (row.status !== "ready" || it?.reviewed !== true)
-          return c.json({ detail: `Review “${ch.title}”, mark it ready, then tick its publish approval.` }, 409);
+        if (row.status !== "ready" || it?.reviewed !== true || Number(data.book_reviewed_version) !== Number(row.version))
+          return c.json({ detail: `Review “${ch.title}”, mark it ready, and save its book approval before publishing.` }, 409);
         const issues = companionLessonIssues(data);
         if (issues.length) return c.json({ detail: `“${ch.title}” cannot be published yet: ${issues.join("; ")}.` }, 409);
       }
       const { quest_book_id, quest_book_title, quest_chapter_id, quest_chapter_title, quest_lesson_key, ai_flags, ...clean } = data as any;
       lessons.push({ key: ch.id, chapter_id: ch.id, chapter_title: ch.unit_title || ch.title, title: String(row.title), stage: String(row.stage || ""), learning_area: String(row.learning_area || ""), data: clean });
     }
+    // Publishing replaces the book's R2 snapshot. Never silently remove purchased
+    // lesson keys when only a subset of working drafts was submitted.
+    const priorPublished = await readPublished(c.env.BUCKET!, id);
+    const incomingKeys = new Set(lessons.map((l) => l.key));
+    if (incomingKeys.size !== lessons.length) return c.json({ detail: "A companion lesson was selected more than once." }, 400);
+    const missingPublished = priorPublished.find((l) => !incomingKeys.has(l.key));
+    if (missingPublished) return c.json({
+      detail: `Publishing would remove the previously published lesson “${missingPublished.title}”. Restore its chapter and lesson in this publishing batch instead of silently removing a lesson families may have purchased.`,
+      code: "PUBLISHED_LESSON_KEY_REMOVED",
+    }, 409);
     // Match every lesson to each state's curriculum now, so families anywhere get their own codes when they add it.
     const meta = await readMeta(c.env.BUCKET!, id);
     await Promise.all(lessons.map(async (l) => {

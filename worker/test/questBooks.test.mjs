@@ -405,7 +405,23 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
     parent_script: "Guide, model and review the student's response.", answer_key: "The complete answers are stored per task.",
   };
   h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(thorough), lid);
+  const reviewUrl = `/quest-books/admin/books/${id}/chapters/c1/review`;
+  const nonOwner = await h.parent("ACTIVE_MONTHLY");
+  assert.equal((await h.req(reviewUrl, nonOwner.token, "POST", { lesson_id: lid, approved: true })).status, 403, "family members cannot approve commercial lessons");
+  assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409, "browser checkbox alone cannot approve a book lesson");
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true })).status, 200);
+  let savedReview = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.equal(savedReview.reviewed, true, "approval survives page reload");
+  assert.ok(savedReview.reviewed_at, "review timestamp is stored");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
+  const removal = await h.req(url, owner.token, "POST", { items: [] });
+  assert.equal(removal.status, 409, "publishing an incomplete selection must not unpublish previously sold lessons");
+  assert.equal((await removal.json()).code, "PUBLISHED_LESSON_KEY_REMOVED");
+  const edited = await h.req(`/lessons/${lid}`, owner.token, "PUT", lessonBody("Place value revised"));
+  assert.equal(edited.status, 200);
+  savedReview = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.equal(savedReview.reviewed, false, "changing the lesson invalidates its previous review");
+  assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 409, "unreviewed edits must not silently republish");
   const missingPaidKey = await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token, "PUT", {
     chapters: [{ ...raw, id: "s-1234567890abcdef1234" }],
   });
@@ -587,4 +603,29 @@ test("A paid cart unlocks every item once, and its status turns paid", async () 
   // Someone else's cart id tells them nothing.
   const other = await h.parent("FREE_PREVIEW");
   assert.equal((await (await h.req(`/quest-books/cart/${cartId}/status`, other.token)).json()).paid, false);
+});
+
+
+test("Only the owner can copy a private family lesson into a separate unpublished standalone draft", async () => {
+  const h = harness();
+  const owner = await h.parent("ACTIVE_MONTHLY"); h.makeOwner(owner);
+  const other = await h.parent("ACTIVE_MONTHLY");
+  const created = await h.req("/lessons", owner.token, "POST", lessonBody("For my children"));
+  assert.equal(created.status, 200);
+  const originalId = (await created.json()).id;
+  const route = `/quest-books/admin/lessons/${originalId}/copy-to-standalone`;
+  assert.equal((await h.req(route, other.token, "POST")).status, 403);
+  const copied = await h.req(route, owner.token, "POST");
+  assert.equal(copied.status, 200);
+  const copyId = (await copied.json()).lesson.id;
+  assert.notEqual(copyId, originalId);
+  const familyOriginal = await (await h.req(`/lessons/${originalId}`, owner.token)).json();
+  const standaloneCopy = await (await h.req(`/lessons/${copyId}`, owner.token)).json();
+  assert.equal(familyOriginal.source, "parent", "the original must remain a family lesson");
+  assert.equal(standaloneCopy.source, "side_quest_standalone");
+  assert.equal(standaloneCopy.status, "draft", "copy is not automatically approved or published");
+  const edited = await h.req(`/lessons/${copyId}`, owner.token, "PUT", lessonBody("Edited official standalone draft"));
+  assert.equal(edited.status, 200);
+  assert.equal((await edited.json()).source, "side_quest_standalone", "editing should not reclassify official drafts as personal");
+  assert.equal((await (await h.req(`/lessons/${originalId}`, owner.token)).json()).title, "For my children");
 });

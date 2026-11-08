@@ -4,6 +4,7 @@ import { api } from "../../lib/api";
 import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Compass, MailCheck, ArrowRight, ScrollText, BookMarked } from "lucide-react";
 import { Leaf, Branch } from "../../components/shared/Botanical";
 import ReviewModal from "../../components/parent/ReviewModal";
+import { useAuth } from "../../context/AuthContext";
 import OutcomeSummaryCard from "../../components/parent/OutcomeSummaryCard";
 
 const Stat = ({ icon: Icon, label, value, testid, accent="#4A5D3A", href, to }) => {
@@ -31,6 +32,7 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 );
 
 export default function ParentDashboard() {
+  const { user } = useAuth();
   const { unreadFeedbackReplies: parentUnread = 0, latestUnreadFeedbackReply: parentLatest = null } = useOutletContext() || {};
   // Independently refresh when this page opens: a stale sidebar badge must not
   // hide a fresh Owner reply on the actual dashboard.
@@ -212,6 +214,18 @@ export default function ParentDashboard() {
           </section>
         );
       })()}
+
+      {user?.is_platform_owner && (
+        <section className="relative z-10 rounded-2xl border border-emerald-300 bg-white p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-testid="dashboard-book-readiness">
+          <div>
+            <h2 className="font-display text-lg font-bold text-emerald-950">Book readiness & lesson publishing</h2>
+            <p className="text-sm text-stone-600">Check companion lessons by book, review edits, approve saved versions, and keep family lessons separate.</p>
+          </div>
+          <Link to="/parent/lessons/review-centre" className="shrink-0 inline-flex gap-2 items-center justify-center rounded-xl bg-emerald-900 px-4 py-2.5 text-sm font-semibold text-white">
+            <BookMarked size={16} /> Open review centre
+          </Link>
+        </section>
+      )}
 
       <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Stat icon={Users} label="Students" value={data.students.length} testid="stat-students" to="/parent/children"/>

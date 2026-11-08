@@ -17,6 +17,7 @@ const blank = () => ({
   title: "", learning_area: "", additional_learning_areas: [], year_level: "", objectives: [""], sections: [{ heading: "", body: "" }],
   activities: [], questions: [], quiz: [], resources: [], duration_minutes: "", curriculum_refs: "", outcome_codes: [], hoard_words: "",
   offline_alternative: "", answer_key: "", parent_notes: "", status: "draft",
+  quest_book_id: "", quest_book_title: "", source: "parent",
   delivery: "independent", introduction: "", materials: "", worked_examples: [], guided_practice: [],
   support: "", extension: "", parent_script: "", evidence_suggestions: "",
   key_words: "", teaching_plan: "", why_it_matters: "", prior_knowledge: "", misconceptions: [], teaching_questions: [], texts: [], consolidation: "", ai_flags: [],
@@ -40,13 +41,14 @@ function Card({ title, hint, children, wide }) {
 function fromServer(l) {
   return {
     ...blank(),
+    quest_book_id: l.quest_book_id || "", quest_book_title: l.quest_book_title || "", source: l.source || "parent",
     ai_generated: !!l.ai_generated,
     ai_flags: l.ai_flags || [],
     title: l.title || "", learning_area: l.learning_area || "", additional_learning_areas: l.additional_learning_areas || [], year_level: l.year_level || "",
     objectives: l.objectives?.length ? l.objectives : [""],
     sections: l.sections?.length ? l.sections.map(x => ({ ...x })) : [{ heading: "", body: "" }],
     activities: (l.activities || []).map(a => ({ ...a, tasks: a.tasks || [] })), questions: l.questions || [], quiz: l.quiz || [],
-    resources: (l.resources || []).map(r => ({ ...r, type: r.type === "video" ? "video" : "link", title: r.title || "", url: r.url || "" })),
+    resources: (l.resources || []).map(r => ({ ...r, type: ["video", "file"].includes(r.type) ? r.type : "link", title: r.title || "", url: r.url || "" })),
     key_words: (l.key_words || []).map(w => `${w.word} = ${w.meaning}`).join("\n"),
     duration_minutes: l.duration_minutes ?? "", curriculum_refs: (l.curriculum_refs || []).join("\n"), outcome_codes: l.outcome_codes || [], hoard_words: (l.hoard_words || []).map(w => (w.hint ? `${w.word} = ${w.hint}` : w.word)).join("\n"),
     offline_alternative: l.offline_alternative && !l.activities?.some(a => a.offline) ? l.offline_alternative : (l.offline_alternative || ""),
@@ -74,7 +76,7 @@ function toServer(f, status) {
     activities: f.activities.filter(a => a.title.trim()).map(a => ({ ...a, title: a.title, instructions: a.instructions || "", offline: !!a.offline, tasks: (a.tasks || []).filter(t => t.prompt.trim()).map(t => ({ ...t, prompt: t.prompt, answer: t.answer || "" })) })),
     questions: f.questions.filter(q => q.prompt.trim()).map(q => ({ prompt: q.prompt, type: q.type === "long" ? "long" : "short", answer_key: q.answer_key || "" })),
     quiz: f.quiz.filter(q => q.question.trim()).map(q => ({ question: q.question, options: q.options.filter(o => o.trim()), correct_index: q.correct_index, explanation: q.explanation || "" })),
-    resources: f.resources.filter(r => r.title.trim() && r.url.trim()).map(r => ({ ...r, type: r.type, title: r.title, url: r.url })),
+    resources: f.resources.filter(r => r.title.trim() && (r.type === "file" ? r.file_id : r.url?.trim())).map(r => r.type === "file" ? { type: "file", title: r.title, file_id: r.file_id } : { ...r, type: r.type, title: r.title, url: r.url }),
     key_words: lines(f.key_words).map(x => { const i = x.indexOf("="); return i > 0 ? { word: x.slice(0, i).trim(), meaning: x.slice(i + 1).trim() } : null; }).filter(w => w && w.word && w.meaning),
     duration_minutes: f.duration_minutes === "" ? null : Number(f.duration_minutes),
     curriculum_refs: f.curriculum_refs.split("\n").map(s => s.trim()).filter(Boolean),
@@ -94,6 +96,13 @@ function toServer(f, status) {
   };
 }
 const lines = (t) => String(t || "").split("\n").map(x => x.trim()).filter(Boolean);
+
+/** Do not clear the unsaved indicator until the server returns the edited content. */
+function verifiedSavedLesson(persisted, body) {
+  const fields = ["title", "status", "introduction", "teaching_plan", "parent_script", "answer_key", "parent_notes", "consolidation"];
+  return fields.every((k) => String(persisted[k] || "").trim() === String(body[k] || "").trim()) &&
+    ["sections", "activities", "questions", "quiz", "resources"].every((k) => (persisted[k] || []).length === body[k].length);
+}
 
 const previewItem = (it) => ({ prompt: it.prompt, hint: it.hint, kind: it.kind, options: it.options, lefts: it.pairs?.map(p => p.left), rights: it.pairs?.map(p => p.right) });
 
@@ -118,6 +127,9 @@ const EXAMPLE = (which) => ({ ...fromServer(which === "y7" ? exampleY7 : example
 export default function LessonBuilder() {
   const { id } = useParams();
   const [qs] = useSearchParams();
+  const bookId = qs.get("book") || "";
+  const chapterId = qs.get("chapter") || "";
+  const bookQuery = bookId && chapterId ? `?book=${encodeURIComponent(bookId)}&chapter=${encodeURIComponent(chapterId)}` : "";
   const nav = useNavigate();
   // ?outcome=CODE (from the Outcome tracker) starts a new lesson already linked to that outcome; the server checks the code.
   const [f, setF] = useState(() => (!id && qs.get("example") ? EXAMPLE(qs.get("example")) : { ...blank(), outcome_codes: !id && qs.get("outcome") ? [qs.get("outcome")] : [] }));
@@ -125,6 +137,8 @@ export default function LessonBuilder() {
   const [mode, setMode] = useState("edit"); // edit | preview | split
   const preview = mode === "preview";
   const baseline = useRef(null);
+  const autosaving = useRef(null);
+  const manualSaving = useRef(false);
   const [autosaved, setAutosaved] = useState(null);
   const [busy, setBusy] = useState(false);
   const [assign, setAssign] = useState(null);
@@ -138,8 +152,15 @@ export default function LessonBuilder() {
     api.get("/students").then(r => setStudents(r.data)).catch(() => {});
     api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
     if (id) {
-      api.get(`/lessons/${id}`).then(r => { setF(fromServer(r.data)); setLoaded(true); })
-        .catch(e => { setError(e.response?.data?.detail || "Could not open this lesson"); setLoaded(true); });
+      baseline.current = null;
+      setLoaded(false);
+      setAutosaved(null);
+      api.get(`/lessons/${id}`).then(r => {
+        const lesson = fromServer(r.data);
+        baseline.current = JSON.stringify(lesson);
+        setF(lesson);
+        setLoaded(true);
+      }).catch(e => { setError(e.response?.data?.detail || "Could not open this lesson"); setLoaded(true); });
     }
   }, [id]);
 
@@ -157,8 +178,19 @@ export default function LessonBuilder() {
     // Autosave drafts that already exist; never touches lessons marked ready.
     const t = setInterval(async () => {
       const { f: cur, lessonId: lid, busy: b } = live.current;
-      if (!lid || b || cur.status === "ready" || !cur.title.trim() || JSON.stringify(cur) === baseline.current) return;
-      try { await api.put(`/lessons/${lid}`, toServer(cur, "draft")); baseline.current = JSON.stringify(cur); setAutosaved(new Date()); } catch { /* keep the unsaved warning */ }
+      if (!lid || b || manualSaving.current || autosaving.current || cur.status === "ready" || !cur.title.trim() || JSON.stringify(cur) === baseline.current) return;
+      const task = (async () => {
+        try {
+          const body = toServer(cur, "draft");
+          await api.put(`/lessons/${lid}`, body);
+          const result = await api.get(`/lessons/${lid}`, { params: { _: Date.now() } });
+          if (!verifiedSavedLesson(result.data, body)) throw new Error("The autosaved lesson did not match the draft.");
+          baseline.current = JSON.stringify(cur);
+          setAutosaved(new Date());
+        } catch { /* never claim an unverified autosave succeeded; leave the unsaved warning */ }
+        finally { autosaving.current = null; }
+      })();
+      autosaving.current = task;
     }, 30000);
     return () => { window.removeEventListener("beforeunload", warn); clearInterval(t); };
   }, []);
@@ -170,24 +202,36 @@ export default function LessonBuilder() {
   const del = (k, i) => setF(p => ({ ...p, [k]: p[k].filter((_, j) => j !== i) }));
 
   const save = async (status) => {
+    if (manualSaving.current) return null;
     setError("");
     if (!f.title.trim()) { setError("Give your lesson a title first."); return null; }
+    manualSaving.current = true;
     setBusy(true);
     try {
-      const body = toServer(f, status);
+      if (autosaving.current) await autosaving.current;
+      const snapshot = f;
+      const body = toServer(snapshot, status);
       const r = lessonId ? await api.put(`/lessons/${lessonId}`, body) : await api.post("/lessons", body);
+      // A successful PUT is not proof that every editor field persisted.
+      // Read the saved lesson back before clearing the unsaved indicator.
+      const confirmation = await api.get(`/lessons/${r.data.id}`, { params: { _: Date.now() } });
+      const persisted = confirmation.data;
+      if (!verifiedSavedLesson(persisted, body)) {
+        throw new Error("The server did not retain all edits. Your changes are still shown here; please try saving again.");
+      }
       setLessonId(r.data.id);
-      set("status", status);
-      baseline.current = JSON.stringify({ ...f, status });
+      setF(prev => ({ ...prev, status }));
+      baseline.current = JSON.stringify({ ...snapshot, status });
+      setAutosaved(new Date());
       if (!lessonId) nav(`/parent/lessons/${r.data.id}/edit`, { replace: true });
-      toast.success(status === "ready" ? "Saved to your library" : "Draft saved");
-      return r.data;
+      toast.success(status === "ready" ? "Lesson changes saved and verified" : "Draft saved and verified");
+      return persisted;
     } catch (e) {
       const d = e.response?.data;
-      setError(d?.detail || "Could not save. Please try again.");
+      setError(d?.detail || e.message || "Could not save. Please try again.");
       setUpgrade(d?.code === "UPGRADE_REQUIRED");
       return null;
-    } finally { setBusy(false); }
+    } finally { manualSaving.current = false; setBusy(false); }
   };
 
   const saveAndAssign = async () => {
@@ -199,7 +243,7 @@ export default function LessonBuilder() {
   const batch = qs.get("batch") || "";
   // Opened from a draft in Plan My Week: lead back to that draft's review, which can put it in its timetable slot.
   const week = !batch && /^\d{4}-\d{2}-\d{2}$/.test(qs.get("week") || "") ? qs.get("week") : "";
-  const reviewQuery = batch ? `?batch=${batch}` : week ? `?week=${week}&child=${qs.get("child") || ""}` : "";
+  const reviewQuery = bookQuery || (batch ? `?batch=${batch}` : week ? `?week=${week}&child=${qs.get("child") || ""}` : "");
   const guard = e => { if (dirty && !window.confirm("You have unsaved changes. Leave without saving?")) e.preventDefault(); };
   if (qs.get("ai") && !id) return <Navigate to="/parent/lessons/make" replace />;
   if (!loaded) return <div className="p-8 text-sm text-slate-500">Loading…</div>;
@@ -207,7 +251,12 @@ export default function LessonBuilder() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1500px] space-y-5" data-testid="lesson-builder">
       <div>
-        {batch && lessonId ? (
+        {bookQuery && lessonId ? (
+          <>
+            <Link to={`/parent/lessons/${lessonId}/review${bookQuery}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> Back to book lesson review</Link>
+            <Link to={`/parent/quest-books/${encodeURIComponent(bookId)}?workspace=lessons`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900">All lessons in this book</Link>
+          </>
+        ) : batch && lessonId ? (
           <div className="mb-2 flex flex-wrap gap-4 text-sm" data-testid="builder-batch-links">
             <Link to={`/parent/lessons/${lessonId}/review?batch=${batch}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> Back to this lesson</Link>
             <Link to={`/parent/lessons/drafts/${batch}`} onClick={guard} className="flex items-center gap-1 text-slate-600 hover:text-slate-900" data-testid="builder-all-drafts">All lessons in this set</Link>
@@ -216,6 +265,10 @@ export default function LessonBuilder() {
           <Link to={`/parent/lessons/${lessonId}/review${reviewQuery}`} onClick={guard} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900" data-testid="builder-week-back"><ArrowLeft size={14} /> Back to reviewing this draft</Link>
         ) : <Link to="/parent/lessons" onClick={guard} className="mb-2 flex items-center gap-1 text-sm text-slate-600 hover:text-slate-900"><ArrowLeft size={14} /> My lessons</Link>}
         <h1 className="font-display text-3xl font-bold text-slate-900">{lessonId ? "Edit lesson" : "Build a lesson myself"}</h1>
+        <p className="text-xs font-semibold text-emerald-900" data-testid="lesson-content-category">
+          {f.quest_book_id ? `Official book companion · ${f.quest_book_title || f.quest_book_id}` :
+            f.source === "side_quest_standalone" ? "Official standalone lesson" : "Private family lesson"}
+        </p>
         <p className="text-sm text-slate-600 mt-1"><>Write the lesson in your own words. Save a draft any time. Prefer not to write it? <Link className="underline font-semibold" to="/parent/lessons/make">Let Side-Quest make it for you</Link>. To see how complete lessons look: <Link className="underline" to="/parent/lessons/new?example=1">Year 3 parent-guided example</Link> · <Link className="underline" to="/parent/lessons/new?example=y7">Year 7 independent example</Link>.</></p>
         {lessonId && <div className="mt-4 rounded-xl border border-[#D4C8A8] bg-[#FBF7EA] p-3 space-y-2" data-testid="builder-paper-print">
           <p className="text-sm font-bold text-[#1F3B2D]">🖨️ Want a paper lesson instead?</p>
@@ -403,7 +456,12 @@ export default function LessonBuilder() {
           </Card>
 
           <Card title="Links and videos" hint="Web addresses your child can open. YouTube and Vimeo videos play inside the lesson. Only links starting with https:// are accepted.">
-            {f.resources.map((r, i) => (
+            {f.resources.map((r, i) => r.type === "file" ? (
+              <div key={i} className="flex flex-wrap items-center justify-between gap-2 text-sm rounded-lg border border-stone-200 bg-stone-50 px-3 py-2">
+                <span>Attached file: <b>{r.title}</b> (kept when saving)</span>
+                <button onClick={() => del("resources", i)} aria-label="Remove attached file" className="text-rose-700 font-semibold">Remove</button>
+              </div>
+            ) : (
               <div key={i} className="grid sm:grid-cols-[110px_1fr_1.5fr_auto] gap-2 items-center">
                 <select className={field} value={r.type} onChange={e => upd("resources", i, { type: e.target.value })}><option value="link">Link</option><option value="video">Video</option></select>
                 <input className={field} value={r.title} onChange={e => upd("resources", i, { title: e.target.value })} placeholder="Name" />
@@ -526,7 +584,7 @@ export default function LessonBuilder() {
       )}
 
       <div className="sticky bottom-0 -mx-4 sm:mx-0 bg-white/95 backdrop-blur border-t sm:border sm:rounded-2xl border-slate-200 p-3 flex flex-wrap items-center gap-2 justify-end">
-        <span className="mr-auto text-xs text-slate-500" data-testid="save-state">{dirty ? "Unsaved changes" : autosaved ? `Draft autosaved at ${autosaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</span>
+        <span className="mr-auto text-xs text-slate-500" data-testid="save-state">{dirty ? "Unsaved changes" : autosaved ? `${f.status === "ready" ? "Saved" : "Draft saved"} at ${autosaved.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</span>
         {lessonId && <button disabled={busy} onClick={async () => { const r = await save(f.status === "ready" ? "ready" : "draft"); if (r) nav(`/parent/lessons/${r.id}/review${reviewQuery}`); }} className="rounded-full border border-violet-300 bg-violet-50 px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-review-ai">Review and ask AI to change something</button>}
         <button disabled={busy} onClick={() => save("draft")} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold flex items-center gap-1 disabled:opacity-50" data-testid="b-save-draft"><Save size={14} /> Save draft</button>
         <button disabled={busy} onClick={() => save("ready")} className="rounded-full border border-slate-900 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50" data-testid="b-save-library">Save to library</button>

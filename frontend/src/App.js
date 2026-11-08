@@ -28,6 +28,7 @@ import PlatformNotices from "./components/shared/PlatformNotices";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
+import LessonReviewCentre from "./pages/parent/LessonReviewCentre";
 import LessonBuilder from "./pages/parent/LessonBuilder";
 import MakeLesson from "./pages/parent/MakeLesson";
 import LessonReview from "./pages/parent/LessonReview";
@@ -109,6 +110,7 @@ function Router() {
         <Route path="outcomes/:sid" element={<OutcomeTrackerPage />} />
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
+        <Route path="lessons/review-centre" element={<LessonReviewCentre />} />
         <Route path="plan" element={<UpgradePage />} />
         <Route path="email-preferences" element={<AnnouncementPreferences />} />
         <Route path="command-centre" element={<HqShell />}>
