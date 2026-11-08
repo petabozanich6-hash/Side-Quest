@@ -50,11 +50,13 @@ test("live activity names the lesson, and auto-approval can be enabled without r
   expect(api.post).toHaveBeenCalledWith("/quest-books/admin/overnight/generation/control",
     {action:"set_auto_approve",enabled:true});
 });
-test("finished queues leave the active view; stopping a running queue preserves its work",async()=>{
+test("finished queues leave the active view",async()=>{
   state.jobs=[{...job("finished","generate"),status:"completed",auto_follow:false}];
   await act(async()=>root.render(<QuestBookOvernight/>));
   expect(box.querySelectorAll('[data-testid="quest-overnight-status"]')).toHaveLength(0);
   expect(box.querySelector('[data-testid="quest-queue-history"]')).not.toBeNull();
+});
+test("stopping a running queue sends a stop action",async()=>{
   state.jobs=[{...job("generation","generate"),auto_follow:true,auto_approve:false}];
   await act(async()=>root.render(<QuestBookOvernight/>));
   await act(async()=>box.querySelector('[data-testid="quest-stop-queue"]').click());
