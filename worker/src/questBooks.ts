@@ -991,7 +991,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!VALID_ID.test(id) || !READER_ID.test(generation)) return c.json({ detail: "Invalid reader generation." }, 400);
     const prefix = `${ROOT}${id}/read-build/${generation}/`;
     const page = await c.env.BUCKET!.list({ prefix, limit: 1000 });
-    const uploaded = page.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\\.jpg$/, "")))
+    const uploaded = page.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\.jpg$/, "")))
       .filter((n) => Number.isInteger(n) && n >= 1 && n <= MAX_READ_PAGES);
     c.header("Cache-Control", "no-store");
     return c.json({ uploaded });
@@ -1022,7 +1022,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const prefix = `${ROOT}${id}/read-build/${generation}/`;
     const objects = await c.env.BUCKET!.list({ prefix, limit: 1000 });
     if (objects.truncated) return c.json({ detail: "Too many reader objects were uploaded." }, 409);
-    const received = new Set(objects.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\\.jpg$/, ""))));
+    const received = new Set(objects.objects.map((o) => Number(o.key.slice(prefix.length).replace(/\.jpg$/, ""))));
     for (let i = 1; i <= total; i++) if (!received.has(i))
       return c.json({ detail: `Page ${i} has not finished uploading. Resume reader preparation.` }, 409);
     const ready: ReaderManifest = { generation, pages: total, source_id: body.source_id, created_at: new Date().toISOString() };
