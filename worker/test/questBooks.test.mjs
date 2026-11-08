@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { makeDb } from "./fakeD1.mjs";
 import worker from "../src/index.ts";
 import { clearSettingsCache, clearUsageCache } from "../src/platformSettings.ts";
-import { validateMeta, validateChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
+import { validateMeta, validateChapters, readChapters, chapterRevision, companionLessonIssues, retireSupersededBookDrafts, slugify, packPrice, plusPriceFor } from "../src/questBooks.ts";
 import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
@@ -980,4 +980,58 @@ test("Overnight finalization is per job and interrupted preparation releases the
   await processQuestOvernight(h.env,new Date("2026-11-09T00:00:00Z"));
   const state = Object.fromEntries(h.db.raw.prepare("SELECT id,status FROM quest_overnight_jobs").all().map(r=>[r.id,r.status]));
   assert.deepEqual(state,{finished:"completed",busy:"running",abandoned:"cancelled"});
+});
+
+
+test("An older editor cannot overwrite a saved repair, and its latest edits persist", async () => {
+  const h = harness();
+  const owner = await h.parent("ACTIVE_MONTHLY");
+  const created = await (await h.req("/lessons",owner.token,"POST",lessonBody("Original"))).json();
+  const first = await h.req(`/lessons/${created.id}`,owner.token,"PUT",
+    {...created,title:"Repaired title",expected_version:created.version});
+  assert.equal(first.status,200);
+  const saved = await first.json();
+  const stale = await h.req(`/lessons/${created.id}`,owner.token,"PUT",
+    {...created,title:"Stale editor",expected_version:created.version});
+  assert.equal(stale.status,409);
+  const reloaded = await (await h.req(`/lessons/${created.id}`,owner.token)).json();
+  assert.equal(reloaded.title,"Repaired title");
+  assert.equal(reloaded.version,saved.version);
+});
+
+test("Fix All repair endpoint retries interruption, saves its Book Plan version and preserves notes", async () => {
+  const h = harness();
+  const {owner,id} = await publishedBook(h);
+  h.db.raw.prepare("UPDATE families SET plan='INTERNAL' WHERE id=?").run(owner.id);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",
+    {chapters:[{title:"Counting",start:1,end:2,text:chapterText}]});
+  const chapter = (await readChapters(h.env.BUCKET,id))[0];
+  const lesson = await (await h.req("/lessons",owner.token,"POST",
+    {...lessonBody("My lesson"),status:"draft",parent_notes:"Keep my revision"})).json();
+  const stored = h.db.raw.prepare("SELECT data FROM lessons WHERE id=?").get(lesson.id);
+  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify({
+    ...JSON.parse(stored.data),ai_generated:true,source:"ai",ai_flags:[],
+    quest_book_id:id,quest_chapter_id:chapter.id,quest_source_revision:chapterRevision(chapter),
+    book_repair_requested:true,book_repair_note:"Add support for a struggling child",
+  }),lesson.id);
+  let calls=0;
+  h.env.AI={run:async()=>{
+    if(++calls===1)throw new Error("Temporary service interruption");
+    return {response:JSON.stringify({support:"Use ten counters. Touch each counter once while counting aloud together."})};
+  }};
+  const response=await h.req(`/quest-books/admin/books/${id}/chapters/${chapter.id}/repair-pass`,owner.token,"POST",
+    {lesson_id:lesson.id,expected_version:lesson.version});
+  const result=await response.json();
+  assert.equal(response.status,200,JSON.stringify(result));
+  assert.equal(calls,2);
+  assert.equal(result.changed,true);
+  assert.equal(result.saved_to_plan,true);
+  const reload=await (await h.req(`/lessons/${lesson.id}`,owner.token)).json();
+  assert.match(reload.support,/ten counters/);
+  assert.equal(reload.parent_notes,"Keep my revision");
+  assert.equal(reload.status,"draft");
+  assert.equal(reload.version,result.version);
+  const plan=await (await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token)).json();
+  assert.equal(plan.chapters[0].draft.saved_to_plan,true);
+  assert.equal(plan.chapters[0].draft.version,result.version);
 });
