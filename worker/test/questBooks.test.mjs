@@ -695,3 +695,47 @@ test("VIC and WA families receive their OWN outcomes when adding an older book w
     assert.equal(ownerOriginal.title, "Adding two-digit numbers with regrouping", "owner's reviewed master is unchanged");
   }
 });
+
+
+test("Member reader builds are resumable and only a verified complete generation replaces the active reader", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h, { price_cents: 399 });
+  const member = await h.parent("ACTIVE_MONTHLY");
+  const visitor = await h.parent("FREE_PREVIEW");
+  const sourceRes = await h.req(`/quest-books/admin/books/${id}/read-source`, owner.token);
+  assert.equal(sourceRes.status, 200);
+  const { source_id } = await sourceRes.json();
+  const one = "11111111-1111-4111-8111-111111111111";
+  const two = "22222222-2222-4222-8222-222222222222";
+  const jpeg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 9, 9]);
+  const route = (g, p) => `/quest-books/admin/books/${id}/read-build/${g}/${p}`;
+  assert.equal((await h.req(route(one, "1"), member.token, "PUT", jpeg, "image/jpeg")).status, 403,
+    "members cannot generate or replace reader pages");
+  assert.equal((await h.req(route(one, "1"), owner.token, "PUT", jpeg, "image/jpeg")).status, 200);
+  assert.deepEqual((await (await h.req(route(one, "progress"), owner.token)).json()).uploaded, [1]);
+  assert.equal((await h.req(route(one, "finish"), owner.token, "POST", { total: 2, source_id })).status, 409,
+    "incomplete reader must not appear to members");
+  const before = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
+  assert.equal(before.can_read, false);
+  assert.equal(before.read_pages, 0);
+  assert.equal((await h.req(route(one, "2"), owner.token, "PUT", jpeg, "image/jpeg")).status, 200);
+  assert.equal((await h.req(route(one, "finish"), owner.token, "POST", { total: 2, source_id })).status, 200);
+  const live = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
+  assert.equal(live.can_read, true);
+  assert.equal(live.read_pages, 2);
+  assert.equal((await h.req(`/quest-books/books/${id}/read/2`, member.token)).status, 200);
+  assert.equal((await h.req(`/quest-books/books/${id}/download`, member.token)).status, 402);
+  assert.equal((await h.req(`/quest-books/books/${id}/read/2`, visitor.token)).status, 402);
+
+  // A replacement uploads to a new path, leaving the old complete reader
+  // usable until the full new set is accepted.
+  assert.equal((await h.req(route(two, "1"), owner.token, "PUT", jpeg, "image/jpeg")).status, 200);
+  const stillLive = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
+  assert.equal(stillLive.read_pages, 2);
+  assert.equal((await h.req(route(two, "finish"), owner.token, "POST", { total: 1, source_id: "wrong-source" })).status, 409);
+  assert.equal((await h.req(route(two, "finish"), owner.token, "POST", { total: 1, source_id })).status, 200);
+  const replaced = (await (await h.req(`/quest-books/books/${id}`, member.token)).json()).book;
+  assert.equal(replaced.read_pages, 1);
+  assert.equal((await h.req(`/quest-books/books/${id}/read/2`, member.token)).status, 409,
+    "old generation pages cannot be accessed after a new generation is committed");
+});
