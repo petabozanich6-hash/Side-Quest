@@ -252,6 +252,26 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
       toast.error(apiErrorMessage(e, "Could not save the review"), { duration: 9000 });
     } finally { setBusy(""); }
   };
+  const markNeedsRepair = async (chapter) => {
+    if (!chapter.draft || !!busy || batchProgress) return;
+    const note = window.prompt("What needs correcting in this lesson? (optional, but helps the AI find the mistake)", "");
+    if (note === null) return;
+    setBusy(`repair-mark:${chapter.id}`);
+    try {
+      await api.post(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters/${encodeURIComponent(chapter.id)}/review`,
+        { lesson_id: chapter.draft.lesson_id, approved: false, needs_repair: true,
+          repair_note: note.trim(), expected_version: Number(chapter.draft.version) });
+      const response = await api.get(`/quest-books/admin/books/${encodeURIComponent(book.id)}/chapters`, { params: { _: Date.now() } });
+      const saved = response.data?.chapters?.find((ch) => ch.id === chapter.id)?.draft;
+      if (saved?.reviewed || !saved?.repair_requested || saved?.status !== "draft" ||
+          saved?.lesson_id !== chapter.draft.lesson_id)
+        throw new Error("The lesson was not confirmed in the Needs Repair queue. Reload the book.");
+      setData(response.data);
+      toast.success("Returned to Needs Repair. Your original lesson and changes are safe.");
+    } catch (error) {
+      toast.error(apiErrorMessage(error, "Could not return this lesson to Needs Repair"), { duration: 9000 });
+    } finally { setBusy(""); }
+  };
   const approveAiCleared = async () => {
     const candidates = data.chapters.filter((chapter) => chapter.draft?.ai_cleared && !chapter.draft?.reviewed && !chapter.draft?.stale);
     if (!candidates.length || busy || batchProgress) return;
@@ -283,7 +303,7 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
     } finally { setBusy(""); }
   };
   const approveAlreadyChecked = async () => {
-    const candidates = data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale);
+    const candidates = data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale && !ch.draft.repair_requested);
     if (!candidates.length || busy || batchProgress) return;
     if (!window.confirm(
       `You are confirming that you have PERSONALLY CHECKED all ${candidates.length} remaining saved lessons, including their explanations, activities and answers. Side-Quest will mark complete lessons Ready and Reviewed. Any incomplete lessons will be reported for correction. This does NOT publish anything. Continue?`
@@ -501,12 +521,12 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
           </p>}
           <p className="text-xs text-emerald-900">This records your acceptance of the AI-cleared lessons. AI checks are not a guarantee of accuracy, and publishing remains a separate action.</p>
         </div>}
-        {reviewed < drafted && <div className="rounded-xl border border-emerald-300 bg-white p-3 space-y-2" data-testid="quest-confirm-reviewed">
+        {data.chapters.some((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale && !ch.draft.repair_requested) && <div className="rounded-xl border border-emerald-300 bg-white p-3 space-y-2" data-testid="quest-confirm-reviewed">
           <p className="text-sm font-semibold text-emerald-950">Already checked the lessons? You don't have to open and re-save each one.</p>
           <p className="text-xs text-stone-600">Only use this after personally checking the teaching and answer keys. Complete lessons will be marked Ready and Reviewed; incomplete lessons stay unapproved and you'll see why. Nothing will publish automatically.</p>
           <button type="button" disabled={!!busy || !!batchProgress} onClick={approveAlreadyChecked}
             className="rounded-lg bg-emerald-800 text-white px-4 py-2 text-sm font-bold disabled:opacity-50"
-            data-testid="quest-approve-checked">Confirm review of {data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale).length} saved lesson(s)</button>
+            data-testid="quest-approve-checked">Confirm review of {data.chapters.filter((ch) => ch.draft && !ch.draft.reviewed && !ch.draft.stale && !ch.draft.repair_requested).length} saved lesson(s)</button>
           {approvalProgress && <p role="status" className="text-xs text-emerald-900">
             Checking {approvalProgress.done} of {approvalProgress.total} · {approvalProgress.approved} approved · {approvalProgress.failed} need attention
           </p>}
@@ -554,6 +574,11 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
               {c.draft?.ai_warning_count > 0 && !c.draft.reviewed && (
                 <span className="text-xs font-bold text-amber-800">AI flagged {c.draft.ai_warning_count} warning(s) · Review required</span>
               )}
+              {c.draft?.repair_requested && !c.draft.reviewed && (
+                <span className="w-full rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs text-amber-950" data-testid={`quest-repair-requested-${c.id}`}>
+                  <b>Needs Repair (marked by you):</b> {c.draft.repair_note || "Check this lesson again."}
+                </span>
+              )}
               {c.draft?.quality_issues?.length > 0 && !c.draft.reviewed && (
                 <span className="w-full rounded-lg border border-amber-200 bg-amber-50 px-3 py-1.5 text-xs text-amber-950" data-testid={`quest-quality-${c.id}`}>
                   <b>Needs content:</b> {c.draft.quality_issues.join("; ")}.
@@ -561,6 +586,9 @@ export default function QuestBookLessonsAdmin({ book, onChanged }) {
                 </span>
               )}
               {c.draft && <Link to={`/parent/lessons/${c.draft.lesson_id}/review?book=${encodeURIComponent(book.id)}&chapter=${encodeURIComponent(c.id)}`} className="text-sm font-semibold text-emerald-900 underline">{c.draft.reviewed ? "Reopen" : "Review"} “{c.draft.title}”</Link>}
+              {c.draft?.reviewed && <button type="button" disabled={!!busy || !!batchProgress}
+                onClick={() => markNeedsRepair(c)} className="rounded-lg border border-amber-500 px-2.5 py-1.5 text-xs font-bold text-amber-950 disabled:opacity-50"
+                data-testid={`quest-mark-repair-${c.id}`}>Mark Needs Repair</button>}
               {c.draft && <label className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-950">
                 <input type="checkbox" disabled={c.draft.stale || !!busy || !!batchProgress} checked={!!c.draft.reviewed} onChange={(e) => setReviewed(c, e.target.checked)} aria-label={`Approve ${c.title} for book publication`} />
                 Reviewed and saved{c.draft.reviewed_at && c.draft.reviewed ? ` · ${new Date(c.draft.reviewed_at).toLocaleDateString()}` : ""}
