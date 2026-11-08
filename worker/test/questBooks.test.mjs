@@ -425,14 +425,19 @@ test("Book-generated lessons require owner approval, complete teaching and fresh
   delete unlinkedData.book_plan_saved_version;
   delete unlinkedData.book_plan_saved_at;
   delete unlinkedData.book_plan_saved_by;
-  h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(JSON.stringify(unlinkedData), lid);
+  h.db.raw.prepare("UPDATE lessons SET data=?, status='draft' WHERE id=?").run(JSON.stringify(unlinkedData), lid);
   assert.equal((await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft.saved_to_plan, false);
-  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version - 1 })).status, 409,
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version })).status, 409,
+    "a draft cannot be approved without explicit owner completion confirmation");
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, complete_review: true, expected_version: version - 1 })).status, 409,
     "a stale review screen must never approve a newer version");
-  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version })).status, 200);
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, complete_review: true, expected_version: version })).status, 200);
   let savedReview = (await (await h.req(`/quest-books/admin/books/${id}/chapters`, owner.token)).json()).chapters[0].draft;
+  assert.equal(savedReview.status, "ready", "explicitly confirming an already-checked draft promotes it to Ready");
   assert.equal(savedReview.reviewed, true, "approval survives page reload");
   assert.equal(savedReview.saved_to_plan, true, "approval saves its lesson version to the book plan atomically");
+  assert.equal((await h.req(reviewUrl, owner.token, "POST", { lesson_id: lid, approved: true, expected_version: version })).status, 200,
+    "the original ready-lesson approval workflow remains supported");
   assert.ok(savedReview.reviewed_at, "review timestamp is stored");
   assert.equal((await h.req(url, owner.token, "POST", { items: [item] })).status, 200);
   const removal = await h.req(url, owner.token, "POST", { items: [] });
