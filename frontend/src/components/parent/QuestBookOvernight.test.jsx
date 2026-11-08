@@ -36,3 +36,27 @@ test("both queues remain visible and pause targets only the selected queue",asyn
   await act(async()=>pause.click());
   expect(api.post).toHaveBeenCalledWith("/quest-books/admin/overnight/repairs/control",{action:"pause"});
 });
+
+test("live activity names the lesson, and auto-approval can be enabled without restarting",async()=>{
+  state.jobs=[{...job("generation","generate"),auto_follow:true,auto_approve:false,
+    current:{book_title:"Science Year 4",chapter_title:"Living things",attempts:1},
+    recent:{book_title:"Science Year 4",chapter_title:"Cells",status:"done",updated_at:"2026-11-09T00:00:00Z"},
+    next:{book_title:"Maths Year 2",chapter_title:"Fractions",status:"pending"}}];
+  await act(async()=>root.render(<QuestBookOvernight/>));
+  expect(box.querySelector('[data-testid="quest-live-activity"]').textContent).toContain("Science Year 4");
+  expect(box.querySelector('[data-testid="quest-live-activity"]').textContent).toContain("Living things");
+  expect(box.querySelector('[data-testid="quest-live-activity"]').textContent).toContain("Fractions");
+  await act(async()=>box.querySelector('[data-testid="quest-live-auto-approve"]').click());
+  expect(api.post).toHaveBeenCalledWith("/quest-books/admin/overnight/generation/control",
+    {action:"set_auto_approve",enabled:true});
+});
+test("finished queues leave the active view; stopping a running queue preserves its work",async()=>{
+  state.jobs=[{...job("finished","generate"),status:"completed",auto_follow:false}];
+  await act(async()=>root.render(<QuestBookOvernight/>));
+  expect(box.querySelectorAll('[data-testid="quest-overnight-status"]')).toHaveLength(0);
+  expect(box.querySelector('[data-testid="quest-queue-history"]')).not.toBeNull();
+  state.jobs=[{...job("generation","generate"),auto_follow:true,auto_approve:false}];
+  await act(async()=>root.render(<QuestBookOvernight/>));
+  await act(async()=>box.querySelector('[data-testid="quest-stop-queue"]').click());
+  expect(api.post).toHaveBeenCalledWith("/quest-books/admin/overnight/generation/control",{action:"stop"});
+});
