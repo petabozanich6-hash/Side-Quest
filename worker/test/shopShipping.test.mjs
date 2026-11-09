@@ -75,3 +75,21 @@ test("Square delivery postcode changes hold paid orders for owner review", async
   await recordPaidShopOrder(db, { DB: db }, matching.id, matching.total, "square-2", "https://sidequestlearning.app", new Date(), { postal_code: "2000" });
   assert.equal((await db.prepare("SELECT status FROM shop_orders WHERE id = ?").bind(matching.id).first()).status, "to_fulfil");
 });
+
+
+test("print-and-post family packs quote all children's booklets, not just the first", async () => {
+  const db=makeDb();
+  const id=await product(db);
+  await db.prepare("UPDATE shop_products SET tags = ?, fulfilment = ?, collection = ? WHERE id = ?")
+    .bind('["home-education-document","print-and-post","nsw"]',"made_to_order","Home Education Documents",id).run();
+  const bundle={...line(id),personalisation:{child_count:"4"}};
+  const parcel=await parcelForCart(db,[bundle]);
+  assert.deepEqual(parcel,{weight_g:720,length_cm:20,width_cm:14,height_cm:12});
+  const quote=await quoteStandardPost({DB:db,AUSPOST_PAC_API_KEY:"test"},[bundle],"2000",async (url) => {
+    const args=new URL(url).searchParams;
+    assert.equal(args.get("weight"),"0.72");
+    assert.equal(args.get("height"),"12");
+    return Response.json({postage_result:{total_cost:"16.25"}});
+  });
+  assert.equal(quote.postage_cents,1625);
+});
