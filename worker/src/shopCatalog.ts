@@ -9,6 +9,7 @@
 // - The public shop itself is off until the owner opens it (platform setting features.shopOpen).
 import { SHOP_ADDITIONS, SHOP_SEED, type SeedProduct } from "./data/shopCatalogue";
 import { STAGES, stageFor } from "./shopStages";
+import { SHOP_PREFILL } from "./data/shopPrefill";
 
 type DB = D1Database;
 
@@ -81,6 +82,7 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       }
       await seedCatalog(db);
       await assignStages(db);
+      await applyPrefill(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -106,6 +108,36 @@ function seedStatements(db: DB, list: SeedProduct[], used: Set<string>, startSor
     (p.variants || []).forEach((name, j) => stmts.push(db.prepare("INSERT OR IGNORE INTO shop_variants (id, product_id, name, sort) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), id, name, j)));
   });
   return stmts;
+}
+
+/**
+ * Fills in ready-to-use descriptions, options and personalisation fields once. Never overwrites the owner's work:
+ * a description is only replaced while it still matches the original placeholder (or is empty), and options or
+ * personalisation fields are only added to products that have none. Prices, costs, suppliers, stock, photos and
+ * parcel measurements are never touched.
+ */
+async function applyPrefill(db: DB) {
+  const key = "prefill_v1";
+  if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) return;
+  const original = new Map([...SHOP_SEED, ...SHOP_ADDITIONS.flatMap((b) => b.products)].map((p) => [p.title, p.description]));
+  const { results } = await db.prepare("SELECT p.id, p.title, p.description, p.personalisation, (SELECT COUNT(*) FROM shop_variants v WHERE v.product_id = p.id) AS nvar FROM shop_products p").all<any>();
+  const stmts: D1PreparedStatement[] = [];
+  for (const r of results || []) {
+    const fill = SHOP_PREFILL[r.title];
+    if (!fill) continue;
+    if (!r.description || r.description === original.get(r.title)) {
+      stmts.push(db.prepare("UPDATE shop_products SET description = ? WHERE id = ? AND description = ?").bind(fill.d, r.id, r.description || ""));
+    }
+    if (fill.p?.length && (!r.personalisation || r.personalisation === "[]")) {
+      const fields = fill.p.map((f) => ({ key: slugify(f.label).slice(0, 30) || "field", label: f.label, max: f.max, required: f.required }));
+      stmts.push(db.prepare("UPDATE shop_products SET personalisation = ? WHERE id = ? AND personalisation = ?").bind(JSON.stringify(fields), r.id, r.personalisation || "[]"));
+    }
+    if (fill.v?.length && Number(r.nvar) === 0) {
+      fill.v.forEach((name, j) => stmts.push(db.prepare("INSERT INTO shop_variants (id, product_id, name, sort) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), r.id, name, j)));
+    }
+  }
+  for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
+  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, new Date().toISOString()).run();
 }
 
 /**

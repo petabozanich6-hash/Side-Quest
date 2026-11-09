@@ -165,7 +165,8 @@ test("products waiting on manufacturing can't sell as ready to make; monthly box
   const box = await one(db, "The Creative Quest Box");
   db.raw.prepare("UPDATE shop_products SET visible = 1, status = 'made_to_order', price_cents = 3900, one_off_cents = 4900, dispatch_day = 1, cutoff_day = 20 WHERE id = ?").run(box.id);
   assert.match((await priceItems(db, [{ product_id: box.id }])).detail, /subscription/);
-  const r = await priceItems(db, [{ product_id: box.id, one_off: true }]);
+  const opt = await db.prepare("SELECT id FROM shop_variants WHERE product_id = ? ORDER BY sort LIMIT 1").bind(box.id).first();
+  const r = await priceItems(db, [{ product_id: box.id, variant_id: opt?.id, one_off: true }]);
   assert.equal(r.ok, true);
   assert.deepEqual([r.lines[0].unit_cents, r.lines[0].physical], [4900, true]);
   const pub = (await publicCatalog(db)).products.find((x) => x.id === box.id);
@@ -174,4 +175,30 @@ test("products waiting on manufacturing can't sell as ready to make; monthly box
   assert.ok(!readiness(row, []).includes("one-off price") && !readiness(row, []).includes("monthly dispatch day"));
   assert.ok(readiness({ ...row, one_off_cents: 3000 }, []).includes("one-off price above the monthly price"));
   assert.ok(readiness({ ...row, stage: "future" }, []).includes("future expansion"));
+});
+
+test("prefill: descriptions, options and fields fill in without overwriting the owner's work", async () => {
+  const { SHOP_PREFILL } = await import("../src/data/shopPrefill.ts");
+  const { SHOP_SEED, SHOP_ADDITIONS } = await import("../src/data/shopCatalogue.ts");
+  const titles = new Set([...SHOP_SEED, ...SHOP_ADDITIONS.flatMap((b) => b.products)].map((p) => p.title));
+  assert.deepEqual(Object.keys(SHOP_PREFILL).filter((t) => !titles.has(t)), [], "every prefill matches a product");
+  assert.ok(Object.keys(SHOP_PREFILL).length > 350);
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const tee = await one(db, "Ignis T-shirts");
+  assert.match(tee.description, /printed to order/);
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE product_id = ?").bind(tee.id).first()).n, 7);
+  const name = await one(db, "Personalised name T-shirts");
+  assert.match(name.personalisation, /Child's name/);
+  // Nothing priced, stocked, supplied or published by the prefill.
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR visible = 1 OR status != 'draft'").first()).n, 0);
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE price_cents IS NOT NULL OR stock IS NOT NULL").first()).n, 0);
+  // An owner's own description and options survive a later prefill.
+  const mine = await one(db, "Gel pen sets");
+  db.raw.prepare("UPDATE shop_products SET description = 'My words' WHERE id = ?").run(mine.id);
+  db.raw.prepare("DELETE FROM shop_meta WHERE key = 'prefill_v1'").run();
+  const again = await import("../src/shopCatalog.ts?prefill");
+  await again.ensureShopCatalog(db);
+  assert.equal((await one(db, "Gel pen sets")).description, "My words");
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE product_id = ?").bind(tee.id).first()).n, 7, "options aren't added twice");
 });
