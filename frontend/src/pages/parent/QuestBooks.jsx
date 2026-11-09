@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
-import { ArrowLeft, BookText, ChevronLeft, ChevronRight, Printer, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, ImagePlus, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
+import { ArrowLeft, BookText, ChevronLeft, ChevronRight, Printer, ShoppingCart, Circle, CircleCheck, Eye, X, BookOpen, BookOpenCheck, Check, Download, FileText, Gift, Lock, Pencil, Plus, ShoppingBag, Sparkles, Trash2, Upload } from "lucide-react";
 import { API, FILE_TOKEN, api, apiErrorMessage } from "../../lib/api";
 import { useAuth } from "../../context/AuthContext";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import QuestBookOvernight from "../../components/parent/QuestBookOvernight";
 import { plannedFor } from "../../lib/questBookPlan";
-import { lookInsidePages, readerPages } from "../../lib/pdfPages";
+import { coverFromPdf, lookInsidePages, readerPages } from "../../lib/pdfPages";
 import { addToCart, clearCart, inCart, removeFromCart, setCart, useCart } from "../../lib/questCart";
 
 export const money = (cents) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
@@ -90,7 +90,6 @@ function BookForm({ data, initial, onSaved, onCancel }) {
 
 const FILES = [
   { kind: "book", label: "Book PDF", accept: "application/pdf,.pdf", type: "application/pdf", icon: FileText },
-  { kind: "cover", label: "Cover PNG", accept: "image/png", type: "image/png", icon: ImagePlus },
 ];
 
 function OwnerPanel({ data, reload }) {
@@ -118,6 +117,7 @@ function OwnerPanel({ data, reload }) {
         // Upload is COMPLETE already. Continue preparation without locking the
         // owner out of the screen; pages are resumable if the tab closes.
         void (async () => {
+          try { await makeCover(book, file); } catch { toast.error("Couldn't make the cover from page 1. Use Make cover in the book space."); }
           try {
             await makeLookInside(book, file);
             await reload();
@@ -151,7 +151,7 @@ function OwnerPanel({ data, reload }) {
     <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it and can also read and print it here) and a portrait <strong>Cover PNG</strong>. Families preview a book with Look inside. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it and can also read and print it here) . The cover is made from the PDF's first page, and families preview a book with Look inside. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
         <BookForm data={data} onCancel={() => setAdding(false)} onSaved={async () => { setAdding(false); await reload(); }} />
@@ -167,7 +167,7 @@ function OwnerPanel({ data, reload }) {
               <div className="flex-1 min-w-[180px]">
                 <p className="font-semibold text-slate-900">{b.title} {!b.has_book && <span className="ml-1 rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase">Draft: hidden from families</span>}</p>
                 <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `Book ${money(b.price_cents)}`}{b.lessons_price_cents != null ? ` · Bundle ${money(b.lessons_price_cents)}` : ""}{b.lesson_price_cents != null ? ` · Lesson ${money(b.lesson_price_cents)}` : ""}{b.has_lessons ? " · Lessons published" : ""}</p>
-                <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_cover ? "Cover ✓" : "No cover"}</p>
+                <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_cover ? "Cover ✓ (page 1)" : "Cover made from page 1"}</p>
               </div>
               <Link to={`/parent/quest-books/${b.id}`} className="inline-flex gap-1 items-center rounded-lg bg-emerald-900 text-white px-3 py-2 text-sm font-semibold hover:bg-emerald-800" data-testid={`quest-open-space-${b.id}`}><BookOpen size={15} /> Open book space</Link>
               <button type="button" disabled={!!busy} onClick={() => setLessonsFor(lessonsFor === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-violet-300 px-3 py-2 text-sm font-semibold text-violet-900 hover:bg-violet-50"><BookOpenCheck size={15} /> Lessons</button>
@@ -176,7 +176,7 @@ function OwnerPanel({ data, reload }) {
             </div>
             <div className="flex flex-wrap gap-2">
               {FILES.map((spec) => {
-                const has = spec.kind === "book" ? b.has_book : b.has_cover;
+                const has = b.has_book;
                 const mine = busy === `${b.id}-${spec.kind}`;
                 const Icon = spec.icon;
                 return (
@@ -492,6 +492,17 @@ async function makeReaderPages(book, file, onProgress) {
   }
 }
 
+/** The cover is the book's first page, made in the owner's browser and saved as the cover image. */
+async function makeCover(book, file) {
+  let pdf = file;
+  if (!pdf) {
+    const r = await api.get(`/quest-books/books/${encodeURIComponent(book.id)}/download`, { responseType: "blob", timeout: 5 * 60 * 1000 });
+    pdf = new Blob([r.data], { type: "application/pdf" });
+  }
+  const png = await coverFromPdf(pdf);
+  await api.put(`/quest-books/admin/books/${encodeURIComponent(book.id)}/files/cover`, png, { headers: { "Content-Type": "image/png" }, timeout: 120000 });
+}
+
 async function makeLookInside(book, file) {
   let pdf = file;
   if (!pdf) {
@@ -527,6 +538,7 @@ function BookWorkspace({ book, reload }) {
       setReaderBusy(true);
       setReadProgress("Starting — keep this browser tab open");
       void (async () => {
+        try { await makeCover(book, file); } catch { toast.error("Couldn't make the cover from page 1. Press Make cover to try again."); }
         try { await makeLookInside(book, file); toast.success("Look-inside preview ready."); await reload(); }
         catch (e) { toast.error(apiErrorMessage(e, "Couldn't prepare the look-inside preview. Retry from the book workspace.")); }
         try {
@@ -545,6 +557,12 @@ function BookWorkspace({ book, reload }) {
     try { await makeReaderPages(book, null, (n, total) => setReadProgress(`${n} of ${total}`)); toast.success("Reader pages ready."); await reload(); }
     catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the reader pages")); }
     finally { setBusy(""); setReadProgress(""); }
+  };
+  const remakeCover = async () => {
+    setBusy("cover");
+    try { await makeCover(book); toast.success("Cover made from page 1."); await reload(); }
+    catch (e) { toast.error(apiErrorMessage(e, "Couldn't make the cover")); }
+    finally { setBusy(""); }
   };
   const remakeLook = async () => {
     setBusy("look");
@@ -579,7 +597,8 @@ function BookWorkspace({ book, reload }) {
     { id: "look", title: "Look-inside pages", done: book.look_pages > 0, needs: book.has_book,
       info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
-    { id: "cover", title: "Cover", done: book.has_cover, info: book.has_cover ? "Uploaded" : "Portrait PNG, at least 600 × 800.", action: filePick("cover", book.has_cover ? "Replace" : "Upload PNG") },
+    { id: "cover", title: "Cover", done: book.has_cover, needs: book.has_book, info: busy === "cover" ? "Making the cover…" : book.has_cover ? "The book's first page" : "Made automatically from the first page of the Book PDF.",
+      action: book.has_book && btn(busy === "cover" ? "Making…" : book.has_cover ? "Make again" : "Make cover", remakeCover) },
     { id: "chapters", title: "Teaching sessions mapped", done: book.has_chapters, needs: book.has_book, info: book.has_chapters ? "Mapped to the book" : "Read PDF bookmarks and split by skill and page.",
       action: book.has_book && btn(open === "lessons" ? "Close" : "Open", () => setOpen(open === "lessons" ? null : "lessons")) },
     { id: "lessons", title: "Lessons made and published", done: book.has_lessons, needs: book.has_chapters, info: book.has_lessons ? "Published to the book" : "Make complete lessons for each skill session, review, then publish.",
