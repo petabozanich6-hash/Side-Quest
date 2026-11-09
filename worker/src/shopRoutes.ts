@@ -176,6 +176,48 @@ export function readiness(p: any, variants: any[]): string[] {
 export function registerShopCatalog(app: App) {
   const closed = (c: any) => c.json({ detail: "The shop isn't open yet." }, 404);
 
+  // Public, watermarked excerpts of the actual blank/guest document
+  // renderer. No private data, paid document bytes, full blank template or
+  // order entitlement is exposed. Preview only while product is visible.
+  app.get("/api/shop/products/:id/document-sample", async (c) => {
+    if (!(await shopIsOpen(c.env.DB))) return closed(c);
+    c.header("Cache-Control","no-store");
+    c.header("X-Content-Type-Options","nosniff");
+    const id=c.req.param("id");
+    const year=String(c.req.query("year")||"3");
+    if(!UUID.test(id)||!["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].includes(year))
+      return c.json({detail:"Preview unavailable."},404);
+    await ensureShopCatalog(c.env.DB);
+    const product=await c.env.DB.prepare("SELECT id,visible,status,fulfilment,tags,collection FROM shop_products WHERE id=?").bind(id).first<any>();
+    if(!product||!isPublic(product)||!isHomeEducationDocument(product))
+      return c.json({detail:"Preview unavailable."},404);
+    let tags:unknown=[];
+    try { tags=JSON.parse(product.tags); } catch {/* not a valid document */}
+    if(!Array.isArray(tags)||!tags.includes("home-education-document"))
+      return c.json({detail:"Preview unavailable."},404);
+    const codes=["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"];
+    const matches=codes.filter(code=>tags.includes(code.toLowerCase()));
+    if(matches.length!==1)return c.json({detail:"Preview unavailable."},404);
+    const rate=await hitRateLimit(c.env.DB,`shop-document-preview:${c.req.header("CF-Connecting-IP")||"?"}`,20,3600);
+    if(!rate.ok)return c.json({detail:"Too many previews. Please try later."},429);
+    try {
+      let pdf:Uint8Array;
+      if(tags.includes("guided-document")){
+        const sample=sampleGuidedDocumentData(matches[0],year);
+        const plan=await buildGuestPlan(c.env.DB,matches[0] as any,sample);
+        pdf=await renderGuestPdf(c.env,guestPlanHtml(plan,true));
+      }else if(tags.includes("fillable-pdf")||tags.includes("print-and-post")){
+        pdf=generateHomeEducationTemplate(matches[0],year,true);
+      }else return c.json({detail:"Preview unavailable."},404);
+      c.header("Content-Type","application/pdf");
+      c.header("Content-Disposition",`inline; filename="sidequest-${matches[0].toLowerCase()}-sample.pdf"`);
+      return c.body(pdf);
+    }catch(error:any){
+      console.error("shop sample PDF failed",error?.message);
+      return c.json({detail:"Preview temporarily unavailable."},503);
+    }
+  });
+
   app.get("/api/shop/products/:id/images/:n", async (c) => {
     if (!(await shopIsOpen(c.env.DB))) return closed(c);
     const id = c.req.param("id");
