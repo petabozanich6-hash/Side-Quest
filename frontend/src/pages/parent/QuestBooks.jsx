@@ -7,7 +7,6 @@ import { useAuth } from "../../context/AuthContext";
 import QuestBookCover from "../../components/parent/QuestBookCover";
 import QuestBookLessonsAdmin from "../../components/parent/QuestBookLessonsAdmin";
 import QuestBookOvernight from "../../components/parent/QuestBookOvernight";
-import PdfPreview from "../../components/parent/PdfPreview";
 import { plannedFor } from "../../lib/questBookPlan";
 import { lookInsidePages, readerPages } from "../../lib/pdfPages";
 import { addToCart, clearCart, inCart, removeFromCart, setCart, useCart } from "../../lib/questCart";
@@ -91,7 +90,6 @@ function BookForm({ data, initial, onSaved, onCancel }) {
 
 const FILES = [
   { kind: "book", label: "Book PDF", accept: "application/pdf,.pdf", type: "application/pdf", icon: FileText },
-  { kind: "sample", label: "Sample PDF", accept: "application/pdf,.pdf", type: "application/pdf", icon: Gift },
   { kind: "cover", label: "Cover PNG", accept: "image/png", type: "image/png", icon: ImagePlus },
 ];
 
@@ -153,7 +151,7 @@ function OwnerPanel({ data, reload }) {
     <section className="rounded-2xl border-2 border-emerald-700 bg-emerald-50 p-5 space-y-4 scroll-mt-4" data-testid="quest-books-owner">
       <div>
         <h2 className="font-bold text-emerald-950">Owner HQ · Quest Books uploader</h2>
-        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it and can also read and print it here), a short <strong>Sample PDF</strong> (free for everyone) and a portrait <strong>Cover PNG</strong>. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
+        <p className="text-sm text-emerald-900 mt-1">Only you can see this. Create a book, then upload its <strong>Book PDF</strong> (buyers download it and can also read and print it here) and a portrait <strong>Cover PNG</strong>. Families preview a book with Look inside. Families only see a book once its Book PDF is uploaded. PDFs can be up to 95 MB.</p>
       </div>
       {adding ? (
         <BookForm data={data} onCancel={() => setAdding(false)} onSaved={async () => { setAdding(false); await reload(); }} />
@@ -169,7 +167,7 @@ function OwnerPanel({ data, reload }) {
               <div className="flex-1 min-w-[180px]">
                 <p className="font-semibold text-slate-900">{b.title} {!b.has_book && <span className="ml-1 rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase">Draft: hidden from families</span>}</p>
                 <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `Book ${money(b.price_cents)}`}{b.lessons_price_cents != null ? ` · Bundle ${money(b.lessons_price_cents)}` : ""}{b.lesson_price_cents != null ? ` · Lesson ${money(b.lesson_price_cents)}` : ""}{b.has_lessons ? " · Lessons published" : ""}</p>
-                <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_sample ? `Sample ${mb(b.sample_bytes)} ✓` : "No sample"} · {b.has_cover ? "Cover ✓" : "No cover"}</p>
+                <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_cover ? "Cover ✓" : "No cover"}</p>
               </div>
               <Link to={`/parent/quest-books/${b.id}`} className="inline-flex gap-1 items-center rounded-lg bg-emerald-900 text-white px-3 py-2 text-sm font-semibold hover:bg-emerald-800" data-testid={`quest-open-space-${b.id}`}><BookOpen size={15} /> Open book space</Link>
               <button type="button" disabled={!!busy} onClick={() => setLessonsFor(lessonsFor === b.id ? null : b.id)} className="inline-flex gap-1 items-center rounded-lg border border-violet-300 px-3 py-2 text-sm font-semibold text-violet-900 hover:bg-violet-50"><BookOpenCheck size={15} /> Lessons</button>
@@ -178,7 +176,7 @@ function OwnerPanel({ data, reload }) {
             </div>
             <div className="flex flex-wrap gap-2">
               {FILES.map((spec) => {
-                const has = spec.kind === "book" ? b.has_book : spec.kind === "sample" ? b.has_sample : b.has_cover;
+                const has = spec.kind === "book" ? b.has_book : b.has_cover;
                 const mine = busy === `${b.id}-${spec.kind}`;
                 const Icon = spec.icon;
                 return (
@@ -582,7 +580,6 @@ function BookWorkspace({ book, reload }) {
       info: busy === "look" ? "Making the pages…" : book.look_pages ? `${book.look_pages} watermarked pages parents see before buying` : "Made automatically from the Book PDF.",
       action: book.has_book && btn(busy === "look" ? "Making…" : book.look_pages ? "Make again" : "Make them", remakeLook) },
     { id: "cover", title: "Cover", done: book.has_cover, info: book.has_cover ? "Uploaded" : "Portrait PNG, at least 600 × 800.", action: filePick("cover", book.has_cover ? "Replace" : "Upload PNG") },
-    { id: "sample", title: "Free sample PDF", optional: true, done: book.has_sample, info: book.has_sample ? "Uploaded" : "Optional: a few pages anyone can download.", action: filePick("sample", book.has_sample ? "Replace" : "Upload PDF") },
     { id: "chapters", title: "Teaching sessions mapped", done: book.has_chapters, needs: book.has_book, info: book.has_chapters ? "Mapped to the book" : "Read PDF bookmarks and split by skill and page.",
       action: book.has_book && btn(open === "lessons" ? "Close" : "Open", () => setOpen(open === "lessons" ? null : "lessons")) },
     { id: "lessons", title: "Lessons made and published", done: book.has_lessons, needs: book.has_chapters, info: book.has_lessons ? "Published to the book" : "Make complete lessons for each skill session, review, then publish.",
@@ -803,7 +800,6 @@ function BookView({ id }) {
   const book = data?.book;
   const lessons = data?.lessons || [];
   const [adding, setAdding] = useState("");
-  const [preview, setPreview] = useState(false);
   const addLessons = async (key) => {
     setAdding(key || "all");
     try {
@@ -885,12 +881,6 @@ function BookView({ id }) {
                   <Eye size={16} /> Look inside
                 </button>
               )}
-              {book.has_sample && (
-                <button type="button" onClick={() => setPreview(true)} data-testid="quest-book-sample"
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-amber-500 bg-white text-amber-900 px-4 py-2.5 text-sm font-bold hover:bg-amber-50">
-                  <Gift size={16} /> Preview free sample
-                </button>
-              )}
             </div>
             {book.can_buy_plus && (
               <div className="space-y-1">
@@ -917,7 +907,6 @@ function BookView({ id }) {
           <button type="button" onClick={() => setLook(false)} className="ml-auto text-sm font-semibold text-stone-600 underline">Not now</button>
         </LookInside>
       )}
-      {preview && book && <PdfPreview title={`${book.title} · free sample`} fetchPath={`/quest-books/books/${encodeURIComponent(book.id)}/sample`} downloadHref={pdfLink(book.id, "sample")} onClose={() => setPreview(false)} />}
       {book && lessons.length > 0 && (
         <section className="space-y-3" data-testid="quest-book-lessons">
           <div className="flex flex-wrap items-end gap-3">
