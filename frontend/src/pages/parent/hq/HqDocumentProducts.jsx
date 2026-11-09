@@ -26,6 +26,8 @@ export default function HqDocumentProducts({ jurisdiction }) {
   const [file, setFile] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [yearLevel, setYearLevel] = useState("3");
+  const [previewPdf, setPreviewPdf] = useState(null);
 
   const load = async () => {
     setRefreshing(true);
@@ -36,7 +38,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
     finally { setRefreshing(false); }
   };
   useEffect(() => { load(); }, []);
-  useEffect(() => { setFile(null); setConfirmed(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
+  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setError(""); setMessage(""); }, [jurisdiction?.code]);
 
   if (!jurisdiction) return null;
   const current = products.find((p) => p.title === titleFor(jurisdiction));
@@ -62,6 +64,27 @@ export default function HqDocumentProducts({ jurisdiction }) {
       await load();
     } catch (e) { setError(errorText(e, "Could not create the draft.")); }
     finally { setBusy(false); }
+  };
+  const generatePreview = async () => {
+    setBusy(true); setError(""); setMessage(""); setPreviewPdf(null);
+    try {
+      const result=await adminApi.post("/document-studio/preview",{state:jurisdiction.code,year_level:yearLevel});
+      setPreviewPdf(result);
+      setMessage("Preview generated. Nothing saved. Inspect the PDF and its fields before approving.");
+    } catch(e){setError(errorText(e,"Could not generate the preview."));}
+    finally{setBusy(false);}
+  };
+  const savePreview = async () => {
+    if(!current||!previewPdf)return;
+    setBusy(true);setError("");setMessage("");
+    try{
+      await adminApi.post(`/document-studio/products/${encodeURIComponent(current.id)}/save-preview`,{
+        state:previewPdf.state,year_level:previewPdf.year_level,sha256:previewPdf.sha256
+      });
+      setMessage("The exact previewed PDF has been saved privately. Sales remain blocked pending quality review.");
+      setPreviewPdf(null);await load();
+    }catch(e){setError(errorText(e,"Could not save the previewed PDF."));}
+    finally{setBusy(false);}
   };
   const upload = async () => {
     if (!current || !file || !confirmed) return;
@@ -89,6 +112,24 @@ export default function HqDocumentProducts({ jurisdiction }) {
           <p className="text-sm font-semibold">{current.title}</p>
           <p className="text-sm">Shop status: <strong>{current.status}</strong> · {current.visible ? "Visible" : "Hidden"} · {current.has_file ? "PDF uploaded" : "No PDF uploaded"}</p>
           <p className="text-xs text-stone-700">The state is fixed in this product's title. Don't reuse one state's PDF for another state.</p>
+          <div className="rounded-xl border-2 border-[#4A5D3A] p-4 space-y-3 bg-[#F9F8F0]">
+            <h4 className="font-semibold">Create the fillable PDF here</h4>
+            <p className="text-sm">Generate a blank state-based document using the shared Side-Quest requirements. Nothing is saved or published until you inspect and approve the preview.</p>
+            <label className="block text-sm font-semibold">Year level for learning-area layout
+              <select className={input+" mt-1"} value={yearLevel} onChange={(e)=>{setYearLevel(e.target.value);setPreviewPdf(null);}}>
+                {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map(v=><option key={v} value={v}>{v}</option>)}
+              </select>
+            </label>
+            <button type="button" disabled={busy} onClick={generatePreview} className="rounded-xl bg-[#4A5D3A] px-4 py-2 font-semibold text-white disabled:opacity-60">1. Generate PDF preview</button>
+            {previewPdf && <div className="space-y-3 rounded-xl border bg-white p-3">
+              <p className="text-sm font-semibold">Preview ready — {jurisdiction.name}, year {previewPdf.year_level}</p>
+              <div className="flex flex-wrap gap-2">
+                <a className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold" href={previewPdf.data_url} download={`sidequest-${jurisdiction.code.toLowerCase()}-preview.pdf`}>2. Download and inspect PDF</a>
+                <button type="button" disabled={busy} onClick={savePreview} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">3. Approve preview and save privately</button>
+              </div>
+              <p className="text-xs text-amber-900">Saving attaches this exact preview to the hidden product. It does not approve the document for sale.</p>
+            </div>}
+          </div>
           <label className="block text-sm font-semibold">Upload verified fillable PDF
             <input className={input + " mt-1"} type="file" accept=".pdf,application/pdf" onChange={(e) => { setFile(e.target.files?.[0] || null); setConfirmed(false); }} />
           </label>
