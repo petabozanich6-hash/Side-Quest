@@ -22,6 +22,7 @@ import { isKidsHost } from "./lib/pwa";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
+import HqBookForge from "./pages/parent/hq/HqBookForge";
 import HqShell from "./pages/parent/hq/HqShell";
 import HqOverview from "./pages/parent/hq/HqOverview";
 import HqCustomers from "./pages/parent/hq/HqCustomers";
@@ -134,6 +135,7 @@ function Router() {
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="dragon-hoard" element={<HqHoard />} />
           <Route path="shop" element={<HqShop />} />
+          <Route path="book-forge" element={<HqBookForge />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />

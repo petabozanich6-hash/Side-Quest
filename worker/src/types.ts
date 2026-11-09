@@ -15,6 +15,10 @@ export type EmailBinding = {
 
 export type Env = {
   DB: D1Database;
+  /** Owner Book Forge: scoped Browser Rendering REST credentials. */
+  BROWSER?: { quickAction(action: "pdf", options: Record<string, unknown>): Promise<Response> };
+  BOOK_FORGE_CF_ACCOUNT_ID?: string;
+  BOOK_FORGE_CF_API_TOKEN?: string;
   JWT_SECRET: string;
   /** Optional R2 bucket for file uploads (bind as BUCKET). */
   BUCKET?: R2Bucket;

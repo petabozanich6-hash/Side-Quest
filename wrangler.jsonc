@@ -43,6 +43,8 @@
   // To turn it off, set it to "false" here and merge; AI_FAST_PIPELINE_STOP=true also stops it.
   // AI_COMPACT_GENERATION stays OFF so original teaching depth and prompts do not change.
   "ai": { "binding": "AI" },
+  // Owner Book Forge PDF rendering; only invoked by authenticated owner actions.
+  "browser": { "binding": "BROWSER" },
   // R2 storage for family files (paid membership). Match BUCKET in worker/src/types.ts.
   // The bucket must exist in the same Cloudflare account as this Worker.
   "r2_buckets": [

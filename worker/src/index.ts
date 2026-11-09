@@ -1,3 +1,4 @@
+import { processBookForgeJobs } from "./bookForgeGeneration";
 import { Hono } from "hono";
 import { normJurisdiction, setFamilyJurisdiction, getFamilyJurisdiction } from "./data/jurisdictions";
 import { cors } from "hono/cors";
@@ -357,6 +358,8 @@ export default {
     if (event.cron === "* * * * *") {
       try { await processQuestOvernight(await applyPlatformSettings(env)); }
       catch (e) { console.error("Quest Book overnight queue cron failed", e); }
+      try { await processBookForgeJobs(meterWorkersAi(await applyPlatformSettings(env), _ctx)); }
+      catch (e) { console.error("Book Forge queue cron failed", e); }
       return;
     }
     if (event.cron !== "*/5 * * * *") return;
