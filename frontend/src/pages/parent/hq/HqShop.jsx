@@ -8,11 +8,17 @@ import { useAdmin } from "./useAdmin";
 
 // Owner HQ → Shop: the launch dashboard, every product (switch on/off, edit, photos, variants), orders to post,
 // interest lists and subscriptions. Nothing here opens the shop: that's the "Public shop" switch in Settings.
+const ordinal = (n) => { const x = Number(n); const s = ["th", "st", "nd", "rd"]; const v = x % 100; return `${x}${s[(v - 20) % 10] || s[v] || s[0]}`; };
 const money = (c) => (c == null ? "—" : `$${(c / 100).toFixed(2)}`);
 const toCents = (v) => (v === "" || v == null ? null : Math.round(Number(v) * 100));
 const toDollars = (c) => (c == null ? "" : (c / 100).toFixed(2));
 const input = "mt-1 w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm font-normal";
 const readFile = (file) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+const STAGE_COLOURS = {
+  launch_now: { bg: "#ECFDF5", fg: "#065F46", border: "#A7F3D0" },
+  pro_manufacturing: { bg: "#EFF6FF", fg: "#1E40AF", border: "#BFDBFE" },
+  future: { bg: "#FAF5FF", fg: "#6B21A8", border: "#E9D5FF" },
+};
 const VIEWS = [["dashboard", "Launch dashboard"], ["products", "Products"], ["orders", "Orders"], ["interest", "Interest lists"], ["subscriptions", "Subscriptions"]];
 
 export default function HqShop() {
@@ -53,6 +59,20 @@ function Dashboard() {
         <Stat label="Ready to launch" value={data.ready_to_launch.length} note="Complete but switched off" />
         <Stat label="Subscriptions" value={(data.subscriptions.active || 0) + (data.subscriptions.past_due || 0)} note={data.subscriptions.past_due ? `${data.subscriptions.past_due} need attention` : "active"} />
       </div>
+      {data.by_stage && (
+        <Card title="Development stages">
+          <div className="grid sm:grid-cols-3 gap-3">
+            {data.by_stage.map((st) => (
+              <div key={st.id} className="rounded-xl border p-3" style={{ borderColor: STAGE_COLOURS[st.id].border, backgroundColor: STAGE_COLOURS[st.id].bg }}>
+                <p className="text-xs font-bold uppercase tracking-wide" style={{ color: STAGE_COLOURS[st.id].fg }}>{st.label}</p>
+                <p className="text-2xl font-bold text-slate-900">{st.total}</p>
+                <p className="text-xs text-stone-600">{st.visible} switched on{st.id === "launch_now" ? ` · ${st.ready} ready` : ""}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-stone-500 mt-2">Only Launch Now products can sell as In Stock or Made to Order. The others can collect interest or pre-orders while they wait.</p>
+        </Card>
+      )}
       {data.low_stock.length > 0 && <Card title="Low stock"><ul className="text-sm space-y-1">{data.low_stock.map((x, i) => <li key={i}>{x.title}: <strong>{x.stock}</strong> left</li>)}</ul></Card>}
       <Card title="Ready to launch">
         {data.ready_to_launch.length ? <ul className="text-sm space-y-1">{data.ready_to_launch.map((p) => <li key={p.id}>{p.title} <span className="text-stone-500">· {data.status_labels[p.status]}</span></li>)}</ul>
@@ -74,13 +94,14 @@ function Products() {
   const [dept, setDept] = useState("");
   const [status, setStatus] = useState("");
   const [onOff, setOnOff] = useState("");
+  const [stage, setStage] = useState("");
   const [picked, setPicked] = useState([]);
   const [editing, setEditing] = useState(null);
   const [walk, setWalk] = useState(null); // { ids, index } when working through a list one by one
   const [busy, setBusy] = useState(false);
   const products = useMemo(() => data?.products || [], [data]);
-  const shown = useMemo(() => products.filter((p) => (!dept || p.department === dept) && (!status || p.status === status) && (!onOff || (onOff === "on") === p.visible)
-    && (!q || `${p.title} ${p.collection} ${p.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()))), [products, q, dept, status, onOff]);
+  const shown = useMemo(() => products.filter((p) => (!stage || p.stage === stage) && (!dept || p.department === dept) && (!status || p.status === status) && (!onOff || (onOff === "on") === p.visible)
+    && (!q || `${p.title} ${p.collection} ${p.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()))), [products, q, dept, status, onOff, stage]);
   if (loading && !data) return <p>Loading…</p>;
   if (error) return <Alert>{error}</Alert>;
   const bulk = async (change, ids = picked) => {
@@ -91,6 +112,14 @@ function Products() {
   const dLabel = Object.fromEntries(data.departments.map((d) => [d.id, d.label]));
   return (
     <div className="space-y-3">
+      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Development stage">
+        {[["", "All stages", products.length], ...data.stages.map((st) => [st, data.stage_labels[st], products.filter((p) => p.stage === st).length])].map(([id, label, n]) => {
+          const on = stage === id;
+          const c = STAGE_COLOURS[id] || { bg: "#F5F5F4", fg: "#1C1917", border: "#D6D3D1" };
+          return <button key={id || "all"} type="button" role="tab" aria-selected={on} onClick={() => setStage(id)} data-testid={`hq-shop-stage-${id || "all"}`}
+            className="rounded-full border px-3 py-1.5 text-xs font-bold" style={on ? { backgroundColor: c.fg, borderColor: c.fg, color: "white" } : { backgroundColor: c.bg, borderColor: c.border, color: c.fg }}>{label} · {n}</button>;
+        })}
+      </div>
       <div className="paper-card p-3 flex flex-wrap gap-2 items-end">
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search products" aria-label="Search products" className="rounded-xl border border-stone-300 px-3 py-2 text-sm flex-1 min-w-[160px]" />
         <select value={dept} onChange={(e) => setDept(e.target.value)} aria-label="Department" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">All departments</option>{data.departments.map((d) => <option key={d.id} value={d.id}>{d.label}</option>)}</select>
@@ -105,13 +134,14 @@ function Products() {
           <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: true })}>Switch on</Button>
           <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: false })}>Switch off</Button>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ status: e.target.value })} aria-label="Set status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">Set status…</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
+          <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ stage: e.target.value })} aria-label="Set development stage" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-stage"><option value="">Set stage…</option>{data.stages.map((st) => <option key={st} value={st}>{data.stage_labels[st]}</option>)}</select>
           <Button tone="plain" onClick={() => setPicked([])}>Clear</Button>
         </div>
       )}
       <p className="text-xs text-stone-600">Tip: pick a department first, then "Work through these" to fill each product in turn. {shown.length} of {products.length} products · <button type="button" className="underline" onClick={() => setPicked(shown.map((p) => p.id))}>select all shown</button></p>
       <div className="paper-card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">Product</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th><th className="p-2">On</th></tr></thead>
+          <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">Product</th><th className="p-2">Stage</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th><th className="p-2">On</th></tr></thead>
           <tbody>
             {shown.map((p) => (
               <tr key={p.id} className="border-b border-stone-100 align-top" data-testid={`hq-shop-row-${p.slug}`}>
@@ -121,6 +151,7 @@ function Products() {
                   <div className="text-xs text-stone-500">{dLabel[p.department]}{p.collection ? ` · ${p.collection}` : ""}{p.variants.length ? ` · ${p.variants.length} options` : ""}</div>
                   {p.missing.length > 0 && <div className="text-xs text-amber-800">Needs {p.missing.join(", ")}</div>}
                 </td>
+                <td className="p-2 whitespace-nowrap"><span className="rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ backgroundColor: (STAGE_COLOURS[p.stage] || {}).bg, color: (STAGE_COLOURS[p.stage] || {}).fg }}>{data.stage_labels[p.stage] || "—"}</span></td>
                 <td className="p-2 whitespace-nowrap">{data.status_labels[p.status]}</td>
                 <td className="p-2 whitespace-nowrap">{money(p.price_cents)}</td>
                 <td className="p-2 whitespace-nowrap">{p.profit ? `${money(p.profit.profit_cents)}${p.profit.cost_known ? "" : "*"}` : "—"}</td>
@@ -192,7 +223,7 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
     const p = { ...blank, ...prod };
     return {
       ...p, tags: (p.tags || []).join(", "),
-      price: toDollars(p.price_cents), wholesale: toDollars(p.wholesale_cents), postage: toDollars(p.postage_cents),
+      price: toDollars(p.price_cents), wholesale: toDollars(p.wholesale_cents), postage: toDollars(p.postage_cents), one_off: toDollars(p.one_off_cents),
       preorder_closes_at: p.preorder_closes_at ? p.preorder_closes_at.slice(0, 10) : "",
       variants: (p.variants || []).map((v) => ({ ...v, price: toDollars(v.price_cents) })),
     };
@@ -213,7 +244,7 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
 
   const body = () => ({
     ...f, tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
-    price_cents: priceCents, wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage),
+    price_cents: priceCents, wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage), one_off_cents: toCents(f.one_off),
     preorder_closes_at: f.preorder_closes_at ? new Date(`${f.preorder_closes_at}T23:59:00`).toISOString() : null,
     variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id, details: v.details || "" })),
   });
@@ -270,9 +301,15 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
         <Section title="The basics">
           {isNew && <label className="block font-semibold">Title<input value={f.title} onChange={(e) => set("title", e.target.value)} className={input} /></label>}
           <label className="block font-semibold">Description customers see<textarea rows={3} value={f.description} onChange={(e) => set("description", e.target.value)} className={input} /></label>
-          <label className="block font-semibold">Status
-            <select value={f.status} onChange={(e) => set("status", e.target.value)} className={input}>{meta.statuses.map((s) => <option key={s} value={s}>{meta.status_labels[s]}</option>)}</select>
-          </label>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <label className="block font-semibold">Status
+              <select value={f.status} onChange={(e) => set("status", e.target.value)} className={input}>{meta.statuses.map((s) => <option key={s} value={s}>{meta.status_labels[s]}</option>)}</select>
+            </label>
+            <label className="block font-semibold">Development stage
+              <select value={f.stage || ""} onChange={(e) => set("stage", e.target.value)} className={input} data-testid="hq-shop-stage">{!f.stage && <option value="">Choose…</option>}{meta.stages.map((st) => <option key={st} value={st}>{meta.stage_labels[st]}</option>)}</select>
+            </label>
+          </div>
+          {f.stage && f.stage !== "launch_now" && ["in_stock", "made_to_order"].includes(f.status) && <p className="text-xs text-amber-800">This product is marked {meta.stage_labels[f.stage]}, so it can't sell as {meta.status_labels[f.status]} yet. Use Coming Soon, Register Interest or Pre-order, or move it to Launch Now when it's ready to make.</p>}
         </Section>
 
         <Section title={kind.monthly ? "Monthly price" : "Price"} hint={kind.monthly ? "What subscribers pay each month, including postage." : null}>
@@ -375,6 +412,26 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
               </div>
             ))}
             <Button tone="plain" onClick={() => set("personalisation", [...f.personalisation, { label: "", max: 30, required: true }])}>Add field</Button>
+          </Section>
+        )}
+
+        {kind.monthly && (
+          <Section title="One-off box and monthly schedule" hint="Customers can buy one box at the one-off price, or subscribe at the lower monthly price. Every box goes out once a month.">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <label className="font-semibold">One-off price ($)<input inputMode="decimal" value={f.one_off} onChange={(e) => set("one_off", e.target.value)} className={input} data-testid="hq-shop-one-off" /></label>
+              <label className="font-semibold">Orders close on day<input type="number" min={1} max={28} value={f.cutoff_day ?? ""} onChange={(e) => set("cutoff_day", e.target.value)} placeholder="e.g. 20" className={input} /></label>
+              <label className="font-semibold">Boxes ship on day<input type="number" min={1} max={28} value={f.dispatch_day ?? ""} onChange={(e) => set("dispatch_day", e.target.value)} placeholder="e.g. 1" className={input} /></label>
+            </div>
+            {toCents(f.one_off) != null && priceCents != null && (toCents(f.one_off) > priceCents
+              ? <p className="text-xs text-stone-600">Subscribers save {Math.round((1 - priceCents / toCents(f.one_off)) * 100)}% compared with buying one box.</p>
+              : <p className="text-xs text-amber-800">Make the one-off price higher than the monthly price, so subscribing is the better deal.</p>)}
+            {f.cutoff_day && f.dispatch_day && <p className="text-xs text-stone-600">Customers will see: "Order by the {ordinal(f.cutoff_day)} of the month and your box ships around the {ordinal(f.dispatch_day)}{Number(f.dispatch_day) <= Number(f.cutoff_day) ? " of the following month" : ""}."</p>}
+            {toCents(f.one_off) != null && <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[["parcel_weight_g", "Packed weight (g)"], ["parcel_length_cm", "Length (cm)"], ["parcel_width_cm", "Width (cm)"], ["parcel_height_cm", "Height (cm)"]].map(([key, label]) => (
+                <label key={key} className="font-semibold text-xs">{label}<input type="number" min={1} value={f[key] ?? ""} onChange={(e) => set(key, e.target.value)} className={input} /></label>
+              ))}
+              <p className="col-span-full text-xs text-stone-500">Needed for one-off postage, which Australia Post calculates at checkout.</p>
+            </div>}
           </Section>
         )}
 
