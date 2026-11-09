@@ -24,7 +24,7 @@ const stage=(year:string)=>{
  if(!Number.isFinite(n)||n<=0)return "ES1";
  return n<=2?"S1":n<=4?"S2":n<=6?"S3":n<=8?"S4":n<=10?"S5":"S6";
 };
-export function generateHomeEducationTemplate(state:string,yearLevel="3"):Uint8Array {
+export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleOnly=false):Uint8Array {
  if(!Object.prototype.hasOwnProperty.call(JURISDICTIONS,state)||state==="OTHER")throw Error("Invalid state");
  const jur=JURISDICTIONS[state as JurisdictionCode];
  const pages:Page[]=[];let page!:Page,y=0,sequence=0;
@@ -128,9 +128,10 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3"):Uint8A
  set(regular,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
  set(bold,"<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
  const pids:number[]=[],widgets:number[]=[];
- for(const [index,p] of pages.entries()){
+ const exportedPages=sampleOnly?pages.slice(0,2):pages;
+ for(const [index,p] of exportedPages.entries()){
   const pid=reserve();pids.push(pid);const streamId=reserve();
-  const content=p.draw.join("\n")+"\n"+`BT /R 8 Tf 44 32 Td (Side-Quest | ${jur.code} | page ${index+1} of ${pages.length} | draft fillable template) Tj ET\n`;
+  const content=p.draw.join("\n")+"\n"+(sampleOnly?`0.65 0.18 0.18 rg BT /B 13 Tf 375 51 Td (SAMPLE PREVIEW) Tj ET 0.14 0.18 0.14 rg\n`:"")+`BT /R 8 Tf 44 32 Td (Side-Quest | ${jur.code} | page ${index+1} of ${exportedPages.length} | ${sampleOnly?"sample only":"draft fillable template"}) Tj ET\n`;
   set(streamId,`<< /Length ${new TextEncoder().encode(content).length} >>\nstream\n${content}endstream`);
   const annots:number[]=[];
   for(const f of p.fields){

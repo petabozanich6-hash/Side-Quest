@@ -23,6 +23,7 @@ import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitleme
 import { generateHomeEducationTemplate } from "./homeEducationPdf";
 import { sha256 } from "./documentReview";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
+import { sampleGuidedDocumentData } from "./documentStudioPreview";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -174,6 +175,48 @@ export function readiness(p: any, variants: any[]): string[] {
 
 export function registerShopCatalog(app: App) {
   const closed = (c: any) => c.json({ detail: "The shop isn't open yet." }, 404);
+
+  // Public, watermarked excerpts of the actual blank/guest document
+  // renderer. No private data, paid document bytes, full blank template or
+  // order entitlement is exposed. Preview only while product is visible.
+  app.get("/api/shop/products/:id/document-sample", async (c) => {
+    if (!(await shopIsOpen(c.env.DB))) return closed(c);
+    c.header("Cache-Control","no-store");
+    c.header("X-Content-Type-Options","nosniff");
+    const id=c.req.param("id");
+    const year=String(c.req.query("year")||"3");
+    if(!UUID.test(id)||!["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].includes(year))
+      return c.json({detail:"Preview unavailable."},404);
+    await ensureShopCatalog(c.env.DB);
+    const product=await c.env.DB.prepare("SELECT id,visible,status,fulfilment,tags,collection FROM shop_products WHERE id=?").bind(id).first<any>();
+    if(!product||!isPublic(product)||!isHomeEducationDocument(product))
+      return c.json({detail:"Preview unavailable."},404);
+    let tags:unknown=[];
+    try { tags=JSON.parse(product.tags); } catch {/* not a valid document */}
+    if(!Array.isArray(tags)||!tags.includes("home-education-document"))
+      return c.json({detail:"Preview unavailable."},404);
+    const codes=["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"];
+    const matches=codes.filter(code=>tags.includes(code.toLowerCase()));
+    if(matches.length!==1)return c.json({detail:"Preview unavailable."},404);
+    const rate=await hitRateLimit(c.env.DB,`shop-document-preview:${c.req.header("CF-Connecting-IP")||"?"}`,20,3600);
+    if(!rate.ok)return c.json({detail:"Too many previews. Please try later."},429);
+    try {
+      let pdf:Uint8Array;
+      if(tags.includes("guided-document")){
+        const sample=sampleGuidedDocumentData(matches[0],year);
+        const plan=await buildGuestPlan(c.env.DB,matches[0] as any,sample);
+        pdf=await renderGuestPdf(c.env,guestPlanHtml(plan,true));
+      }else if(tags.includes("fillable-pdf")||tags.includes("print-and-post")){
+        pdf=generateHomeEducationTemplate(matches[0],year,true);
+      }else return c.json({detail:"Preview unavailable."},404);
+      c.header("Content-Type","application/pdf");
+      c.header("Content-Disposition",`inline; filename="sidequest-${matches[0].toLowerCase()}-sample.pdf"`);
+      return c.body(pdf);
+    }catch(error:any){
+      console.error("shop sample PDF failed",error?.message);
+      return c.json({detail:"Preview temporarily unavailable."},503);
+    }
+  });
 
   app.get("/api/shop/products/:id/images/:n", async (c) => {
     if (!(await shopIsOpen(c.env.DB))) return closed(c);
@@ -645,6 +688,37 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     for (let i=0;i<pdf.length;i+=8192) base64 += String.fromCharCode(...pdf.subarray(i,i+8192));
     return c.json({ data_url:"data:application/pdf;base64,"+btoa(base64), sha256:await sha256(pdf), pages_label:"A4", state, year_level:year,
       note:"Preview only. No file saved or approved for sale." });
+  });
+
+  // Owner-only preview of a purchased-style personalised plan, using precisely
+  // the guest purchase generator and PDF renderer with fictional family data.
+  // No order, email, product file, real child data or AI call is involved.
+  admin.post("/document-studio/preview-guided", R, async (c: Context<any>) => {
+    const body = await readJson(c);
+    const state = String(body.state || "").toUpperCase();
+    const year = String(body.year_level || "3");
+    let sample: Record<string, any>;
+    try { sample = sampleGuidedDocumentData(state,year); }
+    catch { return c.json({ detail:"Choose a valid state or territory and year level." },400); }
+    if (!c.env.BROWSER?.quickAction)
+      return c.json({detail:"PDF rendering is not configured. Guided previews need the same PDF renderer as customer orders."},503);
+    const limited=await hitRateLimit(c.env.DB,`document-studio:guided-preview:${c.get("user")?.id || "owner"}`,25,3600);
+    if(!limited.ok) return c.json({detail:"Guided PDF preview limit reached for this hour. Please try again later."},429);
+    try {
+      const built=await buildGuestPlan(c.env.DB,state as any,sample);
+      const pdf=await renderGuestPdf(c.env,guestPlanHtml(built));
+      let base64="";
+      for(let i=0;i<pdf.length;i+=8192)base64+=String.fromCharCode(...pdf.subarray(i,i+8192));
+      return c.json({
+        data_url:"data:application/pdf;base64,"+btoa(base64),
+        sha256:await sha256(pdf),state,year_level:year,
+        variant:"guided",sample_name:"Alex Example",
+        note:"Fictional example only. Preview not saved, emailed or approved for sale.",
+      });
+    } catch(err:any) {
+      console.error("owner guided PDF preview failed",err?.message);
+      return c.json({detail:"Could not generate the personalised PDF preview. Check PDF rendering configuration."},502);
+    }
   });
 
   admin.post("/document-studio/products/:id/save-preview", W, async (c: Context<any>) => {
