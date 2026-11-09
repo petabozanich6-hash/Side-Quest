@@ -4,6 +4,7 @@ import type { Env, AuthUser } from "./types";
 import { writeAudit, hitRateLimit } from "./adminAudit";
 import { registerForgeGeneration } from "./bookForgeGeneration";
 import { ensureShopCatalog, slugify } from "./shopCatalog";
+import { printedLines } from "./bookForgeEditorial";
 
 export const FORGE_SCHEMA = `CREATE TABLE IF NOT EXISTS book_forge_projects (
  id TEXT PRIMARY KEY, owner_id TEXT NOT NULL, title TEXT NOT NULL, revision INTEGER NOT NULL,
@@ -40,7 +41,7 @@ export type Page = {
   art?: string;
   prompt?: string;
   artModel?: string;
-  visual?: { type: string; count: number };
+  visual?: { type: string; count: number; start?: number };
   answerPage?: boolean;
 };
 export type ForgePlan = {
@@ -145,6 +146,13 @@ export function validateBook(input: any, old: Book): Book {
     approved: undefined,
   };
 }
+/** Counting diagrams take 0–20 objects (0 is a valid empty group); number cards show start (0 or 1) to count (≤10). */
+export function validVisual(v: NonNullable<Page["visual"]>): boolean {
+  if (!Number.isInteger(v.count)) return false;
+  if (v.type === "number-cards")
+    return v.count >= 1 && v.count <= 10 && (v.start === undefined || v.start === 0 || v.start === 1);
+  return ["counters", "ten-frame", "shapes"].includes(v.type) && v.count >= 0 && v.count <= 20;
+}
 export function qaBook(book: Book): string[] {
   const issues: string[] = [...(book.review || [])];
   if (
@@ -162,13 +170,7 @@ export function qaBook(book: Book): string[] {
     );
   for (const [i, p] of book.pages.entries()) {
     const label = `Page ${i + 1}`;
-    if (
-      p.visual &&
-      (!["counters", "ten-frame", "shapes"].includes(p.visual.type) ||
-        !Number.isInteger(p.visual.count) ||
-        p.visual.count < 0 ||
-        p.visual.count > 20)
-    )
+    if (p.visual && !validVisual(p.visual))
       issues.push(`${label}: invalid maths diagram.`);
     if (!p.title || !p.text || !p.goal)
       issues.push(`${label}: add title, content and learning goal.`);
@@ -201,8 +203,27 @@ export async function forgeLessonSnapshot(
     .first();
   return lesson ? JSON.stringify(lesson) : null;
 }
+const NUMBER_WORDS = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
+/** Dots for a number card, in rows of five like a ten-frame so amounts are easy to see. */
+const cardDots = (n: number, x: number, y: number) =>
+  Array.from({ length: n }, (_, i) => `<circle cx="${x + 8 + (i % 5) * 11}" cy="${y + 7 + Math.floor(i / 5) * 11}" r="4.2" fill="#222"/>`).join("");
+/** Number cards: each shows the numeral, its name and its dot pattern. Zero shows an empty dot area. */
+function numberCards(start: number, end: number): string {
+  const n = end - start + 1;
+  const perRow = n > 6 ? Math.ceil(n / 2) : n;
+  const w = 74, h = 92, gap = (470 - perRow * w) / Math.max(1, perRow - 1);
+  const cards = Array.from({ length: n }, (_, i) => {
+    const v = start + i;
+    const x = (i % perRow) * (w + Math.min(gap, 10)), y = Math.floor(i / perRow) * (h + 8);
+    return `<g><rect x="${x + 0.5}" y="${y + 0.5}" width="${w}" height="${h}" rx="6" fill="white" stroke="#555"/><text x="${x + w / 2}" y="${y + 34}" text-anchor="middle" font-family="Georgia,serif" font-size="30" fill="#111">${v}</text><text x="${x + w / 2}" y="${y + 52}" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#333">${NUMBER_WORDS[v]}</text><rect x="${x + 7}" y="${y + 61}" width="${w - 14}" height="25" rx="3" fill="none" stroke="#bbb" stroke-dasharray="${v === 0 ? "3 2" : "0"}"/>${cardDots(v, x + 7, y + 61)}</g>`;
+  }).join("");
+  const rows = Math.ceil(n / perRow);
+  return `<svg class="cards" preserveAspectRatio="xMinYMin meet" role="img" aria-label="Number cards ${start} to ${end}, each with its number name and dot pattern" viewBox="0 0 470 ${rows * (h + 8)}" xmlns="http://www.w3.org/2000/svg">${cards}</svg>`;
+}
 export function mathDiagram(visual: Page["visual"]): string {
   if (!visual) return "";
+  if (visual.type === "number-cards")
+    return numberCards(visual.start === 1 ? 1 : 0, Math.max(1, Math.min(10, Math.trunc(visual.count))));
   const count = Math.max(0, Math.min(20, Math.trunc(visual.count)));
   const tenFrame = visual.type === "ten-frame";
   // Standard ten-frames have two rows of five. Show a second frame only above ten.
@@ -216,21 +237,72 @@ export function mathDiagram(visual: Page["visual"]): string {
     ? Array.from(
         { length: count > 10 ? 20 : 10 },
         (_, i) =>
-          `<rect x="${x(i)}" y="${y(i)}" width="42" height="45" fill="white" stroke="#285441"/>`,
+          `<rect x="${x(i)}" y="${y(i)}" width="42" height="45" fill="white" stroke="#333"/>`,
       ).join("")
     : "";
+  // Loose objects sit inside a group outline, so an empty group (0) is visibly a group with nothing in it.
+  const rows = count > 10 ? 2 : 1;
+  const group = tenFrame
+    ? ""
+    : `<rect x="3" y="3" width="${Math.max(4, Math.min(count, 10)) * 45 + 12}" height="${rows * 45 + 12}" rx="10" fill="none" stroke="#888" stroke-dasharray="5 4"/>`;
   const shapes = Array.from({ length: count }, (_, i) =>
     visual.type === "shapes"
-      ? `<rect x="${x(i) + 10}" y="${y(i) + 10}" width="25" height="25" rx="3" fill="#527345"/>`
-      : `<circle cx="${x(i) + 21}" cy="${y(i) + 22}" r="13" fill="#527345"/>`,
+      ? `<rect x="${x(i) + 10}" y="${y(i) + 10}" width="25" height="25" rx="3" fill="#333"/>`
+      : `<circle cx="${x(i) + 21}" cy="${y(i) + 22}" r="13" fill="#222"/>`,
   ).join("");
-  return `<svg role="img" aria-label="${count} objects${tenFrame ? " in ten-frames" : ""}" viewBox="0 0 470 110" xmlns="http://www.w3.org/2000/svg">${cells}${shapes}</svg>`;
+  const label = count === 0 ? "An empty group: 0 objects" : `${count} objects${tenFrame ? " in ten-frames" : ""}`;
+  const height = tenFrame ? 110 : rows * 45 + 20;
+  return `<svg class="diagram" role="img" aria-label="${label}" viewBox="0 0 470 ${height}" preserveAspectRatio="xMinYMin meet" xmlns="http://www.w3.org/2000/svg">${group}${cells}${shapes}</svg>`;
 }
+/**
+ * Student-page text as print blocks: paragraphs, a boxed worked example (the paragraph that starts "Worked example"),
+ * and numbered tasks, each followed by a writing line. Answer pages list answers without writing space.
+ */
+export function renderPageText(text: string, answerPage = false): string {
+  return text.split(/\n{2,}/).map((block) => {
+    const lines = block.split("\n");
+    if (/^worked example\b/i.test(lines[0]))
+      return `<div class="example"><div class="example-label">Worked example</div>${lines.map((l, i) => `<p>${escapeHtml(i === 0 ? l.replace(/^worked example:?\s*/i, "") : l)}</p>`).join("")}</div>`;
+    if (lines.every((l) => /^\d+[.)]\s/.test(l)))
+      return `<ol class="${answerPage ? "answers" : "tasks"}">${lines.map((l) => { const m = l.match(/^(\d+)[.)]\s+(.*)$/)!; return `<li><span class="n">${m[1]}</span><span class="q">${escapeHtml(m[2])}</span>${answerPage ? "" : '<span class="write"></span>'}</li>`; }).join("")}</ol>`;
+    return `<p class="para">${lines.map(escapeHtml).join("<br>")}</p>`;
+  }).join("");
+}
+// Usable height of an answer sheet below its heading, and the estimated height of one answer row (mm).
+const ANSWER_SHEET_MM = 215, ANSWER_HEADING_MM = 13, ANSWER_ROW_MM = 8.4;
+/** Printed sheets: each student page on its own sheet; consecutive answer pages packed together while they fit. */
+export function printSheets(pages: Page[]): Page[][] {
+  const sheets: Page[][] = [];
+  let used = Infinity;
+  for (const p of pages) {
+    if (!p.answerPage) {
+      sheets.push([p]);
+      used = Infinity;
+      continue;
+    }
+    const cost = ANSWER_HEADING_MM + printedLines(p.text) * ANSWER_ROW_MM;
+    if (used + cost > ANSWER_SHEET_MM) {
+      sheets.push([p]);
+      used = cost;
+    } else {
+      sheets[sheets.length - 1].push(p);
+      used += cost;
+    }
+  }
+  return sheets;
+}
+const studentSheet = (p: Page, images: Record<string, string>) =>
+  `<h1>${escapeHtml(p.title)}</h1><div class="goal"><b>Our learning quest:</b> ${escapeHtml(p.goal)}</div>${p.art && images[p.art] ? `<img alt="" src="${images[p.art]}">` : ""}${mathDiagram(p.visual)}<div class="text">${renderPageText(p.text)}</div><div class="lines">${"<div></div>".repeat(28)}</div>`;
+const answerSheet = (pages: Page[]) =>
+  `<h1>Answers</h1><div class="goal"><b>For the adult:</b> ${escapeHtml(pages[0].goal)}</div><div class="text">${pages.map((p) => `<h2 class="session">${escapeHtml(p.title.replace(/^Answers · /, ""))}</h2>${renderPageText(p.text, true)}`).join("")}</div>`;
 export function renderBook(
   book: Book,
   images: Record<string, string> = {},
 ): string {
   const t = TEMPLATES.find((t) => t.id === book.template)!;
+  const sheets = printSheets(book.pages);
+  const sheetOf = new Map<Page, number>();
+  sheets.forEach((sheet, i) => sheet.forEach((p) => sheetOf.set(p, i)));
   const contentsCount = book.generated
     ? Math.max(1, Math.ceil((book.plan?.length || 0) / 24))
     : 0;
@@ -248,12 +320,11 @@ export function renderBook(
                 `<div><span>${n * 24 + i + 1}. ${escapeHtml(s.title)}</span><b>${
                   offset +
                   1 +
-                  Math.max(
-                    0,
-                    book.pages.findIndex(
+                  (sheetOf.get(
+                    book.pages.find(
                       (p) => p.lessonId === s.lessonId && !p.answerPage,
-                    ),
-                  )
+                    )!,
+                  ) ?? 0)
                 }</b></div>`,
             )
             .join(
@@ -262,7 +333,7 @@ export function renderBook(
       ).join("")}`
     : "";
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'"><title>${escapeHtml(book.title)}</title><style>
- @page{size:A4;margin:0}*{box-sizing:border-box}body{margin:0;background:#ddd;color:#24342b;font-family:Arial,sans-serif}.page{width:210mm;height:297mm;padding:18mm 20mm;position:relative;background:${t.paper};break-after:page;overflow:hidden;margin:12px auto}.page:last-child{break-after:auto}.cover{background:#f3efdf}.cover h1{font-size:54px;max-width:550px;margin:35px 0}.cover-kicker{margin-top:60px;text-transform:uppercase;font-size:12px;letter-spacing:3px}.cover-note{font-family:Georgia,serif;font-size:24px;line-height:1.5}.cover-art svg{height:65mm;margin-top:28px}.name-line{margin-top:25px;font-size:15px}.intro{font-size:13px;line-height:1.6}.contents-list{margin-top:18px}.contents-list>div{display:flex;justify-content:space-between;border-bottom:1px solid #d9ddcf;padding:4px 0;font-size:11px}.attribution{font-size:9px;line-height:1.4;margin-top:20px}header{font-size:11px;font-weight:bold;letter-spacing:3px;color:${t.colour};border-bottom:2px solid ${t.colour};padding-bottom:12px}h1{font-family:Georgia,serif;color:${t.colour};font-size:30px;line-height:1.15;margin:20px 0 14px}.goal{padding:12px;border-left:4px solid ${t.colour};background:#ffffffb0;font-size:12px;line-height:1.4}.text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;line-height:1.65;margin-top:18px}svg{display:block;width:100%;height:32mm;margin:12px 0}img{display:block;width:100%;height:65mm;object-fit:contain;margin:14px 0}.lines{height:28mm;background:repeating-linear-gradient(transparent,transparent 8mm,#c5cbbf 8mm,#c5cbbf 8.2mm);margin-top:14px}footer{position:absolute;bottom:12mm;left:20mm;right:20mm;display:flex;justify-content:space-between;font-size:10px;color:${t.colour}}@media print{body{background:white}.page{margin:0}}</style></head><body>${front}${book.pages.map((p, i) => `<section class="page"><header>SIDE-QUEST · ${escapeHtml(book.title)}</header><h1>${escapeHtml(p.title)}</h1><div class="goal"><b>Our learning quest</b><br>${escapeHtml(p.goal)}</div>${p.art && images[p.art] ? `<img alt="" src="${images[p.art]}">` : ""}${mathDiagram(p.visual)}<div class="text">${escapeHtml(p.text)}</div><div class="lines"></div><footer><span>Side-Quest Learning · A little curiosity goes a long way</span><span>${i + 1 + offset} / ${book.pages.length + offset}</span></footer></section>`).join("")}</body></html>`;
+ @page{size:A4;margin:0}*{box-sizing:border-box}body{margin:0;background:#ddd;color:#1c1c1c;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}.page{width:210mm;height:297mm;padding:16mm 18mm 24mm;position:relative;background:#fff;break-after:page;overflow:hidden;margin:12px auto;display:flex;flex-direction:column}.page:last-child{break-after:auto}.cover{background:${t.paper};padding:18mm 20mm}.cover header{color:${t.colour};border-bottom:2px solid ${t.colour};font-size:11px;letter-spacing:3px;padding-bottom:12px}.cover h1{font-size:52px;max-width:550px;margin:35px 0;color:${t.colour}}.cover-kicker{margin-top:60px;text-transform:uppercase;font-size:12px;letter-spacing:3px;color:${t.colour}}.cover-note{font-family:Georgia,serif;font-size:24px;line-height:1.5;color:#2a2a2a}.cover-art svg{height:65mm;margin-top:28px}.name-line{margin-top:25px;font-size:15px}.intro{font-size:13px;line-height:1.6;color:#333}.contents-list{margin-top:14px}.contents-list>div{display:flex;justify-content:space-between;border-bottom:0.6px solid #cfcfcf;padding:5px 0;font-size:11.5px}.attribution{font-size:8.5px;line-height:1.4;margin-top:18px;color:#666}header{flex:none;font-size:8.5px;font-weight:bold;letter-spacing:2.5px;text-transform:uppercase;color:#6a6a6a;border-bottom:0.6px solid #bdbdbd;padding-bottom:7px}h1{flex:none;font-family:Georgia,"Times New Roman",serif;color:#141414;font-size:25px;line-height:1.15;margin:13px 0 7px}.goal{flex:none;font-size:10.5px;line-height:1.4;color:#555;border-left:2px solid #b5b5b5;padding:1px 0 1px 8px;margin-bottom:4px}.goal b{color:#333}svg{flex:none;display:block;margin:8px 0}svg.diagram{width:100%;height:auto;max-height:30mm}svg.cards{width:100%;height:auto;max-height:64mm}img{flex:none;display:block;width:100%;height:55mm;object-fit:contain;margin:10px 0}.text{flex:none;font-size:13.5px;line-height:1.5;overflow-wrap:anywhere}.para{margin:6px 0}.example{border:0.75px solid #9a9a9a;border-radius:4px;padding:7px 11px;margin:8px 0 10px}.example-label{font-size:8.5px;font-weight:bold;letter-spacing:1.6px;text-transform:uppercase;color:#555;margin-bottom:3px}.example p{margin:2px 0}ol.tasks,ol.answers{list-style:none;padding:0;margin:6px 0 0}ol.tasks li,ol.answers li{display:grid;grid-template-columns:7mm 1fr;margin:0 0 2.5mm}ol.answers li{font-size:12.5px;margin-bottom:1.6mm}.n{font-weight:bold}.write{grid-column:2;height:9mm;border-bottom:0.6px solid #9e9e9e}.lines{flex:1 1 0;min-height:0;overflow:hidden;margin-top:3mm}.lines div{height:9mm;border-bottom:0.6px solid #c4c4c4}h2.session{font-family:Georgia,"Times New Roman",serif;font-size:15px;color:#141414;margin:12px 0 2px;padding-top:8px;border-top:0.6px solid #d0d0d0}h2.session:first-of-type{border-top:0;padding-top:0}.manual{white-space:pre-wrap}footer{position:absolute;bottom:11mm;left:18mm;right:18mm;display:flex;justify-content:space-between;font-size:8.5px;color:#777;border-top:0.6px solid #d0d0d0;padding-top:5px}.cover footer{color:${t.colour};border-top:0;left:20mm;right:20mm}@media print{body{background:white}.page{margin:0}}</style></head><body>${front}${sheets.map((sheet, i) => `<section class="page"><header>SIDE-QUEST · ${escapeHtml(book.title)}</header>${sheet[0].answerPage ? answerSheet(sheet) : studentSheet(sheet[0], images)}<footer><span>Side-Quest Learning · A little curiosity goes a long way</span><span>${i + 1 + offset} / ${sheets.length + offset}</span></footer></section>`).join("")}</body></html>`;
 }
 const base64 = (bytes: Uint8Array) => {
   let s = "";

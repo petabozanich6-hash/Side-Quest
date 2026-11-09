@@ -299,8 +299,30 @@ export default function HqBookForge() {
             Completed sections are saved as they finish. Creation runs in the
             background. Longer books take longer; completed sections stay saved.
           </p>
-          {generation.error && (
+          {generation.error && !/needs revision/.test(generation.error) && (
             <p className="mt-2 text-amber-900">{generation.error}</p>
+          )}
+          {generation.review && (
+            <div className="mt-2 text-sm" data-testid="forge-review">
+              <p className="font-semibold text-amber-900">
+                Session {Math.min(generation.cursor + 1, generation.total)} is
+                being revised (attempt {generation.review.attempts}). Nothing
+                from this draft is in the book until it passes every check.
+              </p>
+              {generation.review.errors.length > 0 && (
+                <ul className="list-disc pl-5 mt-1 text-amber-900">
+                  {generation.review.errors.map((e) => (
+                    <li key={e}>{e}</li>
+                  ))}
+                </ul>
+              )}
+              {generation.review.suggestions.length > 0 && (
+                <p className="mt-1 text-stone-600">
+                  Suggestions (not required):{" "}
+                  {generation.review.suggestions.join(" · ")}
+                </p>
+              )}
+            </div>
           )}
           <div className="flex gap-2 mt-3">
             {generation.status === "failed" && (

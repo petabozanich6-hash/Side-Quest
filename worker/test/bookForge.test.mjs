@@ -364,26 +364,12 @@ import {
   processBookForgeJobs,
   validateGeneratedSession,
 } from "../src/bookForgeGeneration.ts";
+import { countingSession } from "./fixtures/bookForgeSessions.mjs";
 test("Forge autonomous creation persists steps, checks text, produces PDF and never auto-publishes", async () => {
   const { h, owner } = await ownerSetup();
   await stepUp(h, owner);
   h.env.BUCKET = bucket();
-  const draft = {
-    pages: [
-      {
-        title: "Count the woodland treasures",
-        text: "Look at the counters. Touch each one as you count. Say one number for each counter. Worked example: two counters means two. Now count this set and write its number.",
-        visual: { type: "counters", count: 4 },
-      },
-      {
-        title: "Try counting for yourself",
-        text: "Collect four small stones. Put them in a row. Count each stone once. Move the stones into a circle. Count them again. Tell an adult what you noticed. Draw your own set of four stones.",
-        visual: { type: "ten-frame", count: 4 },
-      },
-    ],
-    answers:
-      "Page 1: There are four counters. The learner writes 4. Page 2: Both arrangements contain four stones; moving objects does not change the quantity.",
-  };
+  const draft = countingSession();
   let calls = 0;
   h.env.AI = {
     run: async (model, input) => {

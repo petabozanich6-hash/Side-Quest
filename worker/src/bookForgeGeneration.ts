@@ -12,6 +12,21 @@ import {
   type Page,
   type ForgePlan,
 } from "./bookForge";
+import {
+  checkSession,
+  composeAnswerText,
+  composeSessionText,
+  mergeFeedback,
+  parseDraft,
+  reconcileReview,
+  reviewPrompt,
+  revisePrompt,
+  writePrompt,
+  type Feedback,
+  type Revision,
+  type SessionContext,
+  type SessionDraft,
+} from "./bookForgeEditorial";
 const JOB_SCHEMA = `CREATE TABLE IF NOT EXISTS book_forge_jobs (
  project_id TEXT PRIMARY KEY, owner_id TEXT NOT NULL, family_id TEXT NOT NULL,
  status TEXT NOT NULL, phase TEXT NOT NULL, cursor INTEGER NOT NULL DEFAULT 0,
@@ -62,55 +77,45 @@ async function ask(env: Env, prompt: string, max = 4500): Promise<any> {
     );
   }
 }
-export function validateGeneratedSession(
-  raw: any,
-  plan: ForgePlan,
-  index: number,
-): Page[] {
-  if (!Array.isArray(raw?.pages) || raw.pages.length !== 2)
-    throw new Error("A lesson needs two complete student pages.");
-  const pages: Page[] = raw.pages.map((p: any, i: number) => {
-    const title = bounded(p?.title, 100),
-      text = bounded(p?.text, 900);
-    if (!title || text.length < 100)
-      throw new Error("A generated student page is incomplete or too long.");
-    let visual: Page["visual"];
-    if (p.visual) {
-      if (
-        !["counters", "ten-frame", "shapes"].includes(p.visual.type) ||
-        !Number.isInteger(p.visual.count) ||
-        p.visual.count < 0 ||
-        p.visual.count > 20
-      )
-        throw new Error("A mathematical diagram failed validation.");
-      visual = { type: p.visual.type, count: p.visual.count };
-    }
-    return {
-      id: `lesson-${index + 1}-page-${i + 1}`,
-      title,
-      text,
-      goal: plan.goal,
-      lessonId: plan.lessonId,
-      lessonSnapshot: JSON.stringify(plan),
-      locked: true,
-      visual,
-    };
-  });
-  const answers = bounded(raw.answers, 1400);
-  if (answers.length < 40)
-    throw new Error("The answer guide is missing or too long.");
+/** The three book pages of an approved session: two student pages and its answer page. */
+export function sessionPages(draft: SessionDraft, plan: ForgePlan, index: number): Page[] {
+  const snapshot = JSON.stringify(plan);
+  const pages: Page[] = draft.pages.slice(0, 2).map((p, i) => ({
+    id: `lesson-${index + 1}-page-${i + 1}`,
+    title: p.title,
+    text: composeSessionText(p),
+    goal: plan.goal,
+    lessonId: plan.lessonId,
+    lessonSnapshot: snapshot,
+    locked: true,
+    ...(p.visual ? { visual: { ...p.visual } } : {}),
+  }));
   pages.push({
     id: `lesson-${index + 1}-answers`,
     title: `Answers · ${plan.title}`.slice(0, 120),
-    text: answers,
+    text: composeAnswerText(draft),
     goal: "Adult guide: answers, acceptable responses and support.",
     lessonId: plan.lessonId,
-    lessonSnapshot: JSON.stringify(plan),
+    lessonSnapshot: snapshot,
     locked: true,
     answerPage: true,
   });
   return pages;
 }
+/** Parses and checks a generated session; throws with every deterministic problem, or returns its pages. */
+export function validateGeneratedSession(
+  raw: any,
+  plan: ForgePlan,
+  index: number,
+  ctx: SessionContext = { year: 0, subject: "Mathematics", title: plan.title, goal: plan.goal },
+): Page[] {
+  const draft = parseDraft(raw);
+  if (!draft) throw new Error("A lesson needs two complete student pages.");
+  const errors = checkSession(draft, { ...ctx, title: plan.title, goal: plan.goal });
+  if (errors.length) throw new Error(errors.join(" "));
+  return sessionPages(draft, plan, index);
+}
+const MAX_ATTEMPTS = 3;
 export function registerForgeGeneration(app: Hono<any>) {
   app.use("*", async (c, next) => {
     await ensureForgeJobs(c.env.DB);
@@ -275,8 +280,23 @@ export function registerForgeGeneration(app: Hono<any>) {
       .first();
     if (!job) return c.json({ job: null });
     const { payload, ...safe } = job;
+    const data = JSON.parse(payload as string);
+    // The draft being revised (never part of the book) and its feedback, for the owner to inspect.
+    const revision: Revision | undefined = job.phase === "write" ? data.revisions?.[job.cursor as number] : undefined;
     return c.json({
-      job: { ...safe, total: JSON.parse(payload as string).count },
+      job: {
+        ...safe,
+        total: data.count,
+        review: revision
+          ? {
+              attempts: revision.attempts,
+              errors: revision.feedback.filter((f) => f.kind === "error").map((f) => f.text),
+              suggestions: revision.feedback.filter((f) => f.kind === "suggestion").map((f) => f.text),
+              falsePositives: revision.falsePositives,
+              draft: revision.draft,
+            }
+          : null,
+      },
     });
   });
   for (const action of ["retry", "cancel"])
@@ -323,6 +343,9 @@ export async function processBookForgeJobs(env: Env) {
     .bind(lease, until, job.project_id, iso())
     .run();
   if (!claimed.meta.changes) return;
+  // A rejected session draft and its feedback, saved with the failure so the next attempt revises it.
+  let rejected: { cursor: number; revision: Revision } | null = null;
+  const payload = JSON.parse(job.payload);
   try {
     if (!(await activeRoles(env.DB, job.owner_id)).includes("owner"))
       throw new Error("Owner access is no longer active.");
@@ -332,8 +355,7 @@ export async function processBookForgeJobs(env: Env) {
       .bind(job.project_id, job.owner_id)
       .first<any>();
     if (!row) throw new Error("Project no longer exists.");
-    const book: Book = JSON.parse(row.document),
-      payload = JSON.parse(job.payload);
+    const book: Book = JSON.parse(row.document);
     let phase = job.phase,
       cursor = job.cursor,
       status = "queued";
@@ -391,34 +413,59 @@ export async function processBookForgeJobs(env: Env) {
         cursor = 0;
       }
     } else if (phase === "write") {
+      // Each attempt revises the last rejected draft against all feedback so far, then the whole draft is checked
+      // again. Nothing reaches book.pages until a session passes every check and the independent review.
       const plan = book.plan![cursor];
-      const draft = await ask(
+      const ctx: SessionContext = { year: payload.year, subject: payload.subject, title: plan.title, goal: plan.goal };
+      const previous: Revision = payload.revisions?.[cursor] || { draft: null, feedback: [], falsePositives: [], attempts: 0 };
+      const raw = await ask(
         env,
-        `Write session ${cursor + 1} of this original Side-Quest ${payload.year === 0 ? "Foundation" : `Year ${payload.year}`} ${payload.subject} workbook. Brief: ${payload.brief}\nSequence: ${JSON.stringify(book.plan!.map((p) => ({ title: p.title, code: p.code })))}\nPrevious step feedback: ${job.error || "none"}\nTHIS SESSION: ${JSON.stringify(plan)}\nCreate exactly TWO student pages: page 1 has a short explicit explanation, a fully worked example and supported practice; page 2 varies the task, adds independent practice and one simple real-world challenge. Use short age-appropriate instructions and plenty of writing space. Each page text 100–900 characters (at most 12 printed lines), numbered tasks, no answers on student pages except the clearly labelled worked example. No references to missing pictures or resources. For countable maths pictures, specify visual:{type:'counters'|'ten-frame'|'shapes',count:integer 0..20}; all counted objects are exactly that count. These diagrams are drawn by code, not AI art. No emoji. Decorative art is separate and never carries mathematical information. Provide complete numbered answers and acceptable responses, referencing each page/task, 40–1400 characters. Return {"pages":[{"title":"...","text":"...","visual":null},{"title":"...","text":"...","visual":null}],"answers":"..."}.`,
+        previous.draft
+          ? revisePrompt({ ctx, plan, draft: previous.draft, feedback: previous.feedback })
+          : writePrompt({
+              ctx,
+              brief: payload.brief,
+              sessionNumber: cursor + 1,
+              sequence: book.plan!.map((p) => ({ title: p.title, code: p.code })),
+              plan,
+            }),
         4000,
       );
-      const pages = validateGeneratedSession(draft, plan, cursor);
-      const layoutIssues = qaBook({
-        title: book.title,
-        template: book.template,
-        pages,
-        releases: [],
-      });
-      if (layoutIssues.length) throw new Error(layoutIssues.join(" "));
-      const review = await ask(
-        env,
-        `Independently verify this ${payload.year === 0 ? "Foundation" : `Year ${payload.year}`} ${payload.subject} workbook session for age suitability, mathematical correctness, complete and correct answers, goal alignment, unambiguous tasks and no dependence on nonexistent illustrations. Count diagrams exactly from visual.count. Accept worked-example answers on page 1. Do not demand diagrams for purely verbal tasks. Session plan: ${JSON.stringify(plan)}\nDraft: ${JSON.stringify(draft)}\nReturn {"pass":boolean,"issues":["specific errors only"]}.`,
-        1500,
-      );
-      if (
-        review.pass !== true ||
-        !Array.isArray(review.issues) ||
-        review.issues.length
-      )
-        throw new Error(
-          `Content review needs a retry: ${Array.isArray(review.issues) ? review.issues.join(" ").slice(0, 500) : "The independent check did not approve this session."}`,
-        );
+      const draft = parseDraft(raw);
+      const checks = draft
+        ? checkSession(draft, ctx)
+        : ["The reply was not a complete session in the required JSON shape."];
+      let pages: Page[] = [];
+      if (draft && !checks.length) {
+        pages = sessionPages(draft, plan, cursor);
+        checks.push(...qaBook({ title: book.title, template: book.template, pages, releases: [] }));
+      }
+      const verdict = checks.length
+        ? { errors: [], suggestions: [], falsePositives: [] }
+        : reconcileReview(await ask(env, reviewPrompt({ ctx, plan, draft: draft! }), 1500));
+      const errors = [...checks, ...verdict.errors];
+      if (errors.length) {
+        const feedback: Feedback[] = [
+          ...checks.map((text) => ({ kind: "error" as const, source: "check" as const, text })),
+          ...verdict.errors.map((text) => ({ kind: "error" as const, source: "reviewer" as const, text })),
+          ...verdict.suggestions.map((text) => ({ kind: "suggestion" as const, source: "reviewer" as const, text })),
+        ];
+        rejected = {
+          cursor,
+          revision: {
+            // An unreadable reply never replaces the last readable draft.
+            draft: draft ?? previous.draft,
+            feedback: mergeFeedback(previous.feedback, feedback),
+            falsePositives: [...previous.falsePositives, ...verdict.falsePositives].slice(-20),
+            attempts: previous.attempts + 1,
+          },
+        };
+        throw new Error(`Session ${cursor + 1} needs revision: ${errors.slice(0, 4).join(" ")}`.slice(0, 780));
+      }
+      if (verdict.falsePositives.length)
+        payload.falsePositives = [...(payload.falsePositives || []), ...verdict.falsePositives.map((f) => `Session ${cursor + 1}: ${f}`)].slice(-50);
       book.pages.push(...pages);
+      if (payload.revisions) delete payload.revisions[cursor];
       cursor++;
       if (cursor >= book.plan!.length) {
         book.pages = [
@@ -559,11 +606,12 @@ export async function processBookForgeJobs(env: Env) {
         lease,
       ),
       env.DB.prepare(
-        "UPDATE book_forge_jobs SET status=?,phase=?,cursor=?,error=?,lease=NULL,lease_until=NULL,updated_at=? WHERE project_id=? AND lease=? AND EXISTS (SELECT 1 FROM book_forge_projects WHERE id=? AND revision=? AND document=?)",
+        "UPDATE book_forge_jobs SET status=?,phase=?,cursor=?,payload=?,error=?,lease=NULL,lease_until=NULL,updated_at=? WHERE project_id=? AND lease=? AND EXISTS (SELECT 1 FROM book_forge_projects WHERE id=? AND revision=? AND document=?)",
       ).bind(
         status,
         phase,
         cursor,
+        JSON.stringify(payload),
         "",
         iso(),
         job.project_id,
@@ -578,7 +626,10 @@ export async function processBookForgeJobs(env: Env) {
         "Project changed while generating. Stop creation and review your saved pages.",
       );
   } catch (e) {
+    // Start from the stored payload so nothing half-done in this step is kept, except the rejected draft.
     const payload = JSON.parse(job.payload);
+    if (rejected)
+      payload.revisions = { ...(payload.revisions || {}), [rejected.cursor]: rejected.revision };
     const key = `${job.phase}:${job.cursor}`;
     payload.failures = payload.failures || {};
     payload.failures[key] = (payload.failures[key] || 0) + 1;
@@ -586,7 +637,7 @@ export async function processBookForgeJobs(env: Env) {
       "UPDATE book_forge_jobs SET status=?,payload=?,error=?,lease=NULL,lease_until=NULL,updated_at=? WHERE project_id=? AND lease=?",
     )
       .bind(
-        payload.failures[key] < 3 ? "queued" : "failed",
+        payload.failures[key] < MAX_ATTEMPTS ? "queued" : "failed",
         JSON.stringify(payload),
         (e instanceof Error
           ? e.message
