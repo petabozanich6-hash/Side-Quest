@@ -146,7 +146,21 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
         </div>
         {(p.can_buy || p.subscription) && (
           <div className="space-y-3">
-            {p.variants.length > 0 && (
+            {p.variants.some((x) => x.details) ? (
+              <fieldset className="space-y-2">
+                <legend className="text-sm font-semibold mb-1">Choose your option</legend>
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {p.variants.map((x) => (
+                    <label key={x.id} className={`rounded-xl border-2 p-3 cursor-pointer ${variant === x.id ? "border-emerald-700 bg-emerald-50" : "border-stone-200"} ${x.available ? "" : "opacity-50"}`}>
+                      <input type="radio" name={`opt-${p.id}`} className="sr-only" disabled={!x.available} checked={variant === x.id} onChange={() => setVariant(x.id)} />
+                      <span className="flex items-baseline justify-between gap-2"><span className="font-bold text-slate-900">{x.name}</span>{x.price_cents != null && <span className="font-bold" style={{ color: GREEN }}>{money(x.price_cents)}</span>}</span>
+                      {x.details && <ul className="mt-2 space-y-0.5 text-xs text-stone-700">{x.details.split(/\n+/).filter(Boolean).map((line, k) => <li key={k} className="flex gap-1.5"><span style={{ color: GREEN }}>✓</span>{line.replace(/^[-•*]\s*/, "")}</li>)}</ul>}
+                      {!x.available && <span className="text-xs text-rose-700">Sold out</span>}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            ) : p.variants.length > 0 && (
               <label className="block text-sm font-semibold">{p.prints_books ? "Which book?" : "Option"}
                 <select value={variant} onChange={(e) => setVariant(e.target.value)} className={field}>
                   <option value="">Choose…</option>

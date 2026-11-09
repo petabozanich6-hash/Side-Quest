@@ -117,3 +117,11 @@ test("later product batches reach an already-seeded shop once, as hidden drafts"
   await again.ensureShopCatalog(db);
   assert.equal(await one(db, "Growing Up Care Box (Girls)"), null);
 });
+
+test("tiers: each option keeps its own price and what's included", async () => {
+  const v = validateProduct({ title: "Science kit", department: "science", price_cents: 2900, variants: [{ name: "Basics", price_cents: 2900, details: "Workbook\nMagnifier" }, { name: "Full package", price_cents: 6900, details: "Everything in Basics\nMicroscope <b>" }] });
+  assert.equal(v.ok, true);
+  assert.equal(v.variants[1].details, "Everything in Basics\nMicroscope  b");
+  const pub = publicProduct({ status: "in_stock", visible: 1, price_cents: 2900, tags: [], personalisation: [], bundle_items: [], addons: [], gift_months: [], fulfilment: "physical" }, v.variants);
+  assert.deepEqual(pub.variants.map((x) => [x.name, x.price_cents, x.details.split("\n").length]), [["Basics", 2900, 2], ["Full package", 6900, 2]]);
+});

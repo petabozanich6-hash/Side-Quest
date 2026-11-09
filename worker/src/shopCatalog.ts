@@ -70,6 +70,8 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       for (const name of ["parcel_weight_g", "parcel_length_cm", "parcel_width_cm", "parcel_height_cm"]) {
         await db.prepare(`ALTER TABLE shop_products ADD COLUMN ${name} INTEGER`).run().catch(() => undefined);
       }
+      // What's included in each option, for tiers like "Basics" and "Full package".
+      await db.prepare("ALTER TABLE shop_variants ADD COLUMN details TEXT NOT NULL DEFAULT ''").run().catch(() => undefined);
       await seedCatalog(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
@@ -178,7 +180,7 @@ export function publicProduct(p: any, variants: any[] = [], preorderCount = 0, n
     preorder_progress: p.status === "pre_order" && p.preorder_target ? { ordered: preorderCount, target: p.preorder_target } : null,
     personalisation: p.personalisation, bundle_items: p.bundle_items, addons: p.addons, gift_months: p.gift_months,
     prints_books: !!p.prints_books,
-    variants: activeVariants.map((v) => ({ id: v.id, name: v.name, book_id: v.book_id || null, price_cents: v.price_cents ?? p.price_cents, available: p.status !== "in_stock" || v.stock == null || v.stock > 0 })),
+    variants: activeVariants.map((v) => ({ id: v.id, name: v.name, details: v.details || "", book_id: v.book_id || null, price_cents: v.price_cents ?? p.price_cents, available: p.status !== "in_stock" || v.stock == null || v.stock > 0 })),
     low_stock: p.status === "in_stock" && p.stock != null && p.low_stock_at != null && p.stock <= p.low_stock_at && p.stock > 0,
     can_buy: b.ok, can_register_interest: INTEREST.has(p.status), subscription: SUBSCRIPTION_FULFILMENT.has(p.fulfilment),
   };
@@ -242,7 +244,7 @@ export function validateProduct(b: any): { ok: true; value: Record<string, unkno
       const price = cents(v?.price_cents);
       const stock = intOrNull(v?.stock, 100000);
       if (price === "bad" || stock === "bad") return { ok: false, detail: `Check the price and stock for "${name}".` };
-      variants.push({ id: /^[0-9a-f-]{36}$/.test(String(v?.id)) ? String(v.id) : crypto.randomUUID(), name, sku: clip(v?.sku, 40), price_cents: price, stock, active: v?.active === false ? 0 : 1, sort: i, book_id: /^[a-z0-9-]{1,80}$/.test(String(v?.book_id || "")) ? String(v.book_id) : null });
+      variants.push({ id: /^[0-9a-f-]{36}$/.test(String(v?.id)) ? String(v.id) : crypto.randomUUID(), name, sku: clip(v?.sku, 40), price_cents: price, stock, active: v?.active === false ? 0 : 1, sort: i, details: typeof v?.details === "string" ? v.details.replace(/[\x00-\x09\x0b-\x1f\x7f<>]/g, " ").trim().slice(0, 600) : "", book_id: /^[a-z0-9-]{1,80}$/.test(String(v?.book_id || "")) ? String(v.book_id) : null });
     }
   }
   return {
