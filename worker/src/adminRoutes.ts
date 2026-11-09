@@ -34,6 +34,7 @@ import { billingConfig } from "./billing";
 import { createHoardOffer, disableHoardOffer, giftPreviewDays, listHoardOffers } from "./dragonHoard";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
+import { createBookForgeRoutes } from "./bookForge";
 import { registerShopAdmin } from "./shopRoutes";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -589,6 +590,7 @@ export function createAdminRoutes() {
   });
 
   // ---------------------------------------------------------------- shop catalogue
+  admin.route("/book-forge", createBookForgeRoutes());
   registerShopAdmin(admin, { requirePermission, actor, readJson });
 
   admin.all("*", (c) => notFound(c));

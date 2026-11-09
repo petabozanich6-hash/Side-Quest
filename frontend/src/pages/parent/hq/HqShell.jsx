@@ -5,6 +5,7 @@ import { adminApi, enrolPasskey, errorCode, errorText, stepUpWithPasskey } from 
 import { Alert, Button, GREEN } from "./ui";
 
 const TABS = [
+  { to: "/parent/command-centre/book-forge", label: "Book Forge", testid: "hq-tab-book-forge" },
   { to: "/parent/command-centre", label: "Overview", end: true, testid: "hq-tab-overview" },
   { to: "/parent/command-centre/customers", label: "Customers", testid: "hq-tab-customers" },
   { to: "/parent/command-centre/feedback", label: "Feedback inbox", testid: "hq-tab-feedback" },
