@@ -28,8 +28,12 @@ export default function QuestBookOvernight() {
   useEffect(()=>{
     mounted.current=true;
     void load();
-    const interval=setInterval(()=>{void load();},15000);
-    return ()=>{mounted.current=false;clearInterval(interval);};
+    // Poll gently and only while the tab is visible: each refresh scans the owner's lessons,
+    // and fast polling from open tabs overloaded the D1 database.
+    const interval=setInterval(()=>{if(!document.hidden)void load();},60000);
+    const onVisible=()=>{if(!document.hidden)void load();};
+    document.addEventListener("visibilitychange",onVisible);
+    return ()=>{mounted.current=false;clearInterval(interval);document.removeEventListener("visibilitychange",onVisible);};
   },[load]);
   const chosen=(data?.books||[]).filter((b)=>selected.includes(b.id) && b.has_chapters);
   const visibleBooks=(data?.books||[]).filter(b=>b.missing>0||b.repairable>0||b.ai_cleared>0||!b.has_chapters);

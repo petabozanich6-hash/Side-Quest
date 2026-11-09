@@ -13,8 +13,17 @@ const LEASE_MS = 30 * 60_000;
 const SYNC_MS = 2 * 60_000;
 const MAX_SYNC_ITEMS = 120;
 
-/** D1-backed jobs survive tab closure, Cloudflare restarts, and interrupted cron runs. */
+/** D1-backed jobs survive tab closure, Cloudflare restarts, and interrupted cron runs.
+ * The schema check (two CREATE TABLEs, PRAGMAs and three index statements) runs once per
+ * isolate per database instead of on every poll and every cron tick: repeating DDL on each
+ * request competed with real work on the single-threaded D1 database. */
+const overnightSchemaReady = new WeakSet<object>();
 export async function ensureOvernightTables(db: DB) {
+  if (overnightSchemaReady.has(db as object)) return;
+  await createOvernightTables(db);
+  overnightSchemaReady.add(db as object);
+}
+async function createOvernightTables(db: DB) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_jobs (
     id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL, family_id TEXT NOT NULL,
     status TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'generate', auto_approve INTEGER NOT NULL DEFAULT 0, total INTEGER NOT NULL, created_at TEXT NOT NULL,
@@ -56,28 +65,38 @@ export async function ensureOvernightTables(db: DB) {
     ON quest_overnight_items(job_id,status,position)`).run();
 }
 
-/** A real working draft in ANY status counts as generated; never remake it overnight. */
-async function existingIds(db: DB, familyId: string, bookId: string) {
-  const { results } = await db.prepare(`SELECT json_extract(data,'$.quest_chapter_id') AS chapter_id
+/**
+ * Every Quest Book companion lesson for the family, newest first, grouped by book.
+ * One indexed query per family replaces the previous two full JSON scans of `lessons`
+ * per book; those scans were ~98% of all D1 time and overloaded the database
+ * (the admin page polls this and the cron runs it every minute).
+ */
+async function questLessonsByBook(db: DB, familyId: string) {
+  const { results } = await db.prepare(`SELECT id,status,version,updated_at,data,
+    json_extract(data,'$.quest_chapter_id') AS chapter_id,
+    json_extract(data,'$.quest_book_id') AS book_id
     FROM lessons WHERE family_id=? AND archived_at IS NULL AND json_valid(data)
-    AND json_extract(data,'$.quest_book_id')=?
-    AND COALESCE(json_extract(data,'$.source'),'') != 'side_quest_book'`)
-    .bind(familyId, bookId).all<{ chapter_id: string }>();
-  return new Set((results || []).map((r) => r.chapter_id).filter(Boolean));
+    AND json_extract(data,'$.quest_book_id') IS NOT NULL
+    AND COALESCE(json_extract(data,'$.source'),'')!='side_quest_book'
+    ORDER BY updated_at DESC`).bind(familyId).all<any>();
+  const byBook = new Map<string, any[]>();
+  for (const row of results || []) {
+    const key = String(row.book_id);
+    const list = byBook.get(key) || [];
+    list.push(row); byBook.set(key, list);
+  }
+  return byBook;
 }
 export async function overnightCandidates(env: Env, familyId: string) {
   const books = (await listBooks(env.BUCKET)).filter((book) => book.has_book);
+  const lessonsByBook = books.length ? await questLessonsByBook(env.DB, familyId) : new Map<string, any[]>();
   const grouped = [];
   for (const book of books) {
     const chapters = book.has_chapters ? await readChapters(env.BUCKET!, book.id) : [];
-    const existing = await existingIds(env.DB, familyId, book.id);
+    const rows = lessonsByBook.get(book.id) || [];
+    // A real working draft in ANY status counts as generated; never remake it overnight.
+    const existing = new Set(rows.map((r) => r.chapter_id).filter(Boolean));
     const missing = chapters.filter((ch) => !existing.has(ch.id));
-    const { results: rows } = await env.DB.prepare(`SELECT id,status,version,updated_at,data,
-      json_extract(data,'$.quest_chapter_id') AS chapter_id
-      FROM lessons WHERE family_id=? AND archived_at IS NULL AND json_valid(data)
-      AND json_extract(data,'$.quest_book_id')=?
-      AND COALESCE(json_extract(data,'$.source'),'')!='side_quest_book'
-      ORDER BY updated_at DESC`).bind(familyId,book.id).all<any>();
     const latest = new Map<string,any>();
     for (const row of rows || []) if(row.chapter_id && !latest.has(row.chapter_id))latest.set(row.chapter_id,row);
     const repairItems: Array<{book_id:string;book_title:string;chapter_id:string;chapter_title:string;revision:string;lesson_id:string;lesson_updated_at:string}> = [];
