@@ -45,6 +45,11 @@ export default function GuidedDocument() {
     return () => { active = false; };
   }, [id, productId, token]);
 
+  // Explicit completion warnings: never silently call an unfinished plan submission-ready.
+  const missingFields = FIELDS.filter(([key]) => !clean(answers[key])).map(([, label]) => label);
+  const missingAreas = (meta?.areas || []).filter((area) =>
+    !clean(areas[area]?.focus) || !clean(areas[area]?.activities) || !clean(areas[area]?.evidence));
+  const incomplete = missingFields.length + missingAreas.length;
   const update = (key, value) => setAnswers((old) => ({ ...old, [key]: value.slice(0, 6000) }));
   const updateArea = (name, key, value) => setAreas((old) => ({
     ...old, [name]: { ...(old[name] || {}), [key]: value.slice(0, 6000) },
@@ -105,10 +110,19 @@ export default function GuidedDocument() {
       {meta && preview && <article className="document-sheet max-w-3xl mx-auto p-8 bg-white shadow-sm rounded-xl leading-relaxed text-sm">
         <header className="border-b border-stone-400 pb-4 mb-5">
           <p className="text-xs uppercase tracking-wide text-stone-600">Side-Quest • Independent home education planning resource</p>
-          <h1 className="text-2xl font-bold mt-2">{meta.plan_name}</h1>
+          <h1 className="text-2xl font-bold mt-2">Family draft: {meta.plan_name}</h1>
           <p>{meta.state_name} • Requirements reference reviewed {meta.requirements_checked_on}</p>
           <p className="mt-2 text-xs">Not issued or approved by {meta.authority}. Parents must check current official registration instructions.</p>
         </header>
+        <section className="mb-5 border border-amber-600 p-3 break-inside-avoid">
+          <h2 className="font-bold">Completion and requirements review</h2>
+          <p className="mt-1">{incomplete
+            ? `Draft incomplete: ${missingFields.length} general sections and ${missingAreas.length} learning areas need more information.`
+            : "All guided fields contain responses. This does NOT establish that your state's specific requirements are satisfied."}</p>
+          {!!missingFields.length && <p className="mt-2">Unanswered sections: {missingFields.join("; ")}</p>}
+          {!!missingAreas.length && <p className="mt-2">Incomplete learning areas: {missingAreas.join("; ")}</p>}
+          <p className="mt-2">Check all official requirements, the appropriate government forms, supporting evidence and the accuracy of every statement before submitting anything.</p>
+        </section>
         {FIELDS.map(([key, label]) => <React.Fragment key={key}>{line(label, answers[key])}</React.Fragment>)}
         <h2 className="text-xl font-bold mb-2 mt-6">Learning area plans</h2>
         {meta.areas.map((name) => <section key={name} className="mb-5 break-inside-avoid">
