@@ -242,9 +242,12 @@ test("state document downloads cannot be sold before a PDF is uploaded", async (
   assert.equal(locked.can_buy, false, "not downloadable just because the owner enabled the listing");
   assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /Download file not uploaded/);
   await db.prepare("UPDATE shop_products SET digital_file = 1 WHERE id = ?").bind(p.id).run();
-  const ready = (await publicCatalog(db)).products.find((x) => x.id === p.id);
-  assert.equal(ready.can_buy, true);
-  const quoted = await priceItems(db, [{ product_id: p.id }]);
-  assert.equal(quoted.ok, true);
-  assert.deepEqual([quoted.lines[0].amount_cents, quoted.lines[0].physical, quoted.postage], [1495, false, 0]);
+  const reviewed = (await publicCatalog(db)).products.find((x) => x.id === p.id);
+  assert.equal(reviewed.can_buy, false, "even an uploaded PDF needs substantive state-specific approval");
+  assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /quality review pending/);
+  // Ordinary digital products remain usable: this stricter gate applies to
+  // jurisdiction-specific education documents, not the rest of the shop.
+  await db.prepare("UPDATE shop_products SET tags = ? WHERE id = ?").bind('["ordinary-download"]', p.id).run();
+  const regular = (await publicCatalog(db)).products.find((x) => x.id === p.id);
+  assert.equal(regular.can_buy, true);
 });
