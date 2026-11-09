@@ -7,7 +7,7 @@ import { validateMeta, validateChapters, readChapters, chapterRevision, companio
 import { recordQuestBookPurchase, saveCart } from "../src/questBookPurchases.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validatePlanRequest, normaliseSubsections, suggestBookSubsections } from "../src/questBookSubsections.ts";
-import { processQuestOvernight, syncOvernightWork, ensureOvernightTables } from "../src/questBookOvernight.ts";
+import { processQuestOvernight, syncOvernightWork, ensureOvernightTables, forgetOvernightSchema } from "../src/questBookOvernight.ts";
 
 let seq = 0;
 // Quest Books aren't included with membership: families (members or not) buy the book or the pack.
@@ -1143,6 +1143,7 @@ test("Running generation survives the upgrade and accepts a separate repair queu
   const generation=(await start.json()).job;
   // Reproduce the deployed schema while an existing generation queue runs.
   h.db.raw.exec("DROP INDEX quest_one_active_overnight_kind; CREATE UNIQUE INDEX quest_one_active_overnight_job ON quest_overnight_jobs(family_id) WHERE status IN ('building','running','paused')");
+  forgetOvernightSchema(h.db); // a deploy starts fresh isolates, which re-check the schema
   const before=h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=? ORDER BY position").all(generation.id);
   const repairResponse=await h.req(url+"/start",owner.token,"POST",{book_ids:[id],mode:"repair"});
   assert.equal(repairResponse.status,200,await repairResponse.clone().text());
