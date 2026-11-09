@@ -8,6 +8,7 @@ export default function QuestBookOvernight() {
   const [data,setData] = useState(null);
   const [selected,setSelected] = useState([]);
   const [autoApprove,setAutoApprove] = useState(false);
+  const [autoFollow,setAutoFollow] = useState(false);
   const [busy,setBusy] = useState("");
   const [error,setError] = useState("");
   const initialized = useRef(false);
@@ -80,16 +81,16 @@ export default function QuestBookOvernight() {
     if(kind==="stop" && !window.confirm("Stop this queue? Finished lessons will be kept. Waiting lessons will stop processing, and you can start a new queue later. A lesson already being processed may still finish."))return;
     if(kind==="set_auto_approve" && options.enabled && !window.confirm("Auto-approve only NEW lessons that pass all AI checks from this point onward? Already generated drafts will not be approved retroactively. Nothing will be published."))return;
     if((kind==="start" || kind==="repair") && !window.confirm(kind==="start"
-      ? `Queue ${totalSelected} missing lessons for unattended AI generation? Workers AI resources may incur charges. Existing lessons remain untouched. ${autoApprove?"New AI-cleared lessons will be approved automatically; flagged ones stay Draft.":"New lessons stay Draft until reviewed."} Nothing is published. The queue can be paused or stopped, and new chapter plans will be picked up automatically.`
+      ? `Queue ${totalSelected} missing lessons for unattended AI generation? Workers AI resources may incur charges. Existing lessons remain untouched. ${autoApprove?"New AI-cleared lessons will be approved automatically; flagged ones stay Draft.":"New lessons stay Draft until reviewed."} Nothing is published. The queue can be paused or stopped.${autoFollow?" New chapter plans will be picked up automatically.":" Books you upload later are not added."}`
       : `Run AI repair on ${repairSelected} flagged lesson(s) across selected books? This can incur AI charges. Repaired lessons remain unapproved until checked. Stubborn problems stay in the attention queue.`))return;
     setBusy(kind);setError("");
     try{
       const queued=kind==="start"||kind==="repair";
       const path=queued?"/quest-books/admin/overnight/start":`/quest-books/admin/overnight/${encodeURIComponent(jobId)}/control`;
       await api.post(path,queued?{book_ids:(kind==="repair"?repairBooks:generateBooks).map(b=>b.id),
-        mode:kind==="repair"?"repair":"generate",auto_approve:kind==="start"&&autoApprove}:{action:kind,...options});
+        mode:kind==="repair"?"repair":"generate",auto_approve:kind==="start"&&autoApprove,auto_follow:kind==="start"?autoFollow:true}:{action:kind,...options});
       await load();
-      toast.success(kind==="start"?"Generation started; new book chapter plans will be added automatically.":kind==="repair"?
+      toast.success(kind==="start"?(autoFollow?"Generation started; new book chapter plans will be added automatically.":"Generation started for the selected books."):kind==="repair"?
         "Repair watch started; newly flagged lessons will be added automatically.":kind==="pause"?
         "Queue paused after the current lesson.":kind==="resume"?"Queue resumed.":kind==="stop"?
         "Queue stopped. Finished lessons are safe.":kind==="set_auto_approve"?
@@ -101,7 +102,7 @@ export default function QuestBookOvernight() {
   return <section className="rounded-2xl border border-violet-300 bg-white p-4 sm:p-5 space-y-4" data-testid="quest-overnight-queue">
     <div className="space-y-1">
       <h3 className="font-bold text-violet-950 text-lg">Live Lesson Production Queue</h3>
-      <p className="text-sm text-slate-700">Make missing lessons, approve AI-cleared drafts, and bulk-repair the flagged ones across all your uploaded books. Queued work continues on the server while you use the rest of Side-Quest or close the browser. New chapter plans and flagged drafts are picked up automatically when queue watching is on. If the AI allowance temporarily runs out, the queue retries when available.</p>
+      <p className="text-sm text-slate-700">Make missing lessons, approve AI-cleared drafts, and bulk-repair the flagged ones across all your uploaded books. Queued work continues on the server while you use the rest of Side-Quest or close the browser. New chapter plans and flagged drafts are picked up automatically only when you switch queue watching on. If the AI allowance temporarily runs out, the queue retries when available.</p>
       <p className="text-xs text-slate-600">Books need a saved chapter plan. Generation and repair share a dedicated one-minute server cycle (up to 60 attempts an hour). Actual progress depends on AI availability and retries. You can pause either queue. Nothing is published automatically.</p>
     </div>
     {!data && !error && <p role="status" className="text-sm">Finding missing lessons…</p>}
@@ -210,6 +211,11 @@ export default function QuestBookOvernight() {
           <input type="checkbox" checked={autoApprove} onChange={e=>setAutoApprove(e.target.checked)}
             disabled={!!busy} data-testid="quest-overnight-auto-approve" />
           <span>Automatically approve newly generated AI-cleared lessons (zero warnings and all required content). Existing lessons are untouched. Any lesson with an issue stays a draft for bulk repair. This is not publication.</span>
+        </label>}
+        {!generationActive && totalSelected>0 && <label className="flex items-start gap-2 rounded-lg bg-stone-50 p-2 text-xs text-slate-800">
+          <input type="checkbox" checked={autoFollow} onChange={e=>setAutoFollow(e.target.checked)}
+            disabled={!!busy} data-testid="quest-overnight-auto-follow" />
+          <span>Also make lessons for books I upload later. Leave this off to upload PDFs without starting lesson generation.</span>
         </label>}
         <div className="flex flex-wrap items-center gap-2">
           {!generationActive && totalSelected>0 && <button type="button" disabled={!!busy} onClick={()=>void action("start")}

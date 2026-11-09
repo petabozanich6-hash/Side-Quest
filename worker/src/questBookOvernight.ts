@@ -206,7 +206,8 @@ export function registerQuestOvernight(app: App, g: Guards) {
       await c.env.DB.prepare(`INSERT INTO quest_overnight_jobs
         (id,owner_user_id,family_id,status,kind,auto_approve,auto_follow,total,created_at,updated_at)
         VALUES (?,?,?,'building',?,?,?,?,?,?)`)
-        .bind(id,user.id,user.family_id,kind,kind==="generate" && body.auto_approve===true?1:0,1,items.length,time,time).run();
+        // Watching for newly uploaded books (and newly flagged drafts) is opt-in: uploading a PDF must not start AI work.
+        .bind(id,user.id,user.family_id,kind,kind==="generate" && body.auto_approve===true?1:0,body.auto_follow===true?1:0,items.length,time,time).run();
     } catch { return c.json({detail:"A queue of this type is already active. Open it instead."},409); }
     try {
       for(let i=0;i<items.length;i+=40) {

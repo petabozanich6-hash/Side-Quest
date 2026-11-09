@@ -25,7 +25,7 @@ test("repair action stays available while generation runs",async()=>{
   expect(repair.disabled).toBe(false);
   expect(box.querySelector('input[type="checkbox"]').disabled).toBe(false);
   await act(async()=>repair.click());
-  expect(api.post).toHaveBeenCalledWith("/quest-books/admin/overnight/start",{book_ids:["book"],mode:"repair",auto_approve:false});
+  expect(api.post).toHaveBeenCalledWith("/quest-books/admin/overnight/start",{book_ids:["book"],mode:"repair",auto_approve:false,auto_follow:true});
 });
 test("both queues remain visible and pause targets only the selected queue",async()=>{
   state.jobs.push(job("repairs","repair"));
