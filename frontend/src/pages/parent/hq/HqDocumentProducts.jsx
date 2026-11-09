@@ -127,6 +127,10 @@ export default function HqDocumentProducts({ jurisdiction }) {
             <button type="button" disabled={busy} onClick={generatePreview} className="rounded-xl bg-[#4A5D3A] px-4 py-2 font-semibold text-white disabled:opacity-60">1. Generate PDF preview</button>
             {previewPdf && <div className="space-y-3 rounded-xl border bg-white p-3">
               <p className="text-sm font-semibold">Preview ready — {jurisdiction.name}, year {previewPdf.year_level}</p>
+              <div className="border border-stone-200 rounded-xl overflow-hidden bg-stone-100">
+                <iframe title={`PDF preview for ${jurisdiction.name}`} src={previewPdf.data_url} className="w-full h-[520px]" />
+              </div>
+              <p className="text-xs text-stone-600">Inspect all pages and test typing in several fields using your PDF reader. If the embedded viewer cannot show interactive fields, download the preview and open it in a compatible PDF application.</p>
               <div className="flex flex-wrap gap-2">
                 <a className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold" href={previewPdf.data_url} download={`sidequest-${jurisdiction.code.toLowerCase()}-preview.pdf`}>2. Download and inspect PDF</a>
                 <button type="button" disabled={busy || !previewAccepted} onClick={savePreview} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">3. Approve inspected PDF and save privately</button>
