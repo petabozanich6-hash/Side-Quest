@@ -23,6 +23,7 @@ import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitleme
 import { generateHomeEducationTemplate } from "./homeEducationPdf";
 import { sha256 } from "./documentReview";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
+import { sampleGuidedDocumentData } from "./documentStudioPreview";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -645,6 +646,37 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     for (let i=0;i<pdf.length;i+=8192) base64 += String.fromCharCode(...pdf.subarray(i,i+8192));
     return c.json({ data_url:"data:application/pdf;base64,"+btoa(base64), sha256:await sha256(pdf), pages_label:"A4", state, year_level:year,
       note:"Preview only. No file saved or approved for sale." });
+  });
+
+  // Owner-only preview of a purchased-style personalised plan, using precisely
+  // the guest purchase generator and PDF renderer with fictional family data.
+  // No order, email, product file, real child data or AI call is involved.
+  admin.post("/document-studio/preview-guided", R, async (c: Context<any>) => {
+    const body = await readJson(c);
+    const state = String(body.state || "").toUpperCase();
+    const year = String(body.year_level || "3");
+    let sample: Record<string, any>;
+    try { sample = sampleGuidedDocumentData(state,year); }
+    catch { return c.json({ detail:"Choose a valid state or territory and year level." },400); }
+    if (!c.env.BROWSER?.quickAction)
+      return c.json({detail:"PDF rendering is not configured. Guided previews need the same PDF renderer as customer orders."},503);
+    const limited=await hitRateLimit(c.env.DB,`document-studio:guided-preview:${c.get("user")?.id || "owner"}`,25,3600);
+    if(!limited.ok) return c.json({detail:"Guided PDF preview limit reached for this hour. Please try again later."},429);
+    try {
+      const built=await buildGuestPlan(c.env.DB,state as any,sample);
+      const pdf=await renderGuestPdf(c.env,guestPlanHtml(built));
+      let base64="";
+      for(let i=0;i<pdf.length;i+=8192)base64+=String.fromCharCode(...pdf.subarray(i,i+8192));
+      return c.json({
+        data_url:"data:application/pdf;base64,"+btoa(base64),
+        sha256:await sha256(pdf),state,year_level:year,
+        variant:"guided",sample_name:"Alex Example",
+        note:"Fictional example only. Preview not saved, emailed or approved for sale.",
+      });
+    } catch(err:any) {
+      console.error("owner guided PDF preview failed",err?.message);
+      return c.json({detail:"Could not generate the personalised PDF preview. Check PDF rendering configuration."},502);
+    }
   });
 
   admin.post("/document-studio/products/:id/save-preview", W, async (c: Context<any>) => {
