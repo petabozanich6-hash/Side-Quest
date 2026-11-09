@@ -20,6 +20,8 @@ import { listBooks } from "./questBooks";
 import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
+import { generateHomeEducationTemplate } from "./homeEducationPdf";
+import { sha256 } from "./documentReview";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 
 type DB = D1Database;
@@ -626,6 +628,46 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     await env.DB.prepare("UPDATE shop_products SET images = ?, updated_at = ? WHERE id = ?").bind(p.images - 1, new Date().toISOString(), id).run();
     await audit(c, "shop.image_removed", id, { n });
     return c.json({ images: p.images - 1 });
+  });
+
+  // Owner-only two-step generation. Preview creates bytes in memory but
+  // never persists or publishes a file. Save must match the exact SHA-256
+  // fingerprint previously inspected in the browser.
+  admin.post("/document-studio/preview", R, async (c: Context<any>) => {
+    const body = await readJson(c);
+    const state = String(body.state || "").toUpperCase();
+    const year = String(body.year_level || "3");
+    if (!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state) ||
+        !/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year)) return c.json({ detail:"Choose a valid state and school year." },400);
+    const pdf = generateHomeEducationTemplate(state,year);
+    if (pdf.byteLength > MAX_FILE_BYTES) return c.json({ detail:"The generated PDF is too large." },413);
+    let base64 = "";
+    for (let i=0;i<pdf.length;i+=8192) base64 += String.fromCharCode(...pdf.subarray(i,i+8192));
+    return c.json({ data_url:"data:application/pdf;base64,"+btoa(base64), sha256:await sha256(pdf), pages_label:"A4", state, year_level:year,
+      note:"Preview only. No file saved or approved for sale." });
+  });
+
+  admin.post("/document-studio/products/:id/save-preview", W, async (c: Context<any>) => {
+    const env = c.env as Env;
+    if (!env.BUCKET) return c.json({ detail:"Private document storage is unavailable." },503);
+    const id = c.req.param("id");
+    if (!UUID.test(id)) return c.json({ detail:"Product not found." },404);
+    await ensureShopCatalog(env.DB);
+    const product = await env.DB.prepare("SELECT id, title, collection, tags, fulfilment FROM shop_products WHERE id=?").bind(id).first<any>();
+    if (!product || !isHomeEducationDocument(product) || product.fulfilment!=="digital") return c.json({ detail:"Document product not found." },404);
+    const body=await readJson(c);
+    const state=String(body.state||"").toUpperCase(),year=String(body.year_level||"3");
+    if (!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state) || !/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year)) return c.json({ detail:"Invalid state or year." },400);
+    let tags:unknown=[];
+    try{tags=JSON.parse(product.tags);}catch{}
+    if(!Array.isArray(tags)||!tags.includes(state.toLowerCase())||tags.includes("guided-document")||!tags.includes("fillable-pdf")) return c.json({ detail:"This PDF does not match the selected blank-template product." },409);
+    const bytes=generateHomeEducationTemplate(state,year),fingerprint=await sha256(bytes);
+    if(!/^[a-f0-9]{64}$/.test(String(body.sha256||""))||fingerprint!==body.sha256) return c.json({ detail:"This PDF differs from the preview. Preview the latest version before saving." },409);
+    const filename=`sidequest-${state.toLowerCase()}-home-education-fillable.pdf`;
+    await env.BUCKET.put(fileKey(id),bytes,{ httpMetadata:{contentType:"application/pdf"},customMetadata:{name:filename} });
+    await env.DB.prepare("UPDATE shop_products SET digital_file=1,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
+    await audit(c,"document_studio.pdf_saved",id,{state,year,fingerprint,bytes:bytes.length});
+    return c.json({ok:true,saved:true,sha256:fingerprint,detail:"Saved as a draft file. Document sales remain blocked pending state-specific quality review."});
   });
 
   // The file a digital product delivers (PDF or ZIP, up to 25 MB). Private: only paid orders can download it.
