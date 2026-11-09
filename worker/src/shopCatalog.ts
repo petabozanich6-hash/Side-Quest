@@ -295,19 +295,22 @@ export function digitalVersion(p: any): boolean {
 }
 export function isPublic(p: any) { return !!p.visible && p.status !== "draft" && p.status !== "discontinued"; }
 
+/** Home education registration resources need an independent review before sale.
+ * Collection is checked as well as tags so a routine tag edit cannot bypass it. */
+export function isHomeEducationDocument(p: any): boolean {
+  if (String(p?.collection || "").trim().toLowerCase() === "home education documents") return true;
+  const tags = Array.isArray(p?.tags) ? p.tags : (() => {
+    try { const value = JSON.parse(String(p?.tags || "")); return Array.isArray(value) ? value : []; }
+    catch { return []; }
+  })();
+  return tags.includes("home-education-document");
+}
+
 /** Whether a public product can be bought right now (and why not, for the owner). */
 export function buyable(p: any, variants: any[] = [], now: Date = new Date()): { ok: boolean; reason?: string } {
   if (!isPublic(p)) return { ok: false, reason: "Hidden" };
   if (!SELLING.has(p.status)) return { ok: false, reason: STATUS_LABELS[p.status] };
-  // Home education registration documents require a separate, independently
-  // verified jurisdiction-specific quality approval before any sale. Until
-  // that workflow exists, do not let a generic shop toggle bypass the gate.
-  // These resources may influence statutory registration decisions.
-  const productTags: string[] = Array.isArray(p.tags) ? p.tags : (() => {
-    try { const v = JSON.parse(p.tags); return Array.isArray(v) ? v : []; } catch { return []; }
-  })();
-  if (productTags.includes("home-education-document")) return { ok: false, reason: "State requirements and document quality review pending" };
-
+  if (isHomeEducationDocument(p)) return { ok: false, reason: "State requirements and document quality review pending" };
   // A digital listing cannot take payment until there is an actual private file to deliver.
   // In particular this protects state-specific documents from being sold before their PDFs exist.
   if (p.fulfilment === "digital" && !p.digital_file) return { ok: false, reason: "Download file not uploaded" };
