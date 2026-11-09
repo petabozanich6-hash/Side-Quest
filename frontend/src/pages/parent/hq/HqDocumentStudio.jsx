@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../../lib/api";
+import HqDocumentProducts from "./HqDocumentProducts";
 
 // Owner HQ workspace. Requirements come directly from the same server catalogue
 // used by the existing subscription learning-plan tools. No AI calls and no
@@ -88,6 +89,7 @@ export default function HqDocumentStudio() {
           </>}
         </>}
       </section>
+      <HqDocumentProducts jurisdiction={jur} />
       <section className="paper-card p-5 space-y-2">
         <h3 className="font-bold text-lg">Release checks</h3>
         <p className="text-sm text-stone-700">Before publishing a document: confirm official rules and forms; build and proof a genuinely fillable PDF; collect only required personal information; ensure Square confirms payment before download; check customer-specific access and document deletion; version the template and preserve its source review date.</p>
