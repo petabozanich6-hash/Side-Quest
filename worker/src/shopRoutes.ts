@@ -20,6 +20,7 @@ import { listBooks } from "./questBooks";
 import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
+import { documentKind, familyDocumentPrice } from "./familyDocumentPricing";
 import { generateHomeEducationTemplate } from "./homeEducationPdf";
 import { sha256 } from "./documentReview";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
@@ -60,7 +61,7 @@ export async function publicCatalog(db: DB, now: Date = new Date()) {
 
 // ---------------------------------------------------------------- pricing a cart
 
-export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown; digital?: unknown };
+export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; child_count?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown; digital?: unknown };
 
 function cleanPersonalisation(fields: PersonalField[], given: unknown): Record<string, string> | string {
   const src = given && typeof given === "object" ? (given as Record<string, unknown>) : {};
@@ -126,7 +127,19 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     const pers = cleanPersonalisation(p.personalisation, it?.personalisation);
     if (typeof pers === "string") return { ok: false, detail: pers };
     const physical = p.fulfilment !== "digital";
-    const unitCents = giftMonths ? unit * giftMonths : unit;
+    const familyKind = documentKind(p);
+    // Special family price: one full-price document, $1 extra per guided
+    // learner or $3 extra per printed learner, on the same household order.
+    // Each child must receive their own output; a family pack is never a
+    // licence to share one plan across unrelated households.
+    let unitCents = giftMonths ? unit * giftMonths : unit;
+    if (familyKind) {
+      if (qty !== 1) return {ok:false,detail:"Choose one family document pack and select the number of children."};
+      const quote=familyDocumentPrice(p,it?.child_count,unit);
+      if(!quote.ok)return {ok:false,detail:quote.detail};
+      unitCents=quote.total;
+      pers.child_count=String(quote.children);
+    }
     const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}${oneOff ? " – one-off box" : ""}`;
     lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical });
     if (physical && !giftMonths) postage = Math.max(postage, p.postage_cents ?? 0);
