@@ -421,6 +421,30 @@ async function ownerProducts(env: Env) {
   });
 }
 
+/**
+ * Deletes products, their options and photos. A product that has been sold keeps its download file, because past
+ * buyers' download links still serve it. Returns the titles of the products deleted.
+ */
+export async function deleteProducts(env: Env, ids: string[]): Promise<string[]> {
+  const db = env.DB;
+  const sold = await paidUnitsByProduct(db);
+  const titles: string[] = [];
+  for (const id of ids) {
+    const p = await db.prepare("SELECT id, title FROM shop_products WHERE id = ?").bind(id).first<any>();
+    if (!p) continue;
+    await db.batch([
+      db.prepare("DELETE FROM shop_products WHERE id = ?").bind(id),
+      db.prepare("DELETE FROM shop_variants WHERE product_id = ?").bind(id),
+    ]);
+    if (env.BUCKET) {
+      for (let n = 1; n <= MAX_PRODUCT_IMAGES; n++) await env.BUCKET.delete(imageKey(id, n)).catch(() => undefined);
+      if (!sold.has(id)) await env.BUCKET.delete(fileKey(id)).catch(() => undefined);
+    }
+    titles.push(p.title);
+  }
+  return titles;
+}
+
 async function saveVariants(db: DB, productId: string, variants: any[]) {
   const stmts = [db.prepare("DELETE FROM shop_variants WHERE product_id = ?").bind(productId)];
   for (const v of variants) stmts.push(db.prepare("INSERT INTO shop_variants (id, product_id, name, sku, price_cents, stock, active, sort, book_id, details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(v.id, productId, v.name, v.sku, v.price_cents, v.stock, v.active, v.sort, v.book_id ?? null, v.details ?? ""));
@@ -566,16 +590,22 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const env = c.env as Env;
     await ensureShopCatalog(env.DB);
     const id = c.req.param("id") ?? "";
-    const p = UUID.test(id) ? await env.DB.prepare("SELECT id, title, images FROM shop_products WHERE id = ?").bind(id).first<any>() : null;
-    if (!p) return c.json({ detail: "Product not found" }, 404);
-    await env.DB.batch([
-      env.DB.prepare("DELETE FROM shop_products WHERE id = ?").bind(id),
-      env.DB.prepare("DELETE FROM shop_variants WHERE product_id = ?").bind(id),
-    ]);
-    if (env.BUCKET) for (let n = 1; n <= MAX_PRODUCT_IMAGES; n++) await env.BUCKET.delete(imageKey(id, n)).catch(() => undefined);
-    if (env.BUCKET) await env.BUCKET.delete(fileKey(id)).catch(() => undefined);
-    await audit(c, "shop.product_deleted", id, { title: p.title });
+    const deleted = UUID.test(id) ? await deleteProducts(env, [id]) : [];
+    if (!deleted.length) return c.json({ detail: "Product not found" }, 404);
+    await audit(c, "shop.product_deleted", id, { title: deleted[0] });
     return c.json({ ok: true });
+  });
+
+  // Delete several products at once (Owner HQ → Shop → select → Delete).
+  admin.post("/shop/products/bulk-delete", W, async (c: Context<any>) => {
+    const env = c.env as Env;
+    await ensureShopCatalog(env.DB);
+    const body = await readJson(c);
+    const ids = [...new Set((Array.isArray(body.ids) ? body.ids : []).map(String).filter((x: string) => UUID.test(x)))].slice(0, 500) as string[];
+    if (!ids.length) return c.json({ detail: "Choose at least one product." }, 400);
+    const deleted = await deleteProducts(env, ids);
+    await audit(c, "shop.products_deleted", null, { count: deleted.length, titles: deleted.slice(0, 50) });
+    return c.json({ ok: true, deleted: deleted.length });
   });
 
   // Photos: sent as a data URL (JPEG, PNG or WebP, up to 3 MB each, 6 per product).

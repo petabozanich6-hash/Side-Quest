@@ -4,7 +4,7 @@ import { makeDb as freshDb } from "./fakeD1.mjs";
 // These tests cover the catalogue before the 9 Nov 2026 launch (shopLaunch.test.mjs covers the launch itself).
 const makeDb = (...a) => { const db = freshDb(...a); db.raw.exec("CREATE TABLE IF NOT EXISTS shop_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL); INSERT INTO shop_meta VALUES ('launch_v1', 'test')"); return db; };
 import { ensureShopCatalog, validateProduct, publicProduct, buyable, profitFor } from "../src/shopCatalog.ts";
-import { priceItems, publicCatalog, readiness, squareLinesFor } from "../src/shopRoutes.ts";
+import { deleteProducts, priceItems, publicCatalog, readiness, squareLinesFor } from "../src/shopRoutes.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validateRecipient } from "../src/shopSubscriptions.ts";
 
@@ -252,4 +252,24 @@ test("state document downloads cannot be sold before a PDF is uploaded", async (
   await db.prepare("UPDATE shop_products SET collection = 'Ordinary Downloads' WHERE id = ?").bind(p.id).run();
   const regular = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(regular.can_buy, true);
+});
+
+test("deleting products removes them, their options and photos, but keeps a sold product's download for its buyers", async () => {
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const sold = await one(db, "Printed Quest Book");
+  const unsold = await one(db, "Printed Quest Book + Lesson Pack");
+  const files = new Map([[`shop/products/${sold.id}/file`, 1], [`shop/products/${unsold.id}/file`, 1], [`shop/products/${sold.id}/img-1`, 1]]);
+  const BUCKET = { delete: async (k) => { files.delete(k); } };
+  await db.prepare("UPDATE shop_products SET visible = 1, status = 'in_stock', price_cents = 1000 WHERE id = ?").bind(sold.id).run();
+  const priced = await priceItems(db, [{ product_id: sold.id }]);
+  const order = await createShopOrder(db, "x@y.co", priced.lines, new Date(), priced.postage);
+  await recordPaidShopOrder(db, env(db), order.id, order.total, "p1", "https://x");
+  const titles = await deleteProducts({ DB: db, BUCKET }, [sold.id, unsold.id, "00000000-0000-0000-0000-000000000000"]);
+  assert.deepEqual(titles.sort(), [sold.title, unsold.title].sort());
+  assert.equal(await one(db, sold.title), null);
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE product_id IN (?, ?)").bind(sold.id, unsold.id).first()).n, 0);
+  assert.ok(files.has(`shop/products/${sold.id}/file`), "a past buyer can still download it");
+  assert.ok(!files.has(`shop/products/${unsold.id}/file`));
+  assert.ok(!files.has(`shop/products/${sold.id}/img-1`));
 });
