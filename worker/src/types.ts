@@ -10,6 +10,7 @@ export type EmailBinding = {
     html?: string;
     replyTo?: string | { email: string; name?: string };
     headers?: Record<string, string>;
+    attachments?: Array<{ filename: string; content: string | ArrayBuffer | ArrayBufferView; type: string; disposition: "attachment" | "inline" }>;
   }): Promise<{ messageId: string }>;
 };
 
