@@ -383,7 +383,7 @@ async function readerManifest(bucket: R2Bucket, id: string): Promise<ReaderManif
   } catch { return null; }
 }
 
-type Listed = QuestBookMeta & { look_pages: number; read_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
+type Listed = QuestBookMeta & { look_pages: number; read_pages: number; has_book: boolean; has_sample: boolean; has_cover: boolean; cover_v: number | null; has_chapters: boolean; has_lessons: boolean; book_bytes: number | null; sample_bytes: number | null };
 
 async function deleteReadPages(bucket: R2Bucket, id: string) {
   let cursor: string | undefined;
@@ -406,6 +406,7 @@ export async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]>
   const looks = new Map<string, number>();
   const reads = new Map<string, number>();
   const manifests = new Set<string>();
+  const coverVersions = new Map<string, number>();
   let cursor: string | undefined;
   do {
     const page = await bucket.list({ prefix: ROOT, limit: 1000, cursor });
@@ -418,6 +419,7 @@ export async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]>
       if (m[2] === "meta.json") { metaIds.push(m[1]); continue; }
       const kind = m[2].split(".")[0] as FileKind | "chapters" | "lessons";
       files.set(m[1], { ...(files.get(m[1]) || {}), [kind]: obj.size });
+      if (kind === "cover") coverVersions.set(m[1], new Date(obj.uploaded).getTime() || obj.size);
     }
     cursor = page.truncated ? (page as any).cursor : undefined;
   } while (cursor);
@@ -431,7 +433,7 @@ export async function listBooks(bucket: R2Bucket | undefined): Promise<Listed[]>
     .filter((m): m is QuestBookMeta => !!m)
     .map((m) => {
       const f = files.get(m.id) || {};
-      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: manifests.has(m.id) ? (activeReaders.get(m.id) || 0) : (reads.get(m.id) || 0), has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
+      return { ...m, look_pages: looks.get(m.id) || 0, read_pages: manifests.has(m.id) ? (activeReaders.get(m.id) || 0) : (reads.get(m.id) || 0), has_book: f.book !== undefined, has_sample: f.sample !== undefined, has_cover: f.cover !== undefined, cover_v: coverVersions.get(m.id) ?? null, has_chapters: f.chapters !== undefined, has_lessons: f.lessons !== undefined, book_bytes: f.book ?? null, sample_bytes: f.sample ?? null };
     })
     .sort((a, b) => (a.year ?? 99) - (b.year ?? 99) || QUEST_SUBJECTS.indexOf(a.subject as QuestSubject) - QUEST_SUBJECTS.indexOf(b.subject as QuestSubject) || a.title.localeCompare(b.title));
 }
@@ -492,7 +494,7 @@ function out(b: Listed, a: Access, canBuy: boolean) {
   return {
     id: b.id, collection: b.collection, topic: b.topic, year: b.year, year_label: yearLabel(b.year), subject: b.subject, subject_label: subjectLabel(b),
     title: b.title, subtitle: b.subtitle, description: b.description, pages: b.pages, price_cents: b.price_cents,
-    has_book: b.has_book, has_sample: b.has_sample, has_cover: b.has_cover, book_bytes: b.book_bytes, look_pages: b.look_pages,
+    has_book: b.has_book, has_sample: b.has_sample, has_cover: b.has_cover, cover_v: b.cover_v, book_bytes: b.book_bytes, look_pages: b.look_pages,
     read_pages: b.read_pages,
     included: inc,
     can_download: ownsPdf(a, b.id) && b.has_book,
@@ -1655,7 +1657,7 @@ async function shopOpen(db: DB) {
 const shopBook = (b: Listed) => ({
   id: b.id, title: b.title, subtitle: b.subtitle, description: b.description, collection: b.collection,
   year_label: yearLabel(b.year), subject_label: subjectLabel(b), pages: b.pages, price_cents: b.price_cents,
-  has_cover: b.has_cover, look_pages: b.look_pages,
+  has_cover: b.has_cover, cover_v: b.cover_v, look_pages: b.look_pages,
 });
 
 export function registerShop(app: App) {

@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { api } from "../../lib/api";
 
 /** Fetches owner-uploaded cover art with the sign-in header (an <img src> can't send it). */
-export function useCoverUrl(id, hasCover) {
+export function useCoverUrl(id, hasCover, version = null) {
   const [url, setUrl] = useState("");
   useEffect(() => {
     if (!id || !hasCover) { setUrl(""); return undefined; }
     let live = true, made = "";
-    api.get(`/quest-books/books/${encodeURIComponent(id)}/cover`, { responseType: "blob" })
+    api.get(`/quest-books/books/${encodeURIComponent(id)}/cover${version ? `?v=${version}` : ""}`, { responseType: "blob" })
       .then((r) => { if (!live) return; made = URL.createObjectURL(new Blob([r.data], { type: "image/png" })); setUrl(made); })
       .catch(() => { if (live) setUrl(""); });
     return () => { live = false; if (made) URL.revokeObjectURL(made); };
-  }, [id, hasCover]);
+  }, [id, hasCover, version]);
   return url;
 }
 
@@ -21,7 +21,7 @@ export function useCoverUrl(id, hasCover) {
  * `book` may be a placeholder ({ subjectLabel, yearLabel, placeholder: true }) for a subject not yet released.
  */
 export default function QuestBookCover({ book, size = "md", className = "" }) {
-  const art = useCoverUrl(book?.placeholder ? null : book?.id, book?.has_cover);
+  const art = useCoverUrl(book?.placeholder ? null : book?.id, book?.has_cover, book?.cover_v);
   const w = size === "lg" ? "w-56 sm:w-64" : size === "sm" ? "w-28" : "w-36 sm:w-40";
   const title = book?.placeholder ? book.subjectLabel : book?.title;
   return (

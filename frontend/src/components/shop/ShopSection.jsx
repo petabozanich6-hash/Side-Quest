@@ -34,7 +34,7 @@ function Cover({ book }) {
   return (
     <div className="relative w-full aspect-[3/4] rounded-xl overflow-hidden bg-white border border-stone-200 shadow">
       {book.has_cover && !bad
-        ? <img src={`${API}/shop/books/${encodeURIComponent(book.id)}/cover`} alt="" loading="lazy" onError={() => setBad(true)} className="absolute inset-0 w-full h-full object-cover" />
+        ? <img src={`${API}/shop/books/${encodeURIComponent(book.id)}/cover${book.cover_v ? `?v=${book.cover_v}` : ""}`} alt="" loading="lazy" onError={() => setBad(true)} className="absolute inset-0 w-full h-full object-cover" />
         : <div className="absolute inset-0 grid place-items-center p-3 text-center"><span className="font-display font-bold text-slate-800">{book.title}</span></div>}
     </div>
   );
