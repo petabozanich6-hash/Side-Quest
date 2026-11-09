@@ -10,6 +10,8 @@
 import { SHOP_ADDITIONS, SHOP_SEED, type SeedProduct } from "./data/shopCatalogue";
 import { STAGES, stageFor } from "./shopStages";
 import { SHOP_PREFILL } from "./data/shopPrefill";
+import { DIGITAL_DELIVERY, SIZES, SUB_CUTOFF_DAY, SUB_DISPATCH_DAY, WEEKLY_DISPATCH, holdBack, launchEntry, oneOffFor } from "./data/shopLaunchPrices";
+import { clearSettingsCache, loadPlatformSettings } from "./platformSettings";
 
 type DB = D1Database;
 
@@ -83,6 +85,7 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       await seedCatalog(db);
       await assignStages(db);
       await applyPrefill(db);
+      await applyLaunch(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -138,6 +141,56 @@ async function applyPrefill(db: DB) {
   }
   for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
   await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, new Date().toISOString()).run();
+}
+
+/**
+ * The shop launch (once, 9 Nov 2026): every untouched draft becomes a live, buyable listing with a starting price,
+ * except the owner's unfinished workbooks (see holdBack). Only empty fields are filled: a price, measurement, date
+ * or dispatch note the owner already entered is kept, and products the owner has already published, hidden or
+ * discontinued are left alone. Physical products are Made to Order (posted in the weekly dispatch), digital ones
+ * In Stock. Every launched product is moved to Launch Now so it can be bought. Finally the public shop is opened.
+ */
+export async function applyLaunch(db: DB) {
+  const key = "launch_v1";
+  if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) return;
+  const now = new Date().toISOString();
+  const { results } = await db.prepare("SELECT * FROM shop_products WHERE status = 'draft' AND visible = 0").all<any>();
+  const vars = await variantsFor(db, (results || []).map((r: any) => r.id));
+  const stmts: D1PreparedStatement[] = [];
+  for (const p of results || []) {
+    if (holdBack(p)) continue;
+    const entry = launchEntry(p);
+    if (!entry) continue;
+    const digital = p.fulfilment === "digital";
+    const sub = SUBSCRIPTION_FULFILMENT.has(p.fulfilment);
+    const size = SIZES[entry.s];
+    const price = p.price_cents ?? entry.p;
+    const oneOff = sub ? p.one_off_cents ?? oneOffFor(price, p.fulfilment) : p.one_off_cents;
+    stmts.push(db.prepare(`UPDATE shop_products SET status = ?, visible = 1, stage = 'launch_now', price_cents = ?, one_off_cents = ?,
+        dispatch_day = ?, cutoff_day = ?, dispatch_estimate = ?,
+        parcel_weight_g = COALESCE(parcel_weight_g, ?), parcel_length_cm = COALESCE(parcel_length_cm, ?),
+        parcel_width_cm = COALESCE(parcel_width_cm, ?), parcel_height_cm = COALESCE(parcel_height_cm, ?), updated_at = ?
+      WHERE id = ? AND status = 'draft' AND visible = 0`)
+      .bind(digital ? "in_stock" : "made_to_order", price, oneOff ?? null,
+        sub ? p.dispatch_day ?? SUB_DISPATCH_DAY : p.dispatch_day ?? null, sub ? p.cutoff_day ?? SUB_CUTOFF_DAY : p.cutoff_day ?? null,
+        p.dispatch_estimate || (digital ? DIGITAL_DELIVERY : WEEKLY_DISPATCH),
+        digital ? null : size.g, digital ? null : size.l, digital ? null : size.w, digital ? null : size.h, now, p.id));
+    // Size and tier options with their own price (e.g. A3 / A2 posters); other options use the product price.
+    for (const v of vars.get(p.id) || []) {
+      const vp = entry.v?.[v.name];
+      if (vp != null && v.price_cents == null) stmts.push(db.prepare("UPDATE shop_variants SET price_cents = ? WHERE id = ? AND price_cents IS NULL").bind(vp, v.id));
+    }
+  }
+  for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
+  const settings = await loadPlatformSettings(db, { fresh: true });
+  if (!settings.features.shopOpen) {
+    // Same write as Owner HQ's switch, with no user attached (the launch isn't a person).
+    await db.prepare(`INSERT INTO platform_settings (key, value_json, updated_by, updated_at) VALUES ('features', ?, NULL, ?)
+      ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json, updated_by = NULL, updated_at = excluded.updated_at`)
+      .bind(JSON.stringify({ ...settings.features, shopOpen: true }), now).run();
+    clearSettingsCache();
+  }
+  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, now).run();
 }
 
 /**

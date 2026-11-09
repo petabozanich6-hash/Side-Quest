@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { makeDb } from "./fakeD1.mjs";
+import { makeDb as freshDb } from "./fakeD1.mjs";
+// These tests cover the catalogue before the 9 Nov 2026 launch (shopLaunch.test.mjs covers the launch itself).
+const makeDb = (...a) => { const db = freshDb(...a); db.raw.exec("CREATE TABLE IF NOT EXISTS shop_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL); INSERT INTO shop_meta VALUES ('launch_v1', 'test')"); return db; };
 import { ensureShopCatalog, validateProduct, publicProduct, buyable, profitFor } from "../src/shopCatalog.ts";
 import { priceItems, publicCatalog, readiness, squareLinesFor } from "../src/shopRoutes.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
