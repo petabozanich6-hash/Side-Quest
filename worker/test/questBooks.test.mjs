@@ -1015,7 +1015,13 @@ test("Member reader builds are resumable and only a verified complete generation
 
 test("Public shop: closed by default; when open it lists books and a paid order downloads with its private link only", async () => {
   const h = harness();
-  const { id } = await publishedBook(h, { price_cents: 399 });
+  const { id, owner } = await publishedBook(h, { price_cents: 399, in_shop: true });
+  // A priced book the owner hasn't ticked for the shop (still being finished) is never listed or sold there.
+  const made = await h.req("/quest-books/admin/books", owner.token, "POST", { ...details, title: "Unfinished Quest", price_cents: 399 });
+  assert.equal(made.status, 200);
+  const unfinished = (await made.json()).book.id;
+  assert.notEqual(unfinished, id);
+  assert.equal((await h.req(`/quest-books/admin/books/${unfinished}/files/book`, owner.token, "PUT", pdf("DRAFT"), "application/pdf")).status, 200);
   const get = (path) => worker.fetch(new Request("http://localhost:8787/api" + path), h.env, { waitUntil() {}, passThroughOnException() {} });
   assert.equal((await (await get("/shop")).json()).open, false);
   assert.equal((await get(`/shop/books/${id}/look/1`)).status, 404);
@@ -1025,6 +1031,7 @@ test("Public shop: closed by default; when open it lists books and a paid order 
   const shop = await (await get("/shop")).json();
   assert.equal(shop.open, true);
   assert.deepEqual(shop.books.map((b) => [b.id, b.price_cents]), [[id, 399]]);
+  assert.ok(!shop.books.some((b) => b.id === unfinished));
   assert.ok(!("can_download" in shop.books[0]), "no account details in the public list");
   // No Square configured in tests: checkout refuses rather than falling back to anything else.
   const co = await worker.fetch(new Request("http://localhost:8787/api/shop/checkout", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ book_ids: [id], email: "a@b.co" }) }), h.env, { waitUntil() {}, passThroughOnException() {} });

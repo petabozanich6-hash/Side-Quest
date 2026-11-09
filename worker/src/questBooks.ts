@@ -299,6 +299,8 @@ export type QuestBookMeta = {
   lessons_price_cents: number | null;
   /** Price for one chapter lesson on its own, without a membership. Null: single lessons aren't sold. */
   lesson_price_cents: number | null;
+  /** Listed in the public shop. Off until the owner switches it on for a finished book. */
+  in_shop: boolean;
   updated_at: string;
 };
 
@@ -357,7 +359,7 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   }
   return {
     ok: true,
-    meta: { id, collection, year, subject, topic, title, subtitle: clip(b.subtitle, 160), description: clip(b.description, 2000), pages, price_cents, lessons_price_cents, lesson_price_cents, updated_at: now.toISOString() },
+    meta: { id, collection, year, subject, topic, title, subtitle: clip(b.subtitle, 160), description: clip(b.description, 2000), pages, price_cents, lessons_price_cents, lesson_price_cents, in_shop: b.in_shop === true, updated_at: now.toISOString() },
   };
 }
 
@@ -1664,7 +1666,7 @@ export function registerShop(app: App) {
   app.get("/api/shop", async (c) => {
     c.header("Cache-Control", "no-store");
     if (!(await shopOpen(c.env.DB))) return c.json({ open: false, books: [], products: [], departments: [] });
-    const books = (await listBooks(c.env.BUCKET)).filter((b) => b.has_book && b.price_cents !== null);
+    const books = (await listBooks(c.env.BUCKET)).filter((b) => b.has_book && b.price_cents !== null && b.in_shop);
     const catalog = await publicCatalog(c.env.DB).catch((e) => { console.error("shop catalogue failed", e?.message); return { departments: [], collections: [], products: [] as any[] }; });
     // Printed copies: which switched-on print products offer each book.
     const printed = (id: string) => catalog.products.filter((p: any) => p.prints_books).flatMap((p: any) => p.variants.filter((v: any) => v.book_id === id && v.price_cents != null)
@@ -1707,7 +1709,7 @@ export function registerShop(app: App) {
     if (!EMAIL_RE.test(email)) return c.json({ detail: "Enter the email address your books should go to." }, 400);
     const ids: string[] = [...new Set<string>((Array.isArray(body?.book_ids) ? body.book_ids : []).map((x: unknown) => String(x)))].filter((x) => VALID_ID.test(x)).slice(0, MAX_SHOP_ITEMS);
     const books = new Map((await listBooks(c.env.BUCKET)).map((b) => [b.id, b]));
-    const bookLines: ShopLine[] = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null)
+    const bookLines: ShopLine[] = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null && b.in_shop)
       .map((b) => ({ book_id: b.id, title: b.title, amount_cents: b.price_cents! }));
     // Catalogue products (physical, made to order, printed books, digital): priced from the database.
     const priced = await priceItems(c.env.DB, Array.isArray(body?.items) ? body.items : []);
