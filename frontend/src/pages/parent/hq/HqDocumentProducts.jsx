@@ -139,7 +139,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
               <p className="text-xs text-amber-900">Saving attaches this exact preview to the hidden product. It does not approve the document for sale.</p>
             </div>}
           </div>
-          <label className="block text-sm font-semibold">Upload verified fillable PDF
+          <label className="block text-sm font-semibold">Alternative: upload a verified PDF made elsewhere
             <input className={input + " mt-1"} type="file" accept=".pdf,application/pdf" onChange={(e) => { setFile(e.target.files?.[0] || null); setConfirmed(false); }} />
           </label>
           <label className="flex gap-2 text-sm items-start">
@@ -151,7 +151,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
         </div>}
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
         <h4 className="font-semibold">Guided personalised document — $29.95 AUD</h4>
-        <p className="text-sm text-stone-700">A separate draft for the paid, browser-based guided document builder. Families enter their own responses and use Print / Save as PDF. No AI calls or stored answers.</p>
+        <p className="text-sm text-stone-700">A separate draft for the paid guided document builder. Families enter and review their information; Side-Quest generates the plan through its existing system and emails the PDF to the purchasing address. No paid AI calls.</p>
         {guided
           ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"} · {guided.has_file ? "Guide PDF uploaded" : "Guide PDF missing"}. Before publishing, upload the approved instruction PDF in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
           : <button type="button" disabled={busy || refreshing} onClick={() => create("guided")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} guided-document draft</button>}
