@@ -52,10 +52,10 @@ export async function buildGuestPlan(db: D1Database, code: JurisdictionCode, dat
   const content = await buildPlanContent(db,plan,student,jur);
   return { content, jurisdiction:jur, student, plan, data, checked_on:CHECKED_ON };
 }
-export function guestPlanHtml(r: Awaited<ReturnType<typeof buildGuestPlan>>) {
+export function guestPlanHtml(r: Awaited<ReturnType<typeof buildGuestPlan>>, sampleOnly=false) {
   const {content:c, jurisdiction:j, data:d} = r;
   const section=(title:string,value:unknown)=>`<section><h2>${esc(title)}</h2>${para(value)}</section>`;
-  const areaRows=(c.learning_areas || []).map((a:any)=>{
+  const areaRows=(sampleOnly ? (c.learning_areas || []).slice(0,1) : (c.learning_areas || [])).map((a:any)=>{
     const entered=d.areas[a.area] || {};
     return `<section><h2>${esc(a.area)}</h2>
       ${section("Learning goals", "")}<ul>${list(a.goals)}</ul>
@@ -67,6 +67,14 @@ export function guestPlanHtml(r: Awaited<ReturnType<typeof buildGuestPlan>>) {
       ${section("Evidence approach",a.evidence_approach)}
     </section>`;
   }).join("\n");
+  if(sampleOnly) return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Side-Quest sample</title><style>
+  @page {size:A4;margin:18mm 16mm}body{font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.5;color:#252925}h1{font-size:23pt;color:#25432e}h2{font-size:13pt;color:#25432e;border-bottom:1px solid #bbb;padding-bottom:5px;margin:23px 0 8px}li{margin:7px 0}.sample{background:#f7eddb;border:2px solid #b07c33;padding:13px;margin:16px 0}.cover{border-bottom:3px solid #4a5d3a;padding-bottom:18px}.small{font-size:9pt;color:#555}
+  </style></head><body><header class="cover"><p class="small">SIDE-QUEST | HOME EDUCATION DOCUMENT STUDIO</p>
+  <h1>${esc(j.planName)}</h1><p>${esc(j.name)} | Year ${esc(d.year_level)} | Alex Example (fictional learner)</p></header>
+  <div class="sample"><strong>SAMPLE PREVIEW - NOT A COMPLETE PURCHASED DOCUMENT.</strong> Fictional information only. Your purchased plan is generated from your own answers and includes all applicable learning areas and planning sections.</div>
+  ${section("Overview",c.overview)}${section("Educational approach",c.educational_philosophy)}
+  <h2>Example learning area</h2>${areaRows}
+  <p class="small">End of free sample. The full document also includes the remaining learning areas, assessment, recordkeeping, resource plans, review schedule, requirements checklist and official sources.</p></body></html>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${esc(j.planName)}</title><style>
   @page {size:A4;margin:18mm 16mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.52;color:#252925;background:white}h1{font-size:23pt;color:#25432e;margin:12px 0}h2{font-size:13pt;color:#25432e;margin:20px 0 7px;border-bottom:1px solid #bbb;padding-bottom:4px}section{break-inside:auto}p{margin:6px 0 13px}ul{padding-left:22px}li{margin-bottom:5px}.small{font-size:9pt;color:#555}.notice{border:1px solid #a77c3a;padding:12px;margin:16px 0;background:#fff8ed}.cover{border-bottom:3px solid #4a5d3a;margin-bottom:24px;padding-bottom:12px}
   </style></head><body>
