@@ -23,7 +23,9 @@ const BADGE = {
   in_stock: "bg-emerald-100 text-emerald-900", made_to_order: "bg-amber-100 text-amber-900", sold_out: "bg-rose-100 text-rose-900",
 };
 const fromPrice = (p) => {
-  const prices = [p.price_cents, ...p.variants.map((v) => v.price_cents), p.digital_cents].filter((x) => x != null);
+  // With options, a buyer must pick one, so the product's own price only counts when there are none.
+  const main = p.variants.length ? p.variants.map((v) => v.price_cents ?? p.price_cents) : [p.price_cents];
+  const prices = [...main, p.digital_cents].filter((x) => x != null);
   if (!prices.length) return null;
   const lo = Math.min(...prices);
   return prices.some((x) => x !== lo) ? `From ${money(lo)}` : money(lo);
@@ -90,7 +92,11 @@ function LookInside({ book, onClose, onAdd, inCart, onPrinted }) {
 
 const field = "mt-1 w-full rounded-xl border border-stone-300 px-3 py-2 font-normal";
 
+// Options cheapest first; equal prices keep the owner's order. An option without its own price uses the product price.
+const byPrice = (p) => [...p.variants].map((v, i) => [v, i]).sort(([a, i], [b, j]) => (a.price_cents ?? p.price_cents ?? 0) - (b.price_cents ?? p.price_cents ?? 0) || i - j).map(([v]) => v);
+
 function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = "" }) {
+  const options = byPrice(p);
   const [variant, setVariant] = useState(initialVariant || (p.variants.length === 1 ? p.variants[0].id : ""));
   const [qty, setQty] = useState(1);
   const [pers, setPers] = useState({});
@@ -144,7 +150,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
           </div>
           <div className="space-y-2 text-sm">
             <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-bold ${BADGE[p.status] || "bg-stone-200"}`}>{p.status_label}</span>
-            {price != null && <p className="text-2xl font-bold" style={{ color: GREEN }}>{money(price)}{p.subscription ? <span className="text-sm font-normal"> / month</span> : null}</p>}
+            {(v ? price != null : fromPrice(p)) && <p className="text-2xl font-bold" style={{ color: GREEN }} data-testid="shop-dialog-price">{v ? money(price) : fromPrice(p)}{p.subscription ? <span className="text-sm font-normal"> / month</span> : null}</p>}
             {p.subscription && p.one_off_cents != null && price != null && p.one_off_cents > price && <p className="text-sm text-stone-700">Or {money(p.one_off_cents)} for a single box. Subscribers save {Math.round((1 - price / p.one_off_cents) * 100)}%.</p>}
             {p.subscription && p.cutoff_day && p.dispatch_day && <p className="text-sm text-stone-600">📦 Order by the {ordinal(p.cutoff_day)} of the month and your box ships around the {ordinal(p.dispatch_day)}{p.dispatch_day <= p.cutoff_day ? " of the following month" : ""}.</p>}
             {p.description && <p className="text-stone-700 whitespace-pre-line">{p.description}</p>}
@@ -160,7 +166,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
               <fieldset className="space-y-2">
                 <legend className="text-sm font-semibold mb-1">Choose your option</legend>
                 <div className="grid sm:grid-cols-2 gap-2">
-                  {p.variants.map((x) => (
+                  {options.map((x) => (
                     <label key={x.id} className={`rounded-xl border-2 p-3 cursor-pointer ${variant === x.id ? "border-emerald-700 bg-emerald-50" : "border-stone-200"} ${x.available ? "" : "opacity-50"}`}>
                       <input type="radio" name={`opt-${p.id}`} className="sr-only" disabled={!x.available} checked={variant === x.id} onChange={() => setVariant(x.id)} />
                       <span className="flex items-baseline justify-between gap-2"><span className="font-bold text-slate-900">{x.name}</span>{x.price_cents != null && <span className="font-bold" style={{ color: GREEN }}>{money(x.price_cents)}</span>}</span>
@@ -174,7 +180,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
               <label className="block text-sm font-semibold">{p.prints_books ? "Which book?" : "Option"}
                 <select value={variant} onChange={(e) => setVariant(e.target.value)} className={field}>
                   <option value="">Choose…</option>
-                  {p.variants.map((x) => <option key={x.id} value={x.id} disabled={!x.available}>{x.name}{x.price_cents != null && x.price_cents !== p.price_cents ? ` · ${money(x.price_cents)}` : ""}{x.available ? "" : " (sold out)"}</option>)}
+                  {options.map((x) => <option key={x.id} value={x.id} disabled={!x.available}>{x.name}{x.price_cents != null && x.price_cents !== p.price_cents ? ` · ${money(x.price_cents)}` : ""}{x.available ? "" : " (sold out)"}</option>)}
                 </select>
               </label>
             )}
