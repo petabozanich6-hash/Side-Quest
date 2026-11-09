@@ -4,6 +4,7 @@ import { adminApi, errorText } from "../../../lib/adminApi";
 const input = "w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm";
 const description = (jur) => `An independent, fillable home education planning template for ${jur.name}. Organise your family's learning goals, learning areas, resources, teaching approach, evidence and progress records using the current published guidance as a starting point. Designed for you to complete with your own information. Not a government form, official endorsement or guarantee of registration. Check the linked authority guidance before submission.`;
 const titleFor = (jur) => `Home Education Planning Template – ${jur.name} (Fillable PDF)`;
+const guidedTitleFor = (jur) => `Guided Home Education Plan – ${jur.name}`;
 const fileData = (file) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.onload = () => resolve(reader.result);
@@ -39,19 +40,22 @@ export default function HqDocumentProducts({ jurisdiction }) {
 
   if (!jurisdiction) return null;
   const current = products.find((p) => p.title === titleFor(jurisdiction));
-  const create = async () => {
+  const guided = products.find((p) => p.title === guidedTitleFor(jurisdiction));
+  const create = async (kind = "blank") => {
     setBusy(true); setMessage(""); setError("");
     try {
       await adminApi.post("/shop/products", {
-        title: titleFor(jurisdiction),
-        description: description(jurisdiction),
+        title: kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
+        description: kind === "guided"
+          ? `A private, guided planning worksheet for ${jurisdiction.name}. After a verified payment, enter your family's own educational goals and activities in your browser, review the resulting document and save it as a PDF using your browser's print function. It isn't an interactive fillable PDF, official government form or registration guarantee. Confirm current requirements with your authority.`
+          : description(jurisdiction),
         department: "digital",
         collection: "Home Education Documents",
-        tags: ["home-education-document", jurisdiction.code.toLowerCase(), "fillable-pdf"],
+        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
         fulfilment: "digital",
         status: "draft",
         stage: "launch_now",
-        price_cents: 1495,
+        price_cents: kind === "guided" ? 2995 : 1495,
         safety_checked: false,
       });
       setMessage("Draft listing created. It is hidden and cannot be purchased yet.");
@@ -80,7 +84,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
       <p className="text-sm text-stone-700">Create an independent state-specific digital product in your existing Square-backed shop. The PDF must be prepared and tested before it can be offered to families.</p>
       <p className="text-sm text-stone-700">Suggested price: <strong>$14.95 AUD</strong> · {jurisdiction.name} · no postage · no AI generation.</p>
       {!current
-        ? <button type="button" disabled={busy || refreshing} onClick={create} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} shop draft</button>
+        ? <button type="button" disabled={busy || refreshing} onClick={() => create("blank")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} shop draft</button>
         : <div className="rounded-xl border border-stone-200 p-4 space-y-3">
           <p className="text-sm font-semibold">{current.title}</p>
           <p className="text-sm">Shop status: <strong>{current.status}</strong> · {current.visible ? "Visible" : "Hidden"} · {current.has_file ? "PDF uploaded" : "No PDF uploaded"}</p>
@@ -95,6 +99,13 @@ export default function HqDocumentProducts({ jurisdiction }) {
           <button type="button" disabled={!file || !confirmed || busy} onClick={upload} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Upload PDF privately</button>
           <p className="text-xs text-stone-600">Uploading does not publish the listing. When ready, use <a href="/parent/command-centre/shop" className="underline">Owner HQ → Shop</a> to review its price, photo, description and visibility.</p>
         </div>}
+      <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
+        <h4 className="font-semibold">Guided personalised document — $29.95 AUD</h4>
+        <p className="text-sm text-stone-700">A separate draft for the paid, browser-based guided document builder. Families enter their own responses and use Print / Save as PDF. No AI calls or stored answers.</p>
+        {guided
+          ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"} · {guided.has_file ? "Guide PDF uploaded" : "Guide PDF missing"}. Before publishing, upload the approved instruction PDF in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
+          : <button type="button" disabled={busy || refreshing} onClick={() => create("guided")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} guided-document draft</button>}
+      </div>
       <button type="button" className="text-xs underline text-stone-700" onClick={load} disabled={refreshing}>Refresh document products</button>
       {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
       {message && <p role="status" className="text-sm text-emerald-800">{message}</p>}
