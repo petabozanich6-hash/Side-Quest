@@ -28,6 +28,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
   const [refreshing, setRefreshing] = useState(false);
   const [yearLevel, setYearLevel] = useState("3");
   const [previewPdf, setPreviewPdf] = useState(null);
+  const [guidedPreview, setGuidedPreview] = useState(null);
   const [previewAccepted, setPreviewAccepted] = useState(false);
 
   const load = async () => {
@@ -39,7 +40,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
     finally { setRefreshing(false); }
   };
   useEffect(() => { load(); }, []);
-  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
+  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setGuidedPreview(null); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
 
   if (!jurisdiction) return null;
   const current = products.find((p) => p.title === titleFor(jurisdiction));
@@ -77,6 +78,15 @@ export default function HqDocumentProducts({ jurisdiction }) {
       setMessage("Preview generated. Nothing saved. Inspect the PDF and its fields before approving.");
     } catch(e){setError(errorText(e,"Could not generate the preview."));}
     finally{setBusy(false);}
+  };
+  const generateGuidedPreview = async () => {
+    setBusy(true); setError(""); setMessage(""); setGuidedPreview(null);
+    try {
+      const result=await adminApi.post("/document-studio/preview-guided", {state:jurisdiction.code,year_level:yearLevel});
+      setGuidedPreview(result);
+      setMessage("Guided PDF preview created with fictional family information. This is the actual customer document generator, without payment, email or saving.");
+    } catch (e) { setError(errorText(e,"Could not generate personalised sample PDF.")); }
+    finally {setBusy(false);}
   };
   const savePreview = async () => {
     if(!current||!previewPdf||!previewAccepted)return;
@@ -120,7 +130,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
             <h4 className="font-semibold">Create the fillable PDF here</h4>
             <p className="text-sm">Generate a blank state-based document using the shared Side-Quest requirements. Nothing is saved or published until you inspect and approve the preview.</p>
             <label className="block text-sm font-semibold">Year level for learning-area layout
-              <select className={input+" mt-1"} value={yearLevel} onChange={(e)=>{setYearLevel(e.target.value);setPreviewPdf(null);setPreviewAccepted(false);}}>
+              <select className={input+" mt-1"} value={yearLevel} onChange={(e)=>{setYearLevel(e.target.value);setPreviewPdf(null);setGuidedPreview(null);setPreviewAccepted(false);}}>
                 {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map(v=><option key={v} value={v}>{v}</option>)}
               </select>
             </label>
@@ -151,6 +161,22 @@ export default function HqDocumentProducts({ jurisdiction }) {
         </div>}
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
         <h4 className="font-semibold">Guided personalised document — $29.95 AUD</h4>
+        <div className="rounded-xl border-2 border-[#4A5D3A] bg-[#F9F8F0] p-4 space-y-3">
+          <h5 className="font-semibold">Preview the guided personalised PDF</h5>
+          <p className="text-sm">See the actual PDF a buyer would receive, using “Alex Example” and fictional family information. No purchase, subscription or real child profile is necessary. Nothing will be saved or emailed.</p>
+          <label className="block text-sm font-semibold">Sample year level
+            <select className={input+" mt-1"} value={yearLevel} onChange={(e)=>{setYearLevel(e.target.value);setPreviewPdf(null);setGuidedPreview(null);setPreviewAccepted(false);}}>
+              {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map(v=><option key={v} value={v}>{v}</option>)}
+            </select>
+          </label>
+          <button type="button" onClick={generateGuidedPreview} disabled={busy} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-white font-semibold disabled:opacity-60">Generate guided PDF preview</button>
+          {guidedPreview && <div className="rounded-xl bg-white border p-3 space-y-3">
+            <p className="font-semibold text-sm">Full owner preview — {jurisdiction.name}, Year {guidedPreview.year_level}</p>
+            <iframe title="Generated personalised document preview" src={guidedPreview.data_url} className="w-full h-[520px] border rounded-lg bg-stone-100"/>
+            <a href={guidedPreview.data_url} download={`sidequest-${jurisdiction.code.toLowerCase()}-guided-sample.pdf`} className="inline-block rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold">Download full sample to inspect</a>
+            <p className="text-xs text-amber-900">Fictional information only. This preview is never attached to the shop product or sent to a customer. Review and correct the underlying generator before releasing it.</p>
+          </div>}
+        </div>
         <p className="text-sm text-stone-700">A separate draft for the paid guided document builder. Families enter and review their information; Side-Quest generates the plan through its existing system and emails the PDF to the purchasing address. No paid AI calls.</p>
         {guided
           ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"} · {guided.has_file ? "Guide PDF uploaded" : "Guide PDF missing"}. Before publishing, upload the approved instruction PDF in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
