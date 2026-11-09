@@ -116,6 +116,72 @@ export function validateGeneratedSession(
   return sessionPages(draft, plan, index);
 }
 const MAX_ATTEMPTS = 3;
+/** Pages that get a decorative chapter illustration: up to six short pages without a maths diagram. */
+export function artTargets(book: Book): Page[] {
+  return book.pages
+    .filter(
+      (p) =>
+        !p.answerPage &&
+        !p.visual &&
+        p.text
+          .split("\n")
+          .reduce((n, s) => n + Math.max(1, Math.ceil(s.length / 72)), 0) <=
+          12,
+    )
+    .filter((_, i) => i % 8 === 0)
+    .slice(0, 6);
+}
+const PLAN_BATCH = 12;
+/**
+ * Where a creation job is, for the owner's progress view: each stage's done/total, every planned session's state,
+ * and an estimate of the time left. A step runs on the minute cron, so a step never takes less than a minute.
+ */
+export function progressOf(job: any, payload: any, book: Book, now = Date.now()) {
+  const sessions = payload.count as number;
+  const planned = book.plan?.length || 0;
+  const written = new Set(book.pages.filter((p) => p.answerPage).map((p) => p.lessonId)).size;
+  const phases = ["plan", "write", "illustrate", "render", "ready"];
+  const at = phases.indexOf(job.phase);
+  const artTotal = at >= 2 ? artTargets(book).length : Math.min(6, Math.ceil((sessions * 2) / 8));
+  const artDone = job.phase === "illustrate" ? job.cursor : at > 2 ? artTotal : 0;
+  const steps = {
+    plan: { done: Math.ceil(planned / PLAN_BATCH), total: Math.ceil(sessions / PLAN_BATCH) },
+    write: { done: written, total: sessions },
+    illustrate: { done: artDone, total: artTotal },
+    render: { done: job.phase === "ready" ? 1 : 0, total: 1 },
+  };
+  const done = Object.values(steps).reduce((n, s) => n + s.done, 0);
+  const total = Object.values(steps).reduce((n, s) => n + s.total, 0);
+  const startedAt = payload.startedAt || job.updated_at;
+  const elapsed = Math.max(0, now - Date.parse(startedAt));
+  const perStep = Math.max(60000, done ? elapsed / done : 90000);
+  const active = job.status === "queued" || job.status === "running";
+  const revision = payload.revisions?.[job.cursor];
+  const pageOf = new Map(book.pages.filter((p) => !p.answerPage).map((p) => [p.lessonId, p]));
+  return {
+    percent: job.phase === "ready" ? 100 : Math.min(99, Math.round((done / Math.max(1, total)) * 100)),
+    steps,
+    pagesSaved: book.pages.length,
+    startedAt,
+    minutesLeft: active ? Math.max(1, Math.round(((total - done) * perStep) / 60000)) : null,
+    sessions: Array.from({ length: Math.max(planned, sessions) }, (_, i) => {
+      const plan = book.plan?.[i];
+      const state = !plan
+        ? "planning"
+        : pageOf.has(plan.lessonId)
+          ? "done"
+          : job.phase === "write" && job.cursor === i
+            ? job.status === "failed" ? "stuck" : "writing"
+            : "waiting";
+      return {
+        n: i + 1,
+        title: plan?.title || null,
+        state,
+        ...(state === "writing" || state === "stuck" ? { attempts: revision?.attempts || 0 } : {}),
+      };
+    }),
+  };
+}
 export function registerForgeGeneration(app: Hono<any>) {
   app.use("*", async (c, next) => {
     await ensureForgeJobs(c.env.DB);
@@ -260,6 +326,7 @@ export function registerForgeGeneration(app: Hono<any>) {
           count,
           outcomes,
           focused: b.length === "short",
+          startedAt: now,
         }),
         now,
       ),
@@ -281,12 +348,18 @@ export function registerForgeGeneration(app: Hono<any>) {
     if (!job) return c.json({ job: null });
     const { payload, ...safe } = job;
     const data = JSON.parse(payload as string);
+    const project = await c.env.DB.prepare(
+      "SELECT document FROM book_forge_projects WHERE id=? AND owner_id=?",
+    )
+      .bind(c.req.param("id"), c.get("user").id)
+      .first();
     // The draft being revised (never part of the book) and its feedback, for the owner to inspect.
     const revision: Revision | undefined = job.phase === "write" ? data.revisions?.[job.cursor as number] : undefined;
     return c.json({
       job: {
         ...safe,
         total: data.count,
+        progress: project ? progressOf(job, data, JSON.parse(project.document as string)) : null,
         review: revision
           ? {
               attempts: revision.attempts,
@@ -482,18 +555,7 @@ export async function processBookForgeJobs(env: Env) {
       }
     } else if (phase === "illustrate") {
       // A few decorative chapter illustrations; exact diagrams always remain vector artwork.
-      const targets = book.pages
-        .filter(
-          (p) =>
-            !p.answerPage &&
-            !p.visual &&
-            p.text
-              .split("\n")
-              .reduce((n, s) => n + Math.max(1, Math.ceil(s.length / 72)), 0) <=
-              12,
-        )
-        .filter((_, i) => i % 8 === 0)
-        .slice(0, 6);
+      const targets = artTargets(book);
       if (cursor < targets.length) {
         if (!env.AI || !env.BUCKET)
           throw new Error("Artwork storage or Workers AI is unavailable.");
