@@ -46,13 +46,63 @@ export function parseDraft(raw: any): SessionDraft | null {
       example: ex && typeof ex === "object"
         ? { question: clip(ex.question, 400), working: clip(ex.working, 600), answer: clip(ex.answer, 200) }
         : null,
-      tasks: (Array.isArray(p?.tasks) ? p.tasks : []).slice(0, 20).map((t: any) => ({ n: Number(t?.n), prompt: clip(t?.prompt, 600) })),
+      tasks: (Array.isArray(p?.tasks) ? p.tasks : []).slice(0, 20).map((t: any) =>
+        typeof t === "string"
+          ? { n: Number(t.match(/^\s*(\d+)[.)]\s/)?.[1] ?? NaN), prompt: clip(t.replace(/^\s*\d+[.)]\s*/, ""), 600) }
+          : { n: Number(t?.n ?? t?.number ?? t?.task), prompt: clip(t?.prompt ?? t?.question ?? t?.text, 600) }),
       visual,
     };
   });
-  const answers = (Array.isArray(raw.answers) ? raw.answers : []).slice(0, 30)
-    .map((a: any) => ({ n: Number(a?.n), answer: clip(typeof a?.answer === "number" ? String(a.answer) : a?.answer, 600) }));
-  return { pages, answers };
+  // Answers as a list of {n, answer}, a list of plain strings (in task order), or a map {"1": "..."}.
+  const rawAnswers = Array.isArray(raw.answers)
+    ? raw.answers
+    : raw.answers && typeof raw.answers === "object"
+      ? Object.entries(raw.answers).map(([n, answer]) => ({ n, answer }))
+      : [];
+  const answers = rawAnswers.slice(0, 30).map((a: any) => {
+    const value = typeof a === "string" || typeof a === "number" ? a : a?.answer ?? a?.text;
+    return {
+      n: typeof a === "object" && a ? Number(a.n ?? a.number ?? a.task) : NaN,
+      answer: clip(typeof value === "number" ? String(value) : value, 600),
+    };
+  });
+  return renumber({ pages, answers });
+}
+
+/**
+ * Fixes numbering slips without changing meaning: tasks numbered per page (1, 2, 1, 2) or with gaps are renumbered
+ * 1…N in page order, and each answer moves with its task. Unnumbered tasks and answers pair up by order only when
+ * there are exactly as many answers as tasks. Anything ambiguous is left for checkSession to report.
+ */
+export function renumber(draft: SessionDraft): SessionDraft {
+  const tasks = draft.pages.flatMap((p) => p.tasks);
+  const ns = tasks.map((t) => t.n);
+  const answerNs = draft.answers.map((a) => a.n);
+  if (!tasks.length) return draft;
+  const allNumbered = ns.every(Number.isInteger), unique = new Set(ns).size === ns.length;
+  if (allNumbered && unique) {
+    // Answers keyed by the old numbers follow their task to its new number.
+    if (ns.every((n, i) => n === i + 1)) return draft;
+    const to = new Map(ns.map((n, i) => [n, i + 1]));
+    if (!answerNs.every((n) => to.has(n))) return draft;
+    let i = 0;
+    return {
+      pages: draft.pages.map((p) => ({ ...p, tasks: p.tasks.map((t) => ({ ...t, n: ++i })) })),
+      answers: draft.answers.map((a) => ({ ...a, n: to.get(a.n)! })),
+    };
+  }
+  // Per-page numbering (or none): pair by order, and only when the answer key is the same length and in order too.
+  if (draft.answers.length !== tasks.length) return draft;
+  const answersInOrder =
+    answerNs.every((n) => !Number.isInteger(n)) ||
+    answerNs.every((n, i) => n === ns[i]) ||
+    (ns.every((n) => !Number.isInteger(n)) && answerNs.every((n, i) => n === i + 1));
+  if (!answersInOrder) return draft;
+  let i = 0;
+  return {
+    pages: draft.pages.map((p) => ({ ...p, tasks: p.tasks.map((t) => ({ ...t, n: ++i })) })),
+    answers: draft.answers.map((a, k) => ({ ...a, n: k + 1 })),
+  };
 }
 
 /** The plain text of one student page, in teaching order: explanation, worked example, then numbered tasks. */

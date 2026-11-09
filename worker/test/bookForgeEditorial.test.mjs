@@ -12,6 +12,7 @@ import {
   checkSession,
   composeSessionText,
   mergeFeedback,
+  parseDraft,
   reconcileReview,
 } from "../src/bookForgeEditorial.ts";
 import { mathDiagram, printSheets, qaBook, renderBook } from "../src/bookForge.ts";
@@ -294,11 +295,15 @@ test("Forge job: after three rejected attempts the step fails, the draft is kept
   assert.equal(book.pdf, undefined);
   assert.equal(h.pdfCount(), 0);
   assert.ok(qaBook(book).some((x) => /incomplete/.test(x)), "an incomplete book can't pass QA for approval");
-  // The existing Retry control continues from the kept draft.
+  // The existing Retry control continues from the kept draft, with a fresh three attempts.
   assert.equal((await h.req(`/admin/book-forge/${id}/retry`, { method: "POST", token: h.owner.token })).status, 200);
   await processBookForgeJobs(h.env);
   assert.equal(ai.calls.revise.length, 3);
   assert.match(ai.calls.revise[2], /PREVIOUS DRAFT/);
+  assert.equal((await state(h, id)).status, "queued", "one failure after Retry doesn't stop the step again");
+  for (let i = 0; i < 4; i++) await processBookForgeJobs(h.env);
+  assert.equal((await state(h, id)).status, "failed");
+  assert.equal(ai.calls.revise.length, 5, "Retry allowed exactly three more attempts");
 });
 
 test("Forge job: an unreadable reply never replaces the last readable draft", async () => {
@@ -345,4 +350,31 @@ test("Forge render: answer pages are packed onto shared sheets while contents an
   assert.match(html, /<span>21 \/ 21<\/span>/, "cover + contents + 19 sheets");
   assert.match(html, /8\. Counting quest 8<\/span><b>17<\/b>/, "contents point at the right student sheet");
   assert.equal((html.match(/<h2 class="session">/g) || []).length, 8, "every session's answers are printed once");
+});
+
+test("Editorial: common formatting slips from the model are repaired, not rejected", () => {
+  // Tasks numbered per page, answers keyed by those numbers in order: renumbered 1…N together.
+  const perPage = countingSession();
+  perPage.pages[1].tasks = perPage.pages[1].tasks.map((t, i) => ({ ...t, n: i + 1 }));
+  perPage.answers = perPage.answers.map((a, i) => ({ ...a, n: i < 2 ? i + 1 : i - 1 }));
+  const fixed = parseDraft(perPage);
+  assert.deepEqual(fixed.pages.flatMap((p) => p.tasks.map((t) => t.n)), [1, 2, 3, 4, 5]);
+  assert.deepEqual(checkSession(fixed, COUNTING_CTX), []);
+  assert.equal(fixed.answers[2].answer, "0 (zero): the ten-frame is empty.");
+  // Tasks as plain strings and answers as a map.
+  const loose = countingSession();
+  loose.pages = loose.pages.map((p) => ({ ...p, tasks: p.tasks.map((t) => `${t.n}. ${t.prompt}`) }));
+  loose.answers = Object.fromEntries(countingSession().answers.map((a) => [String(a.n), a.answer]));
+  assert.deepEqual(checkSession(parseDraft(loose), COUNTING_CTX), []);
+  // Gaps (1, 2, 4, 5, 6) close up and each answer moves with its task.
+  const gaps = countingSession();
+  gaps.pages[1].tasks = gaps.pages[1].tasks.map((t) => ({ ...t, n: t.n + 1 }));
+  gaps.answers = gaps.answers.map((a) => ({ ...a, n: a.n > 2 ? a.n + 1 : a.n }));
+  const closed = parseDraft(gaps);
+  assert.deepEqual(checkSession(closed, COUNTING_CTX), []);
+  assert.equal(closed.answers.find((a) => a.n === 4).answer, "6");
+  // Ambiguous: a missing answer is still reported, never guessed.
+  const short = countingSession();
+  short.answers.pop();
+  assert.match(checkSession(parseDraft(short), COUNTING_CTX).join(" "), /Task 5 has no answer/);
 });

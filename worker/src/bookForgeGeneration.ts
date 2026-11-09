@@ -312,11 +312,16 @@ export function registerForgeGeneration(app: Hono<any>) {
           { detail: "Only a failed creation step can be retried." },
           409,
         );
+      // Retry gives the failed step a fresh set of attempts; a kept session draft is revised, not discarded.
+      const payload = JSON.parse(job.payload as string);
+      if (action === "retry" && payload.failures)
+        delete payload.failures[`${job.phase}:${job.cursor}`];
       await c.env.DB.prepare(
-        "UPDATE book_forge_jobs SET status=?,error=?,lease=NULL,lease_until=NULL,updated_at=? WHERE project_id=? AND owner_id=?",
+        "UPDATE book_forge_jobs SET status=?,payload=?,error=?,lease=NULL,lease_until=NULL,updated_at=? WHERE project_id=? AND owner_id=?",
       )
         .bind(
           action === "retry" ? "queued" : "cancelled",
+          JSON.stringify(payload),
           "",
           iso(),
           c.req.param("id"),
