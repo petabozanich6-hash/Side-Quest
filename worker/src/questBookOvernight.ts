@@ -23,6 +23,8 @@ export async function ensureOvernightTables(db: DB) {
   await createOvernightTables(db);
   overnightSchemaReady.add(db as object);
 }
+/** Forget the cached schema check for this database (tests that rewrite the schema mid-run). */
+export function forgetOvernightSchema(db: DB) { overnightSchemaReady.delete(db as object); }
 async function createOvernightTables(db: DB) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS quest_overnight_jobs (
     id TEXT PRIMARY KEY, owner_user_id TEXT NOT NULL, family_id TEXT NOT NULL,
