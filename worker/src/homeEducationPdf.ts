@@ -29,9 +29,14 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3"):Uint8A
  const jur=JURISDICTIONS[state as JurisdictionCode];
  const pages:Page[]=[];let page!:Page,y=0,sequence=0;
  const newPage=()=>{
-  page={draw:[],fields:[]};pages.push(page);y=790;
-  page.draw.push(`0.16 0.30 0.20 rg BT /B 17 Tf 42 805 Td (Side-Quest | Home Education Documents) Tj ET`);
-  page.draw.push(`0.40 0.52 0.37 RG 1 w 42 795 m 553 795 l S 0.16 0.17 0.16 rg`);
+  page={draw:[],fields:[]};pages.push(page);y=777;
+  // Restrained Side-Quest branding: forest-green title bar, bronze rule,
+  // white pages, generous margins and functional form areas.
+  page.draw.push("0.13 0.23 0.17 rg 0 789 595 53 re f");
+  page.draw.push("1 1 1 rg BT /B 15 Tf 44 808 Td (SIDE-QUEST) Tj ET");
+  page.draw.push("0.91 0.81 0.60 rg BT /R 9 Tf 175 810 Td (HOME EDUCATION DOCUMENT STUDIO) Tj ET");
+  page.draw.push("0.76 0.62 0.38 rg 44 784 507 2 re f");
+  page.draw.push("0.14 0.18 0.14 rg");
  };
  const ensure=(h:number)=>{if(y-h<65)newPage();};
  const label=(s:string,size=10,bold=false)=>{
@@ -45,10 +50,44 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3"):Uint8A
   for(const l of lines){page.draw.push(`BT /B 10 Tf 44 ${y} Td (${escaped(l)}) Tj ET`);y-=14;}
   y-=h+3;sequence++;
   page.fields.push({name:`answer_${String(sequence).padStart(3,"0")}`,x:46,y,width:504,height:h});
-  page.draw.push(`0.78 0.80 0.76 RG 0.6 w 46 ${y} 504 ${h} re S 0.16 0.17 0.16 rg`);
+  page.draw.push(`0.76 0.80 0.75 RG 0.7 w 46 ${y} 504 ${h} re S`);
+  // Writing guides remain visible in a printed copy without obstructing
+  // digital AcroForm widgets. One line per 19pt.
+  if(h>35)for(let ruled=y+19;ruled<y+h-7;ruled+=19)
+    page.draw.push(`0.88 0.90 0.86 RG 0.35 w 59 ${ruled} m 538 ${ruled} l S`);
+  page.draw.push("0.14 0.18 0.14 rg");
   y-=17;
  };
- const heading=(s:string)=>{ensure(36);y-=10;label(s,13,true);};
+ const heading=(s:string)=>{
+   ensure(54);y-=15;
+   page.draw.push(`0.92 0.95 0.91 rg 43 ${y-8} 510 32 re f`);
+   page.draw.push(`0.16 0.34 0.21 rg BT /B 13 Tf 53 ${y+4} Td (${escaped(s)}) Tj ET`);
+   page.draw.push("0.14 0.18 0.14 rg");y-=45;
+ };
+ const cover=()=>{
+   page={draw:[],fields:[]};pages.push(page);y=200;
+   page.draw.push("0.13 0.23 0.17 rg 0 515 595 327 re f");
+   page.draw.push("0.78 0.61 0.39 rg 54 752 487 3 re f");
+   page.draw.push("1 1 1 rg BT /B 19 Tf 56 711 Td (SIDE-QUEST) Tj ET");
+   page.draw.push("0.90 0.84 0.71 rg BT /R 12 Tf 56 686 Td (HOME EDUCATION DOCUMENT STUDIO) Tj ET");
+   page.draw.push(`1 1 1 rg BT /B 27 Tf 56 624 Td (Home Education) Tj ET`);
+   page.draw.push(`1 1 1 rg BT /B 27 Tf 56 587 Td (Planning Workbook) Tj ET`);
+   page.draw.push(`0.90 0.84 0.71 rg BT /B 15 Tf 56 545 Td (${escaped(jur.name)}) Tj ET`);
+   page.draw.push("0.17 0.28 0.19 rg BT /B 14 Tf 56 467 Td (WRITE. PLAN. REFLECT.) Tj ET");
+   page.draw.push("0.24 0.27 0.24 rg BT /R 11 Tf 56 435 Td (A practical, printable and digitally fillable planning companion.) Tj ET");
+   page.draw.push("0.94 0.95 0.92 rg 50 265 495 133 re f");
+   page.draw.push("0.16 0.20 0.16 rg BT /B 11 Tf 65 368 Td (BEFORE YOU BEGIN) Tj ET");
+   const lines=[
+     "1. Use each field to record your family's actual learning program.",
+     "2. Type directly into supported PDF readers, or print and handwrite.",
+     "3. Review the official state requirements linked at the end.",
+     "4. Use official authority forms whenever they are prescribed.",
+   ];
+   lines.forEach((s,i)=>page.draw.push(`BT /R 10 Tf 65 ${344-i*22} Td (${escaped(s)}) Tj ET`));
+   page.draw.push("0.33 0.36 0.33 rg BT /R 9 Tf 56 184 Td (Independent Side-Quest resource; not a government application or approval.) Tj ET");
+   page.draw.push(`BT /R 9 Tf 56 164 Td (Official-source summary last checked ${escaped(CHECKED_ON)}. Confirm changes before submission.) Tj ET`);
+ };
+ cover();
  newPage();
  heading(jur.name+" - "+jur.planName);
  label("Independent fillable planning worksheet. NOT an official government form or proof of registration.",9);
