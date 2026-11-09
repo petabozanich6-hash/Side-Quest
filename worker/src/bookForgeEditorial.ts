@@ -341,7 +341,14 @@ export function mergeFeedback(old: Feedback[], add: Feedback[]): Feedback[] {
 
 const yearName = (year: number) => (year === 0 ? "Foundation" : `Year ${year}`);
 
-export const DRAFT_SHAPE = `{"pages":[{"title":"...","explanation":"...","example":{"question":"...","working":"...","answer":"..."},"tasks":[{"n":1,"prompt":"..."}],"visual":{"type":"counters|ten-frame|shapes|number-cards","count":0,"start":0} or null},{"title":"...","explanation":"","example":null or {...},"tasks":[{"n":4,"prompt":"..."}],"visual":null}],"answers":[{"n":1,"answer":"..."}]}`;
+/**
+ * The session shape, as valid JSON the model can copy. The reply is constrained by SESSION_SCHEMA
+ * (bookForgeStructured.ts); "example" may be left out on page 2 and "visual" on any page without a diagram.
+ * visual.type is one of counters, ten-frame, shapes, number-cards.
+ */
+export const DRAFT_SHAPE = `{"pages":[{"title":"...","explanation":"...","example":{"question":"...","working":"...","answer":"..."},"tasks":[{"n":1,"prompt":"..."},{"n":2,"prompt":"..."},{"n":3,"prompt":"..."}],"visual":{"type":"ten-frame","count":7}},{"title":"...","explanation":"...","tasks":[{"n":4,"prompt":"..."},{"n":5,"prompt":"..."},{"n":6,"prompt":"..."}]}],"answers":[{"n":1,"answer":"..."},{"n":2,"answer":"..."},{"n":3,"answer":"..."},{"n":4,"answer":"..."},{"n":5,"answer":"..."},{"n":6,"answer":"..."}]}`;
+const SHAPE_NOTE = 'Top-level keys are exactly "pages" (two student pages) and "answers". Leave "example" out of page 2 if it needs none; leave "visual" out of a page with no diagram. visual.type is counters, ten-frame, shapes or number-cards.';
+export const PAGE_SHAPE = `{"title":"...","explanation":"...","example":{"question":"...","working":"...","answer":"..."},"tasks":[{"n":1,"prompt":"..."},{"n":2,"prompt":"..."},{"n":3,"prompt":"..."}],"visual":{"type":"counters","count":5}}`;
 
 /** The rules a session is written and revised against (shared by the writer and the reviser). */
 export function writingRules(ctx: SessionContext): string {
@@ -363,22 +370,62 @@ Sequence: ${JSON.stringify(o.sequence)}
 THIS SESSION: ${JSON.stringify(o.plan)}
 Rules:
 ${writingRules(o.ctx)}
-Return ONLY this JSON shape: ${DRAFT_SHAPE}`;
+Return ONLY one JSON object in this shape: ${DRAFT_SHAPE}
+${SHAPE_NOTE}`;
 }
 
-export function revisePrompt(o: { ctx: SessionContext; plan: unknown; draft: SessionDraft | null; feedback: Feedback[] }): string {
+/**
+ * Revision prompt. Only the problems the CURRENT draft still has are listed as must-fix; problems fixed in earlier
+ * attempts are listed separately as "keep fixed", so the writer is never told to fix something already fixed
+ * (stale problems contradicting new ones made revisions thrash). Format problems from an unusable reply are listed
+ * on their own so a formatting slip is corrected without rewriting the teaching.
+ */
+export function revisePrompt(o: { ctx: SessionContext; plan: unknown; draft: SessionDraft | null; feedback: Feedback[]; resolved?: string[]; format?: string[] }): string {
   const errors = o.feedback.filter((f) => f.kind === "error").map((f) => `- ${f.text}`).join("\n");
   const suggestions = o.feedback.filter((f) => f.kind === "suggestion").map((f) => `- ${f.text}`).join("\n");
+  const resolved = (o.resolved || []).slice(-12).map((t) => `- ${t}`).join("\n");
+  const format = (o.format || []).map((t) => `- ${t}`).join("\n");
   return `Revise this ${yearName(o.ctx.year)} ${o.ctx.subject} workbook session. Keep everything that was correct; fix ONLY the problems listed. Do not introduce new problems, and re-check every earlier problem is still fixed.
 THIS SESSION: ${JSON.stringify(o.plan)}
 PREVIOUS DRAFT: ${JSON.stringify(o.draft)}
 PROBLEMS TO FIX (all must be fixed):
 ${errors || "- (none recorded)"}
-OPTIONAL IMPROVEMENTS (apply only if they do not break any rule):
+${resolved ? `ALREADY FIXED IN EARLIER ATTEMPTS (keep them fixed):\n${resolved}\n` : ""}${format ? `YOUR LAST REPLY COULD NOT BE USED (formatting only; keep the teaching, fix the format):\n${format}\n` : ""}OPTIONAL IMPROVEMENTS (apply only if they do not break any rule):
 ${suggestions || "- none"}
 Rules:
 ${writingRules(o.ctx)}
-Return the COMPLETE revised session as ONLY this JSON shape: ${DRAFT_SHAPE}`;
+Return the COMPLETE revised session as ONLY one JSON object in this shape: ${DRAFT_SHAPE}
+${SHAPE_NOTE}`;
+}
+
+/**
+ * One student page on its own, used when a whole session is too large to come back reliably in one reply.
+ * Page 2 is written against the saved page 1, and numbering continues from it.
+ */
+export function pagePrompt(o: { ctx: SessionContext; brief: string; sessionNumber: number; plan: unknown; page: 1 | 2; page1?: DraftPage; format?: string[] }): string {
+  const first = o.page === 1;
+  const next = first ? 1 : (o.page1?.tasks.length || 0) + 1;
+  const format = (o.format || []).map((t) => `- ${t}`).join("\n");
+  return `Write student PAGE ${o.page} of 2 for session ${o.sessionNumber} of this original Side-Quest ${yearName(o.ctx.year)} ${o.ctx.subject} workbook. Brief: ${o.brief}
+THIS SESSION: ${JSON.stringify(o.plan)}
+${first ? "This page teaches the skill: a short explanation, a complete worked example, then 2–5 practice tasks." : `PAGE 1 (already written and saved; do not repeat it): ${JSON.stringify(o.page1)}
+This page continues the practice: 2–5 tasks numbered from ${next}, using fresh numbers, ending with one simple real-world challenge. If it practises a skill page 1 did not show, give it its own worked example first.`}
+Tasks are numbered ${next}, ${next + 1}, ${next + 2}… Do not include answers; the answer key is written separately.
+Rules for the whole session:
+${writingRules(o.ctx)}
+${format ? `YOUR LAST REPLY COULD NOT BE USED (formatting only):\n${format}\n` : ""}Return ONLY one JSON object for this single page in this shape: ${PAGE_SHAPE}
+Leave "example" out only on page 2 when it needs none; leave "visual" out if the page has no diagram.`;
+}
+
+/** The answer key for two saved pages: exactly one answer per task number. */
+export function answersPrompt(o: { ctx: SessionContext; plan: unknown; pages: DraftPage[]; format?: string[] }): string {
+  const ns = o.pages.flatMap((p) => p.tasks.map((t) => t.n));
+  const format = (o.format || []).map((t) => `- ${t}`).join("\n");
+  return `Write the adult answer key for this ${yearName(o.ctx.year)} ${o.ctx.subject} workbook session.
+THIS SESSION: ${JSON.stringify(o.plan)}
+STUDENT PAGES: ${JSON.stringify(o.pages)}
+Give exactly one correct, complete answer for each task number: ${ns.join(", ")}. For a task about a page's diagram, the answer must match that diagram's count. Accept reasonable alternatives in the same answer. Each answer under 200 characters.
+${format ? `YOUR LAST REPLY COULD NOT BE USED (formatting only):\n${format}\n` : ""}Return ONLY: {"answers":[{"n":${ns[0] ?? 1},"answer":"..."}]}`;
 }
 
 export function reviewPrompt(o: { ctx: SessionContext; plan: unknown; draft: SessionDraft }): string {
@@ -392,6 +439,6 @@ Check:
 3. Do practice tasks use different numbers or items from the worked example?
 4. Is the session suitable for ${yearName(o.ctx.year)} learners and does it match its goal: ${JSON.stringify((o.plan as any)?.goal ?? "")}?
 5. Is every task unambiguous and possible without missing pictures or resources?
-"errors" are only OBJECTIVE problems that make the session wrong or unusable: a wrong answer, a mismatched or missing answer, missing teaching before practice, practice copying the example, unsuitable content, an ambiguous or impossible task. Each error names the page or task. Style preferences go in "suggestions" and never block.
+"errors" are only OBJECTIVE problems that make the session wrong or unusable: a wrong answer, a mismatched or missing answer, missing teaching before practice, practice copying the example, unsuitable content, an ambiguous or impossible task. Each error names the page or task. Style preferences go in "suggestions" and never block. Use an empty list when there are none.
 Return {"errors":["..."],"suggestions":["..."]}.`;
 }

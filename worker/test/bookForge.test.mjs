@@ -463,8 +463,10 @@ test("Forge autonomous creation retries invalid output, then pauses without losi
       token: owner.token,
     })
   ).json.job;
-  assert.equal(state.status, "failed");
-  assert.match(state.error, /plan/);
+  assert.equal(state.status, "paused");
+  assert.match(state.error, /planning/);
+  assert.equal(state.pause.kind, "schema");
+  assert.deepEqual(state.recovery, ["retry", "cancel"]);
   assert.equal(
     (
       await h.req("/admin/book-forge/" + id + "/retry", {
