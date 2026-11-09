@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
 import ShopOrder from "./pages/ShopOrder";
+import GuidedDocument from "./pages/GuidedDocument";
 import ShopSubscription from "./pages/ShopSubscription";
 import ParentShop from "./pages/parent/ParentShop";
 import ShopDownloads from "./pages/ShopDownloads";
@@ -67,6 +68,7 @@ import HqFeedback from "./pages/parent/hq/HqFeedback";
 import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
 import HqHoard from "./pages/parent/hq/HqHoard";
 import HqShop from "./pages/parent/hq/HqShop";
+import HqDocumentStudio from "./pages/parent/hq/HqDocumentStudio";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -99,6 +101,7 @@ function Router() {
       <Route path="/" element={<Landing />} />
       <Route path="/shop" element={<div className="min-h-screen bg-[#F5EFE0]"><ShopSection standalone /></div>} />
       <Route path="/shop/order/:id" element={<ShopOrder />} />
+      <Route path="/shop/documents/:id/:productId" element={<GuidedDocument />} />
       <Route path="/shop/subscription/:id" element={<ShopSubscription />} />
       <Route path="/shop/downloads" element={<ShopDownloads />} />
       <Route path="/login" element={<Login />} />
@@ -135,6 +138,7 @@ function Router() {
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="dragon-hoard" element={<HqHoard />} />
           <Route path="shop" element={<HqShop />} />
+          <Route path="document-studio" element={<HqDocumentStudio />} />
           <Route path="book-forge" element={<HqBookForge />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />

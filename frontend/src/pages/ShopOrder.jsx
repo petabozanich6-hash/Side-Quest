@@ -43,6 +43,11 @@ export default function ShopOrder() {
                 return (
                   <li key={i} className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3">
                     <span className="mr-auto font-semibold">{it.qty > 1 ? `${it.qty} × ` : ""}{it.title}</span>
+                    {it.guided_document && <Link
+                      to={`/shop/documents/${encodeURIComponent(id)}/${encodeURIComponent(it.product_id)}?t=${encodeURIComponent(t)}`}
+                      className="rounded-lg px-3 py-1.5 text-sm font-bold border border-[#1F3B2D] text-[#1F3B2D]">
+                      Complete online
+                    </Link>}
                     {it.download
                       ? <a href={href} className="rounded-lg px-3 py-1.5 text-sm font-bold text-white" style={{ backgroundColor: "#1F3B2D" }} data-testid={`shop-download-${it.book_id || it.product_id}`}>Download</a>
                       : <span className="text-sm text-stone-600">{order.status === "shipped" || order.status === "complete" ? "Posted" : "Being prepared"}</span>}

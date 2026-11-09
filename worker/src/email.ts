@@ -13,6 +13,7 @@ export type OutgoingEmail = {
   from?: string;
   /** Optional extra headers (e.g. Auto-Submitted for automatic replies). */
   headers?: Record<string, string>;
+  attachments?: Array<{ filename: string; content: string | ArrayBuffer | ArrayBufferView; type: string; disposition: "attachment" | "inline" }>;
 };
 
 /**
@@ -34,6 +35,7 @@ export async function sendEmail(env: Env, msg: OutgoingEmail): Promise<boolean> 
       text: msg.text,
       html: msg.html,
       ...(msg.headers ? { headers: msg.headers } : {}),
+      ...(msg.attachments ? { attachments: msg.attachments } : {}),
     });
     return true;
   } catch (e: any) {

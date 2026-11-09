@@ -5,7 +5,7 @@
 // interest emails are owner-only.
 import type { Context, Hono, Next } from "hono";
 import {
-  DEPARTMENTS, FULFILMENT_LABELS, STATUSES, STATUS_LABELS, SUBSCRIPTION_FULFILMENT, buyable, digitalVersion, ensureShopCatalog, isPublic,
+  DEPARTMENTS, FULFILMENT_LABELS, STATUSES, STATUS_LABELS, SUBSCRIPTION_FULFILMENT, buyable, digitalVersion, ensureShopCatalog, isPublic, isHomeEducationDocument,
   productRow, profitFor, publicProduct, slugify, validateProduct, variantsFor, type PersonalField,
 } from "./shopCatalog";
 import { ensureShopOrders, paidUnitsByProduct, shopOrderFor, type ShopLine } from "./shopOrders";
@@ -19,6 +19,8 @@ import type { App, Env } from "./types";
 import { listBooks } from "./questBooks";
 import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
+import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
+import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -88,6 +90,7 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     // The digital-only version: one download at its own price. It doesn't depend on stock, options or the physical
     // product's status (a family may want the printables for something not made yet), only on being switched on.
     if (it?.digital === true) {
+      if (isHomeEducationDocument(p)) return { ok: false, detail: "State requirements and document quality review pending." };
       if (!digitalVersion(p)) return { ok: false, detail: `The digital version of ${p.title} isn't available.` };
       if (lines.some((l) => l.product_id === p.id && !l.physical)) continue; // one copy is enough
       lines.push({ product_id: p.id, variant_id: null, title: `${p.title} – digital version`, qty: 1, unit_cents: p.digital_cents, amount_cents: p.digital_cents, personalisation: {}, gift_months: null, physical: false });
@@ -276,6 +279,73 @@ export function registerShopCatalog(app: App) {
       console.error("shop subscription cancel failed", e?.message);
       return c.json({ detail: e?.message === "This subscription hasn't started yet." ? e.message : "Could not cancel. Please try again or email us." }, 502);
     }
+  });
+
+  // Guided document workspace: access requires the exact private order token,
+  // verified Square payment, and purchase of this specific guided document.
+  // Never accept arbitrary document state from the URL and never store children's answers.
+  app.get("/api/shop/orders/:id/guided-document/:productId", async (c) => {
+    c.header("Cache-Control", "private, no-store");
+    const order = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
+    const pid = c.req.param("productId");
+    await ensureShopCatalog(c.env.DB);
+    const p = await c.env.DB.prepare("SELECT id, title, tags, fulfilment FROM shop_products WHERE id = ?").bind(pid).first<any>();
+    if (!mayAccessGuidedDocument(order, p, pid)) {
+      return c.json({ detail: "This document link isn't valid." }, 404);
+    }
+    const { JURISDICTIONS, CHECKED_ON } = await import("./data/planJurisdictions");
+    const code = guidedProductState(p)!;
+    const j = JURISDICTIONS[code];
+    return c.json({
+      title: p.title, jurisdiction: j.code, state_name: j.name, authority: j.authority,
+      plan_name: j.planName, curriculum: j.curriculum, areas: j.areas,
+      secondary: j.secondary ?? null, requirements: j.requirements,
+      sources: j.sources, requirements_checked_on: CHECKED_ON,
+      notice: "Independent planning aid only. Not an official form or registration guarantee. Use your own accurate information and verify current requirements with your authority.",
+    });
+  });
+
+  // The buyer submits information only after checkout. Generate using the same
+  // deterministic engine used in the subscriber learning-plan template mode.
+  // The PDF is emailed exclusively to the email recorded by the Square order.
+  app.post("/api/shop/orders/:id/guided-document/:productId/generate", async (c) => {
+    c.header("Cache-Control", "private, no-store");
+    const order = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
+    const pid = c.req.param("productId");
+    if (!order?.paid_at) return c.json({ detail: "This document link isn't valid." }, 404);
+    await ensureShopCatalog(c.env.DB);
+    const product = await c.env.DB.prepare("SELECT id, title, tags, fulfilment FROM shop_products WHERE id = ?").bind(pid).first<any>();
+    if (!mayAccessGuidedDocument(order, product, pid)) return c.json({ detail: "This document link isn't valid." }, 404);
+    const code = guidedProductState(product);
+    if (!code) return c.json({ detail: "This document isn't available." }, 404);
+    const raw: any = await c.req.json().catch(() => ({}));
+    const valid = validateGuestInput(raw);
+    if (!valid.ok) return c.json({ detail: valid.detail }, 400);
+    const action = raw?.action === "email" ? "email" : "preview";
+    const prepared = await buildGuestPlan(c.env.DB, code, valid.data);
+    if (action === "preview") {
+      return c.json({ ok:true, preview:prepared.content, title:prepared.plan.title,
+        jurisdiction:code, recipient_hint:order.email.replace(/^(.{1,2}).*(@.*)$/, "$1***$2") });
+    }
+    if (!raw?.confirmed) return c.json({ detail: "Please review and confirm the generated document before emailing." }, 400);
+    // Cap attachment emails per paid order to avoid spam and surprise rendering
+    // charges. Only order/product IDs are stored, never children's answers.
+    await c.env.DB.prepare("CREATE TABLE IF NOT EXISTS guest_document_email_limits (order_id TEXT NOT NULL, product_id TEXT NOT NULL, window_started INTEGER NOT NULL, hits INTEGER NOT NULL, PRIMARY KEY(order_id,product_id))").run();
+    const windowStart = Math.floor(Date.now() / 86400000);
+    await c.env.DB.prepare(`INSERT INTO guest_document_email_limits(order_id,product_id,window_started,hits) VALUES(?,?,?,1)
+      ON CONFLICT(order_id,product_id) DO UPDATE SET
+      hits=CASE WHEN window_started=excluded.window_started THEN hits+1 ELSE 1 END,
+      window_started=excluded.window_started`).bind(order.id,pid,windowStart).run();
+    const attempt = await c.env.DB.prepare("SELECT hits FROM guest_document_email_limits WHERE order_id=? AND product_id=?").bind(order.id,pid).first<{hits:number}>();
+    if (Number(attempt?.hits || 0) > 5) return c.json({ detail: "This order has reached its daily PDF email limit. Contact support if you need help." }, 429);
+
+    if (!c.env.EMAIL || !c.env.BROWSER?.quickAction) return c.json({ detail: "PDF delivery is not configured right now." }, 503);
+    let bytes: Uint8Array;
+    try { bytes = await renderGuestPdf(c.env, guestPlanHtml(prepared)); }
+    catch (err: any) { console.error("guest PDF failed", err?.message); return c.json({ detail:"Could not create the PDF. Please retry." }, 502); }
+    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name);
+    if (!sent) return c.json({ detail:"The PDF was prepared but could not be emailed. Please retry." }, 502);
+    return c.json({ ok:true, emailed:true, detail:"Your PDF was emailed to the purchase email address." });
   });
 
   // A digital product in a paid order.
