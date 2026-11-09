@@ -20,6 +20,7 @@ import { listBooks } from "./questBooks";
 import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
+import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -302,6 +303,38 @@ export function registerShopCatalog(app: App) {
       sources: j.sources, requirements_checked_on: CHECKED_ON,
       notice: "Independent planning aid only. Not an official form or registration guarantee. Use your own accurate information and verify current requirements with your authority.",
     });
+  });
+
+  // The buyer submits information only after checkout. Generate using the same
+  // deterministic engine used in the subscriber learning-plan template mode.
+  // The PDF is emailed exclusively to the email recorded by the Square order.
+  app.post("/api/shop/orders/:id/guided-document/:productId/generate", async (c) => {
+    c.header("Cache-Control", "private, no-store");
+    const order = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
+    const pid = c.req.param("productId");
+    if (!order?.paid_at) return c.json({ detail: "This document link isn't valid." }, 404);
+    await ensureShopCatalog(c.env.DB);
+    const product = await c.env.DB.prepare("SELECT id, title, tags, fulfilment FROM shop_products WHERE id = ?").bind(pid).first<any>();
+    if (!mayAccessGuidedDocument(order, product, pid)) return c.json({ detail: "This document link isn't valid." }, 404);
+    const code = guidedProductState(product);
+    if (!code) return c.json({ detail: "This document isn't available." }, 404);
+    const raw: any = await c.req.json().catch(() => ({}));
+    const valid = validateGuestInput(raw);
+    if (!valid.ok) return c.json({ detail: valid.detail }, 400);
+    const action = raw?.action === "email" ? "email" : "preview";
+    const prepared = await buildGuestPlan(c.env.DB, code, valid.data);
+    if (action === "preview") {
+      return c.json({ ok:true, preview:prepared.content, title:prepared.plan.title,
+        jurisdiction:code, recipient_hint:order.email.replace(/^(.{1,2}).*(@.*)$/, "$1***$2") });
+    }
+    if (!raw?.confirmed) return c.json({ detail: "Please review and confirm the generated document before emailing." }, 400);
+    if (!c.env.EMAIL || !c.env.BROWSER?.quickAction) return c.json({ detail: "PDF delivery is not configured right now." }, 503);
+    let bytes: Uint8Array;
+    try { bytes = await renderGuestPdf(c.env, guestPlanHtml(prepared)); }
+    catch (err: any) { console.error("guest PDF failed", err?.message); return c.json({ detail:"Could not create the PDF. Please retry." }, 502); }
+    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name);
+    if (!sent) return c.json({ detail:"The PDF was prepared but could not be emailed. Please retry." }, 502);
+    return c.json({ ok:true, emailed:true, detail:"Your PDF was emailed to the purchase email address." });
   });
 
   // A digital product in a paid order.
