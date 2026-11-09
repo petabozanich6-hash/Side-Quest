@@ -99,6 +99,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const options = byPrice(p);
   const [variant, setVariant] = useState(initialVariant || (p.variants.length === 1 ? p.variants[0].id : ""));
   const [qty, setQty] = useState(1);
+  const [childCount, setChildCount] = useState(1);
   const [pers, setPers] = useState({});
   const [img, setImg] = useState(1);
   const [addons, setAddons] = useState([]);
@@ -117,6 +118,8 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const max = Math.min(p.max_per_order || 20, 20);
   const missing = p.personalisation.find((f) => f.required && !(pers[f.key] || "").trim());
   const needVariant = p.variants.length > 0 && !v;
+  const familyKind = (p.tags || []).includes("home-education-document") ? (p.tags || []).includes("guided-document") ? "guided" : (p.tags || []).includes("print-and-post") ? "printed" : null : null;
+  const familyPrice = familyKind && Number.isInteger(price) ? price + (childCount - 1) * (familyKind === "printed" ? 300 : 100) : price;
 
   const post = async (path, body) => {
     setBusy(true); setError(""); setMsg("");
@@ -130,7 +133,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const add = () => {
     if (needVariant) { setError("Choose an option first."); return; }
     if (missing) { setError(`Fill in "${missing.label}".`); return; }
-    onAdd([{ product_id: p.id, variant_id: v?.id || null, qty, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""}`, unit_cents: price, postage_cents: p.postage_cents || 0, physical: p.fulfilment !== "digital" },
+    onAdd([{ product_id: p.id, variant_id: v?.id || null, qty: familyKind ? 1 : qty, child_count: familyKind ? childCount : undefined, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""}${familyKind ? ` (${childCount} children)` : ""}`, unit_cents: familyKind ? familyPrice : price, postage_cents: p.postage_cents || 0, physical: p.fulfilment !== "digital" },
       ...extras.filter((x) => addons.includes(x.id)).map((x) => ({ product_id: x.id, variant_id: null, qty: 1, personalisation: {}, title: x.title, unit_cents: x.price_cents, postage_cents: x.postage_cents || 0, physical: x.fulfilment !== "digital" }))]);
   };
   const subscribe = async () => {
@@ -206,7 +209,16 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
                 <input value={pers[f.key] || ""} maxLength={f.max} onChange={(e) => setPers({ ...pers, [f.key]: e.target.value })} className={field} />
               </label>
             ))}
-            {!p.subscription && max > 1 && (
+            {familyKind && <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 space-y-2">
+              <label className="block text-sm font-semibold">Number of children in your household
+                <select className={field} value={childCount} onChange={(e) => setChildCount(Number(e.target.value))}>
+                  {[1,2,3,4,5].map(n => <option key={n} value={n}>{n} {n === 1 ? "child" : "children"}</option>)}
+                </select>
+              </label>
+              <p className="font-bold" style={{color: GREEN}}>{familyPrice == null ? "Price pending" : `${money(familyPrice)} total`}</p>
+              <p className="text-xs text-stone-700">First child included. Each additional child: {familyKind === "printed" ? "$3" : "$1"}. Each learner receives an individual document.</p>
+            </div>}
+            {!familyKind && !p.subscription && max > 1 && (
               <label className="block text-sm font-semibold w-32">Quantity
                 <input type="number" min={1} max={max} value={qty} onChange={(e) => setQty(Math.max(1, Math.min(max, Number(e.target.value) || 1)))} className={field} />
               </label>
@@ -323,7 +335,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
   const [shippingBusy, setShippingBusy] = useState(false);
   const [shippingError, setShippingError] = useState("");
   const posted = cart.items.some((x) => x.physical && !x.gift_months);
-  const itemsKey = JSON.stringify(cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months, digital }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null, digital: digital === true })));
+  const itemsKey = JSON.stringify(cart.items.map(({ product_id, variant_id, qty, child_count, personalisation, gift_months, digital }) => ({ product_id, variant_id, qty, child_count, personalisation, gift_months: gift_months || null, digital: digital === true })));
   const validQuote = posted && shippingQuote?.postcode === postcode && shippingQuote?.itemsKey === itemsKey ? shippingQuote : null;
 
   useEffect(() => {
@@ -394,7 +406,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
     try {
       const r = await fetch(`${API}/shop/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         book_ids: chosen.map((b) => b.id), email: email.trim(), expected_total_cents: total, destination_postcode: posted ? postcode : null,
-        items: cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months, one_off, digital }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null, one_off: one_off === true, digital: digital === true })),
+        items: cart.items.map(({ product_id, variant_id, qty, child_count, personalisation, gift_months, one_off, digital }) => ({ product_id, variant_id, qty, child_count, personalisation, gift_months: gift_months || null, one_off: one_off === true, digital: digital === true })),
       }) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.url) throw new Error(j.detail || "Could not start checkout.");
@@ -403,14 +415,21 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
     } catch (e) { setError(e.message); setBusy(false); }
   };
   const openPrinted = (opt) => { const p = products.find((x) => x.id === opt.product_id); if (p) { setLook(null); setOpen({ p, variant: opt.variant_id }); } };
-  const chips = [["all", "Everything"], ...(books.length ? [["quest-books", "Quest Books"]] : []), ...(hasSeasonal ? [["seasonal", "Seasonal"]] : []), ...departments.map((d) => [d.id, d.label])];
+  const hasHomeDocuments = shownProducts.some((p) => (p.tags || []).includes("home-education-document"));
+  const chips = [["all", "Everything"], ...(hasHomeDocuments ? [["home-education", "Home Education Documents"]] : []), ...(books.length ? [["quest-books", "Quest Books"]] : []), ...(hasSeasonal ? [["seasonal", "Seasonal"]] : []), ...departments.filter((d) => d.id !== "home-education").map((d) => [d.id, d.label])];
 
   // What to show: one department, or on "Everything" a short row from each, with "See all".
   const groups = [];
-  const inDept = (id) => (id === "seasonal" ? shownProducts.filter((p) => p.tags.includes("seasonal")) : shownProducts.filter((p) => p.department === id));
+  const inDept = (id) => id === "home-education"
+    ? shownProducts.filter((p) => (p.tags || []).includes("home-education-document"))
+    : id === "seasonal"
+      ? shownProducts.filter((p) => p.tags.includes("seasonal") && !(p.tags || []).includes("home-education-document"))
+      : shownProducts.filter((p) => p.department === id && !(p.tags || []).includes("home-education-document"));
   if (dept === "all") {
+    const documents = inDept("home-education");
+    if (documents.length) groups.push({ id:"home-education", label:"Home Education Documents", products:documents });
     if (shownBooks.length) groups.push({ id: "quest-books", label: "Quest Books (PDF)", books: shownBooks });
-    for (const d of departments) { const items = inDept(d.id); if (items.length) groups.push({ id: d.id, label: d.label, products: items }); }
+    for (const d of departments.filter((d) => d.id !== "home-education")) { const items = inDept(d.id); if (items.length) groups.push({ id: d.id, label: d.label, products: items }); }
   } else if (dept === "quest-books") {
     groups.push({ id: "quest-books", label: "Quest Books (PDF)", books: shownBooks, full: true });
   } else {

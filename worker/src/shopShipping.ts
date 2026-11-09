@@ -4,6 +4,7 @@
 import type { Env } from "./types";
 import type { ShopLine } from "./shopOrders";
 import { ensureShopCatalog } from "./shopCatalog";
+import { documentKind } from "./familyDocumentPricing";
 
 const POSTCODE = /^\d{4}$/;
 const API_URL = "https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json";
@@ -26,7 +27,7 @@ export async function parcelForCart(db: D1Database, lines: ShopLine[]): Promise<
   if (!physical.length) return null;
   await ensureShopCatalog(db);
   const ids = [...new Set(physical.map((x) => x.product_id!))];
-  const { results } = await db.prepare(`SELECT id, title, parcel_weight_g, parcel_length_cm, parcel_width_cm, parcel_height_cm FROM shop_products WHERE id IN (${ids.map(() => "?").join(",")})`).bind(...ids).all<any>();
+  const { results } = await db.prepare(`SELECT id, title, tags, fulfilment, parcel_weight_g, parcel_length_cm, parcel_width_cm, parcel_height_cm FROM shop_products WHERE id IN (${ids.map(() => "?").join(",")})`).bind(...ids).all<any>();
   const products = new Map((results || []).map((p: any) => [p.id, p]));
   let weight_g = 0, length_cm = 0, width_cm = 0, height_cm = 0;
   for (const line of physical) {
@@ -38,7 +39,12 @@ export async function parcelForCart(db: D1Database, lines: ShopLine[]): Promise<
     const height = Number(p.parcel_height_cm);
     if (![weight, length, width, height].every((n) => Number.isInteger(n) && n > 0))
       throw new ShippingQuoteError(`Shipping measurements are not ready for "${p.title}". Please contact Side-Quest or try later.`, 409);
-    const qty = Number(line.qty || 1);
+    // Each additional printed child means another complete workbook in the
+    // parcel. The product dimensions describe one book, not the whole family
+    // pack; never underquote postage by charging shipping for one child only.
+    const children = documentKind(p) === "printed" ? Number(line.personalisation?.child_count || 1) : 1;
+    if (!Number.isInteger(children) || children<1 || children>5) throw new ShippingQuoteError("Invalid printed family document count.");
+    const qty = Number(line.qty || 1) * children;
     if (!Number.isInteger(qty) || qty < 1 || qty > 50) throw new ShippingQuoteError("Invalid parcel quantity.");
     weight_g += weight * qty;
     length_cm = Math.max(length_cm, length);

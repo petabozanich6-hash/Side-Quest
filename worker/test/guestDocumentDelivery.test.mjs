@@ -26,3 +26,33 @@ test("guest PDF markup escapes user text and uses the shared plan fields", () =>
   assert.match(html,/Goal/);
   assert.match(html,/Official source/);
 });
+
+
+test("guided PDFs share Side-Quest visual identity in owner, buyer and shop sample", () => {
+  const built={
+    jurisdiction:{code:"QLD",name:"Queensland",planName:"Home Education Program",requirements:["Required planning information"],sources:[{title:"Official source",url:"https://example.org"}]},
+    data:{learner_name:"Alex Example",year_level:"3",period_start:"2027-01-01",period_end:"2027-12-01",goals:"Learning goals",areas:{}},
+    checked_on:"2026-10-14",
+    content:{overview:"Plan overview",educational_philosophy:"Individualised philosophy",learning_areas:[
+      {area:"English",goals:["Read books"],teaching_methods:["Discuss texts"],sample_activities:["Read a story"],evidence_approach:"Reading log"},
+      {area:"Mathematics",goals:["Measure objects"],teaching_methods:["Practical work"],sample_activities:["Measure length"],evidence_approach:"Work samples"},
+    ]},
+  };
+  const full=guestPlanHtml(built);
+  const sample=guestPlanHtml(built,true);
+  for(const html of [full,sample]){
+    assert.match(html,/HOME EDUCATION DOCUMENT STUDIO/);
+    assert.match(html,/Your Home Education Plan/);
+    assert.match(html,/#1F3B2D/);
+    assert.match(html,/#D4A574/);
+    assert.match(html,/Alex Example/);
+    assert.match(html,/Read books/);
+    assert.match(html,/break-after:page/);
+  }
+  assert.match(full,/Measure objects/);
+  assert.match(full,/Required planning information/);
+  assert.match(sample,/FREE SAMPLE/);
+  assert.doesNotMatch(sample,/Measure objects/);
+  assert.doesNotMatch(sample,/Required planning information/);
+  assert.doesNotMatch(full,/FREE SAMPLE/);
+});

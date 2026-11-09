@@ -20,6 +20,7 @@ import { listBooks } from "./questBooks";
 import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
+import { documentKind, familyDocumentPrice } from "./familyDocumentPricing";
 import { generateHomeEducationTemplate } from "./homeEducationPdf";
 import { sha256 } from "./documentReview";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
@@ -60,7 +61,7 @@ export async function publicCatalog(db: DB, now: Date = new Date()) {
 
 // ---------------------------------------------------------------- pricing a cart
 
-export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown; digital?: unknown };
+export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; child_count?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown; digital?: unknown };
 
 function cleanPersonalisation(fields: PersonalField[], given: unknown): Record<string, string> | string {
   const src = given && typeof given === "object" ? (given as Record<string, unknown>) : {};
@@ -126,7 +127,19 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     const pers = cleanPersonalisation(p.personalisation, it?.personalisation);
     if (typeof pers === "string") return { ok: false, detail: pers };
     const physical = p.fulfilment !== "digital";
-    const unitCents = giftMonths ? unit * giftMonths : unit;
+    const familyKind = documentKind(p);
+    // Special family price: one full-price document, $1 extra per guided
+    // learner or $3 extra per printed learner, on the same household order.
+    // Each child must receive their own output; a family pack is never a
+    // licence to share one plan across unrelated households.
+    let unitCents = giftMonths ? unit * giftMonths : unit;
+    if (familyKind) {
+      if (qty !== 1) return {ok:false,detail:"Choose one family document pack and select the number of children."};
+      const quote=familyDocumentPrice(p,it?.child_count,unit);
+      if(!quote.ok)return {ok:false,detail:quote.detail};
+      unitCents=quote.total;
+      pers.child_count=String(quote.children);
+    }
     const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}${oneOff ? " – one-off box" : ""}`;
     lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical });
     if (physical && !giftMonths) postage = Math.max(postage, p.postage_cents ?? 0);
@@ -342,7 +355,7 @@ export function registerShopCatalog(app: App) {
     const code = guidedProductState(p)!;
     const j = JURISDICTIONS[code];
     return c.json({
-      title: p.title, jurisdiction: j.code, state_name: j.name, authority: j.authority,
+      title: p.title, child_count: Number(order.lines.find((l: ShopLine) => l.product_id === pid)?.personalisation?.child_count || 1), jurisdiction: j.code, state_name: j.name, authority: j.authority,
       plan_name: j.planName, curriculum: j.curriculum, areas: j.areas,
       secondary: j.secondary ?? null, requirements: j.requirements,
       sources: j.sources, requirements_checked_on: CHECKED_ON,
@@ -364,6 +377,11 @@ export function registerShopCatalog(app: App) {
     const code = guidedProductState(product);
     if (!code) return c.json({ detail: "This document isn't available." }, 404);
     const raw: any = await c.req.json().catch(() => ({}));
+    const paidChildCount = Number(order.lines.find((l: ShopLine) => l.product_id === pid)?.personalisation?.child_count || 1);
+    const childIndex = Number(raw?.child_index ?? 1);
+    if(!Number.isInteger(paidChildCount) || paidChildCount<1 || paidChildCount>5 ||
+       !Number.isInteger(childIndex) || childIndex<1 || childIndex>paidChildCount)
+      return c.json({detail:"This learner is not covered by the paid family order."},403);
     const valid = validateGuestInput(raw);
     if (!valid.ok) return c.json({ detail: valid.detail }, 400);
     const action = raw?.action === "email" ? "email" : "preview";
@@ -382,15 +400,15 @@ export function registerShopCatalog(app: App) {
       hits=CASE WHEN window_started=excluded.window_started THEN hits+1 ELSE 1 END,
       window_started=excluded.window_started`).bind(order.id,pid,windowStart).run();
     const attempt = await c.env.DB.prepare("SELECT hits FROM guest_document_email_limits WHERE order_id=? AND product_id=?").bind(order.id,pid).first<{hits:number}>();
-    if (Number(attempt?.hits || 0) > 5) return c.json({ detail: "This order has reached its daily PDF email limit. Contact support if you need help." }, 429);
+    if (Number(attempt?.hits || 0) > 15) return c.json({ detail: "This order has reached its daily PDF email limit. Contact support if you need help." }, 429);
 
     if (!c.env.EMAIL || !c.env.BROWSER?.quickAction) return c.json({ detail: "PDF delivery is not configured right now." }, 503);
     let bytes: Uint8Array;
     try { bytes = await renderGuestPdf(c.env, guestPlanHtml(prepared)); }
     catch (err: any) { console.error("guest PDF failed", err?.message); return c.json({ detail:"Could not create the PDF. Please retry." }, 502); }
-    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name);
+    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name,childIndex,paidChildCount);
     if (!sent) return c.json({ detail:"The PDF was prepared but could not be emailed. Please retry." }, 502);
-    return c.json({ ok:true, emailed:true, detail:"Your PDF was emailed to the purchase email address." });
+    return c.json({ ok:true, emailed:true, child_index:childIndex, child_count:paidChildCount, detail:`Document ${childIndex} of ${paidChildCount} was emailed to the purchase email address.` });
   });
 
   // A digital product in a paid order.
