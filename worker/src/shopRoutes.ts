@@ -5,7 +5,7 @@
 // interest emails are owner-only.
 import type { Context, Hono, Next } from "hono";
 import {
-  DEPARTMENTS, FULFILMENT_LABELS, STATUSES, STATUS_LABELS, SUBSCRIPTION_FULFILMENT, buyable, digitalVersion, ensureShopCatalog, isPublic,
+  DEPARTMENTS, FULFILMENT_LABELS, STATUSES, STATUS_LABELS, SUBSCRIPTION_FULFILMENT, buyable, digitalVersion, ensureShopCatalog, isPublic, isHomeEducationDocument,
   productRow, profitFor, publicProduct, slugify, validateProduct, variantsFor, type PersonalField,
 } from "./shopCatalog";
 import { ensureShopOrders, paidUnitsByProduct, shopOrderFor, type ShopLine } from "./shopOrders";
@@ -89,6 +89,7 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     // The digital-only version: one download at its own price. It doesn't depend on stock, options or the physical
     // product's status (a family may want the printables for something not made yet), only on being switched on.
     if (it?.digital === true) {
+      if (isHomeEducationDocument(p)) return { ok: false, detail: "State requirements and document quality review pending." };
       if (!digitalVersion(p)) return { ok: false, detail: `The digital version of ${p.title} isn't available.` };
       if (lines.some((l) => l.product_id === p.id && !l.physical)) continue; // one copy is enough
       lines.push({ product_id: p.id, variant_id: null, title: `${p.title} – digital version`, qty: 1, unit_cents: p.digital_cents, amount_cents: p.digital_cents, personalisation: {}, gift_months: null, physical: false });
