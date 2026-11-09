@@ -34,15 +34,14 @@ import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipelin
 type DB = D1Database;
 
 export const QUEST_SUBJECTS = ["mathematics", "english", "science", "history", "geography", "pdhpe", "creative-arts"] as const;
-/** Year-level subjects offered only in the primary years (Foundation to Year 6). */
-export const PRIMARY_ONLY_SUBJECTS = new Set<string>(["pdhpe", "creative-arts"]);
-export const PRIMARY_MAX_YEAR = 6;
+/** The year-level shelf has the five core subjects; PDHPE and Creative Arts are for specialist books only. */
+export const CORE_SUBJECTS = new Set<string>(["mathematics", "english", "science", "history", "geography"]);
 /** Specialist books may also use "other" with their own topic label. */
 const SPECIALIST_SUBJECTS = [...QUEST_SUBJECTS, "other"] as const;
 
 /** "core" is the year-by-year shelf (Foundation to Year 10, five core subjects). The rest are specialist collections. */
 export const QUEST_COLLECTIONS = [
-  { id: "core", label: "Year-level books", blurb: "Maths, English, Science, History and Geography for each year, plus PDHPE and Creative Arts in the primary years." },
+  { id: "core", label: "Year-level books", blurb: "Maths, English, Science, History and Geography for each year." },
   { id: "naplan", label: "NAPLAN prep", blurb: "Reading, writing, language conventions and numeracy practice for Years 3, 5, 7 and 9." },
   { id: "hsc", label: "HSC prep", blurb: "NSW Year 11 and 12 courses: revision, practice questions and exam technique." },
   { id: "senior", label: "Senior certificates (other states)", blurb: "VCE, QCE, SACE, WACE and other senior secondary courses." },
@@ -323,10 +322,10 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   }
   const subject = String(b.subject || (core ? "" : "other")).toLowerCase() as QuestSubject | "other";
   if (core ? !QUEST_SUBJECTS.includes(subject as QuestSubject) : !(SPECIALIST_SUBJECTS as readonly string[]).includes(subject)) {
-    return fail(400, "Choose Mathematics, English, Science, History, Geography, PDHPE or Creative Arts.");
+    return fail(400, core ? "Choose Mathematics, English, Science, History or Geography." : "Choose a subject, or Other with a topic.");
   }
-  if (core && PRIMARY_ONLY_SUBJECTS.has(subject) && (year as number) > PRIMARY_MAX_YEAR) {
-    return fail(400, `${SUBJECT_LABEL[subject as QuestSubject]} books are for the primary years (Foundation to Year 6).`);
+  if (core && !CORE_SUBJECTS.has(subject)) {
+    return fail(400, "Year-level books are Mathematics, English, Science, History or Geography. Put PDHPE and Creative Arts books on a specialist shelf.");
   }
   const topic = core ? "" : clip(b.topic, 60);
   if (!core && !topic && subject === "other") return fail(400, "Give a specialist book a topic, for example Numeracy or Mathematics Advanced.");
@@ -741,7 +740,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     c.header("Cache-Control", "private, no-store");
     return c.json({
       member: a.member, preview: a.preview, owner: a.owner, can_buy: canBuy,
-      subjects: QUEST_SUBJECTS.map((s) => ({ id: s, label: SUBJECT_LABEL[s], max_year: PRIMARY_ONLY_SUBJECTS.has(s) ? PRIMARY_MAX_YEAR : null })),
+      subjects: QUEST_SUBJECTS.map((s) => ({ id: s, label: SUBJECT_LABEL[s], core: CORE_SUBJECTS.has(s) })),
       years: QUEST_YEARS.map((y) => ({ year: y, label: yearLabel(y) })),
       specialist_years: SPECIALIST_YEARS.map((y) => ({ year: y, label: yearLabel(y) })),
       collections: QUEST_COLLECTIONS,

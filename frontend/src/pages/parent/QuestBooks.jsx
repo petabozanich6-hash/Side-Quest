@@ -73,7 +73,7 @@ function BookForm({ data, initial, onSaved, onCancel }) {
         </select>
       </label>
       <label className="text-sm font-semibold text-emerald-950">Subject
-        <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.filter((s) => f.collection !== "core" || s.max_year == null || f.year === "all" || Number(f.year) <= s.max_year).map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}{f.collection !== "core" && <option value="other">Other</option>}</select>
+        <select value={f.subject} onChange={set("subject")} className={field}>{data.subjects.filter((s) => f.collection !== "core" || s.core).map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}{f.collection !== "core" && <option value="other">Other</option>}</select>
       </label>
       <label className="text-sm font-semibold text-emerald-950">Pages<input value={f.pages} onChange={set("pages")} inputMode="numeric" className={field} placeholder="optional" /></label>
       <label className="text-sm font-semibold text-emerald-950">Book price ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = not on sale yet" /></label>
@@ -258,7 +258,7 @@ function ShelfView() {
   const yearLabel = data?.years.find((y) => y.year === year)?.label || "";
   const shelf = useMemo(() => {
     if (!data) return [];
-    return data.subjects.filter((s) => s.max_year == null || year <= s.max_year).flatMap((s) => {
+    return data.subjects.filter((s) => s.core).flatMap((s) => {
       const books = data.books.filter((b) => (b.collection || "core") === "core" && b.year === year && b.subject === s.id && (b.has_book || data.owner));
       return books.length ? books : [{ placeholder: true, subject: s.id, subjectLabel: s.label, yearLabel, id: `${s.id}-soon` }];
     });
