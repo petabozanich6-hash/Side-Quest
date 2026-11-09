@@ -67,6 +67,7 @@ import HqFeedback from "./pages/parent/hq/HqFeedback";
 import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
 import HqHoard from "./pages/parent/hq/HqHoard";
 import HqShop from "./pages/parent/hq/HqShop";
+import HqDocumentStudio from "./pages/parent/hq/HqDocumentStudio";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -135,6 +136,7 @@ function Router() {
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="dragon-hoard" element={<HqHoard />} />
           <Route path="shop" element={<HqShop />} />
+          <Route path="document-studio" element={<HqDocumentStudio />} />
           <Route path="book-forge" element={<HqBookForge />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
