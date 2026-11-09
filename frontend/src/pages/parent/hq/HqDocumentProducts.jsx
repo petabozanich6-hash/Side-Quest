@@ -77,7 +77,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
   return (
     <section className="paper-card p-5 space-y-3" data-testid="hq-document-products">
       <h3 className="text-lg font-bold">Sell a blank fillable document</h3>
-      <p className="text-sm text-stone-700">Create an independent ${""}state-specific digital product in your existing Square-backed shop. The PDF must be prepared and tested before it can be offered to families.</p>
+      <p className="text-sm text-stone-700">Create an independent state-specific digital product in your existing Square-backed shop. The PDF must be prepared and tested before it can be offered to families.</p>
       <p className="text-sm text-stone-700">Suggested price: <strong>$14.95 AUD</strong> · {jurisdiction.name} · no postage · no AI generation.</p>
       {!current
         ? <button type="button" disabled={busy || refreshing} onClick={create} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} shop draft</button>
