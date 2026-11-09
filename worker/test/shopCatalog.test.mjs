@@ -204,3 +204,29 @@ test("prefill: descriptions, options and fields fill in without overwriting the 
   assert.equal((await one(db, "Gel pen sets")).description, "My words");
   assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE product_id = ?").bind(tee.id).first()).n, 7, "options aren't added twice");
 });
+
+test("digital-only version: sold as one download at its own price, no postage, only once its file is uploaded", async () => {
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const p = await one(db, "Printed Quest Book");
+  const set = (sql, ...a) => db.prepare(`UPDATE shop_products SET ${sql} WHERE id = ?`).bind(...a, p.id).run();
+  // The owner sets a digital price; a physical product that can't be bought yet (coming soon) can still sell it.
+  await set("visible = 1, status = 'coming_soon', price_cents = 4500, postage_cents = 995, digital_cents = 900");
+  assert.equal((await publicCatalog(db)).products[0].digital_cents, null, "hidden until its file is uploaded");
+  assert.match((await priceItems(db, [{ product_id: p.id, digital: true }])).detail, /digital version .* isn't available/);
+  await set("digital_file = 1");
+  const pub = (await publicCatalog(db)).products[0];
+  assert.equal(pub.digital_cents, 900);
+  assert.equal(pub.can_buy, false, "the physical product still isn't for sale");
+  const r = await priceItems(db, [{ product_id: p.id, digital: true, qty: 5 }, { product_id: p.id, digital: true }]);
+  assert.equal(r.ok, true);
+  assert.equal(r.lines.length, 1, "one copy, however many times it's added");
+  assert.deepEqual([r.lines[0].amount_cents, r.lines[0].qty, r.lines[0].physical, r.postage, r.physical], [900, 1, false, 0, false]);
+  assert.match(r.lines[0].title, /digital version/);
+  // Validation: a digital product can't also have a digital version, and the price must be chargeable.
+  assert.equal(validateProduct({ title: "Kit", department: "science", digital_cents: 30 }).ok, false);
+  assert.equal(validateProduct({ title: "Kit", department: "science", fulfilment: "digital", digital_cents: 900 }).value.digital_cents, null);
+  assert.equal(validateProduct({ title: "Kit", department: "science", digital_cents: 900 }).value.digital_cents, 900);
+  // Readiness: a digital version without its file is flagged.
+  assert.ok(readiness({ fulfilment: "physical", digital_cents: 900, has_file: false, status: "in_stock", stock: 1 }, []).includes("digital version file"));
+});

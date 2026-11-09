@@ -15,7 +15,8 @@ const SHOP = {
   open: true, can_buy: true,
   departments: [{ id: "arts", label: "Arts" }, { id: "gifts", label: "Gifts" }],
   books: [{ id: "b1", title: "Maths Quest Book", year_label: "Year 1", subject_label: "Mathematics", price_cents: 1995, look_pages: 0, printed: [] }],
-  products: [1, 2, 3, 4, 5, 6].map((n) => product(n, "arts")).concat([product(7, "gifts", { title: "Dragon plush", status: "pre_order", status_label: "Pre-order" })]),
+  products: [1, 2, 3, 4, 5, 6].map((n) => product(n, "arts")).concat([product(7, "gifts", { title: "Dragon plush", status: "pre_order", status_label: "Pre-order" }),
+    product(8, "gifts", { title: "Volcano kit", status: "coming_soon", status_label: "Coming soon", can_buy: false, fulfilment: "physical", digital_cents: 900 })]),
 };
 let root, box;
 const $ = (sel) => box.querySelector(sel);
@@ -57,4 +58,19 @@ test("Everything shows a short row per department with See all, and search narro
   await act(async () => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value").set.call(search, "plush"); search.dispatchEvent(new Event("input", { bubbles: true })); });
   expect(box.querySelectorAll('[data-testid^="shop-product-"]').length).toBe(1);
   expect($('[data-testid="shop-book-b1"]')).toBeNull();
+});
+
+test("a digital-only version can be added from the product, once, even when the physical product isn't for sale", async () => {
+  await click($('[data-testid="shop-product-p8"]'));
+  const option = $('[data-testid="shop-digital-option"]');
+  expect(option.textContent).toContain("Digital version · $9.00");
+  expect($('[data-testid="shop-product-add"]')).toBeNull();
+  await click($('[data-testid="shop-add-digital"]'));
+  await click($('[data-testid="shop-product-p8"]'));
+  await click($('[data-testid="shop-add-digital"]'));
+  expect($('[data-testid="shop-cart-count"]').textContent).toBe("1");
+  await click($('[data-testid="shop-cart-button"]'));
+  const cart = $('[data-testid="shop-cart"]');
+  expect(cart.textContent).toContain("Volcano kit – digital version");
+  expect(cart.textContent).not.toContain("postcode");
 });

@@ -23,7 +23,7 @@ const BADGE = {
   in_stock: "bg-emerald-100 text-emerald-900", made_to_order: "bg-amber-100 text-amber-900", sold_out: "bg-rose-100 text-rose-900",
 };
 const fromPrice = (p) => {
-  const prices = [p.price_cents, ...p.variants.map((v) => v.price_cents)].filter((x) => x != null);
+  const prices = [p.price_cents, ...p.variants.map((v) => v.price_cents), p.digital_cents].filter((x) => x != null);
   if (!prices.length) return null;
   const lo = Math.min(...prices);
   return prices.some((x) => x !== lo) ? `From ${money(lo)}` : money(lo);
@@ -227,6 +227,16 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
             <input type="email" placeholder="you@example.com" aria-label="Your email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm" />
           </div>
         )}
+        {p.digital_cents != null && (
+          <div className="rounded-xl border border-stone-300 p-3 flex flex-wrap items-center gap-3" data-testid="shop-digital-option">
+            <div className="flex-1 min-w-[200px] text-sm">
+              <p className="font-semibold">Digital version · {money(p.digital_cents)}</p>
+              <p className="text-stone-600">A download (PDF) so you can make it with your own materials. No postage.</p>
+            </div>
+            <button type="button" onClick={() => onAdd([{ product_id: p.id, variant_id: null, qty: 1, digital: true, personalisation: {}, title: `${p.title} – digital version`, unit_cents: p.digital_cents, postage_cents: 0, physical: false }])}
+              className="rounded-xl border px-3 py-2 text-sm font-bold" style={{ borderColor: GREEN, color: GREEN }} data-testid="shop-add-digital">Add digital version</button>
+          </div>
+        )}
         {error && <p className="text-sm text-rose-700" role="alert">{error}</p>}
         {msg && <p className="text-sm text-emerald-800" role="status">{msg}</p>}
       </div>
@@ -263,6 +273,7 @@ function ProductCard({ p, onOpen }) {
       <span className="text-sm font-bold text-slate-900 leading-tight">{p.title}</span>
       <span className="flex items-center gap-2">
         {fromPrice(p) && <span className="text-sm font-bold" style={{ color: GREEN }}>{fromPrice(p)}{p.subscription ? " / month" : ""}</span>}
+        {p.fulfilment === "digital" && <span className="rounded-full px-2 py-0.5 text-[11px] font-bold bg-sky-100 text-sky-900">Download</span>}
         {badge && <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${p.low_stock && p.status === "in_stock" ? "bg-amber-100 text-amber-900" : BADGE[p.status] || "bg-stone-200"}`}>{p.low_stock && p.status === "in_stock" ? "Only a few left" : p.status_label}</span>}
       </span>
     </button>
@@ -288,7 +299,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
   const [shippingBusy, setShippingBusy] = useState(false);
   const [shippingError, setShippingError] = useState("");
   const posted = cart.items.some((x) => x.physical && !x.gift_months);
-  const itemsKey = JSON.stringify(cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null })));
+  const itemsKey = JSON.stringify(cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months, digital }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null, digital: digital === true })));
   const validQuote = posted && shippingQuote?.postcode === postcode && shippingQuote?.itemsKey === itemsKey ? shippingQuote : null;
 
   useEffect(() => {
@@ -336,7 +347,13 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
     setCart((c) => ({ ...c, books: adding ? [...c.books, id] : c.books.filter((x) => x !== id) }));
     if (adding) setAdded(books.find((b) => b.id === id)?.title || "Book");
   };
-  const addItems = (items) => { setCart((c) => ({ ...c, items: [...c.items, ...items].slice(0, 30) })); setOpen(null); setAdded(items[0]?.title || "Item"); };
+  const addItems = (items) => {
+    setCart((c) => {
+      const fresh = items.filter((x) => !x.digital || !c.items.some((y) => y.digital && y.product_id === x.product_id));
+      return { ...c, items: [...c.items, ...fresh].slice(0, 30) };
+    });
+    setOpen(null); setAdded(items[0]?.title || "Item");
+  };
   const removeItem = (i) => setCart((c) => ({ ...c, items: c.items.filter((_, j) => j !== i) }));
   const chosen = books.filter((b) => cart.books.includes(b.id));
   const postage = validQuote?.postage_cents || 0;
@@ -353,7 +370,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
     try {
       const r = await fetch(`${API}/shop/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         book_ids: chosen.map((b) => b.id), email: email.trim(), expected_total_cents: total, destination_postcode: posted ? postcode : null,
-        items: cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months, one_off }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null, one_off: one_off === true })),
+        items: cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months, one_off, digital }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null, one_off: one_off === true, digital: digital === true })),
       }) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.url) throw new Error(j.detail || "Could not start checkout.");

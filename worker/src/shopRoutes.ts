@@ -5,7 +5,7 @@
 // interest emails are owner-only.
 import type { Context, Hono, Next } from "hono";
 import {
-  DEPARTMENTS, FULFILMENT_LABELS, STATUSES, STATUS_LABELS, SUBSCRIPTION_FULFILMENT, buyable, ensureShopCatalog, isPublic,
+  DEPARTMENTS, FULFILMENT_LABELS, STATUSES, STATUS_LABELS, SUBSCRIPTION_FULFILMENT, buyable, digitalVersion, ensureShopCatalog, isPublic,
   productRow, profitFor, publicProduct, slugify, validateProduct, variantsFor, type PersonalField,
 } from "./shopCatalog";
 import { ensureShopOrders, paidUnitsByProduct, shopOrderFor, type ShopLine } from "./shopOrders";
@@ -55,7 +55,7 @@ export async function publicCatalog(db: DB, now: Date = new Date()) {
 
 // ---------------------------------------------------------------- pricing a cart
 
-export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown };
+export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown; digital?: unknown };
 
 function cleanPersonalisation(fields: PersonalField[], given: unknown): Record<string, string> | string {
   const src = given && typeof given === "object" ? (given as Record<string, unknown>) : {};
@@ -85,6 +85,14 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     const p = products.get(String(it?.product_id || ""));
     if (!p) return { ok: false, detail: "Something in your cart is no longer available." };
     const vs = variants.get(p.id) || [];
+    // The digital-only version: one download at its own price. It doesn't depend on stock, options or the physical
+    // product's status (a family may want the printables for something not made yet), only on being switched on.
+    if (it?.digital === true) {
+      if (!digitalVersion(p)) return { ok: false, detail: `The digital version of ${p.title} isn't available.` };
+      if (lines.some((l) => l.product_id === p.id && !l.physical)) continue; // one copy is enough
+      lines.push({ product_id: p.id, variant_id: null, title: `${p.title} – digital version`, qty: 1, unit_cents: p.digital_cents, amount_cents: p.digital_cents, personalisation: {}, gift_months: null, physical: false });
+      continue;
+    }
     const ok = buyable(p, vs, now);
     if (!ok.ok) return { ok: false, detail: `${p.title} can't be bought right now (${ok.reason}).` };
     const giftMonths = it?.gift_months != null ? Number(it.gift_months) : null;
@@ -141,6 +149,7 @@ export function readiness(p: any, variants: any[]): string[] {
   if (p.fulfilment !== "digital" && !p.supplier) missing.push("supplier");
   if (p.fulfilment !== "digital" && p.wholesale_cents == null) missing.push("unit cost");
   if (p.fulfilment === "digital" && !p.has_file) missing.push("download file");
+  if (p.fulfilment !== "digital" && p.digital_cents != null && !p.has_file) missing.push("digital version file");
   if (p.status === "pre_order" && (!p.preorder_closes_at || !p.dispatch_estimate)) missing.push("pre-order dates");
   if (p.status === "in_stock" && (active.length ? active.every((v) => v.stock == null) : p.stock == null)) missing.push("stock count");
   if (p.status === "draft" || p.status === "discontinued") missing.push("status");
@@ -326,9 +335,15 @@ async function ownerProducts(env: Env) {
       cursor = page.truncated ? page.cursor : undefined;
     } while (cursor);
   }
+  // Keep the stored "file uploaded" flag in step with storage (files uploaded before the flag existed).
+  if (env.BUCKET) {
+    const stale = products.filter((p) => !!p.digital_file !== files.has(p.id));
+    for (const p of stale)
+      await db.prepare("UPDATE shop_products SET digital_file = ? WHERE id = ?").bind(files.has(p.id) ? 1 : 0, p.id).run();
+  }
   return products.map((p) => {
     const vs = variants.get(p.id) || [];
-    const withFile = { ...p, has_file: files.has(p.id) };
+    const withFile = { ...p, has_file: files.has(p.id), digital_file: files.has(p.id) ? 1 : 0 };
     return {
       ...withFile, variants: vs, interest: interest.get(p.id) || 0, sold: units.get(p.id) || 0,
       profit: profitFor(p), missing: readiness(withFile, vs), buyable_if_on: buyable({ ...p, visible: 1 }, vs).ok,
@@ -442,13 +457,19 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       if (!(STATUSES as readonly string[]).includes(String(body.status))) return c.json({ detail: "Unknown status." }, 400);
       sets.push("status = ?"); vals.push(String(body.status));
     }
+    // Make many products digital only (a download such as an instructional PDF or activity book) or physical again.
+    if (body.fulfilment !== undefined) {
+      if (body.fulfilment !== "digital" && body.fulfilment !== "physical") return c.json({ detail: "Choose digital only or physical." }, 400);
+      sets.push("fulfilment = ?"); vals.push(body.fulfilment);
+      if (body.fulfilment === "digital") sets.push("digital_cents = NULL"); // already a download
+    }
     if (!sets.length) return c.json({ detail: "Nothing to change." }, 400);
     const now = new Date().toISOString();
     for (let i = 0; i < ids.length; i += 50) {
       const chunk = ids.slice(i, i + 50);
       await db.prepare(`UPDATE shop_products SET ${sets.join(", ")}, updated_at = ? WHERE id IN (${chunk.map(() => "?").join(",")})`).bind(...vals, now, ...chunk).run();
     }
-    await audit(c, "shop.products_bulk", null, { count: ids.length, visible: body.visible, status: body.status, stage: body.stage });
+    await audit(c, "shop.products_bulk", null, { count: ids.length, visible: body.visible, status: body.status, stage: body.stage, fulfilment: body.fulfilment });
     return c.json({ ok: true, changed: ids.length });
   });
 
@@ -550,6 +571,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if (file.bytes.length > MAX_FILE_BYTES) return c.json({ detail: "Files can be up to 25 MB." }, 400);
     const name = String(body.name || "download").replace(/[^\w. -]/g, "").slice(0, 100) || "download";
     await env.BUCKET.put(fileKey(id), file.bytes, { httpMetadata: { contentType: file.type }, customMetadata: { name } });
+    await env.DB.prepare("UPDATE shop_products SET digital_file = 1, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
     await audit(c, "shop.file_uploaded", id, { name, bytes: file.bytes.length });
     return c.json({ ok: true });
   });
@@ -559,6 +581,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const id = c.req.param("id") ?? "";
     if (!UUID.test(id) || !env.BUCKET) return c.json({ detail: "Not found" }, 404);
     await env.BUCKET.delete(fileKey(id));
+    await ensureShopCatalog(env.DB);
+    await env.DB.prepare("UPDATE shop_products SET digital_file = 0, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
     await audit(c, "shop.file_removed", id);
     return c.json({ ok: true });
   });
