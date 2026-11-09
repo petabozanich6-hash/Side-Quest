@@ -211,3 +211,18 @@ export async function readerPages(file, onPage, { width = 1240, quality = 0.8, s
     await doc.destroy();
   }
 }
+
+/** The book's first page as a clean PNG cover (no watermark), about `width` pixels wide. */
+export async function coverFromPdf(file, { width = 900 } = {}) {
+  const doc = await loadPdf(file);
+  const page = await doc.getPage(1);
+  const viewport = page.getViewport({ scale: width / page.getViewport({ scale: 1 }).width });
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(viewport.width); canvas.height = Math.round(viewport.height);
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  await page.render({ canvasContext: ctx, viewport }).promise;
+  const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
+  if (!blob) throw new Error("Couldn't read the first page of the book.");
+  return blob;
+}
