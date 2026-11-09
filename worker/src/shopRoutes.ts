@@ -355,7 +355,7 @@ export function registerShopCatalog(app: App) {
     const code = guidedProductState(p)!;
     const j = JURISDICTIONS[code];
     return c.json({
-      title: p.title, jurisdiction: j.code, state_name: j.name, authority: j.authority,
+      title: p.title, child_count: Number(order.lines.find((l: ShopLine) => l.product_id === pid)?.personalisation?.child_count || 1), jurisdiction: j.code, state_name: j.name, authority: j.authority,
       plan_name: j.planName, curriculum: j.curriculum, areas: j.areas,
       secondary: j.secondary ?? null, requirements: j.requirements,
       sources: j.sources, requirements_checked_on: CHECKED_ON,
@@ -377,6 +377,11 @@ export function registerShopCatalog(app: App) {
     const code = guidedProductState(product);
     if (!code) return c.json({ detail: "This document isn't available." }, 404);
     const raw: any = await c.req.json().catch(() => ({}));
+    const paidChildCount = Number(order.lines.find((l: ShopLine) => l.product_id === pid)?.personalisation?.child_count || 1);
+    const childIndex = Number(raw?.child_index ?? 1);
+    if(!Number.isInteger(paidChildCount) || paidChildCount<1 || paidChildCount>5 ||
+       !Number.isInteger(childIndex) || childIndex<1 || childIndex>paidChildCount)
+      return c.json({detail:"This learner is not covered by the paid family order."},403);
     const valid = validateGuestInput(raw);
     if (!valid.ok) return c.json({ detail: valid.detail }, 400);
     const action = raw?.action === "email" ? "email" : "preview";
@@ -395,15 +400,15 @@ export function registerShopCatalog(app: App) {
       hits=CASE WHEN window_started=excluded.window_started THEN hits+1 ELSE 1 END,
       window_started=excluded.window_started`).bind(order.id,pid,windowStart).run();
     const attempt = await c.env.DB.prepare("SELECT hits FROM guest_document_email_limits WHERE order_id=? AND product_id=?").bind(order.id,pid).first<{hits:number}>();
-    if (Number(attempt?.hits || 0) > 5) return c.json({ detail: "This order has reached its daily PDF email limit. Contact support if you need help." }, 429);
+    if (Number(attempt?.hits || 0) > 15) return c.json({ detail: "This order has reached its daily PDF email limit. Contact support if you need help." }, 429);
 
     if (!c.env.EMAIL || !c.env.BROWSER?.quickAction) return c.json({ detail: "PDF delivery is not configured right now." }, 503);
     let bytes: Uint8Array;
     try { bytes = await renderGuestPdf(c.env, guestPlanHtml(prepared)); }
     catch (err: any) { console.error("guest PDF failed", err?.message); return c.json({ detail:"Could not create the PDF. Please retry." }, 502); }
-    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name);
+    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name,childIndex,paidChildCount);
     if (!sent) return c.json({ detail:"The PDF was prepared but could not be emailed. Please retry." }, 502);
-    return c.json({ ok:true, emailed:true, detail:"Your PDF was emailed to the purchase email address." });
+    return c.json({ ok:true, emailed:true, child_index:childIndex, child_count:paidChildCount, detail:`Document ${childIndex} of ${paidChildCount} was emailed to the purchase email address.` });
   });
 
   // A digital product in a paid order.
