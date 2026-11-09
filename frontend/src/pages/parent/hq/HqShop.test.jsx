@@ -1,14 +1,15 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
-import { Editor, Switch } from "./HqShop";
+import { Editor, Products, Switch } from "./HqShop";
 import { adminApi } from "../../../lib/adminApi";
 
 jest.mock("../../../lib/adminApi", () => ({ adminApi: { get: jest.fn(), post: jest.fn(), put: jest.fn(), del: jest.fn() }, errorText: (e) => e.message }));
 jest.mock("../../../lib/api", () => ({ api: { get: jest.fn() } }));
 jest.mock("sonner", () => ({ toast: { success: jest.fn(), error: jest.fn() } }));
 jest.mock("react-router-dom", () => ({ Link: ({ children }) => <span>{children}</span> }));
-jest.mock("./useAdmin", () => ({ useAdmin: () => ({}) }));
+const mockAdmin = { data: null, reload: jest.fn() };
+jest.mock("./useAdmin", () => ({ useAdmin: () => mockAdmin }));
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
 const META = {
@@ -60,4 +61,20 @@ test("the in-shop switch says plainly whether a product is in the shop and toggl
   expect(onChange).toHaveBeenCalledTimes(1);
   await act(async () => root.render(<Switch on={false} label="Volcano kit" onChange={onChange} testid="sw" />));
   expect($('[data-testid="sw"]').textContent).toBe("Off");
+});
+
+test("products table: select all, and the in-shop switch sits right after Stage", async () => {
+  const row = (n, visible) => ({ ...PRODUCT, id: `p${n}`, slug: `p${n}`, title: `Thing ${n}`, visible, missing: [], variants: [], tags: [], profit: null, interest: 0 });
+  mockAdmin.data = { ...META, products: [row(1, true), row(2, false), row(3, true)] };
+  adminApi.post.mockReset().mockResolvedValue({ ok: true });
+  await act(async () => root.render(<Products />));
+  const heads = [...box.querySelectorAll("thead th")].map((th) => th.textContent);
+  expect(heads.slice(1, 4)).toEqual(["Product", "Stage", "In shop"]);
+  await click($('[data-testid="hq-shop-select-all"]'));
+  expect(box.textContent).toContain("3 selected");
+  expect([...box.querySelectorAll('tbody input[type="checkbox"]')].every((c) => c.checked)).toBe(true);
+  await click($('[data-testid="hq-shop-select-all"]'));
+  expect(box.textContent).not.toContain("selected");
+  await click($('[data-testid="hq-shop-toggle-p2"]'));
+  expect(adminApi.post).toHaveBeenCalledWith("/shop/products/bulk", { ids: ["p2"], visible: true });
 });

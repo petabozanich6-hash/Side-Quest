@@ -101,7 +101,7 @@ export function Switch({ on, onChange, disabled, label, testid }) {
   );
 }
 
-function Products() {
+export function Products() {
   const { data, error, loading, reload } = useAdmin("/shop/products");
   const [q, setQ] = useState("");
   const [dept, setDept] = useState("");
@@ -123,6 +123,7 @@ function Products() {
     catch (e) { toast.error(errorText(e)); } finally { setBusy(false); }
   };
   const dLabel = Object.fromEntries(data.departments.map((d) => [d.id, d.label]));
+  const allPicked = shown.length > 0 && shown.every((p) => picked.includes(p.id));
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Development stage">
@@ -155,22 +156,29 @@ function Products() {
       <p className="text-xs text-stone-600">Tip: pick a department first, then "Work through these" to fill each product in turn. {shown.length} of {products.length} products · <button type="button" className="underline" onClick={() => setPicked(shown.map((p) => p.id))}>select all shown</button></p>
       <div className="paper-card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">In shop</th><th className="p-2">Product</th><th className="p-2">Stage</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th></tr></thead>
+          <thead><tr className="text-left text-stone-600 border-b">
+            <th className="p-2"><input type="checkbox" aria-label="Select all shown" checked={allPicked} onChange={() => setPicked(allPicked ? [] : shown.map((p) => p.id))} data-testid="hq-shop-select-all" /></th>
+            <th className="p-2">Product</th><th className="p-2">Stage</th><th className="p-2">In shop</th><th className="p-2">Status</th><th className="p-2">Price</th>
+            <th className="p-2 hidden xl:table-cell">Profit</th><th className="p-2 hidden xl:table-cell">Interest</th>
+          </tr></thead>
           <tbody>
             {shown.map((p) => (
               <tr key={p.id} className="border-b border-stone-100 align-top" data-testid={`hq-shop-row-${p.slug}`}>
                 <td className="p-2"><input type="checkbox" aria-label={`Select ${p.title}`} checked={picked.includes(p.id)} onChange={() => setPicked((x) => (x.includes(p.id) ? x.filter((y) => y !== p.id) : [...x, p.id]))} /></td>
-                <td className="p-2"><Switch on={p.visible} disabled={busy} label={p.title} onChange={() => bulk({ visible: !p.visible }, [p.id])} testid={`hq-shop-toggle-${p.slug}`} /></td>
-                <td className="p-2 min-w-[220px]">
+                <td className="p-2 min-w-[160px]">
                   <button type="button" onClick={() => setEditing(p)} className="font-semibold text-left underline-offset-2 hover:underline" style={{ color: GREEN }}>{p.title}</button>
                   <div className="text-xs text-stone-500">{dLabel[p.department]}{p.collection ? ` · ${p.collection}` : ""}{p.variants.length ? ` · ${p.variants.length} options` : ""}</div>
                   {p.missing.length > 0 && <div className="text-xs text-amber-800">Needs {p.missing.join(", ")}</div>}
                 </td>
                 <td className="p-2 whitespace-nowrap"><span className="rounded-full px-2 py-0.5 text-[11px] font-bold" style={{ backgroundColor: (STAGE_COLOURS[p.stage] || {}).bg, color: (STAGE_COLOURS[p.stage] || {}).fg }}>{data.stage_labels[p.stage] || "—"}</span></td>
-                <td className="p-2 whitespace-nowrap">{data.status_labels[p.status]}</td>
-                <td className="p-2 whitespace-nowrap">{money(p.price_cents)}</td>
-                <td className="p-2 whitespace-nowrap">{p.profit ? `${money(p.profit.profit_cents)}${p.profit.cost_known ? "" : "*"}` : "—"}</td>
-                <td className="p-2">{p.interest || ""}</td>
+                <td className="p-2"><Switch on={p.visible} disabled={busy} label={p.title} onChange={() => bulk({ visible: !p.visible }, [p.id])} testid={`hq-shop-toggle-${p.slug}`} /></td>
+                <td className="p-2">{data.status_labels[p.status]}</td>
+                <td className="p-2 whitespace-nowrap">{money(p.price_cents)}
+                  {/* On narrower screens (e.g. half a screen) profit and interest sit under the price instead of their own columns. */}
+                  <span className="block xl:hidden text-xs text-stone-500">{p.profit ? `Profit ${money(p.profit.profit_cents)}${p.profit.cost_known ? "" : "*"}` : ""}{p.interest ? `${p.profit ? " · " : ""}${p.interest} interested` : ""}</span>
+                </td>
+                <td className="p-2 whitespace-nowrap hidden xl:table-cell">{p.profit ? `${money(p.profit.profit_cents)}${p.profit.cost_known ? "" : "*"}` : "—"}</td>
+                <td className="p-2 hidden xl:table-cell">{p.interest || ""}</td>
               </tr>
             ))}
           </tbody>
