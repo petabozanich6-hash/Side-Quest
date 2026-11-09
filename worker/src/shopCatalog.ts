@@ -16,6 +16,7 @@ import { clearSettingsCache, loadPlatformSettings } from "./platformSettings";
 type DB = D1Database;
 
 export const DEPARTMENTS = [
+  { id: "home-education", label: "Home Education Documents" },
   { id: "books", label: "Books & Learning" },
   { id: "stationery", label: "Stationery & School Supplies" },
   { id: "science", label: "Science & Discovery" },
