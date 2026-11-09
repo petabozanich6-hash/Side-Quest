@@ -61,7 +61,7 @@ function harness() {
 }
 
 const pdf = (text) => new TextEncoder().encode("%PDF-1.7\n" + text);
-const details = { title: "Number Navigators", subtitle: "Year 3 Mathematics", year: 3, subject: "mathematics", description: "Place value and more.", pages: 120 };
+const details = { title: "Number Navigators", subtitle: "Year 3 Mathematics", year: 3, subject: "mathematics", description: "Place value and more.", pages: 120, released: true };
 
 async function publishedBook(h, extra = {}) {
   const owner = await h.parent("FREE_PREVIEW"); h.makeOwner(owner);
@@ -427,7 +427,7 @@ test("Specialist books: NAPLAN and HSC collections with topics, Years 11-12 and 
 
   const h = harness();
   const owner = await h.parent("FREE_PREVIEW"); h.makeOwner(owner);
-  const r = await (await h.req("/quest-books/admin/books", owner.token, "POST", { collection: "hsc", title: "HSC English Standard", year: 12, topic: "English Standard", price_cents: 999 })).json();
+  const r = await (await h.req("/quest-books/admin/books", owner.token, "POST", { collection: "hsc", title: "HSC English Standard", year: 12, topic: "English Standard", price_cents: 999, released: true })).json();
   await h.req(`/quest-books/admin/books/${r.book.id}/files/book`, owner.token, "PUT", pdf("HSC"), "application/pdf");
   const member = await h.parent("ACTIVE_MONTHLY");
   const list = await (await h.req("/quest-books", member.token)).json();
@@ -1015,9 +1015,9 @@ test("Member reader builds are resumable and only a verified complete generation
 
 test("Public shop: closed by default; when open it lists books and a paid order downloads with its private link only", async () => {
   const h = harness();
-  const { id, owner } = await publishedBook(h, { price_cents: 399, in_shop: true });
+  const { id, owner } = await publishedBook(h, { price_cents: 399, released: true });
   // A priced book the owner hasn't ticked for the shop (still being finished) is never listed or sold there.
-  const made = await h.req("/quest-books/admin/books", owner.token, "POST", { ...details, title: "Unfinished Quest", price_cents: 399 });
+  const made = await h.req("/quest-books/admin/books", owner.token, "POST", { ...details, title: "Unfinished Quest", price_cents: 399, released: false });
   assert.equal(made.status, 200);
   const unfinished = (await made.json()).book.id;
   assert.notEqual(unfinished, id);
@@ -1230,4 +1230,22 @@ test("The owner can download a book through the browser download link (files-onl
   const other = await h.parent("ACTIVE_MONTHLY");
   const oft = (await (await h.req("/auth/me", other.token)).json()).file_token;
   assert.equal((await h.req(`/quest-books/books/${id}/download?ft=${encodeURIComponent(oft)}`)).status, 402);
+});
+
+
+test("Books not marked ready are hidden from families (list, detail, reading, buying) but the owner still sees them", async () => {
+  const h = harness();
+  const { owner, id } = await publishedBook(h, { title: "Draft Quest", price_cents: 399, released: false });
+  const family = await h.parent("ACTIVE_MONTHLY");
+  const list = await (await h.req("/quest-books", family.token)).json();
+  assert.ok(!list.books.some((b) => b.id === id), "hidden from the family's Quest Books");
+  assert.equal((await h.req(`/quest-books/books/${id}`, family.token)).status, 404);
+  assert.equal((await h.req(`/quest-books/books/${id}/read/1`, family.token)).status, 404);
+  const ownerList = await (await h.req("/quest-books", owner.token)).json();
+  assert.ok(ownerList.books.some((b) => b.id === id && b.released === false), "the owner still sees it");
+  // Marking it ready shows it to families.
+  const saved = await h.req("/quest-books/admin/books", owner.token, "POST", { ...details, id, title: "Draft Quest", price_cents: 399, released: true });
+  assert.equal(saved.status, 200);
+  const after = await (await h.req("/quest-books", family.token)).json();
+  assert.ok(after.books.some((b) => b.id === id));
 });
