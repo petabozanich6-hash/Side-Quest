@@ -19,6 +19,7 @@ import type { App, Env } from "./types";
 import { listBooks } from "./questBooks";
 import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
+import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -285,21 +286,13 @@ export function registerShopCatalog(app: App) {
     c.header("Cache-Control", "private, no-store");
     const order = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
     const pid = c.req.param("productId");
-    if (!order?.paid_at || !order.lines.some((line: ShopLine) => line.product_id === pid && !line.physical)) {
-      return c.json({ detail: "This document link isn't valid." }, 404);
-    }
     await ensureShopCatalog(c.env.DB);
     const p = await c.env.DB.prepare("SELECT id, title, tags, fulfilment FROM shop_products WHERE id = ?").bind(pid).first<any>();
-    if (p?.fulfilment !== "digital") return c.json({ detail: "This document isn't available." }, 404);
-    let tags: string[] = [];
-    try { tags = JSON.parse(p.tags); } catch { /* invalid product tags */ }
-    if (!Array.isArray(tags) || !tags.includes("home-education-document") || !tags.includes("guided-document")) {
-      return c.json({ detail: "This isn't a guided document." }, 404);
+    if (!mayAccessGuidedDocument(order, p, pid)) {
+      return c.json({ detail: "This document link isn't valid." }, 404);
     }
     const { JURISDICTIONS, CHECKED_ON } = await import("./data/planJurisdictions");
-    const codes = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"] as const;
-    const code = codes.find((v) => tags.includes(v.toLowerCase()));
-    if (!code) return c.json({ detail: "The document state is unavailable." }, 404);
+    const code = guidedProductState(p)!;
     const j = JURISDICTIONS[code];
     return c.json({
       title: p.title, jurisdiction: j.code, state_name: j.name, authority: j.authority,
