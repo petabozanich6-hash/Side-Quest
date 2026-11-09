@@ -86,3 +86,26 @@ test("tiers: Basics / Full package options get rising prices; the owner's own op
   const umbrellas = await db.prepare("SELECT id FROM shop_products WHERE title = 'Socks'").first();
   assert.ok((await prices(umbrellas.id)).every((p) => p === null));
 });
+
+test("Christmas, Christmas Eve and Birthday boxes are one-off purchases, not monthly subscriptions", async () => {
+  clearSettingsCache();
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const rows = (await all(db, "SELECT * FROM shop_products WHERE title IN ('Christmas Quest Boxes', 'Christmas Eve Adventure Boxes', 'Birthday Quest Boxes')")).map(productRow);
+  const vars = await variantsFor(db, rows.map((r) => r.id));
+  assert.equal(rows.length, 3);
+  for (const r of rows) {
+    assert.equal(r.fulfilment, "made_to_order", r.title);
+    assert.deepEqual([r.one_off_cents, r.dispatch_day, r.cutoff_day], [null, null, null], r.title);
+    assert.ok(buyable(r, vars.get(r.id) || []).ok, r.title);
+  }
+  // An existing shop (seeded as subscriptions before this fix) is corrected once.
+  const { applyOneOffBoxes } = await import("../src/shopCatalog.ts");
+  await db.prepare("UPDATE shop_products SET fulfilment = 'subscription_box', one_off_cents = 6995, dispatch_day = 15, cutoff_day = 8 WHERE title = 'Birthday Quest Boxes'").run();
+  await db.prepare("DELETE FROM shop_meta WHERE key = 'oneoff_boxes_v1'").run();
+  await applyOneOffBoxes(db);
+  const b = await db.prepare("SELECT fulfilment, one_off_cents, price_cents FROM shop_products WHERE title = 'Birthday Quest Boxes'").first();
+  assert.deepEqual([b.fulfilment, b.one_off_cents, b.price_cents], ["made_to_order", null, 5495]);
+  // Real monthly boxes stay subscriptions.
+  assert.equal((await db.prepare("SELECT fulfilment FROM shop_products WHERE title = 'The Discovery Quest Box'").first()).fulfilment, "subscription_box");
+});

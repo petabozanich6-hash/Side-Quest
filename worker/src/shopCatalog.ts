@@ -87,6 +87,7 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       await applyPrefill(db);
       await applyLaunch(db);
       await applyTierPrices(db);
+      await applyOneOffBoxes(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -192,6 +193,23 @@ export async function applyLaunch(db: DB) {
     clearSettingsCache();
   }
   await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, now).run();
+}
+
+/** Gift boxes for one occasion: bought once, never a monthly subscription. */
+export const ONE_OFF_BOXES = ["Christmas Quest Boxes", "Christmas Eve Adventure Boxes", "Birthday Quest Boxes"];
+
+/**
+ * Once (9 Nov 2026): the Christmas, Christmas Eve and Birthday boxes were seeded as monthly subscription boxes. They
+ * become ordinary one-off made-to-order products at their current price, with the monthly-only settings cleared.
+ * Skipped for any of them the owner has already changed to another kind of product.
+ */
+export async function applyOneOffBoxes(db: DB) {
+  const key = "oneoff_boxes_v1";
+  if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) return;
+  await db.prepare(`UPDATE shop_products SET fulfilment = 'made_to_order', one_off_cents = NULL, dispatch_day = NULL, cutoff_day = NULL,
+      gift_months = '[]', updated_at = ? WHERE fulfilment = 'subscription_box' AND title IN (${ONE_OFF_BOXES.map(() => "?").join(",")})`)
+    .bind(new Date().toISOString(), ...ONE_OFF_BOXES).run();
+  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, new Date().toISOString()).run();
 }
 
 /** Option names that are tiers of the same product (bigger kit, bigger price), not sizes or ages. */
