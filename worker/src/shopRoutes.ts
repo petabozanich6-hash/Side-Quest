@@ -17,6 +17,7 @@ import { appOrigin } from "./billing";
 import { sendEmail } from "./email";
 import type { App, Env } from "./types";
 import { listBooks } from "./questBooks";
+import { STAGES, STAGE_LABELS, stageFor } from "./shopStages";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 
 type DB = D1Database;
@@ -54,7 +55,7 @@ export async function publicCatalog(db: DB, now: Date = new Date()) {
 
 // ---------------------------------------------------------------- pricing a cart
 
-export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; personalisation?: unknown; gift_months?: unknown };
+export type ItemIn = { product_id?: unknown; variant_id?: unknown; qty?: unknown; personalisation?: unknown; gift_months?: unknown; one_off?: unknown };
 
 function cleanPersonalisation(fields: PersonalField[], given: unknown): Record<string, string> | string {
   const src = given && typeof given === "object" ? (given as Record<string, unknown>) : {};
@@ -87,14 +88,16 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     const ok = buyable(p, vs, now);
     if (!ok.ok) return { ok: false, detail: `${p.title} can't be bought right now (${ok.reason}).` };
     const giftMonths = it?.gift_months != null ? Number(it.gift_months) : null;
-    if (SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && !(giftMonths && p.gift_months.includes(giftMonths))) return { ok: false, detail: `${p.title} is a subscription. Start it from its own page.` };
+    // A monthly box can also be bought once, at its (higher) one-off price.
+    const oneOff = it?.one_off === true && SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && p.one_off_cents != null;
+    if (SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && !oneOff && !(giftMonths && p.gift_months.includes(giftMonths))) return { ok: false, detail: `${p.title} is a subscription. Start it from its own page.` };
     const active = vs.filter((v) => v.active);
     let variant: any = null;
     if (active.length) {
       variant = active.find((v) => v.id === String(it?.variant_id || ""));
       if (!variant) return { ok: false, detail: `Choose an option for ${p.title}.` };
     }
-    const unit = variant?.price_cents ?? p.price_cents;
+    const unit = oneOff ? p.one_off_cents : variant?.price_cents ?? p.price_cents;
     if (unit == null) return { ok: false, detail: `${p.title} doesn't have a price yet.` };
     let qty = Math.floor(Number(it?.qty) || 1);
     if (giftMonths) qty = 1;
@@ -110,7 +113,7 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     if (typeof pers === "string") return { ok: false, detail: pers };
     const physical = p.fulfilment !== "digital";
     const unitCents = giftMonths ? unit * giftMonths : unit;
-    const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}`;
+    const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}${oneOff ? " – one-off box" : ""}`;
     lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical });
     if (physical && !giftMonths) postage = Math.max(postage, p.postage_cents ?? 0);
   }
@@ -141,6 +144,15 @@ export function readiness(p: any, variants: any[]): string[] {
   if (p.status === "pre_order" && (!p.preorder_closes_at || !p.dispatch_estimate)) missing.push("pre-order dates");
   if (p.status === "in_stock" && (active.length ? active.every((v) => v.stock == null) : p.stock == null)) missing.push("stock count");
   if (p.status === "draft" || p.status === "discontinued") missing.push("status");
+  if (SUBSCRIPTION_FULFILMENT.has(p.fulfilment)) {
+    if (p.one_off_cents == null) missing.push("one-off price");
+    else if (p.price_cents != null && p.one_off_cents <= p.price_cents) missing.push("one-off price above the monthly price");
+    if (!p.dispatch_day) missing.push("monthly dispatch day");
+    if (!p.cutoff_day) missing.push("monthly order cutoff");
+    if (p.one_off_cents != null && ![p.parcel_weight_g, p.parcel_length_cm, p.parcel_width_cm, p.parcel_height_cm].every((n) => Number.isInteger(Number(n)) && Number(n) > 0)) missing.push("packed weight & dimensions");
+  }
+  // Only Launch Now products can be ready to launch; the rest are waiting on manufacturing or expansion.
+  if (p.stage && p.stage !== "launch_now") missing.push(p.stage === "pro_manufacturing" ? "professional manufacturing" : "future expansion");
   return missing;
 }
 
@@ -360,11 +372,12 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       on_sale: products.filter((p) => isPublic(p) && p.buyable_if_on).length,
       by_status: byStatus,
       status_labels: STATUS_LABELS,
+      by_stage: STAGES.map((st) => ({ id: st, label: STAGE_LABELS[st], total: products.filter((p) => p.stage === st).length, visible: products.filter((p) => p.stage === st && p.visible).length, ready: products.filter((p) => p.stage === st && p.missing.length === 0).length })),
       by_department: DEPARTMENTS.map((d) => ({ ...d, total: products.filter((p) => p.department === d.id).length, visible: products.filter((p) => p.department === d.id && p.visible).length })),
       interest: { signups: Number(interestTotal?.n || 0), people: Number(interestTotal?.people || 0), top: products.filter((p) => p.interest > 0).sort((a, b) => b.interest - a.interest).slice(0, 10).map((p) => ({ ...brief(p), interest: p.interest })) },
       preorders: products.filter((p) => p.status === "pre_order").map((p) => ({ ...brief(p), sold: p.sold, target: p.preorder_target, reached: !!p.preorder_target && p.sold >= p.preorder_target, closes_at: p.preorder_closes_at })),
       ready_to_launch: products.filter((p) => !p.visible && p.missing.length === 0).map(brief),
-      nearly_ready: products.filter((p) => !p.visible && p.missing.length > 0 && p.missing.length <= 2).slice(0, 30).map(brief),
+      nearly_ready: products.filter((p) => !p.visible && p.stage === "launch_now" && p.missing.length > 0 && p.missing.length <= 2).slice(0, 30).map(brief),
       orders: Object.fromEntries((orders.results || []).map((r: any) => [r.status, { count: Number(r.n), total_cents: Number(r.t) }])),
       subscriptions: Object.fromEntries((subs.results || []).map((r: any) => [r.status, Number(r.n)])),
       low_stock: low,
@@ -372,7 +385,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   });
 
   admin.get("/shop/products", R, async (c: Context<any>) => {
-    return c.json({ products: await ownerProducts(c.env as Env), departments: DEPARTMENTS, statuses: STATUSES, status_labels: STATUS_LABELS, fulfilment_labels: FULFILMENT_LABELS });
+    return c.json({ products: await ownerProducts(c.env as Env), departments: DEPARTMENTS, statuses: STATUSES, status_labels: STATUS_LABELS, fulfilment_labels: FULFILMENT_LABELS, stages: STAGES, stage_labels: STAGE_LABELS });
   });
 
   admin.post("/shop/products", W, async (c: Context<any>) => {
@@ -382,6 +395,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if (!checked.ok) return c.json({ detail: checked.detail }, 400);
     const id = crypto.randomUUID();
     const v = checked.value as any;
+    if (!v.stage) v.stage = stageFor(v);
     let slug = slugify(v.title) || "product";
     if (await db.prepare("SELECT 1 FROM shop_products WHERE slug = ?").bind(slug).first()) slug = `${slug}-${id.slice(0, 6)}`;
     const now = new Date().toISOString();
@@ -420,6 +434,10 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const sets: string[] = [];
     const vals: unknown[] = [];
     if (typeof body.visible === "boolean") { sets.push("visible = ?"); vals.push(body.visible ? 1 : 0); }
+    if (body.stage !== undefined) {
+      if (!(STAGES as readonly string[]).includes(String(body.stage))) return c.json({ detail: "Unknown development stage." }, 400);
+      sets.push("stage = ?"); vals.push(String(body.stage));
+    }
     if (body.status !== undefined) {
       if (!(STATUSES as readonly string[]).includes(String(body.status))) return c.json({ detail: "Unknown status." }, 400);
       sets.push("status = ?"); vals.push(String(body.status));
@@ -430,7 +448,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       const chunk = ids.slice(i, i + 50);
       await db.prepare(`UPDATE shop_products SET ${sets.join(", ")}, updated_at = ? WHERE id IN (${chunk.map(() => "?").join(",")})`).bind(...vals, now, ...chunk).run();
     }
-    await audit(c, "shop.products_bulk", null, { count: ids.length, visible: body.visible, status: body.status });
+    await audit(c, "shop.products_bulk", null, { count: ids.length, visible: body.visible, status: body.status, stage: body.stage });
     return c.json({ ok: true, changed: ids.length });
   });
 

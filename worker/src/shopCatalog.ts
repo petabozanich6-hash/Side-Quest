@@ -8,6 +8,8 @@
 //   (and, for pre-orders, before the closing date). Everything else can collect "register interest" emails instead.
 // - The public shop itself is off until the owner opens it (platform setting features.shopOpen).
 import { SHOP_ADDITIONS, SHOP_SEED, type SeedProduct } from "./data/shopCatalogue";
+import { STAGES, stageFor } from "./shopStages";
+import { SHOP_PREFILL } from "./data/shopPrefill";
 
 type DB = D1Database;
 
@@ -72,7 +74,15 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       }
       // What's included in each option, for tiers like "Basics" and "Full package".
       await db.prepare("ALTER TABLE shop_variants ADD COLUMN details TEXT NOT NULL DEFAULT ''").run().catch(() => undefined);
+      // Development stage (Launch Now / Professional Manufacturing Later / Future Expansion) and the monthly-box
+      // options: a one-off price, the dispatch day and the order cutoff day each month.
+      await db.prepare("ALTER TABLE shop_products ADD COLUMN stage TEXT").run().catch(() => undefined);
+      for (const name of ["one_off_cents", "dispatch_day", "cutoff_day"]) {
+        await db.prepare(`ALTER TABLE shop_products ADD COLUMN ${name} INTEGER`).run().catch(() => undefined);
+      }
       await seedCatalog(db);
+      await assignStages(db);
+      await applyPrefill(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -91,13 +101,56 @@ function seedStatements(db: DB, list: SeedProduct[], used: Set<string>, startSor
     if (used.has(slug)) return; // already in the catalogue
     used.add(slug);
     const id = crypto.randomUUID();
-    stmts.push(db.prepare(`INSERT OR IGNORE INTO shop_products (id, slug, department, collection, title, description, tags, status, fulfilment, visible, sort, personalisation, prints_books, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, 'draft', ?, 0, ?, ?, ?, ?, ?)`)
-      .bind(id, slug, p.department, p.collection, p.title, p.description, JSON.stringify(p.tags), p.fulfilment, startSort + i, JSON.stringify(p.personalisation || []), p.prints_books ? 1 : 0, now, now));
+    stmts.push(db.prepare(`INSERT OR IGNORE INTO shop_products (id, slug, department, collection, title, description, tags, status, fulfilment, visible, sort, personalisation, prints_books, stage, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 'draft', ?, 0, ?, ?, ?, ?, ?, ?)`)
+      .bind(id, slug, p.department, p.collection, p.title, p.description, JSON.stringify(p.tags), p.fulfilment, startSort + i, JSON.stringify(p.personalisation || []), p.prints_books ? 1 : 0, stageFor(p), now, now));
     // "Who it's for", age bands and similar options, with no price or stock yet.
     (p.variants || []).forEach((name, j) => stmts.push(db.prepare("INSERT OR IGNORE INTO shop_variants (id, product_id, name, sort) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), id, name, j)));
   });
   return stmts;
+}
+
+/**
+ * Fills in ready-to-use descriptions, options and personalisation fields once. Never overwrites the owner's work:
+ * a description is only replaced while it still matches the original placeholder (or is empty), and options or
+ * personalisation fields are only added to products that have none. Prices, costs, suppliers, stock, photos and
+ * parcel measurements are never touched.
+ */
+async function applyPrefill(db: DB) {
+  const key = "prefill_v1";
+  if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) return;
+  const original = new Map([...SHOP_SEED, ...SHOP_ADDITIONS.flatMap((b) => b.products)].map((p) => [p.title, p.description]));
+  const { results } = await db.prepare("SELECT p.id, p.title, p.description, p.personalisation, (SELECT COUNT(*) FROM shop_variants v WHERE v.product_id = p.id) AS nvar FROM shop_products p").all<any>();
+  const stmts: D1PreparedStatement[] = [];
+  for (const r of results || []) {
+    const fill = SHOP_PREFILL[r.title];
+    if (!fill) continue;
+    if (!r.description || r.description === original.get(r.title)) {
+      stmts.push(db.prepare("UPDATE shop_products SET description = ? WHERE id = ? AND description = ?").bind(fill.d, r.id, r.description || ""));
+    }
+    if (fill.p?.length && (!r.personalisation || r.personalisation === "[]")) {
+      const fields = fill.p.map((f) => ({ key: slugify(f.label).slice(0, 30) || "field", label: f.label, max: f.max, required: f.required }));
+      stmts.push(db.prepare("UPDATE shop_products SET personalisation = ? WHERE id = ? AND personalisation = ?").bind(JSON.stringify(fields), r.id, r.personalisation || "[]"));
+    }
+    if (fill.v?.length && Number(r.nvar) === 0) {
+      fill.v.forEach((name, j) => stmts.push(db.prepare("INSERT INTO shop_variants (id, product_id, name, sort) VALUES (?, ?, ?, ?)").bind(crypto.randomUUID(), r.id, name, j)));
+    }
+  }
+  for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
+  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, new Date().toISOString()).run();
+}
+
+/**
+ * Gives every product without a development stage one (once per new reconciliation). Only the stage column is
+ * written: prices, descriptions, options, images, suppliers, status and visibility are left exactly as they are.
+ */
+async function assignStages(db: DB) {
+  const key = "staged_v1";
+  if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) return;
+  const { results } = await db.prepare("SELECT id, title, department, fulfilment FROM shop_products WHERE stage IS NULL").all<any>();
+  const stmts = (results || []).map((r) => db.prepare("UPDATE shop_products SET stage = ? WHERE id = ? AND stage IS NULL").bind(stageFor(r), r.id));
+  for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
+  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, new Date().toISOString()).run();
 }
 
 /**
@@ -157,6 +210,8 @@ export function isPublic(p: any) { return !!p.visible && p.status !== "draft" &&
 export function buyable(p: any, variants: any[] = [], now: Date = new Date()): { ok: boolean; reason?: string } {
   if (!isPublic(p)) return { ok: false, reason: "Hidden" };
   if (!SELLING.has(p.status)) return { ok: false, reason: STATUS_LABELS[p.status] };
+  // Products waiting for professional manufacturing or future expansion can't be sold as ready to make or send.
+  if (p.stage && p.stage !== "launch_now" && p.status !== "pre_order") return { ok: false, reason: "Not in production yet" };
   const priced = p.price_cents != null || variants.some((v) => v.active && v.price_cents != null);
   if (!priced) return { ok: false, reason: "No price" };
   if (p.status === "pre_order" && p.preorder_closes_at && p.preorder_closes_at < now.toISOString()) return { ok: false, reason: "Pre-orders closed" };
@@ -180,6 +235,9 @@ export function publicProduct(p: any, variants: any[] = [], preorderCount = 0, n
     preorder_progress: p.status === "pre_order" && p.preorder_target ? { ordered: preorderCount, target: p.preorder_target } : null,
     personalisation: p.personalisation, bundle_items: p.bundle_items, addons: p.addons, gift_months: p.gift_months,
     prints_books: !!p.prints_books,
+    one_off_cents: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.one_off_cents ?? null : null,
+    dispatch_day: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.dispatch_day ?? null : null,
+    cutoff_day: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.cutoff_day ?? null : null,
     variants: activeVariants.map((v) => ({ id: v.id, name: v.name, details: v.details || "", book_id: v.book_id || null, price_cents: v.price_cents ?? p.price_cents, available: p.status !== "in_stock" || v.stock == null || v.stock > 0 })),
     low_stock: p.status === "in_stock" && p.stock != null && p.low_stock_at != null && p.stock <= p.low_stock_at && p.stock > 0,
     can_buy: b.ok, can_register_interest: INTEREST.has(p.status), subscription: SUBSCRIPTION_FULFILMENT.has(p.fulfilment),
@@ -211,18 +269,21 @@ export function validateProduct(b: any): { ok: true; value: Record<string, unkno
   const fulfilment = String(b.fulfilment || "physical");
   if (!(FULFILMENTS as readonly string[]).includes(fulfilment)) return { ok: false, detail: "Unknown fulfilment type." };
   const money: Record<string, number | null> = {};
-  for (const k of ["price_cents", "wholesale_cents", "postage_cents"]) {
+  for (const k of ["price_cents", "wholesale_cents", "postage_cents", "one_off_cents"]) {
     const v = cents(b[k]);
     if (v === "bad") return { ok: false, detail: "Prices and costs must be whole cents between $0 and $10,000." };
     money[k] = v;
   }
   if (money.price_cents !== null && money.price_cents < 50 && money.price_cents !== 0) return { ok: false, detail: "Prices under 50c can't be charged by card." };
   const ints: Record<string, number | null> = {};
-  for (const [k, max] of [["lead_time_days", 365], ["stock", 100000], ["low_stock_at", 100000], ["max_per_order", 1000], ["preorder_target", 100000], ["parcel_weight_g", 22000], ["parcel_length_cm", 105], ["parcel_width_cm", 105], ["parcel_height_cm", 105]] as const) {
+  for (const [k, max] of [["lead_time_days", 365], ["stock", 100000], ["low_stock_at", 100000], ["max_per_order", 1000], ["preorder_target", 100000], ["parcel_weight_g", 22000], ["parcel_length_cm", 105], ["parcel_width_cm", 105], ["parcel_height_cm", 105], ["dispatch_day", 28], ["cutoff_day", 28]] as const) {
     const v = intOrNull(b[k], max);
     if (v === "bad") return { ok: false, detail: `${k.replace(/_/g, " ")} must be a whole number.` };
     ints[k] = v;
   }
+  if ((ints.dispatch_day !== null && ints.dispatch_day < 1) || (ints.cutoff_day !== null && ints.cutoff_day < 1)) return { ok: false, detail: "Dispatch and cutoff days are days of the month, 1 to 28." };
+  const stage = b.stage === undefined || b.stage === null || b.stage === "" ? undefined : String(b.stage);
+  if (stage !== undefined && !(STAGES as readonly string[]).includes(stage)) return { ok: false, detail: "Unknown development stage." };
   let closes: string | null = null;
   if (b.preorder_closes_at) {
     const t = Date.parse(String(b.preorder_closes_at));
@@ -256,6 +317,7 @@ export function validateProduct(b: any): { ok: true; value: Record<string, unkno
       supplier: clip(b.supplier, 200), supplier_notes: clip(b.supplier_notes, 2000),
       personalisation: JSON.stringify(fields), bundle_items: JSON.stringify(ids(b.bundle_items)), addons: JSON.stringify(ids(b.addons)),
       gift_months: JSON.stringify(giftMonths), safety_checked: b.safety_checked ? 1 : 0,
+      ...(stage ? { stage } : {}),
     },
   };
 }

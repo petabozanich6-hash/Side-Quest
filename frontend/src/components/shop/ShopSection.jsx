@@ -6,6 +6,7 @@ import { API } from "../../lib/api";
 // Prices, stock and postage are always re-checked by the server at checkout; payment happens on Square's own page.
 const KEY = "sq-shop-cart-v2";
 const GREEN = "#1F3B2D";
+const ordinal = (n) => { const x = Number(n); const s = ["th", "st", "nd", "rd"]; const v = x % 100; return `${x}${s[(v - 20) % 10] || s[v] || s[0]}`; };
 const money = (c) => `$${(c / 100).toFixed(2)}`;
 const readCart = () => {
   try {
@@ -137,6 +138,8 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
           <div className="space-y-2 text-sm">
             <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-bold ${BADGE[p.status] || "bg-stone-200"}`}>{p.status_label}</span>
             {price != null && <p className="text-2xl font-bold" style={{ color: GREEN }}>{money(price)}{p.subscription ? <span className="text-sm font-normal"> / month</span> : null}</p>}
+            {p.subscription && p.one_off_cents != null && price != null && p.one_off_cents > price && <p className="text-sm text-stone-700">Or {money(p.one_off_cents)} for a single box. Subscribers save {Math.round((1 - price / p.one_off_cents) * 100)}%.</p>}
+            {p.subscription && p.cutoff_day && p.dispatch_day && <p className="text-sm text-stone-600">📦 Order by the {ordinal(p.cutoff_day)} of the month and your box ships around the {ordinal(p.dispatch_day)}{p.dispatch_day <= p.cutoff_day ? " of the following month" : ""}.</p>}
             {p.description && <p className="text-stone-700 whitespace-pre-line">{p.description}</p>}
             {p.dispatch_estimate && <p className="text-stone-600">Dispatch: {p.dispatch_estimate}</p>}
             {p.preorder_closes_at && <p className="text-stone-600">Pre-orders close {new Date(p.preorder_closes_at).toLocaleDateString("en-AU", { dateStyle: "medium" })}</p>}
@@ -191,6 +194,14 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
                 ))}
                 <input type="email" placeholder="Your email (for receipts and managing it)" aria-label="Your email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm" />
                 <p className="text-xs text-stone-500">Billed monthly on Square. Cancel any time from the link we email you.</p>
+                {p.one_off_cents != null && (
+                  <div className="pt-2 border-t">
+                    <p className="text-sm font-semibold">Just want one box?</p>
+                    <button type="button" onClick={() => { if (needVariant) { setError("Choose an option first."); return; } onAdd([{ product_id: p.id, variant_id: v?.id || null, qty: 1, one_off: true, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""} – one-off box`, unit_cents: p.one_off_cents, postage_cents: 0, physical: true }]); }}
+                      className="mt-1 rounded-lg border px-3 py-1.5 text-sm font-semibold" style={{ borderColor: GREEN, color: GREEN }} data-testid="shop-one-off">Add one box to cart · {money(p.one_off_cents)}</button>
+                    <p className="text-xs text-stone-500 mt-1">One payment, no subscription. Postage is added at checkout.</p>
+                  </div>
+                )}
                 {p.gift_months.length > 0 && (
                   <div className="pt-2 border-t">
                     <p className="text-sm font-semibold">Or give it as a prepaid gift (one payment, no renewal):</p>
@@ -291,7 +302,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
     try {
       const r = await fetch(`${API}/shop/checkout`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         book_ids: chosen.map((b) => b.id), email: email.trim(), expected_total_cents: total, destination_postcode: posted ? postcode : null,
-        items: cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null })),
+        items: cart.items.map(({ product_id, variant_id, qty, personalisation, gift_months, one_off }) => ({ product_id, variant_id, qty, personalisation, gift_months: gift_months || null, one_off: one_off === true })),
       }) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || !j.url) throw new Error(j.detail || "Could not start checkout.");
