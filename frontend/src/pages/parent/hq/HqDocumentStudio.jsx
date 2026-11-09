@@ -33,7 +33,7 @@ export default function HqDocumentStudio() {
       <header className="paper-card p-5 space-y-2">
         <h2 className="text-2xl font-bold text-[#4A5D3A]">Home Education Document Studio</h2>
         <p className="text-sm text-stone-700">Prepare state-specific home education templates for sale, using the requirements already built into Side-Quest's subscriber learning plans.</p>
-        <p className="text-sm rounded-xl bg-amber-50 p-3 text-amber-950">Planning workspace only: paid document creation and customer downloads are not enabled yet. Never advertise a draft as government-approved or accept payment before its template is verified and ready.</p>
+        <p className="text-sm rounded-xl bg-amber-50 p-3 text-amber-950">Quality-controlled draft workspace: home education document sales are blocked by the backend until an independent state-specific requirements review and document approval system is in place. A checked box or uploaded PDF is not sufficient for publication.</p>
       </header>
 
       <section className="paper-card p-5 space-y-3">
@@ -46,7 +46,7 @@ export default function HqDocumentStudio() {
             <span className="inline-block text-xs rounded-full bg-stone-100 px-2 py-1">Not for sale yet</span>
           </article>)}
         </div>
-        <p className="text-sm text-stone-600">The existing <Link className="underline text-[#4A5D3A]" to="/parent/command-centre/shop">Owner HQ Shop</Link> already handles digital products and Square payments. The document product type must be added with paid-order checks before publication.</p>
+        <p className="text-sm text-stone-600">The existing <Link className="underline text-[#4A5D3A]" to="/parent/command-centre/shop">Owner HQ Shop</Link> already handles digital products and Square payments. Document-specific products are currently locked from sale pending independent review, even after a PDF is uploaded. The existing Square checkout already enforces paid-order download access for ordinary digital products.</p>
       </section>
 
       <section className="paper-card p-5 space-y-3">
@@ -92,7 +92,7 @@ export default function HqDocumentStudio() {
       <HqDocumentProducts jurisdiction={jur} />
       <section className="paper-card p-5 space-y-2">
         <h3 className="font-bold text-lg">Release checks</h3>
-        <p className="text-sm text-stone-700">Before publishing a document: confirm official rules and forms; build and proof a genuinely fillable PDF; collect only required personal information; ensure Square confirms payment before download; check customer-specific access and document deletion; version the template and preserve its source review date.</p>
+        <p className="text-sm text-stone-700">Document sales remain blocked pending independent state-specific review. Confirm the current official rules and forms; map every mandatory item to a section; assess educational substance, individualisation and genuine fillable fields; test missing-content warnings, privacy, verified paid access, versioning, and real sample submissions before implementing an approval-based release gate.</p>
         <p className="text-sm text-stone-700">Official application forms remain free from their issuing authorities. Side-Quest products should provide independent planning assistance, not impersonate government forms or promise registration approval.</p>
       </section>
     </div>
