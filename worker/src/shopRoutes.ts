@@ -278,6 +278,38 @@ export function registerShopCatalog(app: App) {
     }
   });
 
+  // Guided document workspace: access requires the exact private order token,
+  // verified Square payment, and purchase of this specific guided document.
+  // Never accept arbitrary document state from the URL and never store children's answers.
+  app.get("/api/shop/orders/:id/guided-document/:productId", async (c) => {
+    c.header("Cache-Control", "private, no-store");
+    const order = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
+    const pid = c.req.param("productId");
+    if (!order?.paid_at || !order.lines.some((line: ShopLine) => line.product_id === pid && !line.physical)) {
+      return c.json({ detail: "This document link isn't valid." }, 404);
+    }
+    await ensureShopCatalog(c.env.DB);
+    const p = await c.env.DB.prepare("SELECT id, title, tags, fulfilment FROM shop_products WHERE id = ?").bind(pid).first<any>();
+    if (p?.fulfilment !== "digital") return c.json({ detail: "This document isn't available." }, 404);
+    let tags: string[] = [];
+    try { tags = JSON.parse(p.tags); } catch { /* invalid product tags */ }
+    if (!Array.isArray(tags) || !tags.includes("home-education-document") || !tags.includes("guided-document")) {
+      return c.json({ detail: "This isn't a guided document." }, 404);
+    }
+    const { JURISDICTIONS, CHECKED_ON } = await import("./data/planJurisdictions");
+    const codes = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"] as const;
+    const code = codes.find((v) => tags.includes(v.toLowerCase()));
+    if (!code) return c.json({ detail: "The document state is unavailable." }, 404);
+    const j = JURISDICTIONS[code];
+    return c.json({
+      title: p.title, jurisdiction: j.code, state_name: j.name, authority: j.authority,
+      plan_name: j.planName, curriculum: j.curriculum, areas: j.areas,
+      secondary: j.secondary ?? null, requirements: j.requirements,
+      sources: j.sources, requirements_checked_on: CHECKED_ON,
+      notice: "Independent planning aid only. Not an official form or registration guarantee. Use your own accurate information and verify current requirements with your authority.",
+    });
+  });
+
   // A digital product in a paid order.
   app.get("/api/shop/orders/:id/file/:productId", async (c) => {
     const o = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
