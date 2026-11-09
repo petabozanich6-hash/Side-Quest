@@ -299,6 +299,15 @@ export function isPublic(p: any) { return !!p.visible && p.status !== "draft" &&
 export function buyable(p: any, variants: any[] = [], now: Date = new Date()): { ok: boolean; reason?: string } {
   if (!isPublic(p)) return { ok: false, reason: "Hidden" };
   if (!SELLING.has(p.status)) return { ok: false, reason: STATUS_LABELS[p.status] };
+  // Home education registration documents require a separate, independently
+  // verified jurisdiction-specific quality approval before any sale. Until
+  // that workflow exists, do not let a generic shop toggle bypass the gate.
+  // These resources may influence statutory registration decisions.
+  const productTags: string[] = Array.isArray(p.tags) ? p.tags : (() => {
+    try { const v = JSON.parse(p.tags); return Array.isArray(v) ? v : []; } catch { return []; }
+  })();
+  if (productTags.includes("home-education-document")) return { ok: false, reason: "State requirements and document quality review pending" };
+
   // A digital listing cannot take payment until there is an actual private file to deliver.
   // In particular this protects state-specific documents from being sold before their PDFs exist.
   if (p.fulfilment === "digital" && !p.digital_file) return { ok: false, reason: "Download file not uploaded" };
