@@ -79,9 +79,12 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       // Development stage (Launch Now / Professional Manufacturing Later / Future Expansion) and the monthly-box
       // options: a one-off price, the dispatch day and the order cutoff day each month.
       await db.prepare("ALTER TABLE shop_products ADD COLUMN stage TEXT").run().catch(() => undefined);
-      for (const name of ["one_off_cents", "dispatch_day", "cutoff_day"]) {
+      // A digital-only version of a physical product (for example the instructions or printables, so a family can
+      // source the materials themselves): its price, and whether its download file has been uploaded.
+      for (const name of ["one_off_cents", "dispatch_day", "cutoff_day", "digital_cents"]) {
         await db.prepare(`ALTER TABLE shop_products ADD COLUMN ${name} INTEGER`).run().catch(() => undefined);
       }
+      await db.prepare("ALTER TABLE shop_products ADD COLUMN digital_file INTEGER NOT NULL DEFAULT 0").run().catch(() => undefined);
       await seedCatalog(db);
       await assignStages(db);
       await applyPrefill(db);
@@ -286,6 +289,10 @@ export async function variantsFor(db: DB, ids: string[]): Promise<Map<string, an
   return out;
 }
 
+/** A product sold physically that also offers a digital-only version with its file uploaded. */
+export function digitalVersion(p: any): boolean {
+  return p.fulfilment !== "digital" && p.digital_cents != null && !!p.digital_file && isPublic(p);
+}
 export function isPublic(p: any) { return !!p.visible && p.status !== "draft" && p.status !== "discontinued"; }
 
 /** Whether a public product can be bought right now (and why not, for the owner). */
@@ -320,6 +327,7 @@ export function publicProduct(p: any, variants: any[] = [], preorderCount = 0, n
     one_off_cents: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.one_off_cents ?? null : null,
     dispatch_day: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.dispatch_day ?? null : null,
     cutoff_day: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.cutoff_day ?? null : null,
+    digital_cents: digitalVersion(p) ? p.digital_cents : null,
     variants: activeVariants.map((v) => ({ id: v.id, name: v.name, details: v.details || "", book_id: v.book_id || null, price_cents: v.price_cents ?? p.price_cents, available: p.status !== "in_stock" || v.stock == null || v.stock > 0 })),
     low_stock: p.status === "in_stock" && p.stock != null && p.low_stock_at != null && p.stock <= p.low_stock_at && p.stock > 0,
     can_buy: b.ok, can_register_interest: INTEREST.has(p.status), subscription: SUBSCRIPTION_FULFILMENT.has(p.fulfilment),
@@ -351,12 +359,14 @@ export function validateProduct(b: any): { ok: true; value: Record<string, unkno
   const fulfilment = String(b.fulfilment || "physical");
   if (!(FULFILMENTS as readonly string[]).includes(fulfilment)) return { ok: false, detail: "Unknown fulfilment type." };
   const money: Record<string, number | null> = {};
-  for (const k of ["price_cents", "wholesale_cents", "postage_cents", "one_off_cents"]) {
+  for (const k of ["price_cents", "wholesale_cents", "postage_cents", "one_off_cents", "digital_cents"]) {
     const v = cents(b[k]);
     if (v === "bad") return { ok: false, detail: "Prices and costs must be whole cents between $0 and $10,000." };
     money[k] = v;
   }
   if (money.price_cents !== null && money.price_cents < 50 && money.price_cents !== 0) return { ok: false, detail: "Prices under 50c can't be charged by card." };
+  if (money.digital_cents !== null && money.digital_cents < 50) return { ok: false, detail: "The digital version's price must be at least 50c." };
+  if (fulfilment === "digital") money.digital_cents = null; // already a download
   const ints: Record<string, number | null> = {};
   for (const [k, max] of [["lead_time_days", 365], ["stock", 100000], ["low_stock_at", 100000], ["max_per_order", 1000], ["preorder_target", 100000], ["parcel_weight_g", 22000], ["parcel_length_cm", 105], ["parcel_width_cm", 105], ["parcel_height_cm", 105], ["dispatch_day", 28], ["cutoff_day", 28]] as const) {
     const v = intOrNull(b[k], max);

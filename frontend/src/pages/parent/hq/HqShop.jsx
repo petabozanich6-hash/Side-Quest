@@ -134,6 +134,7 @@ function Products() {
           <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: true })}>Switch on</Button>
           <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: false })}>Switch off</Button>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ status: e.target.value })} aria-label="Set status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">Set status…</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
+          <select disabled={busy} value="" onChange={(e) => e.target.value && bulk({ fulfilment: e.target.value })} aria-label="Set how it's sold" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-format"><option value="">How it's sold…</option><option value="digital">Digital only</option><option value="physical">Physical</option></select>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ stage: e.target.value })} aria-label="Set development stage" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-stage"><option value="">Set stage…</option>{data.stages.map((st) => <option key={st} value={st}>{data.stage_labels[st]}</option>)}</select>
           <Button tone="plain" onClick={() => setPicked([])}>Clear</Button>
         </div>
@@ -217,13 +218,14 @@ function Section({ title, hint, children }) {
   );
 }
 
-function Editor({ product, meta, all, onClose, onSaved, queue }) {
+export function Editor({ product, meta, all, onClose, onSaved, queue }) {
   const isNew = !product.id;
   const init = (prod) => {
     const p = { ...blank, ...prod };
     return {
       ...p, tags: (p.tags || []).join(", "),
       price: toDollars(p.price_cents), wholesale: toDollars(p.wholesale_cents), postage: toDollars(p.postage_cents), one_off: toDollars(p.one_off_cents),
+      digital: toDollars(p.digital_cents), digitalOn: p.digital_cents != null,
       preorder_closes_at: p.preorder_closes_at ? p.preorder_closes_at.slice(0, 10) : "",
       variants: (p.variants || []).map((v) => ({ ...v, price: toDollars(v.price_cents) })),
     };
@@ -234,6 +236,14 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const set = (k, v) => setF((x) => ({ ...x, [k]: v }));
+  // Physical only, physical with a digital version, or digital only. Switching to digital only remembers the
+  // physical kind (stock, made to order, personalised…) so switching back restores it.
+  const format = f.fulfilment === "digital" ? "digital" : f.digitalOn ? "both" : "physical";
+  const setFormat = (mode) => setF((x) => {
+    const physicalKind = x.fulfilment === "digital" ? x.lastPhysical || "physical" : x.fulfilment;
+    if (mode === "digital") return { ...x, fulfilment: "digital", lastPhysical: physicalKind, digitalOn: false };
+    return { ...x, fulfilment: physicalKind, digitalOn: mode === "both" };
+  });
   const setVar = (i, k, v) => setF((x) => ({ ...x, variants: x.variants.map((y, j) => (j === i ? { ...y, [k]: v } : y)) }));
   const setField = (i, k, v) => setF((x) => ({ ...x, personalisation: x.personalisation.map((y, j) => (j === i ? { ...y, [k]: v } : y)) }));
   const others = all.filter((p) => p.id !== product.id);
@@ -245,6 +255,7 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
   const body = () => ({
     ...f, tags: f.tags.split(",").map((t) => t.trim()).filter(Boolean),
     price_cents: priceCents, wholesale_cents: toCents(f.wholesale), postage_cents: toCents(f.postage), one_off_cents: toCents(f.one_off),
+    digital_cents: f.fulfilment !== "digital" && f.digitalOn ? toCents(f.digital) : null,
     preorder_closes_at: f.preorder_closes_at ? new Date(`${f.preorder_closes_at}T23:59:00`).toISOString() : null,
     variants: f.variants.map((v) => ({ id: v.id, name: v.name, sku: v.sku, price_cents: toCents(v.price), stock: v.stock === "" ? null : v.stock, active: v.active !== false, book_id: v.book_id, details: v.details || "" })),
   });
@@ -309,6 +320,17 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
               <select value={f.stage || ""} onChange={(e) => set("stage", e.target.value)} className={input} data-testid="hq-shop-stage">{!f.stage && <option value="">Choose…</option>}{meta.stages.map((st) => <option key={st} value={st}>{meta.stage_labels[st]}</option>)}</select>
             </label>
           </div>
+          <fieldset>
+            <legend className="font-semibold">How it's sold</legend>
+            <div className="mt-1 grid sm:grid-cols-3 gap-2" data-testid="hq-shop-format">
+              {[["physical", "Physical only", "Posted or delivered."], ["both", "Physical + digital", "Also sells a download, e.g. instructions or printables."], ["digital", "Digital only", "A download only, e.g. an instructional PDF or activity book."]].map(([mode, label, help]) => (
+                <label key={mode} className={`rounded-xl border-2 p-2 cursor-pointer text-sm ${format === mode ? "border-emerald-700 bg-emerald-50" : "border-stone-200"}`}>
+                  <input type="radio" name="format" className="sr-only" checked={format === mode} onChange={() => setFormat(mode)} data-testid={`hq-shop-format-${mode}`} />
+                  <span className="block font-semibold">{label}</span><span className="block text-xs text-stone-600">{help}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
           {f.stage && f.stage !== "launch_now" && ["in_stock", "made_to_order"].includes(f.status) && <p className="text-xs text-amber-800">This product is marked {meta.stage_labels[f.stage]}, so it can't sell as {meta.status_labels[f.status]} yet. Use Coming Soon, Register Interest or Pre-order, or move it to Launch Now when it's ready to make.</p>}
         </Section>
 
@@ -347,10 +369,30 @@ function Editor({ product, meta, all, onClose, onSaved, queue }) {
           </Section>
         )}
 
-        {kind.file && !isNew && (
+        {kind.file && (
           <Section title="The download" hint="The PDF or ZIP buyers get after paying (up to 25 MB).">
-            <p>{product.has_file ? "✓ A file is uploaded. Choose another to replace it." : "No file yet."}</p>
-            <input type="file" accept="application/pdf,application/zip" disabled={busy} onChange={(e) => uploadFile(e.target.files?.[0])} />
+            {isNew
+              ? <p className="text-xs text-stone-600">Save the product first, then upload its PDF or ZIP here.</p>
+              : <>
+                  <p>{product.has_file ? "✓ A file is uploaded. Choose another to replace it." : "No file yet."}</p>
+                  <input type="file" accept="application/pdf,application/zip" disabled={busy} onChange={(e) => uploadFile(e.target.files?.[0])} data-testid="hq-shop-file" />
+                </>}
+          </Section>
+        )}
+
+        {format === "both" && (
+          <Section title="Digital version" hint="Sold alongside the physical product, for example the instructions or printables so families can source the materials themselves. One download at its own price, with no postage or stock.">
+            {(
+              <>
+                <label className="block font-semibold w-48">Digital price ($)<input inputMode="decimal" value={f.digital ?? ""} onChange={(e) => set("digital", e.target.value)} className={input} data-testid="hq-shop-digital-price" /></label>
+                {isNew
+                  ? <p className="text-xs text-stone-600">Save the product first, then upload its PDF or ZIP here.</p>
+                  : <>
+                      <p>{product.has_file ? "✓ The digital file is uploaded. Choose another to replace it." : "No file yet. Families can't buy the digital version until it's uploaded."}</p>
+                      <input type="file" accept="application/pdf,application/zip" disabled={busy} onChange={(e) => uploadFile(e.target.files?.[0])} data-testid="hq-shop-digital-file" />
+                    </>}
+              </>
+            )}
           </Section>
         )}
 
