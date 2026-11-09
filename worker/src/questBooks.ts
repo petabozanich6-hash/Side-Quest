@@ -506,6 +506,7 @@ function out(b: Listed, a: Access, canBuy: boolean) {
     // Members can still buy a year-level book to keep the PDF.
     can_buy: !a.tiers.has(b.id) && !a.owner && b.has_book && b.price_cents !== null && canBuy,
     lessons_price_cents: b.lessons_price_cents, lesson_price_cents: b.lesson_price_cents, has_lessons: b.has_lessons, has_chapters: b.has_chapters,
+    ...(a.owner ? { released: !!b.released } : {}),
     owned_tier: tier || null,
     can_add_lessons: b.has_lessons && hasLessons(a, b),
     can_buy_lesson: !inc && b.has_lessons && b.lesson_price_cents !== null && canBuy && tier !== "plus",
