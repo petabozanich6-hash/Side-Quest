@@ -140,6 +140,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
           <div className="space-y-2">
             <ProductImage p={p} n={img} />
             {p.images > 1 && <div className="flex gap-1">{Array.from({ length: p.images }, (_, i) => <button key={i} type="button" onClick={() => setImg(i + 1)} className={`h-2 flex-1 rounded ${img === i + 1 ? "bg-stone-700" : "bg-stone-300"}`} aria-label={`Photo ${i + 1}`} />)}</div>}
+            {p.fulfilment !== "digital" && <p className="text-xs text-stone-500" data-testid="shop-image-disclaimer">Actual product may vary from image.</p>}
           </div>
           <div className="space-y-2 text-sm">
             <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-bold ${BADGE[p.status] || "bg-stone-200"}`}>{p.status_label}</span>
@@ -450,6 +451,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
       </div>
 
       <p className="mt-10 text-center text-sm text-stone-600">Already bought something? <Link to="/shop/downloads" className="underline font-semibold">Get my downloads</Link></p>
+      <p className="mt-2 text-center text-xs text-stone-500">Photos are for illustration. Actual products may vary from images in colour, size or design.</p>
 
       {cartOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 flex justify-end" onClick={() => setCartOpen(false)} role="dialog" aria-modal="true" aria-label="Your cart">

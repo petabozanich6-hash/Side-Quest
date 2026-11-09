@@ -74,3 +74,12 @@ test("a digital-only version can be added from the product, once, even when the 
   expect(cart.textContent).toContain("Volcano kit – digital version");
   expect(cart.textContent).not.toContain("postcode");
 });
+
+test("physical products carry an 'actual product may vary' note; downloads don't", async () => {
+  expect(box.textContent).toContain("Actual products may vary from images");
+  await click($('[data-testid="shop-product-p8"]'));
+  expect($('[data-testid="shop-image-disclaimer"]').textContent).toBe("Actual product may vary from image.");
+  await click(box.querySelector('[aria-label="Close"]'));
+  await click($('[data-testid="shop-product-p1"]'));
+  expect($('[data-testid="shop-image-disclaimer"]')).toBeNull();
+});
