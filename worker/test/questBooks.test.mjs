@@ -1042,10 +1042,10 @@ test("Public shop: closed by default; when open it lists books and a paid order 
   assert.equal((await get(`/shop/orders/${order.id}/download/${id}?t=${"0".repeat(48)}`)).status, 404, "wrong token");
 });
 
-test("PDHPE and Creative Arts year-level books are for the primary years only", () => {
+test("PDHPE and Creative Arts aren't year-level books, but can be specialist books", () => {
   for (const subject of ["pdhpe", "creative-arts"]) {
-    for (const year of [0, 3, 6]) assert.equal(validateMeta({ collection: "core", title: `Book ${subject} ${year}`, year, subject }).ok, true, `${subject} ${year}`);
-    assert.equal(validateMeta({ collection: "core", title: `Book ${subject} 7`, year: 7, subject }).ok, false, `${subject} isn't a secondary year-level book`);
+    for (const year of [0, 3, 6, 8]) assert.equal(validateMeta({ collection: "core", title: `Book ${subject} ${year}`, year, subject }).ok, false, `${subject} ${year}`);
+    assert.equal(validateMeta({ collection: "wellbeing", title: `Specialist ${subject}`, year: "all", subject, topic: "Feelings" }).ok, true);
   }
   assert.equal(validateMeta({ collection: "core", title: "Maths 8", year: 8, subject: "mathematics" }).ok, true);
 });
