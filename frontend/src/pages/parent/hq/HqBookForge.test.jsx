@@ -82,3 +82,35 @@ test("provider connection is required before beginning paid generation", async (
   expect(button("Create my workbook").disabled).toBe(true);
   expect(button("Create project").disabled).toBe(false);
 });
+
+test("a running build shows overall progress, the stages, an estimate and each session's state", async () => {
+  const job = {
+    status: "running", phase: "write", cursor: 2, total: 4, error: "", updated_at: new Date().toISOString(), review: null,
+    progress: {
+      percent: 43, minutesLeft: 4, pagesSaved: 6, startedAt: new Date().toISOString(),
+      steps: { plan: { done: 1, total: 1 }, write: { done: 2, total: 4 }, illustrate: { done: 0, total: 1 }, render: { done: 0, total: 1 } },
+      sessions: [
+        { n: 1, title: "Numbers have names", state: "done" },
+        { n: 2, title: "Counting to five", state: "done" },
+        { n: 3, title: "Zero means none", state: "writing", attempts: 1 },
+        { n: 4, title: "Ordering to ten", state: "waiting" },
+      ],
+    },
+  };
+  adminApi.post.mockResolvedValue({ id: "p", revision: 1, book: { title: "Creating", template: "woodland", pages: [], releases: [] } });
+  adminApi.get.mockImplementation(async (path) =>
+    path.endsWith("/generation") ? { job } : path.endsWith("/p") ? { id: "p", revision: 1, book: { title: "Creating", template: "woodland", pages: [], releases: [] } } : path.endsWith("/lessons") ? { lessons: [] } : { projects: [], templates: [], capabilities: { art: true, pdf: true } },
+  );
+  await act(async () =>
+    button("Create my workbook").closest("form").dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })),
+  );
+  const panel = container.querySelector('[data-testid="forge-progress"]');
+  expect(panel).not.toBeNull();
+  expect(panel.textContent).toContain("43% complete");
+  expect(panel.textContent).toContain("About 4 min left");
+  expect(panel.textContent).toContain("6 pages saved");
+  expect(panel.textContent).toContain("2 of 4");
+  expect(panel.textContent).toContain("Zero means none");
+  expect(panel.textContent).toContain("Writing now · attempt 2");
+  expect(panel.querySelector('[role="progressbar"]').getAttribute("aria-valuenow")).toBe("43");
+});

@@ -16,7 +16,7 @@ import {
   reconcileReview,
 } from "../src/bookForgeEditorial.ts";
 import { mathDiagram, printSheets, qaBook, renderBook } from "../src/bookForge.ts";
-import { processBookForgeJobs, sessionPages } from "../src/bookForgeGeneration.ts";
+import { processBookForgeJobs, progressOf, sessionPages } from "../src/bookForgeGeneration.ts";
 import {
   OPENING_CTX,
   OPENING_PLAN,
@@ -377,4 +377,25 @@ test("Editorial: common formatting slips from the model are repaired, not reject
   const short = countingSession();
   short.answers.pop();
   assert.match(checkSession(parseDraft(short), COUNTING_CTX).join(" "), /Task 5 has no answer/);
+});
+
+test("Forge progress: stage counts, session states, percentage and a time estimate from the saved book", () => {
+  const plans = Array.from({ length: 4 }, (_, i) => ({ title: `Session ${i + 1}`, goal: "Count.", code: "AC9MFN01", lessonId: `s${i + 1}` }));
+  const book = { title: "t", template: "woodland", releases: [], generated: true, plan: plans, pages: [...sessionPages(countingSession(), plans[0], 0), ...sessionPages(countingSession(), plans[1], 1)] };
+  const start = "2026-11-09T10:00:00.000Z";
+  const job = { status: "running", phase: "write", cursor: 2, updated_at: start };
+  const payload = { count: 4, startedAt: start, revisions: { 2: { attempts: 1 } } };
+  const p = progressOf(job, payload, book, Date.parse("2026-11-09T10:03:00.000Z"));
+  assert.deepEqual(p.steps.plan, { done: 1, total: 1 });
+  assert.deepEqual(p.steps.write, { done: 2, total: 4 });
+  assert.equal(p.pagesSaved, 6);
+  assert.deepEqual(p.sessions.map((s) => s.state), ["done", "done", "writing", "waiting"]);
+  assert.equal(p.sessions[2].attempts, 1);
+  assert.ok(p.percent > 0 && p.percent < 100);
+  assert.ok(p.minutesLeft >= 3, "at least a minute for each remaining step");
+  assert.equal(progressOf({ ...job, status: "failed" }, payload, book).sessions[2].state, "stuck");
+  assert.equal(progressOf({ ...job, status: "failed" }, payload, book).minutesLeft, null);
+  const ready = progressOf({ status: "complete", phase: "ready", cursor: 0, updated_at: start }, payload, { ...book, pages: plans.flatMap((pl, i) => sessionPages(countingSession(), pl, i)) });
+  assert.equal(ready.percent, 100);
+  assert.deepEqual(ready.steps.render, { done: 1, total: 1 });
 });

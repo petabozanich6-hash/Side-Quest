@@ -26,6 +26,103 @@ function LessonReference({ value }) {
 }
 const field =
   "block w-full rounded-xl border border-stone-300 p-2 mt-1 font-normal";
+const STAGES = [
+  ["plan", "Plan"],
+  ["write", "Write and check"],
+  ["illustrate", "Illustrate"],
+  ["render", "PDF"],
+];
+const SESSION_STATE = {
+  done: ["✓", "text-emerald-800", "Done"],
+  writing: ["…", "text-sky-800 font-semibold", "Writing now"],
+  stuck: ["!", "text-amber-800 font-semibold", "Needs a retry"],
+  waiting: ["·", "text-stone-500", "Waiting"],
+  planning: ["·", "text-stone-400", "Not planned yet"],
+};
+const ago = (iso) => {
+  const s = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000));
+  return s < 60 ? "just now" : s < 3600 ? `${Math.round(s / 60)} min ago` : `${Math.round(s / 3600)} h ago`;
+};
+/** Build progress: overall bar, the four stages, an estimate, and every session's state. */
+function BuildProgress({ progress, status, updatedAt }) {
+  const p = progress;
+  return (
+    <div className="mt-3 space-y-3" data-testid="forge-progress">
+      <div>
+        <div className="flex justify-between text-sm">
+          <span className="font-semibold">{p.percent}% complete</span>
+          <span className="text-stone-600">
+            {p.minutesLeft != null
+              ? `About ${p.minutesLeft} min left`
+              : status === "complete"
+                ? "Finished"
+                : status === "failed"
+                  ? "Paused"
+                  : "Stopped"}
+          </span>
+        </div>
+        <div
+          className="h-2.5 mt-1 rounded-full bg-stone-200 overflow-hidden"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={p.percent}
+        >
+          <div
+            className={`h-full ${status === "failed" ? "bg-amber-600" : "bg-emerald-700"}`}
+            style={{ width: `${p.percent}%` }}
+          />
+        </div>
+        <p className="text-xs text-stone-600 mt-1">
+          Started {new Date(p.startedAt).toLocaleString("en-AU", { weekday: "short", hour: "numeric", minute: "2-digit" })}
+          {updatedAt ? ` · last step ${ago(updatedAt)}` : ""} · {p.pagesSaved} page
+          {p.pagesSaved === 1 ? "" : "s"} saved
+        </p>
+      </div>
+      <ol className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+        {STAGES.map(([key, label]) => {
+          const s = p.steps[key];
+          const complete = s.total > 0 && s.done >= s.total;
+          return (
+            <li
+              key={key}
+              className={`rounded-lg border px-2 py-1.5 ${complete ? "border-emerald-700 bg-emerald-50" : "border-stone-300"}`}
+            >
+              <span className="font-semibold block">{label}</span>
+              {key === "render" ? (complete ? "Done" : "Not yet") : `${s.done} of ${s.total}`}
+            </li>
+          );
+        })}
+      </ol>
+      <details>
+        <summary className="cursor-pointer text-sm font-semibold">
+          Sessions ({p.steps.write.done} of {p.steps.write.total} written)
+        </summary>
+        <ol className="mt-2 text-sm max-h-64 overflow-auto divide-y divide-stone-100">
+          {p.sessions.map((s) => {
+            const [mark, cls, label] = SESSION_STATE[s.state];
+            return (
+              <li key={s.n} className="flex gap-2 py-1">
+                <span className={`w-4 text-center ${cls}`} aria-hidden="true">{mark}</span>
+                <span className="flex-1 min-w-0 truncate">
+                  {s.n}. {s.title || "To be planned"}
+                </span>
+                <span className={`text-xs ${cls}`}>
+                  {label}
+                  {s.state === "stuck" && s.attempts
+                    ? ` after ${s.attempts} tries`
+                    : s.attempts
+                      ? ` · attempt ${s.attempts + 1}`
+                      : ""}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </details>
+    </div>
+  );
+}
 export default function HqBookForge() {
   const [catalogue, setCatalogue] = useState({
     projects: [],
@@ -295,9 +392,16 @@ export default function HqBookForge() {
             }{" "}
             · {generation.status}
           </p>
+          {generation.progress && (
+            <BuildProgress
+              progress={generation.progress}
+              status={generation.status}
+              updatedAt={generation.updated_at}
+            />
+          )}
           <p className="text-sm mt-2">
             Completed sections are saved as they finish. Creation runs in the
-            background. Longer books take longer; completed sections stay saved.
+            background, so you can close this page and come back.
           </p>
           {generation.error && !/needs revision/.test(generation.error) && (
             <p className="mt-2 text-amber-900">{generation.error}</p>
