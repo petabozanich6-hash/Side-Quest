@@ -35,7 +35,7 @@ const STAGES = [
 const SESSION_STATE = {
   done: ["✓", "text-emerald-800", "Done"],
   writing: ["…", "text-sky-800 font-semibold", "Writing now"],
-  stuck: ["!", "text-amber-800 font-semibold", "Needs a retry"],
+  stuck: ["!", "text-amber-800 font-semibold", "Paused"],
   waiting: ["·", "text-stone-500", "Waiting"],
   planning: ["·", "text-stone-400", "Not planned yet"],
 };
@@ -43,6 +43,18 @@ const ago = (iso) => {
   const s = Math.max(0, Math.round((Date.now() - Date.parse(iso)) / 1000));
   return s < 60 ? "just now" : s < 3600 ? `${Math.round(s / 60)} min ago` : `${Math.round(s / 3600)} h ago`;
 };
+const FAILURE_LABEL = {
+  truncated: "reply cut off at the length limit",
+  malformed: "reply was not JSON",
+  schema: "reply had the wrong shape",
+  empty: "empty reply",
+  provider: "writing service error",
+  editorial: "quality checks",
+  budget: "spending cap reached",
+  calls: "call limit reached",
+  step: "step error",
+};
+const stoppedStatus = (status) => status === "paused" || status === "failed";
 /** Build progress: overall bar, the four stages, an estimate, and every session's state. */
 function BuildProgress({ progress, status, updatedAt }) {
   const p = progress;
@@ -53,11 +65,11 @@ function BuildProgress({ progress, status, updatedAt }) {
           <span className="font-semibold">{p.percent}% complete</span>
           <span className="text-stone-600">
             {p.minutesLeft != null
-              ? `About ${p.minutesLeft} min left`
+              ? `${p.estimateBasis === "initial" ? "Roughly" : "About"} ${p.minutesLeft} min left`
               : status === "complete"
                 ? "Finished"
-                : status === "failed"
-                  ? "Paused"
+                : stoppedStatus(status)
+                  ? "Paused · needs you"
                   : "Stopped"}
           </span>
         </div>
@@ -69,7 +81,7 @@ function BuildProgress({ progress, status, updatedAt }) {
           aria-valuenow={p.percent}
         >
           <div
-            className={`h-full ${status === "failed" ? "bg-amber-600" : "bg-emerald-700"}`}
+            className={`h-full ${stoppedStatus(status) ? "bg-amber-600" : "bg-emerald-700"}`}
             style={{ width: `${p.percent}%` }}
           />
         </div>
@@ -110,10 +122,11 @@ function BuildProgress({ progress, status, updatedAt }) {
                 <span className={`text-xs ${cls}`}>
                   {label}
                   {s.state === "stuck" && s.attempts
-                    ? ` after ${s.attempts} tries`
+                    ? ` after ${s.attempts} draft${s.attempts === 1 ? "" : "s"}`
                     : s.attempts
                       ? ` · attempt ${s.attempts + 1}`
                       : ""}
+                  {s.lastFailure ? ` · last: ${FAILURE_LABEL[s.lastFailure] || s.lastFailure}` : ""}
                 </span>
               </li>
             );
@@ -403,16 +416,40 @@ export default function HqBookForge() {
             Completed sections are saved as they finish. Creation runs in the
             background, so you can close this page and come back.
           </p>
-          {generation.error && !/needs revision/.test(generation.error) && (
+          {stoppedStatus(generation.status) && (
+            <div className="mt-2 rounded-xl bg-amber-50 p-3 text-sm text-amber-950" data-testid="forge-paused" role="alert">
+              <p className="font-semibold">
+                Creation is paused{generation.pause?.session != null ? ` at session ${generation.pause.session + 1}` : ""}
+                {generation.pause?.kind ? ` (${FAILURE_LABEL[generation.pause.kind] || generation.pause.kind})` : ""}.
+                No more paid calls will be made until you choose what to do.
+              </p>
+              {generation.error && <p className="mt-1">{generation.error}</p>}
+              <p className="mt-1 text-stone-700">
+                Every approved session and every saved part is kept. Retry continues this step with a fresh set of
+                attempts{generation.recovery?.includes("reset-session") ? "; Write this session again discards only this session's draft" : ""}.
+              </p>
+            </div>
+          )}
+          {!stoppedStatus(generation.status) && generation.error && !/needs revision/.test(generation.error) && (
             <p className="mt-2 text-amber-900">{generation.error}</p>
           )}
           {generation.review && (
             <div className="mt-2 text-sm" data-testid="forge-review">
               <p className="font-semibold text-amber-900">
-                Session {Math.min(generation.cursor + 1, generation.total)} is
-                being revised (attempt {generation.review.attempts}). Nothing
-                from this draft is in the book until it passes every check.
+                Session {Math.min(generation.cursor + 1, generation.total)}
+                {generation.review.attempts
+                  ? ` · ${generation.review.attempts} draft${generation.review.attempts === 1 ? "" : "s"} so far`
+                  : ""}
+                {generation.review.mode === "components"
+                  ? ` · built in parts (saved: ${generation.review.savedComponents.join(", ") || "none yet"})`
+                  : ""}
+                . Nothing from this draft is in the book until it passes every check.
               </p>
+              {generation.review.format?.length > 0 && (
+                <p className="mt-1 text-stone-700">
+                  Formatting being repaired (not a teaching problem): {generation.review.format.join(" · ")}
+                </p>
+              )}
               {generation.review.errors.length > 0 && (
                 <ul className="list-disc pl-5 mt-1 text-amber-900">
                   {generation.review.errors.map((e) => (
@@ -428,8 +465,31 @@ export default function HqBookForge() {
               )}
             </div>
           )}
+          {generation.usage && (
+            <p className="mt-2 text-xs text-stone-600" data-testid="forge-usage">
+              {generation.usage.calls} model call{generation.usage.calls === 1 ? "" : "s"}
+              {generation.usage.failedCalls ? ` (${generation.usage.failedCalls} unusable${generation.usage.truncatedCalls ? `, ${generation.usage.truncatedCalls} cut off` : ""})` : ""}
+              {" · "}
+              {(generation.usage.inputTokens + generation.usage.outputTokens).toLocaleString("en-AU")} tokens · about US$
+              {generation.usage.estimatedUsd.toFixed(2)} estimated of a US${Number(generation.usage.capUsd).toFixed(2)} cap
+            </p>
+          )}
           <div className="flex gap-2 mt-3">
-            {generation.status === "failed" && (
+            {stoppedStatus(generation.status) && generation.recovery?.includes("reset-session") && (
+              <Button
+                tone="plain"
+                disabled={working}
+                onClick={() =>
+                  run(async () => {
+                    await adminApi.post(`${ROOT}/${project.id}/reset-session`);
+                    setGeneration({ ...generation, status: "queued", error: "", pause: null });
+                  })
+                }
+              >
+                Write this session again
+              </Button>
+            )}
+            {stoppedStatus(generation.status) && (
               <Button
                 disabled={working}
                 onClick={() =>
@@ -439,6 +499,7 @@ export default function HqBookForge() {
                       ...generation,
                       status: "queued",
                       error: "",
+                      pause: null,
                     });
                   })
                 }
@@ -446,7 +507,7 @@ export default function HqBookForge() {
                 Retry this step
               </Button>
             )}
-            {generating && (
+            {(generating || stoppedStatus(generation.status)) && (
               <Button
                 tone="plain"
                 disabled={working}

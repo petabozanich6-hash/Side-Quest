@@ -224,7 +224,7 @@ const start = async (h) => {
 const state = async (h, id) => (await h.req(`/admin/book-forge/${id}/generation`, { token: h.owner.token })).json.job;
 const project = async (h, id) => (await h.req(`/admin/book-forge/${id}`, { token: h.owner.token })).json.book;
 
-test("Forge job: a rejected draft is revised (not restarted) with all accumulated feedback, and only the approved session is saved", async () => {
+test("Forge job: a rejected draft is revised (not restarted) against its current problems, and only the approved session is saved", async () => {
   const h = await ownerHarness();
   const ai = simulatedAi(
     (kind, n) => (n === 1 ? openingCopiesExample() : openingGood()),
@@ -254,11 +254,13 @@ test("Forge job: a rejected draft is revised (not restarted) with all accumulate
   assert.equal(job.review.attempts, 2);
   assert.deepEqual(job.review.suggestions, ["Add a picture of spoons."]);
   assert.equal((await project(h, id)).pages.length, 0);
-  // Attempt 3: the revision gets BOTH problems, each once; the reviewer's empty-group objection is ignored.
+  // Attempt 3: the revision must fix the reviewer's problem, and is told to keep the earlier fix (each once);
+  // the reviewer's empty-group objection is ignored.
   await processBookForgeJobs(h.env);
   const third = ai.calls.revise[1];
   assert.equal(third.split("Task 4 uses the same numbers as the worked example").length - 1, 1);
   assert.equal(third.split("Task 6: the answer should be 1").length - 1, 1);
+  assert.match(third, /PROBLEMS TO FIX[^]*Task 6: the answer should be 1[^]*ALREADY FIXED IN EARLIER ATTEMPTS[^]*Task 4 uses the same numbers/);
   assert.match(third, /OPTIONAL IMPROVEMENTS[^]*Add a picture of spoons\./);
   job = await state(h, id);
   assert.equal(job.status, "queued");
@@ -269,41 +271,44 @@ test("Forge job: a rejected draft is revised (not restarted) with all accumulate
   assert.match(book.pages[0].text, /Point to the card for 7/);
   assert.deepEqual(book.pages[0].visual, { type: "number-cards", count: 10, start: 0 });
   const payload = JSON.parse(h.db.raw.prepare("SELECT payload FROM book_forge_jobs WHERE project_id=?").get(id).payload);
-  assert.deepEqual(payload.revisions, {});
+  assert.deepEqual(payload.work, {}, "the approved session's working state is cleared");
+  assert.equal(payload.sessionCosts[1].attempts, 3);
   assert.match(payload.falsePositives[0], /Session 1: Task 3: zero cards are invalid.*ignored: an empty group/);
 });
 
-test("Forge job: after three rejected attempts the step fails, the draft is kept for inspection, and nothing is rendered", async () => {
+test("Forge job: after four rejected drafts the session pauses, the draft is kept for inspection, and nothing is rendered", async () => {
   const h = await ownerHarness();
   const ai = simulatedAi(() => openingMissingOrderingExample(), () => ({ errors: [], suggestions: [] }));
   h.env.AI = ai;
   const id = await start(h);
-  for (let i = 0; i < 8; i++) await processBookForgeJobs(h.env);
+  for (let i = 0; i < 10; i++) await processBookForgeJobs(h.env);
   const job = await state(h, id);
-  assert.equal(job.status, "failed");
+  assert.equal(job.status, "paused");
   assert.equal(job.phase, "write");
   assert.equal(job.cursor, 0);
-  assert.equal(ai.calls.write.length + ai.calls.revise.length, 3, "three attempts, then it stops");
-  assert.equal(ai.calls.revise.length, 2, "attempts two and three revised the stored draft");
-  assert.equal(job.review.attempts, 3);
+  assert.equal(job.pause.kind, "editorial");
+  assert.deepEqual(job.recovery, ["retry", "reset-session", "cancel"]);
+  assert.equal(ai.calls.write.length + ai.calls.revise.length, 4, "four drafts, then it stops");
+  assert.equal(ai.calls.revise.length, 3, "attempts two to four revised the stored draft");
+  assert.equal(job.review.attempts, 4);
   assert.equal(job.review.draft.pages[1].tasks[0].prompt, "Put 3, 9 and 1 in order from smallest to largest.");
   const ordering = job.review.errors.filter((e) => e.startsWith("Task 4 practises ordering"));
   assert.equal(ordering.length, 1, "the same problem is recorded once, however many attempts repeat it");
-  assert.match(job.error, /Session 1 needs revision/);
+  assert.match(job.error, /Session 1 paused after 4 revisions still failing the quality checks/);
   const book = await project(h, id);
   assert.equal(book.pages.length, 0);
   assert.equal(book.pdf, undefined);
   assert.equal(h.pdfCount(), 0);
   assert.ok(qaBook(book).some((x) => /incomplete/.test(x)), "an incomplete book can't pass QA for approval");
-  // The existing Retry control continues from the kept draft, with a fresh three attempts.
+  // Retry continues from the kept draft, with a fresh revision budget.
   assert.equal((await h.req(`/admin/book-forge/${id}/retry`, { method: "POST", token: h.owner.token })).status, 200);
   await processBookForgeJobs(h.env);
-  assert.equal(ai.calls.revise.length, 3);
-  assert.match(ai.calls.revise[2], /PREVIOUS DRAFT/);
+  assert.equal(ai.calls.revise.length, 4);
+  assert.match(ai.calls.revise[3], /PREVIOUS DRAFT/);
   assert.equal((await state(h, id)).status, "queued", "one failure after Retry doesn't stop the step again");
-  for (let i = 0; i < 4; i++) await processBookForgeJobs(h.env);
-  assert.equal((await state(h, id)).status, "failed");
-  assert.equal(ai.calls.revise.length, 5, "Retry allowed exactly three more attempts");
+  for (let i = 0; i < 5; i++) await processBookForgeJobs(h.env);
+  assert.equal((await state(h, id)).status, "paused");
+  assert.equal(ai.calls.revise.length, 7, "Retry allowed exactly four more drafts");
 });
 
 test("Forge job: an unreadable reply never replaces the last readable draft", async () => {
@@ -314,7 +319,11 @@ test("Forge job: an unreadable reply never replaces the last readable draft", as
   for (let i = 0; i < 3; i++) await processBookForgeJobs(h.env);
   const job = await state(h, id);
   assert.equal(job.review.draft.pages[1].tasks[0].prompt, "Put 6, 2 and 4 in order from smallest to largest.");
-  assert.match(job.review.errors.join(" "), /not a complete session in the required JSON shape/);
+  // The unusable reply is a format problem, reported separately from the teaching problems it did not fix.
+  assert.deepEqual(job.review.format, ["reply.pages: is missing", "reply.answers: is missing"]);
+  assert.match(job.review.errors.join(" "), /Task 4 uses the same numbers as the worked example/);
+  assert.equal(job.review.run.editorial, 1);
+  assert.equal(job.review.run.structural, 1);
 });
 
 // ---------------------------------------------------------------- rendered pages
@@ -384,7 +393,7 @@ test("Forge progress: stage counts, session states, percentage and a time estima
   const book = { title: "t", template: "woodland", releases: [], generated: true, plan: plans, pages: [...sessionPages(countingSession(), plans[0], 0), ...sessionPages(countingSession(), plans[1], 1)] };
   const start = "2026-11-09T10:00:00.000Z";
   const job = { status: "running", phase: "write", cursor: 2, updated_at: start };
-  const payload = { count: 4, startedAt: start, revisions: { 2: { attempts: 1 } } };
+  const payload = { count: 4, startedAt: start, work: { 2: { attempts: 1, components: {}, draft: null } } };
   const p = progressOf(job, payload, book, Date.parse("2026-11-09T10:03:00.000Z"));
   assert.deepEqual(p.steps.plan, { done: 1, total: 1 });
   assert.deepEqual(p.steps.write, { done: 2, total: 4 });
@@ -393,8 +402,10 @@ test("Forge progress: stage counts, session states, percentage and a time estima
   assert.equal(p.sessions[2].attempts, 1);
   assert.ok(p.percent > 0 && p.percent < 100);
   assert.ok(p.minutesLeft >= 3, "at least a minute for each remaining step");
-  assert.equal(progressOf({ ...job, status: "failed" }, payload, book).sessions[2].state, "stuck");
-  assert.equal(progressOf({ ...job, status: "failed" }, payload, book).minutesLeft, null);
+  for (const status of ["failed", "paused"]) {
+    assert.equal(progressOf({ ...job, status }, payload, book).sessions[2].state, "stuck");
+    assert.equal(progressOf({ ...job, status }, payload, book).minutesLeft, null);
+  }
   const ready = progressOf({ status: "complete", phase: "ready", cursor: 0, updated_at: start }, payload, { ...book, pages: plans.flatMap((pl, i) => sessionPages(countingSession(), pl, i)) });
   assert.equal(ready.percent, 100);
   assert.deepEqual(ready.steps.render, { done: 1, total: 1 });

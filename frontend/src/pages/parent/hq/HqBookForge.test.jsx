@@ -114,3 +114,42 @@ test("a running build shows overall progress, the stages, an estimate and each s
   expect(panel.textContent).toContain("Writing now · attempt 2");
   expect(panel.querySelector('[role="progressbar"]').getAttribute("aria-valuenow")).toBe("43");
 });
+
+test("a paused build explains the precise reason, offers every recovery action and shows the spend", async () => {
+  const job = {
+    status: "paused", phase: "write", cursor: 1, total: 36, updated_at: new Date().toISOString(),
+    error: "Session 2 paused after 2 replies cut off at the length limit (page2): Reply stopped mid-JSON after 2600 of 2600 tokens.",
+    pause: { session: 1, kind: "truncated", detail: "Reply stopped mid-JSON", at: new Date().toISOString() },
+    recovery: ["retry", "reset-session", "cancel"],
+    usage: { calls: 9, failedCalls: 3, truncatedCalls: 2, inputTokens: 21000, outputTokens: 9000, estimatedUsd: 0.0264, capUsd: 4, recent: [] },
+    review: { attempts: 0, mode: "components", savedComponents: ["page1"], errors: [], suggestions: [], resolved: [], format: ["Your reply was cut off at the length limit."], falsePositives: [], run: {}, draft: null },
+    progress: {
+      percent: 3, minutesLeft: null, pagesSaved: 3, startedAt: new Date().toISOString(), estimateBasis: "initial",
+      steps: { plan: { done: 3, total: 3 }, write: { done: 1, total: 36 }, illustrate: { done: 0, total: 6 }, render: { done: 0, total: 1 } },
+      sessions: [
+        { n: 1, title: "Numbers have names", state: "done" },
+        { n: 2, title: "Counting to five", state: "stuck", attempts: 0, lastFailure: "truncated" },
+      ],
+    },
+  };
+  adminApi.post.mockResolvedValue({ id: "p", revision: 1, book: { title: "Creating", template: "woodland", pages: [], releases: [] } });
+  adminApi.get.mockImplementation(async (path) =>
+    path.endsWith("/generation") ? { job } : path.endsWith("/p") ? { id: "p", revision: 1, book: { title: "Creating", template: "woodland", pages: [], releases: [] } } : path.endsWith("/lessons") ? { lessons: [] } : { projects: [], templates: [], capabilities: { art: true, pdf: true } },
+  );
+  await act(async () =>
+    button("Create my workbook").closest("form").dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })),
+  );
+  const paused = container.querySelector('[data-testid="forge-paused"]');
+  expect(paused.textContent).toContain("paused at session 2 (reply cut off at the length limit)");
+  expect(paused.textContent).toContain("No more paid calls");
+  expect(paused.textContent).toContain("2600 of 2600 tokens");
+  expect(container.querySelector('[data-testid="forge-progress"]').textContent).toContain("Paused · needs you");
+  expect(container.querySelector('[data-testid="forge-review"]').textContent).toContain("built in parts (saved: page1)");
+  expect(container.querySelector('[data-testid="forge-usage"]').textContent).toContain("9 model calls (3 unusable, 2 cut off)");
+  expect(container.querySelector('[data-testid="forge-usage"]').textContent).toContain("US$0.03 estimated of a US$4.00 cap");
+  expect(button("Retry this step")).toBeTruthy();
+  expect(button("Write this session again")).toBeTruthy();
+  expect(button("Stop and keep completed pages")).toBeTruthy();
+  await act(async () => button("Write this session again").click());
+  expect(adminApi.post).toHaveBeenCalledWith("/book-forge/p/reset-session");
+});
