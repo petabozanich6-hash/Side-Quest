@@ -64,13 +64,13 @@ export async function renderGuestPdf(env: Env, html: string): Promise<Uint8Array
   if (bytes.length < 10 || bytes.length > 16*1024*1024 || new TextDecoder().decode(bytes.slice(0,5)) !== "%PDF-") throw new Error("PDF_INVALID");
   return bytes;
 }
-export async function emailGuestPdf(env: Env, recipient: string, document: Uint8Array, stateName: string) {
+export async function emailGuestPdf(env: Env, recipient: string, document: Uint8Array, stateName: string, childIndex=1, childCount=1) {
   if (!env.EMAIL) return false;
   return sendEmail(env,{
     to:recipient,
-    subject:`Your Side-Quest home education document – ${stateName}`,
-    text:"Your completed home education planning PDF is attached. This is an independent family planning resource, not an official government form. Please review all details and current local requirements before submission. If you need help, contact support@sidequestlearning.app.",
+    subject:`Your Side-Quest home education document – ${stateName} (${childIndex} of ${childCount})`,
+    text:`Document ${childIndex} of ${childCount} is attached. Each child needs their own individualised planning details. This is an independent planning resource, not an official government form. Please check current local requirements before submission. For help, contact support@sidequestlearning.app.`,
     html:"<p>Your Side-Quest home education document is attached as a PDF.</p><p>Please review your family's information and current state requirements before using it for registration or review.</p><p>This is an independent planning resource, not a government-issued document.</p>",
-    attachments:[{filename:"side-quest-home-education-plan.pdf",content:document,type:"application/pdf",disposition:"attachment"}],
+    attachments:[{filename:`side-quest-home-education-plan-child-${childIndex}.pdf`,content:document,type:"application/pdf",disposition:"attachment"}],
   });
 }
