@@ -88,6 +88,19 @@ function Dashboard() {
   );
 }
 
+/** An on/off switch: on shows the product in the shop, off takes it out (nothing is deleted). */
+export function Switch({ on, onChange, disabled, label, testid }) {
+  return (
+    <button type="button" role="switch" aria-checked={!!on} aria-label={`${label}: ${on ? "in the shop" : "hidden"}`} disabled={disabled} onClick={onChange} data-testid={testid}
+      className="inline-flex items-center gap-2 disabled:opacity-50">
+      <span className={`relative inline-block h-6 w-11 rounded-full transition-colors ${on ? "bg-emerald-700" : "bg-stone-300"}`}>
+        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${on ? "left-[22px]" : "left-0.5"}`} />
+      </span>
+      <span className={`text-xs font-semibold w-10 ${on ? "text-emerald-800" : "text-stone-500"}`}>{on ? "On" : "Off"}</span>
+    </button>
+  );
+}
+
 function Products() {
   const { data, error, loading, reload } = useAdmin("/shop/products");
   const [q, setQ] = useState("");
@@ -131,8 +144,8 @@ function Products() {
       {picked.length > 0 && (
         <div className="paper-card p-3 flex flex-wrap gap-2 items-center text-sm">
           <strong>{picked.length} selected</strong>
-          <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: true })}>Switch on</Button>
-          <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: false })}>Switch off</Button>
+          <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: true })}>Put in shop</Button>
+          <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: false })}>Take out of shop</Button>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ status: e.target.value })} aria-label="Set status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">Set status…</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
           <select disabled={busy} value="" onChange={(e) => e.target.value && bulk({ fulfilment: e.target.value })} aria-label="Set how it's sold" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-format"><option value="">How it's sold…</option><option value="digital">Digital only</option><option value="physical">Physical</option></select>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ stage: e.target.value })} aria-label="Set development stage" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-stage"><option value="">Set stage…</option>{data.stages.map((st) => <option key={st} value={st}>{data.stage_labels[st]}</option>)}</select>
@@ -142,11 +155,12 @@ function Products() {
       <p className="text-xs text-stone-600">Tip: pick a department first, then "Work through these" to fill each product in turn. {shown.length} of {products.length} products · <button type="button" className="underline" onClick={() => setPicked(shown.map((p) => p.id))}>select all shown</button></p>
       <div className="paper-card overflow-x-auto">
         <table className="w-full text-sm">
-          <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">Product</th><th className="p-2">Stage</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th><th className="p-2">On</th></tr></thead>
+          <thead><tr className="text-left text-stone-600 border-b"><th className="p-2"></th><th className="p-2">In shop</th><th className="p-2">Product</th><th className="p-2">Stage</th><th className="p-2">Status</th><th className="p-2">Price</th><th className="p-2">Profit</th><th className="p-2">Interest</th></tr></thead>
           <tbody>
             {shown.map((p) => (
               <tr key={p.id} className="border-b border-stone-100 align-top" data-testid={`hq-shop-row-${p.slug}`}>
                 <td className="p-2"><input type="checkbox" aria-label={`Select ${p.title}`} checked={picked.includes(p.id)} onChange={() => setPicked((x) => (x.includes(p.id) ? x.filter((y) => y !== p.id) : [...x, p.id]))} /></td>
+                <td className="p-2"><Switch on={p.visible} disabled={busy} label={p.title} onChange={() => bulk({ visible: !p.visible }, [p.id])} testid={`hq-shop-toggle-${p.slug}`} /></td>
                 <td className="p-2 min-w-[220px]">
                   <button type="button" onClick={() => setEditing(p)} className="font-semibold text-left underline-offset-2 hover:underline" style={{ color: GREEN }}>{p.title}</button>
                   <div className="text-xs text-stone-500">{dLabel[p.department]}{p.collection ? ` · ${p.collection}` : ""}{p.variants.length ? ` · ${p.variants.length} options` : ""}</div>
@@ -157,12 +171,6 @@ function Products() {
                 <td className="p-2 whitespace-nowrap">{money(p.price_cents)}</td>
                 <td className="p-2 whitespace-nowrap">{p.profit ? `${money(p.profit.profit_cents)}${p.profit.cost_known ? "" : "*"}` : "—"}</td>
                 <td className="p-2">{p.interest || ""}</td>
-                <td className="p-2">
-                  <label className="inline-flex items-center gap-1 cursor-pointer">
-                    <input type="checkbox" checked={p.visible} disabled={busy} onChange={() => bulk({ visible: !p.visible }, [p.id])} data-testid={`hq-shop-toggle-${p.slug}`} />
-                    <span className="text-xs">{p.visible ? "On" : "Off"}</span>
-                  </label>
-                </td>
               </tr>
             ))}
           </tbody>

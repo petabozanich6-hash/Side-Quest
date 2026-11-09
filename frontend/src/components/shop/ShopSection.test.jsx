@@ -16,6 +16,10 @@ const SHOP = {
   departments: [{ id: "arts", label: "Arts" }, { id: "gifts", label: "Gifts" }],
   books: [{ id: "b1", title: "Maths Quest Book", year_label: "Year 1", subject_label: "Mathematics", price_cents: 1995, look_pages: 0, printed: [] }],
   products: [1, 2, 3, 4, 5, 6].map((n) => product(n, "arts")).concat([product(7, "gifts", { title: "Dragon plush", status: "pre_order", status_label: "Pre-order" }),
+    product(9, "gifts", { title: "Science kit", fulfilment: "physical", price_cents: 2000, variants: [
+      { id: "v-full", name: "Full package", price_cents: 6900, available: true, details: "" },
+      { id: "v-basic", name: "Basics", price_cents: 2900, available: true, details: "" },
+      { id: "v-mid", name: "Explorer", price_cents: 4500, available: true, details: "" }] }),
     product(8, "gifts", { title: "Volcano kit", status: "coming_soon", status_label: "Coming soon", can_buy: false, fulfilment: "physical", digital_cents: 900 })]),
 };
 let root, box;
@@ -73,4 +77,24 @@ test("a digital-only version can be added from the product, once, even when the 
   const cart = $('[data-testid="shop-cart"]');
   expect(cart.textContent).toContain("Volcano kit – digital version");
   expect(cart.textContent).not.toContain("postcode");
+});
+
+test("physical products carry an 'actual product may vary' note; downloads don't", async () => {
+  expect(box.textContent).toContain("Actual products may vary from images");
+  await click($('[data-testid="shop-product-p8"]'));
+  expect($('[data-testid="shop-image-disclaimer"]').textContent).toBe("Actual product may vary from image.");
+  await click(box.querySelector('[aria-label="Close"]'));
+  await click($('[data-testid="shop-product-p1"]'));
+  expect($('[data-testid="shop-image-disclaimer"]')).toBeNull();
+});
+
+test("products with several prices say 'From' the cheapest option, and list options cheapest first", async () => {
+  expect($('[data-testid="shop-product-p9"]').textContent).toContain("From $29.00");
+  await click($('[data-testid="shop-product-p9"]'));
+  expect($('[data-testid="shop-dialog-price"]').textContent).toBe("From $29.00");
+  const options = [...box.querySelectorAll('[data-testid="shop-product-dialog"] select option')].map((o) => o.textContent);
+  expect(options.slice(1)).toEqual(["Basics · $29.00", "Explorer · $45.00", "Full package · $69.00"]);
+  const select = box.querySelector('[data-testid="shop-product-dialog"] select');
+  await act(async () => { select.value = "v-mid"; select.dispatchEvent(new Event("change", { bubbles: true })); });
+  expect($('[data-testid="shop-dialog-price"]').textContent).toBe("$45.00");
 });

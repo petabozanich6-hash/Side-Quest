@@ -182,7 +182,7 @@ test("Live generation picks up chapters from newly uploaded books without replac
   const {owner,id}=await publishedBook(h);
   await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[{title:"Old lesson",start:1,end:2,text:chapterText}]});
   h.env.AI={run:async()=>({})};
-  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id],auto_follow:true});
   assert.equal(started.status,200);
   const job=(await started.json()).job;
   assert.equal(job.auto_follow,true);
@@ -208,12 +208,29 @@ test("Live generation picks up chapters from newly uploaded books without replac
   assert.equal(snap.next.book_title,details.title);
 });
 
+test("A generation queue doesn't pick up books uploaded later unless watching was switched on",async()=>{
+  const h=harness();
+  const {owner,id}=await publishedBook(h);
+  await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[{title:"Old lesson",start:1,end:2,text:chapterText}]});
+  h.env.AI={run:async()=>({})};
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  assert.equal(started.status,200);
+  const job=(await started.json()).job;
+  assert.equal(job.auto_follow,false);
+  const created=await h.req("/quest-books/admin/books",owner.token,"POST",{...details,title:"Year Three Science Explorer",subject:"science"});
+  const second=(await created.json()).book.id;
+  await h.req(`/quest-books/admin/books/${second}/files/book`,owner.token,"PUT",pdf("NEW BOOK"),"application/pdf");
+  await h.req(`/quest-books/admin/books/${second}/chapters`,owner.token,"PUT",{chapters:[{title:"New topic",start:1,end:2,text:chapterText}]});
+  assert.equal((await syncOvernightWork(h.env,new Date("2026-12-01T00:00:00Z"))).added,0);
+  assert.equal(h.db.raw.prepare("SELECT COUNT(*) AS n FROM quest_overnight_items WHERE job_id=?").get(job.id).n,1);
+});
+
 test("Live generation automatically opens a watch queue for newly flagged AI lessons",async()=>{
   const h=harness();
   const {owner,id}=await publishedBook(h);
   await h.req(`/quest-books/admin/books/${id}/chapters`,owner.token,"PUT",{chapters:[{title:"Needs a repair",start:1,end:2,text:chapterText}]});
   h.env.AI={run:async()=>({})};
-  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id],auto_follow:true});
   assert.equal(started.status,200);
   const chapter=(await readChapters(h.env.BUCKET,id))[0];
   const lesson=await (await h.req("/lessons",owner.token,"POST",{...lessonBody("Flagged draft"),status:"draft"})).json();
@@ -296,7 +313,7 @@ test("Overnight queue groups missing lessons across books, skips saved drafts an
   assert.equal(grouped[first].generated,1);
   assert.equal(grouped[second].missing,1);
   h.env.AI={run:async()=>({})}; // Enabled, but the fake Cron generator avoids model calls.
-  const started=await h.req(url+"/start",owner.token,"POST",{book_ids:[first,second]});
+  const started=await h.req(url+"/start",owner.token,"POST",{book_ids:[first,second],auto_follow:true});
   assert.equal(started.status,200);
   const job=(await started.json()).job;
   assert.equal(job.total,2);
@@ -1145,14 +1162,14 @@ test("Running generation survives the upgrade and accepts a separate repair queu
   h.db.raw.prepare("UPDATE lessons SET data=? WHERE id=?").run(data,made.id);
   h.env.AI={run:async()=>({})};
   const url="/quest-books/admin/overnight";
-  const start=await h.req(url+"/start",owner.token,"POST",{book_ids:[id]});
+  const start=await h.req(url+"/start",owner.token,"POST",{book_ids:[id],auto_follow:true});
   assert.equal(start.status,200);
   const generation=(await start.json()).job;
   // Reproduce the deployed schema while an existing generation queue runs.
   h.db.raw.exec("DROP INDEX quest_one_active_overnight_kind; CREATE UNIQUE INDEX quest_one_active_overnight_job ON quest_overnight_jobs(family_id) WHERE status IN ('building','running','paused')");
   forgetOvernightSchema(h.db); // a deploy starts fresh isolates, which re-check the schema
   const before=h.db.raw.prepare("SELECT * FROM quest_overnight_items WHERE job_id=? ORDER BY position").all(generation.id);
-  const repairResponse=await h.req(url+"/start",owner.token,"POST",{book_ids:[id],mode:"repair"});
+  const repairResponse=await h.req(url+"/start",owner.token,"POST",{book_ids:[id],mode:"repair",auto_follow:true});
   assert.equal(repairResponse.status,200,await repairResponse.clone().text());
   const repair=(await repairResponse.json()).job;
   assert.equal(repair.kind,"repair");
@@ -1184,7 +1201,7 @@ test("Overnight queue survives a temporary AI budget pause and resumes without u
     {title:"First skill",start:1,end:2,text:chapterText},
   ]});
   h.env.AI={run:async()=>({})};
-  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id]});
+  const started=await h.req("/quest-books/admin/overnight/start",owner.token,"POST",{book_ids:[id],auto_follow:true});
   assert.equal(started.status,200);
   const job=(await started.json()).job;
   const noAi={...h.env,AI:undefined};

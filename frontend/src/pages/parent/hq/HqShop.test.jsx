@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { act } from "react-dom/test-utils";
-import { Editor } from "./HqShop";
+import { Editor, Switch } from "./HqShop";
 import { adminApi } from "../../../lib/adminApi";
 
 jest.mock("../../../lib/adminApi", () => ({ adminApi: { get: jest.fn(), post: jest.fn(), put: jest.fn(), del: jest.fn() }, errorText: (e) => e.message }));
@@ -46,4 +46,18 @@ test("physical + digital sells a download at its own price alongside the physica
   expect($('[data-testid="hq-shop-digital-file"]')).not.toBeNull();
   await click(save());
   expect(adminApi.put).toHaveBeenLastCalledWith("/shop/products/p1", expect.objectContaining({ fulfilment: "made_to_order", digital_cents: 900 }));
+});
+
+test("the in-shop switch says plainly whether a product is in the shop and toggles it", async () => {
+  const onChange = jest.fn();
+  await act(async () => root.render(<Switch on label="Volcano kit" onChange={onChange} testid="sw" />));
+  const sw = $('[data-testid="sw"]');
+  expect(sw.getAttribute("role")).toBe("switch");
+  expect(sw.getAttribute("aria-checked")).toBe("true");
+  expect(sw.textContent).toBe("On");
+  expect(sw.getAttribute("aria-label")).toBe("Volcano kit: in the shop");
+  await click(sw);
+  expect(onChange).toHaveBeenCalledTimes(1);
+  await act(async () => root.render(<Switch on={false} label="Volcano kit" onChange={onChange} testid="sw" />));
+  expect($('[data-testid="sw"]').textContent).toBe("Off");
 });
