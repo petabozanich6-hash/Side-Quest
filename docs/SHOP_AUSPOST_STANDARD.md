@@ -21,3 +21,14 @@
 5. Confirm your real packaging choice and label cost. Square payment processing on the postage portion and packing supplies remain your expense; advertised PAC retail rates may provide some buffer over MyPost Business paid rates, but this is not guaranteed.
 
 Source: https://developers.auspost.com.au/apis/pac/tutorial/domestic-parcel
+
+## Shop launch (9 Nov 2026)
+
+On the first request after deploy, the Worker runs a one-time launch step (`applyLaunch` in `worker/src/shopCatalog.ts`, prices in `worker/src/data/shopLaunchPrices.ts`):
+
+- Every untouched draft becomes a visible, buyable listing at a starting price (physical: **Made to Order**, digital: **In Stock**), moved to **Launch Now**. Change any price in **Owner HQ → Shop → Products**.
+- **Held back as drafts:** Printed Quest Books, the Educational books range, and any product whose title or description mentions workbooks. Publish those yourself when they're finished.
+- Physical listings show "Posted in our weekly dispatch. Shipping times may vary." Monthly boxes and letter clubs: order by the 8th, posted around the 15th; a one-off box costs $10 more than a month (letters $3 more).
+- Packed weights and sizes are conservative estimates so Australia Post can quote. Re-measure real parcels when stock is in hand.
+- The public shop switch (`features.shopOpen`) is turned on.
+- Only empty fields are filled; anything you already entered, and any product you already published, hid or discontinued, is left alone. It never runs twice.
