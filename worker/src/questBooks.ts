@@ -17,6 +17,7 @@ import { squareConfig, createCartPaymentLink, createShopPaymentLink } from "./sq
 import { loadPlatformSettings } from "./platformSettings";
 import { createShopOrder, shopOrderFor, resendShopLinks, ensureShopOrders, MAX_SHOP_DOWNLOADS, type ShopLine } from "./shopOrders";
 import { priceItems, publicCatalog, squareLinesFor } from "./shopRoutes";
+import { guidedProductState } from "./documentEntitlement";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 
 /** Books can be sold when Square (preferred) or Stripe is configured. */
@@ -1766,10 +1767,7 @@ export function registerShop(app: App) {
     if (o.paid_at && productIds.length) {
       const { results } = await c.env.DB.prepare(`SELECT id, tags FROM shop_products WHERE id IN (${productIds.map(() => "?").join(",")})`).bind(...productIds).all<any>();
       for (const p of results || []) {
-        try {
-          const tags = JSON.parse(p.tags);
-          if (Array.isArray(tags) && tags.includes("home-education-document") && tags.includes("guided-document")) guided.add(p.id);
-        } catch { /* skip invalid product tags */ }
+        if (guidedProductState({ ...p, fulfilment: "digital" })) guided.add(p.id);
       }
     }
     return c.json({
