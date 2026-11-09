@@ -230,3 +230,21 @@ test("digital-only version: sold as one download at its own price, no postage, o
   // Readiness: a digital version without its file is flagged.
   assert.ok(readiness({ fulfilment: "physical", digital_cents: 900, has_file: false, status: "in_stock", stock: 1 }, []).includes("digital version file"));
 });
+
+
+test("state document downloads cannot be sold before a PDF is uploaded", async () => {
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const p = await one(db, "Printed Quest Book");
+  await db.prepare("UPDATE shop_products SET title = ?, department = 'digital', fulfilment = 'digital', stage = 'launch_now', visible = 1, status = 'in_stock', price_cents = 1495, tags = ? WHERE id = ?")
+    .bind("Home Education Planning Template – New South Wales (Fillable PDF)", JSON.stringify(["home-education-document", "nsw"]), p.id).run();
+  const locked = (await publicCatalog(db)).products.find((x) => x.id === p.id);
+  assert.equal(locked.can_buy, false, "not downloadable just because the owner enabled the listing");
+  assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /Download file not uploaded/);
+  await db.prepare("UPDATE shop_products SET digital_file = 1 WHERE id = ?").bind(p.id).run();
+  const ready = (await publicCatalog(db)).products.find((x) => x.id === p.id);
+  assert.equal(ready.can_buy, true);
+  const quoted = await priceItems(db, [{ product_id: p.id }]);
+  assert.equal(quoted.ok, true);
+  assert.deepEqual([quoted.lines[0].amount_cents, quoted.lines[0].physical, quoted.postage], [1495, false, 0]);
+});
