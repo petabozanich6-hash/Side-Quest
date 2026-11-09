@@ -403,14 +403,21 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
     } catch (e) { setError(e.message); setBusy(false); }
   };
   const openPrinted = (opt) => { const p = products.find((x) => x.id === opt.product_id); if (p) { setLook(null); setOpen({ p, variant: opt.variant_id }); } };
-  const chips = [["all", "Everything"], ...(books.length ? [["quest-books", "Quest Books"]] : []), ...(hasSeasonal ? [["seasonal", "Seasonal"]] : []), ...departments.map((d) => [d.id, d.label])];
+  const hasHomeDocuments = shownProducts.some((p) => (p.tags || []).includes("home-education-document"));
+  const chips = [["all", "Everything"], ...(hasHomeDocuments ? [["home-education", "Home Education Documents"]] : []), ...(books.length ? [["quest-books", "Quest Books"]] : []), ...(hasSeasonal ? [["seasonal", "Seasonal"]] : []), ...departments.filter((d) => d.id !== "home-education").map((d) => [d.id, d.label])];
 
   // What to show: one department, or on "Everything" a short row from each, with "See all".
   const groups = [];
-  const inDept = (id) => (id === "seasonal" ? shownProducts.filter((p) => p.tags.includes("seasonal")) : shownProducts.filter((p) => p.department === id));
+  const inDept = (id) => id === "home-education"
+    ? shownProducts.filter((p) => (p.tags || []).includes("home-education-document"))
+    : id === "seasonal"
+      ? shownProducts.filter((p) => p.tags.includes("seasonal") && !(p.tags || []).includes("home-education-document"))
+      : shownProducts.filter((p) => p.department === id && !(p.tags || []).includes("home-education-document"));
   if (dept === "all") {
+    const documents = inDept("home-education");
+    if (documents.length) groups.push({ id:"home-education", label:"Home Education Documents", products:documents });
     if (shownBooks.length) groups.push({ id: "quest-books", label: "Quest Books (PDF)", books: shownBooks });
-    for (const d of departments) { const items = inDept(d.id); if (items.length) groups.push({ id: d.id, label: d.label, products: items }); }
+    for (const d of departments.filter((d) => d.id !== "home-education")) { const items = inDept(d.id); if (items.length) groups.push({ id: d.id, label: d.label, products: items }); }
   } else if (dept === "quest-books") {
     groups.push({ id: "quest-books", label: "Quest Books (PDF)", books: shownBooks, full: true });
   } else {
