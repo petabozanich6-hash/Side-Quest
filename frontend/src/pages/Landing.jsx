@@ -1,12 +1,11 @@
 import React from "react";
-import ShopSection from "../components/shop/ShopSection";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { isKidsDevice, isKidsHost, isStandalone } from "../lib/pwa";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
 import InstallApp from "../components/shared/InstallApp";
 import PublicHelpFaq from "../components/shared/PublicHelpFaq";
-import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight } from "lucide-react";
+import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight, ShoppingBag } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
   <div className="paper-card p-6 relative overflow-hidden" data-testid={`feature-${title.replace(/\s+/g,'-').toLowerCase()}`}>
@@ -86,6 +85,13 @@ export default function Landing() {
               <div className="min-w-0">
                 <div className="font-display text-2xl font-bold leading-tight">I'm a student</div>
                 <div className="mt-1 text-sm font-semibold flex items-center gap-1.5">Start your quest <ArrowRight size={16} className="transition group-hover:translate-x-1"/></div>
+              </div>
+            </Link>
+            <Link to="/shop" className="group rounded-3xl p-5 flex items-center gap-4 shadow-md hover:translate-y-[-2px] transition focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300" style={{backgroundColor:"#D4A574", color:"#1F3B2D"}} data-testid="cta-shop" aria-label="Visit the Side-Quest shop">
+              <div className="shrink-0 rounded-2xl p-4" style={{backgroundColor:"#FFF9EE"}}><ShoppingBag size={44} strokeWidth={1.75} color="#1F3B2D"/></div>
+              <div className="min-w-0">
+                <div className="font-display text-2xl font-bold leading-tight">The Shop</div>
+                <div className="mt-1 text-sm font-semibold flex items-center gap-1.5">Books, kits, gifts and more <ArrowRight size={16} className="transition group-hover:translate-x-1"/></div>
               </div>
             </Link>
           </div>
@@ -216,8 +222,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      <ShopSection />
 
       <section className="relative z-10 mx-auto max-w-6xl px-5 sm:px-6 py-14" aria-labelledby="membership-heading">
         <div className="text-center mb-8">

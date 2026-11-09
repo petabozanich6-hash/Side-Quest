@@ -63,3 +63,26 @@ test("every catalogue product that isn't held back has a launch price", async ()
     .filter((p) => !holdBack({ ...p, description: SHOP_PREFILL[p.title]?.d || p.description }) && !launchEntry(p)).map((p) => p.title);
   assert.deepEqual(missing, []);
 });
+
+test("tiers: Basics / Full package options get rising prices; the owner's own option prices are kept", async () => {
+  clearSettingsCache();
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const { applyTierPrices, tierPrice } = await import("../src/shopCatalog.ts");
+  const acrylic = await db.prepare("SELECT id FROM shop_products WHERE title = 'Acrylic paint sets'").first();
+  const tee = await db.prepare("SELECT id FROM shop_products WHERE title = 'Ignis T-shirts'").first();
+  await db.prepare("UPDATE shop_products SET price_cents = 1500 WHERE id = ?").bind(acrylic.id).run();
+  await db.prepare("DELETE FROM shop_variants WHERE product_id IN (?, ?)").bind(acrylic.id, tee.id).run();
+  const add = (pid, name, sort, details = "", price = null) => db.prepare("INSERT INTO shop_variants (id, product_id, name, sort, details, price_cents) VALUES (?, ?, ?, ?, ?, ?)").bind(crypto.randomUUID(), pid, name, sort, details, price).run();
+  await add(acrylic.id, "Basics", 0, "5 cards"); await add(acrylic.id, "Full package", 1, "10 cards, apron");
+  await add(tee.id, "Basics", 0, "", 2000); await add(tee.id, "Full package", 1, "");
+  await db.prepare("DELETE FROM shop_meta WHERE key = 'tiers_v1'").run();
+  await applyTierPrices(db);
+  const prices = async (pid) => (await all(db, "SELECT price_cents FROM shop_variants WHERE product_id = ? ORDER BY sort", pid)).map((r) => r.price_cents);
+  assert.deepEqual(await prices(acrylic.id), [1500, 2395]);
+  assert.deepEqual(await prices(tee.id), [2000, null], "owner priced one tier, so the product is left alone");
+  assert.deepEqual([tierPrice(1695, 1), tierPrice(1695, 2), tierPrice(100, 1)], [2695, 3695, 200]);
+  // Sizes and ages aren't tiers.
+  const umbrellas = await db.prepare("SELECT id FROM shop_products WHERE title = 'Socks'").first();
+  assert.ok((await prices(umbrellas.id)).every((p) => p === null));
+});

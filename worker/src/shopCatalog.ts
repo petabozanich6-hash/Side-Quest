@@ -86,6 +86,7 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       await assignStages(db);
       await applyPrefill(db);
       await applyLaunch(db);
+      await applyTierPrices(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -191,6 +192,34 @@ export async function applyLaunch(db: DB) {
     clearSettingsCache();
   }
   await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, now).run();
+}
+
+/** Option names that are tiers of the same product (bigger kit, bigger price), not sizes or ages. */
+export const TIER_NAME = /\b(basic|basics|starter|standard|essentials?|full|package|premium|deluxe|complete|ultimate|bumper|mega|plus|pro)\b/i;
+/** Each tier up costs this much more than the first (by the order the options are listed). */
+export const TIER_STEPS = [1, 1.6, 2.2, 2.8];
+export const tierPrice = (base: number, rank: number) => rank === 0 ? base : Math.max(base + 100, Math.round((base * (TIER_STEPS[rank] ?? 1 + rank * 0.6)) / 100) * 100 - 5);
+
+/**
+ * Once (9 Nov 2026): products whose options are tiers ("Basics", "Full package", or options that each list what's
+ * included) get a rising price per tier, starting from the product price. Only options with no price of their own are
+ * set, and only when none of that product's options has a price yet, so the owner's own tier prices are kept.
+ */
+export async function applyTierPrices(db: DB) {
+  const key = "tiers_v1";
+  if (await db.prepare("SELECT value FROM shop_meta WHERE key = ?").bind(key).first()) return;
+  const { results } = await db.prepare("SELECT id, price_cents FROM shop_products WHERE price_cents IS NOT NULL").all<any>();
+  const vars = await variantsFor(db, (results || []).map((r: any) => r.id));
+  const stmts: D1PreparedStatement[] = [];
+  for (const p of results || []) {
+    const list = (vars.get(p.id) || []).filter((v) => v.active && !v.book_id);
+    if (list.length < 2 || list.some((v) => v.price_cents != null)) continue;
+    const tiers = list.filter((v) => TIER_NAME.test(v.name)).length >= 2 || list.every((v) => String(v.details || "").trim());
+    if (!tiers) continue;
+    list.forEach((v, rank) => stmts.push(db.prepare("UPDATE shop_variants SET price_cents = ? WHERE id = ? AND price_cents IS NULL").bind(tierPrice(p.price_cents, rank), v.id)));
+  }
+  for (let i = 0; i < stmts.length; i += 50) await db.batch(stmts.slice(i, i + 50));
+  await db.prepare("INSERT OR REPLACE INTO shop_meta (key, value) VALUES (?, ?)").bind(key, new Date().toISOString()).run();
 }
 
 /**

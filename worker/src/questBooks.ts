@@ -299,6 +299,8 @@ export type QuestBookMeta = {
   lessons_price_cents: number | null;
   /** Price for one chapter lesson on its own, without a membership. Null: single lessons aren't sold. */
   lesson_price_cents: number | null;
+  /** Ready for families: shown in Quest Books and the public shop. Off until the owner switches it on for a finished book. */
+  released: boolean;
   updated_at: string;
 };
 
@@ -357,7 +359,7 @@ export function validateMeta(raw: unknown, now: Date = new Date()): { ok: true; 
   }
   return {
     ok: true,
-    meta: { id, collection, year, subject, topic, title, subtitle: clip(b.subtitle, 160), description: clip(b.description, 2000), pages, price_cents, lessons_price_cents, lesson_price_cents, updated_at: now.toISOString() },
+    meta: { id, collection, year, subject, topic, title, subtitle: clip(b.subtitle, 160), description: clip(b.description, 2000), pages, price_cents, lessons_price_cents, lesson_price_cents, released: b.released === true, updated_at: now.toISOString() },
   };
 }
 
@@ -449,6 +451,9 @@ export async function readMeta(bucket: R2Bucket, id: string): Promise<QuestBookM
 }
 
 /** member: every book and its lessons. Otherwise a family gets what it bought ("book" or "plus"), plus every sample. */
+/** Families only see books the owner has marked ready, plus any book they already bought. The owner sees everything. */
+const familyCanSee = (a: { owner: boolean; owned: Set<string> }, b: { id: string; released?: boolean }) => a.owner || !!b.released || a.owned.has(b.id);
+
 async function accessFor(db: DB, familyId: string, userId: string | null) {
   const owner = userId ? await ownerPowers(db, { id: userId, family_id: familyId }) : false;
   const { plan, limits } = await getEntitlement(db, familyId);
@@ -501,6 +506,7 @@ function out(b: Listed, a: Access, canBuy: boolean) {
     // Members can still buy a year-level book to keep the PDF.
     can_buy: !a.tiers.has(b.id) && !a.owner && b.has_book && b.price_cents !== null && canBuy,
     lessons_price_cents: b.lessons_price_cents, lesson_price_cents: b.lesson_price_cents, has_lessons: b.has_lessons, has_chapters: b.has_chapters,
+    ...(a.owner ? { released: !!b.released } : {}),
     owned_tier: tier || null,
     can_add_lessons: b.has_lessons && hasLessons(a, b),
     can_buy_lesson: !inc && b.has_lessons && b.lesson_price_cents !== null && canBuy && tier !== "plus",
@@ -546,7 +552,7 @@ export async function quoteCart(db: DB, bucket: R2Bucket, familyId: string, user
     seen.add(key);
     const b = books.get(it.book_id);
     const drop = (reason: string) => removed.push({ book_id: it.book_id, tier: it.tier, ...(it.lesson_key ? { lesson_key: it.lesson_key } : {}), reason });
-    if (!b || !b.has_book) { drop("This book isn't available any more."); continue; }
+    if (!b || !b.has_book || !familyCanSee(a, b)) { drop("This book isn't available any more."); continue; }
     if (it.tier !== "book" && included(a, b)) { drop("Your Family Membership already includes this book's lessons."); continue; }
     if (b.price_cents === null) { drop("This book is only available with Family Membership."); continue; }
     const owned = a.tiers.get(b.id);
@@ -736,7 +742,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const user = c.get("user");
     const a = await accessFor(c.env.DB, user.family_id, user.id);
     const canBuy = canSell(c.env);
-    const books = (await listBooks(c.env.BUCKET)).filter((b) => a.owner || b.has_book);
+    const books = (await listBooks(c.env.BUCKET)).filter((b) => (a.owner || b.has_book) && familyCanSee(a, b));
     c.header("Cache-Control", "private, no-store");
     return c.json({
       member: a.member, preview: a.preview, owner: a.owner, can_buy: canBuy,
@@ -753,7 +759,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!VALID_ID.test(id) || !c.env.BUCKET) return c.json({ detail: "Book not found" }, 404);
     const user = c.get("user");
     const a = await accessFor(c.env.DB, user.family_id, user.id);
-    const book = (await listBooks(c.env.BUCKET)).find((b) => b.id === id && (a.owner || b.has_book));
+    const book = (await listBooks(c.env.BUCKET)).find((b) => b.id === id && (a.owner || b.has_book) && familyCanSee(a, b));
     if (!book) return c.json({ detail: "Book not found" }, 404);
     // The lesson list (titles only) is shown to everyone; adding lessons needs membership or a "book + lessons" purchase.
     const published = book.has_lessons ? await readPublished(c.env.BUCKET, id) : [];
@@ -779,7 +785,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!VALID_ID.test(id) || !c.env.BUCKET) return c.json({ detail: "Lesson not found" }, 404);
     const user = c.get("user");
     const a = await accessFor(c.env.DB, user.family_id, user.id);
-    const book = (await listBooks(c.env.BUCKET)).find((b) => b.id === id && (a.owner || b.has_book));
+    const book = (await listBooks(c.env.BUCKET)).find((b) => b.id === id && (a.owner || b.has_book) && familyCanSee(a, b));
     const lesson = book && book.has_lessons ? (await readPublished(c.env.BUCKET, id)).find((l) => l.key === key) : null;
     if (!lesson) return c.json({ detail: "Lesson not found" }, 404);
     c.header("Cache-Control", "private, no-store");
@@ -797,6 +803,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const body: any = await c.req.json().catch(() => ({}));
     const wanted = typeof body?.key === "string" ? published.filter((l) => l.key === body.key) : published;
     const meta0 = await readMeta(c.env.BUCKET, id);
+    if (!meta0 || !familyCanSee(a, meta0)) return c.json({ detail: "Book not found" }, 404);
     const bought = meta0 && hasLessons(a, meta0) ? null : await ownedLessonKeys(c.env.DB, user.family_id, id);
     const allowed = bought ? wanted.filter((l) => bought.has(l.key)) : wanted;
     if (!allowed.length) return c.json({ code: "UPGRADE_REQUIRED", detail: "This book's lessons come with Family Membership, the book + lessons bundle, or one at a time." }, 402);
@@ -839,6 +846,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     const meta = await readMeta(c.env.BUCKET, id);
     if (!meta) return c.json({ detail: "Book not found" }, 404);
     const a = await accessFor(c.env.DB, user.family_id, user.id);
+    if (!familyCanSee(a, meta)) return c.json({ detail: "Book not found" }, 404);
     if (!canReadBook(a, meta)) return c.json({ code: "UPGRADE_REQUIRED", detail: "Reading this book in Side-Quest comes with Family Membership or buying the book." }, 402);
     const manifest = await readerManifest(c.env.BUCKET, id);
     const source = manifest ? await c.env.BUCKET.head(keyFor(id, "book")) : null;
@@ -890,6 +898,7 @@ export function registerQuestBooks(app: App, g: Guards) {
     if (!VALID_ID.test(id) || !c.env.BUCKET) return c.json({ detail: "Book not found" }, 404);
     const meta = await readMeta(c.env.BUCKET, id);
     if (!meta || !(await c.env.BUCKET.head(keyFor(id, "book")))) return c.json({ detail: "Book not found" }, 404);
+    if (!familyCanSee(await accessFor(c.env.DB, user.family_id, user.id), meta)) return c.json({ detail: "Book not found" }, 404);
     const body: any = await c.req.json().catch(() => ({}));
     const tier: Tier | "lesson" = body?.tier === "plus" ? "plus" : body?.tier === "lesson" ? "lesson" : "book";
     const lessonKey = tier === "lesson" ? clip(body?.lesson_key, 40) : "";
@@ -1664,7 +1673,7 @@ export function registerShop(app: App) {
   app.get("/api/shop", async (c) => {
     c.header("Cache-Control", "no-store");
     if (!(await shopOpen(c.env.DB))) return c.json({ open: false, books: [], products: [], departments: [] });
-    const books = (await listBooks(c.env.BUCKET)).filter((b) => b.has_book && b.price_cents !== null);
+    const books = (await listBooks(c.env.BUCKET)).filter((b) => b.has_book && b.price_cents !== null && b.released);
     const catalog = await publicCatalog(c.env.DB).catch((e) => { console.error("shop catalogue failed", e?.message); return { departments: [], collections: [], products: [] as any[] }; });
     // Printed copies: which switched-on print products offer each book.
     const printed = (id: string) => catalog.products.filter((p: any) => p.prints_books).flatMap((p: any) => p.variants.filter((v: any) => v.book_id === id && v.price_cents != null)
@@ -1707,7 +1716,7 @@ export function registerShop(app: App) {
     if (!EMAIL_RE.test(email)) return c.json({ detail: "Enter the email address your books should go to." }, 400);
     const ids: string[] = [...new Set<string>((Array.isArray(body?.book_ids) ? body.book_ids : []).map((x: unknown) => String(x)))].filter((x) => VALID_ID.test(x)).slice(0, MAX_SHOP_ITEMS);
     const books = new Map((await listBooks(c.env.BUCKET)).map((b) => [b.id, b]));
-    const bookLines: ShopLine[] = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null)
+    const bookLines: ShopLine[] = ids.map((id) => books.get(id)).filter((b): b is Listed => !!b && b.has_book && b.price_cents !== null && b.released)
       .map((b) => ({ book_id: b.id, title: b.title, amount_cents: b.price_cents! }));
     // Catalogue products (physical, made to order, printed books, digital): priced from the database.
     const priced = await priceItems(c.env.DB, Array.isArray(body?.items) ? body.items : []);

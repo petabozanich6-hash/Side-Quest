@@ -33,9 +33,9 @@ function Shelf({ children }) {
   );
 }
 
-const EMPTY = { collection: "core", topic: "", title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "3.99", bundle: "9.99", lesson: "1.00" };
+const EMPTY = { collection: "core", topic: "", title: "", subtitle: "", year: 3, subject: "mathematics", description: "", pages: "", price: "3.99", bundle: "9.99", lesson: "1.00", released: false };
 const dollars = (c) => (c == null ? "" : (c / 100).toFixed(2));
-const toForm = (b) => ({ id: b.id, collection: b.collection || "core", topic: b.topic || "", title: b.title, subtitle: b.subtitle || "", year: b.year ?? "all", subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: dollars(b.price_cents), bundle: dollars(b.lessons_price_cents), lesson: dollars(b.lesson_price_cents) });
+const toForm = (b) => ({ id: b.id, collection: b.collection || "core", topic: b.topic || "", title: b.title, subtitle: b.subtitle || "", year: b.year ?? "all", subject: b.subject, description: b.description || "", pages: b.pages ?? "", price: dollars(b.price_cents), bundle: dollars(b.lessons_price_cents), lesson: dollars(b.lesson_price_cents), released: !!b.released });
 const cents = (v) => { const t = String(v || "").replace(/[$\s]/g, ""); return t === "" ? null : Math.round(Number(t) * 100); };
 
 function BookForm({ data, initial, onSaved, onCancel }) {
@@ -48,7 +48,7 @@ function BookForm({ data, initial, onSaved, onCancel }) {
     if ([price_cents, lessons_price_cents, lesson_price_cents].some((v) => v !== null && !Number.isFinite(v))) { toast.error("Prices must be numbers, like 3.99."); return; }
     setBusy(true);
     try {
-      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), collection: f.collection, topic: f.collection === "core" ? "" : f.topic, title: f.title, subtitle: f.subtitle, year: f.year === "all" ? "all" : Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents, lessons_price_cents, lesson_price_cents });
+      const r = await api.post("/quest-books/admin/books", { ...(f.id ? { id: f.id } : {}), collection: f.collection, topic: f.collection === "core" ? "" : f.topic, title: f.title, subtitle: f.subtitle, year: f.year === "all" ? "all" : Number(f.year), subject: f.subject, description: f.description, pages: f.pages === "" ? null : Number(f.pages), price_cents, lessons_price_cents, lesson_price_cents, released: !!f.released });
       toast.success(r.data.created ? `Created “${r.data.book.title}”. Now upload its files.` : `Saved “${r.data.book.title}”`);
       await onSaved(r.data.book);
     } catch (err) { toast.error(apiErrorMessage(err, "Could not save the book")); }
@@ -78,6 +78,7 @@ function BookForm({ data, initial, onSaved, onCancel }) {
       <label className="text-sm font-semibold text-emerald-950">Book price ($)<input value={f.price} onChange={set("price")} inputMode="decimal" className={field} placeholder="empty = not on sale yet" /></label>
       <label className="text-sm font-semibold text-emerald-950">Book + all lessons price ($)<input value={f.bundle} onChange={set("bundle")} inputMode="decimal" className={field} placeholder="e.g. 15.00 (optional)" /></label>
       <label className="text-sm font-semibold text-emerald-950">Single lesson price ($)<input value={f.lesson} onChange={set("lesson")} inputMode="decimal" className={field} placeholder="e.g. 1.00 (optional)" /></label>
+      <label className="sm:col-span-2 flex items-center gap-2 text-sm font-semibold text-emerald-950"><input type="checkbox" checked={!!f.released} onChange={(e) => setF((x) => ({ ...x, released: e.target.checked }))} className="h-4 w-4" /> Ready for families: show in Quest Books and the shop (tick when the book is finished)</label>
       <p className="sm:col-span-2 text-xs text-stone-600">Every family pays these prices, members included. Lesson prices apply once you publish lessons to the book.</p>
       <label className="text-sm font-semibold text-emerald-950 sm:col-span-2">Description (what parents see)<textarea value={f.description} onChange={set("description")} rows={4} className={field} maxLength={2000} /></label>
       <div className="sm:col-span-2 flex gap-2">
@@ -166,7 +167,7 @@ function OwnerPanel({ data, reload }) {
               <QuestBookCover book={b} size="sm" />
               <div className="flex-1 min-w-[180px]">
                 <p className="font-semibold text-slate-900">{b.title} {!b.has_book && <span className="ml-1 rounded-full bg-amber-100 text-amber-900 px-2 py-0.5 text-[10px] font-bold uppercase">Draft: hidden from families</span>}</p>
-                <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `Book ${money(b.price_cents)}`}{b.lessons_price_cents != null ? ` · Bundle ${money(b.lessons_price_cents)}` : ""}{b.lesson_price_cents != null ? ` · Lesson ${money(b.lesson_price_cents)}` : ""}{b.has_lessons ? " · Lessons published" : ""}</p>
+                <p className="text-xs text-stone-500">{b.year_label} · {b.subject_label} · {b.price_cents == null ? "Members only" : `Book ${money(b.price_cents)}`}{b.lessons_price_cents != null ? ` · Bundle ${money(b.lessons_price_cents)}` : ""}{b.lesson_price_cents != null ? ` · Lesson ${money(b.lesson_price_cents)}` : ""}{b.has_lessons ? " · Lessons published" : ""}{b.released ? " · Ready for families" : " · Hidden from families"}</p>
                 <p className="text-xs text-stone-500 mt-0.5">{b.has_book ? `Book ${mb(b.book_bytes)} ✓` : "No book PDF"} · {b.has_cover ? "Cover ✓ (page 1)" : "Cover made from page 1"}</p>
               </div>
               <Link to={`/parent/quest-books/${b.id}`} className="inline-flex gap-1 items-center rounded-lg bg-emerald-900 text-white px-3 py-2 text-sm font-semibold hover:bg-emerald-800" data-testid={`quest-open-space-${b.id}`}><BookOpen size={15} /> Open book space</Link>
