@@ -6,7 +6,7 @@ import { API } from "../lib/api";
 // remain in component memory, never sent to Side-Quest servers or an AI model.
 // Printing uses the browser's built-in "Save as PDF" flow and does not claim
 // to create official government forms or interactive PDF form fields.
-const EMPTY = { learner_name: "", school_year: "", goals: "", strengths: "", teaching: "", schedule: "", records: "", resources: "", review: "" };
+const EMPTY = { learner_name: "", school_year: "", year_level: "3", period_start: "", period_end: "", goals: "", strengths: "", teaching: "", schedule: "", records: "", resources: "", review: "" };
 const FIELDS = [
   ["learner_name", "Learner's name or initials", "Use initials if you prefer. Leave blank to complete later."],
   ["school_year", "Planned learning period", "For example, Term 1–4, 2027."],
@@ -30,10 +30,13 @@ export default function GuidedDocument() {
   const [answers, setAnswers] = useState(EMPTY);
   const [areas, setAreas] = useState({});
   const [preview, setPreview] = useState(false);
+  const [generatedPreview, setGeneratedPreview] = useState(null);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     let active = true;
-    setError(""); setMeta(null); setPreview(false); setAnswers(EMPTY); setAreas({});
+    setError(""); setMeta(null); setPreview(false); setGeneratedPreview(null); setSent(false); setAnswers(EMPTY); setAreas({});
     fetch(`${API}/shop/orders/${encodeURIComponent(id)}/guided-document/${encodeURIComponent(productId)}?t=${encodeURIComponent(token)}`, { cache: "no-store" })
       .then(async (r) => {
         const data = await r.json().catch(() => ({}));
@@ -50,6 +53,20 @@ export default function GuidedDocument() {
   const missingAreas = (meta?.areas || []).filter((area) =>
     !clean(areas[area]?.focus) || !clean(areas[area]?.activities) || !clean(areas[area]?.evidence));
   const incomplete = missingFields.length + missingAreas.length;
+  const postDocument = async (action) => {
+    setSending(true); setError("");
+    try {
+      const response = await fetch(`${API}/shop/orders/${encodeURIComponent(id)}/guided-document/${encodeURIComponent(productId)}/generate?t=${encodeURIComponent(token)}`, {
+        method: "POST", headers: { "Content-Type":"application/json" }, cache:"no-store",
+        body: JSON.stringify({ ...answers, areas, action, confirmed: action === "email" }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.detail || "Document preparation failed.");
+      if (action === "preview") { setGeneratedPreview(result.preview); setPreview(true); }
+      else setSent(true);
+    } catch (e) { setError(e.message); }
+    finally { setSending(false); }
+  };
   const update = (key, value) => setAnswers((old) => ({ ...old, [key]: value.slice(0, 6000) }));
   const updateArea = (name, key, value) => setAreas((old) => ({
     ...old, [name]: { ...(old[name] || {}), [key]: value.slice(0, 6000) },
@@ -70,18 +87,19 @@ export default function GuidedDocument() {
       <div className="max-w-3xl mx-auto mb-4 no-print flex flex-wrap justify-between items-center gap-3">
         <Link className="underline text-sm" to={`/shop/order/${encodeURIComponent(id)}?t=${encodeURIComponent(token)}`}>← Back to paid order</Link>
         {meta && <div className="flex gap-2">
-          <button className="rounded-lg border border-stone-400 px-4 py-2 text-sm" onClick={() => setPreview((p) => !p)}>{preview ? "Edit responses" : "Review document"}</button>
-          {preview && <button className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold" onClick={() => window.print()}>Print / Save as PDF</button>}
+          <button className="rounded-lg border border-stone-400 px-4 py-2 text-sm" disabled={sending} onClick={() => preview ? setPreview(false) : postDocument("preview")}>{preview ? "Edit responses" : "Review generated document"}</button>
+          {preview && !sent && <button disabled={sending} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={() => postDocument("email")}>{sending ? "Preparing..." : "Email my completed PDF"}</button>}
         </div>}
       </div>
-      {error && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-red-800" role="alert">{error}</p>}
+      {error && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-red-800 no-print" role="alert">{error}</p>}
+      {sent && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-emerald-800 font-semibold no-print" role="status">Your PDF has been emailed to the address used at checkout. Check your inbox.</p>}
       {!meta && !error && <p className="max-w-3xl mx-auto">Checking your purchase…</p>}
       {meta && !preview && <div className="max-w-3xl mx-auto bg-white rounded-xl p-6 space-y-5 no-print">
         <h1 className="font-display text-2xl font-bold text-[#4A5D3A]">{meta.title}</h1>
         <p className="text-sm text-amber-900 rounded-lg bg-amber-50 p-3">{meta.notice}</p>
         <p className="text-sm">Your answers stay in this browser tab and aren't uploaded or saved on our servers. Keep the tab open until you've saved your PDF; closing or refreshing it clears your answers.</p>
         <p className="text-sm">Requirements source review: {meta.requirements_checked_on}. Please check the official links at the end of your document, as guidance may have changed.</p>
-        <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); setPreview(true); }}>
+        <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); postDocument("preview"); }}>
           {FIELDS.map(([key, label, help]) => <label key={key} className="block space-y-1">
             <span className="font-semibold text-sm">{label}</span>
             <span className="block text-xs text-stone-600">{help}</span>
@@ -89,6 +107,19 @@ export default function GuidedDocument() {
               ? <input className={fieldClass} value={answers[key]} onChange={(e) => update(key, e.target.value)} maxLength={300} />
               : <textarea className={fieldClass} rows={3} value={answers[key]} onChange={(e) => update(key, e.target.value)} />}
           </label>)}
+          <div className="grid gap-3 sm:grid-cols-3">
+            <label className="block space-y-1 text-sm font-semibold">Year level
+              <select value={answers.year_level} className={fieldClass} onChange={(e) => update("year_level", e.target.value)}>
+                {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map((v)=><option key={v} value={v}>{v}</option>)}
+              </select>
+            </label>
+            <label className="block space-y-1 text-sm font-semibold">Period starts
+              <input type="date" className={fieldClass} value={answers.period_start} onChange={(e) => update("period_start",e.target.value)} required />
+            </label>
+            <label className="block space-y-1 text-sm font-semibold">Period ends
+              <input type="date" className={fieldClass} value={answers.period_end} onChange={(e) => update("period_end",e.target.value)} required />
+            </label>
+          </div>
           <div className="space-y-3">
             <h2 className="text-lg font-bold">Learning areas — {meta.state_name}</h2>
             <p className="text-sm text-stone-600">Use actual plans and resources. You may leave an area incomplete and return before printing.</p>
@@ -104,7 +135,7 @@ export default function GuidedDocument() {
               </label>)}
             </div>)}
           </div>
-          <button className="rounded-lg bg-[#4A5D3A] text-white px-5 py-3 font-semibold" type="submit">Review my document</button>
+          <button className="rounded-lg bg-[#4A5D3A] text-white px-5 py-3 font-semibold" type="submit" disabled={sending}>Generate and review document</button>
         </form>
       </div>}
       {meta && preview && <article className="document-sheet max-w-3xl mx-auto p-8 bg-white shadow-sm rounded-xl leading-relaxed text-sm">
@@ -121,8 +152,21 @@ export default function GuidedDocument() {
             : "All guided fields contain responses. This does NOT establish that your state's specific requirements are satisfied."}</p>
           {!!missingFields.length && <p className="mt-2">Unanswered sections: {missingFields.join("; ")}</p>}
           {!!missingAreas.length && <p className="mt-2">Incomplete learning areas: {missingAreas.join("; ")}</p>}
-          <p className="mt-2">Check all official requirements, the appropriate government forms, supporting evidence and the accuracy of every statement before submitting anything.</p>
+          <p className="mt-2">Check the generated goals, actual family plans, official requirements and supporting evidence before using the Email my completed PDF action. The generated content is a planning aid, not a claim that learning has occurred.</p>
         </section>
+        {generatedPreview && <>
+          <h2 className="text-xl font-bold mb-2 mt-6">Generated using Side-Quest's existing learning-plan builder</h2>
+          {line("Plan overview",generatedPreview.overview)}
+          {line("Teaching philosophy",generatedPreview.educational_philosophy)}
+          {line("Weekly rhythm",generatedPreview.weekly_rhythm)}
+          {line("Assessment approach",generatedPreview.assessment_approach)}
+          {line("Review schedule",generatedPreview.review_schedule)}
+          <h2 className="text-xl font-bold mb-2">Learning area goals and activities</h2>
+          {(generatedPreview.learning_areas || []).map((a,i)=><section key={i} className="mb-5"><h3 className="font-bold">{a.area}</h3>
+            <ul className="list-disc ml-5">{(a.goals || []).map((goal,j)=><li key={j}>{goal}</li>)}</ul>
+            <p className="font-semibold mt-2">Suggested activities</p><ul className="list-disc ml-5">{(a.sample_activities || []).map((activity,j)=><li key={j}>{activity}</li>)}</ul>
+          </section>)}
+        </>}
         {FIELDS.map(([key, label]) => <React.Fragment key={key}>{line(label, answers[key])}</React.Fragment>)}
         <h2 className="text-xl font-bold mb-2 mt-6">Learning area plans</h2>
         {meta.areas.map((name) => <section key={name} className="mb-5 break-inside-avoid">
