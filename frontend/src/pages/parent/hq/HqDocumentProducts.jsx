@@ -28,36 +28,40 @@ export default function HqDocumentProducts({ jurisdiction }) {
   const [refreshing, setRefreshing] = useState(false);
   const [yearLevel, setYearLevel] = useState("3");
   const [previewPdf, setPreviewPdf] = useState(null);
+  const [previewAccepted, setPreviewAccepted] = useState(false);
 
   const load = async () => {
     setRefreshing(true);
     try {
       const response = await adminApi.get("/shop/products");
-      setProducts((response.products || []).filter((p) => p.fulfilment === "digital" && (p.tags || []).includes("home-education-document")));
+      setProducts((response.products || []).filter((p) => (p.tags || []).includes("home-education-document")));
     } catch (e) { setError(errorText(e, "Could not load shop products.")); }
     finally { setRefreshing(false); }
   };
   useEffect(() => { load(); }, []);
-  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setError(""); setMessage(""); }, [jurisdiction?.code]);
+  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
 
   if (!jurisdiction) return null;
   const current = products.find((p) => p.title === titleFor(jurisdiction));
   const guided = products.find((p) => p.title === guidedTitleFor(jurisdiction));
+  const printed = products.find((p) => p.title === `Printed Home Education Planning Workbook – ${jurisdiction.name}`);
   const create = async (kind = "blank") => {
     setBusy(true); setMessage(""); setError("");
     try {
       await adminApi.post("/shop/products", {
-        title: kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
-        description: kind === "guided"
+        title: kind === "printed" ? `Printed Home Education Planning Workbook – ${jurisdiction.name}` : kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
+        description: kind === "printed"
+          ? `A professionally printed and posted copy of the Side-Quest ${jurisdiction.name} home education planning workbook. This is an independent parent planning resource, not an official government form or registration guarantee. Printing, binding, packaging, dispatch and postage must be costed before orders open.`
+          : kind === "guided"
           ? `A private, guided planning worksheet for ${jurisdiction.name}. After a verified payment, enter your family's own educational goals and activities in your browser, review the resulting document and save it as a PDF using your browser's print function. It isn't an interactive fillable PDF, official government form or registration guarantee. Confirm current requirements with your authority.`
           : description(jurisdiction),
-        department: "digital",
+        department: kind === "printed" ? "books" : "digital",
         collection: "Home Education Documents",
-        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
-        fulfilment: "digital",
+        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind === "printed" ? ["print-and-post"] : kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
+        fulfilment: kind === "printed" ? "made_to_order" : "digital",
         status: "draft",
         stage: "launch_now",
-        price_cents: kind === "guided" ? 2995 : 1495,
+        price_cents: kind === "printed" ? null : kind === "guided" ? 2995 : 1495,
         safety_checked: false,
       });
       setMessage("Draft listing created. It is hidden and cannot be purchased yet.");
@@ -66,7 +70,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
     finally { setBusy(false); }
   };
   const generatePreview = async () => {
-    setBusy(true); setError(""); setMessage(""); setPreviewPdf(null);
+    setBusy(true); setError(""); setMessage(""); setPreviewPdf(null); setPreviewAccepted(false);
     try {
       const result=await adminApi.post("/document-studio/preview",{state:jurisdiction.code,year_level:yearLevel});
       setPreviewPdf(result);
@@ -75,14 +79,14 @@ export default function HqDocumentProducts({ jurisdiction }) {
     finally{setBusy(false);}
   };
   const savePreview = async () => {
-    if(!current||!previewPdf)return;
+    if(!current||!previewPdf||!previewAccepted)return;
     setBusy(true);setError("");setMessage("");
     try{
       await adminApi.post(`/document-studio/products/${encodeURIComponent(current.id)}/save-preview`,{
         state:previewPdf.state,year_level:previewPdf.year_level,sha256:previewPdf.sha256
       });
       setMessage("The exact previewed PDF has been saved privately. Sales remain blocked pending quality review.");
-      setPreviewPdf(null);await load();
+      setPreviewPdf(null);setPreviewAccepted(false);await load();
     }catch(e){setError(errorText(e,"Could not save the previewed PDF."));}
     finally{setBusy(false);}
   };
@@ -116,7 +120,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
             <h4 className="font-semibold">Create the fillable PDF here</h4>
             <p className="text-sm">Generate a blank state-based document using the shared Side-Quest requirements. Nothing is saved or published until you inspect and approve the preview.</p>
             <label className="block text-sm font-semibold">Year level for learning-area layout
-              <select className={input+" mt-1"} value={yearLevel} onChange={(e)=>{setYearLevel(e.target.value);setPreviewPdf(null);}}>
+              <select className={input+" mt-1"} value={yearLevel} onChange={(e)=>{setYearLevel(e.target.value);setPreviewPdf(null);setPreviewAccepted(false);}}>
                 {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map(v=><option key={v} value={v}>{v}</option>)}
               </select>
             </label>
@@ -125,8 +129,9 @@ export default function HqDocumentProducts({ jurisdiction }) {
               <p className="text-sm font-semibold">Preview ready — {jurisdiction.name}, year {previewPdf.year_level}</p>
               <div className="flex flex-wrap gap-2">
                 <a className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold" href={previewPdf.data_url} download={`sidequest-${jurisdiction.code.toLowerCase()}-preview.pdf`}>2. Download and inspect PDF</a>
-                <button type="button" disabled={busy} onClick={savePreview} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">3. Approve preview and save privately</button>
+                <button type="button" disabled={busy || !previewAccepted} onClick={savePreview} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">3. Approve inspected PDF and save privately</button>
               </div>
+              <label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={previewAccepted} onChange={(e)=>setPreviewAccepted(e.target.checked)} /><span>I have opened the PDF, inspected its branding, print layout and interactive fields, and approve saving this exact version privately.</span></label>
               <p className="text-xs text-amber-900">Saving attaches this exact preview to the hidden product. It does not approve the document for sale.</p>
             </div>}
           </div>
@@ -146,6 +151,14 @@ export default function HqDocumentProducts({ jurisdiction }) {
         {guided
           ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"} · {guided.has_file ? "Guide PDF uploaded" : "Guide PDF missing"}. Before publishing, upload the approved instruction PDF in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
           : <button type="button" disabled={busy || refreshing} onClick={() => create("guided")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} guided-document draft</button>}
+      </div>
+      <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
+        <h4 className="font-semibold">Printed and posted workbook — physical version</h4>
+        <p className="text-sm text-stone-700">Offer professionally printed pages for families who prefer paper. This is a separate, made-to-order physical shop product: printing, binding, packaging, dispatch and Australia Post postage are charged separately from the digital PDF. The shop's existing physical fulfilment and postage quoting can be reused after you enter real costs and packed weight/dimensions.</p>
+        {printed
+          ? <p className="text-sm">Physical listing: <strong>{printed.status}</strong> · {printed.visible ? "Visible" : "Hidden"} · {printed.price_cents == null ? "Printing price not set" : "Price set"}. Review production costs, postage and the exact approved printed proof before publishing.</p>
+          : <button type="button" disabled={busy || refreshing} onClick={()=>create("printed")} className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold text-[#4A5D3A] disabled:opacity-60">Create hidden {jurisdiction.code} print-and-post draft</button>}
+        <p className="text-xs text-stone-600">The printable PDF includes interactive fields for digital use and ample space for handwriting. Print-and-post is not active until the physical product is reviewed and priced.</p>
       </div>
       <button type="button" className="text-xs underline text-stone-700" onClick={load} disabled={refreshing}>Refresh document products</button>
       {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
