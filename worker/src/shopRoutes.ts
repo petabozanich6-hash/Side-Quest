@@ -328,6 +328,17 @@ export function registerShopCatalog(app: App) {
         jurisdiction:code, recipient_hint:order.email.replace(/^(.{1,2}).*(@.*)$/, "$1***$2") });
     }
     if (!raw?.confirmed) return c.json({ detail: "Please review and confirm the generated document before emailing." }, 400);
+    // Cap attachment emails per paid order to avoid spam and surprise rendering
+    // charges. Only order/product IDs are stored, never children's answers.
+    await c.env.DB.prepare("CREATE TABLE IF NOT EXISTS guest_document_email_limits (order_id TEXT NOT NULL, product_id TEXT NOT NULL, window_started INTEGER NOT NULL, hits INTEGER NOT NULL, PRIMARY KEY(order_id,product_id))").run();
+    const windowStart = Math.floor(Date.now() / 86400000);
+    await c.env.DB.prepare(`INSERT INTO guest_document_email_limits(order_id,product_id,window_started,hits) VALUES(?,?,?,1)
+      ON CONFLICT(order_id,product_id) DO UPDATE SET
+      hits=CASE WHEN window_started=excluded.window_started THEN hits+1 ELSE 1 END,
+      window_started=excluded.window_started`).bind(order.id,pid,windowStart).run();
+    const attempt = await c.env.DB.prepare("SELECT hits FROM guest_document_email_limits WHERE order_id=? AND product_id=?").bind(order.id,pid).first<{hits:number}>();
+    if (Number(attempt?.hits || 0) > 5) return c.json({ detail: "This order has reached its daily PDF email limit. Contact support if you need help." }, 429);
+
     if (!c.env.EMAIL || !c.env.BROWSER?.quickAction) return c.json({ detail: "PDF delivery is not configured right now." }, 503);
     let bytes: Uint8Array;
     try { bytes = await renderGuestPdf(c.env, guestPlanHtml(prepared)); }
