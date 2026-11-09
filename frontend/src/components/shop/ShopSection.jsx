@@ -107,6 +107,10 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [sampleOpen, setSampleOpen] = useState(false);
+  const [sampleYear, setSampleYear] = useState("3");
+  const hasDocumentSample = (p.tags || []).includes("home-education-document");
+  const sampleUrl = `${API}/shop/products/${encodeURIComponent(p.id)}/document-sample?year=${encodeURIComponent(sampleYear)}`;
   const v = p.variants.find((x) => x.id === variant);
   const price = v ? v.price_cents : p.price_cents;
   const extras = (p.addons || []).map((id) => all.find((x) => x.id === id)).filter((x) => x && x.can_buy && !x.variants.length && !x.personalisation.length && !x.subscription);
@@ -154,12 +158,25 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
             {p.subscription && p.one_off_cents != null && price != null && p.one_off_cents > price && <p className="text-sm text-stone-700">Or {money(p.one_off_cents)} for a single box. Subscribers save {Math.round((1 - price / p.one_off_cents) * 100)}%.</p>}
             {p.subscription && p.cutoff_day && p.dispatch_day && <p className="text-sm text-stone-600">📦 Order by the {ordinal(p.cutoff_day)} of the month and your box ships around the {ordinal(p.dispatch_day)}{p.dispatch_day <= p.cutoff_day ? " of the following month" : ""}.</p>}
             {p.description && <p className="text-stone-700 whitespace-pre-line">{p.description}</p>}
+            {hasDocumentSample && <button type="button" onClick={() => setSampleOpen((old) => !old)} className="rounded-xl border border-[#1F3B2D] px-3 py-2 text-sm font-semibold text-[#1F3B2D]" data-testid="shop-document-sample-toggle">{sampleOpen ? "Hide sample pages" : "Look inside — free sample"}</button>}
             {p.dispatch_estimate && <p className="text-stone-600">Dispatch: {p.dispatch_estimate}</p>}
             {p.preorder_closes_at && <p className="text-stone-600">Pre-orders close {new Date(p.preorder_closes_at).toLocaleDateString("en-AU", { dateStyle: "medium" })}</p>}
             {p.preorder_progress && <p className="text-stone-600">{p.preorder_progress.ordered} of {p.preorder_progress.target} pre-ordered</p>}
             {p.low_stock && <p className="font-semibold text-amber-800">Only a few left</p>}
           </div>
         </div>
+        {hasDocumentSample && sampleOpen && <section className="space-y-3 rounded-xl border border-stone-300 bg-[#F9F8F0] p-3" data-testid="shop-document-sample">
+          <p className="font-semibold text-[#1F3B2D]">Preview sample pages</p>
+          <p className="text-xs text-stone-700">A sample of the actual document format. Guided previews use fictional family details. Your purchase will contain the full resource or a document created from your own answers.</p>
+          <label className="block text-sm font-semibold max-w-xs">Show sample for year level
+            <select className={field} value={sampleYear} onChange={(e) => setSampleYear(e.target.value)}>
+              {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map((year)=><option key={year} value={year}>{year}</option>)}
+            </select>
+          </label>
+          <iframe title={`Sample PDF for ${p.title}, year ${sampleYear}`} src={sampleUrl} className="w-full h-[380px] rounded-lg border border-stone-200 bg-white"/>
+          <a href={sampleUrl} target="_blank" rel="noreferrer" className="inline-block text-sm font-semibold underline text-[#1F3B2D]">Open sample PDF in a new tab</a>
+          <p className="text-xs text-stone-600">Sample only. Not a full download or government-issued form.</p>
+        </section>}
         {(p.can_buy || p.subscription) && (
           <div className="space-y-3">
             {p.variants.some((x) => x.details) ? (
