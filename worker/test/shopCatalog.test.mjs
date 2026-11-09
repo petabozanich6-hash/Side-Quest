@@ -248,6 +248,8 @@ test("state document downloads cannot be sold before a PDF is uploaded", async (
   // Ordinary digital products remain usable: this stricter gate applies to
   // jurisdiction-specific education documents, not the rest of the shop.
   await db.prepare("UPDATE shop_products SET tags = ? WHERE id = ?").bind('["ordinary-download"]', p.id).run();
+  assert.equal((await publicCatalog(db)).products.find((x) => x.id === p.id).can_buy, false, "removing document tag does not bypass collection quality hold");
+  await db.prepare("UPDATE shop_products SET collection = 'Ordinary Downloads' WHERE id = ?").bind(p.id).run();
   const regular = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(regular.can_buy, true);
 });
