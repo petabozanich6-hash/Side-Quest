@@ -1765,9 +1765,9 @@ export function registerShop(app: App) {
     const productIds = [...new Set(o.lines.map((l: any) => l.product_id).filter((id: any) => /^[0-9a-f-]{36}$/.test(String(id || ""))))] as string[];
     const guided = new Set<string>();
     if (o.paid_at && productIds.length) {
-      const { results } = await c.env.DB.prepare(`SELECT id, tags FROM shop_products WHERE id IN (${productIds.map(() => "?").join(",")})`).bind(...productIds).all<any>();
+      const { results } = await c.env.DB.prepare(`SELECT id, tags, fulfilment FROM shop_products WHERE id IN (${productIds.map(() => "?").join(",")})`).bind(...productIds).all<any>();
       for (const p of results || []) {
-        if (guidedProductState({ ...p, fulfilment: "digital" })) guided.add(p.id);
+        if (guidedProductState(p)) guided.add(p.id);
       }
     }
     return c.json({
