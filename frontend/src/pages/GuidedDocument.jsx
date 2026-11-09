@@ -33,10 +33,13 @@ export default function GuidedDocument() {
   const [generatedPreview, setGeneratedPreview] = useState(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [childIndex, setChildIndex] = useState(1);
+  const [childDrafts, setChildDrafts] = useState({});
+  const [sentChildren, setSentChildren] = useState({});
 
   useEffect(() => {
     let active = true;
-    setError(""); setMeta(null); setPreview(false); setGeneratedPreview(null); setSent(false); setAnswers(EMPTY); setAreas({});
+    setError(""); setMeta(null); setPreview(false); setGeneratedPreview(null); setSent(false); setChildIndex(1); setChildDrafts({}); setSentChildren({}); setAnswers(EMPTY); setAreas({});
     fetch(`${API}/shop/orders/${encodeURIComponent(id)}/guided-document/${encodeURIComponent(productId)}?t=${encodeURIComponent(token)}`, { cache: "no-store" })
       .then(async (r) => {
         const data = await r.json().catch(() => ({}));
@@ -53,17 +56,29 @@ export default function GuidedDocument() {
   const missingAreas = (meta?.areas || []).filter((area) =>
     !clean(areas[area]?.focus) || !clean(areas[area]?.activities) || !clean(areas[area]?.evidence));
   const incomplete = missingFields.length + missingAreas.length;
+  const switchChild = (next) => {
+    if (next === childIndex || sending) return;
+    setChildDrafts((existing) => ({...existing, [childIndex]: {answers,areas}}));
+    const draft = childDrafts[next];
+    setAnswers(draft?.answers || {...EMPTY});
+    setAreas(draft?.areas || {});
+    setChildIndex(next);
+    setPreview(false);
+    setGeneratedPreview(null);
+    setSent(!!sentChildren[next]);
+    setError("");
+  };
   const postDocument = async (action) => {
     setSending(true); setError("");
     try {
       const response = await fetch(`${API}/shop/orders/${encodeURIComponent(id)}/guided-document/${encodeURIComponent(productId)}/generate?t=${encodeURIComponent(token)}`, {
         method: "POST", headers: { "Content-Type":"application/json" }, cache:"no-store",
-        body: JSON.stringify({ ...answers, areas, action, confirmed: action === "email" }),
+        body: JSON.stringify({ ...answers, areas, child_index: childIndex, action, confirmed: action === "email" }),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.detail || "Document preparation failed.");
       if (action === "preview") { setGeneratedPreview(result.preview); setPreview(true); }
-      else setSent(true);
+      else {setSent(true);setSentChildren((old)=>({...old,[childIndex]:true}));}
     } catch (e) { setError(e.message); }
     finally { setSending(false); }
   };
@@ -88,14 +103,25 @@ export default function GuidedDocument() {
         <Link className="underline text-sm" to={`/shop/order/${encodeURIComponent(id)}?t=${encodeURIComponent(token)}`}>← Back to paid order</Link>
         {meta && <div className="flex gap-2">
           <button className="rounded-lg border border-stone-400 px-4 py-2 text-sm" disabled={sending} onClick={() => preview ? setPreview(false) : postDocument("preview")}>{preview ? "Edit responses" : "Review generated document"}</button>
-          {preview && !sent && <button disabled={sending} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={() => postDocument("email")}>{sending ? "Preparing..." : "Email my completed PDF"}</button>}
+          {preview && <button disabled={sending} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={() => postDocument("email")}>{sending ? "Preparing..." : "Email my completed PDF"}</button>}
         </div>}
       </div>
       {error && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-red-800 no-print" role="alert">{error}</p>}
-      {sent && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-emerald-800 font-semibold no-print" role="status">Your PDF has been emailed to the address used at checkout. Check your inbox.</p>}
+      {sent && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-emerald-800 font-semibold no-print" role="status">Child {childIndex} document has been emailed to the checkout address. {(meta?.child_count || 1) > 1 ? "Choose your next child above to prepare their own document." : "Check your inbox."}</p>}
       {!meta && !error && <p className="max-w-3xl mx-auto">Checking your purchase…</p>}
+      {meta && (meta.child_count || 1)>1 && <div className="max-w-3xl mx-auto mb-4 no-print bg-white rounded-xl p-4 space-y-2">
+        <p className="font-semibold text-[#1F3B2D]">Your family pack includes {meta.child_count} separate personalised documents</p>
+        <p className="text-sm text-stone-700">Complete one plan for each child. Choose a child below; the answers you enter remain in this browser tab until you leave or refresh the page.</p>
+        <div className="flex flex-wrap gap-2">
+          {Array.from({length:Math.min(5,meta.child_count)},(_,i)=>i+1).map(n=>
+            <button key={n} type="button" disabled={sending} onClick={()=>switchChild(n)} className={`px-3 py-2 rounded-lg text-sm font-semibold border ${childIndex===n ? "bg-[#1F3B2D] text-white" : "bg-white text-[#1F3B2D]"}`}>
+              Child {n}{sentChildren[n] ? " ✓ Sent" : ""}
+            </button>
+          )}
+        </div>
+      </div>}
       {meta && !preview && <div className="max-w-3xl mx-auto bg-white rounded-xl p-6 space-y-5 no-print">
-        <h1 className="font-display text-2xl font-bold text-[#4A5D3A]">{meta.title}</h1>
+        <h1 className="font-display text-2xl font-bold text-[#4A5D3A]">{meta.title}{(meta.child_count || 1)>1 ? ` — Child ${childIndex}` : ""}</h1>
         <p className="text-sm text-amber-900 rounded-lg bg-amber-50 p-3">{meta.notice}</p>
         <p className="text-sm">Your answers stay in this browser tab and aren't uploaded or saved on our servers. Keep the tab open until you've saved your PDF; closing or refreshing it clears your answers.</p>
         <p className="text-sm">Requirements source review: {meta.requirements_checked_on}. Please check the official links at the end of your document, as guidance may have changed.</p>
