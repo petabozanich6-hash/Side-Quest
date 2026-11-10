@@ -1040,8 +1040,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
 
   admin.get("/document-studio/print-jobs", R, async (c: Context<any>) => {
     await ensurePremiumPrintQueue(c.env.DB);
-    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
-    return c.json({jobs:(results||[]).map((x:any)=>({...x,shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}))});
+    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.lines,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
+    return c.json({jobs:(results||[]).map((x:any)=>{ const lines=(()=>{try{return JSON.parse(x.lines||"[]")}catch{return []}})(); return {...x,lines:undefined, copies:Math.max(1,Math.min(5,Number(lines.find((l:any)=>l.product_id===x.product_id)?.personalisation?.child_count)||1)),shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}; })});
   });
   admin.get("/document-studio/print-jobs/:jobId/pdf", R, async (c: Context<any>) => {
     const id=c.req.param("jobId");
