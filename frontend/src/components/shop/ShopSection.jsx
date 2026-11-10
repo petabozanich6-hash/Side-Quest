@@ -119,7 +119,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const max = Math.min(p.max_per_order || 20, 20);
   const missing = p.personalisation.find((f) => f.required && !(pers[f.key] || "").trim());
   const needVariant = p.variants.length > 0 && !v;
-  const familyKind = (p.tags || []).includes("home-education-document") ? (p.tags || []).includes("guided-document") ? "guided" : (p.tags || []).includes("print-and-post") ? "printed" : (p.tags || []).includes("fillable-pdf") ? "blank" : null : null;
+  const familyKind = (p.tags || []).includes("home-education-document") ? (p.tags || []).includes("premium-planner-personalised") ? "guided" : (p.tags || []).includes("premium-planner-printed") ? "printed" : (p.tags || []).includes("premium-planner-blank") ? "blank" : (p.tags || []).includes("guided-document") ? "guided" : (p.tags || []).includes("print-and-post") ? "printed" : (p.tags || []).includes("fillable-pdf") ? "blank" : null : null;
   const familyPrice = familyKind && Number.isInteger(price) ? price + (childCount - 1) * (familyKind === "blank" ? 100 : 200) : price;
 
   const post = async (path, body) => {
@@ -134,7 +134,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const add = () => {
     if (needVariant) { setError("Choose an option first."); return; }
     if (missing) { setError(`Fill in "${missing.label}".`); return; }
-    onAdd([{ product_id: p.id, variant_id: v?.id || null, qty: familyKind ? 1 : qty, child_count: familyKind ? childCount : undefined, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""}${familyKind ? ` (${childCount} children)` : ""}`, unit_cents: familyKind ? familyPrice : price, postage_cents: p.postage_cents || 0, physical: p.fulfilment !== "digital" },
+    onAdd([{ product_id: p.id, variant_id: v?.id || null, qty: familyKind ? 1 : qty, child_count: familyKind ? childCount : undefined, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""}${familyKind ? ` (${childCount} children)` : ""}`, unit_cents: familyKind ? familyPrice : price, postage_cents: p.postage_cents || 0, physical: p.fulfilment !== "digital", included_postage: (p.tags || []).some(t => ["premium-planner-printed","print-and-post"].includes(t)) },
       ...extras.filter((x) => addons.includes(x.id)).map((x) => ({ product_id: x.id, variant_id: null, qty: 1, personalisation: {}, title: x.title, unit_cents: x.price_cents, postage_cents: x.postage_cents || 0, physical: x.fulfilment !== "digital" }))]);
   };
   const subscribe = async () => {
@@ -336,7 +336,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
   const [shippingQuote, setShippingQuote] = useState(null);
   const [shippingBusy, setShippingBusy] = useState(false);
   const [shippingError, setShippingError] = useState("");
-  const posted = cart.items.some((x) => x.physical && !x.gift_months);
+  const posted = cart.items.some((x) => x.physical && !x.gift_months && !x.included_postage);
   const itemsKey = JSON.stringify(cart.items.map(({ product_id, variant_id, qty, child_count, personalisation, gift_months, digital }) => ({ product_id, variant_id, qty, child_count, personalisation, gift_months: gift_months || null, digital: digital === true })));
   const validQuote = posted && shippingQuote?.postcode === postcode && shippingQuote?.itemsKey === itemsKey ? shippingQuote : null;
 
