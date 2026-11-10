@@ -15,7 +15,7 @@
 import { recordPaidCart } from "./questBookPurchases";
 import { recordPaidShopOrder } from "./shopOrders";
 import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo } from "./squareMembership";
-import { attachShopSubscription, linkShopSubscriptionPayment, markShopSubscriptionPastDue, syncShopSubscription } from "./shopSubscriptions";
+import { attachShopSubscription, linkShopSubscriptionPayment, markShopSubscriptionPastDue, syncShopSubscription, recordShopSubscriptionInvoice } from "./shopSubscriptions";
 import type { App, Env } from "./types";
 import { LIVE_PRICE_DETAILS, appOrigin } from "./billing";
 import { membershipActivatedEmail, sendEmail } from "./email";
@@ -154,8 +154,16 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   }
   if (type === "invoice.payment_made") {
     const id = String(obj.invoice?.subscription_id || "");
+    const invoiceId=String(obj.invoice?.id || event?.data?.id || "");
     if (!id) return "invoice without subscription";
-    return (await syncShopSubscription(db, cfg, id, fetchImpl)) ?? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated);
+    // Never use a subscription's active status as evidence of payment.
+    // Only the verified, signed Square paid-invoice notification counts.
+    const synced=await syncShopSubscription(db,cfg,id,fetchImpl);
+    if(synced){
+      if(invoiceId) await recordShopSubscriptionInvoice(db,id,invoiceId,now.toISOString());
+      return synced;
+    }
+    return syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated);
   }
   if (type === "invoice.scheduled_charge_failed") {
     const id = String(obj.invoice?.subscription_id || "");
