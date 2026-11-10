@@ -674,6 +674,7 @@ function Subscriptions() {
               <div className="flex flex-wrap items-center gap-2 text-sm"><strong className="mr-auto">{s.title}</strong><span className={`rounded px-2 py-1 text-xs font-semibold ${s.eligible?"bg-emerald-100 text-emerald-900":"bg-amber-100 text-amber-900"}`}>{s.label}</span></div>
               <p className="text-sm">{s.recipient?.name||"Recipient"} · {s.email}</p>
               <p className="text-xs text-stone-700">{s.billing_cadence==="fortnightly"?"Fortnightly":"Monthly"} · {s.paid_instalments} of {s.required} instalments available · {s.mailed_count} editions already sent</p>
+              {!s.mailed_this_month&&!s.eligible&&<Button tone="plain" disabled={rosterBusy} onClick={async()=>{setRosterBusy(true);setRosterError("");try{await adminApi.post("/shop/subscriptions/"+encodeURIComponent(s.id)+"/recheck-payments");toast.success("Square invoices rechecked");await loadRoster();}catch(e){setRosterError(errorText(e,"Square could not verify this subscription."));}finally{setRosterBusy(false)}}}>Recheck payments with Square</Button>}
               {s.eligible&&<div className="flex flex-wrap gap-2 items-end">
                 <label className="text-xs font-semibold">Tracking (optional)
                   <input className={input} value={tracking[s.id]||""} maxLength={80} onChange={e=>setTracking(old=>({...old,[s.id]:e.target.value}))} placeholder="Parcel reference"/>
