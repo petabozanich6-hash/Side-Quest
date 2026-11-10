@@ -5,6 +5,7 @@ import type { Env } from "./types";
 import type { ShopLine } from "./shopOrders";
 import { ensureShopCatalog } from "./shopCatalog";
 import { documentKind } from "./familyDocumentPricing";
+import { documentType } from "./documentRelease";
 
 const POSTCODE = /^\d{4}$/;
 const API_URL = "https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json";
@@ -36,7 +37,7 @@ export async function parcelForCart(db: D1Database, lines: ShopLine[]): Promise<
   for (const line of physical) {
     const p: any = products.get(line.product_id);
     if (!p) throw new ShippingQuoteError("A product in this order is no longer available.", 409);
-    if (documentKind(p) === "printed") continue; // $5 print-and-post component already covers its shipping
+    if (documentKind(p) === "printed" || documentType(p) === "planner_printed") continue; // $5 print-and-post component already covers its shipping
     chargeableCount++;
     const weight = Number(p.parcel_weight_g);
     const length = Number(p.parcel_length_cm);
