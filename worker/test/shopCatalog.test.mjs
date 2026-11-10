@@ -214,10 +214,10 @@ test("digital-only version: sold as one download at its own price, no postage, o
   const set = (sql, ...a) => db.prepare(`UPDATE shop_products SET ${sql} WHERE id = ?`).bind(...a, p.id).run();
   // The owner sets a digital price; a physical product that can't be bought yet (coming soon) can still sell it.
   await set("visible = 1, status = 'coming_soon', price_cents = 4500, postage_cents = 995, digital_cents = 900");
-  assert.equal((await publicCatalog(db)).products[0].digital_cents, null, "hidden until its file is uploaded");
+  assert.equal((await publicCatalog(db)).products.find(x=>x.id===p.id).digital_cents, null, "hidden until its file is uploaded");
   assert.match((await priceItems(db, [{ product_id: p.id, digital: true }])).detail, /digital version .* isn't available/);
   await set("digital_file = 1");
-  const pub = (await publicCatalog(db)).products[0];
+  const pub = (await publicCatalog(db)).products.find(x=>x.id===p.id);
   assert.equal(pub.digital_cents, 900);
   assert.equal(pub.can_buy, false, "the physical product still isn't for sale");
   const r = await priceItems(db, [{ product_id: p.id, digital: true, qty: 5 }, { product_id: p.id, digital: true }]);
