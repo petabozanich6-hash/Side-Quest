@@ -111,6 +111,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const [sampleOpen, setSampleOpen] = useState(false);
   const [sampleYear, setSampleYear] = useState("3");
   const hasDocumentSample = (p.tags || []).includes("home-education-document");
+  const personalisedPlanner = (p.tags || []).some(t => t === "premium-planner-personalised" || t === "premium-planner-printed");
   const sampleUrl = `${API}/shop/products/${encodeURIComponent(p.id)}/document-sample?year=${encodeURIComponent(sampleYear)}`;
   const v = p.variants.find((x) => x.id === variant);
   const price = v ? v.price_cents : p.price_cents;
@@ -161,6 +162,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
             {p.subscription && p.one_off_cents != null && price != null && p.one_off_cents > price && <p className="text-sm text-stone-700">Or {money(p.one_off_cents)} for a single box. Subscribers save {Math.round((1 - price / p.one_off_cents) * 100)}%.</p>}
             {p.subscription && p.cutoff_day && p.dispatch_day && <p className="text-sm text-stone-600">📦 Order by the {ordinal(p.cutoff_day)} of the month and your box ships around the {ordinal(p.dispatch_day)}{p.dispatch_day <= p.cutoff_day ? " of the following month" : ""}.</p>}
             {p.description && <p className="text-stone-700 whitespace-pre-line">{p.description}</p>}
+            {personalisedPlanner && p.can_buy && <Link to={"/shop/configure-planner/"+encodeURIComponent(p.id)} className="inline-block rounded-xl bg-[#1F3B2D] px-3 py-2 text-white text-sm font-semibold" data-testid="shop-configure-planner">Personalise before checkout</Link>}
             {hasDocumentSample && <button type="button" onClick={() => setSampleOpen((old) => !old)} className="rounded-xl border border-[#1F3B2D] px-3 py-2 text-sm font-semibold text-[#1F3B2D]" data-testid="shop-document-sample-toggle">{sampleOpen ? "Hide sample pages" : "Look inside — free sample"}</button>}
             {p.dispatch_estimate && <p className="text-stone-600">Dispatch: {p.dispatch_estimate}</p>}
             {p.preorder_closes_at && <p className="text-stone-600">Pre-orders close {new Date(p.preorder_closes_at).toLocaleDateString("en-AU", { dateStyle: "medium" })}</p>}
