@@ -234,7 +234,7 @@ export function registerShopCatalog(app: App) {
       }else return c.json({detail:"Preview unavailable."},404);
       c.header("Content-Type","application/pdf");
       c.header("Content-Disposition",`inline; filename="sidequest-${matches[0].toLowerCase()}-sample.pdf"`);
-      return c.body(pdf);
+      return c.body(pdf as unknown as ArrayBuffer);
     }catch(error:any){
       console.error("shop sample PDF failed",error?.message);
       return c.json({detail:"Preview temporarily unavailable."},503);
@@ -570,7 +570,7 @@ export function registerShopCatalog(app: App) {
         c.header("Cache-Control","private, no-store");
         c.header("X-Content-Type-Options","nosniff");
         await c.env.DB.prepare("UPDATE shop_orders SET downloads=downloads+1 WHERE id=?").bind(o.id).run();
-        return c.body(bytes);
+        return c.body(bytes as unknown as ArrayBuffer);
       }catch(err:any){
         console.error("paid document generation failed",err?.message);
         return c.json({detail:"Couldn't generate your document. Your purchase remains available; please retry or contact support."},503);
@@ -883,7 +883,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   // One Owner HQ release process; shop visibility and ordinary updates cannot
   // override the independently reviewed, version-bound quality gate.
   admin.post("/document-studio/products/:id/price", W, async (c: Context<any>) => {
-    const env=c.env as Env,id=c.req.param("id");
+    const env=c.env as Env,id=(c.req.param("id")??"");
     if(!UUID.test(id))return c.json({detail:"Product not found."},404);
     await ensureShopCatalog(env.DB);
     const p=await env.DB.prepare("SELECT id,tags,fulfilment,collection FROM shop_products WHERE id=?").bind(id).first<any>();
@@ -895,7 +895,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     return c.json({ok:true,price_cents:price});
   });
   admin.post("/document-studio/products/:id/release", W, async (c: Context<any>) => {
-    const env=c.env as Env,id=c.req.param("id");
+    const env=c.env as Env,id=(c.req.param("id")??"");
     if(!UUID.test(id))return c.json({detail:"Document product not found."},404);
     await ensureShopCatalog(env.DB);
     const p=await env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(id).first<any>();
@@ -954,7 +954,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     }catch(err:any){console.error("premium preview failed",err?.message);return c.json({detail:"Could not generate premium preview."},502);}
   });
   admin.post("/document-studio/products/:id/save-premium", W, async (c: Context<any>) => {
-    const env=c.env as Env,id=c.req.param("id"),raw=await readJson(c);
+    const env=c.env as Env,id=(c.req.param("id")??""),raw=await readJson(c);
     if(!UUID.test(id)||!env.BUCKET)return c.json({detail:"Document storage unavailable."},503);
     await ensureShopCatalog(env.DB);
     const p=await env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(id).first<any>();
@@ -1024,7 +1024,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   admin.post("/document-studio/products/:id/save-preview", W, async (c: Context<any>) => {
     const env = c.env as Env;
     if (!env.BUCKET) return c.json({ detail:"Private document storage is unavailable." },503);
-    const id = c.req.param("id");
+    const id = (c.req.param("id")??"");
     if (!UUID.test(id)) return c.json({ detail:"Product not found." },404);
     await ensureShopCatalog(env.DB);
     const product = await env.DB.prepare("SELECT id, title, collection, tags, fulfilment FROM shop_products WHERE id=?").bind(id).first<any>();
@@ -1075,14 +1075,14 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
 
   admin.get("/document-studio/print-jobs", R, async (c: Context<any>) => {
     await ensurePremiumPrintQueue(c.env.DB);
-    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.lines,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
+    const {results}=await (c.env as Env).DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.lines,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
     return c.json({jobs:(results||[]).map((x:any)=>{ const lines=(()=>{try{return JSON.parse(x.lines||"[]")}catch{return []}})(); return {...x,lines:undefined, copies:Math.max(1,Math.min(5,Number(lines.find((l:any)=>l.product_id===x.product_id)?.personalisation?.child_count)||1)),shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}; })});
   });
   admin.get("/document-studio/print-jobs/:jobId/pdf", R, async (c: Context<any>) => {
-    const id=c.req.param("jobId");
+    const id=(c.req.param("jobId")??"");
     if(!UUID.test(id)||!c.env.BUCKET)return c.json({detail:"File unavailable."},404);
     await ensurePremiumPrintQueue(c.env.DB);
-    const job=await c.env.DB.prepare("SELECT j.pdf_key FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id WHERE j.id=? AND o.paid_at IS NOT NULL").bind(id).first<any>();
+    const job=await (c.env as Env).DB.prepare("SELECT j.pdf_key FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id WHERE j.id=? AND o.paid_at IS NOT NULL").bind(id).first<any>();
     if(!job)return c.json({detail:"File unavailable."},404);
     const pdf=await c.env.BUCKET.get(job.pdf_key);
     if(!pdf)return c.json({detail:"File unavailable."},404);
@@ -1094,11 +1094,11 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   // Parent documents remain private during fulfilment; after completion the
   // owner can explicitly purge the PDF from R2 while retaining order metadata.
   admin.post("/document-studio/print-jobs/:jobId/delete-pdf", W, async (c: Context<any>) => {
-    const id=c.req.param("jobId"),body=await readJson(c);
+    const id=(c.req.param("jobId")??""),body=await readJson(c);
     if(!UUID.test(id)||body.confirm!==true)return c.json({detail:"Explicit confirmation required."},400);
     if(!c.env.BUCKET)return c.json({detail:"Private storage unavailable."},503);
     await ensurePremiumPrintQueue(c.env.DB);
-    const job=await c.env.DB.prepare("SELECT id,status,pdf_key FROM premium_print_jobs WHERE id=?").bind(id).first<any>();
+    const job=await (c.env as Env).DB.prepare("SELECT id,status,pdf_key FROM premium_print_jobs WHERE id=?").bind(id).first<any>();
     if(!job)return c.json({detail:"Print job not found."},404);
     if(job.status!=="complete")return c.json({detail:"Mark the print job complete before deleting its private file."},409);
     if(job.pdf_key){
@@ -1110,10 +1110,10 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   });
 
   admin.post("/document-studio/print-jobs/:jobId/status", W, async (c: Context<any>) => {
-    const id=c.req.param("jobId"),body=await readJson(c),status=String(body.status||"");
+    const id=(c.req.param("jobId")??""),body=await readJson(c),status=String(body.status||"");
     if(!UUID.test(id)||!PRINT_JOB_STATUSES.includes(status as any))return c.json({detail:"Invalid print status."},400);
     await ensurePremiumPrintQueue(c.env.DB);
-    const job=await c.env.DB.prepare(`SELECT j.id,j.order_id,j.status,j.tracking,j.dispatch_notified_at,o.email,o.paid_at
+    const job=await (c.env as Env).DB.prepare(`SELECT j.id,j.order_id,j.status,j.tracking,j.dispatch_notified_at,o.email,o.paid_at
       FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id WHERE j.id=?`).bind(id).first<any>();
     if(!job?.paid_at)return c.json({detail:"Paid print job not found."},404);
     if(status==="complete"&&!job.dispatch_notified_at)
@@ -1213,7 +1213,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       mailed:roster.filter(x=>x.mailed_this_month).length});
   });
   admin.post("/shop/subscriptions/:id/recheck-payments", W, async (c:Context<any>) => {
-    const id=c.req.param("id");
+    const id=(c.req.param("id")??"");
     if(!UUID.test(id))return c.json({detail:"Invalid subscription."},400);
     await ensureShopSubscriptions(c.env.DB);
     const row=await (c.env.DB as DB).prepare("SELECT square_subscription_id FROM shop_subscriptions WHERE id=?").bind(id).first<{square_subscription_id:string|null}>();
@@ -1231,7 +1231,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     }
   });
   admin.post("/shop/subscriptions/:id/mark-mailed", W, async (c:Context<any>) => {
-    const id=c.req.param("id"),body=await readJson(c);
+    const id=(c.req.param("id")??""),body=await readJson(c);
     const month=String(body.month||"");
     if(!UUID.test(id)||!/^\\d{4}-(0[1-9]|1[0-2])$/.test(month))return c.json({detail:"Invalid subscription or edition month."},400);
     const tracking=String(body.tracking||"");

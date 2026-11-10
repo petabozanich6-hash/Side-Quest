@@ -13,7 +13,8 @@ test("launch: every product except the unfinished workbooks is live, priced, buy
   await ensureShopCatalog(db);
   const rows = (await all(db, "SELECT * FROM shop_products")).map(productRow);
   const vars = await variantsFor(db, rows.map((r) => r.id));
-  const held = rows.filter((r) => holdBack(r));
+  // Document editions are live by design, even the "Workbook" ones; they are checked separately below.
+  const held = rows.filter((r) => holdBack(r) && r.collection !== "Home Education Documents");
   const documents=rows.filter(r=>r.collection==="Home Education Documents");
   assert.equal(documents.length,48);
   assert.equal(documents.filter(r=>buyable(r).ok).length,48,"every edition generates from the paid order and can be purchased");
@@ -23,7 +24,9 @@ test("launch: every product except the unfinished workbooks is live, priced, buy
   assert.ok(held.some((r) => r.title === "Side-Quest Mathematics workbooks") && held.some((r) => r.title === "Printed Quest Book"));
   for (const r of live) {
     const b = buyable(r, vars.get(r.id) || []);
-    assert.ok(b.ok, `${r.title}: ${b.reason}`);
+    // A live download stays unbuyable until the owner uploads its file; nothing else may block a sale.
+    if (r.fulfilment === "digital" && !r.digital_file) assert.equal(b.reason, "Download file not uploaded", r.title);
+    else assert.ok(b.ok, `${r.title}: ${b.reason}`);
     assert.ok(r.price_cents >= 50, r.title);
     if (r.fulfilment !== "digital") {
       assert.ok(r.parcel_weight_g > 0 && r.parcel_length_cm > 0, `${r.title} needs a parcel size`);

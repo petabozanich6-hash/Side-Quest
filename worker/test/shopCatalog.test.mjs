@@ -155,7 +155,8 @@ test("an existing shop gets stages without touching anything else, and nothing i
   const after = await db.prepare("SELECT * FROM shop_products WHERE id = ?").bind(p.id).first();
   assert.deepEqual([after.stage, after.price_cents, after.description, after.supplier, after.visible, after.status], ["launch_now", 3500, "Mine", "POD Co", 0, "draft"]);
   assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE stage IS NULL").first()).n, 0);
-  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE visible = 1").first()).n, 0);
+  // The Home Education Documents collection is published on purpose (it generates from the paid order).
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE visible = 1 AND collection IS NOT 'Home Education Documents'").first()).n, 0);
 });
 
 test("products waiting on manufacturing can't sell as ready to make; monthly boxes sell one-off too", async () => {
@@ -195,7 +196,7 @@ test("prefill: descriptions, options and fields fill in without overwriting the 
   const name = await one(db, "Personalised name T-shirts");
   assert.match(name.personalisation, /Child's name/);
   // Nothing priced, stocked, supplied or published by the prefill.
-  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR visible = 1 OR status != 'draft'").first()).n, 0);
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE (price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR visible = 1 OR status != 'draft') AND collection IS NOT 'Home Education Documents'").first()).n, 0);
   assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE price_cents IS NOT NULL OR stock IS NOT NULL").first()).n, 0);
   // An owner's own description and options survive a later prefill.
   const mine = await one(db, "Gel pen sets");
