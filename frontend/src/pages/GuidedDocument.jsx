@@ -3,7 +3,8 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { API } from "../lib/api";
 
 // Guided home education document: the paid order token gates access. Answers
-// remain in component memory, never sent to Side-Quest servers or an AI model.
+// stay in component memory until preview or PDF generation, when they are
+// transmitted to the server for rendering. They are not stored in the database.
 // Printing uses the browser's built-in "Save as PDF" flow and does not claim
 // to create official government forms or interactive PDF form fields.
 const EMPTY = { learner_name: "", school_year: "", year_level: "3", period_start: "", period_end: "", goals: "", strengths: "", teaching: "", schedule: "", records: "", resources: "", review: "" };
@@ -156,7 +157,7 @@ export default function GuidedDocument() {
       {meta && !preview && <div className="max-w-3xl mx-auto bg-white rounded-xl p-6 space-y-5 no-print">
         <h1 className="font-display text-2xl font-bold text-[#4A5D3A]">{meta.title}{(meta.child_count || 1)>1 ? ` — Child ${childIndex}` : ""}</h1>
         <p className="text-sm text-amber-900 rounded-lg bg-amber-50 p-3">{meta.notice}</p>
-        <p className="text-sm">Your answers stay in this browser tab and aren't uploaded or saved on our servers. Keep the tab open until you've saved your PDF; closing or refreshing it clears your answers.</p>
+        <p className="text-sm">Your answers stay in this browser tab while you work. When you preview or request the PDF, they are securely sent to Side-Quest to generate the document, but are not saved in a child profile or document database. Keep the tab open until your PDF is emailed; closing or refreshing clears your drafts.</p>
         <p className="text-sm">Requirements source review: {meta.requirements_checked_on}. Please check the official links at the end of your document, as guidance may have changed.</p>
         <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); postDocument("preview"); }}>
           {FIELDS.map(([key, label, help]) => <label key={key} className="block space-y-1">
