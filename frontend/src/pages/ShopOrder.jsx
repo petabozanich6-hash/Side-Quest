@@ -88,7 +88,7 @@ export default function ShopOrder() {
                     {(it.blank_document||it.print_document)&&<DocumentYearAction item={it} id={id} token={t}/>}
                     {!it.blank_document&&!it.print_document&&(it.download
                       ? <a href={href} className="rounded-lg px-3 py-1.5 text-sm font-bold text-white" style={{ backgroundColor: "#1F3B2D" }} data-testid={`shop-download-${it.book_id || it.product_id}`}>Download</a>
-                      : <span className="text-sm text-stone-600">{order.status === "shipped" || order.status === "complete" ? "Posted" : "Being prepared"}</span>}
+                      : <span className="text-sm text-stone-600">{order.status === "shipped" || order.status === "complete" ? "Posted" : "Being prepared"}</span>)}
                   </li>
                 );
               })}
