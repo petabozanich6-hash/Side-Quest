@@ -1020,6 +1020,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const job=await c.env.DB.prepare(`SELECT j.id,j.order_id,j.status,j.tracking,j.dispatch_notified_at,o.email,o.paid_at
       FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id WHERE j.id=?`).bind(id).first<any>();
     if(!job?.paid_at)return c.json({detail:"Paid print job not found."},404);
+    if(status==="complete"&&!job.dispatch_notified_at)
+      return c.json({detail:"Send the dispatch notification before marking this job complete."},409);
     const sameDispatch=status==="dispatched"&&job.status==="dispatched"&&!job.dispatch_notified_at;
     if(!sameDispatch&&!canAdvancePrintStatus(job.status,status))
       return c.json({detail:"Complete the printing stages in order. You cannot skip or undo a stage."},409);
