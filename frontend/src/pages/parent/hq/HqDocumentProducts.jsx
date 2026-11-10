@@ -73,6 +73,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
         fulfilment: ["printed","premium_printed"].includes(kind) ? "made_to_order" : "digital",
         status: "draft",
         stage: "launch_now",
+        max_per_order:1,
         price_cents: kind === "premium_blank" ? 2995 : kind === "premium_personalised" ? 3995 : kind === "premium_printed" ? 6995 : kind === "printed" ? 1499 : kind === "guided" ? 999 : 499,
         safety_checked: false,
       });
@@ -205,7 +206,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
         </div>
         <p className="text-sm text-stone-700">A separate draft for the paid guided document builder. Families enter and review their information; Side-Quest generates the plan through its existing system and emails the PDF to the purchasing address. No paid AI calls.</p>
         {guided
-          ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"} · {guided.has_file ? "Guide PDF uploaded" : "Guide PDF missing"}. Before publishing, upload the approved instruction PDF in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
+          ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"}. Guided documents generate at purchase, so a static PDF upload is not required. Use the release checklist below. View settings in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
           : <button type="button" disabled={busy || refreshing} onClick={() => create("guided")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} guided-document draft</button>}
       </div>
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
