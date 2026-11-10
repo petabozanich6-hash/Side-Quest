@@ -37,6 +37,14 @@ export function requiredReleaseRevision(p:any):string|null{
   if(kind==="printed")return BLANK_RELEASE_REVISION+":printed:"+state+":"+CHECKED_ON;
   return BLANK_RELEASE_REVISION+":"+state+":"+CHECKED_ON;
 }
+/**
+ * Generated on demand: these products do not need a pre-uploaded PDF.
+ * Their buyer-specific renderer is separate from the reusable-template release workflow.
+ * Checkout independently verifies PDF/email and private storage capabilities before charging.
+ */
+export function isOnDemandDocument(p:any):boolean {
+ return ["guided","planner_personalised","planner_printed"].includes(documentType(p)||"");
+}
 export function approvedForSale(p:any,now:Date=new Date()):boolean{
   const version=requiredReleaseRevision(p);
   return !!version && p.document_release_version===version &&
