@@ -383,6 +383,8 @@ export function registerShopCatalog(app: App) {
     if(!Number.isInteger(paidChildCount) || paidChildCount<1 || paidChildCount>5 ||
        !Number.isInteger(childIndex) || childIndex<1 || childIndex>paidChildCount)
       return c.json({detail:"This learner is not covered by the paid family order."},403);
+    if (!["preview", "email", "family_email"].includes(String(raw?.action || "")))
+      return c.json({ detail: "Choose a document preview or confirmed email delivery." }, 400);
     const familyEmail = raw?.action === "family_email";
     if (familyEmail && paidChildCount < 2) return c.json({ detail: "This order has one learner. Use the individual document option." }, 400);
     const submissions: any[] = familyEmail ? raw?.children : [raw];
