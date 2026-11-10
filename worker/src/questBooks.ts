@@ -18,6 +18,7 @@ import { loadPlatformSettings } from "./platformSettings";
 import { createShopOrder, shopOrderFor, resendShopLinks, ensureShopOrders, MAX_SHOP_DOWNLOADS, type ShopLine } from "./shopOrders";
 import { priceItems, publicCatalog, squareLinesFor } from "./shopRoutes";
 import { guidedProductState } from "./documentEntitlement";
+import { documentType } from "./documentRelease";
 import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 
 /** Books can be sold when Square (preferred) or Stripe is configured. */
@@ -1764,15 +1765,17 @@ export function registerShop(app: App) {
     // document endpoint independently verifies the paid order and product.
     const productIds = [...new Set(o.lines.map((l: any) => l.product_id).filter((id: any) => /^[0-9a-f-]{36}$/.test(String(id || ""))))] as string[];
     const guided = new Set<string>();
+    const premium = new Set<string>();
     if (o.paid_at && productIds.length) {
-      const { results } = await c.env.DB.prepare(`SELECT id, tags, fulfilment FROM shop_products WHERE id IN (${productIds.map(() => "?").join(",")})`).bind(...productIds).all<any>();
+      const { results } = await c.env.DB.prepare(`SELECT id, tags, collection, fulfilment FROM shop_products WHERE id IN (${productIds.map(() => "?").join(",")})`).bind(...productIds).all<any>();
       for (const p of results || []) {
         if (guidedProductState(p)) guided.add(p.id);
+        if (["planner_personalised","planner_printed"].includes(documentType(p)||"")) premium.add(p.id);
       }
     }
     return c.json({
       paid: !!o.paid_at, status: o.status, tracking: o.tracking || null, postage_cents: o.postage_cents || 0,
-      items: o.lines.map((l: any) => ({ book_id: l.book_id || null, product_id: l.product_id || null, title: l.title, qty: l.qty || 1, physical: !!l.physical, download: !!l.book_id || (!!l.product_id && !l.physical), guided_document: !!o.paid_at && guided.has(l.product_id) })),
+      items: o.lines.map((l: any) => ({ book_id: l.book_id || null, product_id: l.product_id || null, title: l.title, qty: l.qty || 1, physical: !!l.physical, download: !!l.book_id || (!!l.product_id && !l.physical && !premium.has(l.product_id) && !guided.has(l.product_id)), guided_document: !!o.paid_at && guided.has(l.product_id), premium_document: !!o.paid_at && premium.has(l.product_id) })),
       total_cents: o.total_cents, downloads_left: Math.max(0, MAX_SHOP_DOWNLOADS - Number(o.downloads || 0)),
     });
   });
