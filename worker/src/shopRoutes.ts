@@ -504,12 +504,73 @@ export function registerShopCatalog(app: App) {
     return c.json({ ok:true, emailed:true, child_index:childIndex, child_count:paidChildCount, detail:`Document ${childIndex} of ${paidChildCount} was emailed to the purchase email address.` });
   });
 
+  // Paid printed templates are prepared per order, never pre-uploaded by the owner.
+  app.post("/api/shop/orders/:id/print-document/:productId", async (c) => {
+    c.header("Cache-Control","private, no-store");
+    const o=await shopOrderFor(c.env.DB,c.req.param("id"),c.req.query("t")||"");
+    const pid=c.req.param("productId");
+    if(!o?.paid_at||!o.lines.some((line:ShopLine)=>line.product_id===pid&&line.physical))
+      return c.json({detail:"Paid document order not found."},404);
+    await ensureShopCatalog(c.env.DB);
+    const p=await c.env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(pid).first<any>();
+    if(documentType(p)!=="printed")return c.json({detail:"Printed document not found."},404);
+    const state=documentStateFromTags(p);
+    const raw:any=await c.req.json().catch(()=>({}));
+    const year=String(raw.year_level||"");
+    if(!state||!/^(K|F|Prep|[1-9]|1[0-2])$/.test(year))return c.json({detail:"Choose a school year."},400);
+    if(!c.env.BUCKET)return c.json({detail:"Private print storage is unavailable."},503);
+    await ensurePremiumPrintQueue(c.env.DB);
+    if(await c.env.DB.prepare("SELECT 1 FROM premium_print_jobs WHERE order_id=? AND product_id=?").bind(o.id,pid).first())
+      return c.json({detail:"This order is already in the printing queue."},409);
+    const pdf=generateHomeEducationTemplate(state,year);
+    const jobId=crypto.randomUUID(),key=premiumPdfKey(o.id,pid,jobId),now=new Date().toISOString();
+    await c.env.BUCKET.put(key,pdf,{httpMetadata:{contentType:"application/pdf"}});
+    try {
+      const result=await c.env.DB.prepare("INSERT OR IGNORE INTO premium_print_jobs(id,order_id,product_id,pdf_key,status,submitted_at,updated_at) VALUES(?,?,?,?,?,?,?)")
+        .bind(jobId,o.id,pid,key,"ready",now,now).run();
+      if(!(result as any)?.meta?.changes){
+        await c.env.BUCKET.delete(key);
+        return c.json({detail:"This order has already been sent for printing."},409);
+      }
+    } catch(err){
+      await c.env.BUCKET.delete(key);
+      throw err;
+    }
+    if(c.env.EMAIL)await sendEmail(c.env,{
+      to:o.email,subject:"Side-Quest printed workbook order received",
+      text:"Your paid home education workbook is in the Side-Quest print queue. We will email you when it is dispatched.",
+      html:"<p>Your printed workbook is now in our production queue. We'll email you when it is dispatched.</p>"
+    }).catch(()=>false);
+    return c.json({ok:true,detail:"Your workbook is in the Side-Quest print queue."});
+  });
+
   // A digital product in a paid order.
   app.get("/api/shop/orders/:id/file/:productId", async (c) => {
     const o = await shopOrderFor(c.env.DB, c.req.param("id"), c.req.query("t") || "");
     const pid = c.req.param("productId");
     if (!o || !o.paid_at || !o.lines.some((l: ShopLine) => l.product_id === pid && !l.physical)) return c.json({ detail: "This download link isn't valid." }, 404);
     if (Number(o.downloads || 0) >= 25) return c.json({ detail: "This order has reached its download limit. Contact us if you need help." }, 429);
+    await ensureShopCatalog(c.env.DB);
+    const product=await c.env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(pid).first<any>();
+    const kind=documentType(product),state=documentStateFromTags(product);
+    if(["blank","planner_blank"].includes(kind||"")&&state){
+      const year=String(c.req.query("year")||"");
+      if(!/^(K|F|Prep|[1-9]|1[0-2])$/.test(year))
+        return c.json({detail:"Choose a school year before generating this document."},400);
+      try {
+        const bytes=kind==="blank"?generateHomeEducationTemplate(state,year):
+          await renderGuestPdf(c.env,premiumDiaryHtml(state,year));
+        c.header("Content-Type","application/pdf");
+        c.header("Content-Disposition",'attachment; filename="sidequest-'+state.toLowerCase()+'-'+year+'-home-education.pdf"');
+        c.header("Cache-Control","private, no-store");
+        c.header("X-Content-Type-Options","nosniff");
+        await c.env.DB.prepare("UPDATE shop_orders SET downloads=downloads+1 WHERE id=?").bind(o.id).run();
+        return c.body(bytes);
+      }catch(err:any){
+        console.error("paid document generation failed",err?.message);
+        return c.json({detail:"Couldn't generate your document. Your purchase remains available; please retry or contact support."},503);
+      }
+    }
     const obj = c.env.BUCKET ? await c.env.BUCKET.get(fileKey(pid)) : null;
     if (!obj) return c.json({ detail: "This file isn't ready yet. We'll email you when it is." }, 404);
     await c.env.DB.prepare("UPDATE shop_orders SET downloads = downloads + 1 WHERE id = ?").bind(o.id).run();
@@ -979,8 +1040,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
 
   admin.get("/document-studio/print-jobs", R, async (c: Context<any>) => {
     await ensurePremiumPrintQueue(c.env.DB);
-    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
-    return c.json({jobs:(results||[]).map((x:any)=>({...x,shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}))});
+    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.lines,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
+    return c.json({jobs:(results||[]).map((x:any)=>{ const lines=(()=>{try{return JSON.parse(x.lines||"[]")}catch{return []}})(); return {...x,lines:undefined, copies:Math.max(1,Math.min(5,Number(lines.find((l:any)=>l.product_id===x.product_id)?.personalisation?.child_count)||1)),shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}; })});
   });
   admin.get("/document-studio/print-jobs/:jobId/pdf", R, async (c: Context<any>) => {
     const id=c.req.param("jobId");

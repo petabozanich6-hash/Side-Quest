@@ -52,6 +52,6 @@ test("buyer-generated planners are buyable without uploading another family's PD
  }
  const blank={tags:["home-education-document","nsw","premium-planner-blank"],collection:"Home Education Documents",
    fulfilment:"digital",visible:true,status:"in_stock",price_cents:2995,stage:"launch_now",digital_file:0};
- assert.equal(isOnDemandDocument(blank),false);
- assert.equal(buyable(blank).ok,false,"an unprepared blank download must not be sold");
+ assert.equal(isOnDemandDocument(blank),true);
+ assert.equal(buyable(blank).ok,true,"blank PDF generated after paid order, no pre-upload");
 });

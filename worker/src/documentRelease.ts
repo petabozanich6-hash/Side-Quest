@@ -43,7 +43,7 @@ export function requiredReleaseRevision(p:any):string|null{
  * Checkout independently verifies PDF/email and private storage capabilities before charging.
  */
 export function isOnDemandDocument(p:any):boolean {
- return ["guided","planner_personalised","planner_printed"].includes(documentType(p)||"");
+ return ["blank","guided","printed","planner_blank","planner_personalised","planner_printed"].includes(documentType(p)||"");
 }
 export function approvedForSale(p:any,now:Date=new Date()):boolean{
   const version=requiredReleaseRevision(p);

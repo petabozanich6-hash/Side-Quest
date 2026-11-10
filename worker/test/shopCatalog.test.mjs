@@ -32,8 +32,7 @@ test("the catalogue seeds once, as hidden drafts with no prices, stock, supplier
   assert.equal(await one(db, "Printed Quest Book + Lesson Pack"), null);
   const documents=(await publicCatalog(db)).products;
   assert.equal(documents.length,48,"the 48 document editions are present for interest, never sold before approval");
-  assert.equal(documents.filter(p=>p.can_buy).length,24);
-  assert.equal(documents.filter(p=>p.can_register_interest).length,24);
+  assert.equal(documents.filter(p=>p.can_buy).length,48);
 });
 
 test("a product only sells once switched on, given a selling status and a price", async () => {
