@@ -218,7 +218,12 @@ export function registerShopCatalog(app: App) {
     if(!rate.ok)return c.json({detail:"Too many previews. Please try later."},429);
     try {
       let pdf:Uint8Array;
-      if(tags.includes("guided-document")){
+      if(tags.some(t=>["premium-planner-blank","premium-planner-personalised","premium-planner-printed"].includes(t))){
+        const personalised=tags.includes("premium-planner-personalised")||tags.includes("premium-planner-printed");
+        const data=personalised?sampleGuidedDocumentData(matches[0],year):null;
+        const plan=data?await buildGuestPlan(c.env.DB,matches[0] as any,data):null;
+        pdf=await renderGuestPdf(c.env,premiumDiaryHtml(matches[0],year,plan,true));
+      }else if(tags.includes("guided-document")){
         const sample=sampleGuidedDocumentData(matches[0],year);
         const plan=await buildGuestPlan(c.env.DB,matches[0] as any,sample);
         pdf=await renderGuestPdf(c.env,guestPlanHtml(plan,true));
