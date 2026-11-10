@@ -1196,7 +1196,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   admin.get("/shop/subscriptions", R, async (c: Context<any>) => {
     const db = (c.env as Env).DB;
     await ensureShopSubscriptions(db);
-    const { results } = await db.prepare("SELECT id, product_id, title, email, recipient, personalisation, price_cents, status, charged_through, created_at FROM shop_subscriptions WHERE status != 'pending' OR created_at > ? ORDER BY created_at DESC LIMIT 500")
+    const { results } = await db.prepare("SELECT id, product_id, title, email, recipient, personalisation, price_cents, billing_cadence, monthly_price_cents, status, charged_through, created_at FROM shop_subscriptions WHERE status != 'pending' OR created_at > ? ORDER BY created_at DESC LIMIT 500")
       .bind(new Date(Date.now() - 2 * 86400000).toISOString()).all<any>();
     const parse = (s: string) => { try { return JSON.parse(s); } catch { return {}; } };
     return c.json({ subscriptions: (results || []).map((r) => ({ ...r, recipient: parse(r.recipient), personalisation: parse(r.personalisation) })) });
