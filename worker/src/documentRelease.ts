@@ -18,17 +18,21 @@ export function documentStateFromTags(p:any):string|null{
   const found=states.filter(x=>tags.includes(x.toLowerCase()));
   return found.length===1?found[0]:null;
 }
-export function documentType(p:any):"blank"|"guided"|"printed"|null{
+export function documentType(p:any):"blank"|"guided"|"printed"|"planner_blank"|"planner_personalised"|"planner_printed"|null{
   if(!documentStateFromTags(p))return null;
+  const tags=Array.isArray(p?.tags)?p.tags:(()=>{try{return JSON.parse(p?.tags||"[]");}catch{return [];}})();
+  if(tags.includes("premium-planner-blank")&&p.fulfilment==="digital")return "planner_blank";
+  if(tags.includes("premium-planner-personalised")&&p.fulfilment==="digital")return "planner_personalised";
+  if(tags.includes("premium-planner-printed")&&p.fulfilment!=="digital")return "planner_printed";
   const kind=documentKind(p);
   if(kind)return kind;
-  const tags=Array.isArray(p?.tags)?p.tags:(()=>{try{return JSON.parse(p?.tags||"[]");}catch{return [];}})();
   return tags.includes("fillable-pdf")&&p.fulfilment==="digital"?"blank":null;
 }
 export function requiredReleaseRevision(p:any):string|null{
   const kind=documentType(p);
   if(!kind)return null;
   const state=documentStateFromTags(p);
+  if(kind.startsWith("planner_"))return "premium-family-diary-v1:"+kind+":"+state+":"+CHECKED_ON;
   if(kind==="guided")return GUIDED_RELEASE_REVISION+":"+state+":"+CHECKED_ON;
   if(kind==="printed")return BLANK_RELEASE_REVISION+":printed:"+state+":"+CHECKED_ON;
   return BLANK_RELEASE_REVISION+":"+state+":"+CHECKED_ON;
