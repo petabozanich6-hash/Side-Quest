@@ -1723,6 +1723,17 @@ export function registerShop(app: App) {
     // Catalogue products (physical, made to order, printed books, digital): priced from the database.
     const priced = await priceItems(c.env.DB, Array.isArray(body?.items) ? body.items : []);
     if (!priced.ok) return c.json({ detail: priced.detail }, 409);
+    // Never take payment for a customer-generated PDF when the PDF renderer,
+    // buyer email delivery or private print storage is unavailable.
+    const generatedIds=[...new Set(priced.lines.map(l=>l.product_id).filter(Boolean))] as string[];
+    if(generatedIds.length){
+      const {results}=await c.env.DB.prepare(`SELECT id,tags,fulfilment FROM shop_products WHERE id IN (${generatedIds.map(()=>"?").join(",")})`).bind(...generatedIds).all<any>();
+      const generated=(results||[]).filter(p=>["guided","planner_personalised","planner_printed"].includes(documentType(p)||""));
+      if(generated.length && (!c.env.BROWSER?.quickAction || !c.env.EMAIL))
+        return c.json({detail:"Personalised document generation is temporarily unavailable. No payment has been taken."},503);
+      if(generated.some(p=>documentType(p)==="planner_printed") && !c.env.BUCKET)
+        return c.json({detail:"Private print storage is unavailable. No payment has been taken."},503);
+    }
     const lines = [...bookLines, ...priced.lines];
     if (!lines.length) return c.json({ detail: "Your cart is empty." }, 400);
     let postage = 0;

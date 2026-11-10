@@ -13,7 +13,7 @@ const editions = [
 
 export async function ensureDocumentShopListings(db:D1Database) {
  const key="document-listings-2026-11-v1";
- if(await db.prepare("SELECT 1 FROM shop_meta WHERE key=?").bind(key).first())return {added:0,total:48};
+ const seeded=!!(await db.prepare("SELECT 1 FROM shop_meta WHERE key=?").bind(key).first());
  const states=["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"] as const;
  const entries=states.flatMap((state)=>editions.map((kind)=>({
   state,kind,title:kind.title(JURISDICTIONS[state].name),
@@ -21,7 +21,7 @@ export async function ensureDocumentShopListings(db:D1Database) {
  const existing=(await db.prepare("SELECT title FROM shop_products WHERE collection='Home Education Documents'").all<{title:string}>()).results||[];
  const titles=new Set(existing.map(x=>x.title));
  const now=new Date().toISOString();
- const statements=entries.filter(x=>!titles.has(x.title)).map(({state,kind,title},i)=>{
+ const statements=(seeded?[]:entries.filter(x=>!titles.has(x.title))).map(({state,kind,title},i)=>{
   const slug="home-education-"+state.toLowerCase()+"-"+kind.code;
   const tags=JSON.stringify(["home-education-document",state.toLowerCase(),kind.tag]);
   const description="A Side-Quest home education planning resource for "+JURISDICTIONS[state].name+". Independent parent resource; not an official government form, authority endorsement or registration guarantee. "+(kind.fulfilment==="digital"?"Digital document.":"Printed to order, with Australian postage included in the price.")+" Confirm your current state or territory requirements before use.";
@@ -32,5 +32,18 @@ export async function ensureDocumentShopListings(db:D1Database) {
  });
  for(let i=0;i<statements.length;i+=40)await db.batch(statements.slice(i,i+40));
  await db.prepare("INSERT OR IGNORE INTO shop_meta(key,value) VALUES(?,?)").bind(key,now).run();
+ // One-time activation of ONLY the originally seeded on-demand catalogue rows.
+ // Leave intentionally hidden/edited products alone; never activate uploaded templates.
+ const liveKey="on-demand-document-listings-2026-11-v1";
+ if(!(await db.prepare("SELECT 1 FROM shop_meta WHERE key=?").bind(liveKey).first())){
+   for(const entry of entries.filter(x=>["guided","premium_personalised","premium_printed"].includes(x.kind.code))){
+     await db.prepare(`UPDATE shop_products SET status='in_stock',updated_at=?
+       WHERE slug=? AND title=? AND department='home-education'
+         AND status='register_interest' AND visible=1
+         AND document_release_version IS NULL`)
+       .bind(now,"home-education-"+entry.state.toLowerCase()+"-"+entry.kind.code,entry.title).run();
+   }
+   await db.prepare("INSERT OR IGNORE INTO shop_meta(key,value) VALUES(?,?)").bind(liveKey,now).run();
+ }
  return {added:statements.length,total:entries.length};
 }

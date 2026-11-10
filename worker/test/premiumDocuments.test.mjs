@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {premiumDiaryHtml,premiumFamilyDiaryHtml} from "../src/premiumHomeEducationDiary.ts";
-import {documentType,requiredReleaseRevision,approvedForSale,reviewEvidence} from "../src/documentRelease.ts";
+import {documentType,requiredReleaseRevision,approvedForSale,reviewEvidence,isOnDemandDocument} from "../src/documentRelease.ts";
+import {buyable} from "../src/shopCatalog.ts";
 import {premiumPdfKey,PRINT_JOB_STATUSES} from "../src/premiumPrintQueue.ts";
 test("premium planner has complete family lesson, reading, evidence and outcomes worksheets",()=>{
  const blank=premiumDiaryHtml("NSW","3");
@@ -39,4 +40,18 @@ test("release checklist is evidence-bound, not a cosmetic shop toggle",()=>{
  assert.equal(reviewEvidence({}).ok,false);
  assert.equal(PRINT_JOB_STATUSES.includes("sent_to_printer"),true);
  assert.match(premiumPdfKey("order","product","job"),/shop\/premium-print-orders/);
+});
+
+test("buyer-generated planners are buyable without uploading another family's PDF",()=>{
+ for(const [tag,fulfilment] of [["guided-document","digital"],["premium-planner-personalised","digital"],["premium-planner-printed","made_to_order"]]){
+  const p={id:"abc",tags:["home-education-document","nsw",tag],collection:"Home Education Documents",fulfilment,
+    visible:true,status:"in_stock",price_cents:3995,digital_file:0,stage:"launch_now",
+    document_release_version:null,document_released_at:null,document_source_checked_on:null};
+  assert.equal(isOnDemandDocument(p),true);
+  assert.equal(buyable(p).ok,true,tag);
+ }
+ const blank={tags:["home-education-document","nsw","premium-planner-blank"],collection:"Home Education Documents",
+   fulfilment:"digital",visible:true,status:"in_stock",price_cents:2995,stage:"launch_now",digital_file:0};
+ assert.equal(isOnDemandDocument(blank),false);
+ assert.equal(buyable(blank).ok,false,"an unprepared blank download must not be sold");
 });

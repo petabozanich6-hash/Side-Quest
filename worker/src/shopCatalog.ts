@@ -12,7 +12,7 @@ import { STAGES, stageFor } from "./shopStages";
 import { SHOP_PREFILL } from "./data/shopPrefill";
 import { DIGITAL_DELIVERY, SIZES, SUB_CUTOFF_DAY, SUB_DISPATCH_DAY, WEEKLY_DISPATCH, holdBack, launchEntry, oneOffFor } from "./data/shopLaunchPrices";
 import { clearSettingsCache, loadPlatformSettings } from "./platformSettings";
-import { approvedForSale, documentType } from "./documentRelease";
+import { approvedForSale, documentType, isOnDemandDocument } from "./documentRelease";
 import { ensureDocumentShopListings } from "./documentShopBootstrap";
 import { JURISDICTIONS } from "./data/planJurisdictions";
 
@@ -327,10 +327,10 @@ export function isHomeEducationDocument(p: any): boolean {
 export function buyable(p: any, variants: any[] = [], now: Date = new Date()): { ok: boolean; reason?: string } {
   if (!isPublic(p)) return { ok: false, reason: "Hidden" };
   if (!SELLING.has(p.status)) return { ok: false, reason: STATUS_LABELS[p.status] };
-  if (isHomeEducationDocument(p) && !approvedForSale(p,now)) return { ok: false, reason: "State requirements and document quality review pending" };
+  if (isHomeEducationDocument(p) && !isOnDemandDocument(p) && !approvedForSale(p,now)) return { ok: false, reason: "State requirements and document quality review pending" };
   // A digital listing cannot take payment until there is an actual private file to deliver.
   // In particular this protects state-specific documents from being sold before their PDFs exist.
-  if (p.fulfilment === "digital" && !p.digital_file && !(["guided","planner_personalised"].includes(documentType(p)||"") && approvedForSale(p,now))) return { ok: false, reason: "Download file not uploaded" };
+  if (p.fulfilment === "digital" && !p.digital_file && !isOnDemandDocument(p)) return { ok: false, reason: "Download file not uploaded" };
   // Products waiting for professional manufacturing or future expansion can't be sold as ready to make or send.
   if (p.stage && p.stage !== "launch_now" && p.status !== "pre_order") return { ok: false, reason: "Not in production yet" };
   const priced = p.price_cents != null || variants.some((v) => v.active && v.price_cents != null);
