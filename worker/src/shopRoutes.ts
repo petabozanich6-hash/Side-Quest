@@ -25,7 +25,7 @@ import { generateHomeEducationTemplate } from "./homeEducationPdf";
 import { sha256 } from "./documentReview";
 import { documentStateFromTags, documentType, requiredReleaseRevision, reviewEvidence, approvedForSale } from "./documentRelease";
 import { premiumDiaryHtml, premiumFamilyDiaryHtml } from "./premiumHomeEducationDiary";
-import { ensurePremiumPrintQueue, premiumPdfKey, PRINT_JOB_STATUSES } from "./premiumPrintQueue";
+import { ensurePremiumPrintQueue, premiumPdfKey, PRINT_JOB_STATUSES, canAdvancePrintStatus, validatePrintTracking } from "./premiumPrintQueue";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 import { sampleGuidedDocumentData } from "./documentStudioPreview";
 
@@ -979,7 +979,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
 
   admin.get("/document-studio/print-jobs", R, async (c: Context<any>) => {
     await ensurePremiumPrintQueue(c.env.DB);
-    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
+    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.tracking,j.dispatch_notified_at,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
     return c.json({jobs:(results||[]).map((x:any)=>({...x,shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}))});
   });
   admin.get("/document-studio/print-jobs/:jobId/pdf", R, async (c: Context<any>) => {
@@ -1017,9 +1017,41 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const id=c.req.param("jobId"),body=await readJson(c),status=String(body.status||"");
     if(!UUID.test(id)||!PRINT_JOB_STATUSES.includes(status as any))return c.json({detail:"Invalid print status."},400);
     await ensurePremiumPrintQueue(c.env.DB);
-    const changed=await c.env.DB.prepare("UPDATE premium_print_jobs SET status=?,updated_at=? WHERE id=?").bind(status,new Date().toISOString(),id).run();
-    if(!(changed as any)?.meta?.changes)return c.json({detail:"Print job not found."},404);
-    await audit(c,"document_studio.print_job_updated",id,{status});
+    const job=await c.env.DB.prepare(`SELECT j.id,j.order_id,j.status,j.tracking,j.dispatch_notified_at,o.email,o.paid_at
+      FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id WHERE j.id=?`).bind(id).first<any>();
+    if(!job?.paid_at)return c.json({detail:"Paid print job not found."},404);
+    if(status==="complete"&&!job.dispatch_notified_at)
+      return c.json({detail:"Send the dispatch notification before marking this job complete."},409);
+    const sameDispatch=status==="dispatched"&&job.status==="dispatched"&&!job.dispatch_notified_at;
+    if(!sameDispatch&&!canAdvancePrintStatus(job.status,status))
+      return c.json({detail:"Complete the printing stages in order. You cannot skip or undo a stage."},409);
+    const tracking=status==="dispatched"?validatePrintTracking(body.tracking??job.tracking):String(job.tracking||"");
+    if(status==="dispatched"&&!tracking)
+      return c.json({detail:"Enter the parcel tracking number before marking this order dispatched."},400);
+    if(!sameDispatch){
+      const updated=await c.env.DB.prepare("UPDATE premium_print_jobs SET status=?,tracking=?,updated_at=? WHERE id=? AND status=?")
+        .bind(status,tracking,new Date().toISOString(),id,job.status).run();
+      if(!(updated as any)?.meta?.changes)return c.json({detail:"This print job changed. Refresh the queue and try again."},409);
+      await audit(c,"document_studio.print_job_updated",id,{from:job.status,to:status,tracking:status==="dispatched"?"recorded":undefined});
+    }
+    if(status==="dispatched"){
+      // Dispatch notification is separate from the order receipt. A failed
+      // email leaves the job visibly unnotified and can be retried from Owner HQ.
+      if(job.dispatch_notified_at)return c.json({ok:true,status,notification_sent:true});
+      if(!c.env.EMAIL)return c.json({ok:true,status,notification_sent:false,detail:"Marked dispatched, but email delivery is not configured. Retry notification when available."});
+      const sent=await sendEmail(c.env,{
+        to:job.email,subject:"Your Side-Quest family planner is on its way",
+        text:`Your printed Side-Quest family planner has been dispatched. Parcel tracking: ${tracking}. For delivery questions contact support@sidequestlearning.app.`,
+        html:`<p>Your printed Side-Quest family planner has been dispatched.</p><p>Parcel tracking: <strong>${tracking}</strong></p><p>For delivery questions, contact support@sidequestlearning.app.</p>`,
+      }).catch(()=>false);
+      if(sent){
+        await c.env.DB.prepare("UPDATE premium_print_jobs SET dispatch_notified_at=?,updated_at=? WHERE id=? AND dispatch_notified_at IS NULL")
+          .bind(new Date().toISOString(),new Date().toISOString(),id).run();
+        await audit(c,"document_studio.dispatch_notice_sent",id);
+      }
+      return c.json({ok:true,status,notification_sent:!!sent,
+        detail:sent?"Marked dispatched and emailed the buyer.":"Marked dispatched, but the buyer email failed. Retry the dispatch notification."});
+    }
     return c.json({ok:true,status});
   });
 
