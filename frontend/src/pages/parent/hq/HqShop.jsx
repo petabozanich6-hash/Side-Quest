@@ -361,7 +361,7 @@ export function Editor({ product, meta, all, onClose, onSaved, queue }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <label className="font-semibold">{kind.monthly ? "Per month ($)" : "Sale price ($)"}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} data-testid="hq-shop-price" /></label>
             {f.fulfilment !== "digital" && <label className="font-semibold">Your cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>}
-            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">Postage is calculated at checkout using Australia Post Parcel Post, not entered here.</div>}
+            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">{f.postage_included ? "Postage is included in this price; nothing is added at checkout." : "Postage is calculated at checkout using Australia Post Parcel Post, not entered here."}</div>}
           </div>
           {priceCents != null && <p className="text-xs text-stone-600">Square fee {money(fee)} · you keep {money(priceCents - fee - (toCents(f.wholesale) || 0))}{f.fulfilment !== "digital" && f.wholesale === "" ? " before your cost" : ""}</p>}
           {!f.variants.some((v) => /basic|full/i.test(v.name)) && (
@@ -371,6 +371,19 @@ export function Editor({ product, meta, all, onClose, onSaved, queue }) {
         </Section>
 
         {kind.posted && (
+          <Section title="Postage" hint="Choose whether families pay postage for this product at checkout, or it's included in the price.">
+            <div className="grid sm:grid-cols-2 gap-2" role="radiogroup" aria-label="Postage">
+              {[[false, "Charged at checkout", "Australia Post Parcel Post is added to the order."], [true, "Included in the price", "Nothing is added for this product. Allow for postage in the price."]].map(([included, label, help]) => (
+                <label key={label} className={`rounded-xl border-2 p-2 cursor-pointer text-sm ${!!f.postage_included === included ? "border-emerald-700 bg-emerald-50" : "border-stone-200"}`}>
+                  <input type="radio" name="postage" className="mr-2" checked={!!f.postage_included === included} onChange={() => set("postage_included", included)} data-testid={`hq-shop-postage-${included ? "included" : "charged"}`} />
+                  <span className="font-semibold">{label}</span><span className="block text-xs text-stone-600">{help}</span>
+                </label>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {kind.posted && !f.postage_included && (
           <Section title="Postage measurements" hint="One finished product, including its protective packaging. Enter actual packed dimensions before selling. Standard Parcel Post only, dispatched from postcode 2340. Leave blank while sourcing supplies.">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[["parcel_weight_g", "Packed weight (g)"], ["parcel_length_cm", "Length (cm)"], ["parcel_width_cm", "Width (cm)"], ["parcel_height_cm", "Height (cm)"]].map(([key, label]) => (

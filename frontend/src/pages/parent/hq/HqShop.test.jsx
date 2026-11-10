@@ -95,3 +95,21 @@ test("the product editor shows Delete next to Save", async () => {
   await render();
   expect($('[data-testid="hq-shop-delete"]').textContent).toBe("Delete product");
 });
+
+test("postage can be switched between charged at checkout and included in the price", async () => {
+  await render();
+  expect($('[data-testid="hq-shop-postage-charged"]').checked).toBe(true);
+  expect(box.textContent).toContain("Postage measurements");
+  await click($('[data-testid="hq-shop-postage-included"]'));
+  expect(box.textContent).not.toContain("Postage measurements");
+  await click(save());
+  expect(adminApi.put).toHaveBeenLastCalledWith("/shop/products/p1", expect.objectContaining({ postage_included: true }));
+  await click($('[data-testid="hq-shop-postage-charged"]'));
+  await click(save());
+  expect(adminApi.put).toHaveBeenLastCalledWith("/shop/products/p1", expect.objectContaining({ postage_included: false }));
+});
+
+test("digital-only products have no postage choice", async () => {
+  await render({ ...PRODUCT, fulfilment: "digital" });
+  expect($('[data-testid="hq-shop-postage-included"]')).toBeNull();
+});

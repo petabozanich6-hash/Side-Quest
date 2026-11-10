@@ -26,7 +26,8 @@ export type StandardQuote = { postcode: string; service: "Parcel Post"; service_
 export async function parcelForCart(db: D1Database, lines: ShopLine[]): Promise<Parcel | null> {
   // Home Education print-and-post is sold at an all-inclusive delivered price.
   // Other physical goods in a mixed cart still receive a separate quote.
-  const physical = lines.filter((x) => x.product_id && x.physical && !x.gift_months);
+  // Products with postage included in their price are posted but don't add to the quote.
+  const physical = lines.filter((x) => x.product_id && x.physical && !x.gift_months && !x.postage_included);
   if (!physical.length) return null;
   await ensureShopCatalog(db);
   const ids = [...new Set(physical.map((x) => x.product_id!))];

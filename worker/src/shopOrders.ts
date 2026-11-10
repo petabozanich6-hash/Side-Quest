@@ -11,7 +11,7 @@ type DB = D1Database;
 /** A book PDF (book_id) or a catalogue product (product_id, with variant, quantity and personalisation). */
 export type ShopLine = {
   book_id?: string; product_id?: string; variant_id?: string | null; title: string; amount_cents: number;
-  qty?: number; unit_cents?: number; personalisation?: Record<string, string>; gift_months?: number | null; physical?: boolean;
+  qty?: number; unit_cents?: number; personalisation?: Record<string, string>; gift_months?: number | null; physical?: boolean; postage_included?: boolean;
 };
 
 const CREATE = `CREATE TABLE IF NOT EXISTS shop_orders (

@@ -275,3 +275,23 @@ test("deleting products removes them, their options and photos, but keeps a sold
   assert.ok(!files.has(`shop/products/${unsold.id}/file`));
   assert.ok(!files.has(`shop/products/${sold.id}/img-1`));
 });
+
+test("postage included: the product is posted but adds no postage, and a cart of only those needs no parcel quote", async () => {
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const free = await one(db, "Printed Quest Book");
+  const paid = await one(db, "Printed Quest Book + Lesson Pack");
+  await db.prepare("UPDATE shop_products SET visible = 1, status = 'in_stock', stage = 'launch_now', price_cents = 2495, postage_cents = 900, stock = 5, postage_included = 1, personalisation = '[]' WHERE id = ?").bind(free.id).run();
+  await db.prepare("UPDATE shop_products SET visible = 1, status = 'in_stock', stage = 'launch_now', price_cents = 3000, postage_cents = 1200, stock = 5, postage_included = 0, personalisation = '[]' WHERE id = ?").bind(paid.id).run();
+  assert.equal((await publicCatalog(db)).products.find((p) => p.id === free.id).postage_included, true);
+  const only = await priceItems(db, [{ product_id: free.id }]);
+  assert.equal(only.ok, true, JSON.stringify(only));
+  assert.deepEqual([only.postage, only.physical, only.lines[0].postage_included], [0, true, true], "still posted, nothing added for postage");
+  const { parcelForCart } = await import("../src/shopShipping.ts");
+  assert.equal(await parcelForCart(db, only.lines), null, "no Australia Post quote needed");
+  const mixed = await priceItems(db, [{ product_id: free.id }, { product_id: paid.id }]);
+  assert.equal(mixed.postage, 1200, "other products in the same cart still pay their postage");
+  assert.equal(validateProduct({ title: "Kit", department: "science", postage_included: true }).value.postage_included, 1);
+  assert.equal(validateProduct({ title: "Kit", department: "science", fulfilment: "digital", postage_included: true }).value.postage_included, 0);
+  assert.ok(!readiness({ fulfilment: "physical", postage_included: 1, status: "in_stock", stock: 1, price_cents: 1 }, []).includes("packed weight & dimensions"));
+});

@@ -144,8 +144,9 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
       pers.child_count=String(quote.children);
     }
     const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}${oneOff ? " – one-off box" : ""}`;
-    lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical });
-    if (physical && !giftMonths && !["printed","planner_printed"].includes(documentType(p)||"")) postage = Math.max(postage, p.postage_cents ?? 0);
+    const postageIncluded = physical && !!p.postage_included;
+    lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical, ...(postageIncluded ? { postage_included: true } : {}) });
+    if (physical && !postageIncluded && !giftMonths && !["printed","planner_printed"].includes(documentType(p)||"")) postage = Math.max(postage, p.postage_cents ?? 0);
   }
   return { ok: true, lines, postage, physical: lines.some((l) => l.physical) };
 }
@@ -167,7 +168,7 @@ export function readiness(p: any, variants: any[]): string[] {
   if (!priced) missing.push("price");
   if (!p.images) missing.push("photo");
   if (!p.description) missing.push("description");
-  if (p.fulfilment !== "digital" && !SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && ![p.parcel_weight_g, p.parcel_length_cm, p.parcel_width_cm, p.parcel_height_cm].every((n) => Number.isInteger(Number(n)) && Number(n) > 0)) missing.push("packed weight & dimensions");
+  if (p.fulfilment !== "digital" && !p.postage_included && !SUBSCRIPTION_FULFILMENT.has(p.fulfilment) && ![p.parcel_weight_g, p.parcel_length_cm, p.parcel_width_cm, p.parcel_height_cm].every((n) => Number.isInteger(Number(n)) && Number(n) > 0)) missing.push("packed weight & dimensions");
   if (p.fulfilment !== "digital" && !p.supplier) missing.push("supplier");
   if (p.fulfilment !== "digital" && p.wholesale_cents == null) missing.push("unit cost");
   if (p.fulfilment === "digital" && !p.has_file) missing.push("download file");
