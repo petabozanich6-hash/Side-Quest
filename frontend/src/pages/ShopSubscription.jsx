@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from "react-router-dom";
 import { API } from "../lib/api";
 
 const money = (c) => `$${(c / 100).toFixed(2)}`;
-const LABEL = { pending: "Starting…", active: "Active", cancelling: "Cancelled (finishes at the end of the paid month)", cancelled: "Cancelled", past_due: "Payment needs attention", paused: "Paused" };
+const LABEL = { pending: "Starting…", active: "Active", cancelling: "Cancelling (remaining prepaid coverage applies)", cancelled: "Cancelled", past_due: "Payment needs attention", paused: "Paused" };
 
 // A Dragon Post or Monthly Quest subscription bought in the shop: status and cancel, from its private link.
 export default function ShopSubscription() {
@@ -45,7 +45,8 @@ export default function ShopSubscription() {
         {sub && (
           <>
             <p className="text-lg font-semibold">{sub.title}</p>
-            <p className="text-stone-700">For {sub.recipient_name} · {money(sub.price_cents)} a month</p>
+            <p className="text-stone-700">For {sub.recipient_name} · {money(sub.price_cents)} {sub.billing_cadence==="fortnightly"?"every two weeks":"a month"}</p>
+            <p className="text-xs text-stone-600">One monthly mail-out. Fortnightly subscribers must complete two instalments before a mailing is eligible.</p>
             <p className="text-stone-700">Status: <span className="font-semibold">{LABEL[sub.status] || sub.status}</span></p>
             {sub.charged_through && <p className="text-sm text-stone-600">Paid up to {new Date(`${sub.charged_through}T00:00:00`).toLocaleDateString("en-AU", { dateStyle: "medium" })}</p>}
             {sub.status === "pending" && <p className="text-sm text-stone-600">We're confirming your payment with Square…</p>}

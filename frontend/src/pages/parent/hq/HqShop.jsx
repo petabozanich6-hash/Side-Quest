@@ -603,20 +603,95 @@ function Interest() {
 
 function Subscriptions() {
   const { data, error, loading, reload } = useAdmin("/shop/subscriptions");
+  const [editionMonth, setEditionMonth] = useState(() => new Date().toISOString().slice(0, 7));
+  const [roster, setRoster] = useState(null);
+  const [rosterError, setRosterError] = useState("");
+  const [rosterBusy, setRosterBusy] = useState(false);
+  const [tracking, setTracking] = useState({});
+  const loadRoster = async () => {
+    setRosterBusy(true); setRosterError("");
+    try {
+      const result = await adminApi.get("/shop/subscriptions/mailing-roster?month=" + encodeURIComponent(editionMonth));
+      setRoster(result);
+    } catch (e) { setRosterError(errorText(e, "Could not check the mailing payments.")); }
+    finally { setRosterBusy(false); }
+  };
+  useEffect(() => { loadRoster(); }, [editionMonth]);
   const cancel = async (s) => {
     if (!window.confirm(`Cancel ${s.title} for ${s.recipient?.name}?`)) return;
-    try { await adminApi.post(`/shop/subscriptions/${s.id}/cancel`); toast.success("Cancelled"); await reload(); } catch (e) { toast.error(errorText(e)); }
+    try { await adminApi.post(`/shop/subscriptions/${s.id}/cancel`); toast.success("Cancelled"); await reload(); await loadRoster(); } catch (e) { toast.error(errorText(e)); }
+  };
+  const markMailed = async (subscriber) => {
+    if (!subscriber.eligible) return;
+    if (!window.confirm(`Confirm ${subscriber.recipient?.name || subscriber.email}'s ${editionMonth} mail has actually been posted? This permanently uses its paid instalments for this month's edition.`)) return;
+    setRosterBusy(true); setRosterError("");
+    try {
+      await adminApi.post("/shop/subscriptions/" + encodeURIComponent(subscriber.id) + "/mark-mailed", {month:editionMonth,tracking:tracking[subscriber.id]||""});
+      toast.success("Marked as mailed");
+      await loadRoster();
+    } catch(e) { setRosterError(errorText(e,"Could not mark this edition mailed.")); }
+    finally {setRosterBusy(false);}
+  };
+  const downloadRoster = (filter) => {
+    if (!roster) return;
+    const selected=roster.subscribers.filter(s=>filter==="paid" ? s.eligible : filter==="held" ? !s.eligible&&!s.mailed_this_month : s.mailed_this_month);
+    const headings=["Edition","Product","Recipient","Street","Address line 2","Suburb","State","Postcode","Email","Cadence","Paid instalments","Required instalments","Payment status"];
+    const rows=selected.map(s=>[
+      editionMonth,s.title,s.recipient?.name||"",s.recipient?.address_line_1||"",s.recipient?.address_line_2||"",s.recipient?.locality||"",s.recipient?.state||"",s.recipient?.postcode||"",s.email,s.billing_cadence,s.paid_instalments,s.required,s.label,
+    ]);
+    const csv=[headings,...rows].map(row=>row.map(value=>{const text=String(value??"");const safe=/^[=+@\-\t\r]/.test(text)?String.fromCharCode(39)+text:text;return '"'+safe.replace(/"/g,'""')+'"';}).join(",")).join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`sidequest-${editionMonth}-${filter}-mailing.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(url),15000);
   };
   if (loading && !data) return <p>Loading…</p>;
   if (error) return <Alert>{error}</Alert>;
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
+      <Card title="Monthly mail: paid vs unpaid">
+        <div className="space-y-3">
+          <p className="text-sm text-stone-700">Only verified Square payments count. Fortnightly subscriptions need two unused paid instalments per monthly mail-out. Part-paid, failed and already-mailed orders are excluded from the ready-to-send list. Extra fortnightly payments carry forward to future mail-outs.</p>
+          <div className="flex flex-wrap items-end gap-3">
+            <label className="text-sm font-semibold">Mailing edition
+              <input type="month" className={input} value={editionMonth} onChange={e=>setEditionMonth(e.target.value)} />
+            </label>
+            <Button tone="plain" onClick={loadRoster} disabled={rosterBusy}>Refresh verified payments</Button>
+          </div>
+          {rosterError&&<p role="alert" className="text-sm text-rose-700">{rosterError}</p>}
+          {roster&&<>
+            <div className="grid grid-cols-3 gap-2 text-sm">
+              <div className="rounded-lg bg-emerald-50 p-3"><strong className="block text-xl">{roster.paid}</strong>Fully paid, ready</div>
+              <div className="rounded-lg bg-amber-50 p-3"><strong className="block text-xl">{roster.held}</strong>Unpaid / part paid</div>
+              <div className="rounded-lg bg-stone-100 p-3"><strong className="block text-xl">{roster.mailed}</strong>Already mailed</div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button tone="plain" onClick={()=>downloadRoster("paid")} disabled={!roster.paid}>Export PAID mailing addresses</Button>
+              <Button tone="plain" onClick={()=>downloadRoster("held")} disabled={!roster.held}>Export NOT PAID / hold list</Button>
+              <Button tone="plain" onClick={()=>downloadRoster("mailed")} disabled={!roster.mailed}>Export mailed list</Button>
+            </div>
+            <p className="text-xs text-stone-600">Check the paid list before making labels. Previous subscriptions with unrecorded invoice history are held until their Square payments have been verified; an active subscription alone does not qualify.</p>
+            {roster.subscribers.length===0&&<p className="text-sm">No subscription records found.</p>}
+            {roster.subscribers.map(s=><div key={s.id} className="rounded-lg border border-stone-200 p-3 space-y-2">
+              <div className="flex flex-wrap items-center gap-2 text-sm"><strong className="mr-auto">{s.title}</strong><span className={`rounded px-2 py-1 text-xs font-semibold ${s.eligible?"bg-emerald-100 text-emerald-900":"bg-amber-100 text-amber-900"}`}>{s.label}</span></div>
+              <p className="text-sm">{s.recipient?.name||"Recipient"} · {s.email}</p>
+              <p className="text-xs text-stone-700">{s.billing_cadence==="fortnightly"?"Fortnightly":"Monthly"} · {s.paid_instalments} of {s.required} instalments available · {s.mailed_count} editions already sent</p>
+              {!s.mailed_this_month&&!s.eligible&&<Button tone="plain" disabled={rosterBusy} onClick={async()=>{setRosterBusy(true);setRosterError("");try{await adminApi.post("/shop/subscriptions/"+encodeURIComponent(s.id)+"/recheck-payments");toast.success("Square invoices rechecked");await loadRoster();}catch(e){setRosterError(errorText(e,"Square could not verify this subscription."));}finally{setRosterBusy(false)}}}>Recheck payments with Square</Button>}
+              {s.eligible&&<div className="flex flex-wrap gap-2 items-end">
+                <label className="text-xs font-semibold">Tracking (optional)
+                  <input className={input} value={tracking[s.id]||""} maxLength={80} onChange={e=>setTracking(old=>({...old,[s.id]:e.target.value}))} placeholder="Parcel reference"/>
+                </label>
+                <Button tone="plain" disabled={rosterBusy} onClick={()=>markMailed(s)}>Mark {editionMonth} mailed</Button>
+              </div>}
+            </div>)}
+          </>}
+        </div>
+      </Card>
+      <h3 className="font-semibold">All subscriptions</h3>
       {!data.subscriptions.length && <p className="text-sm text-stone-600">No subscriptions yet.</p>}
       {data.subscriptions.map((s) => (
         <Card key={s.id}>
-          <div className="flex flex-wrap gap-2 text-sm"><strong className="mr-auto">{s.title}</strong><span>{money(s.price_cents)}/month</span><span className="rounded-full bg-stone-100 px-2">{s.status}</span></div>
+          <div className="flex flex-wrap gap-2 text-sm"><strong className="mr-auto">{s.title}</strong><span>{money(s.price_cents)} / {s.billing_cadence==="fortnightly"?"fortnight":"month"}</span><span className="rounded-full bg-stone-100 px-2">{s.status}</span></div>
           <p className="text-sm mt-1">For <strong>{s.recipient?.name}</strong> · {[s.recipient?.address_line_1, s.recipient?.address_line_2, s.recipient?.locality, s.recipient?.state, s.recipient?.postcode].filter(Boolean).join(", ")}</p>
-          <p className="text-xs text-stone-600">Buyer {s.email} · started {fmtDate(s.created_at)}{s.charged_through ? ` · paid to ${s.charged_through}` : ""}</p>
+          <p className="text-xs text-stone-600">Buyer {s.email} · started {fmtDate(s.created_at)}{s.charged_through ? ` · charged through ${s.charged_through}` : ""}</p>
           {Object.keys(s.personalisation || {}).length > 0 && <p className="text-xs text-stone-600">{Object.entries(s.personalisation).map(([k, v]) => `${k}: ${v}`).join("; ")}</p>}
           {["active", "past_due"].includes(s.status) && <Button tone="plain" className="mt-2" onClick={() => cancel(s)}>Cancel</Button>}
         </Card>

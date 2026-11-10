@@ -9,7 +9,8 @@ import {
   productRow, profitFor, publicProduct, slugify, validateProduct, variantsFor, type PersonalField,
 } from "./shopCatalog";
 import { ensureShopOrders, paidUnitsByProduct, shopOrderFor, type ShopLine } from "./shopOrders";
-import { cancelShopSubscription, ensureShopSubscriptions, shopSubscriptionFor, startShopSubscription, validateRecipient } from "./shopSubscriptions";
+import { cancelShopSubscription, ensureShopSubscriptions, shopSubscriptionFor, startShopSubscription, validateRecipient, shopMailRoster, recordShopMailing, syncShopSubscription } from "./shopSubscriptions";
+import { billingCadence, instalmentCents } from "./shopMailBilling";
 import { squareConfig } from "./square";
 import { loadPlatformSettings } from "./platformSettings";
 import { hitRateLimit, writeAudit } from "./adminAudit";
@@ -315,8 +316,11 @@ export function registerShopCatalog(app: App) {
     if (price == null || price < 100) return c.json({ detail: `${p.title} doesn't have a price yet.` }, 409);
     const pers = cleanPersonalisation(p.personalisation, body?.personalisation);
     if (typeof pers === "string") return c.json({ detail: pers }, 400);
+    const cadence = billingCadence(body?.billing_cadence || "monthly");
+    if (!cadence) return c.json({detail:"Choose monthly or fortnightly billing."},400);
+    const chargeCents = instalmentCents(price,cadence);
     try {
-      const url = await startShopSubscription(c.env.DB, sq, { product: p, variantId: variant?.id || null, variantName: variant?.name, priceCents: price, email, recipient, personalisation: pers, origin: appOrigin(c.env, c.req.url) });
+      const url = await startShopSubscription(c.env.DB, sq, { product: p, variantId: variant?.id || null, variantName: variant?.name, priceCents: chargeCents, monthlyPriceCents: price, billingCadence: cadence, email, recipient, personalisation: pers, origin: appOrigin(c.env, c.req.url) });
       return c.json({ url });
     } catch (e: any) {
       console.error("shop subscription checkout failed", e?.message);
@@ -330,7 +334,7 @@ export function registerShopCatalog(app: App) {
     if (!s) return c.json({ detail: "This subscription link isn't valid." }, 404);
     let recipient: any = {};
     try { recipient = JSON.parse(s.recipient); } catch { recipient = {}; }
-    return c.json({ title: s.title, status: s.status, price_cents: s.price_cents, recipient_name: recipient.name || "", charged_through: s.charged_through, can_cancel: !!s.square_subscription_id && ["active", "past_due"].includes(s.status) });
+    return c.json({ title: s.title, status: s.status, price_cents: s.price_cents, monthly_price_cents:s.monthly_price_cents??s.price_cents, billing_cadence:s.billing_cadence||"monthly", recipient_name: recipient.name || "", charged_through: s.charged_through, can_cancel: !!s.square_subscription_id && ["active", "past_due"].includes(s.status) });
   });
 
   app.post("/api/shop/subscriptions/:id/cancel", async (c) => {
@@ -1167,10 +1171,50 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     return c.json({ ok: true, emailed });
   });
 
+  // Owner-only mailing roster: eligibility comes from distinct verified Square
+  // paid invoices, NOT from a subscription's "active" status.
+  admin.get("/shop/subscriptions/mailing-roster", R, async (c: Context<any>) => {
+    const month=c.req.query("month")||new Date().toISOString().slice(0,7);
+    if(!/^\\d{4}-(0[1-9]|1[0-2])$/.test(month))return c.json({detail:"Choose an edition month (YYYY-MM)."},400);
+    const roster=await shopMailRoster(c.env.DB,month);
+    return c.json({month,subscribers:roster,paid:roster.filter(x=>x.eligible).length,
+      held:roster.filter(x=>!x.eligible&&!x.mailed_this_month).length,
+      mailed:roster.filter(x=>x.mailed_this_month).length});
+  });
+  admin.post("/shop/subscriptions/:id/recheck-payments", W, async (c:Context<any>) => {
+    const id=c.req.param("id");
+    if(!UUID.test(id))return c.json({detail:"Invalid subscription."},400);
+    await ensureShopSubscriptions(c.env.DB);
+    const row=await (c.env.DB as DB).prepare("SELECT square_subscription_id FROM shop_subscriptions WHERE id=?").bind(id).first<{square_subscription_id:string|null}>();
+    if(!row)return c.json({detail:"Subscription not found."},404);
+    if(!row.square_subscription_id)return c.json({detail:"Square subscription is not linked yet. Keep the mailing on hold."},409);
+    const sq=squareConfig(c.env);
+    if(!sq.ok)return c.json({detail:"Square reconciliation is unavailable; do not send this mailing."},503);
+    try{
+      await syncShopSubscription(c.env.DB,sq,row.square_subscription_id,undefined,true);
+      await audit(c,"shop.subscription_payment_rechecked",id);
+      return c.json({ok:true,detail:"Rechecked paid Square invoices. Refresh the mailing roster to see whether both instalments have cleared."});
+    }catch(e:any){
+      console.error("shop subscription reconciliation error",e?.message);
+      return c.json({detail:"Square payment verification failed; keep the mailing on hold."},502);
+    }
+  });
+  admin.post("/shop/subscriptions/:id/mark-mailed", W, async (c:Context<any>) => {
+    const id=c.req.param("id"),body=await readJson(c);
+    const month=String(body.month||"");
+    if(!UUID.test(id)||!/^\\d{4}-(0[1-9]|1[0-2])$/.test(month))return c.json({detail:"Invalid subscription or edition month."},400);
+    const tracking=String(body.tracking||"");
+    if(tracking.length>80||/[<>\\r\\n]/.test(tracking))return c.json({detail:"Invalid parcel tracking."},400);
+    const outcome=await recordShopMailing(c.env.DB,id,month,tracking);
+    if(!outcome.ok)return c.json({detail:outcome.detail},409);
+    await audit(c,"shop.subscription_mailed",id,{month,tracking:tracking?"recorded":undefined});
+    return c.json({ok:true,detail:"This edition was marked mailed; its payment credits cannot be used for another edition."});
+  });
+
   admin.get("/shop/subscriptions", R, async (c: Context<any>) => {
     const db = (c.env as Env).DB;
     await ensureShopSubscriptions(db);
-    const { results } = await db.prepare("SELECT id, product_id, title, email, recipient, personalisation, price_cents, status, charged_through, created_at FROM shop_subscriptions WHERE status != 'pending' OR created_at > ? ORDER BY created_at DESC LIMIT 500")
+    const { results } = await db.prepare("SELECT id, product_id, title, email, recipient, personalisation, price_cents, billing_cadence, monthly_price_cents, status, charged_through, created_at FROM shop_subscriptions WHERE status != 'pending' OR created_at > ? ORDER BY created_at DESC LIMIT 500")
       .bind(new Date(Date.now() - 2 * 86400000).toISOString()).all<any>();
     const parse = (s: string) => { try { return JSON.parse(s); } catch { return {}; } };
     return c.json({ subscriptions: (results || []).map((r) => ({ ...r, recipient: parse(r.recipient), personalisation: parse(r.personalisation) })) });
