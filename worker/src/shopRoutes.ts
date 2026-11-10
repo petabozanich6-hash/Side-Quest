@@ -9,7 +9,7 @@ import {
   productRow, profitFor, publicProduct, slugify, validateProduct, variantsFor, type PersonalField,
 } from "./shopCatalog";
 import { ensureShopOrders, paidUnitsByProduct, shopOrderFor, type ShopLine } from "./shopOrders";
-import { cancelShopSubscription, ensureShopSubscriptions, shopSubscriptionFor, startShopSubscription, validateRecipient, shopMailRoster, recordShopMailing } from "./shopSubscriptions";
+import { cancelShopSubscription, ensureShopSubscriptions, shopSubscriptionFor, startShopSubscription, validateRecipient, shopMailRoster, recordShopMailing, syncShopSubscription } from "./shopSubscriptions";
 import { billingCadence, instalmentCents } from "./shopMailBilling";
 import { squareConfig } from "./square";
 import { loadPlatformSettings } from "./platformSettings";
@@ -1180,6 +1180,24 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     return c.json({month,subscribers:roster,paid:roster.filter(x=>x.eligible).length,
       held:roster.filter(x=>!x.eligible&&!x.mailed_this_month).length,
       mailed:roster.filter(x=>x.mailed_this_month).length});
+  });
+  admin.post("/shop/subscriptions/:id/recheck-payments", W, async (c:Context<any>) => {
+    const id=c.req.param("id");
+    if(!UUID.test(id))return c.json({detail:"Invalid subscription."},400);
+    await ensureShopSubscriptions(c.env.DB);
+    const row=await c.env.DB.prepare("SELECT square_subscription_id FROM shop_subscriptions WHERE id=?").bind(id).first<any>();
+    if(!row)return c.json({detail:"Subscription not found."},404);
+    if(!row.square_subscription_id)return c.json({detail:"Square subscription is not linked yet. Keep the mailing on hold."},409);
+    const sq=squareConfig(c.env);
+    if(!sq.ok)return c.json({detail:"Square reconciliation is unavailable; do not send this mailing."},503);
+    try{
+      await syncShopSubscription(c.env.DB,sq,row.square_subscription_id);
+      await audit(c,"shop.subscription_payment_rechecked",id);
+      return c.json({ok:true,detail:"Rechecked paid Square invoices. Refresh the mailing roster to see whether both instalments have cleared."});
+    }catch(e:any){
+      console.error("shop subscription reconciliation error",e?.message);
+      return c.json({detail:"Square payment verification failed; keep the mailing on hold."},502);
+    }
   });
   admin.post("/shop/subscriptions/:id/mark-mailed", W, async (c:Context<any>) => {
     const id=c.req.param("id"),body=await readJson(c);
