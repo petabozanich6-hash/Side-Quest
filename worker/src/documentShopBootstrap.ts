@@ -34,9 +34,9 @@ export async function ensureDocumentShopListings(db:D1Database) {
  await db.prepare("INSERT OR IGNORE INTO shop_meta(key,value) VALUES(?,?)").bind(key,now).run();
  // One-time activation of ONLY the originally seeded on-demand catalogue rows.
  // Leave intentionally hidden/edited products alone; never activate uploaded templates.
- const liveKey="on-demand-document-listings-2026-11-v1";
+ const liveKey="all-on-demand-document-listings-2026-11-v2";
  if(!(await db.prepare("SELECT 1 FROM shop_meta WHERE key=?").bind(liveKey).first())){
-   for(const entry of entries.filter(x=>["guided","premium_personalised","premium_printed"].includes(x.kind.code))){
+   for(const entry of entries){
      await db.prepare(`UPDATE shop_products SET status='in_stock',updated_at=?
        WHERE slug=? AND title=? AND department='home-education'
          AND status='register_interest' AND visible=1
