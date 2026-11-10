@@ -6,11 +6,6 @@ import HqDocumentProducts from "./HqDocumentProducts";
 // Owner HQ workspace. Requirements come directly from the same server catalogue
 // used by the existing subscription learning-plan tools. No AI calls and no
 // private parent/child records are accessed.
-const OFFERS = [
-  { id: "blank", name: "Blank fillable state template", price: "$4.99", note: "State-specific, printable and fillable PDF. Additional child: $1." },
-  { id: "guided", name: "Guided personalised document", price: "$9.99", note: "Each child receives an individual plan; $2 per additional child." },
-  { id: "premium", name: "Personalised spiral-bound Home Education Planner & Diary", price: "$69.95", note: "An all-inclusive printed and posted family planner, tailored to state requirements. Includes program planning, individual child pages, dated learning logs, evidence records and review sections. Preview and production checks required." },
-];
 const input = "w-full rounded-xl border border-stone-300 bg-white p-2 text-sm";
 
 export default function HqDocumentStudio() {
@@ -33,20 +28,15 @@ export default function HqDocumentStudio() {
       <header className="paper-card p-5 space-y-2">
         <h2 className="text-2xl font-bold text-[#4A5D3A]">Home Education Document Studio</h2>
         <p className="text-sm text-stone-700">Prepare state-specific home education templates for sale, using the requirements already built into Side-Quest's subscriber learning plans.</p>
-        <p className="text-sm rounded-xl bg-amber-50 p-3 text-amber-950">Quality-controlled draft workspace: home education document sales are blocked by the backend until an independent state-specific requirements review and document approval system is in place. A checked box or uploaded PDF is not sufficient for publication.</p>
+        <p className="text-sm rounded-xl bg-amber-50 p-3 text-amber-950">Home education products are created and reviewed here. Only individually approved document revisions may be activated. Unreviewed content and untested physical fulfilment remain blocked from sale.</p>
       </header>
 
       <section className="paper-card p-5 space-y-3">
-        <h3 className="font-bold text-lg">Document catalogue and pricing</h3>
-        <div className="grid gap-3 md:grid-cols-3">
-          {OFFERS.map((offer) => <article key={offer.id} className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
-            <h4 className="font-semibold">{offer.name}</h4>
-            <p className="text-xl font-bold text-[#4A5D3A]">{offer.price} AUD</p>
-            <p className="text-sm text-stone-700">{offer.note}</p>
-            <span className="inline-block text-xs rounded-full bg-stone-100 px-2 py-1">Not for sale yet</span>
-          </article>)}
-        </div>
-        <p className="text-sm text-stone-600">The existing <Link className="underline text-[#4A5D3A]" to="/parent/command-centre/shop">Owner HQ Shop</Link> already handles digital products and Square payments. Document-specific products are currently locked from sale pending independent review, even after a PDF is uploaded. The existing Square checkout already enforces paid-order download access for ordinary digital products.</p>
+        <h3 className="font-bold text-lg">Create → Preview → Review → Activate</h3>
+        <p className="text-sm text-stone-700">The products, real prices, full PDF previews and publication controls are managed below for each state. Families can browse sample pages in the shop and, after payment, complete the guided setup relevant to their purchase.</p>
+        <p className="text-sm text-stone-700">Standard documents: blank fillable PDF $4.99 (+$1 per extra child); guided personalised PDF $9.99 (+$2 per extra child); basic print-and-post $14.99 including delivery (+$2 per extra child).</p>
+        <p className="text-sm text-stone-700">Complete Home Education Planner & Diary: blank PDF $29.95; personalised family PDF $39.95; personalised spiral-bound printed copy $69.95 including Australian delivery. The premium versions include lesson plans, outcomes, reading logs, evidence tracking, progress reviews and curriculum preparation.</p>
+        <p className="text-xs text-amber-900">Actual existing product prices are displayed in the product workspace below; no listings are silently repriced. Publication is version-bound and requires documented quality review. Printed editions remain on hold pending production and dispatch verification.</p>
       </section>
 
       <section className="paper-card p-5 space-y-3">
