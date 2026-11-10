@@ -4,6 +4,7 @@
  * Sessions are random tab-scoped UUIDs, so "visits" are estimates, not people.
  */
 import type { App } from "./types";
+import { hitRateLimit } from "./adminAudit";
 
 const safePath=(value:unknown):string|null=>{
  if(typeof value!=="string"||value.length>100)return null;
@@ -27,6 +28,8 @@ export function registerSiteTraffic(app:App){
   const session=typeof raw.session==="string"?raw.session:"";
   if(!path||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(session))return c.json({detail:"Invalid event"},400);
   try{
+   const limit=await hitRateLimit(c.env.DB,"traffic:"+session,120,3600);
+   if(!limit.ok)return c.json({detail:"Too many requests"},429);
    await ensureTrafficSchema(c.env.DB);
    const day=new Date().toISOString().slice(0,10);
    await c.env.DB.prepare("INSERT INTO site_traffic_sessions(day,session_id) VALUES(?,?) ON CONFLICT DO NOTHING").bind(day,session).run();
