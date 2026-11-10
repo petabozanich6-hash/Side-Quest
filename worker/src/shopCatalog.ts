@@ -13,6 +13,8 @@ import { SHOP_PREFILL } from "./data/shopPrefill";
 import { DIGITAL_DELIVERY, SIZES, SUB_CUTOFF_DAY, SUB_DISPATCH_DAY, WEEKLY_DISPATCH, holdBack, launchEntry, oneOffFor } from "./data/shopLaunchPrices";
 import { clearSettingsCache, loadPlatformSettings } from "./platformSettings";
 import { approvedForSale, documentType } from "./documentRelease";
+import { ensureDocumentShopListings } from "./documentShopBootstrap";
+import { JURISDICTIONS } from "./data/planJurisdictions";
 
 type DB = D1Database;
 
@@ -104,6 +106,7 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       await applyPrefill(db);
       await applyLaunch(db);
       await applyTierPrices(db);
+      await ensureDocumentShopListings(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -346,6 +349,7 @@ export function publicProduct(p: any, variants: any[] = [], preorderCount = 0, n
   const activeVariants = variants.filter((v) => v.active);
   return {
     id: p.id, slug: p.slug, department: p.department, collection: p.collection, title: p.title, description: p.description,
+    areas: isHomeEducationDocument(p) ? (()=>{ const state=(Array.isArray(p.tags)?p.tags:[]).find((t:string)=>["nsw","vic","qld","wa","sa","tas","act","nt"].includes(t)); return state ? JURISDICTIONS[state.toUpperCase() as keyof typeof JURISDICTIONS]?.areas || [] : []; })() : [],
     tags: p.tags, status: p.status, status_label: STATUS_LABELS[p.status], fulfilment: p.fulfilment,
     price_cents: p.price_cents, postage_cents: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) || p.fulfilment === "digital" ? 0 : p.postage_cents ?? 0,
     images: p.images, dispatch_estimate: p.dispatch_estimate, max_per_order: p.max_per_order,
