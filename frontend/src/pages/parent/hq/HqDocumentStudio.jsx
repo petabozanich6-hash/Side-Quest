@@ -7,9 +7,9 @@ import HqDocumentProducts from "./HqDocumentProducts";
 // used by the existing subscription learning-plan tools. No AI calls and no
 // private parent/child records are accessed.
 const OFFERS = [
-  { id: "blank", name: "Blank fillable state template", price: "$14.95", note: "A reusable, independently prepared PDF with fields and a state-specific checklist." },
-  { id: "guided", name: "Guided personalised document", price: "$29.95", note: "A questionnaire-backed document populated from the family's own answers, with a final review step." },
-  { id: "review", name: "Owner-reviewed preparation", price: "From $69.95", note: "A future manual service for checking completeness, not government approval." },
+  { id: "blank", name: "Blank fillable state template", price: "$4.99", note: "State-specific, printable and fillable PDF. Additional child: $1." },
+  { id: "guided", name: "Guided personalised document", price: "$9.99", note: "Each child receives an individual plan; $2 per additional child." },
+  { id: "premium", name: "Personalised spiral-bound Home Education Planner & Diary", price: "$69.95", note: "An all-inclusive printed and posted family planner, tailored to state requirements. Includes program planning, individual child pages, dated learning logs, evidence records and review sections. Preview and production checks required." },
 ];
 const input = "w-full rounded-xl border border-stone-300 bg-white p-2 text-sm";
 
