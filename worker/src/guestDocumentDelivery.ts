@@ -4,6 +4,7 @@
 import { buildPlanContent } from "./data/planBuilder";
 import { JURISDICTIONS, CHECKED_ON, type JurisdictionCode } from "./data/planJurisdictions";
 import { sendEmail } from "./email";
+import { renderGuidedDocumentLayout } from "./guidedDocumentLayout";
 import type { Env } from "./types";
 
 export const safe = (v: unknown, max = 5000) =>
@@ -52,42 +53,8 @@ export async function buildGuestPlan(db: D1Database, code: JurisdictionCode, dat
   const content = await buildPlanContent(db,plan,student,jur);
   return { content, jurisdiction:jur, student, plan, data, checked_on:CHECKED_ON };
 }
-export function guestPlanHtml(r: Awaited<ReturnType<typeof buildGuestPlan>>) {
-  const {content:c, jurisdiction:j, data:d} = r;
-  const section=(title:string,value:unknown)=>`<section><h2>${esc(title)}</h2>${para(value)}</section>`;
-  const areaRows=(c.learning_areas || []).map((a:any)=>{
-    const entered=d.areas[a.area] || {};
-    return `<section><h2>${esc(a.area)}</h2>
-      ${section("Learning goals", "")}<ul>${list(a.goals)}</ul>
-      ${section("Teaching methods", "")}<ul>${list(a.teaching_methods)}</ul>
-      ${section("Suggested learning experiences", "")}<ul>${list(a.sample_activities)}</ul>
-      ${section("Family's own topics / goals",entered.focus)}
-      ${section("Family's planned activities",entered.activities)}
-      ${section("Family's resources and evidence",entered.evidence)}
-      ${section("Evidence approach",a.evidence_approach)}
-    </section>`;
-  }).join("\n");
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${esc(j.planName)}</title><style>
-  @page {size:A4;margin:18mm 16mm}*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;font-size:10.5pt;line-height:1.52;color:#252925;background:white}h1{font-size:23pt;color:#25432e;margin:12px 0}h2{font-size:13pt;color:#25432e;margin:20px 0 7px;border-bottom:1px solid #bbb;padding-bottom:4px}section{break-inside:auto}p{margin:6px 0 13px}ul{padding-left:22px}li{margin-bottom:5px}.small{font-size:9pt;color:#555}.notice{border:1px solid #a77c3a;padding:12px;margin:16px 0;background:#fff8ed}.cover{border-bottom:3px solid #4a5d3a;margin-bottom:24px;padding-bottom:12px}
-  </style></head><body>
-  <header class="cover"><p class="small">SIDE-QUEST • INDEPENDENT HOME EDUCATION RESOURCE</p><h1>${esc(j.planName)}</h1><p>${esc(j.name)} · ${esc(d.learner_name)} · ${esc(d.period_start)} – ${esc(d.period_end)}</p></header>
-  <div class="notice">Family draft. Not a government form or approval. Check every statement, official requirement, curriculum source and any government-prescribed form before submission. Current source summary checked ${esc(r.checked_on)}.</div>
-  ${section("Overview",c.overview)}
-  ${section("Educational approach",c.educational_philosophy)}
-  ${section("Learner strengths, interests and needs",d.strengths)}
-  ${section("Family's learning goals",d.goals)}
-  ${section("Learning environment and schedule",d.schedule)}
-  <h2>Learning areas</h2>${areaRows}
-  ${section("Weekly rhythm",c.weekly_rhythm)}${section("Family's actual planned schedule",d.schedule)}
-  ${section("Assessment and progress approach",c.assessment_approach)}
-  ${section("Family's evidence and record keeping",d.records)}
-  ${section("Resources overview",c.resources_overview)}
-  ${section("Family's named learning resources",d.resources)}
-  ${section("Review schedule",c.review_schedule)}${section("Family's review approach",d.review)}
-  <section><h2>Requirements to check</h2><ul>${j.requirements.map((v)=>`<li>☐ ${esc(v)}</li>`).join("")}</ul></section>
-  <section><h2>Official sources</h2><ul>${j.sources.map((v)=>`<li>${esc(v.title)}: ${esc(v.url)}</li>`).join("")}</ul></section>
-  <p class="small">Prepared using Side-Quest's existing deterministic learning-plan generator. This document needs individual factual review by the family, and no registration outcome is guaranteed.</p>
-  </body></html>`;
+export function guestPlanHtml(r: Awaited<ReturnType<typeof buildGuestPlan>>, sampleOnly=false) {
+  return renderGuidedDocumentLayout(r,sampleOnly);
 }
 export async function renderGuestPdf(env: Env, html: string): Promise<Uint8Array> {
   if (!env.BROWSER?.quickAction) throw new Error("PDF_RENDERING_UNAVAILABLE");
@@ -97,13 +64,13 @@ export async function renderGuestPdf(env: Env, html: string): Promise<Uint8Array
   if (bytes.length < 10 || bytes.length > 16*1024*1024 || new TextDecoder().decode(bytes.slice(0,5)) !== "%PDF-") throw new Error("PDF_INVALID");
   return bytes;
 }
-export async function emailGuestPdf(env: Env, recipient: string, document: Uint8Array, stateName: string) {
+export async function emailGuestPdf(env: Env, recipient: string, document: Uint8Array, stateName: string, childIndex=1, childCount=1) {
   if (!env.EMAIL) return false;
   return sendEmail(env,{
     to:recipient,
-    subject:`Your Side-Quest home education document – ${stateName}`,
-    text:"Your completed home education planning PDF is attached. This is an independent family planning resource, not an official government form. Please review all details and current local requirements before submission. If you need help, contact support@sidequestlearning.app.",
+    subject:`Your Side-Quest home education document – ${stateName} (${childIndex} of ${childCount})`,
+    text:`Document ${childIndex} of ${childCount} is attached. Each child needs their own individualised planning details. This is an independent planning resource, not an official government form. Please check current local requirements before submission. For help, contact support@sidequestlearning.app.`,
     html:"<p>Your Side-Quest home education document is attached as a PDF.</p><p>Please review your family's information and current state requirements before using it for registration or review.</p><p>This is an independent planning resource, not a government-issued document.</p>",
-    attachments:[{filename:"side-quest-home-education-plan.pdf",content:document,type:"application/pdf",disposition:"attachment"}],
+    attachments:[{filename:`side-quest-home-education-plan-child-${childIndex}.pdf`,content:document,type:"application/pdf",disposition:"attachment"}],
   });
 }

@@ -75,3 +75,19 @@ test("Square delivery postcode changes hold paid orders for owner review", async
   await recordPaidShopOrder(db, { DB: db }, matching.id, matching.total, "square-2", "https://sidequestlearning.app", new Date(), { postal_code: "2000" });
   assert.equal((await db.prepare("SELECT status FROM shop_orders WHERE id = ?").bind(matching.id).first()).status, "to_fulfil");
 });
+
+
+test("document print-and-post is delivered with no additional postage line", async () => {
+  const db=makeDb(); const id=await product(db);
+  await db.prepare("UPDATE shop_products SET tags=?, fulfilment=?, collection=? WHERE id=?")
+    .bind('["home-education-document","print-and-post","nsw"]',"made_to_order","Home Education Documents",id).run();
+  const order={...line(id),personalisation:{child_count:"4"}};
+  assert.equal(await parcelForCart(db,[order]),null);
+  assert.equal(await quoteStandardPost({DB:db},[order],"2000"),null);
+});
+test("spiral-bound premium diary also includes delivery",async()=>{
+  const db=makeDb();const id=await product(db);
+  await db.prepare("UPDATE shop_products SET tags=?, fulfilment=?, collection=? WHERE id=?")
+    .bind('["home-education-document","premium-planner-printed","nsw"]',"made_to_order","Home Education Documents",id).run();
+  assert.equal(await parcelForCart(db,[line(id)]),null);
+});

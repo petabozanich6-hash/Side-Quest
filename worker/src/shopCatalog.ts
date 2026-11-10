@@ -12,10 +12,14 @@ import { STAGES, stageFor } from "./shopStages";
 import { SHOP_PREFILL } from "./data/shopPrefill";
 import { DIGITAL_DELIVERY, SIZES, SUB_CUTOFF_DAY, SUB_DISPATCH_DAY, WEEKLY_DISPATCH, holdBack, launchEntry, oneOffFor } from "./data/shopLaunchPrices";
 import { clearSettingsCache, loadPlatformSettings } from "./platformSettings";
+import { approvedForSale, documentType, isOnDemandDocument } from "./documentRelease";
+import { ensureDocumentShopListings } from "./documentShopBootstrap";
+import { JURISDICTIONS } from "./data/planJurisdictions";
 
 type DB = D1Database;
 
 export const DEPARTMENTS = [
+  { id: "home-education", label: "Home Education Documents" },
   { id: "books", label: "Books & Learning" },
   { id: "stationery", label: "Stationery & School Supplies" },
   { id: "science", label: "Science & Discovery" },
@@ -85,11 +89,24 @@ export function ensureShopCatalog(db: DB): Promise<void> {
         await db.prepare(`ALTER TABLE shop_products ADD COLUMN ${name} INTEGER`).run().catch(() => undefined);
       }
       await db.prepare("ALTER TABLE shop_products ADD COLUMN digital_file INTEGER NOT NULL DEFAULT 0").run().catch(() => undefined);
+      // Document-specific release fields are set only by the Owner HQ release
+      // action, never by generic shop product edits or visible/status toggles.
+      for(const stmt of [
+        "ALTER TABLE shop_products ADD COLUMN document_release_version TEXT",
+        "ALTER TABLE shop_products ADD COLUMN document_released_at TEXT",
+        "ALTER TABLE shop_products ADD COLUMN document_source_checked_on TEXT"
+      ]) await db.prepare(stmt).run().catch(() => undefined);
+      await db.prepare(`CREATE TABLE IF NOT EXISTS home_education_release_history (
+        id TEXT PRIMARY KEY, product_id TEXT NOT NULL, action TEXT NOT NULL,
+        version TEXT, source_checked_on TEXT, reviewer TEXT, notes TEXT, recorded_at TEXT NOT NULL
+      )`).run();
+
       await seedCatalog(db);
       await assignStages(db);
       await applyPrefill(db);
       await applyLaunch(db);
       await applyTierPrices(db);
+      await ensureDocumentShopListings(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
@@ -310,10 +327,10 @@ export function isHomeEducationDocument(p: any): boolean {
 export function buyable(p: any, variants: any[] = [], now: Date = new Date()): { ok: boolean; reason?: string } {
   if (!isPublic(p)) return { ok: false, reason: "Hidden" };
   if (!SELLING.has(p.status)) return { ok: false, reason: STATUS_LABELS[p.status] };
-  if (isHomeEducationDocument(p)) return { ok: false, reason: "State requirements and document quality review pending" };
+  if (isHomeEducationDocument(p) && !isOnDemandDocument(p) && !approvedForSale(p,now)) return { ok: false, reason: "State requirements and document quality review pending" };
   // A digital listing cannot take payment until there is an actual private file to deliver.
   // In particular this protects state-specific documents from being sold before their PDFs exist.
-  if (p.fulfilment === "digital" && !p.digital_file) return { ok: false, reason: "Download file not uploaded" };
+  if (p.fulfilment === "digital" && !p.digital_file && !isOnDemandDocument(p)) return { ok: false, reason: "Download file not uploaded" };
   // Products waiting for professional manufacturing or future expansion can't be sold as ready to make or send.
   if (p.stage && p.stage !== "launch_now" && p.status !== "pre_order") return { ok: false, reason: "Not in production yet" };
   const priced = p.price_cents != null || variants.some((v) => v.active && v.price_cents != null);
@@ -332,6 +349,7 @@ export function publicProduct(p: any, variants: any[] = [], preorderCount = 0, n
   const activeVariants = variants.filter((v) => v.active);
   return {
     id: p.id, slug: p.slug, department: p.department, collection: p.collection, title: p.title, description: p.description,
+    areas: isHomeEducationDocument(p) ? (()=>{ const state=(Array.isArray(p.tags)?p.tags:[]).find((t:string)=>["nsw","vic","qld","wa","sa","tas","act","nt"].includes(t)); return state ? JURISDICTIONS[state.toUpperCase() as keyof typeof JURISDICTIONS]?.areas || [] : []; })() : [],
     tags: p.tags, status: p.status, status_label: STATUS_LABELS[p.status], fulfilment: p.fulfilment,
     price_cents: p.price_cents, postage_cents: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) || p.fulfilment === "digital" ? 0 : p.postage_cents ?? 0,
     images: p.images, dispatch_estimate: p.dispatch_estimate, max_per_order: p.max_per_order,

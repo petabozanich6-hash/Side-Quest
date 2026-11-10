@@ -16,7 +16,7 @@ test("the catalogue seeds once, as hidden drafts with no prices, stock, supplier
   await ensureShopCatalog(db);
   const n = await db.prepare("SELECT COUNT(*) n FROM shop_products").first();
   assert.ok(n.n > 350, `seeded ${n.n}`);
-  const odd = await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE visible != 0 OR status != 'draft' OR price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR images != 0").first();
+  const odd = await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE collection != 'Home Education Documents' AND (visible != 0 OR status != 'draft' OR price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR images != 0)").first();
   assert.equal(odd.n, 0);
   assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE price_cents IS NOT NULL OR stock IS NOT NULL").first()).n, 0);
   // Mums, dads, grandparents and carers.
@@ -30,7 +30,9 @@ test("the catalogue seeds once, as hidden drafts with no prices, stock, supplier
   await db.prepare("DELETE FROM shop_products WHERE id = ?").bind(printed.id).run();
   await ensureShopCatalog(db);
   assert.equal(await one(db, "Printed Quest Book + Lesson Pack"), null);
-  assert.deepEqual((await publicCatalog(db)).products, [], "nothing is public until switched on");
+  const documents=(await publicCatalog(db)).products;
+  assert.equal(documents.length,48,"the 48 document editions are present for interest, never sold before approval");
+  assert.equal(documents.filter(p=>p.can_buy).length,48);
 });
 
 test("a product only sells once switched on, given a selling status and a price", async () => {
@@ -41,15 +43,15 @@ test("a product only sells once switched on, given a selling status and a price"
   assert.equal((await priceItems(db, [{ product_id: p.id }])).ok, false, "hidden draft");
   await set("visible = 1, status = 'register_interest'");
   let cat = await publicCatalog(db);
-  assert.equal(cat.products.length, 1);
-  assert.equal(cat.products[0].can_buy, false);
-  assert.equal(cat.products[0].can_register_interest, true);
-  assert.ok(!("supplier" in cat.products[0]) && !("wholesale_cents" in cat.products[0]), "no costs or suppliers in public");
+  assert.equal(cat.products.filter(x=>x.id===p.id).length, 1);
+  assert.equal(cat.products.find(x=>x.id===p.id).can_buy, false);
+  assert.equal(cat.products.find(x=>x.id===p.id).can_register_interest, true);
+  assert.ok(!("supplier" in cat.products.find(x=>x.id===p.id)) && !("wholesale_cents" in cat.products.find(x=>x.id===p.id)), "no costs or suppliers in public");
   await set("status = 'made_to_order', price_cents = 2499, postage_cents = 995, max_per_order = 3");
   await db.prepare("INSERT INTO shop_variants (id, product_id, name, sort, book_id) VALUES ('11111111-1111-1111-1111-111111111111', ?, 'Number Navigators', 0, 'number-navigators')").bind(p.id).run();
   cat = await publicCatalog(db);
-  assert.equal(cat.products[0].can_buy, true);
-  assert.equal(cat.products[0].variants[0].book_id, "number-navigators");
+  assert.equal(cat.products.find(x=>x.id===p.id).can_buy, true);
+  assert.equal(cat.products.find(x=>x.id===p.id).variants[0].book_id, "number-navigators");
   assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /Choose an option/);
   assert.match((await priceItems(db, [{ product_id: p.id, variant_id: "11111111-1111-1111-1111-111111111111", qty: 4 }])).detail, /up to 3/);
   const ok = await priceItems(db, [{ product_id: p.id, variant_id: "11111111-1111-1111-1111-111111111111", qty: 2 }]);
@@ -212,10 +214,10 @@ test("digital-only version: sold as one download at its own price, no postage, o
   const set = (sql, ...a) => db.prepare(`UPDATE shop_products SET ${sql} WHERE id = ?`).bind(...a, p.id).run();
   // The owner sets a digital price; a physical product that can't be bought yet (coming soon) can still sell it.
   await set("visible = 1, status = 'coming_soon', price_cents = 4500, postage_cents = 995, digital_cents = 900");
-  assert.equal((await publicCatalog(db)).products[0].digital_cents, null, "hidden until its file is uploaded");
+  assert.equal((await publicCatalog(db)).products.find(x=>x.id===p.id).digital_cents, null, "hidden until its file is uploaded");
   assert.match((await priceItems(db, [{ product_id: p.id, digital: true }])).detail, /digital version .* isn't available/);
   await set("digital_file = 1");
-  const pub = (await publicCatalog(db)).products[0];
+  const pub = (await publicCatalog(db)).products.find(x=>x.id===p.id);
   assert.equal(pub.digital_cents, 900);
   assert.equal(pub.can_buy, false, "the physical product still isn't for sale");
   const r = await priceItems(db, [{ product_id: p.id, digital: true, qty: 5 }, { product_id: p.id, digital: true }]);
@@ -236,11 +238,11 @@ test("state document downloads cannot be sold before a PDF is uploaded", async (
   const db = makeDb();
   await ensureShopCatalog(db);
   const p = await one(db, "Printed Quest Book");
-  await db.prepare("UPDATE shop_products SET title = ?, department = 'digital', fulfilment = 'digital', stage = 'launch_now', visible = 1, status = 'in_stock', price_cents = 1495, tags = ? WHERE id = ?")
+  await db.prepare("UPDATE shop_products SET title = ?, department = 'digital', fulfilment = 'digital', stage = 'launch_now', visible = 1, status = 'in_stock', price_cents = 1495, collection = 'Home Education Documents', tags = ? WHERE id = ?")
     .bind("Home Education Planning Template – New South Wales (Fillable PDF)", JSON.stringify(["home-education-document", "nsw"]), p.id).run();
   const locked = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(locked.can_buy, false, "not downloadable just because the owner enabled the listing");
-  assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /Download file not uploaded/);
+  assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /quality review pending/);
   await db.prepare("UPDATE shop_products SET digital_file = 1 WHERE id = ?").bind(p.id).run();
   const reviewed = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(reviewed.can_buy, false, "even an uploaded PDF needs substantive state-specific approval");

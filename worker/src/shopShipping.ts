@@ -4,6 +4,8 @@
 import type { Env } from "./types";
 import type { ShopLine } from "./shopOrders";
 import { ensureShopCatalog } from "./shopCatalog";
+import { documentKind } from "./familyDocumentPricing";
+import { documentType } from "./documentRelease";
 
 const POSTCODE = /^\d{4}$/;
 const API_URL = "https://digitalapi.auspost.com.au/postage/parcel/domestic/calculate.json";
@@ -22,29 +24,40 @@ export type StandardQuote = { postcode: string; service: "Parcel Post"; service_
  * We stack units into one parcel conservatively: largest footprint and the sum of heights,
  * with combined actual weights. If the order won't fit, do not guess a rate. */
 export async function parcelForCart(db: D1Database, lines: ShopLine[]): Promise<Parcel | null> {
+  // Home Education print-and-post is sold at an all-inclusive delivered price.
+  // Other physical goods in a mixed cart still receive a separate quote.
   const physical = lines.filter((x) => x.product_id && x.physical && !x.gift_months);
   if (!physical.length) return null;
   await ensureShopCatalog(db);
   const ids = [...new Set(physical.map((x) => x.product_id!))];
-  const { results } = await db.prepare(`SELECT id, title, parcel_weight_g, parcel_length_cm, parcel_width_cm, parcel_height_cm FROM shop_products WHERE id IN (${ids.map(() => "?").join(",")})`).bind(...ids).all<any>();
+  const { results } = await db.prepare(`SELECT id, title, tags, fulfilment, parcel_weight_g, parcel_length_cm, parcel_width_cm, parcel_height_cm FROM shop_products WHERE id IN (${ids.map(() => "?").join(",")})`).bind(...ids).all<any>();
   const products = new Map((results || []).map((p: any) => [p.id, p]));
   let weight_g = 0, length_cm = 0, width_cm = 0, height_cm = 0;
+  let chargeableCount = 0;
   for (const line of physical) {
     const p: any = products.get(line.product_id);
     if (!p) throw new ShippingQuoteError("A product in this order is no longer available.", 409);
+    if (documentKind(p) === "printed" || documentType(p) === "planner_printed") continue; // $5 print-and-post component already covers its shipping
+    chargeableCount++;
     const weight = Number(p.parcel_weight_g);
     const length = Number(p.parcel_length_cm);
     const width = Number(p.parcel_width_cm);
     const height = Number(p.parcel_height_cm);
     if (![weight, length, width, height].every((n) => Number.isInteger(n) && n > 0))
       throw new ShippingQuoteError(`Shipping measurements are not ready for "${p.title}". Please contact Side-Quest or try later.`, 409);
-    const qty = Number(line.qty || 1);
+    // Each additional printed child means another complete workbook in the
+    // parcel. The product dimensions describe one book, not the whole family
+    // pack; never underquote postage by charging shipping for one child only.
+    const children = documentKind(p) === "printed" ? Number(line.personalisation?.child_count || 1) : 1;
+    if (!Number.isInteger(children) || children<1 || children>5) throw new ShippingQuoteError("Invalid printed family document count.");
+    const qty = Number(line.qty || 1) * children;
     if (!Number.isInteger(qty) || qty < 1 || qty > 50) throw new ShippingQuoteError("Invalid parcel quantity.");
     weight_g += weight * qty;
     length_cm = Math.max(length_cm, length);
     width_cm = Math.max(width_cm, width);
     height_cm += height * qty;
   }
+  if(!chargeableCount)return null;
   // Australia Post's maximums vary by service. Reject unlikely/unshippable orders;
   // a single-parcel estimate is preferable to silently undercharging multi-box orders.
   if (weight_g > 22000 || Math.max(length_cm, width_cm, height_cm) > 105 || [length_cm, width_cm, height_cm].sort((a, b) => b - a)[1] * 2 + [length_cm, width_cm, height_cm].sort((a, b) => b - a)[2] * 2 > 140)
