@@ -3,6 +3,7 @@
 // then pays on Square's hosted page. Access is managed with a private link (token stored only as a hash).
 import { squareCall, type SquareConfig, type Fetch } from "./square";
 import { hashToken } from "./shopOrders";
+import { instalmentCents, instalmentsPerMail, mailPaymentStatus, type ShopBillingCadence } from "./shopMailBilling";
 
 type DB = D1Database;
 type Cfg = Extract<SquareConfig, { ok: true }>;
@@ -13,15 +14,24 @@ const SCHEMA = [
     id TEXT PRIMARY KEY, product_id TEXT NOT NULL, variant_id TEXT, title TEXT NOT NULL, email TEXT NOT NULL,
     recipient TEXT NOT NULL, personalisation TEXT NOT NULL DEFAULT '{}', price_cents INTEGER NOT NULL, order_id TEXT UNIQUE,
     customer_id TEXT, square_subscription_id TEXT, plan_variation_id TEXT, status TEXT NOT NULL DEFAULT 'pending',
-    charged_through TEXT, token_hash TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)`,
+    charged_through TEXT, token_hash TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL,
+    billing_cadence TEXT NOT NULL DEFAULT 'monthly', monthly_price_cents INTEGER)`,
   `CREATE INDEX IF NOT EXISTS idx_shop_subs_square ON shop_subscriptions (square_subscription_id)`,
   `CREATE TABLE IF NOT EXISTS shop_square_plans (key TEXT PRIMARY KEY, catalog_id TEXT NOT NULL, created_at TEXT NOT NULL)`,
+  `CREATE TABLE IF NOT EXISTS shop_subscription_payments (subscription_id TEXT NOT NULL, invoice_id TEXT NOT NULL, paid_at TEXT NOT NULL, PRIMARY KEY(subscription_id,invoice_id))`,
+  `CREATE TABLE IF NOT EXISTS shop_subscription_mailings (subscription_id TEXT NOT NULL, edition_month TEXT NOT NULL, mailed_at TEXT NOT NULL, tracking TEXT NOT NULL DEFAULT '', PRIMARY KEY(subscription_id,edition_month))`,
 ];
 const ready = new WeakMap<object, Promise<void>>();
 export function ensureShopSubscriptions(db: DB): Promise<void> {
   let p = ready.get(db);
   if (!p) {
-    const made: Promise<void> = (async () => { for (const q of SCHEMA) await db.prepare(q).run(); })().catch((e) => { ready.delete(db); throw e; });
+    const made: Promise<void> = (async () => {
+      for (const q of SCHEMA) await db.prepare(q).run();
+      for (const column of ["billing_cadence TEXT NOT NULL DEFAULT 'monthly'", "monthly_price_cents INTEGER"]) {
+        try { await db.prepare("ALTER TABLE shop_subscriptions ADD COLUMN " + column).run(); }
+        catch(e:any){if(!/duplicate column name/i.test(String(e?.message||e)))throw e;}
+      }
+    })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
   }
@@ -47,7 +57,7 @@ async function catalogId(db: DB, key: string, make: () => Promise<string>): Prom
 }
 
 /** A monthly Square plan variation for this product at this price (created the first time). */
-export async function productPlanVariation(db: DB, cfg: Cfg, product: { id: string; title: string }, priceCents: number, fetchImpl?: Fetch): Promise<string> {
+export async function productPlanVariation(db: DB, cfg: Cfg, product: { id: string; title: string }, priceCents: number, cadence: ShopBillingCadence = "monthly", fetchImpl?: Fetch): Promise<string> {
   await ensureShopSubscriptions(db);
   const plan = await catalogId(db, `plan:${product.id}`, async () => {
     const r = await squareCall(cfg, "POST", "catalog/object", {
@@ -57,12 +67,12 @@ export async function productPlanVariation(db: DB, cfg: Cfg, product: { id: stri
     if (!r?.catalog_object?.id) throw new Error("Square did not create the plan");
     return r.catalog_object.id;
   });
-  return catalogId(db, `var:${product.id}:${priceCents}`, async () => {
+  return catalogId(db, `var:${product.id}:${cadence}:${priceCents}`, async () => {
     const r = await squareCall(cfg, "POST", "catalog/object", {
-      idempotency_key: `shop-var-${product.id}-${priceCents}`,
+      idempotency_key: `shop-var-${product.id}-${cadence}-${priceCents}`,
       object: { type: "SUBSCRIPTION_PLAN_VARIATION", id: "#shop_var", subscription_plan_variation_data: {
-        name: "Monthly", subscription_plan_id: plan,
-        phases: [{ ordinal: 0, cadence: "MONTHLY", pricing: { type: "STATIC", price_money: { amount: priceCents, currency: "AUD" } } }],
+        name: cadence === "fortnightly" ? "Fortnightly payments · monthly delivery" : "Monthly", subscription_plan_id: plan,
+        phases: [{ ordinal: 0, cadence: cadence === "fortnightly" ? "EVERY_TWO_WEEKS" : "MONTHLY", pricing: { type: "STATIC", price_money: { amount: priceCents, currency: "AUD" } } }],
       } },
     }, fetchImpl);
     if (!r?.catalog_object?.id) throw new Error("Square did not create the plan variation");
@@ -74,10 +84,10 @@ const hex = (b: Uint8Array) => [...b].map((x) => x.toString(16).padStart(2, "0")
 
 export async function startShopSubscription(db: DB, cfg: Cfg, opts: {
   product: { id: string; title: string }; variantId: string | null; variantName?: string; priceCents: number; email: string;
-  recipient: Recipient; personalisation: Record<string, string>; origin: string; fetchImpl?: Fetch;
+  recipient: Recipient; personalisation: Record<string, string>; origin: string; billingCadence: ShopBillingCadence; monthlyPriceCents: number; fetchImpl?: Fetch;
 }): Promise<string> {
   await ensureShopSubscriptions(db);
-  const variation = await productPlanVariation(db, cfg, opts.product, opts.priceCents, opts.fetchImpl);
+  const variation = await productPlanVariation(db, cfg, opts.product, opts.priceCents, opts.billingCadence, opts.fetchImpl);
   const id = crypto.randomUUID();
   const token = hex(crypto.getRandomValues(new Uint8Array(24)));
   const title = opts.variantName ? `${opts.product.title} (${opts.variantName})` : opts.product.title;
@@ -91,9 +101,9 @@ export async function startShopSubscription(db: DB, cfg: Cfg, opts: {
   const orderId = r?.payment_link?.order_id;
   if (!url || !orderId) throw new Error("Square did not return a checkout link");
   const now = new Date().toISOString();
-  await db.prepare(`INSERT INTO shop_subscriptions (id, product_id, variant_id, title, email, recipient, personalisation, price_cents, order_id, plan_variation_id, status, token_hash, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?)`)
-    .bind(id, opts.product.id, opts.variantId, title, opts.email, JSON.stringify(opts.recipient), JSON.stringify(opts.personalisation), opts.priceCents, orderId, variation, await hashToken(token), now, now).run();
+  await db.prepare(`INSERT INTO shop_subscriptions (id, product_id, variant_id, title, email, recipient, personalisation, price_cents, order_id, plan_variation_id, status, token_hash, created_at, updated_at, billing_cadence, monthly_price_cents)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)`)
+    .bind(id, opts.product.id, opts.variantId, title, opts.email, JSON.stringify(opts.recipient), JSON.stringify(opts.personalisation), opts.priceCents, orderId, variation, await hashToken(token), now, now, opts.billingCadence, opts.monthlyPriceCents).run();
   return url;
 }
 
@@ -159,4 +169,50 @@ export async function markShopSubscriptionPastDue(db: DB, squareSubId: string): 
   await ensureShopSubscriptions(db);
   const r = await db.prepare("UPDATE shop_subscriptions SET status = 'past_due', updated_at = ? WHERE square_subscription_id = ?").bind(new Date().toISOString(), squareSubId).run();
   return (r as any)?.meta?.changes ? `shop subscription ${squareSubId} past due` : null;
+}
+
+/** The signed Square invoice.payment_made event is the payment source of truth.
+ * Store only invoice IDs (idempotent), never treat "active" as proof of two
+ * fortnightly payments. Both first and recurring invoices go through this path.
+ */
+export async function recordShopSubscriptionInvoice(db: DB, squareSubscriptionId: string, invoiceId: string, paidAt = new Date().toISOString()): Promise<boolean> {
+  if (!invoiceId || !squareSubscriptionId) return false;
+  await ensureShopSubscriptions(db);
+  const row = await db.prepare("SELECT id FROM shop_subscriptions WHERE square_subscription_id=?").bind(squareSubscriptionId).first<{id:string}>();
+  if (!row) return false;
+  await db.prepare("INSERT OR IGNORE INTO shop_subscription_payments(subscription_id,invoice_id,paid_at) VALUES(?,?,?)").bind(row.id,invoiceId,paidAt).run();
+  return true;
+}
+
+export async function shopMailRoster(db: DB, editionMonth: string) {
+  if (!/^\\d{4}-(0[1-9]|1[0-2])$/.test(editionMonth)) throw Error("Choose a valid edition month.");
+  await ensureShopSubscriptions(db);
+  const {results} = await db.prepare(`SELECT s.id,s.title,s.email,s.recipient,s.status,s.price_cents,s.monthly_price_cents,s.billing_cadence,s.created_at,
+    (SELECT COUNT(*) FROM shop_subscription_payments pay WHERE pay.subscription_id=s.id) paid_count,
+    (SELECT COUNT(*) FROM shop_subscription_mailings mail WHERE mail.subscription_id=s.id) mailed_count,
+    (SELECT mailed_at FROM shop_subscription_mailings mail WHERE mail.subscription_id=s.id AND mail.edition_month=?) mailed_this_month
+    FROM shop_subscriptions s WHERE s.status != 'pending' ORDER BY s.created_at ASC`).bind(editionMonth).all<any>();
+  return (results||[]).map(row=>{
+    const cadence: ShopBillingCadence=row.billing_cadence==="fortnightly"?"fortnightly":"monthly";
+    const paid=mailPaymentStatus(cadence,Number(row.paid_count||0),Number(row.mailed_count||0),row.status);
+    let recipient=null;try{recipient=JSON.parse(row.recipient);}catch{}
+    const monthAlreadySent=!!row.mailed_this_month;
+    return {id:row.id,title:row.title,email:row.email,recipient,status:row.status,
+      billing_cadence:cadence,price_cents:row.price_cents,monthly_price_cents:row.monthly_price_cents??row.price_cents,
+      paid_count:Number(row.paid_count||0),mailed_count:Number(row.mailed_count||0),
+      ...paid,eligible:paid.eligible&&!monthAlreadySent,
+      label:monthAlreadySent?"Already mailed for this edition":paid.label,mailed_this_month:monthAlreadySent};
+  });
+}
+
+export async function recordShopMailing(db:DB, subscriptionId:string, editionMonth:string, tracking:string) {
+  const rows=await shopMailRoster(db,editionMonth);
+  const row=rows.find(x=>x.id===subscriptionId);
+  if(!row) return {ok:false,detail:"Subscription not found."};
+  if(!row.eligible) return {ok:false,detail:"This subscriber has not fully paid for this mailing or has already been sent this edition."};
+  // An owner may have multiple roster tabs; the unique constraint prevents
+  // duplicate editions. Never consume two payments twice on the same edition.
+  const result=await db.prepare("INSERT OR IGNORE INTO shop_subscription_mailings(subscription_id,edition_month,mailed_at,tracking) VALUES(?,?,?,?)")
+    .bind(subscriptionId,editionMonth,new Date().toISOString(),tracking.trim().slice(0,80)).run();
+  return (result as any)?.meta?.changes?{ok:true}:{ok:false,detail:"This edition was already marked mailed."};
 }
