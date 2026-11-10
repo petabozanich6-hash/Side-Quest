@@ -60,6 +60,7 @@ export default function ShopOrder() {
                 );
               })}
             </ul>
+            <p className="text-sm text-stone-700">Having trouble with your document or order? <a className="underline font-semibold" href={"mailto:support@sidequestlearning.app?subject="+encodeURIComponent("SideQuest order support · "+id)}>Contact SideQuest support</a>. Include this order number, but do not email card details or private information about your children.</p>
             {order.tracking && <p className="text-sm text-stone-700">Tracking: <span className="font-semibold">{order.tracking}</span></p>}
             {order.items.some((it) => it.physical) && <p className="text-sm text-stone-700">We'll email you when your parcel is on its way.</p>}
             {order.items.some((it) => it.download) && <p className="text-xs text-stone-500">For your family's own use. Please don't share the files.</p>}
