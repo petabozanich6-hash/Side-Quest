@@ -57,3 +57,17 @@ export function premiumDiaryHtml(code:string,year:string,prepared?:any,short=fal
  }else out+=page(header('Sample ends here','Full planner includes the remaining learning areas, term lesson plans, reading logs, outcome tracking, evidence sheets, assessment, review and official sources'));
  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Side-Quest Home Education Planner & Diary</title><style>'+css+'</style></head><body>'+out+'</body></html>';
 }
+
+
+// Full family edition: each child has their own lesson, reading, evidence and
+// outcomes sections. Concatenate the body pages into a single printable PDF.
+export function premiumFamilyDiaryHtml(code:string,children:Array<{year_level:string;prepared?:any}>,blank=false):string{
+  if(!Array.isArray(children)||children.length<1||children.length>5)throw Error("Choose 1 to 5 children");
+  const docs=children.map(child=>premiumDiaryHtml(code,child.year_level,blank?undefined:child.prepared));
+  const first=docs[0],before=first.slice(0,first.indexOf("</head>")+7);
+  const bodies=docs.map((html,i)=>{
+    const body=html.slice(html.indexOf("<body>")+6,html.lastIndexOf("</body>"));
+    return '<div class="family-child" data-child="'+(i+1)+'">'+body+'</div>';
+  });
+  return before+"<body>"+bodies.join("\n")+"</body></html>";
+}
