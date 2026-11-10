@@ -37,12 +37,14 @@ export function premiumDiaryHtml(code:string,year:string,prepared?:any,short=fal
    field('Learner strengths, interests and learning needs',true)+field('Goals, teaching and adjustments',true)+field('Learning schedule and resources',true));
  for(const name of (short?areas.slice(0,1):areas)){
   const a=data.areas?.[name]||{};
-  out+=page(header('03','Learning area: '+name)+(filled?'<div class="note">Our topics: '+e(a.focus)+'\nOur activities: '+e(a.activities)+'\nProgress evidence: '+e(a.evidence)+'</div>':'')+
+  const generated=(prepared?.content?.learning_areas||[]).find((entry:any)=>entry.area===name);
+  const guidance=generated?'<div class="note"><strong>Learning goals:</strong><ul>'+((generated.goals||[]).map((g:string)=>'<li>'+e(g)+'</li>').join(''))+'</ul><strong>Suggested teaching:</strong><ul>'+((generated.teaching_methods||[]).map((m:string)=>'<li>'+e(m)+'</li>').join(''))+'</ul><strong>Learning experiences:</strong><ul>'+((generated.sample_activities||[]).map((act:string)=>'<li>'+e(act)+'</li>').join(''))+'</ul></div>':'';
+  out+=page(header('03','Learning area: '+name)+guidance+(filled?'<div class="note">Our topics: '+e(a.focus)+'\nOur activities: '+e(a.activities)+'\nProgress evidence: '+e(a.evidence)+'</div>':'')+
    field('Curriculum, stage, learning outcomes and objectives',true)+field('Activities and teaching approaches',true)+field('Learning resources and assessment',true));
  }
  if(!short){
   for(let term=1;term<=4;term++){
-   out+=page(header('04','Term '+term+' goals and lesson planning')+field('Term priorities and curriculum links',true)+field('Lesson plan: objective, materials and teaching sequence',true)+field('Lesson plan: differentiation and progress check',true));
+   out+=page(header('04','Term '+term+' goals and lesson planning')+(filled&&data.lesson_plans?'<div class="note">Family lesson intentions and activities: '+e(data.lesson_plans)+'</div>':'')+field('Term priorities and curriculum links',true)+field('Lesson plan: objective, materials and teaching sequence',true)+field('Lesson plan: differentiation and progress check',true));
    out+=page(header('05','Term '+term+' learning diary')+'<p class="hint">Duplicate as needed for each week. Record what actually happened.</p>'+field('Week commencing')+grid(['Day / date','Activity and lesson','Outcome / focus','Evidence'],9));
    out+=page(header('06','Term '+term+' evidence tracker')+grid(['Date','Learning area / outcome','Evidence ID / location','What it demonstrates'],12));
    out+=page(header('07','Term '+term+' review')+(filled&&data.assessment_notes?'<div class="note">Family assessment: '+e(data.assessment_notes)+'</div>':'')+field('Progress and achievements',true)+field('Work samples and observations',true)+field('Adjustments and next learning goals',true));
