@@ -13,6 +13,7 @@ import { SHOP_PREFILL } from "./data/shopPrefill";
 import { DIGITAL_DELIVERY, SIZES, SUB_CUTOFF_DAY, SUB_DISPATCH_DAY, WEEKLY_DISPATCH, holdBack, launchEntry, oneOffFor } from "./data/shopLaunchPrices";
 import { clearSettingsCache, loadPlatformSettings } from "./platformSettings";
 import { approvedForSale, documentType } from "./documentRelease";
+import { ensureDocumentShopListings } from "./documentShopBootstrap";
 
 type DB = D1Database;
 
@@ -104,6 +105,7 @@ export function ensureShopCatalog(db: DB): Promise<void> {
       await applyPrefill(db);
       await applyLaunch(db);
       await applyTierPrices(db);
+      await ensureDocumentShopListings(db);
     })().catch((e) => { ready.delete(db); throw e; });
     ready.set(db, made);
     p = made;
