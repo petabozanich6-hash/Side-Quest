@@ -77,19 +77,17 @@ test("Square delivery postcode changes hold paid orders for owner review", async
 });
 
 
-test("print-and-post family packs quote all children's booklets, not just the first", async () => {
-  const db=makeDb();
-  const id=await product(db);
-  await db.prepare("UPDATE shop_products SET tags = ?, fulfilment = ?, collection = ? WHERE id = ?")
+test("document print-and-post is delivered with no additional postage line", async () => {
+  const db=makeDb(); const id=await product(db);
+  await db.prepare("UPDATE shop_products SET tags=?, fulfilment=?, collection=? WHERE id=?")
     .bind('["home-education-document","print-and-post","nsw"]',"made_to_order","Home Education Documents",id).run();
-  const bundle={...line(id),personalisation:{child_count:"4"}};
-  const parcel=await parcelForCart(db,[bundle]);
-  assert.deepEqual(parcel,{weight_g:720,length_cm:20,width_cm:14,height_cm:12});
-  const quote=await quoteStandardPost({DB:db,AUSPOST_PAC_API_KEY:"test"},[bundle],"2000",async (url) => {
-    const args=new URL(url).searchParams;
-    assert.equal(args.get("weight"),"0.72");
-    assert.equal(args.get("height"),"12");
-    return Response.json({postage_result:{total_cost:"16.25"}});
-  });
-  assert.equal(quote.postage_cents,1625);
+  const order={...line(id),personalisation:{child_count:"4"}};
+  assert.equal(await parcelForCart(db,[order]),null);
+  assert.equal(await quoteStandardPost({DB:db},[order],"2000"),null);
+});
+test("spiral-bound premium diary also includes delivery",async()=>{
+  const db=makeDb();const id=await product(db);
+  await db.prepare("UPDATE shop_products SET tags=?, fulfilment=?, collection=? WHERE id=?")
+    .bind('["home-education-document","premium-planner-printed","nsw"]',"made_to_order","Home Education Documents",id).run();
+  assert.equal(await parcelForCart(db,[line(id)]),null);
 });

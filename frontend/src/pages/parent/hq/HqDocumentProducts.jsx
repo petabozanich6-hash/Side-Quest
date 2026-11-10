@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { adminApi, errorText } from "../../../lib/adminApi";
+import HqDocumentRelease from "./HqDocumentRelease";
+import HqDocumentPrintQueue from "./HqDocumentPrintQueue";
 
 const input = "w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm";
 const description = (jur) => `An independent, fillable home education planning template for ${jur.name}. Organise your family's learning goals, learning areas, resources, teaching approach, evidence and progress records using the current published guidance as a starting point. Designed for you to complete with your own information. Not a government form, official endorsement or guarantee of registration. Check the linked authority guidance before submission.`;
 const titleFor = (jur) => `Home Education Planning Template – ${jur.name} (Fillable PDF)`;
 const guidedTitleFor = (jur) => `Guided Home Education Plan – ${jur.name}`;
+const premiumTitle=(jur,kind)=>"Complete Home Education Planner & Diary – "+jur.name+" ("+({premium_blank:"Blank PDF",premium_personalised:"Personalised PDF",premium_printed:"Spiral Bound Printed"}[kind])+")";
 const fileData = (file) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.onload = () => resolve(reader.result);
@@ -30,6 +33,9 @@ export default function HqDocumentProducts({ jurisdiction }) {
   const [previewPdf, setPreviewPdf] = useState(null);
   const [guidedPreview, setGuidedPreview] = useState(null);
   const [previewAccepted, setPreviewAccepted] = useState(false);
+  const [premiumMode,setPremiumMode]=useState("blank");
+  const [premiumPreview,setPremiumPreview]=useState(null);
+  const [premiumAccepted,setPremiumAccepted]=useState(false);
 
   const load = async () => {
     setRefreshing(true);
@@ -40,29 +46,35 @@ export default function HqDocumentProducts({ jurisdiction }) {
     finally { setRefreshing(false); }
   };
   useEffect(() => { load(); }, []);
-  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setGuidedPreview(null); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
+  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setGuidedPreview(null); setPremiumPreview(null); setPremiumAccepted(false); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
 
   if (!jurisdiction) return null;
   const current = products.find((p) => p.title === titleFor(jurisdiction));
   const guided = products.find((p) => p.title === guidedTitleFor(jurisdiction));
   const printed = products.find((p) => p.title === `Printed Home Education Planning Workbook – ${jurisdiction.name}`);
+  const premiumBlank = products.find(p=>p.title===premiumTitle(jurisdiction,"premium_blank"));
+  const premiumPersonal = products.find(p=>p.title===premiumTitle(jurisdiction,"premium_personalised"));
+  const premiumPrint = products.find(p=>p.title===premiumTitle(jurisdiction,"premium_printed"));
   const create = async (kind = "blank") => {
     setBusy(true); setMessage(""); setError("");
     try {
       await adminApi.post("/shop/products", {
-        title: kind === "printed" ? `Printed Home Education Planning Workbook – ${jurisdiction.name}` : kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
-        description: kind === "printed"
+        title: kind.startsWith("premium_") ? premiumTitle(jurisdiction,kind) : kind === "printed" ? `Printed Home Education Planning Workbook – ${jurisdiction.name}` : kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
+        description: kind.startsWith("premium_")
+          ? "Complete Side-Quest-branded Home Education Planner & Diary for "+jurisdiction.name+". Includes state-based learning plans, curriculum goals, lesson plans, weekly learning diary, reading logs, outcome and evidence tracking, assessment, term reviews and authority preparation checklists. "+(kind==="premium_blank"?"Blank downloadable PDF for the family to complete.":kind==="premium_personalised"?"Personalised family PDF produced after a paid guided setup and emailed to the checkout address.":"Personalised spiral-bound printed family edition, including Australian delivery, prepared after a paid guided setup.")+" Independent educational resource, not an official government form or approval."
+          : kind === "printed"
           ? `A professionally printed and posted copy of the Side-Quest ${jurisdiction.name} home education planning workbook. This is an independent parent planning resource, not an official government form or registration guarantee. Printing, binding, packaging, dispatch and postage must be costed before orders open.`
           : kind === "guided"
           ? `A private, guided planning worksheet for ${jurisdiction.name}. After a verified payment, enter your family's own educational goals and activities in your browser, review the resulting document and save it as a PDF using your browser's print function. It isn't an interactive fillable PDF, official government form or registration guarantee. Confirm current requirements with your authority.`
           : description(jurisdiction),
         department: "home-education",
         collection: "Home Education Documents",
-        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind === "printed" ? ["print-and-post"] : kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
-        fulfilment: kind === "printed" ? "made_to_order" : "digital",
+        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind.startsWith("premium_") ? [{premium_blank:"premium-planner-blank",premium_personalised:"premium-planner-personalised",premium_printed:"premium-planner-printed"}[kind]] : kind === "printed" ? ["print-and-post"] : kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
+        fulfilment: ["printed","premium_printed"].includes(kind) ? "made_to_order" : "digital",
         status: "draft",
         stage: "launch_now",
-        price_cents: kind === "printed" ? null : kind === "guided" ? 2495 : 1295,
+        max_per_order:1,
+        price_cents: kind === "premium_blank" ? 2995 : kind === "premium_personalised" ? 3995 : kind === "premium_printed" ? 6995 : kind === "printed" ? 1499 : kind === "guided" ? 999 : 499,
         safety_checked: false,
       });
       setMessage("Draft listing created. It is hidden and cannot be purchased yet.");
@@ -100,6 +112,21 @@ export default function HqDocumentProducts({ jurisdiction }) {
     }catch(e){setError(errorText(e,"Could not save the previewed PDF."));}
     finally{setBusy(false);}
   };
+  const generatePremium = async () => {
+    setBusy(true);setError("");setMessage("");setPremiumPreview(null);setPremiumAccepted(false);
+    try {
+      const result=await adminApi.post("/document-studio/preview-premium",{state:jurisdiction.code,year_level:yearLevel,mode:premiumMode});
+      setPremiumPreview(result);setMessage("Complete premium workbook preview created. Nothing saved or published.");
+    }catch(e){setError(errorText(e,"Could not generate premium preview."))}finally{setBusy(false)}
+  };
+  const savePremium = async () => {
+    if(!premiumBlank||!premiumPreview||premiumPreview.mode!=="blank"||!premiumAccepted)return;
+    setBusy(true);setError("");setMessage("");
+    try{
+      await adminApi.post("/document-studio/products/"+encodeURIComponent(premiumBlank.id)+"/save-premium",{state:premiumPreview.state,year_level:premiumPreview.year_level,sha256:premiumPreview.sha256});
+      setPremiumPreview(null);setPremiumAccepted(false);setMessage("Reviewed premium blank PDF saved privately. Release approval still required.");await load();
+    }catch(e){setError(errorText(e,"Could not save premium PDF."))}finally{setBusy(false)}
+  };
   const upload = async () => {
     if (!current || !file || !confirmed) return;
     setBusy(true); setError(""); setMessage("");
@@ -118,8 +145,8 @@ export default function HqDocumentProducts({ jurisdiction }) {
   return (
     <section className="paper-card p-5 space-y-3" data-testid="hq-document-products">
       <h3 className="text-lg font-bold">Sell a blank fillable document</h3>
-      <p className="text-sm text-stone-700">Create an independent state-specific digital product in your existing Square-backed shop. New guided drafts include the first child at the base price, with $1 for each additional child in the same household. Print-and-post family orders add $3 per extra child, plus postage. Existing listing prices are not overwritten.</p>
-      <p className="text-sm text-stone-700">Suggested price for new drafts: <strong>$12.95 AUD</strong> · {jurisdiction.name} · no postage · no AI generation.</p>
+      <p className="text-sm text-stone-700">Create an independent state-specific digital product in your existing Square-backed shop. New draft prices: blank fillable $4.99 (+$1 per additional child); guided personalised $9.99 (+$2 per additional child); printed and posted $14.99 delivered (+$2 per additional child). Existing listing prices are not overwritten.</p>
+      <p className="text-sm text-stone-700">Suggested price for new drafts: <strong>$4.99 AUD</strong> · {jurisdiction.name} · no postage · no AI generation.</p>
       {!current
         ? <button type="button" disabled={busy || refreshing} onClick={() => create("blank")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} shop draft</button>
         : <div className="rounded-xl border border-stone-200 p-4 space-y-3">
@@ -160,7 +187,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
           <p className="text-xs text-stone-600">Uploading does not publish the listing. When ready, use <a href="/parent/command-centre/shop" className="underline">Owner HQ → Shop</a> to review its price, photo, description and visibility.</p>
         </div>}
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
-        <h4 className="font-semibold">Guided personalised document — $24.95 AUD (new draft base)</h4>
+        <h4 className="font-semibold">Guided personalised document — $9.99 AUD (new draft base)</h4>
         <div className="rounded-xl border-2 border-[#4A5D3A] bg-[#F9F8F0] p-4 space-y-3">
           <h5 className="font-semibold">Preview the guided personalised PDF</h5>
           <p className="text-sm">See the actual PDF a buyer would receive, using “Alex Example” and fictional family information. No purchase, subscription or real child profile is necessary. Nothing will be saved or emailed.</p>
@@ -179,18 +206,63 @@ export default function HqDocumentProducts({ jurisdiction }) {
         </div>
         <p className="text-sm text-stone-700">A separate draft for the paid guided document builder. Families enter and review their information; Side-Quest generates the plan through its existing system and emails the PDF to the purchasing address. No paid AI calls.</p>
         {guided
-          ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"} · {guided.has_file ? "Guide PDF uploaded" : "Guide PDF missing"}. Before publishing, upload the approved instruction PDF in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
+          ? <p className="text-sm">Listing: {guided.status} · {guided.visible ? "Visible" : "Hidden"}. Guided documents generate at purchase, so a static PDF upload is not required. Use the release checklist below. View settings in <a className="underline" href="/parent/command-centre/shop">Owner HQ Shop</a>.</p>
           : <button type="button" disabled={busy || refreshing} onClick={() => create("guided")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} guided-document draft</button>}
       </div>
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
         <h4 className="font-semibold">Printed and posted workbook — physical version</h4>
-        <p className="text-sm font-semibold text-[#1F3B2D]">Base printing price covers one child; add $3 per additional child (up to five), plus calculated postage.</p>
-        <p className="text-sm text-stone-700">Offer professionally printed pages for families who prefer paper. This is a separate, made-to-order physical shop product: printing, binding, packaging, dispatch and Australia Post postage are charged separately from the digital PDF. The shop's existing physical fulfilment and postage quoting can be reused after you enter real costs and packed weight/dimensions.</p>
+        <p className="text-sm font-semibold text-[#1F3B2D]">$14.99 delivered for one child, then $2 per additional child (up to five), with no extra postage line at checkout.</p>
+        <p className="text-sm text-stone-700">Offer professionally printed pages for families who prefer paper. This is a separate, made-to-order physical shop product: the $14.99 base includes $9.99 document preparation and $5 for print-and-post. Before accepting orders, verify that this covers printing, binding, packaging, dispatch and Australia Post costs. The shop's existing physical fulfilment and postage quoting can be reused after you enter real costs and packed weight/dimensions.</p>
         {printed
           ? <p className="text-sm">Physical listing: <strong>{printed.status}</strong> · {printed.visible ? "Visible" : "Hidden"} · {printed.price_cents == null ? "Printing price not set" : "Price set"}. Review production costs, postage and the exact approved printed proof before publishing.</p>
           : <button type="button" disabled={busy || refreshing} onClick={()=>create("printed")} className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold text-[#4A5D3A] disabled:opacity-60">Create hidden {jurisdiction.code} print-and-post draft</button>}
         <p className="text-xs text-stone-600">The printable PDF includes interactive fields for digital use and ample space for handwriting. Print-and-post is not active until the physical product is reviewed and priced.</p>
       </div>
+      <section className="rounded-xl border-2 border-[#1F3B2D] bg-white p-4 space-y-4">
+        <div><h3 className="font-bold text-lg text-[#1F3B2D]">Complete Home Education Planner & Diary</h3>
+          <p className="text-sm text-stone-700">A full family workbook with lesson plans, reading logs, evidence records, curriculum outcomes, weekly and term diaries, progress reviews and state registration checklists. Every format uses the same Side-Quest design.</p></div>
+        <div className="grid md:grid-cols-3 gap-3">
+          {[
+            ["premium_blank",premiumBlank,"Blank family PDF","$29.95","Complete printable/downloadable pack"],
+            ["premium_personalised",premiumPersonal,"Personalised family PDF","$39.95","Step-by-step setup and emailed PDF"],
+            ["premium_printed",premiumPrint,"Spiral-bound personalised","$69.95","Printed, bound and posted to the family"],
+          ].map(([kind,product,title,price,description])=><article key={kind} className="border rounded-xl p-3 space-y-2">
+            <h4 className="font-semibold">{title}</h4><p className="text-xl font-bold text-[#1F3B2D]">{product&&product.price_cents!=null?"$"+(product.price_cents/100).toFixed(2):price}</p>
+            <p className="text-xs text-stone-600">{description}</p>
+            {product?<p className="text-xs">{product.status} · {product.visible?"Visible":"Hidden"} · {product.has_file?"Master PDF saved":"Generated on purchase or not yet saved"}</p>
+              :<button type="button" disabled={busy} onClick={()=>create(kind)} className="text-sm font-semibold rounded-lg bg-[#4A5D3A] text-white px-3 py-2">Create hidden product draft</button>}
+          </article>)}
+        </div>
+        <div className="rounded-xl border bg-[#F9F8F0] p-4 space-y-3">
+          <h4 className="font-semibold">Generate and review the complete premium workbook</h4>
+          <p className="text-sm">The full preview uses the real premium renderer, with no payment, upload or publication. Personalised previews use fictional family details only.</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <label className="text-sm font-semibold">Version to preview
+              <select className={input} value={premiumMode} onChange={e=>{setPremiumMode(e.target.value);setPremiumPreview(null);setPremiumAccepted(false)}}>
+                <option value="blank">Blank complete PDF</option><option value="personalised">Filled fictional family edition</option>
+              </select>
+            </label>
+            <label className="text-sm font-semibold">Year-level example
+              <select className={input} value={yearLevel} onChange={e=>{setYearLevel(e.target.value);setPremiumPreview(null);setPremiumAccepted(false)}}>
+                {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map(y=><option key={y}>{y}</option>)}
+              </select>
+            </label>
+          </div>
+          <button type="button" disabled={busy} className="rounded-lg bg-[#1F3B2D] text-white px-4 py-2 font-semibold" onClick={generatePremium}>Generate full premium PDF preview</button>
+          {premiumPreview&&<div className="space-y-3 bg-white border rounded-lg p-3">
+            <p className="font-semibold text-sm">Full owner proof: {premiumPreview.mode} · {jurisdiction.name} · Year {premiumPreview.year_level}</p>
+            <iframe title="Premium Side-Quest family planner PDF preview" className="w-full h-[520px] border rounded-lg" src={premiumPreview.data_url}/>
+            <a className="text-sm underline" href={premiumPreview.data_url} download="sidequest-premium-planner-proof.pdf">Download and inspect every page</a>
+            <label className="flex gap-2 text-sm items-start"><input type="checkbox" checked={premiumAccepted} onChange={e=>setPremiumAccepted(e.target.checked)}/>
+              <span>I have inspected the complete PDF for this edition, tested print margins, lesson, reading, outcomes and evidence sections, and approve saving the exact blank version.</span></label>
+            {premiumPreview.mode==="blank"&&premiumBlank&&<button type="button" disabled={busy||!premiumAccepted} onClick={savePremium} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 font-semibold disabled:opacity-40">Approve and save this blank PDF privately</button>}
+            {premiumPreview.mode==="personalised"&&<p className="text-xs text-stone-700">This fictional example previews the same design used in both personalised formats. Individual customer PDFs are generated after the family's paid setup and cannot be pre-saved as generic files.</p>}
+          </div>}
+        </div>
+        <p className="text-xs text-amber-900">The $69.95 printed version remains unavailable for sale until a real spiral-bound print proof, packaging costs, shipping and private owner-queue processing have been tested.</p>
+      </section>
+      <HqDocumentRelease products={products.filter(p=>(p.tags||[]).includes(jurisdiction.code.toLowerCase()))} onRefresh={load}/>
+      <HqDocumentPrintQueue/>
       <button type="button" className="text-xs underline text-stone-700" onClick={load} disabled={refreshing}>Refresh document products</button>
       {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
       {message && <p role="status" className="text-sm text-emerald-800">{message}</p>}

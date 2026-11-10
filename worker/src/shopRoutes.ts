@@ -23,6 +23,9 @@ import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitleme
 import { documentKind, familyDocumentPrice } from "./familyDocumentPricing";
 import { generateHomeEducationTemplate } from "./homeEducationPdf";
 import { sha256 } from "./documentReview";
+import { documentStateFromTags, documentType, requiredReleaseRevision, reviewEvidence, approvedForSale } from "./documentRelease";
+import { premiumDiaryHtml, premiumFamilyDiaryHtml } from "./premiumHomeEducationDiary";
+import { ensurePremiumPrintQueue, premiumPdfKey, PRINT_JOB_STATUSES } from "./premiumPrintQueue";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 import { sampleGuidedDocumentData } from "./documentStudioPreview";
 
@@ -142,7 +145,7 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     }
     const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}${oneOff ? " – one-off box" : ""}`;
     lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical });
-    if (physical && !giftMonths) postage = Math.max(postage, p.postage_cents ?? 0);
+    if (physical && !giftMonths && !["printed","planner_printed"].includes(documentType(p)||"")) postage = Math.max(postage, p.postage_cents ?? 0);
   }
   return { ok: true, lines, postage, physical: lines.some((l) => l.physical) };
 }
@@ -215,7 +218,12 @@ export function registerShopCatalog(app: App) {
     if(!rate.ok)return c.json({detail:"Too many previews. Please try later."},429);
     try {
       let pdf:Uint8Array;
-      if(tags.includes("guided-document")){
+      if(tags.some(t=>["premium-planner-blank","premium-planner-personalised","premium-planner-printed"].includes(t))){
+        const personalised=tags.includes("premium-planner-personalised")||tags.includes("premium-planner-printed");
+        const data=personalised?sampleGuidedDocumentData(matches[0],year):null;
+        const plan=data?await buildGuestPlan(c.env.DB,matches[0] as any,data):null;
+        pdf=await renderGuestPdf(c.env,premiumDiaryHtml(matches[0],year,plan,true));
+      }else if(tags.includes("guided-document")){
         const sample=sampleGuidedDocumentData(matches[0],year);
         const plan=await buildGuestPlan(c.env.DB,matches[0] as any,sample);
         pdf=await renderGuestPdf(c.env,guestPlanHtml(plan,true));
@@ -336,6 +344,91 @@ export function registerShopCatalog(app: App) {
     } catch (e: any) {
       console.error("shop subscription cancel failed", e?.message);
       return c.json({ detail: e?.message === "This subscription hasn't started yet." ? e.message : "Could not cancel. Please try again or email us." }, 502);
+    }
+  });
+
+  // Purchased premium planner wizard. It is available without a subscription,
+  // but only with the exact secret paid-order token and matching product.
+  app.get("/api/shop/orders/:id/premium/:productId", async (c) => {
+    c.header("Cache-Control","private, no-store");
+    const o=await shopOrderFor(c.env.DB,c.req.param("id"),c.req.query("t")||"");
+    const pid=c.req.param("productId");
+    if(!o?.paid_at)return c.json({detail:"Document link unavailable."},404);
+    await ensureShopCatalog(c.env.DB);
+    const p=await c.env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(pid).first<any>();
+    const kind=documentType(p),state=documentStateFromTags(p);
+    if(!p||!["planner_personalised","planner_printed"].includes(kind||"")||!state||
+       !o.lines.some((line:ShopLine)=>line.product_id===pid&&Number(line.amount_cents)>0))
+      return c.json({detail:"Document link unavailable."},404);
+    const {JURISDICTIONS,CHECKED_ON}=await import("./data/planJurisdictions");
+    const j=JURISDICTIONS[state as keyof typeof JURISDICTIONS];
+    return c.json({title:p.title,kind,state,authority:j.authority,state_name:j.name,
+      areas:j.areas,requirements:j.requirements,sources:j.sources,checked_on:CHECKED_ON,
+      max_children:5,delivery:kind==="planner_printed"?"owner_print_queue":"buyer_email_pdf"});
+  });
+  app.post("/api/shop/orders/:id/premium/:productId/prepare", async (c) => {
+    c.header("Cache-Control","private, no-store");
+    const o=await shopOrderFor(c.env.DB,c.req.param("id"),c.req.query("t")||"");
+    const pid=c.req.param("productId");
+    if(!o?.paid_at)return c.json({detail:"Document link unavailable."},404);
+    await ensureShopCatalog(c.env.DB);
+    const p=await c.env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(pid).first<any>();
+    const kind=documentType(p),state=documentStateFromTags(p);
+    if(!["planner_personalised","planner_printed"].includes(kind||"")||!state||
+       !o.lines.some((line:ShopLine)=>line.product_id===pid&&Number(line.amount_cents)>0))
+      return c.json({detail:"Document link unavailable."},404);
+    const limiter=await hitRateLimit(c.env.DB,"premium-document:"+o.id+":"+pid,10,86400);
+    if(!limiter.ok)return c.json({detail:"PDF preparation limit reached today. Please contact support."},429);
+    const raw:any=await c.req.json().catch(()=>({}));
+    if(!Array.isArray(raw.children)||raw.children.length<1||raw.children.length>5)
+      return c.json({detail:"Add between 1 and 5 children."},400);
+    const data:any[]=[];
+    for(const child of raw.children){
+      const checked=validateGuestInput(child);
+      if(!checked.ok)return c.json({detail:checked.detail},400);
+      for(const k of ["lesson_plans","reading_log","evidence_log","outcome_tracking","assessment_notes"]){
+        checked.data[k]=typeof child[k]==="string"?child[k].slice(0,3000).trim():"";
+      }
+      data.push(checked.data);
+    }
+    if(!c.env.BROWSER?.quickAction)return c.json({detail:"PDF rendering is unavailable."},503);
+    try{
+      const prepared=await Promise.all(data.map(d=>buildGuestPlan(c.env.DB,state as any,d)));
+      const html=premiumFamilyDiaryHtml(state,prepared.map((r:any)=>({year_level:r.data.year_level,prepared:r})));
+      const pdf=await renderGuestPdf(c.env,html);
+      if(raw.action!=="final"){
+        let binary="";for(let i=0;i<pdf.length;i+=8192)binary+=String.fromCharCode(...pdf.subarray(i,i+8192));
+        return c.json({ok:true,data_url:"data:application/pdf;base64,"+btoa(binary),
+          note:"Private proof only. Confirm names, curriculum goals, pages and evidence before submitting."});
+      }
+      if(raw.confirmed!==true)return c.json({detail:"Review and confirm the PDF before final submission."},400);
+      if(kind==="planner_personalised"){
+        if(!c.env.EMAIL)return c.json({detail:"Email delivery is unavailable."},503);
+        const sent=await sendEmail(c.env,{
+          to:o.email,subject:"Your Side-Quest Home Education Planner & Diary",
+          text:"Your personalised Side-Quest family planner PDF is attached. Please review current official registration requirements before using it.",
+          html:"<p>Your personalised Side-Quest family planner is attached as a PDF.</p><p>Please check each child's details and current official requirements.</p>",
+          attachments:[{filename:"sidequest-personalised-family-planner.pdf",content:pdf,type:"application/pdf",disposition:"attachment"}],
+        });
+        if(!sent)return c.json({detail:"PDF prepared but email delivery failed. Try again."},502);
+        return c.json({ok:true,delivered:"email",detail:"Your complete personalised family planner PDF has been emailed to the checkout address."});
+      }
+      if(!c.env.BUCKET)return c.json({detail:"Private print storage unavailable."},503);
+      await ensurePremiumPrintQueue(c.env.DB);
+      const existing=await c.env.DB.prepare("SELECT id FROM premium_print_jobs WHERE order_id=? AND product_id=?").bind(o.id,pid).first();
+      if(existing)return c.json({detail:"Your planner has already been submitted to Side-Quest for printing. Contact support for changes."},409);
+      const jobId=crypto.randomUUID(),key=premiumPdfKey(o.id,pid,jobId),now=new Date().toISOString();
+      await c.env.BUCKET.put(key,pdf,{httpMetadata:{contentType:"application/pdf"}});
+      const inserted=await c.env.DB.prepare("INSERT OR IGNORE INTO premium_print_jobs(id,order_id,product_id,pdf_key,status,submitted_at,updated_at) VALUES(?,?,?,?,?,?,?)")
+        .bind(jobId,o.id,pid,key,"ready",now,now).run();
+      if(!(inserted as any)?.meta?.changes){await c.env.BUCKET.delete(key);return c.json({detail:"A print job already exists for this purchase."},409);}
+      await sendEmail(c.env,{to:o.email,subject:"Your Side-Quest planner is queued for printing",
+        text:"Your personalised family planner has been securely submitted to Side-Quest for printing. We'll notify you after dispatch.",
+        html:"<p>Your family planner is in the Side-Quest print queue. We'll contact you after dispatch.</p>"}).catch(()=>false);
+      return c.json({ok:true,delivered:"print_queue",detail:"Your personalised planner has been sent securely to the Side-Quest printing queue."});
+    }catch(err:any){
+      console.error("premium planner preparation failed",err?.message);
+      return c.json({detail:"Could not prepare the planner. Please retry or contact support."},502);
     }
   });
 
@@ -691,6 +784,99 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     return c.json({ images: p.images - 1 });
   });
 
+  // One Owner HQ release process; shop visibility and ordinary updates cannot
+  // override the independently reviewed, version-bound quality gate.
+  admin.post("/document-studio/products/:id/price", W, async (c: Context<any>) => {
+    const env=c.env as Env,id=c.req.param("id");
+    if(!UUID.test(id))return c.json({detail:"Product not found."},404);
+    await ensureShopCatalog(env.DB);
+    const p=await env.DB.prepare("SELECT id,tags,fulfilment,collection FROM shop_products WHERE id=?").bind(id).first<any>();
+    const kind=documentType(p);
+    const price=({blank:499,guided:999,printed:1499,planner_blank:2995,planner_personalised:3995,planner_printed:6995} as any)[kind||""];
+    if(price==null)return c.json({detail:"Document product not found."},404);
+    await env.DB.prepare("UPDATE shop_products SET price_cents=?,updated_at=? WHERE id=?").bind(price,new Date().toISOString(),id).run();
+    await audit(c,"document_studio.price_set",id,{price,kind});
+    return c.json({ok:true,price_cents:price});
+  });
+  admin.post("/document-studio/products/:id/release", W, async (c: Context<any>) => {
+    const env=c.env as Env,id=c.req.param("id");
+    if(!UUID.test(id))return c.json({detail:"Document product not found."},404);
+    await ensureShopCatalog(env.DB);
+    const p=await env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(id).first<any>();
+    const kind=documentType(p),state=documentStateFromTags(p);
+    if(!kind||!state)return c.json({detail:"Document product not found."},404);
+    const raw=await readJson(c),now=new Date().toISOString();
+    if(raw.action==="deactivate"){
+      await env.DB.prepare("UPDATE shop_products SET visible=0,status='draft',document_release_version=NULL,document_released_at=NULL,updated_at=? WHERE id=?").bind(now,id).run();
+      await env.DB.prepare("INSERT INTO home_education_release_history(id,product_id,action,recorded_at) VALUES(?,?,?,?)").bind(crypto.randomUUID(),id,"deactivated",now).run();
+      await audit(c,"document_studio.deactivated",id,{kind,state});
+      return c.json({ok:true,active:false});
+    }
+    const checked=reviewEvidence(raw);
+    if(!checked.ok)return c.json({detail:checked.detail},400);
+    if(p.price_cents==null||p.price_cents<=0)return c.json({detail:"Set a price first."},409);
+    if(["blank","planner_blank"].includes(kind)&&(!p.digital_file||!env.BUCKET||!(await env.BUCKET.head(fileKey(id)))))
+      return c.json({detail:"Generate, inspect and save the approved PDF before activating."},409);
+    if(["guided","planner_personalised","planner_printed"].includes(kind)&&(!env.BROWSER?.quickAction||!env.EMAIL))
+      return c.json({detail:"PDF rendering and email delivery must be configured."},503);
+    if(kind==="printed"||kind==="planner_printed"){
+      if(raw.print_proof_verified!==true||raw.printing_postage_cost_verified!==true||raw.fulfilment_trial_completed!==true)
+        return c.json({detail:"Verify the physical print proof, spiral binding where relevant, all-inclusive delivery costs and end-to-end fulfilment trial before activation."},409);
+      if(!env.BUCKET)return c.json({detail:"Secure document storage is required for physical fulfilment."},503);
+      if(kind==="printed"&&(!p.digital_file||!(await env.BUCKET.head(fileKey(id)))))
+        return c.json({detail:"Upload and verify the print master for this basic printed workbook."},409);
+      if(kind==="planner_printed"&&(!env.BROWSER?.quickAction||!env.EMAIL))
+        return c.json({detail:"The personalised printed planner needs PDF rendering and email confirmation configured."},503);
+    }
+    const revision=requiredReleaseRevision(p);
+    if(!revision)return c.json({detail:"Unrecognised template revision."},409);
+    await env.DB.prepare("UPDATE shop_products SET document_release_version=?,document_source_checked_on=?,document_released_at=?,visible=1,status='in_stock',updated_at=? WHERE id=?")
+      .bind(revision,checked.value.source,now,now,id).run();
+    await env.DB.prepare("INSERT INTO home_education_release_history(id,product_id,action,version,source_checked_on,reviewer,notes,recorded_at) VALUES(?,?,?,?,?,?,?,?)")
+      .bind(crypto.randomUUID(),id,"activated",revision,checked.value.source,checked.value.reviewer,checked.value.notes,now).run();
+    await audit(c,"document_studio.activated",id,{kind,state,revision});
+    return c.json({ok:true,active:true,revision});
+  });
+
+  // Owner proof: the entire premium book is generated without touching shop
+  // products. Blank and fictional-filled editions use identical master pages.
+  admin.post("/document-studio/preview-premium", R, async (c: Context<any>) => {
+    const raw=await readJson(c);
+    const state=String(raw.state||"").toUpperCase(),year=String(raw.year_level||"3"),mode=String(raw.mode||"blank");
+    if(!["blank","personalised"].includes(mode))return c.json({detail:"Invalid edition."},400);
+    const limited=await hitRateLimit(c.env.DB,"document-studio:premium-preview",12,3600);
+    if(!limited.ok)return c.json({detail:"Preview limit reached. Try again later."},429);
+    if(!c.env.BROWSER?.quickAction)return c.json({detail:"PDF renderer unavailable."},503);
+    try {
+      const data=mode==="personalised"?sampleGuidedDocumentData(state,year):null;
+      const plan=data?await buildGuestPlan(c.env.DB,state as any,data):null;
+      const html=premiumDiaryHtml(state,year,plan);
+      const pdf=await renderGuestPdf(c.env,html);
+      let binary="";for(let i=0;i<pdf.length;i+=8192)binary+=String.fromCharCode(...pdf.subarray(i,i+8192));
+      return c.json({data_url:"data:application/pdf;base64,"+btoa(binary),sha256:await sha256(pdf),mode,state,year_level:year,
+        note:"Full owner-only sample. Nothing has been saved, emailed or published."});
+    }catch(err:any){console.error("premium preview failed",err?.message);return c.json({detail:"Could not generate premium preview."},502);}
+  });
+  admin.post("/document-studio/products/:id/save-premium", W, async (c: Context<any>) => {
+    const env=c.env as Env,id=c.req.param("id"),raw=await readJson(c);
+    if(!UUID.test(id)||!env.BUCKET)return c.json({detail:"Document storage unavailable."},503);
+    await ensureShopCatalog(env.DB);
+    const p=await env.DB.prepare("SELECT * FROM shop_products WHERE id=?").bind(id).first<any>();
+    if(documentType(p)!=="planner_blank")return c.json({detail:"Only blank premium PDF products can store a reusable master."},409);
+    const state=documentStateFromTags(p);
+    if(!state||raw.state!==state)return c.json({detail:"State mismatch."},409);
+    if(!c.env.BROWSER?.quickAction)return c.json({detail:"PDF renderer unavailable."},503);
+    try{
+      const pdf=await renderGuestPdf(env,premiumDiaryHtml(state,String(raw.year_level||"3")));
+      const hash=await sha256(pdf);
+      if(hash!==raw.sha256)return c.json({detail:"The PDF changed. Preview again before approving."},409);
+      await env.BUCKET.put(fileKey(id),pdf,{httpMetadata:{contentType:"application/pdf"},customMetadata:{name:"sidequest-family-planner.pdf"}});
+      await env.DB.prepare("UPDATE shop_products SET digital_file=1,document_release_version=NULL,document_released_at=NULL,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
+      await audit(c,"document_studio.premium_pdf_saved",id,{state,hash});
+      return c.json({ok:true,detail:"Approved premium blank PDF saved privately; independent quality release still required."});
+    }catch(err:any){console.error("premium save failed",err?.message);return c.json({detail:"Could not save premium PDF."},502);}
+  });
+
   // Owner-only two-step generation. Preview creates bytes in memory but
   // never persists or publishes a file. Save must match the exact SHA-256
   // fingerprint previously inspected in the browser.
@@ -757,7 +943,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if(!/^[a-f0-9]{64}$/.test(String(body.sha256||""))||fingerprint!==body.sha256) return c.json({ detail:"This PDF differs from the preview. Preview the latest version before saving." },409);
     const filename=`sidequest-${state.toLowerCase()}-home-education-fillable.pdf`;
     await env.BUCKET.put(fileKey(id),bytes,{ httpMetadata:{contentType:"application/pdf"},customMetadata:{name:filename} });
-    await env.DB.prepare("UPDATE shop_products SET digital_file=1,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
+    await env.DB.prepare("UPDATE shop_products SET digital_file=1,document_release_version=NULL,document_released_at=NULL,visible=0,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
     await audit(c,"document_studio.pdf_saved",id,{state,year,fingerprint,bytes:bytes.length});
     return c.json({ok:true,saved:true,sha256:fingerprint,detail:"Saved as a draft file. Document sales remain blocked pending state-specific quality review."});
   });
@@ -775,7 +961,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if (file.bytes.length > MAX_FILE_BYTES) return c.json({ detail: "Files can be up to 25 MB." }, 400);
     const name = String(body.name || "download").replace(/[^\w. -]/g, "").slice(0, 100) || "download";
     await env.BUCKET.put(fileKey(id), file.bytes, { httpMetadata: { contentType: file.type }, customMetadata: { name } });
-    await env.DB.prepare("UPDATE shop_products SET digital_file = 1, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
+    await env.DB.prepare("UPDATE shop_products SET digital_file = 1, document_release_version=NULL, document_released_at=NULL, visible=CASE WHEN collection = 'Home Education Documents' THEN 0 ELSE visible END, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
     await audit(c, "shop.file_uploaded", id, { name, bytes: file.bytes.length });
     return c.json({ ok: true });
   });
@@ -789,6 +975,52 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     await env.DB.prepare("UPDATE shop_products SET digital_file = 0, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
     await audit(c, "shop.file_removed", id);
     return c.json({ ok: true });
+  });
+
+  admin.get("/document-studio/print-jobs", R, async (c: Context<any>) => {
+    await ensurePremiumPrintQueue(c.env.DB);
+    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
+    return c.json({jobs:(results||[]).map((x:any)=>({...x,shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}))});
+  });
+  admin.get("/document-studio/print-jobs/:jobId/pdf", R, async (c: Context<any>) => {
+    const id=c.req.param("jobId");
+    if(!UUID.test(id)||!c.env.BUCKET)return c.json({detail:"File unavailable."},404);
+    await ensurePremiumPrintQueue(c.env.DB);
+    const job=await c.env.DB.prepare("SELECT j.pdf_key FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id WHERE j.id=? AND o.paid_at IS NOT NULL").bind(id).first<any>();
+    if(!job)return c.json({detail:"File unavailable."},404);
+    const pdf=await c.env.BUCKET.get(job.pdf_key);
+    if(!pdf)return c.json({detail:"File unavailable."},404);
+    c.header("Cache-Control","private, no-store");
+    c.header("Content-Type","application/pdf");
+    c.header("Content-Disposition",'attachment; filename="sidequest-print-ready-planner.pdf"');
+    return c.body(pdf.body as any);
+  });
+  // Parent documents remain private during fulfilment; after completion the
+  // owner can explicitly purge the PDF from R2 while retaining order metadata.
+  admin.post("/document-studio/print-jobs/:jobId/delete-pdf", W, async (c: Context<any>) => {
+    const id=c.req.param("jobId"),body=await readJson(c);
+    if(!UUID.test(id)||body.confirm!==true)return c.json({detail:"Explicit confirmation required."},400);
+    if(!c.env.BUCKET)return c.json({detail:"Private storage unavailable."},503);
+    await ensurePremiumPrintQueue(c.env.DB);
+    const job=await c.env.DB.prepare("SELECT id,status,pdf_key FROM premium_print_jobs WHERE id=?").bind(id).first<any>();
+    if(!job)return c.json({detail:"Print job not found."},404);
+    if(job.status!=="complete")return c.json({detail:"Mark the print job complete before deleting its private file."},409);
+    if(job.pdf_key){
+      await c.env.BUCKET.delete(job.pdf_key);
+      await c.env.DB.prepare("UPDATE premium_print_jobs SET pdf_key='',updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
+    }
+    await audit(c,"document_studio.print_pdf_deleted",id);
+    return c.json({ok:true,detail:"Private print PDF deleted. Order history retained."});
+  });
+
+  admin.post("/document-studio/print-jobs/:jobId/status", W, async (c: Context<any>) => {
+    const id=c.req.param("jobId"),body=await readJson(c),status=String(body.status||"");
+    if(!UUID.test(id)||!PRINT_JOB_STATUSES.includes(status as any))return c.json({detail:"Invalid print status."},400);
+    await ensurePremiumPrintQueue(c.env.DB);
+    const changed=await c.env.DB.prepare("UPDATE premium_print_jobs SET status=?,updated_at=? WHERE id=?").bind(status,new Date().toISOString(),id).run();
+    if(!(changed as any)?.meta?.changes)return c.json({detail:"Print job not found."},404);
+    await audit(c,"document_studio.print_job_updated",id,{status});
+    return c.json({ok:true,status});
   });
 
   admin.get("/shop/interest", R, async (c: Context<any>) => {

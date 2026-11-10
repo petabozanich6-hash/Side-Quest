@@ -118,8 +118,8 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const max = Math.min(p.max_per_order || 20, 20);
   const missing = p.personalisation.find((f) => f.required && !(pers[f.key] || "").trim());
   const needVariant = p.variants.length > 0 && !v;
-  const familyKind = (p.tags || []).includes("home-education-document") ? (p.tags || []).includes("guided-document") ? "guided" : (p.tags || []).includes("print-and-post") ? "printed" : null : null;
-  const familyPrice = familyKind && Number.isInteger(price) ? price + (childCount - 1) * (familyKind === "printed" ? 300 : 100) : price;
+  const familyKind = (p.tags || []).includes("home-education-document") ? (p.tags || []).includes("guided-document") ? "guided" : (p.tags || []).includes("print-and-post") ? "printed" : (p.tags || []).includes("fillable-pdf") ? "blank" : null : null;
+  const familyPrice = familyKind && Number.isInteger(price) ? price + (childCount - 1) * (familyKind === "blank" ? 100 : 200) : price;
 
   const post = async (path, body) => {
     setBusy(true); setError(""); setMsg("");
@@ -216,7 +216,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
                 </select>
               </label>
               <p className="font-bold" style={{color: GREEN}}>{familyPrice == null ? "Price pending" : `${money(familyPrice)} total`}</p>
-              <p className="text-xs text-stone-700">First child included. Each additional child: {familyKind === "printed" ? "$3" : "$1"}. Each learner receives an individual document.</p>
+              <p className="text-xs text-stone-700">First child included. Each additional child: {familyKind === "blank" ? "$1" : "$2"}. Each learner receives an individual document.</p>
             </div>}
             {!familyKind && !p.subscription && max > 1 && (
               <label className="block text-sm font-semibold w-32">Quantity

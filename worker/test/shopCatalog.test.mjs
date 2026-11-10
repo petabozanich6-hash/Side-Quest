@@ -236,11 +236,11 @@ test("state document downloads cannot be sold before a PDF is uploaded", async (
   const db = makeDb();
   await ensureShopCatalog(db);
   const p = await one(db, "Printed Quest Book");
-  await db.prepare("UPDATE shop_products SET title = ?, department = 'digital', fulfilment = 'digital', stage = 'launch_now', visible = 1, status = 'in_stock', price_cents = 1495, tags = ? WHERE id = ?")
+  await db.prepare("UPDATE shop_products SET title = ?, department = 'digital', fulfilment = 'digital', stage = 'launch_now', visible = 1, status = 'in_stock', price_cents = 1495, collection = 'Home Education Documents', tags = ? WHERE id = ?")
     .bind("Home Education Planning Template – New South Wales (Fillable PDF)", JSON.stringify(["home-education-document", "nsw"]), p.id).run();
   const locked = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(locked.can_buy, false, "not downloadable just because the owner enabled the listing");
-  assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /Download file not uploaded/);
+  assert.match((await priceItems(db, [{ product_id: p.id }])).detail, /quality review pending/);
   await db.prepare("UPDATE shop_products SET digital_file = 1 WHERE id = ?").bind(p.id).run();
   const reviewed = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(reviewed.can_buy, false, "even an uploaded PDF needs substantive state-specific approval");

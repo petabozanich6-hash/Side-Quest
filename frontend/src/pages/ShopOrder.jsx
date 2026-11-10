@@ -43,6 +43,11 @@ export default function ShopOrder() {
                 return (
                   <li key={i} className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3">
                     <span className="mr-auto font-semibold">{it.qty > 1 ? `${it.qty} × ` : ""}{it.title}</span>
+                    {it.premium_document && <Link
+                      to={`/shop/premium/${encodeURIComponent(id)}/${encodeURIComponent(it.product_id)}?t=${encodeURIComponent(t)}`}
+                      className="rounded-lg px-3 py-1.5 text-sm font-bold border border-[#1F3B2D] text-[#1F3B2D]">
+                      Personalise your planner
+                    </Link>}
                     {it.guided_document && <Link
                       to={`/shop/documents/${encodeURIComponent(id)}/${encodeURIComponent(it.product_id)}?t=${encodeURIComponent(t)}`}
                       className="rounded-lg px-3 py-1.5 text-sm font-bold border border-[#1F3B2D] text-[#1F3B2D]">
