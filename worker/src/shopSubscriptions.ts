@@ -3,7 +3,7 @@
 // then pays on Square's hosted page. Access is managed with a private link (token stored only as a hash).
 import { squareCall, type SquareConfig, type Fetch } from "./square";
 import { hashToken } from "./shopOrders";
-import { instalmentCents, instalmentsPerMail, mailPaymentStatus, type ShopBillingCadence } from "./shopMailBilling";
+import { mailPaymentStatus, type ShopBillingCadence } from "./shopMailBilling";
 
 type DB = D1Database;
 type Cfg = Extract<SquareConfig, { ok: true }>;
@@ -242,7 +242,14 @@ export async function recordShopMailing(db:DB, subscriptionId:string, editionMon
   if(!row.eligible) return {ok:false,detail:"This subscriber has not fully paid for this mailing or has already been sent this edition."};
   // An owner may have multiple roster tabs; the unique constraint prevents
   // duplicate editions. Never consume two payments twice on the same edition.
-  const result=await db.prepare("INSERT OR IGNORE INTO shop_subscription_mailings(subscription_id,edition_month,mailed_at,tracking) VALUES(?,?,?,?)")
-    .bind(subscriptionId,editionMonth,new Date().toISOString(),tracking.trim().slice(0,80)).run();
+  // Apply eligibility inside the INSERT statement, not only in the earlier
+  // read. Concurrent clicks across two editions cannot spend the same credit.
+  const result=await db.prepare(`INSERT OR IGNORE INTO shop_subscription_mailings(subscription_id,edition_month,mailed_at,tracking)
+    SELECT s.id,?,?,? FROM shop_subscriptions s WHERE s.id=? AND s.status='active'
+      AND NOT EXISTS (SELECT 1 FROM shop_subscription_mailings m WHERE m.subscription_id=s.id AND m.edition_month=?)
+      AND (SELECT COUNT(*) FROM shop_subscription_payments pay WHERE pay.subscription_id=s.id)
+        >= ((SELECT COUNT(*) FROM shop_subscription_mailings used WHERE used.subscription_id=s.id)+1)
+          * CASE WHEN s.billing_cadence='fortnightly' THEN 2 ELSE 1 END`)
+    .bind(editionMonth,new Date().toISOString(),tracking.trim().slice(0,80),subscriptionId,editionMonth).run();
   return (result as any)?.meta?.changes?{ok:true}:{ok:false,detail:"This edition was already marked mailed."};
 }
