@@ -29,6 +29,7 @@ import { premiumDiaryHtml, premiumFamilyDiaryHtml } from "./premiumHomeEducation
 import { ensurePremiumPrintQueue, premiumPdfKey, PRINT_JOB_STATUSES, canAdvancePrintStatus, validatePrintTracking } from "./premiumPrintQueue";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 import { sampleGuidedDocumentData } from "./documentStudioPreview";
+import { combineFamilyPlanHtml } from "./familyDocumentHtml";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -480,11 +481,22 @@ export function registerShopCatalog(app: App) {
     if(!Number.isInteger(paidChildCount) || paidChildCount<1 || paidChildCount>5 ||
        !Number.isInteger(childIndex) || childIndex<1 || childIndex>paidChildCount)
       return c.json({detail:"This learner is not covered by the paid family order."},403);
-    const valid = validateGuestInput(raw);
-    if (!valid.ok) return c.json({ detail: valid.detail }, 400);
-    const action = raw?.action === "email" ? "email" : "preview";
-    const prepared = await buildGuestPlan(c.env.DB, code, valid.data);
-    if (action === "preview") {
+    if (!["preview", "email", "family_email"].includes(String(raw?.action || "")))
+      return c.json({ detail: "Choose a document preview or confirmed email delivery." }, 400);
+    const familyEmail = raw?.action === "family_email";
+    if (familyEmail && paidChildCount < 2) return c.json({ detail: "This order has one learner. Use the individual document option." }, 400);
+    const submissions: any[] = familyEmail ? raw?.children : [raw];
+    if (!Array.isArray(submissions) || submissions.length !== (familyEmail ? paidChildCount : 1))
+      return c.json({ detail: "Provide one complete, individually reviewed plan for every child in the paid family order." }, 400);
+    const validated = submissions.map((entry) => validateGuestInput(entry || {}));
+    const invalid = validated.findIndex((entry) => !entry.ok);
+    if (invalid !== -1) return c.json({ detail: `Child ${invalid + 1}: ${(validated[invalid] as {ok:false;detail:string}).detail}` }, 400);
+    if (familyEmail && !submissions.every((entry) => entry?.reviewed === true))
+      return c.json({ detail: "Review and confirm every learner's generated plan before emailing the combined PDF." }, 400);
+    const preparedPlans = await Promise.all(validated.map((entry) =>
+      buildGuestPlan(c.env.DB, code, (entry as {ok:true;data:Record<string,any>}).data)));
+    const prepared = preparedPlans[0];
+    if (raw?.action === "preview") {
       return c.json({ ok:true, preview:prepared.content, title:prepared.plan.title,
         jurisdiction:code, recipient_hint:order.email.replace(/^(.{1,2}).*(@.*)$/, "$1***$2") });
     }
@@ -502,11 +514,20 @@ export function registerShopCatalog(app: App) {
 
     if (!c.env.EMAIL || !c.env.BROWSER?.quickAction) return c.json({ detail: "PDF delivery is not configured right now." }, 503);
     let bytes: Uint8Array;
-    try { bytes = await renderGuestPdf(c.env, guestPlanHtml(prepared)); }
+    try {
+      const html = familyEmail
+        ? combineFamilyPlanHtml(preparedPlans.map((plan) => guestPlanHtml(plan)))
+        : guestPlanHtml(prepared);
+      bytes = await renderGuestPdf(c.env, html);
+    }
     catch (err: any) { console.error("guest PDF failed", err?.message); return c.json({ detail:"Could not create the PDF. Please retry." }, 502); }
-    const sent = await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name,childIndex,paidChildCount);
+    const sent = familyEmail
+      ? await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name,0,paidChildCount)
+      : await emailGuestPdf(c.env,order.email,bytes,prepared.jurisdiction.name,childIndex,paidChildCount);
     if (!sent) return c.json({ detail:"The PDF was prepared but could not be emailed. Please retry." }, 502);
-    return c.json({ ok:true, emailed:true, child_index:childIndex, child_count:paidChildCount, detail:`Document ${childIndex} of ${paidChildCount} was emailed to the purchase email address.` });
+    return c.json({ ok:true, emailed:true, family:familyEmail, child_index:familyEmail?null:childIndex, child_count:paidChildCount,
+      detail:familyEmail ? `One combined family PDF for ${paidChildCount} learners was emailed to the purchase email address.`
+        : `Document ${childIndex} of ${paidChildCount} was emailed to the purchase email address.` });
   });
 
   // Paid printed templates are prepared per order, never pre-uploaded by the owner.

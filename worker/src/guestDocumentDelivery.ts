@@ -66,11 +66,12 @@ export async function renderGuestPdf(env: Env, html: string): Promise<Uint8Array
 }
 export async function emailGuestPdf(env: Env, recipient: string, document: Uint8Array, stateName: string, childIndex=1, childCount=1) {
   if (!env.EMAIL) return false;
+  const family = childIndex === 0 && childCount > 1;
   return sendEmail(env,{
     to:recipient,
-    subject:`Your Side-Quest home education document – ${stateName} (${childIndex} of ${childCount})`,
-    text:`Document ${childIndex} of ${childCount} is attached. Each child needs their own individualised planning details. This is an independent planning resource, not an official government form. Please check current local requirements before submission. For help, contact support@sidequestlearning.app.`,
+    subject:family ? `Your Side-Quest family home education planner – ${stateName}` : `Your Side-Quest home education document – ${stateName} (${childIndex} of ${childCount})`,
+    text:family ? `Your combined family planner covering ${childCount} children is attached. Each learner has their own section. This is an independent planning resource, not an official government form. Check current local requirements before submission.` : `Document ${childIndex} of ${childCount} is attached. Each child needs their own individualised planning details. This is an independent planning resource, not an official government form. Please check current local requirements before submission. For help, contact support@sidequestlearning.app.`,
     html:"<p>Your Side-Quest home education document is attached as a PDF.</p><p>Please review your family's information and current state requirements before using it for registration or review.</p><p>This is an independent planning resource, not a government-issued document.</p>",
-    attachments:[{filename:`side-quest-home-education-plan-child-${childIndex}.pdf`,content:document,type:"application/pdf",disposition:"attachment"}],
+    attachments:[{filename:family ? "side-quest-family-home-education-planner.pdf" : `side-quest-home-education-plan-child-${childIndex}.pdf`,content:document,type:"application/pdf",disposition:"attachment"}],
   });
 }
