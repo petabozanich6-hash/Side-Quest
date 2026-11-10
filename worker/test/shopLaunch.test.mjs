@@ -16,7 +16,8 @@ test("launch: every product except the unfinished workbooks is live, priced, buy
   const held = rows.filter((r) => holdBack(r));
   const documents=rows.filter(r=>r.collection==="Home Education Documents");
   assert.equal(documents.length,48);
-  assert.ok(documents.every(r=>r.visible&&r.status==="register_interest"&&!buyable(r).ok),"unreviewed documents are visible for interest but never chargeable");
+  assert.equal(documents.filter(r=>buyable(r).ok).length,24,"on-demand editions can be purchased without pre-generating each family PDF");
+  assert.equal(documents.filter(r=>!buyable(r).ok).length,24,"static PDF and print-master editions remain gated");
   const live = rows.filter((r) => !holdBack(r)&&r.collection!=="Home Education Documents");
   assert.ok(held.length >= 16 && held.length < 40, `held back ${held.length}`);
   for (const r of held) assert.deepEqual([r.status, r.visible, r.price_cents], ["draft", false, null], r.title);
