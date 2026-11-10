@@ -979,7 +979,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
 
   admin.get("/document-studio/print-jobs", R, async (c: Context<any>) => {
     await ensurePremiumPrintQueue(c.env.DB);
-    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.submitted_at,j.updated_at,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
+    const {results}=await c.env.DB.prepare("SELECT j.id,j.order_id,j.product_id,j.status,j.submitted_at,j.updated_at,CASE WHEN length(j.pdf_key)>0 THEN 1 ELSE 0 END pdf_available,o.email,o.shipping,o.quoted_postcode,p.title FROM premium_print_jobs j JOIN shop_orders o ON o.id=j.order_id JOIN shop_products p ON p.id=j.product_id WHERE o.paid_at IS NOT NULL ORDER BY j.submitted_at DESC LIMIT 100").all<any>();
     return c.json({jobs:(results||[]).map((x:any)=>({...x,shipping:(()=>{try{return JSON.parse(x.shipping||"null")}catch{return null}})()}))});
   });
   admin.get("/document-studio/print-jobs/:jobId/pdf", R, async (c: Context<any>) => {
@@ -995,6 +995,24 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     c.header("Content-Disposition",'attachment; filename="sidequest-print-ready-planner.pdf"');
     return c.body(pdf.body as any);
   });
+  // Parent documents remain private during fulfilment; after completion the
+  // owner can explicitly purge the PDF from R2 while retaining order metadata.
+  admin.post("/document-studio/print-jobs/:jobId/delete-pdf", W, async (c: Context<any>) => {
+    const id=c.req.param("jobId"),body=await readJson(c);
+    if(!UUID.test(id)||body.confirm!==true)return c.json({detail:"Explicit confirmation required."},400);
+    if(!c.env.BUCKET)return c.json({detail:"Private storage unavailable."},503);
+    await ensurePremiumPrintQueue(c.env.DB);
+    const job=await c.env.DB.prepare("SELECT id,status,pdf_key FROM premium_print_jobs WHERE id=?").bind(id).first<any>();
+    if(!job)return c.json({detail:"Print job not found."},404);
+    if(job.status!=="complete")return c.json({detail:"Mark the print job complete before deleting its private file."},409);
+    if(job.pdf_key){
+      await c.env.BUCKET.delete(job.pdf_key);
+      await c.env.DB.prepare("UPDATE premium_print_jobs SET pdf_key='',updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
+    }
+    await audit(c,"document_studio.print_pdf_deleted",id);
+    return c.json({ok:true,detail:"Private print PDF deleted. Order history retained."});
+  });
+
   admin.post("/document-studio/print-jobs/:jobId/status", W, async (c: Context<any>) => {
     const id=c.req.param("jobId"),body=await readJson(c),status=String(body.status||"");
     if(!UUID.test(id)||!PRINT_JOB_STATUSES.includes(status as any))return c.json({detail:"Invalid print status."},400);
