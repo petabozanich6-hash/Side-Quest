@@ -62,7 +62,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
         fulfilment: kind === "printed" ? "made_to_order" : "digital",
         status: "draft",
         stage: "launch_now",
-        price_cents: kind === "printed" ? null : kind === "guided" ? 2495 : 1295,
+        price_cents: kind === "printed" ? 1499 : kind === "guided" ? 999 : 499,
         safety_checked: false,
       });
       setMessage("Draft listing created. It is hidden and cannot be purchased yet.");
@@ -118,8 +118,8 @@ export default function HqDocumentProducts({ jurisdiction }) {
   return (
     <section className="paper-card p-5 space-y-3" data-testid="hq-document-products">
       <h3 className="text-lg font-bold">Sell a blank fillable document</h3>
-      <p className="text-sm text-stone-700">Create an independent state-specific digital product in your existing Square-backed shop. New guided drafts include the first child at the base price, with $1 for each additional child in the same household. Print-and-post family orders add $3 per extra child, plus postage. Existing listing prices are not overwritten.</p>
-      <p className="text-sm text-stone-700">Suggested price for new drafts: <strong>$12.95 AUD</strong> · {jurisdiction.name} · no postage · no AI generation.</p>
+      <p className="text-sm text-stone-700">Create an independent state-specific digital product in your existing Square-backed shop. New draft prices: blank fillable $4.99 (+$1 per additional child); guided personalised $9.99 (+$2 per additional child); printed and posted $14.99 delivered (+$2 per additional child). Existing listing prices are not overwritten.</p>
+      <p className="text-sm text-stone-700">Suggested price for new drafts: <strong>$4.99 AUD</strong> · {jurisdiction.name} · no postage · no AI generation.</p>
       {!current
         ? <button type="button" disabled={busy || refreshing} onClick={() => create("blank")} className="rounded-xl bg-[#4A5D3A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Create hidden {jurisdiction.code} shop draft</button>
         : <div className="rounded-xl border border-stone-200 p-4 space-y-3">
@@ -160,7 +160,7 @@ export default function HqDocumentProducts({ jurisdiction }) {
           <p className="text-xs text-stone-600">Uploading does not publish the listing. When ready, use <a href="/parent/command-centre/shop" className="underline">Owner HQ → Shop</a> to review its price, photo, description and visibility.</p>
         </div>}
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
-        <h4 className="font-semibold">Guided personalised document — $24.95 AUD (new draft base)</h4>
+        <h4 className="font-semibold">Guided personalised document — $9.99 AUD (new draft base)</h4>
         <div className="rounded-xl border-2 border-[#4A5D3A] bg-[#F9F8F0] p-4 space-y-3">
           <h5 className="font-semibold">Preview the guided personalised PDF</h5>
           <p className="text-sm">See the actual PDF a buyer would receive, using “Alex Example” and fictional family information. No purchase, subscription or real child profile is necessary. Nothing will be saved or emailed.</p>
@@ -184,8 +184,8 @@ export default function HqDocumentProducts({ jurisdiction }) {
       </div>
       <div className="rounded-xl border border-stone-200 bg-white p-4 space-y-2">
         <h4 className="font-semibold">Printed and posted workbook — physical version</h4>
-        <p className="text-sm font-semibold text-[#1F3B2D]">Base printing price covers one child; add $3 per additional child (up to five), plus calculated postage.</p>
-        <p className="text-sm text-stone-700">Offer professionally printed pages for families who prefer paper. This is a separate, made-to-order physical shop product: printing, binding, packaging, dispatch and Australia Post postage are charged separately from the digital PDF. The shop's existing physical fulfilment and postage quoting can be reused after you enter real costs and packed weight/dimensions.</p>
+        <p className="text-sm font-semibold text-[#1F3B2D]">$14.99 delivered for one child, then $2 per additional child (up to five), with no extra postage line at checkout.</p>
+        <p className="text-sm text-stone-700">Offer professionally printed pages for families who prefer paper. This is a separate, made-to-order physical shop product: the $14.99 base includes $9.99 document preparation and $5 for print-and-post. Before accepting orders, verify that this covers printing, binding, packaging, dispatch and Australia Post costs. The shop's existing physical fulfilment and postage quoting can be reused after you enter real costs and packed weight/dimensions.</p>
         {printed
           ? <p className="text-sm">Physical listing: <strong>{printed.status}</strong> · {printed.visible ? "Visible" : "Hidden"} · {printed.price_cents == null ? "Printing price not set" : "Price set"}. Review production costs, postage and the exact approved printed proof before publishing.</p>
           : <button type="button" disabled={busy || refreshing} onClick={()=>create("printed")} className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold text-[#4A5D3A] disabled:opacity-60">Create hidden {jurisdiction.code} print-and-post draft</button>}
