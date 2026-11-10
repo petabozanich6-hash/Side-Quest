@@ -227,11 +227,12 @@ export async function shopMailRoster(db: DB, editionMonth: string) {
     const paid=mailPaymentStatus(cadence,Number(row.paid_count||0),Number(row.mailed_count||0),row.status);
     let recipient=null;try{recipient=JSON.parse(row.recipient);}catch{}
     const monthAlreadySent=!!row.mailed_this_month;
+    const beforeSignup=editionMonth<String(row.created_at||"").slice(0,7);
     return {id:row.id,title:row.title,email:row.email,recipient,status:row.status,
       billing_cadence:cadence,price_cents:row.price_cents,monthly_price_cents:row.monthly_price_cents??row.price_cents,
       paid_count:Number(row.paid_count||0),mailed_count:Number(row.mailed_count||0),
-      ...paid,eligible:paid.eligible&&!monthAlreadySent,
-      label:monthAlreadySent?"Already mailed for this edition":paid.label,mailed_this_month:monthAlreadySent};
+      ...paid,eligible:paid.eligible&&!monthAlreadySent&&!beforeSignup,
+      label:monthAlreadySent?"Already mailed for this edition":beforeSignup?"Not subscribed for this edition":paid.label,mailed_this_month:monthAlreadySent};
   });
 }
 
@@ -245,11 +246,11 @@ export async function recordShopMailing(db:DB, subscriptionId:string, editionMon
   // Apply eligibility inside the INSERT statement, not only in the earlier
   // read. Concurrent clicks across two editions cannot spend the same credit.
   const result=await db.prepare(`INSERT OR IGNORE INTO shop_subscription_mailings(subscription_id,edition_month,mailed_at,tracking)
-    SELECT s.id,?,?,? FROM shop_subscriptions s WHERE s.id=? AND s.status='active'
+    SELECT s.id,?,?,? FROM shop_subscriptions s WHERE s.id=? AND s.status='active' AND substr(s.created_at,1,7)<=?
       AND NOT EXISTS (SELECT 1 FROM shop_subscription_mailings m WHERE m.subscription_id=s.id AND m.edition_month=?)
       AND (SELECT COUNT(*) FROM shop_subscription_payments pay WHERE pay.subscription_id=s.id)
         >= ((SELECT COUNT(*) FROM shop_subscription_mailings used WHERE used.subscription_id=s.id)+1)
           * CASE WHEN s.billing_cadence='fortnightly' THEN 2 ELSE 1 END`)
-    .bind(editionMonth,new Date().toISOString(),tracking.trim().slice(0,80),subscriptionId,editionMonth).run();
+    .bind(editionMonth,new Date().toISOString(),tracking.trim().slice(0,80),subscriptionId,editionMonth,editionMonth).run();
   return (result as any)?.meta?.changes?{ok:true}:{ok:false,detail:"This edition was already marked mailed."};
 }
