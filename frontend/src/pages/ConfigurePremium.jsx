@@ -25,7 +25,7 @@ export default function ConfigurePremium(){
    sessionStorage.setItem(plannerDraftKey(productId),JSON.stringify({updated:Date.now(),children}));
    const key="sq-shop-cart-v2",cart=JSON.parse(localStorage.getItem(key)||'{"books":[],"items":[]}');
    if(!Array.isArray(cart.books)||!Array.isArray(cart.items))throw Error("Could not read cart");
-   const item={product_id:productId,qty:1,child_count:children.length,personalisation:{},title:product.title,unit_cents:product.price_cents,physical:product.fulfilment!=="digital",postage_cents:0};
+   const item={product_id:productId,qty:1,child_count:children.length,personalisation:{},title:product.title,unit_cents:product.price_cents+(children.length-1)*200,physical:product.fulfilment!=="digital",postage_cents:0,included_postage:(product.tags||[]).includes("premium-planner-printed")};
    cart.items=cart.items.filter(i=>i.product_id!==productId).concat([item]).slice(0,30);
    localStorage.setItem(key,JSON.stringify(cart));navigate("/shop");
  }catch{setError("Could not keep this draft in your browser. Please check that browser storage is enabled.")}};
