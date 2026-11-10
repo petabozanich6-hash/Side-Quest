@@ -110,7 +110,7 @@ export async function startShopSubscription(db: DB, cfg: Cfg, opts: {
 const STATUS: Record<string, string> = { ACTIVE: "active", PENDING: "pending", CANCELED: "cancelled", DEACTIVATED: "cancelled", PAUSED: "paused" };
 
 /** Re-reads one Square subscription and applies it to the matching shop subscription (if it is one). */
-export async function syncShopSubscription(db: DB, cfg: Cfg, squareSubId: string, fetchImpl?: Fetch): Promise<string | null> {
+export async function syncShopSubscription(db: DB, cfg: Cfg, squareSubId: string, fetchImpl?: Fetch, strictInvoiceVerification=false): Promise<string | null> {
   await ensureShopSubscriptions(db);
   const row = await db.prepare("SELECT id FROM shop_subscriptions WHERE square_subscription_id = ?").bind(squareSubId).first<{ id: string }>();
   if (!row) return null;
@@ -122,7 +122,7 @@ export async function syncShopSubscription(db: DB, cfg: Cfg, squareSubId: string
   // Recheck Square's own PAID invoices whenever the subscription is synced;
   // this is also usable by the owner for older subscription records.
   try { await reconcileShopSubscriptionInvoices(db,cfg,row.id,sub,fetchImpl); }
-  catch(e:any){console.error("shop subscription paid invoice sync deferred",e?.message);}
+  catch(e:any){if(strictInvoiceVerification)throw e;console.error("shop subscription paid invoice sync deferred",e?.message);}
 
   return `shop subscription ${row.id} ${status}`;
 }
