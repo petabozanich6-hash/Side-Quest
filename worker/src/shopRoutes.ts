@@ -1191,7 +1191,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const sq=squareConfig(c.env);
     if(!sq.ok)return c.json({detail:"Square reconciliation is unavailable; do not send this mailing."},503);
     try{
-      await syncShopSubscription(c.env.DB,sq,row.square_subscription_id);
+      await syncShopSubscription(c.env.DB,sq,row.square_subscription_id,undefined,true);
       await audit(c,"shop.subscription_payment_rechecked",id);
       return c.json({ok:true,detail:"Rechecked paid Square invoices. Refresh the mailing roster to see whether both instalments have cleared."});
     }catch(e:any){
