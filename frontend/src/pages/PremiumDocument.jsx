@@ -42,6 +42,6 @@ export default function PremiumDocument(){
     </>}
     <div className="flex justify-between"><button type="button" className="border rounded-lg px-4 py-2 disabled:opacity-30" disabled={step===0} onClick={()=>setStep(s=>s-1)}>Previous step</button><button type="button" className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 disabled:opacity-30" disabled={step===3} onClick={()=>setStep(s=>s+1)}>Next step</button></div>
    </section></>}
- <p className="text-sm">Need help with this order? <a className="underline font-semibold" href={"mailto:support@sidequestlearning.app?subject="+encodeURIComponent("SideQuest document support · Order "+id)}>Contact SideQuest support</a>. Include your order number, but not children\u0027s personal details or card information.</p>
+ <p className="text-sm">Need help with this order? <a className="underline font-semibold" href={"mailto:support@sidequestlearning.app?subject="+encodeURIComponent("SideQuest document support · Order "+id)}>Contact SideQuest support</a>. Include your order number, but not children's personal details or card information.</p>
  </div></main>;
 }
