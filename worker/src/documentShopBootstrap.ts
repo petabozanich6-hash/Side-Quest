@@ -1,4 +1,3 @@
-import type { D1Database } from "@cloudflare/workers-types";
 import { JURISDICTIONS } from "./data/planJurisdictions";
 
 // Seed only missing product listings; do not alter existing Owner HQ edits,
@@ -13,6 +12,8 @@ const editions = [
 ] as const;
 
 export async function ensureDocumentShopListings(db:D1Database) {
+ const key="document-listings-2026-11-v1";
+ if(await db.prepare("SELECT 1 FROM shop_meta WHERE key=?").bind(key).first())return {added:0,total:48};
  const states=["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"] as const;
  const entries=states.flatMap((state)=>editions.map((kind)=>({
   state,kind,title:kind.title(JURISDICTIONS[state].name),
@@ -30,5 +31,6 @@ export async function ensureDocumentShopListings(db:D1Database) {
   .bind(crypto.randomUUID(),slug,"home-education","Home Education Documents",title,description,tags,kind.fulfilment,kind.price,8000+i,now,now);
  });
  for(let i=0;i<statements.length;i+=40)await db.batch(statements.slice(i,i+40));
+ await db.prepare("INSERT OR IGNORE INTO shop_meta(key,value) VALUES(?,?)").bind(key,now).run();
  return {added:statements.length,total:entries.length};
 }
