@@ -118,6 +118,12 @@ export async function syncShopSubscription(db: DB, cfg: Cfg, squareSubId: string
   if (!sub?.id) return "shop subscription not found at Square";
   const status = sub.canceled_date && sub.status === "ACTIVE" ? "cancelling" : STATUS[String(sub.status)] || "pending";
   await db.prepare("UPDATE shop_subscriptions SET status = ?, charged_through = ?, updated_at = ? WHERE id = ?").bind(status, sub.charged_through_date || null, new Date().toISOString(), row.id).run();
+  // First-payment invoices can arrive before their subscription is linked.
+  // Recheck Square's own PAID invoices whenever the subscription is synced;
+  // this is also usable by the owner for older subscription records.
+  try { await reconcileShopSubscriptionInvoices(db,cfg,row.id,sub,fetchImpl); }
+  catch(e:any){console.error("shop subscription paid invoice sync deferred",e?.message);}
+
   return `shop subscription ${row.id} ${status}`;
 }
 
@@ -169,6 +175,30 @@ export async function markShopSubscriptionPastDue(db: DB, squareSubId: string): 
   await ensureShopSubscriptions(db);
   const r = await db.prepare("UPDATE shop_subscriptions SET status = 'past_due', updated_at = ? WHERE square_subscription_id = ?").bind(new Date().toISOString(), squareSubId).run();
   return (r as any)?.meta?.changes ? `shop subscription ${squareSubId} past due` : null;
+}
+
+/** Reconcile existing and out-of-order Square invoices, never treating an
+ * active subscription as payment evidence. Invoice status MUST be PAID.
+ * No invented/manual credits; a failed Square lookup leaves the mail held.
+ */
+export async function reconcileShopSubscriptionInvoices(db:DB,cfg:Cfg,localId:string,subscription:any,fetchImpl?:Fetch):Promise<number>{
+  await ensureShopSubscriptions(db);
+  const invoices=Array.isArray(subscription?.invoice_ids)?subscription.invoice_ids.slice(0,100):[];
+  let total=0;
+  for(const rawId of invoices){
+    const invoiceId=String(rawId||"");
+    if(!invoiceId)continue;
+    const existing=await db.prepare("SELECT 1 FROM shop_subscription_payments WHERE subscription_id=? AND invoice_id=?").bind(localId,invoiceId).first();
+    if(existing)continue;
+    const response=await squareCall(cfg,"GET","invoices/"+encodeURIComponent(invoiceId),undefined,fetchImpl);
+    const invoice=response?.invoice;
+    if(invoice?.id===invoiceId&&invoice?.subscription_id===subscription.id&&invoice?.status==="PAID"){
+      await db.prepare("INSERT OR IGNORE INTO shop_subscription_payments(subscription_id,invoice_id,paid_at) VALUES(?,?,?)")
+        .bind(localId,invoiceId,invoice.paid_at||new Date().toISOString()).run();
+      total++;
+    }
+  }
+  return total;
 }
 
 /** The signed Square invoice.payment_made event is the payment source of truth.
