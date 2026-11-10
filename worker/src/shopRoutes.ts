@@ -145,7 +145,7 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     }
     const title = `${p.title}${variant ? ` (${variant.name})` : ""}${giftMonths ? ` – ${giftMonths}-month gift` : ""}${oneOff ? " – one-off box" : ""}`;
     lines.push({ product_id: p.id, variant_id: variant?.id || null, title, qty, unit_cents: unitCents, amount_cents: unitCents * qty, personalisation: pers, gift_months: giftMonths, physical });
-    if (physical && !giftMonths) postage = Math.max(postage, p.postage_cents ?? 0);
+    if (physical && !giftMonths && !["printed","planner_printed"].includes(documentType(p)||"")) postage = Math.max(postage, p.postage_cents ?? 0);
   }
   return { ok: true, lines, postage, physical: lines.some((l) => l.physical) };
 }
@@ -932,7 +932,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if(!/^[a-f0-9]{64}$/.test(String(body.sha256||""))||fingerprint!==body.sha256) return c.json({ detail:"This PDF differs from the preview. Preview the latest version before saving." },409);
     const filename=`sidequest-${state.toLowerCase()}-home-education-fillable.pdf`;
     await env.BUCKET.put(fileKey(id),bytes,{ httpMetadata:{contentType:"application/pdf"},customMetadata:{name:filename} });
-    await env.DB.prepare("UPDATE shop_products SET digital_file=1,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
+    await env.DB.prepare("UPDATE shop_products SET digital_file=1,document_release_version=NULL,document_released_at=NULL,visible=0,updated_at=? WHERE id=?").bind(new Date().toISOString(),id).run();
     await audit(c,"document_studio.pdf_saved",id,{state,year,fingerprint,bytes:bytes.length});
     return c.json({ok:true,saved:true,sha256:fingerprint,detail:"Saved as a draft file. Document sales remain blocked pending state-specific quality review."});
   });
@@ -950,7 +950,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if (file.bytes.length > MAX_FILE_BYTES) return c.json({ detail: "Files can be up to 25 MB." }, 400);
     const name = String(body.name || "download").replace(/[^\w. -]/g, "").slice(0, 100) || "download";
     await env.BUCKET.put(fileKey(id), file.bytes, { httpMetadata: { contentType: file.type }, customMetadata: { name } });
-    await env.DB.prepare("UPDATE shop_products SET digital_file = 1, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
+    await env.DB.prepare("UPDATE shop_products SET digital_file = 1, document_release_version=NULL, document_released_at=NULL, visible=CASE WHEN collection = 'Home Education Documents' THEN 0 ELSE visible END, updated_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
     await audit(c, "shop.file_uploaded", id, { name, bytes: file.bytes.length });
     return c.json({ ok: true });
   });
