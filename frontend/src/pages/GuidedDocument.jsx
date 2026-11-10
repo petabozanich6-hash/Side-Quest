@@ -36,10 +36,12 @@ export default function GuidedDocument() {
   const [childIndex, setChildIndex] = useState(1);
   const [childDrafts, setChildDrafts] = useState({});
   const [sentChildren, setSentChildren] = useState({});
+  const [reviewedChildren, setReviewedChildren] = useState({});
+  const [familySent, setFamilySent] = useState(false);
 
   useEffect(() => {
     let active = true;
-    setError(""); setMeta(null); setPreview(false); setGeneratedPreview(null); setSent(false); setChildIndex(1); setChildDrafts({}); setSentChildren({}); setAnswers(EMPTY); setAreas({});
+    setError(""); setMeta(null); setPreview(false); setGeneratedPreview(null); setSent(false); setChildIndex(1); setChildDrafts({}); setSentChildren({}); setReviewedChildren({}); setFamilySent(false); setAnswers(EMPTY); setAreas({});
     fetch(`${API}/shop/orders/${encodeURIComponent(id)}/guided-document/${encodeURIComponent(productId)}?t=${encodeURIComponent(token)}`, { cache: "no-store" })
       .then(async (r) => {
         const data = await r.json().catch(() => ({}));
@@ -68,6 +70,30 @@ export default function GuidedDocument() {
     setSent(!!sentChildren[next]);
     setError("");
   };
+  const markChildReviewed = () => {
+    if (!generatedPreview || !preview) return;
+    setReviewedChildren((previous) => ({...previous, [childIndex]: {...answers, areas, reviewed:true}}));
+    setChildDrafts((previous) => ({...previous, [childIndex]: {answers,areas}}));
+  };
+  const emailFamily = async () => {
+    const count = meta?.child_count || 1;
+    const children = Array.from({length:count},(_,i)=>reviewedChildren[i+1]);
+    if (children.some((child)=>!child)) {
+      setError("Review and save each child's plan before emailing the family PDF.");
+      return;
+    }
+    setSending(true);setError("");
+    try {
+      const response=await fetch(`${API}/shop/orders/${encodeURIComponent(id)}/guided-document/${encodeURIComponent(productId)}/generate?t=${encodeURIComponent(token)}`,{
+        method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",
+        body:JSON.stringify({action:"family_email",confirmed:true,children}),
+      });
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw new Error(result.detail||"Could not deliver the family PDF.");
+      setFamilySent(true);
+    }catch(e){setError(e.message);}
+    finally{setSending(false);}
+  };
   const postDocument = async (action) => {
     setSending(true); setError("");
     try {
@@ -82,10 +108,13 @@ export default function GuidedDocument() {
     } catch (e) { setError(e.message); }
     finally { setSending(false); }
   };
-  const update = (key, value) => setAnswers((old) => ({ ...old, [key]: value.slice(0, 6000) }));
-  const updateArea = (name, key, value) => setAreas((old) => ({
+  const invalidateReview = () => {
+    setReviewedChildren((old)=>{const next={...old};delete next[childIndex];return next;});
+  };
+  const update = (key, value) => {invalidateReview();setAnswers((old) => ({ ...old, [key]: value.slice(0, 6000) }));};
+  const updateArea = (name, key, value) => {invalidateReview();setAreas((old) => ({
     ...old, [name]: { ...(old[name] || {}), [key]: value.slice(0, 6000) },
-  }));
+  }));};
   const line = (label, value) => <section className="mb-5 break-inside-avoid">
     <h3 className="font-semibold mb-1">{label}</h3>
     <p className="whitespace-pre-wrap min-h-[38px]">{clean(value) || "To be completed by the family."}</p>
@@ -103,19 +132,23 @@ export default function GuidedDocument() {
         <Link className="underline text-sm" to={`/shop/order/${encodeURIComponent(id)}?t=${encodeURIComponent(token)}`}>← Back to paid order</Link>
         {meta && <div className="flex gap-2">
           <button className="rounded-lg border border-stone-400 px-4 py-2 text-sm" disabled={sending} onClick={() => preview ? setPreview(false) : postDocument("preview")}>{preview ? "Edit responses" : "Review generated document"}</button>
-          {preview && <button disabled={sending} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={() => postDocument("email")}>{sending ? "Preparing..." : "Email my completed PDF"}</button>}
+          {preview && (meta.child_count || 1) === 1 && <button disabled={sending} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={() => postDocument("email")}>{sending ? "Preparing..." : "Email my completed PDF"}</button>}
+          {preview && (meta.child_count || 1) > 1 && <button disabled={sending || !!reviewedChildren[childIndex]} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={markChildReviewed}>{reviewedChildren[childIndex] ? "Child saved for family PDF" : "Approve this child's plan"}</button>}
+          {(meta.child_count || 1) > 1 && Object.keys(reviewedChildren).length === meta.child_count && !familySent &&
+            <button disabled={sending} className="rounded-lg bg-[#1F3B2D] text-white px-4 py-2 text-sm font-semibold disabled:opacity-50" onClick={emailFamily}>{sending ? "Preparing combined PDF..." : "Email one combined family PDF"}</button>}
         </div>}
       </div>
       {error && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-red-800 no-print" role="alert">{error}</p>}
+      {familySent && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-emerald-800 font-semibold no-print" role="status">Your combined family PDF has been emailed to your checkout address. It includes a separate plan for each child.</p>}
       {sent && <p className="max-w-3xl mx-auto p-5 bg-white rounded-xl text-emerald-800 font-semibold no-print" role="status">Child {childIndex} document has been emailed to the checkout address. {(meta?.child_count || 1) > 1 ? "Choose your next child above to prepare their own document." : "Check your inbox."}</p>}
       {!meta && !error && <p className="max-w-3xl mx-auto">Checking your purchase…</p>}
       {meta && (meta.child_count || 1)>1 && <div className="max-w-3xl mx-auto mb-4 no-print bg-white rounded-xl p-4 space-y-2">
-        <p className="font-semibold text-[#1F3B2D]">Your family pack includes {meta.child_count} separate personalised documents</p>
-        <p className="text-sm text-stone-700">Complete one plan for each child. Choose a child below; the answers you enter remain in this browser tab until you leave or refresh the page.</p>
+        <p className="font-semibold text-[#1F3B2D]">Your family pack includes {meta.child_count} personalised learner sections in one combined PDF</p>
+        <p className="text-sm text-stone-700">Complete, preview and approve each child’s plan. When all children are approved, select “Email one combined family PDF”. Answers remain in this tab until you leave or refresh.</p>
         <div className="flex flex-wrap gap-2">
           {Array.from({length:Math.min(5,meta.child_count)},(_,i)=>i+1).map(n=>
             <button key={n} type="button" disabled={sending} onClick={()=>switchChild(n)} className={`px-3 py-2 rounded-lg text-sm font-semibold border ${childIndex===n ? "bg-[#1F3B2D] text-white" : "bg-white text-[#1F3B2D]"}`}>
-              Child {n}{sentChildren[n] ? " ✓ Sent" : ""}
+              Child {n}{reviewedChildren[n] ? " ✓ Approved" : sentChildren[n] ? " ✓ Sent" : ""}
             </button>
           )}
         </div>
