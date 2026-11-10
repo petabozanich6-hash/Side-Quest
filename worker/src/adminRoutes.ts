@@ -36,6 +36,7 @@ import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { createBookForgeRoutes } from "./bookForge";
 import { registerShopAdmin } from "./shopRoutes";
+import { siteTrafficSummary } from "./siteTraffic";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -247,6 +248,8 @@ export function createAdminRoutes() {
     const settings = await loadPlatformSettings(c.env.DB, { fresh: true });
     return c.json(await overview(c.env, settings));
   });
+
+  admin.get("/traffic",requirePermission("metrics.read"),async c=>c.json(await siteTrafficSummary(c.env.DB)));
 
   // --------------------------------------------------------------- customers
   admin.get("/customers", requirePermission("customers.read"), async (c) => {
