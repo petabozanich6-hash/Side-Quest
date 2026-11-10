@@ -27,7 +27,7 @@ export function premiumDiaryHtml(code:string,year:string,prepared?:any,short=fal
  const codes=["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"],years=["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))];
  if(!codes.includes(code)||!years.includes(year))throw Error("Unsupported state or year");
  const j=JURISDICTIONS[code as JurisdictionCode];
- const areas=planAreas(j,{year_level:year,stage:stage[year]}).areas;
+ const areas=prepared?planAreas(j,{year_level:year,stage:stage[year]}).areas:j.areas;
  const data=prepared?.data||{},filled=!!prepared;
  let out='<section class="cover"><div class="hero"><div class="brand">SIDE-QUEST</div><div class="gold"></div><h1>Home Education<br>Planner & Diary</h1><p class="edition">'+(filled?'Personalised':'Blank')+' family edition | '+e(j.name)+'</p></div>'+
  '<div class="cover-info"><h2>Plan. Learn. Record. Reflect.</h2><p>Individual education plans, curriculum mapping, lesson planning, reading logs, evidence, assessment and review all in one workbook.</p><div class="note">An independent planning resource, not an official government form or guarantee of registration. Verify current requirements. Source summary checked '+e(CHECKED_ON)+'.</div></div></section>';
@@ -45,13 +45,13 @@ export function premiumDiaryHtml(code:string,year:string,prepared?:any,short=fal
    out+=page(header('04','Term '+term+' goals and lesson planning')+field('Term priorities and curriculum links',true)+field('Lesson plan: objective, materials and teaching sequence',true)+field('Lesson plan: differentiation and progress check',true));
    out+=page(header('05','Term '+term+' learning diary')+'<p class="hint">Duplicate as needed for each week. Record what actually happened.</p>'+field('Week commencing')+grid(['Day / date','Activity and lesson','Outcome / focus','Evidence'],9));
    out+=page(header('06','Term '+term+' evidence tracker')+grid(['Date','Learning area / outcome','Evidence ID / location','What it demonstrates'],12));
-   out+=page(header('07','Term '+term+' review')+field('Progress and achievements',true)+field('Work samples and observations',true)+field('Adjustments and next learning goals',true));
+   out+=page(header('07','Term '+term+' review')+(filled&&data.assessment_notes?'<div class="note">Family assessment: '+e(data.assessment_notes)+'</div>':'')+field('Progress and achievements',true)+field('Work samples and observations',true)+field('Adjustments and next learning goals',true));
   }
-  out+=page(header('08','Reading log')+grid(['Date','Text and author','Pages / duration','Response / learning'],13));
-  out+=page(header('09','Book discussion and literacy responses')+field('Book / author / learning area')+field('Questions, discussion and vocabulary',true)+field('Written response and progress notes',true));
+  out+=page(header('08','Reading log')+(filled&&data.reading_log?'<div class="note">Reading records: '+e(data.reading_log)+'</div>':'')+grid(['Date','Text and author','Pages / duration','Response / learning'],13));
+  out+=page(header('09','Book discussion and literacy responses')+(filled&&data.lesson_plans?'<div class="note">Family lesson plans: '+e(data.lesson_plans)+'</div>':'')+field('Book / author / learning area')+field('Questions, discussion and vocabulary',true)+field('Written response and progress notes',true));
   out+=page(header('10','Projects, experiments and excursions')+grid(['Date','Activity and subject','Learning intention','Evidence / reflection'],11));
-  out+=page(header('11','Outcome and progress tracker')+grid(['Learning area','Relevant syllabus outcome / goal','Evidence reference','Progress / next step'],11));
-  out+=page(header('12','Assessment and achievement')+field('Knowledge and skills demonstrated',true)+field('Annotated examples, achievements and reflections',true)+field('Next learning goals and adjustments',true));
+  out+=page(header('11','Outcome and progress tracker')+(filled&&data.outcome_tracking?'<div class="note">Outcome notes: '+e(data.outcome_tracking)+'</div>':'')+grid(['Learning area','Relevant syllabus outcome / goal','Evidence reference','Progress / next step'],11));
+  out+=page(header('12','Assessment and achievement')+(filled&&data.evidence_log?'<div class="note">Evidence records: '+e(data.evidence_log)+'</div>':'')+field('Knowledge and skills demonstrated',true)+field('Annotated examples, achievements and reflections',true)+field('Next learning goals and adjustments',true));
   out+=page(header('13','Home education requirements')+'<p class="hint">Check the official authority requirements and any prescribed forms. This list is not a compliance certification.</p><ul>'+j.requirements.map(s=>'<li>[ ] '+e(s)+'</li>').join('')+'</ul>'+field('Preparation for authority reviews'));
   out+=page(header('14','Official sources and review notes')+'<ul>'+j.sources.map(s=>'<li><strong>'+e(s.title)+'</strong>: '+e(s.url)+'</li>').join('')+'</ul>'+field('Questions and supporting documents to prepare',true));
  }else out+=page(header('Sample ends here','Full planner includes the remaining learning areas, term lesson plans, reading logs, outcome tracking, evidence sheets, assessment, review and official sources'));
