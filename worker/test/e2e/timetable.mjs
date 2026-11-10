@@ -87,6 +87,10 @@ const login = async (p, email) => {
   await p.click("[data-testid=login-submit]"); await p.waitForURL("**/parent");
 };
 const slots = async () => (await api("GET", `/timetable/slots?student_id=${kid.id}`, pt)).json;
+// Lessons go into the next free slot from today (the browser's own date), so slots
+// earlier in this week have already passed and stay free; only count the ones still ahead.
+const browserToday = () => page.evaluate(() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; });
+const ahead = async () => { const t = await browserToday(); return (await slots()).filter((x) => x.date >= t); };
 let weekStart;
 
 await step("paying parent: plan one week; it is saved as free timetable slots", async () => {
@@ -149,7 +153,7 @@ await step("assigning a maths lesson puts it in Mia's next free Mathematics slot
   await page.check(`[data-testid=sch-student-${kid.id}]`);
   await page.waitForSelector("[data-testid=sch-slot-preview]");
   ok(await page.isChecked("[data-testid=sch-mode-slot]"), "the recommended timetable option was not selected");
-  const first = (await slots()).filter((x) => x.title === "Mathematics")[0];
+  const first = (await ahead()).filter((x) => x.title === "Mathematics")[0];
   await page.waitForFunction(() => !/checking/.test(document.querySelector("[data-testid=sch-slot-preview]")?.textContent || "checking"));
   ok((await page.textContent("[data-testid=sch-slot-preview]")).includes("Mathematics"), "preview doesn't show the slot");
   await shot("02-assign-window");
@@ -174,7 +178,7 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
     const s = (await slots()).find((x) => x.linked_lesson_id === lid);
     ok(s && s.title === subject, `${subject} lesson in the wrong slot: ${JSON.stringify(s)}`);
   }
-  const m = (await slots()).filter((x) => x.title === "Mathematics");
+  const m = (await ahead()).filter((x) => x.title === "Mathematics");
   ok(m[0].linked_lesson_id === maths1 && m[1].linked_lesson_id === maths2, "maths lessons not in order");
 });
 
