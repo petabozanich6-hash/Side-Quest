@@ -217,6 +217,51 @@ export default function HqDocumentProducts({ jurisdiction }) {
           : <button type="button" disabled={busy || refreshing} onClick={()=>create("printed")} className="rounded-xl border border-[#4A5D3A] px-4 py-2 text-sm font-semibold text-[#4A5D3A] disabled:opacity-60">Create hidden {jurisdiction.code} print-and-post draft</button>}
         <p className="text-xs text-stone-600">The printable PDF includes interactive fields for digital use and ample space for handwriting. Print-and-post is not active until the physical product is reviewed and priced.</p>
       </div>
+      <section className="rounded-xl border-2 border-[#1F3B2D] bg-white p-4 space-y-4">
+        <div><h3 className="font-bold text-lg text-[#1F3B2D]">Complete Home Education Planner & Diary</h3>
+          <p className="text-sm text-stone-700">A full family workbook with lesson plans, reading logs, evidence records, curriculum outcomes, weekly and term diaries, progress reviews and state registration checklists. Every format uses the same Side-Quest design.</p></div>
+        <div className="grid md:grid-cols-3 gap-3">
+          {[
+            ["premium_blank",premiumBlank,"Blank family PDF","$29.95","Complete printable/downloadable pack"],
+            ["premium_personalised",premiumPersonal,"Personalised family PDF","$39.95","Step-by-step setup and emailed PDF"],
+            ["premium_printed",premiumPrint,"Spiral-bound personalised","$69.95","Printed, bound and posted to the family"],
+          ].map(([kind,product,title,price,description])=><article key={kind} className="border rounded-xl p-3 space-y-2">
+            <h4 className="font-semibold">{title}</h4><p className="text-xl font-bold text-[#1F3B2D]">{product&&product.price_cents!=null?"$"+(product.price_cents/100).toFixed(2):price}</p>
+            <p className="text-xs text-stone-600">{description}</p>
+            {product?<p className="text-xs">{product.status} · {product.visible?"Visible":"Hidden"} · {product.has_file?"Master PDF saved":"Generated on purchase or not yet saved"}</p>
+              :<button type="button" disabled={busy} onClick={()=>create(kind)} className="text-sm font-semibold rounded-lg bg-[#4A5D3A] text-white px-3 py-2">Create hidden product draft</button>}
+          </article>)}
+        </div>
+        <div className="rounded-xl border bg-[#F9F8F0] p-4 space-y-3">
+          <h4 className="font-semibold">Generate and review the complete premium workbook</h4>
+          <p className="text-sm">The full preview uses the real premium renderer, with no payment, upload or publication. Personalised previews use fictional family details only.</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <label className="text-sm font-semibold">Version to preview
+              <select className={input} value={premiumMode} onChange={e=>{setPremiumMode(e.target.value);setPremiumPreview(null);setPremiumAccepted(false)}}>
+                <option value="blank">Blank complete PDF</option><option value="personalised">Filled fictional family edition</option>
+              </select>
+            </label>
+            <label className="text-sm font-semibold">Year-level example
+              <select className={input} value={yearLevel} onChange={e=>{setYearLevel(e.target.value);setPremiumPreview(null);setPremiumAccepted(false)}}>
+                {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map(y=><option key={y}>{y}</option>)}
+              </select>
+            </label>
+          </div>
+          <button type="button" disabled={busy} className="rounded-lg bg-[#1F3B2D] text-white px-4 py-2 font-semibold" onClick={generatePremium}>Generate full premium PDF preview</button>
+          {premiumPreview&&<div className="space-y-3 bg-white border rounded-lg p-3">
+            <p className="font-semibold text-sm">Full owner proof: {premiumPreview.mode} · {jurisdiction.name} · Year {premiumPreview.year_level}</p>
+            <iframe title="Premium Side-Quest family planner PDF preview" className="w-full h-[520px] border rounded-lg" src={premiumPreview.data_url}/>
+            <a className="text-sm underline" href={premiumPreview.data_url} download="sidequest-premium-planner-proof.pdf">Download and inspect every page</a>
+            <label className="flex gap-2 text-sm items-start"><input type="checkbox" checked={premiumAccepted} onChange={e=>setPremiumAccepted(e.target.checked)}/>
+              <span>I have inspected the complete PDF for this edition, tested print margins, lesson, reading, outcomes and evidence sections, and approve saving the exact blank version.</span></label>
+            {premiumPreview.mode==="blank"&&premiumBlank&&<button type="button" disabled={busy||!premiumAccepted} onClick={savePremium} className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 font-semibold disabled:opacity-40">Approve and save this blank PDF privately</button>}
+            {premiumPreview.mode==="personalised"&&<p className="text-xs text-stone-700">This fictional example previews the same design used in both personalised formats. Individual customer PDFs are generated after the family's paid setup and cannot be pre-saved as generic files.</p>}
+          </div>}
+        </div>
+        <p className="text-xs text-amber-900">The $69.95 printed version remains unavailable for sale until a real spiral-bound print proof, packaging costs, shipping and private owner-queue processing have been tested.</p>
+      </section>
+      <HqDocumentRelease products={products.filter(p=>(p.tags||[]).includes(jurisdiction.code.toLowerCase()))} onRefresh={load}/>
+      <HqDocumentPrintQueue/>
       <button type="button" className="text-xs underline text-stone-700" onClick={load} disabled={refreshing}>Refresh document products</button>
       {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
       {message && <p role="status" className="text-sm text-emerald-800">{message}</p>}
