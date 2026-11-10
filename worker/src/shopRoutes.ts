@@ -820,7 +820,13 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     if(["guided","planner_personalised","planner_printed"].includes(kind)&&(!env.BROWSER?.quickAction||!env.EMAIL))
       return c.json({detail:"PDF rendering and email delivery must be configured."},503);
     if(kind==="printed"||kind==="planner_printed"){
-      return c.json({detail:"Physical print-and-post activation remains paused until a real print proof and fulfilment test have been verified."},409);
+      if(raw.print_proof_verified!==true||raw.printing_postage_cost_verified!==true||raw.fulfilment_trial_completed!==true)
+        return c.json({detail:"Verify the physical print proof, spiral binding where relevant, all-inclusive delivery costs and end-to-end fulfilment trial before activation."},409);
+      if(!env.BUCKET)return c.json({detail:"Secure document storage is required for physical fulfilment."},503);
+      if(kind==="printed"&&(!p.digital_file||!(await env.BUCKET.head(fileKey(id)))))
+        return c.json({detail:"Upload and verify the print master for this basic printed workbook."},409);
+      if(kind==="planner_printed"&&(!env.BROWSER?.quickAction||!env.EMAIL))
+        return c.json({detail:"The personalised printed planner needs PDF rendering and email confirmation configured."},503);
     }
     const revision=requiredReleaseRevision(p);
     if(!revision)return c.json({detail:"Unrecognised template revision."},409);
