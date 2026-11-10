@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { adminApi, errorText } from "../../../lib/adminApi";
+import HqDocumentRelease from "./HqDocumentRelease";
+import HqDocumentPrintQueue from "./HqDocumentPrintQueue";
 
 const input = "w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm";
 const description = (jur) => `An independent, fillable home education planning template for ${jur.name}. Organise your family's learning goals, learning areas, resources, teaching approach, evidence and progress records using the current published guidance as a starting point. Designed for you to complete with your own information. Not a government form, official endorsement or guarantee of registration. Check the linked authority guidance before submission.`;
 const titleFor = (jur) => `Home Education Planning Template – ${jur.name} (Fillable PDF)`;
 const guidedTitleFor = (jur) => `Guided Home Education Plan – ${jur.name}`;
+const premiumTitle=(jur,kind)=>"Complete Home Education Planner & Diary – "+jur.name+" ("+({premium_blank:"Blank PDF",premium_personalised:"Personalised PDF",premium_printed:"Spiral Bound Printed"}[kind])+")";
 const fileData = (file) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.onload = () => resolve(reader.result);
@@ -30,6 +33,9 @@ export default function HqDocumentProducts({ jurisdiction }) {
   const [previewPdf, setPreviewPdf] = useState(null);
   const [guidedPreview, setGuidedPreview] = useState(null);
   const [previewAccepted, setPreviewAccepted] = useState(false);
+  const [premiumMode,setPremiumMode]=useState("blank");
+  const [premiumPreview,setPremiumPreview]=useState(null);
+  const [premiumAccepted,setPremiumAccepted]=useState(false);
 
   const load = async () => {
     setRefreshing(true);
@@ -40,29 +46,34 @@ export default function HqDocumentProducts({ jurisdiction }) {
     finally { setRefreshing(false); }
   };
   useEffect(() => { load(); }, []);
-  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setGuidedPreview(null); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
+  useEffect(() => { setFile(null); setConfirmed(false); setPreviewPdf(null); setGuidedPreview(null); setPremiumPreview(null); setPremiumAccepted(false); setPreviewAccepted(false); setError(""); setMessage(""); }, [jurisdiction?.code]);
 
   if (!jurisdiction) return null;
   const current = products.find((p) => p.title === titleFor(jurisdiction));
   const guided = products.find((p) => p.title === guidedTitleFor(jurisdiction));
   const printed = products.find((p) => p.title === `Printed Home Education Planning Workbook – ${jurisdiction.name}`);
+  const premiumBlank = products.find(p=>p.title===premiumTitle(jurisdiction,"premium_blank"));
+  const premiumPersonal = products.find(p=>p.title===premiumTitle(jurisdiction,"premium_personalised"));
+  const premiumPrint = products.find(p=>p.title===premiumTitle(jurisdiction,"premium_printed"));
   const create = async (kind = "blank") => {
     setBusy(true); setMessage(""); setError("");
     try {
       await adminApi.post("/shop/products", {
-        title: kind === "printed" ? `Printed Home Education Planning Workbook – ${jurisdiction.name}` : kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
-        description: kind === "printed"
+        title: kind.startsWith("premium_") ? premiumTitle(jurisdiction,kind) : kind === "printed" ? `Printed Home Education Planning Workbook – ${jurisdiction.name}` : kind === "guided" ? guidedTitleFor(jurisdiction) : titleFor(jurisdiction),
+        description: kind.startsWith("premium_")
+          ? "Complete Side-Quest-branded Home Education Planner & Diary for "+jurisdiction.name+". Includes state-based learning plans, curriculum goals, lesson plans, weekly learning diary, reading logs, outcome and evidence tracking, assessment, term reviews and authority preparation checklists. "+(kind==="premium_blank"?"Blank downloadable PDF for the family to complete.":kind==="premium_personalised"?"Personalised family PDF produced after a paid guided setup and emailed to the checkout address.":"Personalised spiral-bound printed family edition, including Australian delivery, prepared after a paid guided setup.")+" Independent educational resource, not an official government form or approval."
+          : kind === "printed"
           ? `A professionally printed and posted copy of the Side-Quest ${jurisdiction.name} home education planning workbook. This is an independent parent planning resource, not an official government form or registration guarantee. Printing, binding, packaging, dispatch and postage must be costed before orders open.`
           : kind === "guided"
           ? `A private, guided planning worksheet for ${jurisdiction.name}. After a verified payment, enter your family's own educational goals and activities in your browser, review the resulting document and save it as a PDF using your browser's print function. It isn't an interactive fillable PDF, official government form or registration guarantee. Confirm current requirements with your authority.`
           : description(jurisdiction),
         department: "home-education",
         collection: "Home Education Documents",
-        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind === "printed" ? ["print-and-post"] : kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
-        fulfilment: kind === "printed" ? "made_to_order" : "digital",
+        tags: ["home-education-document", jurisdiction.code.toLowerCase(), ...(kind.startsWith("premium_") ? [{premium_blank:"premium-planner-blank",premium_personalised:"premium-planner-personalised",premium_printed:"premium-planner-printed"}[kind]] : kind === "printed" ? ["print-and-post"] : kind === "guided" ? ["guided-document"] : ["fillable-pdf"])],
+        fulfilment: ["printed","premium_printed"].includes(kind) ? "made_to_order" : "digital",
         status: "draft",
         stage: "launch_now",
-        price_cents: kind === "printed" ? 1499 : kind === "guided" ? 999 : 499,
+        price_cents: kind === "premium_blank" ? 2995 : kind === "premium_personalised" ? 3995 : kind === "premium_printed" ? 6995 : kind === "printed" ? 1499 : kind === "guided" ? 999 : 499,
         safety_checked: false,
       });
       setMessage("Draft listing created. It is hidden and cannot be purchased yet.");
@@ -99,6 +110,21 @@ export default function HqDocumentProducts({ jurisdiction }) {
       setPreviewPdf(null);setPreviewAccepted(false);await load();
     }catch(e){setError(errorText(e,"Could not save the previewed PDF."));}
     finally{setBusy(false);}
+  };
+  const generatePremium = async () => {
+    setBusy(true);setError("");setMessage("");setPremiumPreview(null);setPremiumAccepted(false);
+    try {
+      const result=await adminApi.post("/document-studio/preview-premium",{state:jurisdiction.code,year_level:yearLevel,mode:premiumMode});
+      setPremiumPreview(result);setMessage("Complete premium workbook preview created. Nothing saved or published.");
+    }catch(e){setError(errorText(e,"Could not generate premium preview."))}finally{setBusy(false)}
+  };
+  const savePremium = async () => {
+    if(!premiumBlank||!premiumPreview||premiumPreview.mode!=="blank"||!premiumAccepted)return;
+    setBusy(true);setError("");setMessage("");
+    try{
+      await adminApi.post("/document-studio/products/"+encodeURIComponent(premiumBlank.id)+"/save-premium",{state:premiumPreview.state,year_level:premiumPreview.year_level,sha256:premiumPreview.sha256});
+      setPremiumPreview(null);setPremiumAccepted(false);setMessage("Reviewed premium blank PDF saved privately. Release approval still required.");await load();
+    }catch(e){setError(errorText(e,"Could not save premium PDF."))}finally{setBusy(false)}
   };
   const upload = async () => {
     if (!current || !file || !confirmed) return;
