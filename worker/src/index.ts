@@ -53,7 +53,6 @@ import type { InboundMessage } from "./inbound";
 import type { App, Env, Guards, Vars } from "./types";
 
 const app: App = new Hono<{ Bindings: Env; Variables: Vars }>();
-registerSiteTraffic(app);
 // Owner HQ is same-origin only: no CORS headers for /api/admin/* (its CSRF checks are in adminRoutes.ts).
 const corsAll = cors();
 app.use("/api/*", (c, next) => (c.req.path.startsWith("/api/admin/") || c.req.path === "/api/admin" ? next() : corsAll(c, next)));
@@ -333,6 +332,7 @@ registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
 registerAnnouncementPreferences(app, guards);
+registerSiteTraffic(app);
 app.route("/api/admin", createAdminRoutes());
 
 // Unhandled errors: record the method, route pattern and error class only (no ids, bodies or messages).
