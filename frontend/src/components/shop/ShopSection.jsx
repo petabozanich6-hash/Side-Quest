@@ -136,7 +136,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const add = () => {
     if (needVariant) { setError("Choose an option first."); return; }
     if (missing) { setError(`Fill in "${missing.label}".`); return; }
-    onAdd([{ product_id: p.id, variant_id: v?.id || null, qty: familyKind ? 1 : qty, child_count: familyKind ? childCount : undefined, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""}${familyKind ? ` (${childCount} children)` : ""}`, unit_cents: familyKind ? familyPrice : price, postage_cents: p.postage_cents || 0, physical: p.fulfilment !== "digital", included_postage: (p.tags || []).some(t => ["premium-planner-printed","print-and-post"].includes(t)) },
+    onAdd([{ product_id: p.id, variant_id: v?.id || null, qty: familyKind ? 1 : qty, child_count: familyKind ? childCount : undefined, personalisation: pers, title: `${p.title}${v ? ` (${v.name})` : ""}${familyKind ? ` (${childCount} children)` : ""}`, unit_cents: familyKind ? familyPrice : price, postage_cents: p.postage_cents || 0, physical: p.fulfilment !== "digital", included_postage: !!p.postage_included || (p.tags || []).some(t => ["premium-planner-printed","print-and-post"].includes(t)) },
       ...extras.filter((x) => addons.includes(x.id)).map((x) => ({ product_id: x.id, variant_id: null, qty: 1, personalisation: {}, title: x.title, unit_cents: x.price_cents, postage_cents: x.postage_cents || 0, physical: x.fulfilment !== "digital" }))]);
   };
   const subscribe = async () => {
@@ -166,6 +166,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
             {p.description && <p className="text-stone-700 whitespace-pre-line">{p.description}</p>}
             {personalisedPlanner && p.can_buy && <Link to={"/shop/configure-planner/"+encodeURIComponent(p.id)} className="inline-block rounded-xl bg-[#1F3B2D] px-3 py-2 text-white text-sm font-semibold" data-testid="shop-configure-planner">Personalise before checkout</Link>}
             {hasDocumentSample && <button type="button" onClick={() => setSampleOpen((old) => !old)} className="rounded-xl border border-[#1F3B2D] px-3 py-2 text-sm font-semibold text-[#1F3B2D]" data-testid="shop-document-sample-toggle">{sampleOpen ? "Hide sample pages" : "Look inside — free sample"}</button>}
+            {p.postage_included && <p className="font-semibold text-emerald-800" data-testid="shop-postage-included">Postage included</p>}
             {p.dispatch_estimate && <p className="text-stone-600">Dispatch: {p.dispatch_estimate}</p>}
             {p.preorder_closes_at && <p className="text-stone-600">Pre-orders close {new Date(p.preorder_closes_at).toLocaleDateString("en-AU", { dateStyle: "medium" })}</p>}
             {p.preorder_progress && <p className="text-stone-600">{p.preorder_progress.ordered} of {p.preorder_progress.target} pre-ordered</p>}
@@ -523,7 +524,7 @@ export default function ShopSection({ standalone = false, defaultEmail = "", inA
                     {chosen.map((b) => <li key={b.id} className="flex items-center gap-3 py-2 text-sm"><span className="mr-auto">{b.title} <span className="text-stone-500">(PDF)</span></span><span className="font-semibold">{money(b.price_cents)}</span><button type="button" onClick={() => toggle(b.id)} className="text-stone-500 hover:text-rose-700" aria-label={`Remove ${b.title}`}>✕</button></li>)}
                     {cart.items.map((x, i) => (
                       <li key={i} className="flex items-center gap-3 py-2 text-sm">
-                        <span className="mr-auto">{x.qty > 1 ? `${x.qty} × ` : ""}{x.title}{Object.values(x.personalisation || {}).filter(Boolean).length ? <span className="text-stone-500"> · {Object.values(x.personalisation).filter(Boolean).join(", ")}</span> : null}</span>
+                        <span className="mr-auto">{x.qty > 1 ? `${x.qty} × ` : ""}{x.title}{x.included_postage ? <span className="text-emerald-800"> · postage included</span> : null}{Object.values(x.personalisation || {}).filter(Boolean).length ? <span className="text-stone-500"> · {Object.values(x.personalisation).filter(Boolean).join(", ")}</span> : null}</span>
                         <span className="font-semibold">{money(x.unit_cents * x.qty)}</span>
                         <button type="button" onClick={() => removeItem(i)} className="text-stone-500 hover:text-rose-700" aria-label={`Remove ${x.title}`}>✕</button>
                       </li>

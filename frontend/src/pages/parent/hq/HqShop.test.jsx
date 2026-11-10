@@ -78,3 +78,38 @@ test("products table: select all, and the in-shop switch sits right after Stage"
   await click($('[data-testid="hq-shop-toggle-p2"]'));
   expect(adminApi.post).toHaveBeenCalledWith("/shop/products/bulk", { ids: ["p2"], visible: true });
 });
+
+test("selected products can be deleted together after confirming", async () => {
+  const row = (n) => ({ ...PRODUCT, id: `p${n}`, slug: `p${n}`, title: `Thing ${n}`, visible: true, missing: [], variants: [], tags: [], profit: null, interest: 0 });
+  mockAdmin.data = { ...META, products: [row(1), row(2)] };
+  adminApi.post.mockReset().mockResolvedValue({ ok: true, deleted: 2 });
+  window.confirm = jest.fn(() => true);
+  await act(async () => root.render(<Products />));
+  await click($('[data-testid="hq-shop-select-all"]'));
+  await click($('[data-testid="hq-shop-bulk-delete"]'));
+  expect(window.confirm).toHaveBeenCalledWith(expect.stringContaining("Delete 2 products"));
+  expect(adminApi.post).toHaveBeenCalledWith("/shop/products/bulk-delete", { ids: ["p1", "p2"] });
+});
+
+test("the product editor shows Delete next to Save", async () => {
+  await render();
+  expect($('[data-testid="hq-shop-delete"]').textContent).toBe("Delete product");
+});
+
+test("postage can be switched between charged at checkout and included in the price", async () => {
+  await render();
+  expect($('[data-testid="hq-shop-postage-charged"]').checked).toBe(true);
+  expect(box.textContent).toContain("Postage measurements");
+  await click($('[data-testid="hq-shop-postage-included"]'));
+  expect(box.textContent).not.toContain("Postage measurements");
+  await click(save());
+  expect(adminApi.put).toHaveBeenLastCalledWith("/shop/products/p1", expect.objectContaining({ postage_included: true }));
+  await click($('[data-testid="hq-shop-postage-charged"]'));
+  await click(save());
+  expect(adminApi.put).toHaveBeenLastCalledWith("/shop/products/p1", expect.objectContaining({ postage_included: false }));
+});
+
+test("digital-only products have no postage choice", async () => {
+  await render({ ...PRODUCT, fulfilment: "digital" });
+  expect($('[data-testid="hq-shop-postage-included"]')).toBeNull();
+});

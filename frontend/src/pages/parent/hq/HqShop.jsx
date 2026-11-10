@@ -124,6 +124,12 @@ export function Products() {
   };
   const dLabel = Object.fromEntries(data.departments.map((d) => [d.id, d.label]));
   const allPicked = shown.length > 0 && shown.every((p) => picked.includes(p.id));
+  const removeSelected = async () => {
+    if (!window.confirm(`Delete ${picked.length} product${picked.length === 1 ? "" : "s"} from the shop? This can't be undone. (To hide them for now instead, use "Take out of shop".)`)) return;
+    setBusy(true);
+    try { const r = await adminApi.post("/shop/products/bulk-delete", { ids: picked }); setPicked([]); await reload(); toast.success(`Deleted ${r.deleted} product${r.deleted === 1 ? "" : "s"}`); }
+    catch (e) { toast.error(errorText(e)); } finally { setBusy(false); }
+  };
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-2" role="tablist" aria-label="Development stage">
@@ -147,6 +153,7 @@ export function Products() {
           <strong>{picked.length} selected</strong>
           <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: true })}>Put in shop</Button>
           <Button tone="plain" disabled={busy} onClick={() => bulk({ visible: false })}>Take out of shop</Button>
+          <Button tone="danger" disabled={busy} onClick={removeSelected} data-testid="hq-shop-bulk-delete">Delete</Button>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ status: e.target.value })} aria-label="Set status" className="rounded-xl border border-stone-300 px-2 py-2 text-sm"><option value="">Set status…</option>{data.statuses.map((s) => <option key={s} value={s}>{data.status_labels[s]}</option>)}</select>
           <select disabled={busy} value="" onChange={(e) => e.target.value && bulk({ fulfilment: e.target.value })} aria-label="Set how it's sold" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-format"><option value="">How it's sold…</option><option value="digital">Digital only</option><option value="physical">Physical</option></select>
           <select disabled={busy} defaultValue="" onChange={(e) => e.target.value && bulk({ stage: e.target.value })} aria-label="Set development stage" className="rounded-xl border border-stone-300 px-2 py-2 text-sm" data-testid="hq-shop-bulk-stage"><option value="">Set stage…</option>{data.stages.map((st) => <option key={st} value={st}>{data.stage_labels[st]}</option>)}</select>
@@ -354,7 +361,7 @@ export function Editor({ product, meta, all, onClose, onSaved, queue }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <label className="font-semibold">{kind.monthly ? "Per month ($)" : "Sale price ($)"}<input inputMode="decimal" value={f.price} onChange={(e) => set("price", e.target.value)} className={input} data-testid="hq-shop-price" /></label>
             {f.fulfilment !== "digital" && <label className="font-semibold">Your cost ($)<input inputMode="decimal" value={f.wholesale} onChange={(e) => set("wholesale", e.target.value)} className={input} /></label>}
-            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">Postage is calculated at checkout using Australia Post Parcel Post, not entered here.</div>}
+            {kind.posted && <div className="text-xs text-stone-600 self-end pb-2">{f.postage_included ? "Postage is included in this price; nothing is added at checkout." : "Postage is calculated at checkout using Australia Post Parcel Post, not entered here."}</div>}
           </div>
           {priceCents != null && <p className="text-xs text-stone-600">Square fee {money(fee)} · you keep {money(priceCents - fee - (toCents(f.wholesale) || 0))}{f.fulfilment !== "digital" && f.wholesale === "" ? " before your cost" : ""}</p>}
           {!f.variants.some((v) => /basic|full/i.test(v.name)) && (
@@ -364,6 +371,19 @@ export function Editor({ product, meta, all, onClose, onSaved, queue }) {
         </Section>
 
         {kind.posted && (
+          <Section title="Postage" hint="Choose whether families pay postage for this product at checkout, or it's included in the price.">
+            <div className="grid sm:grid-cols-2 gap-2" role="radiogroup" aria-label="Postage">
+              {[[false, "Charged at checkout", "Australia Post Parcel Post is added to the order."], [true, "Included in the price", "Nothing is added for this product. Allow for postage in the price."]].map(([included, label, help]) => (
+                <label key={label} className={`rounded-xl border-2 p-2 cursor-pointer text-sm ${!!f.postage_included === included ? "border-emerald-700 bg-emerald-50" : "border-stone-200"}`}>
+                  <input type="radio" name="postage" className="mr-2" checked={!!f.postage_included === included} onChange={() => set("postage_included", included)} data-testid={`hq-shop-postage-${included ? "included" : "charged"}`} />
+                  <span className="font-semibold">{label}</span><span className="block text-xs text-stone-600">{help}</span>
+                </label>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {kind.posted && !f.postage_included && (
           <Section title="Postage measurements" hint="One finished product, including its protective packaging. Enter actual packed dimensions before selling. Standard Parcel Post only, dispatched from postcode 2340. Leave blank while sourcing supplies.">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[["parcel_weight_g", "Packed weight (g)"], ["parcel_length_cm", "Length (cm)"], ["parcel_width_cm", "Width (cm)"], ["parcel_height_cm", "Height (cm)"]].map(([key, label]) => (
@@ -517,7 +537,6 @@ export function Editor({ product, meta, all, onClose, onSaved, queue }) {
               <label className="flex items-center gap-2 font-semibold"><input type="checkbox" checked={!!f.safety_checked} onChange={(e) => set("safety_checked", e.target.checked)} />Safety checked</label>
               <PickList label="Bundle contains" ids={f.bundle_items} others={others} onPick={(id) => pick("bundle_items", id)} />
               <PickList label="Suggested add-ons" ids={f.addons} others={others} onPick={(id) => pick("addons", id)} />
-              {!isNew && <Button tone="danger" disabled={busy} onClick={remove}>Delete this product</Button>}
             </div>
           )}
         </div>
@@ -525,6 +544,7 @@ export function Editor({ product, meta, all, onClose, onSaved, queue }) {
         {isNew && <p className="text-xs text-stone-500">Save first, then add photos.</p>}
         {err && <Alert>{err}</Alert>}
         <div className="flex flex-wrap gap-2 justify-end border-t pt-3">
+          {!isNew && <Button tone="danger" className="mr-auto" disabled={busy} onClick={remove} data-testid="hq-shop-delete">Delete product</Button>}
           {queue && <Button tone="plain" disabled={busy} onClick={() => queue.next()}>Skip</Button>}
           <Button tone={queue ? "plain" : "primary"} disabled={busy} onClick={() => save(false)} data-testid="hq-shop-save">{busy ? "Saving…" : queue ? "Save & stop" : "Save"}</Button>
           {queue && <Button disabled={busy} onClick={() => save(true)} data-testid="hq-shop-save-next">{busy ? "Saving…" : "Save & next"}</Button>}

@@ -89,6 +89,8 @@ export function ensureShopCatalog(db: DB): Promise<void> {
         await db.prepare(`ALTER TABLE shop_products ADD COLUMN ${name} INTEGER`).run().catch(() => undefined);
       }
       await db.prepare("ALTER TABLE shop_products ADD COLUMN digital_file INTEGER NOT NULL DEFAULT 0").run().catch(() => undefined);
+      // Postage included in the price: the product adds no postage at checkout (it's still posted).
+      await db.prepare("ALTER TABLE shop_products ADD COLUMN postage_included INTEGER NOT NULL DEFAULT 0").run().catch(() => undefined);
       // Document-specific release fields are set only by the Owner HQ release
       // action, never by generic shop product edits or visible/status toggles.
       for(const stmt of [
@@ -361,6 +363,7 @@ export function publicProduct(p: any, variants: any[] = [], preorderCount = 0, n
     dispatch_day: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.dispatch_day ?? null : null,
     cutoff_day: SUBSCRIPTION_FULFILMENT.has(p.fulfilment) ? p.cutoff_day ?? null : null,
     digital_cents: digitalVersion(p) ? p.digital_cents : null,
+    postage_included: p.fulfilment !== "digital" && !!p.postage_included,
     variants: activeVariants.map((v) => ({ id: v.id, name: v.name, details: v.details || "", book_id: v.book_id || null, price_cents: v.price_cents ?? p.price_cents, available: p.status !== "in_stock" || v.stock == null || v.stock > 0 })),
     low_stock: p.status === "in_stock" && p.stock != null && p.low_stock_at != null && p.stock <= p.low_stock_at && p.stock > 0,
     can_buy: b.ok, can_register_interest: INTEREST.has(p.status), subscription: SUBSCRIPTION_FULFILMENT.has(p.fulfilment),
@@ -440,6 +443,7 @@ export function validateProduct(b: any): { ok: true; value: Record<string, unkno
       title, department, status, fulfilment, collection: clip(b.collection, 80), description: clip(b.description, 3000).replace(/[<>]/g, ""),
       tags: JSON.stringify(tags), ...money, ...ints, preorder_closes_at: closes, dispatch_estimate: clip(b.dispatch_estimate, 120).replace(/[<>]/g, ""),
       supplier: clip(b.supplier, 200), supplier_notes: clip(b.supplier_notes, 2000),
+      postage_included: fulfilment !== "digital" && (b.postage_included === true || b.postage_included === 1) ? 1 : 0,
       personalisation: JSON.stringify(fields), bundle_items: JSON.stringify(ids(b.bundle_items)), addons: JSON.stringify(ids(b.addons)),
       gift_months: JSON.stringify(giftMonths), safety_checked: b.safety_checked ? 1 : 0,
       ...(stage ? { stage } : {}),

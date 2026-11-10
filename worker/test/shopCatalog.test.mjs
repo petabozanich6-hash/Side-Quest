@@ -4,7 +4,7 @@ import { makeDb as freshDb } from "./fakeD1.mjs";
 // These tests cover the catalogue before the 9 Nov 2026 launch (shopLaunch.test.mjs covers the launch itself).
 const makeDb = (...a) => { const db = freshDb(...a); db.raw.exec("CREATE TABLE IF NOT EXISTS shop_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL); INSERT INTO shop_meta VALUES ('launch_v1', 'test')"); return db; };
 import { ensureShopCatalog, validateProduct, publicProduct, buyable, profitFor } from "../src/shopCatalog.ts";
-import { priceItems, publicCatalog, readiness, squareLinesFor } from "../src/shopRoutes.ts";
+import { deleteProducts, priceItems, publicCatalog, readiness, squareLinesFor } from "../src/shopRoutes.ts";
 import { createShopOrder, recordPaidShopOrder } from "../src/shopOrders.ts";
 import { validateRecipient } from "../src/shopSubscriptions.ts";
 
@@ -155,7 +155,8 @@ test("an existing shop gets stages without touching anything else, and nothing i
   const after = await db.prepare("SELECT * FROM shop_products WHERE id = ?").bind(p.id).first();
   assert.deepEqual([after.stage, after.price_cents, after.description, after.supplier, after.visible, after.status], ["launch_now", 3500, "Mine", "POD Co", 0, "draft"]);
   assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE stage IS NULL").first()).n, 0);
-  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE visible = 1").first()).n, 0);
+  // The Home Education Documents collection is published on purpose (it generates from the paid order).
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE visible = 1 AND collection IS NOT 'Home Education Documents'").first()).n, 0);
 });
 
 test("products waiting on manufacturing can't sell as ready to make; monthly boxes sell one-off too", async () => {
@@ -195,7 +196,7 @@ test("prefill: descriptions, options and fields fill in without overwriting the 
   const name = await one(db, "Personalised name T-shirts");
   assert.match(name.personalisation, /Child's name/);
   // Nothing priced, stocked, supplied or published by the prefill.
-  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR visible = 1 OR status != 'draft'").first()).n, 0);
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_products WHERE (price_cents IS NOT NULL OR stock IS NOT NULL OR supplier != '' OR visible = 1 OR status != 'draft') AND collection IS NOT 'Home Education Documents'").first()).n, 0);
   assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE price_cents IS NOT NULL OR stock IS NOT NULL").first()).n, 0);
   // An owner's own description and options survive a later prefill.
   const mine = await one(db, "Gel pen sets");
@@ -254,4 +255,44 @@ test("state document downloads cannot be sold before a PDF is uploaded", async (
   await db.prepare("UPDATE shop_products SET collection = 'Ordinary Downloads' WHERE id = ?").bind(p.id).run();
   const regular = (await publicCatalog(db)).products.find((x) => x.id === p.id);
   assert.equal(regular.can_buy, true);
+});
+
+test("deleting products removes them, their options and photos, but keeps a sold product's download for its buyers", async () => {
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const sold = await one(db, "Printed Quest Book");
+  const unsold = await one(db, "Printed Quest Book + Lesson Pack");
+  const files = new Map([[`shop/products/${sold.id}/file`, 1], [`shop/products/${unsold.id}/file`, 1], [`shop/products/${sold.id}/img-1`, 1]]);
+  const BUCKET = { delete: async (k) => { files.delete(k); } };
+  await db.prepare("UPDATE shop_products SET visible = 1, status = 'in_stock', price_cents = 1000 WHERE id = ?").bind(sold.id).run();
+  const priced = await priceItems(db, [{ product_id: sold.id }]);
+  const order = await createShopOrder(db, "x@y.co", priced.lines, new Date(), priced.postage);
+  await recordPaidShopOrder(db, env(db), order.id, order.total, "p1", "https://x");
+  const titles = await deleteProducts({ DB: db, BUCKET }, [sold.id, unsold.id, "00000000-0000-0000-0000-000000000000"]);
+  assert.deepEqual(titles.sort(), [sold.title, unsold.title].sort());
+  assert.equal(await one(db, sold.title), null);
+  assert.equal((await db.prepare("SELECT COUNT(*) n FROM shop_variants WHERE product_id IN (?, ?)").bind(sold.id, unsold.id).first()).n, 0);
+  assert.ok(files.has(`shop/products/${sold.id}/file`), "a past buyer can still download it");
+  assert.ok(!files.has(`shop/products/${unsold.id}/file`));
+  assert.ok(!files.has(`shop/products/${sold.id}/img-1`));
+});
+
+test("postage included: the product is posted but adds no postage, and a cart of only those needs no parcel quote", async () => {
+  const db = makeDb();
+  await ensureShopCatalog(db);
+  const free = await one(db, "Printed Quest Book");
+  const paid = await one(db, "Printed Quest Book + Lesson Pack");
+  await db.prepare("UPDATE shop_products SET visible = 1, status = 'in_stock', stage = 'launch_now', price_cents = 2495, postage_cents = 900, stock = 5, postage_included = 1, personalisation = '[]' WHERE id = ?").bind(free.id).run();
+  await db.prepare("UPDATE shop_products SET visible = 1, status = 'in_stock', stage = 'launch_now', price_cents = 3000, postage_cents = 1200, stock = 5, postage_included = 0, personalisation = '[]' WHERE id = ?").bind(paid.id).run();
+  assert.equal((await publicCatalog(db)).products.find((p) => p.id === free.id).postage_included, true);
+  const only = await priceItems(db, [{ product_id: free.id }]);
+  assert.equal(only.ok, true, JSON.stringify(only));
+  assert.deepEqual([only.postage, only.physical, only.lines[0].postage_included], [0, true, true], "still posted, nothing added for postage");
+  const { parcelForCart } = await import("../src/shopShipping.ts");
+  assert.equal(await parcelForCart(db, only.lines), null, "no Australia Post quote needed");
+  const mixed = await priceItems(db, [{ product_id: free.id }, { product_id: paid.id }]);
+  assert.equal(mixed.postage, 1200, "other products in the same cart still pay their postage");
+  assert.equal(validateProduct({ title: "Kit", department: "science", postage_included: true }).value.postage_included, 1);
+  assert.equal(validateProduct({ title: "Kit", department: "science", fulfilment: "digital", postage_included: true }).value.postage_included, 0);
+  assert.ok(!readiness({ fulfilment: "physical", postage_included: 1, status: "in_stock", stock: 1, price_cents: 1 }, []).includes("packed weight & dimensions"));
 });
