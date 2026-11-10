@@ -8,6 +8,7 @@ import Landing from "./pages/Landing";
 import ShopOrder from "./pages/ShopOrder";
 import GuidedDocument from "./pages/GuidedDocument";
 import PremiumDocument from "./pages/PremiumDocument";
+import ConfigurePremium from "./pages/ConfigurePremium";
 import ShopSubscription from "./pages/ShopSubscription";
 import ParentShop from "./pages/parent/ParentShop";
 import ShopDownloads from "./pages/ShopDownloads";
@@ -104,6 +105,7 @@ function Router() {
       <Route path="/shop/order/:id" element={<ShopOrder />} />
       <Route path="/shop/documents/:id/:productId" element={<GuidedDocument />} />
       <Route path="/shop/premium/:id/:productId" element={<PremiumDocument />} />
+      <Route path="/shop/configure-planner/:productId" element={<ConfigurePremium />} />
       <Route path="/shop/subscription/:id" element={<ShopSubscription />} />
       <Route path="/shop/downloads" element={<ShopDownloads />} />
       <Route path="/login" element={<Login />} />

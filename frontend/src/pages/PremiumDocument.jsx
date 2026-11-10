@@ -10,7 +10,7 @@ export default function PremiumDocument(){
  const {id,productId}=useParams(),[search]=useSearchParams(),token=search.get("t")||"";
  const endpoint=API+"/shop/orders/"+encodeURIComponent(id)+"/premium/"+encodeURIComponent(productId);
  const [meta,setMeta]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[step,setStep]=useState(0);
- const [children,setChildren]=useState([seed()]),[current,setCurrent]=useState(0),[pdf,setPdf]=useState(""),[sent,setSent]=useState("");
+ const [children,setChildren]=useState(()=>{try{const saved=JSON.parse(sessionStorage.getItem("sq-planner-draft:"+productId)||"null");if(saved&&Date.now()-saved.updated<3600000&&Array.isArray(saved.children)&&saved.children.length>=1&&saved.children.length<=5)return saved.children;}catch{}return [seed()]}),[current,setCurrent]=useState(0),[pdf,setPdf]=useState(""),[sent,setSent]=useState("");
  useEffect(()=>{let active=true;fetch(endpoint+"?t="+encodeURIComponent(token),{cache:"no-store"}).then(async r=>{const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.detail||"Link unavailable");return d}).then(d=>{if(active)setMeta(d)}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[endpoint,token]);
  const child=children[current];
  const update=(key,v)=>{setPdf("");setChildren(old=>old.map((x,i)=>i===current?{...x,[key]:v.slice(0,4500)}:x))};
@@ -19,7 +19,7 @@ export default function PremiumDocument(){
  const submit=async action=>{setBusy(true);setError("");try{
    const r=await fetch(endpoint+"/prepare?t="+encodeURIComponent(token),{method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",body:JSON.stringify({children,action,confirmed:action==="final"})});
    const d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.detail||"PDF could not be prepared");
-   if(action==="final"){setSent(d.detail);setPdf("")}else setPdf(d.data_url);
+   if(action==="final"){setSent(d.detail);setPdf("");try{sessionStorage.removeItem("sq-planner-draft:"+productId)}catch{}}else setPdf(d.data_url);
  }catch(e){setError(e.message)}finally{setBusy(false)}};
  const textFields=fields=>fields.map(([key,label])=><label key={key} className="block space-y-1 text-sm"><span className="font-semibold">{label}</span><textarea className={input} rows={3} value={child[key]||""} onChange={e=>update(key,e.target.value)}/></label>);
  const steps=["Family and children","Learning plans","Lessons and evidence","Review and submit"];
@@ -42,5 +42,6 @@ export default function PremiumDocument(){
     </>}
     <div className="flex justify-between"><button type="button" className="border rounded-lg px-4 py-2 disabled:opacity-30" disabled={step===0} onClick={()=>setStep(s=>s-1)}>Previous step</button><button type="button" className="rounded-lg bg-[#4A5D3A] text-white px-4 py-2 disabled:opacity-30" disabled={step===3} onClick={()=>setStep(s=>s+1)}>Next step</button></div>
    </section></>}
+ <p className="text-sm">Need help with this order? <a className="underline font-semibold" href={"mailto:support@sidequestlearning.app?subject="+encodeURIComponent("SideQuest document support · Order "+id)}>Contact SideQuest support</a>. Include your order number, but not children's personal details or card information.</p>
  </div></main>;
 }
