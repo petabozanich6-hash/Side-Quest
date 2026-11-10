@@ -639,7 +639,7 @@ function Subscriptions() {
     const rows=selected.map(s=>[
       editionMonth,s.title,s.recipient?.name||"",s.recipient?.address_line_1||"",s.recipient?.address_line_2||"",s.recipient?.locality||"",s.recipient?.state||"",s.recipient?.postcode||"",s.email,s.billing_cadence,s.paid_instalments,s.required,s.label,
     ]);
-    const csv=[headings,...rows].map(row=>row.map(value=>'"'+String(value??"").replace(/"/g,'""')+'"').join(",")).join("\n");
+    const csv=[headings,...rows].map(row=>row.map(value=>{const text=String(value??"");const safe=/^[=+@\-\t\r]/.test(text)?String.fromCharCode(39)+text:text;return '"'+safe.replace(/"/g,'""')+'"';}).join(",")).join("\n");
     const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
     const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`sidequest-${editionMonth}-${filter}-mailing.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(url),15000);
   };
