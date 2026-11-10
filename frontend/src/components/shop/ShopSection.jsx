@@ -105,6 +105,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const [addons, setAddons] = useState([]);
   const [email, setEmail] = useState(defaultEmail);
   const [recipient, setRecipient] = useState({ name: "", address_line_1: "", address_line_2: "", locality: "", state: "", postcode: "" });
+  const [billingCadence, setBillingCadence] = useState("monthly");
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -115,6 +116,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const sampleUrl = `${API}/shop/products/${encodeURIComponent(p.id)}/document-sample?year=${encodeURIComponent(sampleYear)}`;
   const v = p.variants.find((x) => x.id === variant);
   const price = v ? v.price_cents : p.price_cents;
+  const fortnightlyPrice = Number.isInteger(price) ? Math.round(price * 12 / 26) : null;
   const extras = (p.addons || []).map((id) => all.find((x) => x.id === id)).filter((x) => x && x.can_buy && !x.variants.length && !x.personalisation.length && !x.subscription);
   const max = Math.min(p.max_per_order || 20, 20);
   const missing = p.personalisation.find((f) => f.required && !(pers[f.key] || "").trim());
@@ -139,7 +141,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   };
   const subscribe = async () => {
     if (needVariant) { setError("Choose an option first."); return; }
-    const j = await post("/shop/subscribe", { product_id: p.id, variant_id: v?.id || null, email: email.trim(), recipient, personalisation: pers });
+    const j = await post("/shop/subscribe", { product_id: p.id, variant_id: v?.id || null, email: email.trim(), recipient, personalisation: pers, billing_cadence: billingCadence });
     if (j?.url) window.location.assign(j.url);
   };
   const interest = async () => {
@@ -232,12 +234,18 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
             )}
             {p.subscription && p.can_buy && (
               <div className="space-y-2 rounded-xl bg-stone-50 p-3">
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-semibold">How would you like to pay?</legend>
+                  <label className="flex items-center gap-2 text-sm"><input type="radio" name={`billing-${p.id}`} checked={billingCadence==="monthly"} onChange={()=>setBillingCadence("monthly")}/>Monthly · {money(price)} per month</label>
+                  <label className="flex items-center gap-2 text-sm"><input type="radio" name={`billing-${p.id}`} checked={billingCadence==="fortnightly"} onChange={()=>setBillingCadence("fortnightly")}/>Fortnightly · {money(fortnightlyPrice)} every 2 weeks</label>
+                  <p className="text-xs text-stone-600">One delivery each month, not fortnightly. Both instalments must clear before the next mail is sent. Some months have an extra fortnightly payment; those credits carry forward to later editions.</p>
+                </fieldset>
                 <p className="text-sm font-semibold">Who is it for? (they can be a child, grandchild or anyone you're gifting to)</p>
                 {[["name", "Their name"], ["address_line_1", "Street address"], ["address_line_2", "Unit, building (optional)"], ["locality", "Suburb or town"], ["state", "State"], ["postcode", "Postcode"]].map(([k, l]) => (
                   <input key={k} placeholder={l} aria-label={l} value={recipient[k]} onChange={(e) => setRecipient({ ...recipient, [k]: e.target.value })} className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm" />
                 ))}
                 <input type="email" placeholder="Your email (for receipts and managing it)" aria-label="Your email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full rounded-xl border border-stone-300 px-3 py-2 text-sm" />
-                <p className="text-xs text-stone-500">Billed monthly on Square. Cancel any time from the link we email you.</p>
+                <p className="text-xs text-stone-500">Billed {billingCadence==="fortnightly"?"every two weeks":"monthly"} by Square. Cancel any time from the private link we email you. Monthly mail dispatch is unchanged.</p>
                 {p.one_off_cents != null && (
                   <div className="pt-2 border-t">
                     <p className="text-sm font-semibold">Just want one box?</p>
@@ -280,7 +288,7 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
       </div>
       <div className="border-t px-4 py-3 flex justify-end gap-2">
         {p.can_buy && !p.subscription && <button type="button" onClick={add} className="rounded-xl px-4 py-2 text-sm font-bold text-white" style={{ backgroundColor: GREEN }} data-testid="shop-product-add">Add to cart{price != null ? ` · ${money(price * qty)}` : ""}</button>}
-        {p.can_buy && p.subscription && <button type="button" onClick={subscribe} disabled={busy} className="rounded-xl px-4 py-2 text-sm font-bold text-white disabled:opacity-60" style={{ backgroundColor: GREEN }}>{busy ? "Opening checkout…" : "Subscribe securely"}</button>}
+        {p.can_buy && p.subscription && <button type="button" onClick={subscribe} disabled={busy} className="rounded-xl px-4 py-2 text-sm font-bold text-white disabled:opacity-60" style={{ backgroundColor: GREEN }}>{busy ? "Opening checkout…" : `Subscribe · ${money(billingCadence==="fortnightly"?fortnightlyPrice:price)} ${billingCadence==="fortnightly"?"/ fortnight":"/ month"}`}</button>}
         {!p.can_buy && p.can_register_interest && !msg && <button type="button" onClick={interest} disabled={busy} className="rounded-xl px-4 py-2 text-sm font-bold text-white disabled:opacity-60" style={{ backgroundColor: GREEN }} data-testid="shop-register-interest">Register interest</button>}
       </div>
     </Modal>
