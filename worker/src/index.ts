@@ -19,6 +19,7 @@ import { registerHelpRequests } from "./helpRequests";
 import { registerBilling, reconcileSubscriptions } from "./billing";
 import { registerSquare } from "./square";
 import { registerShopCatalog } from "./shopRoutes";
+import { registerSiteTraffic } from "./siteTraffic";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerPriorLearning } from "./priorLearning";
 import { registerStartingChecks } from "./startingCheck";
@@ -52,6 +53,7 @@ import type { InboundMessage } from "./inbound";
 import type { App, Env, Guards, Vars } from "./types";
 
 const app: App = new Hono<{ Bindings: Env; Variables: Vars }>();
+registerSiteTraffic(app);
 // Owner HQ is same-origin only: no CORS headers for /api/admin/* (its CSRF checks are in adminRoutes.ts).
 const corsAll = cors();
 app.use("/api/*", (c, next) => (c.req.path.startsWith("/api/admin/") || c.req.path === "/api/admin" ? next() : corsAll(c, next)));
