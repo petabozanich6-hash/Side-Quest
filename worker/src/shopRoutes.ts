@@ -130,7 +130,7 @@ export async function priceItems(db: DB, items: ItemIn[], now: Date = new Date()
     const pers = cleanPersonalisation(p.personalisation, it?.personalisation);
     if (typeof pers === "string") return { ok: false, detail: pers };
     const physical = p.fulfilment !== "digital";
-    const familyKind = documentKind(p);
+    const familyKind = documentType(p);
     // Special family price: one full-price document, $1 extra per guided
     // learner or $3 extra per printed learner, on the same household order.
     // Each child must receive their own output; a family pack is never a
