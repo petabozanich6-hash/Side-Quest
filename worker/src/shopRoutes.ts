@@ -1185,7 +1185,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const id=c.req.param("id");
     if(!UUID.test(id))return c.json({detail:"Invalid subscription."},400);
     await ensureShopSubscriptions(c.env.DB);
-    const row=await c.env.DB.prepare("SELECT square_subscription_id FROM shop_subscriptions WHERE id=?").bind(id).first<any>();
+    const row=await (c.env.DB as DB).prepare("SELECT square_subscription_id FROM shop_subscriptions WHERE id=?").bind(id).first<{square_subscription_id:string|null}>();
     if(!row)return c.json({detail:"Subscription not found."},404);
     if(!row.square_subscription_id)return c.json({detail:"Square subscription is not linked yet. Keep the mailing on hold."},409);
     const sq=squareConfig(c.env);
