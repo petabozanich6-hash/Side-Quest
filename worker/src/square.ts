@@ -14,7 +14,8 @@
 //   SQUARE_WEBHOOK_URL            var, optional (the exact URL registered with Square; defaults to the request URL)
 import { recordPaidCart } from "./questBookPurchases";
 import { recordPaidShopOrder } from "./shopOrders";
-import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo } from "./squareMembership";
+import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo, type ShopMembershipHooks } from "./squareMembership";
+import { linkShopMembershipCustomer, shopMembershipInterval } from "./squareShopMembership";
 import { attachShopSubscription, linkShopSubscriptionPayment, markShopSubscriptionPastDue, syncShopSubscription, recordShopSubscriptionInvoice } from "./shopSubscriptions";
 import type { App, Env } from "./types";
 import { LIVE_PRICE_DETAILS, appOrigin } from "./billing";
@@ -145,12 +146,16 @@ function ensureEvents(db: DB) {
 export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>, shop?: { env: Env; origin: string }): Promise<string> {
   const type = String(event?.type || "");
   const obj = event?.data?.object || {};
+  const hooks: ShopMembershipHooks = {
+    intervalFor: (variationId) => shopMembershipInterval(db, cfg, variationId, fetchImpl, now),
+    linkCustomer: (customerId) => linkShopMembershipCustomer(db, shop?.env, cfg, customerId, fetchImpl, now),
+  };
   if (type === "subscription.created" || type === "subscription.updated") {
     const id = String(obj.subscription?.id || event?.data?.id || "");
     if (!id) return "subscription event without id";
     // Shop subscriptions (Dragon Post letters, Monthly Quest boxes) first; everything else is a membership.
     await attachShopSubscription(db, cfg, obj.subscription);
-    return (await syncShopSubscription(db, cfg, id, fetchImpl)) ?? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated);
+    return (await syncShopSubscription(db, cfg, id, fetchImpl)) ?? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated, hooks);
   }
   if (type === "invoice.payment_made") {
     const id = String(obj.invoice?.subscription_id || "");
@@ -163,7 +168,7 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
       if(invoiceId) await recordShopSubscriptionInvoice(db,id,invoiceId,now.toISOString());
       return synced;
     }
-    return syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated);
+    return syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated, hooks);
   }
   if (type === "invoice.scheduled_charge_failed") {
     const id = String(obj.invoice?.subscription_id || "");

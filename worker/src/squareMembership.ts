@@ -135,15 +135,28 @@ const endOfDate = (d: string) => new Date(Date.parse(`${d}T00:00:00Z`) + 2 * DAY
 export type ActivatedInfo = { familyId: string; subscriptionId: string; interval: Interval; periodEnd: string };
 
 /** Re-reads one subscription from Square and applies it to its family. Returns an outcome string. */
-export async function syncSquareSubscription(db: DB, cfg: Cfg, subscriptionId: string, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>): Promise<string> {
+/** Hooks for memberships bought in the Square Online shop, where the app did not create the checkout. */
+export type ShopMembershipHooks = {
+  intervalFor: (variationId: string) => Promise<Interval | null>;
+  linkCustomer: (customerId: string) => Promise<{ familyId: string; created: boolean } | null>;
+};
+
+export async function syncSquareSubscription(db: DB, cfg: Cfg, subscriptionId: string, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>, shopHooks?: ShopMembershipHooks): Promise<string> {
   await ensureSquareMembership(db);
   const sub = (await squareCall(cfg, "GET", `subscriptions/${encodeURIComponent(subscriptionId)}`, undefined, fetchImpl))?.subscription;
   if (!sub?.id || sub.location_id !== cfg.locationId) return `subscription ${subscriptionId} not for this location`;
-  const member = await db.prepare("SELECT family_id FROM square_members WHERE customer_id = ?").bind(String(sub.customer_id || "")).first<{ family_id: string }>();
-  if (!member) return `no family yet for customer of ${subscriptionId}`;
-  const planRow = await db.prepare("SELECT interval FROM square_plans WHERE variation_id = ?").bind(String(sub.plan_variation_id || "")).first<{ interval: string }>();
-  const interval = (planRow && INTERVALS.includes(planRow.interval as Interval) ? planRow.interval : null) as Interval | null;
+  const variationId = String(sub.plan_variation_id || "");
+  const planRow = await db.prepare("SELECT interval FROM square_plans WHERE variation_id = ?").bind(variationId).first<{ interval: string }>();
+  let interval = (planRow && INTERVALS.includes(planRow.interval as Interval) ? planRow.interval : null) as Interval | null;
+  // Not one of the app's own checkout plans: it may be a Family Membership sold in the Square Online shop.
+  if (!interval && shopHooks) interval = await shopHooks.intervalFor(variationId);
   if (!interval) return `unknown plan for ${subscriptionId}`;
+  let member = await db.prepare("SELECT family_id FROM square_members WHERE customer_id = ?").bind(String(sub.customer_id || "")).first<{ family_id: string }>();
+  if (!member && shopHooks && !planRow) {
+    const linked = await shopHooks.linkCustomer(String(sub.customer_id || ""));
+    if (linked) member = { family_id: linked.familyId };
+  }
+  if (!member) return `no family yet for customer of ${subscriptionId}`;
   const fam = await db.prepare("SELECT plan FROM families WHERE id = ?").bind(member.family_id).first<{ plan: string }>();
   if (!fam) return "family gone";
   const status = String(sub.status || "");
