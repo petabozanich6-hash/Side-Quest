@@ -169,3 +169,75 @@ test("Square promo codes: a discounted first phase on its own plan variation, an
   db.raw.prepare("UPDATE square_checkouts SET paid_at = '2026-11-08' WHERE offer_id = 'off1'").run();
   assert.equal(await findSquareOffer(db, cfg, "DRAGON20"), null);
 });
+
+function fakeShopMembershipSquare() {
+  const calls = [];
+  const state = { sub: null, customers: { CUSTNEW: { id: "CUSTNEW", email_address: "New.Parent@Example.com", given_name: "Nina", family_name: "Parent" }, CUSTOLD: { id: "CUSTOLD", email_address: "old@example.com" } } };
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status });
+  const objects = {
+    MVAR_M: { id: "MVAR_M", type: "SUBSCRIPTION_PLAN_VARIATION", subscription_plan_variation_data: { name: "Monthly", subscription_plan_id: "MPLAN", phases: [{ cadence: "MONTHLY" }] } },
+    MVAR_Y: { id: "MVAR_Y", type: "SUBSCRIPTION_PLAN_VARIATION", subscription_plan_variation_data: { name: "Yearly", subscription_plan_id: "MPLAN", phases: [{ cadence: "MONTHLY", periods: 1 }, { cadence: "ANNUAL" }] } },
+    MPLAN: { id: "MPLAN", type: "SUBSCRIPTION_PLAN", subscription_plan_data: { name: "Side-Quest Family Membership" } },
+    BVAR: { id: "BVAR", type: "SUBSCRIPTION_PLAN_VARIATION", subscription_plan_variation_data: { name: "Monthly box", subscription_plan_id: "BPLAN", phases: [{ cadence: "MONTHLY" }] } },
+    BPLAN: { id: "BPLAN", type: "SUBSCRIPTION_PLAN", subscription_plan_data: { name: "Monthly Quest Box" } },
+  };
+  const fetchImpl = async (url, init) => {
+    const path = url.replace(/^https:\/\/[^/]+\/v2\//, "");
+    calls.push({ path, method: init?.method });
+    if (path.startsWith("catalog/object/")) { const o = objects[decodeURIComponent(path.slice(15))]; return o ? json({ object: o }) : json({}, 404); }
+    if (path.startsWith("customers/")) { const c = state.customers[decodeURIComponent(path.slice(10))]; return c ? json({ customer: c }) : json({}, 404); }
+    if (path.startsWith("subscriptions/")) return json({ subscription: state.sub });
+    return json({}, 404);
+  };
+  return { fetchImpl, calls, state };
+}
+
+test("Square shop membership: a new buyer gets an account, is unlocked through the paid period, and renewals keep it unlocked", async () => {
+  const db = makeDb();
+  const cfg = squareConfig(ENV);
+  const sq = fakeShopMembershipSquare();
+  const sent = [];
+  const env = { EMAIL: { send: async (m) => { sent.push(m); } } };
+  sq.state.sub = { id: "SSUB1", customer_id: "CUSTNEW", location_id: "LTEST123456", plan_variation_id: "MVAR_M", status: "ACTIVE", charged_through_date: "2026-12-12" };
+  const out = await handleSquareEvent(db, cfg, { type: "subscription.created", data: { object: { subscription: { id: "SSUB1", customer_id: "CUSTNEW", plan_variation_id: "MVAR_M" } } } }, sq.fetchImpl, new Date("2026-11-12T00:00:00Z"), undefined, { env, origin: "https://sidequestlearning.app" });
+  assert.match(out, /synced square SSUB1 -> ACTIVE_MONTHLY/);
+  const user = db.raw.prepare("SELECT id, family_id, name FROM users WHERE email = 'new.parent@example.com'").get();
+  assert.ok(user, "parent account created from the Square customer");
+  assert.equal(user.name, "Nina Parent");
+  const fam = db.raw.prepare("SELECT plan, plan_period_end, billing_interval FROM families WHERE id = ?").get(user.family_id);
+  assert.equal(fam.plan, "ACTIVE_MONTHLY");
+  assert.ok(fam.plan_period_end > "2026-12-12");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM password_resets WHERE user_id = ? AND used_at IS NULL").get(user.id).n, 1);
+
+  // Renewal paid: Square moves charged_through on; the account stays unlocked for the new period.
+  sq.state.sub = { ...sq.state.sub, charged_through_date: "2027-01-12" };
+  await handleSquareEvent(db, cfg, { type: "invoice.payment_made", data: { object: { invoice: { id: "INV2", subscription_id: "SSUB1" } } } }, sq.fetchImpl, new Date("2026-12-12T00:00:00Z"), undefined, { env, origin: "https://sidequestlearning.app" });
+  assert.ok(db.raw.prepare("SELECT plan_period_end FROM families WHERE id = ?").get(user.family_id).plan_period_end > "2027-01-12");
+  // Only one account, even after repeated events.
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM users WHERE email = 'new.parent@example.com'").get().n, 1);
+
+  // Failed renewal: grace; subscription ends: locked.
+  await handleSquareEvent(db, cfg, { type: "invoice.scheduled_charge_failed", data: { object: { invoice: { subscription_id: "SSUB1" } } } }, sq.fetchImpl);
+  assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id = ?").get(user.family_id).plan, "PAST_DUE");
+  sq.state.sub = { ...sq.state.sub, status: "CANCELED" };
+  await handleSquareEvent(db, cfg, { type: "subscription.updated", data: { object: { subscription: { id: "SSUB1" } } } }, sq.fetchImpl);
+  assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id = ?").get(user.family_id).plan, "CANCELLED");
+});
+
+test("Square shop membership: an existing parent is matched by email; non-membership shop subscriptions are left alone", async () => {
+  const db = makeDb();
+  db.raw.prepare("INSERT INTO families (id,name,owner_id,created_at,plan) VALUES ('fam-old','F','u-old','2026-01-01','FREE_PREVIEW')").run();
+  db.raw.prepare("INSERT INTO users (id,family_id,email,password_hash,name,is_owner,created_at) VALUES ('u-old','fam-old','old@example.com','x','Old',1,'2026-01-01')").run();
+  const cfg = squareConfig(ENV);
+  const sq = fakeShopMembershipSquare();
+  sq.state.sub = { id: "SSUB2", customer_id: "CUSTOLD", location_id: "LTEST123456", plan_variation_id: "MVAR_Y", status: "ACTIVE", charged_through_date: "2027-11-12" };
+  const out = await handleSquareEvent(db, cfg, { type: "subscription.created", data: { object: { subscription: { id: "SSUB2" } } } }, sq.fetchImpl, new Date("2026-11-12T00:00:00Z"));
+  assert.match(out, /ACTIVE_ANNUAL/);
+  assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id='fam-old'").get().plan, "ACTIVE_ANNUAL");
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM users").get().n, 1);
+
+  sq.state.sub = { id: "SSUB3", customer_id: "CUSTNEW", location_id: "LTEST123456", plan_variation_id: "BVAR", status: "ACTIVE", charged_through_date: "2026-12-12" };
+  const box = await handleSquareEvent(db, cfg, { type: "subscription.created", data: { object: { subscription: { id: "SSUB3" } } } }, sq.fetchImpl);
+  assert.match(box, /unknown plan/);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM users WHERE email='new.parent@example.com'").get().n, 0);
+});
