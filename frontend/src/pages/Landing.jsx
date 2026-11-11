@@ -87,13 +87,13 @@ export default function Landing() {
                 <div className="mt-1 text-sm font-semibold flex items-center gap-1.5">Start your quest <ArrowRight size={16} className="transition group-hover:translate-x-1"/></div>
               </div>
             </Link>
-            <Link to="/shop" className="group rounded-3xl p-5 flex items-center gap-4 shadow-md hover:translate-y-[-2px] transition focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300" style={{backgroundColor:"#D4A574", color:"#1F3B2D"}} data-testid="cta-shop" aria-label="Visit the Side-Quest shop">
+            <a href="https://shop.sidequestlearning.app" className="group rounded-3xl p-5 flex items-center gap-4 shadow-md hover:translate-y-[-2px] transition focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300" style={{backgroundColor:"#D4A574", color:"#1F3B2D"}} data-testid="cta-shop" aria-label="Visit the Side-Quest shop">
               <div className="shrink-0 rounded-2xl p-4" style={{backgroundColor:"#FFF9EE"}}><ShoppingBag size={44} strokeWidth={1.75} color="#1F3B2D"/></div>
               <div className="min-w-0">
                 <div className="font-display text-2xl font-bold leading-tight">The Shop</div>
                 <div className="mt-1 text-sm font-semibold flex items-center gap-1.5">Books, kits, gifts and more <ArrowRight size={16} className="transition group-hover:translate-x-1"/></div>
               </div>
-            </Link>
+            </a>
           </div>
 
           <p className="mt-5 text-xs font-semibold" style={{color:"#4A5D3A"}}>Start with seven days free, no card or automatic charge. Your preview includes one child, two lessons you make yourself, two active assignments and one generated lesson draft for your family.</p>
