@@ -12,6 +12,12 @@ Choose a starter (worksheet, family planner, reading journal, evidence tracker o
 
 Download files individually or use **Download Square product ZIP** to package both PDFs with owner-only listing and quality notes. No product database row or customer transaction is created during export.
 
+## Square digital delivery in Australia
+
+Square's Digital item type accepts orders, but Square Australia requires manual email fulfilment unless a separate service such as SendOwl is connected. Publishing a PDF using a Square website PDF block makes it publicly accessible and is not paid-file delivery. Keep the exported ZIP private, then manually email it after a verified purchase or configure secure third-party delivery.
+
+Sources: https://squareup.com/help/au/en/article/6873-sell-non-physical-items-in-square-online-store and https://squareup.com/help/au/en/article/7052-display-documents-on-your-site .
+
 ## Mandatory pre-sale test
 
 1. Inspect all pages at full size and print an A4 sample: check margins, contrast, labels, table continuation, whitespace, answer sizes and page count.
