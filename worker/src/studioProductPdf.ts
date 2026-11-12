@@ -119,25 +119,27 @@ export function buildStudioProductPdf(raw:unknown,mode:"print"|"fillable"):{pdf:
  };
  const log=(labels:string[])=>{
   const widths=[98,170,228], xs=[LEFT,LEFT+98,LEFT+268], headers=["Date","Learning / activity","Notes or evidence"];
-  const h=38;
+  const header=()=>{
+   need(50);
+   fill(sheet,LEFT,y-30,RIGHT-LEFT,30,rgb(.93,.95,.92));
+   headers.forEach((s,i)=>text(sheet,s,xs[i]+7,y-19,9,true,FOREST));
+   y-=30;
+  };
   const rows=Math.max(4,Math.min(labels.length,10));
-  need(50);
-  fill(sheet,LEFT,y-30,RIGHT-LEFT,30,rgb(.93,.95,.92));
-  headers.forEach((s,i)=>text(sheet,s,xs[i]+7,y-19,9,true,FOREST));
-  y-=30;
+  header();
   for(let k=0;k<rows;k++){
-   need(78);
-   const bottom=y-70;
-   widths.forEach((w,i)=>stroke(sheet,xs[i],bottom,w,70));
    const prompt=labels[k]||"";
-   const promptLines=wrap(prompt,8.5,152).slice(0,2);
-   if(prompt && promptLines.length){
-    text(sheet,promptLines[0],xs[1]+8,y-14,8.5,false,MUTED);
-    if(promptLines[1])text(sheet,promptLines[1],xs[1]+8,y-26,8.5,false,MUTED);
-   }
+   // A long activity description grows its row. It is never clipped to two lines.
+   const promptLines=prompt?wrap(prompt,8.5,152):[];
+   const rowH=Math.max(72,promptLines.length*13+43);
+   if(y-rowH-11<BOTTOM){newSheet();header();}
+   const bottom=y-rowH;
+   widths.forEach((w,i)=>stroke(sheet,xs[i],bottom,w,rowH));
+   promptLines.forEach((line,j)=>text(sheet,line,xs[1]+8,y-14-j*13,8.5,false,MUTED));
    if(mode==="fillable")widths.forEach((w,i)=>{
     fieldIndex++;
-    sheet.fields.push({name:"log_"+fieldIndex.toString().padStart(3,"0"),kind:"text",x:xs[i]+3,y:bottom+3,w:w-6,h:i===1&&prompt?35:64});
+    const reserved=i===1?promptLines.length*13+18:5;
+    sheet.fields.push({name:"log_"+fieldIndex.toString().padStart(3,"0"),kind:"text",x:xs[i]+3,y:bottom+3,w:w-6,h:rowH-reserved-3});
    });
    y=bottom-9;
   }
