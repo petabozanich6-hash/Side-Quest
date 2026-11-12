@@ -116,19 +116,20 @@ const NSW_ELECTIVES=["PDHPE","Creative Arts","Languages","Technology"] as const;
  */
 export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleOnly=false,mode:Mode="fillable",edition:Edition="standard",selectedElectives:string[]=[],productKind="blank"):Uint8Array{
  if(!Object.prototype.hasOwnProperty.call(JURISDICTIONS,state)||state==="OTHER")throw Error("Invalid state");
- if(!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(yearLevel))throw Error("Invalid school year");
+ if(!/^(ALL|K|F|Prep|[1-9]|1[0-2])$/i.test(yearLevel))throw Error("Invalid school year");
  if(mode!=="fillable"&&mode!=="print")throw Error("Invalid PDF edition");
  if(edition!=="standard"&&edition!=="complete")throw Error("Invalid document range");
  const kinds=["blank","guided","printed","planner_blank","planner_personalised","planner_printed"];
  if(!kinds.includes(productKind))throw Error("Invalid document product.");
- const master=["guided","planner_personalised","planner_printed"].includes(productKind);
+ const master=["planner_personalised","planner_printed"].includes(productKind);
+ const universal=yearLevel.toUpperCase()==="ALL";
  const productTitles:Record<string,string>={
-  blank:"Planning Template",guided:"Guided Planning Master",printed:"Printed Workbook",
+  blank:"Planning Template",guided:"Self-Guided Workbook",printed:"Printed Workbook",
   planner_blank:"Complete Planner & Diary",planner_personalised:"Personalised Planner Master",
   planner_printed:"Spiral-Bound Planner Master"
  };
  const jur=JURISDICTIONS[state as JurisdictionCode];
- const displayYear=/^(K|F|Prep)$/i.test(yearLevel)?jur.foundationYear:yearLevel;
+ const displayYear=universal?"Flexible year levels":/^(K|F|Prep)$/i.test(yearLevel)?jur.foundationYear:yearLevel;
  const rawElectives=Array.isArray(selectedElectives)?selectedElectives:[];
  const chosen=rawElectives.filter(v=>NSW_ELECTIVES.some(a=>a===v));
  if(chosen.length!==rawElectives.length||new Set(chosen).size!==chosen.length||chosen.length>2)throw Error("Select up to two different NSW elective learning areas.");
@@ -250,11 +251,11 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  text("Home Education",L,630,32,true,"1 1 1");
  text(productKind==="blank"&&edition==="complete"?"Planner & Diary":productTitles[productKind],L,580,productKind==="planner_personalised"||productKind==="planner_printed"?25:27,true,"1 1 1");
  for(const [i,s] of wrap(jur.name,16,480).entries())text(s,L,520-i*20,16,true,"0.91 0.83 0.69");
- text(/^(K|F|Prep)$/i.test(yearLevel)?displayYear:"Year "+displayYear,L,479,11,true,"0.91 0.83 0.69");
+ text(universal?jur.foundationYear+" to Year 12":/^(K|F|Prep)$/i.test(yearLevel)?displayYear:"Year "+displayYear,L,479,11,true,"0.91 0.83 0.69");
  text("PLAN. TEACH. RECORD. REFLECT.",L,428,14,true,green);
  const coverSubtitles:Record<string,string>={
   blank:"A4 printing and digitally fillable PDF",
-  guided:"Owner master for individual guided preparation",
+  guided:"Self-guided A4 printable + fillable workbook",
   printed:"A4 printed-and-posted workbook production master",
   planner_blank:"A4 printing and digitally fillable family diary",
   planner_personalised:"Owner master - prepare each family edition individually",
@@ -274,22 +275,44 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  text("Official-source catalogue last checked "+CHECKED_ON+". Review before using.",L,102,8.4,false,muted);
  if(state==="NT")text("NT: Use the department\'s prescribed self-developed plan form for submission.",L,82,8.2,true,green);
  
- if(productKind==="guided"){
-  startSection("GUIDE","How this guided document is completed","This is an owner production master. A genuine guided plan is based on the individual family's information, not a pre-written generic answer.");
-  const steps=[
-   ["01. Understand the learner","Ask the family to describe interests, current strengths, needs and realistic priorities. Do not infer diagnoses or add fictional achievements."],
-   ["02. Choose goals and learning experiences","Identify the real knowledge or skills to develop, the activities that will teach them and actual named resources."],
-   ["03. Connect learning and evidence","Link activities to observations, dated work samples and other evidence. Distinguish planned learning from learning already completed."],
-   ["04. Review before individual delivery","Check that the plan reflects the actual child's year, jurisdiction, selected learning areas and family's approved wording."]
-  ];
-  for(const [heading,explain] of steps){
-   ensure(96);text(heading,L+3,y,12,true,green);y-=21;lines(explain,L+5,R-L-12,9.6,16);y-=26;
-  }
-  field("Owner production notes (not a substitute for family input)","Record missing information and specific questions before preparing the real personalised document.",115);
+ if(universal){
+  startSection("START","How to use this flexible-year workbook",
+   "One document for your state or territory, from the first year of school through senior secondary. Only complete the sections relevant to your learner.");
+  lines("STEP 1  Enter the learner's actual school year, stage and planning dates on the next page.",L+4,R-L-8,10,17,green);y-=13;
+  lines("STEP 2  Use the common learning, resources and evidence pages that suit your family. Extra pages can be left blank.",L+4,R-L-8,10,17);y-=13;
+  lines("STEP 3  Look for the clearly labelled OPTIONAL early-years, primary, secondary and senior-secondary pages. Complete only the age group(s) that apply.",L+4,R-L-8,10,17);y-=13;
+  lines("STEP 4  For digital use, type and save your answers. For paper use, print only the pages you need. PDF pages do not automatically hide or disappear.",L+4,R-L-8,10,17);y-=18;
+  checkbox("First school year to Year 2 - complete the optional early-years section where relevant.");
+  checkbox("Years 3-6 - complete the optional primary-years section where relevant.");
+  checkbox("Years 7-10 - complete the optional secondary-years section where relevant.");
+  checkbox("Years 11-12 - complete the optional senior-secondary section where relevant.");
+  field("My learner's year, stage and which optional pages we'll use",
+    "The stage can be different for different subjects. Check the current state/territory requirements; these checkboxes are planning aids, not a statutory checklist.",112);
  }
-
+ if(productKind==="guided"){
+  startSection("GUIDE","Your self-guided planning journey",
+   "This downloadable workbook guides you step by step. There is no online wizard, live consultation or owner-prepared plan. Work through the exercises at your own pace.");
+  const steps=[
+   ["1. Start with the learner","Example only: A learner who loves animals might enjoy reading wildlife books, measuring pet food or making an observation diary.","Write the learner's actual interests, strengths and learning needs, without adding private diagnoses or inventing achievements."],
+   ["2. Choose meaningful learning goals","Example only: Practise explaining an observation in two or three clear sentences. This is an illustrative goal, not a prescribed syllabus outcome.","Write a few specific goals that fit the learner. Check actual curriculum or syllabus references separately."],
+   ["3. Turn a goal into practical activities","Example only: Read an age-suitable article, discuss its main idea and create a labelled drawing. Adjust the activities to the child's own needs.","Describe how you will introduce, practise and revisit one real learning goal."],
+   ["4. Name resources you can really use","Example only: A borrowed library book, a suitable website, everyday household objects or a planned visit. Do not invent purchases.","List the real titles, materials, people and places your family will use."],
+   ["5. Plan evidence and review","Example only: Keep dated drawings, activity notes and a photo of a completed project. This is proposed evidence, not a claim of finished learning.","Decide how progress will be recorded and when you will revisit the plan."]
+  ];
+  for(const [heading,example,prompt] of steps){
+   startSection("GUIDE",heading,"WORK THROUGH THIS EXERCISE - example answers are illustrative, never pre-filled family information.");
+   lines(example,L+4,R-L-8,9.7,16,muted);y-=20;
+   field("Your turn",prompt,188);
+   field("Anything to check before moving on?","Check that your answer is accurate, realistic and suited to the learner and the jurisdiction.",126);
+  }
+  startSection("GUIDE","Putting the steps together",
+   "Use this table to turn your answers into a draft learning plan. You can return to the full planning pages later to develop each learning area.");
+  table(["Goal / focus","Teaching activities and actual resources","Evidence / next review"],5,101,{widths:[120,210,171]});
+  checkbox("I used my own family information rather than copying an illustrative example as a completed plan.");
+  checkbox("I have checked the current official guidance relevant to our state or territory.");
+ }
  startSection("01","Learner and planning period","Start with the details that make this a plan for an individual learner. Leave fields blank until you have accurate information.");
- pair("Learner name / identifier","Year level / stage ("+displayYear+")");
+ pair("Learner name / identifier",universal?"Actual year level / stage":("Year level / stage ("+displayYear+")"));
  pair("Planning start date","Planning end date");
  field("What does this learner enjoy and do well?","Interests, strengths, motivations and current skills.",120);
  field("What would meaningful progress look like?","Include a few realistic learning and development goals.",125);
