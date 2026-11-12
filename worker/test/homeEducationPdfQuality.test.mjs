@@ -28,7 +28,7 @@ test("Complete diary retains original product scope and adds usable records",()=
  const base=asText(generateHomeEducationTemplate("NSW","3"));
  const complete=asText(generateHomeEducationTemplate("NSW","3",false,"fillable","complete"));
  assert.ok(pages(complete)>pages(base)+8);
- for(const phrase of ["Learning diary","Reading and literacy record","Evidence portfolio index","Outcome and goals tracker","Projects and excursions","Family review"])assert.ok(complete.includes(phrase),phrase);
+ for(const phrase of ["Learning diary","Reading and literacy record","Evidence portfolio index","Outcomes and goals tracker","Projects and excursions","Family review"])assert.ok(complete.includes(phrase),phrase);
  assert.match(complete,/\/FT \/Tx/);
  assert.match(complete,/\/FT \/Btn/);
 });
