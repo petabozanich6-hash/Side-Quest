@@ -995,6 +995,34 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     }
   });
 
+  // New authoring export for the EXISTING home education documents.
+  // This is independent of any Side-Quest shop listing or Square transaction.
+  // A master is generated separately as print-only or digitally fillable PDF.
+  admin.post("/document-studio/export-home-education", R, async (c: Context<any>) => {
+    const body=await readJson(c);
+    const state=String(body.state||"").toUpperCase(),year=String(body.year_level||"3");
+    const edition=body.edition==="complete"?"complete":body.edition==="standard"?"standard":null;
+    const mode=body.mode==="print"?"print":body.mode==="fillable"?"fillable":null;
+    if(!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state)||!edition||!mode||!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year))
+      return c.json({detail:"Choose a document range, state, year and PDF edition."},400);
+    const limited=await hitRateLimit(c.env.DB,"document-studio:education-export:"+String(c.get("user")?.id||"owner"),30,3600);
+    if(!limited.ok)return c.json({detail:"PDF export limit reached for this hour."},429);
+    try{
+      const pdf=generateHomeEducationTemplate(state,year,false,mode,edition);
+      if(pdf.byteLength>MAX_FILE_BYTES)return c.json({detail:"PDF exceeds 25 MB."},413);
+      let binary="";
+      for(let i=0;i<pdf.length;i+=8192)binary+=String.fromCharCode(...pdf.subarray(i,i+8192));
+      c.header("Cache-Control","private, no-store");
+      return c.json({
+        data_url:"data:application/pdf;base64,"+btoa(binary),
+        sha256:await sha256(pdf),
+        state,year_level:year,edition,mode,
+        filename:"sidequest-"+state.toLowerCase()+"-"+year.toLowerCase()+"-"+edition+"-"+mode+".pdf",
+        note:"Owner-only document proof. No listing or customer delivery created. Independently review content, sources, form fields and every A4 page before offering for sale."
+      });
+    }catch(err:any){return c.json({detail:err?.message||"Unable to build the document."},400);}
+  });
+
   // Owner-only two-step generation. Preview creates bytes in memory but
   // never persists or publishes a file. Save must match the exact SHA-256
   // fingerprint previously inspected in the browser.
