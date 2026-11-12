@@ -1,138 +1,214 @@
-import React,{useEffect,useState} from "react";
+import React,{useEffect,useMemo,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 import {squareProductZip} from "./squareProductZip";
 
 const input="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm";
 const primary="rounded-xl bg-[#1F3B2D] text-white px-4 py-2.5 text-sm font-semibold disabled:opacity-50";
 const secondary="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50";
-const foundationYears={
+const firstYears={
  NSW:["K","Kindergarten"],VIC:["F","Foundation"],QLD:["Prep","Prep"],
  WA:["K","Pre-primary"],SA:["K","Reception"],TAS:["Prep","Prep"],
- ACT:["K","Kindergarten"],NT:["K","Transition"],
+ ACT:["K","Kindergarten"],NT:["K","Transition"]
 };
 const years=Array.from({length:12},(_,i)=>String(i+1));
-const NSW_OPTIONAL_AREAS=["PDHPE","Creative Arts","Languages","Technology"];
-const editions={
- standard:{label:"Home Education Planning Workbook",summary:"A state-specific learning plan with learner goals, detailed teaching plans for each learning area, curriculum references, resources, evidence recording, review pages and authority preparation notes."},
- complete:{label:"Complete Home Education Planner & Diary",summary:"Everything in the planning workbook, plus four planning periods, learning diaries, dated evidence and reading logs, goal/outcome trackers, project records and family progress reviews."}
-};
-function bytes(uri){
- const binary=atob(String(uri||"").split(",")[1]||""),out=new Uint8Array(binary.length);
- for(let i=0;i<binary.length;i++)out[i]=binary.charCodeAt(i);
- return out;
+const electives=["PDHPE","Creative Arts","Languages","Technology"];
+const defaultKinds=["blank","guided","printed","planner_blank","planner_personalised","planner_printed"];
+const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(Number(n||0)/100);
+
+function uriBytes(uri){
+ const data=String(uri||"").split(",")[1];
+ if(!data)throw Error("PDF proof missing.");
+ const raw=atob(data),bytes=new Uint8Array(raw.length);
+ for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+ return bytes;
 }
-function downloadPack(result,filename){
- const files=[
-  {name:result.print.filename,bytes:bytes(result.print.data_url)},
-  {name:result.fillable.filename,bytes:bytes(result.fillable.data_url)}
- ];
- const blob=squareProductZip(files),url=URL.createObjectURL(blob);
- const a=window.document.createElement("a");a.href=url;a.download=filename;
+function downloadFile(name,blob){
+ const url=URL.createObjectURL(blob);
+ const a=window.document.createElement("a");a.href=url;a.download=name;
  window.document.body.appendChild(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),2000);
+ window.setTimeout(()=>URL.revokeObjectURL(url),2500);
 }
+function storedQueue(){
+ try{return JSON.parse(localStorage.getItem("sidequest:home-document-production-queue-v1")||"{}")||{}}
+ catch{return {}}
+}
+const textCopy=async(value)=>{
+ if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(value);
+ else throw Error("Clipboard unavailable. Select and copy the text manually.");
+};
+
 export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  const [year,setYear]=useState("3");
- const [edition,setEdition]=useState("standard");
- const [electives,setElectives]=useState(["",""]);
+ const [kind,setKind]=useState("blank");
+ const [electiveChoices,setElectiveChoices]=useState(["",""]);
+ const [catalogue,setCatalogue]=useState(null);
+ const [catalogueError,setCatalogueError]=useState("");
+ const [loading,setLoading]=useState(false);
+ const [busy,setBusy]=useState(false);
  const [proof,setProof]=useState(null);
  const [selected,setSelected]=useState("fillable");
- const [busy,setBusy]=useState(false);
- const [error,setError]=useState("");
+ const [confirmed,setConfirmed]=useState(false);
  const [notice,setNotice]=useState("");
- const [review,setReview]=useState(false);
- useEffect(()=>{
-  const schoolFirst=(foundationYears[jurisdiction?.code]||["K"])[0];
-  if(["K","F","Prep"].includes(year) && year!==schoolFirst)setYear(schoolFirst);
- },[jurisdiction?.code,year]);
- useEffect(()=>{setProof(null);setReview(false);setError("");setNotice("")},[jurisdiction?.code,year,edition,electives[0],electives[1]]);
+ const [error,setError]=useState("");
+ const [prepared,setPrepared]=useState(storedQueue);
+ const offers=useMemo(()=>((catalogue?.offers)||[]).filter(x=>x.state===jurisdiction?.code),[catalogue,jurisdiction?.code]);
+ const offer=offers.find(x=>x.kind===kind);
+ const output=offer?.production?.output;
+ const modes=offer?.production?.customer_modes||[];
  const needsElectives=jurisdiction?.code==="NSW"&&["7","8","9","10"].includes(year);
- const validElectives=!needsElectives||(electives.every(Boolean)&&electives[0]!==electives[1]);
- const setElective=(index,value)=>setElectives(v=>v.map((item,i)=>i===index?value:item));
+ const choicesValid=!needsElectives||(electiveChoices.every(Boolean)&&electiveChoices[0]!==electiveChoices[1]);
+ const preparedKey=offer?.listing?.key;
+ const queueEntry=preparedKey?prepared[preparedKey]:null;
+
+ useEffect(()=>{
+  const expected=(firstYears[jurisdiction?.code]||["K"])[0];
+  if(["K","F","Prep"].includes(year)&&year!==expected)setYear(expected);
+ },[jurisdiction?.code,year]);
+ useEffect(()=>{setProof(null);setConfirmed(false);setError("");setNotice("")},[
+  jurisdiction?.code,year,kind,electiveChoices[0],electiveChoices[1]
+ ]);
+ useEffect(()=>{
+  let mounted=true;setLoading(true);setCatalogueError("");
+  adminApi.get("/document-studio/square-production",{year}).then(data=>{
+   if(mounted)setCatalogue(data);
+  }).catch(e=>{if(mounted){setCatalogue(null);setCatalogueError(errorText(e,"Could not load the real Side-Quest catalogue."))}})
+    .finally(()=>{if(mounted)setLoading(false)});
+  return()=>{mounted=false};
+ },[year]);
+
  const generate=async()=>{
-  if(!jurisdiction)return;
-  setBusy(true);setError("");setNotice("");setProof(null);setReview(false);
+  if(!offer||!jurisdiction||!choicesValid)return;
+  setBusy(true);setProof(null);setConfirmed(false);setError("");setNotice("");
   try{
-   const req={state:jurisdiction.code,year_level:year,edition,secondary_electives:needsElectives?electives:[]};
-   const [print,fillable]=await Promise.all(["print","fillable"].map(mode=>adminApi.post("/document-studio/export-home-education",{...req,mode})));
-   setProof({print,fillable});setSelected("fillable");
-   setNotice("Both editions generated from the same master. Inspect the full documents and test the interactive fields before offering them for sale.");
-  }catch(e){setError(errorText(e,"Could not generate the document."))}
+   const request={state:jurisdiction.code,year_level:year,edition:offer.production.edition,
+    product_kind:kind,secondary_electives:needsElectives?electiveChoices:[]};
+   const responses=await Promise.all(modes.map(mode=>adminApi.post("/document-studio/export-home-education",{...request,mode})));
+   const byMode=Object.fromEntries(responses.map(p=>[p.mode,p]));
+   setProof(byMode);setSelected(byMode.fillable?"fillable":"print");
+   setNotice(output==="customer"?
+    "This is the exact PDF set for this blank product. Inspect it before packaging for Square.":
+    "These are OWNER PRODUCTION MASTERS, not an individually completed order. They are not suitable for automatic digital customer delivery.");
+  }catch(e){setError(errorText(e,"Could not generate your document."))}
   finally{setBusy(false)}
  };
- const download=()=>{
-  if(!proof||!jurisdiction)return;
+ const save=()=>{
+  if(!proof||!confirmed||!offer)return;
   try{
-   downloadPack(proof,"sidequest-"+jurisdiction.code.toLowerCase()+"-"+year.toLowerCase()+"-"+edition+"-square-package.zip");
-   setNotice("Customer PDF package downloaded. No product was published or sold.");
-  }catch(e){setError(e?.message||"Could not package these PDFs.")}
+   const files=modes.map(mode=>({name:proof[mode].filename,bytes:uriBytes(proof[mode].data_url)}));
+   const filename=offer.listing.slug+(output==="customer"?"-square-customer-files.zip":"-OWNER-PRODUCTION-MASTER.zip");
+   const zip=squareProductZip(files);
+   downloadFile(filename,zip);
+   const next={...prepared,[offer.listing.key]:{date:new Date().toISOString(),status:output==="customer"?"customer_files_downloaded":"owner_master_downloaded",year,kind}};
+   setPrepared(next);
+   try{localStorage.setItem("sidequest:home-document-production-queue-v1",JSON.stringify(next))}catch{}
+   setNotice(output==="customer"?
+     "Customer files downloaded. Attach these to the corresponding Square listing after completing the independent quality and source review. Square delivery is unchanged.":
+     "Owner masters downloaded. Do NOT attach these as a final personalised PDF or an instant physical purchase. The individual fulfilment workflow is still required.");
+  }catch(e){setError(e?.message||"Could not package the document files.")}
+ };
+ const choose=(value)=>{setKind(value);setConfirmed(false)};
+ const copy=async(value)=>{
+  try{await textCopy(value);setNotice("Copied. Check the details against your actual Square product before saving.");}
+  catch(e){setError(e?.message||"Could not copy the text.")}
  };
  return <section className="paper-card p-5 space-y-5" data-testid="hq-existing-education-publisher">
   <div className="space-y-2">
-   <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">EXISTING SIDE-QUEST DOCUMENT COLLECTION</p>
-   <h3 className="text-xl font-bold text-[#1F3B2D]">Create your home education documents for Square</h3>
-   <p className="text-sm text-stone-700">These are the planning and recordkeeping products Document Studio already created, redesigned with larger working areas and purpose-specific pages. This generates files only. You handle the Square listing and your existing automatic delivery.</p>
+   <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">THE ORIGINAL 48 SIDE-QUEST DOCUMENT OFFERS</p>
+   <h3 className="text-xl font-bold text-[#1F3B2D]">Create each product for your Square shop</h3>
+   <p className="text-sm text-stone-700">Choose one of the six existing products in your selected state or territory. Make its PDF, check it, download it, then create the corresponding Square listing yourself. Your Square order and automatic file-delivery settings are not changed.</p>
   </div>
-  <div className="grid gap-4 md:grid-cols-2">
-   <label className="text-sm font-semibold">Document to create
-    <select className={input+" mt-1"} value={edition} onChange={e=>setEdition(e.target.value)}>
-     {Object.entries(editions).map(([key,e])=><option value={key} key={key}>{e.label}</option>)}
-    </select>
-   </label>
-   <label className="text-sm font-semibold">Learner year or stage
+  <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-sm">
+   <strong>Catalogue source:</strong> {catalogue?.source||"Checking Side-Quest database"}.
+   <p className="mt-1 text-stone-600">Square Dashboard is separate. This shows exactly which listings Side-Quest is configured to recognise, not which products are currently live in Square.</p>
+   {loading&&<p role="status" className="mt-1">Checking the existing catalogue…</p>}
+   {catalogueError&&<p role="alert" className="mt-1 text-red-800">{catalogueError}</p>}
+  </div>
+  <div className="grid sm:grid-cols-2 gap-4">
+   <label className="text-sm font-semibold">Year or stage for this product
     <select className={input+" mt-1"} value={year} onChange={e=>setYear(e.target.value)}>
-     {[foundationYears[jurisdiction?.code]||["K","First year"],...years.map(y=>[y,"Year "+y])].map(([value,label])=><option value={value} key={value}>{label}</option>)}
+     {[firstYears[jurisdiction?.code]||["K","First school year"],...years.map(y=>[y,"Year "+y])].map(([v,label])=><option key={v} value={v}>{label}</option>)}
+    </select>
+   </label>
+   <label className="text-sm font-semibold">Existing product you want to prepare
+    <select className={input+" mt-1"} value={kind} onChange={e=>choose(e.target.value)}>
+     {defaultKinds.map(k=>{const o=offers.find(x=>x.kind===k);return <option key={k} value={k}>{o?o.label+" — "+money(o.default_price_cents):k}</option>})}
     </select>
    </label>
   </div>
-  {needsElectives&&<div className="rounded-xl border border-[#C8A66A] bg-amber-50 p-4 space-y-3">
-   <p className="font-semibold text-[#1F3B2D]">NSW Years 7–10: choose the two additional learning areas</p>
-   <p className="text-sm text-stone-700">English, Mathematics, Science and HSIE are already included. Choose two further, <strong>different</strong> key learning areas. Families still need to identify the actual syllabus or subject within each area.</p>
-   <div className="grid md:grid-cols-2 gap-3">
-    {[0,1].map(index=><label key={index} className="text-sm font-semibold">Additional learning area {index+1}
-     <select className={input+" mt-1"} value={electives[index]} onChange={e=>setElective(index,e.target.value)}>
+  {offers.length>0&&<div className="space-y-2">
+   <h4 className="font-semibold">All six products configured for {jurisdiction.name}</h4>
+   <div className="grid sm:grid-cols-2 gap-2">
+    {offers.map(o=><button key={o.key} type="button" onClick={()=>choose(o.kind)}
+      className={"rounded-xl border p-3 text-left text-sm "+(o.kind===kind?"border-[#1F3B2D] bg-[#F2F5F0]":"border-stone-200 bg-white")}>
+      <span className="font-semibold">{o.label}</span>
+      <span className="block text-stone-600">{money(o.default_price_cents)} · {o.production.output==="customer"?"Digital customer file":"Owner production master"}</span>
+      <span className="block text-xs mt-1 text-stone-500">
+       {o.sidequest_listings.length?o.sidequest_listings.length+" Side-Quest record(s), "+o.sidequest_listings.map(p=>p.status).join(", "):"Not found in Side-Quest's current database"}
+      </span>
+      {prepared[o.state+":"+o.kind+":"+year]&&<span className="block text-xs mt-1 font-semibold text-[#1F3B2D]">Files downloaded on this device</span>}
+    </button>)}
+   </div>
+  </div>}
+  {needsElectives&&<div className="rounded-xl border border-amber-300 bg-amber-50 p-4 space-y-3">
+   <p className="font-semibold text-[#1F3B2D]">NSW Years 7–10: two additional learning areas</p>
+   <p className="text-sm">Select two different areas. This creates a specific version, so include those choices in your Square listing. The family must still identify the actual syllabuses.</p>
+   <div className="grid sm:grid-cols-2 gap-2">
+    {[0,1].map(i=><label key={i} className="text-sm font-semibold">Additional area {i+1}
+     <select className={input+" mt-1"} value={electiveChoices[i]} onChange={e=>setElectiveChoices(old=>old.map((v,n)=>n===i?e.target.value:v))}>
       <option value="">Select an area</option>
-      {NSW_OPTIONAL_AREAS.map(area=><option key={area} value={area} disabled={electives[1-index]===area}>{area}</option>)}
+      {electives.map(o=><option key={o} value={o} disabled={electiveChoices[1-i]===o}>{o}</option>)}
      </select>
     </label>)}
    </div>
-   {!validElectives&&<p className="text-sm text-amber-900">Choose two different learning areas before generating the product.</p>}
   </div>}
-  {jurisdiction?.code==="NT"&&<p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Northern Territory: the government requires the applicable official self-developed plan template. These downloadable planning workbooks are preparation companions, not replacements for that form.</p>}
-  {["11","12"].includes(year)&&<p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Senior secondary planning can require specific course and study patterns. Review the relevant authority's senior secondary rules and syllabus versions before distributing this product.</p>}
-  <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm space-y-2">
-   <p className="font-bold text-[#1F3B2D]">{editions[edition].label}</p>
-   <p>{editions[edition].summary}</p>
-   <p className="text-stone-600">State/territory: <strong>{jurisdiction?.name||"Select a state above"}</strong> · Format: A4, print and fillable PDF editions</p>
-  </div>
-  <div className="space-y-2">
-   <button type="button" className={primary} onClick={generate} disabled={busy||!jurisdiction||!validElectives}>{busy?"Generating the document set…":"Generate complete print + fillable PDF editions"}</button>
-   <p className="text-xs text-stone-600">Neither PDF is connected to a Side-Quest shop listing or payment. Files are generated privately for you to review and download.</p>
-  </div>
+  {offer&&<div className="rounded-xl border border-stone-200 bg-white p-4 space-y-3">
+   <div className="flex flex-wrap items-center gap-3 justify-between">
+    <h4 className="font-semibold text-lg">{offer.label}</h4>
+    <strong>{money(offer.default_price_cents)}</strong>
+   </div>
+   <p className="text-sm">{offer.production.purpose}</p>
+   <div className="rounded-lg bg-stone-50 p-3 text-sm space-y-2">
+    <strong>Correct Square listing title</strong>
+    <p>{offer.listing.title}</p>
+    <button className={secondary} type="button" onClick={()=>copy(offer.listing.title)}>Copy title</button>
+    <strong className="block pt-2">Suggested customer-facing description</strong>
+    <p className="whitespace-pre-line">{offer.listing.description}</p>
+    <button className={secondary} type="button" onClick={()=>copy(offer.listing.description)}>Copy description</button>
+    <p className="text-amber-900 font-semibold pt-2">{offer.listing.note}</p>
+   </div>
+   {["NT"].includes(jurisdiction?.code)&&<p className="text-sm text-amber-900">NT preparation documents do not replace the official government plan template.</p>}
+   {["11","12"].includes(year)&&<p className="text-sm text-amber-900">Senior secondary course and study requirements need specific curriculum review before publication.</p>}
+   {queueEntry&&<p className="text-xs text-stone-600">Local workflow note: {queueEntry.status.replaceAll("_"," ")} on {new Date(queueEntry.date).toLocaleDateString("en-AU")}. This does NOT mean listed, approved or active in Square.</p>}
+   <button className={primary} type="button" disabled={busy||loading||!jurisdiction||!choicesValid}
+    onClick={generate}>{busy?"Building PDF masters…":output==="customer"?"Generate customer print + fillable PDFs":"Generate OWNER production master PDFs"}</button>
+  </div>}
   {error&&<p role="alert" className="text-sm text-red-800">{error}</p>}
   {notice&&<p role="status" className="text-sm text-[#1F3B2D]">{notice}</p>}
-  {proof&&<div className="border-t border-stone-200 pt-4 space-y-4">
-   <h4 className="font-bold text-[#1F3B2D]">Review the actual document</h4>
+  {proof&&offer&&<div className="border-t border-stone-200 pt-4 space-y-4">
+   <h4 className="font-bold text-[#1F3B2D]">Inspect the {output==="customer"?"actual customer documents":"owner production master"}</h4>
    <div className="flex flex-wrap gap-2">
-    <button type="button" className={selected==="fillable"?primary:secondary} onClick={()=>setSelected("fillable")}>Fillable PDF proof</button>
-    <button type="button" className={selected==="print"?primary:secondary} onClick={()=>setSelected("print")}>Printable PDF proof</button>
+    {modes.map(mode=><button key={mode} type="button" className={selected===mode?primary:secondary} onClick={()=>setSelected(mode)}>
+     {mode==="print"?"A4 print proof":"Fillable PDF proof"}
+    </button>)}
    </div>
-   <iframe className="w-full border rounded-xl bg-white" style={{height:"min(75vh,780px)"}} title={selected+" home education PDF proof"} src={proof[selected].data_url}/>
-   <div className="grid gap-3 md:grid-cols-2">
-    {["print","fillable"].map(mode=><a key={mode} className={secondary+" text-center"} href={proof[mode].data_url} download={proof[mode].filename}>
-     Download {mode==="print"?"A4 printable":"digitally fillable"} PDF
-    </a>)}
+   <iframe className="w-full border rounded-xl bg-white" style={{height:"min(75vh,780px)"}}
+    title={selected+" document proof"} src={proof[selected]?.data_url}/>
+   <div className="flex flex-wrap gap-2">
+    {modes.map(mode=><a key={mode} className={secondary} href={proof[mode].data_url} download={proof[mode].filename}>Download {mode==="print"?"print":"fillable"} proof</a>)}
    </div>
    <div className="rounded-xl border border-stone-200 p-4 space-y-3">
-    <p className="font-semibold text-sm">Manual publication quality check</p>
-    <p className="text-xs text-stone-700">Print an A4 sample, check every page for clipped content and accurate instructions, then type into the digital fields, tick the boxes, save, close and reopen the file. Test long responses too. Export generation is not independent editorial or regulatory approval.</p>
+    <strong>Release review</strong>
+    <p className="text-sm">Inspect every page, print an A4 sample and verify official state rules. For interactive fields, enter meaningful long answers, save, close and reopen the PDF. Independent editorial/regulatory review is still required before describing any product as registration-ready.</p>
+    {output!=="customer"&&<p className="text-sm text-amber-900 font-semibold">These files are production proofs ONLY. Square cannot automatically turn this master into an individually personalised PDF or a posted book. A separate, tested customer intake and fulfilment process is required.</p>}
     <label className="flex gap-2 items-start text-sm">
-     <input type="checkbox" checked={review} onChange={e=>setReview(e.target.checked)}/>
-     <span>I have inspected both files and tested their printed and digitally fillable function, and I understand that official requirements require independent verification before sale.</span>
+     <input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/>
+     <span>I have inspected the file outputs and understand the outstanding review/fulfilment requirements. Downloading does not independently approve them for sale.</span>
     </label>
-    <button type="button" className={primary} disabled={!review} onClick={download}>Download both PDFs as one customer ZIP</button>
+    <button className={primary} type="button" onClick={save} disabled={!confirmed}>
+     {output==="customer"?"Download customer PDF ZIP for Square":"Download OWNER production-master ZIP"}
+    </button>
    </div>
   </div>}
-  <p className="text-xs text-amber-900">The current jurisdiction source catalogue was last checked {checkedOn||"on an earlier date"}. Don't market these materials as approved for registration unless the required independent state-specific content review is complete.</p>
+  <p className="text-xs text-amber-900">Jurisdiction guidance last reviewed {checkedOn||"on an earlier date"}. Verify requirements again before sale. Upload only the reviewed, correct product files. No Square listing, payment or delivery settings are changed by this screen.</p>
  </section>;
 }
