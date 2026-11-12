@@ -331,6 +331,36 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  y-=15;
  field(local.focus,local.focusHint,125);
  field(local.record,local.recordHint,125);
+ if(universal){
+  startSection("OPTIONAL","Early years: first school year to Year 2",
+   "SKIP THIS SECTION if your learner is older and it is not useful. Age bands are an organising guide, not a substitute for your jurisdiction's current curriculum rules.");
+  field("Early reading, writing, listening and communication","Which age-appropriate language experiences, books and discussions will support this learner?",115);
+  field("Early numeracy, play and practical discoveries","Consider number, measurement, patterns, science, movement, creativity and lived experiences.",115);
+  table(["Area / discovery","Play, practice or exploration","What to observe / keep"],3,95,{widths:[127,199,175]});
+
+  startSection("OPTIONAL","Primary years: Years 3 to 6",
+   "SKIP THIS SECTION if not relevant. You can use it alongside other sections when a learner's goals cross year or stage boundaries.");
+  field("Primary-years learning priorities","Identify the relevant subjects and verified syllabus/curriculum references only where required.",138);
+  table(["Learning area / topic","Activities, investigations and resources","Learning evidence / review"],4,101,{widths:[133,205,163]});
+
+  startSection("OPTIONAL","Secondary years: Years 7 to 10",
+   "SKIP THIS SECTION for other levels. Families should check the current jurisdiction-specific subjects, course patterns and syllabuses.");
+  if(state==="NSW"){
+   lines("NSW Years 7-10: English, Mathematics, Science and HSIE are the core areas. Check the current requirements for two additional subjects from different eligible learning areas: PDHPE, Creative Arts, Languages and Technology.",L+4,R-L-8,9.7,16,muted);y-=15;
+   pair("First additional area (write in)","Second DIFFERENT area (write in)");
+   field("Actual subjects and checked NSW syllabuses","Record the two chosen subjects and the applicable syllabus names, implementation dates and learning intentions.",145);
+  }else{
+   field("Actual secondary subject and course choices","Identify which areas and courses are relevant and check the current state or territory requirements.",125);
+  }
+  table(["Secondary subject / goal","Activities and verified sources","Evidence / next review"],4,100,{widths:[135,197,169]});
+
+  startSection("OPTIONAL","Senior secondary: Years 11 and 12",
+   "SKIP THIS SECTION unless relevant. Senior certificates, prescribed study patterns and course rules can differ greatly from earlier school years.");
+  lines("IMPORTANT: This optional planning page is not a senior secondary qualification or evidence that any particular senior course satisfies local requirements. Check your jurisdiction's senior study, home education and assessment rules.",L+4,R-L-8,9.7,16,muted);y-=15;
+  table(["Course / subject","Current syllabus or course requirement","Plan / evidence to check"],4,104,{widths:[133,181,187]});
+  field("Further senior-study questions","List course prerequisites, external assessments or other requirements to confirm with the relevant authority.",134);
+ }
+
  if(isNswSecondary){
   startSection("NSW 7-10","Two additional learning areas",
     "The family must choose two further subjects, each from a different eligible key learning area. Choosing a category here does not select a particular syllabus.");
@@ -364,18 +394,24 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  startSection("03B","Flexible weekly learning plan","A practical planning table, not a compulsory timetable. Enter learning sessions, activities and how you will notice progress.");
  table(["Day / session","Learning goal and planned activities","Resources / progress notes"],5,100,{widths:[111,218,172]});
 
- const curriculum=planAreas(jur,{year_level:yearLevel,stage:stage(yearLevel)},[],isNswSecondary?chosen:[]);
- const areas=[...curriculum.areas];
+ const curriculum=universal?null:planAreas(jur,{year_level:yearLevel,stage:stage(yearLevel)},[],isNswSecondary?chosen:[]);
+ // A single year-neutral Square product includes both primary and optional
+ // secondary areas so a parent can skip anything that does not apply.
+ const areas=universal?[...new Set([...jur.areas,...(jur.secondary?.required||[]),...(jur.secondary?.chooseTwoFrom||[])])]:[...curriculum!.areas];
  if(isNswSecondary&&chosen.length<2){
   for(let i=chosen.length;i<2;i++)areas.push("Elective "+(i+1)+" - parent to choose");
  }
- startSection("MAP","Learning areas at a glance","A working overview of the learner's actual priorities. The learning areas are printed for you; the two larger columns are separate digital form fields.");
+ startSection("MAP","Learning areas at a glance",universal?
+  "Choose only the learning areas relevant to your learner and year, using the optional age/stage sections and current jurisdiction guidance. Unused rows and subject sections can be skipped.":
+  "A working overview of the learner's actual priorities. The learning areas are printed for you; the two larger columns are separate digital form fields.");
  table(["Learning area","Knowledge / skills to develop","Activities / evidence of progress"],areas.length,80,{
   widths:[148,178,175],rowLabels:areas
  });
  areas.forEach((area,i)=>{
   const hints=areaHints(area),n=String(i+4).padStart(2,"0");
-  startSection(n,area+" - learning focus","Use this space for your real curriculum focus and goals. Do not claim outcomes or codes that have not been checked against current sources.");
+  startSection(n,area+" - learning focus",universal?
+   "OPTIONAL LEARNING AREA - Use this only if relevant to the learner's year, stage and current requirements. Skip other learning areas; verify actual sources before writing syllabus codes.":
+   "Use this space for your real curriculum focus and goals. Do not claim outcomes or codes that have not been checked against current sources.");
   field("Learning focus and intended knowledge or skills",hints.focus,116);
   field("Relevant curriculum reference or learning goals","If applicable, enter verified syllabus outcomes, learning areas or your own clearly labelled goals.",112);
   field("Why these learning priorities suit the learner","Connect goals to strengths, needs, interests and progress so far.",116);
