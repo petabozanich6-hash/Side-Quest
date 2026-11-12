@@ -31,6 +31,7 @@ The existing Side-Quest family-price logic may add $1 or $2 per extra child. Tha
 8. For the **guided and personalised products**, first complete a separately tested private intake and individual PDF delivery process. Do **not** attach the generic owner master or a fictional sample as a supposedly personalised completed product. These are made-to-order services, not instant generic PDF sales.
 9. For **printed and spiral-bound** products, proof real paper quality, production time, binding, packing, postage, Australian delivery costs and tracking. These are physical goods; do not represent them as automatic PDF delivery.
 10. Review your final Square listing independently; Document Studio does not know whether a Square item is live, paused or missing.
+11. In Document Studio, optionally paste the Square listing URL and record **I created this Square listing**. This is a **manual, browser-local note**, not a verification against Square. If you regenerate the files later, the local status warns that the recorded Square listing may need updating; the tool does not replace files on Square.
 
 ## Educational and PDF quality
 
