@@ -12,17 +12,18 @@ export default function HqDocumentStudio(){
    <p className="text-xs font-semibold tracking-widest text-[#4A5D3A]">SIDE-QUEST · OWNER HQ</p>
    <h2 className="text-2xl font-bold text-[#1F3B2D]">Document Studio</h2>
    <p className="text-sm">Create beautiful, usable PDF products in Owner HQ, download the printable and digitally fillable editions, then upload them manually to Square. Square manages sales and payments.</p>
+
+  </header>
+  <HqStudioPublisher/>
+  <details className="paper-card p-5 space-y-3">
+   <summary className="font-semibold text-lg cursor-pointer">Legacy Side-Quest document listings and release controls</summary>
+   <p className="text-sm text-stone-700 pt-3">These older shop controls are retained for existing products, but they are not needed when creating files for Square.</p>
    {loading&&<p role="status" className="text-sm">Loading state requirements…</p>}
    {error&&<p role="alert" className="text-red-800">{error}</p>}
    {data&&<label className="block max-w-md text-sm font-semibold">Choose the state or territory
     <select className={input} value={selected} onChange={e=>setSelected(e.target.value)}>
      {data.jurisdictions.filter(j=>j.code!=="OTHER").map(j=><option key={j.code} value={j.code}>{j.name}</option>)}
     </select></label>}
-  </header>
-  <HqStudioPublisher/>
-  <details className="paper-card p-5 space-y-3">
-   <summary className="font-semibold text-lg cursor-pointer">Legacy Side-Quest document listings and release controls</summary>
-   <p className="text-sm text-stone-700 pt-3">These older shop controls are retained for existing products, but they are not needed when creating files for Square.</p>
    <section className="space-y-2">
    <h3 className="text-lg font-bold text-[#1F3B2D]">Previous document prices</h3>
    <p className="text-sm">Basic: blank fillable $4.99 (+$1 per extra child); guided personalised $9.99 (+$2 per extra child); basic printed $14.99 delivered (+$2 per extra child).</p>
