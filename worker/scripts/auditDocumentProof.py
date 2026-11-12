@@ -96,9 +96,38 @@ def main() -> None:
             if group["print"]["pages"] != group["fillable"]["pages"]:
                 fail(f"{state}/{edition}: print and fillable pages differ")
             summary[f"{state}/{edition}"] = group
+    # Check representative Year 7 documents in every jurisdiction, including
+    # explicit NSW choice of two additional learning areas.
+    for state in STATES:
+        pair = {}
+        for mode in MODES:
+            filename = f"sidequest-{state}-year7-standard-{mode}.pdf"
+            path = root / filename
+            if not path.is_file():
+                fail(f"Missing Year 7 PDF proof: {filename}")
+            pair[mode] = audit(path)
+        if pair["print"]["pages"] != pair["fillable"]["pages"]:
+            fail(f"{state}/Year 7: print and fillable page counts differ")
+        summary[f"{state}/year7"] = pair
+    nsw_seven = fitz.open(root / "sidequest-nsw-year7-standard-print.pdf")
+    text_nsw = "\\n".join(p.get_text() for p in nsw_seven)
+    for required in ["Creative Arts", "Technology", "Two additional learning areas"]:
+        if required not in text_nsw:
+            fail(f"NSW Year 7: missing selected subject choice or label: {required}")
+    nsw_seven.close()
+    senior_pair = {}
+    for mode in MODES:
+        filename = f"sidequest-nsw-year11-standard-{mode}.pdf"
+        path = root / filename
+        if not path.is_file():
+            fail(f"Missing senior secondary PDF proof: {filename}")
+        senior_pair[mode] = audit(path)
+    if senior_pair["print"]["pages"] != senior_pair["fillable"]["pages"]:
+        fail("NSW Year 11: print and fillable page counts differ")
+    summary["nsw/year11"] = senior_pair
     report = root / "pdf-audit.json"
     report.write_text(json.dumps({"validated": True, "documents": summary}, indent=2))
-    print(f"PASS: {len(summary)*2} PDFs, all eight jurisdictions, print+fillable, A4 bounds, field overlaps and save/reopen tests")
+    print(f"PASS: {len(summary)*2} PDFs, all eight jurisdictions at Year 3 and Year 7, plus NSW Year 11, print+fillable, A4 bounds, fields and save/reopen tests")
 
 
 if __name__ == "__main__":
