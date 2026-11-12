@@ -156,7 +156,7 @@ export default function HqStudioPublisher(){
    {proof&&<div className="space-y-4">
     <div className="rounded-xl border border-[#A3B49D] bg-[#F0F5EC] p-4 space-y-3">
      <h4 className="font-bold text-[#1F3B2D]">One complete Square product package</h4>
-     <p className="text-sm">Includes both PDF editions and a separate owner-only product description and quality checklist. Upload the ZIP or its individual PDFs using your Square digital delivery setup.</p>
+     <p className="text-sm">Includes both PDF editions and a separate owner-only product description and quality checklist. Keep these files private for delivery after payment (manually or via a connected digital-delivery service). Do not publish them in a public PDF section.</p>
      <button type="button" className={styles.button} onClick={()=>{try{downloadSquareProductZip(document,proof);setNotice("Square product ZIP downloaded. Review all contents before offering it for sale.")}catch(e){setError(e?.message||"Could not package your PDFs.")}}}>Download Square product ZIP</button>
     </div>
     <div className="grid md:grid-cols-2 gap-3">
@@ -181,10 +181,10 @@ export default function HqStudioPublisher(){
    </div>}
   </section>
   <section className="paper-card p-5 space-y-3">
-   <h3 className="text-lg font-bold text-[#1F3B2D]">4. Upload and sell through Square</h3>
-   <p className="text-sm text-stone-700">After reviewing both PDFs, create your item in Square, add its cover and product description, set your price, and attach or arrange delivery of the downloadable files using your Square setup.</p>
+   <h3 className="text-lg font-bold text-[#1F3B2D]">4. List in Square and deliver securely</h3>
+   <p className="text-sm text-stone-700">After reviewing both PDFs, create a Digital item in Square, add the product description and cover, and set your price. Square Australia does not natively attach a private downloadable PDF to this product for automatic customer delivery. Email the files yourself after payment, or set up a service such as SendOwl for secure automated delivery.</p>
    <button type="button" className={styles.secondary} onClick={copyListing}>Copy Square listing description</button>
-   <p className="text-xs text-stone-600">Square handles orders and payment. Document Studio only creates your master PDF files. Keep the same editions together so customers can choose print or digital use.</p>
+   <p className="text-xs text-stone-600">Square handles your product listing and payments. Document Studio creates the private master files, and you or a separate integration handle delivery. Keep both PDF editions together so buyers can choose print or digital use.</p>
   </section>
  </div>;
 }
