@@ -11,6 +11,7 @@ const foundationYears={
  ACT:["K","Kindergarten"],NT:["K","Transition"],
 };
 const years=Array.from({length:12},(_,i)=>String(i+1));
+const NSW_OPTIONAL_AREAS=["PDHPE","Creative Arts","Languages","Technology"];
 const editions={
  standard:{label:"Home Education Planning Workbook",summary:"A state-specific learning plan with learner goals, detailed teaching plans for each learning area, curriculum references, resources, evidence recording, review pages and authority preparation notes."},
  complete:{label:"Complete Home Education Planner & Diary",summary:"Everything in the planning workbook, plus four planning periods, learning diaries, dated evidence and reading logs, goal/outcome trackers, project records and family progress reviews."}
@@ -33,6 +34,7 @@ function downloadPack(result,filename){
 export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  const [year,setYear]=useState("3");
  const [edition,setEdition]=useState("standard");
+ const [electives,setElectives]=useState(["",""]);
  const [proof,setProof]=useState(null);
  const [selected,setSelected]=useState("fillable");
  const [busy,setBusy]=useState(false);
@@ -43,12 +45,15 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
   const schoolFirst=(foundationYears[jurisdiction?.code]||["K"])[0];
   if(["K","F","Prep"].includes(year) && year!==schoolFirst)setYear(schoolFirst);
  },[jurisdiction?.code,year]);
- useEffect(()=>{setProof(null);setReview(false);setError("");setNotice("")},[jurisdiction?.code,year,edition]);
+ useEffect(()=>{setProof(null);setReview(false);setError("");setNotice("")},[jurisdiction?.code,year,edition,electives[0],electives[1]]);
+ const needsElectives=jurisdiction?.code==="NSW"&&["7","8","9","10"].includes(year);
+ const validElectives=!needsElectives||(electives.every(Boolean)&&electives[0]!==electives[1]);
+ const setElective=(index,value)=>setElectives(v=>v.map((item,i)=>i===index?value:item));
  const generate=async()=>{
   if(!jurisdiction)return;
   setBusy(true);setError("");setNotice("");setProof(null);setReview(false);
   try{
-   const req={state:jurisdiction.code,year_level:year,edition};
+   const req={state:jurisdiction.code,year_level:year,edition,secondary_electives:needsElectives?electives:[]};
    const [print,fillable]=await Promise.all(["print","fillable"].map(mode=>adminApi.post("/document-studio/export-home-education",{...req,mode})));
    setProof({print,fillable});setSelected("fillable");
    setNotice("Both editions generated from the same master. Inspect the full documents and test the interactive fields before offering them for sale.");
@@ -80,13 +85,28 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     </select>
    </label>
   </div>
+  {needsElectives&&<div className="rounded-xl border border-[#C8A66A] bg-amber-50 p-4 space-y-3">
+   <p className="font-semibold text-[#1F3B2D]">NSW Years 7–10: choose the two additional learning areas</p>
+   <p className="text-sm text-stone-700">English, Mathematics, Science and HSIE are already included. Choose two further, <strong>different</strong> key learning areas. Families still need to identify the actual syllabus or subject within each area.</p>
+   <div className="grid md:grid-cols-2 gap-3">
+    {[0,1].map(index=><label key={index} className="text-sm font-semibold">Additional learning area {index+1}
+     <select className={input+" mt-1"} value={electives[index]} onChange={e=>setElective(index,e.target.value)}>
+      <option value="">Select an area</option>
+      {NSW_OPTIONAL_AREAS.map(area=><option key={area} value={area} disabled={electives[1-index]===area}>{area}</option>)}
+     </select>
+    </label>)}
+   </div>
+   {!validElectives&&<p className="text-sm text-amber-900">Choose two different learning areas before generating the product.</p>}
+  </div>}
+  {jurisdiction?.code==="NT"&&<p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Northern Territory: the government requires the applicable official self-developed plan template. These downloadable planning workbooks are preparation companions, not replacements for that form.</p>}
+  {["11","12"].includes(year)&&<p className="rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-amber-950">Senior secondary planning can require specific course and study patterns. Review the relevant authority's senior secondary rules and syllabus versions before distributing this product.</p>}
   <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm space-y-2">
    <p className="font-bold text-[#1F3B2D]">{editions[edition].label}</p>
    <p>{editions[edition].summary}</p>
    <p className="text-stone-600">State/territory: <strong>{jurisdiction?.name||"Select a state above"}</strong> · Format: A4, print and fillable PDF editions</p>
   </div>
   <div className="space-y-2">
-   <button type="button" className={primary} onClick={generate} disabled={busy||!jurisdiction}>{busy?"Generating the document set…":"Generate complete print + fillable PDF editions"}</button>
+   <button type="button" className={primary} onClick={generate} disabled={busy||!jurisdiction||!validElectives}>{busy?"Generating the document set…":"Generate complete print + fillable PDF editions"}</button>
    <p className="text-xs text-stone-600">Neither PDF is connected to a Side-Quest shop listing or payment. Files are generated privately for you to review and download.</p>
   </div>
   {error&&<p role="alert" className="text-sm text-red-800">{error}</p>}
