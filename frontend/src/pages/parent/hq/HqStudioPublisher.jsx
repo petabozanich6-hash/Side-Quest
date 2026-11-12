@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
+import {downloadSquareProductZip} from "./squareProductZip";
 
 const STORAGE="sidequest.documentStudio.squarePublisher.v1";
 const styles={input:"w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900",button:"rounded-xl bg-[#1F3B2D] text-white px-4 py-2.5 text-sm font-semibold disabled:opacity-50",secondary:"rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-stone-700"};
@@ -62,6 +63,7 @@ export default function HqStudioPublisher(){
  };
  const applyTemplate=key=>{
   if(!templates[key])return;
+  if(!window.confirm("Replace the current document draft with this starter template? Your current pages will be overwritten."))return;
   update(()=>JSON.parse(JSON.stringify(templates[key])));
   setSelected(0);setTemplate(key);
  };
@@ -152,6 +154,11 @@ export default function HqStudioPublisher(){
    {error&&<p role="alert" className="text-sm text-red-800">{error}</p>}
    {notice&&<p role="status" className="text-sm text-[#1F3B2D]">{notice}</p>}
    {proof&&<div className="space-y-4">
+    <div className="rounded-xl border border-[#A3B49D] bg-[#F0F5EC] p-4 space-y-3">
+     <h4 className="font-bold text-[#1F3B2D]">One complete Square product package</h4>
+     <p className="text-sm">Includes both PDF editions and a separate owner-only product description and quality checklist. Upload the ZIP or its individual PDFs using your Square digital delivery setup.</p>
+     <button type="button" className={styles.button} onClick={()=>{try{downloadSquareProductZip(document,proof);setNotice("Square product ZIP downloaded. Review all contents before offering it for sale.")}catch(e){setError(e?.message||"Could not package your PDFs.")}}}>Download Square product ZIP</button>
+    </div>
     <div className="grid md:grid-cols-2 gap-3">
      {["print","fillable"].map(mode=><div key={mode} className="rounded-xl border border-stone-300 p-4 space-y-2">
       <h4 className="font-semibold">{mode==="print"?"A4 printable PDF":"Digitally fillable PDF"}</h4>
