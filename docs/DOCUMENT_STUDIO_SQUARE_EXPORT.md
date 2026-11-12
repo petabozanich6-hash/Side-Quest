@@ -1,51 +1,49 @@
-# Side-Quest Document Studio: PDF creation for Square
+# Side-Quest Document Studio: six-product Square publishing workflow
 
-**Purpose:** Make the existing Side-Quest home education planning and recordkeeping products more substantial, readable and useful, then download the finished documents for a separate Square listing. Square checkout and the owner's existing automatic PDF delivery workflow are **not modified**.
+**What the owner intends:** Make each existing home education product in Owner HQ, download its correct PDF output, create a separate product listing on the owner's independently configured Square store, and use the owner's existing Square delivery arrangements for eligible **static digital** products. Document Studio does not log in to Square or create Square listings.
 
-## Main workflow (Owner HQ > Document Studio)
+## What is actually configured in Side-Quest
 
-1. **Select the state or territory**: NSW, VIC, QLD, WA, SA, TAS, ACT or NT. The studio does not assume NSW.
-2. Select a **document type**: Home Education Planning Workbook or Complete Home Education Planner & Diary.
-3. Select the **learner year**. The first year is labelled using the selected jurisdiction's own terminology. NSW Years 7–10 additionally require **two different additional learning-area choices**, which create dedicated planning pages.
-4. Generate **both A4 editions** from the same state-specific document: one designed for printing/handwriting and one with genuine interactive AcroForm text fields and checkboxes.
-5. Inspect each page, enter and save test data in the fillable PDF, print an A4 sample, check current regulatory sources, and only then approve the customer ZIP. The ZIP includes the two customer-facing PDFs and no internal release notes.
-6. Create the Square item yourself and use your **existing Square digital delivery setup**. Verify an actual test order correctly delivers the two-edition package; the PDF generator does not create or send customer orders.
+The existing Side-Quest catalogue seeder defines **48 potential products**: six offers in each of eight states/territories, at these default base prices:
 
-The older Side-Quest shop listing, print queue and release controls are retained under **Legacy Side-Quest document listings**. A separate optional generic worksheet creator remains available but is not the principal home education product workflow.
+| Offer | Default AUD | Generation | Actual fulfilment |
+| --- | ---: | --- | --- |
+| Blank Home Education Planning Template | $4.99 | Standard planning workbook, printable + fillable PDFs | Static Square digital delivery after editorial approval |
+| Guided Home Education Plan | $9.99 | Owner guidance/production master, with prompts and a guide | Requires buyer responses and individually completed guidance after purchase |
+| Printed Home Education Planning Workbook | $14.99 | Standard A4 print master | Print, bind, post physical copies; check real costs and postage |
+| Complete Planner & Diary, Blank PDF | $29.95 | Complete planning workbook, printable + fillable PDFs | Static Square digital delivery after editorial approval |
+| Complete Planner & Diary, Personalised PDF | $39.95 | Complete personalised owner production master | Secure buyer intake, individual book preparation and delivery after purchase |
+| Complete Planner & Diary, Spiral Bound | $69.95 | Complete print production master | Secure buyer intake, individual production, spiral binding, post |
 
-## What is in each document
+These are **catalogue defaults, not verified prices in Square**. The new owner-only \`GET /api/admin/document-studio/square-production?year=3\` reads the actual Side-Quest product rows, saved prices, titles, statuses and attachment existence. It highlights missing/duplicate items; it does not invent Square storefront status. The raw product record is not altered by this read.
 
-**Planning Workbook:** Learner and planning period; strengths/interests and goals; jurisdiction-specific preparation guidance; teaching approach; adjustments; learning environment, routine and resources; separate learning-focus and teaching/evidence spreads per learning area; record and review pages; jurisdiction authority preparation checklist; official-source links and final parent check.
+The existing Side-Quest family-price logic may add $1 or $2 per extra child. That pricing does **not** transfer to Square automatically; set up actual Square variants/charges if offering the same multi-child pricing. Likewise, **48 is a count of state-by-type product families, not every year-specific variant**. A Year 3 product cannot honestly be marketed as a complete K–12 package. Prepare separate year-specific items or verified Square variants and correctly match each actual file to the listing.
 
-**Complete Planner & Diary:** All the planning workbook pages, plus four adaptable planning periods, diary records, reading log, evidence index, outcome/goal tracker, project/outing record and family review.
+## How to make one product
 
-These are independent **planning and recordkeeping companions**. They do not pre-claim curriculum outcomes, create imaginary family information or replace any government form. A digitally filled PDF with more words than a field can display may hide overflowing text when printed; test realistic long responses before sale.
+1. In **Owner HQ > Document Studio**, select the state/territory and the **year or first-school-year level**.
+2. Choose the **exact product type** from the six configured offers. Inspect the actual Side-Quest catalogue status and price; Square may differ.
+3. For NSW Years 7–10, select two different additional learning areas. Those choices are included in the PDF and the suggested Square title and description. Verify the actual syllabuses separately.
+4. Generate the PDF master(s) using the product-specific selector. **Blank digital products** return downloadable print and fillable customer editions. **Printed products** return a print-only master. **Guided/personalised products** return clearly marked OWNER production masters, NOT customer-complete products.
+5. Open both proofs, test saved form values, print a real A4 sample, review page flow and source accuracy. Then use the review acknowledgement to download the correct ZIP. This records local progress **on that browser only**. It does not activate a product, mark a sale, collect payment, or change fulfilment.
+6. Copy the suggested Square title and customer description (including the actual year and any electives), verify price, correct region, exact product type and the separate Square listing's delivery configuration.
+7. For the **two blank digital products**, attach the reviewed customer ZIP to your existing automatic digital delivery. Make a test Square purchase and verify the email/download contains exactly those files.
+8. For the **guided and personalised products**, first complete a separately tested private intake and individual PDF delivery process. Do **not** attach the generic owner master or a fictional sample as a supposedly personalised completed product. These are made-to-order services, not instant generic PDF sales.
+9. For **printed and spiral-bound** products, proof real paper quality, production time, binding, packing, postage, Australian delivery costs and tracking. These are physical goods; do not represent them as automatic PDF delivery.
+10. Review your final Square listing independently; Document Studio does not know whether a Square item is live, paused or missing.
 
-### State-specific rules are not interchangeable
+## Educational and PDF quality
 
-- **NSW:** Current NESA syllabus and implementation requirements matter. For Years 7–10, the studio explicitly asks for two different additional learning-area categories, and the family must still identify the actual syllabuses/subjects. Years 11–12 need independent verification of course selection and pattern of study.
-- **VIC:** A home education learning plan can use subject-based or activity-based approaches while showing the eight learning areas and actual learning resources.
-- **QLD:** A program summary should explain the individualised learning approach. Renewal/reporting documentation is distinct from an initial plan.
-- **WA:** A home education moderator examines the learner's plan and progress; the program can be organised flexibly, and families should be ready to explain records and their relationship to curriculum references.
-- **SA:** Explain learning-area coverage, real activities/resources and evidence including literacy, numeracy and social experiences.
-- **TAS:** The Home Education Summary and Program is assessed using standards, including literacy, numeracy, range of learning areas, wellbeing, pedagogy and evaluation. A generic eight-subject checklist is not a substitute for addressing those standards.
-- **ACT:** The Statement of Intent and annual Home Education Report serve different purposes. Developmental opportunities and learning strategies matter.
-- **NT:** The official self-developed plan template is required when applicable. A Side-Quest PDF is a **preparation resource only**, not a replacement form.
+The user-facing document generator uses independent state/territory guidance, official source references, curriculum and learning-area sections, individual learning planning prompts, evidence records and interactive AcroForm fields in fillable editions. This does not constitute an official form or a registration guarantee. Northern Territory official prescribed documents remain necessary where required; personalised parent information is never invented; NSW syllabus implementation and secondary course choices must be checked.
 
-All jurisdiction-specific content is subject to the independent review standard in [HOME_EDUCATION_DOCUMENT_QUALITY.md](HOME_EDUCATION_DOCUMENT_QUALITY.md). The existing authority catalogue was last checked **2026-10-14**, and source changes, syllabus implementation dates and registration rules must be checked before listing.
+The existing jurisdiction information was last checked **2026-10-14** and is **not** certified current. Independent review against the latest official rules and actual education practice is required before sale, as in [HOME_EDUCATION_DOCUMENT_QUALITY.md](HOME_EDUCATION_DOCUMENT_QUALITY.md).
 
-## Proof and automated checks
+The **Document Studio PDF Proof** GitHub workflow generates representative 50-PDF print/fillable proofs across all eight jurisdictions and primary/secondary years. It checks A4 geometry, PDF text bounds, field overlaps, consistency and text/checkbox save-and-reopen. The new \`worker/test/documentSquareProduction.test.mjs\` additionally tests the 48 catalogue definitions and six output classifications. Automated tests are structural, not an independent editorial or legal approval.
 
-The repository's **Document Studio PDF Proof** workflow produces PDFs for every jurisdiction, plus secondary/senior representative proofs. It checks A4 dimensions, extracted text bounds, form field geometry, field overlaps, unique field IDs, print/interactive page parity, and whether typed text and checkbox choices survive saving and reopening.
+### Limitations and safeguards
 
-Run the workflow or inspect the retained PDF artifact at `.github/workflows/document-studio-proof.yml`. The regression tests in `worker/test/homeEducationPdfQuality.test.mjs` also cover all eight jurisdictions and NSW elective handling.
-
-An automated pass confirms **structural integrity**, not professional proofreading, accessible keyboard navigation in every reader, current regulatory accuracy, or an independent sale approval. Inspect every product in a PDF reader and at least one real printout, and arrange independent jurisdiction-specific review before making claims of registration suitability.
-
-## Current design boundaries
-
-The improved planning editions use understated Side-Quest colours, distinct functional sections, generous handwriting areas, purposeful prompts, full-page record tables and interactive form controls. These are **not** yet fully art-directed illustrated products. They do not incorporate Ignis cover art, interactive drag-and-drop activity pages, automated curriculum-code validation, multi-child personalisation or a PDF editor for arbitrary individual page design. The separate generic authoring tool supports writing, checklist and log pages.
-
-The current Square-export action builds blank products for families to complete. The existing **guided/personalised family workflow** remains separate and cannot be safely described as automatically personalised by Square's generic file delivery. It requires a distinct verified customer-data and fulfilment path if offered for sale.
-
-Do not label a document release-ready merely because it was exported or passed automated tests.
+- The new static PDFs do not include original Ignis artwork or intricate professionally illustrated spreads. They need further design refinement if the intended price points are to be justified.
+- A filled form can visually hide typed text when the entry exceeds its displayed field; test realistic long answers, reopening and printing in common PDF readers.
+- Output is made for **one selected year / elective combination**; another age band or syllabus choice requires a separately generated version.
+- Owner production masters for guided and personalised services are intentionally marked as such. The current Square export screen does **not** collect customer data or automatically prepare personalised books.
+- The original Side-Quest shop routes and release controls are still present separately; no current Square Dashboard product, payment integration or automatic delivery has been modified by this workflow.
