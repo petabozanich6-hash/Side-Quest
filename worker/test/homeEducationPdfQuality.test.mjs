@@ -74,3 +74,40 @@ test("all eight Australian jurisdictions have distinct print and fillable editio
   }
  }
 });
+
+
+test("state-specific preparation page uses each jurisdiction's own plan terminology",()=>{
+ const titles={
+  NSW:"educational program",VIC:"home education learning plan",QLD:"summary of the educational program",
+  WA:"education program",SA:"home education program",TAS:"Home Education Summary and Program",
+  ACT:"Statement of Intent",NT:"teaching, learning and assessment plan"
+ };
+ for(const [state,title] of Object.entries(titles)){
+  const pdf=asText(generateHomeEducationTemplate(state,"3",false,"print","standard"));
+  assert.ok(pdf.includes("Preparing your "),state+" is missing its preparation chapter");
+  assert.ok(pdf.includes(title),state+" lacks its authority terminology");
+  if(state==="NT"){
+   assert.match(pdf,/department.s prescribed self-developed plan form/);
+  }
+  if(state==="TAS")assert.match(pdf,/home education standards/i);
+  if(state==="WA")assert.match(pdf,/home education moderator/i);
+ }
+});
+test("NSW Years 7-10 explicitly include two selected elective areas rather than silently omitting them",()=>{
+ const year7=asText(generateHomeEducationTemplate("NSW","7",false,"fillable","standard",["Languages","Technology"]));
+ assert.match(year7,/Two additional learning areas/);
+ assert.match(year7,/Additional area 1: Languages/);
+ assert.match(year7,/Additional area 2: Technology/);
+ assert.match(year7,/Languages - learning focus/);
+ assert.match(year7,/Technology - teaching and evidence/);
+ const unspecified=asText(generateHomeEducationTemplate("NSW","7"));
+ assert.match(unspecified,/Elective 1 - parent to choose/);
+ assert.match(unspecified,/Elective 2 - parent to choose/);
+ assert.throws(()=>generateHomeEducationTemplate("NSW","7",false,"fillable","standard",["PDHPE","PDHPE"]));
+ assert.throws(()=>generateHomeEducationTemplate("NSW","7",false,"fillable","standard",["Languages","Invalid"]));
+});
+test("NSW senior secondary has an explicit course planning warning and dedicated section",()=>{
+ const senior=asText(generateHomeEducationTemplate("NSW","11"));
+ assert.match(senior,/Senior secondary course and pattern-of-study planning/);
+ assert.match(senior,/Pattern of study and verified syllabus references/);
+});
