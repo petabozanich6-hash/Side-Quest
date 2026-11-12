@@ -720,8 +720,8 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   // Owner-only exact audit of Side-Quest's six existing document offers per state.
   // Deliberately NOT a claim about the independent Square Dashboard catalogue.
   admin.get("/document-studio/square-production", R, async (c: Context<any>) => {
-    const year=String(c.req.query("year")||"3");
-    if(!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year))return c.json({detail:"Choose a valid school year."},400);
+    const year=String(c.req.query("year")||"ALL");
+    if(!/^(ALL|K|F|Prep|[1-9]|1[0-2])$/i.test(year))return c.json({detail:"Choose a valid planning range."},400);
     const source=await ownerProducts(c.env as Env);
     const indexed=new Map<string,any[]>();
     for(const p of source){
@@ -1036,7 +1036,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
   // A master is generated separately as print-only or digitally fillable PDF.
   admin.post("/document-studio/export-home-education", R, async (c: Context<any>) => {
     const body=await readJson(c);
-    const state=String(body.state||"").toUpperCase(),year=String(body.year_level||"3");
+    const state=String(body.state||"").toUpperCase(),year=String(body.year_level||"ALL");
     const edition=body.edition==="complete"?"complete":body.edition==="standard"?"standard":null;
     const mode=body.mode==="print"?"print":body.mode==="fillable"?"fillable":null;
     const productKind=typeof body.product_kind==="string"?body.product_kind:(edition==="complete"?"planner_blank":"blank");
@@ -1051,7 +1051,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       electives.some((v:string)=>!["PDHPE","Creative Arts","Languages","Technology"].includes(v)))) ||
        (!isNswYears7To10&&electives.length))
       return c.json({detail:"NSW Years 7-10 require two different selected additional learning areas. Other years do not use this selection."},400);
-    if(!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state)||!edition||!mode||!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year))
+    if(!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state)||!edition||!mode||!/^(ALL|K|F|Prep|[1-9]|1[0-2])$/i.test(year))
       return c.json({detail:"Choose a document range, state, year and PDF edition."},400);
     const limited=await hitRateLimit(c.env.DB,"document-studio:education-export:"+String(c.get("user")?.id||"owner"),160,3600);
     if(!limited.ok)return c.json({detail:"PDF export limit reached for this hour."},429);
@@ -1065,7 +1065,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
         data_url:"data:application/pdf;base64,"+btoa(binary),
         sha256:await sha256(pdf),
         state,year_level:year,edition,mode,product_kind:productKind,output:production.output,
-        filename:"sidequest-"+state.toLowerCase()+"-"+year.toLowerCase()+"-"+productKind+"-"+mode+
+        filename:"sidequest-"+state.toLowerCase()+"-"+(year.toUpperCase()==="ALL"?"flexible-years":year.toLowerCase())+"-"+productKind+"-"+mode+
           (production.output==="production_master"?"-owner-proof":"")+".pdf",
         note:production.output==="production_master"?
           "OWNER PRODUCTION MASTER: This is NOT a completed customer's order. Personalised editions require separate customer information and custom delivery; printed editions require actual print-and-post fulfilment. No listing or customer delivery created.":
