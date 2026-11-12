@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from "react";
 import {api} from "../../../lib/api";
 import HqDocumentProducts from "./HqDocumentProducts";
+import HqStudioPublisher from "./HqStudioPublisher";
 const input="w-full rounded-xl border border-stone-300 bg-white p-2 text-sm";
 export default function HqDocumentStudio(){
  const [data,setData]=useState(null),[selected,setSelected]=useState("NSW"),[error,setError]=useState(""),[loading,setLoading]=useState(true);
@@ -9,8 +10,8 @@ export default function HqDocumentStudio(){
  return <div className="space-y-5" data-testid="hq-document-studio">
   <header className="paper-card p-5 space-y-3">
    <p className="text-xs font-semibold tracking-widest text-[#4A5D3A]">SIDE-QUEST · OWNER HQ</p>
-   <h2 className="text-2xl font-bold text-[#1F3B2D]">Home Education Document Studio</h2>
-   <p className="text-sm">Create, preview, quality-review, price and activate the documents parents will access through the shop. All products remain private until their own review is approved.</p>
+   <h2 className="text-2xl font-bold text-[#1F3B2D]">Document Studio</h2>
+   <p className="text-sm">Create beautiful, usable PDF products in Owner HQ, download the printable and digitally fillable editions, then upload them manually to Square. Square manages sales and payments.</p>
    {loading&&<p role="status" className="text-sm">Loading state requirements…</p>}
    {error&&<p role="alert" className="text-red-800">{error}</p>}
    {data&&<label className="block max-w-md text-sm font-semibold">Choose the state or territory
@@ -18,13 +19,18 @@ export default function HqDocumentStudio(){
      {data.jurisdictions.filter(j=>j.code!=="OTHER").map(j=><option key={j.code} value={j.code}>{j.name}</option>)}
     </select></label>}
   </header>
-  <section className="paper-card p-5 space-y-2">
-   <h3 className="text-lg font-bold text-[#1F3B2D]">Your document range</h3>
+  <HqStudioPublisher/>
+  <details className="paper-card p-5 space-y-3">
+   <summary className="font-semibold text-lg cursor-pointer">Legacy Side-Quest document listings and release controls</summary>
+   <p className="text-sm text-stone-700 pt-3">These older shop controls are retained for existing products, but they are not needed when creating files for Square.</p>
+   <section className="space-y-2">
+   <h3 className="text-lg font-bold text-[#1F3B2D]">Previous document prices</h3>
    <p className="text-sm">Basic: blank fillable $4.99 (+$1 per extra child); guided personalised $9.99 (+$2 per extra child); basic printed $14.99 delivered (+$2 per extra child).</p>
    <p className="text-sm">Complete Planner & Diary: blank family PDF $29.95; personalised family PDF $39.95; personalised spiral-bound printed family edition $69.95, delivery included.</p>
    <p className="text-xs text-stone-600">These are agreed standard prices for new drafts. The actual price and activation state of every existing product appears below. Prices aren't changed without an explicit action.</p>
-  </section>
-  <HqDocumentProducts jurisdiction={jur}/>
+   </section>
+   <HqDocumentProducts jurisdiction={jur}/>
+  </details>
   <details className="paper-card p-5 space-y-3">
    <summary className="font-semibold text-lg cursor-pointer">Official state requirements and learning areas</summary>
    {jur&&<div className="space-y-4 pt-4 text-sm">
