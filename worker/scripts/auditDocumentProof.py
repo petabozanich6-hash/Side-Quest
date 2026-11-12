@@ -37,9 +37,18 @@ def audit(path: Path) -> dict:
         # Term planners should not orphan a lone answer box on a separate sheet.
         # Keep period details and all three planning answers on the same page.
         if "complete" in path.stem and any(f"Planning period {term}" in page_text for term in range(1,5)):
-            period_widgets = list(page.widgets() or ())
-            if len(period_widgets) < 7:
-                fail(f"{path.name} page {i+1}: planning period split into an incomplete or sparse page")
+            # Printable pages intentionally have no form widgets. Both versions
+            # must contain all three planning prompts and both date fields.
+            expected_labels = (
+                "Period starts", "Period ends",
+                "Learning priorities and curriculum focus",
+                "Activities, projects and teaching sequence",
+                "Resources, evidence and review points",
+            )
+            if any(label not in page_text for label in expected_labels):
+                fail(f"{path.name} page {i+1}: term planner content split across pages")
+            if "fillable" in path.stem and len(list(page.widgets() or ())) < 7:
+                fail(f"{path.name} page {i+1}: term planner missing digital fields")
         for word in words:
             x0, y0, x1, y1 = word[:4]
             if x0 < 4 or x1 > 591 or y0 < 3 or y1 > 837:
