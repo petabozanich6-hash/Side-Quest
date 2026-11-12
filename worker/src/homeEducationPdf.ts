@@ -335,11 +335,21 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  field("How we will record progress","Describe dated work samples, reading records, projects, observations or other methods.",145);
  field("How and when we will review the plan","For example: periodic reflections, work samples, discussions and adjustments.",145);
 
+ startSection("03A","Resource inventory","Name real books, websites, practical equipment and community resources. Each row has room to say how the resource supports learning.");
+ table(["Resource / title","How it will be used","Learning area / access"],5,100,{widths:[139,192,170]});
+
+ startSection("03B","Flexible weekly learning plan","A practical planning table, not a compulsory timetable. Enter learning sessions, activities and how you will notice progress.");
+ table(["Day / session","Learning goal and planned activities","Resources / progress notes"],5,100,{widths:[111,218,172]});
+
  const curriculum=planAreas(jur,{year_level:yearLevel,stage:stage(yearLevel)},[],isNswSecondary?chosen:[]);
  const areas=[...curriculum.areas];
  if(isNswSecondary&&chosen.length<2){
   for(let i=chosen.length;i<2;i++)areas.push("Elective "+(i+1)+" - parent to choose");
  }
+ startSection("MAP","Learning areas at a glance","A working overview of the learner's actual priorities. The learning areas are printed for you; the two larger columns are separate digital form fields.");
+ table(["Learning area","Knowledge / skills to develop","Activities / evidence of progress"],areas.length,91,{
+  widths:[148,178,175],rowLabels:areas
+ });
  areas.forEach((area,i)=>{
   const hints=areaHints(area),n=String(i+4).padStart(2,"0");
   startSection(n,area+" - learning focus","Use this space for your real curriculum focus and goals. Do not claim outcomes or codes that have not been checked against current sources.");
@@ -350,9 +360,11 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   field("Teaching strategies and planned learning experiences",hints.activities,148);
   field("Materials, texts, places and other learning resources","List concrete resources the family actually has or will obtain.",130);
   field("How progress will be noticed and recorded",hints.evidence,137);
+  startSection(n+"C",area+" - lesson and activity planner","Use this practical grid to connect teaching activities to resources and evidence. Repeat or print another page when you need more rows.");
+  table(["Week / topic","Learning activities and teaching steps","Resources / work to keep"],4,102,{widths:[105,207,189]});
  });
- startSection("A","Learning records and evidence","This is a working record. Add copies of this page if the family needs more entries.");
- table(["Date","Learning area","Learning experience","Evidence / next step"],7,64);
+ startSection("A","Learning records and evidence","This is a working record. Add copies of this page if the family needs more entries. Each large cell can hold multiple lines.");
+ table(["Date / focus","Learning completed","Evidence / next step"],5,104,{widths:[115,207,179]});
 
  startSection("B","Review and adjustments","Reflect on actual learning rather than treating planned activities as completed work.");
  field("Progress, achievements and skills demonstrated","What did the learner understand, make, discuss or practise?",145);
@@ -366,21 +378,27 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
    field("Learning priorities and curriculum focus","What will the learner work towards during this period?",148);
    field("Activities, projects and teaching sequence","How will you introduce, practise and extend this learning?",148);
    field("Resources, evidence and review points","What materials and records will help you check progress?",140);
-   startSection("D"+term,"Learning diary - period "+term,"Record what really happened. Duplicate this page for more days or weeks.");
-   table(["Date","Subject / learning area","Learning completed","Evidence / reflection"],7,64);
+   startSection("W"+term,"Weekly or fortnightly planner - period "+term,
+    "Use each spacious row for one learning block or day. Include a realistic activity, named resources and a way to check learning.");
+   table(["Day / learning block","Teaching plan and learning goal","Resources / review notes"],5,100,{widths:[112,208,181]});
+   startSection("D"+term,"Learning diary - period "+term,"Record actual learning rather than planned activities. Entries can be typed, saved or handwritten.");
+   table(["Date / learning area","Learning completed / observations","Evidence / reflection"],5,100,{widths:[121,207,173]});
   }
-  startSection("R","Reading and literacy record","Include independent reading, read-alouds, audiobooks and other text experiences as relevant.");
-  table(["Date","Book / text / author","Reading activity","Response / next step"],7,64);
-  startSection("E","Evidence portfolio index","Use a consistent file name or evidence ID to match entries to dated work samples.");
-  table(["Date","Area / focus","Evidence ID / file","What the evidence shows"],7,64);
-  startSection("O","Outcome and goals tracker","Use verified codes only where applicable; learning goals can also be written in ordinary language.");
-  table(["Area","Outcome or goal","Evidence reference","Progress / next step"],7,64);
-  startSection("P","Projects and excursions","Document the learning connected to activities outside a conventional lesson.");
-  table(["Date","Project or outing","Learning intention","Evidence / reflection"],7,64);
+  startSection("R","Reading and literacy record","Use a separate row for each reading experience. Include read-alouds, audiobooks and other text experiences as relevant.");
+  table(["Date / book or text","What we read / discussed","Response, questions / next step"],5,102,{widths:[138,184,179]});
+  startSection("E","Evidence portfolio index","Record where work samples are kept and what they actually show. Use filenames or references that match your stored evidence.");
+  table(["Date / evidence ID","Learning focus / work sample","What this shows / follow-up"],5,102,{widths:[132,184,185]});
+  startSection("O","Outcomes and goals tracker","Enter only verified syllabus outcomes or clearly identified personal goals. Record actual evidence separately from the intended goal.");
+  table(["Area / goal or code","Planned work / resources","Evidence, progress / next step"],5,102,{widths:[152,174,175]});
+  startSection("P","Projects and excursions","Document the learning connected to visits, community activities and projects, not only a date and attendance.");
+  table(["Date / project or place","Learning focus and activities","Evidence / reflection"],5,102,{widths:[134,188,179]});
   startSection("F","Family review","Revisit this page at an interval that works for your family.");
   field("What has worked particularly well?","Consider engagement, understanding, confidence and practical experiences.",152);
   field("What were the challenges?","Record changes needed in teaching, resources, environment or timing.",152);
   field("Our priorities for the next learning period","List achievable next steps and how progress will be recorded.",155);
+  startSection("X","Extra family planning notes","A blank, flexible space for the ideas, questions or adjustments that don't fit into the structured records.");
+  field("Questions, ideas, learning possibilities and family notes","Record anything important to the next planning period.",237);
+  field("Further reflections and follow-up actions","Keep longer notes together without squeezing them into a small table cell.",237);
  }
  startSection("C","Requirements: parent review","Use this section as a preparation aid, not a compliance certificate. Verify the latest authority guidance.");
  for(const [i,req] of jur.requirements.entries()){
@@ -388,6 +406,9 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   checkbox(req);
   field("Evidence or planning notes for item "+(i+1),"Reference the relevant section, dated work sample or action still to complete.",92,true);
  }
+ startSection("N","Additional working notes","An open writing space for questions, planning changes, supplementary evidence or anything you need to explain in more detail.");
+ field("Planning notes / extra information","Use this page for longer answers that don't fit into another area.",230);
+ field("Next steps / information to verify","Write down additional resources, follow-up tasks or matters to check.",230);
  startSection("S","Official sources and final check","State-specific information can change. Confirm current registration and documentation requirements directly with the authority.");
  for(const source of jur.sources){
   const title=wrap(source.title,10,R-L-15),url=wrap(source.url,8.5,R-L-15),height=title.length*15+url.length*13+16;
