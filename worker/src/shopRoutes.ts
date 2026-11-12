@@ -1003,12 +1003,19 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const state=String(body.state||"").toUpperCase(),year=String(body.year_level||"3");
     const edition=body.edition==="complete"?"complete":body.edition==="standard"?"standard":null;
     const mode=body.mode==="print"?"print":body.mode==="fillable"?"fillable":null;
+    const electiveRaw=Array.isArray(body.secondary_electives)?body.secondary_electives:[];
+    const electives=electiveRaw.map((v:unknown)=>String(v));
+    const isNswYears7To10=state==="NSW"&&/^(7|8|9|10)$/.test(year);
+    if((isNswYears7To10 && (electives.length!==2 || new Set(electives).size!==2 ||
+      electives.some((v:string)=>!["PDHPE","Creative Arts","Languages","Technology"].includes(v)))) ||
+       (!isNswYears7To10&&electives.length))
+      return c.json({detail:"NSW Years 7-10 require two different selected additional learning areas. Other years do not use this selection."},400);
     if(!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state)||!edition||!mode||!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year))
       return c.json({detail:"Choose a document range, state, year and PDF edition."},400);
     const limited=await hitRateLimit(c.env.DB,"document-studio:education-export:"+String(c.get("user")?.id||"owner"),30,3600);
     if(!limited.ok)return c.json({detail:"PDF export limit reached for this hour."},429);
     try{
-      const pdf=generateHomeEducationTemplate(state,year,false,mode,edition);
+      const pdf=generateHomeEducationTemplate(state,year,false,mode,edition,electives);
       if(pdf.byteLength>MAX_FILE_BYTES)return c.json({detail:"PDF exceeds 25 MB."},413);
       let binary="";
       for(let i=0;i<pdf.length;i+=8192)binary+=String.fromCharCode(...pdf.subarray(i,i+8192));
