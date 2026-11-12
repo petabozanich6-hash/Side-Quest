@@ -57,5 +57,5 @@ test("Year-specific and NSW elective variants are explicit instead of implicitly
  assert.match(nsw,/Additional area 2: Technology/);
  assert.throws(()=>listingDraftFor("INVALID","7","blank"));
  assert.match(listingDraftFor("NSW","7","blank").title,/Year 7/);
- assert.match(listingDraftFor("WA","K","planner_blank").title,/first school year/);
+ assert.match(listingDraftFor("WA","K","planner_blank").title,/Pre-primary/);
 });
