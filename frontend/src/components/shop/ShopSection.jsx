@@ -110,10 +110,9 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [sampleOpen, setSampleOpen] = useState(false);
-  const [sampleYear, setSampleYear] = useState("3");
   const hasDocumentSample = (p.tags || []).includes("home-education-document");
   const personalisedPlanner = (p.tags || []).some(t => t === "premium-planner-personalised" || t === "premium-planner-printed");
-  const sampleUrl = `${API}/shop/products/${encodeURIComponent(p.id)}/document-sample?year=${encodeURIComponent(sampleYear)}`;
+  const sampleUrl = `${API}/shop/products/${encodeURIComponent(p.id)}/document-sample`;
   const v = p.variants.find((x) => x.id === variant);
   const price = v ? v.price_cents : p.price_cents;
   const fortnightlyPrice = Number.isInteger(price) ? Math.round(price * 12 / 26) : null;
@@ -175,13 +174,8 @@ function ProductDialog({ p, all, initialVariant, onClose, onAdd, defaultEmail = 
         </div>
         {hasDocumentSample && sampleOpen && <section className="space-y-3 rounded-xl border border-stone-300 bg-[#F9F8F0] p-3" data-testid="shop-document-sample">
           <p className="font-semibold text-[#1F3B2D]">Preview sample pages</p>
-          <p className="text-xs text-stone-700">A sample of the actual document format. Guided previews use fictional family details. Your purchase will contain the full resource or a document created from your own answers.</p>
-          <label className="block text-sm font-semibold max-w-xs">Show sample for year level
-            <select className={field} value={sampleYear} onChange={(e) => setSampleYear(e.target.value)}>
-              {["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].map((year)=><option key={year} value={year}>{year}</option>)}
-            </select>
-          </label>
-          <iframe title={`Sample PDF for ${p.title}, year ${sampleYear}`} src={sampleUrl} className="w-full h-[380px] rounded-lg border border-stone-200 bg-white"/>
+          <p className="text-xs text-stone-700">A sample from the flexible-year document. Complete only the sections that apply to your child. Self-guided workbooks are PDF downloads, not online planning sessions; personalised and printed products require separate fulfilment.</p>
+          <iframe title={`Flexible-year sample PDF for ${p.title}`} src={sampleUrl} className="w-full h-[380px] rounded-lg border border-stone-200 bg-white"/>
           <a href={sampleUrl} target="_blank" rel="noreferrer" className="inline-block text-sm font-semibold underline text-[#1F3B2D]">Open sample PDF in a new tab</a>
           <p className="text-xs text-stone-600">Sample only. Not a full download or government-issued form.</p>
         </section>}
