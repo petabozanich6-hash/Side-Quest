@@ -120,7 +120,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">THE ORIGINAL 48 SIDE-QUEST DOCUMENT OFFERS</p>
    <h3 className="text-xl font-bold text-[#1F3B2D]">Create each product for your Square shop</h3>
    <p className="text-sm text-stone-700">Choose one of the six existing products in your selected state or territory. Make its PDF, check it, download it, then create the corresponding Square listing yourself. Your Square order and automatic file-delivery settings are not changed.</p>
-   <p className="text-xs text-stone-600">The 48 catalogue families cover eight jurisdictions times six product types. Each generated PDF is for the particular year and any NSW elective choices shown in its Square listing. Create additional listings or correctly named variants for other year levels.</p>
+   <p className="text-xs text-stone-600">The 48 catalogue families cover eight jurisdictions times six product types. Each generated PDF is for the particular year and any NSW elective choices shown in its Square listing. Create additional listings or correctly named variants for other year levels. Extra-child pricing in your original Side-Quest shop is not automatically copied to Square.</p>
   </div>
   <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-sm">
    <strong>Catalogue source:</strong> {catalogue?.source||"Checking Side-Quest database"}.
@@ -136,7 +136,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    </label>
    <label className="text-sm font-semibold">Existing product you want to prepare
     <select className={input+" mt-1"} value={kind} onChange={e=>choose(e.target.value)}>
-     {defaultKinds.map(k=>{const o=offers.find(x=>x.kind===k);return <option key={k} value={k}>{o?o.label+" — "+money(o.default_price_cents):k}</option>})}
+     {defaultKinds.map(k=>{const o=offers.find(x=>x.kind===k);return <option key={k} value={k}>{o?o.label+" — "+money(o.current_sidequest_price_cents??o.default_price_cents):k}</option>})}
     </select>
    </label>
   </div>
@@ -146,7 +146,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     {offers.map(o=><button key={o.key} type="button" onClick={()=>choose(o.kind)}
       className={"rounded-xl border p-3 text-left text-sm "+(o.kind===kind?"border-[#1F3B2D] bg-[#F2F5F0]":"border-stone-200 bg-white")}>
       <span className="font-semibold">{o.label}</span>
-      <span className="block text-stone-600">{money(o.default_price_cents)} · {o.production.output==="customer"?"Digital customer file":"Owner production master"}</span>
+      <span className="block text-stone-600">{money(o.current_sidequest_price_cents??o.default_price_cents)} · {o.production.output==="customer"?"Digital customer file":"Owner production master"}</span>
       <span className="block text-xs mt-1 text-stone-500">
        {o.sidequest_listings.length?o.sidequest_listings.length+" Side-Quest record(s), "+o.sidequest_listings.map(p=>p.status).join(", "):"Not found in Side-Quest's current database"}
       </span>
@@ -169,9 +169,14 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
   {offer&&<div className="rounded-xl border border-stone-200 bg-white p-4 space-y-3">
    <div className="flex flex-wrap items-center gap-3 justify-between">
     <h4 className="font-semibold text-lg">{offer.label}</h4>
-    <strong>{money(offer.default_price_cents)}</strong>
+    <strong>{money(offer.current_sidequest_price_cents??offer.default_price_cents)}</strong>
    </div>
    <p className="text-sm">{offer.production.purpose}</p>
+   <p className="text-xs text-stone-600">Current Side-Quest record: {offer.current_sidequest_title||"No unique matching product"}.
+    {offer.current_sidequest_price_cents!=null&&offer.current_sidequest_price_cents!==offer.default_price_cents&&
+      <strong> Its saved price differs from the original {money(offer.default_price_cents)} default; your saved value is shown above.</strong>}
+    {offer.catalogue_warning&&<strong className="block text-amber-900">{offer.catalogue_warning}</strong>}
+   </p>
    <div className="rounded-lg bg-stone-50 p-3 text-sm space-y-2">
     <strong>Correct Square listing title</strong>
     <p>{listingTitle}</p>
