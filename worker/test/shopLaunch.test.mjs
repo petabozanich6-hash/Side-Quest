@@ -17,7 +17,15 @@ test("launch: every product except the unfinished workbooks is live, priced, buy
   const held = rows.filter((r) => holdBack(r) && r.collection !== "Home Education Documents");
   const documents=rows.filter(r=>r.collection==="Home Education Documents");
   assert.equal(documents.length,48);
-  assert.equal(documents.filter(r=>buyable(r).ok).length,48,"every edition generates from the paid order and can be purchased");
+  assert.equal(documents.filter(r=>buyable(r).ok).length,40,
+    "new guided PDF downloads cannot be bought through the retired online wizard");
+  const guided=documents.filter(r=>Array.isArray(r.tags)&&r.tags.includes("guided-document"));
+  assert.equal(guided.length,8);
+  for(const item of guided){
+    const status=buyable(item);
+    assert.equal(status.ok,false,"offline guide must wait for an approved PDF download");
+    assert.match(status.reason||"",/review pending/i);
+  }
   const live = rows.filter((r) => !holdBack(r)&&r.collection!=="Home Education Documents");
   assert.ok(held.length >= 16 && held.length < 40, `held back ${held.length}`);
   for (const r of held) assert.deepEqual([r.status, r.visible, r.price_cents], ["draft", false, null], r.title);
