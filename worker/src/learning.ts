@@ -340,28 +340,6 @@ export function registerLearning(app: App, g: Guards) {
   });
 
   // Backwards-compatible planning metadata; uses the same family jurisdiction as registration and curriculum.
-  // Read-only, shared jurisdiction guidance for the Owner HQ document studio.
-  // This is the SAME dataset used by subscribed families, not a second rules registry.
-  // No private student or family information is returned and this endpoint never invokes AI.
-  app.get("/api/home-education/document-requirements", g.auth, g.parent, (c) => {
-    return c.json({
-      checked_on: CHECKED_ON,
-      jurisdictions: Object.values(PLAN_JURISDICTIONS)
-        .filter((j) => j.code !== "OTHER")
-        .map((j) => ({
-          code: j.code,
-          name: j.name,
-          authority: j.authority,
-          reviewer: j.reviewer,
-          plan_name: j.planName,
-          curriculum: j.curriculum,
-          areas: j.areas,
-          secondary: j.secondary ?? null,
-          requirements: j.requirements,
-          sources: j.sources,
-        })),
-    });
-  });
 
   app.get("/api/family/jurisdiction", g.auth, g.parent, async (c) => {
     const code = await getFamilyJurisdiction(c.env.DB, c.get("user").family_id);

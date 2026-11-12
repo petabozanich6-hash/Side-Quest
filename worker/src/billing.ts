@@ -11,11 +11,9 @@
 import { ACTIVE_PLANS, PAST_DUE_GRACE_DAYS } from "./entitlements";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
-import { resolveHoardDiscount, previewHoardDiscount } from "./dragonHoard";
-import { recordQuestBookPurchase } from "./questBookPurchases";
 import type { Plan } from "./entitlements";
 import { squareConfig } from "./square";
-import { membershipOptions, findSquareOffer, startMembershipCheckout, membershipFor, cancelMembership, keepMembership, squareRenewing } from "./squareMembership";
+import { membershipOptions, membershipFor, cancelMembership, keepMembership, squareRenewing } from "./squareMembership";
 import type { App, Env, Guards } from "./types";
 
 type DB = D1Database;
@@ -346,11 +344,6 @@ export async function handleEvent(
   }
   const subId = subscriptionIdFromEvent(event);
   if (subId) outcome = await syncSubscription(db, cfg, subId, fetchImpl, now);
-  // One-off Quest Book purchases (checkout mode "payment"): recorded only from this verified event.
-  if ((event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded")
-    && obj?.object === "checkout.session" && obj.mode === "payment") {
-    outcome = (await recordQuestBookPurchase(db, obj, cfg.mode === "live", now)) || outcome;
-  }
 
   // Only a genuine completed checkout (or its delayed-payment success) sends the
   // first-membership email. A redirect alone never sends it. The event is marked
@@ -452,151 +445,8 @@ export function appOrigin(env: Env, reqUrl: string): string {
 export function registerBilling(app: App, { auth, parent }: Guards, fetchImpl?: Fetch) {
   const notConfigured = (reason: string) => ({ detail: "Membership checkout is not available yet.", code: "BILLING_NOT_CONFIGURED", reason });
 
-  // Read-only validation before checkout: never creates a payment, reserves a code,
-  // or trusts a browser-calculated discount. Stripe remains final at checkout.
-  app.get("/api/billing/discount-preview", auth, parent, async (c) => {
-    const code = (c.req.query("code") || "").trim().toUpperCase();
-    if (!code || code.length > 24) return c.json({ valid: false, message: "Enter a Dragon's Hoard code." }, 400);
-    try {
-      c.header("Cache-Control", "no-store");
-      const sq = squareConfig(c.env);
-      if (sq.ok) {
-        const offer = await findSquareOffer(c.env.DB, sq, code);
-        return c.json(offer ? { valid: true, code: offer.code, percent_off: offer.percent_off, duration_type: offer.duration_type }
-          : { valid: false, message: "This code isn't currently available. Check the spelling or try another." });
-      }
-      return c.json(await previewHoardDiscount(c.env.DB, c.env, code, fetchImpl));
-    } catch {
-      return c.json({ valid: false, message: "We couldn't check this code right now. Try again shortly." }, 503);
-    }
-  });
-
-  // Start a subscription. Body: { interval: "weekly" | "fortnightly" | "monthly" | "yearly", promo_code?: string }.
-  // Promotion IDs come exclusively from active, mode-scoped Dragon\u2019s Hoard records on the server.
-  app.post("/api/billing/checkout", auth, parent, async (c) => {
-    const sq = squareConfig(c.env);
-    if (sq.ok) {
-      const body: any = await c.req.json().catch(() => ({}));
-      const interval = String(body?.interval || "") as Interval;
-      if (!INTERVALS.includes(interval)) return c.json({ detail: "Choose weekly, fortnightly, monthly or yearly." }, 400);
-      const promo = typeof body?.promo_code === "string" ? body.promo_code.trim().toUpperCase() : "";
-      if (promo.length > 24) return c.json({ detail: "Enter a valid Dragon\u2019s Hoard code." }, 400);
-      const u = c.get("user");
-      const fam = await c.env.DB.prepare("SELECT id, plan, subscription_status FROM families WHERE id = ?").bind(u.family_id).first<any>();
-      if (!fam) return c.json({ detail: "Family not found" }, 404);
-      if (fam.plan === "INTERNAL") return c.json({ detail: "This early-access family already has full access. Use a separate test family to try checkout.", code: "INTERNAL_FAMILY" }, 409);
-      const existing = await membershipFor(c.env.DB, u.family_id).catch(() => null);
-      if (ACTIVE_PLANS.includes(fam.plan) || (existing?.subscription_id && existing.status === "ACTIVE")) {
-        return c.json({ detail: "You already have a Family Membership. Use Manage membership to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
-      }
-      const offer = promo ? await findSquareOffer(c.env.DB, sq, promo) : null;
-      if (promo && !offer) return c.json({ detail: "This Dragon\u2019s Hoard code is invalid, inactive or expired." }, 400);
-      try {
-        const parentRow = await c.env.DB.prepare("SELECT email FROM users WHERE id = ?").bind(u.id).first<{ email: string }>();
-        const url = await startMembershipCheckout(c.env.DB, sq, { familyId: u.family_id, email: parentRow?.email, interval, offer,
-          redirectUrl: `${appOrigin(c.env, c.req.url)}/parent/plan?checkout=success`, fetchImpl });
-        return c.json({ url });
-      } catch (e: any) {
-        console.error("square membership checkout failed", e?.message);
-        return c.json({ detail: "Could not start checkout. Please try again." }, 502);
-      }
-    }
-    const cfg = billingConfig(c.env);
-    if (!cfg.ok) return c.json(notConfigured(cfg.reason), 503);
-    const body = await c.req.json().catch(() => ({}));
-    const interval = String((body as any)?.interval || "") as Interval;
-    const price = INTERVALS.includes(interval) ? cfg.prices[interval] : undefined;
-    if (!price) return c.json({ detail: "Choose weekly, fortnightly, monthly or yearly." }, 400);
-    const incomingCode = (body as any)?.promo_code;
-    if (incomingCode != null && (typeof incomingCode !== "string" || incomingCode.length > 24)) {
-      return c.json({ detail: "Enter a valid Dragon\u2019s Hoard code." }, 400);
-    }
-    const promoCode = typeof incomingCode === "string" ? incomingCode.trim().toUpperCase() : "";
-
-    const u = c.get("user");
-    const fam = await c.env.DB.prepare("SELECT id, plan, stripe_customer_id, subscription_status FROM families WHERE id = ?").bind(u.family_id).first<any>();
-    if (!fam) return c.json({ detail: "Family not found" }, 404);
-    if (fam.plan === "INTERNAL") {
-      return c.json({ detail: "This early-access family already has full access. Use a separate test family to try checkout.", code: "INTERNAL_FAMILY" }, 409);
-    }
-    if (GRANT_STATES.has(String(fam.subscription_status || "")) || ACTIVE_PLANS.includes(fam.plan)) {
-      return c.json({ detail: "You already have a Family Membership. Use Manage billing to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
-    }
-
-    let promotionId: string | null = null;
-    if (promoCode) {
-      promotionId = await resolveHoardDiscount(c.env.DB, cfg.mode, promoCode);
-      if (!promotionId) return c.json({ detail: "This Dragon\u2019s Hoard code is invalid, inactive or expired." }, 400);
-    }
-
-    try {
-      let customer: string | null = fam.stripe_customer_id;
-      if (customer && cfg.mode === "live") {
-        // A production family may retain a sandbox customer id after switching Stripe modes.
-        // Confirm it exists in this live account before reusing it; other Stripe errors fail closed.
-        try {
-          const existing = await stripeCall(cfg.key, "GET", `customers/${encodeURIComponent(customer)}`, {}, { fetchImpl });
-          if (existing?.deleted || (existing?.metadata?.family_id && existing.metadata.family_id !== u.family_id)) {
-            throw new Error("Stripe customer is deleted or belongs to a different family");
-          }
-        } catch (err) {
-          if (!(err instanceof StripeError) || err.status !== 404) throw err;
-          customer = null;
-        }
-      }
-      if (!customer) {
-        const parentRow = await c.env.DB.prepare("SELECT email, name FROM users WHERE id = ?").bind(u.id).first<{ email: string; name: string }>();
-        const created = await stripeCall(cfg.key, "POST", "customers", {
-          email: parentRow?.email,
-          name: parentRow?.name,
-          metadata: { family_id: u.family_id },
-        }, { idempotencyKey: `sq-customer-${cfg.mode}-${u.family_id}`, fetchImpl });
-        // Atomic compare-and-swap protects concurrent checkout attempts and other family records.
-        // Only replace a stale id when Stripe confirmed it does not exist in live mode.
-        await c.env.DB.prepare("UPDATE families SET stripe_customer_id = ? WHERE id = ? AND (stripe_customer_id IS ? OR stripe_customer_id = ?)")
-          .bind(created.id, u.family_id, fam.stripe_customer_id, fam.stripe_customer_id).run();
-        const again = await c.env.DB.prepare("SELECT stripe_customer_id FROM families WHERE id = ?").bind(u.family_id).first<{ stripe_customer_id: string }>();
-        customer = again?.stripe_customer_id || created.id;
-      }
-      // Stripe is the source of truth: the webhook for an earlier purchase may not have arrived yet.
-      const existingSubs = await stripeCall(cfg.key, "GET", "subscriptions", { customer, status: "all", limit: 100 }, { fetchImpl });
-      if ((existingSubs?.data || []).some((s: any) => LIVE_SUB_STATES.has(String(s?.status || "")))) {
-        return c.json({ detail: "You already have a Family Membership. Use Manage billing to change or cancel it.", code: "ALREADY_SUBSCRIBED" }, 409);
-      }
-      // Only one checkout should be payable at a time. Reuse an open page for the same choice (a double
-      // click) and close the rest (another tab or plan). Best effort: a failure here never blocks checkout.
-      const promoKey = promotionId ?? "none";
-      try {
-        const open = await stripeCall(cfg.key, "GET", "checkout/sessions", { customer, status: "open", limit: 100 }, { fetchImpl });
-        for (const s of open?.data || []) {
-          if (!s?.id) continue;
-          if (s.url && s.metadata?.interval === interval && s.metadata?.promo === promoKey) return c.json({ url: s.url });
-          await stripeCall(cfg.key, "POST", `checkout/sessions/${encodeURIComponent(s.id)}/expire`, {}, { fetchImpl });
-        }
-      } catch (e: any) {
-        console.error("billing checkout: could not close earlier checkout pages", e?.message);
-      }
-      const origin = appOrigin(c.env, c.req.url);
-      const session = await stripeCall(cfg.key, "POST", "checkout/sessions", {
-        mode: "subscription",
-        customer,
-        client_reference_id: u.family_id,
-        line_items: [{ price: price.price, quantity: 1 }],
-        // Only owner-issued Hoard offers are eligible, while Stripe enforces actual redemption limits.
-        ...(promotionId ? { discounts: [{ promotion_code: promotionId }] } : {}),
-        metadata: { family_id: u.family_id, interval, promo: promoKey },
-        subscription_data: { metadata: { family_id: u.family_id, interval } },
-        success_url: `${origin}/parent/plan?checkout=success`,
-        cancel_url: `${origin}/parent/plan?checkout=cancelled`,
-      }, { idempotencyKey: `sq-checkout-${u.family_id}-${interval}-${promotionId ?? "none"}-${Math.floor(Date.now() / 60000)}`, fetchImpl });
-      return c.json({ url: session.url });
-    } catch (e: any) {
-      console.error("billing checkout failed", e?.message);
-      return c.json({ detail: "Could not start checkout. Please try again." }, 502);
-    }
-  });
-
-  // Stripe Customer Portal: update card, view invoices, cancel (configured in Stripe to cancel at period end).
+  // New memberships are bought in the Square Online shop (squareShopMembership.ts), not here.
+  // These routes only look after families who already joined through the old Stripe or Square checkout.
   app.post("/api/billing/portal", auth, parent, async (c) => {
     // Square has no hosted portal: members manage their membership on Side-Quest's own page.
     if (squareConfig(c.env).ok) return c.json({ url: `${appOrigin(c.env, c.req.url)}/parent/plan?manage=1` });

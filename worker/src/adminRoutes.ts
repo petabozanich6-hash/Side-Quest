@@ -31,11 +31,9 @@ import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
 import { billingConfig } from "./billing";
-import { createHoardOffer, disableHoardOffer, giftPreviewDays, listHoardOffers } from "./dragonHoard";
+import { giftPreviewDays } from "./previewGifts";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
-import { createBookForgeRoutes } from "./bookForge";
-import { registerShopAdmin } from "./shopRoutes";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -96,9 +94,7 @@ export function createAdminRoutes() {
   // ----------------------------------------------------------- 3. rate limits
   admin.use("*", async (c, next) => {
     const write = isMutation(c.req.method);
-    // Shop editing (saving products and photos one after another) gets its own, larger allowance.
-    const shop = c.req.path.startsWith("/api/admin/shop/");
-    const limit = await hitRateLimit(c.env.DB, `admin:${write ? "w" : "r"}${shop ? ":shop" : ""}:${c.get("user").id}`, write ? (shop ? 150 : 30) : 300, 300);
+    const limit = await hitRateLimit(c.env.DB, `admin:${write ? "w" : "r"}:${c.get("user").id}`, write ? 30 : 300, 300);
     if (!limit.ok) {
       c.header("Retry-After", String(limit.retryAfter));
       return c.json({ detail: "Too many requests. Please slow down for a moment." }, 429);
@@ -322,49 +318,7 @@ export function createAdminRoutes() {
   });
 
 
-  // ---------------------------------------------- The Dragon's Hoard
-  // These routes inherit Owner role, CSRF, passkey step-up, per-user limits and an audit trail.
-  // Stripe discounts always stay in the Stripe mode (test/live) they were issued under.
-  admin.get("/hoard", requirePermission("settings.read"), async (c) => {
-    const cfg = billingConfig(c.env);
-    const offers = await listHoardOffers(c.env.DB);
-    return c.json({
-      billing_configured: cfg.ok,
-      mode: cfg.ok ? cfg.mode : null,
-      note: cfg.ok ? null : "Stripe checkout isn't configured. Discount scrolls cannot be created yet.",
-      offers,
-    });
-  });
-
-  admin.post("/hoard", requirePermission("settings.write"), async (c) => {
-    const body = await readJson(c);
-    if (body.confirm !== "CREATE") return c.json({ detail: "Type CREATE to approve this Stripe discount." }, 400);
-    try {
-      const result = await createHoardOffer(c.env.DB, c.env, body, c.get("user").id);
-      if (!result.ok) return c.json({ detail: result.detail }, result.status);
-      await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_created", targetType: "hoard_offer", targetId: result.id, detail: { code: result.code, mode: result.mode } });
-      return c.json(result, 201);
-    } catch {
-      // Do not log the Stripe key, customer information or a full outbound request.
-      return c.json({ detail: "Stripe could not create this scroll. Check Prices read, Coupons write and Promotion Codes write permissions in the matching Stripe account, then retry." }, 502);
-    }
-  });
-
-  admin.post("/hoard/:id/retire", requirePermission("settings.write"), async (c) => {
-    const body = await readJson(c);
-    if (body.confirm !== "RETIRE") return c.json({ detail: "Type RETIRE to disable the code." }, 400);
-    const reason = reasonFrom(body);
-    if (!reason) return c.json({ detail: "Give a reason (5–500 characters)." }, 400);
-    try {
-      const result = await disableHoardOffer(c.env.DB, c.env, c.req.param("id") ?? "");
-      if (!result.ok) return c.json({ detail: result.detail }, result.status);
-      await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_retired", targetType: "hoard_offer", targetId: c.req.param("id"), detail: { code: result.code, mode: result.mode, reason } });
-      return c.json({ ok: true });
-    } catch {
-      return c.json({ detail: "Stripe could not disable this discount. Nothing was retired in HQ; check Stripe and retry." }, 502);
-    }
-  });
-
+  // ---------------------------------------------- Preview gifts
   admin.post("/customers/:id/gift-preview", requirePermission("settings.write"), async (c) => {
     const { target, error } = await loadTarget(c);
     if (error) return error;
@@ -589,9 +543,6 @@ export function createAdminRoutes() {
     return c.json({cancelled:true});
   });
 
-  // ---------------------------------------------------------------- shop catalogue
-  admin.route("/book-forge", createBookForgeRoutes());
-  registerShopAdmin(admin, { requirePermission, actor, readJson });
 
   admin.all("*", (c) => notFound(c));
   return admin;

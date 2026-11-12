@@ -12,13 +12,10 @@
 //   SQUARE_APPLICATION_ID         var     (sq0idp-... production, sandbox-sq0idb-... sandbox)
 //   SQUARE_LOCATION_ID            var
 //   SQUARE_WEBHOOK_URL            var, optional (the exact URL registered with Square; defaults to the request URL)
-import { recordPaidCart } from "./questBookPurchases";
-import { recordPaidShopOrder } from "./shopOrders";
 import { linkMembershipPayment, syncSquareSubscription, markPastDue, type ActivatedInfo, type ShopMembershipHooks } from "./squareMembership";
 import { linkShopMembershipCustomer, shopMembershipInterval } from "./squareShopMembership";
-import { attachShopSubscription, linkShopSubscriptionPayment, markShopSubscriptionPastDue, syncShopSubscription, recordShopSubscriptionInvoice } from "./shopSubscriptions";
 import type { App, Env } from "./types";
-import { LIVE_PRICE_DETAILS, appOrigin } from "./billing";
+import { LIVE_PRICE_DETAILS } from "./billing";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
 
@@ -76,54 +73,6 @@ export async function verifySquareSignature(rawBody: string, header: string | un
   return diff === 0;
 }
 
-// ---------------------------------------------------------------- checkout
-
-export type SquareLine = { name: string; amount_cents: number; note?: string; quantity?: number };
-
-/** One hosted Square checkout for a saved, server-priced cart. Returns the URL to send the parent to. */
-export async function createCartPaymentLink(cfg: Extract<SquareConfig, { ok: true }>, opts: {
-  cartId: string; familyId: string; lines: SquareLine[]; redirectUrl: string; email?: string | null; fetchImpl?: Fetch;
-}): Promise<string> {
-  const r = await squareCall(cfg, "POST", "online-checkout/payment-links", {
-    idempotency_key: `cart-${opts.cartId}`,
-    order: {
-      location_id: cfg.locationId,
-      reference_id: opts.cartId,
-      metadata: { kind: "quest_cart", family_id: opts.familyId, cart_id: opts.cartId },
-      line_items: opts.lines.map((l) => ({
-        name: l.name.slice(0, 500), quantity: "1",
-        base_price_money: { amount: Math.round(l.amount_cents), currency: "AUD" },
-        ...(l.note ? { note: l.note.slice(0, 500) } : {}),
-      })),
-    },
-    checkout_options: { redirect_url: opts.redirectUrl, ask_for_shipping_address: false, allow_tipping: false },
-    ...(opts.email ? { pre_populated_data: { buyer_email: opts.email } } : {}),
-  }, opts.fetchImpl);
-  const url = r?.payment_link?.url;
-  if (!url) throw new SquareError(502, "Square did not return a checkout link");
-  return url;
-}
-
-/** Hosted Square checkout for a public shop order (no account). */
-export async function createShopPaymentLink(cfg: Extract<SquareConfig, { ok: true }>, opts: {
-  orderId: string; lines: SquareLine[]; redirectUrl: string; email: string; askShipping?: boolean; fetchImpl?: Fetch;
-}): Promise<string> {
-  const r = await squareCall(cfg, "POST", "online-checkout/payment-links", {
-    idempotency_key: `shop-${opts.orderId}`,
-    order: {
-      location_id: cfg.locationId,
-      reference_id: opts.orderId,
-      metadata: { kind: "shop_order", order_id: opts.orderId },
-      line_items: opts.lines.map((l) => ({ name: l.name.slice(0, 500), quantity: String(Math.max(1, l.quantity || 1)), base_price_money: { amount: Math.round(l.amount_cents), currency: "AUD" }, ...(l.note ? { note: l.note.slice(0, 2000) } : {}) })),
-    },
-    checkout_options: { redirect_url: opts.redirectUrl, ask_for_shipping_address: !!opts.askShipping, allow_tipping: false },
-    pre_populated_data: { buyer_email: opts.email },
-  }, opts.fetchImpl);
-  const url = r?.payment_link?.url;
-  if (!url) throw new SquareError(502, "Square did not return a checkout link");
-  return url;
-}
-
 // ---------------------------------------------------------------- webhook handling
 
 const CREATE_EVENTS = `CREATE TABLE IF NOT EXISTS square_events (
@@ -140,10 +89,11 @@ function ensureEvents(db: DB) {
 }
 
 /**
- * Applies one verified Square event. A completed payment is matched to its order; the order (created by us) carries
- * the cart id and family id. The amount actually paid must equal the saved cart total.
+ * Applies one verified Square event to Family Memberships: those bought in the Square Online shop, and those from
+ * the app's old Square checkout. Everything else Square sells (books, letters, boxes) is fulfilled in Square itself
+ * and ignored here.
  */
-export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>, shop?: { env: Env; origin: string }): Promise<string> {
+export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok: true }>, event: any, fetchImpl?: Fetch, now: Date = new Date(), onActivated?: (i: ActivatedInfo) => Promise<void>, shop?: { env: Env }): Promise<string> {
   const type = String(event?.type || "");
   const obj = event?.data?.object || {};
   const hooks: ShopMembershipHooks = {
@@ -153,58 +103,30 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   if (type === "subscription.created" || type === "subscription.updated") {
     const id = String(obj.subscription?.id || event?.data?.id || "");
     if (!id) return "subscription event without id";
-    // Shop subscriptions (Dragon Post letters, Monthly Quest boxes) first; everything else is a membership.
-    await attachShopSubscription(db, cfg, obj.subscription);
-    return (await syncShopSubscription(db, cfg, id, fetchImpl)) ?? syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated, hooks);
+    return syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated, hooks);
   }
   if (type === "invoice.payment_made") {
     const id = String(obj.invoice?.subscription_id || "");
-    const invoiceId=String(obj.invoice?.id || event?.data?.id || "");
     if (!id) return "invoice without subscription";
     // Never use a subscription's active status as evidence of payment.
     // Only the verified, signed Square paid-invoice notification counts.
-    const synced=await syncShopSubscription(db,cfg,id,fetchImpl);
-    if(synced){
-      if(invoiceId) await recordShopSubscriptionInvoice(db,id,invoiceId,now.toISOString());
-      return synced;
-    }
     return syncSquareSubscription(db, cfg, id, fetchImpl, now, onActivated, hooks);
   }
   if (type === "invoice.scheduled_charge_failed") {
     const id = String(obj.invoice?.subscription_id || "");
     if (!id) return "invoice without subscription";
-    return (await markShopSubscriptionPastDue(db, id)) ?? markPastDue(db, id, now);
+    return markPastDue(db, id, now);
   }
   if (type !== "payment.created" && type !== "payment.updated") return `ignored ${type}`;
   const payment = event?.data?.object?.payment;
   if (!payment?.id || !payment?.order_id) return "payment without order";
   if (payment.location_id && payment.location_id !== cfg.locationId) return "payment for another location";
   if (payment.status !== "COMPLETED") return `payment ${payment.status || "unknown"}`;
-  // Re-read both from Square rather than trusting the event body alone.
+  // Re-read the payment from Square rather than trusting the event body alone.
   const fresh = (await squareCall(cfg, "GET", `payments/${encodeURIComponent(payment.id)}`, undefined, fetchImpl))?.payment;
   if (!fresh || fresh.status !== "COMPLETED") return "payment not completed";
-  const order = (await squareCall(cfg, "GET", `orders/${encodeURIComponent(fresh.order_id)}`, undefined, fetchImpl))?.order;
-  if (!order || order.location_id !== cfg.locationId) return "order not found for this location";
-  const meta = order.metadata || {};
-  if (meta.kind === "shop_order") {
-    if (String(fresh.amount_money?.currency || "AUD") !== "AUD") return "unexpected currency";
-    if (!shop) return "shop order without context";
-    const ship = fresh.shipping_address || order.fulfillments?.[0]?.shipment_details?.recipient?.address || null;
-    const recipient = order.fulfillments?.[0]?.shipment_details?.recipient?.display_name || null;
-    return recordPaidShopOrder(db, shop.env, String(order.reference_id || meta.order_id || ""), Number(fresh.amount_money?.amount), `sq_${fresh.id}`, shop.origin, now, ship ? { name: recipient, ...ship } : undefined);
-  }
-  if (meta.kind !== "quest_cart") {
-    // A shop subscription's first payment, else a membership checkout's (orders we remember by id).
-    const shopSub = await linkShopSubscriptionPayment(db, cfg, fresh, fetchImpl);
-    if (shopSub) return shopSub;
-    return (await linkMembershipPayment(db, cfg, fresh, fetchImpl, now, onActivated)) ?? `ignored order ${order.id}`;
-  }
-  const cartId = String(order.reference_id || meta.cart_id || "");
-  const familyId = String(meta.family_id || "");
-  if (!cartId || !familyId) return "order missing cart";
-  const paid = Number(fresh.amount_money?.amount);
-  if (String(fresh.amount_money?.currency || "AUD") !== "AUD") return "unexpected currency";
-  return recordPaidCart(db, familyId, cartId, `sq_${fresh.id}`, "aud", cfg.production, now, paid);
+  // Only a first payment for a membership checkout the app remembers by order id is acted on.
+  return (await linkMembershipPayment(db, cfg, fresh, fetchImpl, now, onActivated)) ?? `ignored order ${fresh.order_id}`;
 }
 
 /** New member: confirmation email to the parent and (live only) the owner alert. Never blocks activation. */
@@ -239,7 +161,7 @@ export function registerSquare(app: App) {
     await c.env.DB.prepare("INSERT OR IGNORE INTO square_events (id, type, received_at) VALUES (?, ?, ?)").bind(id, String(event.type || ""), new Date().toISOString()).run();
     try {
       const outcome = await handleSquareEvent(c.env.DB, cfg, event, undefined, new Date(), (info) => notifyActivated(c.env, info, cfg.production),
-        { env: c.env, origin: appOrigin(c.env, c.req.url) });
+        { env: c.env });
       await c.env.DB.prepare("UPDATE square_events SET processed_at = ?, outcome = ? WHERE id = ?").bind(new Date().toISOString(), outcome.slice(0, 300), id).run();
       console.log("square webhook", event.type, id, outcome);
       return c.json({ received: true });
