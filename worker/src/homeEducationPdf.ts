@@ -347,7 +347,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   for(let i=chosen.length;i<2;i++)areas.push("Elective "+(i+1)+" - parent to choose");
  }
  startSection("MAP","Learning areas at a glance","A working overview of the learner's actual priorities. The learning areas are printed for you; the two larger columns are separate digital form fields.");
- table(["Learning area","Knowledge / skills to develop","Activities / evidence of progress"],areas.length,91,{
+ table(["Learning area","Knowledge / skills to develop","Activities / evidence of progress"],areas.length,80,{
   widths:[148,178,175],rowLabels:areas
  });
  areas.forEach((area,i)=>{
@@ -364,7 +364,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   table(["Week / topic","Learning activities and teaching steps","Resources / work to keep"],4,102,{widths:[105,207,189]});
  });
  startSection("A","Learning records and evidence","This is a working record. Add copies of this page if the family needs more entries. Each large cell can hold multiple lines.");
- table(["Date / focus","Learning completed","Evidence / next step"],5,104,{widths:[115,207,179]});
+ table(["Date / focus","Learning completed","Evidence / next step"],5,90,{widths:[115,207,179]});
 
  startSection("B","Review and adjustments","Reflect on actual learning rather than treating planned activities as completed work.");
  field("Progress, achievements and skills demonstrated","What did the learner understand, make, discuss or practise?",116);
@@ -375,9 +375,9 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   for(let term=1;term<=4;term++){
    startSection("T"+term,"Planning period "+term,"Use this as a term planner or another planning block. Adapt dates and duration to suit your family's approach.");
    pair("Period starts","Period ends");
-   field("Learning priorities and curriculum focus","What will the learner work towards during this period?",110);
-   field("Activities, projects and teaching sequence","How will you introduce, practise and extend this learning?",110);
-   field("Resources, evidence and review points","What materials and records will help you check progress?",110);
+   field("Learning priorities and curriculum focus","What will the learner work towards during this period?",92);
+   field("Activities, projects and teaching sequence","How will you introduce, practise and extend this learning?",92);
+   field("Resources, evidence and review points","What materials and records will help you check progress?",92);
    startSection("W"+term,"Weekly or fortnightly planner - period "+term,
     "Use each spacious row for one learning block or day. Include a realistic activity, named resources and a way to check learning.");
    table(["Day / learning block","Teaching plan and learning goal","Resources / review notes"],5,100,{widths:[112,208,181]});
