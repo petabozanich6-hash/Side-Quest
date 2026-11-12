@@ -23,6 +23,7 @@ import { quoteStandardPost, ShippingQuoteError } from "./shopShipping";
 import { guidedProductState, mayAccessGuidedDocument } from "./documentEntitlement";
 import { documentKind, familyDocumentPrice } from "./familyDocumentPricing";
 import { generateHomeEducationTemplate } from "./homeEducationPdf";
+import { buildStudioProductPdf } from "./studioProductPdf";
 import { sha256 } from "./documentReview";
 import { documentStateFromTags, documentType, requiredReleaseRevision, reviewEvidence, approvedForSale } from "./documentRelease";
 import { premiumDiaryHtml, premiumFamilyDiaryHtml } from "./premiumHomeEducationDiary";
@@ -971,6 +972,27 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       await audit(c,"document_studio.premium_pdf_saved",id,{state,hash});
       return c.json({ok:true,detail:"Approved premium blank PDF saved privately; independent quality release still required."});
     }catch(err:any){console.error("premium save failed",err?.message);return c.json({detail:"Could not save premium PDF."},502);}
+  });
+
+  // Owner authoring export only. PDF bytes are returned directly for manual
+  // Square upload. No shop listing, order, customer, or storage is created.
+  admin.post("/document-studio/export", R, async (c: Context<any>) => {
+    const body=await readJson(c);
+    const mode=body.mode === "fillable" ? "fillable" : body.mode === "print" ? "print" : null;
+    if(!mode)return c.json({detail:"Choose the printable or fillable PDF."},400);
+    const limited=await hitRateLimit(c.env.DB,"document-studio:export:"+String(c.get("user")?.id||"owner"),36,3600);
+    if(!limited.ok)return c.json({detail:"Document export limit reached for this hour."},429);
+    try {
+      const result=buildStudioProductPdf(body.product,mode);
+      if(result.pdf.byteLength>MAX_FILE_BYTES)return c.json({detail:"PDF exceeds 25 MB. Divide the pack into smaller documents."},413);
+      let binary="";
+      for(let i=0;i<result.pdf.length;i+=8192)binary+=String.fromCharCode(...result.pdf.subarray(i,i+8192));
+      c.header("Cache-Control","private, no-store");
+      return c.json({ok:true,data_url:"data:application/pdf;base64,"+btoa(binary),mode,quality:result.quality,
+        note:"Owner proof for manual Square upload. Inspect every page and test filled fields in a PDF reader before selling."});
+    }catch(e:any){
+      return c.json({detail:typeof e?.message==="string"?e.message:"Could not build the PDF."},400);
+    }
   });
 
   // Owner-only two-step generation. Preview creates bytes in memory but
