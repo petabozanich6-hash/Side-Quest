@@ -77,7 +77,7 @@ test("One all-year PDF per jurisdiction and product has optional, skippable stag
   for(const product of DOCUMENT_OFFER_KINDS){
    const config=SQUARE_PRODUCTION[product.kind];
    const data=str(generateHomeEducationTemplate(state,"ALL",false,config.customer_modes[0],config.edition,[],product.kind));
-   assert.match(data,/Flexible year levels/);
+   assert.match(data,/How to use this flexible-year workbook/);
    for(const section of ["Early years: first school year to Year 2","Primary years: Years 3 to 6",
       "Secondary years: Years 7 to 10","Senior secondary: Years 11 and 12",
       "SKIP THIS SECTION","Actual year level / stage"]){
