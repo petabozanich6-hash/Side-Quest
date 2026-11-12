@@ -34,3 +34,26 @@ for(const mode of ["print","fillable"]){
  writeFileSync(file,pdf);
  console.log(file,pdf.byteLength,"bytes");
 }
+
+
+// Visual proof for the full original six-product range, not just the two blank
+// exporters. Two contrasting jurisdictions exercise both the cover and the
+// jurisdiction-specific body pages.
+const products={
+ blank:{edition:"standard",modes:["print","fillable"]},
+ guided:{edition:"standard",modes:["print","fillable"]},
+ printed:{edition:"standard",modes:["print"]},
+ planner_blank:{edition:"complete",modes:["print","fillable"]},
+ planner_personalised:{edition:"complete",modes:["print","fillable"]},
+ planner_printed:{edition:"complete",modes:["print"]}
+};
+for(const state of ["NSW","VIC"]){
+ for(const [kind,product] of Object.entries(products)){
+  for(const mode of product.modes){
+   const file=dir+"/sidequest-"+state.toLowerCase()+"-year3-"+kind+"-"+mode+"-product.pdf";
+   const pdf=generateHomeEducationTemplate(state,"3",false,mode,product.edition,[],kind);
+   writeFileSync(file,pdf);
+   console.log(file,pdf.byteLength,"bytes");
+  }
+ }
+}
