@@ -40,18 +40,91 @@ const areaHints=(area:string)=>{
  return{focus:"Which concepts, knowledge and skills are planned for this learning area?",activities:"Describe meaningful learning experiences and teaching approaches.",evidence:"Dated work samples, photographs, observations or learner reflections"};
 };
 
+
+const jurisdictionHelp:Record<string,{intro:string;focus:string;focusHint:string;record:string;recordHint:string;reminder:string}>={
+ NSW:{
+  intro:"NSW home education programs use current NESA syllabuses. Identify the relevant syllabus stage and the learning areas selected for this child.",
+  focus:"Syllabus stage and learning-area choices",
+  focusHint:"Identify the stage, syllabus source and any secondary elective syllabuses. Check syllabus implementation dates and use verified outcomes only.",
+  record:"How we will explain the program and its evidence",
+  recordHint:"Note how this plan reflects the child's needs, how learning will occur and where dated work samples will be kept.",
+  reminder:"NSW syllabus documents are being updated. Check implementation dates and the department's current registration guidelines before use."
+ },
+ VIC:{
+  intro:"A Victorian home education learning plan can use a subject-based or activity-based approach, while showing how the program substantially addresses the eight learning areas.",
+  focus:"Our learning approach and how it covers the eight areas",
+  focusHint:"Describe your subject-based or activity-based approach. If an activity contributes to several areas, explain how.",
+  record:"The actual books, resources and learning locations",
+  recordHint:"List real titles, websites, apps or community services and when or where the activities will happen.",
+  reminder:"Check the VRQA's current guidance on learning plans, registration and any learning-area exemptions."
+ },
+ QLD:{
+  intro:"Queensland uses a summary of the educational program. Explain the intended education and how it suits this child, rather than promising every lesson in advance.",
+  focus:"Why this educational program suits our learner",
+  focusHint:"Explain how the planned approach responds to the child's age, ability, aptitude, interests and development.",
+  record:"Progress and reporting over the registration period",
+  recordHint:"Describe actual evidence, reflection and review. A continuing registration may also need an updated program summary.",
+  reminder:"Check Queensland Home Education's current reporting and program summary requirements."
+ },
+ WA:{
+  intro:"In Western Australia, a home education moderator considers both the education program and the child's educational progress. Plan for an individual learner and collect varied evidence.",
+  focus:"Individual goals and program approach",
+  focusHint:"Explain the child's strengths, interests, learning priorities and how activities develop knowledge and skills.",
+  record:"Progress examples for a moderator discussion",
+  recordHint:"Identify practical work samples, photos, discussions or records that will demonstrate learning over time.",
+  reminder:"Read the WA Department's current program and moderator evaluation guidance, including its discussion of the WA Curriculum."
+ },
+ SA:{
+  intro:"South Australian planning should make the learning program, activities, resources, evidence and opportunities for social interaction clear.",
+  focus:"Learning coverage and planned activities",
+  focusHint:"Explain how the program covers the relevant learning areas, with actual topics, activities and resources.",
+  record:"Evidence of literacy, numeracy and social learning",
+  recordHint:"Identify progress observations and work samples, especially literacy and numeracy, plus appropriate social opportunities.",
+  reminder:"Check SA's latest home education guidance, registration conditions and review process."
+ },
+ TAS:{
+  intro:"Tasmania's home education guidance is organised around standards including literacy, numeracy, range of learning areas, wellbeing, pedagogy and evaluation.",
+  focus:"How our program addresses the home education standards",
+  focusHint:"Describe literacy, numeracy and suitable breadth; include the learner's personal goals and wellbeing.",
+  record:"How we will teach and evaluate learning",
+  recordHint:"Explain your teaching approach, observations, learning evidence and how the program will change over time.",
+  reminder:"Check the Office of the Education Registrar's current Home Education Summary and Program guidance."
+ },
+ ACT:{
+  intro:"An ACT Statement of Intent explains educational opportunities and learning strategies suited to the individual child's development and interests.",
+  focus:"Opportunities across the child's development",
+  focusHint:"Describe opportunities supporting intellectual, social, emotional, physical and family-led spiritual development.",
+  record:"Learning strategies and citizenship",
+  recordHint:"Explain ways to encourage learning and build independent participation in local and global communities.",
+  reminder:"Check the ACT's Statement of Intent and annual Home Education Report processes and deadlines."
+ },
+ NT:{
+  intro:"The Northern Territory requires an applicable department template for self-developed plans. This Side-Quest workbook is a preparation companion, not a substitute for that official template.",
+  focus:"Topics, learning content and curriculum references",
+  focusHint:"Identify learning content and current Australian Curriculum references for the child's year and subjects.",
+  record:"Assessment tasks and actual learning resources",
+  recordHint:"Plan a suitable assessment approach and name the books, materials, software or services you actually intend to use.",
+  reminder:"IMPORTANT: Transfer your completed plan to the current NT government self-developed plan form where required. Do not lodge this workbook in its place."
+ }
+};
+const NSW_ELECTIVES=["PDHPE","Creative Arts","Languages","Technology"] as const;
+
 /**
  * Backward-compatible API. mode and edition are owner publishing options:
  * existing three-argument preview/paid routes continue to generate fillable
  * planning workbooks. Full editions add printable and interactive record pages.
  */
-export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleOnly=false,mode:Mode="fillable",edition:Edition="standard"):Uint8Array{
+export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleOnly=false,mode:Mode="fillable",edition:Edition="standard",selectedElectives:string[]=[]):Uint8Array{
  if(!Object.prototype.hasOwnProperty.call(JURISDICTIONS,state)||state==="OTHER")throw Error("Invalid state");
  if(!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(yearLevel))throw Error("Invalid school year");
  if(mode!=="fillable"&&mode!=="print")throw Error("Invalid PDF edition");
  if(edition!=="standard"&&edition!=="complete")throw Error("Invalid document range");
  const jur=JURISDICTIONS[state as JurisdictionCode];
  const displayYear=/^(K|F|Prep)$/i.test(yearLevel)?jur.foundationYear:yearLevel;
+ const rawElectives=Array.isArray(selectedElectives)?selectedElectives:[];
+ const chosen=rawElectives.filter(v=>NSW_ELECTIVES.some(a=>a===v));
+ if(chosen.length!==rawElectives.length||new Set(chosen).size!==chosen.length||chosen.length>2)throw Error("Select up to two different NSW elective learning areas.");
+ const isNswSecondary=state==="NSW"&&/^(7|8|9|10)$/.test(yearLevel);
  const pages:Page[]=[];let p!:Page,y=TOP,fieldNumber=0;
  const rect=(x:number,b:number,w:number,h:number,color:string)=>p.draw.push(color+" rg "+x+" "+b+" "+w+" "+h+" re f");
  const outline=(x:number,b:number,w:number,h:number,color=line)=>p.draw.push(color+" RG 0.7 w "+x+" "+b+" "+w+" "+h+" re S");
@@ -153,12 +226,44 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  ].forEach((s,i)=>text(String(i+1)+". "+s,L+16,288-i*20,9.4,false,ink));
  text("Independent resource - not a government form or registration guarantee.",L,120,9,false,muted);
  text("Official-source catalogue last checked "+CHECKED_ON+". Review before using.",L,102,8.4,false,muted);
+ if(state==="NT")text("NT: Use the department\'s prescribed self-developed plan form for submission.",L,82,8.2,true,green);
  
  startSection("01","Learner and planning period","Start with the details that make this a plan for an individual learner. Leave fields blank until you have accurate information.");
  pair("Learner name / identifier","Year level / stage ("+displayYear+")");
  pair("Planning start date","Planning end date");
  field("What does this learner enjoy and do well?","Interests, strengths, motivations and current skills.",115);
  field("What would meaningful progress look like?","Include a few realistic learning and development goals.",118);
+
+ // Each jurisdiction receives a bespoke working page, not an NSW cover with a new name.
+ const local=jurisdictionHelp[state];
+ startSection(jur.code,"Preparing your "+jur.planName,
+   "An independent planning companion, tailored to "+jur.name+". The official authority may prescribe additional documents.");
+ ensure(79);
+ lines("Education authority: "+jur.authority,L+3,R-L-6,9.1,15,green);
+ y-=7;
+ lines(local.intro,L+3,R-L-6,9.5,16);
+ y-=10;
+ field(local.focus,local.focusHint,107);
+ field(local.record,local.recordHint,107);
+ ensure(76);
+ lines(local.reminder,L+3,R-L-10,9,15,muted);
+ y-=9;
+ if(isNswSecondary){
+  startSection("NSW 7-10","Two additional learning areas",
+    "The family must choose two further subjects, each from a different eligible key learning area. Choosing a category here does not select a particular syllabus.");
+  const options=chosen.length===2?chosen:["To choose (first area)","To choose (second area)"];
+  pair("Additional area 1: "+options[0],"Additional area 2: "+options[1]);
+  field("Specific syllabus or subject for each additional area",
+    "Choose and verify the specific syllabus in each of the two categories. Do not treat this blank workbook as evidence that a particular syllabus has been selected.",127);
+  field("Curriculum source and learning plan for the two chosen subjects",
+    "Identify the actual syllabus, current implementation date, proposed learning and real resources for each.",131);
+ }
+ if(state==="NSW"&&/^(11|12)$/.test(yearLevel)){
+  startSection("NSW 11-12","Senior secondary course and pattern-of-study planning",
+    "Senior secondary requirements differ from the K-10 learning-area structure. Check the correct course selection and pattern of study against current NSW guidance.");
+  field("Proposed senior secondary courses and levels","List the actual course names and relevant year or level after checking the authority rules.",125);
+  field("Pattern of study and verified syllabus references","Record how course selection and study requirements were checked.",125);
+ }
 
  startSection("02","How learning will happen","Explain your approach in plain language. A useful plan describes what the parent actually intends to do.");
  field("Learning approaches and teaching strategies","For example: discussion, modelling, guided practice, independent projects, hands-on learning.",108);
@@ -170,7 +275,11 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  field("How we will record progress","Describe dated work samples, reading records, projects, observations or other methods.",110);
  field("How and when we will review the plan","For example: periodic reflections, work samples, discussions and adjustments.",110);
 
- const areas=planAreas(jur,{year_level:yearLevel,stage:stage(yearLevel)}).areas;
+ const curriculum=planAreas(jur,{year_level:yearLevel,stage:stage(yearLevel)},[],isNswSecondary?chosen:[]);
+ const areas=[...curriculum.areas];
+ if(isNswSecondary&&chosen.length<2){
+  for(let i=chosen.length;i<2;i++)areas.push("Elective "+(i+1)+" - parent to choose");
+ }
  areas.forEach((area,i)=>{
   const hints=areaHints(area),n=String(i+4).padStart(2,"0");
   startSection(n,area+" - learning focus","Use this space for your real curriculum focus and goals. Do not claim outcomes or codes that have not been checked against current sources.");
