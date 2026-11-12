@@ -43,7 +43,9 @@ export function requiredReleaseRevision(p:any):string|null{
  * Checkout independently verifies PDF/email and private storage capabilities before charging.
  */
 export function isOnDemandDocument(p:any):boolean {
- return ["blank","guided","printed","planner_blank","planner_personalised","planner_printed"].includes(documentType(p)||"");
+ // Guided is now a self-guided static file. Keep legacy paid guided-order links
+ // working, but never sell a NEW guided order through the old online wizard.
+ return ["blank","printed","planner_blank","planner_personalised","planner_printed"].includes(documentType(p)||"");
 }
 export function approvedForSale(p:any,now:Date=new Date()):boolean{
   const version=requiredReleaseRevision(p);
