@@ -1,0 +1,50 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {generateHomeEducationTemplate} from "../src/homeEducationPdf.ts";
+
+const asText=bytes=>new TextDecoder().decode(bytes);
+const pages=source=>Number(source.match(/\/Type \/Pages \/Kids \[[^\]]*\] \/Count (\d+)/)?.[1]);
+const widgets=source=>(source.match(/\/Type \/Annot \/Subtype \/Widget/g)||[]).length;
+
+test("The original NSW educational plan is now a substantive printable and fillable workbook",()=>{
+ const digital=asText(generateHomeEducationTemplate("NSW","3",false,"fillable","standard"));
+ const paper=asText(generateHomeEducationTemplate("NSW","3",false,"print","standard"));
+ assert.match(digital,/^%PDF-1.7/);
+ assert.match(digital,/New South Wales/);
+ assert.match(digital,/English - learning focus/);
+ assert.match(digital,/Mathematics - teaching and evidence/);
+ assert.match(digital,/Science and Technology/);
+ assert.match(digital,/Evidence or planning notes/);
+ assert.match(digital,/\/AcroForm/);
+ assert.match(digital,/\/Ff 4096/);
+ assert.match(digital,/\/FT \/Btn/);
+ assert.doesNotMatch(paper,/\/AcroForm/);
+ assert.equal(widgets(paper),0);
+ assert.ok(widgets(digital)>55);
+ assert.ok(pages(digital)>15);
+ assert.equal(pages(digital),pages(paper));
+});
+test("Complete diary retains original product scope and adds usable records",()=>{
+ const base=asText(generateHomeEducationTemplate("NSW","3"));
+ const complete=asText(generateHomeEducationTemplate("NSW","3",false,"fillable","complete"));
+ assert.ok(pages(complete)>pages(base)+8);
+ for(const phrase of ["Learning diary","Reading and literacy record","Evidence portfolio index","Outcome and goals tracker","Projects and excursions","Family review"])assert.ok(complete.includes(phrase),phrase);
+ assert.match(complete,/\/FT \/Tx/);
+ assert.match(complete,/\/FT \/Btn/);
+});
+test("Public samples remain only two watermarked pages",()=>{
+ const sample=asText(generateHomeEducationTemplate("QLD","3",true));
+ assert.equal(pages(sample),2);
+ assert.match(sample,/SAMPLE PREVIEW/);
+ assert.doesNotMatch(sample,/Mathematics - learning focus/);
+});
+test("Field rectangles and text boxes fit within the printable A4 body",()=>{
+ const raw=asText(generateHomeEducationTemplate("VIC","7",false,"fillable","complete"));
+ const boxes=[...raw.matchAll(/\/Rect \[([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)\]/g)];
+ assert.ok(boxes.length>100);
+ for(const b of boxes){
+  const [x1,y1,x2,y2]=b.slice(1).map(Number);
+  assert.ok(x1>=45&&x2<=550&&y1>=65&&y2<=770, "Field outside safe page margins: "+b[0]);
+  assert.ok(x2>x1+8&&y2>y1+8);
+ }
+});
