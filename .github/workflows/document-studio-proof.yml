@@ -6,6 +6,7 @@ on:
       - .github/workflows/document-studio-proof.yml
       - worker/src/homeEducationPdf.ts
       - worker/scripts/buildHomeEducationProof.mjs
+      - worker/scripts/auditDocumentProof.py
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,6 +30,10 @@ jobs:
           done
           test "$(find document-proof -name '*.pdf' | wc -l)" -eq 32
           test "$(find document-proof -name '*.png' | wc -l)" -ge 32
+      - name: Audit ALL pages, fields and saved user input
+        run: |
+          python -m pip install --quiet "PyMuPDF>=1.25,<1.30"
+          python worker/scripts/auditDocumentProof.py document-proof
       - uses: actions/upload-artifact@v4
         with:
           name: sidequest-document-studio-all-jurisdictions-pdf-proofs
