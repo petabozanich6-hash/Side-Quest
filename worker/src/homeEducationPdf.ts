@@ -51,6 +51,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  if(mode!=="fillable"&&mode!=="print")throw Error("Invalid PDF edition");
  if(edition!=="standard"&&edition!=="complete")throw Error("Invalid document range");
  const jur=JURISDICTIONS[state as JurisdictionCode];
+ const displayYear=/^(K|F|Prep)$/i.test(yearLevel)?jur.foundationYear:yearLevel;
  const pages:Page[]=[];let p!:Page,y=TOP,fieldNumber=0;
  const rect=(x:number,b:number,w:number,h:number,color:string)=>p.draw.push(color+" rg "+x+" "+b+" "+w+" "+h+" re f");
  const outline=(x:number,b:number,w:number,h:number,color=line)=>p.draw.push(color+" RG 0.7 w "+x+" "+b+" "+w+" "+h+" re S");
@@ -154,7 +155,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  text("Official-source catalogue last checked "+CHECKED_ON+". Review before using.",L,102,8.4,false,muted);
  
  startSection("01","Learner and planning period","Start with the details that make this a plan for an individual learner. Leave fields blank until you have accurate information.");
- pair("Learner name / identifier","Year level / stage ("+yearLevel+")");
+ pair("Learner name / identifier","Year level / stage ("+displayYear+")");
  pair("Planning start date","Planning end date");
  field("What does this learner enjoy and do well?","Interests, strengths, motivations and current skills.",115);
  field("What would meaningful progress look like?","Include a few realistic learning and development goals.",118);
