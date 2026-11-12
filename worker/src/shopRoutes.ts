@@ -30,6 +30,7 @@ import { premiumDiaryHtml, premiumFamilyDiaryHtml } from "./premiumHomeEducation
 import { ensurePremiumPrintQueue, premiumPdfKey, PRINT_JOB_STATUSES, canAdvancePrintStatus, validatePrintTracking } from "./premiumPrintQueue";
 import { buildGuestPlan, emailGuestPdf, guestPlanHtml, renderGuestPdf, validateGuestInput } from "./guestDocumentDelivery";
 import { sampleGuidedDocumentData } from "./documentStudioPreview";
+import { documentSquareOffers, offerForTags, listingDraftFor, SQUARE_PRODUCTION } from "./documentSquareOffers";
 
 type DB = D1Database;
 const EMAIL_RE = /^[^\s@<>]{1,64}@[^\s@<>]{1,190}\.[a-z]{2,}$/i;
@@ -714,6 +715,34 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       subscriptions: Object.fromEntries((subs.results || []).map((r: any) => [r.status, Number(r.n)])),
       low_stock: low,
     });
+  });
+
+  // Owner-only exact audit of Side-Quest's six existing document offers per state.
+  // Deliberately NOT a claim about the independent Square Dashboard catalogue.
+  admin.get("/document-studio/square-production", R, async (c: Context<any>) => {
+    const year=String(c.req.query("year")||"3");
+    if(!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year))return c.json({detail:"Choose a valid school year."},400);
+    const source=await ownerProducts(c.env as Env);
+    const indexed=new Map<string,any[]>();
+    for(const p of source){
+      const offer=offerForTags(p.tags);
+      if(!offer)continue;
+      const group=indexed.get(offer.key)||[];
+      group.push({id:p.id,title:p.title,visible:!!p.visible,status:p.status,price_cents:p.price_cents,
+       has_file:!!p.has_file,release_version:p.document_release_version||null,
+       fulfilment:p.fulfilment,stage:p.stage,slug:p.slug});
+      indexed.set(offer.key,group);
+    }
+    return c.json({
+      year,source:"Side-Quest database (NOT Square Dashboard)",
+      square_catalogue_connected:false,
+      checked_at:new Date().toISOString(),
+      offers:documentSquareOffers().map(o=>({
+        ...o,listing:listingDraftFor(o.state,year,o.kind),
+        production:SQUARE_PRODUCTION[o.kind],
+        sidequest_listings:indexed.get(o.key)||[]
+      }))
+    },200,{"Cache-Control":"private, no-store"});
   });
 
   admin.get("/shop/products", R, async (c: Context<any>) => {
