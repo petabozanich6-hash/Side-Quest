@@ -57,7 +57,11 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  const modes=offer?.production?.customer_modes||[];
  const needsElectives=jurisdiction?.code==="NSW"&&["7","8","9","10"].includes(year);
  const choicesValid=!needsElectives||(electiveChoices.every(Boolean)&&electiveChoices[0]!==electiveChoices[1]);
- const preparedKey=offer?.listing?.key;
+ const electiveSuffix=needsElectives&&choicesValid?" ("+electiveChoices.join(" + ")+")":"";
+ const listingTitle=offer?.listing?.title?offer.listing.title+electiveSuffix:"";
+ const listingDescription=offer?.listing?.description?
+  offer.listing.description+(needsElectives&&choicesValid?"\n\nThis specific edition includes the NSW additional learning areas: "+electiveChoices.join(" and ")+". Families must verify their chosen actual syllabus.":""):"";
+ const preparedKey=offer?.listing?.key+(needsElectives?":"+electiveChoices.join("-"):"");
  const queueEntry=preparedKey?prepared[preparedKey]:null;
 
  useEffect(()=>{
@@ -95,10 +99,10 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
   if(!proof||!confirmed||!offer)return;
   try{
    const files=modes.map(mode=>({name:proof[mode].filename,bytes:uriBytes(proof[mode].data_url)}));
-   const filename=offer.listing.slug+(output==="customer"?"-square-customer-files.zip":"-OWNER-PRODUCTION-MASTER.zip");
+   const filename=offer.listing.slug+(needsElectives?"-"+electiveChoices.join("-").toLowerCase().replaceAll(" ","-"):"")+(output==="customer"?"-square-customer-files.zip":"-OWNER-PRODUCTION-MASTER.zip");
    const zip=squareProductZip(files);
    downloadFile(filename,zip);
-   const next={...prepared,[offer.listing.key]:{date:new Date().toISOString(),status:output==="customer"?"customer_files_downloaded":"owner_master_downloaded",year,kind}};
+   const next={...prepared,[preparedKey]:{date:new Date().toISOString(),status:output==="customer"?"customer_files_downloaded":"owner_master_downloaded",year,kind}};
    setPrepared(next);
    try{localStorage.setItem("sidequest:home-document-production-queue-v1",JSON.stringify(next))}catch{}
    setNotice(output==="customer"?
@@ -116,6 +120,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">THE ORIGINAL 48 SIDE-QUEST DOCUMENT OFFERS</p>
    <h3 className="text-xl font-bold text-[#1F3B2D]">Create each product for your Square shop</h3>
    <p className="text-sm text-stone-700">Choose one of the six existing products in your selected state or territory. Make its PDF, check it, download it, then create the corresponding Square listing yourself. Your Square order and automatic file-delivery settings are not changed.</p>
+   <p className="text-xs text-stone-600">The 48 catalogue families cover eight jurisdictions times six product types. Each generated PDF is for the particular year and any NSW elective choices shown in its Square listing. Create additional listings or correctly named variants for other year levels.</p>
   </div>
   <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-sm">
    <strong>Catalogue source:</strong> {catalogue?.source||"Checking Side-Quest database"}.
@@ -145,7 +150,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
       <span className="block text-xs mt-1 text-stone-500">
        {o.sidequest_listings.length?o.sidequest_listings.length+" Side-Quest record(s), "+o.sidequest_listings.map(p=>p.status).join(", "):"Not found in Side-Quest's current database"}
       </span>
-      {prepared[o.state+":"+o.kind+":"+year]&&<span className="block text-xs mt-1 font-semibold text-[#1F3B2D]">Files downloaded on this device</span>}
+      {prepared[o.state+":"+o.kind+":"+year+(needsElectives?":"+electiveChoices.join("-"):"")]&&<span className="block text-xs mt-1 font-semibold text-[#1F3B2D]">Files downloaded on this device</span>}
     </button>)}
    </div>
   </div>}
@@ -169,11 +174,11 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    <p className="text-sm">{offer.production.purpose}</p>
    <div className="rounded-lg bg-stone-50 p-3 text-sm space-y-2">
     <strong>Correct Square listing title</strong>
-    <p>{offer.listing.title}</p>
-    <button className={secondary} type="button" onClick={()=>copy(offer.listing.title)}>Copy title</button>
+    <p>{listingTitle}</p>
+    <button className={secondary} type="button" onClick={()=>copy(listingTitle)}>Copy title</button>
     <strong className="block pt-2">Suggested customer-facing description</strong>
-    <p className="whitespace-pre-line">{offer.listing.description}</p>
-    <button className={secondary} type="button" onClick={()=>copy(offer.listing.description)}>Copy description</button>
+    <p className="whitespace-pre-line">{listingDescription}</p>
+    <button className={secondary} type="button" onClick={()=>copy(listingDescription)}>Copy description</button>
     <p className="text-amber-900 font-semibold pt-2">{offer.listing.note}</p>
    </div>
    {["NT"].includes(jurisdiction?.code)&&<p className="text-sm text-amber-900">NT preparation documents do not replace the official government plan template.</p>}
