@@ -52,7 +52,7 @@ export function renderGuidedDocumentLayout(r:Input,sampleOnly=false):string{
     '<div><strong>Planning period</strong>'+esc(d.period_start||"")+" to "+esc(d.period_end||"")+'</div></div>'+
     '<p class="disclaimer">Independent Side-Quest planning resource. Not a government form, endorsement or registration guarantee. Verify all content and current requirements before submission.</p></div></section>';
  const pageHead='<header class="pagehead"><span>SIDE-QUEST</span><em>HOME EDUCATION · '+esc(j.code)+'</em></header>';
- let body=cover+pageHead+(sampleOnly?'<p class="sample-banner">FREE SAMPLE · Fictional learner information. This is not a complete purchased document.</p>':"")+
+ let body=cover+pageHead+(sampleOnly?'<p class="sample-banner">SAMPLE PREVIEW · Fictional learner information. This is not a complete purchased document.</p>':"")+
     heading("01","YOUR PROGRAM","The learning plan")+
     section("Overview",c.overview)+section("Educational philosophy",c.educational_philosophy)+
     '<div class="family-grid">'+box("Strengths, interests and learning needs",d.strengths)+box("Family learning goals",d.goals)+'</div>'+
