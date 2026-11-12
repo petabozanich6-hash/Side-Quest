@@ -37,7 +37,10 @@ test("All six products generate the right structure and explicit owner-master ma
    for(const mode of production.customer_modes){
     const text=str(generateHomeEducationTemplate(state,"3",false,mode,production.edition,[],kind.kind));
     assert.match(text,/^%PDF-1.7/);
-    if(production.output==="production_master")assert.match(text,/OWNER PRODUCTION MASTER/);
+    // Physical blank workbooks have a clean print master (no owner watermark).
+    // Individually guided/personalised proofs must be marked so nobody
+    // mistakes the generic template for a customer's completed purchase.
+    if(["guided","planner_personalised","planner_printed"].includes(kind.kind))assert.match(text,/OWNER PRODUCTION MASTER/);
     else assert.doesNotMatch(text,/OWNER PRODUCTION MASTER/);
     if(mode==="fillable")assert.match(text,/\/AcroForm/);
     else assert.doesNotMatch(text,/\/AcroForm/);
