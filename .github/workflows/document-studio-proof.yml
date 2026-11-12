@@ -1,0 +1,35 @@
+name: Document Studio PDF Proof
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/document-studio-proof.yml
+      - worker/src/homeEducationPdf.ts
+      - worker/scripts/buildHomeEducationProof.mjs
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate NSW PDF proofs
+        run: node --no-warnings --import ./worker/test/register.mjs worker/scripts/buildHomeEducationProof.mjs
+      - name: Render PDF sample pages
+        run: |
+          command -v pdfinfo >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y poppler-utils; }
+          for f in document-proof/*.pdf; do
+            pdfinfo "$f" | grep -E 'Pages:|Page size:|Form:|Encrypted:'
+            pdftoppm -f 1 -l 2 -scale-to 850 -png "$f" "${f%.pdf}" >/dev/null 2>&1
+          done
+          test -f document-proof/sidequest-nsw-year3-standard-fillable-1.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sidequest-document-studio-nsw-pdf-proofs
+          path: document-proof
+          retention-days: 7
