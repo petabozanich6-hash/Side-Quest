@@ -114,11 +114,19 @@ const NSW_ELECTIVES=["PDHPE","Creative Arts","Languages","Technology"] as const;
  * existing three-argument preview/paid routes continue to generate fillable
  * planning workbooks. Full editions add printable and interactive record pages.
  */
-export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleOnly=false,mode:Mode="fillable",edition:Edition="standard",selectedElectives:string[]=[]):Uint8Array{
+export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleOnly=false,mode:Mode="fillable",edition:Edition="standard",selectedElectives:string[]=[],productKind="blank"):Uint8Array{
  if(!Object.prototype.hasOwnProperty.call(JURISDICTIONS,state)||state==="OTHER")throw Error("Invalid state");
  if(!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(yearLevel))throw Error("Invalid school year");
  if(mode!=="fillable"&&mode!=="print")throw Error("Invalid PDF edition");
  if(edition!=="standard"&&edition!=="complete")throw Error("Invalid document range");
+ const kinds=["blank","guided","printed","planner_blank","planner_personalised","planner_printed"];
+ if(!kinds.includes(productKind))throw Error("Invalid document product.");
+ const master=["guided","planner_personalised","planner_printed"].includes(productKind);
+ const productTitles:Record<string,string>={
+  blank:"Planning Template",guided:"Guided Planning Master",printed:"Printed Workbook",
+  planner_blank:"Complete Planner & Diary",planner_personalised:"Personalised Planner Master",
+  planner_printed:"Spiral-Bound Planner Master"
+ };
  const jur=JURISDICTIONS[state as JurisdictionCode];
  const displayYear=/^(K|F|Prep)$/i.test(yearLevel)?jur.foundationYear:yearLevel;
  const rawElectives=Array.isArray(selectedElectives)?selectedElectives:[];
@@ -212,7 +220,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  text("SIDE-QUEST",L,758,23,true,"1 1 1");
  text("THE HOME EDUCATION COLLECTION",L,705,10,true,"0.86 0.77 0.59");
  text("Home Education",L,630,32,true,"1 1 1");
- text(edition==="complete"?"Planner & Diary":"Planning Workbook",L,580,30,true,"1 1 1");
+ text(productKind==="blank"&&edition==="complete"?"Planner & Diary":productTitles[productKind],L,580,productKind==="planner_personalised"||productKind==="planner_printed"?25:27,true,"1 1 1");
  for(const [i,s] of wrap(jur.name,16,480).entries())text(s,L,520-i*20,16,true,"0.91 0.83 0.69");
  text("PLAN. TEACH. RECORD. REFLECT.",L,428,14,true,green);
  text("Practical, printable and digitally fillable",L,396,11,false,ink);
@@ -224,10 +232,25 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   "Verify current guidance with your state or territory authority.",
   "Use an official government form wherever one is prescribed."
  ].forEach((s,i)=>text(String(i+1)+". "+s,L+16,288-i*20,9.4,false,ink));
+ if(master)text("OWNER PRODUCTION MASTER - NOT A FINISHED PERSONALISED CUSTOMER DOCUMENT",L,150,8.2,true,"0.58 0.17 0.13");
  text("Independent resource - not a government form or registration guarantee.",L,120,9,false,muted);
  text("Official-source catalogue last checked "+CHECKED_ON+". Review before using.",L,102,8.4,false,muted);
  if(state==="NT")text("NT: Use the department\'s prescribed self-developed plan form for submission.",L,82,8.2,true,green);
  
+ if(productKind==="guided"){
+  startSection("GUIDE","How this guided document is completed","This is an owner production master. A genuine guided plan is based on the individual family's information, not a pre-written generic answer.");
+  const steps=[
+   ["01. Understand the learner","Ask the family to describe interests, current strengths, needs and realistic priorities. Do not infer diagnoses or add fictional achievements."],
+   ["02. Choose goals and learning experiences","Identify the real knowledge or skills to develop, the activities that will teach them and actual named resources."],
+   ["03. Connect learning and evidence","Link activities to observations, dated work samples and other evidence. Distinguish planned learning from learning already completed."],
+   ["04. Review before individual delivery","Check that the plan reflects the actual child's year, jurisdiction, selected learning areas and family's approved wording."]
+  ];
+  for(const [heading,explain] of steps){
+   ensure(96);text(heading,L+3,y,12,true,green);y-=21;lines(explain,L+5,R-L-12,9.6,16);y-=26;
+  }
+  field("Owner production notes (not a substitute for family input)","Record missing information and specific questions before preparing the real personalised document.",115);
+ }
+
  startSection("01","Learner and planning period","Start with the details that make this a plan for an individual learner. Leave fields blank until you have accurate information.");
  pair("Learner name / identifier","Year level / stage ("+displayYear+")");
  pair("Planning start date","Planning end date");
@@ -364,6 +387,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
    sheet.draw.push(line+" RG 0.55 w "+L+" 57 m "+R+" 57 l S");
    sheet.draw.push(muted+" rg BT /R 7.7 Tf "+L+" 41 Td ("+escape(foot)+") Tj ET");
    sheet.draw.push(muted+" rg BT /R 7.7 Tf 469 41 Td (Page "+(i+1)+" of "+exported.length+") Tj ET");
+   if(master)sheet.draw.push("0.58 0.17 0.13 rg BT /B 7.4 Tf "+L+" 27 Td (OWNER MASTER - NOT FOR AUTOMATIC DIGITAL DELIVERY) Tj ET");
   }
   const stream=sheet.draw.join("\n")+"\n"+(sampleOnly?"0.59 0.24 0.18 rg BT /B 12 Tf 435 65 Td (SAMPLE PREVIEW) Tj ET\n":"");
   set(streamId,"<< /Length "+enc.encode(stream).length+" >>\nstream\n"+stream+"endstream");
