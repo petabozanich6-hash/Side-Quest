@@ -33,6 +33,13 @@ def audit(path: Path) -> dict:
         words = page.get_text("words")
         if len(words) < 3:
             fail(f"{path.name} page {i+1}: nearly blank")
+        page_text = page.get_text()
+        # Term planners should not orphan a lone answer box on a separate sheet.
+        # Keep period details and all three planning answers on the same page.
+        if "complete" in path.stem and any(f"Planning period {term}" in page_text for term in range(1,5)):
+            period_widgets = list(page.widgets() or ())
+            if len(period_widgets) < 7:
+                fail(f"{path.name} page {i+1}: planning period split into an incomplete or sparse page")
         for word in words:
             x0, y0, x1, y1 = word[:4]
             if x0 < 4 or x1 > 591 or y0 < 3 or y1 > 837:
