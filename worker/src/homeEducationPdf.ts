@@ -250,7 +250,6 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   const sheet=exported[i],pid=reserve(),streamId=reserve();ids.push(pid);
   if(i>0){
    const foot="SIDE-QUEST  |  "+jur.code+"  |  "+(edition==="complete"?"COMPLETE PLANNER & DIARY":"HOME EDUCATION PLANNING WORKBOOK");
-   text(" ",0,0); // no-op; footer is appended to the current sheet below
    sheet.draw.push(line+" RG 0.55 w "+L+" 57 m "+R+" 57 l S");
    sheet.draw.push(muted+" rg BT /R 7.7 Tf "+L+" 41 Td ("+escape(foot)+") Tj ET");
    sheet.draw.push(muted+" rg BT /R 7.7 Tf 469 41 Td (Page "+(i+1)+" of "+exported.length+") Tj ET");
