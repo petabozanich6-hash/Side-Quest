@@ -162,7 +162,7 @@ def main() -> None:
                 entries[mode] = audit(path)
                 doc = fitz.open(path)
                 text_full = " ".join(p.get_text() for p in doc)
-                should_be_master = kind in ("guided", "planner_personalised", "planner_printed")
+                should_be_master = kind in ("planner_personalised", "planner_printed")
                 if should_be_master and "OWNER PRODUCTION MASTER" not in text_full:
                     fail(f"{filename}: personalised master watermark missing")
                 if not should_be_master and "OWNER PRODUCTION MASTER" in text_full:
@@ -171,9 +171,55 @@ def main() -> None:
             if len(modes) == 2 and entries["print"]["pages"] != entries["fillable"]["pages"]:
                 fail(f"{state}/{kind}: page parity failed")
             summary[f"{state}/{kind}"] = entries
+    # Universal PDF catalogue: eight states, six products, no year-specific
+    # variant or online guided service. Pages for irrelevant stages remain
+    # optional and can be skipped by families.
+    for state in STATES:
+        for kind, modes in product_modes.items():
+            checks = {}
+            for mode in modes:
+                filename = f"sidequest-{state}-all-years-{kind}-{mode}.pdf"
+                path = root / filename
+                if not path.is_file():
+                    fail(f"Missing universal-state product: {filename}")
+                checks[mode] = audit(path)
+                doc = fitz.open(path)
+                full_text = " ".join(" ".join(p.get_text().split()) for p in doc)
+                for title in (
+                    "How to use this flexible-year workbook",
+                    "Early years: first school year to Year 2",
+                    "Primary years: Years 3 to 6",
+                    "Secondary years: Years 7 to 10",
+                    "Senior secondary: Years 11 and 12",
+                    "SKIP THIS SECTION",
+                    "Actual year level / stage"
+                ):
+                    if title not in full_text:
+                        fail(f"{filename}: missing reusable-year section {title}")
+                if "Year ALL" in full_text:
+                    fail(f"{filename}: displays invalid year")
+                should_be_master = kind in ("planner_personalised", "planner_printed")
+                if should_be_master and "OWNER PRODUCTION MASTER" not in full_text:
+                    fail(f"{filename}: personalised owner watermark missing")
+                if not should_be_master and "OWNER PRODUCTION MASTER" in full_text:
+                    fail(f"{filename}: unexpected owner watermark")
+                if kind == "guided":
+                    for value in ("Your self-guided planning journey", "Your turn", "Putting the steps together"):
+                        if value not in full_text:
+                            fail(f"{filename}: self-guided exercise missing: {value}")
+                    if "online wizard" in full_text.lower() or "owner production master" in full_text.lower():
+                        fail(f"{filename}: contains legacy guided sales instructions")
+                if state == "nsw":
+                    for value in ("First additional area", "Second DIFFERENT area"):
+                        if value not in full_text:
+                            fail(f"{filename}: missing NSW secondary parent choices")
+                doc.close()
+            if len(modes) == 2 and checks["print"]["pages"] != checks["fillable"]["pages"]:
+                fail(f"{state}/{kind}: universal print and fillable page counts differ")
+            summary[f"{state}/universal/{kind}"] = checks
     report = root / "pdf-audit.json"
     report.write_text(json.dumps({"validated": True, "documents": summary}, indent=2))
-    print("PASS: 70 PDFs; all eight jurisdictions plus six distinct production products for NSW and Victoria, A4 bounds, form checks and save/reopen tests")
+    print("PASS: 150 PDFs; all eight jurisdictions and six all-year product types, printable and fillable A4 geometry, independent form cells and saved field data")
 
 
 if __name__ == "__main__":
