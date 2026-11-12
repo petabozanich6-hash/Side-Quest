@@ -737,11 +737,18 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       year,source:"Side-Quest database (NOT Square Dashboard)",
       square_catalogue_connected:false,
       checked_at:new Date().toISOString(),
-      offers:documentSquareOffers().map(o=>({
-        ...o,listing:listingDraftFor(o.state,year,o.kind),
-        production:SQUARE_PRODUCTION[o.kind],
-        sidequest_listings:indexed.get(o.key)||[]
-      }))
+      offers:documentSquareOffers().map(o=>{
+        const saved=indexed.get(o.key)||[];
+        return {
+          ...o,listing:listingDraftFor(o.state,year,o.kind),
+          production:SQUARE_PRODUCTION[o.kind],
+          sidequest_listings:saved,
+          current_sidequest_price_cents:saved.length===1?saved[0].price_cents:null,
+          current_sidequest_title:saved.length===1?saved[0].title:null,
+          catalogue_warning:saved.length===0?"No matching Side-Quest product found":
+            saved.length>1?"Multiple Side-Quest products of this kind need review":null
+        };
+      })
     },200,{"Cache-Control":"private, no-store"});
   });
 
