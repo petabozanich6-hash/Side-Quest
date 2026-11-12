@@ -291,8 +291,8 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  startSection("01","Learner and planning period","Start with the details that make this a plan for an individual learner. Leave fields blank until you have accurate information.");
  pair("Learner name / identifier","Year level / stage ("+displayYear+")");
  pair("Planning start date","Planning end date");
- field("What does this learner enjoy and do well?","Interests, strengths, motivations and current skills.",148);
- field("What would meaningful progress look like?","Include a few realistic learning and development goals.",158);
+ field("What does this learner enjoy and do well?","Interests, strengths, motivations and current skills.",120);
+ field("What would meaningful progress look like?","Include a few realistic learning and development goals.",125);
 
  // Each jurisdiction receives a bespoke working page, not an NSW cover with a new name.
  const local=jurisdictionHelp[state];
@@ -306,8 +306,8 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  ensure(61);
  lines(local.reminder,L+3,R-L-10,9,15,muted);
  y-=15;
- field(local.focus,local.focusHint,183);
- field(local.record,local.recordHint,183);
+ field(local.focus,local.focusHint,125);
+ field(local.record,local.recordHint,125);
  if(isNswSecondary){
   startSection("NSW 7-10","Two additional learning areas",
     "The family must choose two further subjects, each from a different eligible key learning area. Choosing a category here does not select a particular syllabus.");
@@ -326,14 +326,14 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  }
 
  startSection("02","How learning will happen","Explain your approach in plain language. A useful plan describes what the parent actually intends to do.");
- field("Learning approaches and teaching strategies","For example: discussion, modelling, guided practice, independent projects, hands-on learning.",145);
- field("Adjustments and learning support","Outline practical supports or changes to pace, resources or instruction. Sensitive medical details are not needed here.",137);
- field("Learning environment, routine and supervision","Describe where, when and with whom learning will normally happen.",145);
+ field("Learning approaches and teaching strategies","For example: discussion, modelling, guided practice, independent projects, hands-on learning.",118);
+ field("Adjustments and learning support","Outline practical supports or changes to pace, resources or instruction. Sensitive medical details are not needed here.",115);
+ field("Learning environment, routine and supervision","Describe where, when and with whom learning will normally happen.",118);
 
  startSection("03","Resources and recording","Named resources and a clear recordkeeping method make it easier to follow the program over time.");
- field("Resources we plan to use","Name actual books, websites, programs, community resources, tools and materials.",150);
- field("How we will record progress","Describe dated work samples, reading records, projects, observations or other methods.",145);
- field("How and when we will review the plan","For example: periodic reflections, work samples, discussions and adjustments.",145);
+ field("Resources we plan to use","Name actual books, websites, programs, community resources, tools and materials.",120);
+ field("How we will record progress","Describe dated work samples, reading records, projects, observations or other methods.",118);
+ field("How and when we will review the plan","For example: periodic reflections, work samples, discussions and adjustments.",118);
 
  startSection("03A","Resource inventory","Name real books, websites, practical equipment and community resources. Each row has room to say how the resource supports learning.");
  table(["Resource / title","How it will be used","Learning area / access"],5,100,{widths:[139,192,170]});
@@ -353,13 +353,13 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  areas.forEach((area,i)=>{
   const hints=areaHints(area),n=String(i+4).padStart(2,"0");
   startSection(n,area+" - learning focus","Use this space for your real curriculum focus and goals. Do not claim outcomes or codes that have not been checked against current sources.");
-  field("Learning focus and intended knowledge or skills",hints.focus,145);
-  field("Relevant curriculum reference or learning goals","If applicable, enter verified syllabus outcomes, learning areas or your own clearly labelled goals.",135);
-  field("Why these learning priorities suit the learner","Connect goals to strengths, needs, interests and progress so far.",135);
+  field("Learning focus and intended knowledge or skills",hints.focus,116);
+  field("Relevant curriculum reference or learning goals","If applicable, enter verified syllabus outcomes, learning areas or your own clearly labelled goals.",112);
+  field("Why these learning priorities suit the learner","Connect goals to strengths, needs, interests and progress so far.",116);
   startSection(n+"B",area+" - teaching and evidence","Keep teaching intentions separate from the evidence you will collect after learning has occurred.");
-  field("Teaching strategies and planned learning experiences",hints.activities,148);
-  field("Materials, texts, places and other learning resources","List concrete resources the family actually has or will obtain.",130);
-  field("How progress will be noticed and recorded",hints.evidence,137);
+  field("Teaching strategies and planned learning experiences",hints.activities,118);
+  field("Materials, texts, places and other learning resources","List concrete resources the family actually has or will obtain.",116);
+  field("How progress will be noticed and recorded",hints.evidence,116);
   startSection(n+"C",area+" - lesson and activity planner","Use this practical grid to connect teaching activities to resources and evidence. Repeat or print another page when you need more rows.");
   table(["Week / topic","Learning activities and teaching steps","Resources / work to keep"],4,102,{widths:[105,207,189]});
  });
@@ -367,17 +367,17 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  table(["Date / focus","Learning completed","Evidence / next step"],5,104,{widths:[115,207,179]});
 
  startSection("B","Review and adjustments","Reflect on actual learning rather than treating planned activities as completed work.");
- field("Progress, achievements and skills demonstrated","What did the learner understand, make, discuss or practise?",145);
- field("Work samples and records referenced","Record specific evidence references or file names.",138);
- field("What will change in the next planning period?","Identify next steps, teaching adjustments or new resources.",140);
+ field("Progress, achievements and skills demonstrated","What did the learner understand, make, discuss or practise?",116);
+ field("Work samples and records referenced","Record specific evidence references or file names.",114);
+ field("What will change in the next planning period?","Identify next steps, teaching adjustments or new resources.",116);
 
  if(edition==="complete"){
   for(let term=1;term<=4;term++){
    startSection("T"+term,"Planning period "+term,"Use this as a term planner or another planning block. Adapt dates and duration to suit your family's approach.");
    pair("Period starts","Period ends");
-   field("Learning priorities and curriculum focus","What will the learner work towards during this period?",148);
-   field("Activities, projects and teaching sequence","How will you introduce, practise and extend this learning?",148);
-   field("Resources, evidence and review points","What materials and records will help you check progress?",140);
+   field("Learning priorities and curriculum focus","What will the learner work towards during this period?",110);
+   field("Activities, projects and teaching sequence","How will you introduce, practise and extend this learning?",110);
+   field("Resources, evidence and review points","What materials and records will help you check progress?",110);
    startSection("W"+term,"Weekly or fortnightly planner - period "+term,
     "Use each spacious row for one learning block or day. Include a realistic activity, named resources and a way to check learning.");
    table(["Day / learning block","Teaching plan and learning goal","Resources / review notes"],5,100,{widths:[112,208,181]});
@@ -393,12 +393,12 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   startSection("P","Projects and excursions","Document the learning connected to visits, community activities and projects, not only a date and attendance.");
   table(["Date / project or place","Learning focus and activities","Evidence / reflection"],5,102,{widths:[134,188,179]});
   startSection("F","Family review","Revisit this page at an interval that works for your family.");
-  field("What has worked particularly well?","Consider engagement, understanding, confidence and practical experiences.",152);
-  field("What were the challenges?","Record changes needed in teaching, resources, environment or timing.",152);
-  field("Our priorities for the next learning period","List achievable next steps and how progress will be recorded.",155);
+  field("What has worked particularly well?","Consider engagement, understanding, confidence and practical experiences.",116);
+  field("What were the challenges?","Record changes needed in teaching, resources, environment or timing.",116);
+  field("Our priorities for the next learning period","List achievable next steps and how progress will be recorded.",116);
   startSection("X","Extra family planning notes","A blank, flexible space for the ideas, questions or adjustments that don't fit into the structured records.");
-  field("Questions, ideas, learning possibilities and family notes","Record anything important to the next planning period.",237);
-  field("Further reflections and follow-up actions","Keep longer notes together without squeezing them into a small table cell.",237);
+  field("Questions, ideas, learning possibilities and family notes","Record anything important to the next planning period.",205);
+  field("Further reflections and follow-up actions","Keep longer notes together without squeezing them into a small table cell.",205);
  }
  startSection("C","Requirements: parent review","Use this section as a preparation aid, not a compliance certificate. Verify the latest authority guidance.");
  for(const [i,req] of jur.requirements.entries()){
@@ -407,8 +407,8 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   field("Evidence or planning notes for item "+(i+1),"Reference the relevant section, dated work sample or action still to complete.",92,true);
  }
  startSection("N","Additional working notes","An open writing space for questions, planning changes, supplementary evidence or anything you need to explain in more detail.");
- field("Planning notes / extra information","Use this page for longer answers that don't fit into another area.",230);
- field("Next steps / information to verify","Write down additional resources, follow-up tasks or matters to check.",230);
+ field("Planning notes / extra information","Use this page for longer answers that don't fit into another area.",205);
+ field("Next steps / information to verify","Write down additional resources, follow-up tasks or matters to check.",205);
  startSection("S","Official sources and final check","State-specific information can change. Confirm current registration and documentation requirements directly with the authority.");
  for(const source of jur.sources){
   const title=wrap(source.title,10,R-L-15),url=wrap(source.url,8.5,R-L-15),height=title.length*15+url.length*13+16;
