@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Generate NSW PDF proofs
+      - name: Generate PDF proofs for all eight jurisdictions
         run: node --no-warnings --import ./worker/test/register.mjs worker/scripts/buildHomeEducationProof.mjs
       - name: Render PDF sample pages
         run: |
@@ -27,9 +27,10 @@ jobs:
             pdfinfo "$f" | grep -E 'Pages:|Page size:|Form:|Encrypted:'
             pdftoppm -f 1 -l 2 -scale-to 850 -png "$f" "${f%.pdf}" >/dev/null 2>&1
           done
-          test -f document-proof/sidequest-nsw-year3-standard-fillable-1.png
+          test "$(find document-proof -name '*.pdf' | wc -l)" -eq 32
+          test "$(find document-proof -name '*.png' | wc -l)" -ge 32
       - uses: actions/upload-artifact@v4
         with:
-          name: sidequest-document-studio-nsw-pdf-proofs
+          name: sidequest-document-studio-all-jurisdictions-pdf-proofs
           path: document-proof
           retention-days: 7
