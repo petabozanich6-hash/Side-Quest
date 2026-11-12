@@ -48,3 +48,29 @@ test("Field rectangles and text boxes fit within the printable A4 body",()=>{
   assert.ok(x2>x1+8&&y2>y1+8);
  }
 });
+
+
+test("all eight Australian jurisdictions have distinct print and fillable editions",()=>{
+ const states={
+  NSW:"New South Wales",VIC:"Victoria",QLD:"Queensland",WA:"Western Australia",
+  SA:"South Australia",TAS:"Tasmania",ACT:"Australian Capital Territory",NT:"Northern Territory"
+ };
+ const fingerprints=new Set();
+ for(const [code,name] of Object.entries(states)){
+  for(const year of ["3","7"]){
+   for(const edition of ["standard","complete"]){
+    const printable=asText(generateHomeEducationTemplate(code,year,false,"print",edition));
+    const fillable=asText(generateHomeEducationTemplate(code,year,false,"fillable",edition));
+    assert.ok(printable.includes(name),code+" print missing its jurisdiction");
+    assert.ok(fillable.includes(name),code+" fillable missing its jurisdiction");
+    assert.ok(pages(printable)>10,code+" has an incomplete document");
+    assert.equal(pages(printable),pages(fillable),code+" edition pages differ");
+    assert.ok(!printable.includes("/AcroForm"),code+" print should not contain widgets");
+    assert.ok(fillable.includes("/AcroForm"),code+" needs interactive fields");
+    assert.ok(widgets(fillable)>35,code+" needs actual fields");
+    assert.ok(!fingerprints.has(fillable),code+" uses a duplicate document");
+    fingerprints.add(fillable);
+   }
+  }
+ }
+});
