@@ -492,7 +492,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  y-=12;
  checkbox("I have reviewed the current official guidance and checked which documents are actually required.");
 
- const exported=sampleOnly?pages.slice(0,2):pages;
+ const exported=sampleOnly?pages.slice(0,universal?4:2):pages;
  const objects:string[]=[""];const reserve=()=>{objects.push("");return objects.length-1;};
  const set=(id:number,value:string)=>{objects[id]=value;};
  const regular=reserve(),bold=reserve(),pagesId=reserve(),catalog=reserve();
