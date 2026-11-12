@@ -5,7 +5,12 @@ import {squareProductZip} from "./squareProductZip";
 const input="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm";
 const primary="rounded-xl bg-[#1F3B2D] text-white px-4 py-2.5 text-sm font-semibold disabled:opacity-50";
 const secondary="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50";
-const years=["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))];
+const foundationYears={
+ NSW:["K","Kindergarten"],VIC:["F","Foundation"],QLD:["Prep","Prep"],
+ WA:["K","Pre-primary"],SA:["K","Reception"],TAS:["Prep","Prep"],
+ ACT:["K","Kindergarten"],NT:["K","Transition"],
+};
+const years=Array.from({length:12},(_,i)=>String(i+1));
 const editions={
  standard:{label:"Home Education Planning Workbook",summary:"A state-specific learning plan with learner goals, detailed teaching plans for each learning area, curriculum references, resources, evidence recording, review pages and authority preparation notes."},
  complete:{label:"Complete Home Education Planner & Diary",summary:"Everything in the planning workbook, plus four planning periods, learning diaries, dated evidence and reading logs, goal/outcome trackers, project records and family progress reviews."}
@@ -34,6 +39,10 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  const [error,setError]=useState("");
  const [notice,setNotice]=useState("");
  const [review,setReview]=useState(false);
+ useEffect(()=>{
+  const schoolFirst=(foundationYears[jurisdiction?.code]||["K"])[0];
+  if(["K","F","Prep"].includes(year) && year!==schoolFirst)setYear(schoolFirst);
+ },[jurisdiction?.code,year]);
  useEffect(()=>{setProof(null);setReview(false);setError("");setNotice("")},[jurisdiction?.code,year,edition]);
  const generate=async()=>{
   if(!jurisdiction)return;
@@ -67,7 +76,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    </label>
    <label className="text-sm font-semibold">Learner year or stage
     <select className={input+" mt-1"} value={year} onChange={e=>setYear(e.target.value)}>
-     {years.map(y=><option value={y} key={y}>{y}</option>)}
+     {[foundationYears[jurisdiction?.code]||["K","First year"],...years.map(y=>[y,"Year "+y])].map(([value,label])=><option value={value} key={value}>{label}</option>)}
     </select>
    </label>
   </div>
