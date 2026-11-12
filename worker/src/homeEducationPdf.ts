@@ -222,8 +222,17 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  text("Home Education",L,630,32,true,"1 1 1");
  text(productKind==="blank"&&edition==="complete"?"Planner & Diary":productTitles[productKind],L,580,productKind==="planner_personalised"||productKind==="planner_printed"?25:27,true,"1 1 1");
  for(const [i,s] of wrap(jur.name,16,480).entries())text(s,L,520-i*20,16,true,"0.91 0.83 0.69");
+ text(/^(K|F|Prep)$/i.test(yearLevel)?displayYear:"Year "+displayYear,L,479,11,true,"0.91 0.83 0.69");
  text("PLAN. TEACH. RECORD. REFLECT.",L,428,14,true,green);
- text("Practical, printable and digitally fillable",L,396,11,false,ink);
+ const coverSubtitles:Record<string,string>={
+  blank:"A4 printing and digitally fillable PDF",
+  guided:"Owner master for individual guided preparation",
+  printed:"A4 printed-and-posted workbook production master",
+  planner_blank:"A4 printing and digitally fillable family diary",
+  planner_personalised:"Owner master - prepare each family edition individually",
+  planner_printed:"Owner print master - final family edition still required"
+ };
+ text(coverSubtitles[productKind],L,396,10.3,false,ink);
  text("A4 documents for Australian home educating families",L,374,10,false,muted);
  rect(L,231,R-L,108,"0.95 0.96 0.94");
  text("BEFORE YOU BEGIN",L+16,313,11,true,green);
