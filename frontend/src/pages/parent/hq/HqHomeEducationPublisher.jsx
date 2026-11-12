@@ -5,13 +5,6 @@ import {squareProductZip} from "./squareProductZip";
 const input="w-full rounded-xl border border-stone-300 bg-white px-3 py-2 text-sm";
 const primary="rounded-xl bg-[#1F3B2D] text-white px-4 py-2.5 text-sm font-semibold disabled:opacity-50";
 const secondary="rounded-xl border border-stone-300 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50";
-const firstYears={
- NSW:["K","Kindergarten"],VIC:["F","Foundation"],QLD:["Prep","Prep"],
- WA:["K","Pre-primary"],SA:["K","Reception"],TAS:["Prep","Prep"],
- ACT:["K","Kindergarten"],NT:["K","Transition"]
-};
-const years=Array.from({length:12},(_,i)=>String(i+1));
-const electives=["PDHPE","Creative Arts","Languages","Technology"];
 const defaultKinds=["blank","guided","printed","planner_blank","planner_personalised","planner_printed"];
 const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(Number(n||0)/100);
 
@@ -38,9 +31,8 @@ const textCopy=async(value)=>{
 };
 
 export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
- const [year,setYear]=useState("3");
+ const year="ALL";
  const [kind,setKind]=useState("blank");
- const [electiveChoices,setElectiveChoices]=useState(["",""]);
  const [catalogue,setCatalogue]=useState(null);
  const [catalogueError,setCatalogueError]=useState("");
  const [loading,setLoading]=useState(false);
@@ -56,22 +48,14 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  const offer=offers.find(x=>x.kind===kind);
  const output=offer?.production?.output;
  const modes=offer?.production?.customer_modes||[];
- const needsElectives=jurisdiction?.code==="NSW"&&["7","8","9","10"].includes(year);
- const choicesValid=!needsElectives||(electiveChoices.every(Boolean)&&electiveChoices[0]!==electiveChoices[1]);
- const electiveSuffix=needsElectives&&choicesValid?" ("+electiveChoices.join(" + ")+")":"";
- const listingTitle=offer?.listing?.title?offer.listing.title+electiveSuffix:"";
- const listingDescription=offer?.listing?.description?
-  offer.listing.description+(needsElectives&&choicesValid?"\n\nThis specific edition includes the NSW additional learning areas: "+electiveChoices.join(" and ")+". Families must verify their chosen actual syllabus.":""):"";
- const preparedKey=offer?.listing?.key+(needsElectives?":"+electiveChoices.join("-"):"");
+ const listingTitle=offer?.listing?.title||"";
+ const listingDescription=offer?.listing?.description||"";
+ const preparedKey=offer?.listing?.key;
  const queueEntry=preparedKey?prepared[preparedKey]:null;
  useEffect(()=>{setSquareUrl(queueEntry?.square_url||"")},[preparedKey]);
 
- useEffect(()=>{
-  const expected=(firstYears[jurisdiction?.code]||["K"])[0];
-  if(["K","F","Prep"].includes(year)&&year!==expected)setYear(expected);
- },[jurisdiction?.code,year]);
  useEffect(()=>{setProof(null);setConfirmed(false);setError("");setNotice("")},[
-  jurisdiction?.code,year,kind,electiveChoices[0],electiveChoices[1]
+  jurisdiction?.code,kind
  ]);
  useEffect(()=>{
   let mounted=true;setLoading(true);setCatalogueError("");
@@ -83,11 +67,11 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  },[year]);
 
  const generate=async()=>{
-  if(!offer||!jurisdiction||!choicesValid)return;
+  if(!offer||!jurisdiction)return;
   setBusy(true);setProof(null);setConfirmed(false);setError("");setNotice("");
   try{
    const request={state:jurisdiction.code,year_level:year,edition:offer.production.edition,
-    product_kind:kind,secondary_electives:needsElectives?electiveChoices:[]};
+    product_kind:kind,secondary_electives:[]};
    const responses=await Promise.all(modes.map(mode=>adminApi.post("/document-studio/export-home-education",{...request,mode})));
    const byMode=Object.fromEntries(responses.map(p=>[p.mode,p]));
    setProof(byMode);setSelected(byMode.fillable?"fillable":"print");
@@ -101,7 +85,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
   if(!proof||!confirmed||!offer)return;
   try{
    const files=modes.map(mode=>({name:proof[mode].filename,bytes:uriBytes(proof[mode].data_url)}));
-   const filename=offer.listing.slug+(needsElectives?"-"+electiveChoices.join("-").toLowerCase().replaceAll(" ","-"):"")+(output==="customer"?"-square-customer-files.zip":"-OWNER-PRODUCTION-MASTER.zip");
+   const filename=offer.listing.slug+(output==="customer"?"-square-customer-files.zip":"-OWNER-PRODUCTION-MASTER.zip");
    const zip=squareProductZip(files);
    downloadFile(filename,zip);
    const previous=prepared[preparedKey]||{};
@@ -143,7 +127,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">THE ORIGINAL 48 SIDE-QUEST DOCUMENT OFFERS</p>
    <h3 className="text-xl font-bold text-[#1F3B2D]">Create each product for your Square shop</h3>
    <p className="text-sm text-stone-700">Choose one of the six existing products in your selected state or territory. Make its PDF, check it, download it, then create the corresponding Square listing yourself. Your Square order and automatic file-delivery settings are not changed.</p>
-   <p className="text-xs text-stone-600">The 48 catalogue families cover eight jurisdictions times six product types. Each generated PDF is for the particular year and any NSW elective choices shown in its Square listing. Create additional listings or correctly named variants for other year levels. Extra-child pricing in your original Side-Quest shop is not automatically copied to Square.</p>
+   <p className="text-xs text-stone-600">48 catalogue items: eight jurisdictions × six product types. Each item covers different school years, with optional age and stage pages that families can skip. No Year 3, Year 7 or separate elective listing is required. Extra-child pricing in your original Side-Quest shop is not automatically copied to Square.</p>
   </div>
   <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-sm">
    <strong>Catalogue source:</strong> {catalogue?.source||"Checking Side-Quest database"}.
@@ -151,18 +135,15 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    {loading&&<p role="status" className="mt-1">Checking the existing catalogue…</p>}
    {catalogueError&&<p role="alert" className="mt-1 text-red-800">{catalogueError}</p>}
   </div>
-  <div className="grid sm:grid-cols-2 gap-4">
-   <label className="text-sm font-semibold">Year or stage for this product
-    <select className={input+" mt-1"} value={year} onChange={e=>setYear(e.target.value)}>
-     {[firstYears[jurisdiction?.code]||["K","First school year"],...years.map(y=>[y,"Year "+y])].map(([v,label])=><option key={v} value={v}>{label}</option>)}
-    </select>
-   </label>
-   <label className="text-sm font-semibold">Existing product you want to prepare
+  <div className="rounded-xl border border-stone-200 bg-[#F4F6F1] p-4 space-y-1">
+   <p className="font-semibold text-[#1F3B2D]">One document per state and product type</p>
+   <p className="text-sm text-stone-700">Covers the first school year to Year 12. Families fill in their learner's actual year inside the document, then use only the optional stage sections and subject pages that apply to them. PDF pages don't disappear automatically; users may skip them or print selected pages.</p>
+  </div>
+  <label className="block text-sm font-semibold max-w-xl">Document product to create
     <select className={input+" mt-1"} value={kind} onChange={e=>choose(e.target.value)}>
      {defaultKinds.map(k=>{const o=offers.find(x=>x.kind===k);return <option key={k} value={k}>{o?o.label+" — "+money(o.current_sidequest_price_cents??o.default_price_cents):k}</option>})}
     </select>
-   </label>
-  </div>
+  </label>
   {offers.length>0&&<div className="space-y-2">
    <h4 className="font-semibold">All six products configured for {jurisdiction.name}</h4>
    <div className="grid sm:grid-cols-2 gap-2">
@@ -173,20 +154,8 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
       <span className="block text-xs mt-1 text-stone-500">
        {o.sidequest_listings.length?o.sidequest_listings.length+" Side-Quest record(s), "+o.sidequest_listings.map(p=>p.status).join(", "):"Not found in Side-Quest's current database"}
       </span>
-      {prepared[o.state+":"+o.kind+":"+year+(needsElectives?":"+electiveChoices.join("-"):"")]&&<span className="block text-xs mt-1 font-semibold text-[#1F3B2D]">Files downloaded on this device</span>}
+      {prepared[o.state+":"+o.kind]&&<span className="block text-xs mt-1 font-semibold text-[#1F3B2D]">Files downloaded on this device</span>}
     </button>)}
-   </div>
-  </div>}
-  {needsElectives&&<div className="rounded-xl border border-amber-300 bg-amber-50 p-4 space-y-3">
-   <p className="font-semibold text-[#1F3B2D]">NSW Years 7–10: two additional learning areas</p>
-   <p className="text-sm">Select two different areas. This creates a specific version, so include those choices in your Square listing. The family must still identify the actual syllabuses.</p>
-   <div className="grid sm:grid-cols-2 gap-2">
-    {[0,1].map(i=><label key={i} className="text-sm font-semibold">Additional area {i+1}
-     <select className={input+" mt-1"} value={electiveChoices[i]} onChange={e=>setElectiveChoices(old=>old.map((v,n)=>n===i?e.target.value:v))}>
-      <option value="">Select an area</option>
-      {electives.map(o=><option key={o} value={o} disabled={electiveChoices[1-i]===o}>{o}</option>)}
-     </select>
-    </label>)}
    </div>
   </div>}
   {offer&&<div className="rounded-xl border border-stone-200 bg-white p-4 space-y-3">
@@ -210,7 +179,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     <p className="text-amber-900 font-semibold pt-2">{offer.listing.note}</p>
    </div>
    {["NT"].includes(jurisdiction?.code)&&<p className="text-sm text-amber-900">NT preparation documents do not replace the official government plan template.</p>}
-   {["11","12"].includes(year)&&<p className="text-sm text-amber-900">Senior secondary course and study requirements need specific curriculum review before publication.</p>}
+   <p className="text-xs text-amber-900">The optional senior-secondary pages are planning prompts only. Current official course rules and requirements must be checked before claiming suitability.</p>}
    {queueEntry&&<p className="text-xs text-stone-600">This-device workflow: {queueEntry.status.replaceAll("_"," ")} on {new Date(queueEntry.date).toLocaleDateString("en-AU")}. The record is self-reported; it does not verify what is live in Square.</p>}
    <div className="rounded-lg border border-stone-200 p-3 space-y-2">
     <p className="text-sm font-semibold">After you create the Square listing</p>
@@ -220,7 +189,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     </label>
     <button className={secondary} type="button" onClick={markSquareListed} disabled={!proof&&!queueEntry}>Record that I created this Square listing</button>
    </div>
-   <button className={primary} type="button" disabled={busy||loading||!jurisdiction||!choicesValid}
+   <button className={primary} type="button" disabled={busy||loading||!jurisdiction}
     onClick={generate}>{busy?"Building PDF masters…":output==="customer"?"Generate customer print + fillable PDFs":"Generate OWNER production master PDFs"}</button>
   </div>}
   {error&&<p role="alert" className="text-sm text-red-800">{error}</p>}
