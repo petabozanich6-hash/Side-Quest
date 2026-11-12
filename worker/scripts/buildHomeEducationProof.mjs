@@ -57,3 +57,18 @@ for(const state of ["NSW","VIC"]){
   }
  }
 }
+
+
+// The current Square catalogue: ONE reusable master per state and product
+// covering all relevant school-year groups. Previous year-specific samples
+// remain as backward-compatibility checks for previously generated orders.
+for(const state of jurisdictions){
+ for(const [kind,product] of Object.entries(products)){
+  for(const mode of product.modes){
+   const file=dir+"/sidequest-"+state.toLowerCase()+"-all-years-"+kind+"-"+mode+".pdf";
+   const pdf=generateHomeEducationTemplate(state,"ALL",false,mode,product.edition,[],kind);
+   writeFileSync(file,pdf);
+   console.log(file,pdf.byteLength,"bytes");
+  }
+ }
+}
