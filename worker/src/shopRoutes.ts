@@ -1046,7 +1046,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       return c.json({detail:"NSW Years 7-10 require two different selected additional learning areas. Other years do not use this selection."},400);
     if(!["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"].includes(state)||!edition||!mode||!/^(K|F|Prep|[1-9]|1[0-2])$/i.test(year))
       return c.json({detail:"Choose a document range, state, year and PDF edition."},400);
-    const limited=await hitRateLimit(c.env.DB,"document-studio:education-export:"+String(c.get("user")?.id||"owner"),30,3600);
+    const limited=await hitRateLimit(c.env.DB,"document-studio:education-export:"+String(c.get("user")?.id||"owner"),160,3600);
     if(!limited.ok)return c.json({detail:"PDF export limit reached for this hour."},429);
     try{
       const pdf=generateHomeEducationTemplate(state,year,false,mode,edition,electives,productKind);
