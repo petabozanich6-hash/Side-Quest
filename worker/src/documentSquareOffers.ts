@@ -48,14 +48,17 @@ export function listingDraftFor(state:string,year:string,kind:DocumentOfferKind)
  if(!code||!offer)throw Error("Unknown document listing.");
  const prep=SQUARE_PRODUCTION[kind];
  const display=JURISDICTIONS[code].name;
- const grade=/^(K|F|Prep)$/i.test(year) ? JURISDICTIONS[code].foundationYear : "Year "+year;
- const title=offer.title(display)+" — "+grade;
- const common="Independent Side-Quest home education planning and recordkeeping resource for "+display+" ("+grade+"). Not a government-issued document, a substitute for an official prescribed form, or a registration guarantee. Families must verify current state or territory rules and the relevant curriculum before use.";
+ const universal=year.toUpperCase()==="ALL";
+ const grade=universal?"Flexible year levels":/^(K|F|Prep)$/i.test(year) ? JURISDICTIONS[code].foundationYear : "Year "+year;
+ const title=universal?(kind==="guided"?"Self-Guided Home Education Planning Workbook - "+display:offer.title(display)):offer.title(display)+" — "+grade;
+ const levelText=universal?
+  "Includes optional early-years, primary, secondary and senior-secondary pages. Complete only what applies to your learner; skip or print selectively.":("Prepared for "+grade+".");
+ const common="Independent Side-Quest home education planning and recordkeeping resource for "+display+". "+levelText+" Not a government-issued document, a substitute for an official prescribed form, or a registration guarantee. Families must verify current state or territory rules and the relevant curriculum before use.";
  const descriptions:Record<DocumentOfferKind,string>={
-  blank:"A spacious home education planning workbook with learning goals, teaching strategies, a resource inventory, weekly planning grid, curriculum overview, individual learning-area lesson tables, progress and evidence records, and additional writing pages. Includes an A4 print edition and digitally fillable PDF with editable table cells.",
-  guided:"A self-guided, step-by-step home education planning workbook. Each section explains what to consider, shows illustrative examples and provides spacious fillable exercises and practical tables for writing your own goals, teaching approach, resources, learning activities and evidence plans. Includes both printable and digitally fillable A4 PDFs. Complete it independently, offline and at your own pace; no online guided form, personal consultation or custom plan is included.",
+  blank:"A flexible home education planning workbook with learning goals, teaching strategies, a resource inventory, weekly planning grid, curriculum overview, individual learning-area lesson tables, progress and evidence records, and additional writing pages. Includes optional year/stage planning pages and both printable and digitally fillable PDF editions with editable table cells.",
+  guided:"A self-guided, step-by-step home education planning workbook with clear instructions, illustrative examples, meaningful exercises and generous fillable tables. Includes optional pages for different school-year groups so families complete only the sections that apply. Download a printable A4 PDF and an editable PDF, then work through the plan independently at your own pace. No online planning form, consultation or custom-written plan is included.",
   printed:"A professionally printed home education planning workbook made to order. Includes spacious working areas and practical planning, resources, lesson and evidence tables. Production, binding and delivery must be arranged after purchase. This is a physical product, not an instant PDF download.",
-  planner_blank:"A comprehensive blank home education planner and diary with spacious learning plans, resource inventories, weekly planning tables, four flexible planning periods, editable learning diaries, reading logs, evidence indexes, goals trackers, project records and family reviews. Includes A4 print and digitally fillable PDFs with individual multiline table cells.",
+  planner_blank:"A comprehensive flexible-year home education planner and diary with spacious learning plans, resource inventories, optional stage-specific pages, weekly planning tables, four flexible planning periods, editable learning diaries, reading logs, evidence indexes, goals trackers, project records and family reviews. Includes A4 print and digitally fillable PDFs with multiline table cells.",
   planner_personalised:"A made-to-order family planner and diary developed from information supplied after purchase, with learning plans, records and review sections. The final personalised PDF must be prepared separately after collecting and checking family details; no generic PDF is the completed purchase.",
   planner_printed:"A made-to-order, personalised spiral-bound family planner and diary. After purchase, family information must be collected, the individual final PDF prepared and checked, and the printed book produced and posted. This is not an instant digital item."
  };
@@ -65,10 +68,10 @@ export function listingDraftFor(state:string,year:string,kind:DocumentOfferKind)
    "Fulfilment: do not attach the owner print master to an automatic digital delivery. Collect any required family details, verify the final proof, then arrange printing and dispatch manually.":
    "Fulfilment: requires a working secure post-purchase family intake and individual PDF production/delivery. Do not attach the blank master as though it were a personalised final product.";
  return {
-  key:code+":"+kind+":"+year,title,price_cents:offer.price_cents,
+  key:code+":"+kind+(universal?"":":"+year),title,price_cents:offer.price_cents,
   description:descriptions[kind]+"\n\n"+common,
   category:"Home Education Documents",
   output:prep.output,fulfilment:prep.fulfilment,
-  note,grade,slug:"sidequest-"+code.toLowerCase()+"-"+year.toLowerCase()+"-"+kind
+  note,grade,slug:"sidequest-"+code.toLowerCase()+"-"+(universal?"":year.toLowerCase()+"-")+kind
  };
 }
