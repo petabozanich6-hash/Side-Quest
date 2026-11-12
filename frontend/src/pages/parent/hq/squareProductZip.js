@@ -1,5 +1,5 @@
 // A dependency-free ZIP packager for a Square-ready download containing
-// the same product's print and interactive PDF editions plus listing notes.
+// the same product's print and interactive PDF editions.
 // Uses ZIP "stored" entries: PDFs are already compressed internally.
 const utf8=new TextEncoder();
 const u16=(view,pos,v)=>view.setUint16(pos,v,true);
@@ -43,28 +43,9 @@ export function squareProductZip(files){
 }
 export function makeSquareProductZip(doc,proof){
  const slug=String(doc.title||"sidequest-product").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,55);
- const listing=[
-  "SIDE-QUEST | SQUARE LISTING NOTES",
-  "",
-  "Product: "+doc.title,
-  "Audience: "+(doc.audience||"Learners and families"),
-  "Description: "+(doc.subtitle||"A practical printable and digital learning resource."),
-  "Contents: "+doc.pages.length+" activities, supplied as A4 printable and digitally fillable PDFs.",
-  "Delivery: Digital download. No physical item is included.",
-  "",
-  "OWNER QUALITY CHECK BEFORE SALE",
-  "[ ] Print and inspect a physical A4 page",
-  "[ ] Read every question, instruction and example for accuracy",
-  "[ ] Check every page for cropping, orphans and writing space",
-  "[ ] Open the fillable PDF, type and tick, save it and reopen it",
-  "[ ] Confirm the Square product's digital file delivery is working",
-  "",
-  "This file is for the store owner. Do not claim educational authority approval.",
- ].join("\n");
  const files=[
   {name:slug+"-print.pdf",bytes:dataBytes(proof.print.data_url)},
   {name:slug+"-fillable.pdf",bytes:dataBytes(proof.fillable.data_url)},
-  {name:"square-listing-and-quality-check.txt",bytes:utf8.encode(listing)},
  ];
  return squareProductZip(files);
 }
