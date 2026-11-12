@@ -125,9 +125,39 @@ def main() -> None:
     if senior_pair["print"]["pages"] != senior_pair["fillable"]["pages"]:
         fail("NSW Year 11: print and fillable page counts differ")
     summary["nsw/year11"] = senior_pair
+    # Exercise the actual six product-kind export masters in two different
+    # states, so products cannot collapse into the same unlabelled PDF.
+    product_modes = {
+        "blank": ("print", "fillable"),
+        "guided": ("print", "fillable"),
+        "printed": ("print",),
+        "planner_blank": ("print", "fillable"),
+        "planner_personalised": ("print", "fillable"),
+        "planner_printed": ("print",),
+    }
+    for state in ("nsw", "vic"):
+        for kind, modes in product_modes.items():
+            entries = {}
+            for mode in modes:
+                filename = f"sidequest-{state}-year3-{kind}-{mode}-product.pdf"
+                path = root / filename
+                if not path.is_file():
+                    fail(f"Missing product-kind PDF proof: {filename}")
+                entries[mode] = audit(path)
+                doc = fitz.open(path)
+                text_full = " ".join(p.get_text() for p in doc)
+                should_be_master = kind in ("guided", "planner_personalised", "planner_printed")
+                if should_be_master and "OWNER PRODUCTION MASTER" not in text_full:
+                    fail(f"{filename}: personalised master watermark missing")
+                if not should_be_master and "OWNER PRODUCTION MASTER" in text_full:
+                    fail(f"{filename}: printable/customer document incorrectly watermarked")
+                doc.close()
+            if len(modes) == 2 and entries["print"]["pages"] != entries["fillable"]["pages"]:
+                fail(f"{state}/{kind}: page parity failed")
+            summary[f"{state}/{kind}"] = entries
     report = root / "pdf-audit.json"
     report.write_text(json.dumps({"validated": True, "documents": summary}, indent=2))
-    print(f"PASS: {len(summary)*2} PDFs, all eight jurisdictions at Year 3 and Year 7, plus NSW Year 11, print+fillable, A4 bounds, fields and save/reopen tests")
+    print("PASS: 70 PDFs; all eight jurisdictions plus six distinct production products for NSW and Victoria, A4 bounds, form checks and save/reopen tests")
 
 
 if __name__ == "__main__":
