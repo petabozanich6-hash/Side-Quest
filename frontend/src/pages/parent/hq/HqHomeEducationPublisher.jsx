@@ -51,6 +51,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  const [notice,setNotice]=useState("");
  const [error,setError]=useState("");
  const [prepared,setPrepared]=useState(storedQueue);
+ const [squareUrl,setSquareUrl]=useState("");
  const offers=useMemo(()=>((catalogue?.offers)||[]).filter(x=>x.state===jurisdiction?.code),[catalogue,jurisdiction?.code]);
  const offer=offers.find(x=>x.kind===kind);
  const output=offer?.production?.output;
@@ -63,6 +64,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
   offer.listing.description+(needsElectives&&choicesValid?"\n\nThis specific edition includes the NSW additional learning areas: "+electiveChoices.join(" and ")+". Families must verify their chosen actual syllabus.":""):"";
  const preparedKey=offer?.listing?.key+(needsElectives?":"+electiveChoices.join("-"):"");
  const queueEntry=preparedKey?prepared[preparedKey]:null;
+ useEffect(()=>{setSquareUrl(queueEntry?.square_url||"")},[preparedKey]);
 
  useEffect(()=>{
   const expected=(firstYears[jurisdiction?.code]||["K"])[0];
@@ -109,6 +111,21 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
      "Customer files downloaded. Attach these to the corresponding Square listing after completing the independent quality and source review. Square delivery is unchanged.":
      "Owner masters downloaded. Do NOT attach these as a final personalised PDF or an instant physical purchase. The individual fulfilment workflow is still required.");
   }catch(e){setError(e?.message||"Could not package the document files.")}
+ };
+ const markSquareListed=()=>{
+  if(!preparedKey)return;
+  const url=squareUrl.trim();
+  if(url && (!/^https:\/\//i.test(url)||url.length>500)){
+   setError("Use a full https:// listing URL, or leave the URL blank.");return;
+  }
+  const next={...prepared,[preparedKey]:{
+   ...(prepared[preparedKey]||{}),date:new Date().toISOString(),
+   status:"square_listing_recorded_manually",kind,year,square_url:url
+  }};
+  setPrepared(next);
+  try{localStorage.setItem("sidequest:home-document-production-queue-v1",JSON.stringify(next))}catch{}
+  setError("");
+  setNotice("Your manual Square listing note has been saved in this browser. It was not checked against Square and did not create or publish a product.");
  };
  const choose=(value)=>{setKind(value);setConfirmed(false)};
  const copy=async(value)=>{
@@ -188,7 +205,15 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    </div>
    {["NT"].includes(jurisdiction?.code)&&<p className="text-sm text-amber-900">NT preparation documents do not replace the official government plan template.</p>}
    {["11","12"].includes(year)&&<p className="text-sm text-amber-900">Senior secondary course and study requirements need specific curriculum review before publication.</p>}
-   {queueEntry&&<p className="text-xs text-stone-600">Local workflow note: {queueEntry.status.replaceAll("_"," ")} on {new Date(queueEntry.date).toLocaleDateString("en-AU")}. This does NOT mean listed, approved or active in Square.</p>}
+   {queueEntry&&<p className="text-xs text-stone-600">This-device workflow: {queueEntry.status.replaceAll("_"," ")} on {new Date(queueEntry.date).toLocaleDateString("en-AU")}. The record is self-reported; it does not verify what is live in Square.</p>}
+   <div className="rounded-lg border border-stone-200 p-3 space-y-2">
+    <p className="text-sm font-semibold">After you create the Square listing</p>
+    <p className="text-xs text-stone-600">Optionally record the URL to remember which product you've listed. Saved on this browser only, never synced to Square. This is not a live-status check.</p>
+    <label className="block text-xs font-semibold">Square product URL (optional)
+     <input className={input+" mt-1"} value={squareUrl} onChange={e=>setSquareUrl(e.target.value)} placeholder="https://your-square-store.example/…"/>
+    </label>
+    <button className={secondary} type="button" onClick={markSquareListed} disabled={!proof}>Record that I created this Square listing</button>
+   </div>
    <button className={primary} type="button" disabled={busy||loading||!jurisdiction||!choicesValid}
     onClick={generate}>{busy?"Building PDF masters…":output==="customer"?"Generate customer print + fillable PDFs":"Generate OWNER production master PDFs"}</button>
   </div>}
