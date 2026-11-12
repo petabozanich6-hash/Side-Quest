@@ -207,7 +207,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   const xs=[L];
   for(let i=1;i<widths.length;i++)xs.push(xs[i-1]+widths[i-1]);
   const head=()=>{
-   ensure(30+rowHeight+14);
+   ensure(30+Math.min(rows,3)*rowHeight+14);
    rect(L,y-31,R-L,31,"0.92 0.95 0.92");
    headings.forEach((heading,i)=>wrap(heading,8.4,widths[i]-12).slice(0,2).forEach((line,j)=>
     text(line,xs[i]+6,y-13-j*11,8.4,true,green)));
@@ -292,6 +292,16 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  if(productKind==="guided"){
   startSection("GUIDE","Your self-guided planning journey",
    "This downloadable workbook guides you step by step. There is no online wizard, live consultation or owner-prepared plan. Work through the exercises at your own pace.");
+  lines("Follow these five practical steps. Tick each one as you complete it, then use the main planning pages to turn your ideas into a working program.",L+4,R-L-8,9.8,17);y-=14;
+  for(const item of [
+   "Step 1: Describe the learner's real strengths, interests and priorities.",
+   "Step 2: Choose a few realistic learning goals and check relevant guidance.",
+   "Step 3: Turn goals into learning activities and teaching strategies.",
+   "Step 4: Name resources that are available or can be obtained.",
+   "Step 5: Decide what evidence to keep and when to review progress."
+  ])checkbox(item);
+  field("How I want to use this self-guided workbook",
+    "My learner, what I am planning, the parts I need most, and any questions I want to come back to.",127);
   const steps=[
    ["1. Start with the learner","Example only: A learner who loves animals might enjoy reading wildlife books, measuring pet food or making an observation diary.","Write the learner's actual interests, strengths and learning needs, without adding private diagnoses or inventing achievements."],
    ["2. Choose meaningful learning goals","Example only: Practise explaining an observation in two or three clear sentences. This is an illustrative goal, not a prescribed syllabus outcome.","Write a few specific goals that fit the learner. Check actual curriculum or syllabus references separately."],
@@ -307,7 +317,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   }
   startSection("GUIDE","Putting the steps together",
    "Use this table to turn your answers into a draft learning plan. You can return to the full planning pages later to develop each learning area.");
-  table(["Goal / focus","Teaching activities and actual resources","Evidence / next review"],5,101,{widths:[120,210,171]});
+  table(["Goal / focus","Teaching activities and actual resources","Evidence / next review"],4,101,{widths:[120,210,171]});
   checkbox("I used my own family information rather than copying an illustrative example as a completed plan.");
   checkbox("I have checked the current official guidance relevant to our state or territory.");
  }
@@ -357,7 +367,7 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   startSection("OPTIONAL","Senior secondary: Years 11 and 12",
    "SKIP THIS SECTION unless relevant. Senior certificates, prescribed study patterns and course rules can differ greatly from earlier school years.");
   lines("IMPORTANT: This optional planning page is not a senior secondary qualification or evidence that any particular senior course satisfies local requirements. Check your jurisdiction's senior study, home education and assessment rules.",L+4,R-L-8,9.7,16,muted);y-=15;
-  table(["Course / subject","Current syllabus or course requirement","Plan / evidence to check"],4,104,{widths:[133,181,187]});
+  table(["Course / subject","Current syllabus or course requirement","Plan / evidence to check"],3,104,{widths:[133,181,187]});
   field("Further senior-study questions","List course prerequisites, external assessments or other requirements to confirm with the relevant authority.",134);
  }
 
