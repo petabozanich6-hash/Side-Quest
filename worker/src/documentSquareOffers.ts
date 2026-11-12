@@ -28,3 +28,47 @@ export const offerForTags=(tags:unknown)=>{
  if(!state||!type||!tags.includes("home-education-document"))return null;
  return {state,kind:type.kind,key:state+":"+type.kind};
 };
+
+
+/** A production master and a customer-deliverable file are NOT interchangeable.
+ * Square's automatic delivery can send static reviewed files, not manufacture
+ * an individual child's personalised book or post a spiral-bound edition. */
+export const SQUARE_PRODUCTION = {
+ blank:{edition:"standard",customer_modes:["print","fillable"],output:"customer",fulfilment:"automatic_pdf",purpose:"Blank, reusable A4 planning workbook. The buyer fills in their own details."},
+ guided:{edition:"standard",customer_modes:["print","fillable"],output:"production_master",fulfilment:"after_purchase_guided",purpose:"Individually guided planning product. Personal responses must be collected and a reviewed learner-specific PDF prepared after purchase."},
+ printed:{edition:"standard",customer_modes:["print"],output:"production_master",fulfilment:"print_and_post",purpose:"Printed-to-order workbook. A print-ready PDF is a production master; no PDF should be auto-delivered as the purchased physical book."},
+ planner_blank:{edition:"complete",customer_modes:["print","fillable"],output:"customer",fulfilment:"automatic_pdf",purpose:"Blank comprehensive planner and diary, printable and digitally fillable."},
+ planner_personalised:{edition:"complete",customer_modes:["print","fillable"],output:"production_master",fulfilment:"after_purchase_personalisation",purpose:"Individualised PDF prepared from the family's information after a verified purchase. The blank master is not the final purchased personalised product."},
+ planner_printed:{edition:"complete",customer_modes:["print"],output:"production_master",fulfilment:"personalised_print_and_post",purpose:"Individualised spiral-bound diary. Printing, packaging and shipping happen only after customer details and final proof are prepared."},
+} as const satisfies Record<DocumentOfferKind,{edition:"standard"|"complete";customer_modes:readonly ("print"|"fillable")[];output:"customer"|"production_master";fulfilment:string;purpose:string}>;
+
+export function listingDraftFor(state:string,year:string,kind:DocumentOfferKind){
+ const code=DOCUMENT_STATES.find(s=>s===state);
+ const offer=DOCUMENT_OFFER_KINDS.find(o=>o.kind===kind);
+ if(!code||!offer)throw Error("Unknown document listing.");
+ const prep=SQUARE_PRODUCTION[kind];
+ const display=JURISDICTIONS[code].name;
+ const grade=/^(K|F|Prep)$/i.test(year) ? "first school year" : "Year "+year;
+ const title=offer.title(display)+" — "+grade;
+ const common="Independent Side-Quest home education planning and recordkeeping resource for "+display+" ("+grade+"). Not a government-issued document, a substitute for an official prescribed form, or a registration guarantee. Families must verify current state or territory rules and the relevant curriculum before use.";
+ const descriptions:Record<DocumentOfferKind,string>={
+  blank:"A blank home education planning workbook with learning goals, teaching strategies, resources, individual learning-area pages, progress records and preparation notes. Includes an A4 print edition and digitally fillable PDF.",
+  guided:"A guided, individual home education planning service. After purchase, the family's details and learning intentions must be collected privately, reviewed and used to create a learner-specific planning document. No personalised book can be delivered automatically from a generic PDF download.",
+  printed:"A professionally printed home education planning workbook made to order, with room to record real learning and evidence. Production, binding and delivery must be arranged after purchase. This is a physical product, not an instant PDF download.",
+  planner_blank:"A complete blank home education planner and diary with planning periods, daily learning records, reading logs, evidence and goal trackers, and family reviews. Includes A4 print and digitally fillable PDFs.",
+  planner_personalised:"A made-to-order family planner and diary developed from information supplied after purchase, with learning plans, records and review sections. The final personalised PDF must be prepared separately after collecting and checking family details; no generic PDF is the completed purchase.",
+  planner_printed:"A made-to-order, personalised spiral-bound family planner and diary. After purchase, family information must be collected, the individual final PDF prepared and checked, and the printed book produced and posted. This is not an instant digital item."
+ };
+ const note=prep.output==="customer"?
+  "File delivery: attach the exact reviewed customer ZIP (print + fillable PDFs) to this Square listing using the existing automatic delivery system.":
+  prep.fulfilment.includes("print")?
+   "Fulfilment: do not attach the owner print master to an automatic digital delivery. Collect any required family details, verify the final proof, then arrange printing and dispatch manually.":
+   "Fulfilment: requires a working secure post-purchase family intake and individual PDF production/delivery. Do not attach the blank master as though it were a personalised final product.";
+ return {
+  key:code+":"+kind+":"+year,title,price_cents:offer.price_cents,
+  description:descriptions[kind]+"\n\n"+common,
+  category:"Home Education Documents",
+  output:prep.output,fulfilment:prep.fulfilment,
+  note,grade,slug:"sidequest-"+code.toLowerCase()+"-"+year.toLowerCase()+"-"+kind
+ };
+}
