@@ -160,18 +160,23 @@ export function buildStudioProductPdf(raw:unknown,mode:"print"|"fillable"):{pdf:
    text(sheet,line,LEFT,subY,12,false,INK);subY-=19;
   }
  }
- if(product.audience)text(sheet,"FOR "+product.audience.toUpperCase().slice(0,65),LEFT,321,10,true,FOREST);
+ if(product.audience)wrap("FOR "+product.audience.toUpperCase(),10,RIGHT-LEFT).forEach((line,i)=>text(sheet,line,LEFT,321-i*17,10,true,FOREST));
  rule(sheet,LEFT,291,RIGHT,GOLD);
  text(sheet,"PRINT IT. TYPE IN IT. MAKE IT YOURS.",LEFT,266,12,true,FOREST);
  text(sheet,"Side-Quest Learning | An independent learning resource",LEFT,91,9,false,MUTED);
  text(sheet,"A4 edition | Review every page before distribution",LEFT,73,8,false,MUTED);
  newSheet();
  for(const [i,activity] of product.pages.entries()){
-  need(116);
-  fill(sheet,LEFT,y-35,RIGHT-LEFT,35,rgb(.93,.95,.92));
-  text(sheet,"ACTIVITY "+String(i+1).padStart(2,"0"),LEFT+10,y-14,8,true,MUTED);
-  text(sheet,activity.title.slice(0,82),LEFT+10,y-29,13,true,FOREST);
-  y-=54;
+  const titleLines=wrap(activity.title,13,RIGHT-LEFT-24);
+  const bandH=18+titleLines.length*18;
+  const introH=bandH+19+wrap(activity.instructions,10,RIGHT-LEFT-10).length*15+13;
+  // Keep a heading and the start of its activity together; never orphan a title.
+  const firstItem=activity.kind==="writing"?165:activity.kind==="checklist"?55:140;
+  need(introH+firstItem);
+  fill(sheet,LEFT,y-bandH,RIGHT-LEFT,bandH,rgb(.93,.95,.92));
+  text(sheet,"ACTIVITY "+String(i+1).padStart(2,"0"),LEFT+10,y-12,8,true,MUTED);
+  titleLines.forEach((line,j)=>text(sheet,line,LEFT+10,y-29-j*18,13,true,FOREST));
+  y-=bandH+19;
   paragraph(activity.instructions,LEFT+4,RIGHT-LEFT-10,10,15,MUTED);
   y-=13;
   if(activity.kind==="writing"){
