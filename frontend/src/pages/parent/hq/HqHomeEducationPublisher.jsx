@@ -104,10 +104,16 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
    const filename=offer.listing.slug+(needsElectives?"-"+electiveChoices.join("-").toLowerCase().replaceAll(" ","-"):"")+(output==="customer"?"-square-customer-files.zip":"-OWNER-PRODUCTION-MASTER.zip");
    const zip=squareProductZip(files);
    downloadFile(filename,zip);
-   const next={...prepared,[preparedKey]:{date:new Date().toISOString(),status:output==="customer"?"customer_files_downloaded":"owner_master_downloaded",year,kind}};
+   const previous=prepared[preparedKey]||{};
+   const nextStatus=previous.status==="square_listing_recorded_manually"?
+    "new_pdf_needs_square_listing_update":
+    output==="customer"?"customer_files_downloaded":"owner_master_downloaded";
+   const next={...prepared,[preparedKey]:{...previous,date:new Date().toISOString(),status:nextStatus,year,kind}};
    setPrepared(next);
    try{localStorage.setItem("sidequest:home-document-production-queue-v1",JSON.stringify(next))}catch{}
-   setNotice(output==="customer"?
+   setNotice(previous.status==="square_listing_recorded_manually"?
+     "Revised files downloaded. Update the matching Square listing if needed. Do not assume previous customer downloads or listing attachments changed automatically.":
+     output==="customer"?
      "Customer files downloaded. Attach these to the corresponding Square listing after completing the independent quality and source review. Square delivery is unchanged.":
      "Owner masters downloaded. Do NOT attach these as a final personalised PDF or an instant physical purchase. The individual fulfilment workflow is still required.");
   }catch(e){setError(e?.message||"Could not package the document files.")}
@@ -212,7 +218,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     <label className="block text-xs font-semibold">Square product URL (optional)
      <input className={input+" mt-1"} value={squareUrl} onChange={e=>setSquareUrl(e.target.value)} placeholder="https://your-square-store.example/…"/>
     </label>
-    <button className={secondary} type="button" onClick={markSquareListed} disabled={!proof}>Record that I created this Square listing</button>
+    <button className={secondary} type="button" onClick={markSquareListed} disabled={!proof&&!queueEntry}>Record that I created this Square listing</button>
    </div>
    <button className={primary} type="button" disabled={busy||loading||!jurisdiction||!choicesValid}
     onClick={generate}>{busy?"Building PDF masters…":output==="customer"?"Generate customer print + fillable PDFs":"Generate OWNER production master PDFs"}</button>
