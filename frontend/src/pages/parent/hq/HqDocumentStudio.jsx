@@ -5,7 +5,7 @@ import HqStudioPublisher from "./HqStudioPublisher";
 import HqHomeEducationPublisher from "./HqHomeEducationPublisher";
 const input="w-full rounded-xl border border-stone-300 bg-white p-2 text-sm";
 export default function HqDocumentStudio(){
- const [data,setData]=useState(null),[selected,setSelected]=useState("NSW"),[error,setError]=useState(""),[loading,setLoading]=useState(true);
+ const [data,setData]=useState(null),[selected,setSelected]=useState(""),[error,setError]=useState(""),[loading,setLoading]=useState(true);
  useEffect(()=>{let active=true;api.get("/home-education/document-requirements").then(({data})=>{if(active)setData(data)}).catch(()=>{if(active)setError("Could not load the existing jurisdiction requirements.")}).finally(()=>{if(active)setLoading(false)});return()=>{active=false}},[]);
  const jur=data?.jurisdictions?.find(j=>j.code===selected);
  return <div className="space-y-5" data-testid="hq-document-studio">
@@ -15,8 +15,9 @@ export default function HqDocumentStudio(){
    <p className="text-sm">Create your existing planning workbooks, complete family planners and guided home education documents with improved content structure and practical completion space. Download the finished PDFs for your Square store.</p>
    {loading&&<p role="status" className="text-sm">Loading state requirements…</p>}
    {error&&<p role="alert" className="text-red-800">{error}</p>}
-   {data&&<label className="block max-w-md text-sm font-semibold">Choose the state or territory
+   {data&&<label className="block max-w-md text-sm font-semibold">Choose a state or territory (all eight supported)
     <select className={input} value={selected} onChange={e=>setSelected(e.target.value)}>
+     <option value="" disabled>Select a state or territory</option>
      {data.jurisdictions.filter(j=>j.code!=="OTHER").map(j=><option key={j.code} value={j.code}>{j.name}</option>)}
     </select></label>}
 
