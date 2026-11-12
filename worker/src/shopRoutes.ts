@@ -1032,6 +1032,11 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const state=String(body.state||"").toUpperCase(),year=String(body.year_level||"3");
     const edition=body.edition==="complete"?"complete":body.edition==="standard"?"standard":null;
     const mode=body.mode==="print"?"print":body.mode==="fillable"?"fillable":null;
+    const productKind=typeof body.product_kind==="string"?body.product_kind:(edition==="complete"?"planner_blank":"blank");
+    const production=SQUARE_PRODUCTION[productKind as keyof typeof SQUARE_PRODUCTION];
+    if(!production||production.edition!==edition||!mode||
+       !(production.customer_modes as readonly string[]).includes(mode))
+      return c.json({detail:"This catalogue product and PDF export format do not match."},400);
     const electiveRaw=Array.isArray(body.secondary_electives)?body.secondary_electives:[];
     const electives=electiveRaw.map((v:unknown)=>String(v));
     const isNswYears7To10=state==="NSW"&&/^(7|8|9|10)$/.test(year);
@@ -1044,7 +1049,7 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
     const limited=await hitRateLimit(c.env.DB,"document-studio:education-export:"+String(c.get("user")?.id||"owner"),30,3600);
     if(!limited.ok)return c.json({detail:"PDF export limit reached for this hour."},429);
     try{
-      const pdf=generateHomeEducationTemplate(state,year,false,mode,edition,electives);
+      const pdf=generateHomeEducationTemplate(state,year,false,mode,edition,electives,productKind);
       if(pdf.byteLength>MAX_FILE_BYTES)return c.json({detail:"PDF exceeds 25 MB."},413);
       let binary="";
       for(let i=0;i<pdf.length;i+=8192)binary+=String.fromCharCode(...pdf.subarray(i,i+8192));
@@ -1052,9 +1057,12 @@ export function registerShopAdmin(admin: Hono<any>, h: Helpers) {
       return c.json({
         data_url:"data:application/pdf;base64,"+btoa(binary),
         sha256:await sha256(pdf),
-        state,year_level:year,edition,mode,
-        filename:"sidequest-"+state.toLowerCase()+"-"+year.toLowerCase()+"-"+edition+"-"+mode+".pdf",
-        note:"Owner-only document proof. No listing or customer delivery created. Independently review content, sources, form fields and every A4 page before offering for sale."
+        state,year_level:year,edition,mode,product_kind:productKind,output:production.output,
+        filename:"sidequest-"+state.toLowerCase()+"-"+year.toLowerCase()+"-"+productKind+"-"+mode+
+          (production.output==="production_master"?"-owner-proof":"")+".pdf",
+        note:production.output==="production_master"?
+          "OWNER PRODUCTION MASTER: This is NOT a completed customer's order. Personalised editions require separate customer information and custom delivery; printed editions require actual print-and-post fulfilment. No listing or customer delivery created.":
+          "Customer file proof, NOT approved for sale. Inspect pages, official requirements, field saving and A4 print output. No listing or delivery created."
       });
     }catch(err:any){return c.json({detail:err?.message||"Unable to build the document."},400);}
   });
