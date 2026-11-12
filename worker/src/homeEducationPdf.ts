@@ -243,8 +243,8 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  y-=7;
  lines(local.intro,L+3,R-L-6,9.5,16);
  y-=10;
- field(local.focus,local.focusHint,107);
- field(local.record,local.recordHint,107);
+ field(local.focus,local.focusHint,150);
+ field(local.record,local.recordHint,150);
  ensure(76);
  lines(local.reminder,L+3,R-L-10,9,15,muted);
  y-=9;
