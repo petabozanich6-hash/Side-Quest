@@ -207,8 +207,8 @@ def main() -> None:
                     for value in ("Your self-guided planning journey", "Your turn", "Putting the steps together"):
                         if value not in full_text:
                             fail(f"{filename}: self-guided exercise missing: {value}")
-                    if "online wizard" in full_text.lower() or "owner production master" in full_text.lower():
-                        fail(f"{filename}: contains legacy guided sales instructions")
+                    if "owner production master" in full_text.lower() or "owner production notes" in full_text.lower():
+                        fail(f"{filename}: contains legacy guided owner-production material")
                 if state == "nsw":
                     for value in ("First additional area", "Second DIFFERENT area"):
                         if value not in full_text:
