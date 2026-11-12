@@ -3,7 +3,7 @@
 // The revision changes whenever the customer PDF renderer/content contract changes.
 import { CHECKED_ON } from "./data/planJurisdictions";
 import { documentKind } from "./familyDocumentPricing";
-export const GUIDED_RELEASE_REVISION = "guided-sidequest-layout-2026-11-10-v2";
+export const GUIDED_RELEASE_REVISION = "guided-offline-self-directed-pdf-2026-11-12-v3";
 export const BLANK_RELEASE_REVISION = "fillable-sidequest-layout-2026-11-10-v2";
 export const MAX_REVIEW_AGE_DAYS = 120;
 export function sourceReviewCurrent(checked:unknown, now:Date=new Date()):boolean{
