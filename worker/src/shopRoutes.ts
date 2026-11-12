@@ -204,9 +204,7 @@ export function registerShopCatalog(app: App) {
     c.header("Cache-Control","no-store");
     c.header("X-Content-Type-Options","nosniff");
     const id=c.req.param("id");
-    const year=String(c.req.query("year")||"3");
-    if(!UUID.test(id)||!["K","F","Prep",...Array.from({length:12},(_,i)=>String(i+1))].includes(year))
-      return c.json({detail:"Preview unavailable."},404);
+    if(!UUID.test(id))return c.json({detail:"Preview unavailable."},404);
     await ensureShopCatalog(c.env.DB);
     const product=await c.env.DB.prepare("SELECT id,visible,status,fulfilment,tags,collection FROM shop_products WHERE id=?").bind(id).first<any>();
     if(!product||!isPublic(product)||!isHomeEducationDocument(product))
