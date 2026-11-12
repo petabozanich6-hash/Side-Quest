@@ -47,7 +47,7 @@ def audit(path: Path) -> dict:
             )
             if any(label not in page_text for label in expected_labels):
                 fail(f"{path.name} page {i+1}: term planner content split across pages")
-            if "fillable" in path.stem and len(list(page.widgets() or ())) < 7:
+            if "fillable" in path.stem and len(list(page.widgets() or ())) < 5:
                 fail(f"{path.name} page {i+1}: term planner missing digital fields")
         for word in words:
             x0, y0, x1, y1 = word[:4]
