@@ -243,11 +243,11 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  y-=7;
  lines(local.intro,L+3,R-L-6,9.5,16);
  y-=10;
+ ensure(61);
+ lines(local.reminder,L+3,R-L-10,9,15,muted);
+ y-=15;
  field(local.focus,local.focusHint,150);
  field(local.record,local.recordHint,150);
- ensure(76);
- lines(local.reminder,L+3,R-L-10,9,15,muted);
- y-=9;
  if(isNswSecondary){
   startSection("NSW 7-10","Two additional learning areas",
     "The family must choose two further subjects, each from a different eligible key learning area. Choosing a category here does not select a particular syllabus.");
