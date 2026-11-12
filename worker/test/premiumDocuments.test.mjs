@@ -43,14 +43,18 @@ test("release checklist is evidence-bound, not a cosmetic shop toggle",()=>{
 });
 
 test("buyer-generated planners are buyable without uploading another family's PDF",()=>{
- for(const [tag,fulfilment] of [["guided-document","digital"],["premium-planner-personalised","digital"],["premium-planner-printed","made_to_order"]]){
+ for(const [tag,fulfilment] of [["premium-planner-personalised","digital"],["premium-planner-printed","made_to_order"]]){
   const p={id:"abc",tags:["home-education-document","nsw",tag],collection:"Home Education Documents",fulfilment,
     visible:true,status:"in_stock",price_cents:3995,digital_file:0,stage:"launch_now",
     document_release_version:null,document_released_at:null,document_source_checked_on:null};
   assert.equal(isOnDemandDocument(p),true);
   assert.equal(buyable(p).ok,true,tag);
  }
- const blank={tags:["home-education-document","nsw","premium-planner-blank"],collection:"Home Education Documents",
+ const guided={tags:["home-education-document","nsw","guided-document"],collection:"Home Education Documents",
+   fulfilment:"digital",visible:true,status:"in_stock",price_cents:999,stage:"launch_now",digital_file:0};
+ assert.equal(isOnDemandDocument(guided),false,"new guided copies must never start old online wizard checkout");
+ assert.equal(buyable(guided).ok,false,"must not sell guided until static file uploaded and reviewed");
+  const blank={tags:["home-education-document","nsw","premium-planner-blank"],collection:"Home Education Documents",
    fulfilment:"digital",visible:true,status:"in_stock",price_cents:2995,stage:"launch_now",digital_file:0};
  assert.equal(isOnDemandDocument(blank),true);
  assert.equal(buyable(blank).ok,true,"blank PDF generated after paid order, no pre-upload");
