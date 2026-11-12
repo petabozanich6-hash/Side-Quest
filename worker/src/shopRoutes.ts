@@ -221,19 +221,18 @@ export function registerShopCatalog(app: App) {
     const rate=await hitRateLimit(c.env.DB,`shop-document-preview:${c.req.header("CF-Connecting-IP")||"?"}`,20,3600);
     if(!rate.ok)return c.json({detail:"Too many previews. Please try later."},429);
     try {
-      let pdf:Uint8Array;
-      if(tags.some(t=>["premium-planner-blank","premium-planner-personalised","premium-planner-printed"].includes(t))){
-        const personalised=tags.includes("premium-planner-personalised")||tags.includes("premium-planner-printed");
-        const data=personalised?sampleGuidedDocumentData(matches[0],year):null;
-        const plan=data?await buildGuestPlan(c.env.DB,matches[0] as any,data):null;
-        pdf=await renderGuestPdf(c.env,premiumDiaryHtml(matches[0],year,plan,true));
-      }else if(tags.includes("guided-document")){
-        const sample=sampleGuidedDocumentData(matches[0],year);
-        const plan=await buildGuestPlan(c.env.DB,matches[0] as any,sample);
-        pdf=await renderGuestPdf(c.env,guestPlanHtml(plan,true));
-      }else if(tags.includes("fillable-pdf")||tags.includes("print-and-post")){
-        pdf=generateHomeEducationTemplate(matches[0],year,true);
-      }else return c.json({detail:"Preview unavailable."},404);
+      // Public samples show the current universal, reusable PDFs.
+      // Personalised and printed products preview the blank layout, never
+      // expose owner masters or another family's data. Historical paid
+      // custom-order endpoints remain unchanged.
+      const isPremium=tags.some(t=>["premium-planner-blank","premium-planner-personalised","premium-planner-printed"].includes(t));
+      const isGuided=tags.includes("guided-document");
+      const isBasic=tags.includes("fillable-pdf")||tags.includes("print-and-post");
+      if(!isPremium&&!isGuided&&!isBasic)return c.json({detail:"Preview unavailable."},404);
+      const printable=tags.some(t=>["print-and-post","premium-planner-printed"].includes(t));
+      const edition=isPremium?"complete":"standard";
+      const publicKind=isPremium?"planner_blank":isGuided?"guided":"blank";
+      const pdf=generateHomeEducationTemplate(matches[0],"ALL",true,printable?"print":"fillable",edition,[],publicKind);
       c.header("Content-Type","application/pdf");
       c.header("Content-Disposition",`inline; filename="sidequest-${matches[0].toLowerCase()}-sample.pdf"`);
       return c.body(pdf as unknown as ArrayBuffer);
