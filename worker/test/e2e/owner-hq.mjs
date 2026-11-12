@@ -170,11 +170,7 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 });
 
 
-await step("Dragon's Hoard appears and gifting preview days reaches the parent", async () => {
-  await page.click("[data-testid=hq-tab-dragon-hoard]");
-  await page.waitForSelector("[data-testid=hq-dragon-hoard]");
-  await page.waitForSelector("[data-testid=hoard-create]", { timeout: 15000 });
-  await page.waitForSelector("[data-testid=hoard-gifts]", { timeout: 15000 });
+await step("gifting preview days from a customer's page reaches the parent", async () => {
   const before = await api("GET", "/account/plan", user.token);
   ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");
   await page.click("[data-testid=hq-tab-customers]");

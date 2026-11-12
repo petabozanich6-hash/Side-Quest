@@ -8,9 +8,8 @@ It replaces the first "Command Centre" page, which treated any family on the `IN
 | Area      | What you can do                                                                                                                                                          |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Overview  | Families, parents, children, new families (7/30 days, 14-day chart), plans, Stripe status, AI requests and failures, storage, server errors and a "needs attention" list. Unmeasured billing and user statistics still say **Not configured** (revenue, active users). Workers AI now has a privacy-safe per-inference token ledger with a **clearly labelled USD gross estimate**, not an invoice or a guess from request counts. Cloudflare remains authoritative for charges. |
-| Customers | Search families by parent email or family id. A family's page shows account details and **counts only**: never children's names, lessons, answers, evidence, notes or files. Suspend, restore and "sign out everywhere", each with a reason. |
+| Customers | Search families by parent email or family id. A family's page shows account details and **counts only**: never children's names, lessons, answers, evidence, notes or files. Suspend, restore and "sign out everywhere", each with a reason, and gift extra free-preview days (audited, capped at 35 days from sign-up). |
 | Feedback inbox | Review parent reports, ideas and problems, keep private internal notes, and **reply to the submitting parent directly** with editable quick-response templates. Parents see the reply in their own Feedback history and get an unread badge. Email sends a content-free sign-in notification when EMAIL is available; in-app delivery works without email. Owner replies and status changes stay audited. |
-| Dragon's Hoard | Owner-managed, first-invoice Stripe promo codes (test/live separated, capped and expiring) and audited Helping Hand free-preview gifts to eligible families. See [Dragon's Hoard](DRAGONS_HOARD.md). |
 | Settings  | Announcement banner, maintenance notice, feature switches (new sign-ups, AI, YouTube suggestions) and the platform-wide daily AI limit. Changes that could cost money or shut people out ask for a second confirmation. |
 | Audit log | Every administrative change, newest first.                                                                                                                               |
 | Security  | Your passkeys (keep at least two).                                                                                                                                       |
@@ -90,7 +89,7 @@ If the Cloudflare Email Service binding is configured, a content-free email invi
 
 At the bottom of the sidebar, owners get a **View site as** menu: Owner (normal), Family member, Free preview or
 Preview ended. It changes only the owner's own family, so the owner sees exactly what that kind of family sees
-(plan limits, locked features, Quest Books buy buttons, Printable Vault and Hands-on Vault locks). Owner-only
+(plan limits, locked features, the handwriting book and Hands-on Vault locks). Owner-only
 shortcuts and uploader panels are hidden while it's on. A yellow banner shows the current view with a
 **Back to owner view** button, and the view switches itself off after 2 hours. Owner HQ and admin endpoints keep
 checking the real owner role throughout. Code: `worker/src/viewAs.ts`, `frontend/src/components/parent/OwnerViewAs.jsx`;

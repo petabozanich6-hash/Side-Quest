@@ -5,14 +5,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
-import ShopOrder from "./pages/ShopOrder";
-import GuidedDocument from "./pages/GuidedDocument";
-import PremiumDocument from "./pages/PremiumDocument";
-import ConfigurePremium from "./pages/ConfigurePremium";
-import ShopSubscription from "./pages/ShopSubscription";
-import ParentShop from "./pages/parent/ParentShop";
-import ShopDownloads from "./pages/ShopDownloads";
-import ShopSection from "./components/shop/ShopSection";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -25,7 +17,6 @@ import { isKidsHost } from "./lib/pwa";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
 import ParentDashboard from "./pages/parent/Dashboard";
-import HqBookForge from "./pages/parent/hq/HqBookForge";
 import HqShell from "./pages/parent/hq/HqShell";
 import HqOverview from "./pages/parent/hq/HqOverview";
 import HqCustomers from "./pages/parent/hq/HqCustomers";
@@ -37,7 +28,6 @@ import PlatformNotices from "./components/shared/PlatformNotices";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
-import LessonReviewCentre from "./pages/parent/LessonReviewCentre";
 import LessonBuilder from "./pages/parent/LessonBuilder";
 import MakeLesson from "./pages/parent/MakeLesson";
 import LessonReview from "./pages/parent/LessonReview";
@@ -46,8 +36,6 @@ import LessonPrint from "./pages/parent/LessonPrint";
 import UpgradePage from "./pages/parent/Upgrade";
 import AssignmentsPage from "./pages/parent/Assignments";
 import ResourcesPage from "./pages/parent/Resources";
-import PrintableVault from "./pages/parent/PrintableVault";
-import QuestBooks from "./pages/parent/QuestBooks";
 import HandwritingBook from "./pages/parent/HandwritingBook";
 import HandsOnVault from "./pages/parent/HandsOnVault";
 import HomeschoolCompass from "./pages/parent/HomeschoolCompass";
@@ -68,9 +56,6 @@ import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
 import SiteSearch from "./pages/shared/SiteSearch";
 import HqFeedback from "./pages/parent/hq/HqFeedback";
 import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
-import HqHoard from "./pages/parent/hq/HqHoard";
-import HqShop from "./pages/parent/hq/HqShop";
-import HqDocumentStudio from "./pages/parent/hq/HqDocumentStudio";
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -84,6 +69,13 @@ import ChildWordHoard from "./pages/child/ChildWordHoard";
 import PetRoom from "./pages/child/PetRoom";
 import ChildReading from "./pages/child/ChildReading";
 import DragonLibrary from "./pages/shared/DragonLibrary";
+import { SHOP_URL } from "./lib/shop";
+
+/** Sends visitors from an old in-app shop link to the Square shop. */
+function GoToShop() {
+  React.useEffect(() => { window.location.replace(SHOP_URL); }, []);
+  return <p className="p-8 text-center text-stone-700">Taking you to the <a className="underline font-bold" href={SHOP_URL}>Side-Quest shop</a>…</p>;
+}
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
@@ -101,13 +93,8 @@ function Router() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/shop" element={<div className="min-h-screen bg-[#F5EFE0]"><ShopSection standalone /></div>} />
-      <Route path="/shop/order/:id" element={<ShopOrder />} />
-      <Route path="/shop/documents/:id/:productId" element={<GuidedDocument />} />
-      <Route path="/shop/premium/:id/:productId" element={<PremiumDocument />} />
-      <Route path="/shop/configure-planner/:productId" element={<ConfigurePremium />} />
-      <Route path="/shop/subscription/:id" element={<ShopSubscription />} />
-      <Route path="/shop/downloads" element={<ShopDownloads />} />
+      {/* The shop moved to Square: old shop links (and anything under /shop) go there. */}
+      <Route path="/shop/*" element={<GoToShop />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
@@ -128,7 +115,6 @@ function Router() {
         <Route path="outcomes/:sid" element={<OutcomeTrackerPage />} />
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
-        <Route path="lessons/review-centre" element={<LessonReviewCentre />} />
         <Route path="plan" element={<UpgradePage />} />
         <Route path="email-preferences" element={<AnnouncementPreferences />} />
         <Route path="command-centre" element={<HqShell />}>
@@ -140,10 +126,6 @@ function Router() {
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
           <Route path="announcements" element={<HqAnnouncements />} />
-          <Route path="dragon-hoard" element={<HqHoard />} />
-          <Route path="shop" element={<HqShop />} />
-          <Route path="document-studio" element={<HqDocumentStudio />} />
-          <Route path="book-forge" element={<HqBookForge />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
@@ -154,10 +136,6 @@ function Router() {
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
-        <Route path="shop" element={<ParentShop />} />
-        <Route path="quest-books" element={<QuestBooks />} />
-        <Route path="quest-books/:bookId" element={<QuestBooks />} />
-        <Route path="printable-vault" element={<PrintableVault />} />
         <Route path="handwriting-book" element={<HandwritingBook />} />
         <Route path="hands-on-vault" element={<HandsOnVault />} />
         <Route path="dragons-library" element={<DragonLibrary mode="parent" />} />
