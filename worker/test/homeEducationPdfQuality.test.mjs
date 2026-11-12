@@ -111,3 +111,32 @@ test("NSW senior secondary has an explicit course planning warning and dedicated
  assert.match(senior,/Senior secondary course and pattern-of-study planning/);
  assert.match(senior,/Pattern of study and verified syllabus references/);
 });
+
+
+test("large writing spaces and real editable working tables exist in every jurisdiction",()=>{
+ const states=["NSW","VIC","QLD","WA","SA","TAS","ACT","NT"];
+ for(const state of states){
+  const fillable=asText(generateHomeEducationTemplate(state,"3",false,"fillable","standard"));
+  const printable=asText(generateHomeEducationTemplate(state,"3",false,"print","standard"));
+  for(const phrase of ["Resource inventory","Flexible weekly learning plan","Learning areas at a glance","lesson and activity planner","Additional working notes"]){
+   assert.ok(fillable.includes(phrase),state+": missing "+phrase);
+  }
+  assert.ok(widgets(fillable)>120,state+" needs many independent fillable cells");
+  assert.equal(widgets(printable),0,state+" print must remain handwriting-only");
+  assert.ok(pages(fillable)>pages(asText(generateHomeEducationTemplate(state,"3",true))),
+    state+" expanded form must have real interior pages");
+  // The new table cells are tall enough for useful multiline answers.
+  const tall=[...fillable.matchAll(/\/Rect \[([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)\]/g)]
+   .filter(m=>Number(m[4])-Number(m[2])>=90);
+  assert.ok(tall.length>=20,state+" needs spacious cells, not only shallow rows");
+ }
+});
+test("full diary has separate weekly, diary and reading tables with editable cells",()=>{
+ const text=asText(generateHomeEducationTemplate("VIC","7",false,"fillable","complete"));
+ for(const phrase of ["Weekly or fortnightly planner - period 1","Learning diary - period 1",
+  "Reading and literacy record","Evidence portfolio index","Outcomes and goals tracker",
+  "Projects and excursions","Extra family planning notes"]){
+   assert.ok(text.includes(phrase),"Missing comprehensive planner table: "+phrase);
+ }
+ assert.ok(widgets(text)>400,"The complete planner needs useful digital space for planning and evidence");
+});
