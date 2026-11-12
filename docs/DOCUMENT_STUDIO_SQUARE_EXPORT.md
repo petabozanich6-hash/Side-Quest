@@ -10,7 +10,7 @@ Choose a starter (worksheet, family planner, reading journal, evidence tracker o
 
 "Create print + fillable PDF set" calls an owner-only API to build the same content in two A4 PDFs. The **print** edition has visible boxes, writing guides and checklist outlines. The **fillable** edition includes PDF AcroForm text/checkbox widgets in the same areas. Long activities continue on additional sheets; the renderer does not shrink answer spaces to force a page count. Covers use a restrained forest-green, bronze and white Side-Quest visual system.
 
-Download files individually or use **Download Square product ZIP** to package both PDFs with owner-only listing and quality notes. No product database row or customer transaction is created during export.
+Download files individually or use **Download Square product ZIP** to package both customer-facing PDFs without internal owner notes. No product database row or customer transaction is created during export.
 
 ## Square digital delivery in Australia
 
