@@ -163,14 +163,14 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
  };
  const field=(label:string,help="",height=104,short=false)=>{
   const lbl=wrap(label,11,R-L-10),hint=help?wrap(help,8.8,R-L-18):[];
-  const cost=lbl.length*15+hint.length*13+height+24;
+  const cost=lbl.length*15+hint.length*13+height+35;
   ensure(cost);
   for(const s of lbl){text(s,L+3,y,11,true,green);y-=15;}
   for(const s of hint){text(s,L+3,y,8.8,false,muted);y-=13;}
   y-=12;
   const bottom=y-height;
   outline(L,bottom,R-L,height);
-  if(!short)for(let yy=bottom+23;yy<y-5;yy+=24)rule(L+13,yy,R-13,"0.87 0.89 0.86");
+  if(mode==="print"&&!short)for(let yy=bottom+23;yy<y-5;yy+=24)rule(L+13,yy,R-13,"0.87 0.89 0.86");
   fieldNumber++;
   if(mode==="fillable")p.fields.push({name:"answer_"+String(fieldNumber).padStart(4,"0"),kind:"text",x:L+3,y:bottom+3,width:R-L-6,height:height-6});
   y=bottom-23;
@@ -195,19 +195,47 @@ export function generateHomeEducationTemplate(state:string,yearLevel="3",sampleO
   if(mode==="fillable")p.fields.push({name:"check_"+String(fieldNumber).padStart(4,"0"),kind:"check",x:L+3,y:y-18,width:15,height:15});
   y-=h+10;
  };
- const table=(headings:string[],rows:number,rowHeight=69)=>{
-  const widths=headings.length===4?[84,133,142,142]:[100,192,209];
+ // Every editable table cell is its own multiline PDF field. Optional static
+ // first-column labels make curriculum maps useful without asking families to
+ // keep rewriting the learning area on every line.
+ const table=(headings:string[],rows:number,rowHeight=98,options?:{widths?:number[];rowLabels?:string[]})=>{
+  const widths=options?.widths || (headings.length===4?[79,133,144,145]:
+    headings.length===3?[125,188,188]:headings.length===2?[165,336]:[]);
+  if(!widths.length||widths.length!==headings.length||widths.reduce((a,b)=>a+b,0)!==R-L)
+   throw Error("Invalid table column dimensions.");
   const xs=[L];
   for(let i=1;i<widths.length;i++)xs.push(xs[i-1]+widths[i-1]);
-  const header=()=>{ensure(45);rect(L,y-30,R-L,30,"0.93 0.95 0.92");headings.forEach((h,i)=>wrap(h,8.1,widths[i]-9).slice(0,2).forEach((s,j)=>text(s,xs[i]+5,y-13-j*10,8.1,true,green)));y-=30;};
-  header();
+  const head=()=>{
+   ensure(30+rowHeight+14);
+   rect(L,y-31,R-L,31,"0.92 0.95 0.92");
+   headings.forEach((heading,i)=>wrap(heading,8.4,widths[i]-12).slice(0,2).forEach((line,j)=>
+    text(line,xs[i]+6,y-13-j*11,8.4,true,green)));
+   y-=31;
+  };
+  head();
   for(let i=0;i<rows;i++){
-   if(y-rowHeight-12<BOTTOM){page();header();}
+   if(y-rowHeight-9<BOTTOM){
+    page();
+    text("WORKING TABLE - CONTINUED",L,y,9,true,muted);y-=20;
+    head();
+   }
    const bottom=y-rowHeight;
-   widths.forEach((w,j)=>{
-    outline(xs[j],bottom,w,rowHeight);
-    fieldNumber++;
-    if(mode==="fillable")p.fields.push({name:"answer_"+String(fieldNumber).padStart(4,"0"),kind:"text",x:xs[j]+3,y:bottom+3,width:w-6,height:rowHeight-6});
+   if(i%2===1)rect(L,bottom,R-L,rowHeight,"0.987 0.99 0.984");
+   widths.forEach((width,j)=>{
+    outline(xs[j],bottom,width,rowHeight);
+    const label=j===0?options?.rowLabels?.[i]:undefined;
+    if(label){
+     wrap(label,9,width-13).slice(0,Math.max(1,Math.floor((rowHeight-12)/14))).forEach((line,k)=>
+      text(line,xs[j]+6,y-16-k*14,9,true,green));
+    }else{
+     if(mode==="print")for(let yy=bottom+25;yy<y-7;yy+=25)
+      rule(xs[j]+7,yy,xs[j]+width-7,"0.88 0.9 0.86");
+     fieldNumber++;
+     if(mode==="fillable")p.fields.push({
+      name:"answer_"+String(fieldNumber).padStart(4,"0"),kind:"text",
+      x:xs[j]+4,y:bottom+4,width:width-8,height:rowHeight-8
+     });
+    }
    });
    y=bottom-9;
   }
