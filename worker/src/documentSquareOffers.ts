@@ -48,7 +48,7 @@ export function listingDraftFor(state:string,year:string,kind:DocumentOfferKind)
  if(!code||!offer)throw Error("Unknown document listing.");
  const prep=SQUARE_PRODUCTION[kind];
  const display=JURISDICTIONS[code].name;
- const grade=/^(K|F|Prep)$/i.test(year) ? "first school year" : "Year "+year;
+ const grade=/^(K|F|Prep)$/i.test(year) ? JURISDICTIONS[code].foundationYear : "Year "+year;
  const title=offer.title(display)+" — "+grade;
  const common="Independent Side-Quest home education planning and recordkeeping resource for "+display+" ("+grade+"). Not a government-issued document, a substitute for an official prescribed form, or a registration guarantee. Families must verify current state or territory rules and the relevant curriculum before use.";
  const descriptions:Record<DocumentOfferKind,string>={
