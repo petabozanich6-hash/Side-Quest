@@ -435,92 +435,6 @@ function ctx(db, body, env = {}) {
   };
 }
 
-test("checkout: server picks price, family and redirect; client values are ignored; no trial; no double subscriptions", async () => {
-  const db = makeDb();
-  seedFamily(db, "f1");
-  db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES ('u1','f1','p@example.com','P',?)").run(NOW.toISOString());
-  const sent = [];
-  const f = async (url, init) => {
-    sent.push({ url, body: decodeURIComponent(init.body || "") });
-    if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_new" }));
-    return new Response(JSON.stringify({ id: "cs_1", url: "https://checkout.stripe.com/c/pay/cs_1" }));
-  };
-  const h = routes(f);
-  const r = await h["/api/billing/checkout"](ctx(db, { interval: "fortnightly", price: "price_evil", family_id: "f2", success_url: "https://evil.example" }));
-  assert.equal(r.status, 200);
-  assert.equal(r.data.url, "https://checkout.stripe.com/c/pay/cs_1");
-  const cs = sent.find((s) => s.url.endsWith("/checkout/sessions")).body;
-  assert.match(cs, new RegExp(`line_items\\[0\\]\\[price\\]=${P.fortnightly.price}`));
-  assert.match(cs, /client_reference_id=f1/);
-  assert.match(cs, /customer=cus_new/);
-  assert.match(cs, /success_url=https:\/\/sidequestlearning.app\/parent\/plan\?checkout=success/);
-  assert.ok(!cs.includes("evil") && !cs.includes("f2") && !cs.includes("trial"));
-  assert.equal(fam(db, "f1").stripe_customer_id, "cus_new");
-  assert.equal(effectivePlan(fam(db, "f1"), NOW), "FREE_PREVIEW", "checkout grants nothing");
-
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "lifetime" }))).status, 400);
-  db.raw.prepare("UPDATE families SET plan='ACTIVE_MONTHLY', subscription_status='active' WHERE id='f1'").run();
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }))).status, 409);
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }, { STRIPE_SECRET_KEY: "" }))).status, 503);
-});
-
-test("checkout only accepts active, same-mode SideQuest Hoard codes and never forwards arbitrary Stripe codes", async () => {
-  const db = makeDb();
-  seedFamily(db, "f1");
-  db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES ('u1','f1','p@example.com','P',?)").run(NOW.toISOString());
-  const insert = db.raw.prepare(
-    "INSERT INTO dragon_hoard_offers (id,mode,code,label,percent_off,duration_months,max_redemptions,expires_at,stripe_coupon_id,stripe_promotion_id,active,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
-  );
-  insert.run("offer1", "test", "DRAGON20", "Dragon day", 20, 1, 10, new Date(Date.now() + 86400000).toISOString(), "coupon_sq1", "promo_sq1", 1, NOW.toISOString());
-  insert.run("offer2", "live", "LIVECODE", "Other mode", 20, 1, 10, new Date(Date.now() + 86400000).toISOString(), "coupon_sq2", "promo_live", 1, NOW.toISOString());
-  const calls = [];
-  const fake = async (url, init) => {
-    calls.push({ url, body: decodeURIComponent(init.body || "") });
-    if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_hoard" }));
-    return new Response(JSON.stringify({ id: "cs_hoard", url: "https://checkout.stripe.com/c/pay/cs_hoard" }));
-  };
-  const h = routes(fake);
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "monthly", promo_code: "SECRETWRONG", discounts: [{ promotion_code: "promo_evil" }] }))).status, 400);
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "monthly", promo_code: "LIVECODE" }))).status, 400);
-  assert.equal(calls.length, 0, "invalid or cross-mode codes must never contact Stripe");
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "monthly", promo_code: "dragon20", discounts: [{ promotion_code: "promo_evil" }] }))).status, 200);
-  const checkout = calls.find((x) => x.url.endsWith("/checkout/sessions")).body;
-  assert.ok(checkout.includes("discounts[0][promotion_code]=promo_sq1"), checkout);
-  assert.ok(!checkout.includes("promo_evil") && !checkout.includes("allow_promotion_codes"), "No arbitrary Stripe codes or open promo field");
-  db.raw.prepare("UPDATE dragon_hoard_offers SET active = 0 WHERE id = 'offer1'").run();
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly", promo_code: "DRAGON20" }))).status, 400);
-});
-
-test("live checkout replaces a confirmed stale sandbox customer, preserving family data", async () => {
-  const db = makeDb();
-  seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_sandbox_old" });
-  db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES ('u1','f1','p@example.com','P',?)").run(NOW.toISOString());
-  const calls = [];
-  const fetchStripe = async (url, init) => {
-    calls.push({ url, init });
-    if (url.endsWith("/customers/cus_sandbox_old")) return new Response(JSON.stringify({ error: { message: "No such customer" } }), { status: 404 });
-    if (url.endsWith("/customers")) return new Response(JSON.stringify({ id: "cus_live_new" }));
-    if (/\/(subscriptions|checkout\/sessions)\?customer=cus_live_new/.test(url)) return new Response(JSON.stringify({ data: [] }));
-    if (url.endsWith("/checkout/sessions")) return new Response(JSON.stringify({ id: "cs_live_1", url: "https://checkout.stripe.com/c/pay/cs_live_1" }));
-    throw Error("unexpected Stripe request " + url);
-  };
-  const h = routes(fetchStripe);
-  const result = await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }, { STRIPE_SECRET_KEY: "sk_live_dummy", STRIPE_LIVE_ENABLED: "true" }));
-  assert.equal(result.status, 200);
-  assert.equal(fam(db, "f1").stripe_customer_id, "cus_live_new");
-  assert.equal(fam(db, "f1").plan, "FREE_PREVIEW");
-  assert.match(calls.find((c) => c.url.endsWith("/checkout/sessions")).init.body, /customer=cus_live_new/);
-});
-
-test("live checkout fails closed on Stripe permission/server errors without replacing customer", async () => {
-  const db = makeDb();
-  seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_existing" });
-  const h = routes(async () => new Response(JSON.stringify({ error: { message: "Service unavailable" } }), { status: 503 }));
-  const res = await h["/api/billing/checkout"](ctx(db, { interval: "monthly" }, { STRIPE_SECRET_KEY: "sk_live_dummy", STRIPE_LIVE_ENABLED: "true" }));
-  assert.equal(res.status, 502);
-  assert.equal(fam(db, "f1").stripe_customer_id, "cus_existing");
-});
-
 test("webhook route rejects unsigned requests", async () => {
   const db = makeDb();
   const h = routes(async () => new Response("{}"));
@@ -551,39 +465,6 @@ test("account deletion: blocked while any Stripe subscription still renews; fail
   assert.equal((await b.deletionBillingBlock(db, {}, "f1"))?.status, 409);
   db.raw.prepare("UPDATE families SET cancel_at_period_end = 1 WHERE id = 'f1'").run();
   assert.equal(await b.deletionBillingBlock(db, {}, "f1"), null);
-});
-
-test("checkout: Stripe's own subscription list blocks a second membership; open pages are reused or closed", async () => {
-  const db = makeDb();
-  seedFamily(db, "f1", "FREE_PREVIEW", { stripe_customer_id: "cus_1" });
-  let subs = [];
-  let open = [];
-  const calls = [];
-  const f = async (url, init) => {
-    calls.push({ url, method: init.method });
-    if (/\/subscriptions\?/.test(url)) return new Response(JSON.stringify({ data: subs }));
-    if (/\/checkout\/sessions\?/.test(url)) return new Response(JSON.stringify({ data: open }));
-    if (url.endsWith("/expire")) return new Response(JSON.stringify({ id: "x", status: "expired" }));
-    if (url.endsWith("/checkout/sessions")) return new Response(JSON.stringify({ id: "cs_new", url: "https://checkout.stripe.com/new" }));
-    throw Error("unexpected " + url);
-  };
-  const h = routes(f);
-  // Paid a moment ago, webhook not here yet: the family row still says Free.
-  subs = [sub({ status: "active" })];
-  const dup = await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }));
-  assert.equal(dup.status, 409);
-  assert.equal(dup.data.code, "ALREADY_SUBSCRIBED");
-  assert.ok(!calls.some((c) => c.url.endsWith("/checkout/sessions")), "no new checkout page");
-
-  subs = [sub({ status: "canceled" })];
-  open = [{ id: "cs_same", url: "https://checkout.stripe.com/same", metadata: { interval: "weekly", promo: "none" } }];
-  assert.equal((await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }))).data.url, "https://checkout.stripe.com/same", "double click reuses the page");
-
-  calls.length = 0;
-  open = [{ id: "cs_other", url: "https://checkout.stripe.com/other", metadata: { interval: "monthly", promo: "none" } }];
-  const r = await h["/api/billing/checkout"](ctx(db, { interval: "weekly" }));
-  assert.equal(r.data.url, "https://checkout.stripe.com/new");
-  assert.ok(calls.some((c) => c.url.endsWith("/checkout/sessions/cs_other/expire") && c.method === "POST"), "the other plan's page is closed");
 });
 
 test("reconcile: a missed cancellation webhook is caught once the period ends; fresh or future rows are left alone", async () => {

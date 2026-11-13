@@ -5,14 +5,10 @@ import { adminApi, enrolPasskey, errorCode, errorText, stepUpWithPasskey } from 
 import { Alert, Button, GREEN } from "./ui";
 
 const TABS = [
-  { to: "/parent/command-centre/book-forge", label: "Book Forge", testid: "hq-tab-book-forge" },
   { to: "/parent/command-centre", label: "Overview", end: true, testid: "hq-tab-overview" },
   { to: "/parent/command-centre/customers", label: "Customers", testid: "hq-tab-customers" },
   { to: "/parent/command-centre/feedback", label: "Feedback inbox", testid: "hq-tab-feedback" },
   { to: "/parent/command-centre/announcements", label: "Special emails", testid: "hq-tab-announcements" },
-  { to: "/parent/command-centre/dragon-hoard", label: "Dragon’s Hoard", testid: "hq-tab-dragon-hoard" },
-  { to: "/parent/command-centre/shop", label: "Shop", testid: "hq-tab-shop" },
-  { to: "/parent/command-centre/document-studio", label: "Document Studio", testid: "hq-tab-document-studio" },
   { to: "/parent/command-centre/settings", label: "Settings", testid: "hq-tab-settings" },
   { to: "/parent/command-centre/audit", label: "Audit log", testid: "hq-tab-audit" },
   { to: "/parent/command-centre/security", label: "Security", testid: "hq-tab-security" },

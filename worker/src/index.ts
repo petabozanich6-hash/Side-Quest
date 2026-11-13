@@ -1,4 +1,3 @@
-import { processBookForgeJobs } from "./bookForgeGeneration";
 import { Hono } from "hono";
 import { normJurisdiction, setFamilyJurisdiction, getFamilyJurisdiction } from "./data/jurisdictions";
 import { cors } from "hono/cors";
@@ -18,7 +17,6 @@ import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
 import { registerBilling, reconcileSubscriptions } from "./billing";
 import { registerSquare } from "./square";
-import { registerShopCatalog } from "./shopRoutes";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerPriorLearning } from "./priorLearning";
 import { registerStartingChecks } from "./startingCheck";
@@ -27,10 +25,7 @@ import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
 import { registerHomeschoolCompass } from "./homeschoolCompass";
 import { registerSiteSearch } from "./siteSearch";
-import { registerPrintableVault } from "./printableVault";
 import { registerHandwritingBook } from "./handwritingBook";
-import { registerQuestBooks, registerShop } from "./questBooks";
-import { registerQuestOvernight, processQuestOvernight } from "./questBookOvernight";
 import { registerViewAs, viewAsState } from "./viewAs";
 import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
@@ -313,8 +308,6 @@ registerStudentCredentials(app, guards);
 registerHelpRequests(app, guards);
 registerBilling(app, guards);
 registerSquare(app);
-registerShopCatalog(app);
-registerShop(app);
 registerOutcomes(app, guards);
 registerPriorLearning(app, guards);
 registerStartingChecks(app, guards);
@@ -323,10 +316,7 @@ registerAutoQuest(app, guards);
 registerTimetable(app, guards);
 registerHomeschoolCompass(app, guards);
 registerSiteSearch(app, guards);
-registerPrintableVault(app, guards);
 registerHandwritingBook(app, guards);
-registerQuestBooks(app, guards);
-registerQuestOvernight(app, guards);
 registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
@@ -353,15 +343,6 @@ export default {
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env), ctx), ctx);
   },
   scheduled: async (event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
-    // A dedicated one-minute trigger keeps book work moving without a browser and
-    // without waiting for the five-minute email/billing tasks to finish.
-    if (event.cron === "* * * * *") {
-      try { await processQuestOvernight(await applyPlatformSettings(env)); }
-      catch (e) { console.error("Quest Book overnight queue cron failed", e); }
-      try { await processBookForgeJobs(meterWorkersAi(await applyPlatformSettings(env), _ctx)); }
-      catch (e) { console.error("Book Forge queue cron failed", e); }
-      return;
-    }
     if (event.cron !== "*/5 * * * *") return;
     // Preserve the five-minute cadence of every existing maintenance task.
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }

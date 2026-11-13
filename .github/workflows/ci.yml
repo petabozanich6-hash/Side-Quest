@@ -49,8 +49,6 @@ jobs:
           npm run test:support-copy 2>&1 | tee ci-logs/support-copy.log
       - name: Senior curriculum source checks
         run: node --test worker/test/seniorCatalogueAudit.test.mjs
-      - name: Document Studio PDF regression checks
-        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/homeEducationPdfQuality.test.mjs worker/test/homeEducationPdf.test.mjs worker/test/documentStudioPreview.test.mjs worker/test/documentSquareProduction.test.mjs
       - name: Worker TypeScript check
         id: typecheck
         continue-on-error: true

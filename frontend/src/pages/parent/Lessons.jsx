@@ -67,16 +67,8 @@ export default function LessonsPage() {
     book_copy: "Book lesson in your library",
     official_standalone: "Official standalone lesson",
   };
-  const reviewLink = l => {
-    const bookContext = kindOf(l) === "book_companion" && l.quest_chapter_id
-      ? `?book=${encodeURIComponent(l.quest_book_id)}&chapter=${encodeURIComponent(l.quest_chapter_id)}` : "";
-    return `/parent/lessons/${l.id}/review${bookContext}`;
-  };
-  const editLink = l => {
-    const bookContext = kindOf(l) === "book_companion" && l.quest_chapter_id
-      ? `?book=${encodeURIComponent(l.quest_book_id)}&chapter=${encodeURIComponent(l.quest_chapter_id)}` : "";
-    return `/parent/lessons/${l.id}/edit${bookContext}`;
-  };
+  const reviewLink = l => `/parent/lessons/${l.id}/review`;
+  const editLink = l => `/parent/lessons/${l.id}/edit`;
   const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const shown = lessons.filter(l => {
     const t = [l.title, l.learning_area, l.quest_book_title, ...(l.additional_learning_areas || []), l.year_level, ...(l.objectives || [])].join(" ").toLowerCase();

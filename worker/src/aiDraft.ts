@@ -1057,9 +1057,7 @@ export async function generateStaged(
 export async function draftLessonWithAi(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; request: AiRequest;
-    /** Set only by the owner's Quest Books "make a lesson from this chapter": tags the draft with its book and chapter. */
-    questBook?: { bookId: string; bookTitle: string; chapterId: string; chapterTitle: string; pageStart?: number; pageEnd?: number; exerciseRef?: string; skillGoal?: string; sourceRevision?: string } },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; request: AiRequest },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; usage: Awaited<ReturnType<typeof aiUsage>>; warnings: string[]; model: string; assumptions: Record<string, string | number>; generation: ReturnType<typeof generationReport>; outcomes: OutcomeSuggestion[] }>> {
   const { familyId, userId, request } = opts;
@@ -1242,7 +1240,7 @@ export async function draftLessonWithAi(
   }
   // Apply reviewable subject links after repair so no repaired draft loses them.
   (draft as any).additional_learning_areas = cleanAdditionalAreas((request as any).additional_learning_areas, draft.learning_area);
-  const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags, questBook: opts.questBook });
+  const created = await lb.createLesson(db, familyId, draft, now, { ai: true, flags });
   if (!created.ok) {
     await mark("failed");
     return created;

@@ -1,10 +1,9 @@
-// Family Membership on Square: subscription plans in Square's catalog, hosted checkout (Payment Links), and access
-// granted only from Square's signed webhooks (payments, subscriptions, invoices), re-read from Square each time.
+// Family Membership on Square: access granted only from Square's signed webhooks (payments, subscriptions,
+// invoices), re-read from Square each time.
 //
-// - Plan variations are created once in Square's catalog (and one per Dragon's Hoard code, with a discounted first
-//   phase) and remembered in square_plans.
-// - A checkout is remembered by its Square order id (square_checkouts). When that order's payment completes, the
-//   Square customer is linked to the family (square_members) and their subscription is synced.
+// - New members buy in the Square Online shop; squareShopMembership.ts links them to a parent account.
+// - Families who joined through the app's old Square checkout are remembered in square_checkouts / square_plans
+//   and keep being synced the same way.
 // - families keeps the provider-neutral state the rest of the app reads (plan, plan_period_end, billing_interval,
 //   subscription_status, cancel_at_period_end). The Square subscription id is kept as "sq:<id>" in
 //   stripe_subscription_id so the owner new-member alert and the summary work unchanged.
@@ -16,7 +15,6 @@ type DB = D1Database;
 type Cfg = Extract<SquareConfig, { ok: true }>;
 const DAY_MS = 86400000;
 
-const CADENCE: Record<Interval, string> = { weekly: "WEEKLY", fortnightly: "EVERY_TWO_WEEKS", monthly: "MONTHLY", yearly: "ANNUAL" };
 
 const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS square_plans (key TEXT PRIMARY KEY, variation_id TEXT NOT NULL UNIQUE, interval TEXT NOT NULL, offer_id TEXT, created_at TEXT NOT NULL)`,
@@ -39,97 +37,9 @@ export const membershipOptions = () => INTERVALS.map((i) => ({ interval: i, labe
 
 // ---------------------------------------------------------------- promo codes (Dragon's Hoard)
 
-export type SquareOffer = { id: string; code: string; percent_off: number; duration_type: string; max_redemptions: number; expires_at: string };
+// New memberships are bought in the Square Online shop (squareShopMembership.ts). The app no longer creates
+// checkouts, plans or discounts; it only keeps existing members in step with Square.
 
-/** An active, unexpired Square-mode Hoard code that still has redemptions left. */
-export async function findSquareOffer(db: DB, cfg: Cfg, raw: string, now: Date = new Date()): Promise<SquareOffer | null> {
-  const code = String(raw || "").trim().toUpperCase();
-  if (!/^[A-Z0-9]{4,24}$/.test(code)) return null;
-  await ensureSquareMembership(db);
-  const offer = await db.prepare(
-    `SELECT o.id, o.code, o.percent_off, COALESCE(t.duration_type,'once') AS duration_type, o.max_redemptions, o.expires_at
-     FROM dragon_hoard_offers o LEFT JOIN dragon_hoard_terms t ON t.offer_id = o.id
-     WHERE o.mode = ? AND o.code = ? AND o.active = 1 AND o.expires_at > ? AND o.stripe_coupon_id = 'square'`
-  ).bind(cfg.production ? "live" : "test", code, now.toISOString()).first<SquareOffer>().catch(() => null);
-  if (!offer) return null;
-  const used = await db.prepare("SELECT COUNT(*) n FROM square_checkouts WHERE offer_id = ? AND paid_at IS NOT NULL").bind(offer.id).first<{ n: number }>();
-  return Number(used?.n || 0) >= offer.max_redemptions ? null : offer;
-}
-
-/** How many periods of this cadence the discount covers ("once" = the first payment; monthN = about N months). */
-export function discountPeriods(interval: Interval, durationType: string): number {
-  const months = /^month(\d)$/.exec(durationType)?.[1];
-  if (!months) return 1;
-  const m = Number(months);
-  return interval === "monthly" ? m : interval === "weekly" ? Math.round((m * 52) / 12) : interval === "fortnightly" ? Math.round((m * 26) / 12) : 1;
-}
-export const discounted = (cents: number, pct: number) => Math.max(100, Math.round((cents * (100 - pct)) / 100));
-
-// ---------------------------------------------------------------- catalog plans
-
-async function planId(db: DB, cfg: Cfg, fetchImpl?: Fetch): Promise<string> {
-  const row = await db.prepare("SELECT variation_id FROM square_plans WHERE key = 'plan'").first<{ variation_id: string }>();
-  if (row) return row.variation_id;
-  const r = await squareCall(cfg, "POST", "catalog/object", {
-    idempotency_key: `sidequest-membership-plan-${cfg.locationId}`,
-    object: { type: "SUBSCRIPTION_PLAN", id: "#sidequest_plan", subscription_plan_data: { name: "Side-Quest Family Membership" } },
-  }, fetchImpl);
-  const id = r?.catalog_object?.id;
-  if (!id) throw new Error("Square did not create the membership plan");
-  await db.prepare("INSERT OR IGNORE INTO square_plans (key, variation_id, interval, created_at) VALUES ('plan', ?, 'plan', ?)").bind(id, new Date().toISOString()).run();
-  return id;
-}
-
-/** The plan variation for an interval (and optional Hoard offer), created in Square the first time it's needed. */
-export async function planVariation(db: DB, cfg: Cfg, interval: Interval, offer: SquareOffer | null, fetchImpl?: Fetch): Promise<{ id: string; firstCents: number }> {
-  await ensureSquareMembership(db);
-  const full = LIVE_PRICE_DETAILS[interval].amount_cents;
-  const key = offer ? `${interval}:${offer.id}` : interval;
-  const firstCents = offer ? discounted(full, offer.percent_off) : full;
-  const row = await db.prepare("SELECT variation_id FROM square_plans WHERE key = ?").bind(key).first<{ variation_id: string }>();
-  if (row) return { id: row.variation_id, firstCents };
-  const plan = await planId(db, cfg, fetchImpl);
-  const money = (amount: number) => ({ type: "STATIC", price_money: { amount, currency: "AUD" } });
-  const phases = offer
-    ? [{ ordinal: 0, cadence: CADENCE[interval], periods: discountPeriods(interval, offer.duration_type), pricing: money(firstCents) },
-       { ordinal: 1, cadence: CADENCE[interval], pricing: money(full) }]
-    : [{ ordinal: 0, cadence: CADENCE[interval], pricing: money(full) }];
-  const r = await squareCall(cfg, "POST", "catalog/object", {
-    idempotency_key: `sidequest-variation-${key}-${full}`,
-    object: {
-      type: "SUBSCRIPTION_PLAN_VARIATION", id: "#sidequest_variation",
-      subscription_plan_variation_data: { name: `${LIVE_PRICE_DETAILS[interval].label}${offer ? ` (${offer.code})` : ""}`, subscription_plan_id: plan, phases },
-    },
-  }, fetchImpl);
-  const id = r?.catalog_object?.id;
-  if (!id) throw new Error("Square did not create the plan variation");
-  await db.prepare("INSERT OR IGNORE INTO square_plans (key, variation_id, interval, offer_id, created_at) VALUES (?, ?, ?, ?, ?)").bind(key, id, interval, offer?.id ?? null, new Date().toISOString()).run();
-  return { id, firstCents };
-}
-
-// ---------------------------------------------------------------- checkout
-
-export async function startMembershipCheckout(db: DB, cfg: Cfg, opts: {
-  familyId: string; email?: string | null; interval: Interval; offer: SquareOffer | null; redirectUrl: string; fetchImpl?: Fetch;
-}): Promise<string> {
-  const v = await planVariation(db, cfg, opts.interval, opts.offer, opts.fetchImpl);
-  const r = await squareCall(cfg, "POST", "online-checkout/payment-links", {
-    idempotency_key: `member-${opts.familyId}-${opts.interval}-${opts.offer?.id ?? "none"}-${Math.floor(Date.now() / 60000)}`,
-    quick_pay: { name: `Side-Quest Family Membership (${LIVE_PRICE_DETAILS[opts.interval].label})`, price_money: { amount: v.firstCents, currency: "AUD" }, location_id: cfg.locationId },
-    checkout_options: { subscription_plan_id: v.id, redirect_url: opts.redirectUrl, allow_tipping: false, ask_for_shipping_address: false },
-    ...(opts.email ? { pre_populated_data: { buyer_email: opts.email } } : {}),
-  }, opts.fetchImpl);
-  const url = r?.payment_link?.url;
-  const orderId = r?.payment_link?.order_id;
-  if (!url || !orderId) throw new Error("Square did not return a checkout link");
-  await db.prepare("INSERT OR REPLACE INTO square_checkouts (order_id, family_id, interval, offer_id, created_at) VALUES (?, ?, ?, ?, ?)")
-    .bind(orderId, opts.familyId, opts.interval, opts.offer?.id ?? null, new Date().toISOString()).run();
-  return url;
-}
-
-// ---------------------------------------------------------------- syncing from Square
-
-/** End of a Square date (YYYY-MM-DD) as an ISO time, with a day's slack for time zones. */
 const endOfDate = (d: string) => new Date(Date.parse(`${d}T00:00:00Z`) + 2 * DAY_MS - 1000).toISOString();
 
 export type ActivatedInfo = { familyId: string; subscriptionId: string; interval: Interval; periodEnd: string };

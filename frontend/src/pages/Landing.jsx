@@ -5,6 +5,7 @@ import { isKidsDevice, isKidsHost, isStandalone } from "../lib/pwa";
 import { Fern, Branch, Leaf, Flower, Pet } from "../components/shared/Botanical";
 import InstallApp from "../components/shared/InstallApp";
 import PublicHelpFaq from "../components/shared/PublicHelpFaq";
+import { SHOP_URL } from "../lib/shop";
 import { Sparkles, BookOpen, Camera, CalendarDays, Printer, ShieldCheck, Users, Compass, ArrowRight, ShoppingBag } from "lucide-react";
 
 const Feature = ({ icon: Icon, title, desc, tint = "#6B8A5B" }) => (
@@ -87,7 +88,7 @@ export default function Landing() {
                 <div className="mt-1 text-sm font-semibold flex items-center gap-1.5">Start your quest <ArrowRight size={16} className="transition group-hover:translate-x-1"/></div>
               </div>
             </Link>
-            <a href="https://shop.sidequestlearning.app" className="group rounded-3xl p-5 flex items-center gap-4 shadow-md hover:translate-y-[-2px] transition focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300" style={{backgroundColor:"#D4A574", color:"#1F3B2D"}} data-testid="cta-shop" aria-label="Visit the Side-Quest shop">
+            <a href={SHOP_URL} className="group rounded-3xl p-5 flex items-center gap-4 shadow-md hover:translate-y-[-2px] transition focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300" style={{backgroundColor:"#D4A574", color:"#1F3B2D"}} data-testid="cta-shop" aria-label="Visit the Side-Quest shop">
               <div className="shrink-0 rounded-2xl p-4" style={{backgroundColor:"#FFF9EE"}}><ShoppingBag size={44} strokeWidth={1.75} color="#1F3B2D"/></div>
               <div className="min-w-0">
                 <div className="font-display text-2xl font-bold leading-tight">The Shop</div>
@@ -143,7 +144,7 @@ export default function Landing() {
           <Feature icon={Camera} title="Evidence Backpack" desc="Your free preview shows a summary and one detailed entry. Family Membership unlocks full records, everyday learning evidence and portfolio exports." tint="#6B8A5B"/>
           <Feature icon={CalendarDays} title="A plan you can actually change" desc="Family Membership includes the editable family calendar, weekly timetables and Auto-Quest planning. Change the schedule when life changes — because it will." tint="#C8893B"/>
           <Feature icon={BookOpen} title="Progress and learning records" desc="Review completed work and keep evidence together. Australian families get official links and available outcome trackers; families using Other can define their own learning goals." tint="#4A5D3A"/>
-          <Feature icon={Printer} title="Books, printables and hands-on learning" desc="Explore Dragon’s Library for book ideas and links to legitimate reading sources. Paid members also have the Printable Vault, lesson printing and offline child learning." tint="#D4A574"/>
+          <Feature icon={Printer} title="Books, printables and hands-on learning" desc="Explore Dragon’s Library for book ideas and links to legitimate reading sources. Paid members also get hands-on activity guides, the A–Z handwriting book, lesson printing and offline child learning." tint="#D4A574"/>
           <Feature icon={ShieldCheck} title="Private by design" desc="No public profiles. Each child only sees their own work. Family data stays isolated." tint="#6B8A5B"/>
           <Feature icon={Compass} title="A little bit of magic" desc="Children earn XP and grow their pocket pets as they learn. Families can also opt into seasonal surprises — a little fun along the way." tint="#C77B5B"/>
           <div className="col-span-full mt-2 paper-card p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4" data-testid="homepage-homeschool-compass">
@@ -214,7 +215,7 @@ export default function Landing() {
               <li>Ongoing guided lesson drafting, editing, lesson sets and optional child hints*</li>
               <li>Advanced learning plans, manual calendar, timetables and Auto-Quest</li>
               <li>Full Evidence Backpack, life-learning records and outcome evidence management</li>
-              <li>Printable Vault activities, saved resources, Word Hoard authoring and file uploads*</li>
+              <li>Hands-on activity guides, the A–Z handwriting book, saved resources, Word Hoard authoring and file uploads*</li>
               <li>Offline learning for children, full portfolio exports and family-defined learning goals for “Other” regions</li>
             </ul>
             <p className="text-xs text-stone-600 border-t pt-3" style={{borderColor:"#D4C8A8"}}>*Family-wide fair-use limits apply to AI and records. Active uploaded file storage is limited to 250 MB per family. Every payment option unlocks the same membership.</p>

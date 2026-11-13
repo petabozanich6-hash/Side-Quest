@@ -128,7 +128,7 @@ export default function HandwritingBook(){
  };
  const button="inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold disabled:opacity-40";
  return <div className="p-4 sm:p-8 lg:p-10 max-w-6xl mx-auto space-y-5" data-testid="handwriting-book">
-  <nav aria-label="Breadcrumb" className="text-sm text-stone-600"><Link className="underline" to="/parent/printable-vault">Printable Vault</Link> / The Little Letter Quest</nav>
+  
   <header className="rounded-2xl bg-emerald-950 text-white p-6 sm:p-8 flex flex-wrap items-center justify-between gap-5">
    <div><p className="text-emerald-200 text-xs font-bold tracking-widest uppercase">Side-Quest · Early learners</p>
     <h1 className="font-display text-3xl font-bold mt-2">The Little Letter Quest</h1>
