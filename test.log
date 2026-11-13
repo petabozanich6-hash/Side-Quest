@@ -1,0 +1,3501 @@
+
+> side-quest@1.0.0 test:worker
+> node --no-warnings --import ./worker/test/register.mjs --test worker/test/builder.test.mjs worker/test/billing.test.mjs worker/test/dragonHoard.test.mjs worker/test/lifeLearning.test.mjs worker/test/portfolio.test.mjs worker/test/batches.test.mjs worker/test/outcomes.test.mjs worker/test/ac9Catalogue.test.mjs worker/test/autoQuest.test.mjs worker/test/plans.test.mjs worker/test/auth.test.mjs worker/test/ownerHq.test.mjs worker/test/bookForge.test.mjs worker/test/bookForgeEditorial.test.mjs worker/test/shopCatalog.test.mjs worker/test/bookForgeReliability.test.mjs worker/test/petGrowth.test.mjs worker/test/timetable.test.mjs worker/test/homeschoolCompass.test.mjs worker/test/compassUi.test.mjs worker/test/siteSearch.test.mjs worker/test/membershipAccess.test.mjs worker/test/printableVault.test.mjs worker/test/handwritingBook.test.mjs worker/test/handsOnVault.test.mjs worker/test/internationalGoals.test.mjs worker/test/aiCost.test.mjs worker/test/aiModelTrial.test.mjs worker/test/announcements.test.mjs worker/test/assignmentDedup.test.mjs worker/test/sessionSafety.test.mjs worker/test/emailVerification.test.mjs worker/test/compassSelections.test.mjs worker/test/compassSelectionsHttp.test.mjs worker/test/trialReminders.test.mjs worker/test/paymentNotices.test.mjs worker/test/priorLearning.test.mjs worker/test/startingCheck.test.mjs worker/test/aiFastPipeline.test.mjs worker/test/aiPipeline.test.mjs worker/test/calendarPlanningIntegration.test.mjs worker/test/childAnswerLeak.test.mjs worker/test/lessonAreas.test.mjs worker/test/lessonLanguage.test.mjs worker/test/childPrivacy.test.mjs worker/test/submissionsList.test.mjs worker/test/resourceLinks.test.mjs worker/test/questBookDraftQueue.test.mjs worker/test/questBookOutstanding.test.mjs worker/test/questBookRepairs.test.mjs worker/test/questBooks.test.mjs worker/test/seasonal.test.mjs worker/test/square.test.mjs worker/test/viewAs.test.mjs worker/test/shopLaunch.test.mjs
+
+TAP version 13
+# Subtest: ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands
+ok 1 - ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands
+  ---
+  duration_ms: 2.555137
+  type: 'test'
+  ...
+# Subtest: five jurisdictions use the same correctly named AC9 framework without claiming local syllabus equivalence
+ok 2 - five jurisdictions use the same correctly named AC9 framework without claiming local syllabus equivalence
+  ---
+  duration_ms: 0.208731
+  type: 'test'
+  ...
+# Subtest: NSW, VCAA and SCSA state catalogues remain distinct
+ok 3 - NSW, VCAA and SCSA state catalogues remain distinct
+  ---
+  duration_ms: 0.349191
+  type: 'test'
+  ...
+# Subtest: AC9 reference codes belong to the appropriate learning stage
+ok 4 - AC9 reference codes belong to the appropriate learning stage
+  ---
+  duration_ms: 0.191175
+  type: 'test'
+  ...
+# Subtest: an AC9 language elective matches ONLY the language selected by the family
+ok 5 - an AC9 language elective matches ONLY the language selected by the family
+  ---
+  duration_ms: 1.766707
+  type: 'test'
+  ...
+# Subtest: selected Chinese learner pathway must not mix distinct official pathway codes
+ok 6 - selected Chinese learner pathway must not mix distinct official pathway codes
+  ---
+  duration_ms: 0.394859
+  type: 'test'
+  ...
+# Subtest: VIC and WA expose state-specific source catalogues as references, not as unavailable or compliance guarantees
+ok 7 - VIC and WA expose state-specific source catalogues as references, not as unavailable or compliance guarantees
+  ---
+  duration_ms: 0.722659
+  type: 'test'
+  ...
+# Subtest: VIC and WA book matching separates History from Geography within Humanities
+ok 8 - VIC and WA book matching separates History from Geography within Humanities
+  ---
+  duration_ms: 5.415044
+  type: 'test'
+  ...
+# Workers AI cost metering unavailable
+# Subtest: Workers AI cost estimates use documented rates; unknown models are unpriced
+ok 9 - Workers AI cost estimates use documented rates; unknown models are unpriced
+  ---
+  duration_ms: 5.297744
+  type: 'test'
+  ...
+# Subtest: all model calls are logged without retaining messages, responses, family identifiers or emails
+ok 10 - all model calls are logged without retaining messages, responses, family identifiers or emails
+  ---
+  duration_ms: 223.784932
+  type: 'test'
+  ...
+# Subtest: the production waitUntil path never delays the AI response for cost writes
+ok 11 - the production waitUntil path never delays the AI response for cost writes
+  ---
+  duration_ms: 184.554037
+  type: 'test'
+  ...
+# Subtest: when a provider doesn't return usage, approximation is labelled and unknown prices remain unpriced
+ok 12 - when a provider doesn't return usage, approximation is labelled and unknown prices remain unpriced
+  ---
+  duration_ms: 165.927154
+  type: 'test'
+  ...
+# Subtest: provider failures preserve the original error; metering failures do not break AI
+ok 13 - provider failures preserve the original error; metering failures do not break AI
+  ---
+  duration_ms: 142.148884
+  type: 'test'
+  ...
+# Subtest: Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estimates, never invoice amounts
+ok 14 - Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estimates, never invoice amounts
+  ---
+  duration_ms: 135.992029
+  type: 'test'
+  ...
+# Subtest: only source-free mathematics can overlap frame with teaching
+ok 15 - only source-free mathematics can overlap frame with teaching
+  ---
+  duration_ms: 0.973864
+  type: 'test'
+  ...
+# Subtest: fast path starts a section before the frame is finished and preserves lesson stages
+ok 16 - fast path starts a section before the frame is finished and preserves lesson stages
+  ---
+  duration_ms: 2.930645
+  type: 'test'
+  ...
+# Subtest: English or source-based teaching still receives complete framed readings
+ok 17 - English or source-based teaching still receives complete framed readings
+  ---
+  duration_ms: 4.713937
+  type: 'test'
+  ...
+# Subtest: flag off retains frame-first scheduling and the standard pool
+ok 18 - flag off retains frame-first scheduling and the standard pool
+  ---
+  duration_ms: 0.700095
+  type: 'test'
+  ...
+# Subtest: if mathematics generates an unexpected reading, fast mode rebuilds every section with that reading
+ok 19 - if mathematics generates an unexpected reading, fast mode rebuilds every section with that reading
+  ---
+  duration_ms: 1.154674
+  type: 'test'
+  ...
+# Subtest: fast and standard modes send exactly the same full teaching prompts and preserve the same output
+ok 20 - fast and standard modes send exactly the same full teaching prompts and preserve the same output
+  ---
+  duration_ms: 1.937362
+  type: 'test'
+  ...
+# Subtest: split stages: no reading needed means teaching starts without waiting for the opening
+ok 21 - split stages: no reading needed means teaching starts without waiting for the opening
+  ---
+  duration_ms: 1.210607
+  type: 'test'
+  ...
+# Subtest: split stages: a needed reading is written first and every teaching and practice request receives it
+ok 22 - split stages: a needed reading is written first and every teaching and practice request receives it
+  ---
+  duration_ms: 0.771161
+  type: 'test'
+  ...
+# Subtest: split stages: a design that does not say keeps the reading-first rule outside source-free maths
+ok 23 - split stages: a design that does not say keeps the reading-first rule outside source-free maths
+  ---
+  duration_ms: 1.215925
+  type: 'test'
+  ...
+# Subtest: split stages: a parent's own resource always gets the readings step
+ok 24 - split stages: a parent's own resource always gets the readings step
+  ---
+  duration_ms: 0.81066
+  type: 'test'
+  ...
+# Subtest: split stages: all teaching requests of a long lesson run in a single round
+ok 25 - split stages: all teaching requests of a long lesson run in a single round
+  ---
+  duration_ms: 1.245129
+  type: 'test'
+  ...
+# Subtest: split stages: each activity is given different worked-example skills
+ok 26 - split stages: each activity is given different worked-example skills
+  ---
+  duration_ms: 0.665192
+  type: 'test'
+  ...
+# Subtest: split stages: a failed activity keeps the rest of the lesson and is flagged
+ok 27 - split stages: a failed activity keeps the rest of the lesson and is flagged
+  ---
+  duration_ms: 0.702448
+  type: 'test'
+  ...
+# Subtest: split stages off: design and existing stage prompts are unchanged
+ok 28 - split stages off: design and existing stage prompts are unchanged
+  ---
+  duration_ms: 0.518864
+  type: 'test'
+  ...
+# Subtest: benchmark fixtures are synthetic and dry run makes zero model calls
+ok 29 - benchmark fixtures are synthetic and dry run makes zero model calls
+  ---
+  duration_ms: 0.687386
+  type: 'test'
+  ...
+# Subtest: candidate models are registered at their own published prices, not inherited prices
+ok 30 - candidate models are registered at their own published prices, not inherited prices
+  ---
+  duration_ms: 0.449732
+  type: 'test'
+  ...
+# Subtest: full lesson estimates are available for named new models and null if counts are unknown
+ok 31 - full lesson estimates are available for named new models and null if counts are unknown
+  ---
+  duration_ms: 0.119698
+  type: 'test'
+  ...
+# Subtest: automatic checks require substantial teaching but never pretend to validate factual correctness
+ok 32 - automatic checks require substantial teaching but never pretend to validate factual correctness
+  ---
+  duration_ms: 2.839989
+  type: 'test'
+  ...
+# Subtest: new algebra benchmark runs the actual Year 7 independent generator only after charge confirmation
+ok 33 - new algebra benchmark runs the actual Year 7 independent generator only after charge confirmation
+  ---
+  duration_ms: 0.398254
+  type: 'test'
+  ...
+# Subtest: synthetic child-view review shows the teaching model but excludes private assessment answers
+ok 34 - synthetic child-view review shows the teaching model but excludes private assessment answers
+  ---
+  duration_ms: 0.278486
+  type: 'test'
+  ...
+# Subtest: bounded synthetic learning review covers all major subject teaching styles
+ok 35 - bounded synthetic learning review covers all major subject teaching styles
+  ---
+  duration_ms: 0.39523
+  type: 'test'
+  ...
+# Subtest: paid-family speed rollout uses an explicit server-side configuration flag
+ok 36 - paid-family speed rollout uses an explicit server-side configuration flag
+  ---
+  duration_ms: 0.622179
+  type: 'test'
+  ...
+# Subtest: emergency halt overrides enabled rollout for every AI entry point
+ok 37 - emergency halt overrides enabled rollout for every AI entry point
+  ---
+  duration_ms: 0.11401
+  type: 'test'
+  ...
+# Subtest: split stages are opt-in and the same emergency halt stops them
+ok 38 - split stages are opt-in and the same emergency halt stops them
+  ---
+  duration_ms: 0.124846
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: only an unlocked Owner can broadcast, preview + typed confirmation required
+ok 39 - only an unlocked Owner can broadcast, preview + typed confirmation required
+  ---
+  duration_ms: 236.781856
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: optional announcements need consent; individual emails, unsubscribe, idempotency and history
+ok 40 - optional announcements need consent; individual emails, unsubscribe, idempotency and history
+  ---
+  duration_ms: 326.841727
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: service broadcast is limited to participating parents; opt-outs block queued optional email; cancelling is safe
+ok 41 - service broadcast is limited to participating parents; opt-outs block queued optional email; cancelling is safe
+  ---
+  duration_ms: 287.249974
+  type: 'test'
+  ...
+# Subtest: announcement HTML escapes owner-entered markup and preserves lines
+ok 42 - announcement HTML escapes owner-entered markup and preserves lines
+  ---
+  duration_ms: 0.350513
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: required-verification accounts are excluded from previews and queued delivery
+ok 43 - required-verification accounts are excluded from previews and queued delivery
+  ---
+  duration_ms: 250.563178
+  type: 'test'
+  ...
+# Subtest: inbound auto-reply: only authenticated senders, never echoes their subject, capped per day
+ok 44 - inbound auto-reply: only authenticated senders, never echoes their subject, capped per day
+  ---
+  duration_ms: 1.247312
+  type: 'test'
+  ...
+# Subtest: a lesson can't be assigned twice to one child, even with two requests at once
+ok 45 - a lesson can't be assigned twice to one child, even with two requests at once
+  ---
+  duration_ms: 145.54603
+  type: 'test'
+  ...
+# Subtest: a finished lesson needs an explicit 'assign again'; an open one never doubles
+ok 46 - a finished lesson needs an explicit 'assign again'; an open one never doubles
+  ---
+  duration_ms: 131.735038
+  type: 'test'
+  ...
+# Subtest: the library lists who each lesson is assigned to, one entry per child, never another family's
+ok 47 - the library lists who each lesson is assigned to, one entry per child, never another family's
+  ---
+  duration_ms: 129.734757
+  type: 'test'
+  ...
+# Subtest: runtime schema matches migration 0058 and keeps existing children at version 0
+ok 48 - runtime schema matches migration 0058 and keeps existing children at version 0
+  ---
+  duration_ms: 423.615034
+  type: 'test'
+  ...
+# Subtest: only failed sign-ins count, per account, and success clears them; child and parent counters are separate
+ok 49 - only failed sign-ins count, per account, and success clears them; child and parent counters are separate
+  ---
+  duration_ms: 207.18217
+  type: 'test'
+  ...
+# Subtest: a daily cap per account stops slow PIN guessing from rotating addresses; a new PIN lifts it
+ok 50 - a daily cap per account stops slow PIN guessing from rotating addresses; a new PIN lifts it
+  ---
+  duration_ms: 204.50897
+  type: 'test'
+  ...
+# Subtest: reuses only a ready, age-matched unused library lesson once
+ok 51 - reuses only a ready, age-matched unused library lesson once
+  ---
+  duration_ms: 10.213777
+  type: 'test'
+  ...
+# Subtest: existing assignments are never overwritten
+ok 52 - existing assignments are never overwritten
+  ---
+  duration_ms: 0.35465
+  type: 'test'
+  ...
+# Subtest: without a verified catalogue, does not suggest fabricated mappings
+ok 53 - without a verified catalogue, does not suggest fabricated mappings
+  ---
+  duration_ms: 0.385125
+  type: 'test'
+  ...
+# Subtest: achieved-only curriculum is not generated again by default
+ok 54 - achieved-only curriculum is not generated again by default
+  ---
+  duration_ms: 0.136133
+  type: 'test'
+  ...
+# Subtest: family/child isolation: only chosen child's timetable slots are planned
+ok 55 - family/child isolation: only chosen child's timetable slots are planned
+  ---
+  duration_ms: 0.313068
+  type: 'test'
+  ...
+# Subtest: same subject on the same day gets a separate proposal unless that exact slot is linked
+ok 56 - same subject on the same day gets a separate proposal unless that exact slot is linked
+  ---
+  duration_ms: 0.252497
+  type: 'test'
+  ...
+# Subtest: Auto-Quest ignores ordinary calendar lessons but includes older explicitly marked timetable slots
+ok 57 - Auto-Quest ignores ordinary calendar lessons but includes older explicitly marked timetable slots
+  ---
+  duration_ms: 0.408961
+  type: 'test'
+  ...
+# Subtest: six weekly sessions can use different practice tasks for the same unachieved outcome
+ok 58 - six weekly sessions can use different practice tasks for the same unachieved outcome
+  ---
+  duration_ms: 0.394829
+  type: 'test'
+  ...
+# Subtest: multiple sessions reinforce an outcome without claiming it is achieved
+ok 59 - multiple sessions reinforce an outcome without claiming it is achieved
+  ---
+  duration_ms: 0.381921
+  type: 'test'
+  ...
+# Subtest: library-first refuses lessons from wrong stage, already assigned, completed or archived
+ok 60 - library-first refuses lessons from wrong stage, already assigned, completed or archived
+  ---
+  duration_ms: 0.406798
+  type: 'test'
+  ...
+# Subtest: Languages without codes reuses an age-matched, not-previously-assigned ready lesson
+ok 61 - Languages without codes reuses an age-matched, not-previously-assigned ready lesson
+  ---
+  duration_ms: 0.651612
+  type: 'test'
+  ...
+# Subtest: library-first excludes otherwise-valid outcome codes outside this child's selected programme
+ok 62 - library-first excludes otherwise-valid outcome codes outside this child's selected programme
+  ---
+  duration_ms: 0.171817
+  type: 'test'
+  ...
+# Subtest: Languages never chooses a different language without a matching focus
+ok 63 - Languages never chooses a different language without a matching focus
+  ---
+  duration_ms: 0.257985
+  type: 'test'
+  ...
+# Subtest: plans from the timetable and the family's curriculum: lesson slots only, matched areas, verified codes, existing lessons reused once
+ok 64 - plans from the timetable and the family's curriculum: lesson slots only, matched areas, verified codes, existing lessons reused once
+  ---
+  duration_ms: 203.515346
+  type: 'test'
+  ...
+# Subtest: re-planning never duplicates proposals and never loses a generated draft; AI is paid-only and never automatic
+ok 65 - re-planning never duplicates proposals and never loses a generated draft; AI is paid-only and never automatic
+  ---
+  duration_ms: 239.344642
+  type: 'test'
+  ...
+# Subtest: approval: drafts need the parent's review; assignment lands on the slot's date; existing links are never overridden
+ok 66 - approval: drafts need the parent's review; assignment lands on the slot's date; existing links are never overridden
+  ---
+  duration_ms: 268.660584
+  type: 'test'
+  ...
+# Subtest: an appointment added after planning blocks assignment without creating partial work
+ok 67 - an appointment added after planning blocks assignment without creating partial work
+  ---
+  duration_ms: 480.717992
+  type: 'test'
+  ...
+# Subtest: calendar-slot approval refuses a slot filled after planning without making a new assignment
+ok 68 - calendar-slot approval refuses a slot filled after planning without making a new assignment
+  ---
+  duration_ms: 197.726185
+  type: 'test'
+  ...
+# Subtest: replanning another calendar slot keeps the parent's previously selected lesson
+ok 69 - replanning another calendar slot keeps the parent's previously selected lesson
+  ---
+  duration_ms: 197.765102
+  type: 'test'
+  ...
+# Subtest: approval after another tab fills a slot does not overwrite its assignment
+ok 70 - approval after another tab fills a slot does not overwrite its assignment
+  ---
+  duration_ms: 190.339487
+  type: 'test'
+  ...
+# Subtest: one open assignment cannot silently fill multiple calendar slots
+ok 71 - one open assignment cannot silently fill multiple calendar slots
+  ---
+  duration_ms: 191.224578
+  type: 'test'
+  ...
+# Subtest: reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught
+ok 72 - reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught
+  ---
+  duration_ms: 199.817987
+  type: 'test'
+  ...
+# Subtest: purposeful revision: a demonstrated outcome not seen for weeks is revisited in at most one slot in four, reusing its lesson
+ok 73 - purposeful revision: a demonstrated outcome not seen for weeks is revisited in at most one slot in four, reusing its lesson
+  ---
+  duration_ms: 180.849771
+  type: 'test'
+  ...
+# Subtest: family isolation and unsupported curricula
+ok 74 - family isolation and unsupported curricula
+  ---
+  duration_ms: 182.716848
+  type: 'test'
+  ...
+# Subtest: rejecting keeps the parent's lesson; reopening allows re-planning
+ok 75 - rejecting keeps the parent's lesson; reopening allows re-planning
+  ---
+  duration_ms: 187.952614
+  type: 'test'
+  ...
+# Subtest: after revocation a previously assigned timetable slot can be planned again
+ok 76 - after revocation a previously assigned timetable slot can be planned again
+  ---
+  duration_ms: 189.543444
+  type: 'test'
+  ...
+# Subtest: Auto-Quest plans only within the child's program from their profile
+ok 77 - Auto-Quest plans only within the child's program from their profile
+  ---
+  duration_ms: 178.519462
+  type: 'test'
+  ...
+# Subtest: related subject lesson can be offered once in another subject without inventing outcomes
+ok 78 - related subject lesson can be offered once in another subject without inventing outcomes
+  ---
+  duration_ms: 0.296783
+  type: 'test'
+  ...
+# Subtest: acceptance: five lessons, edit + save + assign one, move around, 'refresh' — all five accounted for, no duplicates
+ok 79 - acceptance: five lessons, edit + save + assign one, move around, 'refresh' — all five accounted for, no duplicates
+  ---
+  duration_ms: 454.726602
+  type: 'test'
+  ...
+# Subtest: one failed lesson does not hide the others and can be retried on its own
+ok 80 - one failed lesson does not hide the others and can be retried on its own
+  ---
+  duration_ms: 212.47452
+  type: 'test'
+  ...
+# Subtest: unfinished sets: lessons not yet written stay listed and can be written later
+ok 81 - unfinished sets: lessons not yet written stay listed and can be written later
+  ---
+  duration_ms: 197.706205
+  type: 'test'
+  ...
+# Subtest: a lesson being written is never started twice; an interrupted one becomes retryable
+ok 82 - a lesson being written is never started twice; an interrupted one becomes retryable
+  ---
+  duration_ms: 185.96049
+  type: 'test'
+  ...
+# Subtest: archived lessons, dismissing a set, and family isolation
+ok 83 - archived lessons, dismissing a set, and family isolation
+  ---
+  duration_ms: 220.193032
+  type: 'test'
+  ...
+# Subtest: batches: validation, paid-only, and single-lesson drafting unchanged
+ok 84 - batches: validation, paid-only, and single-lesson drafting unchanged
+  ---
+  duration_ms: 193.608838
+  type: 'test'
+  ...
+# Subtest: Year 7 Halloween Science AND Maths request creates two fully independent, correctly labelled draft lessons
+ok 85 - Year 7 Halloween Science AND Maths request creates two fully independent, correctly labelled draft lessons
+  ---
+  duration_ms: 201.643341
+  type: 'test'
+  ...
+# Subtest: reject unsupported individual batch subjects instead of silently writing the wrong subject
+ok 86 - reject unsupported individual batch subjects instead of silently writing the wrong subject
+  ---
+  duration_ms: 186.776569
+  type: 'test'
+  ...
+# Subtest: an invalid multi-subject planner request is blocked before making any AI call
+ok 87 - an invalid multi-subject planner request is blocked before making any AI call
+  ---
+  duration_ms: 185.916479
+  type: 'test'
+  ...
+# Subtest: three Year 7 Halloween lessons preserve Science, English and HSIE, including secondary areas, end to end
+ok 88 - three Year 7 Halloween lessons preserve Science, English and HSIE, including secondary areas, end to end
+  ---
+  duration_ms: 144.063176
+  type: 'test'
+  ...
+# Subtest: config: test key uses sandbox prices; live key is refused unless explicitly enabled and priced
+ok 89 - config: test key uses sandbox prices; live key is refused unless explicitly enabled and priced
+  ---
+  duration_ms: 1.661139
+  type: 'test'
+  ...
+# Subtest: live config: complete distinct live prices activate only with explicit opt-in
+ok 90 - live config: complete distinct live prices activate only with explicit opt-in
+  ---
+  duration_ms: 0.286568
+  type: 'test'
+  ...
+# Subtest: signature: valid accepted; tampered, wrong secret, stale or missing rejected
+ok 91 - signature: valid accepted; tampered, wrong secret, stale or missing rejected
+  ---
+  duration_ms: 12.901859
+  type: 'test'
+  ...
+# Subtest: all four intervals map to paid Family Membership with identical limits
+ok 92 - all four intervals map to paid Family Membership with identical limits
+  ---
+  duration_ms: 225.617099
+  type: 'test'
+  ...
+# Subtest: unknown price, incomplete payment and wrong customer never grant access
+ok 93 - unknown price, incomplete payment and wrong customer never grant access
+  ---
+  duration_ms: 504.759556
+  type: 'test'
+  ...
+# Subtest: webhook: duplicate events are processed once; livemode mismatch ignored
+ok 94 - webhook: duplicate events are processed once; livemode mismatch ignored
+  ---
+  duration_ms: 207.407176
+  type: 'test'
+  ...
+# Subtest: checkout success alone (no webhook) grants nothing; checkout.session.completed links customer and activates
+ok 95 - checkout success alone (no webhook) grants nothing; checkout.session.completed links customer and activates
+  ---
+  duration_ms: 181.578629
+  type: 'test'
+  ...
+# Subtest: checkout confirmation runs after paid membership activation, only once per event
+ok 96 - checkout confirmation runs after paid membership activation, only once per event
+  ---
+  duration_ms: 197.675132
+  type: 'test'
+  ...
+# Subtest: temporary membership email failure leaves the event retryable without removing access
+ok 97 - temporary membership email failure leaves the event retryable without removing access
+  ---
+  duration_ms: 191.541071
+  type: 'test'
+  ...
+# Subtest: subscription and account emails contain current terms and no obsolete personal-project copy
+ok 98 - subscription and account emails contain current terms and no obsolete personal-project copy
+  ---
+  duration_ms: 15.689181
+  type: 'test'
+  ...
+# Subtest: owner paid-family email celebrates the membership without personal information
+ok 99 - owner paid-family email celebrates the membership without personal information
+  ---
+  duration_ms: 8.248363
+  type: 'test'
+  ...
+# email: send failed undefined temporary outage
+# owner new-member notification not delivered owner notification delivery was not confirmed
+# Subtest: owner alert is delivered once per family, not again for another purchase or a renewal
+ok 100 - owner alert is delivered once per family, not again for another purchase or a renewal
+  ---
+  duration_ms: 190.934836
+  type: 'test'
+  ...
+# Subtest: owner alert skips test mode, unconfigured recipients and unpaid or stale subscriptions
+ok 101 - owner alert skips test mode, unconfigured recipients and unpaid or stale subscriptions
+  ---
+  duration_ms: 177.480391
+  type: 'test'
+  ...
+# Subtest: owner alert releases an unsuccessful claim without interrupting customer access
+ok 102 - owner alert releases an unsuccessful claim without interrupting customer access
+  ---
+  duration_ms: 181.612559
+  type: 'test'
+  ...
+# billing checkout failed Service unavailable
+# Subtest: simultaneous owner-alert webhook deliveries claim the same family only once
+ok 103 - simultaneous owner-alert webhook deliveries claim the same family only once
+  ---
+  duration_ms: 183.361771
+  type: 'test'
+  ...
+# Subtest: verified live paid checkout invokes owner notifier; sandbox, renewals, zero amounts and unpaid do not
+ok 104 - verified live paid checkout invokes owner notifier; sandbox, renewals, zero amounts and unpaid do not
+  ---
+  duration_ms: 126.110507
+  type: 'test'
+  ...
+# Subtest: out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access
+ok 105 - out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access
+  ---
+  duration_ms: 162.241058
+  type: 'test'
+  ...
+# Subtest: cancellation keeps paid access until period end, then ends; data is untouched
+ok 106 - cancellation keeps paid access until period end, then ends; data is untouched
+  ---
+  duration_ms: 182.98621
+  type: 'test'
+  ...
+# Subtest: payment failure: short grace, then locked; successful retry restores
+ok 107 - payment failure: short grace, then locked; successful retry restores
+  ---
+  duration_ms: 250.718355
+  type: 'test'
+  ...
+# Subtest: renewal moves the period forward; missed renewals stop access after grace
+ok 108 - renewal moves the period forward; missed renewals stop access after grace
+  ---
+  duration_ms: 0.200599
+  type: 'test'
+  ...
+# Subtest: INTERNAL early-access families keep their plan whatever Stripe says
+ok 109 - INTERNAL early-access families keep their plan whatever Stripe says
+  ---
+  duration_ms: 189.216311
+  type: 'test'
+  ...
+# Subtest: invoice subscription id is found on old and new API shapes
+ok 110 - invoice subscription id is found on old and new API shapes
+  ---
+  duration_ms: 0.183564
+  type: 'test'
+  ...
+# Subtest: checkout: server picks price, family and redirect; client values are ignored; no trial; no double subscriptions
+ok 111 - checkout: server picks price, family and redirect; client values are ignored; no trial; no double subscriptions
+  ---
+  duration_ms: 194.356694
+  type: 'test'
+  ...
+# Subtest: checkout only accepts active, same-mode SideQuest Hoard codes and never forwards arbitrary Stripe codes
+ok 112 - checkout only accepts active, same-mode SideQuest Hoard codes and never forwards arbitrary Stripe codes
+  ---
+  duration_ms: 176.352198
+  type: 'test'
+  ...
+# Subtest: live checkout replaces a confirmed stale sandbox customer, preserving family data
+ok 113 - live checkout replaces a confirmed stale sandbox customer, preserving family data
+  ---
+  duration_ms: 178.962454
+  type: 'test'
+  ...
+# Subtest: live checkout fails closed on Stripe permission/server errors without replacing customer
+ok 114 - live checkout fails closed on Stripe permission/server errors without replacing customer
+  ---
+  duration_ms: 151.349117
+  type: 'test'
+  ...
+# Subtest: webhook route rejects unsigned requests
+ok 115 - webhook route rejects unsigned requests
+  ---
+  duration_ms: 130.918033
+  type: 'test'
+  ...
+# Subtest: account deletion: blocked while any Stripe subscription still renews; fails closed when Stripe is down
+ok 116 - account deletion: blocked while any Stripe subscription still renews; fails closed when Stripe is down
+  ---
+  duration_ms: 195.965786
+  type: 'test'
+  ...
+# Subtest: checkout: Stripe's own subscription list blocks a second membership; open pages are reused or closed
+ok 117 - checkout: Stripe's own subscription list blocks a second membership; open pages are reused or closed
+  ---
+  duration_ms: 137.572603
+  type: 'test'
+  ...
+# Subtest: reconcile: a missed cancellation webhook is caught once the period ends; fresh or future rows are left alone
+ok 118 - reconcile: a missed cancellation webhook is caught once the period ends; fresh or future rows are left alone
+  ---
+  duration_ms: 170.047221
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Forge: owner gate, CSRF, locking, stale writes, QA, PDF, approval and hidden Shop publication
+ok 119 - Forge: owner gate, CSRF, locking, stale writes, QA, PDF, approval and hidden Shop publication
+  ---
+  duration_ms: 402.530785
+  type: 'test'
+  ...
+# Subtest: Forge: renderer escapes content, blocks overflow and preserves locked page existence
+ok 120 - Forge: renderer escapes content, blocks overflow and preserves locked page existence
+  ---
+  duration_ms: 0.501569
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1037,"outputTokens":217,"tokenBasis":"approximate","estUsd":0.0007927419999999999,"ms":1,"maxTokens":4000,"detail":"","action":"planned sessions 1–8"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":1,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":2,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":2,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":3,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":3,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":4,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":4,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":5,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":5,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":6,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":6,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":7,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":807,"outputTokens":282,"tokenBasis":"approximate","estUsd":0.000871797,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"b9b1e26a-cf7d-41f8-95a0-9f8100036545","phase":"write","session":7,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":732,"outputTokens":7,"tokenBasis":"approximate","estUsd":0.00023024700000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# Subtest: Forge autonomous creation persists steps, checks text, produces PDF and never auto-publishes
+ok 121 - Forge autonomous creation persists steps, checks text, produces PDF and never auto-publishes
+  ---
+  duration_ms: 178.997125
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# {"evt":"book-forge.call","project":"b2ac9ab6-1e40-4d2b-b236-4a5979a30fe1","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":1035,"outputTokens":9,"tokenBasis":"approximate","estUsd":0.00032353199999999996,"ms":1,"maxTokens":4000,"detail":"reply.sessions: needs at least 8 items (has 0)","action":"retry plan (schema)"}
+# {"evt":"book-forge.call","project":"b2ac9ab6-1e40-4d2b-b236-4a5979a30fe1","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":1056,"outputTokens":9,"tokenBasis":"approximate","estUsd":0.00032968499999999997,"ms":0,"maxTokens":4000,"detail":"reply.sessions: needs at least 8 items (has 0)","action":"retry plan (schema)"}
+# {"evt":"book-forge.call","project":"b2ac9ab6-1e40-4d2b-b236-4a5979a30fe1","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":1056,"outputTokens":9,"tokenBasis":"approximate","estUsd":0.00032968499999999997,"ms":0,"maxTokens":4000,"detail":"reply.sessions: needs at least 8 items (has 0)","action":"retry plan (schema)"}
+# Subtest: Forge autonomous creation retries invalid output, then pauses without losing saved state
+ok 122 - Forge autonomous creation retries invalid output, then pauses without losing saved state
+  ---
+  duration_ms: 182.141174
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# {"evt":"book-forge.call","project":"effb3098-ae85-49e8-b611-74095d57948c","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1039,"outputTokens":255,"tokenBasis":"approximate","estUsd":0.000878942,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–12"}
+# {"evt":"book-forge.call","project":"effb3098-ae85-49e8-b611-74095d57948c","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1458,"outputTokens":257,"tokenBasis":"approximate","estUsd":0.001006215,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 13–24"}
+# {"evt":"book-forge.call","project":"effb3098-ae85-49e8-b611-74095d57948c","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1880,"outputTokens":196,"tokenBasis":"approximate","estUsd":0.0009924279999999998,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 25–33"}
+# Subtest: Forge plans longer focused books in batches without broadening their topic
+ok 123 - Forge plans longer focused books in batches without broadening their topic
+  ---
+  duration_ms: 207.261769
+  type: 'test'
+  ...
+# Subtest: Forge ten-frames show two rows of five with exactly the requested counters
+ok 124 - Forge ten-frames show two rows of five with exactly the requested counters
+  ---
+  duration_ms: 0.28697
+  type: 'test'
+  ...
+# Subtest: Editorial: the good opening session and the counting session pass every deterministic check
+ok 125 - Editorial: the good opening session and the counting session pass every deterministic check
+  ---
+  duration_ms: 3.970147
+  type: 'test'
+  ...
+# Subtest: Editorial: empty groups (0) are valid, drawn as an empty group, and checked against the answer key
+ok 126 - Editorial: empty groups (0) are valid, drawn as an empty group, and checked against the answer key
+  ---
+  duration_ms: 1.013112
+  type: 'test'
+  ...
+# Subtest: Editorial: a stated diagram count that disagrees with visual.count is an error
+ok 127 - Editorial: a stated diagram count that disagrees with visual.count is an error
+  ---
+  duration_ms: 0.223453
+  type: 'test'
+  ...
+# Subtest: Editorial: questions and the answer key must match one to one
+ok 128 - Editorial: questions and the answer key must match one to one
+  ---
+  duration_ms: 0.507998
+  type: 'test'
+  ...
+# Subtest: Editorial: teaching comes before practice (explanation, worked example, and an example for each skill)
+ok 129 - Editorial: teaching comes before practice (explanation, worked example, and an example for each skill)
+  ---
+  duration_ms: 0.419626
+  type: 'test'
+  ...
+# Subtest: Editorial: practice uses fresh examples, not the worked example's numbers, and doesn't repeat itself
+ok 130 - Editorial: practice uses fresh examples, not the worked example's numbers, and doesn't repeat itself
+  ---
+  duration_ms: 0.286738
+  type: 'test'
+  ...
+# Subtest: Editorial: the opening numeral session needs number names and dot patterns
+ok 131 - Editorial: the opening numeral session needs number names and dot patterns
+  ---
+  duration_ms: 0.512865
+  type: 'test'
+  ...
+# Subtest: Editorial: reviewer errors and suggestions are separated; false positives that contradict the checks are ignored
+ok 132 - Editorial: reviewer errors and suggestions are separated; false positives that contradict the checks are ignored
+  ---
+  duration_ms: 1.369315
+  type: 'test'
+  ...
+# Subtest: Editorial: feedback accumulates across attempts without duplicates, errors first, suggestions capped
+ok 133 - Editorial: feedback accumulates across attempts without duplicates, errors first, suggestions capped
+  ---
+  duration_ms: 0.29493
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# {"evt":"book-forge.call","project":"4f27fbfe-5481-4a90-b949-9b8ddbfbab5a","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1040,"outputTokens":309,"tokenBasis":"approximate","estUsd":0.001000897,"ms":1,"maxTokens":4000,"detail":"","action":"planned sessions 1–8"}
+# {"evt":"book-forge.call","project":"4f27fbfe-5481-4a90-b949-9b8ddbfbab5a","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":923,"outputTokens":396,"tokenBasis":"approximate","estUsd":0.0011626269999999998,"ms":1,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"4f27fbfe-5481-4a90-b949-9b8ddbfbab5a","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1283,"outputTokens":396,"tokenBasis":"approximate","estUsd":0.0012681069999999999,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"4f27fbfe-5481-4a90-b949-9b8ddbfbab5a","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":867,"outputTokens":35,"tokenBasis":"approximate","estUsd":0.00033288599999999996,"ms":1,"maxTokens":1200,"detail":"","action":"revise: 1 reviewer error(s)"}
+# {"evt":"book-forge.call","project":"4f27fbfe-5481-4a90-b949-9b8ddbfbab5a","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1322,"outputTokens":396,"tokenBasis":"approximate","estUsd":0.0012795340000000001,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"4f27fbfe-5481-4a90-b949-9b8ddbfbab5a","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":867,"outputTokens":31,"tokenBasis":"approximate","estUsd":0.000323874,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# Subtest: Forge job: a rejected draft is revised (not restarted) against its current problems, and only the approved session is saved
+ok 134 - Forge job: a rejected draft is revised (not restarted) against its current problems, and only the approved session is saved
+  ---
+  duration_ms: 227.725256
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1040,"outputTokens":309,"tokenBasis":"approximate","estUsd":0.001000897,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–8"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":923,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.001068001,"ms":1,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# {"evt":"book-forge.call","project":"53b78ee9-4dad-4c7d-b35f-18f67c9b185b","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":1292,"outputTokens":354,"tokenBasis":"approximate","estUsd":0.0011761179999999999,"ms":1,"maxTokens":6000,"detail":"","action":"revise: 2 check problem(s)"}
+# Subtest: Forge job: after four rejected drafts the session pauses, the draft is kept for inspection, and nothing is rendered
+ok 135 - Forge job: after four rejected drafts the session pauses, the draft is kept for inspection, and nothing is rendered
+  ---
+  duration_ms: 259.573439
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# {"evt":"book-forge.call","project":"d9a7acb7-4d3c-4bfd-afa4-3096f29327e4","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":1040,"outputTokens":309,"tokenBasis":"approximate","estUsd":0.001000897,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–8"}
+# {"evt":"book-forge.call","project":"d9a7acb7-4d3c-4bfd-afa4-3096f29327e4","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":923,"outputTokens":396,"tokenBasis":"approximate","estUsd":0.0011626269999999998,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"d9a7acb7-4d3c-4bfd-afa4-3096f29327e4","phase":"write","session":0,"purpose":"revise","outcome":"schema","finishReason":null,"inputTokens":1283,"outputTokens":5,"tokenBasis":"approximate","estUsd":0.00038718399999999994,"ms":0,"maxTokens":6000,"detail":"reply.pages: is missing; reply.answers: is missing","action":"repair revise format (content kept)"}
+# Subtest: Forge job: an unreadable reply never replaces the last readable draft
+ok 136 - Forge job: an unreadable reply never replaces the last readable draft
+  ---
+  duration_ms: 230.846433
+  type: 'test'
+  ...
+# Subtest: Forge render: teaching first, boxed worked example, a writing line per task, answers only on the answer page
+ok 137 - Forge render: teaching first, boxed worked example, a writing line per task, answers only on the answer page
+  ---
+  duration_ms: 1.299896
+  type: 'test'
+  ...
+# Subtest: Forge render: answer pages are packed onto shared sheets while contents and footers stay correct
+ok 138 - Forge render: answer pages are packed onto shared sheets while contents and footers stay correct
+  ---
+  duration_ms: 0.80402
+  type: 'test'
+  ...
+# Subtest: Editorial: common formatting slips from the model are repaired, not rejected
+ok 139 - Editorial: common formatting slips from the model are repaired, not rejected
+  ---
+  duration_ms: 0.955563
+  type: 'test'
+  ...
+# Subtest: Forge progress: stage counts, session states, percentage and a time estimate from the saved book
+ok 140 - Forge progress: stage counts, session states, percentage and a time estimate from the saved book
+  ---
+  duration_ms: 0.655632
+  type: 'test'
+  ...
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":1,"maxTokens":4000,"detail":"","action":"planned sessions 1–3"}
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":1500,"tokenBasis":"reported","estUsd":0.0042585,"ms":1,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":1500,"tokenBasis":"reported","estUsd":0.0042585,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"write","session":1,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"write","session":2,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":1500,"tokenBasis":"reported","estUsd":0.0042585,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"05d5283f-17f0-4a22-8e93-b5d794569849","phase":"write","session":2,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–2"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":0,"purpose":"session","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"reply.pages: is missing","action":"split session into components (kept: none)"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":0,"purpose":"page1","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"","action":"saved page1"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":0,"purpose":"page2","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"","action":"saved page2"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":0,"purpose":"answers","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1600,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"de562745-ce95-4019-9e6c-05f5ae031acf","phase":"write","session":1,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"463e7406-47e7-4c85-9ed2-eded9dadd076","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"463e7406-47e7-4c85-9ed2-eded9dadd076","phase":"write","session":0,"purpose":"session","outcome":"truncated","finishReason":null,"inputTokens":3000,"outputTokens":6000,"tokenBasis":"reported","estUsd":0.014397,"ms":0,"maxTokens":6000,"detail":"Reply hit the 6000-token limit: reply.answers: is missing; reply.pages[1].explanation: is missing; reply.pages[1].tasks: is missing","action":"split session into components (kept: page1)"}
+# {"evt":"book-forge.call","project":"463e7406-47e7-4c85-9ed2-eded9dadd076","phase":"write","session":0,"purpose":"page2","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"","action":"saved page2"}
+# {"evt":"book-forge.call","project":"463e7406-47e7-4c85-9ed2-eded9dadd076","phase":"write","session":0,"purpose":"answers","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1600,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"463e7406-47e7-4c85-9ed2-eded9dadd076","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"7aa07362-4cad-44a8-bfea-2099a57ddc40","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"7aa07362-4cad-44a8-bfea-2099a57ddc40","phase":"write","session":0,"purpose":"session","outcome":"truncated","finishReason":null,"inputTokens":3000,"outputTokens":6000,"tokenBasis":"reported","estUsd":0.014397,"ms":0,"maxTokens":6000,"detail":"Reply stopped mid-JSON after 6000 of 6000 tokens. Excerpt: …{\\"pages\\":[","action":"split session into components (kept: none)"}
+# {"evt":"book-forge.call","project":"7aa07362-4cad-44a8-bfea-2099a57ddc40","phase":"write","session":0,"purpose":"page1","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"","action":"saved page1"}
+# {"evt":"book-forge.call","project":"7aa07362-4cad-44a8-bfea-2099a57ddc40","phase":"write","session":0,"purpose":"page2","outcome":"truncated","finishReason":null,"inputTokens":3000,"outputTokens":2600,"tokenBasis":"reported","estUsd":0.0067368,"ms":0,"maxTokens":2600,"detail":"Reply stopped mid-JSON after 2600 of 2600 tokens. Excerpt: …{\\"title\\":\\"Try counting\\",\\"tasks\\":[{\\"n\\":3,\\"prompt\\":\\"How","action":"repair page2 format (content kept)"}
+# {"evt":"book-forge.call","project":"7aa07362-4cad-44a8-bfea-2099a57ddc40","phase":"write","session":0,"purpose":"page2","outcome":"truncated","finishReason":null,"inputTokens":3000,"outputTokens":2600,"tokenBasis":"reported","estUsd":0.0067368,"ms":0,"maxTokens":2600,"detail":"Reply stopped mid-JSON after 2600 of 2600 tokens. Excerpt: …{\\"title\\":\\"Try counting\\",\\"tasks\\":[{\\"n\\":3,\\"prompt\\":\\"How","action":"repair page2 format (content kept)"}
+# {"evt":"book-forge.call","project":"02c150cf-9f66-435e-a884-8990e3560c4a","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"02c150cf-9f66-435e-a884-8990e3560c4a","phase":"write","session":0,"purpose":"session","outcome":"malformed","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"Reply was not JSON. Excerpt: I have written the page for you!","action":"split session into components (kept: none)"}
+# {"evt":"book-forge.call","project":"02c150cf-9f66-435e-a884-8990e3560c4a","phase":"write","session":0,"purpose":"page1","outcome":"malformed","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"Reply was not JSON. Excerpt: I have written the page for you!","action":"repair page1 format (content kept)"}
+# {"evt":"book-forge.call","project":"02c150cf-9f66-435e-a884-8990e3560c4a","phase":"write","session":0,"purpose":"page1","outcome":"malformed","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"Reply was not JSON. Excerpt: I have written the page for you!","action":"repair page1 format (content kept)"}
+# {"evt":"book-forge.call","project":"02c150cf-9f66-435e-a884-8990e3560c4a","phase":"write","session":0,"purpose":"page1","outcome":"malformed","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"Reply was not JSON. Excerpt: I have written the page for you!","action":"repair page1 format (content kept)"}
+# {"evt":"book-forge.call","project":"02c150cf-9f66-435e-a884-8990e3560c4a","phase":"write","session":0,"purpose":"page1","outcome":"malformed","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"Reply was not JSON. Excerpt: I have written the page for you!","action":"repair page1 format (content kept)"}
+# {"evt":"book-forge.call","project":"0415f8da-6f06-44d0-bd02-7f428615df2a","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":1,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"0415f8da-6f06-44d0-bd02-7f428615df2a","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"0415f8da-6f06-44d0-bd02-7f428615df2a","phase":"write","session":0,"purpose":"revise","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"reply.pages: is missing; reply.answers: is missing","action":"repair revise format (content kept)"}
+# {"evt":"book-forge.call","project":"0415f8da-6f06-44d0-bd02-7f428615df2a","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"0415f8da-6f06-44d0-bd02-7f428615df2a","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"7122efac-8b85-4ebf-a0a4-734cfe5ac0f2","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"7122efac-8b85-4ebf-a0a4-734cfe5ac0f2","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"7122efac-8b85-4ebf-a0a4-734cfe5ac0f2","phase":"write","session":0,"purpose":"review","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1200,"detail":"reply.errors: is missing","action":"ask the reviewer again (draft kept)"}
+# {"evt":"book-forge.call","project":"7122efac-8b85-4ebf-a0a4-734cfe5ac0f2","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1200,"detail":"","action":"revise: 1 reviewer error(s)"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1200,"detail":"","action":"revise: 1 reviewer error(s)"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"1dcd737a-cc1c-407d-a996-ac806f93a394","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1200,"detail":"","action":"revise: 1 reviewer error(s)"}
+# {"evt":"book-forge.call","project":"2fa0df42-4fd0-4404-9529-beed83b22e43","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–1"}
+# {"evt":"book-forge.call","project":"2fa0df42-4fd0-4404-9529-beed83b22e43","phase":"write","session":0,"purpose":"session","outcome":"provider","finishReason":null,"inputTokens":null,"outputTokens":null,"tokenBasis":"unknown","estUsd":null,"ms":0,"maxTokens":6000,"detail":"Upstream 502","action":"wait and retry session"}
+# {"evt":"book-forge.call","project":"2fa0df42-4fd0-4404-9529-beed83b22e43","phase":"write","session":0,"purpose":"session","outcome":"provider","finishReason":null,"inputTokens":null,"outputTokens":null,"tokenBasis":"unknown","estUsd":null,"ms":0,"maxTokens":6000,"detail":"Upstream 502","action":"wait and retry session"}
+# {"evt":"book-forge.call","project":"2fa0df42-4fd0-4404-9529-beed83b22e43","phase":"write","session":0,"purpose":"session","outcome":"provider","finishReason":null,"inputTokens":null,"outputTokens":null,"tokenBasis":"unknown","estUsd":null,"ms":0,"maxTokens":6000,"detail":"Upstream 502","action":"wait and retry session"}
+# {"evt":"book-forge.call","project":"2fa0df42-4fd0-4404-9529-beed83b22e43","phase":"write","session":0,"purpose":"session","outcome":"provider","finishReason":null,"inputTokens":null,"outputTokens":null,"tokenBasis":"unknown","estUsd":null,"ms":0,"maxTokens":6000,"detail":"Upstream 502","action":"wait and retry session"}
+# {"evt":"book-forge.call","project":"0df19cf4-ef10-4ca2-b683-3a6ca9055692","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–2"}
+# {"evt":"book-forge.call","project":"0df19cf4-ef10-4ca2-b683-3a6ca9055692","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"0df19cf4-ef10-4ca2-b683-3a6ca9055692","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"0df19cf4-ef10-4ca2-b683-3a6ca9055692","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"0df19cf4-ef10-4ca2-b683-3a6ca9055692","phase":"write","session":1,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"71354a4c-06aa-4623-8d4e-f996a3b601df","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–2"}
+# {"evt":"book-forge.call","project":"71354a4c-06aa-4623-8d4e-f996a3b601df","phase":"write","session":0,"purpose":"session","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"reply.pages: is missing; reply.answers: is missing","action":"split session into components (kept: none)"}
+# {"evt":"book-forge.call","project":"71354a4c-06aa-4623-8d4e-f996a3b601df","phase":"write","session":0,"purpose":"page1","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"","action":"saved page1"}
+# {"evt":"book-forge.call","project":"71354a4c-06aa-4623-8d4e-f996a3b601df","phase":"write","session":0,"purpose":"page2","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":2600,"detail":"","action":"saved page2"}
+# Subtest: Structured: the schema validator names every structural problem with its exact path
+ok 141 - Structured: the schema validator names every structural problem with its exact path
+  ---
+  duration_ms: 1.910606
+  type: 'test'
+  ...
+# Subtest: Structured: fenced and prose-wrapped JSON parse; cut-off JSON is reported as truncated, prose as malformed
+ok 142 - Structured: fenced and prose-wrapped JSON parse; cut-off JSON is reported as truncated, prose as malformed
+  ---
+  duration_ms: 0.674473
+  type: 'test'
+  ...
+# Subtest: Structured: every call is schema-constrained and classified, with usage, truncation and cost recorded
+ok 143 - Structured: every call is schema-constrained and classified, with usage, truncation and cost recorded
+  ---
+  duration_ms: 1.481538
+  type: 'test'
+  ...
+# Subtest: Structured: an oversized prompt never pushes the reply past the 24k context window
+ok 144 - Structured: an oversized prompt never pushes the reply past the 24k context window
+  ---
+  duration_ms: 0.25544
+  type: 'test'
+  ...
+# Subtest: Forge job: a whole book completes with one write and one review call per session, logged with tokens and cost
+ok 145 - Forge job: a whole book completes with one write and one review call per session, logged with tokens and cost
+  ---
+  duration_ms: 283.959934
+  type: 'test'
+  ...
+# Subtest: Forge job: the reported failure (a valid JSON reply without top-level pages) is repaired, not rewritten from scratch
+ok 146 - Forge job: the reported failure (a valid JSON reply without top-level pages) is repaired, not rewritten from scratch
+  ---
+  duration_ms: 212.037048
+  type: 'test'
+  ...
+# Subtest: Forge job: a reply cut off at the token limit keeps its valid page and builds only the missing parts
+ok 147 - Forge job: a reply cut off at the token limit keeps its valid page and builds only the missing parts
+  ---
+  duration_ms: 193.348062
+  type: 'test'
+  ...
+# Subtest: Forge job: a component that keeps arriving cut off pauses the session with the precise error, keeping saved parts
+ok 148 - Forge job: a component that keeps arriving cut off pauses the session with the precise error, keeping saved parts
+  ---
+  duration_ms: 190.663863
+  type: 'test'
+  ...
+# Subtest: Forge job: malformed replies are repaired with their exact format errors, then pause — never an endless paid loop
+ok 149 - Forge job: malformed replies are repaired with their exact format errors, then pause — never an endless paid loop
+  ---
+  duration_ms: 149.480619
+  type: 'test'
+  ...
+# Subtest: Forge job: a format error in a revision keeps the draft and its teaching; only editorial failures count as revisions
+ok 150 - Forge job: a format error in a revision keeps the draft and its teaching; only editorial failures count as revisions
+  ---
+  duration_ms: 136.997652
+  type: 'test'
+  ...
+# Subtest: Forge job: a malformed reviewer reply never approves a session; only the reviewer is asked again
+ok 151 - Forge job: a malformed reviewer reply never approves a session; only the reviewer is asked again
+  ---
+  duration_ms: 176.701208
+  type: 'test'
+  ...
+# Subtest: Forge job: revisions list only the current problems, with earlier fixes marked keep-fixed; standards still pause
+ok 152 - Forge job: revisions list only the current problems, with earlier fixes marked keep-fixed; standards still pause
+  ---
+  duration_ms: 180.571677
+  type: 'test'
+  ...
+# Subtest: Forge job: provider errors back off and retry the same call, then pause; the job is not counted as a content failure
+ok 153 - Forge job: provider errors back off and retry the same call, then pause; the job is not counted as a content failure
+  ---
+  duration_ms: 169.358606
+  type: 'test'
+  ...
+# Subtest: Forge job: the cost cap pauses creation, and Retry is the owner's approval to spend one more cap
+ok 154 - Forge job: the cost cap pauses creation, and Retry is the owner's approval to spend one more cap
+  ---
+  duration_ms: 191.395966
+  type: 'test'
+  ...
+# {"evt":"book-forge.call","project":"71354a4c-06aa-4623-8d4e-f996a3b601df","phase":"write","session":0,"purpose":"answers","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":1600,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"71354a4c-06aa-4623-8d4e-f996a3b601df","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–3"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"write","session":1,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"write","session":2,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"4b269ba8-be7b-4f0f-86cd-e792af4d3a48","phase":"write","session":2,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–2"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":0,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":0,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":1,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":1,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":1,"purpose":"revise","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"revise: 1 check problem(s)"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":1,"purpose":"session","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":6000,"detail":"","action":"draft passed checks; review"}
+# {"evt":"book-forge.call","project":"8b675192-1c69-4f2f-825a-b87368d3089e","phase":"write","session":1,"purpose":"review","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":60,"tokenBasis":"reported","estUsd":0.0010141800000000002,"ms":0,"maxTokens":1200,"detail":"","action":"approved"}
+# {"evt":"book-forge.call","project":"dbb0253c-9d50-4da9-9630-b3850bafe147","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":4000,"detail":"reply.sessions: needs at least 3 items (has 0)","action":"retry plan (schema)"}
+# {"evt":"book-forge.call","project":"dbb0253c-9d50-4da9-9630-b3850bafe147","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":4000,"detail":"reply.sessions: needs at least 3 items (has 0)","action":"retry plan (schema)"}
+# {"evt":"book-forge.call","project":"dbb0253c-9d50-4da9-9630-b3850bafe147","phase":"plan","session":null,"purpose":"plan","outcome":"ok","finishReason":null,"inputTokens":3000,"outputTokens":400,"tokenBasis":"reported","estUsd":0.0017802,"ms":0,"maxTokens":4000,"detail":"","action":"planned sessions 1–3"}
+# {"evt":"book-forge.call","project":"3a2524d2-b35e-487b-9b11-2f7e54c10358","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":4000,"detail":"Invalid curriculum reference: session 1 uses \\"NOT-A-CODE\\", which is not a supplied code","action":"retry plan (schema)"}
+# {"evt":"book-forge.call","project":"3a2524d2-b35e-487b-9b11-2f7e54c10358","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":4000,"detail":"Invalid curriculum reference: session 1 uses \\"NOT-A-CODE\\", which is not a supplied code","action":"retry plan (schema)"}
+# {"evt":"book-forge.call","project":"3a2524d2-b35e-487b-9b11-2f7e54c10358","phase":"plan","session":null,"purpose":"plan","outcome":"schema","finishReason":null,"inputTokens":3000,"outputTokens":900,"tokenBasis":"reported","estUsd":0.0029067,"ms":0,"maxTokens":4000,"detail":"Invalid curriculum reference: session 1 uses \\"NOT-A-CODE\\", which is not a supplied code","action":"retry plan (schema)"}
+# Subtest: Forge job: an interrupted tick resumes from saved work without paying again for completed parts
+ok 155 - Forge job: an interrupted tick resumes from saved work without paying again for completed parts
+  ---
+  duration_ms: 223.677902
+  type: 'test'
+  ...
+# Subtest: Forge job: a job saved before this pipeline (stuck on session 2) resumes on Retry and keeps session 1
+ok 156 - Forge job: a job saved before this pipeline (stuck on session 2) resumes on Retry and keeps session 1
+  ---
+  duration_ms: 198.681073
+  type: 'test'
+  ...
+# Subtest: Forge recovery: Reset session discards only the paused session's draft; approved sessions and the plan stay
+ok 157 - Forge recovery: Reset session discards only the paused session's draft; approved sessions and the plan stay
+  ---
+  duration_ms: 191.529056
+  type: 'test'
+  ...
+# Subtest: Forge planning: an unusable plan reply is retried with its error, then pauses; a valid plan is kept
+ok 158 - Forge planning: an unusable plan reply is retried with its error, then pauses; a valid plan is kept
+  ---
+  duration_ms: 411.781014
+  type: 'test'
+  ...
+# Subtest: Forge progress: weighted by real work, partial credit for saved parts, measured estimates, none while paused
+ok 159 - Forge progress: weighted by real work, partial credit for saved parts, measured estimates, none while paused
+  ---
+  duration_ms: 0.515301
+  type: 'test'
+  ...
+# Subtest: entitlement states
+ok 160 - entitlement states
+  ---
+  duration_ms: 2.460469
+  type: 'test'
+  ...
+# Subtest: migration 0050 grandfathers existing families as INTERNAL
+ok 161 - migration 0050 grandfathers existing families as INTERNAL
+  ---
+  duration_ms: 175.342107
+  type: 'test'
+  ...
+# Subtest: sanitize rejects unsafe urls, ignores client embed_url, strips unknown keys
+ok 162 - sanitize rejects unsafe urls, ignores client embed_url, strips unknown keys
+  ---
+  duration_ms: 2.738895
+  type: 'test'
+  ...
+# Subtest: preview: max 2 lessons, 1 child, 2 active assignments (server side)
+ok 163 - preview: max 2 lessons, 1 child, 2 active assignments (server side)
+  ---
+  duration_ms: 187.325442
+  type: 'test'
+  ...
+# Subtest: preview limit on active assignments with paid lessons count
+ok 164 - preview limit on active assignments with paid lessons count
+  ---
+  duration_ms: 200.137587
+  type: 'test'
+  ...
+# Subtest: expired preview: cannot create or assign but data is kept
+ok 165 - expired preview: cannot create or assign but data is kept
+  ---
+  duration_ms: 195.119497
+  type: 'test'
+  ...
+# Subtest: cross-family isolation
+ok 166 - cross-family isolation
+  ---
+  duration_ms: 124.472387
+  type: 'test'
+  ...
+# Subtest: premade lessons (family_id NULL) never appear in a family library
+ok 167 - premade lessons (family_id NULL) never appear in a family library
+  ---
+  duration_ms: 139.930699
+  type: 'test'
+  ...
+# Subtest: full workflow: create, assign, snapshot survives edit, submit once, review, XP once
+ok 168 - full workflow: create, assign, snapshot survives edit, submit once, review, XP once
+  ---
+  duration_ms: 140.204378
+  type: 'test'
+  ...
+# Subtest: parent review rolls back fully if evidence cannot be saved, then succeeds once
+ok 169 - parent review rolls back fully if evidence cannot be saved, then succeeds once
+  ---
+  duration_ms: 166.551386
+  type: 'test'
+  ...
+# Subtest: legacy submissions with no lesson_id can still be approved safely
+ok 170 - legacy submissions with no lesson_id can still be approved safely
+  ---
+  duration_ms: 159.630164
+  type: 'test'
+  ...
+# Subtest: approval succeeds on legacy production evidence schema missing file_ids
+ok 171 - approval succeeds on legacy production evidence schema missing file_ids
+  ---
+  duration_ms: 129.547468
+  type: 'test'
+  ...
+# Subtest: a missing approval evidence table returns a safe error without changing work
+ok 172 - a missing approval evidence table returns a safe error without changing work
+  ---
+  duration_ms: 139.982166
+  type: 'test'
+  ...
+# Subtest: returned work restores the submitted draft and accepts a corrected hand-in
+ok 173 - returned work restores the submitted draft and accepts a corrected hand-in
+  ---
+  duration_ms: 135.249257
+  type: 'test'
+  ...
+# Subtest: two children have independent assignments
+ok 174 - two children have independent assignments
+  ---
+  duration_ms: 132.361137
+  type: 'test'
+  ...
+# Subtest: deleting an assigned lesson archives it; drafts cannot be assigned
+ok 175 - deleting an assigned lesson archives it; drafts cannot be assigned
+  ---
+  duration_ms: 133.75348
+  type: 'test'
+  ...
+# Subtest: owner-only fast preview retains the full lesson and cannot be activated by paying families
+ok 176 - owner-only fast preview retains the full lesson and cannot be activated by paying families
+  ---
+  duration_ms: 593.681618
+  type: 'test'
+  ...
+# Subtest: paid default runs the original full-length lesson through the fast pipeline and ignores forged baseline opt-outs
+ok 177 - paid default runs the original full-length lesson through the fast pipeline and ignores forged baseline opt-outs
+  ---
+  duration_ms: 822.177352
+  type: 'test'
+  ...
+# Subtest: only a verified INTERNAL platform owner can select standard generation for comparison
+ok 178 - only a verified INTERNAL platform owner can select standard generation for comparison
+  ---
+  duration_ms: 355.154526
+  type: 'test'
+  ...
+# Subtest: opt-in compact drafting halves teaching model calls without skipping the quality gate
+ok 179 - opt-in compact drafting halves teaching model calls without skipping the quality gate
+  ---
+  duration_ms: 190.787367
+  type: 'test'
+  ...
+# Subtest: compact group parse failure falls back to independently validated sections
+ok 180 - compact group parse failure falls back to independently validated sections
+  ---
+  duration_ms: 159.725822
+  type: 'test'
+  ...
+# Subtest: AI drafting: one successful free-preview lesson per family, never per account or device
+ok 181 - AI drafting: one successful free-preview lesson per family, never per account or device
+  ---
+  duration_ms: 192.560278
+  type: 'test'
+  ...
+# Subtest: a preview family with two manual lessons can still generate its one AI sample
+ok 182 - a preview family with two manual lessons can still generate its one AI sample
+  ---
+  duration_ms: 168.654723
+  type: 'test'
+  ...
+# Subtest: AI sample drafted first does not steal either manual lesson slot
+ok 183 - AI sample drafted first does not steal either manual lesson slot
+  ---
+  duration_ms: 197.064186
+  type: 'test'
+  ...
+# Subtest: AI drafting: preview retries a failed generation, but cannot run two at once
+ok 184 - AI drafting: preview retries a failed generation, but cannot run two at once
+  ---
+  duration_ms: 147.631928
+  type: 'test'
+  ...
+# Subtest: AI drafting: expired previews and cancelled plans remain blocked before any AI call
+ok 185 - AI drafting: expired previews and cancelled plans remain blocked before any AI call
+  ---
+  duration_ms: 735.241994
+  type: 'test'
+  ...
+# Subtest: AI drafting: paid family gets an unreviewed AI-labelled draft with no links, and usage is recorded
+ok 186 - AI drafting: paid family gets an unreviewed AI-labelled draft with no links, and usage is recorded
+  ---
+  duration_ms: 143.018928
+  type: 'test'
+  ...
+# Subtest: AI lesson drafting follows family jurisdiction without inventing non-NSW curriculum codes
+ok 187 - AI lesson drafting follows family jurisdiction without inventing non-NSW curriculum codes
+  ---
+  duration_ms: 188.682068
+  type: 'test'
+  ...
+# Subtest: AI drafting: unavailable binding, bad output and quota
+ok 188 - AI drafting: unavailable binding, bad output and quota
+  ---
+  duration_ms: 203.4992
+  type: 'test'
+  ...
+# Subtest: owner can keep building and refining AI lessons beyond customer fair-use limits
+ok 189 - owner can keep building and refining AI lessons beyond customer fair-use limits
+  ---
+  duration_ms: 188.865352
+  type: 'test'
+  ...
+# Subtest: assignments: move dates, reassign before work starts and revoke unfinished work; other families blocked
+ok 190 - assignments: move dates, reassign before work starts and revoke unfinished work; other families blocked
+  ---
+  duration_ms: 176.298365
+  type: 'test'
+  ...
+# Subtest: evidence notes: family-scoped, searchable, date filtered; expired preview keeps reading but cannot add
+ok 191 - evidence notes: family-scoped, searchable, date filtered; expired preview keeps reading but cannot add
+  ---
+  duration_ms: 178.978754
+  type: 'test'
+  ...
+# Subtest: AI drafting: a thin reply gets one targeted repair; an unfixable one is refused, not saved
+ok 192 - AI drafting: a thin reply gets one targeted repair; an unfixable one is refused, not saved
+  ---
+  duration_ms: 176.911462
+  type: 'test'
+  ...
+# Subtest: reference lessons meet the generator's own quality gate and match the frontend copies
+ok 193 - reference lessons meet the generator's own quality gate and match the frontend copies
+  ---
+  duration_ms: 16.342624
+  type: 'test'
+  ...
+# Subtest: quality gate catches fake resources, vague activities, wrong arithmetic and a missing student voice
+ok 194 - quality gate catches fake resources, vague activities, wrong arithmetic and a missing student voice
+  ---
+  duration_ms: 1.881324
+  type: 'test'
+  ...
+# Subtest: maths prompts teach algebra instead of merely stating rules
+ok 195 - maths prompts teach algebra instead of merely stating rules
+  ---
+  duration_ms: 0.44127
+  type: 'test'
+  ...
+# Subtest: maths quality gate rejects summaries that look like teaching but contain no demonstration
+ok 196 - maths quality gate rejects summaries that look like teaching but contain no demonstration
+  ---
+  duration_ms: 1.231122
+  type: 'test'
+  ...
+# Subtest: shape and position lessons pass the maths working check without + or = signs
+ok 197 - shape and position lessons pass the maths working check without + or = signs
+  ---
+  duration_ms: 19.518214
+  type: 'test'
+  ...
+# Subtest: equation lessons must demonstrate why an operation works and check the result
+ok 198 - equation lessons must demonstrate why an operation works and check the result
+  ---
+  duration_ms: 2.570535
+  type: 'test'
+  ...
+# Subtest: teaching prompts actually model the method in each subject, not just assign it
+ok 199 - teaching prompts actually model the method in each subject, not just assign it
+  ---
+  duration_ms: 0.785585
+  type: 'test'
+  ...
+# Subtest: all-subject quality gate rejects worked examples consisting only of generic orders
+ok 200 - all-subject quality gate rejects worked examples consisting only of generic orders
+  ---
+  duration_ms: 4.620501
+  type: 'test'
+  ...
+# Subtest: truncated model output is salvaged to the last complete item
+ok 201 - truncated model output is salvaged to the last complete item
+  ---
+  duration_ms: 0.17387
+  type: 'test'
+  ...
+# Subtest: rich lessons keep teaching content for the parent but strip answers and the parent guide for the child
+ok 202 - rich lessons keep teaching content for the parent but strip answers and the parent guide for the child
+  ---
+  duration_ms: 164.56084
+  type: 'test'
+  ...
+# Subtest: one-sentence requests are understood (subject, year, minutes, theme, delivery, count)
+ok 203 - one-sentence requests are understood (subject, year, minutes, theme, delivery, count)
+  ---
+  duration_ms: 1.478727
+  type: 'test'
+  ...
+# Subtest: the child's saved profile changes the lesson request; the parent's words win over the profile
+ok 204 - the child's saved profile changes the lesson request; the parent's words win over the profile
+  ---
+  duration_ms: 150.371336
+  type: 'test'
+  ...
+# Subtest: changes are previewed first, touch only the named parts, count separately, and apply keeps manual edits
+ok 205 - changes are previewed first, touch only the named parts, count separately, and apply keeps manual edits
+  ---
+  duration_ms: 266.473906
+  type: 'test'
+  ...
+# Subtest: AI refinement retries a no-op once and saves a genuinely changed field
+ok 206 - AI refinement retries a no-op once and saves a genuinely changed field
+  ---
+  duration_ms: 196.710266
+  type: 'test'
+  ...
+# Subtest: refinement normalisation keeps quiz options and answer index in exactly the original order
+ok 207 - refinement normalisation keeps quiz options and answer index in exactly the original order
+  ---
+  duration_ms: 0.192042
+  type: 'test'
+  ...
+# Subtest: unchanged AI patches do not consume allowance or shuffle a correct quiz
+ok 208 - unchanged AI patches do not consume allowance or shuffle a correct quiz
+  ---
+  duration_ms: 187.091424
+  type: 'test'
+  ...
+# Subtest: series planning checks the allowance up front and returns the right number of lessons
+ok 209 - series planning checks the allowance up front and returns the right number of lessons
+  ---
+  duration_ms: 216.231393
+  type: 'test'
+  ...
+# Subtest: help: paid only, child only, own assignment only, and the parent can switch it off
+ok 210 - help: paid only, child only, own assignment only, and the parent can switch it off
+  ---
+  duration_ms: 313.509262
+  type: 'test'
+  ...
+# Subtest: help: context comes from the server, never includes answer keys or names, and answer-leaking replies are replaced
+ok 211 - help: context comes from the server, never includes answer keys or names, and answer-leaking replies are replaced
+  ---
+  duration_ms: 136.946435
+  type: 'test'
+  ...
+# Subtest: help: a stored hint answers a first hint request for free; limits apply per child and per family; failures cost nothing
+ok 212 - help: a stored hint answers a first hint request for free; limits apply per child and per family; failures cost nothing
+  ---
+  duration_ms: 179.015424
+  type: 'test'
+  ...
+# Subtest: leak detector: numbers match whole values only
+ok 213 - leak detector: numbers match whole values only
+  ---
+  duration_ms: 0.307675
+  type: 'test'
+  ...
+# Subtest: practice marking: numbers, text, choice, blanks, order and match
+ok 214 - practice marking: numbers, text, choice, blanks, order and match
+  ---
+  duration_ms: 1.066371
+  type: 'test'
+  ...
+# Subtest: kinds are cleaned: broken interactive items fall back to plain text; visuals are data only
+ok 215 - kinds are cleaned: broken interactive items fall back to plain text; visuals are data only
+  ---
+  duration_ms: 0.199101
+  type: 'test'
+  ...
+# Subtest: practice: lessons keep interactive items; the child never gets answers or the correct order; feedback is checked on the server
+ok 216 - practice: lessons keep interactive items; the child never gets answers or the correct order; feedback is checked on the server
+  ---
+  duration_ms: 183.810857
+  type: 'test'
+  ...
+# Subtest: youtube: only public, embeddable, not age-restricted, not live videos survive; best matches first; no key means an honest 'unavailable'
+ok 217 - youtube: only public, embeddable, not age-restricted, not live videos survive; best matches first; no key means an honest 'unavailable'
+  ---
+  duration_ms: 168.073779
+  type: 'test'
+  ...
+# Subtest: youtube: per-family daily limit, failures cost nothing, key is never in a response
+ok 218 - youtube: per-family daily limit, failures cost nothing, key is never in a response
+  ---
+  duration_ms: 177.471683
+  type: 'test'
+  ...
+# Subtest: youtube: a parent's own link is checked (embeddable only) and non-YouTube links are refused
+ok 219 - youtube: a parent's own link is checked (embeddable only) and non-YouTube links are refused
+  ---
+  duration_ms: 0.419754
+  type: 'test'
+  ...
+# Subtest: approved videos are kept with the lesson, survive edit/duplicate/assignment snapshot, and never trust a client-supplied embed or thumbnail host
+ok 220 - approved videos are kept with the lesson, survive edit/duplicate/assignment snapshot, and never trust a client-supplied embed or thumbnail host
+  ---
+  duration_ms: 167.888269
+  type: 'test'
+  ...
+# Subtest: staged generation: a cut-off stage is asked again once; if still cut off it is kept but flagged; a stage that never works fails cleanly
+ok 221 - staged generation: a cut-off stage is asked again once; if still cut off it is kept but flagged; a stage that never works fails cleanly
+  ---
+  duration_ms: 215.729272
+  type: 'test'
+  ...
+# Subtest: quality gate: instructions that stand in for teaching are caught
+ok 222 - quality gate: instructions that stand in for teaching are caught
+  ---
+  duration_ms: 1.818346
+  type: 'test'
+  ...
+# Subtest: young learners get a reading-level instruction; the lesson is told the child works alone
+ok 223 - young learners get a reading-level instruction; the lesson is told the child works alone
+  ---
+  duration_ms: 180.955054
+  type: 'test'
+  ...
+# Subtest: outcomes: the model can only pick from the real list; opting out leaves none; existing lessons can be matched; free plans get the wording match; other families blocked
+ok 224 - outcomes: the model can only pick from the real list; opting out leaves none; existing lessons can be matched; free plans get the wording match; other families blocked
+  ---
+  duration_ms: 180.028795
+  type: 'test'
+  ...
+# Subtest: model replies with raw line breaks and trailing commas are repaired, and a failed step is named
+ok 225 - model replies with raw line breaks and trailing commas are repaired, and a failed step is named
+  ---
+  duration_ms: 167.15692
+  type: 'test'
+  ...
+# Subtest: spelling words for the Word Hoard: cleaned, single words only, kept with hints, and never carry answers
+ok 226 - spelling words for the Word Hoard: cleaned, single words only, kept with hints, and never carry answers
+  ---
+  duration_ms: 1.241955
+  type: 'test'
+  ...
+# Subtest: pet goals: three a day, progress from real learning, coins only when collected, once each
+ok 227 - pet goals: three a day, progress from real learning, coins only when collected, once each
+  ---
+  duration_ms: 2.286974
+  type: 'test'
+  ...
+# Subtest: pet coins from spelling are capped each day so repeating cannot farm them
+ok 228 - pet coins from spelling are capped each day so repeating cannot farm them
+  ---
+  duration_ms: 4.806759
+  type: 'test'
+  ...
+# Subtest: pet weekly chest needs five finished days, gives a rare accessory once, and the accessory can be worn
+ok 229 - pet weekly chest needs five finished days, gives a rare accessory once, and the accessory can be worn
+  ---
+  duration_ms: 7.148216
+  type: 'test'
+  ...
+# Subtest: pet shop: buy with coins, own once, place up to six, cannot place what you do not own
+ok 230 - pet shop: buy with coins, own once, place up to six, cannot place what you do not own
+  ---
+  duration_ms: 0.281656
+  type: 'test'
+  ...
+# Subtest: pet trophies and extra pets: mastered words open slots, swapping keeps each pet's own progress
+ok 231 - pet trophies and extra pets: mastered words open slots, swapping keeps each pet's own progress
+  ---
+  duration_ms: 1.437391
+  type: 'test'
+  ...
+# Subtest: pet mood and weekly summary read sensibly; parent summary counts this week's mastered words
+ok 232 - pet mood and weekly summary read sensibly; parent summary counts this week's mastered words
+  ---
+  duration_ms: 0.414436
+  type: 'test'
+  ...
+# Subtest: pet room: things can be moved, positions are kept in range and only for things placed
+ok 233 - pet room: things can be moved, positions are kept in range and only for things placed
+  ---
+  duration_ms: 0.401547
+  type: 'test'
+  ...
+# Subtest: state or territory: codes are validated, and families outside NSW never get NSW outcome codes
+ok 234 - state or territory: codes are validated, and families outside NSW never get NSW outcome codes
+  ---
+  duration_ms: 164.196313
+  type: 'test'
+  ...
+# Subtest: revocation preserves lesson, saved work, quiz and submission history; permits a fresh assignment
+ok 235 - revocation preserves lesson, saved work, quiz and submission history; permits a fresh assignment
+  ---
+  duration_ms: 161.474773
+  type: 'test'
+  ...
+# Subtest: every unfinished state can be revoked; completed assignments and drafts remain intact
+ok 236 - every unfinished state can be revoked; completed assignments and drafts remain intact
+  ---
+  duration_ms: 171.639355
+  type: 'test'
+  ...
+# Subtest: revocation racing a hand-in or completed review cannot lose work or reopen the assignment
+ok 237 - revocation racing a hand-in or completed review cannot lose work or reopen the assignment
+  ---
+  duration_ms: 172.038478
+  type: 'test'
+  ...
+# Subtest: question review flags validate targets, stay with the return and preserve answers
+ok 238 - question review flags validate targets, stay with the return and preserve answers
+  ---
+  duration_ms: 174.581457
+  type: 'test'
+  ...
+# Subtest: AI repair retries one service interruption and persisted changes retain manual content
+ok 239 - AI repair retries one service interruption and persisted changes retain manual content
+  ---
+  duration_ms: 150.378074
+  type: 'test'
+  ...
+# Subtest: AI repair preserves a concurrent approval even when content version is unchanged
+ok 240 - AI repair preserves a concurrent approval even when content version is unchanged
+  ---
+  duration_ms: 140.758726
+  type: 'test'
+  ...
+# Subtest: A metadata change during the save cannot be overwritten by an AI patch
+ok 241 - A metadata change during the save cannot be overwritten by an AI patch
+  ---
+  duration_ms: 186.489923
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: manual calendar scheduling keeps the real assignment day in sync, even after editing or removing
+ok 242 - manual calendar scheduling keeps the real assignment day in sync, even after editing or removing
+  ---
+  duration_ms: 200.41102
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: change dates moves the linked session, rather than just the assignment label
+ok 243 - change dates moves the linked session, rather than just the assignment label
+  ---
+  duration_ms: 231.740106
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: overlapping sessions and whole-family holidays are rejected, but siblings may learn together
+ok 244 - overlapping sessions and whole-family holidays are rejected, but siblings may learn together
+  ---
+  duration_ms: 244.614418
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: rescheduling a timetable assignment preserves the old slot and uses a free matching slot
+ok 245 - rescheduling a timetable assignment preserves the old slot and uses a free matching slot
+  ---
+  duration_ms: 227.192194
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: multi-day lessons never move by changing one date field
+ok 246 - multi-day lessons never move by changing one date field
+  ---
+  duration_ms: 243.829458
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: a rest day stops autogenerated timetable slots for the affected child
+ok 247 - a rest day stops autogenerated timetable slots for the affected child
+  ---
+  duration_ms: 223.843209
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: repeated schedule requests do not create duplicate sessions for the same assignment and day
+ok 248 - repeated schedule requests do not create duplicate sessions for the same assignment and day
+  ---
+  duration_ms: 227.955811
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: free-preview manual lesson dates work without unlocking paid timetable or calendar writes
+ok 249 - free-preview manual lesson dates work without unlocking paid timetable or calendar writes
+  ---
+  duration_ms: 230.531944
+  type: 'test'
+  ...
+# Subtest: already assigned child lessons hide explicit answer labels, not the task or worked examples
+ok 250 - already assigned child lessons hide explicit answer labels, not the task or worked examples
+  ---
+  duration_ms: 2.047643
+  type: 'test'
+  ...
+# Subtest: AI review rejects answers embedded in student fields and read-only try/check pairs
+ok 251 - AI review rejects answers embedded in student fields and read-only try/check pairs
+  ---
+  duration_ms: 11.309986
+  type: 'test'
+  ...
+# Subtest: generation prompts explicitly separate public tasks and private solutions
+ok 252 - generation prompts explicitly separate public tasks and private solutions
+  ---
+  duration_ms: 1.376449
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: child routes never expose parent notes, answer keys or quiz answers
+ok 253 - child routes never expose parent notes, answer keys or quiz answers
+  ---
+  duration_ms: 298.046618
+  type: 'test'
+  ...
+# Subtest: Compass selections persist separately from saved elective courses and prefs
+ok 254 - Compass selections persist separately from saved elective courses and prefs
+  ---
+  duration_ms: 1.255398
+  type: 'test'
+  ...
+# Subtest: Ordinary profile update retains Compass selections unless supplied explicitly
+ok 255 - Ordinary profile update retains Compass selections unless supplied explicitly
+  ---
+  duration_ms: 0.141021
+  type: 'test'
+  ...
+# Subtest: Clearing Compass selection does not clear already chosen subject courses
+ok 256 - Clearing Compass selection does not clear already chosen subject courses
+  ---
+  duration_ms: 0.120661
+  type: 'test'
+  ...
+# Subtest: Only a parent of the owning NSW family may store 2 distinct valid Compass areas
+ok 257 - Only a parent of the owning NSW family may store 2 distinct valid Compass areas
+  ---
+  duration_ms: 179.586433
+  type: 'test'
+  ...
+# Subtest: Wrong stage rejected and clearing Compass leaves courses intact
+ok 258 - Wrong stage rejected and clearing Compass leaves courses intact
+  ---
+  duration_ms: 164.544134
+  type: 'test'
+  ...
+# Subtest: all eight jurisdictions have complete expandable instructions for every Compass checklist step
+ok 259 - all eight jurisdictions have complete expandable instructions for every Compass checklist step
+  ---
+  duration_ms: 1.513504
+  type: 'test'
+  ...
+# Subtest: registration summary shows entered dates and a near-expiry warning without government confirmation claims
+ok 260 - registration summary shows entered dates and a near-expiry warning without government confirmation claims
+  ---
+  duration_ms: 15.158222
+  type: 'test'
+  ...
+# Subtest: already expired registration is surfaced above any non-expired status
+ok 261 - already expired registration is surfaced above any non-expired status
+  ---
+  duration_ms: 0.497414
+  type: 'test'
+  ...
+# Subtest: ACT renewal is three calendar months before expiry, including last-day clamp
+ok 262 - ACT renewal is three calendar months before expiry, including last-day clamp
+  ---
+  duration_ms: 0.790513
+  type: 'test'
+  ...
+# Subtest: approved registrations without an expiry in VIC are not given invented annual renewal reminders
+ok 263 - approved registrations without an expiry in VIC are not given invented annual renewal reminders
+  ---
+  duration_ms: 0.319137
+  type: 'test'
+  ...
+# Subtest: status, date and validation helpers account for user-entered values
+ok 264 - status, date and validation helpers account for user-entered values
+  ---
+  duration_ms: 0.399077
+  type: 'test'
+  ...
+# Subtest: Hoard schema is additive, idempotent and appears in migration 0067
+ok 265 - Hoard schema is additive, idempotent and appears in migration 0067
+  ---
+  duration_ms: 172.480494
+  type: 'test'
+  ...
+# Subtest: Hoard rejects unsafe or overly generous discounts
+ok 266 - Hoard rejects unsafe or overly generous discounts
+  ---
+  duration_ms: 0.5755
+  type: 'test'
+  ...
+# Subtest: Stripe handles coupon and redemption caps, and retiring a code disables it
+ok 267 - Stripe handles coupon and redemption caps, and retiring a code disables it
+  ---
+  duration_ms: 198.116739
+  type: 'test'
+  ...
+# Subtest: discount preview reads live Stripe status and never creates or redeems codes
+ok 268 - discount preview reads live Stripe status and never creates or redeems codes
+  ---
+  duration_ms: 202.163918
+  type: 'test'
+  ...
+# Subtest: monthly-duration offers create bounded repeating Stripe coupons and retain their terms
+ok 269 - monthly-duration offers create bounded repeating Stripe coupons and retain their terms
+  ---
+  duration_ms: 202.882062
+  type: 'test'
+  ...
+# Subtest: Preview gifts are capped, conditional and do not confer paid access
+ok 270 - Preview gifts are capped, conditional and do not confer paid access
+  ---
+  duration_ms: 176.367884
+  type: 'test'
+  ...
+# Subtest: gated family cannot sign in until mailed, single-use verification; 7-day preview begins on confirmation
+ok 271 - gated family cannot sign in until mailed, single-use verification; 7-day preview begins on confirmation
+  ---
+  duration_ms: 415.190795
+  type: 'test'
+  ...
+# Subtest: new signups fail closed without an email sender and create no family
+ok 272 - new signups fail closed without an email sender and create no family
+  ---
+  duration_ms: 184.309237
+  type: 'test'
+  ...
+# Subtest: legacy sign-in stays available while migration 0069 is pending; activation fails closed
+ok 273 - legacy sign-in stays available while migration 0069 is pending; activation fails closed
+  ---
+  duration_ms: 229.001019
+  type: 'test'
+  ...
+# Subtest: legacy family can still sign in with verification enabled; pending user can resend without logging in
+ok 274 - legacy family can still sign in with verification enabled; pending user can resend without logging in
+  ---
+  duration_ms: 269.091254
+  type: 'test'
+  ...
+# Subtest: 254 original family activities have practical printable guides and troubleshooting
+ok 275 - 254 original family activities have practical printable guides and troubleshooting
+  ---
+  duration_ms: 3.107688
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: free preview gets metadata only, but never step-by-step guides
+ok 276 - free preview gets metadata only, but never step-by-step guides
+  ---
+  duration_ms: 244.943145
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: paid families receive complete guides and own material search metadata
+ok 277 - paid families receive complete guides and own material search metadata
+  ---
+  duration_ms: 217.560452
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: expired memberships are locked; verified owner can read without payment
+ok 278 - expired memberships are locked; verified owner can read without payment
+  ---
+  duration_ms: 216.62988
+  type: 'test'
+  ...
+# Subtest: All 56 A4 pages exist as black-and-white scalable practice sheets
+ok 279 - All 56 A4 pages exist as black-and-white scalable practice sheets
+  ---
+  duration_ms: 9.874049
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Free families never receive book artwork; paid parents can read it
+ok 280 - Free families never receive book artwork; paid parents can read it
+  ---
+  duration_ms: 269.136322
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner has free creator access while ordinary free families stay locked
+ok 281 - Owner has free creator access while ordinary free families stay locked
+  ---
+  duration_ms: 207.512529
+  type: 'test'
+  ...
+# Subtest: Compass saves and reads only the family-owned child's state-specific record
+ok 282 - Compass saves and reads only the family-owned child's state-specific record
+  ---
+  duration_ms: 217.570532
+  type: 'test'
+  ...
+# Subtest: Compass rejects cross-family writes, child-role access, invalid dates and made-up steps
+ok 283 - Compass rejects cross-family writes, child-role access, invalid dates and made-up steps
+  ---
+  duration_ms: 205.180697
+  type: 'test'
+  ...
+# Subtest: Compass progress belongs to a jurisdiction and does not bleed into the next state
+ok 284 - Compass progress belongs to a jurisdiction and does not bleed into the next state
+  ---
+  duration_ms: 149.174588
+  type: 'test'
+  ...
+# Subtest: OTHER is valid but never maps families onto an Australian outcome catalogue
+ok 285 - OTHER is valid but never maps families onto an Australian outcome catalogue
+  ---
+  duration_ms: 1.322614
+  type: 'test'
+  ...
+# Subtest: international family creates goals, attaches observations and explicitly confirms achievement
+ok 286 - international family creates goals, attaches observations and explicitly confirms achievement
+  ---
+  duration_ms: 216.003989
+  type: 'test'
+  ...
+# Subtest: linked Evidence Backpack notes are verified for child and family, and stay intact after unlink
+ok 287 - linked Evidence Backpack notes are verified for child and family, and stay intact after unlink
+  ---
+  duration_ms: 197.071114
+  type: 'test'
+  ...
+# Subtest: only parents can use international goals; family and child boundaries cannot be crossed
+ok 288 - only parents can use international goals; family and child boundaries cannot be crossed
+  ---
+  duration_ms: 186.229194
+  type: 'test'
+  ...
+# Subtest: one primary area can link to distinct valid other subjects without duplication
+ok 289 - one primary area can link to distinct valid other subjects without duplication
+  ---
+  duration_ms: 1.30239
+  type: 'test'
+  ...
+# Subtest: cross-curricular areas survive server validation and lesson data conversion
+ok 290 - cross-curricular areas survive server validation and lesson data conversion
+  ---
+  duration_ms: 0.783395
+  type: 'test'
+  ...
+# Subtest: full Humanities and Social Sciences name normalises as HSIE, never Science
+ok 291 - full Humanities and Social Sciences name normalises as HSIE, never Science
+  ---
+  duration_ms: 0.076364
+  type: 'test'
+  ...
+# Subtest: Australian English is consistent for model-authored lessons, questions and answers
+ok 292 - Australian English is consistent for model-authored lessons, questions and answers
+  ---
+  duration_ms: 4.255928
+  type: 'test'
+  ...
+# Subtest: Australian localisation protects quotes, CSS, URLs, parent resources and genuine source records
+ok 293 - Australian localisation protects quotes, CSS, URLs, parent resources and genuine source records
+  ---
+  duration_ms: 0.724695
+  type: 'test'
+  ...
+# Subtest: do not rewrite deliberately quoted American spelling or programming code in lessons
+ok 294 - do not rewrite deliberately quoted American spelling or programming code in lessons
+  ---
+  duration_ms: 0.303949
+  type: 'test'
+  ...
+# Subtest: jurisdiction codes normalise and every state has a framework
+ok 295 - jurisdiction codes normalise and every state has a framework
+  ---
+  duration_ms: 0.657173
+  type: 'test'
+  ...
+# Subtest: family jurisdiction is stored and read back
+ok 296 - family jurisdiction is stored and read back
+  ---
+  duration_ms: 129.874207
+  type: 'test'
+  ...
+# Subtest: NSW: model can only pick from the verified list; unknown numbers are dropped
+ok 297 - NSW: model can only pick from the verified list; unknown numbers are dropped
+  ---
+  duration_ms: 2.385713
+  type: 'test'
+  ...
+# Subtest: Other states: no codes attached, areas limited to that framework, codes stripped from text
+ok 298 - Other states: no codes attached, areas limited to that framework, codes stripped from text
+  ---
+  duration_ms: 0.442318
+  type: 'test'
+  ...
+# Subtest: stripCodes removes AC9, VC2 and NSW-style codes
+ok 299 - stripCodes removes AC9, VC2 and NSW-style codes
+  ---
+  duration_ms: 0.180723
+  type: 'test'
+  ...
+# Subtest: AI mapping is metered, records failures without charging, and enforces limits
+ok 300 - AI mapping is metered, records failures without charging, and enforces limits
+  ---
+  duration_ms: 150.881164
+  type: 'test'
+  ...
+# Subtest: Basic (free) suggestions use the family's framework and attach no codes outside NSW
+ok 301 - Basic (free) suggestions use the family's framework and attach no codes outside NSW
+  ---
+  duration_ms: 178.148424
+  type: 'test'
+  ...
+# Subtest: access policy covers advanced mutations and trial writes without blocking reading and account safety
+ok 302 - access policy covers advanced mutations and trial writes without blocking reading and account safety
+  ---
+  duration_ms: 1.697775
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: preview protects all advanced routes server-side and allows only one basic learning plan
+ok 303 - preview protects all advanced routes server-side and allows only one basic learning plan
+  ---
+  duration_ms: 326.976197
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: expired families cannot write new content; existing records and safeguards remain accessible
+ok 304 - expired families cannot write new content; existing records and safeguards remain accessible
+  ---
+  duration_ms: 217.182372
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: paid families can use advanced endpoints; tests never unlock paid access by client input
+ok 305 - paid families can use advanced endpoints; tests never unlock paid access by client input
+  ---
+  duration_ms: 232.70478
+  type: 'test'
+  ...
+# Subtest: approval alone cannot count as demonstrated understanding
+ok 306 - approval alone cannot count as demonstrated understanding
+  ---
+  duration_ms: 1.106982
+  type: 'test'
+  ...
+# Subtest: full journey: five lessons, hand-ins, reviews with support, parent confirmation and preserved history
+ok 307 - full journey: five lessons, hand-ins, reviews with support, parent confirmation and preserved history
+  ---
+  duration_ms: 167.910773
+  type: 'test'
+  ...
+# Subtest: a confirmed achievement is never silently removed when its evidence changes
+ok 308 - a confirmed achievement is never silently removed when its evidence changes
+  ---
+  duration_ms: 138.846157
+  type: 'test'
+  ...
+# Subtest: duplicate submissions, re-reviews and resyncs never double count
+ok 309 - duplicate submissions, re-reviews and resyncs never double count
+  ---
+  duration_ms: 141.566876
+  type: 'test'
+  ...
+# Subtest: deleted, excluded and moved evidence recalculates progress but keeps the record
+ok 310 - deleted, excluded and moved evidence recalculates progress but keeps the record
+  ---
+  duration_ms: 211.749763
+  type: 'test'
+  ...
+# Subtest: life learning: only reviewed, verified-code mappings count; re-review recalculates
+ok 311 - life learning: only reviewed, verified-code mappings count; re-review recalculates
+  ---
+  duration_ms: 141.009715
+  type: 'test'
+  ...
+# Subtest: children and families stay separate
+ok 312 - children and families stay separate
+  ---
+  duration_ms: 143.823594
+  type: 'test'
+  ...
+# Subtest: state catalogues are isolated; switching states preserves historical evidence by framework
+ok 313 - state catalogues are isolated; switching states preserves historical evidence by framework
+  ---
+  duration_ms: 161.113427
+  type: 'test'
+  ...
+# Subtest: curriculum wording updates don't rewrite what was recorded
+ok 314 - curriculum wording updates don't rewrite what was recorded
+  ---
+  duration_ms: 180.60203
+  type: 'test'
+  ...
+# Subtest: learner needs: documented adjustments let well-supported work count
+ok 315 - learner needs: documented adjustments let well-supported work count
+  ---
+  duration_ms: 123.18198
+  type: 'test'
+  ...
+# Subtest: mastery rules: pure evaluation
+ok 316 - mastery rules: pure evaluation
+  ---
+  duration_ms: 0.333533
+  type: 'test'
+  ...
+# Subtest: tracker bookkeeping can never break a review
+ok 317 - tracker bookkeeping can never break a review
+  ---
+  duration_ms: 121.126826
+  type: 'test'
+  ...
+# Subtest: schema: runtime creation matches migration 0057, and the Backpack shows tracker status
+ok 318 - schema: runtime creation matches migration 0057, and the Backpack shows tracker status
+  ---
+  duration_ms: 299.180928
+  type: 'test'
+  ...
+# Subtest: one reviewed comprehensive assessment reaches Demonstrated; it still needs the parent to confirm Achieved
+ok 319 - one reviewed comprehensive assessment reaches Demonstrated; it still needs the parent to confirm Achieved
+  ---
+  duration_ms: 176.455078
+  type: 'test'
+  ...
+# Subtest: review mappings can only add codes from the family's own framework
+ok 320 - review mappings can only add codes from the family's own framework
+  ---
+  duration_ms: 198.649778
+  type: 'test'
+  ...
+# Subtest: lessons keep only codes from the family's own catalogue (AC9 states can link AC9 codes)
+ok 321 - lessons keep only codes from the family's own catalogue (AC9 states can link AC9 codes)
+  ---
+  duration_ms: 191.077672
+  type: 'test'
+  ...
+# Subtest: Mason's case: Year 7 with History, Languages and Technology gets cards for those subjects, Languages flagged as not held
+ok 322 - Mason's case: Year 7 with History, Languages and Technology gets cards for those subjects, Languages flagged as not held
+  ---
+  duration_ms: 175.766317
+  type: 'test'
+  ...
+# Subtest: Years 7-12: the tracker covers only the courses chosen when the child was added
+ok 323 - Years 7-12: the tracker covers only the courses chosen when the child was added
+  ---
+  duration_ms: 181.550373
+  type: 'test'
+  ...
+# Subtest: AC9 follows the child's year (not the two-year stage) and chosen subjects; primary covers every area
+ok 324 - AC9 follows the child's year (not the two-year stage) and chosen subjects; primary covers every area
+  ---
+  duration_ms: 121.903008
+  type: 'test'
+  ...
+# Subtest: a per-subject level on the profile moves just that subject
+ok 325 - a per-subject level on the profile moves just that subject
+  ---
+  duration_ms: 153.332135
+  type: 'test'
+  ...
+# Subtest: a chosen subject is never filled with another subject's outcomes
+ok 326 - a chosen subject is never filled with another subject's outcomes
+  ---
+  duration_ms: 160.580102
+  type: 'test'
+  ...
+# Subtest: lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, VC2 for VIC
+ok 327 - lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, VC2 for VIC
+  ---
+  duration_ms: 40.48263
+  type: 'test'
+  ...
+# Subtest: schema: migration 0060 is exactly the runtime schema, idempotent, and grants no one anything
+ok 328 - schema: migration 0060 is exactly the runtime schema, idempotent, and grants no one anything
+  ---
+  duration_ms: 355.238767
+  type: 'test'
+  ...
+# Subtest: no API can grant roles: the only INSERT INTO user_roles is the promotion script
+ok 329 - no API can grant roles: the only INSERT INTO user_roles is the promotion script
+  ---
+  duration_ms: 1.126
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: authz: everyone but the Owner gets 404 from every admin endpoint, including the INTERNAL plan
+ok 330 - authz: everyone but the Owner gets 404 from every admin endpoint, including the INTERNAL plan
+  ---
+  duration_ms: 340.216995
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: authz: the Owner sees the HQ link; tokens from before Owner HQ must sign in again; no CORS on admin
+ok 331 - authz: the Owner sees the HQ link; tokens from before Owner HQ must sign in again; no CORS on admin
+  ---
+  duration_ms: 170.747958
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: CSRF: changes need the admin header, this site's allow-listed Origin and a same-origin fetch
+ok 332 - CSRF: changes need the admin header, this site's allow-listed Origin and a same-origin fetch
+  ---
+  duration_ms: 134.581357
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: rate limits: more than 30 changes in 5 minutes are refused with Retry-After
+ok 333 - rate limits: more than 30 changes in 5 minutes are refused with Retry-After
+  ---
+  duration_ms: 153.91133
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: passkeys: first passkey needs the password; step-up opens HQ for this sign-in only
+ok 334 - passkeys: first passkey needs the password; step-up opens HQ for this sign-in only
+  ---
+  duration_ms: 210.693878
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: passkeys: challenges are single-use and session-bound; another authenticator or origin is rejected
+ok 335 - passkeys: challenges are single-use and session-bound; another authenticator or origin is rejected
+  ---
+  duration_ms: 161.554273
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: passkeys: the last passkey cannot be removed
+ok 336 - passkeys: the last passkey cannot be removed
+  ---
+  duration_ms: 215.871552
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: overview: real counts, and unmeasured things say so instead of inventing numbers
+ok 337 - overview: real counts, and unmeasured things say so instead of inventing numbers
+  ---
+  duration_ms: 283.832483
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: owner can diagnose missing approval storage without exposing family records or changing data
+ok 338 - owner can diagnose missing approval storage without exposing family records or changing data
+  ---
+  duration_ms: 273.063569
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: legacy evidence column appears as compatible, not fully repaired, in owner overview
+ok 339 - legacy evidence column appears as compatible, not fully repaired, in owner overview
+  ---
+  duration_ms: 217.510013
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: privacy: customer list and detail carry metadata and counts only, never children's or private content
+ok 340 - privacy: customer list and detail carry metadata and counts only, never children's or private content
+  ---
+  duration_ms: 309.896827
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: customer detail works on the production users table, which has no oauth_provider column
+ok 341 - customer detail works on the production users table, which has no oauth_provider column
+  ---
+  duration_ms: 198.027673
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: suspend / restore / sign out everywhere: confirmed, reasoned, enforced on every sign-in path, audited
+ok 342 - suspend / restore / sign out everywhere: confirmed, reasoned, enforced on every sign-in path, audited
+  ---
+  duration_ms: 339.167695
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Dragon's Hoard is Owner-only, passkey protected, and free-preview gifts are audited
+ok 343 - Dragon's Hoard is Owner-only, passkey protected, and free-preview gifts are audited
+  ---
+  duration_ms: 258.391254
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: deleting a family still works with the new tables (no foreign key gets in the way)
+ok 344 - deleting a family still works with the new tables (no foreign key gets in the way)
+  ---
+  duration_ms: 280.218279
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: settings: strict validation, confirmation for high-impact changes, audited, and actually enforced
+ok 345 - settings: strict validation, confirmation for high-impact changes, audited, and actually enforced
+  ---
+  duration_ms: 342.401092
+  type: 'test'
+  ...
+# Subtest: settings enforcement: the AI switch and the platform AI limit withhold the AI binding; YouTube switch too
+ok 346 - settings enforcement: the AI switch and the platform AI limit withhold the AI binding; YouTube switch too
+  ---
+  duration_ms: 204.174375
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: maintenance notice reaches everyone and turning it on needs confirmation
+ok 347 - maintenance notice reaches everyone and turning it on needs confirmation
+  ---
+  duration_ms: 215.005665
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# unhandled GET /api/calendar Error
+# Subtest: errors: an unhandled exception is logged with route pattern and class only
+ok 348 - errors: an unhandled exception is logged with route pattern and class only
+  ---
+  duration_ms: 159.184948
+  type: 'test'
+  ...
+# Subtest: owner promotion: checks, masked output and guarded one-time SQL
+ok 349 - owner promotion: checks, masked output and guarded one-time SQL
+  ---
+  duration_ms: 113.115453
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: offline lessons: only Family Membership (and complimentary) families get offline_allowed
+ok 350 - offline lessons: only Family Membership (and complimentary) families get offline_allowed
+  ---
+  duration_ms: 266.684683
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback: parent submissions inherit trusted account/family identifiers, stay private and require Owner step-up
+ok 351 - feedback: parent submissions inherit trusted account/family identifiers, stay private and require Owner step-up
+  ---
+  duration_ms: 314.239075
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: owner feedback replies are private, auditable, unread until viewed, and work after preview expiry
+ok 352 - owner feedback replies are private, auditable, unread until viewed, and work after preview expiry
+  ---
+  duration_ms: 331.574624
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: branded Owner HQ feedback email includes the real Side-Quest logo without private content
+ok 353 - branded Owner HQ feedback email includes the real Side-Quest logo without private content
+  ---
+  duration_ms: 201.469806
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback reply email only notifies the real submitting parent and never includes private message text
+ok 354 - feedback reply email only notifies the real submitting parent and never includes private message text
+  ---
+  duration_ms: 222.971848
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: dashboard reply alert surfaces older unread threads buried behind 50 newer submissions
+ok 355 - dashboard reply alert surfaces older unread threads buried behind 50 newer submissions
+  ---
+  duration_ms: 210.679416
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback submissions survive missing or unavailable optional reply/notification storage
+ok 356 - feedback submissions survive missing or unavailable optional reply/notification storage
+  ---
+  duration_ms: 276.89192
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback: input validation and rate limiting stop spam without creating extra reports
+ok 357 - feedback: input validation and rate limiting stop spam without creating extra reports
+  ---
+  duration_ms: 195.126074
+  type: 'test'
+  ...
+# Subtest: a missed payment emails the parent once, with the date full access ends
+ok 358 - a missed payment emails the parent once, with the date full access ends
+  ---
+  duration_ms: 203.872179
+  type: 'test'
+  ...
+# Subtest: the owner hears about each missed payment in live mode only, with no family details
+ok 359 - the owner hears about each missed payment in live mode only, with no family details
+  ---
+  duration_ms: 375.570819
+  type: 'test'
+  ...
+# Subtest: when grace runs out without payment, the parent is told access is paused, once
+ok 360 - when grace runs out without payment, the parent is told access is paused, once
+  ---
+  duration_ms: 199.704491
+  type: 'test'
+  ...
+# Subtest: Stripe ending the subscription early after a missed payment also sends the paused email
+ok 361 - Stripe ending the subscription early after a missed payment also sends the paused email
+  ---
+  duration_ms: 187.783206
+  type: 'test'
+  ...
+# Subtest: paying again before grace ends means no paused email
+ok 362 - paying again before grace ends means no paused email
+  ---
+  duration_ms: 187.396908
+  type: 'test'
+  ...
+# Subtest: no paused email without a payment email first, or for an ordinary cancellation
+ok 363 - no paused email without a payment email first, or for an ordinary cancellation
+  ---
+  duration_ms: 265.768296
+  type: 'test'
+  ...
+# Subtest: a later missed payment is a new episode and emails again
+ok 364 - a later missed payment is a new episode and emails again
+  ---
+  duration_ms: 153.533735
+  type: 'test'
+  ...
+# Subtest: suspended families and paid families get nothing
+ok 365 - suspended families and paid families get nothing
+  ---
+  duration_ms: 360.752003
+  type: 'test'
+  ...
+# Subtest: new pet growth takes sustained XP and retains the 60 XP hatching threshold
+ok 366 - new pet growth takes sustained XP and retains the 60 XP hatching threshold
+  ---
+  duration_ms: 1.295797
+  type: 'test'
+  ...
+# Subtest: existing pet XP and achieved stage are grandfathered without fast-forwarding new pets
+ok 367 - existing pet XP and achieved stage are grandfathered without fast-forwarding new pets
+  ---
+  duration_ms: 0.175846
+  type: 'test'
+  ...
+# Subtest: pets keep individual growth floors when switching between animals
+ok 368 - pets keep individual growth floors when switching between animals
+  ---
+  duration_ms: 21.941959
+  type: 'test'
+  ...
+# Subtest: new pets start on the new curve without inheriting old minimum levels
+ok 369 - new pets start on the new curve without inheriting old minimum levels
+  ---
+  duration_ms: 0.181414
+  type: 'test'
+  ...
+# Subtest: pet feeding cooldown still parses persisted dates after growth changes
+ok 370 - pet feeding cooldown still parses persisted dates after growth changes
+  ---
+  duration_ms: 0.137438
+  type: 'test'
+  ...
+# Subtest: jurisdiction reads and writes work on a database without migration 0054 (the column is added at runtime)
+ok 371 - jurisdiction reads and writes work on a database without migration 0054 (the column is added at runtime)
+  ---
+  duration_ms: 158.586361
+  type: 'test'
+  ...
+# Subtest: each jurisdiction gets its own learning areas and year names
+ok 372 - each jurisdiction gets its own learning areas and year names
+  ---
+  duration_ms: 1.008032
+  type: 'test'
+  ...
+# Subtest: AI plans: free preview and expired families are refused before any AI call
+ok 373 - AI plans: free preview and expired families are refused before any AI call
+  ---
+  duration_ms: 153.052843
+  type: 'test'
+  ...
+# Subtest: AI plans: a family must choose a state or territory first
+ok 374 - AI plans: a family must choose a state or territory first
+  ---
+  duration_ms: 131.844322
+  type: 'test'
+  ...
+# Subtest: AI plans: a Victorian plan covers the eight areas, keeps the child's name away from the model and adds no codes
+ok 375 - AI plans: a Victorian plan covers the eight areas, keeps the child's name away from the model and adds no codes
+  ---
+  duration_ms: 148.451785
+  type: 'test'
+  ...
+# Subtest: AI plans: NSW plans keep only outcome codes from the list Side-Quest holds
+ok 376 - AI plans: NSW plans keep only outcome codes from the list Side-Quest holds
+  ---
+  duration_ms: 124.206397
+  type: 'test'
+  ...
+# Subtest: AI plans: a missing area is repaired once, else left blank and flagged
+ok 377 - AI plans: a missing area is repaired once, else left blank and flagged
+  ---
+  duration_ms: 135.541396
+  type: 'test'
+  ...
+# Subtest: AI plans: failures use no allowance, and the daily cap applies
+ok 378 - AI plans: failures use no allowance, and the daily cap applies
+  ---
+  duration_ms: 129.154801
+  type: 'test'
+  ...
+# Subtest: free template uses the family's jurisdiction and drops NSW wording and codes elsewhere
+ok 379 - free template uses the family's jurisdiction and drops NSW wording and codes elsewhere
+  ---
+  duration_ms: 159.69566
+  type: 'test'
+  ...
+# Subtest: outcomeFrom gives the code and the parent's judgement, never syllabus wording or legacy 'achieved'
+ok 380 - outcomeFrom gives the code and the parent's judgement, never syllabus wording or legacy 'achieved'
+  ---
+  duration_ms: 1.031608
+  type: 'test'
+  ...
+# Subtest: full record: every source, chronological, outcomes, coverage gaps
+ok 381 - full record: every source, chronological, outcomes, coverage gaps
+  ---
+  duration_ms: 144.529591
+  type: 'test'
+  ...
+# Subtest: parent-approved reading records appear in state-aware evidence, while unapproved child entries do not
+ok 382 - parent-approved reading records appear in state-aware evidence, while unapproved child entries do not
+  ---
+  duration_ms: 168.035732
+  type: 'test'
+  ...
+# Subtest: preview shows the summary but only one detailed entry; other families cannot read
+ok 383 - preview shows the summary but only one detailed entry; other families cannot read
+  ---
+  duration_ms: 175.757925
+  type: 'test'
+  ...
+# Subtest: summarise lists areas outside the stage's expected areas after the expected ones
+ok 384 - summarise lists areas outside the stage's expected areas after the expected ones
+  ---
+  duration_ms: 0.230989
+  type: 'test'
+  ...
+# Subtest: a Victorian family's record uses Victorian learning areas and invents no codes
+ok 385 - a Victorian family's record uses Victorian learning areas and invents no codes
+  ---
+  duration_ms: 185.457874
+  type: 'test'
+  ...
+# Subtest: a family that hasn't chosen a state gets the Australian Curriculum, not NSW
+ok 386 - a family that hasn't chosen a state gets the Australian Curriculum, not NSW
+  ---
+  duration_ms: 178.757115
+  type: 'test'
+  ...
+# Subtest: a Queensland family's record keeps verified AC9 codes, drops NSW codes and never prints content descriptions
+ok 387 - a Queensland family's record keeps verified AC9 codes, drops NSW codes and never prints content descriptions
+  ---
+  duration_ms: 158.286855
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Ten original illustrated catalogue activities remain; old SVG and PDF routes are retired
+ok 388 - Ten original illustrated catalogue activities remain; old SVG and PDF routes are retired
+  ---
+  duration_ms: 245.738695
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner-only import is enforced for free, paid and child accounts; free remains locked
+ok 389 - Owner-only import is enforced for free, paid and child accounts; free remains locked
+  ---
+  duration_ms: 212.56924
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Only verified owner imports a valid 2480x3508 A4 PNG to private R2 and reads it back
+ok 390 - Only verified owner imports a valid 2480x3508 A4 PNG to private R2 and reads it back
+  ---
+  duration_ms: 143.183268
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner uploads become immediately viewable and printable by paid families, never free or expired families
+ok 391 - Owner uploads become immediately viewable and printable by paid families, never free or expired families
+  ---
+  duration_ms: 213.65442
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner can add brand-new solar-system activities without a code whitelist or migration
+ok 392 - Owner can add brand-new solar-system activities without a code whitelist or migration
+  ---
+  duration_ms: 195.192644
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner delete removes main and ink R2 artwork; legacy card returns to import pending
+ok 393 - Owner delete removes main and ink R2 artwork; legacy card returns to import pending
+  ---
+  duration_ms: 258.863559
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Deleting a newly uploaded activity removes its card; ink-only remnants are manageable
+ok 394 - Deleting a newly uploaded activity removes its card; ink-only remnants are manageable
+  ---
+  duration_ms: 206.878605
+  type: 'test'
+  ...
+# Subtest: recognised prior learning gets its own status, clears gaps and is logged as the parent's decision
+ok 395 - recognised prior learning gets its own status, clears gaps and is logged as the parent's decision
+  ---
+  duration_ms: 178.601174
+  type: 'test'
+  ...
+# Subtest: a later confirmation still wins, and recording twice skips what's already recognised
+ok 396 - a later confirmation still wins, and recording twice skips what's already recognised
+  ---
+  duration_ms: 172.864489
+  type: 'test'
+  ...
+# Subtest: removing prior learning restores the evidence-based status and keeps the history
+ok 397 - removing prior learning restores the evidence-based status and keeps the history
+  ---
+  duration_ms: 191.643343
+  type: 'test'
+  ...
+# Subtest: an uploaded report is kept as one Evidence Backpack note
+ok 398 - an uploaded report is kept as one Evidence Backpack note
+  ---
+  duration_ms: 146.855975
+  type: 'test'
+  ...
+# Subtest: bad input is refused: no source, unknown outcomes, another family's file, no catalogue
+ok 399 - bad input is refused: no source, unknown outcomes, another family's file, no catalogue
+  ---
+  duration_ms: 364.900416
+  type: 'test'
+  ...
+# Subtest: reading a report: the AI only picks from the child's own unmet outcomes, and NAPLAN is never high confidence
+ok 400 - reading a report: the AI only picks from the child's own unmet outcomes, and NAPLAN is never high confidence
+  ---
+  duration_ms: 185.793248
+  type: 'test'
+  ...
+# Subtest: Plan My Week's planner treats prior learning like Achieved and doesn't teach it again
+ok 401 - Plan My Week's planner treats prior learning like Achieved and doesn't teach it again
+  ---
+  duration_ms: 1.345261
+  type: 'test'
+  ...
+# Subtest: document conversion metadata is not mistaken for page text
+ok 402 - document conversion metadata is not mistaken for page text
+  ---
+  duration_ms: 0.478864
+  type: 'test'
+  ...
+# Subtest: a scanned PDF asks for photos instead of reporting an empty document
+ok 403 - a scanned PDF asks for photos instead of reporting an empty document
+  ---
+  duration_ms: 136.739816
+  type: 'test'
+  ...
+# Subtest: photos of work are transcribed by the vision model, accepting its licence once
+ok 404 - photos of work are transcribed by the vision model, accepting its licence once
+  ---
+  duration_ms: 127.833994
+  type: 'test'
+  ...
+# Subtest: several scanned pages are read and joined in page order
+ok 405 - several scanned pages are read and joined in page order
+  ---
+  duration_ms: 168.978179
+  type: 'test'
+  ...
+# Subtest: Quest Book batch continues after a failed lesson and retries are targeted
+ok 406 - Quest Book batch continues after a failed lesson and retries are targeted
+  ---
+  duration_ms: 1.230299
+  type: 'test'
+  ...
+# Subtest: Queue catches unexpected generator errors and attempts remaining lessons
+ok 407 - Queue catches unexpected generator errors and attempts remaining lessons
+  ---
+  duration_ms: 0.206392
+  type: 'test'
+  ...
+# Subtest: Queue stops after current attempt and never starts duplicate subsections
+ok 408 - Queue stops after current attempt and never starts duplicate subsections
+  ---
+  duration_ms: 0.258751
+  type: 'test'
+  ...
+# Subtest: Book review prioritises blockers and omits already approved lessons
+ok 409 - Book review prioritises blockers and omits already approved lessons
+  ---
+  duration_ms: 1.029134
+  type: 'test'
+  ...
+# Subtest: Outstanding lessons expose the real reason they need attention
+ok 410 - Outstanding lessons expose the real reason they need attention
+  ---
+  duration_ms: 0.210287
+  type: 'test'
+  ...
+# Subtest: Already approved lessons disappear; stale previously approved lessons reappear
+ok 411 - Already approved lessons disappear; stale previously approved lessons reappear
+  ---
+  duration_ms: 0.101854
+  type: 'test'
+  ...
+# Subtest: One plan includes multiple AI warnings and book completion problems
+ok 412 - One plan includes multiple AI warnings and book completion problems
+  ---
+  duration_ms: 1.332603
+  type: 'test'
+  ...
+# Subtest: Owner-reported issue remains even when the AI warnings were cleared on approval
+ok 413 - Owner-reported issue remains even when the AI warnings were cleared on approval
+  ---
+  duration_ms: 0.746858
+  type: 'test'
+  ...
+# Subtest: Duplicate warnings are deduplicated and pass size is bounded
+ok 414 - Duplicate warnings are deduplicated and pass size is bounded
+  ---
+  duration_ms: 0.797394
+  type: 'test'
+  ...
+# Subtest: Book details validate and get an id from the title
+ok 415 - Book details validate and get an id from the title
+  ---
+  duration_ms: 1.950155
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Only the owner manages books; drafts without a PDF are hidden from families
+ok 416 - Only the owner manages books; drafts without a PDF are hidden from families
+  ---
+  duration_ms: 331.358243
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Quest Books aren't included with membership: buyers read, print and download; free preview gets the sample
+ok 417 - Quest Books aren't included with membership: buyers read, print and download; free preview gets the sample
+  ---
+  duration_ms: 214.484373
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: A bought book can be downloaded for good, even after the preview ends
+ok 418 - A bought book can be downloaded for good, even after the preview ends
+  ---
+  duration_ms: 210.369698
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Live generation picks up chapters from newly uploaded books without replacing current work
+ok 419 - Live generation picks up chapters from newly uploaded books without replacing current work
+  ---
+  duration_ms: 186.714985
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: A generation queue doesn't pick up books uploaded later unless watching was switched on
+ok 420 - A generation queue doesn't pick up books uploaded later unless watching was switched on
+  ---
+  duration_ms: 209.566239
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Live generation automatically opens a watch queue for newly flagged AI lessons
+ok 421 - Live generation automatically opens a watch queue for newly flagged AI lessons
+  ---
+  duration_ms: 144.795543
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner can enable auto-approval mid-run, retry failures and stop without deleting finished lessons
+ok 422 - Owner can enable auto-approval mid-run, retry failures and stop without deleting finished lessons
+  ---
+  duration_ms: 153.217353
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Overnight queue groups missing lessons across books, skips saved drafts and keeps running without a browser
+ok 423 - Overnight queue groups missing lessons across books, skips saved drafts and keeps running without a browser
+  ---
+  duration_ms: 190.407787
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Only the owner manages chapters and publishes lessons
+ok 424 - Only the owner manages chapters and publishes lessons
+  ---
+  duration_ms: 244.604727
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Any family can peek at a published lesson, but the preview leaves out the quiz content
+ok 425 - Any family can peek at a published lesson, but the preview leaves out the quiz content
+  ---
+  duration_ms: 206.467083
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Pack buyers add every chapter lesson once; members without the pack and free families can't
+ok 426 - Pack buyers add every chapter lesson once; members without the pack and free families can't
+  ---
+  duration_ms: 209.64549
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Bundle, upgrade and single-lesson purchases unlock the right lessons, which stay assignable after the preview
+ok 427 - Bundle, upgrade and single-lesson purchases unlock the right lessons, which stay assignable after the preview
+  ---
+  duration_ms: 209.651423
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Specialist books: NAPLAN and HSC collections with topics, Years 11-12 and all ages
+ok 428 - Specialist books: NAPLAN and HSC collections with topics, Years 11-12 and all ages
+  ---
+  duration_ms: 191.766369
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Pack pricing: each extra pack is 10% cheaper again, capped at 50% off; book owners pay the difference
+ok 429 - Pack pricing: each extra pack is 10% cheaper again, capped at 50% off; book owners pay the difference
+  ---
+  duration_ms: 230.673556
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Look-inside pages: the owner uploads watermarked JPEGs, any parent can view them
+ok 430 - Look-inside pages: the owner uploads watermarked JPEGs, any parent can view them
+  ---
+  duration_ms: 229.411609
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Published lessons carry codes for every state's curriculum; each family gets its own state's codes
+ok 431 - Published lessons carry codes for every state's curriculum; each family gets its own state's codes
+  ---
+  duration_ms: 232.327183
+  type: 'test'
+  ...
+# Subtest: Companion-session source and depth checks preserve exact workbook references
+ok 432 - Companion-session source and depth checks preserve exact workbook references
+  ---
+  duration_ms: 0.746177
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Book-generated lessons require owner approval, complete teaching and fresh source before publication
+ok 433 - Book-generated lessons require owner approval, complete teaching and fresh source before publication
+  ---
+  duration_ms: 248.496922
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner can approve only genuinely AI-cleared book lessons in one request
+ok 434 - Owner can approve only genuinely AI-cleared book lessons in one request
+  ---
+  duration_ms: 269.19275
+  type: 'test'
+  ...
+# Subtest: Automatic chapter planner returns ordered, skill-level, source-bounded subsections
+ok 435 - Automatic chapter planner returns ordered, skill-level, source-bounded subsections
+  ---
+  duration_ms: 1.518063
+  type: 'test'
+  ...
+# Subtest: A single teaching skill spanning twelve PDF pages is ONE subsection, not six lessons
+ok 436 - A single teaching skill spanning twelve PDF pages is ONE subsection, not six lessons
+  ---
+  duration_ms: 0.217048
+  type: 'test'
+  ...
+# Subtest: Overzealous AI cannot create a 45-minute lesson for each workbook page
+ok 437 - Overzealous AI cannot create a 45-minute lesson for each workbook page
+  ---
+  duration_ms: 0.322277
+  type: 'test'
+  ...
+# Subtest: Short two- or three-page chapters are not split into one lesson per page
+ok 438 - Short two- or three-page chapters are not split into one lesson per page
+  ---
+  duration_ms: 0.215375
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner-only chapter planning does not save lessons or chapter data
+ok 439 - Owner-only chapter planning does not save lessons or chapter data
+  ---
+  duration_ms: 227.516978
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner can reset an unpublished collection without re-uploading the PDF
+ok 440 - Owner can reset an unpublished collection without re-uploading the PDF
+  ---
+  duration_ms: 241.348329
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: A purchased book cannot have its published lesson identifiers reset
+ok 441 - A purchased book cannot have its published lesson identifiers reset
+  ---
+  duration_ms: 192.811377
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Remaking a generated lesson archives earlier AI drafts but retains new and manually authored lessons
+ok 442 - Remaking a generated lesson archives earlier AI drafts but retains new and manually authored lessons
+  ---
+  duration_ms: 191.716146
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Cart: the server prices it, a pack replaces the same book and its lessons, unsellable items drop out
+ok 443 - Cart: the server prices it, a pack replaces the same book and its lessons, unsellable items drop out
+  ---
+  duration_ms: 238.854079
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: A paid cart unlocks every item once, and its status turns paid
+ok 444 - A paid cart unlocks every item once, and its status turns paid
+  ---
+  duration_ms: 282.650861
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Only the owner can copy a private family lesson into a separate unpublished standalone draft
+ok 445 - Only the owner can copy a private family lesson into a separate unpublished standalone draft
+  ---
+  duration_ms: 218.996722
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: VIC and WA families receive their OWN outcomes when adding an older book with no per-state snapshot
+ok 446 - VIC and WA families receive their OWN outcomes when adding an older book with no per-state snapshot
+  ---
+  duration_ms: 259.516405
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Member reader builds are resumable and only a verified complete generation replaces the active reader
+ok 447 - Member reader builds are resumable and only a verified complete generation replaces the active reader
+  ---
+  duration_ms: 265.043668
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Public shop: closed by default; when open it lists books and a paid order downloads with its private link only
+ok 448 - Public shop: closed by default; when open it lists books and a paid order downloads with its private link only
+  ---
+  duration_ms: 342.01229
+  type: 'test'
+  ...
+# Subtest: PDHPE and Creative Arts aren't year-level books, but can be specialist books
+ok 449 - PDHPE and Creative Arts aren't year-level books, but can be specialist books
+  ---
+  duration_ms: 0.349528
+  type: 'test'
+  ...
+# Subtest: Overnight finalization is per job and interrupted preparation releases the queue
+ok 450 - Overnight finalization is per job and interrupted preparation releases the queue
+  ---
+  duration_ms: 175.660232
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: An older editor cannot overwrite a saved repair, and its latest edits persist
+ok 451 - An older editor cannot overwrite a saved repair, and its latest edits persist
+  ---
+  duration_ms: 176.97053
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Fix All repair endpoint retries interruption, saves its Book Plan version and preserves notes
+ok 452 - Fix All repair endpoint retries interruption, saves its Book Plan version and preserves notes
+  ---
+  duration_ms: 209.079425
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Running generation survives the upgrade and accepts a separate repair queue
+ok 453 - Running generation survives the upgrade and accepts a separate repair queue
+  ---
+  duration_ms: 150.307551
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Overnight queue survives a temporary AI budget pause and resumes without using retries
+ok 454 - Overnight queue survives a temporary AI budget pause and resumes without using retries
+  ---
+  duration_ms: 195.745726
+  type: 'test'
+  ...
+# Subtest: New specialist shelves accept books
+ok 455 - New specialist shelves accept books
+  ---
+  duration_ms: 0.29164
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: The owner can download a book through the browser download link (files-only token)
+ok 456 - The owner can download a book through the browser download link (files-only token)
+  ---
+  duration_ms: 170.522942
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Books not marked ready are hidden from families (list, detail, reading, buying) but the owner still sees them
+ok 457 - Books not marked ready are hidden from families (list, detail, reading, buying) but the owner still sees them
+  ---
+  duration_ms: 149.834947
+  type: 'test'
+  ...
+# Subtest: saved resource links must be web addresses
+ok 458 - saved resource links must be web addresses
+  ---
+  duration_ms: 204.721037
+  type: 'test'
+  ...
+# Subtest: there is one monthly theme for each month, each with 12 prizes covering every slot
+ok 459 - there is one monthly theme for each month, each with 12 prizes covering every slot
+  ---
+  duration_ms: 1.898768
+  type: 'test'
+  ...
+# Subtest: a monthly theme is active only in its own month, and only when switched on
+ok 460 - a monthly theme is active only in its own month, and only when switched on
+  ---
+  duration_ms: 17.450498
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: resetting the password signs the whole family out everywhere
+ok 461 - resetting the password signs the whole family out everywhere
+  ---
+  duration_ms: 231.092985
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: file links: a files-only token, which never works as a sign-in and dies with sign-out-everywhere
+ok 462 - file links: a files-only token, which never works as a sign-in and dies with sign-out-everywhere
+  ---
+  duration_ms: 226.057874
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: a Google-only parent can delete their account after a fresh sign-in, not with an old session
+ok 463 - a Google-only parent can delete their account after a fresh sign-in, not with an old session
+  ---
+  duration_ms: 224.745346
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: assignment revocation is parent-only and family-scoped; revoked work cannot be reopened
+ok 464 - assignment revocation is parent-only and family-scoped; revoked work cannot be reopened
+  ---
+  duration_ms: 281.574963
+  type: 'test'
+  ...
+# Subtest: the catalogue seeds once, as hidden drafts with no prices, stock, suppliers or photos
+ok 465 - the catalogue seeds once, as hidden drafts with no prices, stock, suppliers or photos
+  ---
+  duration_ms: 225.4664
+  type: 'test'
+  ...
+# Subtest: a product only sells once switched on, given a selling status and a price
+ok 466 - a product only sells once switched on, given a selling status and a price
+  ---
+  duration_ms: 209.495959
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: personalisation is required where set, stock is respected, and postage is charged once
+ok 467 - personalisation is required where set, stock is respected, and postage is charged once
+  ---
+  duration_ms: 191.830727
+  type: 'test'
+  ...
+# Subtest: owner edits are validated; readiness and profit come from the owner's own numbers
+ok 468 - owner edits are validated; readiness and profit come from the owner's own numbers
+  ---
+  duration_ms: 1.320123
+  type: 'test'
+  ...
+# Subtest: Owner HQ shop routes are registered before the admin catch-all
+ok 469 - Owner HQ shop routes are registered before the admin catch-all
+  ---
+  duration_ms: 1.261835
+  type: 'test'
+  ...
+# Subtest: later product batches reach an already-seeded shop once, as hidden drafts
+ok 470 - later product batches reach an already-seeded shop once, as hidden drafts
+  ---
+  duration_ms: 251.660946
+  type: 'test'
+  ...
+# Subtest: tiers: each option keeps its own price and what's included
+ok 471 - tiers: each option keeps its own price and what's included
+  ---
+  duration_ms: 0.698435
+  type: 'test'
+  ...
+# Subtest: development stages: every catalogue product is reconciled to a stage
+ok 472 - development stages: every catalogue product is reconciled to a stage
+  ---
+  duration_ms: 1.111288
+  type: 'test'
+  ...
+# Subtest: an existing shop gets stages without touching anything else, and nothing is published
+ok 473 - an existing shop gets stages without touching anything else, and nothing is published
+  ---
+  duration_ms: 213.680189
+  type: 'test'
+  ...
+# Subtest: products waiting on manufacturing can't sell as ready to make; monthly boxes sell one-off too
+ok 474 - products waiting on manufacturing can't sell as ready to make; monthly boxes sell one-off too
+  ---
+  duration_ms: 152.289572
+  type: 'test'
+  ...
+# Subtest: prefill: descriptions, options and fields fill in without overwriting the owner's work
+ok 475 - prefill: descriptions, options and fields fill in without overwriting the owner's work
+  ---
+  duration_ms: 210.739026
+  type: 'test'
+  ...
+# Subtest: digital-only version: sold as one download at its own price, no postage, only once its file is uploaded
+ok 476 - digital-only version: sold as one download at its own price, no postage, only once its file is uploaded
+  ---
+  duration_ms: 227.527568
+  type: 'test'
+  ...
+# Subtest: state document downloads cannot be sold before a PDF is uploaded
+ok 477 - state document downloads cannot be sold before a PDF is uploaded
+  ---
+  duration_ms: 245.407971
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: deleting products removes them, their options and photos, but keeps a sold product's download for its buyers
+ok 478 - deleting products removes them, their options and photos, but keeps a sold product's download for its buyers
+  ---
+  duration_ms: 161.948632
+  type: 'test'
+  ...
+# Subtest: postage included: the product is posted but adds no postage, and a cart of only those needs no parcel quote
+ok 479 - postage included: the product is posted but adds no postage, and a cart of only those needs no parcel quote
+  ---
+  duration_ms: 157.141491
+  type: 'test'
+  ...
+# live 368, held back 27: Printed Quest Book; Printed Quest Book + Lesson Pack; Side-Quest English workbooks (by year level); Side-Quest Mathematics workbooks; Science workbooks; History and Geography workbooks; Creative Writing workbooks; Reading Comprehension books; Handwriting practice books; Spelling and Vocabulary books; Grammar and Punctuation books; Study Skills and Revision guides; Educational colouring books; Holiday learning activity books; Complete year-level workbook bundles; My First Homeschool Starter Kit; Year 1 Learning Essentials Pack; Year 2 Learning Essentials Pack; Year 3 Learning Essentials Pack; Year 4 Learning Essentials Pack; Year 5 Learning Essentials Pack; Year 6 Learning Essentials Pack; Year 7–8 Study Essentials Pack; Year 9–10 Study Essentials Pack; Mathematics Learning Starter Pack; Creative Writing Starter Pack; Geography Explorer Pack
+# Subtest: launch: every product except the unfinished workbooks is live, priced, buyable and posted weekly; the shop opens
+ok 480 - launch: every product except the unfinished workbooks is live, priced, buyable and posted weekly; the shop opens
+  ---
+  duration_ms: 280.553912
+  type: 'test'
+  ...
+# Subtest: launch never overwrites the owner's work and runs once
+ok 481 - launch never overwrites the owner's work and runs once
+  ---
+  duration_ms: 242.029808
+  type: 'test'
+  ...
+# Subtest: every catalogue product that isn't held back has a launch price
+ok 482 - every catalogue product that isn't held back has a launch price
+  ---
+  duration_ms: 3.790275
+  type: 'test'
+  ...
+# Subtest: tiers: Basics / Full package options get rising prices; the owner's own option prices are kept
+ok 483 - tiers: Basics / Full package options get rising prices; the owner's own option prices are kept
+  ---
+  duration_ms: 245.11627
+  type: 'test'
+  ...
+# Subtest: parent search discovers only their family records across sections
+ok 484 - parent search discovers only their family records across sections
+  ---
+  duration_ms: 226.48238
+  type: 'test'
+  ...
+# Subtest: child search is strictly limited to their own assignments and reading, never family or parent records
+ok 485 - child search is strictly limited to their own assignments and reading, never family or parent records
+  ---
+  duration_ms: 195.601647
+  type: 'test'
+  ...
+# Subtest: search input is constrained and syntax characters are searched literally
+ok 486 - search input is constrained and syntax characters are searched literally
+  ---
+  duration_ms: 189.104424
+  type: 'test'
+  ...
+# Subtest: Square stays off until every setting (including the webhook key) is present; sandbox is detected
+ok 487 - Square stays off until every setting (including the webhook key) is present; sandbox is detected
+  ---
+  duration_ms: 0.639376
+  type: 'test'
+  ...
+# Subtest: webhook signatures: only Square's exact HMAC over URL + body passes
+ok 488 - webhook signatures: only Square's exact HMAC over URL + body passes
+  ---
+  duration_ms: 4.754762
+  type: 'test'
+  ...
+# Subtest: a cart checkout sends the server's lines and cart id to Square, never browser prices
+ok 489 - a cart checkout sends the server's lines and cart id to Square, never browser prices
+  ---
+  duration_ms: 13.998243
+  type: 'test'
+  ...
+# Subtest: a completed Square payment unlocks the cart once; wrong amounts and other locations unlock nothing
+ok 490 - a completed Square payment unlocks the cart once; wrong amounts and other locations unlock nothing
+  ---
+  duration_ms: 123.641561
+  type: 'test'
+  ...
+# Subtest: Square membership: checkout creates the plan once, the first payment links the family, and the subscription grants the plan
+ok 491 - Square membership: checkout creates the plan once, the first payment links the family, and the subscription grants the plan
+  ---
+  duration_ms: 131.012044
+  type: 'test'
+  ...
+# Subtest: Square promo codes: a discounted first phase on its own plan variation, and redemption limits are enforced
+ok 492 - Square promo codes: a discounted first phase on its own plan variation, and redemption limits are enforced
+  ---
+  duration_ms: 122.459276
+  type: 'test'
+  ...
+# Subtest: Square shop membership: a new buyer gets an account, is unlocked through the paid period, and renewals keep it unlocked
+ok 493 - Square shop membership: a new buyer gets an account, is unlocked through the paid period, and renewals keep it unlocked
+  ---
+  duration_ms: 192.757737
+  type: 'test'
+  ...
+# Subtest: Square shop membership: an existing parent is matched by email; non-membership shop subscriptions are left alone
+ok 494 - Square shop membership: an existing parent is matched by email; non-membership shop subscriptions are left alone
+  ---
+  duration_ms: 167.593548
+  type: 'test'
+  ...
+# Subtest: questions are spread across strands
+ok 495 - questions are spread across strands
+  ---
+  duration_ms: 1.523602
+  type: 'test'
+  ...
+# Subtest: a check becomes an assigned AI-labelled lesson with one valid question per outcome and no outcome codes
+ok 496 - a check becomes an assigned AI-labelled lesson with one valid question per outcome and no outcome codes
+  ---
+  duration_ms: 212.689713
+  type: 'test'
+  ...
+# Subtest: a low score never blocks hand-in, and only the first attempt counts
+ok 497 - a low score never blocks hand-in, and only the first attempt counts
+  ---
+  duration_ms: 167.517343
+  type: 'test'
+  ...
+# Subtest: an ordinary lesson's quiz still has to be passed
+ok 498 - an ordinary lesson's quiz still has to be passed
+  ---
+  duration_ms: 183.080608
+  type: 'test'
+  ...
+# Subtest: outcomes already met are not checked, and an unusable AI reply uses nothing
+ok 499 - outcomes already met are not checked, and an unusable AI reply uses nothing
+  ---
+  duration_ms: 159.378761
+  type: 'test'
+  ...
+# Subtest: questions are read from the shapes the model actually returns
+ok 500 - questions are read from the shapes the model actually returns
+  ---
+  duration_ms: 0.592836
+  type: 'test'
+  ...
+# Subtest: an unusable first reply is retried once
+ok 501 - an unusable first reply is retried once
+  ---
+  duration_ms: 148.856269
+  type: 'test'
+  ...
+# Subtest: subjects with few outcomes get several questions on each
+ok 502 - subjects with few outcomes get several questions on each
+  ---
+  duration_ms: 0.240944
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: listing 450 submissions uses batched lookups and keeps every lesson and child
+ok 503 - listing 450 submissions uses batched lookups and keeps every lesson and child
+  ---
+  duration_ms: 269.323717
+  type: 'test'
+  ...
+# Subtest: subjects match by name or by learning area
+ok 504 - subjects match by name or by learning area
+  ---
+  duration_ms: 1.069125
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: timetables are a Family Membership feature (server-enforced)
+ok 505 - timetables are a Family Membership feature (server-enforced)
+  ---
+  duration_ms: 314.581721
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: a week is saved once (repeats are skipped), validated, and only for your own children
+ok 506 - a week is saved once (repeats are skipped), validated, and only for your own children
+  ---
+  duration_ms: 265.701176
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: assigning fills the next open slot of the lesson's subject; more sessions fill more slots
+ok 507 - assigning fills the next open slot of the lesson's subject; more sessions fill more slots
+  ---
+  duration_ms: 176.127057
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: choosing a slot by hand; a taken slot or another child's slot is refused
+ok 508 - choosing a slot by hand; a taken slot or another child's slot is refused
+  ---
+  duration_ms: 210.319778
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: cancelling or moving an assignment empties its slot; the timetable is never deleted
+ok 509 - cancelling or moving an assignment empties its slot; the timetable is never deleted
+  ---
+  duration_ms: 188.012818
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: slots from the older one-week generator are used too, without rewriting them
+ok 510 - slots from the older one-week generator are used too, without rewriting them
+  ---
+  duration_ms: 215.171365
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: timetable refuses overlapping blocks and preserves existing appointments
+ok 511 - timetable refuses overlapping blocks and preserves existing appointments
+  ---
+  duration_ms: 156.873087
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: reschedule preview respects completed lessons, family isolation and free subject slots
+ok 512 - reschedule preview respects completed lessons, family isolation and free subject slots
+  ---
+  duration_ms: 196.503822
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: parent revocation keeps lesson history, empties timetable slot, and permits reassigning
+ok 513 - parent revocation keeps lesson history, empties timetable slot, and permits reassigning
+  ---
+  duration_ms: 148.099661
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: calendar linked assignments cannot cross children or mismatch a lesson
+ok 514 - calendar linked assignments cannot cross children or mismatch a lesson
+  ---
+  duration_ms: 162.5301
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: calendar supports a visible month date range without showing older years
+ok 515 - calendar supports a visible month date range without showing older years
+  ---
+  duration_ms: 138.21035
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: manual timetable assignment rejects wrong-subject slots without changing any slot
+ok 516 - manual timetable assignment rejects wrong-subject slots without changing any slot
+  ---
+  duration_ms: 142.181969
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: rescheduling one of several sessions preserves the earliest remaining lesson date
+ok 517 - rescheduling one of several sessions preserves the earliest remaining lesson date
+  ---
+  duration_ms: 142.415091
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: one lesson with an HSIE connection may fill HSIE time once without duplicating its English assignment
+ok 518 - one lesson with an HSIE connection may fill HSIE time once without duplicating its English assignment
+  ---
+  duration_ms: 163.884826
+  type: 'test'
+  ...
+# email: send failed undefined Email unavailable
+# Subtest: due windows: two days left and first 24 hours after expiry only
+ok 519 - due windows: two days left and first 24 hours after expiry only
+  ---
+  duration_ms: 0.97336
+  type: 'test'
+  ...
+# Subtest: Day 5 email uses the Side-Quest logo and is sent once even on repeat cron
+ok 520 - Day 5 email uses the Side-Quest logo and is sent once even on repeat cron
+  ---
+  duration_ms: 206.131693
+  type: 'test'
+  ...
+# Subtest: Day 7 expiry email preserves existing data and cannot resend
+ok 521 - Day 7 expiry email preserves existing data and cannot resend
+  ---
+  duration_ms: 182.788427
+  type: 'test'
+  ...
+# Subtest: paid or suspended families never receive preview reminders
+ok 522 - paid or suspended families never receive preview reminders
+  ---
+  duration_ms: 174.931961
+  type: 'test'
+  ...
+# Subtest: a failed delivery cannot be retried automatically and cause duplicates
+ok 523 - a failed delivery cannot be retried automatically and cause duplicates
+  ---
+  duration_ms: 187.867868
+  type: 'test'
+  ...
+# Subtest: email copy never describes a mandatory subscription
+ok 524 - email copy never describes a mandatory subscription
+  ---
+  duration_ms: 0.822823
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Only the owner can use View site as, and it only changes the owner's own family
+ok 525 - Only the owner can use View site as, and it only changes the owner's own family
+  ---
+  duration_ms: 280.449776
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: View site as switches itself off when it expires
+ok 526 - View site as switches itself off when it expires
+  ---
+  duration_ms: 202.360192
+  type: 'test'
+  ...
+1..526
+# tests 526
+# suites 0
+# pass 526
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 35336.307545

@@ -1,0 +1,17 @@
+PASS the offline page is served at /offline without a redirect, and the service worker caches that address
+PASS desktop: Get the app shows a QR code and the link to open on a phone
+PASS iPhone Safari: Get the app shows that phone's install steps, no QR code, fits the screen
+PASS iPhone Chrome: Get the app shows that phone's install steps, no QR code, fits the screen
+PASS Android: Get the app shows that phone's install steps, no QR code, fits the screen
+PASS iPhone: the home page's Install button opens the Add to Home Screen steps
+PASS kids' app manifest: its own app that starts at the child sign-in
+PASS Get the app for a child's device: kids' manifest, kids' wording and a QR link that keeps for=child
+PASS parent app: an old kids' marker on the phone is cleared and the app opens to the parent sign-in
+PASS inside the installed parent app, the kids' link sends families to SQ Kids (no dead end, no mixing)
+PASS SQ Kids address: opens to the child sign-in, installs the kids' app and has no parent pages
+PASS one phone, two apps: the parent stays signed in to Side-Quest while the child signs in to SQ Kids
+PASS an ordinary browser is unaffected: the home page still shows the front page
+PASS the Parent Hub Children page links to setting up a child's device
+PASS when the network drops, a page visit shows Side-Quest's offline page (not the browser error)
+
+15/15 install-app steps passed
