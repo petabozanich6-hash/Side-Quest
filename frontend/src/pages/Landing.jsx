@@ -273,6 +273,12 @@ export default function Landing() {
       <footer className="relative z-10 border-t py-10 text-center text-xs" style={{color:"#7A6E5D", borderColor:"#D4C8A8"}}>
         <p>Side-Quest Learning · Australian-made homeschooling tools for families near and far.</p>
         <p className="mt-1 font-script text-base" style={{color:"#C77B5B"}}>Made with care for homeschool families.</p>
+        <p className="mt-3">
+          Created by{" "}
+          <a href="https://www.facebook.com/profile.php?id=61596584274920" target="_blank" rel="noopener" className="underline">Peta Bozanich</a>, Australian author
+          {" · "}
+          <a href="https://www.facebook.com/profile.php?id=61595084713830" target="_blank" rel="noopener" className="underline">Side-Quest on Facebook</a>
+        </p>
       </footer>
     </div>
   );
