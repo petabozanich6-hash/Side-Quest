@@ -34,6 +34,8 @@ import HqSettings from "./pages/parent/hq/HqSettings";
 import HqAudit from "./pages/parent/hq/HqAudit";
 import HqSecurity from "./pages/parent/hq/HqSecurity";
 import PlatformNotices from "./components/shared/PlatformNotices";
+import SiteTrafficTracker from "./components/shared/SiteTrafficTracker";
+import HqTraffic from "./pages/parent/hq/HqTraffic";
 import ChildrenPage from "./pages/parent/Children";
 import CurriculumPage from "./pages/parent/Curriculum";
 import LessonsPage from "./pages/parent/Lessons";
@@ -139,6 +141,7 @@ function Router() {
           <Route path="audit" element={<HqAudit />} />
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
+          <Route path="traffic" element={<HqTraffic />} />
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="dragon-hoard" element={<HqHoard />} />
           <Route path="shop" element={<HqShop />} />
@@ -199,6 +202,7 @@ function App() {
       <BrowserRouter>
         <Toaster richColors position="top-right" />
         <PlatformNotices />
+        <SiteTrafficTracker />
         <Router />
       </BrowserRouter>
     </AuthProvider>

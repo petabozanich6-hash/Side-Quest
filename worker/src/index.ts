@@ -19,6 +19,7 @@ import { registerHelpRequests } from "./helpRequests";
 import { registerBilling, reconcileSubscriptions } from "./billing";
 import { registerSquare } from "./square";
 import { registerShopCatalog } from "./shopRoutes";
+import { registerSiteTraffic } from "./siteTraffic";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerPriorLearning } from "./priorLearning";
 import { registerStartingChecks } from "./startingCheck";
@@ -331,6 +332,7 @@ registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
 registerAnnouncementPreferences(app, guards);
+registerSiteTraffic(app);
 app.route("/api/admin", createAdminRoutes());
 
 // Unhandled errors: record the method, route pattern and error class only (no ids, bodies or messages).
