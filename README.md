@@ -54,3 +54,7 @@ npx wrangler d1 export sidequest-db1 --remote --output backup.sql
 Cloudflare R2 uploads and subscription payments require separately configured services. No deployment, domain change or live migration is implied by this documentation/content cleanup.
 
 Refer to the development branch's `docs/SIDEQUEST-EXECUTION.md` for the current implementation priorities and tested capabilities.
+
+## Square shop separation
+
+New product sales take place in Square, not the Side-Quest app. Owner HQ retains a standalone **Document Studio** for generating printable and fillable home-education PDFs; it does not publish, price or fulfil Square orders. All retired in-app order and checkout routes remain removed. Square Family Membership syncing and existing subscription billing continue separately. See `docs/DOCUMENT_STUDIO_SQUARE_EXPORT.md`.

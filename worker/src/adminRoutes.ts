@@ -32,6 +32,7 @@ import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
 import { billingConfig } from "./billing";
 import { giftPreviewDays } from "./previewGifts";
+import { registerDocumentStudio } from "./documentStudioRoutes";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
@@ -543,6 +544,8 @@ export function createAdminRoutes() {
     return c.json({cancelled:true});
   });
 
+
+  registerDocumentStudio(admin, requirePermission);
 
   admin.all("*", (c) => notFound(c));
   return admin;
