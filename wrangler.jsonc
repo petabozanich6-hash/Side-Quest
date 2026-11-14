@@ -4,8 +4,7 @@
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
   "observability": { "enabled": true },
-  // Quest Book queues run every minute independently of Owner HQ maintenance.
-  // Keep mail, billing and notice tasks on their existing five-minute cadence.
+  // Send announcements, trial reminders, reconcile subscriptions and payment notices every five minutes.
   "triggers": { "crons": ["*/5 * * * *"] },
   "keep_vars": true,
   "vars": { "SQUARE_APPLICATION_ID": "sq0idp-m6mTHLzi5hBk9T3M7XvoGg", "SQUARE_LOCATION_ID": "LP9AZ4PNMFW60", "SQUARE_WEBHOOK_URL": "https://sidequestlearning.app/api/billing/square-webhook", "STRIPE_LIVE_ENABLED": "true", "AI_FAST_PIPELINE": "true", "AI_SPLIT_STAGES": "true" },
@@ -43,8 +42,6 @@
   // To turn it off, set it to "false" here and merge; AI_FAST_PIPELINE_STOP=true also stops it.
   // AI_COMPACT_GENERATION stays OFF so original teaching depth and prompts do not change.
   "ai": { "binding": "AI" },
-  // Owner Book Forge PDF rendering; only invoked by authenticated owner actions.
-  "browser": { "binding": "BROWSER" },
   // R2 storage for family files (paid membership). Match BUCKET in worker/src/types.ts.
   // The bucket must exist in the same Cloudflare account as this Worker.
   "r2_buckets": [
