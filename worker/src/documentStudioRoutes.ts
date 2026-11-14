@@ -86,7 +86,7 @@ export function registerDocumentStudio(admin: Hono<any>, requirePermission: (p: 
   admin.post("/document-studio/export-home-education", ownerRead, async c => {
     const checked = validateHomeEducationExport(await jsonBody(c));
     if (!checked.ok) return c.json({ detail: checked.detail }, 400);
-    const limited = await hitRateLimit(c.env.DB, "document-studio:education-export:" + c.get("user").id, 160, 3600);
+    const limited = await hitRateLimit((c as any).env.DB, "document-studio:education-export:" + String((c as any).get("user").id), 160, 3600);
     if (!limited.ok) return c.json({ detail: "PDF export limit reached for this hour." }, 429);
     try {
       const pdf = generateHomeEducationTemplate(checked.state, checked.year, false, checked.mode, checked.edition, checked.electives, checked.kind);
@@ -109,7 +109,7 @@ export function registerDocumentStudio(admin: Hono<any>, requirePermission: (p: 
   admin.post("/document-studio/export", ownerRead, async c => {
     const body = await jsonBody(c);
     if (body.mode !== "print" && body.mode !== "fillable") return c.json({ detail: "Choose print or fillable mode." }, 400);
-    const limited = await hitRateLimit(c.env.DB, "document-studio:activity-export:" + c.get("user").id, 36, 3600);
+    const limited = await hitRateLimit((c as any).env.DB, "document-studio:activity-export:" + String((c as any).get("user").id), 36, 3600);
     if (!limited.ok) return c.json({ detail: "Activity export limit reached for this hour." }, 429);
     try {
       const result = buildStudioProductPdf(body.product, body.mode);
