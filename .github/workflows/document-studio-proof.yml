@@ -7,6 +7,15 @@ on:
       - worker/src/homeEducationPdf.ts
       - worker/scripts/buildHomeEducationProof.mjs
       - worker/scripts/auditDocumentProof.py
+  pull_request:
+    paths:
+      - .github/workflows/document-studio-proof.yml
+      - worker/src/homeEducationPdf.ts
+      - worker/src/documentStudioRoutes.ts
+      - worker/src/documentSquareOffers.ts
+      - worker/src/studioProductPdf.ts
+      - worker/scripts/buildHomeEducationProof.mjs
+      - worker/scripts/auditDocumentProof.py
   workflow_dispatch:
 permissions:
   contents: read

@@ -94,7 +94,7 @@ test("Square membership from the old app checkout: the first payment links the f
 
 function fakeShopMembershipSquare() {
   const calls = [];
-  const state = { sub: null, customers: { CUSTNEW: { id: "CUSTNEW", email_address: "New.Parent@Example.com", given_name: "Nina", family_name: "Parent" }, CUSTOLD: { id: "CUSTOLD", email_address: "old@example.com" } } };
+  const state = { sub: null, cancelAction: null, customers: { CUSTNEW: { id: "CUSTNEW", email_address: "New.Parent@Example.com", given_name: "Nina", family_name: "Parent" }, CUSTOLD: { id: "CUSTOLD", email_address: "old@example.com" } } };
   const json = (o, status = 200) => new Response(JSON.stringify(o), { status });
   const objects = {
     MVAR_M: { id: "MVAR_M", type: "SUBSCRIPTION_PLAN_VARIATION", subscription_plan_variation_data: { name: "Monthly", subscription_plan_id: "MPLAN", phases: [{ cadence: "MONTHLY" }] } },
@@ -108,6 +108,17 @@ function fakeShopMembershipSquare() {
     calls.push({ path, method: init?.method });
     if (path.startsWith("catalog/object/")) { const o = objects[decodeURIComponent(path.slice(15))]; return o ? json({ object: o }) : json({}, 404); }
     if (path.startsWith("customers/")) { const c = state.customers[decodeURIComponent(path.slice(10))]; return c ? json({ customer: c }) : json({}, 404); }
+    if (/^subscriptions\/[^/]+\/cancel$/.test(path)) {
+      state.sub = { ...state.sub, canceled_date: state.sub.charged_through_date };
+      state.cancelAction = { id: "cancel-action-1", type: "CANCEL" };
+      return json({ subscription: state.sub });
+    }
+    if (/^subscriptions\/[^/]+\/actions\/[^/]+\/delete$/.test(path)) {
+      state.sub = { ...state.sub, canceled_date: null };
+      state.cancelAction = null;
+      return json({ subscription: state.sub });
+    }
+    if (path.endsWith("?include=actions")) return json({ subscription: state.sub, actions: state.cancelAction ? [state.cancelAction] : [] });
     if (path.startsWith("subscriptions/")) return json({ subscription: state.sub });
     return json({}, 404);
   };
@@ -162,4 +173,46 @@ test("Square shop membership: an existing parent is matched by email; non-member
   const box = await handleSquareEvent(db, cfg, { type: "subscription.created", data: { object: { subscription: { id: "SSUB3" } } } }, sq.fetchImpl);
   assert.match(box, /unknown plan/);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM users WHERE email='new.parent@example.com'").get().n, 0);
+});
+
+test("Square Online Family Membership can cancel and undo cancellation from the parent account", async () => {
+  const db = makeDb();
+  const cfg = squareConfig(ENV);
+  const sq = fakeShopMembershipSquare();
+  sq.state.sub = { id: "ONLINE-SUB", customer_id: "CUSTNEW", location_id: "LTEST123456",
+    plan_variation_id: "MVAR_M", status: "ACTIVE", charged_through_date: "2026-12-15" };
+  const joined = await handleSquareEvent(db, cfg, { type: "subscription.created",
+    data: { object: { subscription: { id: "ONLINE-SUB" } } } }, sq.fetchImpl, new Date("2026-11-15T00:00:00Z"));
+  assert.match(joined, /ACTIVE_MONTHLY/);
+  const user = db.raw.prepare("SELECT family_id FROM users WHERE email='new.parent@example.com'").get();
+  assert.ok(user, "Square Online subscription should have a connected family");
+
+  const { keepMembership } = await import("../src/squareMembership.ts");
+  const cancelled = await cancelMembership(db, cfg, user.family_id, sq.fetchImpl);
+  assert.match(cancelled, /synced square ONLINE-SUB -> ACTIVE_MONTHLY/);
+  let member = db.raw.prepare("SELECT plan, cancel_at_period_end FROM families WHERE id=?").get(user.family_id);
+  assert.equal(member.plan, "ACTIVE_MONTHLY", "paid access continues until the end of the billing period");
+  assert.equal(member.cancel_at_period_end, 1, "a scheduled cancellation must be visible to the parent");
+  assert.ok(sq.calls.some(c => c.path === "subscriptions/ONLINE-SUB/cancel"));
+
+  const kept = await keepMembership(db, cfg, user.family_id, sq.fetchImpl);
+  assert.match(kept, /synced square ONLINE-SUB -> ACTIVE_MONTHLY/);
+  member = db.raw.prepare("SELECT plan, cancel_at_period_end FROM families WHERE id=?").get(user.family_id);
+  assert.equal(member.plan, "ACTIVE_MONTHLY");
+  assert.equal(member.cancel_at_period_end, 0, "undoing cancellation must clear the scheduled cancellation");
+  assert.ok(sq.calls.some(c => c.path === "subscriptions/ONLINE-SUB/actions/cancel-action-1/delete"));
+});
+
+test("Square subscription for a different location cannot create or unlock a family", async () => {
+  const db = makeDb();
+  const cfg = squareConfig(ENV);
+  const sq = fakeShopMembershipSquare();
+  sq.state.sub = { id: "WRONG-LOCATION", customer_id: "CUSTNEW",
+    location_id: "DIFFERENTLOCATION", plan_variation_id: "MVAR_M", status: "ACTIVE",
+    charged_through_date: "2026-12-15" };
+  const result = await handleSquareEvent(db, cfg, { type: "subscription.created",
+    data: { object: { subscription: { id: "WRONG-LOCATION" } } } }, sq.fetchImpl);
+  assert.match(result, /not for this location/);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM users").get().n, 0);
+  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM square_members").get().n, 0);
 });

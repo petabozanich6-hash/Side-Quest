@@ -275,6 +275,7 @@ await step("customers: find a family, see metadata only, suspend it with a reaso
 
 await step("settings: announcement reaches everyone; switching AI off needs a second confirmation", async () => {
   await page.click("[data-testid=hq-tab-settings]");
+  ok((await page.locator("[data-testid=hq-feature-shop]").count()) === 0, "retired in-app shop switch is still shown");
   await page.check("[data-testid=hq-announcement-enabled]");
   await page.fill("[data-testid=hq-announcement-message]", "Welcome to term 4!");
   await page.click("[data-testid=hq-save-announcement]");

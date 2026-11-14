@@ -58,7 +58,21 @@ export async function syncSquareSubscription(db: DB, cfg: Cfg, subscriptionId: s
   const variationId = String(sub.plan_variation_id || "");
   const planRow = await db.prepare("SELECT interval FROM square_plans WHERE variation_id = ?").bind(variationId).first<{ interval: string }>();
   let interval = (planRow && INTERVALS.includes(planRow.interval as Interval) ? planRow.interval : null) as Interval | null;
-  // Not one of the app's own checkout plans: it may be a Family Membership sold in the Square Online shop.
+  // Square Online plans are cached separately after the first verified subscription event.
+  // Look in that cache on every sync, including account-initiated cancel/keep actions,
+  // which do not receive the new-shop discovery hooks.
+  if (!interval) {
+    let saved: { interval: string } | null = null;
+    try {
+      saved = await db.prepare("SELECT interval FROM square_shop_plans WHERE variation_id = ?").bind(variationId).first<{ interval: string }>();
+    } catch (error) {
+      // Legacy installations may not have seen their first Square Online subscription yet.
+      // A missing cache table is not a reason to break an old in-app Square membership.
+      if (!/no such table: square_shop_plans/i.test(String(error))) throw error;
+    }
+    if (saved && INTERVALS.includes(saved.interval as Interval)) interval = saved.interval as Interval;
+  }
+  // For a new variation not yet cached, discover its parent plan through Square.
   if (!interval && shopHooks) interval = await shopHooks.intervalFor(variationId);
   if (!interval) return `unknown plan for ${subscriptionId}`;
   let member = await db.prepare("SELECT family_id FROM square_members WHERE customer_id = ?").bind(String(sub.customer_id || "")).first<{ family_id: string }>();
