@@ -1,5 +1,10 @@
 # Stripe subscriptions
 
+> **Retired for new members (2026-11-12):** Family Memberships are now bought in the Square Online shop
+> (`shop.sidequestlearning.app`) and linked to accounts by `worker/src/squareShopMembership.ts`. The in-app Stripe
+> checkout and Dragon's Hoard codes are gone. The Stripe webhook, renewal sync and billing portal stay only so
+> families who already pay through Stripe keep their access and can manage or cancel.
+
 > **Status (2026-10-16):** live payments are **on** in production (`STRIPE_LIVE_ENABLED = "true"` in
 > `wrangler.jsonc`, live price ids in `PRICES.live`). Staging must keep sandbox keys only. The setup steps
 > below are written for the sandbox; repeat them in live mode for production.

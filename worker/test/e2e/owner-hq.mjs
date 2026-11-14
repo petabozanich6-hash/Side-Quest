@@ -127,6 +127,18 @@ await step("Owner adds a passkey (password re-check) and unlocks HQ with it", as
 });
 
 
+await step("Document Studio remains owner-only after the old shop is removed", async () => {
+  const denied = await api("GET", "/admin/document-studio/square-production", user.token);
+  ok(denied.status === 404, "ordinary parent can access owner PDF products");
+  await page.goto(BASE + "/parent/command-centre/document-studio");
+  await page.waitForSelector("[data-testid=hq-document-studio]");
+  await page.selectOption("[data-testid=hq-document-studio] select", "NSW");
+  await page.waitForSelector("[data-testid=hq-existing-education-publisher]");
+  const res = await api("GET", "/admin/document-studio/square-production?year=ALL", ownerBrowserToken);
+  ok(res.status === 200 && res.json?.offers?.length === 48, "the 48 Square-ready document templates are unavailable");
+  ok(res.json?.square_catalogue_connected === false, "old in-app shop was not separated");
+});
+
 // Reproduce the parent -> Owner HQ -> parent dashboard path in a REAL browser.
 // Use separate browser contexts so the owner's and parent's localStorage cannot collide.
 await step("feedback regression: parent sends, Owner replies, dashboard alerts and clears on read", async () => {
@@ -170,11 +182,7 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 });
 
 
-await step("Dragon's Hoard appears and gifting preview days reaches the parent", async () => {
-  await page.click("[data-testid=hq-tab-dragon-hoard]");
-  await page.waitForSelector("[data-testid=hq-dragon-hoard]");
-  await page.waitForSelector("[data-testid=hoard-create]", { timeout: 15000 });
-  await page.waitForSelector("[data-testid=hoard-gifts]", { timeout: 15000 });
+await step("gifting preview days from a customer's page reaches the parent", async () => {
   const before = await api("GET", "/account/plan", user.token);
   ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");
   await page.click("[data-testid=hq-tab-customers]");
@@ -267,6 +275,7 @@ await step("customers: find a family, see metadata only, suspend it with a reaso
 
 await step("settings: announcement reaches everyone; switching AI off needs a second confirmation", async () => {
   await page.click("[data-testid=hq-tab-settings]");
+  ok((await page.locator("[data-testid=hq-feature-shop]").count()) === 0, "retired in-app shop switch is still shown");
   await page.check("[data-testid=hq-announcement-enabled]");
   await page.fill("[data-testid=hq-announcement-message]", "Welcome to term 4!");
   await page.click("[data-testid=hq-save-announcement]");

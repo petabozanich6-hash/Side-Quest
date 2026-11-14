@@ -10,9 +10,12 @@ binding `DB`). Check the binding on the live Worker, not just the name: `npx wra
 - **Code**: Cloudflare Workers Builds deploys `main` on every push (`npx wrangler deploy`). Deploying never changes the
   database schema; the Worker also creates any missing *additive* tables/columns at runtime, so a deploy cannot break
   if a migration is late.
-- **Other branches** never build on Cloudflare: `worker/scripts/guard-build-branch.mjs` (first step of the build
-  command) fails them, because a preview would run unreviewed code against the production database. Pull requests are
-  tested by GitHub Actions (unit tests, typecheck, build, browser E2E against a local D1).
+- **Other branches** must not deploy on the production Worker. Cloudflare currently attempts preview builds on PRs
+  and `worker/scripts/guard-build-branch.mjs` intentionally fails them to prevent unreviewed code using production
+  bindings. Thus the "Workers Builds: side-quest" check can show **failure on PRs** even while all GitHub tests pass.
+  In Cloudflare → Workers & Pages → side-quest → Settings → Build → Branch control, disable **Enable Preview Builds**
+  (or "Builds for non-production branches" on older configurations). Keep the production branch set to `main`.
+  Never disable the branch guard just to make a PR check green. Use the separate private staging Worker for tests.
 - **Migrations** are applied deliberately, never by a deploy. `npm run db:migrate` is a no-op that prints this advice.
 
 ## Release checklist
@@ -44,7 +47,7 @@ binding `DB`). Check the binding on the live Worker, not just the name: `npx wra
 - Git repository: `petabozanich6-hash/Side-Quest`; production branch `main`; root directory `/`; `NODE_VERSION=22`.
 - Build command: *(empty; `wrangler.jsonc` `build.command` runs the guard and builds the frontend)*.
 - Deploy command: `npx wrangler deploy` (no migrations).
-- Non-production branch builds: **disabled** (the guard blocks them anyway).
+- Non-production / Preview Builds: **must be disabled in the Cloudflare dashboard**. If a non-main PR reports a failed Cloudflare Workers Builds check, verify this setting; the safety guard may be intentionally rejecting a production-bound preview.
 - Build API token: a token on this account with *Workers Scripts: Edit*, *Workers Builds Configuration: Edit*,
   *Account Settings: Read*, *User Details: Read*, *Workers Routes: Edit* (zone `sidequestlearning.app`) and
   *D1: Edit* only if Cloudflare-side migrations are ever wanted again (they are not).

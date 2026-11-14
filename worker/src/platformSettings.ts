@@ -15,8 +15,6 @@ export type Features = {
   aiEnabled: boolean;
   /** YouTube video suggestions (uses the YouTube Data API quota). */
   videoSearch: boolean;
-  /** The public shop on the landing page (buy books without an account). Off until the owner opens it. */
-  shopOpen: boolean;
 };
 export type CostSafeguards = {
   /** Most AI requests the whole platform may make in any rolling 24 hours. Per-family fair-use caps still apply. */
@@ -39,7 +37,7 @@ export function defaultSettings(): PlatformSettings {
   return {
     announcement: { enabled: false, message: "", tone: "info" },
     maintenance: { enabled: false, message: "" },
-    features: { registrationsOpen: true, aiEnabled: true, videoSearch: true, shopOpen: false },
+    features: { registrationsOpen: true, aiEnabled: true, videoSearch: true },
     costSafeguards: { aiDailyPlatformCap: 2000 },
   };
 }
@@ -95,12 +93,12 @@ export function validateSetting<K extends SettingKey>(key: K, raw: unknown): Res
       return ok({ enabled: enabled.value, message: msg.value });
     }
     case "features": {
-      const keys = ["registrationsOpen", "aiEnabled", "videoSearch", "shopOpen"];
-      const extra = onlyKeys(raw, keys);
+      const keys = ["registrationsOpen", "aiEnabled", "videoSearch"];
+      // Settings saved while the old in-app shop existed still carry its switch; it is ignored.
+      const { shopOpen: _retiredShopSwitch, ...src } = raw as Record<string, unknown>;
+      const extra = onlyKeys(src, keys);
       if (extra) return fail(extra);
       const out: Record<string, boolean> = {};
-      // Settings saved before the shop existed have no shopOpen: closed.
-      const src: Record<string, unknown> = raw.shopOpen === undefined ? { ...raw, shopOpen: false } : raw;
       for (const k of keys) {
         const b = bool(src[k], k);
         if (!b.ok) return b;
@@ -130,7 +128,6 @@ export function highImpactReasons<K extends SettingKey>(key: K, current: Platfor
     if (c.aiEnabled && !n.aiEnabled) reasons.push("Switches AI off for every family, including paying members");
     if (c.registrationsOpen && !n.registrationsOpen) reasons.push("Stops new families from signing up");
     if (!c.videoSearch && n.videoSearch) reasons.push("Turns YouTube API calls back on");
-    if (!c.shopOpen && n.shopOpen) reasons.push("Opens the public shop: anyone can buy books without an account");
   }
   if (key === "costSafeguards") {
     const c = current as CostSafeguards, n = next as CostSafeguards;
@@ -228,6 +225,5 @@ export async function publicNotices(db: D1Database) {
     announcement: s.announcement.enabled ? { message: s.announcement.message, tone: s.announcement.tone } : null,
     maintenance: s.maintenance.enabled ? { message: s.maintenance.message } : null,
     registrations_open: s.features.registrationsOpen,
-    shop_open: s.features.shopOpen,
   };
 }
