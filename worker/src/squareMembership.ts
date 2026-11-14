@@ -155,14 +155,10 @@ export async function keepMembership(db: DB, cfg: Cfg, familyId: string, fetchIm
   const m = await membershipFor(db, familyId);
   if (!m?.subscription_id) throw new Error("No membership to keep");
   const r = await squareCall(cfg, "GET", `subscriptions/${encodeURIComponent(m.subscription_id)}?include=actions`, undefined, fetchImpl);
-  const action = (r?.actions || []).find((a: any) => a?.type === "CANCEL");
-  if (action?.id) await squareCall(cfg, "POST", `subscriptions/${encodeURIComponent(m.subscription_id)}/actions/${encodeURIComponent(action.id)}/delete`, {}, fetchImpl).catch(async () => {
-    // Older API shape: DELETE /subscriptions/{id}/actions/{action_id}
-    const res = await (fetchImpl || fetch)(`${cfg.base}/subscriptions/${encodeURIComponent(m.subscription_id)}/actions/${encodeURIComponent(action.id)}`, {
-      method: "DELETE", headers: { Authorization: `Bearer ${cfg.token}`, "Square-Version": "2024-10-17", Accept: "application/json" },
-    });
-    if (!res.ok) throw new Error("Square could not undo the cancellation");
-  });
+  // Square returns scheduled actions on the subscription object, not at response root.
+  const action = (r?.subscription?.actions || []).find((a: any) => a?.type === "CANCEL");
+  if (!action?.id) throw new Error("Square did not return a pending cancellation to reverse");
+  await squareCall(cfg, "DELETE", `subscriptions/${encodeURIComponent(m.subscription_id)}/actions/${encodeURIComponent(action.id)}`, undefined, fetchImpl);
   return syncSquareSubscription(db, cfg, m.subscription_id, fetchImpl);
 }
 

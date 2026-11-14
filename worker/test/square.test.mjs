@@ -113,12 +113,12 @@ function fakeShopMembershipSquare() {
       state.cancelAction = { id: "cancel-action-1", type: "CANCEL" };
       return json({ subscription: state.sub });
     }
-    if (/^subscriptions\/[^/]+\/actions\/[^/]+\/delete$/.test(path)) {
+    if (/^subscriptions\/[^/]+\/actions\/[^/]+$/.test(path) && init?.method === "DELETE") {
       state.sub = { ...state.sub, canceled_date: null };
       state.cancelAction = null;
       return json({ subscription: state.sub });
     }
-    if (path.endsWith("?include=actions")) return json({ subscription: state.sub, actions: state.cancelAction ? [state.cancelAction] : [] });
+    if (path.endsWith("?include=actions")) return json({ subscription: { ...state.sub, actions: state.cancelAction ? [state.cancelAction] : [] } });
     if (path.startsWith("subscriptions/")) return json({ subscription: state.sub });
     return json({}, 404);
   };
@@ -195,12 +195,18 @@ test("Square Online Family Membership can cancel and undo cancellation from the 
   assert.equal(member.cancel_at_period_end, 1, "a scheduled cancellation must be visible to the parent");
   assert.ok(sq.calls.some(c => c.path === "subscriptions/ONLINE-SUB/cancel"));
 
+  // The Square response must actually contain a pending cancellation action.
+  // Never falsely confirm "keep" when no action was found.
+  const pending = sq.state.cancelAction;
+  sq.state.cancelAction = null;
+  await assert.rejects(() => keepMembership(db, cfg, user.family_id, sq.fetchImpl), /pending cancellation/);
+  sq.state.cancelAction = pending;
   const kept = await keepMembership(db, cfg, user.family_id, sq.fetchImpl);
   assert.match(kept, /synced square ONLINE-SUB -> ACTIVE_MONTHLY/);
   member = db.raw.prepare("SELECT plan, cancel_at_period_end FROM families WHERE id=?").get(user.family_id);
   assert.equal(member.plan, "ACTIVE_MONTHLY");
   assert.equal(member.cancel_at_period_end, 0, "undoing cancellation must clear the scheduled cancellation");
-  assert.ok(sq.calls.some(c => c.path === "subscriptions/ONLINE-SUB/actions/cancel-action-1/delete"));
+  assert.ok(sq.calls.some(c => c.path === "subscriptions/ONLINE-SUB/actions/cancel-action-1" && c.method === "DELETE"));
 });
 
 test("Square subscription for a different location cannot create or unlock a family", async () => {

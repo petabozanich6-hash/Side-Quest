@@ -45,7 +45,7 @@ export class SquareError extends Error {
   constructor(status: number, message: string) { super(message); this.status = status; }
 }
 
-export async function squareCall(cfg: Extract<SquareConfig, { ok: true }>, method: "GET" | "POST", path: string, body?: unknown, fetchImpl?: Fetch): Promise<any> {
+export async function squareCall(cfg: Extract<SquareConfig, { ok: true }>, method: "GET" | "POST" | "DELETE", path: string, body?: unknown, fetchImpl?: Fetch): Promise<any> {
   const res = await (fetchImpl || fetch)(`${cfg.base}/${path}`, {
     method,
     headers: { Authorization: `Bearer ${cfg.token}`, "Square-Version": SQUARE_VERSION, "Content-Type": "application/json", Accept: "application/json" },
