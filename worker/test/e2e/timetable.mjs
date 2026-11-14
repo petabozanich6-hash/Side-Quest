@@ -158,6 +158,8 @@ await step("assigning a maths lesson puts it in Mia's next free Mathematics slot
   ok((await page.textContent("[data-testid=sch-slot-preview]")).includes("Mathematics"), "preview doesn't show the slot");
   await shot("02-assign-window");
   await page.click("[data-testid=sch-submit]");
+  // A previous success toast can still be visible; only modal closure proves this request finished.
+  await page.waitForSelector("[data-testid=sch-submit]", { state: "detached" });
   await page.waitForSelector("text=Scheduled in the timetable");
   const filled = (await slots()).find((x) => x.id === first.id);
   ok(filled.lesson_title === "Place value", "first maths slot not filled: " + JSON.stringify(filled));
@@ -174,6 +176,8 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
     await page.waitForSelector("[data-testid=sch-slot-preview]");
     ok(await page.isChecked("[data-testid=sch-mode-slot]"), "the recommended timetable placement was not selected");
     await page.click("[data-testid=sch-submit]");
+    // Do not read timetable state while the earlier success toast is still visible.
+    await page.waitForSelector("[data-testid=sch-submit]", { state: "detached" });
     await page.waitForSelector("text=Scheduled in the timetable");
     const s = (await slots()).find((x) => x.linked_lesson_id === lid);
     ok(s && s.title === subject, `${subject} lesson in the wrong slot: ${JSON.stringify(s)}`);
