@@ -64,8 +64,17 @@ const sameText = (a: string, b: string) => {
 app.use("/api/*", async (c, next) => {
   const key = c.env.STAGING_KEY;
   if (!key) return next();
-  // Stripe cannot hold the staging cookie; the webhook authenticates by signature instead.
+  // Payment providers cannot hold a staging cookie; their webhooks authenticate by signature.
   if (c.req.path === "/api/billing/webhook") return next();
+  // Only a Square SANDBOX callback for our isolated staging Worker can bypass the cookie.
+  // The actual Square endpoint still verifies its HMAC signature before processing anything.
+  // Never allow live Square credentials or callbacks on another hostname to bypass staging.
+  const sandboxCallback = c.req.path === "/api/billing/square-webhook"
+    && /^sandbox-sq0idb-/.test(String(c.env.SQUARE_APPLICATION_ID || ""))
+    && !!c.env.SQUARE_ACCESS_TOKEN && !!c.env.SQUARE_WEBHOOK_SIGNATURE_KEY
+    && c.env.SQUARE_WEBHOOK_URL === c.req.url
+    && /^https:\/\/side-quest-staging\.[^.]+\.workers\.dev\/api\/billing\/square-webhook$/.test(c.req.url);
+  if (sandboxCallback) return next();
   if (c.req.path === "/api/staging-access") {
     if (sameText(c.req.query("key") || "", key)) {
       return new Response(null, {

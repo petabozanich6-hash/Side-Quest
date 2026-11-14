@@ -222,3 +222,43 @@ test("Square subscription for a different location cannot create or unlock a fam
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM users").get().n, 0);
   assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM square_members").get().n, 0);
 });
+
+
+test("private staging accepts only signed Square sandbox webhooks on its own hostname", async () => {
+  const worker = (await import("../src/index.ts")).default;
+  const baseUrl = "https://side-quest-staging.test-account.workers.dev";
+  const webhookUrl = baseUrl + "/api/billing/square-webhook";
+  const env = {
+    ...ENV, DB: makeDb(), JWT_SECRET: "local-staging-test",
+    STAGING_KEY: "private-staging-cookie-secret", SQUARE_WEBHOOK_URL: webhookUrl,
+  };
+  const ctx = { waitUntil() {}, passThroughOnException() {} };
+  const body = JSON.stringify({ event_id: "sandbox-check-1", type: "catalog.version.updated", data: { object: {} } });
+  const send = async (url, customEnv, signature) => {
+    const response = await worker.fetch(new Request(url, {
+      method: "POST", headers: { "content-type": "application/json", "x-square-hmacsha256-signature": signature },
+      body,
+    }), customEnv, ctx);
+    return { status: response.status, json: await response.json() };
+  };
+  const validSignature = await sign(body, "sig-key", webhookUrl);
+  assert.equal((await send(webhookUrl, env, "not-a-signature")).status, 400,
+    "sandbox must validate the Square webhook's HMAC, not trust a public route");
+  assert.equal((await send(webhookUrl, { ...env, SQUARE_APPLICATION_ID: "sq0idp-live" }, validSignature)).status, 403,
+    "live Square credentials must never bypass the private staging cookie");
+  assert.equal((await send(webhookUrl, { ...env, SQUARE_WEBHOOK_URL: "https://sidequestlearning.app/api/billing/square-webhook" }, validSignature)).status, 403,
+    "a production webhook URL must not be accepted by staging");
+  assert.equal((await send(webhookUrl, { ...env, SQUARE_WEBHOOK_SIGNATURE_KEY: undefined }, validSignature)).status, 403,
+    "unsigned or unconfigured Square webhooks must remain private");
+  assert.equal((await send("https://sidequestlearning.app/api/billing/square-webhook", env, validSignature)).status, 403,
+    "the sandbox exception must not be usable on a production hostname");
+  const first = await send(webhookUrl, env, validSignature);
+  assert.equal(first.status, 200, JSON.stringify(first.json));
+  assert.equal(first.json.received, true);
+  const replay = await send(webhookUrl, env, validSignature);
+  assert.equal(replay.status, 200);
+  assert.equal(replay.json.duplicate, true, "signed replay must be handled idempotently");
+  assert.equal(env.DB.raw.prepare("SELECT COUNT(*) n FROM square_events").get().n, 1);
+  const blocked = await worker.fetch(new Request(baseUrl + "/api/auth/me"), env, ctx);
+  assert.equal(blocked.status, 403, "general staging endpoints still require the staging cookie");
+});

@@ -17,3 +17,15 @@ PR #363 removes retired in-app sales while preserving Square Family Memberships 
 5. Review CI, deployment branch rules, security and monitoring, and confirm rollback to the last known good deployment is available.
 
 Never claim a Square sandbox payment or Cloudflare staging deployment has been tested unless its actual event and result were observed. This repository's isolated test doubles do not replace live provider verification.
+
+## Square sandbox webhook through private staging
+The staging gate requires a cookie for ordinary API calls but allows the **Square sandbox webhook** only when:
+- The request is `https://side-quest-staging.<subdomain>.workers.dev/api/billing/square-webhook`.
+- The Worker has a sandbox `SQUARE_APPLICATION_ID` starting with `sandbox-sq0idb-`, its own **sandbox-only** `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID` and `SQUARE_WEBHOOK_SIGNATURE_KEY`.
+- `SQUARE_WEBHOOK_URL` exactly equals that staging URL. The Square webhook handler then authenticates the HMAC and rejects unsigned requests. Never use production Square tokens in staging.
+- The staging site remains private to ordinary visitors; the webhook exception does not grant access to other endpoints.
+
+Staging is not automatically provisioned with these Square sandbox secrets by the deploy workflow. Configure them separately in the **staging Worker** before any actual Square test. No real Square transaction is initiated by the automated tests.
+
+## Cloudflare PR build check
+The production Worker is configured to refuse non-`main` builds, protecting its production D1 binding. If GitHub reports a failing "Workers Builds: side-quest" check while `verify` and the PDF proofs pass, inspect `worker/scripts/guard-build-branch.mjs` and disable Cloudflare production-Worker preview builds in Settings → Build → Branch control. Do **not** remove the build guard or attach production bindings to a preview Worker merely to make the check green.
