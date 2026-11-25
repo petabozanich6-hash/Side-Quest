@@ -1,0 +1,163 @@
+
+> frontend@0.1.0 build
+> craco build
+
+Creating an optimized production build...
+Compiled with warnings.
+
+[eslint] 
+src/components/child/PetWelcome.jsx
+  Line 87:6:  React Hook useEffect has missing dependencies: 'ctxOf' and 'key'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/parent/ScheduleModal.jsx
+  Line 49:6:  React Hook useEffect has a missing dependency: 'defaultDate'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/child/PetRoom.jsx
+  Line 194:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/ChildOverview.jsx
+  Line 21:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/GuestSupportPortal.jsx
+  Line 16:158:  React Hook useEffect has a missing dependency: 'link'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/HomeschoolCompass.jsx
+  Line 72:6:  React Hook useEffect has a missing dependency: 'searchParams'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/InternationalGoalTracker.jsx
+  Line 155:47:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/LearningSupport.jsx
+  Line 23:64:  React Hook useEffect has a missing dependency: 'user?.role'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/LessonBuilder.jsx
+  Line 168:163:  React Hook useEffect has a missing dependency: 'id'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 170:134:  React Hook useEffect has a missing dependency: 'f'. Either include it or remove the dependency array   react-hooks/exhaustive-deps
+
+src/pages/parent/Lessons.jsx
+  Line 33:63:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/MakeLesson.jsx
+  Line 54:6:  React Hook useEffect has a missing dependency: 'qs'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/OutcomeDetail.jsx
+  Line 203:75:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/OutcomeTracker.jsx
+  Line 90:78:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/ParentFeedback.jsx
+  Line 47:146:  React Hook useEffect has missing dependencies: 'expandedId', 'openThread', 'params', and 'reports'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 47:162:  React Hook useEffect has a complex expression in the dependency array. Extract it to a separate variable so it can be statically checked                react-hooks/exhaustive-deps
+
+src/pages/parent/ReadingLog.jsx
+  Line 58:32:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/SupportOrders.jsx
+  Line 11:26:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/SupportQuotes.jsx
+  Line 11:104:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/SupportVideoPanel.jsx
+  Line 15:55:  The ref value 'generation.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'generation.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqFeedback.jsx
+  Line 45:27:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqGuestSupport.jsx
+  Line 13:26:  React Hook useEffect has a missing dependency: 'list'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqHomeEducationPublisher.jsx
+  Line 55:59:  React Hook useEffect has a missing dependency: 'queueEntry?.square_url'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqSupportOrders.jsx
+  Line 13:26:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqSupportQuotes.jsx
+  Line 13:26:  React Hook useEffect has a missing dependency: 'load'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/parent/hq/HqTutorResources.jsx
+  Line 13:37:  React Hook useEffect has missing dependencies: 'load' and 'run'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+src/pages/shared/SiteSearch.jsx
+  Line 64:6:  React Hook useMemo has a missing dependency: 'pages'. Either include it or remove the dependency array       react-hooks/exhaustive-deps
+  Line 84:6:  React Hook useEffect has a missing dependency: 'q.length'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  295.38 kB  build/static/js/main.81ec9628.js
+  112.43 kB  build/static/js/4283.2c0d4236.chunk.js
+  29.94 kB   build/static/js/409.9d5c3eb3.chunk.js
+  18.93 kB   build/static/js/9434.81ccf1f2.chunk.js
+  16.84 kB   build/static/js/4440.e0e1783d.chunk.js
+  15.2 kB    build/static/css/main.b9018657.css
+  14.72 kB   build/static/js/8587.e285b909.chunk.js
+  13.82 kB   build/static/js/7910.35bf57dd.chunk.js
+  12.53 kB   build/static/js/8649.82419d63.chunk.js
+  12.52 kB   build/static/js/2812.5e580c86.chunk.js
+  11.4 kB    build/static/js/8989.2f41f1a9.chunk.js
+  11.35 kB   build/static/js/1041.b131bc3f.chunk.js
+  10.81 kB   build/static/js/8978.b2431034.chunk.js
+  10.64 kB   build/static/js/9401.9e354c3b.chunk.js
+  10.55 kB   build/static/js/2792.c826e676.chunk.js
+  8.85 kB    build/static/js/7888.8d44c06f.chunk.js
+  8 kB       build/static/js/6763.3f6d816c.chunk.js
+  7.92 kB    build/static/js/9569.e2444b5e.chunk.js
+  7.83 kB    build/static/js/4742.4173c474.chunk.js
+  7.57 kB    build/static/js/4513.27463b02.chunk.js
+  7.54 kB    build/static/js/2723.ceec4ee2.chunk.js
+  7.52 kB    build/static/js/6425.ceb52ffe.chunk.js
+  7.31 kB    build/static/js/1527.66be549c.chunk.js
+  7.15 kB    build/static/js/601.67d4319f.chunk.js
+  7.13 kB    build/static/js/6546.800c4ebe.chunk.js
+  7.07 kB    build/static/js/1396.a1bc2689.chunk.js
+  6.81 kB    build/static/js/1033.27c6f110.chunk.js
+  6.68 kB    build/static/js/9563.20cd36e7.chunk.js
+  6.23 kB    build/static/js/2286.69cf6248.chunk.js
+  5.84 kB    build/static/js/5780.57f340d5.chunk.js
+  5.78 kB    build/static/js/3433.e996efc3.chunk.js
+  5.61 kB    build/static/js/3666.57044fd0.chunk.js
+  5.56 kB    build/static/js/5376.0dbffce2.chunk.js
+  5.33 kB    build/static/js/1081.a2f9f0f3.chunk.js
+  5.12 kB    build/static/js/8373.04a57312.chunk.js
+  4.85 kB    build/static/js/2880.96101d1b.chunk.js
+  4.73 kB    build/static/js/1568.ff8c0600.chunk.js
+  4.55 kB    build/static/js/3994.0031a793.chunk.js
+  4.54 kB    build/static/js/2461.73b1b49b.chunk.js
+  4.37 kB    build/static/js/3232.3c9a6c2f.chunk.js
+  4.32 kB    build/static/js/8025.e5320319.chunk.js
+  4.31 kB    build/static/js/4488.9b279f49.chunk.js
+  3.8 kB     build/static/js/5430.36590942.chunk.js
+  3.54 kB    build/static/js/9338.aceeabd1.chunk.js
+  3.41 kB    build/static/js/1644.fd30ee94.chunk.js
+  3.39 kB    build/static/js/907.66880170.chunk.js
+  3.32 kB    build/static/js/5715.f0a9c42e.chunk.js
+  3.29 kB    build/static/js/6846.786bec38.chunk.js
+  2.91 kB    build/static/js/5869.ba9436c5.chunk.js
+  2.26 kB    build/static/js/3270.8bdb8fdc.chunk.js
+  2.21 kB    build/static/js/8431.ed7e22e4.chunk.js
+  1.76 kB    build/static/js/537.9d87b01b.chunk.js
+  1.42 kB    build/static/js/3481.ec90645e.chunk.js
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.3
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3
+npm notice To update run: npm install -g npm@12.2.3
+npm notice

@@ -1,0 +1,2674 @@
+
+> side-quest@1.0.0 test:worker
+> node --no-warnings --import ./worker/test/register.mjs --test worker/test/builder.test.mjs worker/test/billing.test.mjs worker/test/lifeLearning.test.mjs worker/test/portfolio.test.mjs worker/test/batches.test.mjs worker/test/outcomes.test.mjs worker/test/ac9Catalogue.test.mjs worker/test/autoQuest.test.mjs worker/test/plans.test.mjs worker/test/auth.test.mjs worker/test/ownerHq.test.mjs worker/test/petGrowth.test.mjs worker/test/timetable.test.mjs worker/test/homeschoolCompass.test.mjs worker/test/compassUi.test.mjs worker/test/siteSearch.test.mjs worker/test/membershipAccess.test.mjs worker/test/handwritingBook.test.mjs worker/test/handsOnVault.test.mjs worker/test/internationalGoals.test.mjs worker/test/aiCost.test.mjs worker/test/aiModelCompatibility.test.mjs worker/test/aiModelTrial.test.mjs worker/test/announcements.test.mjs worker/test/assignmentDedup.test.mjs worker/test/sessionSafety.test.mjs worker/test/emailVerification.test.mjs worker/test/compassSelections.test.mjs worker/test/compassSelectionsHttp.test.mjs worker/test/trialReminders.test.mjs worker/test/paymentNotices.test.mjs worker/test/priorLearning.test.mjs worker/test/startingCheck.test.mjs worker/test/aiFastPipeline.test.mjs worker/test/aiPipeline.test.mjs worker/test/calendarPlanningIntegration.test.mjs worker/test/childAnswerLeak.test.mjs worker/test/lessonAreas.test.mjs worker/test/lessonLanguage.test.mjs worker/test/childPrivacy.test.mjs worker/test/submissionsList.test.mjs worker/test/resourceLinks.test.mjs worker/test/seasonal.test.mjs worker/test/square.test.mjs worker/test/retiredShopSettings.test.mjs worker/test/viewAs.test.mjs
+
+TAP version 13
+# Subtest: ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands
+ok 1 - ACARA MRAC import has unique real AC9 identifiers, descriptions and valid year bands
+  ---
+  duration_ms: 5.223278
+  type: 'test'
+  ...
+# Subtest: five jurisdictions use the same correctly named AC9 framework without claiming local syllabus equivalence
+ok 2 - five jurisdictions use the same correctly named AC9 framework without claiming local syllabus equivalence
+  ---
+  duration_ms: 0.335175
+  type: 'test'
+  ...
+# Subtest: NSW, VCAA and SCSA state catalogues remain distinct
+ok 3 - NSW, VCAA and SCSA state catalogues remain distinct
+  ---
+  duration_ms: 0.641256
+  type: 'test'
+  ...
+# Subtest: AC9 reference codes belong to the appropriate learning stage
+ok 4 - AC9 reference codes belong to the appropriate learning stage
+  ---
+  duration_ms: 0.34326
+  type: 'test'
+  ...
+# Subtest: an AC9 language elective matches ONLY the language selected by the family
+ok 5 - an AC9 language elective matches ONLY the language selected by the family
+  ---
+  duration_ms: 3.334783
+  type: 'test'
+  ...
+# Subtest: selected Chinese learner pathway must not mix distinct official pathway codes
+ok 6 - selected Chinese learner pathway must not mix distinct official pathway codes
+  ---
+  duration_ms: 0.673046
+  type: 'test'
+  ...
+# Subtest: VIC and WA expose state-specific source catalogues as references, not as unavailable or compliance guarantees
+ok 7 - VIC and WA expose state-specific source catalogues as references, not as unavailable or compliance guarantees
+  ---
+  duration_ms: 0.608756
+  type: 'test'
+  ...
+# Subtest: VIC and WA book matching separates History from Geography within Humanities
+ok 8 - VIC and WA book matching separates History from Geography within Humanities
+  ---
+  duration_ms: 16.014635
+  type: 'test'
+  ...
+# Workers AI cost metering unavailable
+# Subtest: Workers AI cost estimates use documented rates; unknown models are unpriced
+ok 9 - Workers AI cost estimates use documented rates; unknown models are unpriced
+  ---
+  duration_ms: 2.243927
+  type: 'test'
+  ...
+# Subtest: all model calls are logged without retaining messages, responses, family identifiers or emails
+ok 10 - all model calls are logged without retaining messages, responses, family identifiers or emails
+  ---
+  duration_ms: 396.566738
+  type: 'test'
+  ...
+# Subtest: the production waitUntil path never delays the AI response for cost writes
+ok 11 - the production waitUntil path never delays the AI response for cost writes
+  ---
+  duration_ms: 323.415419
+  type: 'test'
+  ...
+# Subtest: when a provider doesn't return usage, approximation is labelled and unknown prices remain unpriced
+ok 12 - when a provider doesn't return usage, approximation is labelled and unknown prices remain unpriced
+  ---
+  duration_ms: 329.284736
+  type: 'test'
+  ...
+# Subtest: provider failures preserve the original error; metering failures do not break AI
+ok 13 - provider failures preserve the original error; metering failures do not break AI
+  ---
+  duration_ms: 318.718187
+  type: 'test'
+  ...
+# Subtest: Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estimates, never invoice amounts
+ok 14 - Owner HQ reports R2 bound when BUCKET exists and exposes tracked AI estimates, never invoice amounts
+  ---
+  duration_ms: 298.34172
+  type: 'test'
+  ...
+# Subtest: only source-free mathematics can overlap frame with teaching
+ok 15 - only source-free mathematics can overlap frame with teaching
+  ---
+  duration_ms: 1.947094
+  type: 'test'
+  ...
+# Subtest: fast path starts a section before the frame is finished and preserves lesson stages
+ok 16 - fast path starts a section before the frame is finished and preserves lesson stages
+  ---
+  duration_ms: 7.012155
+  type: 'test'
+  ...
+# Subtest: English or source-based teaching still receives complete framed readings
+ok 17 - English or source-based teaching still receives complete framed readings
+  ---
+  duration_ms: 3.478922
+  type: 'test'
+  ...
+# Subtest: flag off retains frame-first scheduling and the standard pool
+ok 18 - flag off retains frame-first scheduling and the standard pool
+  ---
+  duration_ms: 1.535174
+  type: 'test'
+  ...
+# Subtest: if mathematics generates an unexpected reading, fast mode rebuilds every section with that reading
+ok 19 - if mathematics generates an unexpected reading, fast mode rebuilds every section with that reading
+  ---
+  duration_ms: 4.552535
+  type: 'test'
+  ...
+# Subtest: fast and standard modes send exactly the same full teaching prompts and preserve the same output
+ok 20 - fast and standard modes send exactly the same full teaching prompts and preserve the same output
+  ---
+  duration_ms: 3.580081
+  type: 'test'
+  ...
+# Subtest: split stages: no reading needed means teaching starts without waiting for the opening
+ok 21 - split stages: no reading needed means teaching starts without waiting for the opening
+  ---
+  duration_ms: 2.963981
+  type: 'test'
+  ...
+# Subtest: split stages: a needed reading is written first and every teaching and practice request receives it
+ok 22 - split stages: a needed reading is written first and every teaching and practice request receives it
+  ---
+  duration_ms: 2.13262
+  type: 'test'
+  ...
+# Subtest: split stages: a design that does not say keeps the reading-first rule outside source-free maths
+ok 23 - split stages: a design that does not say keeps the reading-first rule outside source-free maths
+  ---
+  duration_ms: 3.753033
+  type: 'test'
+  ...
+# Subtest: split stages: a parent's own resource always gets the readings step
+ok 24 - split stages: a parent's own resource always gets the readings step
+  ---
+  duration_ms: 1.845414
+  type: 'test'
+  ...
+# Subtest: split stages: all teaching requests of a long lesson run in a single round
+ok 25 - split stages: all teaching requests of a long lesson run in a single round
+  ---
+  duration_ms: 2.78675
+  type: 'test'
+  ...
+# Subtest: split stages: each activity is given different worked-example skills
+ok 26 - split stages: each activity is given different worked-example skills
+  ---
+  duration_ms: 1.229985
+  type: 'test'
+  ...
+# Subtest: split stages: a failed activity keeps the rest of the lesson and is flagged
+ok 27 - split stages: a failed activity keeps the rest of the lesson and is flagged
+  ---
+  duration_ms: 1.376578
+  type: 'test'
+  ...
+# Subtest: split stages off: design and existing stage prompts are unchanged
+ok 28 - split stages off: design and existing stage prompts are unchanged
+  ---
+  duration_ms: 1.203296
+  type: 'test'
+  ...
+# Subtest: retired text overrides use the existing supported default without mutating bindings
+ok 29 - retired text overrides use the existing supported default without mutating bindings
+  ---
+  duration_ms: 1.593063
+  type: 'test'
+  ...
+# Subtest: valid settings are unchanged; retired help can use the supported main override
+ok 30 - valid settings are unchanged; retired help can use the supported main override
+  ---
+  duration_ms: 0.276216
+  type: 'test'
+  ...
+# Subtest: benchmark fixtures are synthetic and dry run makes zero model calls
+ok 31 - benchmark fixtures are synthetic and dry run makes zero model calls
+  ---
+  duration_ms: 1.235556
+  type: 'test'
+  ...
+# Subtest: candidate models are registered at their own published prices, not inherited prices
+ok 32 - candidate models are registered at their own published prices, not inherited prices
+  ---
+  duration_ms: 0.736935
+  type: 'test'
+  ...
+# Subtest: full lesson estimates are available for named new models and null if counts are unknown
+ok 33 - full lesson estimates are available for named new models and null if counts are unknown
+  ---
+  duration_ms: 0.220792
+  type: 'test'
+  ...
+# Subtest: automatic checks require substantial teaching but never pretend to validate factual correctness
+ok 34 - automatic checks require substantial teaching but never pretend to validate factual correctness
+  ---
+  duration_ms: 4.599043
+  type: 'test'
+  ...
+# Subtest: new algebra benchmark runs the actual Year 7 independent generator only after charge confirmation
+ok 35 - new algebra benchmark runs the actual Year 7 independent generator only after charge confirmation
+  ---
+  duration_ms: 0.7447
+  type: 'test'
+  ...
+# Subtest: synthetic child-view review shows the teaching model but excludes private assessment answers
+ok 36 - synthetic child-view review shows the teaching model but excludes private assessment answers
+  ---
+  duration_ms: 0.4501
+  type: 'test'
+  ...
+# Subtest: bounded synthetic learning review covers all major subject teaching styles
+ok 37 - bounded synthetic learning review covers all major subject teaching styles
+  ---
+  duration_ms: 0.836211
+  type: 'test'
+  ...
+# Subtest: paid-family speed rollout uses an explicit server-side configuration flag
+ok 38 - paid-family speed rollout uses an explicit server-side configuration flag
+  ---
+  duration_ms: 1.082881
+  type: 'test'
+  ...
+# Subtest: emergency halt overrides enabled rollout for every AI entry point
+ok 39 - emergency halt overrides enabled rollout for every AI entry point
+  ---
+  duration_ms: 0.183612
+  type: 'test'
+  ...
+# Subtest: split stages are opt-in and the same emergency halt stops them
+ok 40 - split stages are opt-in and the same emergency halt stops them
+  ---
+  duration_ms: 0.262429
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: only an unlocked Owner can broadcast, preview + typed confirmation required
+ok 41 - only an unlocked Owner can broadcast, preview + typed confirmation required
+  ---
+  duration_ms: 312.588376
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: optional announcements need consent; individual emails, unsubscribe, idempotency and history
+ok 42 - optional announcements need consent; individual emails, unsubscribe, idempotency and history
+  ---
+  duration_ms: 303.149472
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: service broadcast is limited to participating parents; opt-outs block queued optional email; cancelling is safe
+ok 43 - service broadcast is limited to participating parents; opt-outs block queued optional email; cancelling is safe
+  ---
+  duration_ms: 470.896102
+  type: 'test'
+  ...
+# Subtest: announcement HTML escapes owner-entered markup and preserves lines
+ok 44 - announcement HTML escapes owner-entered markup and preserves lines
+  ---
+  duration_ms: 0.437547
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: required-verification accounts are excluded from previews and queued delivery
+ok 45 - required-verification accounts are excluded from previews and queued delivery
+  ---
+  duration_ms: 415.008458
+  type: 'test'
+  ...
+# Subtest: inbound auto-reply: only authenticated senders, never echoes their subject, capped per day
+ok 46 - inbound auto-reply: only authenticated senders, never echoes their subject, capped per day
+  ---
+  duration_ms: 2.113884
+  type: 'test'
+  ...
+# Subtest: a lesson can't be assigned twice to one child, even with two requests at once
+ok 47 - a lesson can't be assigned twice to one child, even with two requests at once
+  ---
+  duration_ms: 327.110717
+  type: 'test'
+  ...
+# Subtest: a finished lesson needs an explicit 'assign again'; an open one never doubles
+ok 48 - a finished lesson needs an explicit 'assign again'; an open one never doubles
+  ---
+  duration_ms: 327.190276
+  type: 'test'
+  ...
+# Subtest: the library lists who each lesson is assigned to, one entry per child, never another family's
+ok 49 - the library lists who each lesson is assigned to, one entry per child, never another family's
+  ---
+  duration_ms: 326.753691
+  type: 'test'
+  ...
+# Subtest: runtime schema matches migration 0058 and keeps existing children at version 0
+ok 50 - runtime schema matches migration 0058 and keeps existing children at version 0
+  ---
+  duration_ms: 651.042868
+  type: 'test'
+  ...
+# Subtest: only failed sign-ins count, per account, and success clears them; child and parent counters are separate
+ok 51 - only failed sign-ins count, per account, and success clears them; child and parent counters are separate
+  ---
+  duration_ms: 335.237383
+  type: 'test'
+  ...
+# Subtest: a daily cap per account stops slow PIN guessing from rotating addresses; a new PIN lifts it
+ok 52 - a daily cap per account stops slow PIN guessing from rotating addresses; a new PIN lifts it
+  ---
+  duration_ms: 303.405355
+  type: 'test'
+  ...
+# Subtest: reuses only a ready, age-matched unused library lesson once
+ok 53 - reuses only a ready, age-matched unused library lesson once
+  ---
+  duration_ms: 16.619374
+  type: 'test'
+  ...
+# Subtest: existing assignments are never overwritten
+ok 54 - existing assignments are never overwritten
+  ---
+  duration_ms: 0.531953
+  type: 'test'
+  ...
+# Subtest: without a verified catalogue, does not suggest fabricated mappings
+ok 55 - without a verified catalogue, does not suggest fabricated mappings
+  ---
+  duration_ms: 0.583639
+  type: 'test'
+  ...
+# Subtest: achieved-only curriculum is not generated again by default
+ok 56 - achieved-only curriculum is not generated again by default
+  ---
+  duration_ms: 0.229879
+  type: 'test'
+  ...
+# Subtest: family/child isolation: only chosen child's timetable slots are planned
+ok 57 - family/child isolation: only chosen child's timetable slots are planned
+  ---
+  duration_ms: 0.537453
+  type: 'test'
+  ...
+# Subtest: same subject on the same day gets a separate proposal unless that exact slot is linked
+ok 58 - same subject on the same day gets a separate proposal unless that exact slot is linked
+  ---
+  duration_ms: 0.370481
+  type: 'test'
+  ...
+# Subtest: Auto-Quest ignores ordinary calendar lessons but includes older explicitly marked timetable slots
+ok 59 - Auto-Quest ignores ordinary calendar lessons but includes older explicitly marked timetable slots
+  ---
+  duration_ms: 0.615228
+  type: 'test'
+  ...
+# Subtest: six weekly sessions can use different practice tasks for the same unachieved outcome
+ok 60 - six weekly sessions can use different practice tasks for the same unachieved outcome
+  ---
+  duration_ms: 0.61625
+  type: 'test'
+  ...
+# Subtest: multiple sessions reinforce an outcome without claiming it is achieved
+ok 61 - multiple sessions reinforce an outcome without claiming it is achieved
+  ---
+  duration_ms: 0.623904
+  type: 'test'
+  ...
+# Subtest: library-first refuses lessons from wrong stage, already assigned, completed or archived
+ok 62 - library-first refuses lessons from wrong stage, already assigned, completed or archived
+  ---
+  duration_ms: 0.663057
+  type: 'test'
+  ...
+# Subtest: Languages without codes reuses an age-matched, not-previously-assigned ready lesson
+ok 63 - Languages without codes reuses an age-matched, not-previously-assigned ready lesson
+  ---
+  duration_ms: 0.962857
+  type: 'test'
+  ...
+# Subtest: library-first excludes otherwise-valid outcome codes outside this child's selected programme
+ok 64 - library-first excludes otherwise-valid outcome codes outside this child's selected programme
+  ---
+  duration_ms: 0.237313
+  type: 'test'
+  ...
+# Subtest: Languages never chooses a different language without a matching focus
+ok 65 - Languages never chooses a different language without a matching focus
+  ---
+  duration_ms: 0.423631
+  type: 'test'
+  ...
+# Subtest: plans from the timetable and the family's curriculum: lesson slots only, matched areas, verified codes, existing lessons reused once
+ok 66 - plans from the timetable and the family's curriculum: lesson slots only, matched areas, verified codes, existing lessons reused once
+  ---
+  duration_ms: 324.564754
+  type: 'test'
+  ...
+# Subtest: re-planning never duplicates proposals and never loses a generated draft; AI is paid-only and never automatic
+ok 67 - re-planning never duplicates proposals and never loses a generated draft; AI is paid-only and never automatic
+  ---
+  duration_ms: 482.012571
+  type: 'test'
+  ...
+# Subtest: approval: drafts need the parent's review; assignment lands on the slot's date; existing links are never overridden
+ok 68 - approval: drafts need the parent's review; assignment lands on the slot's date; existing links are never overridden
+  ---
+  duration_ms: 353.815572
+  type: 'test'
+  ...
+# Subtest: an appointment added after planning blocks assignment without creating partial work
+ok 69 - an appointment added after planning blocks assignment without creating partial work
+  ---
+  duration_ms: 329.329247
+  type: 'test'
+  ...
+# Subtest: calendar-slot approval refuses a slot filled after planning without making a new assignment
+ok 70 - calendar-slot approval refuses a slot filled after planning without making a new assignment
+  ---
+  duration_ms: 325.005479
+  type: 'test'
+  ...
+# Subtest: replanning another calendar slot keeps the parent's previously selected lesson
+ok 71 - replanning another calendar slot keeps the parent's previously selected lesson
+  ---
+  duration_ms: 334.796541
+  type: 'test'
+  ...
+# Subtest: approval after another tab fills a slot does not overwrite its assignment
+ok 72 - approval after another tab fills a slot does not overwrite its assignment
+  ---
+  duration_ms: 322.594897
+  type: 'test'
+  ...
+# Subtest: one open assignment cannot silently fill multiple calendar slots
+ok 73 - one open assignment cannot silently fill multiple calendar slots
+  ---
+  duration_ms: 330.40617
+  type: 'test'
+  ...
+# Subtest: reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught
+ok 74 - reviewed work feeds the tracker, and the next plan consolidates or moves on; achieved outcomes are not re-taught
+  ---
+  duration_ms: 373.196959
+  type: 'test'
+  ...
+# Subtest: purposeful revision: a demonstrated outcome not seen for weeks is revisited in at most one slot in four, reusing its lesson
+ok 75 - purposeful revision: a demonstrated outcome not seen for weeks is revisited in at most one slot in four, reusing its lesson
+  ---
+  duration_ms: 234.891392
+  type: 'test'
+  ...
+# Subtest: family isolation and unsupported curricula
+ok 76 - family isolation and unsupported curricula
+  ---
+  duration_ms: 218.775849
+  type: 'test'
+  ...
+# Subtest: rejecting keeps the parent's lesson; reopening allows re-planning
+ok 77 - rejecting keeps the parent's lesson; reopening allows re-planning
+  ---
+  duration_ms: 203.458548
+  type: 'test'
+  ...
+# Subtest: after revocation a previously assigned timetable slot can be planned again
+ok 78 - after revocation a previously assigned timetable slot can be planned again
+  ---
+  duration_ms: 330.277484
+  type: 'test'
+  ...
+# Subtest: Auto-Quest plans only within the child's program from their profile
+ok 79 - Auto-Quest plans only within the child's program from their profile
+  ---
+  duration_ms: 194.972401
+  type: 'test'
+  ...
+# Subtest: related subject lesson can be offered once in another subject without inventing outcomes
+ok 80 - related subject lesson can be offered once in another subject without inventing outcomes
+  ---
+  duration_ms: 0.827742
+  type: 'test'
+  ...
+# Subtest: acceptance: five lessons, edit + save + assign one, move around, 'refresh' — all five accounted for, no duplicates
+ok 81 - acceptance: five lessons, edit + save + assign one, move around, 'refresh' — all five accounted for, no duplicates
+  ---
+  duration_ms: 380.223664
+  type: 'test'
+  ...
+# Subtest: one failed lesson does not hide the others and can be retried on its own
+ok 82 - one failed lesson does not hide the others and can be retried on its own
+  ---
+  duration_ms: 390.937371
+  type: 'test'
+  ...
+# Subtest: unfinished sets: lessons not yet written stay listed and can be written later
+ok 83 - unfinished sets: lessons not yet written stay listed and can be written later
+  ---
+  duration_ms: 209.855631
+  type: 'test'
+  ...
+# Subtest: a lesson being written is never started twice; an interrupted one becomes retryable
+ok 84 - a lesson being written is never started twice; an interrupted one becomes retryable
+  ---
+  duration_ms: 206.672301
+  type: 'test'
+  ...
+# Subtest: archived lessons, dismissing a set, and family isolation
+ok 85 - archived lessons, dismissing a set, and family isolation
+  ---
+  duration_ms: 205.8916
+  type: 'test'
+  ...
+# Subtest: batches: validation, paid-only, and single-lesson drafting unchanged
+ok 86 - batches: validation, paid-only, and single-lesson drafting unchanged
+  ---
+  duration_ms: 199.267783
+  type: 'test'
+  ...
+# Subtest: Year 7 Halloween Science AND Maths request creates two fully independent, correctly labelled draft lessons
+ok 87 - Year 7 Halloween Science AND Maths request creates two fully independent, correctly labelled draft lessons
+  ---
+  duration_ms: 207.247959
+  type: 'test'
+  ...
+# Subtest: reject unsupported individual batch subjects instead of silently writing the wrong subject
+ok 88 - reject unsupported individual batch subjects instead of silently writing the wrong subject
+  ---
+  duration_ms: 190.076656
+  type: 'test'
+  ...
+# Subtest: an invalid multi-subject planner request is blocked before making any AI call
+ok 89 - an invalid multi-subject planner request is blocked before making any AI call
+  ---
+  duration_ms: 190.421314
+  type: 'test'
+  ...
+# Subtest: three Year 7 Halloween lessons preserve Science, English and HSIE, including secondary areas, end to end
+ok 90 - three Year 7 Halloween lessons preserve Science, English and HSIE, including secondary areas, end to end
+  ---
+  duration_ms: 204.937594
+  type: 'test'
+  ...
+# Subtest: scheduled writer processes only opted-in pending sets, one item, and pause prevents further work
+ok 91 - scheduled writer processes only opted-in pending sets, one item, and pause prevents further work
+  ---
+  duration_ms: 198.404829
+  type: 'test'
+  ...
+# Subtest: config: test key uses sandbox prices; live key is refused unless explicitly enabled and priced
+ok 92 - config: test key uses sandbox prices; live key is refused unless explicitly enabled and priced
+  ---
+  duration_ms: 2.875316
+  type: 'test'
+  ...
+# Subtest: live config: complete distinct live prices activate only with explicit opt-in
+ok 93 - live config: complete distinct live prices activate only with explicit opt-in
+  ---
+  duration_ms: 0.475217
+  type: 'test'
+  ...
+# Subtest: signature: valid accepted; tampered, wrong secret, stale or missing rejected
+ok 94 - signature: valid accepted; tampered, wrong secret, stale or missing rejected
+  ---
+  duration_ms: 23.161613
+  type: 'test'
+  ...
+# Subtest: all four intervals map to paid Family Membership with identical limits
+ok 95 - all four intervals map to paid Family Membership with identical limits
+  ---
+  duration_ms: 321.455614
+  type: 'test'
+  ...
+# Subtest: unknown price, incomplete payment and wrong customer never grant access
+ok 96 - unknown price, incomplete payment and wrong customer never grant access
+  ---
+  duration_ms: 319.409786
+  type: 'test'
+  ...
+# Subtest: webhook: duplicate events are processed once; livemode mismatch ignored
+ok 97 - webhook: duplicate events are processed once; livemode mismatch ignored
+  ---
+  duration_ms: 350.290283
+  type: 'test'
+  ...
+# Subtest: checkout success alone (no webhook) grants nothing; checkout.session.completed links customer and activates
+ok 98 - checkout success alone (no webhook) grants nothing; checkout.session.completed links customer and activates
+  ---
+  duration_ms: 322.901709
+  type: 'test'
+  ...
+# Subtest: checkout confirmation runs after paid membership activation, only once per event
+ok 99 - checkout confirmation runs after paid membership activation, only once per event
+  ---
+  duration_ms: 321.775366
+  type: 'test'
+  ...
+# Subtest: temporary membership email failure leaves the event retryable without removing access
+ok 100 - temporary membership email failure leaves the event retryable without removing access
+  ---
+  duration_ms: 329.363598
+  type: 'test'
+  ...
+# Subtest: subscription and account emails contain current terms and no obsolete personal-project copy
+ok 101 - subscription and account emails contain current terms and no obsolete personal-project copy
+  ---
+  duration_ms: 36.77256
+  type: 'test'
+  ...
+# Subtest: owner paid-family email celebrates the membership without personal information
+ok 102 - owner paid-family email celebrates the membership without personal information
+  ---
+  duration_ms: 2.766689
+  type: 'test'
+  ...
+# Subtest: owner alert is delivered once per family, not again for another purchase or a renewal
+ok 103 - owner alert is delivered once per family, not again for another purchase or a renewal
+  ---
+  duration_ms: 352.205414
+  type: 'test'
+  ...
+# Subtest: owner alert skips test mode, unconfigured recipients and unpaid or stale subscriptions
+ok 104 - owner alert skips test mode, unconfigured recipients and unpaid or stale subscriptions
+  ---
+  duration_ms: 346.656134
+  type: 'test'
+  ...
+# email: send failed undefined temporary outage
+# owner new-member notification not delivered owner notification delivery was not confirmed
+# Subtest: owner alert releases an unsuccessful claim without interrupting customer access
+ok 105 - owner alert releases an unsuccessful claim without interrupting customer access
+  ---
+  duration_ms: 324.732985
+  type: 'test'
+  ...
+# Subtest: simultaneous owner-alert webhook deliveries claim the same family only once
+ok 106 - simultaneous owner-alert webhook deliveries claim the same family only once
+  ---
+  duration_ms: 279.069765
+  type: 'test'
+  ...
+# Subtest: verified live paid checkout invokes owner notifier; sandbox, renewals, zero amounts and unpaid do not
+ok 107 - verified live paid checkout invokes owner notifier; sandbox, renewals, zero amounts and unpaid do not
+  ---
+  duration_ms: 311.643626
+  type: 'test'
+  ...
+# Subtest: out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access
+ok 108 - out-of-order: a stale 'created/incomplete' event arriving after activation does not revoke access
+  ---
+  duration_ms: 309.849136
+  type: 'test'
+  ...
+# Subtest: cancellation keeps paid access until period end, then ends; data is untouched
+ok 109 - cancellation keeps paid access until period end, then ends; data is untouched
+  ---
+  duration_ms: 248.319437
+  type: 'test'
+  ...
+# Subtest: payment failure: short grace, then locked; successful retry restores
+ok 110 - payment failure: short grace, then locked; successful retry restores
+  ---
+  duration_ms: 217.115685
+  type: 'test'
+  ...
+# Subtest: renewal moves the period forward; missed renewals stop access after grace
+ok 111 - renewal moves the period forward; missed renewals stop access after grace
+  ---
+  duration_ms: 0.199794
+  type: 'test'
+  ...
+# Subtest: INTERNAL early-access families keep their plan whatever Stripe says
+ok 112 - INTERNAL early-access families keep their plan whatever Stripe says
+  ---
+  duration_ms: 256.63081
+  type: 'test'
+  ...
+# Subtest: invoice subscription id is found on old and new API shapes
+ok 113 - invoice subscription id is found on old and new API shapes
+  ---
+  duration_ms: 0.162264
+  type: 'test'
+  ...
+# Subtest: webhook route rejects unsigned requests
+ok 114 - webhook route rejects unsigned requests
+  ---
+  duration_ms: 315.284594
+  type: 'test'
+  ...
+# Subtest: account deletion: blocked while any Stripe subscription still renews; fails closed when Stripe is down
+ok 115 - account deletion: blocked while any Stripe subscription still renews; fails closed when Stripe is down
+  ---
+  duration_ms: 316.525116
+  type: 'test'
+  ...
+# Subtest: reconcile: a missed cancellation webhook is caught once the period ends; fresh or future rows are left alone
+ok 116 - reconcile: a missed cancellation webhook is caught once the period ends; fresh or future rows are left alone
+  ---
+  duration_ms: 321.133822
+  type: 'test'
+  ...
+# Subtest: entitlement states
+ok 117 - entitlement states
+  ---
+  duration_ms: 2.722127
+  type: 'test'
+  ...
+# Subtest: migration 0050 grandfathers existing families as INTERNAL
+ok 118 - migration 0050 grandfathers existing families as INTERNAL
+  ---
+  duration_ms: 303.37089
+  type: 'test'
+  ...
+# Subtest: sanitize rejects unsafe urls, ignores client embed_url, strips unknown keys
+ok 119 - sanitize rejects unsafe urls, ignores client embed_url, strips unknown keys
+  ---
+  duration_ms: 4.2345
+  type: 'test'
+  ...
+# Subtest: preview: max 2 lessons, 1 child, 2 active assignments (server side)
+ok 120 - preview: max 2 lessons, 1 child, 2 active assignments (server side)
+  ---
+  duration_ms: 284.949363
+  type: 'test'
+  ...
+# Subtest: preview limit on active assignments with paid lessons count
+ok 121 - preview limit on active assignments with paid lessons count
+  ---
+  duration_ms: 260.241135
+  type: 'test'
+  ...
+# Subtest: expired preview: cannot create or assign but data is kept
+ok 122 - expired preview: cannot create or assign but data is kept
+  ---
+  duration_ms: 334.232034
+  type: 'test'
+  ...
+# Subtest: cross-family isolation
+ok 123 - cross-family isolation
+  ---
+  duration_ms: 353.284484
+  type: 'test'
+  ...
+# Subtest: premade lessons (family_id NULL) never appear in a family library
+ok 124 - premade lessons (family_id NULL) never appear in a family library
+  ---
+  duration_ms: 334.717192
+  type: 'test'
+  ...
+# Subtest: full workflow: create, assign, snapshot survives edit, submit once, review, XP once
+ok 125 - full workflow: create, assign, snapshot survives edit, submit once, review, XP once
+  ---
+  duration_ms: 345.706892
+  type: 'test'
+  ...
+# Subtest: parent review rolls back fully if evidence cannot be saved, then succeeds once
+ok 126 - parent review rolls back fully if evidence cannot be saved, then succeeds once
+  ---
+  duration_ms: 205.774668
+  type: 'test'
+  ...
+# Subtest: legacy submissions with no lesson_id can still be approved safely
+ok 127 - legacy submissions with no lesson_id can still be approved safely
+  ---
+  duration_ms: 199.091754
+  type: 'test'
+  ...
+# Subtest: approval succeeds on legacy production evidence schema missing file_ids
+ok 128 - approval succeeds on legacy production evidence schema missing file_ids
+  ---
+  duration_ms: 216.843866
+  type: 'test'
+  ...
+# Subtest: a missing approval evidence table returns a safe error without changing work
+ok 129 - a missing approval evidence table returns a safe error without changing work
+  ---
+  duration_ms: 296.355721
+  type: 'test'
+  ...
+# Subtest: returned work restores the submitted draft and accepts a corrected hand-in
+ok 130 - returned work restores the submitted draft and accepts a corrected hand-in
+  ---
+  duration_ms: 297.645511
+  type: 'test'
+  ...
+# Subtest: two children have independent assignments
+ok 131 - two children have independent assignments
+  ---
+  duration_ms: 276.510026
+  type: 'test'
+  ...
+# Subtest: deleting an assigned lesson archives it; drafts cannot be assigned
+ok 132 - deleting an assigned lesson archives it; drafts cannot be assigned
+  ---
+  duration_ms: 200.293385
+  type: 'test'
+  ...
+# Subtest: owner-only fast preview retains the full lesson and cannot be activated by paying families
+ok 133 - owner-only fast preview retains the full lesson and cannot be activated by paying families
+  ---
+  duration_ms: 969.283019
+  type: 'test'
+  ...
+# Subtest: paid default runs the original full-length lesson through the fast pipeline and ignores forged baseline opt-outs
+ok 134 - paid default runs the original full-length lesson through the fast pipeline and ignores forged baseline opt-outs
+  ---
+  duration_ms: 921.22778
+  type: 'test'
+  ...
+# Subtest: only a verified INTERNAL platform owner can select standard generation for comparison
+ok 135 - only a verified INTERNAL platform owner can select standard generation for comparison
+  ---
+  duration_ms: 596.021465
+  type: 'test'
+  ...
+# Subtest: opt-in compact drafting halves teaching model calls without skipping the quality gate
+ok 136 - opt-in compact drafting halves teaching model calls without skipping the quality gate
+  ---
+  duration_ms: 314.344213
+  type: 'test'
+  ...
+# Subtest: compact group parse failure falls back to independently validated sections
+ok 137 - compact group parse failure falls back to independently validated sections
+  ---
+  duration_ms: 311.439358
+  type: 'test'
+  ...
+# Subtest: AI drafting: one successful free-preview lesson per family, never per account or device
+ok 138 - AI drafting: one successful free-preview lesson per family, never per account or device
+  ---
+  duration_ms: 236.989088
+  type: 'test'
+  ...
+# Subtest: a preview family with two manual lessons can still generate its one AI sample
+ok 139 - a preview family with two manual lessons can still generate its one AI sample
+  ---
+  duration_ms: 371.856667
+  type: 'test'
+  ...
+# Subtest: AI sample drafted first does not steal either manual lesson slot
+ok 140 - AI sample drafted first does not steal either manual lesson slot
+  ---
+  duration_ms: 310.916319
+  type: 'test'
+  ...
+# Subtest: AI drafting: preview retries a failed generation, but cannot run two at once
+ok 141 - AI drafting: preview retries a failed generation, but cannot run two at once
+  ---
+  duration_ms: 248.490462
+  type: 'test'
+  ...
+# Subtest: AI drafting: expired previews and cancelled plans remain blocked before any AI call
+ok 142 - AI drafting: expired previews and cancelled plans remain blocked before any AI call
+  ---
+  duration_ms: 905.408966
+  type: 'test'
+  ...
+# Subtest: AI drafting: paid family gets an unreviewed AI-labelled draft with no links, and usage is recorded
+ok 143 - AI drafting: paid family gets an unreviewed AI-labelled draft with no links, and usage is recorded
+  ---
+  duration_ms: 307.08077
+  type: 'test'
+  ...
+# Subtest: AI lesson drafting follows family jurisdiction without inventing non-NSW curriculum codes
+ok 144 - AI lesson drafting follows family jurisdiction without inventing non-NSW curriculum codes
+  ---
+  duration_ms: 316.589545
+  type: 'test'
+  ...
+# Subtest: AI drafting: unavailable binding, bad output and quota
+ok 145 - AI drafting: unavailable binding, bad output and quota
+  ---
+  duration_ms: 410.906968
+  type: 'test'
+  ...
+# Subtest: owner can keep building and refining AI lessons beyond customer fair-use limits
+ok 146 - owner can keep building and refining AI lessons beyond customer fair-use limits
+  ---
+  duration_ms: 287.693785
+  type: 'test'
+  ...
+# Subtest: assignments: move dates, reassign before work starts and revoke unfinished work; other families blocked
+ok 147 - assignments: move dates, reassign before work starts and revoke unfinished work; other families blocked
+  ---
+  duration_ms: 293.975617
+  type: 'test'
+  ...
+# Subtest: evidence notes: family-scoped, searchable, date filtered; expired preview keeps reading but cannot add
+ok 148 - evidence notes: family-scoped, searchable, date filtered; expired preview keeps reading but cannot add
+  ---
+  duration_ms: 311.549422
+  type: 'test'
+  ...
+# Subtest: AI drafting: a thin reply gets one targeted repair; an unfixable one is refused, not saved
+ok 149 - AI drafting: a thin reply gets one targeted repair; an unfixable one is refused, not saved
+  ---
+  duration_ms: 353.728637
+  type: 'test'
+  ...
+# Subtest: reference lessons meet the generator's own quality gate and match the frontend copies
+ok 150 - reference lessons meet the generator's own quality gate and match the frontend copies
+  ---
+  duration_ms: 70.397033
+  type: 'test'
+  ...
+# Subtest: quality gate catches fake resources, vague activities, wrong arithmetic and a missing student voice
+ok 151 - quality gate catches fake resources, vague activities, wrong arithmetic and a missing student voice
+  ---
+  duration_ms: 1.804998
+  type: 'test'
+  ...
+# Subtest: maths prompts teach algebra instead of merely stating rules
+ok 152 - maths prompts teach algebra instead of merely stating rules
+  ---
+  duration_ms: 0.419478
+  type: 'test'
+  ...
+# Subtest: maths quality gate rejects summaries that look like teaching but contain no demonstration
+ok 153 - maths quality gate rejects summaries that look like teaching but contain no demonstration
+  ---
+  duration_ms: 1.163244
+  type: 'test'
+  ...
+# Subtest: shape and position lessons pass the maths working check without + or = signs
+ok 154 - shape and position lessons pass the maths working check without + or = signs
+  ---
+  duration_ms: 2.51893
+  type: 'test'
+  ...
+# Subtest: equation lessons must demonstrate why an operation works and check the result
+ok 155 - equation lessons must demonstrate why an operation works and check the result
+  ---
+  duration_ms: 3.127682
+  type: 'test'
+  ...
+# Subtest: teaching prompts actually model the method in each subject, not just assign it
+ok 156 - teaching prompts actually model the method in each subject, not just assign it
+  ---
+  duration_ms: 1.291906
+  type: 'test'
+  ...
+# Subtest: all-subject quality gate rejects worked examples consisting only of generic orders
+ok 157 - all-subject quality gate rejects worked examples consisting only of generic orders
+  ---
+  duration_ms: 3.118435
+  type: 'test'
+  ...
+# Subtest: truncated model output is salvaged to the last complete item
+ok 158 - truncated model output is salvaged to the last complete item
+  ---
+  duration_ms: 0.241994
+  type: 'test'
+  ...
+# Subtest: rich lessons keep teaching content for the parent but strip answers and the parent guide for the child
+ok 159 - rich lessons keep teaching content for the parent but strip answers and the parent guide for the child
+  ---
+  duration_ms: 267.151668
+  type: 'test'
+  ...
+# Subtest: one-sentence requests are understood (subject, year, minutes, theme, delivery, count)
+ok 160 - one-sentence requests are understood (subject, year, minutes, theme, delivery, count)
+  ---
+  duration_ms: 3.218393
+  type: 'test'
+  ...
+# Subtest: the child's saved profile changes the lesson request; the parent's words win over the profile
+ok 161 - the child's saved profile changes the lesson request; the parent's words win over the profile
+  ---
+  duration_ms: 298.118916
+  type: 'test'
+  ...
+# Subtest: changes are previewed first, touch only the named parts, count separately, and apply keeps manual edits
+ok 162 - changes are previewed first, touch only the named parts, count separately, and apply keeps manual edits
+  ---
+  duration_ms: 506.407171
+  type: 'test'
+  ...
+# Subtest: AI refinement retries a no-op once and saves a genuinely changed field
+ok 163 - AI refinement retries a no-op once and saves a genuinely changed field
+  ---
+  duration_ms: 368.891122
+  type: 'test'
+  ...
+# Subtest: refinement normalisation keeps quiz options and answer index in exactly the original order
+ok 164 - refinement normalisation keeps quiz options and answer index in exactly the original order
+  ---
+  duration_ms: 0.288862
+  type: 'test'
+  ...
+# Subtest: unchanged AI patches do not consume allowance or shuffle a correct quiz
+ok 165 - unchanged AI patches do not consume allowance or shuffle a correct quiz
+  ---
+  duration_ms: 303.481027
+  type: 'test'
+  ...
+# Subtest: series planning checks the allowance up front and returns the right number of lessons
+ok 166 - series planning checks the allowance up front and returns the right number of lessons
+  ---
+  duration_ms: 382.441527
+  type: 'test'
+  ...
+# Subtest: help: paid only, child only, own assignment only, and the parent can switch it off
+ok 167 - help: paid only, child only, own assignment only, and the parent can switch it off
+  ---
+  duration_ms: 450.904209
+  type: 'test'
+  ...
+# Subtest: help: context comes from the server, never includes answer keys or names, and answer-leaking replies are replaced
+ok 168 - help: context comes from the server, never includes answer keys or names, and answer-leaking replies are replaced
+  ---
+  duration_ms: 345.968785
+  type: 'test'
+  ...
+# Subtest: help: a stored hint answers a first hint request for free; limits apply per child and per family; failures cost nothing
+ok 169 - help: a stored hint answers a first hint request for free; limits apply per child and per family; failures cost nothing
+  ---
+  duration_ms: 356.543801
+  type: 'test'
+  ...
+# Subtest: leak detector: numbers match whole values only
+ok 170 - leak detector: numbers match whole values only
+  ---
+  duration_ms: 0.383178
+  type: 'test'
+  ...
+# Subtest: practice marking: numbers, text, choice, blanks, order and match
+ok 171 - practice marking: numbers, text, choice, blanks, order and match
+  ---
+  duration_ms: 1.752806
+  type: 'test'
+  ...
+# Subtest: kinds are cleaned: broken interactive items fall back to plain text; visuals are data only
+ok 172 - kinds are cleaned: broken interactive items fall back to plain text; visuals are data only
+  ---
+  duration_ms: 0.254687
+  type: 'test'
+  ...
+# Subtest: practice: lessons keep interactive items; the child never gets answers or the correct order; feedback is checked on the server
+ok 173 - practice: lessons keep interactive items; the child never gets answers or the correct order; feedback is checked on the server
+  ---
+  duration_ms: 309.552085
+  type: 'test'
+  ...
+# Subtest: youtube: only public, embeddable, not age-restricted, not live videos survive; best matches first; no key means an honest 'unavailable'
+ok 174 - youtube: only public, embeddable, not age-restricted, not live videos survive; best matches first; no key means an honest 'unavailable'
+  ---
+  duration_ms: 249.795008
+  type: 'test'
+  ...
+# Subtest: youtube: per-family daily limit, failures cost nothing, key is never in a response
+ok 175 - youtube: per-family daily limit, failures cost nothing, key is never in a response
+  ---
+  duration_ms: 201.615721
+  type: 'test'
+  ...
+# Subtest: youtube: a parent's own link is checked (embeddable only) and non-YouTube links are refused
+ok 176 - youtube: a parent's own link is checked (embeddable only) and non-YouTube links are refused
+  ---
+  duration_ms: 0.451427
+  type: 'test'
+  ...
+# Subtest: approved videos are kept with the lesson, survive edit/duplicate/assignment snapshot, and never trust a client-supplied embed or thumbnail host
+ok 177 - approved videos are kept with the lesson, survive edit/duplicate/assignment snapshot, and never trust a client-supplied embed or thumbnail host
+  ---
+  duration_ms: 194.753305
+  type: 'test'
+  ...
+# Subtest: staged generation: a cut-off stage is asked again once; if still cut off it is kept but flagged; a stage that never works fails cleanly
+ok 178 - staged generation: a cut-off stage is asked again once; if still cut off it is kept but flagged; a stage that never works fails cleanly
+  ---
+  duration_ms: 193.495688
+  type: 'test'
+  ...
+# Subtest: quality gate: instructions that stand in for teaching are caught
+ok 179 - quality gate: instructions that stand in for teaching are caught
+  ---
+  duration_ms: 2.752069
+  type: 'test'
+  ...
+# Subtest: young learners get a reading-level instruction; the lesson is told the child works alone
+ok 180 - young learners get a reading-level instruction; the lesson is told the child works alone
+  ---
+  duration_ms: 231.507821
+  type: 'test'
+  ...
+# Subtest: outcomes: the model can only pick from the real list; opting out leaves none; existing lessons can be matched; free plans get the wording match; other families blocked
+ok 181 - outcomes: the model can only pick from the real list; opting out leaves none; existing lessons can be matched; free plans get the wording match; other families blocked
+  ---
+  duration_ms: 399.438989
+  type: 'test'
+  ...
+# Subtest: model replies with raw line breaks and trailing commas are repaired, and a failed step is named
+ok 182 - model replies with raw line breaks and trailing commas are repaired, and a failed step is named
+  ---
+  duration_ms: 317.20313
+  type: 'test'
+  ...
+# Subtest: spelling words for the Word Hoard: cleaned, single words only, kept with hints, and never carry answers
+ok 183 - spelling words for the Word Hoard: cleaned, single words only, kept with hints, and never carry answers
+  ---
+  duration_ms: 1.901144
+  type: 'test'
+  ...
+# Subtest: pet goals: three a day, progress from real learning, coins only when collected, once each
+ok 184 - pet goals: three a day, progress from real learning, coins only when collected, once each
+  ---
+  duration_ms: 4.460874
+  type: 'test'
+  ...
+# Subtest: pet coins from spelling are capped each day so repeating cannot farm them
+ok 185 - pet coins from spelling are capped each day so repeating cannot farm them
+  ---
+  duration_ms: 12.814203
+  type: 'test'
+  ...
+# Subtest: pet weekly chest needs five finished days, gives a rare accessory once, and the accessory can be worn
+ok 186 - pet weekly chest needs five finished days, gives a rare accessory once, and the accessory can be worn
+  ---
+  duration_ms: 16.72185
+  type: 'test'
+  ...
+# Subtest: pet shop: buy with coins, own once, place up to six, cannot place what you do not own
+ok 187 - pet shop: buy with coins, own once, place up to six, cannot place what you do not own
+  ---
+  duration_ms: 0.569598
+  type: 'test'
+  ...
+# Subtest: pet trophies and extra pets: mastered words open slots, swapping keeps each pet's own progress
+ok 188 - pet trophies and extra pets: mastered words open slots, swapping keeps each pet's own progress
+  ---
+  duration_ms: 4.234569
+  type: 'test'
+  ...
+# Subtest: pet mood and weekly summary read sensibly; parent summary counts this week's mastered words
+ok 189 - pet mood and weekly summary read sensibly; parent summary counts this week's mastered words
+  ---
+  duration_ms: 0.82122
+  type: 'test'
+  ...
+# Subtest: pet room: things can be moved, positions are kept in range and only for things placed
+ok 190 - pet room: things can be moved, positions are kept in range and only for things placed
+  ---
+  duration_ms: 0.716223
+  type: 'test'
+  ...
+# Subtest: state or territory: codes are validated, and families outside NSW never get NSW outcome codes
+ok 191 - state or territory: codes are validated, and families outside NSW never get NSW outcome codes
+  ---
+  duration_ms: 320.301262
+  type: 'test'
+  ...
+# Subtest: revocation preserves lesson, saved work, quiz and submission history; permits a fresh assignment
+ok 192 - revocation preserves lesson, saved work, quiz and submission history; permits a fresh assignment
+  ---
+  duration_ms: 321.374756
+  type: 'test'
+  ...
+# Subtest: every unfinished state can be revoked; completed assignments and drafts remain intact
+ok 193 - every unfinished state can be revoked; completed assignments and drafts remain intact
+  ---
+  duration_ms: 310.610049
+  type: 'test'
+  ...
+# Subtest: revocation racing a hand-in or completed review cannot lose work or reopen the assignment
+ok 194 - revocation racing a hand-in or completed review cannot lose work or reopen the assignment
+  ---
+  duration_ms: 264.549555
+  type: 'test'
+  ...
+# Subtest: question review flags validate targets, stay with the return and preserve answers
+ok 195 - question review flags validate targets, stay with the return and preserve answers
+  ---
+  duration_ms: 339.4571
+  type: 'test'
+  ...
+# Subtest: AI repair retries one service interruption and persisted changes retain manual content
+ok 196 - AI repair retries one service interruption and persisted changes retain manual content
+  ---
+  duration_ms: 294.217006
+  type: 'test'
+  ...
+# Subtest: AI repair preserves a concurrent approval even when content version is unchanged
+ok 197 - AI repair preserves a concurrent approval even when content version is unchanged
+  ---
+  duration_ms: 267.246843
+  type: 'test'
+  ...
+# Subtest: A metadata change during the save cannot be overwritten by an AI patch
+ok 198 - A metadata change during the save cannot be overwritten by an AI patch
+  ---
+  duration_ms: 187.446537
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: manual calendar scheduling keeps the real assignment day in sync, even after editing or removing
+ok 199 - manual calendar scheduling keeps the real assignment day in sync, even after editing or removing
+  ---
+  duration_ms: 473.401129
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: change dates moves the linked session, rather than just the assignment label
+ok 200 - change dates moves the linked session, rather than just the assignment label
+  ---
+  duration_ms: 275.585745
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: overlapping sessions and whole-family holidays are rejected, but siblings may learn together
+ok 201 - overlapping sessions and whole-family holidays are rejected, but siblings may learn together
+  ---
+  duration_ms: 428.664312
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: rescheduling a timetable assignment preserves the old slot and uses a free matching slot
+ok 202 - rescheduling a timetable assignment preserves the old slot and uses a free matching slot
+  ---
+  duration_ms: 387.202118
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: multi-day lessons never move by changing one date field
+ok 203 - multi-day lessons never move by changing one date field
+  ---
+  duration_ms: 401.783245
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: a rest day stops autogenerated timetable slots for the affected child
+ok 204 - a rest day stops autogenerated timetable slots for the affected child
+  ---
+  duration_ms: 368.70734
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: repeated schedule requests do not create duplicate sessions for the same assignment and day
+ok 205 - repeated schedule requests do not create duplicate sessions for the same assignment and day
+  ---
+  duration_ms: 377.015049
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: free-preview manual lesson dates work without unlocking paid timetable or calendar writes
+ok 206 - free-preview manual lesson dates work without unlocking paid timetable or calendar writes
+  ---
+  duration_ms: 389.290445
+  type: 'test'
+  ...
+# Subtest: already assigned child lessons hide explicit answer labels, not the task or worked examples
+ok 207 - already assigned child lessons hide explicit answer labels, not the task or worked examples
+  ---
+  duration_ms: 2.936759
+  type: 'test'
+  ...
+# Subtest: AI review rejects answers embedded in student fields and read-only try/check pairs
+ok 208 - AI review rejects answers embedded in student fields and read-only try/check pairs
+  ---
+  duration_ms: 17.135868
+  type: 'test'
+  ...
+# Subtest: generation prompts explicitly separate public tasks and private solutions
+ok 209 - generation prompts explicitly separate public tasks and private solutions
+  ---
+  duration_ms: 2.450699
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: child routes never expose parent notes, answer keys or quiz answers
+ok 210 - child routes never expose parent notes, answer keys or quiz answers
+  ---
+  duration_ms: 460.593079
+  type: 'test'
+  ...
+# Subtest: Compass selections persist separately from saved elective courses and prefs
+ok 211 - Compass selections persist separately from saved elective courses and prefs
+  ---
+  duration_ms: 1.891201
+  type: 'test'
+  ...
+# Subtest: Ordinary profile update retains Compass selections unless supplied explicitly
+ok 212 - Ordinary profile update retains Compass selections unless supplied explicitly
+  ---
+  duration_ms: 0.18667
+  type: 'test'
+  ...
+# Subtest: Clearing Compass selection does not clear already chosen subject courses
+ok 213 - Clearing Compass selection does not clear already chosen subject courses
+  ---
+  duration_ms: 0.20829
+  type: 'test'
+  ...
+# Subtest: Only a parent of the owning NSW family may store 2 distinct valid Compass areas
+ok 214 - Only a parent of the owning NSW family may store 2 distinct valid Compass areas
+  ---
+  duration_ms: 385.600319
+  type: 'test'
+  ...
+# Subtest: Wrong stage rejected and clearing Compass leaves courses intact
+ok 215 - Wrong stage rejected and clearing Compass leaves courses intact
+  ---
+  duration_ms: 337.603367
+  type: 'test'
+  ...
+# Subtest: all eight jurisdictions have complete expandable instructions for every Compass checklist step
+ok 216 - all eight jurisdictions have complete expandable instructions for every Compass checklist step
+  ---
+  duration_ms: 1.751731
+  type: 'test'
+  ...
+# Subtest: registration summary shows entered dates and a near-expiry warning without government confirmation claims
+ok 217 - registration summary shows entered dates and a near-expiry warning without government confirmation claims
+  ---
+  duration_ms: 15.724675
+  type: 'test'
+  ...
+# Subtest: already expired registration is surfaced above any non-expired status
+ok 218 - already expired registration is surfaced above any non-expired status
+  ---
+  duration_ms: 0.561712
+  type: 'test'
+  ...
+# Subtest: ACT renewal is three calendar months before expiry, including last-day clamp
+ok 219 - ACT renewal is three calendar months before expiry, including last-day clamp
+  ---
+  duration_ms: 1.043714
+  type: 'test'
+  ...
+# Subtest: approved registrations without an expiry in VIC are not given invented annual renewal reminders
+ok 220 - approved registrations without an expiry in VIC are not given invented annual renewal reminders
+  ---
+  duration_ms: 0.421239
+  type: 'test'
+  ...
+# Subtest: status, date and validation helpers account for user-entered values
+ok 221 - status, date and validation helpers account for user-entered values
+  ---
+  duration_ms: 0.557334
+  type: 'test'
+  ...
+# Subtest: gated family cannot sign in until mailed, single-use verification; 7-day preview begins on confirmation
+ok 222 - gated family cannot sign in until mailed, single-use verification; 7-day preview begins on confirmation
+  ---
+  duration_ms: 444.843239
+  type: 'test'
+  ...
+# Subtest: new signups fail closed without an email sender and create no family
+ok 223 - new signups fail closed without an email sender and create no family
+  ---
+  duration_ms: 330.226377
+  type: 'test'
+  ...
+# Subtest: legacy sign-in stays available while migration 0069 is pending; activation fails closed
+ok 224 - legacy sign-in stays available while migration 0069 is pending; activation fails closed
+  ---
+  duration_ms: 402.954176
+  type: 'test'
+  ...
+# Subtest: legacy family can still sign in with verification enabled; pending user can resend without logging in
+ok 225 - legacy family can still sign in with verification enabled; pending user can resend without logging in
+  ---
+  duration_ms: 251.615218
+  type: 'test'
+  ...
+# Subtest: 254 original family activities have practical printable guides and troubleshooting
+ok 226 - 254 original family activities have practical printable guides and troubleshooting
+  ---
+  duration_ms: 3.522362
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: free preview gets metadata only, but never step-by-step guides
+ok 227 - free preview gets metadata only, but never step-by-step guides
+  ---
+  duration_ms: 259.252056
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: paid families receive complete guides and own material search metadata
+ok 228 - paid families receive complete guides and own material search metadata
+  ---
+  duration_ms: 249.661224
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: expired memberships are locked; verified owner can read without payment
+ok 229 - expired memberships are locked; verified owner can read without payment
+  ---
+  duration_ms: 337.578248
+  type: 'test'
+  ...
+# Subtest: All 56 A4 pages exist as black-and-white scalable practice sheets
+ok 230 - All 56 A4 pages exist as black-and-white scalable practice sheets
+  ---
+  duration_ms: 15.551427
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Free families never receive book artwork; paid parents can read it
+ok 231 - Free families never receive book artwork; paid parents can read it
+  ---
+  duration_ms: 505.771908
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: Owner has free creator access while ordinary free families stay locked
+ok 232 - Owner has free creator access while ordinary free families stay locked
+  ---
+  duration_ms: 348.207647
+  type: 'test'
+  ...
+# Subtest: Compass saves and reads only the family-owned child's state-specific record
+ok 233 - Compass saves and reads only the family-owned child's state-specific record
+  ---
+  duration_ms: 411.559559
+  type: 'test'
+  ...
+# Subtest: Compass rejects cross-family writes, child-role access, invalid dates and made-up steps
+ok 234 - Compass rejects cross-family writes, child-role access, invalid dates and made-up steps
+  ---
+  duration_ms: 337.867343
+  type: 'test'
+  ...
+# Subtest: Compass progress belongs to a jurisdiction and does not bleed into the next state
+ok 235 - Compass progress belongs to a jurisdiction and does not bleed into the next state
+  ---
+  duration_ms: 218.07657
+  type: 'test'
+  ...
+# Subtest: OTHER is valid but never maps families onto an Australian outcome catalogue
+ok 236 - OTHER is valid but never maps families onto an Australian outcome catalogue
+  ---
+  duration_ms: 2.116774
+  type: 'test'
+  ...
+# Subtest: international family creates goals, attaches observations and explicitly confirms achievement
+ok 237 - international family creates goals, attaches observations and explicitly confirms achievement
+  ---
+  duration_ms: 274.886595
+  type: 'test'
+  ...
+# Subtest: linked Evidence Backpack notes are verified for child and family, and stay intact after unlink
+ok 238 - linked Evidence Backpack notes are verified for child and family, and stay intact after unlink
+  ---
+  duration_ms: 341.077764
+  type: 'test'
+  ...
+# Subtest: only parents can use international goals; family and child boundaries cannot be crossed
+ok 239 - only parents can use international goals; family and child boundaries cannot be crossed
+  ---
+  duration_ms: 292.123751
+  type: 'test'
+  ...
+# Subtest: one primary area can link to distinct valid other subjects without duplication
+ok 240 - one primary area can link to distinct valid other subjects without duplication
+  ---
+  duration_ms: 2.953797
+  type: 'test'
+  ...
+# Subtest: cross-curricular areas survive server validation and lesson data conversion
+ok 241 - cross-curricular areas survive server validation and lesson data conversion
+  ---
+  duration_ms: 1.839999
+  type: 'test'
+  ...
+# Subtest: full Humanities and Social Sciences name normalises as HSIE, never Science
+ok 242 - full Humanities and Social Sciences name normalises as HSIE, never Science
+  ---
+  duration_ms: 0.18692
+  type: 'test'
+  ...
+# Subtest: Australian English is consistent for model-authored lessons, questions and answers
+ok 243 - Australian English is consistent for model-authored lessons, questions and answers
+  ---
+  duration_ms: 7.386145
+  type: 'test'
+  ...
+# Subtest: Australian localisation protects quotes, CSS, URLs, parent resources and genuine source records
+ok 244 - Australian localisation protects quotes, CSS, URLs, parent resources and genuine source records
+  ---
+  duration_ms: 1.012066
+  type: 'test'
+  ...
+# Subtest: do not rewrite deliberately quoted American spelling or programming code in lessons
+ok 245 - do not rewrite deliberately quoted American spelling or programming code in lessons
+  ---
+  duration_ms: 0.457097
+  type: 'test'
+  ...
+# Subtest: jurisdiction codes normalise and every state has a framework
+ok 246 - jurisdiction codes normalise and every state has a framework
+  ---
+  duration_ms: 4.312685
+  type: 'test'
+  ...
+# Subtest: family jurisdiction is stored and read back
+ok 247 - family jurisdiction is stored and read back
+  ---
+  duration_ms: 283.539014
+  type: 'test'
+  ...
+# Subtest: NSW: model can only pick from the verified list; unknown numbers are dropped
+ok 248 - NSW: model can only pick from the verified list; unknown numbers are dropped
+  ---
+  duration_ms: 4.90786
+  type: 'test'
+  ...
+# Subtest: Other states: no codes attached, areas limited to that framework, codes stripped from text
+ok 249 - Other states: no codes attached, areas limited to that framework, codes stripped from text
+  ---
+  duration_ms: 0.740718
+  type: 'test'
+  ...
+# Subtest: stripCodes removes AC9, VC2 and NSW-style codes
+ok 250 - stripCodes removes AC9, VC2 and NSW-style codes
+  ---
+  duration_ms: 0.389511
+  type: 'test'
+  ...
+# Subtest: AI mapping is metered, records failures without charging, and enforces limits
+ok 251 - AI mapping is metered, records failures without charging, and enforces limits
+  ---
+  duration_ms: 325.694267
+  type: 'test'
+  ...
+# Subtest: Basic (free) suggestions use the family's framework and attach no codes outside NSW
+ok 252 - Basic (free) suggestions use the family's framework and attach no codes outside NSW
+  ---
+  duration_ms: 320.966856
+  type: 'test'
+  ...
+# Subtest: access policy covers advanced mutations and trial writes without blocking reading and account safety
+ok 253 - access policy covers advanced mutations and trial writes without blocking reading and account safety
+  ---
+  duration_ms: 2.95512
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: preview protects all advanced routes server-side and allows only one basic learning plan
+ok 254 - preview protects all advanced routes server-side and allows only one basic learning plan
+  ---
+  duration_ms: 493.902621
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: expired families cannot write new content; existing records and safeguards remain accessible
+ok 255 - expired families cannot write new content; existing records and safeguards remain accessible
+  ---
+  duration_ms: 429.908174
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: paid families can use advanced endpoints; tests never unlock paid access by client input
+ok 256 - paid families can use advanced endpoints; tests never unlock paid access by client input
+  ---
+  duration_ms: 427.324991
+  type: 'test'
+  ...
+# Subtest: approval alone cannot count as demonstrated understanding
+ok 257 - approval alone cannot count as demonstrated understanding
+  ---
+  duration_ms: 1.836142
+  type: 'test'
+  ...
+# Subtest: full journey: five lessons, hand-ins, reviews with support, parent confirmation and preserved history
+ok 258 - full journey: five lessons, hand-ins, reviews with support, parent confirmation and preserved history
+  ---
+  duration_ms: 281.943456
+  type: 'test'
+  ...
+# Subtest: a confirmed achievement is never silently removed when its evidence changes
+ok 259 - a confirmed achievement is never silently removed when its evidence changes
+  ---
+  duration_ms: 279.842096
+  type: 'test'
+  ...
+# Subtest: duplicate submissions, re-reviews and resyncs never double count
+ok 260 - duplicate submissions, re-reviews and resyncs never double count
+  ---
+  duration_ms: 295.001297
+  type: 'test'
+  ...
+# Subtest: deleted, excluded and moved evidence recalculates progress but keeps the record
+ok 261 - deleted, excluded and moved evidence recalculates progress but keeps the record
+  ---
+  duration_ms: 313.692067
+  type: 'test'
+  ...
+# Subtest: life learning: only reviewed, verified-code mappings count; re-review recalculates
+ok 262 - life learning: only reviewed, verified-code mappings count; re-review recalculates
+  ---
+  duration_ms: 317.225859
+  type: 'test'
+  ...
+# Subtest: children and families stay separate
+ok 263 - children and families stay separate
+  ---
+  duration_ms: 317.212266
+  type: 'test'
+  ...
+# Subtest: state catalogues are isolated; switching states preserves historical evidence by framework
+ok 264 - state catalogues are isolated; switching states preserves historical evidence by framework
+  ---
+  duration_ms: 235.193585
+  type: 'test'
+  ...
+# Subtest: curriculum wording updates don't rewrite what was recorded
+ok 265 - curriculum wording updates don't rewrite what was recorded
+  ---
+  duration_ms: 311.553028
+  type: 'test'
+  ...
+# Subtest: learner needs: documented adjustments let well-supported work count
+ok 266 - learner needs: documented adjustments let well-supported work count
+  ---
+  duration_ms: 282.443125
+  type: 'test'
+  ...
+# Subtest: mastery rules: pure evaluation
+ok 267 - mastery rules: pure evaluation
+  ---
+  duration_ms: 0.585628
+  type: 'test'
+  ...
+# Subtest: tracker bookkeeping can never break a review
+ok 268 - tracker bookkeeping can never break a review
+  ---
+  duration_ms: 322.373914
+  type: 'test'
+  ...
+# Subtest: schema: runtime creation matches migration 0057, and the Backpack shows tracker status
+ok 269 - schema: runtime creation matches migration 0057, and the Backpack shows tracker status
+  ---
+  duration_ms: 498.377335
+  type: 'test'
+  ...
+# Subtest: one reviewed comprehensive assessment reaches Demonstrated; it still needs the parent to confirm Achieved
+ok 270 - one reviewed comprehensive assessment reaches Demonstrated; it still needs the parent to confirm Achieved
+  ---
+  duration_ms: 206.239789
+  type: 'test'
+  ...
+# Subtest: review mappings can only add codes from the family's own framework
+ok 271 - review mappings can only add codes from the family's own framework
+  ---
+  duration_ms: 220.048598
+  type: 'test'
+  ...
+# Subtest: lessons keep only codes from the family's own catalogue (AC9 states can link AC9 codes)
+ok 272 - lessons keep only codes from the family's own catalogue (AC9 states can link AC9 codes)
+  ---
+  duration_ms: 195.152945
+  type: 'test'
+  ...
+# Subtest: Mason's case: Year 7 with History, Languages and Technology gets cards for those subjects, Languages flagged as not held
+ok 273 - Mason's case: Year 7 with History, Languages and Technology gets cards for those subjects, Languages flagged as not held
+  ---
+  duration_ms: 308.493711
+  type: 'test'
+  ...
+# Subtest: Years 7-12: the tracker covers only the courses chosen when the child was added
+ok 274 - Years 7-12: the tracker covers only the courses chosen when the child was added
+  ---
+  duration_ms: 258.545491
+  type: 'test'
+  ...
+# Subtest: AC9 follows the child's year (not the two-year stage) and chosen subjects; primary covers every area
+ok 275 - AC9 follows the child's year (not the two-year stage) and chosen subjects; primary covers every area
+  ---
+  duration_ms: 311.420548
+  type: 'test'
+  ...
+# Subtest: a per-subject level on the profile moves just that subject
+ok 276 - a per-subject level on the profile moves just that subject
+  ---
+  duration_ms: 197.213347
+  type: 'test'
+  ...
+# Subtest: a chosen subject is never filled with another subject's outcomes
+ok 277 - a chosen subject is never filled with another subject's outcomes
+  ---
+  duration_ms: 203.337859
+  type: 'test'
+  ...
+# Subtest: lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, VC2 for VIC
+ok 278 - lesson outcome suggestions use each state's own list: AC9 for QLD, WA's codes for WA, VC2 for VIC
+  ---
+  duration_ms: 74.671982
+  type: 'test'
+  ...
+# Subtest: schema: migration 0060 is exactly the runtime schema, idempotent, and grants no one anything
+ok 279 - schema: migration 0060 is exactly the runtime schema, idempotent, and grants no one anything
+  ---
+  duration_ms: 384.488683
+  type: 'test'
+  ...
+# Subtest: no API can grant roles: the only INSERT INTO user_roles is the promotion script
+ok 280 - no API can grant roles: the only INSERT INTO user_roles is the promotion script
+  ---
+  duration_ms: 1.268488
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: authz: everyone but the Owner gets 404 from every admin endpoint, including the INTERNAL plan
+ok 281 - authz: everyone but the Owner gets 404 from every admin endpoint, including the INTERNAL plan
+  ---
+  duration_ms: 436.485542
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: authz: the Owner sees the HQ link; tokens from before Owner HQ must sign in again; no CORS on admin
+ok 282 - authz: the Owner sees the HQ link; tokens from before Owner HQ must sign in again; no CORS on admin
+  ---
+  duration_ms: 426.760924
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: CSRF: changes need the admin header, this site's allow-listed Origin and a same-origin fetch
+ok 283 - CSRF: changes need the admin header, this site's allow-listed Origin and a same-origin fetch
+  ---
+  duration_ms: 356.064804
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: rate limits: more than 30 changes in 5 minutes are refused with Retry-After
+ok 284 - rate limits: more than 30 changes in 5 minutes are refused with Retry-After
+  ---
+  duration_ms: 378.353313
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: passkeys: first passkey needs the password; step-up opens HQ for this sign-in only
+ok 285 - passkeys: first passkey needs the password; step-up opens HQ for this sign-in only
+  ---
+  duration_ms: 378.330882
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: passkeys: challenges are single-use and session-bound; another authenticator or origin is rejected
+ok 286 - passkeys: challenges are single-use and session-bound; another authenticator or origin is rejected
+  ---
+  duration_ms: 345.301317
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: passkeys: the last passkey cannot be removed
+ok 287 - passkeys: the last passkey cannot be removed
+  ---
+  duration_ms: 387.410742
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: overview: real counts, and unmeasured things say so instead of inventing numbers
+ok 288 - overview: real counts, and unmeasured things say so instead of inventing numbers
+  ---
+  duration_ms: 488.947167
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: owner can diagnose missing approval storage without exposing family records or changing data
+ok 289 - owner can diagnose missing approval storage without exposing family records or changing data
+  ---
+  duration_ms: 468.719296
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: legacy evidence column appears as compatible, not fully repaired, in owner overview
+ok 290 - legacy evidence column appears as compatible, not fully repaired, in owner overview
+  ---
+  duration_ms: 374.119294
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: privacy: customer list and detail carry metadata and counts only, never children's or private content
+ok 291 - privacy: customer list and detail carry metadata and counts only, never children's or private content
+  ---
+  duration_ms: 449.514171
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: customer detail works on the production users table, which has no oauth_provider column
+ok 292 - customer detail works on the production users table, which has no oauth_provider column
+  ---
+  duration_ms: 432.527749
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: suspend / restore / sign out everywhere: confirmed, reasoned, enforced on every sign-in path, audited
+ok 293 - suspend / restore / sign out everywhere: confirmed, reasoned, enforced on every sign-in path, audited
+  ---
+  duration_ms: 582.851752
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: free-preview gifts are Owner-only, passkey protected and audited; Hoard discount codes are retired
+ok 294 - free-preview gifts are Owner-only, passkey protected and audited; Hoard discount codes are retired
+  ---
+  duration_ms: 490.089197
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: deleting a family still works with the new tables (no foreign key gets in the way)
+ok 295 - deleting a family still works with the new tables (no foreign key gets in the way)
+  ---
+  duration_ms: 452.19933
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: settings: strict validation, confirmation for high-impact changes, audited, and actually enforced
+ok 296 - settings: strict validation, confirmation for high-impact changes, audited, and actually enforced
+  ---
+  duration_ms: 425.190217
+  type: 'test'
+  ...
+# Subtest: settings enforcement: the AI switch and the platform AI limit withhold the AI binding; YouTube switch too
+ok 297 - settings enforcement: the AI switch and the platform AI limit withhold the AI binding; YouTube switch too
+  ---
+  duration_ms: 316.685993
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: maintenance notice reaches everyone and turning it on needs confirmation
+ok 298 - maintenance notice reaches everyone and turning it on needs confirmation
+  ---
+  duration_ms: 365.9915
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# unhandled GET /api/calendar Error
+# Subtest: errors: an unhandled exception is logged with route pattern and class only
+ok 299 - errors: an unhandled exception is logged with route pattern and class only
+  ---
+  duration_ms: 424.061596
+  type: 'test'
+  ...
+# Subtest: owner promotion: checks, masked output and guarded one-time SQL
+ok 300 - owner promotion: checks, masked output and guarded one-time SQL
+  ---
+  duration_ms: 273.999005
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: offline lessons: only Family Membership (and complimentary) families get offline_allowed
+ok 301 - offline lessons: only Family Membership (and complimentary) families get offline_allowed
+  ---
+  duration_ms: 566.692282
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback: parent submissions inherit trusted account/family identifiers, stay private and require Owner step-up
+ok 302 - feedback: parent submissions inherit trusted account/family identifiers, stay private and require Owner step-up
+  ---
+  duration_ms: 531.748733
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: owner feedback replies are private, auditable, unread until viewed, and work after preview expiry
+ok 303 - owner feedback replies are private, auditable, unread until viewed, and work after preview expiry
+  ---
+  duration_ms: 538.876068
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: branded Owner HQ feedback email includes the real Side-Quest logo without private content
+ok 304 - branded Owner HQ feedback email includes the real Side-Quest logo without private content
+  ---
+  duration_ms: 278.819702
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback reply email only notifies the real submitting parent and never includes private message text
+ok 305 - feedback reply email only notifies the real submitting parent and never includes private message text
+  ---
+  duration_ms: 266.10153
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: dashboard reply alert surfaces older unread threads buried behind 50 newer submissions
+ok 306 - dashboard reply alert surfaces older unread threads buried behind 50 newer submissions
+  ---
+  duration_ms: 338.627066
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback submissions survive missing or unavailable optional reply/notification storage
+ok 307 - feedback submissions survive missing or unavailable optional reply/notification storage
+  ---
+  duration_ms: 319.096047
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: feedback: input validation and rate limiting stop spam without creating extra reports
+ok 308 - feedback: input validation and rate limiting stop spam without creating extra reports
+  ---
+  duration_ms: 376.392321
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: learning support intake validates consent, is private and filterable in Owner HQ
+ok 309 - learning support intake validates consent, is private and filterable in Owner HQ
+  ---
+  duration_ms: 492.379334
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: learning support quote lifecycle: owner-only, private, expiry, non-member responses, no billing changes
+ok 310 - learning support quote lifecycle: owner-only, private, expiry, non-member responses, no billing changes
+  ---
+  duration_ms: 443.045127
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: standalone support verifies email, isolates guest sessions, and never creates a family or trial
+ok 311 - standalone support verifies email, isolates guest sessions, and never creates a family or trial
+  ---
+  duration_ms: 268.229816
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: manual invoice: owner verifies full payment and overdue slot stays held
+ok 312 - manual invoice: owner verifies full payment and overdue slot stays held
+  ---
+  duration_ms: 462.829851
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: classroom board gates access on paid appointment, owner opening, time window and revision
+ok 313 - classroom board gates access on paid appointment, owner opening, time window and revision
+  ---
+  duration_ms: 355.370068
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: RealtimeKit staging-only room setup, token windows and cleanup with mocked provider
+ok 314 - RealtimeKit staging-only room setup, token windows and cleanup with mocked provider
+  ---
+  duration_ms: 296.693488
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: reusable tutor decks: review required, version conflict, private notes never shared
+ok 315 - reusable tutor decks: review required, version conflict, private notes never shared
+  ---
+  duration_ms: 396.594572
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: quote plan snapshot separates public lesson sequence from private teaching guides
+ok 316 - quote plan snapshot separates public lesson sequence from private teaching guides
+  ---
+  duration_ms: 527.57559
+  type: 'test'
+  ...
+# Subtest: outage backup only permits restricted Meet URLs and does not expose private answers in parent copy
+ok 317 - outage backup only permits restricted Meet URLs and does not expose private answers in parent copy
+  ---
+  duration_ms: 2.579326
+  type: 'test'
+  ...
+# Subtest: guided tutoring enquiry preserves interests, strengths and goals and validates optional fields
+ok 318 - guided tutoring enquiry preserves interests, strengths and goals and validates optional fields
+  ---
+  duration_ms: 1.427937
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: external tutoring resource validation and private grant separation
+ok 319 - external tutoring resource validation and private grant separation
+  ---
+  duration_ms: 396.397871
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: classroom images require active learner material and only the currently presented image is accessible
+ok 320 - classroom images require active learner material and only the currently presented image is accessible
+  ---
+  duration_ms: 353.76025
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: tutor diary reserves buffers and unavailable blocks and keeps private preparation owner-only
+ok 321 - tutor diary reserves buffers and unavailable blocks and keeps private preparation owner-only
+  ---
+  duration_ms: 351.567308
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: private time offers exclude conflicts and reserve only an offered slot with server terms
+ok 322 - private time offers exclude conflicts and reserve only an offered slot with server terms
+  ---
+  duration_ms: 386.284949
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: multi-lesson package atomically reserves all slots and one invoice confirms every session
+ok 323 - multi-lesson package atomically reserves all slots and one invoice confirms every session
+  ---
+  duration_ms: 260.410547
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: per-lesson instalments isolate paid and cancelled sessions and preserve quoted total
+ok 324 - per-lesson instalments isolate paid and cancelled sessions and preserve quoted total
+  ---
+  duration_ms: 264.112664
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: daily owner briefing uses Sydney dates, live data, opt-in and one send per local day
+ok 325 - daily owner briefing uses Sydney dates, live data, opt-in and one send per local day
+  ---
+  duration_ms: 303.522329
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: housekeeping briefing distinguishes unavailable metrics and owner-verified backup checks
+ok 326 - housekeeping briefing distinguishes unavailable metrics and owner-verified backup checks
+  ---
+  duration_ms: 383.460249
+  type: 'test'
+  ...
+# Subtest: a missed payment emails the parent once, with the date full access ends
+ok 327 - a missed payment emails the parent once, with the date full access ends
+  ---
+  duration_ms: 349.338227
+  type: 'test'
+  ...
+# Subtest: the owner hears about each missed payment in live mode only, with no family details
+ok 328 - the owner hears about each missed payment in live mode only, with no family details
+  ---
+  duration_ms: 692.741519
+  type: 'test'
+  ...
+# Subtest: when grace runs out without payment, the parent is told access is paused, once
+ok 329 - when grace runs out without payment, the parent is told access is paused, once
+  ---
+  duration_ms: 365.883113
+  type: 'test'
+  ...
+# Subtest: Stripe ending the subscription early after a missed payment also sends the paused email
+ok 330 - Stripe ending the subscription early after a missed payment also sends the paused email
+  ---
+  duration_ms: 361.488933
+  type: 'test'
+  ...
+# Subtest: paying again before grace ends means no paused email
+ok 331 - paying again before grace ends means no paused email
+  ---
+  duration_ms: 316.331332
+  type: 'test'
+  ...
+# Subtest: no paused email without a payment email first, or for an ordinary cancellation
+ok 332 - no paused email without a payment email first, or for an ordinary cancellation
+  ---
+  duration_ms: 609.10784
+  type: 'test'
+  ...
+# Subtest: a later missed payment is a new episode and emails again
+ok 333 - a later missed payment is a new episode and emails again
+  ---
+  duration_ms: 283.470068
+  type: 'test'
+  ...
+# Subtest: suspended families and paid families get nothing
+ok 334 - suspended families and paid families get nothing
+  ---
+  duration_ms: 546.335055
+  type: 'test'
+  ...
+# Subtest: new pet growth takes sustained XP and retains the 60 XP hatching threshold
+ok 335 - new pet growth takes sustained XP and retains the 60 XP hatching threshold
+  ---
+  duration_ms: 3.359278
+  type: 'test'
+  ...
+# Subtest: existing pet XP and achieved stage are grandfathered without fast-forwarding new pets
+ok 336 - existing pet XP and achieved stage are grandfathered without fast-forwarding new pets
+  ---
+  duration_ms: 0.318567
+  type: 'test'
+  ...
+# Subtest: pets keep individual growth floors when switching between animals
+ok 337 - pets keep individual growth floors when switching between animals
+  ---
+  duration_ms: 27.895561
+  type: 'test'
+  ...
+# Subtest: new pets start on the new curve without inheriting old minimum levels
+ok 338 - new pets start on the new curve without inheriting old minimum levels
+  ---
+  duration_ms: 0.22434
+  type: 'test'
+  ...
+# Subtest: pet feeding cooldown still parses persisted dates after growth changes
+ok 339 - pet feeding cooldown still parses persisted dates after growth changes
+  ---
+  duration_ms: 0.249728
+  type: 'test'
+  ...
+# Subtest: jurisdiction reads and writes work on a database without migration 0054 (the column is added at runtime)
+ok 340 - jurisdiction reads and writes work on a database without migration 0054 (the column is added at runtime)
+  ---
+  duration_ms: 175.691439
+  type: 'test'
+  ...
+# Subtest: each jurisdiction gets its own learning areas and year names
+ok 341 - each jurisdiction gets its own learning areas and year names
+  ---
+  duration_ms: 1.521663
+  type: 'test'
+  ...
+# Subtest: AI plans: free preview and expired families are refused before any AI call
+ok 342 - AI plans: free preview and expired families are refused before any AI call
+  ---
+  duration_ms: 198.512774
+  type: 'test'
+  ...
+# Subtest: AI plans: a family must choose a state or territory first
+ok 343 - AI plans: a family must choose a state or territory first
+  ---
+  duration_ms: 189.830115
+  type: 'test'
+  ...
+# Subtest: AI plans: a Victorian plan covers the eight areas, keeps the child's name away from the model and adds no codes
+ok 344 - AI plans: a Victorian plan covers the eight areas, keeps the child's name away from the model and adds no codes
+  ---
+  duration_ms: 204.957276
+  type: 'test'
+  ...
+# Subtest: AI plans: NSW plans keep only outcome codes from the list Side-Quest holds
+ok 345 - AI plans: NSW plans keep only outcome codes from the list Side-Quest holds
+  ---
+  duration_ms: 197.237092
+  type: 'test'
+  ...
+# Subtest: AI plans: a missing area is repaired once, else left blank and flagged
+ok 346 - AI plans: a missing area is repaired once, else left blank and flagged
+  ---
+  duration_ms: 287.277179
+  type: 'test'
+  ...
+# Subtest: AI plans: failures use no allowance, and the daily cap applies
+ok 347 - AI plans: failures use no allowance, and the daily cap applies
+  ---
+  duration_ms: 203.12536
+  type: 'test'
+  ...
+# Subtest: free template uses the family's jurisdiction and drops NSW wording and codes elsewhere
+ok 348 - free template uses the family's jurisdiction and drops NSW wording and codes elsewhere
+  ---
+  duration_ms: 245.766063
+  type: 'test'
+  ...
+# Subtest: outcomeFrom gives the code and the parent's judgement, never syllabus wording or legacy 'achieved'
+ok 349 - outcomeFrom gives the code and the parent's judgement, never syllabus wording or legacy 'achieved'
+  ---
+  duration_ms: 1.514059
+  type: 'test'
+  ...
+# Subtest: full record: every source, chronological, outcomes, coverage gaps
+ok 350 - full record: every source, chronological, outcomes, coverage gaps
+  ---
+  duration_ms: 230.753897
+  type: 'test'
+  ...
+# Subtest: parent-approved reading records appear in state-aware evidence, while unapproved child entries do not
+ok 351 - parent-approved reading records appear in state-aware evidence, while unapproved child entries do not
+  ---
+  duration_ms: 256.723736
+  type: 'test'
+  ...
+# Subtest: preview shows the summary but only one detailed entry; other families cannot read
+ok 352 - preview shows the summary but only one detailed entry; other families cannot read
+  ---
+  duration_ms: 309.692652
+  type: 'test'
+  ...
+# Subtest: summarise lists areas outside the stage's expected areas after the expected ones
+ok 353 - summarise lists areas outside the stage's expected areas after the expected ones
+  ---
+  duration_ms: 0.206989
+  type: 'test'
+  ...
+# Subtest: a Victorian family's record uses Victorian learning areas and invents no codes
+ok 354 - a Victorian family's record uses Victorian learning areas and invents no codes
+  ---
+  duration_ms: 202.742482
+  type: 'test'
+  ...
+# Subtest: a family that hasn't chosen a state gets the Australian Curriculum, not NSW
+ok 355 - a family that hasn't chosen a state gets the Australian Curriculum, not NSW
+  ---
+  duration_ms: 197.734763
+  type: 'test'
+  ...
+# Subtest: a Queensland family's record keeps verified AC9 codes, drops NSW codes and never prints content descriptions
+ok 356 - a Queensland family's record keeps verified AC9 codes, drops NSW codes and never prints content descriptions
+  ---
+  duration_ms: 198.562244
+  type: 'test'
+  ...
+# Subtest: recognised prior learning gets its own status, clears gaps and is logged as the parent's decision
+ok 357 - recognised prior learning gets its own status, clears gaps and is logged as the parent's decision
+  ---
+  duration_ms: 306.868911
+  type: 'test'
+  ...
+# Subtest: a later confirmation still wins, and recording twice skips what's already recognised
+ok 358 - a later confirmation still wins, and recording twice skips what's already recognised
+  ---
+  duration_ms: 215.813698
+  type: 'test'
+  ...
+# Subtest: removing prior learning restores the evidence-based status and keeps the history
+ok 359 - removing prior learning restores the evidence-based status and keeps the history
+  ---
+  duration_ms: 280.126152
+  type: 'test'
+  ...
+# Subtest: an uploaded report is kept as one Evidence Backpack note
+ok 360 - an uploaded report is kept as one Evidence Backpack note
+  ---
+  duration_ms: 325.692088
+  type: 'test'
+  ...
+# Subtest: bad input is refused: no source, unknown outcomes, another family's file, no catalogue
+ok 361 - bad input is refused: no source, unknown outcomes, another family's file, no catalogue
+  ---
+  duration_ms: 603.061979
+  type: 'test'
+  ...
+# Subtest: reading a report: the AI only picks from the child's own unmet outcomes, and NAPLAN is never high confidence
+ok 362 - reading a report: the AI only picks from the child's own unmet outcomes, and NAPLAN is never high confidence
+  ---
+  duration_ms: 341.803093
+  type: 'test'
+  ...
+# Subtest: Plan My Week's planner treats prior learning like Achieved and doesn't teach it again
+ok 363 - Plan My Week's planner treats prior learning like Achieved and doesn't teach it again
+  ---
+  duration_ms: 2.164618
+  type: 'test'
+  ...
+# Subtest: document conversion metadata is not mistaken for page text
+ok 364 - document conversion metadata is not mistaken for page text
+  ---
+  duration_ms: 0.708178
+  type: 'test'
+  ...
+# Subtest: a scanned PDF asks for photos instead of reporting an empty document
+ok 365 - a scanned PDF asks for photos instead of reporting an empty document
+  ---
+  duration_ms: 329.191148
+  type: 'test'
+  ...
+# Subtest: photos of work are transcribed by the vision model, accepting its licence once
+ok 366 - photos of work are transcribed by the vision model, accepting its licence once
+  ---
+  duration_ms: 299.584321
+  type: 'test'
+  ...
+# Subtest: several scanned pages are read and joined in page order
+ok 367 - several scanned pages are read and joined in page order
+  ---
+  duration_ms: 333.211085
+  type: 'test'
+  ...
+# Subtest: saved resource links must be web addresses
+ok 368 - saved resource links must be web addresses
+  ---
+  duration_ms: 221.26076
+  type: 'test'
+  ...
+# Subtest: retired in-app shop is not an Owner HQ feature switch
+ok 369 - retired in-app shop is not an Owner HQ feature switch
+  ---
+  duration_ms: 1.928565
+  type: 'test'
+  ...
+# Subtest: settings saved before the Square migration ignore obsolete shopOpen without changing live feature switches
+ok 370 - settings saved before the Square migration ignore obsolete shopOpen without changing live feature switches
+  ---
+  duration_ms: 0.55498
+  type: 'test'
+  ...
+# Subtest: there is one monthly theme for each month, each with 12 prizes covering every slot
+ok 371 - there is one monthly theme for each month, each with 12 prizes covering every slot
+  ---
+  duration_ms: 2.413094
+  type: 'test'
+  ...
+# Subtest: a monthly theme is active only in its own month, and only when switched on
+ok 372 - a monthly theme is active only in its own month, and only when switched on
+  ---
+  duration_ms: 27.638607
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: resetting the password signs the whole family out everywhere
+ok 373 - resetting the password signs the whole family out everywhere
+  ---
+  duration_ms: 454.27797
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: file links: a files-only token, which never works as a sign-in and dies with sign-out-everywhere
+ok 374 - file links: a files-only token, which never works as a sign-in and dies with sign-out-everywhere
+  ---
+  duration_ms: 376.829187
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: a Google-only parent can delete their account after a fresh sign-in, not with an old session
+ok 375 - a Google-only parent can delete their account after a fresh sign-in, not with an old session
+  ---
+  duration_ms: 241.221363
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: assignment revocation is parent-only and family-scoped; revoked work cannot be reopened
+ok 376 - assignment revocation is parent-only and family-scoped; revoked work cannot be reopened
+  ---
+  duration_ms: 288.309506
+  type: 'test'
+  ...
+# Subtest: parent search discovers only their family records across sections
+ok 377 - parent search discovers only their family records across sections
+  ---
+  duration_ms: 336.961626
+  type: 'test'
+  ...
+# Subtest: child search is strictly limited to their own assignments and reading, never family or parent records
+ok 378 - child search is strictly limited to their own assignments and reading, never family or parent records
+  ---
+  duration_ms: 248.055014
+  type: 'test'
+  ...
+# Subtest: search input is constrained and syntax characters are searched literally
+ok 379 - search input is constrained and syntax characters are searched literally
+  ---
+  duration_ms: 288.413919
+  type: 'test'
+  ...
+# Subtest: Square stays off until every setting (including the webhook key) is present; sandbox is detected
+ok 380 - Square stays off until every setting (including the webhook key) is present; sandbox is detected
+  ---
+  duration_ms: 1.655664
+  type: 'test'
+  ...
+# Subtest: webhook signatures: only Square's exact HMAC over URL + body passes
+ok 381 - webhook signatures: only Square's exact HMAC over URL + body passes
+  ---
+  duration_ms: 17.629973
+  type: 'test'
+  ...
+# Subtest: Square membership from the old app checkout: the first payment links the family, and the subscription grants the plan
+ok 382 - Square membership from the old app checkout: the first payment links the family, and the subscription grants the plan
+  ---
+  duration_ms: 346.564494
+  type: 'test'
+  ...
+# Subtest: Square shop membership: a new buyer gets an account, is unlocked through the paid period, and renewals keep it unlocked
+ok 383 - Square shop membership: a new buyer gets an account, is unlocked through the paid period, and renewals keep it unlocked
+  ---
+  duration_ms: 361.89072
+  type: 'test'
+  ...
+# Subtest: Square shop membership: an existing parent is matched by email; non-membership shop subscriptions are left alone
+ok 384 - Square shop membership: an existing parent is matched by email; non-membership shop subscriptions are left alone
+  ---
+  duration_ms: 321.321297
+  type: 'test'
+  ...
+# Subtest: Square Online Family Membership can cancel and undo cancellation from the parent account
+ok 385 - Square Online Family Membership can cancel and undo cancellation from the parent account
+  ---
+  duration_ms: 355.06659
+  type: 'test'
+  ...
+# Subtest: Square subscription for a different location cannot create or unlock a family
+ok 386 - Square subscription for a different location cannot create or unlock a family
+  ---
+  duration_ms: 217.616259
+  type: 'test'
+  ...
+# square webhook catalog.version.updated sandbox-check-1 ignored catalog.version.updated
+# Subtest: private staging accepts only signed Square sandbox webhooks on its own hostname
+ok 387 - private staging accepts only signed Square sandbox webhooks on its own hostname
+  ---
+  duration_ms: 985.084361
+  type: 'test'
+  ...
+# Subtest: support orders are separate from subscriptions; Square sandbox checkout is idempotent and verified
+ok 388 - support orders are separate from subscriptions; Square sandbox checkout is idempotent and verified
+  ---
+  duration_ms: 328.246061
+  type: 'test'
+  ...
+# Subtest: questions are spread across strands
+ok 389 - questions are spread across strands
+  ---
+  duration_ms: 1.560425
+  type: 'test'
+  ...
+# Subtest: a check becomes an assigned AI-labelled lesson with one valid question per outcome and no outcome codes
+ok 390 - a check becomes an assigned AI-labelled lesson with one valid question per outcome and no outcome codes
+  ---
+  duration_ms: 277.467191
+  type: 'test'
+  ...
+# Subtest: a low score never blocks hand-in, and only the first attempt counts
+ok 391 - a low score never blocks hand-in, and only the first attempt counts
+  ---
+  duration_ms: 301.757997
+  type: 'test'
+  ...
+# Subtest: an ordinary lesson's quiz still has to be passed
+ok 392 - an ordinary lesson's quiz still has to be passed
+  ---
+  duration_ms: 309.047747
+  type: 'test'
+  ...
+# Subtest: outcomes already met are not checked, and an unusable AI reply uses nothing
+ok 393 - outcomes already met are not checked, and an unusable AI reply uses nothing
+  ---
+  duration_ms: 332.212516
+  type: 'test'
+  ...
+# Subtest: questions are read from the shapes the model actually returns
+ok 394 - questions are read from the shapes the model actually returns
+  ---
+  duration_ms: 0.805931
+  type: 'test'
+  ...
+# Subtest: an unusable first reply is retried once
+ok 395 - an unusable first reply is retried once
+  ---
+  duration_ms: 223.24914
+  type: 'test'
+  ...
+# Subtest: subjects with few outcomes get several questions on each
+ok 396 - subjects with few outcomes get several questions on each
+  ---
+  duration_ms: 0.328235
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: listing 450 submissions uses batched lookups and keeps every lesson and child
+ok 397 - listing 450 submissions uses batched lookups and keeps every lesson and child
+  ---
+  duration_ms: 466.580446
+  type: 'test'
+  ...
+# Subtest: subjects match by name or by learning area
+ok 398 - subjects match by name or by learning area
+  ---
+  duration_ms: 1.640616
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: timetables are a Family Membership feature (server-enforced)
+ok 399 - timetables are a Family Membership feature (server-enforced)
+  ---
+  duration_ms: 367.438138
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: a week is saved once (repeats are skipped), validated, and only for your own children
+ok 400 - a week is saved once (repeats are skipped), validated, and only for your own children
+  ---
+  duration_ms: 351.689332
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: assigning fills the next open slot of the lesson's subject; more sessions fill more slots
+ok 401 - assigning fills the next open slot of the lesson's subject; more sessions fill more slots
+  ---
+  duration_ms: 397.303849
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: choosing a slot by hand; a taken slot or another child's slot is refused
+ok 402 - choosing a slot by hand; a taken slot or another child's slot is refused
+  ---
+  duration_ms: 418.685501
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: cancelling or moving an assignment empties its slot; the timetable is never deleted
+ok 403 - cancelling or moving an assignment empties its slot; the timetable is never deleted
+  ---
+  duration_ms: 394.638772
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: slots from the older one-week generator are used too, without rewriting them
+ok 404 - slots from the older one-week generator are used too, without rewriting them
+  ---
+  duration_ms: 369.828349
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: timetable refuses overlapping blocks and preserves existing appointments
+ok 405 - timetable refuses overlapping blocks and preserves existing appointments
+  ---
+  duration_ms: 270.331871
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: reschedule preview respects completed lessons, family isolation and free subject slots
+ok 406 - reschedule preview respects completed lessons, family isolation and free subject slots
+  ---
+  duration_ms: 287.145662
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: parent revocation keeps lesson history, empties timetable slot, and permits reassigning
+ok 407 - parent revocation keeps lesson history, empties timetable slot, and permits reassigning
+  ---
+  duration_ms: 245.514339
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: calendar linked assignments cannot cross children or mismatch a lesson
+ok 408 - calendar linked assignments cannot cross children or mismatch a lesson
+  ---
+  duration_ms: 256.349573
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: calendar supports a visible month date range without showing older years
+ok 409 - calendar supports a visible month date range without showing older years
+  ---
+  duration_ms: 225.707638
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: manual timetable assignment rejects wrong-subject slots without changing any slot
+ok 410 - manual timetable assignment rejects wrong-subject slots without changing any slot
+  ---
+  duration_ms: 229.425859
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: rescheduling one of several sessions preserves the earliest remaining lesson date
+ok 411 - rescheduling one of several sessions preserves the earliest remaining lesson date
+  ---
+  duration_ms: 229.108434
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: one lesson with an HSIE connection may fill HSIE time once without duplicating its English assignment
+ok 412 - one lesson with an HSIE connection may fill HSIE time once without duplicating its English assignment
+  ---
+  duration_ms: 238.117102
+  type: 'test'
+  ...
+# email: send failed undefined Email unavailable
+# Subtest: due windows: two days left and first 24 hours after expiry only
+ok 413 - due windows: two days left and first 24 hours after expiry only
+  ---
+  duration_ms: 1.372954
+  type: 'test'
+  ...
+# Subtest: Day 5 email uses the Side-Quest logo and is sent once even on repeat cron
+ok 414 - Day 5 email uses the Side-Quest logo and is sent once even on repeat cron
+  ---
+  duration_ms: 332.591949
+  type: 'test'
+  ...
+# Subtest: Day 7 expiry email preserves existing data and cannot resend
+ok 415 - Day 7 expiry email preserves existing data and cannot resend
+  ---
+  duration_ms: 311.128531
+  type: 'test'
+  ...
+# Subtest: paid or suspended families never receive preview reminders
+ok 416 - paid or suspended families never receive preview reminders
+  ---
+  duration_ms: 305.827013
+  type: 'test'
+  ...
+# Subtest: a failed delivery cannot be retried automatically and cause duplicates
+ok 417 - a failed delivery cannot be retried automatically and cause duplicates
+  ---
+  duration_ms: 304.011319
+  type: 'test'
+  ...
+# Subtest: email copy never describes a mandatory subscription
+ok 418 - email copy never describes a mandatory subscription
+  ---
+  duration_ms: 0.939792
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# email: EMAIL binding not configured, skipping send
+# Subtest: Only the owner can use View site as, and it only changes the owner's own family
+ok 419 - Only the owner can use View site as, and it only changes the owner's own family
+  ---
+  duration_ms: 304.551826
+  type: 'test'
+  ...
+# email: EMAIL binding not configured, skipping send
+# Subtest: View site as switches itself off when it expires
+ok 420 - View site as switches itself off when it expires
+  ---
+  duration_ms: 212.129064
+  type: 'test'
+  ...
+1..420
+# tests 420
+# suites 0
+# pass 420
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 45457.092447

@@ -1,0 +1,11 @@
+PASS paying parent: plan one week; it is saved as free timetable slots
+PASS Plan My Week finds the child's existing timetable without assigning anything before approval
+PASS assigning a maths lesson puts it in Mia's next free Mathematics slot (shown before saving)
+PASS the next maths lesson takes the next maths slot; an English lesson takes an English slot
+PASS the calendar shows each lesson inside its slot and free slots as free
+PASS new weekly agenda is readable at mobile width and parents can switch views
+PASS un-assigning a lesson frees its slot; the timetable stays
+PASS Repeat last week copies the timetable into the next week
+PASS free-preview family: timetable shows the membership message; assigning still works by day
+
+9/9 timetable steps passed
