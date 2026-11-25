@@ -1,3 +1,4 @@
+import {createSquareDraft,readSquareDraft,draftEnabled,hasSquareDraft} from "./supportSquareDraft";
 import {previewSupportInvoice} from "./supportSquareInvoicePreview";
 import {supportInvoiceLookupAvailable,inspectSupportInvoice} from "./supportSquareInvoiceLookup";
 import {ownerToday} from "./unifiedOwnerToday";
@@ -277,7 +278,22 @@ export function createAdminRoutes() {
   });
 
   // --------------------------------------------------------------- customers
-  admin.get("/support-invoice-lookup/status",requirePermission("customers.read"),c=>c.json({available:supportInvoiceLookupAvailable(c.env)}));
+  admin.get("/support-invoice-lookup/status",requirePermission("customers.read"),c=>c.json({available:supportInvoiceLookupAvailable(c.env),draft_available:draftEnabled(c.env)}));
+  admin.get("/support-invoice-draft",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
+    const channel=c.req.query("channel"),id=c.req.query("request_id")||"",oid=c.req.query("order_id")||"";
+    if((channel!=="guest"&&channel!=="member")||!id||!oid||id.length>100||oid.length>100)return c.json({detail:"Invalid arrangement"},400);
+    return c.json({draft:await readSquareDraft(c.env.DB,channel,id,oid)});
+  });
+  admin.post("/support-invoice-draft",requirePermission("customers.read"),async c=>{
+    if(!draftEnabled(c.env))return c.json({detail:"Not found"},404);
+    const b=await readJson(c);
+    if(!["guest","member"].includes(b.channel)||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Invalid arrangement"},400);
+    const r=await createSquareDraft(c.env,b.channel,b.request_id,b.order_id,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.square_draft_created",targetType:"support",targetId:b.request_id,detail:{channel:b.channel,order_id:b.order_id}});
+    return c.json(r);
+  });
   admin.post("/support-invoice-preview",requirePermission("customers.read"),async c=>{
     if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
     const b=await readJson(c);
@@ -1122,6 +1138,7 @@ export function createAdminRoutes() {
         return c.json({ok:sent,email_notification_sent:sent});
       }
       if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
+      if(["invoice","cancel","cancel-invoice","verify-payment"].includes(action)&&await hasSquareDraft(c.env.DB,oid))return c.json({detail:"An existing sandbox Square draft requires reconciliation. Do not issue a second invoice or release the reservation."},409);
       if(action==="invoice"){
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
         if("error" in r)return c.json({detail:r.error},409);
