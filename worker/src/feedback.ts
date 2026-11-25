@@ -50,7 +50,7 @@ async function ownerAlert(env: Env, id: string, category: string) {
   const link = SITE_URL + "/parent/command-centre/feedback";
   // Keep names, addresses and free-text descriptions OUT of the optional email.
   await sendEmail(env, {
-    to, subject: "Side-Quest: new " + category + " submission",
+    to, subject: category==="learning support"?"Side-Quest Learning Support: new enquiry":"Side-Quest: new " + category + " submission",
     text: "New submission in Owner HQ.\nReference: " + id + "\nCategory: " + category + "\n" + link,
     html: layout({
       preheader: "A new parent message is ready in your private Owner HQ inbox.",

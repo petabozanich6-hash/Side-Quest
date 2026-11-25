@@ -35,11 +35,11 @@ export function guestOrigin(env:Env):string|null {
 }
 const enabled=(env:Env)=>env.SUPPORT_GUEST_ENABLED==="true"&&!!guestOrigin(env);
 const expires=(ms:number)=>new Date(Date.now()+ms).toISOString();
-export async function guestNotify(env:Env,email:string,owner=false){
+export async function guestNotify(env:Env,email:string,owner=false,reference?:string){
  if(!emailOk(email))return false;
  const origin=guestOrigin(env);if(!origin)return false;
  const url=origin+(owner?"/parent/command-centre/learning-support":"/learning-support/portal");
- return sendEmail(env,{to:email,subject:owner?"Side-Quest Learning Support: new activity":"Side-Quest Learning Support: an update is available",text:"Open the private portal to review the update: "+url,html:layout({preheader:"A private update is ready.",kicker:"Learning Support",heading:"You have an update",body:p("Open the private portal to review your update. No personal details are included in this email.")+button("Open portal",url),reason:"This is a service notification about a Learning Support request."})});
+ return sendEmail(env,{to:email,subject:owner?(reference?"Side-Quest Learning Support: new enquiry":"Side-Quest Learning Support: new activity"):"Side-Quest Learning Support: an update is available",text:(reference?"New enquiry reference: "+reference+"\n":"")+"Open the private portal to review the update: "+url,html:layout({preheader:"A private update is ready.",kicker:"Learning Support",heading:"You have an update",body:p("Open the private portal to review your update. No personal details are included in this email.")+button("Open portal",url),reason:"This is a service notification about a Learning Support request."})});
 }
 export async function guestQuotes(db:D1Database,id:string){
  const {results}=await db.prepare("SELECT id,scope,delivery,amount_cents,currency,status,created_at,expires_at,responded_at,withdrawn_at FROM support_guest_quotes WHERE request_id=? ORDER BY created_at DESC,id DESC LIMIT 100").bind(id).all<any>();
@@ -102,7 +102,7 @@ export function registerGuestSupport(app:App){
   if(!(await hitRateLimit(c.env.DB,"guest-request:"+await digest(who.email),5,3600)).ok)return c.json({detail:"Too many enquiries. Try again later."},429);
   const id=crypto.randomUUID(),now=nowIso();
   await c.env.DB.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").bind(id,who.email,name,parsed.subject,parsed.message,now,now).run();
-  if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
+  try{if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true,id);}catch{ /* The durable enquiry remains in Owner HQ even if email fails. */ }
   return c.json({id,status:"new"},201);
  });
  app.post(root+"/requests/:id/orders/:oid/video-token",async c=>{

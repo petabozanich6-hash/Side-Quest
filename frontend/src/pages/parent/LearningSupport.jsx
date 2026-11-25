@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {useAuth} from "../../context/AuthContext";
 import {api,apiErrorMessage} from "../../lib/api";
 import SupportQuotes from "./SupportQuotes";
+import SupportIntakeFields from "./SupportIntakeFields";
 import {BookOpen,Compass,MessageSquare,ShieldCheck} from "lucide-react";
 
 const subjects=["English","Mathematics","Science","Humanities and social sciences","History","Geography","Technology","Creative arts","Health and physical education","Languages","General learning support","Other"];
@@ -34,7 +35,7 @@ export default function LearningSupport({publicView=false}){
  <form className="paper-card p-5 sm:p-7 space-y-4" onSubmit={submit}>
  <h2 className="font-display text-2xl font-bold text-emerald-950">Request learning support</h2>
  {[[ "year","Year level",years],["subject","Learning area",subjects],["service","Preferred support",services]].map(([key,label,options])=><label key={key} className="block text-sm font-bold">{label}<select required value={form[key]} onChange={e=>change(key,e.target.value)} className={field}><option value="">Choose an option</option>{options.map(o=><option key={o}>{o}</option>)}</select></label>)}
- <label className="block text-sm font-bold">What do you need help with?<textarea required minLength={10} maxLength={3000} rows={5} className={field} value={form.detail} onChange={e=>change("detail",e.target.value)} placeholder="For example, understanding fractions or planning a geography project. No identifying or sensitive information."/></label>
+ <SupportIntakeFields form={form} change={change}/>
  <label className="flex items-start gap-2 text-sm"><input type="checkbox" required checked={form.consent} onChange={e=>change("consent",e.target.checked)}/> I am an adult parent or guardian and understand this is an enquiry, not a confirmed booking or purchase.</label>
  {error&&<p role="alert" className="text-rose-900 text-sm">{error}</p>}{notice&&<p role="status" className="text-emerald-900 text-sm">{notice}</p>}
  <button type="submit" disabled={busy||!form.consent} className="rounded-full px-6 py-3 bg-emerald-950 text-white font-bold disabled:opacity-50">{busy?"Sending…":"Send request"}</button>

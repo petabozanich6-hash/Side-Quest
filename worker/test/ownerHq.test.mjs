@@ -1040,3 +1040,12 @@ test("outage backup only permits restricted Meet URLs and does not expose privat
  const p={title:"Fractions",subject:"Maths",year_level:"Year 5",goal:"Compare fractions",lessons:[{title:"Practice",minutes:30,objective:"Compare",activities:"Draw",check:"Explain",home_practice:"Try 1/2"}],tutor_guides:[{guide:"Private guide",answers:"Private answer"}]};
  assert.ok(!planText(p).includes("Private answer"));assert.ok(planText(p,true).includes("Private answer"));
 });
+
+test("guided tutoring enquiry preserves interests, strengths and goals and validates optional fields",async()=>{
+ const {parseLearningSupport}=await import("../src/learningSupport.ts");
+ const b={subject:"Mathematics",year:"Year 5",service:"Not sure yet",detail:"Finds fractions hard to understand",consent:true,interests:"Dinosaurs and drawing",strengths:"Counts confidently",preferences:"Visual examples",goal:"Compare fractions",availability:"Afternoons"};
+ const result=parseLearningSupport(b);assert.ok(result.message.includes("Interests and favourite topics: Dinosaurs and drawing"));assert.ok(result.message.includes("Parent goals: Compare fractions"));
+ assert.ok(parseLearningSupport({...b,interests:"x".repeat(301)}).error);
+ assert.ok(parseLearningSupport({...b,preferences:[]}).error);
+ assert.ok(parseLearningSupport({...b,detail:"x".repeat(1801)}).error);
+});

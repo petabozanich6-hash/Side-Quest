@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react";
 import {Link} from "react-router-dom";
 import {guestApi,guestToken,setGuestToken,guestRequest} from "../../lib/guestSupportApi";
 import SupportQuotes from "./SupportQuotes";
+import SupportIntakeFields from "./SupportIntakeFields";
 const subjects=["English","Mathematics","Science","Humanities and social sciences","History","Geography","Technology","Creative arts","Health and physical education","Languages","General learning support","Other"];
 const years=["Foundation",...Array.from({length:12},(_,i)=>"Year "+(i+1)),"Mixed year levels / parent support"];
 const services=["Live online support","Worked explanation","Personalised activities","Catch-up or extension","Homework or project guidance","Feedback on completed work","Parent consultation","Not sure yet"];
@@ -25,7 +26,7 @@ export default function GuestSupportPortal(){
  <h2 className="font-display text-xl font-bold">New enquiry</h2>
  <label className="block">Your name<input required minLength={2} maxLength={80} className={field} value={form.parent_name} onChange={e=>change("parent_name",e.target.value)}/></label>
  {[[ "year","Year level",years],["subject","Learning area",subjects],["service","Preferred support",services]].map(([key,label,options])=><label key={key} className="block">{label}<select required className={field} value={form[key]} onChange={e=>change(key,e.target.value)}><option value="">Choose an option</option>{options.map(o=><option key={o}>{o}</option>)}</select></label>)}
- <label className="block">What help is needed?<textarea required minLength={10} maxLength={3000} rows={4} className={field} value={form.detail} onChange={e=>change("detail",e.target.value)}/></label><p className="text-sm">Do not include children's names, school records, health information or payment details. Read our <Link className="underline" to="/legal/privacy">privacy information</Link>.</p>
+ <SupportIntakeFields form={form} change={change}/><p className="text-sm">Do not include children's names, school records, health information or payment details. Read our <Link className="underline" to="/legal/privacy">privacy information</Link>.</p>
  <label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={form.consent} onChange={e=>change("consent",e.target.checked)} required/> I am an adult parent or guardian. This is a free enquiry, not a purchase or booking.</label><button className={btn} disabled={busy||!form.consent}>Submit enquiry</button></form>
  <section className="space-y-3"><h2 className="font-display text-xl font-bold">Your enquiries</h2>{!data.requests.length&&<p>No requests yet.</p>}{data.requests.map(r=><article key={r.id} className="paper-card p-5 space-y-3"><div className="flex justify-between gap-2 flex-wrap"><strong>{r.subject}</strong><span className="capitalize text-sm">{r.status.replaceAll("_"," ")}</span></div><p className="text-sm whitespace-pre-wrap break-words">{r.message}</p><SupportQuotes id={r.id} initialQuotes={r.quotes} closed={["closed","resolved"].includes(r.status)} client={guestApi} basePath="/requests/"/>
  {r.messages.map(m=><div key={m.id} className="rounded-xl bg-stone-100 p-3"><strong className="text-xs">{m.sender==="owner"?"Side-Quest":"You"}</strong><p className="text-sm whitespace-pre-wrap break-words">{m.body}</p></div>)}
