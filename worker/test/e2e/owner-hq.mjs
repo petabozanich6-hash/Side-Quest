@@ -192,6 +192,22 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 
 
 
+await step("English Club uses separate navigable pages without mounting unrelated forms",async()=>{
+ await page.goto(BASE+"/parent/command-centre/learning-support");
+ await page.getByRole("link",{name:/^English Club/}).click();
+ await page.getByRole("heading",{name:"The Side-Quest English Club",exact:true}).waitFor();
+ ok(await page.locator('input[type="datetime-local"]').count()===0,"planning form should not be on the session list");
+ await page.getByRole("link",{name:"Plan a session",exact:true}).click();
+ await page.getByRole("heading",{name:"Plan a club session",exact:true}).waitFor();
+ ok(await page.locator('input[type="datetime-local"]').count()===1,"planning page missing its date input");
+ ok(await page.locator('[aria-label="English Club video"]').count()===0,"video must not mount during planning");
+ await page.goBack();
+ await page.getByRole("heading",{name:"The Side-Quest English Club",exact:true}).waitFor();
+ await page.getByRole("link",{name:/^Expressions of interest/}).click();
+ await page.getByRole("heading",{name:"Expressions of interest",exact:true}).waitFor();
+ ok(await page.locator('input[type="datetime-local"]').count()===0,"planning form leaked into enquiry page");
+});
+
 await step("Learning Support month planner navigates future months, preserves private labels and fits a phone",async()=>{
  const publicPage=await browser.newPage();
  try{await publicPage.goto(BASE);await publicPage.getByTestId("homepage-learning-support-offering").click();await publicPage.getByRole("heading",{name:"Learning, with a little more adventure."}).waitFor();ok((await publicPage.locator("main").innerText()).includes("Peta Bozanich"),"author-led service missing");ok((await publicPage.locator("main").innerText()).includes("AU$25"),"entry price missing");}finally{await publicPage.close();}
