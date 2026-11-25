@@ -11,6 +11,7 @@ export const STATIONERY={
  proposal:{title:"Learning support proposal",fields:["What we understand","Suggested support","Proposed arrangements and fees","Next steps"]},
  progress:{title:"Learning progress report",fields:["Learning focus","Progress and strengths","Areas to practise","Recommended next steps"]},
  summary:{title:"Session summary",fields:["What we worked on","What went well","Follow-up activities"]},
+ session_report:{title:"Today’s learning update",fields:["What we covered","What went well","What to keep practising","Try this at home"]},
  plan:{title:"Personalised learning plan",fields:["Learning goals","Learning approach","Activities and resources","Review and next steps"]},
  activity:{title:"Home practice sheet",fields:["Instructions","Activities","Helpful hints"]},
  recommendations:{title:"Learning recommendations",fields:["Observations","Suggested strategies","Resources and next steps"]},
@@ -105,7 +106,17 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
  const recipient=channel==="guest"?await e.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await e.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
  if(!recipient?.email)return {error:"Parent email not found."} as const;
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"}).format(new Date());
- try{if(typeof b?.quote_id==="string"&&b.quote_id){
+ try{if(b?.from_session_diary===true){
+ if(!oid)return {error:"Choose a completed lesson."};
+ const order=await getOrder(e.DB,channel,id,oid);
+ if(!order||order.mode!=="live"||!["paid","completed"].includes(order.status)||!order.end_at||Date.parse(order.end_at)>Date.now())return {error:"A delivered live lesson is required."};
+ const row=await e.DB.prepare("SELECT learner_label,details_json FROM support_tutor_diary WHERE order_id=?").bind(oid).first<{learner_label:string;details_json:string}>();
+ const details=row?JSON.parse(row.details_json):{};
+ const keys=["report_covered","report_strengths","report_practice","report_home_activity"];
+ const sections=keys.map(k=>typeof details[k]==="string"?details[k].trim():"");
+ if(sections.some(v=>!v))return {error:"Save all four parent-update fields in the private diary first."};
+ b={kind:"session_report",learner:row?.learner_label||"",sections};
+ }if(typeof b?.quote_id==="string"&&b.quote_id){
  const q=await e.DB.prepare(channel==="guest"?"SELECT scope,delivery,amount_cents,expires_at FROM support_guest_quotes WHERE id=? AND request_id=?":"SELECT q.scope,q.delivery,q.amount_cents,q.expires_at FROM learning_support_quotes q JOIN parent_feedback f ON f.id=q.feedback_id WHERE q.id=? AND q.feedback_id=? AND f.page_hint=\'learning-support\'").bind(b.quote_id,id).first<any>();
  if(!q)return {error:"Proposal unavailable."};
  const plan=await readQuotePlan(e.DB,channel,id,b.quote_id,false);
