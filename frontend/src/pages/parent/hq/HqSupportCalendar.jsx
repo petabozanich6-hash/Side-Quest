@@ -4,11 +4,11 @@ import SupportClassroom from "../SupportClassroom";
 import HqTutorDiary from "./HqTutorDiary";
 import HqPublicAvailability from "./HqPublicAvailability";
 import HqReportQueue from "./HqReportQueue";
+import {key,shift,monthShift,monthTitle,time,syd,gridDates,intersects} from "../../../lib/supportCalendarDates";
 const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
 const day=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:"long",day:"numeric",month:"long",year:"numeric"});
 const path=o=>(o.channel==="guest"?"/support-guests/":"/feedback/")+encodeURIComponent(o.request_id)+"/orders/"+o.id;
 const btn="rounded-lg border px-3 py-2 text-sm";
-import {key,shift,monthShift,monthTitle,time,syd,gridDates,intersects} from "../../../lib/supportCalendarDates";
 export default function HqSupportCalendar(){
  const today=key(Date.now());
  const [month,setMonth]=useState(today.slice(0,7)),[selected,setSelected]=useState(today),[data,setData]=useState(null),[error,setError]=useState(""),[room,setRoom]=useState(null),[block,setBlock]=useState({label:"Unavailable",start:today,end:today,allDay:true,startTime:"09:00",endTime:"13:00"}),[busy,setBusy]=useState(false),[loading,setLoading]=useState(false);

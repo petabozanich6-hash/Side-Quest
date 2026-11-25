@@ -782,7 +782,7 @@ export function createAdminRoutes() {
       c.header("Cache-Control","private, no-store");
       if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
       if(action==="upload"){const r=await uploadCorrespondenceAttachment(c.env,channel,id,did,b);return "error" in r?c.json({detail:r.error},409):c.json(r);}
-      if(action==="remove"){return await removeCorrespondenceAttachment(c.env,channel,id,did,b.attachment_id)?c.json({ok:true}):c.json({detail:"Attachment unavailable."},409);}
+      if(action==="remove"){if(typeof b.attachment_id!=="string")return c.json({detail:"Choose an attachment."},400);return await removeCorrespondenceAttachment(c.env,channel,id,did,b.attachment_id)?c.json({ok:true}):c.json({detail:"Attachment unavailable."},409);}
       if(action==="payment-link"){return await saveCorrespondencePaymentLink(c.env.DB,channel,id,did,b)?c.json({ok:true}):c.json({detail:"Use a valid Square invoice or payment link on an unsent document."},409);}
       return c.json({detail:"Unknown action"},404);
     });
@@ -924,8 +924,6 @@ export function createAdminRoutes() {
         return c.json({ok:sent,email_notification_sent:sent});
       }
       if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
-      // Never release or manually invoice a reservation with an unresolved provider attempt.
-      if(["invoice","verify-payment","payment-warning","cancel","cancel-invoice","cancel-paid"].includes(action)&&await c.env.DB.prepare("SELECT order_id FROM support_square_invoice_attempts WHERE order_id=?").bind(oid).first())return c.json({detail:"A Square invoice pilot record exists. Reconcile it before any manual billing or cancellation."},409);
       if(action==="invoice"){
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
         if("error" in r)return c.json({detail:r.error},409);

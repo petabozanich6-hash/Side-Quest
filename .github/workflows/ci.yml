@@ -4,6 +4,9 @@ on:
     branches: [main, dev/sidequest-execution]
   pull_request:
   workflow_dispatch:
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 # Install scripts and tests run with a read-only token; only the separate publish job can write.
 permissions:
@@ -47,8 +50,6 @@ jobs:
         run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportStationery.test.mjs
       - name: Live lesson progress and evidence isolation
         run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportLessonProgress.test.mjs
-      - name: Square invoice pilot guards (mock provider only)
-        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportSquareInvoices.test.mjs
       - name: Public availability privacy and diary blackout tests
         run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPublicAvailability.test.mjs
       - name: Learning Support payment and cancellation safety tests

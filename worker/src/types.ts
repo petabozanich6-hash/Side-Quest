@@ -54,7 +54,6 @@ export type Env = {
   SUPPORT_VIDEO_FAMILY_PRESET?: string;
   /** Test-only checkout; production Square credentials are never accepted. */
   SUPPORT_CHECKOUT_TEST?: string;
-  SUPPORT_SQUARE_INVOICES_TEST?: string;
   /** Opt-in verified tutoring invoice reminders, separate from membership billing. */
   SUPPORT_PAYMENT_NOTICES?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
