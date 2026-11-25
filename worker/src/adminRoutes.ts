@@ -472,7 +472,7 @@ export function createAdminRoutes() {
     const b=await readJson(c);
     if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
     if(await hasOrder(c.env.DB,"member",qid))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
-    const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o WHERE o.channel='member' AND o.quote_id=learning_support_quotes.id AND o.status<>'cancelled')").bind(nowIso(),qid,id).run();
+    const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o LEFT JOIN support_package_sessions ps ON ps.order_id=o.id WHERE o.channel='member' AND COALESCE(ps.quote_id,o.quote_id)=learning_support_quotes.id AND o.status<>'cancelled')").bind(nowIso(),qid,id).run();
     if(!r.meta?.changes)return c.json({detail:"This proposal cannot be withdrawn."},409);
     try{await writeAudit(c.env.DB,{...actor(c),action:"learning_support.withdraw",targetType:"feedback",targetId:id,detail:{quote_id:qid}});}catch{}
     return c.json({ok:true});
@@ -651,7 +651,7 @@ export function createAdminRoutes() {
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
     if(await hasOrder(c.env.DB,"guest",(c.req.param("qid")??"")))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
-    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o WHERE o.channel='guest' AND o.quote_id=support_guest_quotes.id AND o.status<>'cancelled')").bind(nowIso(),(c.req.param("qid")??""),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
+    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o LEFT JOIN support_package_sessions ps ON ps.order_id=o.id WHERE o.channel='guest' AND COALESCE(ps.quote_id,o.quote_id)=support_guest_quotes.id AND o.status<>'cancelled')").bind(nowIso(),(c.req.param("qid")??""),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:(c.req.param("qid")??"")}});
     return c.json({ok:true});
   });
@@ -704,7 +704,7 @@ export function createAdminRoutes() {
     const from=c.req.query("from")||"",to=c.req.query("to")||"";
     if(!Number.isFinite(Date.parse(from))||!Number.isFinite(Date.parse(to))||Date.parse(to)<=Date.parse(from)||Date.parse(to)-Date.parse(from)>62*86400000)return c.json({detail:"Choose a date range of up to 62 days."},400);
     const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,d.learner_label,d.prep_minutes,d.wrap_minutes,d.ready,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
-    const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,i.due_at FROM support_service_orders o JOIN support_manual_invoices i ON i.order_id=o.id WHERE o.status='confirmed' AND i.due_at<=? AND i.cancelled_at IS NULL ORDER BY i.due_at LIMIT 100").bind(nowIso()).all<any>()).results||[];
+    const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_installment_terms t ON t.order_id=o.id WHERE o.status='confirmed' AND COALESCE(t.due_at,i.due_at)<=? AND i.cancelled_at IS NULL ORDER BY COALESCE(t.due_at,i.due_at) LIMIT 100").bind(nowIso()).all<any>()).results||[];
     const blocks=(await c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all()).results||[];
     return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
   });
@@ -826,7 +826,7 @@ export function createAdminRoutes() {
         if(!await cancelManualInvoiceOrder(c.env.DB,channel,id,oid,b))return c.json({detail:"Only a confirmed unpaid order with a cancelled Square invoice can be released."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true});
       }
-      const ok=action==="cancel"?await cancelUnstartedOrder(c.env.DB,channel,id,oid):action==="complete"?await completeOrder(c.env.DB,channel,id,oid):false;
+      const ok=action==="cancel"?await cancelUnstartedOrder(c.env.DB,channel,id,oid,b.checked_square===true):action==="complete"?await completeOrder(c.env.DB,channel,id,oid):false;
       if(!ok)return c.json({detail:"Action unavailable. Orders with an initiated Square checkout require reconciliation before cancellation."},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support."+action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true});
     });

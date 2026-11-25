@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS support_installment_terms (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, due_at TEXT NOT NULL);
+
+DROP TRIGGER IF EXISTS support_package_payment_status;
+
+CREATE TRIGGER IF NOT EXISTS support_package_payment_status AFTER UPDATE OF status ON support_service_orders WHEN OLD.status<>NEW.status AND NEW.status IN ('confirmed','paid','cancelled','review') AND EXISTS(SELECT 1 FROM support_package_sessions p WHERE p.order_id=NEW.id AND p.root_id=NEW.id) AND (NOT EXISTS(SELECT 1 FROM support_installment_terms t WHERE t.order_id=NEW.id) OR (OLD.status='awaiting_confirmation' AND NEW.status IN ('confirmed','cancelled'))) BEGIN UPDATE support_service_orders SET status=NEW.status,confirmed_at=NEW.confirmed_at,paid_at=NEW.paid_at,updated_at=NEW.updated_at WHERE id IN (SELECT order_id FROM support_package_sessions WHERE root_id=NEW.id AND order_id<>NEW.id) AND ((NEW.status='confirmed' AND status='awaiting_confirmation') OR (NEW.status='paid' AND status IN ('awaiting_confirmation','confirmed')) OR (NEW.status='cancelled' AND status IN ('awaiting_confirmation','confirmed')) OR (NEW.status='review' AND status IN ('paid','confirmed','awaiting_confirmation'))); END;
+
+CREATE TRIGGER IF NOT EXISTS support_package_duplicate_guard BEFORE INSERT ON support_service_orders WHEN EXISTS(SELECT 1 FROM support_package_sessions p JOIN support_service_orders s ON s.id=p.order_id WHERE s.channel=NEW.channel AND p.quote_id=NEW.quote_id AND s.status<>'cancelled') BEGIN SELECT RAISE(IGNORE); END;

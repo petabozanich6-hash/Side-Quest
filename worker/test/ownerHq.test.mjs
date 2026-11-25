@@ -1152,3 +1152,26 @@ test("multi-lesson package atomically reserves all slots and one invoice confirm
  assert.equal((await readDiary(h.db,"member",rid,rows[1].id)).diary.details.agenda.includes("Apply fractions"),true);
  assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now)).error);
 });
+
+test("per-lesson instalments isolate paid and cancelled sessions and preserve quoted total",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("installment-alice@example.com","Alice");
+ const {createPackage}=await import("../src/supportPackages.ts");
+ const {confirmServiceOrder,recordManualInvoice,verifyManualInvoice,listOrders,cancelManualInvoiceOrder,hasOrder,cancelUnstartedOrder}=await import("../src/supportOrders.ts");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(r.status,201);const rid=r.json.id;
+ await stepUp(h,owner);
+ const lesson={title:"Fractions",objective:"Compare fractions",activities:"Draw fraction strips",check:"Explain equivalence",home_practice:"Draw another example",minutes:30,guide:"Tutor works through examples",answers:"Private answers"};
+ const plan={title:"Fractions",goal:"Compare fractions",subject:"Mathematics",year_level:"Year 5",lessons:[lesson,{...lesson,title:"Apply fractions"},{...lesson,title:"Practise"}]};
+ const q=await h.req("/admin/feedback/"+rid+"/quotes",{method:"POST",token:owner.token,body:{scope:"Three guided mathematics lessons",delivery:"Online tutoring package",amount_cents:7501,valid_days:7,confirmed:true,plan,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
+ assert.equal((await h.req("/learning-support/"+rid+"/quotes/"+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const now=new Date(),starts=[48,72,96].map(hours=>new Date(now.getTime()+hours*3600000).toISOString());
+ const b={quote_id:qid,starts,learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",payment_mode:"installments",deadline_hours:24,confirmed:true};
+ const made=await createPackage(h.db,"member",rid,b,now);assert.ok(made.id,JSON.stringify(made));
+ let rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.amount_cents),[2501,2500,2500]);assert.ok(rows.every(o=>o.installment));
+ assert.equal(await confirmServiceOrder(h.db,"member",rid,rows[1].id,now),false);assert.equal(await confirmServiceOrder(h.db,"member",rid,made.id,now),true);
+ for(const [i,o] of rows.entries())assert.ok((await recordManualInvoice(h.db,"member",rid,o.id,{reference:"INST-"+i,due_at:o.installment_due_at,sent_in_square:true},owner.id,now)).ok);
+ assert.equal(await verifyManualInvoice(h.db,"member",rid,rows[1].id,{reference:"INST-1",amount_cents:2500,paid_in_square:true},owner.id,now),true);
+ assert.equal(await cancelManualInvoiceOrder(h.db,"member",rid,made.id,{cancelled_unpaid_in_square:true},now),true);
+ rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.status),["cancelled","paid","confirmed"]);assert.equal(await hasOrder(h.db,"member",qid),true);
+ assert.ok((await createPackage(h.db,"member",rid,b,now)).error);
+ assert.equal(await verifyManualInvoice(h.db,"member",rid,rows[2].id,{reference:"INST-2",amount_cents:2500,paid_in_square:true},owner.id,new Date(Date.parse(rows[2].installment_due_at)+1000)),false);
+});
