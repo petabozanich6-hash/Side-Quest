@@ -1,3 +1,4 @@
+import {bookingDetails} from "./supportBookingNotifications";
 import type {Env} from "./types";
 import type {Channel} from "./supportOrders";
 import {sendEmail,layout,p,esc,SUPPORT_EMAIL} from "./email";
@@ -47,4 +48,20 @@ export async function processSupportInvoiceNotices(e:Env,now=new Date(),sender=s
   if(ok)sent++;else review++;
  }
  return {sent,review};
+}
+
+export async function sendFinalPaymentWarning(e:Env,channel:Channel,id:string,oid:string,b:any,now=new Date(),sender=sendEmail){
+ if(e.SUPPORT_PAYMENT_NOTICES!=="true"||!e.EMAIL||e.STAGING_KEY||e.STAGING_PRIVATE==="true"||b?.confirmed!==true||b?.checked_unpaid_in_square!==true)return {error:"Confirm Square has no completed, partial or pending payment; payment emails must be enabled."};
+ const d=await bookingDetails(e.DB,channel,id,oid),at=now.toISOString();
+ if(!d||d.order.status!=="confirmed"||!d.invoice||d.invoice.verified_at||d.invoice.due_at>at||d.order.mode!=="live"||!d.order.start_at||d.order.start_at<=at||d.order.package_sequence>1&&!d.order.installment_due_at||d.appointments.some(a=>a.status!=="confirmed"))return {error:"Only a future provisional appointment with an overdue, unverified invoice can receive this warning."};
+ const recipient=await e.DB.prepare(channel==="guest"?"SELECT email FROM support_guest_requests WHERE id=?":"SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+ if(!recipient?.email)return {error:"Parent email unavailable."};
+ const due=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"full",timeStyle:"short"}).format(new Date(d.invoice.due_at));
+ const subject="Side-Quest Learning Support: a reminder about your reserved time";
+ const message="Hi there,\n\nJust a friendly follow-up about your provisional Learning Support booking.\n\n"+d.lines.join("\n")+"\n\nPayment for Square invoice "+d.invoice.reference+" was due "+due+" (Sydney time). If payment remains outstanding, we will need to cancel the reservation so the time can be offered to another family. If you need a little more time or would like to discuss your payment arrangements, please get in touch as soon as possible. If you have already paid, please let us know rather than paying again.\n\nThank you,\nSide-Quest Learning";
+ const claim=await e.DB.prepare("INSERT OR IGNORE INTO support_payment_warnings(order_id,due_at,reference,recipient,body_text,status,attempted_at) SELECT o.id,i.due_at,i.reference,?,?,'sending',? FROM support_service_orders o JOIN support_manual_invoices i ON i.order_id=o.id WHERE o.id=? AND o.channel=? AND o.request_id=? AND o.status='confirmed' AND o.start_at>? AND i.reference=? AND i.due_at=? AND i.due_at<=? AND i.verified_at IS NULL AND i.cancelled_at IS NULL AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status='pending')").bind(recipient.email,message,at,oid,channel,id,at,d.invoice.reference,d.invoice.due_at,at).run();
+ if(!claim.meta?.changes)return {error:"Warning already attempted or reservation changed. Review correspondence before further action."};
+ let sent=false;try{sent=await sender(e,{to:recipient.email,subject,text:message,html:layout({preheader:"A friendly reminder about your provisional booking.",kicker:"Learning Support",heading:"A reminder about your reserved time",body:message.split("\n\n").map(s=>p(esc(s).replaceAll("\n","<br>"))).join(""),reason:"This is a service notification about your agreed appointment."})});}catch{}
+ await e.DB.prepare("UPDATE support_payment_warnings SET status=?,sent_at=? WHERE order_id=? AND status='sending'").bind(sent?"sent":"review",sent?new Date().toISOString():null,oid).run();
+ return {ok:sent,warning_email_sent:sent};
 }
