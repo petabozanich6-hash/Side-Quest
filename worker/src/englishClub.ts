@@ -55,3 +55,12 @@ export async function parentEnglishClasses(db:D1Database,requestId:string,email:
  await ensureEnglishClub(db);
  return (await db.prepare("SELECT c.id,c.topic,c.start_at,c.end_at,e.status,e.payment_due_at,e.invoice_reference,e.attendance FROM support_english_enrolments e JOIN support_english_classes c ON c.id=e.class_id JOIN support_guest_requests r ON r.id=e.request_id WHERE r.id=? AND r.email=? ORDER BY c.start_at DESC LIMIT 100").bind(requestId,email).all()).results||[];
 }
+
+export async function removeEmptyEnglishClass(db:D1Database,id:string,now=new Date()){
+ await ensureEnglishClub(db);
+ const results=await db.batch([
+ db.prepare("DELETE FROM support_busy_blocks WHERE id=? AND EXISTS(SELECT 1 FROM support_english_classes c WHERE c.id=? AND c.start_at>?) AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE class_id=?)").bind(id,id,now.toISOString(),id),
+ db.prepare("DELETE FROM support_english_classes WHERE id=? AND start_at>? AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE class_id=?) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks WHERE id=?)").bind(id,now.toISOString(),id,id)
+ ]);
+ return !!results[1]?.meta?.changes;
+}
