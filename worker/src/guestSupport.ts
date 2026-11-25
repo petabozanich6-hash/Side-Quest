@@ -23,11 +23,18 @@ const random=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toSt
 const digest=async(s:string)=>Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s))),b=>b.toString(16).padStart(2,"0")).join("");
 const valid=(s:unknown):s is string=>typeof s==="string"&&/^[a-f0-9]{64}$/.test(s);
 const emailOk=(s:string)=>s.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
-const enabled=(env:Env)=>env.SUPPORT_GUEST_ENABLED==="true";
+// Never use a caller-supplied Host header to construct a sign-in link.
+function guestOrigin(env:Env):string|null {
+ if(!env.STAGING_KEY)return SITE_URL;
+ const value=env.SUPPORT_GUEST_ORIGIN||"";
+ try{const u=new URL(value);return u.protocol==="https:"&&/^side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(u.hostname)&&u.origin===value?u.origin:null;}catch{return null;}
+}
+const enabled=(env:Env)=>env.SUPPORT_GUEST_ENABLED==="true"&&!!guestOrigin(env);
 const expires=(ms:number)=>new Date(Date.now()+ms).toISOString();
 export async function guestNotify(env:Env,email:string,owner=false){
  if(!emailOk(email))return false;
- const url=SITE_URL+(owner?"/parent/command-centre/learning-support":"/learning-support/portal");
+ const origin=guestOrigin(env);if(!origin)return false;
+ const url=origin+(owner?"/parent/command-centre/learning-support":"/learning-support/portal");
  return sendEmail(env,{to:email,subject:owner?"Side-Quest Learning Support: new activity":"Side-Quest Learning Support: an update is available",text:"Open the private portal to review the update: "+url,html:layout({preheader:"A private update is ready.",kicker:"Learning Support",heading:"You have an update",body:p("Open the private portal to review your update. No personal details are included in this email.")+button("Open portal",url),reason:"This is a service notification about a Learning Support request."})});
 }
 export async function guestQuotes(db:D1Database,id:string){
@@ -37,8 +44,8 @@ export async function guestQuotes(db:D1Database,id:string){
 export async function guestMessages(db:D1Database,id:string){return (await db.prepare("SELECT id,sender,body,created_at FROM support_guest_messages WHERE request_id=? ORDER BY created_at ASC,id ASC LIMIT 100").bind(id).all()).results||[];}
 export function registerGuestSupport(app:App){
  const root="/api/support-guest";
- app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","no-store");if(!enabled(c.env))return c.json({detail:"Standalone Learning Support is not open yet."},503);await ensureGuestSchema(c.env.DB);await next();});
- app.get(root+"/status",c=>c.json({available:!!c.env.EMAIL}));
+ app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","no-store");if(c.req.path===root+"/status")return next();if(!enabled(c.env))return c.json({detail:"Standalone Learning Support is not open yet."},503);await ensureGuestSchema(c.env.DB);await next();});
+ app.get(root+"/status",c=>c.json({available:enabled(c.env)&&!!c.env.EMAIL}));
  app.post(root+"/link",async c=>{
   if(!c.env.EMAIL)return c.json({detail:"Email access is temporarily unavailable."},503);
   const b=await c.req.json().catch(()=>null),email=typeof b?.email==="string"?b.email.trim().toLowerCase():"";
@@ -49,7 +56,7 @@ export function registerGuestSupport(app:App){
   const token=random();
   await db.prepare("DELETE FROM support_guest_links WHERE expires_at<=?").bind(nowIso()).run();
   await db.prepare("INSERT INTO support_guest_links(token_hash,email,expires_at) VALUES (?,?,?)").bind(await digest(token),email,expires(30*60000)).run();
-  const url=SITE_URL+"/learning-support/portal#token="+token;
+  const url=guestOrigin(c.env)+"/learning-support/portal#token="+token;
   const sent=await sendEmail(c.env,{to:email,subject:"Your Side-Quest Learning Support access link",text:"Open this link, then confirm sign-in: "+url+"\nExpires in 30 minutes. Ignore if you did not request it.",html:layout({preheader:"Your private Learning Support access link.",kicker:"Learning Support",heading:"Open your private portal",body:p("This single-use link expires in 30 minutes. No subscription or homeschooling account is created.")+button("Open Learning Support",url)+p("If you did not request access, ignore this message."),reason:"You requested a Learning Support access link."})});
   if(!sent){await db.prepare("DELETE FROM support_guest_links WHERE token_hash=?").bind(await digest(token)).run();return c.json({detail:"Could not deliver an access link. Please try again later."},503);}
   return c.json(same);

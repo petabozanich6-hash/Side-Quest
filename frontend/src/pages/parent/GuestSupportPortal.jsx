@@ -12,7 +12,7 @@ export default function GuestSupportPortal(){
  const [link,setLink]=useState(()=>new URLSearchParams(window.location.hash.slice(1)).get("token")||"");
  const [email,setEmail]=useState(""),[data,setData]=useState(null),[form,setForm]=useState(initial),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState(""),[messages,setMessages]=useState({});
  const load=async()=>{try{const r=await guestApi.get("/requests");setData(r.data);setError("");}catch(e){if(e.response?.status===401)setData(null);setError(e.message);}};
- useEffect(()=>{if(link){window.history.replaceState(null,"",window.location.pathname+window.location.search);}else if(guestToken())load();},[]);
+ useEffect(()=>{if(link){window.history.replaceState(window.history.state,"",window.location.pathname+window.location.search);}else if(guestToken())load();},[]);
  async function run(fn){if(busy)return;setBusy(true);setError("");setNotice("");try{await fn();}catch(e){setError(e.message);}finally{setBusy(false);}}
  const change=(k,v)=>setForm(f=>({...f,[k]:v}));
  return <main className="min-h-screen bg-[#F5EFE0] p-4 sm:p-8"><div className="max-w-3xl mx-auto space-y-5">

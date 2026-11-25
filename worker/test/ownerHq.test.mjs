@@ -880,7 +880,10 @@ test("learning support quote lifecycle: owner-only, private, expiry, non-member 
 
 
 test("standalone support verifies email, isolates guest sessions, and never creates a family or trial",async()=>{
- const {h,owner}=await ownerSetup();h.env.SUPPORT_GUEST_ENABLED="true";
+ const {h,owner}=await ownerSetup();
+ assert.equal((await h.req("/support-guest/status",{admin:false})).json.available,false);
+ assert.equal((await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"guest@example.com"}})).status,503);
+ h.env.SUPPORT_GUEST_ENABLED="true";
  const mail=[];h.env.EMAIL={send:async m=>{mail.push(m);return {messageId:"test"};}};
  const before=h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n;
  const link=await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"guest@example.com"}});

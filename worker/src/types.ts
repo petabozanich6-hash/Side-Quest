@@ -36,6 +36,8 @@ export type Env = {
   AI_BACKGROUND_BATCHES?: string;
   /** Standalone guest portal rollout; off until email and staging tests pass. */
   SUPPORT_GUEST_ENABLED?: string;
+  /** Exact isolated staging Worker origin; never taken from a request header. */
+  SUPPORT_GUEST_ORIGIN?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */
