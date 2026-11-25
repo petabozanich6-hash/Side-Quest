@@ -1,3 +1,4 @@
+import {readEnglishMaterials,downloadEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,englishVideoToken} from "./englishClubVideo";
 import {ENGLISH_CLUB_SERVICE,ENGLISH_CLUB_PREFIX,parentEnglishClasses} from "./englishClub";
 import type {App,Env} from "./types";
@@ -197,6 +198,17 @@ export function registerGuestSupport(app:App){
   if(b?.confirmed!==true||!await requestAppointmentCancellation(c.env.DB,"guest",id,oid))return c.json({detail:"Cancellation request unavailable. Please contact Side-Quest."},409);
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   return c.json({ok:true,pending:true});
+ });
+ app.get(root+"/requests/:id/english-club/:cid/materials",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  c.header("Cache-Control","private, no-store");
+  const r=await readEnglishMaterials(c.env,c.req.param("cid")??"",{requestId:c.req.param("id")??"",email:who.email});return r?c.json(r):c.json({detail:"Materials unavailable"},404);
+ });
+ app.get(root+"/requests/:id/english-club/:cid/materials/:fid",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  if(!(await hitRateLimit(c.env.DB,"english-file:"+await digest(who.email),20,60)).ok)return c.json({detail:"Try again shortly."},429);
+  c.header("Cache-Control","private, no-store");
+  const r=await downloadEnglishFile(c.env,c.req.param("cid")??"",c.req.param("fid")??"",{requestId:c.req.param("id")??"",email:who.email});return r?c.json(r):c.json({detail:"File unavailable"},404);
  });
  app.get(root+"/requests/:id/english-club/:cid/video",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
