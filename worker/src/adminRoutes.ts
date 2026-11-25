@@ -1,3 +1,4 @@
+import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
 import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
@@ -818,6 +819,19 @@ export function createAdminRoutes() {
   admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
     const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.get("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");const r=await readEnglishMaterials(c.env,c.req.param("cid")??"");return r?c.json(r):c.json({detail:"Club session unavailable"},404);
+  });
+  admin.post("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(!await saveEnglishMaterials(c.env,id,b))return c.json({detail:"Check the prompts, approved meeting URL, session time and fallback safeguards."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.materials.save",targetType:"english_club",targetId:id,detail:{fallback_open:b.fallback_open}});return c.json({ok:true});
+  });
+  admin.post("/english-club/classes/:cid/materials/:fid",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",fid=c.req.param("fid")??"",b=await readJson(c);
+    if(b.confirmed!==true||typeof b.grant!=="boolean"||!await changeEnglishFile(c.env.DB,id,fid,b.grant))return c.json({detail:"Choose an active reviewed learner resource that has not already been shared."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.resource.change",targetType:"english_club",targetId:id,detail:{file_id:fid,grant:b.grant}});return c.json({ok:true});
   });
   admin.get("/english-club/classes/:cid/video",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??""));
