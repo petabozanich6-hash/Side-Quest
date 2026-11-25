@@ -44,6 +44,7 @@ export type Env = {
   SUPPORT_RESOURCE_AI?: string;
   /** Opt-in only after stationery PDF and private email delivery are tested. */
   SUPPORT_STATIONERY_EMAIL?: string;
+  SUPPORT_TERMS_APPROVED_VERSION?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;
