@@ -38,6 +38,8 @@ import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } fr
 import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify, guestOrigin } from "./guestSupport";
 import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,recordManualInvoice,verifyManualInvoice,cancelManualInvoiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
+import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "./supportClassrooms";
+import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -641,6 +643,14 @@ export function createAdminRoutes() {
     return c.json({ok:true});
   });
 
+  admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
+    await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
+    const from=c.req.query("from")||"",to=c.req.query("to")||"";
+    if(!Number.isFinite(Date.parse(from))||!Number.isFinite(Date.parse(to))||Date.parse(to)<=Date.parse(from)||Date.parse(to)-Date.parse(from)>62*86400000)return c.json({detail:"Choose a date range of up to 62 days."},400);
+    const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND o.start_at<? AND o.end_at>? AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
+    const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,i.due_at FROM support_service_orders o JOIN support_manual_invoices i ON i.order_id=o.id WHERE o.status='confirmed' AND i.due_at<=? AND i.cancelled_at IS NULL ORDER BY i.due_at LIMIT 100").bind(nowIso()).all<any>()).results||[];
+    return c.json({appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
+  });
   for(const channel of ["member","guest"] as const){
     const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
     const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
@@ -654,6 +664,21 @@ export function createAdminRoutes() {
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
       return c.json(result,201);
+    });
+    admin.get(path+"/:oid/classroom",requirePermission("customers.read"),async c=>{
+      if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
+      const s=await classroomState(c.env.DB,channel,c.req.param("id"),c.req.param("oid"),true);
+      return s?c.json(s):c.json({detail:"Confirmed live booking required."},404);
+    });
+    admin.post(path+"/:oid/classroom-board",requirePermission("customers.read"),async c=>{
+      if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
+      const id=c.req.param("id"),oid=c.req.param("oid"),b=await readJson(c);
+      if(b.action==="open"||b.action==="close"){
+        if(b.confirmed!==true||!await setClassroomOpen(c.env.DB,channel,id,oid,b.action==="open"))return c.json({detail:"Cannot change this classroom now."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.classroom."+b.action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:true});
+      }
+      const r=await editClassroom(c.env.DB,channel,id,oid,true,b);return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
     admin.post(path+"/:oid/:action",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id"),oid=c.req.param("oid"),action=c.req.param("action"),b=await readJson(c);
@@ -671,7 +696,7 @@ export function createAdminRoutes() {
         await writeAudit(c.env.DB,{...actor(c),action:"support.payment_verified_manually",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
         const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
         const origin=guestOrigin(c.env),url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
-        const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. Classroom access is not yet available.")+button("View arrangements",url),reason:"This is a service notification."})});
+        const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. If classroom access is enabled, open your live appointment in the portal during the session window.")+button("View arrangements",url),reason:"This is a service notification."})});
         return c.json({ok:true,email_notification_sent:sent});
       }
       if(action==="cancel-invoice"){

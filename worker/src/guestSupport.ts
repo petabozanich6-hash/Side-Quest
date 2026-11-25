@@ -5,6 +5,7 @@ import {parseLearningSupport} from "./learningSupport";
 import {SITE_URL,sendEmail,layout,p,button} from "./email";
 import {loadPlatformSettings} from "./platformSettings";
 import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
+import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_links_expiry ON support_guest_links(expires_at)",
@@ -102,10 +103,24 @@ export function registerGuestSupport(app:App){
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
   return c.json({id,status:"new"},201);
  });
+ app.get(root+"/requests/:id/orders/:oid/classroom",async c=>{
+  if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const s=await classroomState(c.env.DB,"guest",id,c.req.param("oid"),false);return s?c.json(s):c.json({detail:"Confirmed live booking required."},404);
+ });
+ app.post(root+"/requests/:id/orders/:oid/classroom-board",async c=>{
+  if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const b=await c.req.json().catch(()=>null);if(!b||typeof b!=="object")return c.json({detail:"Invalid action"},400);
+  if(!(await hitRateLimit(c.env.DB,"support-board-guest:"+await digest(who.email),100,60)).ok)return c.json({detail:"Board is busy. Try again shortly."},429);
+  const s=await editClassroom(c.env.DB,"guest",id,c.req.param("oid"),false,b);return "error" in s?c.json({detail:s.error},409):c.json(s);
+ });
  app.get(root+"/requests/:id/orders",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
   const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
-  return c.json({orders:await listOrders(c.env.DB,"guest",id)});
+  return c.json({orders:await listOrders(c.env.DB,"guest",id),classroom_enabled:classroomEnabled(c.env)});
  });
  app.post(root+"/requests/:id/orders/:oid/confirm",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);

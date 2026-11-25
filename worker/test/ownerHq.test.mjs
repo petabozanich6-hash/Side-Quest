@@ -944,3 +944,30 @@ test("manual invoice: owner verifies full payment and overdue slot stays held",a
  assert.equal((await h.req(pp+"/orders",{admin:false,token:alice.token})).json.orders[0].status,"paid");
  assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"FREE_PREVIEW");
 });
+
+test("classroom board gates access on paid appointment, owner opening, time window and revision",async()=>{
+ const {h,owner}=await ownerSetup();
+ const {classroomState,setClassroomOpen,editClassroom}=await import("../src/supportClassrooms.ts");
+ const alice=await h.register("board-alice@example.com","Alice");
+ const bob=await h.register("board-bob@example.com","Bob");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Help with lunar phases.",consent:true}});
+ assert.equal(r.status,201,JSON.stringify(r.json));
+ const id=r.json.id,now=new Date(),start=new Date(now.getTime()+120000),end=new Date(now.getTime()+32*60000),oid="board-order";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"member",id,"board-quote",0,"Science support","Online","Agreed terms","live",start.toISOString(),end.toISOString(),"confirmed",now.toISOString(),now.toISOString());
+ assert.equal(await classroomState(h.db,"member",id,oid,false,now),null);
+ h.db.raw.prepare("UPDATE support_service_orders SET status='paid' WHERE id=?").run(oid);
+ assert.equal((await classroomState(h.db,"member",id,oid,false,now)).open,false);
+ assert.equal(await setClassroomOpen(h.db,"member",id,oid,true,now),true);
+ assert.equal((await editClassroom(h.db,"member",id,oid,false,{action:"text",text:"not allowed",revision:0},now)).error,"This board action is not available.");
+ assert.equal((await editClassroom(h.db,"member",id,oid,false,{action:"stroke",points:[[0,0],[1,1]],color:"#163b2c",revision:0},now)).ok,true);
+ assert.ok((await editClassroom(h.db,"member",id,oid,true,{action:"text",text:"stale",revision:0},now)).error);
+ h.env.SUPPORT_CLASSROOM_ENABLED="true";
+ const path="/learning-support/"+id+"/orders/"+oid+"/classroom";
+ assert.equal((await h.req(path,{admin:false,token:bob.token})).status,404);
+ assert.equal((await h.req(path,{admin:false,token:alice.token})).json.board.strokes.length,1);
+ await stepUp(h,owner);
+ assert.equal((await h.req("/admin/support-calendar?from="+encodeURIComponent(now.toISOString())+"&to="+encodeURIComponent(new Date(now.getTime()+86400000).toISOString()),{token:owner.token})).json.appointments.some(o=>o.id===oid),true);
+ assert.equal(await setClassroomOpen(h.db,"member",id,oid,false,now),true);
+ assert.equal((await classroomState(h.db,"member",id,oid,false,now)).board.strokes.length,0);
+ assert.equal((await classroomState(h.db,"member",id,oid,true,new Date(end.getTime()+11*60000))).in_window,false);
+});

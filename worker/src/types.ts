@@ -38,6 +38,8 @@ export type Env = {
   SUPPORT_GUEST_ENABLED?: string;
   /** Exact isolated staging Worker origin; never taken from a request header. */
   SUPPORT_GUEST_ORIGIN?: string;
+  /** Teaching board pilot, disabled until staging verifies access and safety. */
+  SUPPORT_CLASSROOM_ENABLED?: string;
   /** Test-only checkout; production Square credentials are never accepted. */
   SUPPORT_CHECKOUT_TEST?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
