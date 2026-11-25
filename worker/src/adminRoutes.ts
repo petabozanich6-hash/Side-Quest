@@ -1,3 +1,4 @@
+import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
@@ -784,6 +785,7 @@ export function createAdminRoutes() {
   });
   admin.post("/support-calendar/blocks/:bid/remove",requirePermission("customers.read"),async c=>{
     const b=await readJson(c),id=c.req.param("bid")??"";if(b.confirmed!==true)return c.json({detail:"Confirm removal."},400);
+    if(id.startsWith("english-club-"))return c.json({detail:"This block belongs to English Club. Manage the class in its dedicated workspace."},409);
     await ensureOrderSchema(c.env.DB);const r=await c.env.DB.prepare("DELETE FROM support_busy_blocks WHERE id=?").bind(id).run();
     if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
     await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
@@ -808,6 +810,22 @@ export function createAdminRoutes() {
     const starts=await suggestSupportStarts(c.env.DB,minutes,prep,wrap);
     if(!starts)return c.json({detail:"Invalid session length or preparation buffers."},400);
     c.header("Cache-Control","private, no-store");return c.json({starts,timezone:"Australia/Sydney"});
+  });
+  admin.get("/english-club",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);c.header("Cache-Control","private, no-store");return c.json(await listEnglishClub(c.env.DB));
+  });
+  admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
+    const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
+    const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.create",targetType:"english_club",targetId:r.id,detail:{class_id:cid}});return c.json(r,201);
+  });
+  admin.post("/english-club/classes/:cid/enrolments/:eid",requirePermission("customers.read"),async c=>{
+    const cid=c.req.param("cid")??"",eid=c.req.param("eid")??"",b=await readJson(c);
+    if(!await updateEnglishEnrolment(c.env.DB,cid,eid,b))return c.json({detail:"Check the current enrolment status and Square confirmation."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.update",targetType:"english_club",targetId:eid,detail:{class_id:cid,action:b.action}});return c.json({ok:true});
   });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
