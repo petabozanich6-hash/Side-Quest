@@ -1,3 +1,4 @@
+import {bookingDetails} from "./supportBookingNotifications";
 import {lessonProgress,reportFromCheckpoints} from "./supportLessonProgress";
 import type {Env} from "./types";
 import {SERVICE_TERMS_VERSION,SERVICE_TERMS_DATE,SERVICE_TERMS_FIELDS,SERVICE_TERMS_SECTIONS} from "./supportServiceTerms";
@@ -9,6 +10,7 @@ import {sendEmail,layout,p,esc,button,SUPPORT_EMAIL,SITE_URL} from "./email";
 export const STATIONERY={
  terms:{title:"Learning Support Service Agreement",fields:SERVICE_TERMS_FIELDS},
  letter:{title:"Parent correspondence",fields:["Message"]},
+ booking_payment:{title:"Provisional booking and payment arrangements",fields:["Reserved appointment times","Payment arrangements","Next steps"]},
  proposal:{title:"Learning support proposal",fields:["What we understand","Suggested support","Proposed arrangements and fees","Next steps"]},
  progress:{title:"Learning progress report",fields:["Learning focus","Progress and strengths","Areas to practise","Recommended next steps"]},
  summary:{title:"Session summary",fields:["What we worked on","What went well","Follow-up activities"]},
@@ -107,7 +109,15 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
  const recipient=channel==="guest"?await e.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await e.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
  if(!recipient?.email)return {error:"Parent email not found."} as const;
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"}).format(new Date());
- try{if(b?.from_session_diary===true){
+ try{if(b?.from_booking===true){
+ if(!oid)return {error:"Select the reserved appointment first."};
+ const details=await bookingDetails(e.DB,channel,id,oid);
+ if(!details||details.order.status!=="confirmed"||!details.invoice||details.invoice.verified_at||details.order.package_sequence>1&&!details.order.installment_due_at)return {error:"Parent must accept the arrangements and the Square invoice must be recorded before preparing a payment request."};
+ if(details.appointments.some(a=>a.status!=="confirmed"))return {error:"The reservation changed. Review the appointments before sending."};
+ const due=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"full",timeStyle:"short"}).format(new Date(details.invoice.due_at));
+ const amount=new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(details.order.amount_cents/100);
+ b={kind:"booking_payment",sections:[details.lines.join("\n")||details.order.delivery,"Square invoice: "+details.invoice.reference+"\nAmount: "+amount+" AUD\nPayment deadline: "+due+" (Sydney time)","Your selected time is provisionally reserved, not yet confirmed. Once payment is verified, Side-Quest will send a booking confirmation. If you have already paid, please do not pay again. Contact us if your arrangements change."]};
+ }if(b?.from_session_diary===true){
  if(!oid)return {error:"Choose a completed lesson."};
  const order=await getOrder(e.DB,channel,id,oid);
  if(!order||order.mode!=="live"||!["paid","completed"].includes(order.status)||!order.end_at||Date.parse(order.end_at)>Date.now())return {error:"A delivered live lesson is required."};
