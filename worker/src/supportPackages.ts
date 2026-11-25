@@ -39,7 +39,7 @@ export async function createPackage(db:D1Database,channel:Channel,id:string,b:an
   if(i>0)stmts.push(db.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,channel,request_id,?,?,?,delivery,terms,'live',?,?,?,? FROM support_service_orders WHERE id=?").bind(s.id,"package-session:"+s.id,charge(i),s.title,s.start,s.end,when,when,root.id));
   stmts.push(db.prepare("INSERT INTO support_package_sessions(order_id,root_id,quote_id,sequence,total) SELECT id,?,?,?,? FROM support_service_orders WHERE id=?").bind(root.id,qid,i+1,sessions.length,s.id));
   if(installments)stmts.push(db.prepare("INSERT INTO support_installment_terms(order_id,due_at) SELECT id,? FROM support_service_orders WHERE id=?").bind(new Date(Date.parse(s.start)-lead*3600000).toISOString(),s.id));
-  const l=plan.lessons[i],g=plan?.tutor_guides?.[i];
+  const l=lessons[i],g=plan?.tutor_guides?.[i];
   const details={subject:plan?.subject||"",year_level:plan?.year_level||"",objective:l.objective,agenda:[l.title,l.activities,g?.guide].filter(Boolean).join("\n").slice(0,2500),approach:[l.check,g?.answers].filter(Boolean).join("\n").slice(0,1000),follow_up:l.home_practice};
   stmts.push(db.prepare("INSERT INTO support_tutor_diary(order_id,learner_label,prep_minutes,wrap_minutes,details_json,updated_at) SELECT id,?,?,?,?,? FROM support_service_orders WHERE id=?").bind(label,prep,wrap,JSON.stringify(details),when,s.id));
  }
