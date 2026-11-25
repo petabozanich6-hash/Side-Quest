@@ -69,6 +69,8 @@ async function stepUp(h, owner, auth) {
   assert.equal(a.status, 200, JSON.stringify(a.json));
   const r = await h.req("/admin/security/step-up/verify", { method: "POST", token: owner.token, body: { response: await auth.authenticate(a.json.options, ORIGIN, "localhost") } });
   assert.equal(r.status, 200, JSON.stringify(r.json));
+  const remaining=Date.parse(r.json.elevated_until)-Date.now();
+  assert.ok(remaining>119*60000&&remaining<=120*60000,"Owner HQ must unlock for a bounded two-hour work session");
   return auth;
 }
 
@@ -988,6 +990,36 @@ test("guest family directory groups verified email enquiries, preserves existing
  const latest=mail.at(-1);assert.match(latest.text,/Review your proposal/);assert.ok(latest.text.includes("?enquiry="+first+"#token="));const accessToken=latest.text.match(/#token=([a-f0-9]{64})/)[1];
  const signed=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}});assert.equal(signed.status,200);assert.equal(signed.json.email,"family-a@example.com");
  assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}})).status,400);
+ // A single owner-approved proposal carries time options without an additional owner invitation.
+ const {saveAvailability}=await import("../src/supportPublicAvailability.ts");
+ assert.equal(await saveAvailability(h.db,{enabled:false,revision:0,windows:[0,1,2,3,4,5,6].map(day=>({day,start:"09:00",end:"13:00"})),confirmed:true}),true);
+ const auto=await h.req("/admin/support-guests/"+second+"/quotes",{method:"POST",token:owner.token,body:{scope:"One online mathematics session",delivery:"Online 30 minutes",amount_cents:2500,valid_days:7,confirmed:true,session_minutes:[30],auto_offer_times:true,learner_label:"Learner A"}});
+ assert.equal(auto.status,201,JSON.stringify(auto.json));assert.equal(auto.json.appointment_offer,"ready");
+ const slotPath="/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/slots";
+ const before=await h.req(slotPath,{admin:false,headers});assert.equal(before.status,200,JSON.stringify(before.json));assert.ok(before.json.offer.starts.length);assert.equal(before.json.offer.can_select,false);
+ assert.equal((await h.req(slotPath,{admin:false,headers:otherHeaders})).status,404);
+ assert.equal((await h.req("/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/respond",{method:"POST",admin:false,headers,body:{response:"interested",confirmed:true}})).status,200);
+ const after=await h.req(slotPath,{admin:false,headers});assert.equal(after.json.offer.can_select,true);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(second).n,0,"proposal or acceptance alone cannot reserve a time");
+ const pkg=await h.req("/admin/support-guests/"+other+"/quotes",{method:"POST",token:owner.token,body:{scope:"Four online mathematics sessions",delivery:"Four 30 minute sessions",amount_cents:10000,valid_days:7,confirmed:true,session_minutes:[30,30,30,30],auto_offer_times:true,learner_label:"Private nickname",payment_mode:"installments",deadline_hours:24}});
+ assert.equal(pkg.status,201,JSON.stringify(pkg.json));assert.equal(pkg.json.appointment_offer,"ready");
+ const pkgPath="/support-guest/requests/"+other+"/quotes/"+pkg.json.id+"/slots";
+ const preview=await h.req(pkgPath,{admin:false,headers:otherHeaders});assert.equal(preview.status,200,JSON.stringify(preview.json));assert.deepEqual(preview.json.offer.package_minutes,[30,30,30,30]);assert.equal(preview.json.offer.can_select,false);assert.ok(!JSON.stringify(preview.json).includes("Private nickname"));
+ assert.equal((await h.req(pkgPath,{admin:false,headers})).status,404);
+ const selected=preview.json.offer.starts.slice(0,4);
+ const payload={offer_id:preview.json.offer.id,starts:selected,confirmed:true};
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload})).status,409);
+ assert.equal((await h.req("/support-guest/requests/"+other+"/quotes/"+pkg.json.id+"/respond",{method:"POST",admin:false,headers:otherHeaders,body:{response:"interested",confirmed:true}})).status,200);
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers,body:payload})).status,404);
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:{...payload,starts:[selected[0],selected[0],selected[2],selected[3]]}})).status,409);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(other).n,0);
+ const booked=await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload});
+ assert.equal(booked.status,201,JSON.stringify(booked.json));assert.equal(booked.json.count,4);
+ const orders=await h.req("/support-guest/requests/"+other+"/orders",{admin:false,headers:otherHeaders});
+ assert.equal(orders.status,200,JSON.stringify(orders.json));assert.equal(orders.json.orders.length,4);
+ assert.ok(orders.json.orders.every(o=>o.status==="awaiting_confirmation"&&o.amount_cents===2500&&o.installment&&o.installment_due_at&&!o.invoice_reference));
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload})).status,409);
+
 });
 
 test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{

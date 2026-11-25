@@ -1,3 +1,6 @@
+import {readEnglishMaterials,downloadEnglishFile} from "./englishClubMaterials";
+import {englishVideoState,englishVideoToken} from "./englishClubVideo";
+import {ENGLISH_CLUB_SERVICE,ENGLISH_CLUB_PREFIX,parentEnglishClasses} from "./englishClub";
 import type {App,Env} from "./types";
 import {nowIso} from "./types";
 import {hitRateLimit} from "./adminAudit";
@@ -130,13 +133,15 @@ export function registerGuestSupport(app:App){
  app.post(root+"/requests",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
   const b=await c.req.json().catch(()=>null);if(!b||typeof b!=="object"||Array.isArray(b))return c.json({detail:"Enter your enquiry."},400);
-  const parsed=parseLearningSupport(b),name=typeof b.parent_name==="string"?b.parent_name.trim():"";
+  const club=b.service===ENGLISH_CLUB_SERVICE;
+  const parsed=parseLearningSupport(club?{...b,subject:"English",service:"Live online support"}:b),name=typeof b.parent_name==="string"?b.parent_name.trim():"";
+  if(club&&b.subject!=="English")return c.json({detail:"Choose English as the learning area for English Club."},400);
   if("error" in parsed)return c.json({detail:parsed.error},400);
   if(name.length<2||name.length>80)return c.json({detail:"Enter your name (2–80 characters)."},400);
   if(!(await loadPlatformSettings(c.env.DB)).features.registrationsOpen)return c.json({detail:"New enquiries are temporarily paused."},503);
   if(!(await hitRateLimit(c.env.DB,"guest-request:"+await digest(who.email),5,3600)).ok)return c.json({detail:"Too many enquiries. Try again later."},429);
   const id=crypto.randomUUID(),now=nowIso();
-  await c.env.DB.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").bind(id,who.email,name,parsed.subject,parsed.message,now,now).run();
+  await c.env.DB.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").bind(id,who.email,name,club?ENGLISH_CLUB_PREFIX+b.year:parsed.subject,club?parsed.message.replace("Preferred support: Live online support","Preferred support: "+ENGLISH_CLUB_SERVICE):parsed.message,now,now).run();
   try{if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true,id);}catch{ /* The durable enquiry remains in Owner HQ even if email fails. */ }
   return c.json({id,status:"new"},201);
  });
@@ -193,6 +198,32 @@ export function registerGuestSupport(app:App){
   if(b?.confirmed!==true||!await requestAppointmentCancellation(c.env.DB,"guest",id,oid))return c.json({detail:"Cancellation request unavailable. Please contact Side-Quest."},409);
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   return c.json({ok:true,pending:true});
+ });
+ app.get(root+"/requests/:id/english-club/:cid/materials",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  c.header("Cache-Control","private, no-store");
+  const r=await readEnglishMaterials(c.env,c.req.param("cid")??"",{requestId:c.req.param("id")??"",email:who.email});return r?c.json(r):c.json({detail:"Materials unavailable"},404);
+ });
+ app.get(root+"/requests/:id/english-club/:cid/materials/:fid",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  if(!(await hitRateLimit(c.env.DB,"english-file:"+await digest(who.email),20,60)).ok)return c.json({detail:"Try again shortly."},429);
+  c.header("Cache-Control","private, no-store");
+  const r=await downloadEnglishFile(c.env,c.req.param("cid")??"",c.req.param("fid")??"",{requestId:c.req.param("id")??"",email:who.email});return r?c.json(r):c.json({detail:"File unavailable"},404);
+ });
+ app.get(root+"/requests/:id/english-club/:cid/video",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??"",{requestId:c.req.param("id")??"",email:who.email}));
+ });
+ app.post(root+"/requests/:id/english-club/:cid/video-token",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  if(!(await hitRateLimit(c.env.DB,"english-video:"+await digest(who.email),8,60)).ok)return c.json({detail:"Try again shortly."},429);
+  c.header("Cache-Control","private, no-store");const r=await englishVideoToken(c.env,c.req.param("cid")??"",{requestId:c.req.param("id")??"",email:who.email});return "error" in r?c.json({detail:r.error},409):c.json(r);
+ });
+ app.get(root+"/requests/:id/english-club",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"";
+  if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=? AND subject LIKE 'English Club: %'").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  c.header("Cache-Control","private, no-store");return c.json({classes:await parentEnglishClasses(c.env.DB,id,who.email)});
  });
  app.get(root+"/requests/:id/orders/:oid/service-terms",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);

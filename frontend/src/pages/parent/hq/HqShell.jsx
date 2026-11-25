@@ -52,7 +52,7 @@ export default function HqShell() {
     return () => { current = false; clearInterval(timer); };
   }, [state.phase, location.pathname]);
 
-  // Re-check when the 15-minute step-up runs out.
+  // Re-check when the bounded step-up runs out.
   useEffect(() => {
     if (state.phase !== "open" || !state.status?.elevated_until) return undefined;
     const ms = new Date(state.status.elevated_until).getTime() - Date.now();
@@ -108,7 +108,7 @@ export default function HqShell() {
         {state.phase === "locked" && (
           <div className="paper-card p-5 space-y-3" data-testid="hq-locked">
             <h2 className="font-display text-lg font-bold flex items-center gap-2" style={{ color: GREEN }}><Lock size={18} /> Confirm it's you</h2>
-            <p className="text-sm text-stone-700">Use your passkey to unlock Owner HQ for {state.status?.step_up_minutes ?? 15} minutes on this sign-in.</p>
+            <p className="text-sm text-stone-700">Use your passkey to unlock Owner HQ for {state.status?.step_up_minutes ?? 120} minutes on this sign-in.</p>
             <Button onClick={() => run(stepUpWithPasskey)} disabled={busy} data-testid="hq-step-up">{busy ? "Waiting for your passkey…" : "Unlock with passkey"}</Button>
           </div>
         )}

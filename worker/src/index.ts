@@ -33,6 +33,7 @@ import { registerFeedback } from "./feedback";
 import { registerGuestSupport } from "./guestSupport";
 import { registerPublicAvailability } from "./supportPublicAvailability";
 import {cleanupVideo} from "./supportVideo";
+import {cleanupEnglishVideo} from "./englishClubVideo";
 import {runDailyBriefing} from "./supportBriefing";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
@@ -374,6 +375,7 @@ export default {
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
     try { await processSupportInvoiceNotices(env); } catch { console.error("Learning Support payment notices need review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
+    try { await cleanupEnglishVideo(env); } catch { console.error("English Club video cleanup needs review"); }
     try { await runDailyBriefing(env); } catch { console.error("daily owner briefing needs review"); }
     // Disabled until a separate staging trial. Recheck the platform cap before every scheduled attempt.
     if(env.AI_BACKGROUND_BATCHES === "true" && env.AI) {

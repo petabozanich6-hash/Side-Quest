@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS support_english_video_rooms (class_id TEXT PRIMARY KEY REFERENCES support_english_classes(id) ON DELETE CASCADE, meeting_id TEXT UNIQUE, status TEXT NOT NULL CHECK(status IN ('creating','ready','closing','closed','review')), expires_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS support_english_video_participants (class_id TEXT NOT NULL REFERENCES support_english_video_rooms(class_id) ON DELETE CASCADE, seat_id TEXT NOT NULL, participant_id TEXT, status TEXT NOT NULL CHECK(status IN ('creating','ready','review')), PRIMARY KEY(class_id,seat_id));

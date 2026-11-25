@@ -1,3 +1,6 @@
+import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
+import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
+import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
@@ -11,7 +14,7 @@ import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
  *  2. CSRF: changes need an allow-listed Origin that matches this site, a same-origin fetch, and the
  *     X-SideQuest-Admin header (which a cross-site form cannot send).
  *  3. Rate limits per user (D1, shared by every Worker instance).
- *  4. Passkey step-up (15 minutes, this sign-in only) for everything except the step-up itself.
+ *  4. Passkey step-up (120 minutes, this sign-in only) for everything except the step-up itself.
  *  5. Per-route permission checks, input validation and an audit record for every change.
  *
  * There is deliberately no endpoint that grants or changes roles.
@@ -55,8 +58,8 @@ import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
-import {offerSlots,readSlots,removeSlots} from "./supportSlots";
-import {createPackage} from "./supportPackages";
+import {offerSlots,readSlots,removeSlots,offerStandardQuoteTimes} from "./supportSlots";
+import {createPackage,offerPackageTimes} from "./supportPackages";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -464,6 +467,10 @@ export function createAdminRoutes() {
     // Expired offers remain immutable in history. Explicitly withdraw them before making another proposal.
     const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
     const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
+    const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
+    const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
+    if((paymentMode!=="installments"&&paymentMode!=="upfront")||typeof lead!=="number"||!Number.isInteger(lead)||lead<1||lead>168)return c.json({detail:"Choose a valid payment arrangement and deadline."},400);
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require standard live sessions and a learner nickname."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id);
     const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when,schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
@@ -472,7 +479,8 @@ export function createAdminRoutes() {
       await c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)").bind(crypto.randomUUID(),id,c.get("user").id,"A learning support proposal is ready. Open Learning Support in your Parent Hub to review the scope, total price and delivery details.",when).run();
       await writeAudit(c.env.DB,{...actor(c),action:"learning_support.quote",targetType:"feedback",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
     }catch{console.warn("learning support quote notification or audit unavailable");}
-    return c.json({ok:true,id:qid},201);
+    const appointment_offer=auto?(schedule.schedule!.length>1?await offerPackageTimes(c.env.DB,"member",id,qid,schedule.schedule!,autoLabel,paymentMode,lead,now):await offerStandardQuoteTimes(c.env.DB,"member",id,qid,schedule.schedule![0],autoLabel,now)):null;
+    return c.json({ok:true,id:qid,appointment_offer},201);
   });
   admin.post("/feedback/:id/quotes/:quoteId/withdraw",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
@@ -721,11 +729,16 @@ export function createAdminRoutes() {
     const qid=crypto.randomUUID(),now=new Date();
     const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
     const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
+    const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
+    const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
+    if((paymentMode!=="installments"&&paymentMode!=="upfront")||typeof lead!=="number"||!Number.isInteger(lead)||lead<1||lead>168)return c.json({detail:"Choose a valid payment arrangement and deadline."},400);
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require standard live sessions and a learner nickname."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id);
     const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString(),schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.quote",targetType:"support_guest",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
-    return c.json({id:qid,email_notification_sent:await guestNotify(c.env,row.email,false,id,"proposal")},201);
+    const appointment_offer=auto?(schedule.schedule!.length>1?await offerPackageTimes(c.env.DB,"guest",id,qid,schedule.schedule!,autoLabel,paymentMode,lead,now):await offerStandardQuoteTimes(c.env.DB,"guest",id,qid,schedule.schedule![0],autoLabel,now)):null;
+    return c.json({id:qid,appointment_offer,email_notification_sent:await guestNotify(c.env,row.email,false,id,"proposal")},201);
   });
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
@@ -774,6 +787,7 @@ export function createAdminRoutes() {
   });
   admin.post("/support-calendar/blocks/:bid/remove",requirePermission("customers.read"),async c=>{
     const b=await readJson(c),id=c.req.param("bid")??"";if(b.confirmed!==true)return c.json({detail:"Confirm removal."},400);
+    if(id.startsWith("english-club-"))return c.json({detail:"This block belongs to English Club. Manage the class in its dedicated workspace."},409);
     await ensureOrderSchema(c.env.DB);const r=await c.env.DB.prepare("DELETE FROM support_busy_blocks WHERE id=?").bind(id).run();
     if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
     await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
@@ -798,6 +812,54 @@ export function createAdminRoutes() {
     const starts=await suggestSupportStarts(c.env.DB,minutes,prep,wrap);
     if(!starts)return c.json({detail:"Invalid session length or preparation buffers."},400);
     c.header("Cache-Control","private, no-store");return c.json({starts,timezone:"Australia/Sydney"});
+  });
+  admin.get("/english-club",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);c.header("Cache-Control","private, no-store");return c.json(await listEnglishClub(c.env.DB));
+  });
+  admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
+    const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.get("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");const r=await readEnglishMaterials(c.env,c.req.param("cid")??"");return r?c.json(r):c.json({detail:"Club session unavailable"},404);
+  });
+  admin.post("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(!await saveEnglishMaterials(c.env,id,b))return c.json({detail:"Check the prompts, approved meeting URL, session time and fallback safeguards."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.materials.save",targetType:"english_club",targetId:id,detail:{fallback_open:b.fallback_open}});return c.json({ok:true});
+  });
+  admin.post("/english-club/classes/:cid/materials/:fid",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",fid=c.req.param("fid")??"",b=await readJson(c);
+    if(b.confirmed!==true||typeof b.grant!=="boolean"||!await changeEnglishFile(c.env.DB,id,fid,b.grant))return c.json({detail:"Choose an active reviewed learner resource that has not already been shared."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.resource.change",targetType:"english_club",targetId:id,detail:{file_id:fid,grant:b.grant}});return c.json({ok:true});
+  });
+  admin.get("/english-club/classes/:cid/video",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??""));
+  });
+  admin.post("/english-club/classes/:cid/video-prepare",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm group supervision before opening."},400);
+    const r=await prepareEnglishVideo(c.env,c.req.param("cid")??"");return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/classes/:cid/video-token",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");const r=await englishVideoToken(c.env,c.req.param("cid")??"");return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/classes/:cid/video-close",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm ending the group room."},400);
+    return await closeEnglishVideo(c.env,c.req.param("cid")??"")?c.json({ok:true}):c.json({detail:"Closure not verified. Check the provider dashboard; token access is blocked for closing rooms."},409);
+  });
+  admin.post("/english-club/classes/:cid/remove",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
+    const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.create",targetType:"english_club",targetId:r.id,detail:{class_id:cid}});return c.json(r,201);
+  });
+  admin.post("/english-club/classes/:cid/enrolments/:eid",requirePermission("customers.read"),async c=>{
+    const cid=c.req.param("cid")??"",eid=c.req.param("eid")??"",b=await readJson(c);
+    if(!await updateEnglishEnrolment(c.env.DB,cid,eid,b))return c.json({detail:"Check the current enrolment status and Square confirmation."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.update",targetType:"english_club",targetId:eid,detail:{class_id:cid,action:b.action}});return c.json({ok:true});
   });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);

@@ -47,6 +47,10 @@ export type Env = {
   SUPPORT_TERMS_REQUIRED?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
+  SUPPORT_ENGLISH_VIDEO_TEST?: string;
+  SUPPORT_ENGLISH_FALLBACK_TEST?: string;
+  SUPPORT_ENGLISH_VIDEO_HOST_PRESET?: string;
+  SUPPORT_ENGLISH_VIDEO_LEARNER_PRESET?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;
   SUPPORT_VIDEO_APP?: string;
   SUPPORT_VIDEO_TOKEN?: string;
