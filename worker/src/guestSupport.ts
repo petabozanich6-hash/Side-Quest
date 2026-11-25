@@ -42,11 +42,31 @@ export function guestOrigin(env:Env):string|null {
 }
 const enabled=(env:Env)=>env.SUPPORT_GUEST_ENABLED==="true"&&!!guestOrigin(env);
 const expires=(ms:number)=>new Date(Date.now()+ms).toISOString();
-export async function guestNotify(env:Env,email:string,owner=false,reference?:string){
+export async function guestNotify(env:Env,email:string,owner=false,reference?:string,event:"proposal"|"message"|"update"="update"){
  if(!emailOk(email))return false;
  const origin=guestOrigin(env);if(!origin)return false;
- const url=origin+(owner?"/parent/command-centre/learning-support":"/learning-support/portal");
- return sendEmail(env,{to:email,subject:owner?(reference?"Side-Quest Learning Support: new enquiry":"Side-Quest Learning Support: new activity"):"Side-Quest Learning Support: an update is available",text:(reference?"New enquiry reference: "+reference+"\n":"")+"Open the private portal to review the update: "+url,html:layout({preheader:"A private update is ready.",kicker:"Learning Support",heading:"You have an update",body:p("Open the private portal to review your update. No personal details are included in this email.")+button("Open portal",url),reason:"This is a service notification about a Learning Support request."})});
+ let url=origin+(owner?"/parent/command-centre/learning-support":"/learning-support/portal"),tokenHash="";
+ const subject=owner?(reference?"Side-Quest Learning Support: new enquiry":"Side-Quest Learning Support: new activity"):event==="proposal"?"Your Side-Quest Learning Support proposal is ready":event==="message"?"You have a reply from Side-Quest Learning Support":"Side-Quest Learning Support: an update is available";
+ const heading=owner?"New Learning Support activity":event==="proposal"?"Your proposal is ready":event==="message"?"You have a new reply":"You have an update";
+ try{
+  if(owner&&reference){
+   const f=await env.DB.prepare("SELECT f.id FROM support_guest_families f JOIN support_guest_requests r ON r.email=f.email WHERE r.id=?").bind(reference).first<{id:string}>();
+   if(f)url+="?family="+encodeURIComponent(f.id)+"&enquiry="+encodeURIComponent(reference);
+  }
+  if(!owner){
+   // Recipient is the stored verified parent address supplied by an authorised service action.
+   // A one-use notification link avoids asking the parent to request a second email.
+   const token=random();tokenHash=await digest(token);
+   await env.DB.prepare("DELETE FROM support_guest_links WHERE expires_at<=?").bind(nowIso()).run();
+   await env.DB.prepare("INSERT INTO support_guest_links(token_hash,email,expires_at) VALUES (?,?,?)").bind(tokenHash,email,expires(24*3600000)).run();
+   url+="#token="+token;
+  }
+  const guidance=owner?"Review the activity in Owner HQ.":event==="proposal"?"Review your proposal and respond in your private portal.":event==="message"?"Read your reply in your private portal.":"Review the update in your private portal.";
+  const access=owner?"":" This single-use access link expires in 24 hours. If it expires, request a new link using your verified email.";
+  const sent=await sendEmail(env,{to:email,subject,text:guidance+access+"\n"+url,html:layout({preheader:guidance,kicker:"Learning Support",heading,body:p(guidance+access)+button(owner?"Open Owner HQ":"Review in private portal",url),reason:"This is a service notification about a Learning Support request."})});
+  if(!sent&&tokenHash)await env.DB.prepare("DELETE FROM support_guest_links WHERE token_hash=?").bind(tokenHash).run();
+  return sent;
+ }catch{if(tokenHash)try{await env.DB.prepare("DELETE FROM support_guest_links WHERE token_hash=?").bind(tokenHash).run();}catch{}return false;}
 }
 export async function guestQuotes(db:D1Database,id:string){
  const {results}=await db.prepare("SELECT id,scope,delivery,amount_cents,currency,status,created_at,expires_at,responded_at,withdrawn_at FROM support_guest_quotes WHERE request_id=? ORDER BY created_at DESC,id DESC LIMIT 100").bind(id).all<any>();
