@@ -1,5 +1,5 @@
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
-import {readInvoiceAttempt,createInvoiceAttempt,publishInvoiceAttempt} from "./supportInvoiceAttempts";
+import {readInvoiceAttempt,createInvoiceAttempt,publishInvoiceAttempt,checkInvoiceAttempt,previewInvoiceEmail} from "./supportInvoiceAttempts";
 /**
  * Owner HQ: owner-only administration API (/api/admin/*).
  *
@@ -899,6 +899,11 @@ export function createAdminRoutes() {
         return c.json({ok:sent,email_notification_sent:sent});
       }
       if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
+      if(action==="square-invoice-check"||action==="square-invoice-email-preview"){
+        c.header("Cache-Control","private, no-store");
+        const r=action==="square-invoice-check"?await checkInvoiceAttempt(c.env,channel,id,oid):await previewInvoiceEmail(c.env,channel,id,oid);
+        return "error" in r?c.json({detail:r.error},409):c.json(r);
+      }
       if(action==="square-invoice-draft"||action==="square-invoice-publish"){
         const r=action==="square-invoice-draft"?await createInvoiceAttempt(c.env,channel,id,oid,b):await publishInvoiceAttempt(c.env,channel,id,oid,b);
         if("error" in r)return c.json({detail:r.error},409);
