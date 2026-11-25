@@ -15,7 +15,8 @@ import {
   type RegistrationResponseJSON,
 } from "@simplewebauthn/server";
 
-export const STEP_UP_MINUTES = 15;
+// A bounded work session, not an indefinitely elevated sign-in.
+export const STEP_UP_MINUTES = 120;
 const CHALLENGE_TTL_MS = 5 * 60_000;
 const RP_NAME = "Side-Quest Learning";
 

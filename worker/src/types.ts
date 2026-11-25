@@ -36,6 +36,11 @@ export type Env = {
   AI_BACKGROUND_BATCHES?: string;
   /** Standalone guest portal rollout; off until email and staging tests pass. */
   SUPPORT_GUEST_ENABLED?: string;
+  /** Private staging pilot for canonical family portal; no production activation. */
+  SUPPORT_UNIFIED_PORTAL_TEST?: string;
+  /** Authorised synthetic recipient for private portal signup testing only. */
+  SUPPORT_UNIFIED_TEST_EMAIL?: string;
+  SUPPORT_SQUARE_INVOICE_TEST?: string;
   /** Exact isolated staging Worker origin; never taken from a request header. */
   SUPPORT_GUEST_ORIGIN?: string;
   /** Teaching board pilot, disabled until staging verifies access and safety. */
@@ -47,6 +52,10 @@ export type Env = {
   SUPPORT_TERMS_REQUIRED?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
+  SUPPORT_ENGLISH_VIDEO_TEST?: string;
+  SUPPORT_ENGLISH_FALLBACK_TEST?: string;
+  SUPPORT_ENGLISH_VIDEO_HOST_PRESET?: string;
+  SUPPORT_ENGLISH_VIDEO_LEARNER_PRESET?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;
   SUPPORT_VIDEO_APP?: string;
   SUPPORT_VIDEO_TOKEN?: string;

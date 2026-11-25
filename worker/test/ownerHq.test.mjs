@@ -69,6 +69,8 @@ async function stepUp(h, owner, auth) {
   assert.equal(a.status, 200, JSON.stringify(a.json));
   const r = await h.req("/admin/security/step-up/verify", { method: "POST", token: owner.token, body: { response: await auth.authenticate(a.json.options, ORIGIN, "localhost") } });
   assert.equal(r.status, 200, JSON.stringify(r.json));
+  const remaining=Date.parse(r.json.elevated_until)-Date.now();
+  assert.ok(remaining>119*60000&&remaining<=120*60000,"Owner HQ must unlock for a bounded two-hour work session");
   return auth;
 }
 
@@ -921,6 +923,105 @@ test("standalone support verifies email, isolates guest sessions, and never crea
  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
 });
 
+test("family workspace migration is additive and idempotent on existing guest records",async()=>{
+ const db=makeDb("0100");
+ const stamp="2026-11-01T00:00:00.000Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("existing-request","existing@example.com","Parent","English","Existing enquiry",stamp,stamp);
+ const original=db.raw.prepare("SELECT * FROM support_guest_requests").all();
+ const migration=readFileSync(new URL("../migrations/0100_support_family_workspaces.sql",import.meta.url),"utf8");
+ db.raw.exec(migration);db.raw.exec(migration);
+ assert.deepEqual(db.raw.prepare("SELECT * FROM support_guest_requests").all(),original);
+ const {ensureGuestSchema,guestOrigin}=await import("../src/guestSupport.ts");
+ await ensureGuestSchema(db);
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("new-request","existing@example.com","Parent","Maths","New enquiry",stamp,stamp);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_guest_families").get().n,1);
+ assert.equal(db.raw.prepare("SELECT email FROM support_guest_families").get().email,"existing@example.com");
+ assert.equal(guestOrigin({STAGING_PRIVATE:"true"}),null);
+ assert.equal(guestOrigin({STAGING_PRIVATE:"true",SUPPORT_GUEST_ORIGIN:"https://sidequestlearning.app"}),null);
+ assert.equal(guestOrigin({STAGING_PRIVATE:"true",SUPPORT_GUEST_ORIGIN:"https://side-quest-staging.example.workers.dev"}),"https://side-quest-staging.example.workers.dev");
+});
+
+test("guest family directory groups verified email enquiries, preserves existing records and isolates learner profiles",async()=>{
+ const {h,owner}=await ownerSetup();
+ const ordinary=await h.register("family-directory-ordinary@example.com");
+ h.env.SUPPORT_GUEST_ENABLED="true";
+ const mail=[];h.env.EMAIL={send:async m=>{mail.push(m);return {messageId:"test"};}};
+ const initialCount=h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n;
+ async function access(email){
+   const link=await h.req("/support-guest/link",{method:"POST",admin:false,body:{email}});
+   assert.equal(link.status,200,JSON.stringify(link.json));
+   const token=mail.at(-1).text.match(/#token=([a-f0-9]{64})/)[1];
+   const r=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token}});
+   assert.equal(r.status,200,JSON.stringify(r.json));return {"X-SideQuest-Guest":r.json.token};
+ }
+ const headers=await access("family-a@example.com");
+ const otherHeaders=await access("family-b@example.com");
+ const input={parent_name:"Example Parent",subject:"Science",year:"Year 5",service:"Worked explanation",detail:"Help understanding the phases of the moon.",consent:true};
+ const send=async(headers,body)=>{const r=await h.req("/support-guest/requests",{method:"POST",admin:false,headers,body});assert.equal(r.status,201,JSON.stringify(r.json));return r.json.id;};
+ const first=await send(headers,input),second=await send(headers,{...input,subject:"Mathematics"}),other=await send(otherHeaders,{...input,parent_name:"Other Parent"});
+ // Simulate an existing enquiry that predates family indexing.
+ const stamp=new Date().toISOString();
+ h.db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("legacy-request","legacy@example.com","Legacy Parent","English","Existing enquiry",stamp,stamp);
+ h.db.raw.prepare("DELETE FROM support_guest_families WHERE email=?").run("legacy@example.com");
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,initialCount);
+ assert.equal((await h.req("/admin/support-families",{token:ordinary.token})).status,404);
+ await stepUp(h,owner);
+ const list=await h.req("/admin/support-families",{token:owner.token});assert.equal(list.status,200,JSON.stringify(list.json));
+ const a=list.json.items.find(x=>x.email==="family-a@example.com"),b=list.json.items.find(x=>x.email==="family-b@example.com");
+ assert.equal(a.enquiry_count,2);assert.equal(b.enquiry_count,1);assert.ok(list.json.items.some(x=>x.email==="legacy@example.com"));
+ const search=await h.req("/admin/support-families?search=family-a",{token:owner.token});assert.equal(search.json.items.length,1);assert.equal(search.json.items[0].id,a.id);
+ const root="/admin/support-families/"+a.id,otherRoot="/admin/support-families/"+b.id;
+ const detail=await h.req(root,{token:owner.token});assert.deepEqual(new Set(detail.json.items.map(x=>x.id)),new Set([first,second]));
+ const learner=await h.req(root+"/learners",{method:"POST",token:owner.token,body:{label:"Learner A",year_level:"Year 5",private_notes:"OWNER ONLY TEST MARKER"}});assert.equal(learner.status,201,JSON.stringify(learner.json));
+ const learner_id=learner.json.id;
+ const assign=(base,id,learner_id)=>h.req(base+"/enquiries/"+id+"/learner",{method:"PUT",token:owner.token,body:{learner_id}});
+ assert.equal((await assign(root,first,learner_id)).status,200);
+ assert.equal((await assign(otherRoot,other,learner_id)).status,404);
+ assert.equal((await assign(root,other,learner_id)).status,404);
+ assert.equal((await h.req(otherRoot+"/learners/"+learner_id,{method:"PUT",token:owner.token,body:{label:"Wrong family"}})).status,404);
+ const updated=await h.req(root,{token:owner.token});assert.equal(updated.json.learners[0].label,"Learner A");assert.equal(updated.json.items.find(x=>x.id===first).learner_id,learner_id);
+ const guest=await h.req("/support-guest/requests",{admin:false,headers});assert.ok(!JSON.stringify(guest.json).includes("OWNER ONLY TEST MARKER"));assert.ok(!JSON.stringify(guest.json).includes(learner_id));
+ assert.equal((await h.req("/admin/support-families/"+a.id,{headers})).status,404);
+ const quote=await h.req("/admin/support-guests/"+first+"/quotes",{method:"POST",token:owner.token,body:{scope:"Worked explanation and practice questions",delivery:"Written response",amount_cents:1500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
+ const documentPath="/support-guest/requests/"+first+"/quotes/"+quote.json.id+"/document";
+ const pdf=await h.req(documentPath,{admin:false,headers});assert.equal(pdf.status,200,JSON.stringify(pdf.json));assert.equal(pdf.json.mime,"application/pdf");assert.ok(atob(pdf.json.base64).startsWith("%PDF"));assert.equal(pdf.json.terms,null);
+ assert.equal((await h.req(documentPath,{admin:false,headers:otherHeaders})).status,404);
+ assert.equal((await h.req(documentPath,{admin:false})).status,401);
+ const latest=mail.at(-1);assert.match(latest.text,/Review your proposal/);assert.ok(latest.text.includes("?enquiry="+first+"#token="));const accessToken=latest.text.match(/#token=([a-f0-9]{64})/)[1];
+ const signed=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}});assert.equal(signed.status,200);assert.equal(signed.json.email,"family-a@example.com");
+ assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}})).status,400);
+ // A single owner-approved proposal carries time options without an additional owner invitation.
+ const {saveAvailability}=await import("../src/supportPublicAvailability.ts");
+ assert.equal(await saveAvailability(h.db,{enabled:false,revision:0,windows:[0,1,2,3,4,5,6].map(day=>({day,start:"09:00",end:"13:00"})),confirmed:true}),true);
+ const auto=await h.req("/admin/support-guests/"+second+"/quotes",{method:"POST",token:owner.token,body:{scope:"One online mathematics session",delivery:"Online 30 minutes",amount_cents:2500,valid_days:7,confirmed:true,session_minutes:[30],auto_offer_times:true,learner_label:"Learner A"}});
+ assert.equal(auto.status,201,JSON.stringify(auto.json));assert.equal(auto.json.appointment_offer,"ready");
+ const slotPath="/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/slots";
+ const before=await h.req(slotPath,{admin:false,headers});assert.equal(before.status,200,JSON.stringify(before.json));assert.ok(before.json.offer.starts.length);assert.equal(before.json.offer.can_select,false);
+ assert.equal((await h.req(slotPath,{admin:false,headers:otherHeaders})).status,404);
+ assert.equal((await h.req("/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/respond",{method:"POST",admin:false,headers,body:{response:"interested",confirmed:true}})).status,200);
+ const after=await h.req(slotPath,{admin:false,headers});assert.equal(after.json.offer.can_select,true);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(second).n,0,"proposal or acceptance alone cannot reserve a time");
+ const pkg=await h.req("/admin/support-guests/"+other+"/quotes",{method:"POST",token:owner.token,body:{scope:"Four online mathematics sessions",delivery:"Four 30 minute sessions",amount_cents:10000,valid_days:7,confirmed:true,session_minutes:[30,30,30,30],auto_offer_times:true,learner_label:"Private nickname",payment_mode:"installments",deadline_hours:24}});
+ assert.equal(pkg.status,201,JSON.stringify(pkg.json));assert.equal(pkg.json.appointment_offer,"ready");
+ const pkgPath="/support-guest/requests/"+other+"/quotes/"+pkg.json.id+"/slots";
+ const preview=await h.req(pkgPath,{admin:false,headers:otherHeaders});assert.equal(preview.status,200,JSON.stringify(preview.json));assert.deepEqual(preview.json.offer.package_minutes,[30,30,30,30]);assert.equal(preview.json.offer.can_select,false);assert.ok(!JSON.stringify(preview.json).includes("Private nickname"));
+ assert.equal((await h.req(pkgPath,{admin:false,headers})).status,404);
+ const selected=preview.json.offer.starts.slice(0,4);
+ const payload={offer_id:preview.json.offer.id,starts:selected,confirmed:true};
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload})).status,409);
+ assert.equal((await h.req("/support-guest/requests/"+other+"/quotes/"+pkg.json.id+"/respond",{method:"POST",admin:false,headers:otherHeaders,body:{response:"interested",confirmed:true}})).status,200);
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers,body:payload})).status,404);
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:{...payload,starts:[selected[0],selected[0],selected[2],selected[3]]}})).status,409);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(other).n,0);
+ const booked=await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload});
+ assert.equal(booked.status,201,JSON.stringify(booked.json));assert.equal(booked.json.count,4);
+ const orders=await h.req("/support-guest/requests/"+other+"/orders",{admin:false,headers:otherHeaders});
+ assert.equal(orders.status,200,JSON.stringify(orders.json));assert.equal(orders.json.orders.length,4);
+ assert.ok(orders.json.orders.every(o=>o.status==="awaiting_confirmation"&&o.amount_cents===2500&&o.installment&&o.installment_due_at&&!o.invoice_reference));
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload})).status,409);
+
+});
+
 test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{
  const {h,owner}=await ownerSetup();
  const alice=await h.register("manual-alice@example.com","Alice");
@@ -934,18 +1035,22 @@ test("manual invoice: owner verifies full payment and overdue slot stays held",a
  const oid=order.json.id,adminPath=ap+"/orders/"+oid,parentPath=pp+"/orders/"+oid;
  assert.equal((await h.req(parentPath+"/confirm",{method:"POST",admin:false,token:alice.token,body:{confirmed:true}})).status,200);
  assert.equal((await h.req(adminPath+"/checkout",{method:"POST",token:owner.token,body:{confirmed:true}})).status,410);
- const inv={reference:"INV-TEST-123",due_at:due,sent_in_square:true,confirmed:true};
+ const inv={reference:"INV-TEST-123",due_at:due,sent_in_square:true,confirmed:true,invoice_payment_url:"https://squareup.com/pay-invoice/synthetic-test",link_reviewed:true};
  assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:alice.token,body:inv})).status,404);
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:{...inv,link_reviewed:false}})).status,409);
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:{...inv,invoice_payment_url:"https://squareup.com.example.net/pay-invoice/fake"}})).status,409);
  assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:inv})).status,201);
+ const payable=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(payable.json.orders[0].invoice_payment_url,inv.invoice_payment_url);assert.equal(payable.json.orders[0].status,"confirmed");
+ const other=await h.register("unrelated-invoice@example.com");assert.equal((await h.req(pp+"/orders",{admin:false,token:other.token})).status,404);
  assert.equal((await h.req(adminPath+"/cancel",{method:"POST",token:owner.token,body:{confirmed:true}})).status,409);
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:{reference:inv.reference,amount_cents:2499,paid_in_square:true,confirmed:true}})).status,409);
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:alice.token,body:{reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true}})).status,404);
  h.db.raw.prepare("UPDATE support_manual_invoices SET due_at='2020-01-01T00:00:00.000Z' WHERE order_id=?").run(oid);
- const list=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(list.json.orders[0].invoice_overdue,true);assert.equal(list.json.orders[0].status,"confirmed");
+ const list=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(list.json.orders[0].invoice_overdue,true);assert.equal(list.json.orders[0].status,"confirmed");assert.equal(list.json.orders[0].invoice_payment_url,null);
  const payment={reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true};
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,200);
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,409);
- assert.equal((await h.req(pp+"/orders",{admin:false,token:alice.token})).json.orders[0].status,"paid");
+ const paid=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(paid.json.orders[0].status,"paid");assert.equal(paid.json.orders[0].invoice_payment_url,null);
  assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"FREE_PREVIEW");
 });
 
@@ -1155,6 +1260,30 @@ test("multi-lesson package atomically reserves all slots and one invoice confirm
  assert.ok((await listOrders(h.db,"member",rid)).every(o=>o.status==="paid"));
  assert.equal((await readDiary(h.db,"member",rid,rows[1].id)).diary.details.agenda.includes("Apply fractions"),true);
  assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now)).error);
+});
+
+test("standard package can be quoted and booked without a teaching plan; instalments use agreed session rates",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("schedule-only@example.com","Parent");
+ const {createPackage}=await import("../src/supportPackages.ts");
+ const {createServiceOrder,listOrders}=await import("../src/supportOrders.ts");
+ const {readDiary}=await import("../src/supportDiary.ts");
+ const {offerSlots}=await import("../src/supportSlots.ts");
+ const made=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(made.status,201);const rid=made.json.id;
+ await stepUp(h,owner);
+ const ap="/admin/feedback/"+rid+"/quotes",pp="/learning-support/"+rid+"/quotes/";
+ const quote={scope:"Two personalised mathematics sessions",delivery:"30-minute and 60-minute sessions by arrangement",amount_cents:7000,valid_days:7,confirmed:true};
+ const invalid=await h.req(ap,{method:"POST",token:owner.token,body:{...quote,session_minutes:[30,55]}});assert.equal(invalid.status,400);
+ const q=await h.req(ap,{method:"POST",token:owner.token,body:{...quote,session_minutes:[30,60]}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
+ const plan=await h.req(ap+"/"+qid+"/plan",{token:owner.token});assert.equal(plan.json.plan,null);assert.deepEqual(plan.json.session_minutes,[30,60]);
+ assert.equal((await h.req(pp+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const now=new Date(),starts=[48,72].map(hours=>new Date(now.getTime()+hours*3600000).toISOString());
+ const b={quote_id:qid,starts,learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",payment_mode:"installments",deadline_hours:24,confirmed:true};
+ assert.ok((await createServiceOrder(h.db,"member",rid,{...b,mode:"live",start_at:starts[0],minutes:30},now)).error);
+ assert.ok((await offerSlots(h.db,"member",rid,qid,{...b,minutes:30},now)).error);
+ assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[starts[0]]},now)).error);
+ const packageResult=await createPackage(h.db,"member",rid,b,now);assert.ok(packageResult.id,JSON.stringify(packageResult));
+ const rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.amount_cents),[2500,4500]);assert.deepEqual(rows.map(o=>(Date.parse(o.end_at)-Date.parse(o.start_at))/60000),[30,60]);
+ assert.equal((await readDiary(h.db,"member",rid,rows[1].id)).diary.ready,false);
 });
 
 test("per-lesson instalments isolate paid and cancelled sessions and preserve quoted total",async()=>{

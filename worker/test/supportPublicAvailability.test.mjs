@@ -80,3 +80,16 @@ test("flexible policy checks Sydney hours, buffers, daily and weekly limits and 
  assert.equal(await db.prepare("SELECT 1 WHERE 1=1"+guard.sql).bind(...guard.args).first(),null);
  assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='first'").get().status,"awaiting_confirmation");
 });
+
+ test("owner suggestions span the blackout and remain private when publication is off",async t=>{
+ const {suggestSupportStarts}=await import("../src/supportPublicAvailability.ts");
+ const db=makeDb();t.after(()=>db.raw.close());
+ const at=new Date("2026-11-25T10:00:00Z");
+ const suggestions=await suggestSupportStarts(db,30,10,10,at);
+ assert.ok(suggestions.length>=12);
+ const date=t=>new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Sydney",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(t));
+ assert.ok(suggestions.every(s=>date(s)<"2026-11-30"||date(s)>"2026-12-06"));
+ assert.ok(suggestions.some(s=>Date.parse(s)>at.getTime()+28*86400000));
+ assert.equal((await readPublicAvailability(db,at)).published,false);
+ assert.equal(await suggestSupportStarts(db,0,10,10,at),null);
+ });

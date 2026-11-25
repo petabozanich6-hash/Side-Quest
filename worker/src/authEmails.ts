@@ -46,7 +46,7 @@ This security email was sent because a password reset was requested for your acc
   };
 }
 
-export function passwordChangedEmail(to: string, name: string): OutgoingEmail {
+export function passwordChangedEmail(to: string, name: string, origin = SITE_URL): OutgoingEmail {
   const n = firstName(name);
   const subject = "Your Side-Quest Learning password was changed";
   const text = `Hi ${n},
@@ -56,7 +56,7 @@ Just a quick note to let you know that the password for your Side-Quest parent a
 If that was you, you're all set.
 
 If you didn't make this change, please reset your password straight away:
-${SITE_URL}/forgot-password
+${origin}/forgot-password
 
 Then contact us at ${SUPPORT_EMAIL} so we can help.
 
@@ -70,7 +70,7 @@ This is a security notification for your account at sidequestlearning.app.`;
     p(`Hi ${esc(n)}, just a quick note to let you know your Side-Quest parent account password has been changed.`),
     p("If that was you, you're all set."),
     note(`<strong>Didn't make this change?</strong> Please reset your password straight away, then contact us at <a href="mailto:${SUPPORT_EMAIL}" style="color:#4A5D3A;">${SUPPORT_EMAIL}</a> so we can help.`),
-    button("Secure my account", `${SITE_URL}/forgot-password`),
+    button("Secure my account", `${origin}/forgot-password`),
     p("Take care,<br/><strong>Side-Quest Learning</strong>"),
   ].join("\n");
 
@@ -105,4 +105,10 @@ export function parentVerificationEmail(to: string, name: string, link: string):
       reason: "Someone used this email to register a new SideQuest family account.",
     }),
   };
+}
+
+/** New support-only account: the inbox owner chooses the first password, not the requester. */
+export function supportAccountSetupEmail(to:string,name:string,link:string):OutgoingEmail{
+ const n=firstName(name);
+ return {to,subject:"Set up your Side-Quest family portal",text:`Hi ${n},\n\nChoose your password to open your free Side-Quest family account for tutoring and English Club. No homeschool membership or trial starts automatically.\n\n${link}\n\nThis link is single-use and expires in one hour. If you didn't request it, ignore this message.\n\nSide-Quest Learning`,html:layout({preheader:"Set up your private family portal.",kicker:"Your family hub",heading:"Choose your password",body:p("Your free account is for learning support and English Club. No subscription is required.")+button("Set up my account",link)+note("This secure link works once, for one hour. Ignore it if you didn't request an account."),reason:"A free family account was requested for this address."})};
 }

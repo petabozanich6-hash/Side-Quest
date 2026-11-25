@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS support_english_materials (class_id TEXT PRIMARY KEY REFERENCES support_english_classes(id) ON DELETE CASCADE, prompts TEXT NOT NULL DEFAULT '', fallback_url TEXT NOT NULL DEFAULT '', fallback_open INTEGER NOT NULL DEFAULT 0 CHECK(fallback_open IN (0,1)));
+CREATE TABLE IF NOT EXISTS support_english_file_grants (class_id TEXT NOT NULL REFERENCES support_english_classes(id) ON DELETE CASCADE,file_id TEXT NOT NULL REFERENCES support_files(id),PRIMARY KEY(class_id,file_id));

@@ -18,11 +18,12 @@ const { chromium } = await import(process.env.PW_PATH || "playwright");
 
 const results = [];
 let page;
+const browserErrors=[];
 const ok = (c, m) => { if (!c) throw new Error(m || "assertion failed"); };
 const shot = async (name, p = page) => { try { await p.screenshot({ path: `${SHOTS}/${name}.png`, fullPage: true }); } catch { /* best effort */ } };
 async function step(name, fn) {
   try { await fn(); results.push({ name, ok: true }); console.log(`PASS ${name}`); }
-  catch (e) { results.push({ name, ok: false }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 800)}`); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); }
+  catch (e) { results.push({ name, ok: false }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 800)}`); if(page)console.log("Owner browser URL:",page.url(),"Recent browser errors:",browserErrors.slice(-6)); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); }
 }
 
 // ---- local stack
@@ -65,6 +66,7 @@ const owner = await reg(ownerEmail, "Owner Person");
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 page = await ctx.newPage();
+page.on("pageerror",e=>{browserErrors.push(String(e.stack||e.message).slice(0,1800));if(browserErrors.length>30)browserErrors.shift();});
 // Authenticate using the real parent login form. Seeding local storage after the
 // app mounts races its initial anonymous auth check and can log out a test user.
 const signIn = async (p, token) => {
@@ -132,7 +134,16 @@ await step("Document Studio remains owner-only after the old shop is removed", a
   ok(denied.status === 404, "ordinary parent can access owner PDF products");
   await page.goto(BASE + "/parent/command-centre/document-studio");
   await page.waitForSelector("[data-testid=hq-document-studio]");
-  await page.selectOption("[data-testid=hq-document-studio] select", "NSW");
+  const requirements = await api("GET", "/admin/document-studio/requirements", ownerBrowserToken);
+  ok(requirements.status === 200 && requirements.json?.jurisdictions?.some(j => j.code === "NSW"), "jurisdiction guidance API unavailable: " + requirements.status);
+  const jurisdiction = page.getByTestId("hq-document-studio-jurisdiction");
+  try {
+    await jurisdiction.waitFor({state:"visible",timeout:15000});
+    await jurisdiction.selectOption("NSW");
+  } catch (e) {
+    throw new Error("Document Studio jurisdiction selector failed: " + (await page.getByTestId("hq-document-studio").locator("header").innerText()).slice(0,400) + "; " + e.message);
+  }
+  ok(await jurisdiction.inputValue() === "NSW", "NSW jurisdiction was not selected");
   await page.waitForSelector("[data-testid=hq-existing-education-publisher]");
   const res = await api("GET", "/admin/document-studio/square-production?year=ALL", ownerBrowserToken);
   ok(res.status === 200 && res.json?.offers?.length === 48, "the 48 Square-ready document templates are unavailable");
@@ -183,12 +194,30 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 
 
 
+await step("English Club uses separate navigable pages without mounting unrelated forms",async()=>{
+ await page.goto(BASE+"/parent/command-centre/learning-support");
+ await page.getByRole("link",{name:/^English Club/}).click();
+ await page.getByRole("heading",{name:"The Side-Quest English Club",exact:true}).waitFor();
+ ok(await page.locator('input[type="datetime-local"]').count()===0,"planning form should not be on the session list");
+ await page.getByRole("link",{name:"Plan a session",exact:true}).click();
+ await page.getByRole("heading",{name:"Plan a club session",exact:true}).waitFor();
+ ok(await page.locator('input[type="datetime-local"]').count()===1,"planning page missing its date input");
+ ok(await page.locator('[aria-label="English Club video"]').count()===0,"video must not mount during planning");
+ await page.goBack();
+ await page.getByRole("heading",{name:"The Side-Quest English Club",exact:true}).waitFor();
+ await page.getByRole("link",{name:/^Expressions of interest/}).click();
+ await page.getByRole("heading",{name:"Expressions of interest",exact:true}).waitFor();
+ ok(await page.locator('input[type="datetime-local"]').count()===0,"planning form leaked into enquiry page");
+});
+
 await step("Learning Support month planner navigates future months, preserves private labels and fits a phone",async()=>{
  const publicPage=await browser.newPage();
  try{await publicPage.goto(BASE);await publicPage.getByTestId("homepage-learning-support-offering").click();await publicPage.getByRole("heading",{name:"Learning, with a little more adventure."}).waitFor();ok((await publicPage.locator("main").innerText()).includes("Peta Bozanich"),"author-led service missing");ok((await publicPage.locator("main").innerText()).includes("AU$25"),"entry price missing");}finally{await publicPage.close();}
  const denied=await api("GET","/admin/support-calendar?from=2027-01-01T00:00:00.000Z&to=2027-02-01T00:00:00.000Z",user.token);
  ok(denied.status===404,"ordinary parent can read private tutor calendar");
  await page.goto(BASE+"/parent/command-centre/learning-support");
+ await page.locator('[data-testid="owner-command-centre"] a[href="/parent/command-centre/learning-support?view=Calendar"]').click();
+ await page.waitForURL(u=>u.pathname==="/parent/command-centre/learning-support"&&u.searchParams.get("view")==="Calendar",{timeout:15000});
  const calendar=page.locator('[aria-label="Monthly private tutor calendar"]');
  await calendar.waitFor({timeout:15000});
  const month=page.locator('input[type="month"]');
@@ -219,6 +248,8 @@ await step("Learning Support month planner navigates future months, preserves pr
 await step("gifting preview days from a customer's page reaches the parent", async () => {
   const before = await api("GET", "/account/plan", user.token);
   ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");
+  await page.goto(BASE+"/parent/command-centre");
+  await page.waitForSelector("[data-testid=owner-command-centre]");
   await page.click("[data-testid=hq-tab-customers]");
   await page.fill("[data-testid=hq-customer-search]", userEmail);
   await page.keyboard.press("Enter");
@@ -252,6 +283,9 @@ await step("gifting preview days from a customer's page reaches the parent", asy
 });
 
 await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
+  await page.goto(BASE+"/parent/command-centre");
+  await page.waitForSelector("[data-testid=owner-command-centre]");
+  await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-announcements]");
   await page.waitForSelector("[data-testid=hq-announcements]");
   const parentCount=await api("GET","/admin/announcements",ownerBrowserToken);
@@ -271,6 +305,7 @@ await step("HQ layout fits phone, tablet and desktop without sideways scrolling"
     await page.setViewportSize({ width: w, height: h });
     for (const tab of ["overview", "customers", "settings", "audit", "security"]) {
       if (w < 1024) { await page.click("[data-testid=menu-toggle]"); await page.click("[data-testid=nav-command-centre]"); }
+      if (["settings","audit","security"].includes(tab)) await page.getByTestId("hq-more-tools").click();
       await page.click(`[data-testid=hq-tab-${tab}]`);
       await page.waitForSelector(`[data-testid=hq-${tab}]`);
       const over = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -308,6 +343,7 @@ await step("customers: find a family, see metadata only, suspend it with a reaso
 });
 
 await step("settings: announcement reaches everyone; switching AI off needs a second confirmation", async () => {
+  await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-settings]");
   ok((await page.locator("[data-testid=hq-feature-shop]").count()) === 0, "retired in-app shop switch is still shown");
   await page.check("[data-testid=hq-announcement-enabled]");
@@ -333,6 +369,7 @@ await step("settings: announcement reaches everyone; switching AI off needs a se
 });
 
 await step("audit log lists every change; cross-site requests are blocked", async () => {
+  await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-audit]");
   await page.waitForSelector("[data-testid=hq-audit-entry]");
   const text = await page.textContent("[data-testid=hq-audit]");

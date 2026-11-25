@@ -1,4 +1,7 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
+import {useSearchParams} from "react-router-dom";
+import {api} from "../../../lib/api";
+import HqToday from "./HqToday";
 import { Alert, Button, Card, fmtBytes, fmtDate, GREEN, NotConfigured, PLAN_LABELS, Row, Stat } from "./ui";
 import { useAdmin } from "./useAdmin";
 
@@ -25,7 +28,12 @@ function Registrations({ days }) {
   );
 }
 
-export default function HqOverview() {
+export default function HqOverview(){
+ const [params]=useSearchParams(),[pilot,setPilot]=useState(false);
+ useEffect(()=>{let live=true;api.get("/family-portal/status").then(r=>{if(live)setPilot(r.data.available===true);}).catch(()=>{});return()=>{live=false;};},[]);
+ return pilot&&params.get("page")!=="metrics"?<HqToday/>:<PlatformOverview/>;
+}
+function PlatformOverview() {
   const { data: o, error, loading, reload } = useAdmin("/overview");
   if (loading && !o) return <p role="status" className="text-stone-600">Loading live figures…</p>;
   if (error && !o) return <><Alert>{error}</Alert><Button onClick={reload}>Retry</Button></>;
