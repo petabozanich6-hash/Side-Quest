@@ -21,7 +21,7 @@ export default function HqGuestSupport(){
  const [directoryLoading,setDirectoryLoading]=useState(true),[directoryReady,setDirectoryReady]=useState(false);
  const [family,setFamily]=useState(null),[familyPage,setFamilyPage]=useState(1),[selected,setSelected]=useState(null),[message,setMessage]=useState(""),[status,setStatus]=useState("new"),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
  const revision=useRef(0);
- function navigate(next,request=""){setError("");setNotice("");setFamilyPage(1);setSelected(null);setFamily(null);setParams(next?{family:next,...(request?{enquiry:request}:{})}:{});}
+ function navigate(next,request=""){setError("");setNotice("");setFamilyPage(1);setSelected(null);setFamily(null);setParams(next?{family:next,...(request?{enquiry:request}:{})}:{view:"Families"});}
  function switchView(v){setError("");setNotice("");setSelected(null);setFamily(null);setParams(v==="Home"?{}:{view:v});}
  function setPanel(section){setParams({family:familyId,enquiry:requestId,...(section==="Enquiry"?{}:{section})});}
  useEffect(()=>{if(view!=="Families"||familyId)return;let active=true;setDirectoryLoading(true);setDirectoryReady(false);setItems([]);setMore(false);setError("");adminApi.get("/support-families",{page,search:query}).then(r=>{if(active){setItems(r.items);setMore(r.has_more);setDirectoryReady(true);}}).catch(e=>{if(active)setError(errorText(e));}).finally(()=>{if(active)setDirectoryLoading(false);});return()=>{active=false;};},[view,familyId,page,query]);
