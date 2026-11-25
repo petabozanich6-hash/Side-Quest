@@ -16,6 +16,7 @@ function fixture(){
 test("support-only signup creates an uncredentialed family; inbox owner sets password and keeps independent entitlements",async t=>{
  const h=fixture();t.after(()=>h.DB.raw.close());
  const input={email,name:"Test Parent",jurisdiction:"NSW",password:"IgnoredAttackerPassword123",plan:"INTERNAL"};
+ const status=await h.call("/family-portal/status");assert.deepEqual(status.json,{available:true,registration_available:true});
  const result=await h.call("/auth/support-register",input);
  assert.equal(result.status,200);assert.equal(result.json.token,undefined);
  const family=h.DB.raw.prepare("SELECT id,plan,trial_started_at,trial_ends_at FROM families").get();
@@ -28,7 +29,7 @@ test("support-only signup creates an uncredentialed family; inbox owner sets pas
  assert.equal(h.DB.raw.prepare("SELECT COUNT(*) n FROM families").get().n,1);assert.equal(h.mails.length,1);
  assert.equal((await h.call("/auth/reset-password",{token,password})).status,200);
  assert.equal((await h.call("/auth/reset-password",{token,password:input.password})).status,400);
- const login=await h.call("/auth/login",{email,password});assert.equal(login.status,200);assert.ok(login.json.token);
+ const login=await h.call("/auth/login",{email,password});assert.equal(login.status,200);assert.ok(login.json.token);assert.equal(login.json.user.family_portal_default,true);
  const portal=await h.call("/family-portal/identity",undefined,login.json.token);
  assert.equal(portal.status,200);assert.equal(portal.json.family_id,family.id);assert.equal(portal.json.registration_intent,"support_only");assert.equal(portal.json.homeschool.plan,"PREVIEW_EXPIRED");assert.equal(portal.json.homeschool.limits.canCreate,false);
  assert.equal((await h.call("/students",{name:"Test learner",username:"test-learner",stage:"S2",pin:"1234"},login.json.token)).status,402);
@@ -38,7 +39,7 @@ test("support-only signup creates an uncredentialed family; inbox owner sets pas
 test("private signup is closed without pilot and for any unapproved recipient",async t=>{
  const h=fixture();t.after(()=>h.DB.raw.close());
  const b={name:"Test Parent",jurisdiction:"NSW",email};
- h.env.SUPPORT_UNIFIED_PORTAL_TEST="false";assert.equal((await h.call("/auth/support-register",b)).status,404);
+ h.env.SUPPORT_UNIFIED_PORTAL_TEST="false";assert.equal((await h.call("/family-portal/status")).json.available,false);assert.equal((await h.call("/auth/support-register",b)).status,404);
  h.env.SUPPORT_UNIFIED_PORTAL_TEST="true";assert.equal((await h.call("/auth/support-register",{...b,email:"unapproved@example.com"})).status,403);
  h.env.SUPPORT_GUEST_ORIGIN="https://sidequestlearning.app";assert.equal((await h.call("/auth/support-register",b)).status,503);
  assert.equal(h.DB.raw.prepare("SELECT COUNT(*) n FROM families").get().n,0);
