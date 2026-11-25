@@ -31,6 +31,7 @@ import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
 import { registerGuestSupport } from "./guestSupport";
+import { registerPublicAvailability } from "./supportPublicAvailability";
 import {cleanupVideo} from "./supportVideo";
 import {runDailyBriefing} from "./supportBriefing";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
@@ -337,6 +338,7 @@ registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
 registerGuestSupport(app);
+registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
