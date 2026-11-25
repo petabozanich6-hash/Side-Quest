@@ -281,7 +281,7 @@ export function createAdminRoutes() {
   admin.post("/support-invoice-preview",requirePermission("customers.read"),async c=>{
     if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
     const b=await readJson(c);
-    if(!["guest","member"].includes(b.channel)||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Invalid arrangement"},400);
+    if((b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Invalid arrangement"},400);
     const r=await previewSupportInvoice(c.env,b.channel,b.request_id,b.order_id,b);
     if("error" in r)return c.json({detail:r.error},409);
     c.header("Cache-Control","private, no-store");return c.json(r);
@@ -289,7 +289,7 @@ export function createAdminRoutes() {
   admin.post("/support-invoice-lookup",requirePermission("customers.read"),async c=>{
     if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
     const b=await readJson(c);
-    if(b?.confirmed!==true||!["guest","member"].includes(b.channel)||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Review the invoice lookup details."},400);
+    if(b?.confirmed!==true||(b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Review the invoice lookup details."},400);
     const r=await inspectSupportInvoice(c.env,b.channel,b.request_id,b.order_id,b.invoice_id);
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.square_invoice_checked",targetType:"support",targetId:b.request_id,detail:{channel:b.channel,order_id:b.order_id,status:r.status}});
