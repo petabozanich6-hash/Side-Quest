@@ -3,6 +3,7 @@ import {ensureOrderSchema} from "./supportOrders";
 import {ensureFeedbackSchema} from "./feedback";
 import {ensureGuestSchema,guestOrigin} from "./guestSupport";
 import {sendEmail,layout,p,h2,ul,esc,button,type OutgoingEmail} from "./email";
+import {housekeepingSections} from "./ownerHousekeeping";
 const SCHEMA=["CREATE TABLE IF NOT EXISTS support_briefing_settings (id INTEGER PRIMARY KEY CHECK(id=1), enabled INTEGER NOT NULL DEFAULT 0 CHECK(enabled IN (0,1)), hour INTEGER NOT NULL DEFAULT 7 CHECK(hour BETWEEN 0 AND 23), updated_at TEXT NOT NULL)","CREATE TABLE IF NOT EXISTS support_briefing_delivery (local_date TEXT PRIMARY KEY, status TEXT NOT NULL CHECK(status IN ('sending','sent','review')), attempted_at TEXT NOT NULL, sent_at TEXT)"] as const;
 const ZONE="Australia/Sydney";
 async function ensure(db:D1Database){for(const sql of SCHEMA)await db.prepare(sql).run();}
@@ -54,16 +55,17 @@ export async function buildBriefing(e:Env,now=new Date()){
  const paymentLine=(label:string,items:Due[])=>label+": "+items.length+" · "+money(items.reduce((a,x)=>a+x.amount_cents,0))+" scheduled total (verify Square; not a live balance)";
  const clock=(s:string)=>new Intl.DateTimeFormat("en-AU",{timeZone:ZONE,hour:"numeric",minute:"2-digit"}).format(new Date(s));
  const whenLabel=new Intl.DateTimeFormat("en-AU",{timeZone:ZONE,dateStyle:"full",timeStyle:"short"}).format(now);
+ const housekeeping=await housekeepingSections(e,now).catch(()=>[{heading:"Platform housekeeping",lines:["Housekeeping checks unavailable — review Owner HQ."]}]);
  const sections=[
   {heading:"Today's diary",lines:[appointments.length+" appointment(s)"+(appointments.length>100?" (display capped; open HQ for full diary)":""),appointments.filter(o=>o.status==="paid"&&!o.ready).length+" confirmed lesson(s) need preparation",blocks+" unavailable time block(s)",...appointments.slice(0,30).map(o=>clock(o.start_at)+"–"+clock(o.end_at)+" · "+(o.status==="paid"?"Confirmed":o.status==="confirmed"?"Awaiting payment":o.status==="review"?"Payment review":"Awaiting parent confirmation")+" · "+(o.ready?"Prepared":"Preparation needed")+" · "+o.prep_minutes+" min prep / "+o.wrap_minutes+" min wrap-up"),...(appointments.length>30?["More appointments in HQ."]:[]),next+" appointment(s) tomorrow"]},
   {heading:"Payments and reservations",lines:[paymentLine("Overdue — check Square before release",overdue),paymentLine("Due later today",todayDue),paymentLine("Due tomorrow",tomorrowDue),uninvoiced+" positive-value confirmed order(s) without recorded invoice",unconfirmed+" arrangement(s) awaiting parent confirmation",review+" payment record(s) requiring review",...(payments.length>100?["Payment summary capped; open HQ for all records."]:[]),"Check for full or partial payment in Square, then cancel the unpaid invoice and release the reservation if appropriate. Never cancel from this email."]},
-  {heading:"Enquiries and follow-ups",lines:[newMembers+newGuests+" new-status enquiries ("+newMembers+" member / "+newGuests+" standalone)",unreadMembers+unreadGuests+" open enquiries with unseen activity",interestedMembers+interestedGuests+" interested proposal(s) awaiting arrangements",finished+" paid live session(s) ended but not marked complete"]}
+  {heading:"Enquiries and follow-ups",lines:[newMembers+newGuests+" new-status enquiries ("+newMembers+" member / "+newGuests+" standalone)",unreadMembers+unreadGuests+" open enquiries with unseen activity",interestedMembers+interestedGuests+" interested proposal(s) awaiting arrangements",finished+" paid live session(s) ended but not marked complete"]},...housekeeping
  ];
  const origin=guestOrigin(e),hq=origin?origin+"/parent/command-centre/learning-support":"",member=origin?origin+"/parent/command-centre/feedback":"";
  const subject="Side-Quest daily briefing — "+day.date;
  const intro="Snapshot generated "+whenLabel+" (Sydney time). Counts reflect Side-Quest records, not live Square balances. Private learner details, notes and customer contact information remain in Owner HQ.";
  const text=[subject,intro,...sections.flatMap(s=>["",s.heading,...s.lines]),"",hq?"Tutor diary and standalone enquiries: "+hq:"Open Owner HQ",member?"Member feedback inbox: "+member:""].join("\n");
- const html=layout({preheader:"Today's schedule, payments and enquiry follow-ups.",kicker:"Owner HQ",heading:"Your daily briefing",body:p(esc(intro))+sections.map(s=>h2(s.heading)+ul(s.lines.map(esc))).join("")+(hq?button("Open tutor diary",hq)+button("Member feedback inbox",member):""),reason:"Private owner briefing, enabled in Owner HQ."});
+ const html=layout({preheader:"Today’s schedule, payments, enquiries and platform housekeeping.",kicker:"Owner HQ",heading:"Your daily briefing",body:p(esc(intro))+sections.map(s=>h2(s.heading)+ul(s.lines.map(esc))).join("")+(hq?button("Open tutor diary",hq)+button("Member feedback inbox",member)+button("Platform overview",origin+"/parent/command-centre"):""),reason:"Private owner briefing, enabled in Owner HQ."});
  return {date:day.date,subject,text,html};
 }
 export async function runDailyBriefing(e:Env,now=new Date(),sender:typeof sendEmail=sendEmail){

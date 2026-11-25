@@ -1199,3 +1199,19 @@ test("daily owner briefing uses Sydney dates, live data, opt-in and one send per
  assert.equal((await h.req("/admin/support-briefing/preview",{token:alice.token})).status,404);
  await stepUp(h,owner);assert.equal((await h.req("/admin/support-briefing/preview",{token:owner.token})).status,200);
 });
+
+test("housekeeping briefing distinguishes unavailable metrics and owner-verified backup checks",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("housekeeping-alice@example.com","Alice");
+ const {housekeepingSections,recordHousekeepingCheck}=await import("../src/ownerHousekeeping.ts");
+ const now=new Date("2026-11-25T00:00:00Z");
+ const text=async()=>JSON.stringify(await housekeepingSections(h.env,now));
+ assert.ok((await text()).includes("no owner-verified check recorded"));
+ assert.equal(await recordHousekeepingCheck(h.db,{kind:"d1_restore",confirmed:false},now),false);
+ assert.equal(await recordHousekeepingCheck(h.db,{kind:"d1_restore",confirmed:true},now),true);
+ assert.ok((await text()).includes("owner recorded 2026-11-25"));
+ h.db.raw.prepare("INSERT INTO app_errors(id,method,route,status,error_name,created_at) VALUES(?,?,?,?,?,?)").run("hk-test","GET","/api/PRIVATE-ROUTE",500,"PRIVATE_ERROR_NAME",now.toISOString());
+ const report=await text();assert.ok(report.includes("Recorded server errors in last 24 hours: 1"));assert.ok(!report.includes("PRIVATE-ROUTE"));assert.ok(!report.includes("PRIVATE_ERROR_NAME"));
+ assert.equal((await h.req("/admin/support-briefing/housekeeping-check",{method:"POST",token:alice.token,body:{kind:"r2_restore",confirmed:true}})).status,404);
+ await stepUp(h,owner);
+ assert.equal((await h.req("/admin/support-briefing/housekeeping-check",{method:"POST",token:owner.token,body:{kind:"r2_restore",confirmed:true}})).status,200);
+});
