@@ -64,6 +64,7 @@ export async function guestNotify(env:Env,email:string,owner=false,reference?:st
    const token=random();tokenHash=await digest(token);
    await env.DB.prepare("DELETE FROM support_guest_links WHERE expires_at<=?").bind(nowIso()).run();
    await env.DB.prepare("INSERT INTO support_guest_links(token_hash,email,expires_at) VALUES (?,?,?)").bind(tokenHash,email,expires(24*3600000)).run();
+   if(reference)url+="?enquiry="+encodeURIComponent(reference);
    url+="#token="+token;
   }
   const guidance=owner?"Review the activity in Owner HQ.":event==="proposal"?"Review your proposal and respond in your private portal.":event==="message"?"Read your reply in your private portal.":event==="appointment"?"Choose a suitable appointment in your private portal. No payment has been taken.":event==="arrangements"?"Review and confirm your service arrangements in your private portal. Payment is not yet confirmed.":"Review the update in your private portal.";
