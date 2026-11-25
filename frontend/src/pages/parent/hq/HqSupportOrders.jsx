@@ -3,6 +3,7 @@ import {adminApi,errorText} from "../../../lib/adminApi";
 import HqSupportBackup from "./HqSupportBackup";
 import HqExternalResources from "./HqExternalResources";
 import HqTutorDiary from "./HqTutorDiary";
+import HqSlotOffers from "./HqSlotOffers";
 export default function HqSupportOrders({id,guest,quotes,closed}){
  const path=(guest?"/support-guests/":"/feedback/")+encodeURIComponent(id)+"/orders";
  const [learner,setLearner]=useState(""),[prep,setPrep]=useState(10),[wrap,setWrap]=useState(10);
@@ -20,6 +21,7 @@ export default function HqSupportOrders({id,guest,quotes,closed}){
  {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqExternalResources orderPath={path+"/"+o.id}/>}
  {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqSupportBackup path={path+"/"+o.id} live={o.mode==="live"}/>}
  {o.status==="paid"&&<button type="button" className="underline text-sm" disabled={busy} onClick={()=>{if(window.confirm("Mark service delivered?"))run(()=>adminApi.post(path+"/"+o.id+"/complete",{confirmed:true}));}}>Mark completed</button>}</div>)}
+ {!closed&&quotes.some(q=>["offered","interested"].includes(q.status))&&<HqSlotOffers path={path} quotes={quotes} onSaved={load}/>}
  {available.length>0&&!closed&&<form className="space-y-2" onSubmit={e=>{e.preventDefault();run(()=>adminApi.post(path,{quote_id:quote,mode,start_at:mode==="live"?new Date(start).toISOString():null,minutes:Number(minutes),learner_label:learner,prep_minutes:mode==="live"?prep:0,wrap_minutes:mode==="live"?wrap:0,terms,confirmed:agree}));}}>
  <label className="text-sm block">Interested proposal<select required className={field} value={quote} onChange={e=>setQuote(e.target.value)}><option value="">Choose</option>{available.map(q=><option key={q.id} value={q.id}>AUD ${(q.amount_cents/100).toFixed(2)} · {q.scope.slice(0,60)}</option>)}</select></label>
  <label className="text-sm block">Learner nickname / initials (private)<input required maxLength={80} className={field} value={learner} onChange={e=>setLearner(e.target.value)}/></label>

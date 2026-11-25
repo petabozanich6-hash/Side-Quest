@@ -11,6 +11,7 @@ import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
+import {readSlots,selectSlot} from "./supportSlots";
 import {grantedResources,downloadResource,readPresentedImage} from "./supportFiles";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
@@ -217,6 +218,17 @@ export function registerFeedback(app: App, guards: Guards) {
     await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
     try{await ownerAlert(c.env,id,"learning support order confirmation");}catch{}
     return c.json({ok:true});
+  });
+  app.get("/api/learning-support/:id/quotes/:qid/slots",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id");if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    c.header("Cache-Control","no-store");return c.json({offer:await readSlots(c.env.DB,"member",id,c.req.param("qid"))});
+  });
+  app.post("/api/learning-support/:id/quotes/:qid/slots/select",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id");if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    if(!(await hitRateLimit(c.env.DB,"support-slot:"+u.id,10,60)).ok)return c.json({detail:"Try again shortly."},429);
+    const r=await selectSlot(c.env.DB,"member",id,c.req.param("qid"),await c.req.json().catch(()=>null));if("error" in r)return c.json({detail:r.error},409);
+    await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
+    try{await ownerAlert(c.env,id,"learning support appointment selection");}catch{}return c.json(r,201);
   });
   app.get("/api/learning-support/:id/quotes/:qid/plan",guards.auth,guards.parent,async c=>{
     const u=c.get("user"),id=c.req.param("id");if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);

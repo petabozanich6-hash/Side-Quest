@@ -46,6 +46,7 @@ import {buildContinuity,emailContinuity} from "./supportContinuity";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
+import {offerSlots,readSlots,removeSlots} from "./supportSlots";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -710,6 +711,24 @@ export function createAdminRoutes() {
     admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true)}));
     const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
     const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
+    const slotsPath=(channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/slots";
+    admin.get(slotsPath,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",qid=c.req.param("qid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      return c.json({offer:await readSlots(c.env.DB,channel,id,qid)});
+    });
+    admin.post(slotsPath,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",qid=c.req.param("qid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const r=await offerSlots(c.env.DB,channel,id,qid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.slots.offer",targetType:"support",targetId:id,detail:{channel,quote_id:qid}});
+      const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+      let sent=false;try{if(recipient?.email){const origin=guestOrigin(c.env);if(origin){const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");sent=await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: choose your appointment",text:"Appointment options are available in your private portal: "+url,html:layout({preheader:"Choose a suitable appointment time.",kicker:"Learning Support",heading:"Choose an appointment time",body:p("Review the available times in your private portal. No payment has been taken.")+button("View appointment options",url),reason:"This is a service notification."})});}}}catch{}
+      return c.json({ok:true,email_notification_sent:sent,offer:await readSlots(c.env.DB,channel,id,qid)},201);
+    });
+    admin.post(slotsPath+"/withdraw",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",qid=c.req.param("qid")??"",b=await readJson(c);
+      if(b.confirmed!==true||!await exists(c,id)||!await removeSlots(c.env.DB,channel,id,qid))return c.json({detail:"Offer unavailable"},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.slots.withdraw",targetType:"support",targetId:id,detail:{channel,quote_id:qid}});return c.json({ok:true});
+    });
     admin.get(path,requirePermission("customers.read"),async c=>{
       const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       return c.json({orders:await listOrders(c.env.DB,channel,id)});

@@ -8,6 +8,7 @@ import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
+import {readSlots,selectSlot} from "./supportSlots";
 import {grantedResources,downloadResource,readPresentedImage} from "./supportFiles";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
@@ -162,6 +163,19 @@ export function registerGuestSupport(app:App){
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
   return c.json({ok:true});
+ });
+ app.get(root+"/requests/:id/quotes/:qid/slots",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"";if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  return c.json({offer:await readSlots(c.env.DB,"guest",id,c.req.param("qid")??"")});
+ });
+ app.post(root+"/requests/:id/quotes/:qid/slots/select",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"";if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  if(!(await hitRateLimit(c.env.DB,"support-slot-guest:"+await digest(who.email),10,60)).ok)return c.json({detail:"Try again shortly."},429);
+  const r=await selectSlot(c.env.DB,"guest",id,c.req.param("qid")??"",await c.req.json().catch(()=>null));if("error" in r)return c.json({detail:r.error},409);
+  await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
+  try{if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);}catch{}return c.json(r,201);
  });
  app.get(root+"/requests/:id/quotes/:qid/plan",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);

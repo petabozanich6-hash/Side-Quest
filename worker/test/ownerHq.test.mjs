@@ -1103,3 +1103,24 @@ test("tutor diary reserves buffers and unavailable blocks and keeps private prep
  const block=await createBusyBlock(h.db,{label:"Unavailable",start_at:new Date(start.getTime()+60*60000).toISOString(),end_at:new Date(start.getTime()+120*60000).toISOString()},now);assert.ok(block.id);
  assert.ok((await createServiceOrder(h.db,"member",rid,{quote_id:"diary-q2",mode:"live",start_at:new Date(start.getTime()+70*60000).toISOString(),minutes:30,terms:"Agreed arrangements and terms.",confirmed:true},now)).error);
 });
+
+test("private time offers exclude conflicts and reserve only an offered slot with server terms",async()=>{
+ const {h}=await ownerSetup(),alice=await h.register("slots-alice@example.com","Alice"),bob=await h.register("slots-bob@example.com","Bob");
+ const {offerSlots,readSlots,selectSlot}=await import("../src/supportSlots.ts");
+ const {createBusyBlock}=await import("../src/supportDiary.ts");
+ const now=new Date(),start=new Date(now.getTime()+48*3600000),s1=start.toISOString(),s2=new Date(start.getTime()+3600000).toISOString(),when=now.toISOString();
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding the solar system",consent:true}});
+ assert.equal(r.status,201);const id=r.json.id,qid="slot-q";
+ h.db.raw.prepare("INSERT INTO learning_support_quotes(id,feedback_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES(?,?,?,?,?,'interested',?,?)").run(qid,id,"Solar system","Online",1500,when,new Date(now.getTime()+7*86400000).toISOString());
+ const b={starts:[s1,s2],minutes:30,prep_minutes:10,wrap_minutes:10,learner_label:"Private learner",terms:"Agreed arrangements and terms.",confirmed:true};
+ const first=await offerSlots(h.db,"member",id,qid,b,now);assert.ok(first.id,JSON.stringify(first));
+ const second=await offerSlots(h.db,"member",id,qid,b,now);assert.ok(second.id);
+ assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:first.id,start_at:s1,confirmed:true},now)).error);
+ assert.ok((await createBusyBlock(h.db,{label:"Busy",start_at:new Date(start.getTime()-60000).toISOString(),end_at:new Date(start.getTime()+60000).toISOString()},now)).id);
+ const offer=await readSlots(h.db,"member",id,qid,now);assert.deepEqual(offer.starts,[s2]);assert.equal(offer.learner_label,undefined);
+ assert.equal((await h.req("/learning-support/"+id+"/quotes/"+qid+"/slots",{admin:false,token:bob.token})).status,404);
+ assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s1,confirmed:true},now)).error);
+ const selected=await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s2,confirmed:true,amount_cents:1},now);assert.ok(selected.id,JSON.stringify(selected));
+ const o=h.db.raw.prepare("SELECT amount_cents,status FROM support_service_orders WHERE id=?").get(selected.id);assert.equal(o.amount_cents,1500);assert.equal(o.status,"awaiting_confirmation");
+ assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s2,confirmed:true},now)).error);
+});
