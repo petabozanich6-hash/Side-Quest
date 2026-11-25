@@ -1,15 +1,17 @@
 import {permittedByBookingPolicy} from "./supportPublicAvailability";
 import {permitsSupportStart,PREPARATION_NOTICE,earliestSupportStart} from "./supportLeadTime";
 import {ensureOrderSchema,createServiceOrder,type Channel} from "./supportOrders";
-import {readQuotePlan} from "./supportQuotePlans";
+import {readQuoteSchedule} from "./supportQuotePlans";
 const iso=(x:unknown):x is string=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(x)&&Number.isFinite(Date.parse(x));
 const whole=(v:unknown,min:number,max:number):v is number=>typeof v==="number"&&Number.isInteger(v)&&v>=min&&v<=max;
 const tables=(channel:Channel)=>channel==="guest"?{q:"support_guest_quotes",r:"support_guest_requests",key:"request_id",tag:""}:{q:"learning_support_quotes",r:"parent_feedback",key:"feedback_id",tag:" AND r.page_hint='learning-support'"};
 export async function offerSlots(db:D1Database,channel:Channel,id:string,qid:string,b:any,now=new Date()){
  await ensureOrderSchema(db);const t=tables(channel),when=now.toISOString();
- if((await readQuotePlan(db,channel,id,qid))?.lessons?.length>1)return {error:"This proposal is a multi-lesson package. Arrange the complete sequence in Owner HQ."};
+ const schedule=await readQuoteSchedule(db,channel,id,qid);
+ if(schedule&&schedule.length>1)return {error:"This proposal is a multi-lesson package. Arrange the complete sequence in Owner HQ."};
  const starts=b?.starts,minutes=b?.minutes,prep=b?.prep_minutes,wrap=b?.wrap_minutes,terms=typeof b?.terms==="string"?b.terms.trim():"",label=typeof b?.learner_label==="string"?b.learner_label.trim():"";
  if(b?.confirmed!==true||!Array.isArray(starts)||starts.length<1||starts.length>12||!whole(minutes,15,180)||!whole(prep,0,120)||!whole(wrap,0,120)||terms.length<20||terms.length>2000||!label||label.length>80||!starts.every(s=>iso(s)&&Date.parse(s)-prep*60000>now.getTime()&&Date.parse(s)<=now.getTime()+90*86400000))return {error:"Choose 1–12 future times, learner label, duration, buffers and service terms."};
+ if(schedule&&schedule[0]!==minutes)return {error:"Appointment length must match the quoted session duration."};
  const unique=[...new Set<string>(starts)].sort();
  if(!await permitsSupportStart(db,channel,id,unique))return {error:PREPARATION_NOTICE};
  const interval=(start:string)=>({start,before:new Date(Date.parse(start)-prep*60000).toISOString(),after:new Date(Date.parse(start)+(minutes+wrap)*60000).toISOString()});
