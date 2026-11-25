@@ -46,6 +46,7 @@ import {buildContinuity,emailContinuity} from "./supportContinuity";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
+import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {offerSlots,readSlots,removeSlots} from "./supportSlots";
 import {createPackage} from "./supportPackages";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
@@ -698,6 +699,14 @@ export function createAdminRoutes() {
     await ensureOrderSchema(c.env.DB);const r=await c.env.DB.prepare("DELETE FROM support_busy_blocks WHERE id=?").bind(id).run();
     if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
     await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env)}));
+  admin.get("/support-briefing/preview",requirePermission("customers.read"),async c=>{
+    const d=await buildBriefing(c.env);c.header("Cache-Control","no-store");return c.json({subject:d.subject,text:d.text});
+  });
+  admin.put("/support-briefing",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(!await saveBriefingSettings(c.env,b))return c.json({detail:"Choose a Sydney-time delivery hour and confirm. Email must be configured in production before enabling."},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.briefing.settings",targetType:"support_briefing",targetId:"daily",detail:{enabled:b.enabled,hour:b.hour}});return c.json({ok:true});
   });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);

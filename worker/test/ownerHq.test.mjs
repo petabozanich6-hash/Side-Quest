@@ -1175,3 +1175,27 @@ test("per-lesson instalments isolate paid and cancelled sessions and preserve qu
  assert.ok((await createPackage(h.db,"member",rid,b,now)).error);
  assert.equal(await verifyManualInvoice(h.db,"member",rid,rows[2].id,{reference:"INST-2",amount_cents:2500,paid_in_square:true},owner.id,new Date(Date.parse(rows[2].installment_due_at)+1000)),false);
 });
+
+test("daily owner briefing uses Sydney dates, live data, opt-in and one send per local day",async()=>{
+ const {h,owner}=await ownerSetup();
+ const {sydneyDay,saveBriefingSettings,buildBriefing,runDailyBriefing}=await import("../src/supportBriefing.ts");
+ const now=new Date("2026-11-24T20:05:00.000Z");
+ assert.equal(sydneyDay(now).date,"2026-11-25");assert.equal(sydneyDay(now).hour,7);assert.equal(sydneyDay(now).from,"2026-11-24T13:00:00.000Z");
+ const winter=sydneyDay(new Date("2026-07-01T21:05:00Z"));assert.equal(winter.hour,7);assert.equal(winter.from,"2026-07-01T14:00:00.000Z");
+ const env={...h.env,OWNER_NOTIFICATION_EMAIL:"owner@example.com",EMAIL:{send:async()=>{throw Error("real sender must not run");}}};
+ const alice=await h.register("briefing-alice@example.com","Private Parent Name");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"PRIVATE LEARNER DETAIL",consent:true}});assert.equal(r.status,201);
+ const id=r.json.id,oid="briefing-order";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"member",id,"briefing-quote",2500,"PRIVATE LEARNER DETAIL","Online","Terms","live","2026-11-24T23:00:00.000Z","2026-11-24T23:30:00.000Z","confirmed",now.toISOString(),now.toISOString());
+ h.db.raw.prepare("INSERT INTO support_installment_terms(order_id,due_at) VALUES(?,?)").run(oid,"2026-11-24T19:00:00.000Z");
+ let sent=0;const fake=async(_env,m)=>{sent++;assert.equal(m.to,"owner@example.com");assert.ok(m.text.includes("Overdue — check Square before release: 1"));assert.ok(!m.text.includes("PRIVATE LEARNER DETAIL"));assert.ok(!m.html.includes("Private Parent Name"));return true;};
+ assert.equal(await runDailyBriefing(env,now,fake),"not_due");
+ assert.equal(await saveBriefingSettings({...env,STAGING_KEY:"test"},{enabled:true,hour:7,confirmed:true}),false);
+ assert.equal(await saveBriefingSettings(env,{enabled:true,hour:7,confirmed:true}),true);
+ assert.equal(await runDailyBriefing({...env,STAGING_KEY:"test"},now,fake),"disabled");
+ assert.equal(await runDailyBriefing(env,new Date("2026-11-24T19:55:00Z"),fake),"not_due");
+ assert.equal(await runDailyBriefing(env,now,fake),"sent");assert.equal(await runDailyBriefing(env,now,fake),"duplicate");assert.equal(sent,1);
+ const digest=await buildBriefing(env,now);assert.ok(digest.text.includes("1 new-status enquiries"));
+ assert.equal((await h.req("/admin/support-briefing/preview",{token:alice.token})).status,404);
+ await stepUp(h,owner);assert.equal((await h.req("/admin/support-briefing/preview",{token:owner.token})).status,200);
+});
