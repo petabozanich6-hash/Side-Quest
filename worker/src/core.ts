@@ -94,26 +94,24 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.get("/api/dashboard/parent", auth, parent, async (c) => {
     const fid = c.get("user").family_id;
     const db = c.env.DB;
-    const count = async (sql: string, ...b: any[]) =>
-      (await db.prepare(sql).bind(...b).first<{ n: number }>())?.n ?? 0;
-    const { results: students } = await db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE family_id = ?"
-    ).bind(fid).all<any>();
-    const out: any = {
-      students: [],
-      pending_review: await count("SELECT COUNT(*) n FROM submissions WHERE family_id = ? AND status = 'submitted'", fid),
-      awaiting_help: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND status = 'awaiting_help'", fid),
+    // Four fixed queries instead of three additional queries for every student.
+    const [studentRows, assignmentRows, pending, resources] = await Promise.all([
+      db.prepare("SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE family_id = ?").bind(fid).all<any>(),
+      db.prepare("SELECT student_id, COUNT(*) total_assignments, SUM(CASE WHEN status IN ('accepted','demonstrated','completed') THEN 1 ELSE 0 END) completed, SUM(CASE WHEN status='awaiting_help' THEN 1 ELSE 0 END) awaiting_help FROM assignments WHERE family_id = ? GROUP BY student_id").bind(fid).all<{student_id:string;total_assignments:number;completed:number;awaiting_help:number}>(),
+      db.prepare("SELECT COUNT(*) n FROM submissions WHERE family_id = ? AND status = 'submitted'").bind(fid).first<{n:number}>(),
+      db.prepare("SELECT COUNT(*) n FROM resources WHERE family_id = ? AND approved = 0").bind(fid).first<{n:number}>(),
+    ]);
+    const byStudent = new Map((assignmentRows.results || []).map(row => [row.student_id, row]));
+    const out = {
+      students: (studentRows.results || []).map(s => {
+        const row=byStudent.get(s.id);
+        return {...studentOut(s),total_assignments:row?.total_assignments ?? 0,completed:row?.completed ?? 0,awaiting_help:row?.awaiting_help ?? 0};
+      }),
+      pending_review: pending?.n ?? 0,
+      awaiting_help: (assignmentRows.results || []).reduce((sum,row)=>sum+Number(row.awaiting_help||0),0),
       resources_pending: 0,
-      unapproved_resources: await count("SELECT COUNT(*) n FROM resources WHERE family_id = ? AND approved = 0", fid),
+      unapproved_resources: resources?.n ?? 0,
     };
-    for (const s of students) {
-      out.students.push({
-        ...studentOut(s),
-        total_assignments: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ?", fid, s.id),
-        completed: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND status IN ('accepted','demonstrated','completed')", fid, s.id),
-        awaiting_help: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND status = 'awaiting_help'", fid, s.id),
-      });
-    }
     return c.json(out);
   });
 

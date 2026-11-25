@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { api } from "../../lib/api";
 import { Users, BookOpen, Camera, AlertTriangle, Plus, GraduationCap, Trees, FileCheck, Compass, MailCheck, ArrowRight, ScrollText, BookMarked } from "lucide-react";
@@ -33,56 +33,36 @@ const Quick = ({ to, icon: Icon, label, desc, tint = "#4A5D3A", testid }) => (
 
 export default function ParentDashboard() {
   const { user } = useAuth();
-  const { unreadFeedbackReplies: parentUnread = 0, latestUnreadFeedbackReply: parentLatest = null } = useOutletContext() || {};
-  // Independently refresh when this page opens: a stale sidebar badge must not
-  // hide a fresh Owner reply on the actual dashboard.
-  const [feedbackNotice,setFeedbackNotice] = useState(null);
-  const unreadFeedbackReplies = feedbackNotice?.unread ?? parentUnread;
-  const latestUnreadFeedbackReply = feedbackNotice?.latest ?? parentLatest;
+  const { unreadFeedbackReplies = 0, latestUnreadFeedbackReply = null, planState: plan = null } = useOutletContext() || {};
   const [data, setData] = useState(null);
   const [waiting, setWaiting] = useState([]);
   const [readingPending, setReadingPending] = useState([]);
   const [openId, setOpenId] = useState(null);
-  const [plan, setPlan] = useState(null);
   const [aiStatus, setAiStatus] = useState(null);
   const [drafts, setDrafts] = useState(null);
-  useEffect(() => {
-    let live=true;
-    const refresh=()=>api.get("/feedback/unread-count").then(({data})=>{
-      if(live) setFeedbackNotice({unread:Number(data?.unread||0),latest:data?.latest||null});
-    }).catch(()=>{});
-    refresh();
-    const onFocus=()=>refresh();
-    window.addEventListener("focus",onFocus);
-    window.addEventListener("sidequest-feedback-replies-updated",onFocus);
-    const timer=window.setInterval(refresh,60000);
-    return ()=>{live=false;window.removeEventListener("focus",onFocus);window.removeEventListener("sidequest-feedback-replies-updated",onFocus);window.clearInterval(timer);};
+  const [loadError,setLoadError]=useState(false);
+  const inFlight=useRef(null);
+  const load=useCallback(()=>{
+    if(inFlight.current)return inFlight.current;
+    setLoadError(false);
+    const job=Promise.allSettled([
+      api.get("/dashboard/parent").then(r=>setData(r.data)).catch(()=>setLoadError(true)),
+      api.get("/submissions").then(r=>setWaiting((r.data||[]).filter(s=>["submitted","awaiting_help"].includes(s.status)))).catch(()=>{}),
+      api.get("/reading-submissions/pending").then(r=>setReadingPending(r.data||[])).catch(()=>{})
+    ]).finally(()=>{inFlight.current=null;});
+    inFlight.current=job;
+    return job;
   },[]);
-
-  const load = () => {
-    api.get("/dashboard/parent").then(r => setData(r.data));
-    api.get("/submissions").then(r => setWaiting((r.data || []).filter(s => ["submitted", "awaiting_help"].includes(s.status)))).catch(() => {});
-    api.get("/reading-submissions/pending").then(r => setReadingPending(r.data || [])).catch(() => setReadingPending([]));
-  };
-  useEffect(() => {
+  useEffect(()=>{
     load();
-    api.get("/account/plan").then(r => setPlan(r.data)).catch(() => {});
-    api.get("/ai/status").then(r => setAiStatus(r.data)).catch(() => {});
-    api.get("/ai/batches?open=1").then(r => setDrafts(r.data)).catch(() => setDrafts(null));
-  }, []);
-  useEffect(() => {
-    // Refresh when returning to the parent dashboard after a child submits work
-    // from another device. Do not poll the full submissions list constantly.
-    const onFocus = () => load();
-    const onVisible = () => { if (document.visibilityState === "visible") load(); };
-    window.addEventListener("focus", onFocus);
-    document.addEventListener("visibilitychange", onVisible);
-    return () => {
-      window.removeEventListener("focus", onFocus);
-      document.removeEventListener("visibilitychange", onVisible);
-    };
-  }, []);
-  if (!data) return <div className="p-10 text-stone-500">Loading dashboard…</div>;
+    api.get("/ai/status").then(r=>setAiStatus(r.data)).catch(()=>{});
+    api.get("/ai/batches?open=1").then(r=>setDrafts(r.data)).catch(()=>setDrafts(null));
+    const refresh=()=>{if(document.visibilityState!=="hidden")load();};
+    window.addEventListener("focus",refresh);
+    document.addEventListener("visibilitychange",refresh);
+    return ()=>{window.removeEventListener("focus",refresh);document.removeEventListener("visibilitychange",refresh);};
+  },[load]);
+  if(!data)return loadError?<div className="paper-card m-4 p-6 space-y-3" role="alert"><p>Couldn't load your dashboard. Check your connection and try again.</p><button className="rounded-full bg-emerald-950 text-white px-4 py-2 font-bold" onClick={load}>Try again</button></div>:<div role="status" className="p-10 text-stone-500">Loading dashboard…</div>;
 
   const pendingTotal = waiting.length + readingPending.length;
   const nextSubmitted = waiting[0] || null;
@@ -91,6 +71,7 @@ export default function ParentDashboard() {
 
   return (
     <div className="p-4 sm:p-8 lg:p-10 space-y-8 relative" data-testid="parent-dashboard">
+      {loadError&&<p role="alert" className="rounded-xl bg-amber-50 p-3 text-sm">Showing the last loaded overview. <button className="underline font-bold" onClick={load}>Retry refresh</button></p>}
       <Leaf className="absolute right-10 top-8 opacity-50" size={70} color="#C8893B"/>
       <Branch className="absolute left-0 bottom-10 opacity-20" size={200} color="#4A5D3A"/>
 
