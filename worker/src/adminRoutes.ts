@@ -613,6 +613,32 @@ export function createAdminRoutes() {
 
 
   // Standalone guests are separate from homeschool customers and remain behind Owner HQ step-up.
+  // Family identities are derived only from the verified guest email, never a child's name.
+  admin.get("/support-families",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    await db.prepare("INSERT OR IGNORE INTO support_guest_families(id,email,created_at) SELECT lower(hex(randomblob(16))),email,MIN(created_at) FROM support_guest_requests GROUP BY email").run();
+    const page=Number(c.req.query("page")||1),search=(c.req.query("search")||"").trim().toLowerCase();
+    if(!Number.isInteger(page)||page<1||page>10000||search.length>254)return c.json({detail:"Invalid search or page"},400);
+    const rows=(await db.prepare(`SELECT f.id,f.email,f.created_at,MAX(r.updated_at) AS updated_at,
+      (SELECT parent_name FROM support_guest_requests WHERE email=f.email ORDER BY updated_at DESC,id DESC LIMIT 1) AS parent_name,
+      COUNT(*) AS enquiry_count,SUM(CASE WHEN r.seen_at IS NULL AND r.status NOT IN ('closed','resolved') THEN 1 ELSE 0 END) AS unread_count,
+      SUM(CASE WHEN r.status NOT IN ('closed','resolved') THEN 1 ELSE 0 END) AS active_count
+      FROM support_guest_families f JOIN support_guest_requests r ON r.email=f.email
+      WHERE (?='' OR instr(lower(f.email),?)>0 OR EXISTS(SELECT 1 FROM support_guest_requests x WHERE x.email=f.email AND instr(lower(x.parent_name),?)>0))
+      GROUP BY f.id,f.email,f.created_at ORDER BY unread_count DESC,updated_at DESC,f.id LIMIT 51 OFFSET ?`).bind(search,search,search,(page-1)*50).all<any>()).results||[];
+    return c.json({items:rows.slice(0,50),has_more:rows.length>50});
+  });
+  admin.get("/support-families/:id",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const id=c.req.param("id")??"",page=Number(c.req.query("page")||1);
+    if(!/^[a-f0-9]{32}$/.test(id)||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid family or page"},400);
+    const family=await db.prepare("SELECT id,email,created_at FROM support_guest_families WHERE id=?").bind(id).first<{id:string,email:string,created_at:string}>();
+    if(!family)return c.json({detail:"Family not found"},404);
+    const contact=await db.prepare("SELECT parent_name FROM support_guest_requests WHERE email=? ORDER BY updated_at DESC,id DESC LIMIT 1").bind(family.email).first<{parent_name:string}>();
+    if(!contact)return c.json({detail:"Family not found"},404);
+    const rows=(await db.prepare("SELECT id,subject,status,seen_at,created_at,updated_at FROM support_guest_requests WHERE email=? ORDER BY CASE WHEN seen_at IS NULL THEN 0 ELSE 1 END,updated_at DESC,id LIMIT 51 OFFSET ?").bind(family.email,(page-1)*50).all<any>()).results||[];
+    return c.json({family:{...family,parent_name:contact.parent_name},items:rows.slice(0,50),has_more:rows.length>50});
+  });
   admin.get("/support-guests",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);
     const page=Number(c.req.query("page")||1);if(!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid page"},400);
