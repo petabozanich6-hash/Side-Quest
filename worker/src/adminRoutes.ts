@@ -43,6 +43,7 @@ import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
+import {readAvailability,saveAvailability} from "./supportPublicAvailability";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
@@ -721,6 +722,16 @@ export function createAdminRoutes() {
     const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_installment_terms t ON t.order_id=o.id WHERE o.status='confirmed' AND COALESCE(t.due_at,i.due_at)<=? AND i.cancelled_at IS NULL ORDER BY COALESCE(t.due_at,i.due_at) LIMIT 100").bind(nowIso()).all<any>()).results||[];
     const blocks=(await c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all()).results||[];
     return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
+  });
+  admin.get("/support-public-availability",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    return c.json(await readAvailability(c.env.DB));
+  });
+  admin.put("/support-public-availability",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);
+    if(!await saveAvailability(c.env.DB,b))return c.json({detail:"Check the weekly hours, confirm the change and refresh if another edit was saved."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.public_availability.settings",targetType:"support",targetId:"availability",detail:{enabled:b.enabled}});
+    return c.json(await readAvailability(c.env.DB));
   });
   for(const channel of ["member","guest"] as const){
     admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true)}));
