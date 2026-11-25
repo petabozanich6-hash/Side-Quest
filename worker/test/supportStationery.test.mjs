@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {buildStationeryPdf,validateStationery,stationeryEmailEnabled,sendStationery} from "../src/supportStationery.ts";
+import {makeDb} from "./fakeD1.mjs";
+import {listStationery,saveStationery,downloadStationery,deliverSavedStationery} from "../src/supportStationeryHistory.ts";
+import {buildStationeryPdf,validateStationery,stationeryEmailEnabled,sendStationery,prepareStationery,stationeryFingerprint} from "../src/supportStationery.ts";
 const date="25 November 2026";
 test("branded A4 stationery has stable parent-facing content and a valid cross-reference table",()=>{
  const r=buildStationeryPdf({kind:"letter",learner:"Sample learner",sections:["Hello (parent)\\ test."]},date);
@@ -37,4 +39,42 @@ test("review and exact scoped recipient required; sends only generated PDF to th
  assert.equal(await sendStationery(e,doc,{reviewed:false,recipient_confirmed:doc.recipient}),false);
  assert.equal(await sendStationery(e,doc,{reviewed:true,recipient_confirmed:doc.recipient}),true);
  assert.equal(sent.length,1);assert.equal(sent[0].to,doc.recipient);assert.equal(sent[0].attachments[0].type,"application/pdf");
+});
+
+test("standalone enquiry needs no account, subscription, order or payment; saved documents are scoped and immutable",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const now="2026-11-25T00:00:00Z";
+ for(const id of ["guest-a","guest-b"])db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(id,id+"@example.test","Sample parent","Learning","Enquiry",now,now);
+ const deliveries=[],env={DB:db,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async msg=>{deliveries.push(msg);return {messageId:"test"};}}};
+ const draft={kind:"proposal",learner:"Sample",sections:["Needs","Support","Agreed later","Reply"]};
+ const doc=await prepareStationery(env,"guest","guest-a",null,draft);assert.ok(!("error" in doc));
+ assert.equal(doc.recipient,"guest-a@example.test");
+ const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
+ assert.equal(await saveStationery(db,"guest","guest-a",null,doc,{...review,fingerprint:"changed"}),null);
+ const saved=await saveStationery(db,"guest","guest-a",null,doc,review);
+ assert.ok(saved.id);assert.equal(saved.status,"saved");
+ assert.equal((await saveStationery(db,"guest","guest-a",null,doc,review)).id,saved.id);
+ assert.equal((await listStationery(db,"guest","guest-a")).length,1);
+ assert.equal((await listStationery(db,"guest","guest-b")).length,0);
+ assert.equal(await downloadStationery(db,"guest","guest-b",saved.id),null);
+ assert.equal(await downloadStationery(db,"member","guest-a",saved.id),null);
+ const copy=await downloadStationery(db,"guest","guest-a",saved.id);
+ assert.deepEqual(Uint8Array.from(atob(copy.base64),c=>c.charCodeAt(0)),doc.pdf);
+ assert.ok("error" in await deliverSavedStationery(env,"guest","guest-b",saved.id,review));
+ const results=await Promise.all([deliverSavedStationery(env,"guest","guest-a",saved.id,review),deliverSavedStationery(env,"guest","guest-a",saved.id,review)]);
+ assert.equal(results.filter(r=>r.email_notification_sent===true).length,1);assert.equal(deliveries.length,1);
+ assert.equal(deliveries[0].to,doc.recipient);assert.deepEqual(deliveries[0].attachments[0].content,doc.pdf);
+ assert.equal((await listStationery(db,"guest","guest-a"))[0].status,"sent");
+});
+test("failed delivery is retained for manual review, not retried",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const now="2026-11-25T00:00:00Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("g","parent@example.test","Sample","Learning","Enquiry",now,now);
+ let attempts=0;const env={DB:db,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async()=>{attempts++;throw Error("synthetic failure");}}};
+ const doc=await prepareStationery(env,"guest","g",null,{kind:"letter",sections:["Sample"]});
+ const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
+ const saved=await saveStationery(db,"guest","g",null,doc,review);
+ assert.equal((await deliverSavedStationery(env,"guest","g",saved.id,review)).email_notification_sent,false);
+ assert.equal((await listStationery(db,"guest","g"))[0].status,"review");
+ assert.ok("error" in await deliverSavedStationery(env,"guest","g",saved.id,review));assert.equal(attempts,1);
 });
