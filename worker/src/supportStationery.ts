@@ -90,10 +90,10 @@ export function buildStationeryPdf(raw:any,date:string){
  return {pdf:encoder.encode(pdf),pages:pages.length,filename:"sidequest-"+d.kind+".pdf",title:template.title,kind:d.kind};
 }
 export function stationeryEmailEnabled(e:Env){return e.SUPPORT_STATIONERY_EMAIL==="true"&&!!e.EMAIL&&!e.STAGING_KEY&&e.STAGING_PRIVATE!=="true";}
-type PreparedStationery=ReturnType<typeof buildStationeryPdf>&{recipient:string;email_enabled:boolean};
-export async function prepareStationery(e:Env,channel:Channel,id:string,oid:string,b:any):Promise<PreparedStationery|{error:string}>{
- const order=await getOrder(e.DB,channel,id,oid);
- if(!order||order.status==="cancelled"||order.status==="review"||order.checkout_started_at)return {error:"An active, non-legacy service order is required."} as const;
+export type PreparedStationery=ReturnType<typeof buildStationeryPdf>&{recipient:string;email_enabled:boolean};
+export async function prepareStationery(e:Env,channel:Channel,id:string,oid:string|null,b:any):Promise<PreparedStationery|{error:string}>{
+ if(oid){const order=await getOrder(e.DB,channel,id,oid);
+ if(!order||order.status==="cancelled"||order.status==="review"||order.checkout_started_at)return {error:"An active, non-legacy service order is required."};}
  const recipient=channel==="guest"?await e.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await e.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
  if(!recipient?.email)return {error:"Parent email not found."} as const;
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"}).format(new Date());
@@ -102,4 +102,16 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
 export async function sendStationery(e:Env,doc:PreparedStationery,b:any){
  if(!stationeryEmailEnabled(e)||!doc.email_enabled||b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return false;
  return sendEmail(e,{to:doc.recipient,subject:"Side-Quest Learning Support: "+doc.title,text:"Your personalised learning support document is attached. Please keep it private. Reply to "+SUPPORT_EMAIL+" if you have questions.",html:layout({preheader:"Your personal learning support document.",kicker:"Learning Support",heading:doc.title,body:p("Your personalised document is attached as a PDF. Please keep it private and contact us if you have questions.")+p(esc(SITE_URL)),reason:"This is correspondence about your learning support service."}),attachments:[{filename:doc.filename,type:"application/pdf",content:doc.pdf,disposition:"attachment"}]});
+}
+
+export async function stationeryRecipient(db:D1Database,channel:Channel,id:string){
+ return channel==="guest"?db.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():db.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+}
+export function stationeryBase64(pdf:Uint8Array){
+ let raw="";for(let i=0;i<pdf.length;i+=8192)raw+=String.fromCharCode(...pdf.subarray(i,i+8192));return btoa(raw);
+}
+export async function stationeryFingerprint(doc:PreparedStationery){
+ const bytes=new TextEncoder().encode(JSON.stringify([doc.recipient,doc.filename,stationeryBase64(doc.pdf)]));
+ const hash=await crypto.subtle.digest("SHA-256",bytes);
+ return Array.from(new Uint8Array(hash),x=>x.toString(16).padStart(2,"0")).join("");
 }
