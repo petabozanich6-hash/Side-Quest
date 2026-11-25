@@ -18,11 +18,12 @@ const { chromium } = await import(process.env.PW_PATH || "playwright");
 
 const results = [];
 let page;
+const browserErrors=[];
 const ok = (c, m) => { if (!c) throw new Error(m || "assertion failed"); };
 const shot = async (name, p = page) => { try { await p.screenshot({ path: `${SHOTS}/${name}.png`, fullPage: true }); } catch { /* best effort */ } };
 async function step(name, fn) {
   try { await fn(); results.push({ name, ok: true }); console.log(`PASS ${name}`); }
-  catch (e) { results.push({ name, ok: false }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 800)}`); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); }
+  catch (e) { results.push({ name, ok: false }); console.log(`FAIL ${name}\n     ${String(e.message || e).slice(0, 800)}`); if(page)console.log("Owner browser URL:",page.url(),"Recent browser errors:",browserErrors.slice(-6)); await shot("FAIL-" + name.replace(/\W+/g, "-").slice(0, 40)); }
 }
 
 // ---- local stack
@@ -65,6 +66,7 @@ const owner = await reg(ownerEmail, "Owner Person");
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
 page = await ctx.newPage();
+page.on("pageerror",e=>{browserErrors.push(String(e.stack||e.message).slice(0,1800));if(browserErrors.length>30)browserErrors.shift();});
 // Authenticate using the real parent login form. Seeding local storage after the
 // app mounts races its initial anonymous auth check and can log out a test user.
 const signIn = async (p, token) => {
@@ -215,6 +217,7 @@ await step("Learning Support month planner navigates future months, preserves pr
  ok(denied.status===404,"ordinary parent can read private tutor calendar");
  await page.goto(BASE+"/parent/command-centre/learning-support");
  await page.getByRole("link",{name:/^Calendar/}).click();
+ await page.waitForURL(u=>u.pathname==="/parent/command-centre/learning-support"&&u.searchParams.get("view")==="Calendar",{timeout:15000});
  const calendar=page.locator('[aria-label="Monthly private tutor calendar"]');
  await calendar.waitFor({timeout:15000});
  const month=page.locator('input[type="month"]');
@@ -245,6 +248,8 @@ await step("Learning Support month planner navigates future months, preserves pr
 await step("gifting preview days from a customer's page reaches the parent", async () => {
   const before = await api("GET", "/account/plan", user.token);
   ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");
+  await page.goto(BASE+"/parent/command-centre");
+  await page.waitForSelector("[data-testid=owner-command-centre]");
   await page.click("[data-testid=hq-tab-customers]");
   await page.fill("[data-testid=hq-customer-search]", userEmail);
   await page.keyboard.press("Enter");
@@ -278,6 +283,8 @@ await step("gifting preview days from a customer's page reaches the parent", asy
 });
 
 await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
+  await page.goto(BASE+"/parent/command-centre");
+  await page.waitForSelector("[data-testid=owner-command-centre]");
   await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-announcements]");
   await page.waitForSelector("[data-testid=hq-announcements]");
