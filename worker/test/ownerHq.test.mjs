@@ -1204,6 +1204,30 @@ test("multi-lesson package atomically reserves all slots and one invoice confirm
  assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now)).error);
 });
 
+test("standard package can be quoted and booked without a teaching plan; instalments use agreed session rates",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("schedule-only@example.com","Parent");
+ const {createPackage}=await import("../src/supportPackages.ts");
+ const {createServiceOrder,listOrders}=await import("../src/supportOrders.ts");
+ const {readDiary}=await import("../src/supportDiary.ts");
+ const {offerSlots}=await import("../src/supportSlots.ts");
+ const made=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(made.status,201);const rid=made.json.id;
+ await stepUp(h,owner);
+ const ap="/admin/feedback/"+rid+"/quotes",pp="/learning-support/"+rid+"/quotes/";
+ const quote={scope:"Two personalised mathematics sessions",delivery:"30-minute and 60-minute sessions by arrangement",amount_cents:7000,valid_days:7,confirmed:true};
+ const invalid=await h.req(ap,{method:"POST",token:owner.token,body:{...quote,session_minutes:[30,55]}});assert.equal(invalid.status,400);
+ const q=await h.req(ap,{method:"POST",token:owner.token,body:{...quote,session_minutes:[30,60]}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
+ const plan=await h.req(ap+"/"+qid+"/plan",{token:owner.token});assert.equal(plan.json.plan,null);assert.deepEqual(plan.json.session_minutes,[30,60]);
+ assert.equal((await h.req(pp+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const now=new Date(),starts=[48,72].map(hours=>new Date(now.getTime()+hours*3600000).toISOString());
+ const b={quote_id:qid,starts,learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",payment_mode:"installments",deadline_hours:24,confirmed:true};
+ assert.ok((await createServiceOrder(h.db,"member",rid,{...b,mode:"live",start_at:starts[0],minutes:30},now)).error);
+ assert.ok((await offerSlots(h.db,"member",rid,qid,{...b,minutes:30},now)).error);
+ assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[starts[0]]},now)).error);
+ const packageResult=await createPackage(h.db,"member",rid,b,now);assert.ok(packageResult.id,JSON.stringify(packageResult));
+ const rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.amount_cents),[2500,4500]);assert.deepEqual(rows.map(o=>(Date.parse(o.end_at)-Date.parse(o.start_at))/60000),[30,60]);
+ assert.equal((await readDiary(h.db,"member",rid,rows[1].id)).diary.ready,false);
+});
+
 test("per-lesson instalments isolate paid and cancelled sessions and preserve quoted total",async()=>{
  const {h,owner}=await ownerSetup(),alice=await h.register("installment-alice@example.com","Alice");
  const {createPackage}=await import("../src/supportPackages.ts");
