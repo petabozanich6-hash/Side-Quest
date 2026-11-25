@@ -827,3 +827,26 @@ test("feedback: input validation and rate limiting stop spam without creating ex
   assert.equal(blocked.status,429);
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM parent_feedback WHERE user_id=?").get(alice.id).n,5);
 });
+
+
+test("learning support intake validates consent, is private and filterable in Owner HQ",async()=>{
+ const {h,owner}=await ownerSetup();
+ const alice=await h.register("support-alice@example.com","Alice");
+ const bob=await h.register("support-bob@example.com","Bob");
+ const child=await h.addChild(alice,"support-child");
+ const input={kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Worked explanation",detail:"Help understanding equivalent fractions.",consent:true};
+ for(const body of [{...input,consent:false},{...input,year:"Year 99"},{...input,subject:"Unknown"},{...input,detail:"short"},{category:"other",subject:"Forged support",message:"This should not be treated as a support enquiry.",page_hint:"learning-support"}]){
+  const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body});assert.equal(r.status,400,JSON.stringify(r.json));
+ }
+ const denied=await h.req("/feedback",{method:"POST",admin:false,token:child.token,body:input});assert.ok([401,403,404].includes(denied.status));
+ const regular=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{category:"idea",subject:"A general idea",message:"An ordinary feedback submission."}});assert.equal(regular.status,201);
+ const created=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{...input,family_id:bob.familyId,user_id:bob.id}});assert.equal(created.status,201,JSON.stringify(created.json));
+ let r=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(r.status,200);assert.deepEqual(r.json.reports.map(x=>x.id),[created.json.id]);assert.match(r.json.reports[0].message,/equivalent fractions/);
+ r=await h.req("/feedback?kind=learning-support",{admin:false,token:bob.token});assert.equal(r.status,200);assert.equal(r.json.reports.length,0);
+ r=await h.req("/admin/feedback?kind=learning-support",{token:alice.token});assert.equal(r.status,404);
+ await stepUp(h,owner);
+ r=await h.req("/admin/feedback?kind=learning-support",{token:owner.token});assert.equal(r.status,200);assert.deepEqual(r.json.items.map(x=>x.id),[created.json.id]);
+ h.db.raw.prepare("UPDATE families SET plan='FREE_EXPIRED' WHERE id=?").run(alice.familyId);
+ r=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.reports.length,1);
+ const afterExpiry=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{...input,detail:"A new learning need after membership expiry."}});assert.equal(afterExpiry.status,201,JSON.stringify(afterExpiry.json));
+});

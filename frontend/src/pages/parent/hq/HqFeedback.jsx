@@ -14,6 +14,7 @@ export default function HqFeedback() {
   const [items,setItems] = useState([]);
   const [status,setStatus] = useState("");
   const [category,setCategory] = useState("");
+  const [supportOnly,setSupportOnly] = useState(false);
   const [page,setPage] = useState(1);
   const [more,setMore] = useState(false);
   const [loading,setLoading] = useState(false);
@@ -32,7 +33,7 @@ export default function HqFeedback() {
     setLoading(true);setError("");
     try {
       const [results,counts]=await Promise.all([
-        adminApi.get("/feedback",{status:status||undefined,category:category||undefined,page}),
+        adminApi.get("/feedback",{status:status||undefined,category:category||undefined,kind:supportOnly?"learning-support":undefined,page}),
         adminApi.get("/feedback/unread-count"),
       ]);
       setItems(results.items||[]);setMore(results.has_more===true);setUnread(counts.unread||0);
@@ -40,7 +41,7 @@ export default function HqFeedback() {
     } catch(e) {setError(errorText(e,"Could not load submitted feedback."));}
     finally {setLoading(false);}
   }
-  useEffect(()=>{load();},[status,category,page]);
+  useEffect(()=>{load();},[status,category,page,supportOnly]);
 
   async function openItem(item) {
     setSelected(item);setDraftStatus(item.status);setOwnerNote(item.owner_note||"");
@@ -68,6 +69,11 @@ export default function HqFeedback() {
     finally {setSaving(false);}
   }
 
+  const SUPPORT_PRESETS = [
+    {label:"Ask for clarification",status:"reviewing",text:"Thanks for your learning support request! Before I recommend an option, could you please send a little more information about the topic and what has already been tried? Please do not send identifying or sensitive child information."},
+    {label:"Prepare a quote",status:"reviewing",text:"I can offer the following support: [service and scope]. Total price: AUD $[amount]. Estimated delivery or proposed session time: [details]. Please review these details before agreeing; this message is not a confirmed booking or charge."},
+    {label:"Outside my scope",status:"closed",text:"Thanks for getting in touch. I cannot confidently provide the support needed for this particular topic, so I will not accept payment or a booking for it."}
+  ];
   const PRESETS = [
     { label:"Thanks!", status:null, text:"Thanks for taking the time to send this through! I really appreciate your feedback." },
     { label:"It's fixed", status:"resolved", text:"Thanks for flagging this! I've made a fix. Please give it another try, and let me know if anything still isn't working as expected." },
@@ -101,6 +107,7 @@ export default function HqFeedback() {
       </div>
     </header>
     <div className="flex flex-wrap gap-3 bg-white rounded-xl border border-stone-200 p-4">
+      <label className="flex gap-2 items-center text-sm"><input type="checkbox" checked={supportOnly} onChange={e=>{setSupportOnly(e.target.checked);setPage(1);}}/> Learning support only</label>
       <F label="Status"><select value={status} onChange={e=>{setStatus(e.target.value);setPage(1);}} className="rounded-lg border border-stone-300 p-2 bg-white text-sm" data-testid="hq-feedback-status-filter">
         <option value="">All statuses</option>{STATUS.map(([id,label])=><option key={id} value={id}>{label}</option>)}
       </select></F>
@@ -115,7 +122,7 @@ export default function HqFeedback() {
         {items.length===0&&!loading?<p className="text-sm p-4 text-stone-600">No submissions match these filters.</p>:null}
         {items.map(item=><button type="button" onClick={()=>openItem(item)} key={item.id} data-testid={"hq-feedback-item-"+item.id}
           className={"block w-full rounded-xl p-4 text-left border hover:border-emerald-600 transition "+(selected?.id===item.id?"border-emerald-800 bg-emerald-50":"border-stone-200 bg-white")}>
-          <div className="flex gap-2 items-center justify-between"><span className="text-[11px] uppercase tracking-wider font-bold text-stone-600">{LABEL[item.category]||"Other"} · {item.status.replaceAll("_"," ")}</span>{!item.seen_at&&<span className="w-2.5 h-2.5 rounded-full bg-amber-600" aria-label="Unread"/>}</div>
+          <div className="flex gap-2 items-center justify-between"><span className="text-[11px] uppercase tracking-wider font-bold text-stone-600">{item.page_hint==="learning-support"?"Learning support":LABEL[item.category]||"Other"} · {item.status.replaceAll("_"," ")}</span>{!item.seen_at&&<span className="w-2.5 h-2.5 rounded-full bg-amber-600" aria-label="Unread"/>}</div>
           <div className="font-bold mt-1 text-sm text-stone-900 break-words">{item.subject}</div>
           <div className="text-xs text-stone-600 mt-1 truncate">{item.parent_name} · {item.parent_email}</div>
           <div className="text-xs text-stone-500 mt-1">{new Date(item.created_at).toLocaleString("en-AU")}</div>
@@ -149,7 +156,7 @@ export default function HqFeedback() {
             <div className="border-t border-stone-200 pt-4 space-y-3">
               <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><MessageSquare size={16}/> Replies to the parent</h4>
               {replies.length===0?<p className="text-xs text-stone-500">No replies yet.</p>:<div className="space-y-2" data-testid="hq-feedback-replies">{replies.map(r=><div key={r.id} className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3"><div className="text-xs font-bold text-emerald-950">Sent · {new Date(r.created_at).toLocaleString("en-AU")}{r.parent_read_at?" · Read by parent":" · Unread by parent"}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-stone-800">{r.body}</p></div>)}</div>}
-              <div className="flex flex-wrap gap-2">{PRESETS.map(p=><button key={p.label} type="button" className="rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold px-3 py-2 hover:bg-emerald-100" onClick={()=>{setReplyText(p.text);if(p.status)setDraftStatus(p.status);setSentNotice("");}}>{p.label}</button>)}</div>
+              <div className="flex flex-wrap gap-2">{(selected?.page_hint==="learning-support"?SUPPORT_PRESETS:PRESETS).map(p=><button key={p.label} type="button" className="rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold px-3 py-2 hover:bg-emerald-100" onClick={()=>{setReplyText(p.text);if(p.status)setDraftStatus(p.status);setSentNotice("");}}>{p.label}</button>)}</div>
               <F label="Message the parent (only the submitting parent sees this)">
                 <textarea rows={5} maxLength={2000} value={replyText} onChange={e=>setReplyText(e.target.value)} className="w-full rounded-xl border border-stone-300 p-3 text-sm" placeholder="Thanks for the suggestion… or the issue has been fixed!" data-testid="hq-feedback-reply-message"/>
               </F>
