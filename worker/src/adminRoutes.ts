@@ -1,4 +1,5 @@
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
+import {readInvoiceAttempt,createInvoiceAttempt,publishInvoiceAttempt} from "./supportInvoiceAttempts";
 /**
  * Owner HQ: owner-only administration API (/api/admin/*).
  *
@@ -830,6 +831,12 @@ export function createAdminRoutes() {
       c.header("Cache-Control","private, no-store");
       return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
+    admin.get(path+"/:oid/square-invoice-pilot",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
+      c.header("Cache-Control","private, no-store");
+      return c.json(await readInvoiceAttempt(c.env,channel,id,oid));
+    });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json(d):c.json({detail:"Order not found"},404);
@@ -892,6 +899,14 @@ export function createAdminRoutes() {
         return c.json({ok:sent,email_notification_sent:sent});
       }
       if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
+      if(action==="square-invoice-draft"||action==="square-invoice-publish"){
+        const r=action==="square-invoice-draft"?await createInvoiceAttempt(c.env,channel,id,oid,b):await publishInvoiceAttempt(c.env,channel,id,oid,b);
+        if("error" in r)return c.json({detail:r.error},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.square_invoice_pilot."+action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json(r);
+      }
+      // Never release or manually invoice a reservation with an unresolved provider attempt.
+      if(["invoice","verify-payment","cancel","cancel-invoice","cancel-paid"].includes(action)&&await c.env.DB.prepare("SELECT order_id FROM support_square_invoice_attempts WHERE order_id=?").bind(oid).first())return c.json({detail:"A Square invoice pilot record exists. Reconcile it before any manual billing or cancellation."},409);
       if(action==="invoice"){
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
         if("error" in r)return c.json({detail:r.error},409);
