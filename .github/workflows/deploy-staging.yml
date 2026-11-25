@@ -1,11 +1,17 @@
 name: Deploy staging (private)
-# Manual only. Deploys the current branch to a SEPARATE staging Worker and a SEPARATE staging D1 database.
+# Manual or dedicated staging branch only. Deploys the current branch to a SEPARATE staging Worker and a SEPARATE staging D1 database.
 # Never touches production (sidequest-db1 / the "side-quest" Worker / sidequestlearning.app).
 on:
   workflow_dispatch:
+  push:
+    branches: [staging/sidequest-modernisation]
 
 permissions:
   contents: read
+
+concurrency:
+  group: sidequest-private-staging
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -31,29 +37,31 @@ jobs:
           npm --prefix worker ci
           npm --prefix frontend ci --legacy-peer-deps
           CI=false npm --prefix frontend run build
-      - name: Find or create the staging database
+      - name: Require existing isolated staging database
         run: |
-          set -e
+          set -euo pipefail
           ID=$(npx wrangler d1 list --json | node -e 'const d=JSON.parse(require("fs").readFileSync(0,"utf8"));const x=d.find(r=>r.name==="sidequest-staging");console.log(x?x.uuid:"")')
-          if [ -z "$ID" ]; then
-            npx wrangler d1 create sidequest-staging
-            ID=$(npx wrangler d1 list --json | node -e 'const d=JSON.parse(require("fs").readFileSync(0,"utf8"));const x=d.find(r=>r.name==="sidequest-staging");console.log(x?x.uuid:"")')
-          fi
-          [ -n "$ID" ] || { echo "could not get staging database id"; exit 1; }
+          [[ "$ID" =~ ^[0-9a-fA-F-]{36}$ ]] && [ "$ID" != "d26b63e2-d9e1-4021-b9c5-c494b607aa14" ] || { echo "Existing isolated staging D1 is not available. No resources created."; exit 1; }
           sed -i "s/REPLACED_BY_WORKFLOW/$ID/" wrangler.staging.jsonc
           grep -q '"sidequest-staging"' wrangler.staging.jsonc
-          echo "staging database: $ID"
-      - name: Optional - staging file storage (R2). Set repository variable STAGING_ENABLE_R2 to "yes" to turn on
+      - name: Optional existing staging R2 (no provisioning)
         if: vars.STAGING_ENABLE_R2 == 'yes'
         run: |
-          set -e
-          npx wrangler r2 bucket create sidequest-staging-files || true
+          set -euo pipefail
+          npx wrangler r2 bucket list --json | node -e 'const d=JSON.parse(require("fs").readFileSync(0,"utf8"));if(!d.some(x=>x.name==="sidequest-staging-files")){console.error("Existing staging bucket unavailable");process.exit(1)}'
           node -e '
             const fs=require("fs");
             const t=fs.readFileSync("wrangler.staging.jsonc","utf8").split("\n").filter(l=>!l.trim().startsWith("//")).join("\n");
             const c=JSON.parse(t);
             c.r2_buckets=[{binding:"BUCKET",bucket_name:"sidequest-staging-files"}];
             fs.writeFileSync("wrangler.staging.jsonc",JSON.stringify(c,null,2));
+          '
+      - name: Validate isolation
+        run: |
+          node -e '
+            const fs=require("fs");
+            const c=JSON.parse(fs.readFileSync("wrangler.staging.jsonc","utf8").split("\n").filter(l=>!l.trim().startsWith("//")).join("\n"));
+            if(c.name!=="side-quest-staging"||c.vars?.STAGING_PRIVATE!=="true"||c.d1_databases?.length!==1||c.d1_databases[0].database_name!=="sidequest-staging"||c.d1_databases[0].database_id==="d26b63e2-d9e1-4021-b9c5-c494b607aa14"||c.routes||c.send_email||c.ai||c.triggers||(c.r2_buckets||[]).some(b=>b.bucket_name!=="sidequest-staging-files"))throw Error("Staging isolation check failed");
           '
       - name: Apply migrations to the staging database
         run: npx wrangler d1 migrations apply DB --remote --config wrangler.staging.jsonc
