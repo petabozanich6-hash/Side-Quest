@@ -1,6 +1,7 @@
 import type {Env} from "./types";
 import {SERVICE_TERMS_VERSION,SERVICE_TERMS_DATE,SERVICE_TERMS_FIELDS,SERVICE_TERMS_SECTIONS} from "./supportServiceTerms";
 import {getOrder,type Channel} from "./supportOrders";
+import {readQuotePlan} from "./supportQuotePlans";
 import {sendEmail,layout,p,esc,SUPPORT_EMAIL,SITE_URL} from "./email";
 
 // Parent-facing content is entered separately; never import the private tutor diary.
@@ -104,7 +105,13 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
  const recipient=channel==="guest"?await e.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await e.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
  if(!recipient?.email)return {error:"Parent email not found."} as const;
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"}).format(new Date());
- try{if(b?.kind==="terms")return {error:"Use the versioned agreement, not editable terms."};const doc=buildStationeryPdf(b,date);return {...doc,recipient:recipient.email,email_enabled:stationeryEmailEnabled(e),...(needsServiceTerms(doc.kind)?{terms:serviceTermsAttachment()}: {})};}catch(err){return {error:err instanceof Error?err.message:"Invalid document."} as const;}
+ try{if(typeof b?.quote_id==="string"&&b.quote_id){
+ const q=await e.DB.prepare(channel==="guest"?"SELECT scope,delivery,amount_cents,expires_at FROM support_guest_quotes WHERE id=? AND request_id=?":"SELECT q.scope,q.delivery,q.amount_cents,q.expires_at FROM learning_support_quotes q JOIN parent_feedback f ON f.id=q.feedback_id WHERE q.id=? AND q.feedback_id=? AND f.page_hint=\'learning-support\'").bind(b.quote_id,id).first<any>();
+ if(!q)return {error:"Proposal unavailable."};
+ const plan=await readQuotePlan(e.DB,channel,id,b.quote_id,false);
+ const sections=[plan?[plan.title,plan.subject+" | "+plan.year_level,plan.goal].join("\n"):q.scope,plan?plan.lessons.map((l:any,i:number)=>["Lesson "+(i+1)+": "+l.title+" ("+l.minutes+" min)",l.objective,l.activities,"Progress check: "+l.check,"Home practice: "+l.home_practice].join("\n")).join("\n\n"):q.scope,q.delivery+"\nTotal: AUD "+(q.amount_cents/100).toFixed(2)+"\nValid until "+new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"}).format(new Date(q.expires_at)),"Review the attached service agreement and discuss suitable appointments. Expressing interest does not create a booking or charge."];
+ b={kind:"proposal",sections};
+ }if(b?.kind==="terms")return {error:"Use the versioned agreement, not editable terms."};const doc=buildStationeryPdf(b,date);return {...doc,recipient:recipient.email,email_enabled:stationeryEmailEnabled(e),...(needsServiceTerms(doc.kind)?{terms:serviceTermsAttachment()}: {})};}catch(err){return {error:err instanceof Error?err.message:"Invalid document."} as const;}
 }
 export async function sendStationery(e:Env,doc:PreparedStationery,b:any){
  if(!stationeryEmailEnabled(e)||!doc.email_enabled||b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return false;
