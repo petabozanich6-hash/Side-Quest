@@ -1,3 +1,4 @@
+import {ownerToday} from "./unifiedOwnerToday";
 import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
@@ -274,6 +275,10 @@ export function createAdminRoutes() {
   });
 
   // --------------------------------------------------------------- customers
+  admin.get("/today",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");return c.json(await ownerToday(c.env.DB));
+  });
   admin.get("/unified-directory", requirePermission("customers.read"), async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     const search=(c.req.query("q")||"").trim().toLowerCase(),page=Number(c.req.query("page")||1),filter=c.req.query("filter")||"all";
