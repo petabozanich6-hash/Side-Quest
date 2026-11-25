@@ -69,6 +69,8 @@ async function stepUp(h, owner, auth) {
   assert.equal(a.status, 200, JSON.stringify(a.json));
   const r = await h.req("/admin/security/step-up/verify", { method: "POST", token: owner.token, body: { response: await auth.authenticate(a.json.options, ORIGIN, "localhost") } });
   assert.equal(r.status, 200, JSON.stringify(r.json));
+  const remaining=Date.parse(r.json.elevated_until)-Date.now();
+  assert.ok(remaining>119*60000&&remaining<=120*60000,"Owner HQ must unlock for a bounded two-hour work session");
   return auth;
 }
 
