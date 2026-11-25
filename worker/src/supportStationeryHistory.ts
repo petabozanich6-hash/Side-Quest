@@ -31,3 +31,11 @@ export async function deliverSavedStationery(e:Env,channel:Channel,id:string,did
  await e.DB.prepare("UPDATE support_stationery_documents SET status=?,sent_at=? WHERE channel=? AND request_id=? AND id=? AND status='sending'").bind(sent?"sent":"review",sent?new Date().toISOString():null,channel,id,did).run();
  return {ok:sent,email_notification_sent:sent};
 }
+
+/** Owner-only report queue. Never return PDF bodies or private observations in this list. */
+export async function lessonReportQueue(db:D1Database,now=new Date()){
+ const at=now.toISOString();
+ const rows=await db.prepare("SELECT o.id,o.channel,o.request_id,o.start_at,o.end_at,COALESCE(d.learner_label,'') learner_label,p.revision progress_revision,p.updated_at progress_updated_at,(SELECT s.status FROM support_stationery_documents s WHERE s.channel=o.channel AND s.request_id=o.request_id AND s.order_id=o.id AND s.kind='session_report' AND s.created_at>=p.updated_at ORDER BY s.created_at DESC,s.id DESC LIMIT 1) report_status FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_lesson_progress p ON p.order_id=o.id WHERE o.mode='live' AND o.status IN ('paid','completed') AND o.checkout_started_at IS NULL AND o.end_at<=? ORDER BY o.end_at DESC,o.id LIMIT 201").bind(at).all<any>();
+ const all=rows.results||[];
+ return {items:all.slice(0,200).map(r=>({id:r.id,channel:r.channel,request_id:r.request_id,start_at:r.start_at,end_at:r.end_at,learner_label:r.learner_label,report_status:r.report_status??(r.progress_revision?"needs_review":"no_progress")})),truncated:all.length>200};
+}
