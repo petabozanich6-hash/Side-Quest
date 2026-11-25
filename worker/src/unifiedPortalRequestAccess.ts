@@ -2,11 +2,11 @@ import type {AuthUser,Env} from "./types";
 import {authenticateToken} from "./session";
 import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity";
 export async function portalEnquirySchemaExists(db:D1Database){
- return !!await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='support_portal_enquiries'").first();
+ return !!await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='support_portal_enquiry_origins'").first();
 }
 export async function portalEnquiryOwner(db:D1Database,id:string){
  if(!await portalEnquirySchemaExists(db))return null;
- return db.prepare("SELECT request_id,family_id,parent_user_id,learner_id FROM support_portal_enquiries WHERE request_id=?").bind(id).first<{request_id:string;family_id:string;parent_user_id:string;learner_id:string}>();
+ return db.prepare("SELECT request_id FROM support_portal_enquiry_origins WHERE request_id=?").bind(id).first<{request_id:string}>();
 }
 export async function ownsPortalEnquiry(db:D1Database,a:AuthUser,id:string){
  if(!await verifiedPortalIdentity(db,a))return false;
