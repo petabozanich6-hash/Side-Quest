@@ -890,7 +890,7 @@ export function createAdminRoutes() {
       const r=await offerSlots(c.env.DB,channel,id,qid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.slots.offer",targetType:"support",targetId:id,detail:{channel,quote_id:qid}});
       const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
-      let sent=false;try{if(recipient?.email){const origin=guestOrigin(c.env);if(origin){const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");sent=await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: choose your appointment",text:"Appointment options are available in your private portal: "+url,html:layout({preheader:"Choose a suitable appointment time.",kicker:"Learning Support",heading:"Choose an appointment time",body:p("Review the available times in your private portal. No payment has been taken.")+button("View appointment options",url),reason:"This is a service notification."})});}}}catch{}
+      let sent=false;try{if(recipient?.email){if(channel==="guest"){sent=await guestNotify(c.env,recipient.email,false,undefined,"appointment");}else{const origin=guestOrigin(c.env);if(origin){const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");sent=await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: choose your appointment",text:"Appointment options are available in your private portal: "+url,html:layout({preheader:"Choose a suitable appointment time.",kicker:"Learning Support",heading:"Choose an appointment time",body:p("Review the available times in your private portal. No payment has been taken.")+button("View appointment options",url),reason:"This is a service notification."})});}}}}catch{}
       return c.json({ok:true,email_notification_sent:sent,offer:await readSlots(c.env.DB,channel,id,qid)},201);
     });
     admin.post(slotsPath+"/withdraw",requirePermission("customers.read"),async c=>{
@@ -905,14 +905,17 @@ export function createAdminRoutes() {
     admin.post(path+"/package",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const r=await createPackage(c.env.DB,channel,id,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
-      await writeAudit(c.env.DB,{...actor(c),action:"support.package.reserve",targetType:"support",targetId:id,detail:{order_id:r.id,session_count:r.count,channel}});return c.json(r,201);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.package.reserve",targetType:"support",targetId:id,detail:{order_id:r.id,session_count:r.count,channel}});
+      let sent=false;if(channel==="guest"){try{const recipient=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(recipient?.email)sent=await guestNotify(c.env,recipient.email,false,undefined,"arrangements");}catch{}}
+      return c.json({...r,...(channel==="guest"?{arrangements_email_sent:sent}:{})},201);
     });
     admin.post(path,requirePermission("customers.read"),async c=>{
       const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const result=await createServiceOrder(c.env.DB,channel,id,await readJson(c));
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
-      return c.json(result,201);
+      let sent=false;if(channel==="guest"){try{const recipient=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(recipient?.email)sent=await guestNotify(c.env,recipient.email,false,undefined,"arrangements");}catch{}}
+      return c.json({...result,...(channel==="guest"?{arrangements_email_sent:sent}:{})},201);
     });
     admin.get(path+"/:oid/lesson-progress",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
