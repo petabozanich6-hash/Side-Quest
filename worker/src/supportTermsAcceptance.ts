@@ -21,14 +21,18 @@ export async function confirmReviewedTerms(e:Env,channel:Channel,id:string,oid:s
  if(e.SUPPORT_TERMS_REQUIRED!=="true")return confirmServiceOrder(e.DB,channel,id,oid,now);
  const review=await termsReview(e,channel,id,oid);
  if(!review?.approved||b.terms_version!==review.version||b.terms_fingerprint!==review.fingerprint||b.terms_accepted!==true)return false;
+ return persistTermsAcceptance(e.DB,channel,id,oid,actor,review,now);
+}
+// Internal only: the caller must verify the canonical approved version and exact fingerprint.
+export async function persistTermsAcceptance(db:D1Database,channel:Channel,id:string,oid:string,actor:string,review:NonNullable<Awaited<ReturnType<typeof termsReview>>>,now=new Date()){
+ if(!review.approved)return false;
  const when=now.toISOString();
  // The insert and confirmation are one D1 batch. Only an awaiting root, with
  // no pending cancellation, can be accepted. A trigger-free predicate ties
  // the state transition to the exact newly inserted acceptance.
- const db=e.DB;
  const statements=[
  db.prepare("INSERT OR IGNORE INTO support_terms_acceptances(order_id,channel,request_id,accepted_by,agreement_version,agreement_pdf_base64,arrangements_json,fingerprint,accepted_at) SELECT id,channel,request_id,?,?,?,?,?,? FROM support_service_orders WHERE id=? AND channel=? AND request_id=? AND status='awaiting_confirmation' AND (start_at IS NULL OR start_at>?) AND NOT EXISTS(SELECT 1 FROM support_package_sessions p WHERE p.order_id=support_service_orders.id AND p.root_id<>p.order_id) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=support_service_orders.id AND c.status='pending')").bind(actor,review.version,review.base64,review.arrangements,review.fingerprint,when,oid,channel,id,when),
- db.prepare("UPDATE support_service_orders SET status=CASE WHEN amount_cents=0 THEN 'paid' ELSE 'confirmed' END,confirmed_at=?,paid_at=CASE WHEN amount_cents=0 THEN ? ELSE NULL END,updated_at=? WHERE id=? AND channel=? AND request_id=? AND status='awaiting_confirmation' AND EXISTS(SELECT 1 FROM support_terms_acceptances a WHERE a.order_id=support_service_orders.id AND a.accepted_at=? AND a.fingerprint=? AND a.accepted_by=?)").bind(when,when,when,oid,channel,id,when,review.fingerprint,actor)
+ db.prepare("UPDATE support_service_orders SET status=CASE WHEN amount_cents=0 THEN 'paid' ELSE 'confirmed' END,confirmed_at=?,paid_at=CASE WHEN amount_cents=0 THEN ? ELSE NULL END,updated_at=? WHERE id=? AND channel=? AND request_id=? AND status='awaiting_confirmation' AND EXISTS(SELECT 1 FROM support_terms_acceptances a WHERE a.order_id=support_service_orders.id AND a.accepted_at=? AND a.fingerprint=? AND a.accepted_by=?) AND (start_at IS NULL OR start_at>?) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=support_service_orders.id AND c.status='pending')").bind(when,when,when,oid,channel,id,when,review.fingerprint,actor,when)
  ];
  const results=await db.batch(statements);
  return !!results[0]?.meta?.changes&&!!results[1]?.meta?.changes;
