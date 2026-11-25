@@ -24,6 +24,8 @@ test("whole day block removes all advertised time; Sydney DST is respected",()=>
 });
 test("actual diary changes immediately affect public availability and cancellation releases times",async t=>{
  const db=makeDb();t.after(()=>db.raw.close());
+ // Reset only this synthetic fixture to exercise the first-save path.
+ db.raw.exec("DELETE FROM support_public_availability; DELETE FROM support_busy_blocks WHERE id='initial-availability-block-2026-11-30';");
  assert.deepEqual(await readAvailability(db),{enabled:false,windows:[],revision:0});
  assert.equal((await readPublicAvailability(db,now)).published,false);
  assert.equal(await saveAvailability(db,{enabled:true,windows:hours,revision:0,confirmed:true}),true);
@@ -40,4 +42,17 @@ test("actual diary changes immediately affect public availability and cancellati
  assert.deepEqual((await readPublicAvailability(db,now)).days[1].windows,[]);
  assert.equal(await saveAvailability(db,{enabled:false,windows:hours,revision:1,confirmed:true}),true);
  assert.equal((await readPublicAvailability(db,now)).published,false);
+});
+
+test("initial owner hours and whole unavailable week are seeded but publication stays off",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const settings=await readAvailability(db);
+ assert.equal(settings.enabled,false);
+ assert.deepEqual(settings.windows,[1,2,3,4,5].map(day=>({day,start:"09:00",end:"13:00"})));
+ const block=db.raw.prepare("SELECT label,start_at,end_at FROM support_busy_blocks WHERE id=?").get("initial-availability-block-2026-11-30");
+ assert.deepEqual({...block},{label:"Unavailable",start_at:"2026-11-29T13:00:00.000Z",end_at:"2026-12-06T13:00:00.000Z"});
+ assert.equal(await saveAvailability(db,{...settings,enabled:true,confirmed:true}),true);
+ const result=await readPublicAvailability(db,new Date("2026-11-29T00:00:00Z"));
+ for(const d of result.days.filter(d=>d.date>="2026-11-30"&&d.date<="2026-12-06"))assert.deepEqual(d.windows,[]);
+ assert.deepEqual(result.days.find(d=>d.date==="2026-12-07").windows,[{start:"2026-12-06T22:00:00.000Z",end:"2026-12-07T02:00:00.000Z"}]);
 });
