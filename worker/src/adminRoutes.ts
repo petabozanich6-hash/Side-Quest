@@ -1,4 +1,4 @@
-import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment} from "./englishClub";
+import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
@@ -817,6 +817,11 @@ export function createAdminRoutes() {
   admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
     const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.post("/english-club/classes/:cid/remove",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
   });
   admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
     const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
