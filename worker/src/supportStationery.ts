@@ -1,3 +1,4 @@
+import {lessonProgress,reportFromCheckpoints} from "./supportLessonProgress";
 import type {Env} from "./types";
 import {SERVICE_TERMS_VERSION,SERVICE_TERMS_DATE,SERVICE_TERMS_FIELDS,SERVICE_TERMS_SECTIONS} from "./supportServiceTerms";
 import {getOrder,type Channel} from "./supportOrders";
@@ -112,9 +113,10 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
  if(!order||order.mode!=="live"||!["paid","completed"].includes(order.status)||!order.end_at||Date.parse(order.end_at)>Date.now())return {error:"A delivered live lesson is required."};
  const row=await e.DB.prepare("SELECT learner_label,details_json FROM support_tutor_diary WHERE order_id=?").bind(oid).first<{learner_label:string;details_json:string}>();
  const details=row?JSON.parse(row.details_json):{};
- const keys=["report_covered","report_strengths","report_practice","report_home_activity"];
- const sections=keys.map(k=>typeof details[k]==="string"?details[k].trim():"");
- if(sections.some(v=>!v))return {error:"Save all four parent-update fields in the private diary first."};
+ const progress=await lessonProgress(e.DB,channel,id,oid);
+ const sections=progress&&reportFromCheckpoints(progress.checkpoints);
+ if(!sections)return {error:"Record at least one observed checkpoint in the live lesson tracker first."};
+ if(sections.some(s=>s.length>4000)||sections.join("").length>10000)return {error:"Progress report exceeds the current PDF limit. Review the checkpoint lengths."};
  b={kind:"session_report",learner:row?.learner_label||"",sections};
  }if(typeof b?.quote_id==="string"&&b.quote_id){
  const q=await e.DB.prepare(channel==="guest"?"SELECT scope,delivery,amount_cents,expires_at FROM support_guest_quotes WHERE id=? AND request_id=?":"SELECT q.scope,q.delivery,q.amount_cents,q.expires_at FROM learning_support_quotes q JOIN parent_feedback f ON f.id=q.feedback_id WHERE q.id=? AND q.feedback_id=? AND f.page_hint=\'learning-support\'").bind(b.quote_id,id).first<any>();
