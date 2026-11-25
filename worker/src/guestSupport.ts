@@ -4,6 +4,7 @@ import {hitRateLimit} from "./adminAudit";
 import {parseLearningSupport} from "./learningSupport";
 import {SITE_URL,sendEmail,layout,p,button} from "./email";
 import {loadPlatformSettings} from "./platformSettings";
+import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_links_expiry ON support_guest_links(expires_at)",
@@ -100,6 +101,22 @@ export function registerGuestSupport(app:App){
   await c.env.DB.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").bind(id,who.email,name,parsed.subject,parsed.message,now,now).run();
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
   return c.json({id,status:"new"},201);
+ });
+ app.get(root+"/requests/:id/orders",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  return c.json({orders:await listOrders(c.env.DB,"guest",id)});
+ });
+ app.post(root+"/requests/:id/orders/:oid/confirm",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id"),oid=c.req.param("oid"),b=await c.req.json().catch(()=>null);
+  const row=await c.env.DB.prepare("SELECT status FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first<{status:string}>();
+  if(!row)return c.json({detail:"Request not found"},404);
+  if(["closed","resolved"].includes(row.status)||b?.confirmed!==true)return c.json({detail:"Confirm the service terms and arrangements."},400);
+  if(!await getOrder(c.env.DB,"guest",id,oid)||!await confirmServiceOrder(c.env.DB,"guest",id,oid))return c.json({detail:"Order unavailable."},409);
+  await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
+  if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
+  return c.json({ok:true});
  });
  app.get(root+"/requests/:id/quotes",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);

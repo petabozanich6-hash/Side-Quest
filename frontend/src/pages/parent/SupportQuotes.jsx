@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {api,apiErrorMessage} from "../../lib/api";
+import SupportOrders from "./SupportOrders";
 const money=c=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(c/100);
 export default function SupportQuotes({id,closed,initialQuotes,client=api,basePath="/learning-support/"}){
  const [quotes,setQuotes]=useState(initialQuotes??null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[confirm,setConfirm]=useState({});
@@ -17,5 +18,6 @@ export default function SupportQuotes({id,closed,initialQuotes,client=api,basePa
  {q.status==="offered"&&!closed&&<><label className="flex gap-2 items-start text-sm"><input type="checkbox" checked={!!confirm[q.id]} onChange={e=>setConfirm(v=>({...v,[q.id]:e.target.checked}))}/> I have reviewed the proposal. Expressing interest does not charge me or confirm a booking.</label><div className="flex flex-wrap gap-2"><button type="button" disabled={busy||!confirm[q.id]} onClick={()=>respond(q,"interested")} className="rounded-full px-4 py-2 bg-emerald-950 text-white text-sm font-bold disabled:opacity-50">I'd like to proceed</button><button type="button" disabled={busy||!confirm[q.id]} onClick={()=>respond(q,"declined")} className="rounded-full border border-stone-400 px-4 py-2 text-sm disabled:opacity-50">Decline</button></div></>}
  {q.status==="interested"&&<p className="text-sm">Your interest has been recorded. Side-Quest will confirm arrangements separately. No payment or booking has been made.</p>}
  </section>)}
+ {quotes?.some(q=>q.status==="interested")&&<SupportOrders id={id} client={client} basePath={basePath} closed={closed}/>}
  </div>;
 }

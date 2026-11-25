@@ -36,6 +36,8 @@ import { registerDocumentStudio } from "./documentStudioRoutes";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } from "./learningSupportQuotes";
 import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify } from "./guestSupport";
+import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,supportPaymentsEnabled } from "./supportOrders";
+import { prepareSupportCheckout } from "./supportCheckout";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -457,6 +459,7 @@ export function createAdminRoutes() {
     await ensureQuoteSchema(c.env.DB);
     const b=await readJson(c);
     if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    if(await hasOrder(c.env.DB,"member",qid))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
     const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested')").bind(nowIso(),qid,id).run();
     if(!r.meta?.changes)return c.json({detail:"This proposal cannot be withdrawn."},409);
     try{await writeAudit(c.env.DB,{...actor(c),action:"learning_support.withdraw",targetType:"feedback",targetId:id,detail:{quote_id:qid}});}catch{}
@@ -633,11 +636,39 @@ export function createAdminRoutes() {
   });
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    if(await hasOrder(c.env.DB,"guest",c.req.param("qid")))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
     const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested')").bind(nowIso(),c.req.param("qid"),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:c.req.param("qid")}});
     return c.json({ok:true});
   });
 
+  for(const channel of ["member","guest"] as const){
+    const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
+    const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
+    admin.get(path,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      return c.json({orders:await listOrders(c.env.DB,channel,id),sandbox_checkout:supportPaymentsEnabled(c.env)});
+    });
+    admin.post(path,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const result=await createServiceOrder(c.env.DB,channel,id,await readJson(c));
+      if("error" in result)return c.json({detail:result.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
+      return c.json(result,201);
+    });
+    admin.post(path+"/:oid/:action",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id"),oid=c.req.param("oid"),action=c.req.param("action"),b=await readJson(c);
+      if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
+      if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(action==="checkout"){
+        try{const r=await prepareSupportCheckout(c.env,channel,id,oid);if("error" in r)return c.json({detail:r.error},409);return c.json({ok:true});}
+        catch{return c.json({detail:"Square checkout could not be confirmed. Retry the same order; do not make a new charge."},502);}
+      }
+      const ok=action==="cancel"?await cancelUnstartedOrder(c.env.DB,channel,id,oid):action==="complete"?await completeOrder(c.env.DB,channel,id,oid):false;
+      if(!ok)return c.json({detail:"Action unavailable. Orders with an initiated Square checkout require reconciliation before cancellation."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support."+action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true});
+    });
+  }
   registerDocumentStudio(admin, requirePermission);
 
   admin.all("*", (c) => notFound(c));

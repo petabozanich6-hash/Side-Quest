@@ -262,3 +262,33 @@ test("private staging accepts only signed Square sandbox webhooks on its own hos
   const blocked = await worker.fetch(new Request(baseUrl + "/api/auth/me"), env, ctx);
   assert.equal(blocked.status, 403, "general staging endpoints still require the staging cookie");
 });
+
+
+test("support orders are separate from subscriptions; Square sandbox checkout is idempotent and verified",async()=>{
+ const {createServiceOrder,confirmServiceOrder,applySupportPayment,cancelUnstartedOrder,getOrder}=await import("../src/supportOrders.ts");
+ const {prepareSupportCheckout}=await import("../src/supportCheckout.ts");
+ const db=makeDb(),now=new Date("2026-11-25T00:00:00.000Z");
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES('r','guest@example.com','Parent','Science','Learning support',?,?)").run(now.toISOString(),now.toISOString());
+ db.raw.prepare("INSERT INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES('q','r','A science explanation','Live',2500,'interested',?,'2099-01-01T00:00:00.000Z')").run(now.toISOString());
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES('r2','other@example.com','Parent','Science','Learning support',?,?)").run(now.toISOString(),now.toISOString());
+ db.raw.prepare("INSERT INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES('q2','r2','A science explanation','Live',2500,'interested',?,'2099-01-01T00:00:00.000Z')").run(now.toISOString());
+ const data={quote_id:"q",mode:"live",start_at:"2098-12-01T01:00:00.000Z",minutes:30,terms:"Agreed service terms for this test.",confirmed:true};
+ const made=await createServiceOrder(db,"guest","r",data,now);assert.ok(made.id,JSON.stringify(made));
+ assert.ok((await createServiceOrder(db,"guest","r2",{...data,quote_id:"q2"},now)).error);
+ assert.ok(await confirmServiceOrder(db,"guest","r",made.id,now));
+ const env={...ENV,DB:db,SUPPORT_CHECKOUT_TEST:"true"};
+ assert.ok((await prepareSupportCheckout({...env,SQUARE_APPLICATION_ID:"sq0idp-live"},"guest","r",made.id)).error);
+ let calls=0;
+ const fake=async(url,init)=>{calls++;const b=JSON.parse(init.body);assert.equal(b.idempotency_key,made.id);assert.equal(b.quick_pay.price_money.amount,2500);return new Response(JSON.stringify({payment_link:{id:"link",order_id:"support-order",url:"https://sandbox.square.link/u/test"}}));};
+ assert.ok((await prepareSupportCheckout(env,"guest","r",made.id,fake)).url);
+ assert.ok((await prepareSupportCheckout(env,"guest","r",made.id,fake)).url);assert.equal(calls,1);
+ assert.equal(await cancelUnstartedOrder(db,"guest","r",made.id),false);
+ const payment={id:"payment",order_id:"support-order",location_id:ENV.SQUARE_LOCATION_ID,status:"COMPLETED",amount_money:{amount:2500,currency:"AUD"}};
+ const cfg=squareConfig(env);
+ const getPayment=async()=>new Response(JSON.stringify({payment}));
+ assert.equal(await handleSquareEvent(db,cfg,{type:"payment.updated",data:{object:{payment}}},getPayment,now),"support payment recorded");
+ assert.equal((await getOrder(db,"guest","r",made.id)).status,"paid");
+ assert.equal(await applySupportPayment(db,{...payment,refunded_money:{amount:2500}},ENV.SQUARE_LOCATION_ID,now),"support payment requires review");
+ assert.equal((await getOrder(db,"guest","r",made.id)).status,"review");
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,0);
+});

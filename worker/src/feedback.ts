@@ -7,6 +7,7 @@ import { newId, nowIso } from "./types";
 import { hitRateLimit } from "./adminAudit";
 import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
+import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -158,6 +159,21 @@ export function registerFeedback(app: App, guards: Guards) {
     return c.json({ok:true});
   });
 
+  app.get("/api/learning-support/:id/orders",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id");
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    c.header("Cache-Control","no-store");return c.json({orders:await listOrders(c.env.DB,"member",id)});
+  });
+  app.post("/api/learning-support/:id/orders/:oid/confirm",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id"),oid=c.req.param("oid"),b=await c.req.json().catch(()=>null);
+    const thread=await supportThread(c.env.DB,id,u.family_id,u.id);
+    if(!thread)return c.json({detail:"Request not found"},404);
+    if(["closed","resolved"].includes(thread.status)||b?.confirmed!==true)return c.json({detail:"Confirm the service terms and arrangements."},400);
+    if(!await getOrder(c.env.DB,"member",id,oid)||!await confirmServiceOrder(c.env.DB,"member",id,oid))return c.json({detail:"Order unavailable."},409);
+    await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
+    try{await ownerAlert(c.env,id,"learning support order confirmation");}catch{}
+    return c.json({ok:true});
+  });
   app.get("/api/learning-support/:id/quotes",guards.auth,guards.parent,async c=>{
     await ensureFeedbackBaseSchema(c.env.DB);
     const u=c.get("user"),id=c.req.param("id");

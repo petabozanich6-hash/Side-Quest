@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
+import HqSupportOrders from "./HqSupportOrders";
 const initial={scope:"",delivery:"",price:"",days:"7",confirmed:false};
 const money=c=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(c/100);
 export default function HqSupportQuotes({id,closed,guest=false}){
@@ -19,5 +20,6 @@ export default function HqSupportQuotes({id,closed,guest=false}){
  {!quotes&&!error&&<p role="status">Loading proposals…</p>}
  {(quotes||[]).map(q=><div key={q.id} className="border rounded-lg p-3 space-y-2 bg-stone-50"><div className="flex flex-wrap justify-between"><strong>{money(q.amount_cents)} AUD</strong><span className="text-sm capitalize">{q.status}</span></div><p className="text-sm whitespace-pre-wrap break-words">{q.scope}</p><p className="text-sm whitespace-pre-wrap break-words">{q.delivery}</p><p className="text-xs">Valid until {new Date(q.expires_at).toLocaleString("en-AU")}</p>{["offered","interested","expired"].includes(q.status)&&<button type="button" disabled={busy} onClick={()=>withdraw(q)} className="text-sm underline text-rose-800">Withdraw proposal</button>}</div>)}
  {quotes&&!open&&!closed&&<form onSubmit={send} className="space-y-3"><label className="block text-sm font-semibold">Scope<textarea required minLength={10} maxLength={1500} rows={3} value={form.scope} onChange={e=>change("scope",e.target.value)} className={field}/></label><label className="block text-sm font-semibold">Delivery / proposed timing<textarea required minLength={3} maxLength={500} rows={2} value={form.delivery} onChange={e=>change("delivery",e.target.value)} className={field}/></label><div className="grid grid-cols-2 gap-3"><label className="text-sm font-semibold">Total (AUD)<input required type="number" min="0" max="10000" step="0.01" value={form.price} onChange={e=>change("price",e.target.value)} className={field}/></label><label className="text-sm font-semibold">Valid for (days)<input required type="number" min="1" max="30" step="1" value={form.days} onChange={e=>change("days",e.target.value)} className={field}/></label></div><label className="flex gap-2 text-sm"><input type="checkbox" checked={form.confirmed} onChange={e=>change("confirmed",e.target.checked)} required/> This is a non-binding proposal, not a charge or confirmed appointment.</label><button type="submit" disabled={busy||!form.confirmed} className="rounded-full bg-emerald-950 text-white font-bold text-sm px-4 py-2 disabled:opacity-50">Send proposal</button></form>}
+ {quotes&&<HqSupportOrders id={id} guest={guest} quotes={quotes} closed={closed}/>}
  </section>;
 }

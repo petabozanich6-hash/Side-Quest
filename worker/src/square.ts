@@ -18,6 +18,7 @@ import type { App, Env } from "./types";
 import { LIVE_PRICE_DETAILS } from "./billing";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
+import { applySupportPayment } from "./supportOrders";
 
 type DB = D1Database;
 export type Fetch = (input: any, init?: any) => Promise<Response>;
@@ -125,6 +126,8 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   // Re-read the payment from Square rather than trusting the event body alone.
   const fresh = (await squareCall(cfg, "GET", `payments/${encodeURIComponent(payment.id)}`, undefined, fetchImpl))?.payment;
   if (!fresh || fresh.status !== "COMPLETED") return "payment not completed";
+  const support=await applySupportPayment(db,fresh,cfg.locationId,now);
+  if(support!==null)return support;
   // Only a first payment for a membership checkout the app remembers by order id is acted on.
   return (await linkMembershipPayment(db, cfg, fresh, fetchImpl, now, onActivated)) ?? `ignored order ${fresh.order_id}`;
 }
