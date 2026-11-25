@@ -1,11 +1,11 @@
 import React,{useEffect,useState} from "react";
 import {api,apiErrorMessage} from "../../lib/api";
 const money=c=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(c/100);
-export default function SupportQuotes({id,closed,initialQuotes}){
+export default function SupportQuotes({id,closed,initialQuotes,client=api,basePath="/learning-support/"}){
  const [quotes,setQuotes]=useState(initialQuotes??null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[confirm,setConfirm]=useState({});
- async function load(){try{const r=await api.get("/learning-support/"+encodeURIComponent(id)+"/quotes");setQuotes(r.data.quotes||[]);setError("");}catch(e){setError(apiErrorMessage(e,"Could not load proposals"));}}
+ async function load(){try{const r=await client.get(basePath+encodeURIComponent(id)+"/quotes");setQuotes(r.data.quotes||[]);setError("");}catch(e){setError(apiErrorMessage(e,"Could not load proposals"));}}
  useEffect(()=>{if(Array.isArray(initialQuotes)){setQuotes(initialQuotes);setError("");}else{load();}},[id,initialQuotes]);
- async function respond(q,response){if(busy||!confirm[q.id])return;setBusy(true);setError("");try{await api.post("/learning-support/"+encodeURIComponent(id)+"/quotes/"+encodeURIComponent(q.id)+"/respond",{response,confirmed:true});setConfirm({});await load();}catch(e){setError(apiErrorMessage(e));}finally{setBusy(false);}}
+ async function respond(q,response){if(busy||!confirm[q.id])return;setBusy(true);setError("");try{await client.post(basePath+encodeURIComponent(id)+"/quotes/"+encodeURIComponent(q.id)+"/respond",{response,confirmed:true});setConfirm({});await load();}catch(e){setError(apiErrorMessage(e));}finally{setBusy(false);}}
  if(!quotes&&!error)return <p role="status" className="text-xs text-stone-600">Checking proposals…</p>;
  return <div className="space-y-3">
  {error&&<p role="alert" className="text-sm text-rose-800">{error} <button type="button" onClick={load} className="underline">Refresh</button></p>}

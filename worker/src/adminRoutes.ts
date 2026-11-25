@@ -35,6 +35,7 @@ import { giftPreviewDays } from "./previewGifts";
 import { registerDocumentStudio } from "./documentStudioRoutes";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } from "./learningSupportQuotes";
+import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify } from "./guestSupport";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -586,6 +587,56 @@ export function createAdminRoutes() {
     return c.json({cancelled:true});
   });
 
+
+  // Standalone guests are separate from homeschool customers and remain behind Owner HQ step-up.
+  admin.get("/support-guests",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);
+    const page=Number(c.req.query("page")||1);if(!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid page"},400);
+    const {results}=await c.env.DB.prepare("SELECT * FROM support_guest_requests ORDER BY CASE WHEN seen_at IS NULL THEN 0 ELSE 1 END,updated_at DESC LIMIT 51 OFFSET ?").bind((page-1)*50).all<any>();
+    const rows=results||[];return c.json({items:rows.slice(0,50),has_more:rows.length>50});
+  });
+  admin.get("/support-guests/:id",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=c.req.param("id");
+    const row=await c.env.DB.prepare("SELECT * FROM support_guest_requests WHERE id=?").bind(id).first<any>();
+    if(!row)return c.json({detail:"Request not found"},404);
+    return c.json({request:row,messages:await guestMessages(c.env.DB,id)});
+  });
+  admin.put("/support-guests/:id",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c);
+    if(typeof b.status!=="string"||!(FEEDBACK_STATUSES as readonly string[]).includes(b.status))return c.json({detail:"Invalid status"},400);
+    const r=await c.env.DB.prepare("UPDATE support_guest_requests SET status=?,seen_at=? WHERE id=?").bind(b.status,nowIso(),id).run();if(!r.meta?.changes)return c.json({detail:"Request not found"},404);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.status",targetType:"support_guest",targetId:id,detail:{status:b.status}});
+    return c.json({ok:true});
+  });
+  admin.post("/support-guests/:id/messages",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c),message=typeof b.message==="string"?b.message.trim():"",when=nowIso();
+    if(message.length<2||message.length>2000)return c.json({detail:"Write 2–2000 characters."},400);
+    const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
+    const r=await c.env.DB.prepare("INSERT INTO support_guest_messages(id,request_id,sender,body,created_at) SELECT ?,id,'owner',?,? FROM support_guest_requests WHERE id=? AND (SELECT COUNT(*) FROM support_guest_messages WHERE request_id=?)<100").bind(crypto.randomUUID(),message,when,id,id).run();if(!r.meta?.changes)return c.json({detail:"Thread full"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.reply",targetType:"support_guest",targetId:id,detail:{}});
+    return c.json({ok:true,email_notification_sent:await guestNotify(c.env,row.email)},201);
+  });
+  admin.get("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=c.req.param("id");
+    if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first())return c.json({detail:"Request not found"},404);
+    return c.json({quotes:await guestQuotes(c.env.DB,id)});
+  });
+  admin.post("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c),v=validateQuote(b);
+    if("error" in v)return c.json({detail:v.error},400);if(b.confirmed!==true)return c.json({detail:"Confirm non-binding proposal."},400);
+    const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
+    const qid=crypto.randomUUID(),now=new Date();
+    const r=await c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id).run();
+    if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.quote",targetType:"support_guest",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
+    return c.json({id:qid,email_notification_sent:await guestNotify(c.env,row.email)},201);
+  });
+  admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested')").bind(nowIso(),c.req.param("qid"),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:c.req.param("qid")}});
+    return c.json({ok:true});
+  });
 
   registerDocumentStudio(admin, requirePermission);
 

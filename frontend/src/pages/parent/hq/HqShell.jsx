@@ -7,6 +7,7 @@ import { Alert, Button, GREEN } from "./ui";
 const TABS = [
   { to: "/parent/command-centre", label: "Overview", end: true, testid: "hq-tab-overview" },
   { to: "/parent/command-centre/customers", label: "Customers", testid: "hq-tab-customers" },
+  { to: "/parent/command-centre/learning-support", label: "Learning Support", testid: "hq-tab-learning-support" },
   { to: "/parent/command-centre/feedback", label: "Feedback inbox", testid: "hq-tab-feedback" },
   { to: "/parent/command-centre/document-studio", label: "Document Studio", testid: "hq-tab-document-studio" },
   { to: "/parent/command-centre/announcements", label: "Special emails", testid: "hq-tab-announcements" },

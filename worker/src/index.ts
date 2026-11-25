@@ -30,6 +30,7 @@ import { registerViewAs, viewAsState } from "./viewAs";
 import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
+import { registerGuestSupport } from "./guestSupport";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
@@ -332,6 +333,7 @@ registerHandwritingBook(app, guards);
 registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
+registerGuestSupport(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
 

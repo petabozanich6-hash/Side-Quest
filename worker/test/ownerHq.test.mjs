@@ -877,3 +877,39 @@ test("learning support quote lifecycle: owner-only, private, expiry, non-member 
  r=await h.req(pp,{admin:false,token:alice.token});assert.equal(r.json.quotes.find(q=>q.id===second.json.id).status,"expired");
  assert.equal((await h.req(pp+"/"+second.json.id+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,409);
 });
+
+
+test("standalone support verifies email, isolates guest sessions, and never creates a family or trial",async()=>{
+ const {h,owner}=await ownerSetup();h.env.SUPPORT_GUEST_ENABLED="true";
+ const mail=[];h.env.EMAIL={send:async m=>{mail.push(m);return {messageId:"test"};}};
+ const before=h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n;
+ const link=await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"guest@example.com"}});
+ assert.equal(link.status,200,JSON.stringify(link.json));
+ const raw=mail.at(-1).text.match(/#token=([a-f0-9]{64})/)[1];
+ assert.notEqual(h.db.raw.prepare("SELECT token_hash FROM support_guest_links").get().token_hash,raw);
+ const redeem=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:raw}});assert.equal(redeem.status,200);
+ assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:raw}})).status,400);
+ const headers={"X-SideQuest-Guest":redeem.json.token};
+ const input={parent_name:"Guest Parent",subject:"Science",year:"Year 5",service:"Worked explanation",detail:"Help understanding the phases of the moon.",consent:true};
+ assert.equal((await h.req("/support-guest/requests",{method:"POST",admin:false,body:input})).status,401);
+ const made=await h.req("/support-guest/requests",{method:"POST",admin:false,headers,body:input});assert.equal(made.status,201,JSON.stringify(made.json));
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
+ assert.equal((await h.req("/auth/me",{token:redeem.json.token})).status,401);
+ const path="/admin/support-guests/"+made.json.id;
+ assert.equal((await h.req("/admin/support-guests",{token:redeem.json.token})).status,404);
+ await stepUp(h,owner);
+ const quote=await h.req(path+"/quotes",{method:"POST",token:owner.token,body:{scope:"Worked explanation and practice questions",delivery:"Written response",amount_cents:1500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
+ const list=await h.req("/support-guest/requests",{admin:false,headers});assert.equal(list.json.requests[0].quotes[0].amount_cents,1500);
+ await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"other@example.com"}});
+ const otherRaw=mail.at(-1).text.match(/#token=([a-f0-9]{64})/)[1];
+ const other=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:otherRaw}});
+ const otherHeaders={"X-SideQuest-Guest":other.json.token};
+ assert.equal((await h.req("/support-guest/requests",{admin:false,headers:otherHeaders})).json.requests.length,0);
+ const response="/support-guest/requests/"+made.json.id+"/quotes/"+quote.json.id+"/respond";
+ assert.equal((await h.req(response,{method:"POST",admin:false,headers:otherHeaders,body:{response:"interested",confirmed:true}})).status,404);
+ assert.equal((await h.req(response,{method:"POST",admin:false,headers,body:{response:"interested",confirmed:true,amount_cents:1}})).status,200);
+ assert.equal((await h.req(path+"/quotes",{token:owner.token})).json.quotes[0].amount_cents,1500);
+ assert.equal((await h.req("/support-guest/logout",{method:"POST",admin:false,headers,body:{}})).status,200);
+ assert.equal((await h.req("/support-guest/requests",{admin:false,headers})).status,401);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
+});

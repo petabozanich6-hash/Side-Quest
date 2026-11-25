@@ -2,9 +2,9 @@ import React,{useEffect,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 const initial={scope:"",delivery:"",price:"",days:"7",confirmed:false};
 const money=c=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(c/100);
-export default function HqSupportQuotes({id,closed}){
+export default function HqSupportQuotes({id,closed,guest=false}){
  const [form,setForm]=useState(initial),[quotes,setQuotes]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState("");
- const path="/feedback/"+encodeURIComponent(id)+"/quotes";
+ const path=(guest?"/support-guests/":"/feedback/")+encodeURIComponent(id)+"/quotes";
  async function load(){try{const r=await adminApi.get(path);setQuotes(r.quotes||[]);setError("");}catch(e){setError(errorText(e,"Could not load proposals"));}}
  useEffect(()=>{load();},[id]);
  const change=(key,val)=>setForm(f=>({...f,[key]:val}));
