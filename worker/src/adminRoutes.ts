@@ -39,7 +39,7 @@ import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify, guestOrigin
 import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,recordManualInvoice,verifyManualInvoice,cancelManualInvoiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "./supportClassrooms";
-import {prepareVideo,videoToken,closeVideo} from "./supportVideo";
+import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -678,7 +678,7 @@ export function createAdminRoutes() {
     admin.get(path+"/:oid/classroom",requirePermission("customers.read"),async c=>{
       if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
       const s=await classroomState(c.env.DB,channel,c.req.param("id"),c.req.param("oid"),true);
-      return s?c.json(s):c.json({detail:"Confirmed live booking required."},404);
+      return s?c.json({...s,video_enabled:videoEnabled(c.env)}):c.json({detail:"Confirmed live booking required."},404);
     });
     admin.post(path+"/:oid/classroom-board",requirePermission("customers.read"),async c=>{
       if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);

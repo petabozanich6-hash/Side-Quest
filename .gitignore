@@ -38,3 +38,6 @@ backup-*.sql
 backups/
 *.sqlite
 wrangler.timetable-e2e.jsonc
+
+# Locally prepared, staging-only RealtimeKit bundle; never commit generated third-party JS.
+/frontend/public/vendor/realtimekit-2.1.0/

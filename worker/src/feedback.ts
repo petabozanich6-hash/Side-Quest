@@ -9,7 +9,7 @@ import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
 import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
-import {videoToken} from "./supportVideo";
+import {videoToken,videoEnabled} from "./supportVideo";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -174,7 +174,7 @@ export function registerFeedback(app: App, guards: Guards) {
     const u=c.get("user"),id=c.req.param("id");
     if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
     const s=await classroomState(c.env.DB,"member",id,c.req.param("oid"),false);
-    c.header("Cache-Control","no-store");return s?c.json(s):c.json({detail:"Confirmed live booking required."},404);
+    c.header("Cache-Control","no-store");return s?c.json({...s,video_enabled:videoEnabled(c.env)}):c.json({detail:"Confirmed live booking required."},404);
   });
   app.post("/api/learning-support/:id/orders/:oid/classroom-board",guards.auth,guards.parent,async c=>{
     if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);

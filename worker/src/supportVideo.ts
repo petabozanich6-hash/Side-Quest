@@ -63,7 +63,7 @@ export async function videoToken(e:Env,channel:Channel,id:string,oid:string,owne
   }
   if(typeof data?.token!=="string"||!data.token)throw Error("Missing participant token");
   // Recheck access after provider calls. Do not issue a token if closure raced the request.
-  const s=await classroomState(e.DB,channel,id,oid,owner,now);
+  const s=await classroomState(e.DB,channel,id,oid,owner,new Date(Math.max(now.getTime(),Date.now())));
   const stillReady=await e.DB.prepare("SELECT order_id FROM support_video_rooms WHERE order_id=? AND status='ready'").bind(oid).first();
   if(!s?.open||!stillReady)return {error:"Classroom closed."};
   return {token:data.token,expires_at:room.expires_at};
