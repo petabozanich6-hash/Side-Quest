@@ -198,7 +198,7 @@ await step("Learning Support month planner navigates future months, preserves pr
  const denied=await api("GET","/admin/support-calendar?from=2027-01-01T00:00:00.000Z&to=2027-02-01T00:00:00.000Z",user.token);
  ok(denied.status===404,"ordinary parent can read private tutor calendar");
  await page.goto(BASE+"/parent/command-centre/learning-support");
- await page.getByRole("navigation",{name:"Learning Support sections"}).getByRole("button",{name:"Calendar",exact:true}).click();
+ await page.getByRole("link",{name:/^Calendar/}).click();
  const calendar=page.locator('[aria-label="Monthly private tutor calendar"]');
  await calendar.waitFor({timeout:15000});
  const month=page.locator('input[type="month"]');
@@ -262,6 +262,7 @@ await step("gifting preview days from a customer's page reaches the parent", asy
 });
 
 await step("announcement composer previews active parent count, but never sends without email binding and confirmation",async()=>{
+  await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-announcements]");
   await page.waitForSelector("[data-testid=hq-announcements]");
   const parentCount=await api("GET","/admin/announcements",ownerBrowserToken);
@@ -281,6 +282,7 @@ await step("HQ layout fits phone, tablet and desktop without sideways scrolling"
     await page.setViewportSize({ width: w, height: h });
     for (const tab of ["overview", "customers", "settings", "audit", "security"]) {
       if (w < 1024) { await page.click("[data-testid=menu-toggle]"); await page.click("[data-testid=nav-command-centre]"); }
+      if (["settings","audit","security"].includes(tab)) await page.getByTestId("hq-more-tools").click();
       await page.click(`[data-testid=hq-tab-${tab}]`);
       await page.waitForSelector(`[data-testid=hq-${tab}]`);
       const over = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
@@ -318,6 +320,7 @@ await step("customers: find a family, see metadata only, suspend it with a reaso
 });
 
 await step("settings: announcement reaches everyone; switching AI off needs a second confirmation", async () => {
+  await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-settings]");
   ok((await page.locator("[data-testid=hq-feature-shop]").count()) === 0, "retired in-app shop switch is still shown");
   await page.check("[data-testid=hq-announcement-enabled]");
@@ -343,6 +346,7 @@ await step("settings: announcement reaches everyone; switching AI off needs a se
 });
 
 await step("audit log lists every change; cross-site requests are blocked", async () => {
+  await page.getByTestId("hq-more-tools").click();
   await page.click("[data-testid=hq-tab-audit]");
   await page.waitForSelector("[data-testid=hq-audit-entry]");
   const text = await page.textContent("[data-testid=hq-audit]");
