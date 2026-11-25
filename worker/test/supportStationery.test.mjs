@@ -31,7 +31,7 @@ test("direct email is explicitly opt-in, and cannot send from private staging",(
  assert.equal(stationeryEmailEnabled({EMAIL,SUPPORT_STATIONERY_EMAIL:"true"}),true);
 });
 test("review and exact scoped recipient required; sends only generated PDF to that recipient",async()=>{
- const sent=[];const e={EMAIL:{send:async msg=>{sent.push(msg);return {messageId:"fake"};}}};
+ const sent=[];const e={SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async msg=>{sent.push(msg);return {messageId:"fake"};}}};
  const doc={...buildStationeryPdf({kind:"letter",sections:["Sample parent document"]},date),recipient:"parent@example.test",email_enabled:true};
  assert.equal(await sendStationery(e,doc,{reviewed:true,recipient_confirmed:"other@example.test"}),false);
  assert.equal(await sendStationery(e,doc,{reviewed:false,recipient_confirmed:doc.recipient}),false);
