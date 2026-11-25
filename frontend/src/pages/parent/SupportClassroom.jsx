@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useRef,useCallback} from "react";
 import SupportVideoPanel from "./SupportVideoPanel";
+import SupportLessonProgress from "./SupportLessonProgress";
 import SupportPresentation,{SlideDisplay} from "./SupportPresentation";
 import SupportImagePresentation,{PresentedImage} from "./SupportImagePresentation";
 const colors=["#163b2c","#2563eb","#b91c1c","#111827"];
@@ -21,6 +22,7 @@ export default function SupportClassroom({path,client,owner=false,onExit}){
  {error&&<p role="alert" className="text-sm text-rose-800">{error} <button type="button" className="underline" onClick={load}>Refresh</button></p>}
  {room&&<p role="status" className="text-sm font-semibold">{room.open?"Classroom open":room.in_window?"Waiting for the tutor to open the classroom":"Classroom available ten minutes before the appointment"}</p>}
  {owner&&room?.in_window&&<button type="button" className={button} disabled={busy} onClick={()=>send({action:room.open?"close":"open",confirmed:true})}>{room.open?"Close classroom":"Open classroom"}</button>}
+ {owner&&room&&<SupportLessonProgress key={path} path={path} client={client}/>}
  {room?.open&&room.video_enabled&&<SupportVideoPanel key={path} path={path} client={client} owner={owner} open={room.open}/>}
  {room?.open&&<><SlideDisplay slide={room.board.slide}/><PresentedImage image={room.board.image} client={client} path={path}/>{owner&&<><SupportPresentation send={send} busy={busy}/><SupportImagePresentation send={send} busy={busy}/></>}<div className="whitespace-pre-wrap break-words bg-stone-100 rounded-lg p-3 text-sm">{room.board.text||"Tutor notes will appear here."}</div>
  {owner&&<form className="space-y-2" onSubmit={e=>{e.preventDefault();send({action:"text",text});}}><label className="block text-sm">Teaching notes<textarea value={text} maxLength={2000} onChange={e=>setText(e.target.value)} className="block w-full border rounded-lg p-2"/></label><button type="submit" className={button} disabled={busy}>Share notes</button><button type="button" className={button+" ml-2"} onClick={()=>setText(room.board.text)}>Load current notes</button></form>}

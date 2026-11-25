@@ -8,6 +8,7 @@ import { hitRateLimit } from "./adminAudit";
 import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
 import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
+import {requestAppointmentCancellation} from "./supportPaymentSafety";
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
@@ -208,6 +209,13 @@ export function registerFeedback(app: App, guards: Guards) {
     const u=c.get("user"),id=c.req.param("id");
     if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
     c.header("Cache-Control","no-store");return c.json({orders:await listOrders(c.env.DB,"member",id),classroom_enabled:classroomEnabled(c.env)});
+  });
+  app.post("/api/learning-support/:id/orders/:oid/request-cancellation",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id"),oid=c.req.param("oid"),b=await c.req.json().catch(()=>null);
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    if(b?.confirmed!==true||!await requestAppointmentCancellation(c.env.DB,"member",id,oid))return c.json({detail:"Cancellation request unavailable. Please contact Side-Quest."},409);
+    await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
+    return c.json({ok:true,pending:true});
   });
   app.post("/api/learning-support/:id/orders/:oid/confirm",guards.auth,guards.parent,async c=>{
     const u=c.get("user"),id=c.req.param("id"),oid=c.req.param("oid"),b=await c.req.json().catch(()=>null);

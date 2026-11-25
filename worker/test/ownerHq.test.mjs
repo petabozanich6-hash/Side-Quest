@@ -925,7 +925,8 @@ test("manual invoice: owner verifies full payment and overdue slot stays held",a
  await stepUp(h,owner);
  const quote=await h.req(ap+"/quotes",{method:"POST",token:owner.token,body:{scope:"A guided science lesson",delivery:"Online appointment",amount_cents:2500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
  assert.equal((await h.req(pp+"/quotes/"+quote.json.id+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
- const start=new Date(Date.now()+48*3600000).toISOString(),due=new Date(Date.now()+24*3600000).toISOString();
+ const start=new Date(Date.now()+192*3600000).toISOString(),due=new Date(Date.now()+24*3600000).toISOString();
+ const early=await h.req(ap+"/orders",{method:"POST",token:owner.token,body:{quote_id:quote.json.id,mode:"live",start_at:new Date(Date.now()+86400000).toISOString(),minutes:30,terms:"Agreed appointment and cancellation terms.",confirmed:true}});assert.ok(early.status>=400);assert.match(early.json.detail,/seven days/);
  const order=await h.req(ap+"/orders",{method:"POST",token:owner.token,body:{quote_id:quote.json.id,mode:"live",start_at:start,minutes:30,terms:"Agreed appointment and cancellation terms.",confirmed:true}});assert.equal(order.status,201,JSON.stringify(order.json));
  const oid=order.json.id,adminPath=ap+"/orders/"+oid,parentPath=pp+"/orders/"+oid;
  assert.equal((await h.req(parentPath+"/confirm",{method:"POST",admin:false,token:alice.token,body:{confirmed:true}})).status,200);
@@ -1088,7 +1089,7 @@ test("tutor diary reserves buffers and unavailable blocks and keeps private prep
  const {h,owner}=await ownerSetup(),alice=await h.register("diary-alice@example.com","Alice");
  const {createServiceOrder}=await import("../src/supportOrders.ts");
  const {createBusyBlock,saveDiary,readDiary}=await import("../src/supportDiary.ts");
- const now=new Date(),start=new Date(now.getTime()+48*3600000),when=now.toISOString();
+ const now=new Date(),start=new Date(now.getTime()+192*3600000),when=now.toISOString();
  const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding the solar system",consent:true}});
  assert.equal(r.status,201);const rid=r.json.id;
  for(const id of ["diary-q1","diary-q2"]){if(id==="diary-q2")h.db.raw.prepare("UPDATE learning_support_quotes SET status='withdrawn' WHERE id='diary-q1'").run();
@@ -1108,11 +1109,12 @@ test("private time offers exclude conflicts and reserve only an offered slot wit
  const {h}=await ownerSetup(),alice=await h.register("slots-alice@example.com","Alice"),bob=await h.register("slots-bob@example.com","Bob");
  const {offerSlots,readSlots,selectSlot}=await import("../src/supportSlots.ts");
  const {createBusyBlock}=await import("../src/supportDiary.ts");
- const now=new Date(),start=new Date(now.getTime()+48*3600000),s1=start.toISOString(),s2=new Date(start.getTime()+3600000).toISOString(),when=now.toISOString();
+ const now=new Date(),start=new Date(now.getTime()+192*3600000),s1=start.toISOString(),s2=new Date(start.getTime()+3600000).toISOString(),when=now.toISOString();
  const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding the solar system",consent:true}});
  assert.equal(r.status,201);const id=r.json.id,qid="slot-q";
  h.db.raw.prepare("INSERT INTO learning_support_quotes(id,feedback_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES(?,?,?,?,?,'interested',?,?)").run(qid,id,"Solar system","Online",1500,when,new Date(now.getTime()+7*86400000).toISOString());
  const b={starts:[s1,s2],minutes:30,prep_minutes:10,wrap_minutes:10,learner_label:"Private learner",terms:"Agreed arrangements and terms.",confirmed:true};
+ assert.match((await offerSlots(h.db,"member",id,qid,{...b,starts:[new Date(now.getTime()+86400000).toISOString()]},now)).error,/seven days/);
  const first=await offerSlots(h.db,"member",id,qid,b,now);assert.ok(first.id,JSON.stringify(first));
  const second=await offerSlots(h.db,"member",id,qid,b,now);assert.ok(second.id);
  assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:first.id,start_at:s1,confirmed:true},now)).error);
@@ -1136,11 +1138,12 @@ test("multi-lesson package atomically reserves all slots and one invoice confirm
  const plan={title:"Fractions",goal:"Compare fractions",subject:"Mathematics",year_level:"Year 5",lessons:[lesson,{...lesson,title:"Apply fractions"}]};
  const q=await h.req("/admin/feedback/"+rid+"/quotes",{method:"POST",token:owner.token,body:{scope:"Two guided mathematics lessons",delivery:"Online tutoring package",amount_cents:5000,valid_days:7,confirmed:true,plan,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
  assert.equal((await h.req("/learning-support/"+rid+"/quotes/"+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
- const now=new Date(),s1=new Date(now.getTime()+48*3600000).toISOString(),s2=new Date(now.getTime()+72*3600000).toISOString(),s3=new Date(now.getTime()+96*3600000).toISOString();
+ const now=new Date(),s1=new Date(now.getTime()+192*3600000).toISOString(),s2=new Date(now.getTime()+216*3600000).toISOString(),s3=new Date(now.getTime()+240*3600000).toISOString();
  const b={quote_id:qid,starts:[s1,s2],learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",confirmed:true};
  assert.ok((await createServiceOrder(h.db,"member",rid,{...b,mode:"live",start_at:s1,minutes:30},now)).error);
  assert.ok((await createBusyBlock(h.db,{label:"Unavailable",start_at:s2,end_at:new Date(Date.parse(s2)+60000).toISOString()},now)).id);
  assert.ok((await createPackage(h.db,"member",rid,b,now)).error);assert.equal((await listOrders(h.db,"member",rid)).length,0);
+ assert.match((await createPackage(h.db,"member",rid,{...b,starts:[new Date(now.getTime()+86400000).toISOString(),s3]},now)).error,/seven days/);
  const made=await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now);assert.ok(made.id,JSON.stringify(made));
  const rows=await listOrders(h.db,"member",rid);assert.equal(rows.length,2);assert.equal(rows[0].amount_cents,5000);assert.equal(rows[1].amount_cents,0);
  assert.equal(await confirmServiceOrder(h.db,"member",rid,rows[1].id,now),false);
@@ -1163,7 +1166,7 @@ test("per-lesson instalments isolate paid and cancelled sessions and preserve qu
  const plan={title:"Fractions",goal:"Compare fractions",subject:"Mathematics",year_level:"Year 5",lessons:[lesson,{...lesson,title:"Apply fractions"},{...lesson,title:"Practise"}]};
  const q=await h.req("/admin/feedback/"+rid+"/quotes",{method:"POST",token:owner.token,body:{scope:"Three guided mathematics lessons",delivery:"Online tutoring package",amount_cents:7501,valid_days:7,confirmed:true,plan,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
  assert.equal((await h.req("/learning-support/"+rid+"/quotes/"+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
- const now=new Date(),starts=[48,72,96].map(hours=>new Date(now.getTime()+hours*3600000).toISOString());
+ const now=new Date(),starts=[192,216,240].map(hours=>new Date(now.getTime()+hours*3600000).toISOString());
  const b={quote_id:qid,starts,learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",payment_mode:"installments",deadline_hours:24,confirmed:true};
  const made=await createPackage(h.db,"member",rid,b,now);assert.ok(made.id,JSON.stringify(made));
  let rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.amount_cents),[2501,2500,2500]);assert.ok(rows.every(o=>o.installment));
