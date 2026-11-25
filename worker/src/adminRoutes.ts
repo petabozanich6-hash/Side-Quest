@@ -460,7 +460,7 @@ export function createAdminRoutes() {
     const b=await readJson(c);
     if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
     if(await hasOrder(c.env.DB,"member",qid))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
-    const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested')").bind(nowIso(),qid,id).run();
+    const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o WHERE o.channel='member' AND o.quote_id=learning_support_quotes.id AND o.status<>'cancelled')").bind(nowIso(),qid,id).run();
     if(!r.meta?.changes)return c.json({detail:"This proposal cannot be withdrawn."},409);
     try{await writeAudit(c.env.DB,{...actor(c),action:"learning_support.withdraw",targetType:"feedback",targetId:id,detail:{quote_id:qid}});}catch{}
     return c.json({ok:true});
@@ -637,7 +637,7 @@ export function createAdminRoutes() {
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
     if(await hasOrder(c.env.DB,"guest",c.req.param("qid")))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
-    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested')").bind(nowIso(),c.req.param("qid"),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
+    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o WHERE o.channel='guest' AND o.quote_id=support_guest_quotes.id AND o.status<>'cancelled')").bind(nowIso(),c.req.param("qid"),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:c.req.param("qid")}});
     return c.json({ok:true});
   });

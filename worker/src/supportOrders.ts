@@ -55,3 +55,11 @@ export async function applySupportPayment(db:D1Database,payment:any,locationId:s
  return "support payment recorded";
 }
 export function supportPaymentsEnabled(env:Env){return env.SUPPORT_CHECKOUT_TEST==="true"&&/^sandbox-/.test(env.SQUARE_APPLICATION_ID||"");}
+
+/** Signed refund notifications are re-read from Square before flagging a tutoring order for manual review. */
+export async function flagSupportRefund(db:D1Database,refund:any,locationId:string,now=new Date()):Promise<string|null>{
+ if(!refund?.payment_id||refund.location_id!==locationId||!["PENDING","COMPLETED"].includes(refund.status))return null;
+ await ensureOrderSchema(db);
+ const r=await db.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE square_payment_id=? AND status IN ('paid','completed','review')").bind(now.toISOString(),refund.payment_id).run();
+ return r.meta?.changes?"support refund requires review":null;
+}

@@ -288,6 +288,9 @@ test("support orders are separate from subscriptions; Square sandbox checkout is
  const getPayment=async()=>new Response(JSON.stringify({payment}));
  assert.equal(await handleSquareEvent(db,cfg,{type:"payment.updated",data:{object:{payment}}},getPayment,now),"support payment recorded");
  assert.equal((await getOrder(db,"guest","r",made.id)).status,"paid");
+ const refund={id:"refund",payment_id:"payment",location_id:ENV.SQUARE_LOCATION_ID,status:"PENDING"};
+ assert.equal(await handleSquareEvent(db,cfg,{type:"refund.updated",data:{object:{refund}}},async()=>new Response(JSON.stringify({refund})),now),"support refund requires review");
+ assert.equal((await getOrder(db,"guest","r",made.id)).status,"review");
  assert.equal(await applySupportPayment(db,{...payment,refunded_money:{amount:2500}},ENV.SQUARE_LOCATION_ID,now),"support payment requires review");
  assert.equal((await getOrder(db,"guest","r",made.id)).status,"review");
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,0);

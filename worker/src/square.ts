@@ -18,7 +18,7 @@ import type { App, Env } from "./types";
 import { LIVE_PRICE_DETAILS } from "./billing";
 import { membershipActivatedEmail, sendEmail } from "./email";
 import { sendOwnerNewMemberAlert } from "./ownerNotifications";
-import { applySupportPayment } from "./supportOrders";
+import { applySupportPayment,flagSupportRefund } from "./supportOrders";
 
 type DB = D1Database;
 export type Fetch = (input: any, init?: any) => Promise<Response>;
@@ -117,6 +117,12 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
     const id = String(obj.invoice?.subscription_id || "");
     if (!id) return "invoice without subscription";
     return markPastDue(db, id, now);
+  }
+  if(type==="refund.created"||type==="refund.updated"){
+    const id=String(obj.refund?.id||event?.data?.id||"");
+    if(!id)return "refund without id";
+    const refund=(await squareCall(cfg,"GET","refunds/"+encodeURIComponent(id),undefined,fetchImpl))?.refund;
+    return (await flagSupportRefund(db,refund,cfg.locationId,now))??"ignored non-support refund";
   }
   if (type !== "payment.created" && type !== "payment.updated") return `ignored ${type}`;
   const payment = event?.data?.object?.payment;
