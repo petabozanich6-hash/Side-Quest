@@ -48,7 +48,7 @@ import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan,scheduleSna
 import {buildContinuity,emailContinuity} from "./supportContinuity";
 import {prepareStationery,stationeryBase64,stationeryFingerprint,stationeryRecipient,stationeryEmailEnabled,termsDeliveryApproved,serviceTermsAttachment} from "./supportStationery";
 import {listStationery,saveStationery,downloadStationery,deliverSavedStationery,lessonReportQueue} from "./supportStationeryHistory";
-import {readAvailability,saveAvailability} from "./supportPublicAvailability";
+import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportPublicAvailability";
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
@@ -792,6 +792,12 @@ export function createAdminRoutes() {
   });
   admin.get("/support-report-queue",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");return c.json(await lessonReportQueue(c.env.DB));
+  });
+  admin.get("/support-calendar/suggestions",requirePermission("customers.read"),async c=>{
+    const minutes=Number(c.req.query("minutes")),prep=Number(c.req.query("prep")??10),wrap=Number(c.req.query("wrap")??10);
+    const starts=await suggestSupportStarts(c.env.DB,minutes,prep,wrap);
+    if(!starts)return c.json({detail:"Invalid session length or preparation buffers."},400);
+    c.header("Cache-Control","private, no-store");return c.json({starts,timezone:"Australia/Sydney"});
   });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
