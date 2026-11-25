@@ -1,4 +1,4 @@
-import {unifiedOwnerDirectory} from "./unifiedOwnerDirectory";
+import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
@@ -279,6 +279,14 @@ export function createAdminRoutes() {
     if(search.length>254||!Number.isInteger(page)||page<1||page>10000||!["all","support","legacy","unread"].includes(filter))return c.json({detail:"Invalid search or page"},400);
     c.header("Cache-Control","private, no-store");
     return c.json(await unifiedOwnerDirectory(c.env.DB,search,page,filter));
+  });
+  admin.get("/unified-directory/:kind/:id",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind")||"",id=c.req.param("id")||"",section=c.req.query("section")||"home",page=Number(c.req.query("page")||1);
+    if(!["account","legacy"].includes(kind)||!id||id.length>100||!OWNER_FAMILY_SECTIONS.includes(section as OwnerFamilySection)||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid family or page"},400);
+    c.header("Cache-Control","private, no-store");
+    const result=await unifiedOwnerFamily(c.env.DB,kind,id,section as OwnerFamilySection,page);
+    return result?c.json(result):c.json({detail:"Family not found"},404);
   });
   admin.get("/customers", requirePermission("customers.read"), async (c) => {
     const q = (c.req.query("q") ?? "").trim();

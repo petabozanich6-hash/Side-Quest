@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {unifiedOwnerDirectory} from "../src/unifiedOwnerDirectory.ts";
+import {unifiedOwnerDirectory,unifiedOwnerFamily} from "../src/unifiedOwnerDirectory.ts";
 test("directory groups explicitly associated records only and preserves unclaimed legacy rows",async t=>{
  const db=makeDb();t.after(()=>db.raw.close());const now="2026-11-26T00:00:00.000Z";
  for(const n of [1,2]){
@@ -19,4 +19,10 @@ test("directory groups explicitly associated records only and preserves unclaime
  assert.equal((await unifiedOwnerDirectory(db,"p2@example.com",1,"all")).items.length,2);
  assert.equal((await unifiedOwnerDirectory(db,"",1,"unread")).items.length,2);
  assert.equal(JSON.stringify(result).includes("PRIVATE"),false);
+ const a=await unifiedOwnerFamily(db,"account","f1","enquiries",1);assert.deepEqual(a.items.map(r=>r.id),["r1"]);
+ const b=await unifiedOwnerFamily(db,"account","f2","enquiries",1);assert.equal(b.items.length,0);
+ const old=result.items.find(r=>r.kind==="legacy");assert.deepEqual((await unifiedOwnerFamily(db,"legacy",old.id,"enquiries",1)).items.map(r=>r.id),["r2"]);
+ assert.equal(await unifiedOwnerFamily(db,"account","missing","home",1),null);
+ for(const section of ["learners","appointments","invoices","messages"]){const p=await unifiedOwnerFamily(db,"account","f1",section,1);assert.ok(p);assert.equal(JSON.stringify(p).includes("PRIVATE"),false);}
+
 });

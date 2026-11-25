@@ -216,7 +216,7 @@ await step("Learning Support month planner navigates future months, preserves pr
  const denied=await api("GET","/admin/support-calendar?from=2027-01-01T00:00:00.000Z&to=2027-02-01T00:00:00.000Z",user.token);
  ok(denied.status===404,"ordinary parent can read private tutor calendar");
  await page.goto(BASE+"/parent/command-centre/learning-support");
- await page.getByRole("link",{name:/^Calendar/}).click();
+ await page.locator('[data-testid="owner-command-centre"] a[href="/parent/command-centre/learning-support?view=Calendar"]').click();
  await page.waitForURL(u=>u.pathname==="/parent/command-centre/learning-support"&&u.searchParams.get("view")==="Calendar",{timeout:15000});
  const calendar=page.locator('[aria-label="Monthly private tutor calendar"]');
  await calendar.waitFor({timeout:15000});
