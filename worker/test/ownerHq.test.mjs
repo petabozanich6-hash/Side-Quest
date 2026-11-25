@@ -963,7 +963,11 @@ test("guest family directory groups verified email enquiries, preserves existing
  const guest=await h.req("/support-guest/requests",{admin:false,headers});assert.ok(!JSON.stringify(guest.json).includes("OWNER ONLY TEST MARKER"));assert.ok(!JSON.stringify(guest.json).includes(learner_id));
  assert.equal((await h.req("/admin/support-families/"+a.id,{headers})).status,404);
  const quote=await h.req("/admin/support-guests/"+first+"/quotes",{method:"POST",token:owner.token,body:{scope:"Worked explanation and practice questions",delivery:"Written response",amount_cents:1500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
- const latest=mail.at(-1);assert.match(latest.text,/Review your proposal/);const accessToken=latest.text.match(/#token=([a-f0-9]{64})/)[1];
+ const documentPath="/support-guest/requests/"+first+"/quotes/"+quote.json.id+"/document";
+ const pdf=await h.req(documentPath,{admin:false,headers});assert.equal(pdf.status,200,JSON.stringify(pdf.json));assert.equal(pdf.json.mime,"application/pdf");assert.ok(atob(pdf.json.base64).startsWith("%PDF"));assert.equal(pdf.json.terms,null);
+ assert.equal((await h.req(documentPath,{admin:false,headers:otherHeaders})).status,404);
+ assert.equal((await h.req(documentPath,{admin:false})).status,401);
+ const latest=mail.at(-1);assert.match(latest.text,/Review your proposal/);assert.ok(latest.text.includes("?enquiry="+first+"#token="));const accessToken=latest.text.match(/#token=([a-f0-9]{64})/)[1];
  const signed=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}});assert.equal(signed.status,200);assert.equal(signed.json.email,"family-a@example.com");
  assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}})).status,400);
 });
