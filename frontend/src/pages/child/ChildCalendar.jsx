@@ -17,12 +17,13 @@ export default function ChildCalendar() {
   const [week, setWeek] = useState(mondayOf(new Date()));
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const [retry,setRetry]=useState(0);
 
   useEffect(() => {
     if (!user?.id) return;
     let active = true;
     const end = new Date(week); end.setDate(end.getDate() + 6);
-    setLoaded(false);
+    setLoaded(false);setError("");setEvents([]);setAssignments([]);
     Promise.all([
       api.get("/assignments"),
       api.get("/calendar", { params: { student_id: user.id, from: iso(week), to: iso(end) } }),
@@ -31,10 +32,10 @@ export default function ChildCalendar() {
       setAssignments((a.data || []).filter(x => x.student_id === user.id));
       setEvents((c.data || []).filter(e => e.student_id === user.id && e.event_type !== "parent-review"));
       setError("");
-    }).catch(() => { if (active) setError("Could not load your week. Try changing weeks or reload the page."); })
+    }).catch(() => { if (active) setError("Could not load your week. Check your connection and try again."); })
       .finally(() => { if (active) setLoaded(true); });
     return () => { active = false; };
-  }, [user?.id, week]);
+  }, [user?.id, week,retry]);
 
   const lessonOf = (a) => a.lesson?.id || a.lesson_id;
 
@@ -67,6 +68,7 @@ export default function ChildCalendar() {
     if (a.status === "submitted") {
       return <span className="text-xs font-bold text-amber-700 flex items-center gap-1"><Hourglass size={14}/> Waiting for review</span>;
     }
+    if (a.status === "awaiting_help") return <span className="text-xs font-bold text-amber-800">Waiting for help</span>;
     if (OPEN_STATUSES.includes(a.status)) {
       if (a.status === "needs_revision" || a.status === "needs_more_practice") {
         return <span className="text-xs font-bold text-rose-700">Try again</span>;
@@ -85,18 +87,18 @@ export default function ChildCalendar() {
   return (
     <div className="space-y-5" data-testid="child-calendar">
       <Link to="/child" className="inline-flex items-center gap-1 text-sm font-semibold opacity-75 hover:opacity-100" data-testid="back-today"><ChevronLeft size={14}/> Back to today</Link>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-3xl font-bold">{user?.name ? `${user.name}'s calendar` : "Calendar"}</h1>
         <div className="flex items-center gap-2">
-          <button onClick={() => shift(-1)} className="rounded-lg border border-slate-300 bg-white p-1.5"><ChevronLeft size={16}/></button>
+          <button type="button" aria-label="Previous week" onClick={() => shift(-1)} className="rounded-lg border border-slate-300 bg-white min-h-11 min-w-11 grid place-items-center"><ChevronLeft size={16}/></button>
           <button onClick={() => setWeek(mondayOf(new Date()))} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold">This week</button>
-          <button onClick={() => shift(1)} className="rounded-lg border border-slate-300 bg-white p-1.5"><ChevronRight size={16}/></button>
+          <button type="button" aria-label="Next week" onClick={() => shift(1)} className="rounded-lg border border-slate-300 bg-white min-h-11 min-w-11 grid place-items-center"><ChevronRight size={16}/></button>
         </div>
       </div>
       <p className="text-sm opacity-75">{label}. You can start any lesson early, even if it is planned for another day.</p>
-      {error && <p className="rounded-xl border border-red-300 p-3 text-sm text-red-800" role="alert">{error}</p>}
+      {error && <div className="rounded-xl border border-red-300 p-3 text-sm text-red-800" role="alert">{error} <button type="button" className="font-bold underline" onClick={()=>setRetry(n=>n+1)}>Try again</button></div>}
 
-      <div className="space-y-3">
+      {!error&&<div className="space-y-3">
         {days.map(d => {
           const key = iso(d);
           const list = events.filter(e => e.date === key);
@@ -111,7 +113,7 @@ export default function ChildCalendar() {
                 <div className="space-y-2">
                   {list.map(e => {
                     const a = assignmentFor(e);
-                    const canOpen = a && (OPEN_STATUSES.includes(a.status) || a.status === "submitted" || DONE_STATUSES.includes(a.status)) && OPEN_STATUSES.includes(a.status);
+                    const canOpen = a && OPEN_STATUSES.includes(a.status) && a.status !== "awaiting_help";
                     const body = (
                       <div className="flex items-center justify-between gap-3">
                         <div>
@@ -130,7 +132,7 @@ export default function ChildCalendar() {
             </section>
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 }

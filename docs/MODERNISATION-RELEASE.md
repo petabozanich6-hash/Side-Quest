@@ -9,3 +9,5 @@ Release gate:
 5. Compare bundle size and real performance on an Australian device, then deploy from main with an explicit rollback point.
 6. Do not delete historical tables/records or legacy purchase entitlements. Avoid new paid services until usage is measured.
 Limitations: Learning Support is enquiry intake/manual quotations, not paid checkout/automatic bookings. WWCC/safeguarding/insurance and service terms must be confirmed before live tutoring. Future work: background AI generation, query plans/indexes, accessibility and further measured performance improvements.
+
+Student UX: distinguish API failure from genuinely empty work, provide retry and reconnect refresh, flag unavailable calendar dates, accessible week navigation and correct waiting-for-help states. No offline storage, entitlement or lesson format changes. Added retry regression test.
