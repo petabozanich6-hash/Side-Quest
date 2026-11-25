@@ -34,7 +34,9 @@ export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_messages (id TEXT PRIMARY KEY,request_id TEXT NOT NULL REFERENCES support_guest_requests(id) ON DELETE CASCADE,sender TEXT NOT NULL CHECK(sender IN ('parent','owner')),body TEXT NOT NULL,created_at TEXT NOT NULL)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_messages_thread ON support_guest_messages(request_id,created_at)"
 ] as const;
-export async function ensureGuestSchema(db:D1Database){for(const sql of GUEST_SCHEMA)await db.prepare(sql).run();}
+// D1 is remote in production and staging. Initialise the additive schema in one
+// atomic batch rather than issuing a round trip for every table, index and trigger.
+export async function ensureGuestSchema(db:D1Database){await db.batch(GUEST_SCHEMA.map(sql=>db.prepare(sql)));}
 const random=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,"0")).join("");
 const digest=async(s:string)=>Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s))),b=>b.toString(16).padStart(2,"0")).join("");
 const valid=(s:unknown):s is string=>typeof s==="string"&&/^[a-f0-9]{64}$/.test(s);
