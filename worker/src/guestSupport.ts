@@ -7,6 +7,7 @@ import {loadPlatformSettings} from "./platformSettings";
 import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
+import {readQuotePlan} from "./supportQuotePlans";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_links_expiry ON support_guest_links(expires_at)",
@@ -140,6 +141,11 @@ export function registerGuestSupport(app:App){
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
   return c.json({ok:true});
+ });
+ app.get(root+"/requests/:id/quotes/:qid/plan",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  return c.json({plan:await readQuotePlan(c.env.DB,"guest",id,c.req.param("qid"))});
  });
  app.get(root+"/requests/:id/quotes",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);

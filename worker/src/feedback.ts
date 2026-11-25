@@ -10,6 +10,7 @@ import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningS
 import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
+import {readQuotePlan} from "./supportQuotePlans";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -198,6 +199,10 @@ export function registerFeedback(app: App, guards: Guards) {
     await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
     try{await ownerAlert(c.env,id,"learning support order confirmation");}catch{}
     return c.json({ok:true});
+  });
+  app.get("/api/learning-support/:id/quotes/:qid/plan",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id");if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    c.header("Cache-Control","no-store");return c.json({plan:await readQuotePlan(c.env.DB,"member",id,c.req.param("qid"))});
   });
   app.get("/api/learning-support/:id/quotes",guards.auth,guards.parent,async c=>{
     await ensureFeedbackBaseSchema(c.env.DB);

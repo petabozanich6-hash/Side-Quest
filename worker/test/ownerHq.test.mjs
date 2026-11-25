@@ -1017,3 +1017,18 @@ test("reusable tutor decks: review required, version conflict, private notes nev
  assert.equal(JSON.stringify(state).includes("Private answer"),false);
  assert.equal((await getDeck(h.db,id)).slides[0].notes,"Private answer: 4.");
 });
+
+test("quote plan snapshot separates public lesson sequence from private teaching guides",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("plan-alice@example.com","Alice"),bob=await h.register("plan-bob@example.com","Bob");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(r.status,201,JSON.stringify(r.json));
+ const id=r.json.id,ap="/admin/feedback/"+id+"/quotes",pp="/learning-support/"+id+"/quotes";
+ await stepUp(h,owner);
+ const plan={title:"Fractions",subject:"Mathematics",year_level:"Year 5",goal:"Recognise equivalent fractions",lessons:[{title:"Halves and quarters",objective:"Identify equivalent fractions",activities:"Compare fraction strips",check:"Explain why two fractions are equal",home_practice:"Draw two equivalent fractions",minutes:30,guide:"Private guide: model 1/2 = 2/4.",answers:"Private answer: 3/6 = 1/2."}]};
+ const proposal={scope:"Guided mathematics support",delivery:"One online session",amount_cents:2500,valid_days:7,confirmed:true,plan};
+ assert.equal((await h.req(ap,{method:"POST",token:owner.token,body:proposal})).status,400);
+ const q=await h.req(ap,{method:"POST",token:owner.token,body:{...proposal,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));
+ const path=pp+"/"+q.json.id+"/plan";
+ const parent=await h.req(path,{admin:false,token:alice.token});assert.equal(parent.status,200);assert.equal(parent.json.plan.lessons[0].title,"Halves and quarters");assert.equal(JSON.stringify(parent.json).includes("Private answer"),false);assert.equal(parent.json.plan.tutor_guides,undefined);
+ assert.equal((await h.req(path,{admin:false,token:bob.token})).status,404);
+ const own=await h.req(ap+"/"+q.json.id+"/plan",{token:owner.token});assert.equal(own.json.plan.tutor_guides[0].answers,"Private answer: 3/6 = 1/2.");
+});

@@ -41,6 +41,7 @@ import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "./supportClassrooms";
 import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
+import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -428,12 +429,13 @@ export function createAdminRoutes() {
 
   // A private reply is persisted first. Optional email only alerts the correct submitting parent
   // to sign in; it never contains the report, reply, names, or other customer data.
+  admin.post("/support-plan/draft",requirePermission("customers.read"),async c=>{const r=await draftQuotePlan(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);});
   admin.get("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
     const id=c.req.param("id");
     if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
     await ensureQuoteSchema(c.env.DB);
-    return c.json({quotes:await listSupportQuotes(c.env.DB,id)});
+    return c.json({quotes:await listSupportQuotes(c.env.DB,id),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI});
   });
   admin.post("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
@@ -446,7 +448,9 @@ export function createAdminRoutes() {
     await ensureQuoteSchema(c.env.DB);
     const qid=crypto.randomUUID(),now=new Date(),when=now.toISOString(),expires=new Date(now.getTime()+v.days*86400000).toISOString();
     // Expired offers remain immutable in history. Explicitly withdraw them before making another proposal.
-    const r=await c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id).run();
+    const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
+    const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id);
+    const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when);
     if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
     // Durable proposal is authoritative. A notification failure does not undo it.
     try{
@@ -625,14 +629,16 @@ export function createAdminRoutes() {
   admin.get("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=c.req.param("id");
     if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first())return c.json({detail:"Request not found"},404);
-    return c.json({quotes:await guestQuotes(c.env.DB,id)});
+    return c.json({quotes:await guestQuotes(c.env.DB,id),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI});
   });
   admin.post("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c),v=validateQuote(b);
     if("error" in v)return c.json({detail:v.error},400);if(b.confirmed!==true)return c.json({detail:"Confirm non-binding proposal."},400);
     const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
     const qid=crypto.randomUUID(),now=new Date();
-    const r=await c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id).run();
+    const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
+    const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id);
+    const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString());
     if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.quote",targetType:"support_guest",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
     return c.json({id:qid,email_notification_sent:await guestNotify(c.env,row.email)},201);
@@ -673,6 +679,7 @@ export function createAdminRoutes() {
     return c.json({appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
   });
   for(const channel of ["member","guest"] as const){
+    admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,c.req.param("id"),c.req.param("qid"),true)}));
     const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
     const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
     admin.get(path,requirePermission("customers.read"),async c=>{

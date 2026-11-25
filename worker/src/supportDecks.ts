@@ -1,8 +1,7 @@
 import type {Env} from "./types";
 import {nowIso} from "./types";
 import {DEFAULT_MODEL,extractJson,subjectGuide} from "./aiDraft";
-import {loadPlatformSettings} from "./platformSettings";
-import {aiRequestsLast24h} from "./aiCost";
+import {loadPlatformSettings,aiRequestsLast24h} from "./platformSettings";
 import {hitRateLimit} from "./adminAudit";
 const SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_teaching_decks (id TEXT PRIMARY KEY,title TEXT NOT NULL,subject TEXT NOT NULL,year_level TEXT NOT NULL,slides_json TEXT NOT NULL,status TEXT NOT NULL CHECK(status IN ('draft','reviewed','archived')),revision INTEGER NOT NULL DEFAULT 1,created_at TEXT NOT NULL,updated_at TEXT NOT NULL)",
