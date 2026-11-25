@@ -5,8 +5,8 @@ const FIELDS={subject:80,year_level:40,objective:600,interests:600,approach:1000
 export async function readDiary(db:D1Database,channel:Channel,id:string,oid:string){
  const order=await getOrder(db,channel,id,oid);if(!order)return null;
  const d=await db.prepare("SELECT * FROM support_tutor_diary WHERE order_id=?").bind(oid).first<any>();
- const plan=await readQuotePlan(db,channel,id,order.quote_id,true);
- return {diary:d?{learner_label:d.learner_label,prep_minutes:d.prep_minutes,wrap_minutes:d.wrap_minutes,ready:!!d.ready,revision:d.revision,details:JSON.parse(d.details_json)}:{learner_label:"",prep_minutes:0,wrap_minutes:0,ready:false,revision:0,details:{}},proposal:plan,order:{scope:order.scope,mode:order.mode,start_at:order.start_at,end_at:order.end_at,status:order.status}};
+ const plan=await readQuotePlan(db,channel,id,order.original_quote_id??order.quote_id,true);
+ return {diary:d?{learner_label:d.learner_label,prep_minutes:d.prep_minutes,wrap_minutes:d.wrap_minutes,ready:!!d.ready,revision:d.revision,details:JSON.parse(d.details_json)}:{learner_label:"",prep_minutes:0,wrap_minutes:0,ready:false,revision:0,details:{}},proposal:plan,order:{package_sequence:order.package_sequence,package_total:order.package_total,scope:order.scope,mode:order.mode,start_at:order.start_at,end_at:order.end_at,status:order.status}};
 }
 export async function saveDiary(db:D1Database,channel:Channel,id:string,oid:string,b:any){
  if(!await getOrder(db,channel,id,oid))return false;

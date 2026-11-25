@@ -47,6 +47,7 @@ import {uploadResource,listResources,archiveResource,downloadResource,grantResou
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {offerSlots,readSlots,removeSlots} from "./supportSlots";
+import {createPackage} from "./supportPackages";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -732,6 +733,11 @@ export function createAdminRoutes() {
     admin.get(path,requirePermission("customers.read"),async c=>{
       const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       return c.json({orders:await listOrders(c.env.DB,channel,id)});
+    });
+    admin.post(path+"/package",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const r=await createPackage(c.env.DB,channel,id,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.package.reserve",targetType:"support",targetId:id,detail:{order_id:r.id,session_count:r.count,channel}});return c.json(r,201);
     });
     admin.post(path,requirePermission("customers.read"),async c=>{
       const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);

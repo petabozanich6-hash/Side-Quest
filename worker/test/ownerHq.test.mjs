@@ -1124,3 +1124,31 @@ test("private time offers exclude conflicts and reserve only an offered slot wit
  const o=h.db.raw.prepare("SELECT amount_cents,status FROM support_service_orders WHERE id=?").get(selected.id);assert.equal(o.amount_cents,1500);assert.equal(o.status,"awaiting_confirmation");
  assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s2,confirmed:true},now)).error);
 });
+
+test("multi-lesson package atomically reserves all slots and one invoice confirms every session",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("package-alice@example.com","Alice");
+ const {createPackage}=await import("../src/supportPackages.ts");
+ const {createBusyBlock,readDiary}=await import("../src/supportDiary.ts");
+ const {createServiceOrder,confirmServiceOrder,recordManualInvoice,verifyManualInvoice,listOrders,completeOrder}=await import("../src/supportOrders.ts");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(r.status,201);const rid=r.json.id;
+ await stepUp(h,owner);
+ const lesson={title:"Fractions",objective:"Compare fractions",activities:"Draw fraction strips",check:"Explain equivalence",home_practice:"Draw another example",minutes:30,guide:"Tutor works through examples",answers:"Private answers"};
+ const plan={title:"Fractions",goal:"Compare fractions",subject:"Mathematics",year_level:"Year 5",lessons:[lesson,{...lesson,title:"Apply fractions"}]};
+ const q=await h.req("/admin/feedback/"+rid+"/quotes",{method:"POST",token:owner.token,body:{scope:"Two guided mathematics lessons",delivery:"Online tutoring package",amount_cents:5000,valid_days:7,confirmed:true,plan,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
+ assert.equal((await h.req("/learning-support/"+rid+"/quotes/"+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const now=new Date(),s1=new Date(now.getTime()+48*3600000).toISOString(),s2=new Date(now.getTime()+72*3600000).toISOString(),s3=new Date(now.getTime()+96*3600000).toISOString();
+ const b={quote_id:qid,starts:[s1,s2],learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",confirmed:true};
+ assert.ok((await createServiceOrder(h.db,"member",rid,{...b,mode:"live",start_at:s1,minutes:30},now)).error);
+ assert.ok((await createBusyBlock(h.db,{label:"Unavailable",start_at:s2,end_at:new Date(Date.parse(s2)+60000).toISOString()},now)).id);
+ assert.ok((await createPackage(h.db,"member",rid,b,now)).error);assert.equal((await listOrders(h.db,"member",rid)).length,0);
+ const made=await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now);assert.ok(made.id,JSON.stringify(made));
+ const rows=await listOrders(h.db,"member",rid);assert.equal(rows.length,2);assert.equal(rows[0].amount_cents,5000);assert.equal(rows[1].amount_cents,0);
+ assert.equal(await confirmServiceOrder(h.db,"member",rid,rows[1].id,now),false);
+ assert.equal(await confirmServiceOrder(h.db,"member",rid,made.id,now),true);
+ assert.equal((await listOrders(h.db,"member",rid))[1].status,"confirmed");
+ assert.ok((await recordManualInvoice(h.db,"member",rid,made.id,{reference:"PKG-TEST",due_at:new Date(now.getTime()+24*3600000).toISOString(),sent_in_square:true},owner.id,now)).ok);
+ assert.equal(await verifyManualInvoice(h.db,"member",rid,made.id,{reference:"PKG-TEST",amount_cents:5000,paid_in_square:true},owner.id,now),true);
+ assert.ok((await listOrders(h.db,"member",rid)).every(o=>o.status==="paid"));
+ assert.equal((await readDiary(h.db,"member",rid,rows[1].id)).diary.details.agenda.includes("Apply fractions"),true);
+ assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now)).error);
+});

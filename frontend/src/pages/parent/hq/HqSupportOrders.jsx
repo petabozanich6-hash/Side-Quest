@@ -4,6 +4,7 @@ import HqSupportBackup from "./HqSupportBackup";
 import HqExternalResources from "./HqExternalResources";
 import HqTutorDiary from "./HqTutorDiary";
 import HqSlotOffers from "./HqSlotOffers";
+import HqSupportPackage from "./HqSupportPackage";
 export default function HqSupportOrders({id,guest,quotes,closed}){
  const path=(guest?"/support-guests/":"/feedback/")+encodeURIComponent(id)+"/orders";
  const [learner,setLearner]=useState(""),[prep,setPrep]=useState(10),[wrap,setWrap]=useState(10);
@@ -14,14 +15,15 @@ export default function HqSupportOrders({id,guest,quotes,closed}){
  const available=quotes.filter(q=>q.status==="interested"&&!orders.some(o=>o.quote_id===q.id&&o.status!=="cancelled"));
  const field="block w-full rounded-lg border border-stone-300 p-2 bg-white";
  return <section className="border-t pt-3 space-y-3"><div className="flex justify-between"><h4 className="font-bold">Service orders & appointments</h4><button onClick={load} className="underline text-xs">Refresh</button></div>{error&&<p role="alert" className="text-sm text-rose-800">{error}</p>}{notice&&<p role="status" className="text-sm">{notice}</p>}
- {orders.map(o=><div key={o.id} className="border rounded-lg p-3 space-y-2"><strong>AUD ${(o.amount_cents/100).toFixed(2)} · {o.status.replaceAll("_"," ")}</strong><p className="text-sm">{o.start_at?new Date(o.start_at).toLocaleString("en-AU")+" to "+new Date(o.end_at).toLocaleString("en-AU"):o.delivery}</p>
+ {orders.map(o=><div key={o.id} className="border rounded-lg p-3 space-y-2"><strong>{o.package_sequence?("Lesson "+o.package_sequence+"/"+o.package_total+" · "):""}{o.package_sequence>1?"Included in package":"AUD "+(o.amount_cents/100).toFixed(2)+(o.package_sequence===1?" total package":"")} · {o.status.replaceAll("_"," ")}</strong><p className="text-sm">{o.start_at?new Date(o.start_at).toLocaleString("en-AU")+" to "+new Date(o.end_at).toLocaleString("en-AU"):o.delivery}</p>
  <HqTutorDiary path={path+"/"+o.id}/>
- {o.status==="confirmed"&&!o.legacy_checkout&&<ManualInvoice key={o.id} order={o} busy={busy} action={(action,body)=>run(()=>adminApi.post(path+"/"+o.id+"/"+action,{...body,confirmed:true}))}/>}{o.legacy_checkout&&o.status==="confirmed"&&<p className="text-sm text-amber-900">Previous test checkout requires reconciliation. Do not send a duplicate invoice.</p>}
- {["awaiting_confirmation","confirmed"].includes(o.status)&&!o.invoice_reference&&!o.legacy_checkout&&<button type="button" className="underline text-sm text-rose-800 ml-2" disabled={busy} onClick={()=>{if(window.confirm("Cancel only if checkout has not started?"))run(()=>adminApi.post(path+"/"+o.id+"/cancel",{confirmed:true}));}}>Cancel unstarted order</button>}
+ {o.status==="confirmed"&&!(o.package_sequence>1)&&!o.legacy_checkout&&<ManualInvoice key={o.id} order={o} busy={busy} action={(action,body)=>run(()=>adminApi.post(path+"/"+o.id+"/"+action,{...body,confirmed:true}))}/>}{o.legacy_checkout&&o.status==="confirmed"&&<p className="text-sm text-amber-900">Previous test checkout requires reconciliation. Do not send a duplicate invoice.</p>}
+ {["awaiting_confirmation","confirmed"].includes(o.status)&&!(o.package_sequence>1)&&!o.invoice_reference&&!o.legacy_checkout&&<button type="button" className="underline text-sm text-rose-800 ml-2" disabled={busy} onClick={()=>{if(window.confirm("Cancel only if checkout has not started?"))run(()=>adminApi.post(path+"/"+o.id+"/cancel",{confirmed:true}));}}>Cancel unstarted order</button>}
  {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqExternalResources orderPath={path+"/"+o.id}/>}
  {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqSupportBackup path={path+"/"+o.id} live={o.mode==="live"}/>}
  {o.status==="paid"&&<button type="button" className="underline text-sm" disabled={busy} onClick={()=>{if(window.confirm("Mark service delivered?"))run(()=>adminApi.post(path+"/"+o.id+"/complete",{confirmed:true}));}}>Mark completed</button>}</div>)}
  {!closed&&quotes.some(q=>["offered","interested"].includes(q.status))&&<HqSlotOffers path={path} quotes={quotes} onSaved={load}/>}
+ {available.length>0&&!closed&&<HqSupportPackage path={path} quotes={available} onSaved={load}/>}
  {available.length>0&&!closed&&<form className="space-y-2" onSubmit={e=>{e.preventDefault();run(()=>adminApi.post(path,{quote_id:quote,mode,start_at:mode==="live"?new Date(start).toISOString():null,minutes:Number(minutes),learner_label:learner,prep_minutes:mode==="live"?prep:0,wrap_minutes:mode==="live"?wrap:0,terms,confirmed:agree}));}}>
  <label className="text-sm block">Interested proposal<select required className={field} value={quote} onChange={e=>setQuote(e.target.value)}><option value="">Choose</option>{available.map(q=><option key={q.id} value={q.id}>AUD ${(q.amount_cents/100).toFixed(2)} · {q.scope.slice(0,60)}</option>)}</select></label>
  <label className="text-sm block">Learner nickname / initials (private)<input required maxLength={80} className={field} value={learner} onChange={e=>setLearner(e.target.value)}/></label>

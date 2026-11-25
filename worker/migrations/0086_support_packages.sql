@@ -1,0 +1,6 @@
+-- One invoice per multi-session package; independent appointment records.
+CREATE TABLE IF NOT EXISTS support_package_sessions (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, root_id TEXT NOT NULL REFERENCES support_service_orders(id), quote_id TEXT NOT NULL, sequence INTEGER NOT NULL CHECK(sequence BETWEEN 1 AND 4), total INTEGER NOT NULL CHECK(total BETWEEN 2 AND 4), UNIQUE(root_id,sequence));
+
+CREATE INDEX IF NOT EXISTS idx_support_package_root ON support_package_sessions(root_id);
+
+CREATE TRIGGER IF NOT EXISTS support_package_payment_status AFTER UPDATE OF status ON support_service_orders WHEN OLD.status<>NEW.status AND NEW.status IN ('confirmed','paid','cancelled','review') AND EXISTS(SELECT 1 FROM support_package_sessions p WHERE p.order_id=NEW.id AND p.root_id=NEW.id) BEGIN UPDATE support_service_orders SET status=NEW.status,confirmed_at=NEW.confirmed_at,paid_at=NEW.paid_at,updated_at=NEW.updated_at WHERE id IN (SELECT order_id FROM support_package_sessions WHERE root_id=NEW.id AND order_id<>NEW.id) AND ((NEW.status='confirmed' AND status='awaiting_confirmation') OR (NEW.status='paid' AND status IN ('awaiting_confirmation','confirmed')) OR (NEW.status='cancelled' AND status IN ('awaiting_confirmation','confirmed')) OR (NEW.status='review' AND status IN ('paid','confirmed','awaiting_confirmation'))); END;
