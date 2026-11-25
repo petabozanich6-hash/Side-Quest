@@ -74,3 +74,31 @@ test("read-only invoice reconciliation verifies underlying completed payments, n
  assert.equal((await check(provider("PAID",full,[{payment_id:"pay1"},{payment_id:"pay1"}],payment))).state,"review");
  await assert.rejects(check(provider("PAID",full,[{payment_id:"pay1"}],payment,{total_money:{currency:"AUD",amount:1}})),/Underlying order/);
 });
+
+test("durable sandbox attempts cannot create a second invoice or be accessed under another enquiry",async t=>{
+ const {makeDb}=await import("./fakeD1.mjs");
+ const {createInvoiceAttempt,publishInvoiceAttempt,checkInvoiceAttempt,previewInvoiceEmail,readInvoiceAttempt}=await import("../src/supportInvoiceAttempts.ts");
+ const db=makeDb();t.after(()=>db.raw.close());
+ const at="2026-11-25T00:00:00.000Z",now=new Date(at),start="2026-12-08T00:00:00.000Z",end="2026-12-08T01:00:00.000Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("g",v.email,"Parent","Support","Enquiry",at,at);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(v.orderId,"guest","g","q",3500,"Lesson","Online","Agreed terms","live",start,end,"confirmed",at,at);
+ const e={...env,DB:db},body={confirmed:true,customer_id:v.customerId,due_at:"2026-12-01T00:00:00.000Z"};
+ const provider=fake();
+ const first=await createInvoiceAttempt(e,"guest","g",v.orderId,body,now,provider.fetch);
+ assert.ok(first.ok,first.error);assert.equal(first.attempt.state,"draft");
+ const count=provider.calls.length;
+ assert.ok("error" in await createInvoiceAttempt(e,"guest","g",v.orderId,body,now,provider.fetch));
+ assert.equal(provider.calls.length,count);
+ assert.equal((await readInvoiceAttempt(e,"guest","another",v.orderId)).attempt,null);
+ assert.ok("error" in await publishInvoiceAttempt(e,"guest","another",v.orderId,{confirmed:true},provider.fetch));
+ const pub=await publishInvoiceAttempt(e,"guest","g",v.orderId,{confirmed:true},provider.fetch);
+ assert.ok(pub.ok,pub.error);assert.equal(pub.attempt.state,"published");
+ const inspectionFetch=async(url,init)=>{
+  assert.equal(init.method,"GET");const path=new URL(url).pathname;
+  return new Response(JSON.stringify(path.includes("/invoices/")?{invoice:{...published,payment_requests:[{...draft.payment_requests[0],total_completed_amount_money:{currency:"AUD",amount:0}}]}}:{order:{id:draft.order_id,location_id:v.locationId,total_money:{currency:"AUD",amount:3500},tenders:[]}}));
+ };
+ assert.equal((await checkInvoiceAttempt(e,"guest","g",v.orderId,inspectionFetch)).inspection.state,"unpaid");
+ const preview=await previewInvoiceEmail(e,"guest","g",v.orderId,inspectionFetch);
+ assert.equal(preview.recipient,v.email);assert.equal(preview.test_only,true);assert.match(preview.text,/35\.00/);assert.ok(preview.text.includes(published.public_url));
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id=?").get(v.orderId).status,"confirmed");
+});
