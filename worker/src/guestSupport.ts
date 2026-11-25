@@ -5,10 +5,10 @@ import {parseLearningSupport} from "./learningSupport";
 import {SITE_URL,sendEmail,layout,p,button} from "./email";
 import {loadPlatformSettings} from "./platformSettings";
 import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
-import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
+import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
-import {grantedResources,downloadResource} from "./supportFiles";
+import {grantedResources,downloadResource,readPresentedImage} from "./supportFiles";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_links_expiry ON support_guest_links(expires_at)",
@@ -112,6 +112,13 @@ export function registerGuestSupport(app:App){
   if(!(await hitRateLimit(c.env.DB,"support-video-guest:"+await digest(who.email),8,60)).ok)return c.json({detail:"Try again shortly."},429);
   const r=await videoToken(c.env,"guest",id,(c.req.param("oid")??""),false);
   return "error" in r?c.json({detail:r.error},409):c.json(r);
+ });
+ app.get(root+"/requests/:id/orders/:oid/classroom-image/:fid",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
+  if(!classroomEnabled(c.env)||!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first()||!await canReadClassroomImage(c.env.DB,"guest",id,oid,fid,false))return c.json({detail:"Image unavailable"},404);
+  if(!(await hitRateLimit(c.env.DB,"support-image-guest:"+await digest(who.email),30,60)).ok)return c.json({detail:"Try again shortly."},429);
+  const r=await readPresentedImage(c.env,fid);return r?c.json(r):c.json({detail:"Image unavailable"},404);
  });
  app.get(root+"/requests/:id/orders/:oid/classroom",async c=>{
   if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);

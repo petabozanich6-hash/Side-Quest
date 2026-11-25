@@ -52,3 +52,14 @@ export async function grantedResources(db:D1Database,channel:Channel,id:string,o
  const o=await getOrder(db,channel,id,oid);if(!o||!["paid","completed"].includes(o.status)||o.checkout_started_at)return [];
  await ensure(db);return (await db.prepare("SELECT "+meta.split(",").map(x=>"f."+x).join(",")+" FROM support_file_grants g JOIN support_files f ON f.id=g.file_id WHERE g.order_id=? AND g.revoked_at IS NULL AND f.status='active' AND f.audience='learner' ORDER BY g.created_at DESC LIMIT 100").bind(oid).all()).results||[];
 }
+
+/** Presentable learner images are distinct from persistent family downloads. */
+export async function presentationImage(db:D1Database,id:string){
+ await ensure(db);
+ return db.prepare("SELECT id,title,mime FROM support_files WHERE id=? AND status='active' AND audience='learner' AND mime IN ('image/png','image/jpeg')").bind(id).first<{id:string;title:string;mime:string}>();
+}
+export async function readPresentedImage(e:Env,id:string){
+ if(!await presentationImage(e.DB,id))return null;
+ const r=await downloadResource(e,id);
+ return r&&["image/png","image/jpeg"].includes(r.mime)?r:null;
+}

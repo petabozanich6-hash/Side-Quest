@@ -8,10 +8,10 @@ import { hitRateLimit } from "./adminAudit";
 import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
 import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
-import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
+import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
-import {grantedResources,downloadResource} from "./supportFiles";
+import {grantedResources,downloadResource,readPresentedImage} from "./supportFiles";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -170,6 +170,12 @@ export function registerFeedback(app: App, guards: Guards) {
     c.header("Cache-Control","no-store");
     const r=await videoToken(c.env,"member",id,c.req.param("oid"),false);
     return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  app.get("/api/learning-support/:id/orders/:oid/classroom-image/:fid",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
+    if(!classroomEnabled(c.env)||!await supportThread(c.env.DB,id,u.family_id,u.id)||!await canReadClassroomImage(c.env.DB,"member",id,oid,fid,false))return c.json({detail:"Image unavailable"},404);
+    if(!(await hitRateLimit(c.env.DB,"support-image:"+u.id,30,60)).ok)return c.json({detail:"Try again shortly."},429);
+    const r=await readPresentedImage(c.env,fid);c.header("Cache-Control","no-store");return r?c.json(r):c.json({detail:"Image unavailable"},404);
   });
   app.get("/api/learning-support/:id/orders/:oid/classroom",guards.auth,guards.parent,async c=>{
     if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);

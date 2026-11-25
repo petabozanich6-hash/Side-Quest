@@ -38,12 +38,12 @@ import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } fr
 import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify, guestOrigin } from "./guestSupport";
 import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,recordManualInvoice,verifyManualInvoice,cancelManualInvoiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
-import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "./supportClassrooms";
+import { classroomEnabled,classroomState,setClassroomOpen,editClassroom,canReadClassroomImage } from "./supportClassrooms";
 import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
-import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources} from "./supportFiles";
+import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -728,6 +728,11 @@ export function createAdminRoutes() {
     admin.post(path+"/:oid/video-token",requirePermission("customers.read"),async c=>{
       const r=await videoToken(c.env,channel,(c.req.param("id")??""),(c.req.param("oid")??""),true);
       return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.get(path+"/:oid/classroom-image/:fid",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
+      if(!classroomEnabled(c.env)||!await canReadClassroomImage(c.env.DB,channel,id,oid,fid,true))return c.json({detail:"Image unavailable"},404);
+      const r=await readPresentedImage(c.env,fid);return r?c.json(r):c.json({detail:"Image unavailable"},404);
     });
     admin.get(path+"/:oid/classroom",requirePermission("customers.read"),async c=>{
       if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);

@@ -1065,3 +1065,21 @@ test("external tutoring resource validation and private grant separation",async(
  assert.equal(await downloadResource(env,"private","file-order"),null);
  assert.ok((await downloadResource(env,"public","file-order")).base64);
 });
+
+test("classroom images require active learner material and only the currently presented image is accessible",async()=>{
+ const {h}=await ownerSetup();
+ const {setClassroomOpen,editClassroom,canReadClassroomImage}=await import("../src/supportClassrooms.ts");
+ const now=new Date(),when=now.toISOString(),oid="img-order",rid="img-request";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest",rid,"img-quote",0,"Maths","Online","Terms","live",when,new Date(now.getTime()+30*60000).toISOString(),"paid",when,when);
+ for(const [id,audience,mime] of [["diagram","learner","image/png"],["answers","tutor","image/png"],["pdf","learner","application/pdf"]])h.db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)").run(id,id,"Maths","Year 5",id+".png",mime,12,"support-private/"+id,audience,when);
+ await setClassroomOpen(h.db,"guest",rid,oid,true,now);
+ assert.ok((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"answers",revision:0},now)).error);
+ assert.ok((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"pdf",revision:0},now)).error);
+ assert.ok((await editClassroom(h.db,"guest",rid,oid,false,{action:"present-image",file_id:"diagram",revision:0},now)).error);
+ assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"diagram",revision:0},now)).ok,true);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),true);
+ assert.equal(await canReadClassroomImage(h.db,"guest","wrong",oid,"diagram",false,now),false);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"answers",false,now),false);
+ assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"hide-image",revision:1},now)).ok,true);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),false);
+});
