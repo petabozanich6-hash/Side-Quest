@@ -62,21 +62,22 @@ export function registerFeedback(app: App, guards: Guards) {
   app.get("/api/feedback", guards.auth, guards.parent, async (c) => {
     // Compatibility fallback: never prevent parents from seeing or sending feedback
     // just because the newly deployed reply table is not yet available.
+    const supportOnly = c.req.query("kind") === "learning-support";
     let results: any[] = [];
     try {
       await ensureFeedbackSchema(c.env.DB);
       const r = await c.env.DB.prepare(
-        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50"
-      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
+        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? AND (? = 0 OR page_hint = 'learning-support') ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50"
+      ).bind(c.get("user").family_id,c.get("user").id,supportOnly ? 1 : 0).all<any>();
       results = r.results ?? [];
     } catch {
-      const sql = "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50";
+      const sql = "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? AND (? = 0 OR page_hint = 'learning-support') ORDER BY created_at DESC LIMIT 50";
       try {
-        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id).all<any>()).results??[];
+        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id,supportOnly ? 1 : 0).all<any>()).results??[];
       } catch (err) {
         if(!/no such table.*parent_feedback/i.test(String(err))) throw err;
         await ensureFeedbackBaseSchema(c.env.DB);
-        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id).all<any>()).results??[];
+        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id,supportOnly ? 1 : 0).all<any>()).results??[];
       }
     }
     // One batched, family-and-parent-scoped query. Internal notes and other users' replies never leave the server.

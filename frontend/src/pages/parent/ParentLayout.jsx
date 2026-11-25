@@ -34,6 +34,7 @@ const nav = [
   { to: "/parent/hands-on-vault", icon: Beaker, label: "Hands-On Quest Vault", testid: "nav-hands-on-vault" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
   { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
+  { to: "/parent/learning-support", icon: LifeBuoy, label: "Learning support", testid: "nav-learning-support" },
   { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
   { to: "/parent/feedback", icon: MessageSquare, label: "Ideas & Feedback", testid: "nav-feedback" },
 ];

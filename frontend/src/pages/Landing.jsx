@@ -46,6 +46,7 @@ export default function Landing() {
             </div>
           </div>
           <nav className="flex w-full sm:w-auto flex-wrap items-center gap-2 sm:gap-4" aria-label="Main navigation">
+            <Link to="/learning-support" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-public-learning-support">Learning support</Link>
             <a href="#help-faq" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-public-help">Help &amp; FAQ</a>
             <Link to="/child-login" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
             <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>

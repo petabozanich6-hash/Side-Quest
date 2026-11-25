@@ -64,6 +64,7 @@ import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
 import ParentWordHoard from "./pages/parent/WordHoard";
 import TrustSupport from "./pages/parent/TrustSupport";
 import ParentFeedback from "./pages/parent/ParentFeedback";
+import LearningSupport from "./pages/parent/LearningSupport";
 import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
 import SiteSearch from "./pages/shared/SiteSearch";
 import HqFeedback from "./pages/parent/hq/HqFeedback";
@@ -97,10 +98,11 @@ function Router() {
   const loc = useLocation();
   if (loc.hash?.includes("session_id=")) return <AuthCallback />;
   // SQ Kids (the kids' address) has no parent pages at all: grown-ups are pointed to the main site.
-  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
+  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|learning-support|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/learning-support" element={<LearningSupport publicView />} />
       <Route path="/shop" element={<div className="min-h-screen bg-[#F5EFE0]"><ShopSection standalone /></div>} />
       <Route path="/shop/order/:id" element={<ShopOrder />} />
       <Route path="/shop/documents/:id/:productId" element={<GuidedDocument />} />
@@ -171,6 +173,7 @@ function Router() {
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
         <Route path="trust" element={<TrustSupport />} />
+        <Route path="learning-support" element={<LearningSupport />} />
         <Route path="feedback" element={<ParentFeedback />} />
         <Route path="trust/:slug" element={<LegalPage />} />
       </Route>
