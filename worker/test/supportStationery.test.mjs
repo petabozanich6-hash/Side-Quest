@@ -46,7 +46,7 @@ test("standalone enquiry needs no account, subscription, order or payment; saved
  const now="2026-11-25T00:00:00Z";
  for(const id of ["guest-a","guest-b"])db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(id,id+"@example.test","Sample parent","Learning","Enquiry",now,now);
  const deliveries=[],env={DB:db,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async msg=>{deliveries.push(msg);return {messageId:"test"};}}};
- const draft={kind:"proposal",learner:"Sample",sections:["Needs","Support","Agreed later","Reply"]};
+ const draft={kind:"letter",learner:"Sample",sections:["Sample correspondence"]};
  const doc=await prepareStationery(env,"guest","guest-a",null,draft);assert.ok(!("error" in doc));
  assert.equal(doc.recipient,"guest-a@example.test");
  const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
@@ -77,4 +77,18 @@ test("failed delivery is retained for manual review, not retried",async t=>{
  assert.equal((await deliverSavedStationery(env,"guest","g",saved.id,review)).email_notification_sent,false);
  assert.equal((await listStationery(db,"guest","g"))[0].status,"review");
  assert.ok("error" in await deliverSavedStationery(env,"guest","g",saved.id,review));assert.equal(attempts,1);
+});
+
+test("proposal automatically carries exact versioned terms, cannot deliver an unapproved draft",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const now="2026-11-25T00:00:00Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("terms-g","parent@example.test","Parent","Support","Request",now,now);
+ const env={DB:db,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async()=>{throw Error("must not send draft");}}};
+ const doc=await prepareStationery(env,"guest","terms-g",null,{kind:"proposal",sections:["Needs","Support","Fee","Reply"]});
+ assert.ok(doc.terms);assert.match(doc.terms.version,/draft/);
+ const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
+ const saved=await saveStationery(db,"guest","terms-g",null,doc,review);
+ const copy=await downloadStationery(db,"guest","terms-g",saved.id);
+ assert.deepEqual(Uint8Array.from(atob(copy.terms.base64),c=>c.charCodeAt(0)),doc.terms.pdf);
+ assert.ok("error" in await deliverSavedStationery(env,"guest","terms-g",saved.id,review));
+ assert.equal((await listStationery(db,"guest","terms-g"))[0].status,"saved");
 });
