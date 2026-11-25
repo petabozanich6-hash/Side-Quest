@@ -12,3 +12,8 @@ CREATE TABLE IF NOT EXISTS support_portal_enquiries (
  UNIQUE(parent_user_id,request_key)
 );
 CREATE INDEX IF NOT EXISTS idx_support_portal_enquiries_family ON support_portal_enquiries(family_id,parent_user_id,created_at);
+
+-- Permanent channel marker survives account/learner mapping deletion; never fall back to email-only access.
+CREATE TABLE IF NOT EXISTS support_portal_enquiry_origins (request_id TEXT PRIMARY KEY REFERENCES support_guest_requests(id) ON DELETE CASCADE);
+CREATE TRIGGER IF NOT EXISTS support_portal_enquiry_origin_on_insert AFTER INSERT ON support_portal_enquiries BEGIN INSERT OR IGNORE INTO support_portal_enquiry_origins(request_id) VALUES(NEW.request_id); END;
+INSERT OR IGNORE INTO support_portal_enquiry_origins(request_id) SELECT request_id FROM support_portal_enquiries;
