@@ -1,3 +1,4 @@
+import {englishVideoState,englishVideoToken} from "./englishClubVideo";
 import {ENGLISH_CLUB_SERVICE,ENGLISH_CLUB_PREFIX,parentEnglishClasses} from "./englishClub";
 import type {App,Env} from "./types";
 import {nowIso} from "./types";
@@ -196,6 +197,15 @@ export function registerGuestSupport(app:App){
   if(b?.confirmed!==true||!await requestAppointmentCancellation(c.env.DB,"guest",id,oid))return c.json({detail:"Cancellation request unavailable. Please contact Side-Quest."},409);
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   return c.json({ok:true,pending:true});
+ });
+ app.get(root+"/requests/:id/english-club/:cid/video",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??"",{requestId:c.req.param("id")??"",email:who.email}));
+ });
+ app.post(root+"/requests/:id/english-club/:cid/video-token",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  if(!(await hitRateLimit(c.env.DB,"english-video:"+await digest(who.email),8,60)).ok)return c.json({detail:"Try again shortly."},429);
+  c.header("Cache-Control","private, no-store");const r=await englishVideoToken(c.env,c.req.param("cid")??"",{requestId:c.req.param("id")??"",email:who.email});return "error" in r?c.json({detail:r.error},409):c.json(r);
  });
  app.get(root+"/requests/:id/english-club",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
