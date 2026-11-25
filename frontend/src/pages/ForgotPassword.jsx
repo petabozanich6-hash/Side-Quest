@@ -15,7 +15,7 @@ export default function ForgotPassword() {
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
-      await api.post("/auth/forgot-password", { email });
+      await api.post("/auth/forgot-password", { email, ...(suffix?{service:"family-portal"}:{}) });
       setSent(true);
     } catch (err) { toast.error(err.response?.data?.detail || "Something went wrong. Please try again."); }
     finally { setLoading(false); }
