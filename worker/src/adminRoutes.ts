@@ -1008,7 +1008,10 @@ export function createAdminRoutes() {
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
         if("error" in r)return c.json({detail:r.error},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_recorded",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
-        return c.json({ok:true},201);
+        const published=typeof b.invoice_payment_url==="string"&&!!b.invoice_payment_url.trim();
+        let sent=false;
+        if(published&&channel==="guest"){try{const recipient=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(recipient?.email)sent=await guestNotify(c.env,recipient.email,false,id,"payment");}catch{}}
+        return c.json({ok:true,...(published?{invoice_portal_published:true,invoice_email_sent:sent}:{})},201);
       }
       if(action==="payment-warning"){
         const r=await sendFinalPaymentWarning(c.env,channel,id,oid,b);
