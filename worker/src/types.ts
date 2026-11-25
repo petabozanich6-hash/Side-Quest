@@ -44,6 +44,7 @@ export type Env = {
   SUPPORT_RESOURCE_AI?: string;
   SUPPORT_STATIONERY_EMAIL?: string;
   SUPPORT_TERMS_APPROVED_VERSION?: string;
+  SUPPORT_TERMS_REQUIRED?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;
