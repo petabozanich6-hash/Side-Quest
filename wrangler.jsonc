@@ -3,7 +3,9 @@
   "name": "side-quest",
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
-  "observability": { "enabled": true },
+  // Keep diagnostic logging, but sample 10% of requests rather than the default 100%.
+  // Reassess against account-wide ingestion/storage after December 1; this is not a hard spend cap.
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
   // Quest Book queues run every minute independently of Owner HQ maintenance.
   // Keep mail, billing and notice tasks on their existing five-minute cadence.
   "triggers": { "crons": ["* * * * *", "*/5 * * * *"] },
