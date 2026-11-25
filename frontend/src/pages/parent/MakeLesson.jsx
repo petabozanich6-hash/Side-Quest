@@ -37,6 +37,7 @@ export default function MakeLesson() {
   const [showRes, setShowRes] = useState(false);
   const [busy, setBusy] = useState("");
   const [err, setErr] = useState("");
+  const [background,setBackground]=useState(false);
   const [outline, setOutline] = useState(null); // multi-lesson plan awaiting confirmation
   const [linkOutcomes, setLinkOutcomes] = useState(true);
   const [ownerStandardPreview, setOwnerStandardPreview] = useState(false);
@@ -94,8 +95,8 @@ export default function MakeLesson() {
     setErr(""); setBusy("series");
     try {
       if (!batchId.current) batchId.current = newId();
-      const r = await api.post("/ai/batches", { id: batchId.current, title: outline.title, lessons: outline.lessons, student_id: student || undefined, request: text.trim(), link_outcomes: linkOutcomes });
-      runBatch(r.data.id, r.data.items.filter(i => i.state === "pending").map(i => i.index));
+      const r = await api.post("/ai/batches", { id: batchId.current, title: outline.title, lessons: outline.lessons, student_id: student || undefined, request: text.trim(), link_outcomes: linkOutcomes, background: background && aiStatus?.background_batches === true });
+      if(!r.data.background_mode) runBatch(r.data.id, r.data.items.filter(i => i.state === "pending").map(i => i.index));
       leaving.current = true;
       nav(`/parent/lessons/drafts/${r.data.id}`);
     } catch (e) { fail(e); setBusy(""); }
@@ -159,6 +160,7 @@ export default function MakeLesson() {
           </ol>
           {busy === "series" && <Progress label="Setting up your lessons…" />}
           {err && <p role="alert" className="text-sm text-rose-700">{err}</p>}
+          {aiStatus?.background_batches&&<label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={background} onChange={e=>setBackground(e.target.checked)} disabled={!!busy}/> Continue writing this set on the server even if I close Side-Quest. Lessons are written one at a time; I can pause future work.</label>}
           <p className="text-xs text-slate-500">{outline.usage.unlimited ? "Owner testing: AI lesson drafts are unlimited. Each generated lesson is still recorded for usage tracking." : `This uses ${outline.count} of your ${outline.usage.limit_per_day - outline.usage.today} lesson drafts left today (${outline.usage.limit_per_month - outline.usage.month} left this month). It is the same as writing ${outline.count} single lessons.`}</p>
           <p className="text-xs text-slate-500">Your lessons are kept together under <b>AI lesson drafts</b>, so you can open, edit and assign them one at a time and come back to the rest whenever you like.</p>
           {busy !== "series" && (

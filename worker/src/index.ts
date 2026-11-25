@@ -33,10 +33,12 @@ import { registerFeedback } from "./feedback";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
+import { runNextBackgroundBatch } from "./lessonBatches";
+import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
-import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
+import { applyPlatformSettings, loadPlatformSettings, publicNotices, aiRequestsLast24h } from "./platformSettings";
 import { meterWorkersAi } from "./aiCost";
 import { normaliseRetiredTextOverrides } from "./aiModelCompatibility";
 import { authenticateToken, bumpAuthVersion, familyState, issueFileToken, issueToken, SUSPENDED_MESSAGE } from "./session";
@@ -362,6 +364,16 @@ export default {
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
     // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
+    // Disabled until a separate staging trial. Recheck the platform cap before every scheduled attempt.
+    if(env.AI_BACKGROUND_BATCHES === "true" && env.AI) {
+      try {
+        await ensureOwnerSchema(env.DB);
+        const settings=await loadPlatformSettings(env.DB);
+        if(!settings.features.aiEnabled || settings.maintenance.enabled || await aiRequestsLast24h(env.DB)>=settings.costSafeguards.aiDailyPlatformCap)return;
+        const metered=meterWorkersAi(env,_ctx);
+        if(metered.AI) await runNextBackgroundBatch(metered.DB,metered.AI,{model:metered.AI_MODEL,gatewayId:metered.AI_GATEWAY_ID,compact:metered.AI_COMPACT_GENERATION==="true",fastPipeline:fastLessonPipelineEnabled(metered),splitStages:splitLessonStagesEnabled(metered)});
+      }catch(e){console.error("background batch tick failed",e instanceof Error?e.name:"error");}
+    }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

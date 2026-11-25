@@ -32,6 +32,8 @@ export type Env = {
   /** Optional AI Gateway id and model override for Workers AI calls. */
   AI_GATEWAY_ID?: string;
   AI_MODEL?: string;
+  /** Explicit staged rollout; unset by default. */
+  AI_BACKGROUND_BATCHES?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */

@@ -28,7 +28,7 @@ export function runBatch(id, indexes) {
     for (const index of indexes) {
       emit(id, { phase: "start", index });
       let ok = false, err = null;
-      for (let attempt = 0; attempt < 2 && !ok; attempt++) {
+      for (let attempt = 0; attempt < 1 && !ok; attempt++) {
         try { await api.post(`/ai/batches/${id}/items/${index}/draft`); ok = true; }
         catch (e) {
           err = e;
@@ -38,7 +38,7 @@ export function runBatch(id, indexes) {
         }
       }
       emit(id, { phase: "end", index, ok, error: err?.response?.data?.detail });
-      if (!ok && STOP(err)) { emit(id, { phase: "stopped", reason: err.response.data.detail }); break; }
+      if (!ok && (STOP(err) || !err?.response || err.response.status >= 500 || err.response.status === 429)) { emit(id, { phase: "stopped", reason: err?.response?.data?.detail || "Writing stopped because the result could not be confirmed. Check the set before retrying." }); break; }
     }
   })().finally(() => { running.delete(id); emit(id, { phase: "done" }); });
   running.set(id, job);

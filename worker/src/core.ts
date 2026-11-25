@@ -14,7 +14,7 @@ import { buildPortfolio } from "./portfolio";
 import { billingSummary } from "./billing";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; AI_FAST_PIPELINE?: string; AI_FAST_PIPELINE_STOP?: string; AI_SPLIT_STAGES?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; AI_FAST_PIPELINE?: string; AI_FAST_PIPELINE_STOP?: string; AI_SPLIT_STAGES?: string; AI_BACKGROUND_BATCHES?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -237,7 +237,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const { plan, limits } = await lb.getEntitlement(c.env.DB, u.family_id);
     const usage = await aid.aiUsage(c.env.DB, u.family_id);
     const previewEligible = plan === "FREE_PREVIEW" && usage.preview.remaining > 0;
-    return c.json({ allowed: limits.aiGeneration || previewEligible, available: !!c.env.AI, preview_eligible: previewEligible, usage });
+    return c.json({ allowed: limits.aiGeneration || previewEligible, available: !!c.env.AI, preview_eligible: previewEligible, background_batches: c.env.AI_BACKGROUND_BATCHES === "true" && !!c.env.AI && limits.aiGeneration, usage });
   });
 
   app.post("/api/ai/lesson-draft", auth, parent, async (c) => {
@@ -265,6 +265,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.post("/api/ai/batches", auth, parent, async (c) => {
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
+    if (b?.background === true && (c.env.AI_BACKGROUND_BATCHES !== "true" || !c.env.AI)) return c.json({detail:"Background writing is not available. Uncheck it to write in this tab."},503);
     const r = await bat.createBatch(c.env.DB, { familyId: u.family_id, userId: u.id, body: b });
     return r.ok ? c.json(r.batch) : send(c, r);
   });
@@ -278,6 +279,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env), splitStages: splitLessonStagesEnabled(c.env), batchId: c.req.param("id"), index: Number(c.req.param("index")) });
     return r.ok ? c.json({ lesson: r.lesson, reused: r.reused, usage: r.usage, warnings: r.warnings, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
   });
+  app.post("/api/ai/batches/:id/pause-background", auth, parent, async (c) => c.json(await bat.pauseBackgroundBatch(c.env.DB,c.get("user").family_id,c.req.param("id"))));
   app.post("/api/ai/batches/:id/dismiss", auth, parent, async (c) => {
     const r = await bat.dismissBatch(c.env.DB, c.get("user").family_id, c.req.param("id"));
     return r.ok ? c.json(r) : send(c, r);

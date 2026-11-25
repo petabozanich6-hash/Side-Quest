@@ -18,6 +18,8 @@ type DB = D1Database;
 
 /** A slot that has said "generating" for longer than this was interrupted (the page closed mid-request). */
 export const STALE_MS = 6 * 60 * 1000;
+// A scheduled invocation can outlive a browser request. Do not offer a competing retry while it may still run.
+export const BACKGROUND_STALE_MS = 20 * 60 * 1000;
 const clip = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const parse = (v: unknown, d: any) => { try { return v ? JSON.parse(String(v)) : d; } catch { return d; } };
@@ -63,7 +65,7 @@ export async function createBatch(
   }
   // Persist the selected subject separately from its editable lesson title.
   // The existing request JSON avoids a database migration.
-  const request = { request: clip(b.request, 1200), link_outcomes: b.link_outcomes !== false, subjects: lessons.map((l: any) => l.learning_area || null), additional_areas: lessons.map((l: any) => l.additional_learning_areas) };
+  const request = { background_mode: b.background === true ? "queued" : null, request: clip(b.request, 1200), link_outcomes: b.link_outcomes !== false, subjects: lessons.map((l: any) => l.learning_area || null), additional_areas: lessons.map((l: any) => l.additional_learning_areas) };
   const ts = now.toISOString();
   await db.batch([
     db.prepare("INSERT INTO lesson_batches (id, family_id, student_id, title, request, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
@@ -75,8 +77,8 @@ export async function createBatch(
   return getBatch(db, familyId, id, now);
 }
 
-function stateOf(item: any, lesson: any, assigned: { student_id: string; name: string }[], now: Date): ItemState {
-  if (item.status === "generating") return now.getTime() - Date.parse(item.updated_at) > STALE_MS ? "failed" : "generating";
+function stateOf(item: any, lesson: any, assigned: { student_id: string; name: string }[], now: Date, staleMs = STALE_MS): ItemState {
+  if (item.status === "generating") return now.getTime() - Date.parse(item.updated_at) > staleMs ? "failed" : "generating";
   if (item.status === "pending" || item.status === "failed") return item.status;
   if (!lesson || lesson.archived_at) return "archived";
   if (assigned.length) return "assigned";
@@ -110,7 +112,7 @@ export async function getBatch(db: DB, familyId: string, id: string, now: Date =
   const out = items.map((i: any) => {
     const lesson = i.lesson_id && i.lesson_status != null ? { status: i.lesson_status, version: i.version, archived_at: i.archived_at } : null;
     const who = (i.lesson_id && assigned[i.lesson_id]) || [];
-    const state = stateOf({ status: i.item_status, updated_at: i.updated_at }, lesson, who, now);
+    const state = stateOf({ status: i.item_status, updated_at: i.updated_at }, lesson, who, now, requested.background_mode ? BACKGROUND_STALE_MS : STALE_MS);
     const resources = lesson ? parse(i.lesson_data, {}).resources : null;
     const meta = parse(i.meta, {});
     return {
@@ -125,7 +127,7 @@ export async function getBatch(db: DB, familyId: string, id: string, now: Date =
       videos: Array.isArray(resources) ? resources.filter((r: any) => r?.type === "video").length : 0,
     };
   });
-  return { ok: true, batch: { id: row.id, title: row.title, student, created_at: row.created_at, dismissed_at: row.dismissed_at, items: out, counts: countStates(out) } };
+  return { ok: true, batch: { id: row.id, title: row.title, student, created_at: row.created_at, dismissed_at: row.dismissed_at, background_mode: requested.background_mode || null, items: out, counts: countStates(out) } };
 }
 
 function countStates(items: { state: ItemState; lesson_status: string | null }[]) {
@@ -168,7 +170,7 @@ export async function dismissBatch(db: DB, familyId: string, id: string, now: Da
 export async function draftBatchItem(
   db: DB,
   ai: AiBinding | undefined,
-  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; batchId: string; index: number },
+  opts: { familyId: string; userId: string; model?: string; gatewayId?: string; compact?: boolean; fastPipeline?: boolean; splitStages?: boolean; batchId: string; index: number; backgroundOnly?: boolean },
   now: Date = new Date()
 ): Promise<Result<{ lesson: any; reused: boolean; [k: string]: any }>> {
   const { familyId, batchId, index } = opts;
@@ -187,9 +189,9 @@ export async function draftBatchItem(
     return lb.fail(409, "This lesson was deleted from your library.", "LESSON_REMOVED");
   }
   const ts = now.toISOString();
-  const stale = new Date(now.getTime() - STALE_MS).toISOString();
+  const stale = new Date(now.getTime() - (parse(batch.request,{}).background_mode ? BACKGROUND_STALE_MS : STALE_MS)).toISOString();
   const claim = await db.prepare(
-    "UPDATE lesson_batch_items SET status = 'generating', error = NULL, updated_at = ? WHERE batch_id = ? AND idx = ? AND family_id = ? AND (status IN ('pending','failed') OR (status = 'generating' AND updated_at < ?))"
+    "UPDATE lesson_batch_items SET status = 'generating', error = NULL, updated_at = ? WHERE batch_id = ? AND idx = ? AND family_id = ? AND (status IN ('pending','failed') OR (status = 'generating' AND updated_at < ?))" + (opts.backgroundOnly ? " AND status='pending' AND EXISTS (SELECT 1 FROM lesson_batches b WHERE b.id=lesson_batch_items.batch_id AND b.family_id=lesson_batch_items.family_id AND b.dismissed_at IS NULL AND json_extract(b.request,'$.background_mode')='queued') AND NOT EXISTS (SELECT 1 FROM lesson_batch_items other WHERE other.batch_id=lesson_batch_items.batch_id AND other.family_id=lesson_batch_items.family_id AND other.status IN ('generating','failed'))" : "")
   ).bind(ts, batchId, index, familyId, stale).run();
   if (!claim.meta?.changes) return lb.fail(409, "This lesson is already being written. It will appear here when it is ready.", "IN_PROGRESS");
 
@@ -213,4 +215,26 @@ export async function draftBatchItem(
     db.prepare("UPDATE lesson_batches SET updated_at = ? WHERE id = ?").bind(ts, batchId),
   ]);
   return { ...r, reused: false };
+}
+
+
+/** Pause future scheduled work; any already-running lesson is allowed to finish. */
+export async function pauseBackgroundBatch(db:DB,familyId:string,id:string) {
+ const r=await db.prepare("UPDATE lesson_batches SET request=json_set(request,'$.background_mode','paused') WHERE id=? AND family_id=? AND json_extract(request,'$.background_mode')='queued'").bind(id,familyId).run();
+ return {ok:true,paused:!!r.meta?.changes};
+}
+
+/** One explicitly opted-in, never-started lesson per tick. Do not retry failed/stale work automatically.
+ * The normal draft service still enforces membership, fair-use limits and the lesson quality checks.
+ */
+export async function runNextBackgroundBatch(db:DB,ai:AiBinding,opts:{model?:string;gatewayId?:string;compact?:boolean;fastPipeline?:boolean;splitStages?:boolean},now=new Date()) {
+ const rows=(await db.prepare(
+   "SELECT b.id,b.family_id,b.created_by,i.idx FROM lesson_batches b JOIN lesson_batch_items i ON i.batch_id=b.id AND i.family_id=b.family_id JOIN users u ON u.id=b.created_by AND u.family_id=b.family_id LEFT JOIN family_admin_state f ON f.family_id=b.family_id WHERE b.dismissed_at IS NULL AND json_extract(b.request,'$.background_mode')='queued' AND COALESCE(f.status,'active')='active' AND i.status='pending' AND NOT EXISTS (SELECT 1 FROM lesson_batch_items j WHERE j.batch_id=b.id AND j.family_id=b.family_id AND j.status IN ('generating','failed')) ORDER BY b.updated_at,b.id,i.idx LIMIT 20"
+ ).all<any>()).results||[];
+ for(const row of rows){
+   const {limits}=await lb.getEntitlement(db,row.family_id,now);
+   if(!limits.aiGeneration)continue;
+   return draftBatchItem(db,ai,{...opts,familyId:row.family_id,userId:row.created_by,batchId:row.id,index:row.idx,backgroundOnly:true},now);
+ }
+ return null;
 }
