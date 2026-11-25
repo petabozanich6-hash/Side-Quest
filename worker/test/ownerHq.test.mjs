@@ -845,3 +845,34 @@ test("learning support intake validates consent, is private and filterable in Ow
  r=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.reports.length,1);
  const afterExpiry=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{...input,detail:"A new learning need after membership expiry."}});assert.equal(afterExpiry.status,201,JSON.stringify(afterExpiry.json));
 }); 
+
+
+test("learning support quote lifecycle: owner-only, private, expiry, non-member responses, no billing changes",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("quote-alice@example.com","Alice"),bob=await h.register("quote-bob@example.com","Bob");
+ const child=await h.addChild(alice,"quote-child");
+ const request=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Worked explanation",detail:"Understanding the phases of the moon.",consent:true}});
+ assert.equal(request.status,201,JSON.stringify(request.json));
+ const id=request.json.id,ap="/admin/feedback/"+id+"/quotes",pp="/learning-support/"+id+"/quotes";
+ const proposal={scope:"A written explanation and practice questions.",delivery:"Private delivery after confirmation",amount_cents:1500,valid_days:7,confirmed:true};
+ assert.equal((await h.req(ap,{method:"POST",token:alice.token,body:proposal})).status,404);
+ await stepUp(h,owner);
+ assert.equal((await h.req(ap,{method:"POST",token:owner.token,body:{...proposal,amount_cents:12.5}})).status,400);
+ const made=await h.req(ap,{method:"POST",token:owner.token,body:proposal});assert.equal(made.status,201,JSON.stringify(made.json));
+ assert.equal((await h.req(ap,{method:"POST",token:owner.token,body:proposal})).status,409);
+ assert.equal((await h.req(pp,{admin:false,token:bob.token})).status,404);
+ assert.ok([401,403,404].includes((await h.req(pp,{admin:false,token:child.token})).status));
+ h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(alice.familyId);
+ let r=await h.req(pp,{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.quotes[0].amount_cents,1500);
+ const response=pp+"/"+made.json.id+"/respond";
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:bob.token,body:{response:"interested",confirmed:true}})).status,404);
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:false}})).status,400);
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true,amount_cents:1}})).status,200);
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,409);
+ r=await h.req(ap,{token:owner.token});assert.equal(r.json.quotes[0].status,"interested");assert.equal(r.json.quotes[0].amount_cents,1500);
+ assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"PREVIEW_EXPIRED");
+ assert.equal((await h.req(ap+"/"+made.json.id+"/withdraw",{method:"POST",token:owner.token,body:{confirmed:true}})).status,200);
+ const second=await h.req(ap,{method:"POST",token:owner.token,body:proposal});assert.equal(second.status,201);
+ h.db.raw.prepare("UPDATE learning_support_quotes SET expires_at='2020-01-01T00:00:00.000Z' WHERE id=?").run(second.json.id);
+ r=await h.req(pp,{admin:false,token:alice.token});assert.equal(r.json.quotes.find(q=>q.id===second.json.id).status,"expired");
+ assert.equal((await h.req(pp+"/"+second.json.id+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,409);
+});

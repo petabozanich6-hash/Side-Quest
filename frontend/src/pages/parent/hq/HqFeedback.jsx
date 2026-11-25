@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Bell, CheckCircle, RefreshCw, Search, ShieldCheck, Send, MessageSquare } from "lucide-react";
 import { adminApi, errorText } from "../../../lib/adminApi";
 import { Alert, Button, GREEN } from "./ui";
+import HqSupportQuotes from "./HqSupportQuotes";
 
 const STATUS = [
   ["new","New"],["reviewing","Under review"],["in_progress","In progress"],["resolved","Resolved"],["closed","Closed"],
@@ -153,6 +154,7 @@ export default function HqFeedback() {
               <h4 className="text-xs font-bold text-stone-600 mb-2">Parent's message</h4>
               <p className="text-sm leading-relaxed whitespace-pre-wrap break-words text-stone-900">{selected.message}</p>
             </div>
+            {selected.page_hint==="learning-support"&&<HqSupportQuotes key={selected.id} id={selected.id} closed={["closed","resolved"].includes(selected.status)}/>}
             <div className="border-t border-stone-200 pt-4 space-y-3">
               <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><MessageSquare size={16}/> Replies to the parent</h4>
               {replies.length===0?<p className="text-xs text-stone-500">No replies yet.</p>:<div className="space-y-2" data-testid="hq-feedback-replies">{replies.map(r=><div key={r.id} className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3"><div className="text-xs font-bold text-emerald-950">Sent · {new Date(r.created_at).toLocaleString("en-AU")}{r.parent_read_at?" · Read by parent":" · Unread by parent"}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-stone-800">{r.body}</p></div>)}</div>}

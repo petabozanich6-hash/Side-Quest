@@ -34,6 +34,7 @@ import { billingConfig } from "./billing";
 import { giftPreviewDays } from "./previewGifts";
 import { registerDocumentStudio } from "./documentStudioRoutes";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
+import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } from "./learningSupportQuotes";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -421,6 +422,46 @@ export function createAdminRoutes() {
 
   // A private reply is persisted first. Optional email only alerts the correct submitting parent
   // to sign in; it never contains the report, reply, names, or other customer data.
+  admin.get("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureFeedbackSchema(c.env.DB);
+    const id=c.req.param("id");
+    if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
+    await ensureQuoteSchema(c.env.DB);
+    return c.json({quotes:await listSupportQuotes(c.env.DB,id)});
+  });
+  admin.post("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureFeedbackSchema(c.env.DB);
+    const id=c.req.param("id"),thread=await supportThread(c.env.DB,id);
+    if(!thread)return c.json({detail:"Learning support request not found"},404);
+    if(["closed","resolved"].includes(thread.status))return c.json({detail:"Reopen the enquiry before proposing support."},409);
+    const b=await readJson(c),v=validateQuote(b);
+    if("error" in v)return c.json({detail:v.error},400);
+    if(b.confirmed!==true)return c.json({detail:"Confirm that this is a non-binding proposal, not a payment or confirmed booking."},400);
+    await ensureQuoteSchema(c.env.DB);
+    const qid=crypto.randomUUID(),now=new Date(),when=now.toISOString(),expires=new Date(now.getTime()+v.days*86400000).toISOString();
+    // Expired offers remain immutable in history. Explicitly withdraw them before making another proposal.
+    const r=await c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id).run();
+    if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
+    // Durable proposal is authoritative. A notification failure does not undo it.
+    try{
+      await c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)").bind(crypto.randomUUID(),id,c.get("user").id,"A learning support proposal is ready. Open Learning Support in your Parent Hub to review the scope, total price and delivery details.",when).run();
+      await writeAudit(c.env.DB,{...actor(c),action:"learning_support.quote",targetType:"feedback",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
+    }catch{console.warn("learning support quote notification or audit unavailable");}
+    return c.json({ok:true,id:qid},201);
+  });
+  admin.post("/feedback/:id/quotes/:quoteId/withdraw",requirePermission("customers.read"),async c=>{
+    await ensureFeedbackSchema(c.env.DB);
+    const id=c.req.param("id"),qid=c.req.param("quoteId");
+    if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
+    await ensureQuoteSchema(c.env.DB);
+    const b=await readJson(c);
+    if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested')").bind(nowIso(),qid,id).run();
+    if(!r.meta?.changes)return c.json({detail:"This proposal cannot be withdrawn."},409);
+    try{await writeAudit(c.env.DB,{...actor(c),action:"learning_support.withdraw",targetType:"feedback",targetId:id,detail:{quote_id:qid}});}catch{}
+    return c.json({ok:true});
+  });
+
   admin.get("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
     await ensureFeedbackSchema(c.env.DB);
     const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind(c.req.param("id")).first();

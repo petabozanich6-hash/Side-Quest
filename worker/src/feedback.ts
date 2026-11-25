@@ -6,6 +6,7 @@ import type { App, Guards, Env } from "./types";
 import { newId, nowIso } from "./types";
 import { hitRateLimit } from "./adminAudit";
 import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
+import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -141,6 +142,29 @@ export function registerFeedback(app: App, guards: Guards) {
       "UPDATE parent_feedback_replies SET parent_read_at=? WHERE feedback_id=? AND parent_read_at IS NULL",
     ).bind(nowIso(),c.req.param("id")).run();
     return c.json({ok:true});
+  });
+
+  app.get("/api/learning-support/:id/quotes",guards.auth,guards.parent,async c=>{
+    await ensureFeedbackBaseSchema(c.env.DB);
+    const u=c.get("user"),id=c.req.param("id");
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    await ensureQuoteSchema(c.env.DB);
+    c.header("Cache-Control","no-store");
+    return c.json({quotes:await listSupportQuotes(c.env.DB,id)});
+  });
+  app.post("/api/learning-support/:id/quotes/:quoteId/respond",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id"),qid=c.req.param("quoteId");
+    const b=await c.req.json().catch(()=>null);
+    if(!b||!["interested","declined"].includes(b.response)||b.confirmed!==true)return c.json({detail:"Confirm your response to the proposal."},400);
+    await ensureFeedbackBaseSchema(c.env.DB);
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    await ensureQuoteSchema(c.env.DB);
+    const when=nowIso();
+    const changed=await c.env.DB.prepare("UPDATE learning_support_quotes SET status=?,responded_at=? WHERE id=? AND feedback_id=? AND status='offered' AND expires_at>? AND EXISTS (SELECT 1 FROM parent_feedback p WHERE p.id=learning_support_quotes.feedback_id AND p.family_id=? AND p.user_id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved'))").bind(b.response,when,qid,id,when,u.family_id,u.id).run();
+    if(!changed.meta?.changes)return c.json({detail:"This proposal is no longer open. Refresh to see its current status."},409);
+    await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(when,id,u.family_id,u.id).run();
+    try{await ownerAlert(c.env,id,"learning support proposal response");}catch{}
+    return c.json({ok:true,status:b.response});
   });
 
   app.post("/api/feedback", guards.auth, guards.parent, async (c) => {
