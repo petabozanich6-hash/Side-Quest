@@ -66,7 +66,7 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  FROM support_portal_learners p LEFT JOIN students s ON s.id=p.student_id AND s.family_id=p.family_id WHERE ?='account' AND p.family_id=?
  UNION ALL SELECT l.id,'legacy',l.label,l.year_level,0,l.family_id FROM support_guest_learners l
  WHERE (?='legacy' AND l.family_id=?) OR (?='account' AND EXISTS(SELECT 1 FROM support_family_claims c WHERE c.guest_family_id=l.family_id AND c.family_id=?) AND NOT EXISTS(SELECT 1 FROM support_portal_legacy_learners m JOIN support_portal_learners p ON p.id=m.learner_id WHERE m.legacy_learner_id=l.id AND p.family_id=?))
- ORDER BY label,id LIMIT 51 OFFSET ?`;
+ ORDER BY 3,1 LIMIT 51 OFFSET ?`;
   // The scope above is intentionally not referenced by the learner query: account profiles require an explicit support record.
   args.push(kind,id,kind,id,kind,id,id);break;
  case "enquiries":
@@ -76,7 +76,7 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  FROM selected_requests r JOIN support_service_orders o ON o.request_id=r.id AND o.channel=r.channel WHERE o.mode='live'
  UNION ALL SELECT e.id,r.id,r.channel,r.guest_id,c.topic,c.start_at,c.end_at,e.status,'club',c.id
  FROM selected_requests r JOIN support_english_enrolments e ON r.channel='guest' AND e.request_id=r.id JOIN support_english_classes c ON c.id=e.class_id
- ORDER BY start_at DESC,id LIMIT 51 OFFSET ?`;break;
+ ORDER BY 6 DESC,1 LIMIT 51 OFFSET ?`;break;
  case "invoices":
   sql=scope+` SELECT o.id,r.id request_id,r.channel,r.guest_id,r.subject,o.amount_cents,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at,'tutoring' service,NULL class_id
  FROM selected_requests r JOIN support_service_orders o ON o.request_id=r.id AND o.channel=r.channel
@@ -84,7 +84,7 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  WHERE o.status<>'awaiting_confirmation' AND o.amount_cents>0 AND (p.sequence IS NULL OR p.sequence=1 OR t.order_id IS NOT NULL)
  UNION ALL SELECT e.id,r.id,r.channel,r.guest_id,c.topic,1200,e.status,e.invoice_reference,e.payment_due_at,'club',c.id
  FROM selected_requests r JOIN support_english_enrolments e ON r.channel='guest' AND e.request_id=r.id JOIN support_english_classes c ON c.id=e.class_id
- ORDER BY due_at DESC,id LIMIT 51 OFFSET ?`;break;
+ ORDER BY 9 DESC,1 LIMIT 51 OFFSET ?`;break;
  default:
   sql=scope+` SELECT r.id,r.channel,r.guest_id,r.subject,r.status,r.updated_at,CASE WHEN r.channel='guest' THEN (SELECT COUNT(*) FROM support_guest_messages m WHERE m.request_id=r.id) ELSE (SELECT COUNT(*) FROM parent_feedback_replies m WHERE m.feedback_id=r.id) END message_count
  FROM selected_requests r ORDER BY updated_at DESC,id LIMIT 51 OFFSET ?`;

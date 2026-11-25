@@ -1,3 +1,4 @@
+import {previewSupportInvoice} from "./supportSquareInvoicePreview";
 import {supportInvoiceLookupAvailable,inspectSupportInvoice} from "./supportSquareInvoiceLookup";
 import {ownerToday} from "./unifiedOwnerToday";
 import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
@@ -277,6 +278,14 @@ export function createAdminRoutes() {
 
   // --------------------------------------------------------------- customers
   admin.get("/support-invoice-lookup/status",requirePermission("customers.read"),c=>c.json({available:supportInvoiceLookupAvailable(c.env)}));
+  admin.post("/support-invoice-preview",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
+    const b=await readJson(c);
+    if(!["guest","member"].includes(b.channel)||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Invalid arrangement"},400);
+    const r=await previewSupportInvoice(c.env,b.channel,b.request_id,b.order_id,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    c.header("Cache-Control","private, no-store");return c.json(r);
+  });
   admin.post("/support-invoice-lookup",requirePermission("customers.read"),async c=>{
     if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
     const b=await readJson(c);

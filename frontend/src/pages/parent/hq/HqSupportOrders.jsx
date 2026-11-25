@@ -2,6 +2,7 @@ import React,{useEffect,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 import HqSupportBackup from "./HqSupportBackup";
 import HqSquareInvoiceLookup from "./HqSquareInvoiceLookup";
+import HqSquareInvoicePreview from "./HqSquareInvoicePreview";
 import HqExternalResources from "./HqExternalResources";
 import HqTutorDiary from "./HqTutorDiary";
 import HqSupportStationery from "./HqSupportStationery";
@@ -43,6 +44,7 @@ export default function HqSupportOrders({id,guest,quotes,closed,learnerLabel="",
  {actionOrders.length>0&&<div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 space-y-1"><p className="text-xs font-semibold uppercase tracking-wide">Your next action</p><strong>{actionOrders.some(o=>o.cancellation_pending)?"Review the cancellation request":needsInvoice.length?("Issue "+needsInvoice.length+" Square invoice"+(needsInvoice.length===1?"":"s")):needsPayment.length?"Check payment in Square":awaitingParent.length?"Waiting for the parent to confirm":"Prepare the confirmed lesson"}</strong><p className="text-sm">{needsInvoice.length?"The invoice-ready details are below. Create and issue the invoice yourself in Square, then record it here.":needsPayment.length?"Check the actual payment against the invoice before confirming the booking.":awaitingParent.length?"No invoice is needed until arrangements are confirmed.":"Use the lesson diary and resources when preparing or delivering support."}</p></div>}
  {sortedOrders.map(o=><div key={o.id} className="border rounded-lg p-3 space-y-2"><strong>{o.package_sequence?("Lesson "+o.package_sequence+"/"+o.package_total+" · "):""}{o.package_sequence>1&&!o.installment?"Included in package":"AUD "+(o.amount_cents/100).toFixed(2)+(o.installment?" lesson instalment":o.package_sequence===1?" total package":"")} · {o.status.replaceAll("_"," ")}</strong><p className="text-sm">{o.start_at?new Date(o.start_at).toLocaleString("en-AU")+" to "+new Date(o.end_at).toLocaleString("en-AU"):o.delivery}</p>
  {o.status==="awaiting_confirmation"&&<p className="text-sm">Waiting for parent confirmation. No invoice is due yet.</p>}
+ {invoiceEligible(o)&&!o.invoice_reference&&<HqSquareInvoicePreview key={"preview:"+o.id} order={o} requestId={id} guest={guest}/>}
  {invoiceEligible(o)&&o.invoice_reference&&<HqSquareInvoiceLookup key={"square:"+o.id} order={o} requestId={id} guest={guest}/>}
  {invoiceEligible(o)&&<ManualInvoice key={o.id} order={o} parentContact={parentContact} learnerLabel={learnerLabel} busy={busy} action={(action,body)=>run(()=>adminApi.post(path+"/"+o.id+"/"+action,{...body,confirmed:true}))}/>}
  { !["cancelled","review"].includes(o.status)&&!o.legacy_checkout&&<details className="border rounded-lg p-2"><summary className="cursor-pointer text-sm font-semibold">Documents and correspondence</summary><HqSupportStationery path={path.slice(0,-7)} orderId={o.id}/></details> }

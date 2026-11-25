@@ -8,8 +8,8 @@ export function supportInvoiceLookupAvailable(env:Env){
  const cfg=squareConfig(env);
  return unifiedPortalPilot(env)&&env.SUPPORT_SQUARE_INVOICE_TEST==="true"&&cfg.ok&&!cfg.production&&!!String(env.SUPPORT_UNIFIED_TEST_EMAIL||"").trim();
 }
-async function recipient(db:D1Database,channel:Channel,id:string){
- if(channel==="member")return db.prepare("SELECT u.email FROM parent_feedback r JOIN users u ON u.id=r.user_id AND u.family_id=r.family_id WHERE r.id=? AND r.page_hint='learning-support' AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>''").bind(id).first<{email:string}>();
+export async function supportInvoiceRecipient(db:D1Database,channel:Channel,id:string){
+ if(channel==="member")return db.prepare("SELECT u.email FROM parent_feedback r JOIN users u ON u.id=r.user_id AND u.family_id=r.family_id WHERE r.id=? AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved') AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND NOT EXISTS(SELECT 1 FROM family_admin_state a WHERE a.family_id=u.family_id AND a.status='suspended')").bind(id).first<{email:string}>();
  if(await portalEnquiryOwner(db,id))return db.prepare("SELECT u.email FROM support_portal_enquiries p JOIN users u ON u.id=p.parent_user_id AND u.family_id=p.family_id JOIN support_guest_requests r ON r.id=p.request_id AND r.email=u.email WHERE p.request_id=? AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>''").bind(id).first<{email:string}>();
  // Do not infer ownership of historical invoices from a matching email. Legacy linking is a separate migration.
  return null;
@@ -20,7 +20,7 @@ export async function inspectSupportInvoice(env:Env,channel:Channel,id:string,oi
  if(!supportInvoiceLookupAvailable(env))return {error:"Square invoice lookup is not enabled in private sandbox staging."};
  if(!validId(invoiceId))return {error:"Enter the Square invoice ID."};
  const cfg=squareConfig(env);if(!cfg.ok||cfg.production)return {error:"Sandbox only."};
- const o=await getOrder(env.DB,channel,id,oid),who=await recipient(env.DB,channel,id);
+ const o=await getOrder(env.DB,channel,id,oid),who=await supportInvoiceRecipient(env.DB,channel,id);
  if(!o||!who||who.email.toLowerCase()!==String(env.SUPPORT_UNIFIED_TEST_EMAIL).trim().toLowerCase()||o.status!=="confirmed"||o.amount_cents<=0||o.checkout_started_at||o.square_order_id||o.package_sequence>1&&!o.installment_due_at)return {error:"This arrangement is not eligible for the sandbox invoice check."};
  const recorded=await env.DB.prepare("SELECT reference,due_at,verified_at,cancelled_at FROM support_manual_invoices WHERE order_id=?").bind(oid).first<any>();
  if(!recorded||recorded.verified_at||recorded.cancelled_at)return {error:"Record the issued invoice first. Only an active unverified invoice can be checked."};
