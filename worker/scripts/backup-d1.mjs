@@ -6,7 +6,7 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync, chmodSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { resolve } from "node:path";
+import { resolve, relative, isAbsolute } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
 const ROOT = resolve(new URL("../../", import.meta.url).pathname);
@@ -20,6 +20,12 @@ const config = readFileSync(resolve(ROOT, "wrangler.jsonc"), "utf8");
 const dbId = config.match(/"database_id":\s*"([^"]+)"/)[1];
 const dbName = config.match(/"database_name":\s*"([^"]+)"/)[1];
 
+// Exports contain private family records; never create them inside this public checkout.
+const rel = relative(ROOT, DIR);
+if (rel === "" || (!rel.startsWith(".." + "/") && rel !== ".." && !isAbsolute(rel))) {
+  console.error("Backup directory must be outside the repository."); process.exit(1);
+}
+process.umask(0o077);
 mkdirSync(DIR, { recursive: true });
 chmodSync(DIR, 0o700);
 const bookmark = (wr(["d1", "time-travel", "info", "DB"]).match(/bookmark is '([^']+)'/) || [])[1];
@@ -27,6 +33,7 @@ if (!bookmark) { console.error("Could not read the Time Travel bookmark"); proce
 const ts = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
 const file = resolve(DIR, `${dbName}-${dbId.slice(0, 8)}-${ts}.sql`);
 wr(["d1", "export", "DB", "--remote", "--output", file]);
+chmodSync(file, 0o600);
 const sql = readFileSync(file, "utf8");
 const sha = createHash("sha256").update(sql).digest("hex");
 
@@ -38,7 +45,7 @@ const q = "SELECT " + tables.map((t) => `(SELECT COUNT(*) FROM "${t}") AS "${t}"
 const live = JSON.parse(wr(["d1", "execute", "DB", "--remote", "--json", "--command", q]))[0].results[0];
 const mismatch = tables.filter((t) => restored[t] !== live[t]);
 const report = { database: dbName, database_id: dbId, time_travel_bookmark: bookmark, taken_at: new Date().toISOString(), file, sha256: sha, tables: tables.length, rows: restored, restore_check: mismatch.length ? `MISMATCH: ${mismatch.join(", ")}` : "all tables match live" };
-writeFileSync(file.replace(/\.sql$/, ".json"), JSON.stringify(report, null, 2));
+writeFileSync(file.replace(/\.sql$/, ".json"), JSON.stringify(report, null, 2), { mode: 0o600 });
 console.log(JSON.stringify({ ...report, rows: undefined }, null, 2));
 if (mismatch.length) { console.error("Backup restore check FAILED. Do not migrate."); process.exit(1); }
 console.log(`\nVerified. To roll back to this exact point: npx wrangler d1 time-travel restore DB --bookmark=${bookmark}`);
