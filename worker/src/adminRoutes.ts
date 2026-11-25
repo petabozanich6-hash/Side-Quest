@@ -466,7 +466,8 @@ export function createAdminRoutes() {
     const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
     const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
     const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
-    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80||!["installments","upfront"].includes(paymentMode)||!Number.isInteger(lead)||lead<1||lead>168))return c.json({detail:"Automatic appointment choices require standard live sessions, a learner nickname and valid payment arrangements."},400);
+    if((paymentMode!=="installments"&&paymentMode!=="upfront")||typeof lead!=="number"||!Number.isInteger(lead)||lead<1||lead>168)return c.json({detail:"Choose a valid payment arrangement and deadline."},400);
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require standard live sessions and a learner nickname."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id);
     const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when,schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
@@ -727,7 +728,8 @@ export function createAdminRoutes() {
     const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
     const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
     const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
-    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80||!["installments","upfront"].includes(paymentMode)||!Number.isInteger(lead)||lead<1||lead>168))return c.json({detail:"Automatic appointment choices require standard live sessions, a learner nickname and valid payment arrangements."},400);
+    if((paymentMode!=="installments"&&paymentMode!=="upfront")||typeof lead!=="number"||!Number.isInteger(lead)||lead<1||lead>168)return c.json({detail:"Choose a valid payment arrangement and deadline."},400);
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require standard live sessions and a learner nickname."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id);
     const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString(),schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
