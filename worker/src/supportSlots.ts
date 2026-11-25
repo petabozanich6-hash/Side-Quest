@@ -2,6 +2,7 @@ import {permittedByBookingPolicy,suggestSupportStarts} from "./supportPublicAvai
 import {permitsSupportStart,PREPARATION_NOTICE,earliestSupportStart} from "./supportLeadTime";
 import {ensureOrderSchema,createServiceOrder,type Channel} from "./supportOrders";
 import {readQuoteSchedule} from "./supportQuotePlans";
+import {readPackageOffer,selectPackageOffer,removePackageOffer} from "./supportPackages";
 const iso=(x:unknown):x is string=>typeof x==="string"&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(x)&&Number.isFinite(Date.parse(x));
 const whole=(v:unknown,min:number,max:number):v is number=>typeof v==="number"&&Number.isInteger(v)&&v>=min&&v<=max;
 const tables=(channel:Channel)=>channel==="guest"?{q:"support_guest_quotes",r:"support_guest_requests",key:"request_id",tag:""}:{q:"learning_support_quotes",r:"parent_feedback",key:"feedback_id",tag:" AND r.page_hint='learning-support'"};
@@ -25,7 +26,7 @@ async function active(db:D1Database,channel:Channel,id:string,qid:string,now:Dat
  return db.prepare("SELECT s.*,q.amount_cents,q.status quote_status FROM support_slot_offers s JOIN "+t.q+" q ON q.id=s.quote_id AND q."+t.key+"=s.request_id JOIN "+t.r+" r ON r.id=s.request_id WHERE s.channel=? AND s.request_id=? AND s.quote_id=? AND s.expires_at>? AND q.expires_at>? AND q.status IN ('offered','interested') AND r.status NOT IN ('closed','resolved')"+t.tag+" AND NOT EXISTS(SELECT 1 FROM support_service_orders o WHERE o.channel=s.channel AND o.quote_id=s.quote_id AND o.status<>'cancelled')").bind(channel,id,qid,now.toISOString(),now.toISOString()).first<any>();
 }
 export async function readSlots(db:D1Database,channel:Channel,id:string,qid:string,now=new Date()){
- const s=await active(db,channel,id,qid,now);if(!s)return null;
+ const s=await active(db,channel,id,qid,now);if(!s)return readPackageOffer(db,channel,id,qid,now);
  const earliest=await earliestSupportStart(db,channel,id);if(earliest===null)return null;
  const rows=(await db.prepare("SELECT j.value start_at FROM json_each(?) j WHERE julianday(j.value)-?/1440.0>julianday(?) AND NOT EXISTS(SELECT 1 FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(j.value)+(?+?)/1440.0 AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(j.value)-?/1440.0) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks z WHERE julianday(z.start_at)<julianday(j.value)+(?+?)/1440.0 AND julianday(z.end_at)>julianday(j.value)-?/1440.0) ORDER BY j.value").bind(s.starts_json,s.prep_minutes,now.toISOString(),s.minutes,s.wrap_minutes,s.prep_minutes,s.minutes,s.wrap_minutes,s.prep_minutes).all<{start_at:string}>()).results||[];
  const possible=rows.map(r=>r.start_at).filter(s=>Date.parse(s)>=earliest);
@@ -33,12 +34,13 @@ export async function readSlots(db:D1Database,channel:Channel,id:string,qid:stri
  return {id:s.id,starts:possible.filter((_,i)=>allowed[i]),minutes:s.minutes,terms:s.terms,expires_at:s.expires_at,amount_cents:s.amount_cents,can_select:s.quote_status==="interested"};
 }
 export async function selectSlot(db:D1Database,channel:Channel,id:string,qid:string,b:any,now=new Date()){
+ if(Array.isArray(b?.starts))return selectPackageOffer(db,channel,id,qid,b,now);
  const s=await active(db,channel,id,qid,now);
  if(!s||s.quote_status!=="interested"||b?.confirmed!==true||b.offer_id!==s.id||!iso(b.start_at)||!JSON.parse(s.starts_json).includes(b.start_at)||Date.parse(b.start_at)-s.prep_minutes*60000<=now.getTime())return {error:"This offer changed or the time is unavailable. Refresh and choose again."};
  return createServiceOrder(db,channel,id,{quote_id:qid,mode:"live",start_at:b.start_at,minutes:s.minutes,prep_minutes:s.prep_minutes,wrap_minutes:s.wrap_minutes,learner_label:s.learner_label,terms:s.terms,confirmed:true},now,s.id);
 }
 export async function removeSlots(db:D1Database,channel:Channel,id:string,qid:string){
- await ensureOrderSchema(db);return !!(await db.prepare("DELETE FROM support_slot_offers WHERE channel=? AND request_id=? AND quote_id=?").bind(channel,id,qid).run()).meta?.changes;
+ await ensureOrderSchema(db);const single=!!(await db.prepare("DELETE FROM support_slot_offers WHERE channel=? AND request_id=? AND quote_id=?").bind(channel,id,qid).run()).meta?.changes;const multi=await removePackageOffer(db,channel,id,qid);return single||multi;
 }
 
 // Called only by an authorised owner proposal action, with explicit approval of
