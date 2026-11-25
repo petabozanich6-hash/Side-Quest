@@ -2,6 +2,7 @@ import React,{useEffect,useState} from "react";
 import {Link} from "react-router-dom";
 import {adminApi,errorText} from "../../../lib/adminApi";
 import HqSupportQuotes from "./HqSupportQuotes";
+import HqSupportStationery from "./HqSupportStationery";
 import HqSupportCalendar from "./HqSupportCalendar";
 import HqTutorResources from "./HqTutorResources";
 import HqDailyBriefing from "./HqDailyBriefing";
@@ -17,6 +18,7 @@ export default function HqGuestSupport(){
  <div className="grid lg:grid-cols-[minmax(240px,1fr)_minmax(0,1.5fr)] gap-4"><div className="paper-card p-3 space-y-2">{!items.length&&<p>No standalone enquiries.</p>}{items.map(r=><button key={r.id} onClick={()=>open(r.id)} className="block w-full text-left border rounded-xl p-3 bg-white"><strong>{r.subject}</strong><p className="text-xs break-all">{r.parent_name} · {r.email}</p><p className="text-xs capitalize">{r.status.replaceAll("_"," ")} {!r.seen_at?"· New activity":""}</p></button>)}<div className="flex justify-between"><button disabled={page===1} onClick={()=>setPage(p=>p-1)}>Previous</button><span>{page}</span><button disabled={!more} onClick={()=>setPage(p=>p+1)}>Next</button></div></div>
  {selected&&<article className="paper-card p-4 space-y-3" key={id}><h3 className="font-bold">{selected.request.subject}</h3><p className="text-sm break-all">{selected.request.parent_name} · {selected.request.email}</p><p className="text-sm whitespace-pre-wrap break-words">{selected.request.message}</p>
  <label className="block text-sm">Status<select className="block border rounded-lg p-2" value={status} onChange={e=>setStatus(e.target.value)}>{statuses.map(s=><option key={s} value={s}>{s.replaceAll("_"," ")}</option>)}</select></label><button className="underline" disabled={busy} onClick={()=>run(async()=>{await adminApi.put(path,{status});await open(id);await list();})}>Save status / mark read</button>
+ <HqSupportStationery key={id} path={path}/>
  <HqSupportQuotes guest id={id} closed={["closed","resolved"].includes(selected.request.status)}/>
  <h4 className="font-bold">Private messages</h4>{selected.messages.map(m=><div className="rounded-lg bg-stone-100 p-3" key={m.id}><strong className="text-xs">{m.sender}</strong><p className="text-sm whitespace-pre-wrap break-words">{m.body}</p></div>)}
  <form onSubmit={e=>{e.preventDefault();run(async()=>{await adminApi.post(path+"/messages",{message});await open(id);});}}><label className="block text-sm">Reply<textarea className="block w-full border rounded-lg p-3" required minLength={2} maxLength={2000} value={message} onChange={e=>setMessage(e.target.value)}/></label><button disabled={busy} className="rounded-full bg-emerald-950 text-white px-4 py-2 mt-2">Send reply</button></form>
