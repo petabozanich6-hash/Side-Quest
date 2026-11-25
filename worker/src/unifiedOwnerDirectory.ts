@@ -49,7 +49,7 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  const row=await db.prepare(directory+" SELECT * FROM entries WHERE kind=? AND id=?").bind(kind,id).first<any>();
  if(!row)return null;
  const family={kind:row.kind,id:row.id,parent_name:row.parent_name,email:row.email,plan:kind==="account"?effectivePlan(row):null,status:row.status,registration_intent:row.registration_intent,enquiries:row.enquiries,open_count:row.open_count,unread_count:row.unread_count,club_count:row.club_count};
- if(section==="home")return {family,items:[],has_more:false};
+ if(section==="home")return {family,section,page,items:[],has_more:false};
  const scope=directory+`, selected_requests AS (
  SELECT r.id,'guest' channel,r.guest_id,r.subject,r.status,r.seen_at,r.updated_at,p.learner_id
  FROM guest_records r LEFT JOIN support_portal_enquiries p ON p.request_id=r.id
@@ -90,5 +90,5 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  FROM selected_requests r ORDER BY updated_at DESC,id LIMIT 51 OFFSET ?`;
  }
  const rows=(await db.prepare(sql).bind(...args,(page-1)*50).all<any>()).results||[];
- return {family,items:rows.slice(0,50),has_more:rows.length>50};
+ return {family,section,page,items:rows.slice(0,50),has_more:rows.length>50};
 }
