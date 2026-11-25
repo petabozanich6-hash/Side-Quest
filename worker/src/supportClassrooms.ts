@@ -33,7 +33,7 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   const points=b.points,color=b.color;
   if(!Array.isArray(points)||points.length<2||points.length>160||!["#163b2c","#2563eb","#b91c1c","#111827"].includes(String(color))||!points.every(p=>Array.isArray(p)&&p.length===2&&p.every(n=>typeof n==="number"&&Number.isFinite(n)&&n>=0&&n<=1)))return {error:"Invalid drawing."};
   if(board.strokes.length>=100)return {error:"Board is full. Ask the tutor to clear it."};
-  board.strokes.push({points:points.map(p=>p.map(n=>Math.round(n*10000)/10000)),color});
+  board.strokes.push({points:points.map(p=>p.map((n:number)=>Math.round(n*10000)/10000)),color});
  }else if(b.action==="text"&&owner&&typeof b.text==="string"&&b.text.length<=2000)board.text=b.text;
  else if(b.action==="clear"&&owner&&b.confirmed===true){board.strokes=[];board.text="";}
  else if(b.action==="hide-slide"&&owner)board.slide=null;

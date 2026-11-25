@@ -238,7 +238,7 @@ export function createAdminRoutes() {
 
   admin.delete("/security/passkeys/:id", async (c) => {
     const user = c.get("user");
-    const id = c.req.param("id");
+    const id = (c.req.param("id")??"");
     const passkeys = await listCredentials(c.env.DB, user.id);
     if (!passkeys.some((p) => p.id === id)) return c.json({ detail: "Passkey not found" }, 404);
     if (passkeys.length < 2) return c.json({ detail: "Add another passkey before removing your last one." }, 409);
@@ -411,7 +411,7 @@ export function createAdminRoutes() {
   admin.put("/feedback/:id", requirePermission("customers.read"), async (c) => {
     await ensureFeedbackSchema(c.env.DB);
     const row = await c.env.DB.prepare("SELECT id,family_id,status,seen_at FROM parent_feedback WHERE id = ?")
-      .bind(c.req.param("id")).first<{id:string;family_id:string;status:string;seen_at:string|null}>();
+      .bind((c.req.param("id")??"")).first<{id:string;family_id:string;status:string;seen_at:string|null}>();
     if (!row) return c.json({ detail: "Feedback not found" }, 404);
     const body = await readJson(c);
     const status = body.status === undefined ? row.status : body.status;
@@ -433,14 +433,14 @@ export function createAdminRoutes() {
   admin.post("/support-plan/draft",requirePermission("customers.read"),async c=>{const r=await draftQuotePlan(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);});
   admin.get("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
-    const id=c.req.param("id");
+    const id=(c.req.param("id")??"");
     if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
     await ensureQuoteSchema(c.env.DB);
     return c.json({quotes:await listSupportQuotes(c.env.DB,id),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI});
   });
   admin.post("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
-    const id=c.req.param("id"),thread=await supportThread(c.env.DB,id);
+    const id=(c.req.param("id")??""),thread=await supportThread(c.env.DB,id);
     if(!thread)return c.json({detail:"Learning support request not found"},404);
     if(["closed","resolved"].includes(thread.status))return c.json({detail:"Reopen the enquiry before proposing support."},409);
     const b=await readJson(c),v=validateQuote(b);
@@ -462,7 +462,7 @@ export function createAdminRoutes() {
   });
   admin.post("/feedback/:id/quotes/:quoteId/withdraw",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
-    const id=c.req.param("id"),qid=c.req.param("quoteId");
+    const id=(c.req.param("id")??""),qid=(c.req.param("quoteId")??"");
     if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
     await ensureQuoteSchema(c.env.DB);
     const b=await readJson(c);
@@ -476,11 +476,11 @@ export function createAdminRoutes() {
 
   admin.get("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
     await ensureFeedbackSchema(c.env.DB);
-    const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind(c.req.param("id")).first();
+    const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind((c.req.param("id")??"")).first();
     if(!exists) return c.json({detail:"Feedback not found"},404);
     const {results}=await c.env.DB.prepare(
       "SELECT id,body,created_at,parent_read_at FROM parent_feedback_replies WHERE feedback_id=? ORDER BY created_at ASC,id ASC LIMIT 100",
-    ).bind(c.req.param("id")).all();
+    ).bind((c.req.param("id")??"")).all();
     return c.json({replies:results||[]});
   });
 
@@ -494,7 +494,7 @@ export function createAdminRoutes() {
       return c.json({detail:"Invalid feedback status"},400);
     const report=await c.env.DB.prepare(
       "SELECT p.id,p.family_id,p.user_id,p.status,u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id WHERE p.id=?"
-    ).bind(c.req.param("id")).first<{id:string;family_id:string;user_id:string;status:string;email:string}>();
+    ).bind((c.req.param("id")??"")).first<{id:string;family_id:string;user_id:string;status:string;email:string}>();
     if(!report)return c.json({detail:"Feedback not found"},404);
     const replyId=crypto.randomUUID(), when=nowIso(), body=b.message.trim();
     // The owner cannot reroute the reply by supplying a target email, family id or user id.
@@ -607,20 +607,20 @@ export function createAdminRoutes() {
     const rows=results||[];return c.json({items:rows.slice(0,50),has_more:rows.length>50});
   });
   admin.get("/support-guests/:id",requirePermission("customers.read"),async c=>{
-    await ensureGuestSchema(c.env.DB);const id=c.req.param("id");
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??"");
     const row=await c.env.DB.prepare("SELECT * FROM support_guest_requests WHERE id=?").bind(id).first<any>();
     if(!row)return c.json({detail:"Request not found"},404);
     return c.json({request:row,messages:await guestMessages(c.env.DB,id)});
   });
   admin.put("/support-guests/:id",requirePermission("customers.read"),async c=>{
-    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c);
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);
     if(typeof b.status!=="string"||!(FEEDBACK_STATUSES as readonly string[]).includes(b.status))return c.json({detail:"Invalid status"},400);
     const r=await c.env.DB.prepare("UPDATE support_guest_requests SET status=?,seen_at=? WHERE id=?").bind(b.status,nowIso(),id).run();if(!r.meta?.changes)return c.json({detail:"Request not found"},404);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.status",targetType:"support_guest",targetId:id,detail:{status:b.status}});
     return c.json({ok:true});
   });
   admin.post("/support-guests/:id/messages",requirePermission("customers.read"),async c=>{
-    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c),message=typeof b.message==="string"?b.message.trim():"",when=nowIso();
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c),message=typeof b.message==="string"?b.message.trim():"",when=nowIso();
     if(message.length<2||message.length>2000)return c.json({detail:"Write 2–2000 characters."},400);
     const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
     const r=await c.env.DB.prepare("INSERT INTO support_guest_messages(id,request_id,sender,body,created_at) SELECT ?,id,'owner',?,? FROM support_guest_requests WHERE id=? AND (SELECT COUNT(*) FROM support_guest_messages WHERE request_id=?)<100").bind(crypto.randomUUID(),message,when,id,id).run();if(!r.meta?.changes)return c.json({detail:"Thread full"},409);
@@ -628,12 +628,12 @@ export function createAdminRoutes() {
     return c.json({ok:true,email_notification_sent:await guestNotify(c.env,row.email)},201);
   });
   admin.get("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
-    await ensureGuestSchema(c.env.DB);const id=c.req.param("id");
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??"");
     if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first())return c.json({detail:"Request not found"},404);
     return c.json({quotes:await guestQuotes(c.env.DB,id),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI});
   });
   admin.post("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
-    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c),v=validateQuote(b);
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c),v=validateQuote(b);
     if("error" in v)return c.json({detail:v.error},400);if(b.confirmed!==true)return c.json({detail:"Confirm non-binding proposal."},400);
     const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
     const qid=crypto.randomUUID(),now=new Date();
@@ -645,10 +645,10 @@ export function createAdminRoutes() {
     return c.json({id:qid,email_notification_sent:await guestNotify(c.env,row.email)},201);
   });
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
-    await ensureGuestSchema(c.env.DB);const id=c.req.param("id"),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
-    if(await hasOrder(c.env.DB,"guest",c.req.param("qid")))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
-    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o WHERE o.channel='guest' AND o.quote_id=support_guest_quotes.id AND o.status<>'cancelled')").bind(nowIso(),c.req.param("qid"),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
-    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:c.req.param("qid")}});
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    if(await hasOrder(c.env.DB,"guest",(c.req.param("qid")??"")))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
+    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o WHERE o.channel='guest' AND o.quote_id=support_guest_quotes.id AND o.status<>'cancelled')").bind(nowIso(),(c.req.param("qid")??""),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:(c.req.param("qid")??"")}});
     return c.json({ok:true});
   });
 
@@ -657,18 +657,18 @@ export function createAdminRoutes() {
     const r=await draftDeck(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);
   });
   admin.get("/support-decks/:deckId",requirePermission("customers.read"),async c=>{
-    const d=await getDeck(c.env.DB,c.req.param("deckId"));return d&&d.status!=="archived"?c.json({deck:d}):c.json({detail:"Resource not found"},404);
+    const d=await getDeck(c.env.DB,(c.req.param("deckId")??""));return d&&d.status!=="archived"?c.json({deck:d}):c.json({detail:"Resource not found"},404);
   });
   admin.post("/support-decks",requirePermission("customers.read"),async c=>{
     const r=await saveDeck(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},400);
     await writeAudit(c.env.DB,{...actor(c),action:"support.deck.create",targetType:"support_deck",targetId:r.id,detail:{}});return c.json(r,201);
   });
   admin.put("/support-decks/:deckId",requirePermission("customers.read"),async c=>{
-    const id=c.req.param("deckId"),r=await saveDeck(c.env.DB,await readJson(c),id);if("error" in r)return c.json({detail:r.error},409);
+    const id=(c.req.param("deckId")??""),r=await saveDeck(c.env.DB,await readJson(c),id);if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.deck.update",targetType:"support_deck",targetId:id,detail:{}});return c.json(r);
   });
   admin.post("/support-decks/:deckId/archive",requirePermission("customers.read"),async c=>{
-    const id=c.req.param("deckId"),b=await readJson(c);if(b.confirmed!==true||!await archiveDeck(c.env.DB,id,b.revision))return c.json({detail:"Resource changed; refresh before archiving."},409);
+    const id=(c.req.param("deckId")??""),b=await readJson(c);if(b.confirmed!==true||!await archiveDeck(c.env.DB,id,b.revision))return c.json({detail:"Resource changed; refresh before archiving."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.deck.archive",targetType:"support_deck",targetId:id,detail:{}});return c.json({ok:true});
   });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
@@ -680,15 +680,15 @@ export function createAdminRoutes() {
     return c.json({appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
   });
   for(const channel of ["member","guest"] as const){
-    admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,c.req.param("id"),c.req.param("qid"),true)}));
+    admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true)}));
     const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
     const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
     admin.get(path,requirePermission("customers.read"),async c=>{
-      const id=c.req.param("id");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       return c.json({orders:await listOrders(c.env.DB,channel,id)});
     });
     admin.post(path,requirePermission("customers.read"),async c=>{
-      const id=c.req.param("id");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const result=await createServiceOrder(c.env.DB,channel,id,await readJson(c));
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
@@ -696,21 +696,21 @@ export function createAdminRoutes() {
     });
     admin.post(path+"/:oid/video-prepare",requirePermission("customers.read"),async c=>{
       const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm video setup."},400);
-      const r=await prepareVideo(c.env,channel,c.req.param("id"),c.req.param("oid"));
+      const r=await prepareVideo(c.env,channel,(c.req.param("id")??""),(c.req.param("oid")??""));
       return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
     admin.post(path+"/:oid/video-token",requirePermission("customers.read"),async c=>{
-      const r=await videoToken(c.env,channel,c.req.param("id"),c.req.param("oid"),true);
+      const r=await videoToken(c.env,channel,(c.req.param("id")??""),(c.req.param("oid")??""),true);
       return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
     admin.get(path+"/:oid/classroom",requirePermission("customers.read"),async c=>{
       if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
-      const s=await classroomState(c.env.DB,channel,c.req.param("id"),c.req.param("oid"),true);
+      const s=await classroomState(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("oid")??""),true);
       return s?c.json({...s,video_enabled:videoEnabled(c.env)}):c.json({detail:"Confirmed live booking required."},404);
     });
     admin.post(path+"/:oid/classroom-board",requirePermission("customers.read"),async c=>{
       if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
-      const id=c.req.param("id"),oid=c.req.param("oid"),b=await readJson(c);
+      const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),b=await readJson(c);
       if(b.action==="open"||b.action==="close"){
         if(b.confirmed!==true||!await setClassroomOpen(c.env.DB,channel,id,oid,b.action==="open"))return c.json({detail:"Cannot change this classroom now."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.classroom."+b.action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});
@@ -720,7 +720,7 @@ export function createAdminRoutes() {
       const r=await editClassroom(c.env.DB,channel,id,oid,true,b);return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
     admin.post(path+"/:oid/:action",requirePermission("customers.read"),async c=>{
-      const id=c.req.param("id"),oid=c.req.param("oid"),action=c.req.param("action"),b=await readJson(c);
+      const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),action=(c.req.param("action")??""),b=await readJson(c);
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
       if(action==="backup-preview"||action==="backup-email"){

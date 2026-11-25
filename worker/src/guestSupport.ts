@@ -107,33 +107,33 @@ export function registerGuestSupport(app:App){
  });
  app.post(root+"/requests/:id/orders/:oid/video-token",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
   if(!(await hitRateLimit(c.env.DB,"support-video-guest:"+await digest(who.email),8,60)).ok)return c.json({detail:"Try again shortly."},429);
-  const r=await videoToken(c.env,"guest",id,c.req.param("oid"),false);
+  const r=await videoToken(c.env,"guest",id,(c.req.param("oid")??""),false);
   return "error" in r?c.json({detail:r.error},409):c.json(r);
  });
  app.get(root+"/requests/:id/orders/:oid/classroom",async c=>{
   if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
-  const s=await classroomState(c.env.DB,"guest",id,c.req.param("oid"),false);return s?c.json({...s,video_enabled:videoEnabled(c.env)}):c.json({detail:"Confirmed live booking required."},404);
+  const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const s=await classroomState(c.env.DB,"guest",id,(c.req.param("oid")??""),false);return s?c.json({...s,video_enabled:videoEnabled(c.env)}):c.json({detail:"Confirmed live booking required."},404);
  });
  app.post(root+"/requests/:id/orders/:oid/classroom-board",async c=>{
   if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
   const b=await c.req.json().catch(()=>null);if(!b||typeof b!=="object")return c.json({detail:"Invalid action"},400);
   if(!(await hitRateLimit(c.env.DB,"support-board-guest:"+await digest(who.email),100,60)).ok)return c.json({detail:"Board is busy. Try again shortly."},429);
-  const s=await editClassroom(c.env.DB,"guest",id,c.req.param("oid"),false,b);return "error" in s?c.json({detail:s.error},409):c.json(s);
+  const s=await editClassroom(c.env.DB,"guest",id,(c.req.param("oid")??""),false,b);return "error" in s?c.json({detail:s.error},409):c.json(s);
  });
  app.get(root+"/requests/:id/orders",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
   return c.json({orders:await listOrders(c.env.DB,"guest",id),classroom_enabled:classroomEnabled(c.env)});
  });
  app.post(root+"/requests/:id/orders/:oid/confirm",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id"),oid=c.req.param("oid"),b=await c.req.json().catch(()=>null);
+  const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),b=await c.req.json().catch(()=>null);
   const row=await c.env.DB.prepare("SELECT status FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first<{status:string}>();
   if(!row)return c.json({detail:"Request not found"},404);
   if(["closed","resolved"].includes(row.status)||b?.confirmed!==true)return c.json({detail:"Confirm the service terms and arrangements."},400);
@@ -144,20 +144,20 @@ export function registerGuestSupport(app:App){
  });
  app.get(root+"/requests/:id/quotes/:qid/plan",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
-  return c.json({plan:await readQuotePlan(c.env.DB,"guest",id,c.req.param("qid"))});
+  const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  return c.json({plan:await readQuotePlan(c.env.DB,"guest",id,(c.req.param("qid")??""))});
  });
  app.get(root+"/requests/:id/quotes",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
   return c.json({quotes:await guestQuotes(c.env.DB,id)});
  });
  app.post(root+"/requests/:id/quotes/:qid/respond",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id"),b=await c.req.json().catch(()=>null),now=nowIso();
+  const id=(c.req.param("id")??""),b=await c.req.json().catch(()=>null),now=nowIso();
   if(!b||!["interested","declined"].includes(b.response)||b.confirmed!==true)return c.json({detail:"Confirm your response."},400);
   if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
-  const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status=?,responded_at=? WHERE id=? AND request_id=? AND status='offered' AND expires_at>? AND EXISTS(SELECT 1 FROM support_guest_requests WHERE id=support_guest_quotes.request_id AND email=? AND status NOT IN ('closed','resolved'))").bind(b.response,now,c.req.param("qid"),id,now,who.email).run();
+  const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status=?,responded_at=? WHERE id=? AND request_id=? AND status='offered' AND expires_at>? AND EXISTS(SELECT 1 FROM support_guest_requests WHERE id=support_guest_quotes.request_id AND email=? AND status NOT IN ('closed','resolved'))").bind(b.response,now,(c.req.param("qid")??""),id,now,who.email).run();
   if(!r.meta?.changes)return c.json({detail:"Proposal is no longer open."},409);
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(now,id,who.email).run();
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
@@ -165,7 +165,7 @@ export function registerGuestSupport(app:App){
  });
  app.post(root+"/requests/:id/messages",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const id=c.req.param("id"),b=await c.req.json().catch(()=>null),message=typeof b?.message==="string"?b.message.trim():"",now=nowIso();
+  const id=(c.req.param("id")??""),b=await c.req.json().catch(()=>null),message=typeof b?.message==="string"?b.message.trim():"",now=nowIso();
   if(message.length<2||message.length>2000)return c.json({detail:"Write 2–2000 characters."},400);
   if(!(await hitRateLimit(c.env.DB,"guest-message:"+await digest(who.email),15,3600)).ok)return c.json({detail:"Too many messages."},429);
   const r=await c.env.DB.prepare("INSERT INTO support_guest_messages(id,request_id,sender,body,created_at) SELECT ?,id,'parent',?,? FROM support_guest_requests WHERE id=? AND email=? AND status NOT IN ('closed','resolved') AND (SELECT COUNT(*) FROM support_guest_messages WHERE request_id=?)<100").bind(crypto.randomUUID(),message,now,id,who.email,id).run();
