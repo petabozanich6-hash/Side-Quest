@@ -29,7 +29,7 @@ function newToken() {
 }
 
 /** Same one-use reset infrastructure for initial support account setup and recovery. */
-export async function sendPasswordSetup(env:Env,user:{id:string;name:string;email:string},initial=false){
+export async function sendPasswordSetup(env:Env,user:{id:string;name:string;email:string},initial=false,portalReturn=false){
  const origin=authEmailOrigin(env);if(!origin||!env.EMAIL)return false;
  const since=new Date(Date.now()-TOKEN_TTL_MS).toISOString();
  const recent=await env.DB.prepare("SELECT COUNT(*) AS n FROM password_resets WHERE user_id = ? AND created_at > ?").bind(user.id,since).first<{n:number}>();
@@ -39,7 +39,7 @@ export async function sendPasswordSetup(env:Env,user:{id:string;name:string;emai
   env.DB.prepare("UPDATE password_resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL").bind(ts,user.id),
   env.DB.prepare("INSERT INTO password_resets (id, user_id, token_hash, expires_at, created_at) VALUES (?, ?, ?, ?, ?)").bind(newId(),user.id,await sha256(token),new Date(Date.now()+TOKEN_TTL_MS).toISOString(),ts),
  ]);
- const link=origin+"/reset-password?token="+token+(initial?"&service=family-portal":"");
+ const link=origin+"/reset-password?token="+token+(initial||portalReturn?"&service=family-portal":"");
  return sendEmail(env,initial?supportAccountSetupEmail(user.email,user.name,link):passwordResetEmail(user.email,user.name,link));
 }
 export function registerPasswordReset(app: App) {
@@ -53,7 +53,7 @@ export function registerPasswordReset(app: App) {
       .bind(email).first<{ id: string; name: string; email: string }>();
     if (!user) return c.json(SAME_REPLY);
 
-    await sendPasswordSetup(c.env,user,false);
+    await sendPasswordSetup(c.env,user,false,b.service==="family-portal");
     return c.json(SAME_REPLY);
   });
 
