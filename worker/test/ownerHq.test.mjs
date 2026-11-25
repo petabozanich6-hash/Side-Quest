@@ -921,6 +921,24 @@ test("standalone support verifies email, isolates guest sessions, and never crea
  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
 });
 
+test("family workspace migration is additive and idempotent on existing guest records",async()=>{
+ const db=makeDb("0100");
+ const stamp="2026-11-01T00:00:00.000Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("existing-request","existing@example.com","Parent","English","Existing enquiry",stamp,stamp);
+ const original=db.raw.prepare("SELECT * FROM support_guest_requests").all();
+ const migration=readFileSync(new URL("../migrations/0100_support_family_workspaces.sql",import.meta.url),"utf8");
+ db.raw.exec(migration);db.raw.exec(migration);
+ assert.deepEqual(db.raw.prepare("SELECT * FROM support_guest_requests").all(),original);
+ const {ensureGuestSchema,guestOrigin}=await import("../src/guestSupport.ts");
+ await ensureGuestSchema(db);
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("new-request","existing@example.com","Parent","Maths","New enquiry",stamp,stamp);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_guest_families").get().n,1);
+ assert.equal(db.raw.prepare("SELECT email FROM support_guest_families").get().email,"existing@example.com");
+ assert.equal(guestOrigin({STAGING_PRIVATE:"true"}),null);
+ assert.equal(guestOrigin({STAGING_PRIVATE:"true",SUPPORT_GUEST_ORIGIN:"https://sidequestlearning.app"}),null);
+ assert.equal(guestOrigin({STAGING_PRIVATE:"true",SUPPORT_GUEST_ORIGIN:"https://side-quest-staging.example.workers.dev"}),"https://side-quest-staging.example.workers.dev");
+});
+
 test("guest family directory groups verified email enquiries, preserves existing records and isolates learner profiles",async()=>{
  const {h,owner}=await ownerSetup();
  const ordinary=await h.register("family-directory-ordinary@example.com");
