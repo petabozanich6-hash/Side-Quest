@@ -62,8 +62,8 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  let sql:string;
  switch(section){
  case "learners":
-  sql=scope+` SELECT p.id,'portal' source,p.label,p.year_level,CASE WHEN p.student_id IS NULL THEN 0 ELSE 1 END existing_student,NULL guest_id
- FROM support_portal_learners p WHERE ?='account' AND p.family_id=?
+  sql=scope+` SELECT p.id,'portal' source,COALESCE(s.name,p.label) label,COALESCE(s.year_level,p.year_level) year_level,CASE WHEN s.id IS NULL THEN 0 ELSE 1 END existing_student,NULL guest_id
+ FROM support_portal_learners p LEFT JOIN students s ON s.id=p.student_id AND s.family_id=p.family_id WHERE ?='account' AND p.family_id=?
  UNION ALL SELECT l.id,'legacy',l.label,l.year_level,0,l.family_id FROM support_guest_learners l
  WHERE (?='legacy' AND l.family_id=?) OR (?='account' AND EXISTS(SELECT 1 FROM support_family_claims c WHERE c.guest_family_id=l.family_id AND c.family_id=?) AND NOT EXISTS(SELECT 1 FROM support_portal_legacy_learners m JOIN support_portal_learners p ON p.id=m.learner_id WHERE m.legacy_learner_id=l.id AND p.family_id=?))
  ORDER BY label,id LIMIT 51 OFFSET ?`;

@@ -1,3 +1,4 @@
+import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
@@ -287,6 +288,19 @@ export function createAdminRoutes() {
     c.header("Cache-Control","private, no-store");
     const result=await unifiedOwnerFamily(c.env.DB,kind,id,section as OwnerFamilySection,page);
     return result?c.json(result):c.json({detail:"Family not found"},404);
+  });
+  admin.get("/unified-directory/account/:id/learners/:learner",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const family=c.req.param("id")||"",learner=c.req.param("learner")||"",page=Number(c.req.query("page")||1);
+    if(!family||!learner||family.length>100||learner.length>100||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid learner or page"},400);
+    const r=await ownerLearner(c.env.DB,family,learner,page);return r?c.json(r):c.json({detail:"Learner not found"},404);
+  });
+  admin.put("/unified-directory/account/:id/learners/:learner",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const family=c.req.param("id")||"",learner=c.req.param("learner")||"";
+    if(!family||!learner||family.length>100||learner.length>100)return c.json({detail:"Invalid learner"},400);
+    const r=await saveOwnerLearnerNotes(c.env.DB,family,learner,await readJson(c),actor(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
   });
   admin.get("/customers", requirePermission("customers.read"), async (c) => {
     const q = (c.req.query("q") ?? "").trim();
