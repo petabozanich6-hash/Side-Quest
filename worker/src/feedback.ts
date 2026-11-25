@@ -5,6 +5,7 @@
 import type { App, Guards, Env } from "./types";
 import { newId, nowIso } from "./types";
 import { hitRateLimit } from "./adminAudit";
+import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -145,7 +146,14 @@ export function registerFeedback(app: App, guards: Guards) {
   app.post("/api/feedback", guards.auth, guards.parent, async (c) => {
     const input: unknown = await c.req.json().catch(() => null);
     if (!input || typeof input !== "object" || Array.isArray(input)) return c.json({ detail: "Enter a report." }, 400);
-    const b = input as Record<string, unknown>;
+    let b = input as Record<string, unknown>;
+    if (b.kind === LEARNING_SUPPORT_HINT) {
+      const parsed = parseLearningSupport(b);
+      if ("error" in parsed) return c.json({ detail: parsed.error }, 400);
+      b = parsed;
+    } else if (typeof b.page_hint === "string" && b.page_hint.trim() === LEARNING_SUPPORT_HINT) {
+      return c.json({ detail: "Use the learning support request form." }, 400);
+    }
     if (!isCategory(b.category)) return c.json({ detail: "Choose a report category." }, 400);
     if (typeof b.subject !== "string" || b.subject.trim().length < 4 || b.subject.trim().length > 120)
       return c.json({ detail: "Give your report a title (4 to 120 characters)." }, 400);
@@ -172,7 +180,7 @@ export function registerFeedback(app: App, guards: Guards) {
       await save();
     }
     // A failed or unconfigured email never undoes the durable, private HQ submission.
-    try { await ownerAlert(c.env, id, b.category); } catch { /* optional */ }
+    try { await ownerAlert(c.env, id, hint === LEARNING_SUPPORT_HINT ? "learning support" : b.category); } catch { /* optional */ }
     return c.json({ id, status: "new", created_at: now }, 201);
   });
 }

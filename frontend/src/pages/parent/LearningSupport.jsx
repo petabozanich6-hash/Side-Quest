@@ -19,7 +19,7 @@ export default function LearningSupport({publicView=false}){
  useEffect(()=>{if(!publicView&&user?.role==="parent")load();},[publicView,user?.id]);
  async function submit(e){e.preventDefault();if(busy||!form.consent||!subjects.includes(form.subject)||!years.includes(form.year)||!services.includes(form.service)||form.detail.trim().length<10)return;
  setBusy(true);setError("");setNotice("");
- try{await api.post("/feedback",{category:"other",page_hint:"learning-support",subject:"Learning support: "+form.subject+" / "+form.year,message:["Year level: "+form.year,"Learning area: "+form.subject,"Preferred support: "+form.service,"Parent confirms enquiry and no payment commitment.","Learning needs: "+form.detail.trim()].join("\n")});setForm(initial);setNotice("Your request has been received. I will review the topic and discuss suitable support, availability and pricing before you commit.");await load();}
+ try{await api.post("/feedback",{kind:"learning-support",...form});setForm(initial);setNotice("Your request has been received. I will review the topic and discuss suitable support, availability and pricing before you commit.");await load();}
  catch(e){setError(apiErrorMessage(e,"Could not submit request"));}finally{setBusy(false);}}
  return <main className={publicView?"min-h-screen bg-[#F5EFE0] p-4 sm:p-10":"p-4 sm:p-8 lg:p-10"}>
  <div className="max-w-4xl mx-auto space-y-6">

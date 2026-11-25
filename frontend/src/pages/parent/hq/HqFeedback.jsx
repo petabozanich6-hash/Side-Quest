@@ -69,6 +69,11 @@ export default function HqFeedback() {
     finally {setSaving(false);}
   }
 
+  const SUPPORT_PRESETS = [
+    {label:"Ask for clarification",status:"reviewing",text:"Thanks for your learning support request! Before I recommend an option, could you please send a little more information about the topic and what has already been tried? Please do not send identifying or sensitive child information."},
+    {label:"Prepare a quote",status:"reviewing",text:"I can offer the following support: [service and scope]. Total price: AUD $[amount]. Estimated delivery or proposed session time: [details]. Please review these details before agreeing; this message is not a confirmed booking or charge."},
+    {label:"Outside my scope",status:"closed",text:"Thanks for getting in touch. I cannot confidently provide the support needed for this particular topic, so I will not accept payment or a booking for it."}
+  ];
   const PRESETS = [
     { label:"Thanks!", status:null, text:"Thanks for taking the time to send this through! I really appreciate your feedback." },
     { label:"It's fixed", status:"resolved", text:"Thanks for flagging this! I've made a fix. Please give it another try, and let me know if anything still isn't working as expected." },
@@ -151,7 +156,7 @@ export default function HqFeedback() {
             <div className="border-t border-stone-200 pt-4 space-y-3">
               <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><MessageSquare size={16}/> Replies to the parent</h4>
               {replies.length===0?<p className="text-xs text-stone-500">No replies yet.</p>:<div className="space-y-2" data-testid="hq-feedback-replies">{replies.map(r=><div key={r.id} className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3"><div className="text-xs font-bold text-emerald-950">Sent · {new Date(r.created_at).toLocaleString("en-AU")}{r.parent_read_at?" · Read by parent":" · Unread by parent"}</div><p className="mt-2 whitespace-pre-wrap break-words text-sm text-stone-800">{r.body}</p></div>)}</div>}
-              <div className="flex flex-wrap gap-2">{PRESETS.map(p=><button key={p.label} type="button" className="rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold px-3 py-2 hover:bg-emerald-100" onClick={()=>{setReplyText(p.text);if(p.status)setDraftStatus(p.status);setSentNotice("");}}>{p.label}</button>)}</div>
+              <div className="flex flex-wrap gap-2">{(selected?.page_hint==="learning-support"?SUPPORT_PRESETS:PRESETS).map(p=><button key={p.label} type="button" className="rounded-full bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-bold px-3 py-2 hover:bg-emerald-100" onClick={()=>{setReplyText(p.text);if(p.status)setDraftStatus(p.status);setSentNotice("");}}>{p.label}</button>)}</div>
               <F label="Message the parent (only the submitting parent sees this)">
                 <textarea rows={5} maxLength={2000} value={replyText} onChange={e=>setReplyText(e.target.value)} className="w-full rounded-xl border border-stone-300 p-3 text-sm" placeholder="Thanks for the suggestion… or the issue has been fixed!" data-testid="hq-feedback-reply-message"/>
               </F>
