@@ -132,7 +132,16 @@ await step("Document Studio remains owner-only after the old shop is removed", a
   ok(denied.status === 404, "ordinary parent can access owner PDF products");
   await page.goto(BASE + "/parent/command-centre/document-studio");
   await page.waitForSelector("[data-testid=hq-document-studio]");
-  await page.getByTestId("hq-document-studio").getByLabel("State or territory",{exact:true}).selectOption("NSW");
+  const requirements = await api("GET", "/admin/document-studio/requirements", ownerBrowserToken);
+  ok(requirements.status === 200 && requirements.json?.jurisdictions?.some(j => j.code === "NSW"), "jurisdiction guidance API unavailable: " + requirements.status);
+  const jurisdiction = page.getByTestId("hq-document-studio-jurisdiction");
+  try {
+    await jurisdiction.waitFor({state:"visible",timeout:15000});
+    await jurisdiction.selectOption("NSW");
+  } catch (e) {
+    throw new Error("Document Studio jurisdiction selector failed: " + (await page.getByTestId("hq-document-studio").locator("header").innerText()).slice(0,400) + "; " + e.message);
+  }
+  ok(await jurisdiction.inputValue() === "NSW", "NSW jurisdiction was not selected");
   await page.waitForSelector("[data-testid=hq-existing-education-publisher]");
   const res = await api("GET", "/admin/document-studio/square-production?year=ALL", ownerBrowserToken);
   ok(res.status === 200 && res.json?.offers?.length === 48, "the 48 Square-ready document templates are unavailable");
