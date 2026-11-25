@@ -61,7 +61,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
   let mounted=true;setLoading(true);setCatalogueError("");
   adminApi.get("/document-studio/square-production",{year}).then(data=>{
    if(mounted)setCatalogue(data);
-  }).catch(e=>{if(mounted){setCatalogue(null);setCatalogueError(errorText(e,"Could not load the real Side-Quest catalogue."))}})
+  }).catch(e=>{if(mounted){setCatalogue(null);setCatalogueError(errorText(e,"Could not load document templates."))}})
     .finally(()=>{if(mounted)setLoading(false)});
   return()=>{mounted=false};
  },[year]);
@@ -124,15 +124,15 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
  };
  return <section className="paper-card p-5 space-y-5" data-testid="hq-existing-education-publisher">
   <div className="space-y-2">
-   <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">THE ORIGINAL 48 SIDE-QUEST DOCUMENT OFFERS</p>
+   <p className="text-xs font-bold tracking-widest text-[#4A5D3A]">48 HOME EDUCATION DOCUMENT TEMPLATES</p>
    <h3 className="text-xl font-bold text-[#1F3B2D]">Create each product for your Square shop</h3>
-   <p className="text-sm text-stone-700">Choose one of the six existing products in your selected state or territory. Make its PDF, check it, download it, then create the corresponding Square listing yourself. Your Square order and automatic file-delivery settings are not changed.</p>
-   <p className="text-xs text-stone-600">48 catalogue items: eight jurisdictions × six product types. Each item covers different school years, with optional age and stage pages that families can skip. No Year 3, Year 7 or separate elective listing is required. Extra-child pricing in your original Side-Quest shop is not automatically copied to Square.</p>
+   <p className="text-sm text-stone-700">Choose one of six document types for your selected state or territory. Make its PDF, check it, download it, then create the corresponding Square listing yourself. Your Square order and automatic file-delivery settings are not changed.</p>
+   <p className="text-xs text-stone-600">48 available templates: eight jurisdictions × six product types. Each item covers different school years, with optional age and stage pages that families can skip. No Year 3, Year 7 or separate elective listing is required. Prices are suggested listing defaults; confirm prices in Square.</p>
   </div>
   <div className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-sm">
-   <strong>Catalogue source:</strong> {catalogue?.source||"Checking Side-Quest database"}.
-   <p className="mt-1 text-stone-600">Square Dashboard is separate. This shows exactly which listings Side-Quest is configured to recognise, not which products are currently live in Square.</p>
-   {loading&&<p role="status" className="mt-1">Checking the existing catalogue…</p>}
+   <strong>Template source:</strong> {catalogue?.source||"Loading templates"}.
+   <p className="mt-1 text-stone-600">Square Dashboard is separate. These are PDF templates and suggested listing details, not live Square products.</p>
+   {loading&&<p role="status" className="mt-1">Loading document templates…</p>}
    {catalogueError&&<p role="alert" className="mt-1 text-red-800">{catalogueError}</p>}
   </div>
   <div className="rounded-xl border border-stone-200 bg-[#F4F6F1] p-4 space-y-1">
@@ -145,14 +145,14 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     </select>
   </label>
   {offers.length>0&&<div className="space-y-2">
-   <h4 className="font-semibold">All six products configured for {jurisdiction.name}</h4>
+   <h4 className="font-semibold">Six document types for {jurisdiction.name}</h4>
    <div className="grid sm:grid-cols-2 gap-2">
     {offers.map(o=><button key={o.key} type="button" onClick={()=>choose(o.kind)}
       className={"rounded-xl border p-3 text-left text-sm "+(o.kind===kind?"border-[#1F3B2D] bg-[#F2F5F0]":"border-stone-200 bg-white")}>
       <span className="font-semibold">{o.label}</span>
       <span className="block text-stone-600">{money(o.current_sidequest_price_cents??o.default_price_cents)} · {o.production.output==="customer"?"Digital customer file":"Owner production master"}</span>
       <span className="block text-xs mt-1 text-stone-500">
-       {o.sidequest_listings.length?o.sidequest_listings.length+" Side-Quest record(s), "+o.sidequest_listings.map(p=>p.status).join(", "):"Not found in Side-Quest's current database"}
+       {o.sidequest_listings.length?o.sidequest_listings.length+" Side-Quest record(s), "+o.sidequest_listings.map(p=>p.status).join(", "):"Managed separately in Square"}
       </span>
       {prepared[o.state+":"+o.kind]&&<span className="block text-xs mt-1 font-semibold text-[#1F3B2D]">Files downloaded on this device</span>}
     </button>)}
@@ -164,7 +164,7 @@ export default function HqHomeEducationPublisher({jurisdiction,checkedOn}){
     <strong>{money(offer.current_sidequest_price_cents??offer.default_price_cents)}</strong>
    </div>
    <p className="text-sm">{offer.production.purpose}</p>
-   <p className="text-xs text-stone-600">Current Side-Quest record: {offer.current_sidequest_title||"No unique matching product"}.
+   <p className="text-xs text-stone-600">Square listing: managed independently of Side-Quest.
     {offer.current_sidequest_price_cents!=null&&offer.current_sidequest_price_cents!==offer.default_price_cents&&
       <strong> Its saved price differs from the original {money(offer.default_price_cents)} default; your saved value is shown above.</strong>}
     {offer.catalogue_warning&&<strong className="block text-amber-900">{offer.catalogue_warning}</strong>}

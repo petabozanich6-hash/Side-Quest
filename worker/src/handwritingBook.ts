@@ -1,5 +1,12 @@
 import type { App, Guards } from "./types";
-import { canAccessPrintableVault } from "./printableVault";
+import { ownerPowers } from "./viewAs";
+import { getEntitlement } from "./lessonBuilder";
+
+/** Family Members (and the owner) can open the handwriting book. */
+async function canOpenBook(db: D1Database, user: { id: string; family_id: string }) {
+  const { limits } = await getEntitlement(db, user.family_id);
+  return (await ownerPowers(db, user)) || limits.aiGeneration;
+}
 
 /**
  * Original black-and-white Side-Quest handwriting book. All pages are A4 SVG
@@ -304,12 +311,12 @@ export function renderHandwritingPage(page:number):string|null{
 }
 export function registerHandwritingBook(app:App,g:Guards){
  app.get("/api/handwriting-book",g.auth,g.parent,async c=>{
-  const unlocked=await canAccessPrintableVault(c.env.DB,c.get("user"));
+  const unlocked=await canOpenBook(c.env.DB,c.get("user"));
   c.header("Cache-Control","private, no-store");
   return c.json({unlocked,title:"The Little Letter Quest",pages:HANDWRITING_PAGE_COUNT,letters:26});
  });
  app.get("/api/handwriting-book/pages/:page",g.auth,g.parent,async c=>{
-  if(!await canAccessPrintableVault(c.env.DB,c.get("user")))
+  if(!await canOpenBook(c.env.DB,c.get("user")))
    return c.json({code:"UPGRADE_REQUIRED",detail:"The handwriting book requires Family Membership."},402);
   const raw=c.req.param("page");
   if(!/^(0|[1-9][0-9]*)$/.test(raw))return c.json({detail:"Page not found"},404);

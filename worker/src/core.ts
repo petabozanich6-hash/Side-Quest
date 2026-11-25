@@ -14,7 +14,7 @@ import { buildPortfolio } from "./portfolio";
 import { billingSummary } from "./billing";
 
 type AuthUser = { id: string; family_id: string; role: "parent" | "child"; name: string };
-type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; AI_FAST_PIPELINE?: string; AI_FAST_PIPELINE_STOP?: string; AI_SPLIT_STAGES?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
+type Env = { DB: D1Database; JWT_SECRET: string; BUCKET?: R2Bucket; AI?: aid.AiBinding; AI_GATEWAY_ID?: string; AI_MODEL?: string; AI_HELP_MODEL?: string; AI_COMPACT_GENERATION?: string; AI_FAST_PIPELINE?: string; AI_FAST_PIPELINE_STOP?: string; AI_SPLIT_STAGES?: string; AI_BACKGROUND_BATCHES?: string; HELP_PER_CHILD_DAY?: string; HELP_PER_FAMILY_DAY?: string; HELP_PER_FAMILY_MONTH?: string; YOUTUBE_API_KEY?: string };
 type App = Hono<{ Bindings: Env; Variables: { user: AuthUser } }>;
 
 const nowIso = () => new Date().toISOString();
@@ -94,26 +94,24 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.get("/api/dashboard/parent", auth, parent, async (c) => {
     const fid = c.get("user").family_id;
     const db = c.env.DB;
-    const count = async (sql: string, ...b: any[]) =>
-      (await db.prepare(sql).bind(...b).first<{ n: number }>())?.n ?? 0;
-    const { results: students } = await db.prepare(
-      "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE family_id = ?"
-    ).bind(fid).all<any>();
-    const out: any = {
-      students: [],
-      pending_review: await count("SELECT COUNT(*) n FROM submissions WHERE family_id = ? AND status = 'submitted'", fid),
-      awaiting_help: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND status = 'awaiting_help'", fid),
+    // Four fixed queries instead of three additional queries for every student.
+    const [studentRows, assignmentRows, pending, resources] = await Promise.all([
+      db.prepare("SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, notes, created_at, extra FROM students WHERE family_id = ?").bind(fid).all<any>(),
+      db.prepare("SELECT student_id, COUNT(*) total_assignments, SUM(CASE WHEN status IN ('accepted','demonstrated','completed') THEN 1 ELSE 0 END) completed, SUM(CASE WHEN status='awaiting_help' THEN 1 ELSE 0 END) awaiting_help FROM assignments WHERE family_id = ? GROUP BY student_id").bind(fid).all<{student_id:string;total_assignments:number;completed:number;awaiting_help:number}>(),
+      db.prepare("SELECT COUNT(*) n FROM submissions WHERE family_id = ? AND status = 'submitted'").bind(fid).first<{n:number}>(),
+      db.prepare("SELECT COUNT(*) n FROM resources WHERE family_id = ? AND approved = 0").bind(fid).first<{n:number}>(),
+    ]);
+    const byStudent = new Map((assignmentRows.results || []).map(row => [row.student_id, row]));
+    const out = {
+      students: (studentRows.results || []).map(s => {
+        const row=byStudent.get(s.id);
+        return {...studentOut(s),total_assignments:row?.total_assignments ?? 0,completed:row?.completed ?? 0,awaiting_help:row?.awaiting_help ?? 0};
+      }),
+      pending_review: pending?.n ?? 0,
+      awaiting_help: (assignmentRows.results || []).reduce((sum,row)=>sum+Number(row.awaiting_help||0),0),
       resources_pending: 0,
-      unapproved_resources: await count("SELECT COUNT(*) n FROM resources WHERE family_id = ? AND approved = 0", fid),
+      unapproved_resources: resources?.n ?? 0,
     };
-    for (const s of students) {
-      out.students.push({
-        ...studentOut(s),
-        total_assignments: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ?", fid, s.id),
-        completed: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND status IN ('accepted','demonstrated','completed')", fid, s.id),
-        awaiting_help: await count("SELECT COUNT(*) n FROM assignments WHERE family_id = ? AND student_id = ? AND status = 'awaiting_help'", fid, s.id),
-      });
-    }
     return c.json(out);
   });
 
@@ -122,10 +120,28 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
     const db = c.env.DB;
     const { results: pending } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision','needs_more_practice') ORDER BY CASE WHEN status IN ('needs_revision','needs_more_practice','in_progress','awaiting_help','opened') THEN 0 ELSE 1 END, created_at DESC LIMIT 200"
-    ).bind(u.id).all<any>();
+      "SELECT * FROM assignments WHERE student_id = ? AND family_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision','needs_more_practice') ORDER BY CASE WHEN status IN ('needs_revision','needs_more_practice','in_progress','awaiting_help','opened') THEN 0 ELSE 1 END, created_at DESC LIMIT 200"
+    ).bind(u.id,u.family_id).all<any>();
+    const { results: fb } = await db.prepare(
+      "SELECT * FROM submissions WHERE student_id = ? AND family_id = ? AND parent_feedback IS NOT NULL ORDER BY reviewed_at DESC LIMIT 5"
+    ).bind(u.id,u.family_id).all<any>();
+    const { results: doneRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND family_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id,u.family_id).all<any>();
+    const { results: waitRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND family_id = ? AND status = 'submitted' ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id,u.family_id).all<any>();
+    // Fetch only the family or shared lessons needed by these assignments. Bounded
+    // batches stay below D1's bound-parameter limit and avoid a query per legacy row.
+    const lessonIds: string[] = [...new Set<string>([...pending,...doneRows,...waitRows].filter(a=>!a.lesson_snapshot).map(a=>String(a.lesson_id||"")).concat(fb.map(f=>String(f.lesson_id||""))).filter(Boolean))];
+    const liveLessons = new Map<string, any>();
+    for (let i=0;i<lessonIds.length;i+=80) {
+      const ids=lessonIds.slice(i,i+80);
+      const {results}=await db.prepare("SELECT * FROM lessons WHERE (family_id=? OR family_id IS NULL) AND id IN ("+ids.map(()=>"?").join(",")+")").bind(u.family_id,...ids).all<any>();
+      for(const row of results||[])liveLessons.set(row.id,row);
+    }
     for (const a of pending) {
-      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const live = a.lesson_snapshot ? null : (liveLessons.get(a.lesson_id) || null);
       a.lesson = lb.childSafeLesson(lb.assignmentLesson(a, live));
       // Give the dashboard the *last visited step*, never the child's answers.
       // This is a position indicator, not a claim that all earlier work is completed.
@@ -143,13 +159,10 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       }
       delete a.lesson_snapshot;
     }
-    const { results: fb } = await db.prepare(
-      "SELECT * FROM submissions WHERE student_id = ? AND parent_feedback IS NOT NULL ORDER BY reviewed_at DESC LIMIT 5"
-    ).bind(u.id).all<any>();
     const feedback = [];
     for (const f of fb) {
       const o: any = subOut(f);
-      o.lesson = lb.childSafeLesson(lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(f.lesson_id).first()));
+      o.lesson = lb.childSafeLesson(lessonSummary(liveLessons.get(f.lesson_id) || null));
       feedback.push(o);
     }
     const { results: ch } = await db.prepare(
@@ -159,21 +172,15 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       // No "notes": those are the parent's private notes about the child (child-login strips them too).
       "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, created_at, extra FROM students WHERE id = ?"
     ).bind(u.id).first<any>();
-    const { results: doneRows } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
-    ).bind(u.id).all<any>();
     const completed = [];
     for (const a of doneRows) {
-      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const live = a.lesson_snapshot ? null : (liveLessons.get(a.lesson_id) || null);
       const l: any = lb.childSafeLesson(lb.assignmentLesson(a, live)) || {};
       completed.push({ id: a.id, status: a.status, updated_at: a.updated_at, lesson: { title: l.title, learning_area: l.learning_area } });
     }
-    const { results: waitRows } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status = 'submitted' ORDER BY updated_at DESC LIMIT 20"
-    ).bind(u.id).all<any>();
     const waiting = [];
     for (const a of waitRows) {
-      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const live = a.lesson_snapshot ? null : (liveLessons.get(a.lesson_id) || null);
       const l: any = lb.assignmentLesson(a, live) || {};
       waiting.push({ id: a.id, lesson: { title: l.title, learning_area: l.learning_area } });
     }
@@ -230,7 +237,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const { plan, limits } = await lb.getEntitlement(c.env.DB, u.family_id);
     const usage = await aid.aiUsage(c.env.DB, u.family_id);
     const previewEligible = plan === "FREE_PREVIEW" && usage.preview.remaining > 0;
-    return c.json({ allowed: limits.aiGeneration || previewEligible, available: !!c.env.AI, preview_eligible: previewEligible, usage });
+    return c.json({ allowed: limits.aiGeneration || previewEligible, available: !!c.env.AI, preview_eligible: previewEligible, background_batches: c.env.AI_BACKGROUND_BATCHES === "true" && !!c.env.AI && limits.aiGeneration, usage });
   });
 
   app.post("/api/ai/lesson-draft", auth, parent, async (c) => {
@@ -258,6 +265,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
   app.post("/api/ai/batches", auth, parent, async (c) => {
     const u = c.get("user");
     const b: any = await c.req.json().catch(() => ({}));
+    if (b?.background === true && (c.env.AI_BACKGROUND_BATCHES !== "true" || !c.env.AI)) return c.json({detail:"Background writing is not available. Uncheck it to write in this tab."},503);
     const r = await bat.createBatch(c.env.DB, { familyId: u.family_id, userId: u.id, body: b });
     return r.ok ? c.json(r.batch) : send(c, r);
   });
@@ -271,6 +279,7 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     const r = await bat.draftBatchItem(c.env.DB, c.env.AI, { familyId: u.family_id, userId: u.id, model: c.env.AI_MODEL, gatewayId: c.env.AI_GATEWAY_ID, compact: c.env.AI_COMPACT_GENERATION === "true", fastPipeline: fastLessonPipelineEnabled(c.env), splitStages: splitLessonStagesEnabled(c.env), batchId: c.req.param("id"), index: Number(c.req.param("index")) });
     return r.ok ? c.json({ lesson: r.lesson, reused: r.reused, usage: r.usage, warnings: r.warnings, assumptions: r.assumptions, generation: r.generation }) : send(c, r);
   });
+  app.post("/api/ai/batches/:id/pause-background", auth, parent, async (c) => c.json(await bat.pauseBackgroundBatch(c.env.DB,c.get("user").family_id,c.req.param("id"))));
   app.post("/api/ai/batches/:id/dismiss", auth, parent, async (c) => {
     const r = await bat.dismissBatch(c.env.DB, c.get("user").family_id, c.req.param("id"));
     return r.ok ? c.json(r) : send(c, r);

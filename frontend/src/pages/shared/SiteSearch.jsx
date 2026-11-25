@@ -21,6 +21,7 @@ const PARENT_PAGES = [
   { title: "Saved resources", description: "Learning links and approved resources", url: "/parent/resources", icon: Library },
   { title: "Word Hoard", description: "Vocabulary and spelling words", url: "/parent/word-hoard", icon: BookOpen },
   { title: "Seasonal surprises", description: "Pet room celebrations and special events", url: "/parent/side-quest", icon: Sparkles },
+  { title: "Learning support", description: "Personalised online tutoring, worked explanations and parent help without a membership", url: "/parent/learning-support", icon: MessageSquare },
   { title: "Ideas & Feedback", description: "Report a problem, suggest a feature or send feedback", url: "/parent/feedback", icon: MessageSquare },
   { title: "Trust & Support", description: "Policies, privacy and account assistance", url: "/parent/trust", icon: ShieldCheck },
 ];

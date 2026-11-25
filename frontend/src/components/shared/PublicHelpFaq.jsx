@@ -29,8 +29,8 @@ const questions = [
     answer: "A parent creates or reviews a lesson and assigns it to a child. The child signs in with their own username and PIN, completes the activities and submits their work. The parent can then review it and keep the learning evidence."
   },
   {
-    question: "What are the Printable Vault and Dragon's Library?",
-    answer: "Family Membership includes access to the Printable Vault's illustrated activities. Dragon's Library offers reading ideas and links to legitimate, often free or low-cost sources; it doesn't upload or share copies of copyrighted books."
+    question: "What are the Hands-On Quest Vault and Dragon's Library?",
+    answer: "Family Membership includes printable step-by-step guides for the Hands-On Quest Vault activities and the A–Z handwriting book. Dragon's Library offers reading ideas and links to legitimate, often free or low-cost sources; it doesn't upload or share copies of copyrighted books."
   },
   {
     question: "What happens when my preview ends?",

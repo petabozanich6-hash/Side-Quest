@@ -31,11 +31,25 @@ import { authenticateToken, bumpAuthVersion } from "./session";
 import type { AuthUser, Env } from "./types";
 import { nowIso } from "./types";
 import { billingConfig } from "./billing";
-import { createHoardOffer, disableHoardOffer, giftPreviewDays, listHoardOffers } from "./dragonHoard";
+import { giftPreviewDays } from "./previewGifts";
+import { registerDocumentStudio } from "./documentStudioRoutes";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
+import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } from "./learningSupportQuotes";
+import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify, guestOrigin } from "./guestSupport";
+import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,recordManualInvoice,verifyManualInvoice,cancelManualInvoiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
-import { createBookForgeRoutes } from "./bookForge";
-import { registerShopAdmin } from "./shopRoutes";
+import { classroomEnabled,classroomState,setClassroomOpen,editClassroom,canReadClassroomImage } from "./supportClassrooms";
+import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
+import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
+import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
+import {buildContinuity,emailContinuity} from "./supportContinuity";
+import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
+import { ensureOrderSchema } from "./supportOrders";
+import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
+import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
+import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
+import {offerSlots,readSlots,removeSlots} from "./supportSlots";
+import {createPackage} from "./supportPackages";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -96,9 +110,7 @@ export function createAdminRoutes() {
   // ----------------------------------------------------------- 3. rate limits
   admin.use("*", async (c, next) => {
     const write = isMutation(c.req.method);
-    // Shop editing (saving products and photos one after another) gets its own, larger allowance.
-    const shop = c.req.path.startsWith("/api/admin/shop/");
-    const limit = await hitRateLimit(c.env.DB, `admin:${write ? "w" : "r"}${shop ? ":shop" : ""}:${c.get("user").id}`, write ? (shop ? 150 : 30) : 300, 300);
+    const limit = await hitRateLimit(c.env.DB, `admin:${write ? "w" : "r"}:${c.get("user").id}`, write ? 30 : 300, 300);
     if (!limit.ok) {
       c.header("Retry-After", String(limit.retryAfter));
       return c.json({ detail: "Too many requests. Please slow down for a moment." }, 429);
@@ -232,7 +244,7 @@ export function createAdminRoutes() {
 
   admin.delete("/security/passkeys/:id", async (c) => {
     const user = c.get("user");
-    const id = c.req.param("id");
+    const id = (c.req.param("id")??"");
     const passkeys = await listCredentials(c.env.DB, user.id);
     if (!passkeys.some((p) => p.id === id)) return c.json({ detail: "Passkey not found" }, 404);
     if (passkeys.length < 2) return c.json({ detail: "Add another passkey before removing your last one." }, 409);
@@ -322,49 +334,7 @@ export function createAdminRoutes() {
   });
 
 
-  // ---------------------------------------------- The Dragon's Hoard
-  // These routes inherit Owner role, CSRF, passkey step-up, per-user limits and an audit trail.
-  // Stripe discounts always stay in the Stripe mode (test/live) they were issued under.
-  admin.get("/hoard", requirePermission("settings.read"), async (c) => {
-    const cfg = billingConfig(c.env);
-    const offers = await listHoardOffers(c.env.DB);
-    return c.json({
-      billing_configured: cfg.ok,
-      mode: cfg.ok ? cfg.mode : null,
-      note: cfg.ok ? null : "Stripe checkout isn't configured. Discount scrolls cannot be created yet.",
-      offers,
-    });
-  });
-
-  admin.post("/hoard", requirePermission("settings.write"), async (c) => {
-    const body = await readJson(c);
-    if (body.confirm !== "CREATE") return c.json({ detail: "Type CREATE to approve this Stripe discount." }, 400);
-    try {
-      const result = await createHoardOffer(c.env.DB, c.env, body, c.get("user").id);
-      if (!result.ok) return c.json({ detail: result.detail }, result.status);
-      await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_created", targetType: "hoard_offer", targetId: result.id, detail: { code: result.code, mode: result.mode } });
-      return c.json(result, 201);
-    } catch {
-      // Do not log the Stripe key, customer information or a full outbound request.
-      return c.json({ detail: "Stripe could not create this scroll. Check Prices read, Coupons write and Promotion Codes write permissions in the matching Stripe account, then retry." }, 502);
-    }
-  });
-
-  admin.post("/hoard/:id/retire", requirePermission("settings.write"), async (c) => {
-    const body = await readJson(c);
-    if (body.confirm !== "RETIRE") return c.json({ detail: "Type RETIRE to disable the code." }, 400);
-    const reason = reasonFrom(body);
-    if (!reason) return c.json({ detail: "Give a reason (5–500 characters)." }, 400);
-    try {
-      const result = await disableHoardOffer(c.env.DB, c.env, c.req.param("id") ?? "");
-      if (!result.ok) return c.json({ detail: result.detail }, result.status);
-      await writeAudit(c.env.DB, { ...actor(c), action: "hoard.discount_retired", targetType: "hoard_offer", targetId: c.req.param("id"), detail: { code: result.code, mode: result.mode, reason } });
-      return c.json({ ok: true });
-    } catch {
-      return c.json({ detail: "Stripe could not disable this discount. Nothing was retired in HQ; check Stripe and retry." }, 502);
-    }
-  });
-
+  // ---------------------------------------------- Preview gifts
   admin.post("/customers/:id/gift-preview", requirePermission("settings.write"), async (c) => {
     const { target, error } = await loadTarget(c);
     if (error) return error;
@@ -432,13 +402,14 @@ export function createAdminRoutes() {
     await ensureFeedbackSchema(c.env.DB);
     const status = c.req.query("status") || "";
     const category = c.req.query("category") || "";
+    const supportOnly = c.req.query("kind") === "learning-support";
     if (status && !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
     if (category && !(FEEDBACK_CATEGORIES as readonly string[]).includes(category)) return c.json({ detail: "Invalid category" }, 400);
     const page = Number(c.req.query("page") || "1");
     if (!Number.isInteger(page) || page < 1 || page > 10000) return c.json({ detail: "Invalid page" }, 400);
     const { results } = await c.env.DB.prepare(
-      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
-    ).bind(status,status,category,category,(page - 1)*50).all();
+      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) AND (? = 0 OR p.page_hint = 'learning-support') ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
+    ).bind(status,status,category,category,supportOnly ? 1 : 0,(page - 1)*50).all();
     const rows=results || [];
     return c.json({ items: rows.slice(0,50), has_more: rows.length > 50, page });
   });
@@ -446,7 +417,7 @@ export function createAdminRoutes() {
   admin.put("/feedback/:id", requirePermission("customers.read"), async (c) => {
     await ensureFeedbackSchema(c.env.DB);
     const row = await c.env.DB.prepare("SELECT id,family_id,status,seen_at FROM parent_feedback WHERE id = ?")
-      .bind(c.req.param("id")).first<{id:string;family_id:string;status:string;seen_at:string|null}>();
+      .bind((c.req.param("id")??"")).first<{id:string;family_id:string;status:string;seen_at:string|null}>();
     if (!row) return c.json({ detail: "Feedback not found" }, 404);
     const body = await readJson(c);
     const status = body.status === undefined ? row.status : body.status;
@@ -465,13 +436,57 @@ export function createAdminRoutes() {
 
   // A private reply is persisted first. Optional email only alerts the correct submitting parent
   // to sign in; it never contains the report, reply, names, or other customer data.
+  admin.post("/support-plan/draft",requirePermission("customers.read"),async c=>{const r=await draftQuotePlan(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);});
+  admin.get("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureFeedbackSchema(c.env.DB);
+    const id=(c.req.param("id")??"");
+    if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
+    await ensureQuoteSchema(c.env.DB);
+    return c.json({quotes:await listSupportQuotes(c.env.DB,id),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI});
+  });
+  admin.post("/feedback/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureFeedbackSchema(c.env.DB);
+    const id=(c.req.param("id")??""),thread=await supportThread(c.env.DB,id);
+    if(!thread)return c.json({detail:"Learning support request not found"},404);
+    if(["closed","resolved"].includes(thread.status))return c.json({detail:"Reopen the enquiry before proposing support."},409);
+    const b=await readJson(c),v=validateQuote(b);
+    if("error" in v)return c.json({detail:v.error},400);
+    if(b.confirmed!==true)return c.json({detail:"Confirm that this is a non-binding proposal, not a payment or confirmed booking."},400);
+    await ensureQuoteSchema(c.env.DB);
+    const qid=crypto.randomUUID(),now=new Date(),when=now.toISOString(),expires=new Date(now.getTime()+v.days*86400000).toISOString();
+    // Expired offers remain immutable in history. Explicitly withdraw them before making another proposal.
+    const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
+    const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id);
+    const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when);
+    if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
+    // Durable proposal is authoritative. A notification failure does not undo it.
+    try{
+      await c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)").bind(crypto.randomUUID(),id,c.get("user").id,"A learning support proposal is ready. Open Learning Support in your Parent Hub to review the scope, total price and delivery details.",when).run();
+      await writeAudit(c.env.DB,{...actor(c),action:"learning_support.quote",targetType:"feedback",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
+    }catch{console.warn("learning support quote notification or audit unavailable");}
+    return c.json({ok:true,id:qid},201);
+  });
+  admin.post("/feedback/:id/quotes/:quoteId/withdraw",requirePermission("customers.read"),async c=>{
+    await ensureFeedbackSchema(c.env.DB);
+    const id=(c.req.param("id")??""),qid=(c.req.param("quoteId")??"");
+    if(!await supportThread(c.env.DB,id))return c.json({detail:"Learning support request not found"},404);
+    await ensureQuoteSchema(c.env.DB);
+    const b=await readJson(c);
+    if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    if(await hasOrder(c.env.DB,"member",qid))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
+    const r=await c.env.DB.prepare("UPDATE learning_support_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND feedback_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o LEFT JOIN support_package_sessions ps ON ps.order_id=o.id WHERE o.channel='member' AND COALESCE(ps.quote_id,o.quote_id)=learning_support_quotes.id AND o.status<>'cancelled')").bind(nowIso(),qid,id).run();
+    if(!r.meta?.changes)return c.json({detail:"This proposal cannot be withdrawn."},409);
+    try{await writeAudit(c.env.DB,{...actor(c),action:"learning_support.withdraw",targetType:"feedback",targetId:id,detail:{quote_id:qid}});}catch{}
+    return c.json({ok:true});
+  });
+
   admin.get("/feedback/:id/replies", requirePermission("customers.read"), async (c) => {
     await ensureFeedbackSchema(c.env.DB);
-    const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind(c.req.param("id")).first();
+    const exists=await c.env.DB.prepare("SELECT id FROM parent_feedback WHERE id=?").bind((c.req.param("id")??"")).first();
     if(!exists) return c.json({detail:"Feedback not found"},404);
     const {results}=await c.env.DB.prepare(
       "SELECT id,body,created_at,parent_read_at FROM parent_feedback_replies WHERE feedback_id=? ORDER BY created_at ASC,id ASC LIMIT 100",
-    ).bind(c.req.param("id")).all();
+    ).bind((c.req.param("id")??"")).all();
     return c.json({replies:results||[]});
   });
 
@@ -485,7 +500,7 @@ export function createAdminRoutes() {
       return c.json({detail:"Invalid feedback status"},400);
     const report=await c.env.DB.prepare(
       "SELECT p.id,p.family_id,p.user_id,p.status,u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id WHERE p.id=?"
-    ).bind(c.req.param("id")).first<{id:string;family_id:string;user_id:string;status:string;email:string}>();
+    ).bind((c.req.param("id")??"")).first<{id:string;family_id:string;user_id:string;status:string;email:string}>();
     if(!report)return c.json({detail:"Feedback not found"},404);
     const replyId=crypto.randomUUID(), when=nowIso(), body=b.message.trim();
     // The owner cannot reroute the reply by supplying a target email, family id or user id.
@@ -589,9 +604,257 @@ export function createAdminRoutes() {
     return c.json({cancelled:true});
   });
 
-  // ---------------------------------------------------------------- shop catalogue
-  admin.route("/book-forge", createBookForgeRoutes());
-  registerShopAdmin(admin, { requirePermission, actor, readJson });
+
+  // Standalone guests are separate from homeschool customers and remain behind Owner HQ step-up.
+  admin.get("/support-guests",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);
+    const page=Number(c.req.query("page")||1);if(!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid page"},400);
+    const {results}=await c.env.DB.prepare("SELECT * FROM support_guest_requests ORDER BY CASE WHEN seen_at IS NULL THEN 0 ELSE 1 END,updated_at DESC LIMIT 51 OFFSET ?").bind((page-1)*50).all<any>();
+    const rows=results||[];return c.json({items:rows.slice(0,50),has_more:rows.length>50});
+  });
+  admin.get("/support-guests/:id",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??"");
+    const row=await c.env.DB.prepare("SELECT * FROM support_guest_requests WHERE id=?").bind(id).first<any>();
+    if(!row)return c.json({detail:"Request not found"},404);
+    return c.json({request:row,messages:await guestMessages(c.env.DB,id)});
+  });
+  admin.put("/support-guests/:id",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);
+    if(typeof b.status!=="string"||!(FEEDBACK_STATUSES as readonly string[]).includes(b.status))return c.json({detail:"Invalid status"},400);
+    const r=await c.env.DB.prepare("UPDATE support_guest_requests SET status=?,seen_at=? WHERE id=?").bind(b.status,nowIso(),id).run();if(!r.meta?.changes)return c.json({detail:"Request not found"},404);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.status",targetType:"support_guest",targetId:id,detail:{status:b.status}});
+    return c.json({ok:true});
+  });
+  admin.post("/support-guests/:id/messages",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c),message=typeof b.message==="string"?b.message.trim():"",when=nowIso();
+    if(message.length<2||message.length>2000)return c.json({detail:"Write 2–2000 characters."},400);
+    const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
+    const r=await c.env.DB.prepare("INSERT INTO support_guest_messages(id,request_id,sender,body,created_at) SELECT ?,id,'owner',?,? FROM support_guest_requests WHERE id=? AND (SELECT COUNT(*) FROM support_guest_messages WHERE request_id=?)<100").bind(crypto.randomUUID(),message,when,id,id).run();if(!r.meta?.changes)return c.json({detail:"Thread full"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.reply",targetType:"support_guest",targetId:id,detail:{}});
+    return c.json({ok:true,email_notification_sent:await guestNotify(c.env,row.email)},201);
+  });
+  admin.get("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??"");
+    if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first())return c.json({detail:"Request not found"},404);
+    return c.json({quotes:await guestQuotes(c.env.DB,id),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI});
+  });
+  admin.post("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c),v=validateQuote(b);
+    if("error" in v)return c.json({detail:v.error},400);if(b.confirmed!==true)return c.json({detail:"Confirm non-binding proposal."},400);
+    const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
+    const qid=crypto.randomUUID(),now=new Date();
+    const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
+    const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id);
+    const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString());
+    if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.quote",targetType:"support_guest",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
+    return c.json({id:qid,email_notification_sent:await guestNotify(c.env,row.email)},201);
+  });
+  admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
+    if(await hasOrder(c.env.DB,"guest",(c.req.param("qid")??"")))return c.json({detail:"Resolve the associated order before withdrawing the quote."},409);
+    const r=await c.env.DB.prepare("UPDATE support_guest_quotes SET status='withdrawn',withdrawn_at=? WHERE id=? AND request_id=? AND status IN ('offered','interested') AND NOT EXISTS (SELECT 1 FROM support_service_orders o LEFT JOIN support_package_sessions ps ON ps.order_id=o.id WHERE o.channel='guest' AND COALESCE(ps.quote_id,o.quote_id)=support_guest_quotes.id AND o.status<>'cancelled')").bind(nowIso(),(c.req.param("qid")??""),id).run();if(!r.meta?.changes)return c.json({detail:"Proposal unavailable"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"guest_support.withdraw",targetType:"support_guest",targetId:id,detail:{quote_id:(c.req.param("qid")??"")}});
+    return c.json({ok:true});
+  });
+
+  admin.get("/support-files",requirePermission("customers.read"),async c=>c.json({files:await listResources(c.env.DB,c.req.query("q")||"",c.req.query("learner")==="1"),storage_available:!!c.env.BUCKET}));
+  admin.post("/support-files",requirePermission("customers.read"),async c=>{
+    if(Number(c.req.header("Content-Length")||0)>7500000)return c.json({detail:"File too large."},413);
+    if(!(await hitRateLimit(c.env.DB,"support-upload:"+c.get("user").id,30,3600)).ok)return c.json({detail:"Upload limit reached."},429);
+    const r=await uploadResource(c.env,await readJson(c));if("error" in r)return c.json({detail:r.error},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.file.upload",targetType:"support_file",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.get("/support-files/:fid/download",requirePermission("customers.read"),async c=>{
+    const r=await downloadResource(c.env,c.req.param("fid")??"");return r?c.json(r):c.json({detail:"Resource unavailable"},404);
+  });
+  admin.post("/support-files/:fid/archive",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/support-decks",requirePermission("customers.read"),async c=>c.json({decks:await findDecks(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI}));
+  admin.post("/support-decks/draft",requirePermission("customers.read"),async c=>{
+    const r=await draftDeck(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.get("/support-decks/:deckId",requirePermission("customers.read"),async c=>{
+    const d=await getDeck(c.env.DB,(c.req.param("deckId")??""));return d&&d.status!=="archived"?c.json({deck:d}):c.json({detail:"Resource not found"},404);
+  });
+  admin.post("/support-decks",requirePermission("customers.read"),async c=>{
+    const r=await saveDeck(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.deck.create",targetType:"support_deck",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.put("/support-decks/:deckId",requirePermission("customers.read"),async c=>{
+    const id=(c.req.param("deckId")??""),r=await saveDeck(c.env.DB,await readJson(c),id);if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.deck.update",targetType:"support_deck",targetId:id,detail:{}});return c.json(r);
+  });
+  admin.post("/support-decks/:deckId/archive",requirePermission("customers.read"),async c=>{
+    const id=(c.req.param("deckId")??""),b=await readJson(c);if(b.confirmed!==true||!await archiveDeck(c.env.DB,id,b.revision))return c.json({detail:"Resource changed; refresh before archiving."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.deck.archive",targetType:"support_deck",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.post("/support-calendar/blocks",requirePermission("customers.read"),async c=>{
+    const r=await createBusyBlock(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.block",targetType:"support_block",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.post("/support-calendar/blocks/:bid/remove",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c),id=c.req.param("bid")??"";if(b.confirmed!==true)return c.json({detail:"Confirm removal."},400);
+    await ensureOrderSchema(c.env.DB);const r=await c.env.DB.prepare("DELETE FROM support_busy_blocks WHERE id=?").bind(id).run();
+    if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env),housekeeping_checks:await housekeepingChecks(c.env.DB)}));
+  admin.post("/support-briefing/housekeeping-check",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(!await recordHousekeepingCheck(c.env.DB,b))return c.json({detail:"Confirm a completed independent check."},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.housekeeping.check",targetType:"support_briefing",targetId:String(b.kind),detail:{}});return c.json({ok:true});
+  });
+  admin.get("/support-briefing/preview",requirePermission("customers.read"),async c=>{
+    const d=await buildBriefing(c.env);c.header("Cache-Control","no-store");return c.json({subject:d.subject,text:d.text});
+  });
+  admin.put("/support-briefing",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(!await saveBriefingSettings(c.env,b))return c.json({detail:"Choose a Sydney-time delivery hour and confirm. Email must be configured in production before enabling."},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.briefing.settings",targetType:"support_briefing",targetId:"daily",detail:{enabled:b.enabled,hour:b.hour}});return c.json({ok:true});
+  });
+  admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
+    await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
+    const from=c.req.query("from")||"",to=c.req.query("to")||"";
+    if(!Number.isFinite(Date.parse(from))||!Number.isFinite(Date.parse(to))||Date.parse(to)<=Date.parse(from)||Date.parse(to)-Date.parse(from)>62*86400000)return c.json({detail:"Choose a date range of up to 62 days."},400);
+    const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,d.learner_label,d.prep_minutes,d.wrap_minutes,d.ready,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
+    const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_installment_terms t ON t.order_id=o.id WHERE o.status='confirmed' AND COALESCE(t.due_at,i.due_at)<=? AND i.cancelled_at IS NULL ORDER BY COALESCE(t.due_at,i.due_at) LIMIT 100").bind(nowIso()).all<any>()).results||[];
+    const blocks=(await c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all()).results||[];
+    return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
+  });
+  for(const channel of ["member","guest"] as const){
+    admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true)}));
+    const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
+    const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
+    const slotsPath=(channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/slots";
+    admin.get(slotsPath,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",qid=c.req.param("qid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      return c.json({offer:await readSlots(c.env.DB,channel,id,qid)});
+    });
+    admin.post(slotsPath,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",qid=c.req.param("qid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const r=await offerSlots(c.env.DB,channel,id,qid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.slots.offer",targetType:"support",targetId:id,detail:{channel,quote_id:qid}});
+      const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+      let sent=false;try{if(recipient?.email){const origin=guestOrigin(c.env);if(origin){const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");sent=await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: choose your appointment",text:"Appointment options are available in your private portal: "+url,html:layout({preheader:"Choose a suitable appointment time.",kicker:"Learning Support",heading:"Choose an appointment time",body:p("Review the available times in your private portal. No payment has been taken.")+button("View appointment options",url),reason:"This is a service notification."})});}}}catch{}
+      return c.json({ok:true,email_notification_sent:sent,offer:await readSlots(c.env.DB,channel,id,qid)},201);
+    });
+    admin.post(slotsPath+"/withdraw",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",qid=c.req.param("qid")??"",b=await readJson(c);
+      if(b.confirmed!==true||!await exists(c,id)||!await removeSlots(c.env.DB,channel,id,qid))return c.json({detail:"Offer unavailable"},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.slots.withdraw",targetType:"support",targetId:id,detail:{channel,quote_id:qid}});return c.json({ok:true});
+    });
+    admin.get(path,requirePermission("customers.read"),async c=>{
+      const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      return c.json({orders:await listOrders(c.env.DB,channel,id)});
+    });
+    admin.post(path+"/package",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const r=await createPackage(c.env.DB,channel,id,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.package.reserve",targetType:"support",targetId:id,detail:{order_id:r.id,session_count:r.count,channel}});return c.json(r,201);
+    });
+    admin.post(path,requirePermission("customers.read"),async c=>{
+      const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const result=await createServiceOrder(c.env.DB,channel,id,await readJson(c));
+      if("error" in result)return c.json({detail:result.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
+      return c.json(result,201);
+    });
+    admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json(d):c.json({detail:"Order not found"},404);
+    });
+    admin.put(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id)||!await saveDiary(c.env.DB,channel,id,oid,await readJson(c)))return c.json({detail:"Check the diary fields and reload if another edit was saved. Ready lessons need objectives, an agenda and materials."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.diary.save",targetType:"support",targetId:oid,detail:{channel}});return c.json({ok:true});
+    });
+    admin.get(path+"/:oid/files",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      return c.json({files:await grantedResources(c.env.DB,channel,id,oid)});
+    });
+    admin.post(path+"/:oid/files/:fid/:fileAction",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"",action=c.req.param("fileAction"),b=await readJson(c);
+      if(b.confirmed!==true||!await exists(c,id))return c.json({detail:"Confirm customer and resource."},400);
+      const ok=action==="share"?await grantResource(c.env.DB,channel,id,oid,fid):action==="revoke"?await revokeResource(c.env.DB,channel,id,oid,fid):false;
+      if(!ok)return c.json({detail:"Resource or confirmed service unavailable."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.file."+action,targetType:"support",targetId:oid,detail:{file_id:fid,channel}});return c.json({ok:true});
+    });
+    admin.post(path+"/:oid/video-prepare",requirePermission("customers.read"),async c=>{
+      const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm video setup."},400);
+      const r=await prepareVideo(c.env,channel,(c.req.param("id")??""),(c.req.param("oid")??""));
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.post(path+"/:oid/video-token",requirePermission("customers.read"),async c=>{
+      const r=await videoToken(c.env,channel,(c.req.param("id")??""),(c.req.param("oid")??""),true);
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.get(path+"/:oid/classroom-image/:fid",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
+      if(!classroomEnabled(c.env)||!await canReadClassroomImage(c.env.DB,channel,id,oid,fid,true))return c.json({detail:"Image unavailable"},404);
+      const r=await readPresentedImage(c.env,fid);return r?c.json(r):c.json({detail:"Image unavailable"},404);
+    });
+    admin.get(path+"/:oid/classroom",requirePermission("customers.read"),async c=>{
+      if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
+      const s=await classroomState(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("oid")??""),true);
+      return s?c.json({...s,video_enabled:videoEnabled(c.env)}):c.json({detail:"Confirmed live booking required."},404);
+    });
+    admin.post(path+"/:oid/classroom-board",requirePermission("customers.read"),async c=>{
+      if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
+      const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),b=await readJson(c);
+      if(b.action==="open"||b.action==="close"){
+        if(b.confirmed!==true||!await setClassroomOpen(c.env.DB,channel,id,oid,b.action==="open"))return c.json({detail:"Cannot change this classroom now."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.classroom."+b.action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        if(b.action==="close"&&c.env.SUPPORT_VIDEO_TOKEN&&!await closeVideo(c.env,oid))return c.json({ok:true,video_cleanup_pending:true});
+        return c.json({ok:true});
+      }
+      const r=await editClassroom(c.env.DB,channel,id,oid,true,b);return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.post(path+"/:oid/:action",requirePermission("customers.read"),async c=>{
+      const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),action=(c.req.param("action")??""),b=await readJson(c);
+      if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
+      if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(action==="backup-preview"||action==="backup-email"){
+        const pack=await buildContinuity(c.env,channel,id,oid,b);
+        if("error" in pack)return c.json({detail:pack.error},409);
+        if(action==="backup-preview")return c.json(pack);
+        const sent=await emailContinuity(c.env,pack);
+        if(sent)await writeAudit(c.env.DB,{...actor(c),action:"support.backup_email",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:sent,email_notification_sent:sent});
+      }
+      if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
+      if(action==="invoice"){
+        const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
+        if("error" in r)return c.json({detail:r.error},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_recorded",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:true},201);
+      }
+      if(action==="verify-payment"){
+        if(!await verifyManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id))return c.json({detail:"Payment could not be recorded. Check the invoice reference, full amount, order status and appointment time."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.payment_verified_manually",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+        const origin=guestOrigin(c.env),url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
+        const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. If classroom access is enabled, open your live appointment in the portal during the session window.")+button("View arrangements",url),reason:"This is a service notification."})});
+        return c.json({ok:true,email_notification_sent:sent});
+      }
+      const cancellationNotice=async()=>{
+        // A cancellation is already durable. Email failure must not undo it or misreport the reservation.
+        try{
+          const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+          const origin=guestOrigin(c.env);if(!origin||!recipient?.email)return false;
+          const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
+          return await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: reservation cancelled",text:"An unpaid reservation has been cancelled and the time released. Please review your arrangements in your private portal. Any separately paid lessons are unaffected. Contact Side-Quest if you believe payment was already made. "+url,html:layout({preheader:"An unpaid reservation has been released.",kicker:"Learning Support",heading:"Reservation cancelled",body:p("An unpaid reservation has been released. Review your arrangements in your private portal. Separately paid lessons are unaffected. Contact Side-Quest if you believe you have already paid.")+button("View arrangements",url),reason:"This is a service notification."})});
+        }catch{return false;}
+      };
+      if(action==="cancel-invoice"){
+        if(!await cancelManualInvoiceOrder(c.env.DB,channel,id,oid,b))return c.json({detail:"Only a confirmed unpaid order with a cancelled Square invoice can be released."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true,cancellation_email_sent:await cancellationNotice()});
+      }
+      const ok=action==="cancel"?await cancelUnstartedOrder(c.env.DB,channel,id,oid,b.checked_square===true):action==="complete"?await completeOrder(c.env.DB,channel,id,oid):false;
+      if(!ok)return c.json({detail:"Action unavailable. Orders with an initiated Square checkout require reconciliation before cancellation."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support."+action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json(action==="cancel"?{ok:true,cancellation_email_sent:await cancellationNotice()}:{ok:true});
+    });
+  }
+  registerDocumentStudio(admin, requirePermission);
 
   admin.all("*", (c) => notFound(c));
   return admin;

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { api } from "../../lib/api";
+import { SHOP_URL } from "../../lib/shop";
+import { useAuth } from "../../context/AuthContext";
 
 const LABEL = {
   FREE_PREVIEW: "Free preview", PREVIEW_EXPIRED: "Free preview ended",
@@ -9,62 +11,24 @@ const LABEL = {
   PAST_DUE: "Family Membership (payment needed)", CANCELLED: "Membership ended", INTERNAL: "Owner account",
 };
 const PAID = ["ACTIVE_WEEKLY", "ACTIVE_FORTNIGHTLY", "ACTIVE_MONTHLY", "ACTIVE_ANNUAL", "PAST_DUE"];
-const money = (cents) => `${(cents / 100).toFixed(cents % 100 ? 2 : 0)}`;
 const BTN = "rounded-xl px-4 py-2 text-sm font-bold text-white disabled:opacity-60";
 const BTN_STYLE = { background: "#4A5D3A" };
 const day = (iso) => (iso ? new Date(iso).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : "");
 
 export default function UpgradePage() {
+  const { user } = useAuth();
   const [plan, setPlan] = useState(null);
   const [aiStatus, setAiStatus] = useState(null);
   const [busy, setBusy] = useState("");
   const [error, setError] = useState("");
-  const [promoCode, setPromoCode] = useState("");
-  const [discount, setDiscount] = useState({ code: "", status: "idle" });
-  const [params] = useSearchParams();
-  const checkout = params.get("checkout");
 
   const load = () => api.get("/account/plan").then((r) => { setPlan(r.data); return r.data; }).catch(() => null);
   useEffect(() => {
     load();
     api.get("/ai/status").then(r => setAiStatus(r.data)).catch(() => {});
-    // Returning from Stripe: access is granted only by the verified webhook, so wait for the server to confirm.
-    if (checkout !== "success") return undefined;
-    let n = 0;
-    const t = setInterval(async () => {
-      n += 1;
-      const p = await load();
-      if ((p && PAID.includes(p.effective_plan)) || n >= 15) clearInterval(t);
-    }, 2000);
-    return () => clearInterval(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkout]);
+  }, []);
 
-  // Debounced server/Stripe check. Editing even one character invalidates the previous
-  // approval; an unavailable network must never silently pass a code into checkout.
-  useEffect(() => {
-    if (!promoCode) { setDiscount({ code: "", status: "idle" }); return undefined; }
-    if (promoCode.length < 4) { setDiscount({ code: promoCode, status: "invalid", message: "Enter at least four letters or numbers." }); return undefined; }
-    const controller = new AbortController();
-    setDiscount({ code: promoCode, status: "checking" });
-    const timer = setTimeout(async () => {
-      try {
-        const response = await api.get("/billing/discount-preview", { params: { code: promoCode }, signal: controller.signal });
-        if (!controller.signal.aborted) {
-          const offer = response.data;
-          setDiscount({ code: promoCode, status: offer.valid ? "valid" : "invalid", ...offer });
-        }
-      } catch (err) {
-        if (!controller.signal.aborted) setDiscount({ code: promoCode, status: "error", message: err.response?.data?.message || "Couldn't check the code. Try again shortly." });
-      }
-    }, 650);
-    return () => { clearTimeout(timer); controller.abort(); };
-  }, [promoCode]);
-
-  const verifiedDiscount = promoCode && discount.code === promoCode && discount.status === "valid" ? discount : null;
-  const codeReady = !promoCode || !!verifiedDiscount;
-  const durationLabel = (value) => ({ once: "first payment only", month1: "first month", month3: "first three months", month6: "first six months" }[value] || "limited period");
-  const discountedCents = (amount) => Math.round(amount * (100 - (verifiedDiscount?.percent_off || 0)) / 100);
 
   const go = async (path, body, key) => {
     setBusy(key); setError("");
@@ -92,7 +56,7 @@ export default function UpgradePage() {
   const paid = PAID.includes(eff);
   const preview = eff === "FREE_PREVIEW";
   const expired = eff === "PREVIEW_EXPIRED" || eff === "CANCELLED";
-  const canBuy = billing.enabled && !paid && eff !== "INTERNAL";
+  const canJoin = !paid && eff !== "INTERNAL";
   const usage = plan.usage || {};
   const row = (a, b) => <tr className="border-t border-stone-200"><td className="p-3">{a}</td><td className="p-3 text-center">{b[0]}</td><td className="p-3 text-center">{b[1]}</td></tr>;
 
@@ -121,10 +85,7 @@ export default function UpgradePage() {
           <p className="text-xs text-violet-900">AI lesson sets, AI rewrites, extra drafts and other advanced planning tools remain part of Family Membership.</p>
         </section>
       )}
-      {preview && plan.preview_gift && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="preview-gift-notice"><strong>🐉 A little something from the Dragon’s Hoard!</strong> You’ve been gifted {plan.preview_gift.days} extra preview day{plan.preview_gift.days === 1 ? "" : "s"}. Your free preview now runs until {day(plan.preview_gift.ends_at)}. All the usual preview limits still apply.</div>}
-      {checkout === "success" && !paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirming">Thanks! We are confirming your payment. This usually takes a few seconds.</div>}
-      {checkout === "success" && paid && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" data-testid="checkout-confirmed">Your Family Membership is active. Welcome!</div>}
-      {checkout === "cancelled" && <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-700">Checkout was cancelled. Nothing was charged.</div>}
+      {preview && plan.preview_gift && <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950" data-testid="preview-gift-notice"><strong>🐉 A little gift from Side-Quest!</strong> You’ve been gifted {plan.preview_gift.days} extra preview day{plan.preview_gift.days === 1 ? "" : "s"}. Your free preview now runs until {day(plan.preview_gift.ends_at)}. All the usual preview limits still apply.</div>}
       {eff === "PAST_DUE" && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">Your last payment did not go through. {billing.provider === "square" ? "Square has emailed you an invoice you can pay with another card" : "Please update your card in Manage billing"}{plan.period_end ? ` before ${day(plan.period_end)}` : ""} to keep full access.</div>}
       {expired && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">{eff === "CANCELLED" ? "Your membership has ended." : "Your free preview has ended."} Your family account and saved records are kept. Existing lessons and records remain viewable, children may finish assigned lessons and parents can review that work. New learning records, lessons and assignments need a Family Membership.</div>}
       {error && <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900" role="alert">{error}</div>}
@@ -153,47 +114,13 @@ export default function UpgradePage() {
         </div>
       )}
 
-      {canBuy && (
-        <section data-testid="billing-options">
-          <h2 className="font-display text-lg font-bold mb-1" style={{color:"#1F3B2D"}}>Choose how often to pay</h2>
-          <p className="text-sm text-stone-600 mb-4">Every option includes the same Family Membership, with no per-child or per-subject charges. Membership renews at the selected interval until you cancel.</p>
-          <div className="paper-card p-4 mb-4 space-y-2" data-testid="plan-promo-scroll">
-            <label htmlFor="sidequest-promo-code" className="block text-sm font-bold" style={{color:"#1F3B2D"}}>🐉 Have a Dragon’s Hoard discount scroll?</label>
-            <input id="sidequest-promo-code" maxLength={24} autoComplete="off" value={promoCode} onChange={(e) => setPromoCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))} placeholder="Enter your code (optional)" className="block w-full rounded-xl border border-stone-300 bg-white p-3 text-sm" data-testid="plan-promo-code" />
-            <p className="text-xs text-stone-600">We'll check your code here before you choose a membership. Stripe confirms the final amount before payment.</p>
-            {promoCode && (
-              <div role="status" aria-live="polite" data-testid="plan-promo-status" className={`rounded-lg px-3 py-2 text-sm ${verifiedDiscount ? "bg-emerald-50 text-emerald-900 border border-emerald-200" : discount.code === promoCode && (discount.status === "invalid" || discount.status === "error") ? "bg-rose-50 text-rose-900 border border-rose-200" : "bg-stone-50 text-stone-700"}`}>
-                {verifiedDiscount ? <><strong>✓ Discount confirmed: {verifiedDiscount.percent_off}% off!</strong> Valid for the {durationLabel(verifiedDiscount.duration_type)}. Your estimated first payment is shown below. Stripe makes the final eligibility and price decision.</>
-                  : discount.code === promoCode && (discount.status === "invalid" || discount.status === "error") ? <><strong>Code not applied.</strong> {discount.message || "Please check your code."}</>
-                  : "Checking this scroll with the Dragon…"}
-              </div>
-            )}
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {billing.options.map((o) => (
-              <div key={o.interval} className="paper-card p-4 flex flex-col gap-2" data-testid={`plan-${o.interval}`}>
-                <div className="text-xs font-bold uppercase tracking-wider text-stone-500">{o.label}</div>
-                <div>{verifiedDiscount ? <>
-                  <span className="text-sm line-through text-stone-500">{money(o.amount_cents)} {o.currency}</span>{" "}
-                  <span className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}} data-testid={`promo-price-${o.interval}`}>{money(discountedCents(o.amount_cents))}</span>
-                  <span className="text-sm text-stone-600"> {o.currency} estimated first payment</span>
-                </> : <><span className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{money(o.amount_cents)}</span> <span className="text-sm text-stone-600">{o.currency} {o.every}</span></>}</div>
-                <p className="text-xs text-stone-500">{verifiedDiscount ? `Your ${verifiedDiscount.percent_off}% discount applies for the ${durationLabel(verifiedDiscount.duration_type)}. After the offer ends, the regular ${money(o.amount_cents)} ${o.currency} ${o.every} resumes. Monthly-duration offers can discount more than one weekly or fortnightly invoice.` : `Billed ${money(o.amount_cents)} ${o.every} until you cancel. Same Family Membership on every option.`}</p>
-                <button type="button" className={`${BTN} mt-auto`} style={BTN_STYLE} disabled={!!busy || !codeReady} onClick={() => go("/billing/checkout", { interval: o.interval, ...(verifiedDiscount ? { promo_code: promoCode } : {}) }, o.interval)} data-testid={`choose-${o.interval}`}>
-                  {busy === o.interval ? "Opening checkout…" : `Choose ${o.label.toLowerCase()}`}
-                </button>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs text-stone-500 mt-2">Payments are handled securely by Stripe. You can only redeem active SideQuest discount scrolls. No additional trial is added at checkout; the seven-day preview needs no card.</p>
+      {canJoin && (
+        <section className="paper-card p-5 space-y-3" data-testid="join-in-shop">
+          <h2 className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>Become a Family Member</h2>
+          <p className="text-sm text-stone-700">Family Membership is bought in the Side-Quest shop. Use <strong>the same email address as your Side-Quest account</strong> at checkout{user?.email ? <> ({user.email})</> : null}, and your account unlocks automatically within a few minutes.</p>
+          <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" className={`${BTN} inline-flex`} style={BTN_STYLE} data-testid="join-shop-link">Go to the shop</a>
+          <p className="text-xs text-stone-500">Payments are handled securely by Square. Every option includes the same Family Membership, with no per-child or per-subject charges.</p>
         </section>
-      )}
-
-      {!billing.enabled && !paid && eff !== "INTERNAL" && (
-        <div className="paper-card p-5" data-testid="billing-status">
-          <h2 className="font-display text-lg font-bold" style={{color:"#1F3B2D"}}>Membership checkout is not open yet</h2>
-          <p className="text-sm text-stone-700 mt-1">Paid checkout is not available right now. You can keep exploring the free preview while subscriptions are being prepared.</p>
-        </div>
       )}
       {eff === "INTERNAL" && <p className="text-sm text-stone-600">Your owner account includes complimentary access to all Side-Quest features.</p>}
 

@@ -384,18 +384,12 @@ test("suspend / restore / sign out everywhere: confirmed, reasoned, enforced on 
   assert.equal((await h.req(`/admin/customers/${owner.familyId}/sign-out-everywhere`, { method: "POST", token: owner.token, body: { reason: "Testing myself" } })).status, 409);
 });
 
-test("Dragon's Hoard is Owner-only, passkey protected, and free-preview gifts are audited", async () => {
+test("free-preview gifts are Owner-only, passkey protected and audited; Hoard discount codes are retired", async () => {
   const { h, owner } = await ownerSetup();
   const family = await h.register("hoard-family@example.com");
-  assert.equal((await h.req("/admin/hoard", { token: family.token })).status, 404);
-  assert.equal((await h.req("/admin/hoard", { token: owner.token })).status, 401, "Owner must unlock with passkey");
+  // The Dragon's Hoard discount codes are retired: those routes no longer exist for anyone.
   await stepUp(h, owner);
-  const listed = await h.req("/admin/hoard", { token: owner.token });
-  assert.equal(listed.status, 200, JSON.stringify(listed.json));
-  assert.equal(listed.json.billing_configured, false);
-  assert.equal(listed.json.offers.length, 0);
-  assert.equal((await h.req("/admin/hoard", { method: "POST", token: family.token, body: { confirm: "CREATE" } })).status, 404);
-  assert.equal((await h.req("/admin/hoard", { method: "POST", token: owner.token, body: { confirm: "CREATE", code: "DRAGON20", label: "Dragon deal", percent_off: 20, duration_months: 1, max_redemptions: 10, expires_at: new Date(Date.now() + 86400000).toISOString() } })).status, 503, "No Stripe key must never create a coupon");
+  assert.equal((await h.req("/admin/hoard", { token: owner.token })).status, 404);
   const giftPath = "/admin/customers/" + family.familyId + "/gift-preview";
   assert.equal((await h.req(giftPath, { method: "POST", token: owner.token, body: { confirm: "GIFT", days: 7, reason: "Generosity test" }, admin: false })).status, 403, "CSRF header required");
   assert.equal((await h.req(giftPath, { method: "POST", token: family.token, body: { confirm: "GIFT", days: 7, reason: "Not owner" } })).status, 404);
@@ -826,4 +820,398 @@ test("feedback: input validation and rate limiting stop spam without creating ex
   const blocked=await h.req("/feedback",{method:"POST",token:alice.token,admin:false,body:good});
   assert.equal(blocked.status,429);
   assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM parent_feedback WHERE user_id=?").get(alice.id).n,5);
+});
+
+
+
+test("learning support intake validates consent, is private and filterable in Owner HQ",async()=>{
+ const {h,owner}=await ownerSetup();
+ const alice=await h.register("support-alice@example.com","Alice");
+ const bob=await h.register("support-bob@example.com","Bob");
+ const child=await h.addChild(alice,"support-child");
+ const input={kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Worked explanation",detail:"Help understanding equivalent fractions.",consent:true};
+ for(const body of [{...input,consent:false},{...input,year:"Year 99"},{...input,subject:"Unknown"},{...input,detail:"short"},{category:"other",subject:"Forged support",message:"This should not be treated as a support enquiry.",page_hint:"learning-support"}]){
+  const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body});assert.equal(r.status,400,JSON.stringify(r.json));
+ }
+ const denied=await h.req("/feedback",{method:"POST",admin:false,token:child.token,body:input});assert.ok([401,403,404].includes(denied.status));
+ const regular=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{category:"idea",subject:"A general idea",message:"An ordinary feedback submission."}});assert.equal(regular.status,201);
+ const created=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{...input,family_id:bob.familyId,user_id:bob.id}});assert.equal(created.status,201,JSON.stringify(created.json));
+ let r=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(r.status,200);assert.deepEqual(r.json.reports.map(x=>x.id),[created.json.id]);assert.match(r.json.reports[0].message,/equivalent fractions/);
+ r=await h.req("/feedback?kind=learning-support",{admin:false,token:bob.token});assert.equal(r.status,200);assert.equal(r.json.reports.length,0);
+ r=await h.req("/admin/feedback?kind=learning-support",{token:alice.token});assert.equal(r.status,404);
+ await stepUp(h,owner);
+ r=await h.req("/admin/feedback?kind=learning-support",{token:owner.token});assert.equal(r.status,200);assert.deepEqual(r.json.items.map(x=>x.id),[created.json.id]);
+ h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(alice.familyId);
+ r=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.reports.length,1);
+ const afterExpiry=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{...input,detail:"A new learning need after membership expiry."}});assert.equal(afterExpiry.status,201,JSON.stringify(afterExpiry.json));
+}); 
+
+
+test("learning support quote lifecycle: owner-only, private, expiry, non-member responses, no billing changes",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("quote-alice@example.com","Alice"),bob=await h.register("quote-bob@example.com","Bob");
+ const child=await h.addChild(alice,"quote-child");
+ const request=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Worked explanation",detail:"Understanding the phases of the moon.",consent:true}});
+ assert.equal(request.status,201,JSON.stringify(request.json));
+ const id=request.json.id,ap="/admin/feedback/"+id+"/quotes",pp="/learning-support/"+id+"/quotes";
+ const proposal={scope:"A written explanation and practice questions.",delivery:"Private delivery after confirmation",amount_cents:1500,valid_days:7,confirmed:true};
+ assert.equal((await h.req(ap,{method:"POST",token:alice.token,body:proposal})).status,404);
+ await stepUp(h,owner);
+ assert.equal((await h.req(ap,{method:"POST",token:owner.token,body:{...proposal,amount_cents:12.5}})).status,400);
+ const made=await h.req(ap,{method:"POST",token:owner.token,body:proposal});assert.equal(made.status,201,JSON.stringify(made.json));
+ assert.equal((await h.req(ap,{method:"POST",token:owner.token,body:proposal})).status,409);
+ assert.equal((await h.req(pp,{admin:false,token:bob.token})).status,404);
+ assert.ok([401,403,404].includes((await h.req(pp,{admin:false,token:child.token})).status));
+ h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(alice.familyId);
+ let r=await h.req(pp,{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.quotes[0].amount_cents,1500);
+ const history=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(history.json.reports.find(x=>x.id===id).quotes[0].amount_cents,1500);
+ const response=pp+"/"+made.json.id+"/respond";
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:bob.token,body:{response:"interested",confirmed:true}})).status,404);
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:false}})).status,400);
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true,amount_cents:1}})).status,200);
+ assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,409);
+ r=await h.req(ap,{token:owner.token});assert.equal(r.json.quotes[0].status,"interested");assert.equal(r.json.quotes[0].amount_cents,1500);
+ assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"PREVIEW_EXPIRED");
+ assert.equal((await h.req(ap+"/"+made.json.id+"/withdraw",{method:"POST",token:owner.token,body:{confirmed:true}})).status,200);
+ const second=await h.req(ap,{method:"POST",token:owner.token,body:proposal});assert.equal(second.status,201);
+ h.db.raw.prepare("UPDATE learning_support_quotes SET expires_at='2020-01-01T00:00:00.000Z' WHERE id=?").run(second.json.id);
+ r=await h.req(pp,{admin:false,token:alice.token});assert.equal(r.json.quotes.find(q=>q.id===second.json.id).status,"expired");
+ assert.equal((await h.req(pp+"/"+second.json.id+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,409);
+});
+
+
+test("standalone support verifies email, isolates guest sessions, and never creates a family or trial",async()=>{
+ const {h,owner}=await ownerSetup();
+ assert.equal((await h.req("/support-guest/status",{admin:false})).json.available,false);
+ assert.equal((await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"guest@example.com"}})).status,503);
+ h.env.SUPPORT_GUEST_ENABLED="true";
+ const mail=[];h.env.EMAIL={send:async m=>{mail.push(m);return {messageId:"test"};}};
+ const before=h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n;
+ const link=await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"guest@example.com"}});
+ assert.equal(link.status,200,JSON.stringify(link.json));
+ const raw=mail.at(-1).text.match(/#token=([a-f0-9]{64})/)[1];
+ assert.notEqual(h.db.raw.prepare("SELECT token_hash FROM support_guest_links").get().token_hash,raw);
+ const redeem=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:raw}});assert.equal(redeem.status,200);
+ assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:raw}})).status,400);
+ const headers={"X-SideQuest-Guest":redeem.json.token};
+ const input={parent_name:"Guest Parent",subject:"Science",year:"Year 5",service:"Worked explanation",detail:"Help understanding the phases of the moon.",consent:true};
+ assert.equal((await h.req("/support-guest/requests",{method:"POST",admin:false,body:input})).status,401);
+ const made=await h.req("/support-guest/requests",{method:"POST",admin:false,headers,body:input});assert.equal(made.status,201,JSON.stringify(made.json));
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
+ assert.equal((await h.req("/auth/me",{token:redeem.json.token})).status,401);
+ const path="/admin/support-guests/"+made.json.id;
+ assert.equal((await h.req("/admin/support-guests",{token:redeem.json.token})).status,404);
+ await stepUp(h,owner);
+ const quote=await h.req(path+"/quotes",{method:"POST",token:owner.token,body:{scope:"Worked explanation and practice questions",delivery:"Written response",amount_cents:1500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
+ const list=await h.req("/support-guest/requests",{admin:false,headers});assert.equal(list.json.requests[0].quotes[0].amount_cents,1500);
+ await h.req("/support-guest/link",{method:"POST",admin:false,body:{email:"other@example.com"}});
+ const otherRaw=mail.at(-1).text.match(/#token=([a-f0-9]{64})/)[1];
+ const other=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:otherRaw}});
+ const otherHeaders={"X-SideQuest-Guest":other.json.token};
+ assert.equal((await h.req("/support-guest/requests",{admin:false,headers:otherHeaders})).json.requests.length,0);
+ const response="/support-guest/requests/"+made.json.id+"/quotes/"+quote.json.id+"/respond";
+ assert.equal((await h.req(response,{method:"POST",admin:false,headers:otherHeaders,body:{response:"interested",confirmed:true}})).status,404);
+ assert.equal((await h.req(response,{method:"POST",admin:false,headers,body:{response:"interested",confirmed:true,amount_cents:1}})).status,200);
+ assert.equal((await h.req(path+"/quotes",{token:owner.token})).json.quotes[0].amount_cents,1500);
+ assert.equal((await h.req("/support-guest/logout",{method:"POST",admin:false,headers,body:{}})).status,200);
+ assert.equal((await h.req("/support-guest/requests",{admin:false,headers})).status,401);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
+});
+
+test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{
+ const {h,owner}=await ownerSetup();
+ const alice=await h.register("manual-alice@example.com","Alice");
+ const made=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding phases of the moon.",consent:true}});assert.equal(made.status,201);
+ const id=made.json.id,ap="/admin/feedback/"+id,pp="/learning-support/"+id;
+ await stepUp(h,owner);
+ const quote=await h.req(ap+"/quotes",{method:"POST",token:owner.token,body:{scope:"A guided science lesson",delivery:"Online appointment",amount_cents:2500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
+ assert.equal((await h.req(pp+"/quotes/"+quote.json.id+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const start=new Date(Date.now()+48*3600000).toISOString(),due=new Date(Date.now()+24*3600000).toISOString();
+ const order=await h.req(ap+"/orders",{method:"POST",token:owner.token,body:{quote_id:quote.json.id,mode:"live",start_at:start,minutes:30,terms:"Agreed appointment and cancellation terms.",confirmed:true}});assert.equal(order.status,201,JSON.stringify(order.json));
+ const oid=order.json.id,adminPath=ap+"/orders/"+oid,parentPath=pp+"/orders/"+oid;
+ assert.equal((await h.req(parentPath+"/confirm",{method:"POST",admin:false,token:alice.token,body:{confirmed:true}})).status,200);
+ assert.equal((await h.req(adminPath+"/checkout",{method:"POST",token:owner.token,body:{confirmed:true}})).status,410);
+ const inv={reference:"INV-TEST-123",due_at:due,sent_in_square:true,confirmed:true};
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:alice.token,body:inv})).status,404);
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:inv})).status,201);
+ assert.equal((await h.req(adminPath+"/cancel",{method:"POST",token:owner.token,body:{confirmed:true}})).status,409);
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:{reference:inv.reference,amount_cents:2499,paid_in_square:true,confirmed:true}})).status,409);
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:alice.token,body:{reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true}})).status,404);
+ h.db.raw.prepare("UPDATE support_manual_invoices SET due_at='2020-01-01T00:00:00.000Z' WHERE order_id=?").run(oid);
+ const list=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(list.json.orders[0].invoice_overdue,true);assert.equal(list.json.orders[0].status,"confirmed");
+ const payment={reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true};
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,200);
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,409);
+ assert.equal((await h.req(pp+"/orders",{admin:false,token:alice.token})).json.orders[0].status,"paid");
+ assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"FREE_PREVIEW");
+});
+
+test("classroom board gates access on paid appointment, owner opening, time window and revision",async()=>{
+ const {h,owner}=await ownerSetup();
+ const {classroomState,setClassroomOpen,editClassroom}=await import("../src/supportClassrooms.ts");
+ const alice=await h.register("board-alice@example.com","Alice");
+ const bob=await h.register("board-bob@example.com","Bob");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Help with lunar phases.",consent:true}});
+ assert.equal(r.status,201,JSON.stringify(r.json));
+ const id=r.json.id,now=new Date(),start=new Date(now.getTime()+120000),end=new Date(now.getTime()+32*60000),oid="board-order";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"member",id,"board-quote",0,"Science support","Online","Agreed terms","live",start.toISOString(),end.toISOString(),"confirmed",now.toISOString(),now.toISOString());
+ assert.equal(await classroomState(h.db,"member",id,oid,false,now),null);
+ h.db.raw.prepare("UPDATE support_service_orders SET status='paid' WHERE id=?").run(oid);
+ assert.equal((await classroomState(h.db,"member",id,oid,false,now)).open,false);
+ assert.equal(await setClassroomOpen(h.db,"member",id,oid,true,now),true);
+ assert.equal((await editClassroom(h.db,"member",id,oid,false,{action:"text",text:"not allowed",revision:0},now)).error,"This board action is not available.");
+ assert.equal((await editClassroom(h.db,"member",id,oid,false,{action:"stroke",points:[[0,0],[1,1]],color:"#163b2c",revision:0},now)).ok,true);
+ assert.ok((await editClassroom(h.db,"member",id,oid,true,{action:"text",text:"stale",revision:0},now)).error);
+ h.env.SUPPORT_CLASSROOM_ENABLED="true";
+ const path="/learning-support/"+id+"/orders/"+oid+"/classroom";
+ assert.equal((await h.req(path,{admin:false,token:bob.token})).status,404);
+ assert.equal((await h.req(path,{admin:false,token:alice.token})).json.board.strokes.length,1);
+ await stepUp(h,owner);
+ assert.equal((await h.req("/admin/support-calendar?from="+encodeURIComponent(now.toISOString())+"&to="+encodeURIComponent(new Date(now.getTime()+86400000).toISOString()),{token:owner.token})).json.appointments.some(o=>o.id===oid),true);
+ assert.equal(await setClassroomOpen(h.db,"member",id,oid,false,now),true);
+ assert.equal((await classroomState(h.db,"member",id,oid,false,now)).board.strokes.length,0);
+ assert.equal((await classroomState(h.db,"member",id,oid,true,new Date(end.getTime()+11*60000))).in_window,false);
+});
+
+test("RealtimeKit staging-only room setup, token windows and cleanup with mocked provider",async()=>{
+ const {h}=await ownerSetup();
+ const {prepareVideo,videoToken,closeVideo}=await import("../src/supportVideo.ts");
+ const {setClassroomOpen}=await import("../src/supportClassrooms.ts");
+ const now=new Date(),oid="video-order",id="video-request";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest",id,"video-quote",0,"Science support","Online","Agreed terms","live",now.toISOString(),new Date(now.getTime()+30*60000).toISOString(),"paid",now.toISOString(),now.toISOString());
+ await setClassroomOpen(h.db,"guest",id,oid,true,now);
+ const env={...h.env,SUPPORT_CLASSROOM_ENABLED:"true",SUPPORT_VIDEO_TEST:"true",SUPPORT_VIDEO_ACCOUNT:"test-account",SUPPORT_VIDEO_APP:"test-app",SUPPORT_VIDEO_TOKEN:"test-secret",SUPPORT_VIDEO_TUTOR_PRESET:"tutor",SUPPORT_VIDEO_FAMILY_PRESET:"family",STAGING_KEY:"test"};
+ const calls=[];
+ const fake=async(url,init)=>{const b=init.body?JSON.parse(init.body):{};calls.push({url,method:init.method,b});return new Response(JSON.stringify({success:true,data:url.endsWith("/meetings")?{id:"meeting-one"}:url.endsWith("/participants")?{id:"participant-one",token:"test-token"}:{token:"refreshed-token"}}));};
+ assert.ok((await prepareVideo({...env,STAGING_KEY:undefined},"guest",id,oid,fake,now)).error);
+ assert.equal(calls.length,0);
+ assert.equal((await prepareVideo(env,"guest",id,oid,fake,now)).ok,true);
+ assert.equal((await prepareVideo(env,"guest",id,oid,fake,now)).ok,true);
+ assert.equal(calls.length,1);assert.equal(calls[0].b.record_on_start,false);
+ assert.equal((await videoToken(env,"guest",id,oid,false,fake,now)).token,"test-token");
+ assert.equal(calls[1].b.preset_name,"family");assert.equal(calls[1].b.token.expires_on,new Date(now.getTime()+40*60000).toISOString());
+ assert.equal((await videoToken(env,"guest",id,oid,false,fake,now)).token,"refreshed-token");
+ assert.equal(await closeVideo(env,oid,fake),true);
+ assert.equal(calls.at(-2).b.status,"INACTIVE");assert.ok(calls.at(-1).url.endsWith("/kick-all"));
+ assert.ok((await videoToken(env,"guest",id,oid,false,fake,now)).error);
+});
+
+test("reusable tutor decks: review required, version conflict, private notes never shared",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("deck-alice@example.com","Alice");
+ const {saveDeck,getDeck}=await import("../src/supportDecks.ts");
+ const {setClassroomOpen,editClassroom,classroomState}=await import("../src/supportClassrooms.ts");
+ const deck={title:"Fractions",subject:"Mathematics",year_level:"Year 5",slides:[{kind:"practice",heading:"Try it",body:"What is half of 8?",notes:"Private answer: 4."}]};
+ assert.equal((await h.req("/admin/support-decks",{token:alice.token})).status,404);
+ await stepUp(h,owner);
+ const d=await h.req("/admin/support-decks",{method:"POST",token:owner.token,body:deck});assert.equal(d.status,201,JSON.stringify(d.json));
+ const id=d.json.id,now=new Date(),oid="deck-order";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest","deck-request","deck-quote",0,"Maths support","Online","Agreed terms","live",now.toISOString(),new Date(now.getTime()+30*60000).toISOString(),"paid",now.toISOString(),now.toISOString());
+ await setClassroomOpen(h.db,"guest","deck-request",oid,true,now);
+ const present={action:"present",deck_id:id,deck_revision:1,index:0,revision:0};
+ assert.ok((await editClassroom(h.db,"guest","deck-request",oid,true,present,now)).error);
+ assert.ok((await saveDeck(h.db,{...deck,reviewed:true,revision:1},id)).id);
+ assert.ok((await saveDeck(h.db,{...deck,reviewed:true,revision:1},id)).error);
+ assert.ok((await editClassroom(h.db,"guest","deck-request",oid,false,{...present,deck_revision:2},now)).error);
+ assert.equal((await editClassroom(h.db,"guest","deck-request",oid,true,{...present,deck_revision:2},now)).ok,true);
+ const state=await classroomState(h.db,"guest","deck-request",oid,false,now);
+ assert.equal(state.board.slide.body,"What is half of 8?");
+ assert.equal(JSON.stringify(state).includes("Private answer"),false);
+ assert.equal((await getDeck(h.db,id)).slides[0].notes,"Private answer: 4.");
+});
+
+test("quote plan snapshot separates public lesson sequence from private teaching guides",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("plan-alice@example.com","Alice"),bob=await h.register("plan-bob@example.com","Bob");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(r.status,201,JSON.stringify(r.json));
+ const id=r.json.id,ap="/admin/feedback/"+id+"/quotes",pp="/learning-support/"+id+"/quotes";
+ await stepUp(h,owner);
+ const plan={title:"Fractions",subject:"Mathematics",year_level:"Year 5",goal:"Recognise equivalent fractions",lessons:[{title:"Halves and quarters",objective:"Identify equivalent fractions",activities:"Compare fraction strips",check:"Explain why two fractions are equal",home_practice:"Draw two equivalent fractions",minutes:30,guide:"Private guide: model 1/2 = 2/4.",answers:"Private answer: 3/6 = 1/2."}]};
+ const proposal={scope:"Guided mathematics support",delivery:"One online session",amount_cents:2500,valid_days:7,confirmed:true,plan};
+ assert.equal((await h.req(ap,{method:"POST",token:owner.token,body:proposal})).status,400);
+ const q=await h.req(ap,{method:"POST",token:owner.token,body:{...proposal,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));
+ const path=pp+"/"+q.json.id+"/plan";
+ const parent=await h.req(path,{admin:false,token:alice.token});assert.equal(parent.status,200);assert.equal(parent.json.plan.lessons[0].title,"Halves and quarters");assert.equal(JSON.stringify(parent.json).includes("Private answer"),false);assert.equal(parent.json.plan.tutor_guides,undefined);
+ assert.equal((await h.req(path,{admin:false,token:bob.token})).status,404);
+ const own=await h.req(ap+"/"+q.json.id+"/plan",{token:owner.token});assert.equal(own.json.plan.tutor_guides[0].answers,"Private answer: 3/6 = 1/2.");
+});
+
+test("outage backup only permits restricted Meet URLs and does not expose private answers in parent copy",async()=>{
+ const {validBackupMeeting,planText}=await import("../src/supportContinuity.ts");
+ assert.equal(validBackupMeeting("https://meet.google.com/abc-defg-hij"),"https://meet.google.com/abc-defg-hij");
+ for(const bad of ["https://meet.google.com.evil.test/abc-defg-hij","https://meet.google.com/abc-defg-hij?x=1","javascript:alert(1)"])assert.equal(validBackupMeeting(bad),null);
+ const p={title:"Fractions",subject:"Maths",year_level:"Year 5",goal:"Compare fractions",lessons:[{title:"Practice",minutes:30,objective:"Compare",activities:"Draw",check:"Explain",home_practice:"Try 1/2"}],tutor_guides:[{guide:"Private guide",answers:"Private answer"}]};
+ assert.ok(!planText(p).includes("Private answer"));assert.ok(planText(p,true).includes("Private answer"));
+});
+
+test("guided tutoring enquiry preserves interests, strengths and goals and validates optional fields",async()=>{
+ const {parseLearningSupport}=await import("../src/learningSupport.ts");
+ const b={subject:"Mathematics",year:"Year 5",service:"Not sure yet",detail:"Finds fractions hard to understand",consent:true,interests:"Dinosaurs and drawing",strengths:"Counts confidently",preferences:"Visual examples",goal:"Compare fractions",availability:"Afternoons"};
+ const result=parseLearningSupport(b);assert.ok(result.message.includes("Interests and favourite topics: Dinosaurs and drawing"));assert.ok(result.message.includes("Parent goals: Compare fractions"));
+ assert.ok(parseLearningSupport({...b,interests:"x".repeat(301)}).error);
+ assert.ok(parseLearningSupport({...b,preferences:[]}).error);
+ assert.ok(parseLearningSupport({...b,detail:"x".repeat(1801)}).error);
+});
+
+test("external tutoring resource validation and private grant separation",async()=>{
+ const {h}=await ownerSetup(),{decodeResource,grantResource,grantedResources,downloadResource}=await import("../src/supportFiles.ts");
+ const b={filename:"lesson.pdf",title:"Fractions",subject:"Maths",year_level:"Year 5",audience:"learner",reviewed:true,base64:btoa("%PDF-1.7 test")};
+ assert.equal(decodeResource(b).mime,"application/pdf");assert.equal(decodeResource({...b,filename:"lesson.html"}),null);assert.equal(decodeResource({...b,reviewed:false}),null);
+ const now=new Date().toISOString();
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)").run("file-order","guest","file-request","file-quote",0,"Maths","Written","Terms","written","paid",now,now);
+ for(const [id,audience] of [["private","tutor"],["public","learner"]])h.db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)").run(id,"Fractions","Maths","Year 5","lesson.pdf","application/pdf",12,"support-private/"+id,audience,now);
+ assert.equal(await grantResource(h.db,"guest","file-request","file-order","private"),false);
+ assert.equal(await grantResource(h.db,"guest","file-request","file-order","public"),true);
+ assert.equal((await grantedResources(h.db,"guest","other","file-order")).length,0);
+ assert.equal((await grantedResources(h.db,"guest","file-request","file-order")).length,1);
+ const env={...h.env,BUCKET:{get:async()=>({size:12,arrayBuffer:async()=>new TextEncoder().encode("%PDF-1.7 test").buffer})}};
+ assert.equal(await downloadResource(env,"private","file-order"),null);
+ assert.ok((await downloadResource(env,"public","file-order")).base64);
+});
+
+test("classroom images require active learner material and only the currently presented image is accessible",async()=>{
+ const {h}=await ownerSetup();
+ const {setClassroomOpen,editClassroom,canReadClassroomImage}=await import("../src/supportClassrooms.ts");
+ const now=new Date(),when=now.toISOString(),oid="img-order",rid="img-request";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest",rid,"img-quote",0,"Maths","Online","Terms","live",when,new Date(now.getTime()+30*60000).toISOString(),"paid",when,when);
+ for(const [id,audience,mime] of [["diagram","learner","image/png"],["answers","tutor","image/png"],["pdf","learner","application/pdf"]])h.db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)").run(id,id,"Maths","Year 5",id+".png",mime,12,"support-private/"+id,audience,when);
+ await setClassroomOpen(h.db,"guest",rid,oid,true,now);
+ assert.ok((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"answers",revision:0},now)).error);
+ assert.ok((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"pdf",revision:0},now)).error);
+ assert.ok((await editClassroom(h.db,"guest",rid,oid,false,{action:"present-image",file_id:"diagram",revision:0},now)).error);
+ assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"diagram",revision:0},now)).ok,true);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),true);
+ assert.equal(await canReadClassroomImage(h.db,"guest","wrong",oid,"diagram",false,now),false);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"answers",false,now),false);
+ assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"hide-image",revision:1},now)).ok,true);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),false);
+});
+
+test("tutor diary reserves buffers and unavailable blocks and keeps private preparation owner-only",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("diary-alice@example.com","Alice");
+ const {createServiceOrder}=await import("../src/supportOrders.ts");
+ const {createBusyBlock,saveDiary,readDiary}=await import("../src/supportDiary.ts");
+ const now=new Date(),start=new Date(now.getTime()+48*3600000),when=now.toISOString();
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding the solar system",consent:true}});
+ assert.equal(r.status,201);const rid=r.json.id;
+ for(const id of ["diary-q1","diary-q2"]){if(id==="diary-q2")h.db.raw.prepare("UPDATE learning_support_quotes SET status='withdrawn' WHERE id='diary-q1'").run();
+ h.db.raw.prepare("INSERT INTO learning_support_quotes(id,feedback_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES(?,?,?,?,?,'interested',?,?)").run(id,rid,"Solar system","Online",1500,when,new Date(now.getTime()+7*86400000).toISOString());
+ if(id==="diary-q1"){const order=await createServiceOrder(h.db,"member",rid,{quote_id:id,mode:"live",start_at:start.toISOString(),minutes:30,prep_minutes:10,wrap_minutes:10,learner_label:"Learner A",terms:"Agreed arrangements and terms.",confirmed:true},now);assert.ok(order.id,JSON.stringify(order));const d=await readDiary(h.db,"member",rid,order.id);assert.equal(d.diary.prep_minutes,10);
+ assert.equal(await saveDiary(h.db,"member",rid,order.id,{...d.diary,ready:true,details:{objective:"Explain orbits",agenda:"Model with diagrams",materials:"Worksheet",reflection:"PRIVATE diary note"} }),true);
+ assert.equal(await saveDiary(h.db,"member",rid,order.id,d.diary),false);
+ const privateRoute="/admin/feedback/"+rid+"/orders/"+order.id+"/diary";assert.equal((await h.req(privateRoute,{token:alice.token})).status,404);await stepUp(h,owner);assert.equal((await h.req(privateRoute,{token:owner.token})).json.diary.details.reflection,"PRIVATE diary note");
+ assert.ok((await createBusyBlock(h.db,{label:"Break",start_at:new Date(start.getTime()+35*60000).toISOString(),end_at:new Date(start.getTime()+50*60000).toISOString()},now)).error);
+ }}
+ const near=await createServiceOrder(h.db,"member",rid,{quote_id:"diary-q2",mode:"live",start_at:new Date(start.getTime()+35*60000).toISOString(),minutes:30,terms:"Agreed arrangements and terms.",confirmed:true},now);assert.ok(near.error);
+ const block=await createBusyBlock(h.db,{label:"Unavailable",start_at:new Date(start.getTime()+60*60000).toISOString(),end_at:new Date(start.getTime()+120*60000).toISOString()},now);assert.ok(block.id);
+ assert.ok((await createServiceOrder(h.db,"member",rid,{quote_id:"diary-q2",mode:"live",start_at:new Date(start.getTime()+70*60000).toISOString(),minutes:30,terms:"Agreed arrangements and terms.",confirmed:true},now)).error);
+});
+
+test("private time offers exclude conflicts and reserve only an offered slot with server terms",async()=>{
+ const {h}=await ownerSetup(),alice=await h.register("slots-alice@example.com","Alice"),bob=await h.register("slots-bob@example.com","Bob");
+ const {offerSlots,readSlots,selectSlot}=await import("../src/supportSlots.ts");
+ const {createBusyBlock}=await import("../src/supportDiary.ts");
+ const now=new Date(),start=new Date(now.getTime()+48*3600000),s1=start.toISOString(),s2=new Date(start.getTime()+3600000).toISOString(),when=now.toISOString();
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding the solar system",consent:true}});
+ assert.equal(r.status,201);const id=r.json.id,qid="slot-q";
+ h.db.raw.prepare("INSERT INTO learning_support_quotes(id,feedback_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES(?,?,?,?,?,'interested',?,?)").run(qid,id,"Solar system","Online",1500,when,new Date(now.getTime()+7*86400000).toISOString());
+ const b={starts:[s1,s2],minutes:30,prep_minutes:10,wrap_minutes:10,learner_label:"Private learner",terms:"Agreed arrangements and terms.",confirmed:true};
+ const first=await offerSlots(h.db,"member",id,qid,b,now);assert.ok(first.id,JSON.stringify(first));
+ const second=await offerSlots(h.db,"member",id,qid,b,now);assert.ok(second.id);
+ assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:first.id,start_at:s1,confirmed:true},now)).error);
+ assert.ok((await createBusyBlock(h.db,{label:"Busy",start_at:new Date(start.getTime()-60000).toISOString(),end_at:new Date(start.getTime()+60000).toISOString()},now)).id);
+ const offer=await readSlots(h.db,"member",id,qid,now);assert.deepEqual(offer.starts,[s2]);assert.equal(offer.learner_label,undefined);
+ assert.equal((await h.req("/learning-support/"+id+"/quotes/"+qid+"/slots",{admin:false,token:bob.token})).status,404);
+ assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s1,confirmed:true},now)).error);
+ const selected=await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s2,confirmed:true,amount_cents:1},now);assert.ok(selected.id,JSON.stringify(selected));
+ const o=h.db.raw.prepare("SELECT amount_cents,status FROM support_service_orders WHERE id=?").get(selected.id);assert.equal(o.amount_cents,1500);assert.equal(o.status,"awaiting_confirmation");
+ assert.ok((await selectSlot(h.db,"member",id,qid,{offer_id:second.id,start_at:s2,confirmed:true},now)).error);
+});
+
+test("multi-lesson package atomically reserves all slots and one invoice confirms every session",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("package-alice@example.com","Alice");
+ const {createPackage}=await import("../src/supportPackages.ts");
+ const {createBusyBlock,readDiary}=await import("../src/supportDiary.ts");
+ const {createServiceOrder,confirmServiceOrder,recordManualInvoice,verifyManualInvoice,listOrders,completeOrder}=await import("../src/supportOrders.ts");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(r.status,201);const rid=r.json.id;
+ await stepUp(h,owner);
+ const lesson={title:"Fractions",objective:"Compare fractions",activities:"Draw fraction strips",check:"Explain equivalence",home_practice:"Draw another example",minutes:30,guide:"Tutor works through examples",answers:"Private answers"};
+ const plan={title:"Fractions",goal:"Compare fractions",subject:"Mathematics",year_level:"Year 5",lessons:[lesson,{...lesson,title:"Apply fractions"}]};
+ const q=await h.req("/admin/feedback/"+rid+"/quotes",{method:"POST",token:owner.token,body:{scope:"Two guided mathematics lessons",delivery:"Online tutoring package",amount_cents:5000,valid_days:7,confirmed:true,plan,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
+ assert.equal((await h.req("/learning-support/"+rid+"/quotes/"+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const now=new Date(),s1=new Date(now.getTime()+48*3600000).toISOString(),s2=new Date(now.getTime()+72*3600000).toISOString(),s3=new Date(now.getTime()+96*3600000).toISOString();
+ const b={quote_id:qid,starts:[s1,s2],learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",confirmed:true};
+ assert.ok((await createServiceOrder(h.db,"member",rid,{...b,mode:"live",start_at:s1,minutes:30},now)).error);
+ assert.ok((await createBusyBlock(h.db,{label:"Unavailable",start_at:s2,end_at:new Date(Date.parse(s2)+60000).toISOString()},now)).id);
+ assert.ok((await createPackage(h.db,"member",rid,b,now)).error);assert.equal((await listOrders(h.db,"member",rid)).length,0);
+ const made=await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now);assert.ok(made.id,JSON.stringify(made));
+ const rows=await listOrders(h.db,"member",rid);assert.equal(rows.length,2);assert.equal(rows[0].amount_cents,5000);assert.equal(rows[1].amount_cents,0);
+ assert.equal(await confirmServiceOrder(h.db,"member",rid,rows[1].id,now),false);
+ assert.equal(await confirmServiceOrder(h.db,"member",rid,made.id,now),true);
+ assert.equal((await listOrders(h.db,"member",rid))[1].status,"confirmed");
+ assert.ok((await recordManualInvoice(h.db,"member",rid,made.id,{reference:"PKG-TEST",due_at:new Date(now.getTime()+24*3600000).toISOString(),sent_in_square:true},owner.id,now)).ok);
+ assert.equal(await verifyManualInvoice(h.db,"member",rid,made.id,{reference:"PKG-TEST",amount_cents:5000,paid_in_square:true},owner.id,now),true);
+ assert.ok((await listOrders(h.db,"member",rid)).every(o=>o.status==="paid"));
+ assert.equal((await readDiary(h.db,"member",rid,rows[1].id)).diary.details.agenda.includes("Apply fractions"),true);
+ assert.ok((await createPackage(h.db,"member",rid,{...b,starts:[s1,s3]},now)).error);
+});
+
+test("per-lesson instalments isolate paid and cancelled sessions and preserve quoted total",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("installment-alice@example.com","Alice");
+ const {createPackage}=await import("../src/supportPackages.ts");
+ const {confirmServiceOrder,recordManualInvoice,verifyManualInvoice,listOrders,cancelManualInvoiceOrder,hasOrder,cancelUnstartedOrder}=await import("../src/supportOrders.ts");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"Help with equivalent fractions.",consent:true}});assert.equal(r.status,201);const rid=r.json.id;
+ await stepUp(h,owner);
+ const lesson={title:"Fractions",objective:"Compare fractions",activities:"Draw fraction strips",check:"Explain equivalence",home_practice:"Draw another example",minutes:30,guide:"Tutor works through examples",answers:"Private answers"};
+ const plan={title:"Fractions",goal:"Compare fractions",subject:"Mathematics",year_level:"Year 5",lessons:[lesson,{...lesson,title:"Apply fractions"},{...lesson,title:"Practise"}]};
+ const q=await h.req("/admin/feedback/"+rid+"/quotes",{method:"POST",token:owner.token,body:{scope:"Three guided mathematics lessons",delivery:"Online tutoring package",amount_cents:7501,valid_days:7,confirmed:true,plan,plan_reviewed:true}});assert.equal(q.status,201,JSON.stringify(q.json));const qid=q.json.id;
+ assert.equal((await h.req("/learning-support/"+rid+"/quotes/"+qid+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const now=new Date(),starts=[48,72,96].map(hours=>new Date(now.getTime()+hours*3600000).toISOString());
+ const b={quote_id:qid,starts,learner_label:"Learner",prep_minutes:10,wrap_minutes:10,terms:"Agreed package arrangements and terms.",payment_mode:"installments",deadline_hours:24,confirmed:true};
+ const made=await createPackage(h.db,"member",rid,b,now);assert.ok(made.id,JSON.stringify(made));
+ let rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.amount_cents),[2501,2500,2500]);assert.ok(rows.every(o=>o.installment));
+ assert.equal(await confirmServiceOrder(h.db,"member",rid,rows[1].id,now),false);assert.equal(await confirmServiceOrder(h.db,"member",rid,made.id,now),true);
+ for(const [i,o] of rows.entries())assert.ok((await recordManualInvoice(h.db,"member",rid,o.id,{reference:"INST-"+i,due_at:o.installment_due_at,sent_in_square:true},owner.id,now)).ok);
+ assert.equal(await verifyManualInvoice(h.db,"member",rid,rows[1].id,{reference:"INST-1",amount_cents:2500,paid_in_square:true},owner.id,now),true);
+ assert.equal(await cancelManualInvoiceOrder(h.db,"member",rid,made.id,{cancelled_unpaid_in_square:true},now),true);
+ rows=await listOrders(h.db,"member",rid);assert.deepEqual(rows.map(o=>o.status),["cancelled","paid","confirmed"]);assert.equal(await hasOrder(h.db,"member",qid),true);
+ assert.ok((await createPackage(h.db,"member",rid,b,now)).error);
+ assert.equal(await verifyManualInvoice(h.db,"member",rid,rows[2].id,{reference:"INST-2",amount_cents:2500,paid_in_square:true},owner.id,new Date(Date.parse(rows[2].installment_due_at)+1000)),false);
+});
+
+test("daily owner briefing uses Sydney dates, live data, opt-in and one send per local day",async()=>{
+ const {h,owner}=await ownerSetup();
+ const {sydneyDay,saveBriefingSettings,buildBriefing,runDailyBriefing}=await import("../src/supportBriefing.ts");
+ const now=new Date("2026-11-24T20:05:00.000Z");
+ assert.equal(sydneyDay(now).date,"2026-11-25");assert.equal(sydneyDay(now).hour,7);assert.equal(sydneyDay(now).from,"2026-11-24T13:00:00.000Z");
+ const winter=sydneyDay(new Date("2026-07-01T21:05:00Z"));assert.equal(winter.hour,7);assert.equal(winter.from,"2026-07-01T14:00:00.000Z");
+ const env={...h.env,OWNER_NOTIFICATION_EMAIL:"owner@example.com",EMAIL:{send:async()=>{throw Error("real sender must not run");}}};
+ const alice=await h.register("briefing-alice@example.com","Private Parent Name");
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Mathematics",year:"Year 5",service:"Live online support",detail:"PRIVATE LEARNER DETAIL",consent:true}});assert.equal(r.status,201);
+ const id=r.json.id,oid="briefing-order";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"member",id,"briefing-quote",2500,"PRIVATE LEARNER DETAIL","Online","Terms","live","2026-11-24T23:00:00.000Z","2026-11-24T23:30:00.000Z","confirmed",now.toISOString(),now.toISOString());
+ h.db.raw.prepare("INSERT INTO support_installment_terms(order_id,due_at) VALUES(?,?)").run(oid,"2026-11-24T19:00:00.000Z");
+ let sent=0;const fake=async(_env,m)=>{sent++;assert.equal(m.to,"owner@example.com");assert.ok(m.text.includes("Overdue — check Square before release: 1"));assert.ok(!m.text.includes("PRIVATE LEARNER DETAIL"));assert.ok(!m.html.includes("Private Parent Name"));return true;};
+ assert.equal(await runDailyBriefing(env,now,fake),"not_due");
+ assert.equal(await saveBriefingSettings({...env,STAGING_KEY:"test"},{enabled:true,hour:7,confirmed:true}),false);
+ assert.equal(await saveBriefingSettings(env,{enabled:true,hour:7,confirmed:true}),true);
+ assert.equal(await runDailyBriefing({...env,STAGING_KEY:"test"},now,fake),"disabled");
+ assert.equal(await runDailyBriefing(env,new Date("2026-11-24T19:55:00Z"),fake),"not_due");
+ assert.equal(await runDailyBriefing(env,now,fake),"sent");assert.equal(await runDailyBriefing(env,now,fake),"duplicate");assert.equal(sent,1);
+ const digest=await buildBriefing(env,now);assert.ok(digest.text.includes("1 new-status enquiries"));
+ assert.equal((await h.req("/admin/support-briefing/preview",{token:alice.token})).status,404);
+ await stepUp(h,owner);assert.equal((await h.req("/admin/support-briefing/preview",{token:owner.token})).status,200);
+});
+
+test("housekeeping briefing distinguishes unavailable metrics and owner-verified backup checks",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("housekeeping-alice@example.com","Alice");
+ const {housekeepingSections,recordHousekeepingCheck}=await import("../src/ownerHousekeeping.ts");
+ const now=new Date("2026-11-25T00:00:00Z");
+ const text=async()=>JSON.stringify(await housekeepingSections(h.env,now));
+ assert.ok((await text()).includes("no owner-verified check recorded"));
+ assert.equal(await recordHousekeepingCheck(h.db,{kind:"d1_restore",confirmed:false},now),false);
+ assert.equal(await recordHousekeepingCheck(h.db,{kind:"d1_restore",confirmed:true},now),true);
+ assert.ok((await text()).includes("owner recorded 2026-11-25"));
+ h.db.raw.prepare("INSERT INTO app_errors(id,method,route,status,error_name,created_at) VALUES(?,?,?,?,?,?)").run("hk-test","GET","/api/PRIVATE-ROUTE",500,"PRIVATE_ERROR_NAME",now.toISOString());
+ const report=await text();assert.ok(report.includes("Recorded server errors in last 24 hours: 1"));assert.ok(!report.includes("PRIVATE-ROUTE"));assert.ok(!report.includes("PRIVATE_ERROR_NAME"));
+ assert.equal((await h.req("/admin/support-briefing/housekeeping-check",{method:"POST",token:alice.token,body:{kind:"r2_restore",confirmed:true}})).status,404);
+ await stepUp(h,owner);
+ assert.equal((await h.req("/admin/support-briefing/housekeeping-check",{method:"POST",token:owner.token,body:{kind:"r2_restore",confirmed:true}})).status,200);
 });

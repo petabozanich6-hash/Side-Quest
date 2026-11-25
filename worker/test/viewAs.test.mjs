@@ -49,8 +49,7 @@ test("Only the owner can use View site as, and it only changes the owner's own f
   assert.equal(await planOf(h, owner), "FREE_PREVIEW");
   assert.equal(await planOf(h, other), "ACTIVE_MONTHLY", "other families are untouched");
   // Owner-only content shortcuts switch off while viewing as a family.
-  const books = await (await h.req("/quest-books", owner.token)).json();
-  assert.deepEqual([books.member, books.owner, books.preview], [false, false, true]);
+  assert.equal((await (await h.req("/handwriting-book", owner.token)).json()).unlocked, false);
   // The switch itself keeps working, so the owner can always get back.
   await h.req("/owner/view-as", owner.token, "PUT", { mode: "expired" });
   assert.equal(await planOf(h, owner), "PREVIEW_EXPIRED");
@@ -59,7 +58,7 @@ test("Only the owner can use View site as, and it only changes the owner's own f
   const back = await (await h.req("/owner/view-as", owner.token, "PUT", { mode: "owner" })).json();
   assert.equal(back.mode, "owner");
   assert.equal(await planOf(h, owner), "INTERNAL");
-  assert.equal((await (await h.req("/quest-books", owner.token)).json()).owner, true);
+  assert.equal((await (await h.req("/handwriting-book", owner.token)).json()).unlocked, true);
 });
 
 test("View site as switches itself off when it expires", async () => {

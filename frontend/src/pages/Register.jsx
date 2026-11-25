@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
@@ -18,6 +18,9 @@ export default function Register() {
   const [resendBusy, setResendBusy] = useState(false);
   const { setSession } = useAuth();
   const nav = useNavigate();
+  const [params] = useSearchParams();
+  const supportSignup = params.get("service") === "learning-support";
+  const supportSuffix = supportSignup ? "?service=learning-support" : "";
 
   const label = (pick === "__other" ? other : pick).trim();
 
@@ -41,7 +44,7 @@ export default function Register() {
         description: "We've sent you a welcome email. If you can't see it, check your spam folder and mark it 'Not spam' so help alerts from your children reach you.",
         duration: 12000,
       });
-      nav("/parent");
+      nav(supportSignup ? "/parent/learning-support" : "/parent");
     } catch (err) { toast.error(err.response?.data?.detail || "Registration failed"); }
     finally { setLoading(false); }
   };
@@ -60,7 +63,7 @@ export default function Register() {
             catch { toast.error("Could not resend right now. Please try later."); }
             finally { setResendBusy(false); }
           }}>{resendBusy ? "Sending…" : "Resend confirmation email"}</button>
-        <p className="text-sm"><Link to="/login" className="underline font-semibold">Already confirmed? Sign in</Link></p>
+        <p className="text-sm"><Link to={"/login"+supportSuffix} className="underline font-semibold">Already confirmed? Sign in</Link></p>
         <p className="text-sm"><button className="underline" onClick={() => setPendingEmail("")}>Wrong email? Register again with the correct address</button></p>
       </div>
     </div>
@@ -91,6 +94,7 @@ export default function Register() {
       <div className="flex items-center justify-center p-6">
         <form onSubmit={submit} className="w-full max-w-md paper-card p-8" data-testid="register-form">
           <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Create a family account</h1>
+          {supportSignup&&<p className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-950">Create a free parent account for Learning Support. No paid membership, card or automatic renewal is required. Any optional platform preview ends separately; you can continue sending and reviewing support enquiries.</p>}
           <p className="text-sm text-stone-500 mt-1">Welcome! Try Side-Quest free for seven days with no card and no automatic charge: one child, two manual lessons, two active assignments, a basic learning plan and one AI-generated lesson for your family. Ongoing AI drafting, AI editing, advanced planning, uploads, offline lessons and full portfolio exports require Family Membership. Your saved records stay available after the preview.</p>
 
           <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
@@ -118,7 +122,7 @@ export default function Register() {
             <strong>Heads up:</strong> your welcome note and account emails come from a <span className="font-mono">@sidequestlearning.app</span> address. You can reply for help at <span className="font-mono">support@sidequestlearning.app</span>. If you don't see an email, check your spam folder and mark it "Not spam" so important account messages can reach you.
           </div>
           <button disabled={loading} className="mt-6 w-full rounded-full py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="reg-submit">{loading ? "Creating…" : "Create account"}</button>
-          <p className="mt-5 text-center text-xs text-stone-500">Already have an account? <Link to="/login" className="font-bold" style={{color:"#4A5D3A"}} data-testid="reg-to-login">Sign in</Link></p>
+          <p className="mt-5 text-center text-xs text-stone-500">Already have an account? <Link to={"/login"+supportSuffix} className="font-bold" style={{color:"#4A5D3A"}} data-testid="reg-to-login">Sign in</Link></p>
         </form>
       </div>
       <style>{`.input { width: 100%; border-radius: 0.75rem; border: 1px solid #D4C8A8; padding: 0.6rem 0.85rem; font-size: 0.875rem; background: #fff; } .input:focus { outline: none; border-color: #4A5D3A; }`}</style>

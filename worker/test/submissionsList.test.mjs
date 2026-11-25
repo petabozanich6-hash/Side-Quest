@@ -44,6 +44,13 @@ test("listing 450 submissions uses batched lookups and keeps every lesson and ch
   db.raw.exec("COMMIT");
 
   queries = 0;
+  const dashboard = await req("/dashboard/parent",{token:reg.json.token});
+  assert.equal(dashboard.status,200,JSON.stringify(dashboard.json));
+  assert.equal(dashboard.json.students[0].total_assignments,450);
+  assert.equal(dashboard.json.students[0].completed,0);
+  assert.equal(dashboard.json.pending_review,450);
+  assert.equal(dashboard.json.awaiting_help,0);
+  queries = 0;
   const list = await req("/submissions", { token: reg.json.token });
   assert.equal(list.status, 200, JSON.stringify(list.json));
   assert.equal(list.json.length, 450);

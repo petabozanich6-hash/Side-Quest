@@ -16,10 +16,6 @@ export type EmailBinding = {
 
 export type Env = {
   DB: D1Database;
-  /** Owner Book Forge: scoped Browser Rendering REST credentials. */
-  BROWSER?: { quickAction(action: "pdf", options: Record<string, unknown>): Promise<Response> };
-  BOOK_FORGE_CF_ACCOUNT_ID?: string;
-  BOOK_FORGE_CF_API_TOKEN?: string;
   JWT_SECRET: string;
   /** Optional R2 bucket for file uploads (bind as BUCKET). */
   BUCKET?: R2Bucket;
@@ -36,6 +32,25 @@ export type Env = {
   /** Optional AI Gateway id and model override for Workers AI calls. */
   AI_GATEWAY_ID?: string;
   AI_MODEL?: string;
+  /** Explicit staged rollout; unset by default. */
+  AI_BACKGROUND_BATCHES?: string;
+  /** Standalone guest portal rollout; off until email and staging tests pass. */
+  SUPPORT_GUEST_ENABLED?: string;
+  /** Exact isolated staging Worker origin; never taken from a request header. */
+  SUPPORT_GUEST_ORIGIN?: string;
+  /** Teaching board pilot, disabled until staging verifies access and safety. */
+  SUPPORT_CLASSROOM_ENABLED?: string;
+  /** Opt-in owner AI slide drafting, subject to existing cost limits. */
+  SUPPORT_RESOURCE_AI?: string;
+  /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
+  SUPPORT_VIDEO_TEST?: string;
+  SUPPORT_VIDEO_ACCOUNT?: string;
+  SUPPORT_VIDEO_APP?: string;
+  SUPPORT_VIDEO_TOKEN?: string;
+  SUPPORT_VIDEO_TUTOR_PRESET?: string;
+  SUPPORT_VIDEO_FAMILY_PRESET?: string;
+  /** Test-only checkout; production Square credentials are never accepted. */
+  SUPPORT_CHECKOUT_TEST?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */
@@ -63,6 +78,7 @@ export type Env = {
   OWNER_PASSWORD?: string;
   /** Private staging only: when set, every /api call needs the access cookie granted by /api/staging-access?key=... */
   STAGING_KEY?: string;
+  STAGING_PRIVATE?: string;
   /** Stripe secret (sk_test_... / rk_test_... for sandbox). Cloudflare secret, never in code or chat. */
   STRIPE_SECRET_KEY?: string;
   /** Signing secret (whsec_...) of the Stripe webhook endpoint for this Worker. Cloudflare secret. */

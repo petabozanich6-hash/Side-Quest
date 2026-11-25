@@ -258,7 +258,7 @@ await step("A. new family registers through the UI", async () => {
 await step("public homepage explains the full product, international option, help and membership pricing", async () => {
   await page.goto(BASE + "/");
   const t = await page.textContent("body");
-  for (const expected of ["across Australia", "Make lessons your way", "Evidence Backpack", "Printable Vault", "Dragon", "Other", "Parent", "pocket pet", "$3", "$6", "$13", "$130", "seven days free"]) {
+  for (const expected of ["across Australia", "Make lessons your way", "Evidence Backpack", "handwriting book", "Dragon", "Other", "Parent", "pocket pet", "$3", "$6", "$13", "$130", "seven days free"]) {
     ok(t.toLowerCase().includes(expected.toLowerCase()), `homepage does not explain ${expected}`);
   }
   ok(!/ready-made lesson library|prewritten lesson library|NSW-only homeschooling platform/i.test(t), "outdated marketing claim");
@@ -1439,10 +1439,12 @@ await step("M. expired preview: cannot create or assign, but nothing is lost", a
   await shot("expired");
 });
 
-await step("plan page explains the preview and that billing is not open", async () => {
-  await page.goto(BASE + "/parent/plan"); await page.waitForSelector('[data-testid=billing-status]');
+await step("plan page explains the preview and sends new members to the Square shop", async () => {
+  await page.goto(BASE + "/parent/plan"); await page.waitForSelector('[data-testid=join-in-shop]');
   const t = await page.textContent("body");
-  ok(t.includes("not open yet") && t.includes("Free preview"), "plan page content");
+  ok(t.includes("same email address") && /preview/i.test(t), "plan page content");
+  ok((await page.getAttribute('[data-testid=join-shop-link]', "href")) === "https://shop.sidequestlearning.app", "shop link");
+  ok((await page.locator('[data-testid=billing-options], [data-testid=plan-promo-code]').count()) === 0, "old checkout still shown");
 });
 
 await step("N. mobile layouts of the main parent pages do not overflow", async () => {

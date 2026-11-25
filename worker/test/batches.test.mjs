@@ -359,3 +359,23 @@ test("three Year 7 Halloween lessons preserve Science, English and HSIE, includi
   for (let i = 0; i < 3; i++) assert.equal((await draft(db, writer, fam, created.batch.id, i)).reused, true);
   assert.equal(lessonsIn(db, fam), 3, "secondary-area connections must never create duplicate lessons");
 });
+
+
+test("scheduled writer processes only opted-in pending sets, one item, and pause prevents further work",async()=>{
+ const db=makeDb(),fam=seed(db);
+ db.raw.prepare("INSERT INTO users (id,family_id,email,name,created_at) VALUES (?,?,?,?,?)").run("u",fam,"batch-scheduled@example.com","Parent",NOW.toISOString());
+ const ordinary=await bat.createBatch(db,{familyId:fam,userId:"u",body:body(null)},NOW);
+ const scheduled=await bat.createBatch(db,{familyId:fam,userId:"u",body:body(null,{background:true})},NOW);
+ assert.equal(scheduled.batch.background_mode,"queued");
+ const ai=stub();
+ const r=await bat.runNextBackgroundBatch(db,ai,{},NOW);
+ assert.ok(r?.ok,JSON.stringify(r));
+ assert.equal(lessonsIn(db,fam),1);
+ assert.equal((await bat.getBatch(db,fam,ordinary.batch.id,NOW)).batch.items[0].state,"pending");
+ assert.equal((await bat.getBatch(db,fam,scheduled.batch.id,NOW)).batch.items[0].state,"ready");
+ await bat.pauseBackgroundBatch(db,fam,scheduled.batch.id);
+ const calls=ai.calls.length;
+ assert.equal(await bat.runNextBackgroundBatch(db,ai,{},NOW),null);
+ assert.equal(ai.calls.length,calls);
+ assert.equal((await bat.getBatch(db,fam,scheduled.batch.id,NOW)).batch.background_mode,"paused");
+});

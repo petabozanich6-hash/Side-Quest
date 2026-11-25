@@ -99,3 +99,14 @@ test("an empty dashboard offers other useful activities without invented quests"
   expect(host.querySelector('[data-testid="continue-quest"]')).toBeNull();
   expect(host.querySelector('a[href="/child/stuff"]')).not.toBeNull();
 });
+
+
+test("server failure shows a retry instead of claiming the child is caught up", async () => {
+ api.get.mockImplementation(path=>path==="/dashboard/child"?Promise.reject({response:{status:503}}):Promise.resolve({data:[]}));
+ await act(async()=>root.render(<ChildHome/>));
+ expect(host.querySelector('[data-testid="child-dashboard-error"]')).not.toBeNull();
+ expect(host.textContent).not.toContain("All caught up!");
+ api.get.mockImplementation(path=>Promise.resolve({data:path==="/dashboard/child"?{all_pending:[],completed:[],waiting:[],offline_allowed:false}:[]}));
+ await act(async()=>host.querySelector("button").click());
+ expect(host.querySelector('[data-testid="no-work"]')).not.toBeNull();
+});

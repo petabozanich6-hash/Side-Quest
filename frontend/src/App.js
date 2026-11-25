@@ -1,18 +1,10 @@
-import LessonDetail from "./pages/LessonDetail";
-import React from "react";
+import React, { lazy, Suspense } from "react";
+import RouteRecovery from "./components/shared/RouteRecovery";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Landing from "./pages/Landing";
-import ShopOrder from "./pages/ShopOrder";
-import GuidedDocument from "./pages/GuidedDocument";
-import PremiumDocument from "./pages/PremiumDocument";
-import ConfigurePremium from "./pages/ConfigurePremium";
-import ShopSubscription from "./pages/ShopSubscription";
-import ParentShop from "./pages/parent/ParentShop";
-import ShopDownloads from "./pages/ShopDownloads";
-import ShopSection from "./components/shop/ShopSection";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
@@ -24,53 +16,47 @@ import KidsOnly from "./pages/KidsOnly";
 import { isKidsHost } from "./lib/pwa";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
-import ParentDashboard from "./pages/parent/Dashboard";
-import HqBookForge from "./pages/parent/hq/HqBookForge";
-import HqShell from "./pages/parent/hq/HqShell";
-import HqOverview from "./pages/parent/hq/HqOverview";
-import HqCustomers from "./pages/parent/hq/HqCustomers";
-import HqCustomer from "./pages/parent/hq/HqCustomer";
-import HqSettings from "./pages/parent/hq/HqSettings";
-import HqAudit from "./pages/parent/hq/HqAudit";
-import HqSecurity from "./pages/parent/hq/HqSecurity";
+
+
+
+
+
+
+
+
 import PlatformNotices from "./components/shared/PlatformNotices";
-import ChildrenPage from "./pages/parent/Children";
-import CurriculumPage from "./pages/parent/Curriculum";
-import LessonsPage from "./pages/parent/Lessons";
-import LessonReviewCentre from "./pages/parent/LessonReviewCentre";
-import LessonBuilder from "./pages/parent/LessonBuilder";
-import MakeLesson from "./pages/parent/MakeLesson";
-import LessonReview from "./pages/parent/LessonReview";
-import LessonDrafts from "./pages/parent/LessonDrafts";
-import LessonPrint from "./pages/parent/LessonPrint";
-import UpgradePage from "./pages/parent/Upgrade";
-import AssignmentsPage from "./pages/parent/Assignments";
-import ResourcesPage from "./pages/parent/Resources";
-import PrintableVault from "./pages/parent/PrintableVault";
-import QuestBooks from "./pages/parent/QuestBooks";
-import HandwritingBook from "./pages/parent/HandwritingBook";
-import HandsOnVault from "./pages/parent/HandsOnVault";
-import HomeschoolCompass from "./pages/parent/HomeschoolCompass";
-import EvidencePage from "./pages/parent/Evidence";
-import CalendarPage from "./pages/parent/CalendarPage";
-import AuditPage from "./pages/parent/Audit";
-import SideQuestPage from "./pages/parent/SideQuest";
-import LifeLearningPage from "./pages/parent/LifeLearning";
-import LearningPlansPage from "./pages/parent/LearningPlans";
-import ReadingLogPage from "./pages/parent/ReadingLog";
-import ChildOverviewPage from "./pages/parent/ChildOverview";
-import OutcomeTrackerPage from "./pages/parent/OutcomeTracker";
-import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
-import ParentWordHoard from "./pages/parent/WordHoard";
-import TrustSupport from "./pages/parent/TrustSupport";
-import ParentFeedback from "./pages/parent/ParentFeedback";
-import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import SiteSearch from "./pages/shared/SiteSearch";
-import HqFeedback from "./pages/parent/hq/HqFeedback";
-import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
-import HqHoard from "./pages/parent/hq/HqHoard";
-import HqShop from "./pages/parent/hq/HqShop";
-import HqDocumentStudio from "./pages/parent/hq/HqDocumentStudio";
+
+
+
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -84,6 +70,58 @@ import ChildWordHoard from "./pages/child/ChildWordHoard";
 import PetRoom from "./pages/child/PetRoom";
 import ChildReading from "./pages/child/ChildReading";
 import DragonLibrary from "./pages/shared/DragonLibrary";
+import { SHOP_URL } from "./lib/shop";
+
+// Keep the student/offline and sign-in modules eager; defer parent-only tools.
+const LearningSupport = lazy(() => import("./pages/parent/LearningSupport"));
+const GuestSupportPortal=lazy(()=>import("./pages/parent/GuestSupportPortal"));
+const HqGuestSupport=lazy(()=>import("./pages/parent/hq/HqGuestSupport"));
+const LessonDetail = lazy(() => import("./pages/LessonDetail"));
+const ParentDashboard = lazy(() => import("./pages/parent/Dashboard"));
+const HqShell = lazy(() => import("./pages/parent/hq/HqShell"));
+const HqOverview = lazy(() => import("./pages/parent/hq/HqOverview"));
+const HqCustomers = lazy(() => import("./pages/parent/hq/HqCustomers"));
+const HqCustomer = lazy(() => import("./pages/parent/hq/HqCustomer"));
+const HqSettings = lazy(() => import("./pages/parent/hq/HqSettings"));
+const HqAudit = lazy(() => import("./pages/parent/hq/HqAudit"));
+const HqSecurity = lazy(() => import("./pages/parent/hq/HqSecurity"));
+const ChildrenPage = lazy(() => import("./pages/parent/Children"));
+const CurriculumPage = lazy(() => import("./pages/parent/Curriculum"));
+const LessonsPage = lazy(() => import("./pages/parent/Lessons"));
+const LessonBuilder = lazy(() => import("./pages/parent/LessonBuilder"));
+const MakeLesson = lazy(() => import("./pages/parent/MakeLesson"));
+const LessonReview = lazy(() => import("./pages/parent/LessonReview"));
+const LessonDrafts = lazy(() => import("./pages/parent/LessonDrafts"));
+const LessonPrint = lazy(() => import("./pages/parent/LessonPrint"));
+const UpgradePage = lazy(() => import("./pages/parent/Upgrade"));
+const AssignmentsPage = lazy(() => import("./pages/parent/Assignments"));
+const ResourcesPage = lazy(() => import("./pages/parent/Resources"));
+const HandwritingBook = lazy(() => import("./pages/parent/HandwritingBook"));
+const HandsOnVault = lazy(() => import("./pages/parent/HandsOnVault"));
+const HomeschoolCompass = lazy(() => import("./pages/parent/HomeschoolCompass"));
+const EvidencePage = lazy(() => import("./pages/parent/Evidence"));
+const CalendarPage = lazy(() => import("./pages/parent/CalendarPage"));
+const AuditPage = lazy(() => import("./pages/parent/Audit"));
+const SideQuestPage = lazy(() => import("./pages/parent/SideQuest"));
+const LifeLearningPage = lazy(() => import("./pages/parent/LifeLearning"));
+const LearningPlansPage = lazy(() => import("./pages/parent/LearningPlans"));
+const ReadingLogPage = lazy(() => import("./pages/parent/ReadingLog"));
+const ChildOverviewPage = lazy(() => import("./pages/parent/ChildOverview"));
+const OutcomeTrackerPage = lazy(() => import("./pages/parent/OutcomeTracker"));
+const OutcomeDetailPage = lazy(() => import("./pages/parent/OutcomeDetail"));
+const ParentWordHoard = lazy(() => import("./pages/parent/WordHoard"));
+const TrustSupport = lazy(() => import("./pages/parent/TrustSupport"));
+const ParentFeedback = lazy(() => import("./pages/parent/ParentFeedback"));
+const AnnouncementPreferences = lazy(() => import("./pages/parent/AnnouncementPreferences"));
+const HqFeedback = lazy(() => import("./pages/parent/hq/HqFeedback"));
+const HqAnnouncements = lazy(() => import("./pages/parent/hq/HqAnnouncements"));
+const HqDocumentStudio = lazy(() => import("./pages/parent/hq/HqDocumentStudio"));
+
+/** Sends visitors from an old in-app shop link to the Square shop. */
+function GoToShop() {
+  React.useEffect(() => { window.location.replace(SHOP_URL); }, []);
+  return <p className="p-8 text-center text-stone-700">Taking you to the <a className="underline font-bold" href={SHOP_URL}>Side-Quest shop</a>…</p>;
+}
 
 function Guard({ role, children }) {
   const { user, loading } = useAuth();
@@ -97,17 +135,14 @@ function Router() {
   const loc = useLocation();
   if (loc.hash?.includes("session_id=")) return <AuthCallback />;
   // SQ Kids (the kids' address) has no parent pages at all: grown-ups are pointed to the main site.
-  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
+  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|learning-support|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
-      <Route path="/shop" element={<div className="min-h-screen bg-[#F5EFE0]"><ShopSection standalone /></div>} />
-      <Route path="/shop/order/:id" element={<ShopOrder />} />
-      <Route path="/shop/documents/:id/:productId" element={<GuidedDocument />} />
-      <Route path="/shop/premium/:id/:productId" element={<PremiumDocument />} />
-      <Route path="/shop/configure-planner/:productId" element={<ConfigurePremium />} />
-      <Route path="/shop/subscription/:id" element={<ShopSubscription />} />
-      <Route path="/shop/downloads" element={<ShopDownloads />} />
+      <Route path="/learning-support" element={<LearningSupport publicView />} />
+      <Route path="/learning-support/portal" element={<GuestSupportPortal />} />
+      {/* The shop moved to Square: old shop links (and anything under /shop) go there. */}
+      <Route path="/shop/*" element={<GoToShop />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
@@ -128,7 +163,6 @@ function Router() {
         <Route path="outcomes/:sid" element={<OutcomeTrackerPage />} />
         <Route path="outcomes/:sid/:code" element={<OutcomeDetailPage />} />
         <Route path="lessons" element={<LessonsPage />} />
-        <Route path="lessons/review-centre" element={<LessonReviewCentre />} />
         <Route path="plan" element={<UpgradePage />} />
         <Route path="email-preferences" element={<AnnouncementPreferences />} />
         <Route path="command-centre" element={<HqShell />}>
@@ -139,11 +173,9 @@ function Router() {
           <Route path="audit" element={<HqAudit />} />
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
+          <Route path="learning-support" element={<HqGuestSupport />} />
           <Route path="announcements" element={<HqAnnouncements />} />
-          <Route path="dragon-hoard" element={<HqHoard />} />
-          <Route path="shop" element={<HqShop />} />
           <Route path="document-studio" element={<HqDocumentStudio />} />
-          <Route path="book-forge" element={<HqBookForge />} />
         </Route>
         <Route path="assignments" element={<AssignmentsPage />} />
         <Route path="lessons/make" element={<MakeLesson />} />
@@ -154,10 +186,6 @@ function Router() {
         <Route path="lessons/:id/edit" element={<LessonBuilder />} />
         <Route path="lessons/:id" element={<LessonDetail />} />
         <Route path="resources" element={<ResourcesPage />} />
-        <Route path="shop" element={<ParentShop />} />
-        <Route path="quest-books" element={<QuestBooks />} />
-        <Route path="quest-books/:bookId" element={<QuestBooks />} />
-        <Route path="printable-vault" element={<PrintableVault />} />
         <Route path="handwriting-book" element={<HandwritingBook />} />
         <Route path="hands-on-vault" element={<HandsOnVault />} />
         <Route path="dragons-library" element={<DragonLibrary mode="parent" />} />
@@ -171,6 +199,7 @@ function Router() {
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
         <Route path="trust" element={<TrustSupport />} />
+        <Route path="learning-support" element={<LearningSupport />} />
         <Route path="feedback" element={<ParentFeedback />} />
         <Route path="trust/:slug" element={<LegalPage />} />
       </Route>
@@ -199,7 +228,7 @@ function App() {
       <BrowserRouter>
         <Toaster richColors position="top-right" />
         <PlatformNotices />
-        <Router />
+        <RouteRecovery><Suspense fallback={<div role="status" className="p-8 text-stone-600">Opening Side-Quest…</div>}><Router /></Suspense></RouteRecovery>
       </BrowserRouter>
     </AuthProvider>
   );

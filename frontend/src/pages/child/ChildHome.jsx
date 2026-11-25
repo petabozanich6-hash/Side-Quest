@@ -142,6 +142,10 @@ export default function ChildHome() {
   const [ready, setReady] = useState(new Set());
   const [news, setNews] = useState([]);
   const [reloads, setReloads] = useState(0);
+  const [loadError,setLoadError]=useState("");
+  const [calendarError,setCalendarError]=useState(false);
+  const [loading,setLoading]=useState(true);
+  const retry=()=>setReloads(n=>n+1);
 
   useEffect(() => {
     if (!user?.id) return undefined;
@@ -152,10 +156,12 @@ export default function ChildHome() {
   useEffect(() => {
     const again = () => setReloads((n) => n + 1);
     window.addEventListener("sq-offline-sent", again);
-    return () => window.removeEventListener("sq-offline-sent", again);
+    window.addEventListener("online", again);
+    return () => {window.removeEventListener("sq-offline-sent", again);window.removeEventListener("online", again);};
   }, []);
   useEffect(() => {
     let active = true;
+    setLoading(true);setLoadError("");setCalendarError(false);
     api.get("/dashboard/child").then((r) => {
       if (!active) return;
       setData(r.data); setOffline(false);
@@ -167,22 +173,24 @@ export default function ChildHome() {
         if (user?.username) forgetOfflineChild(user.username);
       }
     }).catch(async (e) => {
-      const saved = isNetworkError(e) ? await savedDashboard(user?.id) : null;
+      const network=isNetworkError(e);
+      const saved = network ? await savedDashboard(user?.id).catch(()=>null) : null;
       if (!active) return;
-      setOffline(isNetworkError(e));
-      setData(saved || { today: [], completed: [], waiting: [], xp: 0 });
-    });
+      setOffline(network);
+      if(saved) setData(saved);
+      else {setData(null);setLoadError(network?"No saved quests could be opened on this device. Connect to the internet and try again.":"Your quests couldn't load. Try again, or ask your grown-up for help.");}
+    }).finally(()=>{if(active)setLoading(false);});
     setEventsReady(false);
     api.get("/calendar", { params: user?.id ? { student_id: user.id } : {} })
       .then((r) => { if (active) setEvents((r.data || []).filter((e) =>
         (e.linked_lesson_id || e.linked_assignment_id) && !(e.student_id && user?.id && e.student_id !== user.id)
       )); })
-      .catch(() => {})
+      .catch(() => {if(active){setEvents([]);setCalendarError(true);}})
       .finally(() => { if (active) setEventsReady(true); });
     return () => { active = false; };
   }, [user?.id, user?.username, reloads]);
 
-  if (!data) return <div role="status" className="paper-card p-8 text-center text-stone-600">Gathering your quests…</div>;
+  if (!data) return loadError&&!loading?<section role="alert" className="paper-card p-6 space-y-3 text-center" data-testid="child-dashboard-error"><h1 className="font-display text-xl font-bold">Let’s try again</h1><p>{loadError}</p><button type="button" onClick={retry} className="rounded-full bg-emerald-950 text-white px-5 py-3 font-bold">Try again</button></section>:<div role="status" className="paper-card p-8 text-center text-stone-600">Gathering your quests…</div>;
   const visible = (list) => offline ? (list || []).filter((a) => ready.has(a.id)) : list || [];
   const tasks = visible(data.all_pending || data.today);
   const today = iso(new Date());
@@ -199,6 +207,7 @@ export default function ChildHome() {
 
   return (
     <div className="space-y-7 animate-in" data-testid="child-home">
+      {calendarError&&!offline&&<div role="status" className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm">Your quests are here, but some calendar dates couldn’t load. <button type="button" className="font-bold underline" onClick={retry}>Refresh</button></div>}
       {offline && <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900" data-testid="offline-home"><strong>📶 You're offline.</strong> Your saved quests are ready on this device. Your work will send when you're back online.</div>}
       {news.length > 0 && <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 space-y-2" data-testid="offline-news">
         {news.map((n, i) => <p key={i}>{n.kind === "handed_in" ? "✅ " : "⚠️ "}{n.text}</p>)}
@@ -219,8 +228,8 @@ export default function ChildHome() {
         <div>{featured ? <FeaturedQuest quest={featured} ready={ready.has(featured.id)} feedback={feedback[featured.id]} senior={senior} /> :
           <section className="flex h-full min-h-64 flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-[#B5C9AF] bg-white/80 p-8 text-center" data-testid="no-work">
             <Sparkles size={40} className="mb-3 text-[#4A5D3A]" />
-            <h2 className="font-display text-2xl font-bold text-[#1F3B2D]">{groups.awaitingHelp.length ? "Your grown-up has the next move" : "All caught up!"}</h2>
-            <p className="mt-2 text-sm text-stone-600">{groups.awaitingHelp.length ? "Your saved work is waiting for help. You can explore your pet or reading while you wait." : "No quests waiting right now. Visit your pet, add some reading or look back at your adventures."}</p>
+            <h2 className="font-display text-2xl font-bold text-[#1F3B2D]">{groups.awaitingHelp.length ? "Your grown-up has the next move" : offline ? "No saved quests ready" : "All caught up!"}</h2>
+            <p className="mt-2 text-sm text-stone-600">{groups.awaitingHelp.length ? "Your saved work is waiting for help. You can explore your pet or reading while you wait." : offline ? "Reconnect to check for new quests." : "No quests waiting right now. Visit your pet, add some reading or look back at your adventures."}</p>
             <Link className="mt-4 rounded-full bg-[#1F3B2D] px-5 py-3 text-sm font-bold text-white" to="/child/stuff">Explore My Stuff</Link>
           </section>}
         </div>

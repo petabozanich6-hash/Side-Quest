@@ -1,4 +1,3 @@
-import { processBookForgeJobs } from "./bookForgeGeneration";
 import { Hono } from "hono";
 import { normJurisdiction, setFamilyJurisdiction, getFamilyJurisdiction } from "./data/jurisdictions";
 import { cors } from "hono/cors";
@@ -18,7 +17,6 @@ import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
 import { registerBilling, reconcileSubscriptions } from "./billing";
 import { registerSquare } from "./square";
-import { registerShopCatalog } from "./shopRoutes";
 import { registerOutcomes } from "./outcomeTracker";
 import { registerPriorLearning } from "./priorLearning";
 import { registerStartingChecks } from "./startingCheck";
@@ -27,22 +25,25 @@ import { registerAutoQuest } from "./autoQuest";
 import { registerTimetable } from "./timetable";
 import { registerHomeschoolCompass } from "./homeschoolCompass";
 import { registerSiteSearch } from "./siteSearch";
-import { registerPrintableVault } from "./printableVault";
 import { registerHandwritingBook } from "./handwritingBook";
-import { registerQuestBooks, registerShop } from "./questBooks";
-import { registerQuestOvernight, processQuestOvernight } from "./questBookOvernight";
 import { registerViewAs, viewAsState } from "./viewAs";
 import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
+import { registerGuestSupport } from "./guestSupport";
+import {cleanupVideo} from "./supportVideo";
+import {runDailyBriefing} from "./supportBriefing";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
+import { runNextBackgroundBatch } from "./lessonBatches";
+import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 import { createAdminRoutes } from "./adminRoutes";
 import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
-import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
+import { applyPlatformSettings, loadPlatformSettings, publicNotices, aiRequestsLast24h } from "./platformSettings";
 import { meterWorkersAi } from "./aiCost";
+import { normaliseRetiredTextOverrides } from "./aiModelCompatibility";
 import { authenticateToken, bumpAuthVersion, familyState, issueFileToken, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
 import { sendParentVerification, redeemParentVerification, resendParentVerification } from "./emailVerification";
@@ -68,9 +69,18 @@ const sameText = (a: string, b: string) => {
 };
 app.use("/api/*", async (c, next) => {
   const key = c.env.STAGING_KEY;
-  if (!key) return next();
-  // Stripe cannot hold the staging cookie; the webhook authenticates by signature instead.
+  if (!key) return c.env.STAGING_PRIVATE === "true" ? c.json({ detail: "Private staging is not configured" }, 503) : next();
+  // Payment providers cannot hold a staging cookie; their webhooks authenticate by signature.
   if (c.req.path === "/api/billing/webhook") return next();
+  // Only a Square SANDBOX callback for our isolated staging Worker can bypass the cookie.
+  // The actual Square endpoint still verifies its HMAC signature before processing anything.
+  // Never allow live Square credentials or callbacks on another hostname to bypass staging.
+  const sandboxCallback = c.req.path === "/api/billing/square-webhook"
+    && /^sandbox-sq0idb-/.test(String(c.env.SQUARE_APPLICATION_ID || ""))
+    && !!c.env.SQUARE_ACCESS_TOKEN && !!c.env.SQUARE_WEBHOOK_SIGNATURE_KEY
+    && c.env.SQUARE_WEBHOOK_URL === c.req.url
+    && /^https:\/\/side-quest-staging\.[^.]+\.workers\.dev\/api\/billing\/square-webhook$/.test(c.req.url);
+  if (sandboxCallback) return next();
   if (c.req.path === "/api/staging-access") {
     if (sameText(c.req.query("key") || "", key)) {
       return new Response(null, {
@@ -81,7 +91,8 @@ app.use("/api/*", async (c, next) => {
     return c.json({ detail: "Not found" }, 404);
   }
   const cookie = (c.req.header("cookie") || "").split(";").map((x) => x.trim()).find((x) => x.startsWith("sq_staging="));
-  if (!cookie || !sameText(decodeURIComponent(cookie.slice(11)), key)) return c.json({ detail: "Private staging site" }, 403);
+  let supplied = "";try { if(cookie) supplied=decodeURIComponent(cookie.slice(11)); } catch { /* malformed cookie remains unauthorized */ }
+  if (!cookie || !sameText(supplied, key)) return c.json({ detail: "Private staging site" }, 403);
   return next();
 });
 
@@ -313,8 +324,6 @@ registerStudentCredentials(app, guards);
 registerHelpRequests(app, guards);
 registerBilling(app, guards);
 registerSquare(app);
-registerShopCatalog(app);
-registerShop(app);
 registerOutcomes(app, guards);
 registerPriorLearning(app, guards);
 registerStartingChecks(app, guards);
@@ -323,13 +332,11 @@ registerAutoQuest(app, guards);
 registerTimetable(app, guards);
 registerHomeschoolCompass(app, guards);
 registerSiteSearch(app, guards);
-registerPrintableVault(app, guards);
 registerHandwritingBook(app, guards);
-registerQuestBooks(app, guards);
-registerQuestOvernight(app, guards);
 registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
+registerGuestSupport(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
@@ -348,20 +355,13 @@ app.notFound((c) => c.json({ detail: "Not found" }, 404));
 export default {
   // Feature switches and the platform AI limit are applied to the bindings before any route runs (platformSettings.ts).
   fetch: async (req: Request, env: Env, ctx: ExecutionContext) => {
+    env = normaliseRetiredTextOverrides(env);
     if (!new URL(req.url).pathname.startsWith("/api/") || !env.DB) return app.fetch(req, env, ctx);
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env), ctx), ctx);
   },
   scheduled: async (event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
-    // A dedicated one-minute trigger keeps book work moving without a browser and
-    // without waiting for the five-minute email/billing tasks to finish.
-    if (event.cron === "* * * * *") {
-      try { await processQuestOvernight(await applyPlatformSettings(env)); }
-      catch (e) { console.error("Quest Book overnight queue cron failed", e); }
-      try { await processBookForgeJobs(meterWorkersAi(await applyPlatformSettings(env), _ctx)); }
-      catch (e) { console.error("Book Forge queue cron failed", e); }
-      return;
-    }
+    env = normaliseRetiredTextOverrides(env);
     if (event.cron !== "*/5 * * * *") return;
     // Preserve the five-minute cadence of every existing maintenance task.
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
@@ -369,6 +369,18 @@ export default {
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
     // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
+    try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
+    try { await runDailyBriefing(env); } catch { console.error("daily owner briefing needs review"); }
+    // Disabled until a separate staging trial. Recheck the platform cap before every scheduled attempt.
+    if(env.AI_BACKGROUND_BATCHES === "true" && env.AI) {
+      try {
+        await ensureOwnerSchema(env.DB);
+        const settings=await loadPlatformSettings(env.DB);
+        if(!settings.features.aiEnabled || settings.maintenance.enabled || await aiRequestsLast24h(env.DB)>=settings.costSafeguards.aiDailyPlatformCap)return;
+        const metered=meterWorkersAi(env,_ctx);
+        if(metered.AI) await runNextBackgroundBatch(metered.DB,metered.AI,{model:metered.AI_MODEL,gatewayId:metered.AI_GATEWAY_ID,compact:metered.AI_COMPACT_GENERATION==="true",fastPipeline:fastLessonPipelineEnabled(metered),splitStages:splitLessonStagesEnabled(metered)});
+      }catch(e){console.error("background batch tick failed",e instanceof Error?e.name:"error");}
+    }
   },
   email: (message: InboundMessage, env: Env) => handleInbound(message, env),
 };

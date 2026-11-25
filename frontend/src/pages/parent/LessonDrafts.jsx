@@ -72,13 +72,14 @@ function BatchView({ id }) {
       if (!b || resumed.current) return;
       resumed.current = true;
       const todo = b.items.filter(i => i.state === "pending").map(i => i.index);
-      if (todo.length && !isRunning(id)) { setWriting(true); runBatch(id, todo); }
+      if (todo.length && !b.background_mode && !isRunning(id)) { setWriting(true); runBatch(id, todo); }
     });
   }, [id, load]);
 
   // Another tab may be writing: keep the list fresh while anything is still generating.
   const generating = !!batch?.items.some(i => i.state === "generating");
-  useEffect(() => { if (!generating || writing) return; const t = setInterval(load, 10000); return () => clearInterval(t); }, [generating, writing, load]);
+  const backgroundQueued = batch?.background_mode==="queued" && batch?.counts?.pending>0;
+  useEffect(() => { if ((!generating && !backgroundQueued) || writing) return; const t = setInterval(()=>{if(document.visibilityState!=="hidden")load();}, 15000); return () => clearInterval(t); }, [generating, backgroundQueued, writing, load]);
 
   useEffect(() => {
     const warn = e => { if (isRunning(id)) { e.preventDefault(); e.returnValue = ""; } };
@@ -86,6 +87,7 @@ function BatchView({ id }) {
     return () => window.removeEventListener("beforeunload", warn);
   }, [id]);
 
+  const pauseBackground=async()=>{try{await api.post(`/ai/batches/${id}/pause-background`);await load();}catch(e){toast.error(e.response?.data?.detail||"Could not pause background writing");}};
   const retry = index => { setStopped(""); setWriting(true); runBatch(id, [index]); setTimeout(load, 300); };
 
   // Save (and assign) every remaining lesson. Always re-reads each lesson first so a parent's edits are never
@@ -132,10 +134,11 @@ function BatchView({ id }) {
         <p className="text-sm text-slate-600 mt-1">{batch.title}{batch.student ? ` · for ${batch.student.name}` : ""}. Open any lesson to read, edit or assign it; the others stay right here.</p>
       </div>
 
+      {batch.background_mode&&<div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 space-y-2" role="status"><p className="font-semibold">{batch.background_mode==="paused"?"Background writing paused":c.failed?"Background writing needs attention":backgroundQueued||generating?"Server-side writing queued":"Background set finished"}</p><p className="text-sm">The server checks queued sets periodically. You can leave the page. Failed or interrupted lessons need your explicit retry. Pausing stops future scheduled lessons, not a lesson already in progress.</p>{batch.background_mode==="queued"&&(backgroundQueued||generating)&&<button type="button" className="underline font-bold text-sm" onClick={pauseBackground}>Pause background writing</button>}<button type="button" className="ml-3 underline text-sm" onClick={load}>Refresh status</button></div>}
       {(writing || generating) && (
         <div className="rounded-xl border border-violet-200 bg-violet-50 p-4" role="status" data-testid="drafts-writing">
-          <p className="font-semibold text-violet-900 flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> Writing lessons… ({c.total - c.pending - c.generating} of {c.total} done)</p>
-          <p className="text-xs text-slate-600 mt-1">Each lesson usually takes one to three minutes. You can open finished lessons now. If you close Side-Quest, the rest are written when you come back to this page.</p>
+          <p className="font-semibold text-violet-900 flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> Writing lessons… ({c.ready+c.saved+c.assigned+c.archived} of {c.total} written)</p>
+          <p className="text-xs text-slate-600 mt-1">Each lesson usually takes one to three minutes. You can open finished lessons now. {batch.background_mode==="queued"?"Queued lessons can continue on the server.":"If you close Side-Quest, return here to continue."}</p>
         </div>
       )}
       {stopped && <p role="alert" className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">{stopped}</p>}
@@ -159,7 +162,7 @@ function BatchView({ id }) {
               {i.lesson_id && i.state !== "archived" && <Link to={reviewPath(id, i.lesson_id)} className={`${btn} bg-violet-700 text-white`} data-testid={`draft-review-${i.index}`}><Eye size={14} /> Review</Link>}
               {i.lesson_id && (i.state === "ready" || i.state === "saved") && <Link to={`/parent/lessons/${i.lesson_id}/edit?batch=${id}`} className={`${btn} border border-slate-900 bg-white`} data-testid={`draft-edit-${i.index}`}><Pencil size={14} /> Edit</Link>}
               {i.state === "failed" && <button disabled={isRunning(id)} onClick={() => retry(i.index)} className={`${btn} border border-slate-900 bg-white`} data-testid={`draft-retry-${i.index}`}><RotateCcw size={14} /> Try this lesson again</button>}
-              {i.state === "pending" && !isRunning(id) && <button onClick={() => retry(i.index)} className={`${btn} border border-slate-900 bg-white`} data-testid={`draft-write-${i.index}`}>Write it now</button>}
+              {i.state === "pending" && batch.background_mode!=="queued" && !isRunning(id) && <button onClick={() => retry(i.index)} className={`${btn} border border-slate-900 bg-white`} data-testid={`draft-write-${i.index}`}>Write it now</button>}
             </div>
           </li>
         ))}
