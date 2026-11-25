@@ -26,7 +26,7 @@ test("actual diary changes immediately affect public availability and cancellati
  const db=makeDb();t.after(()=>db.raw.close());
  // Reset only this synthetic fixture to exercise the first-save path.
  db.raw.exec("DELETE FROM support_public_availability; DELETE FROM support_busy_blocks WHERE id='initial-availability-block-2026-11-30';");
- assert.deepEqual(await readAvailability(db),{enabled:false,windows:[],revision:0});
+ const empty=await readAvailability(db);assert.equal(empty.enabled,false);assert.deepEqual(empty.windows,[]);assert.equal(empty.revision,0);
  assert.equal((await readPublicAvailability(db,now)).published,false);
  assert.equal(await saveAvailability(db,{enabled:true,windows:hours,revision:0,confirmed:true}),true);
  assert.equal(await saveAvailability(db,{enabled:false,windows:[],revision:0,confirmed:true}),false);
@@ -48,11 +48,35 @@ test("initial owner hours and whole unavailable week are seeded but publication 
  const db=makeDb();t.after(()=>db.raw.close());
  const settings=await readAvailability(db);
  assert.equal(settings.enabled,false);
- assert.deepEqual(settings.windows,[1,2,3,4,5].map(day=>({day,start:"09:00",end:"13:00"})));
+ assert.deepEqual(settings.windows,[{"day":2,"start":"09:00","end":"13:00"},{"day":3,"start":"18:00","end":"19:30"},{"day":4,"start":"09:00","end":"13:00"}]);assert.equal(settings.policy.weekly_limit,5);assert.equal(settings.policy.enforced,true);
  const block=db.raw.prepare("SELECT label,start_at,end_at FROM support_busy_blocks WHERE id=?").get("initial-availability-block-2026-11-30");
  assert.deepEqual({...block},{label:"Unavailable",start_at:"2026-11-29T13:00:00.000Z",end_at:"2026-12-06T13:00:00.000Z"});
  assert.equal(await saveAvailability(db,{...settings,enabled:true,confirmed:true}),true);
  const result=await readPublicAvailability(db,new Date("2026-11-29T00:00:00Z"));
  for(const d of result.days.filter(d=>d.date>="2026-11-30"&&d.date<="2026-12-06"))assert.deepEqual(d.windows,[]);
- assert.deepEqual(result.days.find(d=>d.date==="2026-12-07").windows,[{start:"2026-12-06T22:00:00.000Z",end:"2026-12-07T02:00:00.000Z"}]);
+ assert.deepEqual(result.days.find(d=>d.date==="2026-12-07").windows,[]);assert.deepEqual(result.days.find(d=>d.date==="2026-12-08").windows,[{start:"2026-12-07T22:00:00.000Z",end:"2026-12-08T02:00:00.000Z"}]);
+});
+
+test("flexible policy checks Sydney hours, buffers, daily and weekly limits and concurrent revision",async t=>{
+ const {bookingPolicyGuard,permittedByBookingPolicy}=await import("../src/supportPublicAvailability.ts");
+ const db=makeDb();t.after(()=>db.raw.close());
+ const settings=await readAvailability(db);
+ const interval=(start,before=start,after=new Date(Date.parse(start)+30*60000).toISOString())=>({start,before,after});
+ const first=interval("2026-12-07T23:00:00.000Z"),second=interval("2026-12-08T00:00:00.000Z"),third=interval("2026-12-08T01:00:00.000Z");
+ assert.equal(await permittedByBookingPolicy(db,first),true);
+ assert.equal(await permittedByBookingPolicy(db,interval("2026-12-07T22:00:00.000Z","2026-12-07T21:50:00.000Z")),false);
+ assert.equal(await bookingPolicyGuard(db,[first,second,third]),null);
+ const insert=(id,start)=>db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(id,"guest","r",id,2500,"Lesson","Online","Terms","live",start,new Date(Date.parse(start)+30*60000).toISOString(),"awaiting_confirmation",now.toISOString(),now.toISOString());
+ insert("first",first.start);insert("second",second.start);
+ assert.equal(await permittedByBookingPolicy(db,third),false);
+ assert.equal(await saveAvailability(db,{...settings,confirmed:true,enabled:true,policy:{...settings.policy,week_overrides:[{monday:"2026-12-07",limit:2}],date_overrides:[{date:"2026-12-11",windows:[{start:"18:00",end:"19:30"}],limit:1}]}}),true);
+ const evening=interval("2026-12-11T07:15:00.000Z");
+ assert.equal(await permittedByBookingPolicy(db,evening),false);
+ db.raw.prepare("UPDATE support_service_orders SET status='cancelled' WHERE id='second'").run();
+ assert.equal(await permittedByBookingPolicy(db,evening),true);
+ assert.equal((await readPublicAvailability(db,new Date("2026-12-07T00:00:00Z"))).days.find(d=>d.date==="2026-12-11").windows.length,1);
+ const guard=await bookingPolicyGuard(db,[evening]),updated=await readAvailability(db);
+ assert.equal(await saveAvailability(db,{...updated,confirmed:true,policy:{...updated.policy,week_overrides:[{monday:"2026-12-07",limit:0}]}}),true);
+ assert.equal(await db.prepare("SELECT 1 WHERE 1=1"+guard.sql).bind(...guard.args).first(),null);
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='first'").get().status,"awaiting_confirmation");
 });
