@@ -2,7 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
 import {previewSupportInvoice} from "../src/supportSquareInvoicePreview.ts";
-import {prepareSupportInvoiceIntent} from "../src/supportSquareInvoiceIntent.ts";
+import {prepareSupportInvoiceIntent,releasePreparedSupportInvoiceIntent} from "../src/supportSquareInvoiceIntent.ts";
+import {prepareSupportCheckout} from "../src/supportCheckout.ts";
+import {cancelUnstartedOrder,recordManualInvoice} from "../src/supportOrders.ts";
 test("approved invoice intent is durable, duplicate-safe and never issues a provider invoice",async t=>{
  const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
  db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
@@ -32,5 +34,25 @@ test("approved invoice intent is durable, duplicate-safe and never issues a prov
  db.raw.prepare("UPDATE support_service_orders SET amount_cents=3000 WHERE id='o'").run();
  assert.ok("error" in await run());assert.deepEqual(rows()[0],first);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
+ const before=calls;
+ assert.ok("error" in await prepareSupportCheckout({...env,SUPPORT_CHECKOUT_TEST:"true"},"member","r","o",provider));assert.equal(calls,before);
+ assert.ok("error" in await recordManualInvoice(db,"member","r","o",{issued_in_square:true,reference:"INV-001",due_at:b.due_at},"owner",now));
+ assert.equal(await cancelUnstartedOrder(db,"member","r","o",true),false);
+ assert.throws(()=>db.raw.prepare("UPDATE support_service_orders SET checkout_started_at=? WHERE id='o'").run(stamp),/requires reconciliation/);
+ assert.throws(()=>db.raw.prepare("UPDATE support_service_orders SET status='cancelled' WHERE id='o'").run(),/requires reconciliation/);
+ assert.throws(()=>db.raw.prepare("UPDATE support_service_orders SET status='paid' WHERE id='o'").run(),/requires reconciliation/);
+ assert.throws(()=>db.raw.prepare("INSERT INTO support_manual_invoices(order_id,reference,due_at,issued_at,issued_by) VALUES('o','INV-001',?,?,'owner')").run(b.due_at,stamp),/requires reconciliation/);
+ const release=(body=approved,requestId="r")=>releasePreparedSupportInvoiceIntent(env,"member",requestId,"o","owner",body,now);
+ assert.ok("error" in await release({...approved,confirmed:false}));
+ assert.ok("error" in await release({...approved,fingerprint:"0".repeat(64)}));
+ assert.ok("error" in await release(approved,"another-request"));
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='order_pending' WHERE order_id='o'").run();
+ assert.ok("error" in await release());assert.equal(rows().length,1);
+ // Restore synthetic fixture to a never-submitted state to exercise local release.
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='prepared' WHERE order_id='o'").run();
+ assert.equal((await release()).released,true);assert.equal(rows().length,0);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_intent_releases WHERE order_id='o' AND released_by='owner'").get().n,1);
+ assert.ok("error" in await release());
+ assert.equal(await cancelUnstartedOrder(db,"member","r","o",true),true);
  assert.ok(calls>0);
 });
