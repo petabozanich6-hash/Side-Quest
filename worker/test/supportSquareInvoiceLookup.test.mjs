@@ -1,0 +1,22 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {makeDb} from "./fakeD1.mjs";
+import {inspectSupportInvoice,supportInvoiceLookupAvailable} from "../src/supportSquareInvoiceLookup.ts";
+test("sandbox invoice lookup verifies actual recipient, location, reference, date and amount without changing booking",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z";
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'Scope','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_manual_invoices(order_id,reference,due_at,issued_at,issued_by) VALUES('o','INV-1','2026-11-27T01:00:00.000Z',?,'u')").run(stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+ const invoice={id:"inv:123",location_id:"LOCATION123",order_id:"order123",invoice_number:"INV-1",primary_recipient:{email_address:"test@example.com"},status:"PAID",payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",computed_amount_money:{amount:2500,currency:"AUD"},total_completed_amount_money:{amount:2500,currency:"AUD"}}]};
+ let calls=0;
+ const provider=async(url,init)=>{calls++;assert.equal(init.method,"GET");assert.ok(url.startsWith("https://connect.squareupsandbox.com/v2/"));return new Response(JSON.stringify(url.includes("/invoices/")?{invoice}:{order:{id:"order123",location_id:"LOCATION123",total_money:{amount:2500,currency:"AUD"}}}));};
+ assert.equal(supportInvoiceLookupAvailable(env),true);
+ assert.ok("error" in await inspectSupportInvoice({...env,SQUARE_APPLICATION_ID:"sq0idp-live"},"member","r","o","inv:123",provider));assert.equal(calls,0);
+ const r=await inspectSupportInvoice(env,"member","r","o","inv:123",provider);assert.equal(r.matched,true);assert.equal(r.status,"PAID");assert.equal(r.requires_manual_review,true);assert.equal(calls,2);
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
+ invoice.primary_recipient.email_address="wrong@example.com";assert.ok("error" in await inspectSupportInvoice(env,"member","r","o","inv:123",provider));
+ invoice.primary_recipient.email_address="test@example.com";invoice.payment_requests[0].due_date="2026-11-28";assert.ok("error" in await inspectSupportInvoice(env,"member","r","o","inv:123",provider));
+});

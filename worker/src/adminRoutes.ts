@@ -1,3 +1,4 @@
+import {supportInvoiceLookupAvailable,inspectSupportInvoice} from "./supportSquareInvoiceLookup";
 import {ownerToday} from "./unifiedOwnerToday";
 import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
@@ -275,6 +276,16 @@ export function createAdminRoutes() {
   });
 
   // --------------------------------------------------------------- customers
+  admin.get("/support-invoice-lookup/status",requirePermission("customers.read"),c=>c.json({available:supportInvoiceLookupAvailable(c.env)}));
+  admin.post("/support-invoice-lookup",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
+    const b=await readJson(c);
+    if(b?.confirmed!==true||!["guest","member"].includes(b.channel)||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Review the invoice lookup details."},400);
+    const r=await inspectSupportInvoice(c.env,b.channel,b.request_id,b.order_id,b.invoice_id);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.square_invoice_checked",targetType:"support",targetId:b.request_id,detail:{channel:b.channel,order_id:b.order_id,status:r.status}});
+    return c.json(r);
+  });
   admin.get("/today",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");return c.json(await ownerToday(c.env.DB));
