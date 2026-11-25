@@ -45,6 +45,7 @@ import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./su
 import {buildContinuity,emailContinuity} from "./supportContinuity";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -686,13 +687,24 @@ export function createAdminRoutes() {
     const id=(c.req.param("deckId")??""),b=await readJson(c);if(b.confirmed!==true||!await archiveDeck(c.env.DB,id,b.revision))return c.json({detail:"Resource changed; refresh before archiving."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.deck.archive",targetType:"support_deck",targetId:id,detail:{}});return c.json({ok:true});
   });
+  admin.post("/support-calendar/blocks",requirePermission("customers.read"),async c=>{
+    const r=await createBusyBlock(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.block",targetType:"support_block",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.post("/support-calendar/blocks/:bid/remove",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c),id=c.req.param("bid")??"";if(b.confirmed!==true)return c.json({detail:"Confirm removal."},400);
+    await ensureOrderSchema(c.env.DB);const r=await c.env.DB.prepare("DELETE FROM support_busy_blocks WHERE id=?").bind(id).run();
+    if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
+  });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
     const from=c.req.query("from")||"",to=c.req.query("to")||"";
     if(!Number.isFinite(Date.parse(from))||!Number.isFinite(Date.parse(to))||Date.parse(to)<=Date.parse(from)||Date.parse(to)-Date.parse(from)>62*86400000)return c.json({detail:"Choose a date range of up to 62 days."},400);
-    const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND o.start_at<? AND o.end_at>? AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
+    const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,d.learner_label,d.prep_minutes,d.wrap_minutes,d.ready,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
     const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,i.due_at FROM support_service_orders o JOIN support_manual_invoices i ON i.order_id=o.id WHERE o.status='confirmed' AND i.due_at<=? AND i.cancelled_at IS NULL ORDER BY i.due_at LIMIT 100").bind(nowIso()).all<any>()).results||[];
-    return c.json({appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
+    const blocks=(await c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all()).results||[];
+    return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
   });
   for(const channel of ["member","guest"] as const){
     admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true)}));
@@ -708,6 +720,14 @@ export function createAdminRoutes() {
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
       return c.json(result,201);
+    });
+    admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json(d):c.json({detail:"Order not found"},404);
+    });
+    admin.put(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id)||!await saveDiary(c.env.DB,channel,id,oid,await readJson(c)))return c.json({detail:"Check the diary fields and reload if another edit was saved. Ready lessons need objectives, an agenda and materials."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.diary.save",targetType:"support",targetId:oid,detail:{channel}});return c.json({ok:true});
     });
     admin.get(path+"/:oid/files",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);

@@ -1083,3 +1083,23 @@ test("classroom images require active learner material and only the currently pr
  assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"hide-image",revision:1},now)).ok,true);
  assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),false);
 });
+
+test("tutor diary reserves buffers and unavailable blocks and keeps private preparation owner-only",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("diary-alice@example.com","Alice");
+ const {createServiceOrder}=await import("../src/supportOrders.ts");
+ const {createBusyBlock,saveDiary,readDiary}=await import("../src/supportDiary.ts");
+ const now=new Date(),start=new Date(now.getTime()+48*3600000),when=now.toISOString();
+ const r=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding the solar system",consent:true}});
+ assert.equal(r.status,201);const rid=r.json.id;
+ for(const id of ["diary-q1","diary-q2"]){if(id==="diary-q2")h.db.raw.prepare("UPDATE learning_support_quotes SET status='withdrawn' WHERE id='diary-q1'").run();
+ h.db.raw.prepare("INSERT INTO learning_support_quotes(id,feedback_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES(?,?,?,?,?,'interested',?,?)").run(id,rid,"Solar system","Online",1500,when,new Date(now.getTime()+7*86400000).toISOString());
+ if(id==="diary-q1"){const order=await createServiceOrder(h.db,"member",rid,{quote_id:id,mode:"live",start_at:start.toISOString(),minutes:30,prep_minutes:10,wrap_minutes:10,learner_label:"Learner A",terms:"Agreed arrangements and terms.",confirmed:true},now);assert.ok(order.id,JSON.stringify(order));const d=await readDiary(h.db,"member",rid,order.id);assert.equal(d.diary.prep_minutes,10);
+ assert.equal(await saveDiary(h.db,"member",rid,order.id,{...d.diary,ready:true,details:{objective:"Explain orbits",agenda:"Model with diagrams",materials:"Worksheet",reflection:"PRIVATE diary note"} }),true);
+ assert.equal(await saveDiary(h.db,"member",rid,order.id,d.diary),false);
+ const privateRoute="/admin/feedback/"+rid+"/orders/"+order.id+"/diary";assert.equal((await h.req(privateRoute,{token:alice.token})).status,404);await stepUp(h,owner);assert.equal((await h.req(privateRoute,{token:owner.token})).json.diary.details.reflection,"PRIVATE diary note");
+ assert.ok((await createBusyBlock(h.db,{label:"Break",start_at:new Date(start.getTime()+35*60000).toISOString(),end_at:new Date(start.getTime()+50*60000).toISOString()},now)).error);
+ }}
+ const near=await createServiceOrder(h.db,"member",rid,{quote_id:"diary-q2",mode:"live",start_at:new Date(start.getTime()+35*60000).toISOString(),minutes:30,terms:"Agreed arrangements and terms.",confirmed:true},now);assert.ok(near.error);
+ const block=await createBusyBlock(h.db,{label:"Unavailable",start_at:new Date(start.getTime()+60*60000).toISOString(),end_at:new Date(start.getTime()+120*60000).toISOString()},now);assert.ok(block.id);
+ assert.ok((await createServiceOrder(h.db,"member",rid,{quote_id:"diary-q2",mode:"live",start_at:new Date(start.getTime()+70*60000).toISOString(),minutes:30,terms:"Agreed arrangements and terms.",confirmed:true},now)).error);
+});

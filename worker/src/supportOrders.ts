@@ -11,7 +11,12 @@ export const INVOICE_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_manual_invoices (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, reference TEXT NOT NULL COLLATE NOCASE UNIQUE, due_at TEXT NOT NULL, issued_at TEXT NOT NULL, issued_by TEXT NOT NULL, verified_at TEXT, verified_by TEXT, cancelled_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_invoice_due ON support_manual_invoices(due_at)"
 ] as const;
-export async function ensureOrderSchema(db:D1Database){for(const sql of [...ORDER_SCHEMA,...INVOICE_SCHEMA])await db.prepare(sql).run();}
+export const DIARY_SCHEMA=[
+  "CREATE TABLE IF NOT EXISTS support_tutor_diary (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, learner_label TEXT NOT NULL DEFAULT '', prep_minutes INTEGER NOT NULL DEFAULT 0 CHECK(prep_minutes BETWEEN 0 AND 120), wrap_minutes INTEGER NOT NULL DEFAULT 0 CHECK(wrap_minutes BETWEEN 0 AND 120), details_json TEXT NOT NULL DEFAULT '{}', ready INTEGER NOT NULL DEFAULT 0 CHECK(ready IN (0,1)), revision INTEGER NOT NULL DEFAULT 1, updated_at TEXT NOT NULL)",
+  "CREATE TABLE IF NOT EXISTS support_busy_blocks (id TEXT PRIMARY KEY,label TEXT NOT NULL,start_at TEXT NOT NULL,end_at TEXT NOT NULL,created_at TEXT NOT NULL)",
+  "CREATE INDEX IF NOT EXISTS idx_support_busy_blocks_time ON support_busy_blocks(start_at,end_at)"
+] as const;
+export async function ensureOrderSchema(db:D1Database){for(const sql of [...ORDER_SCHEMA,...INVOICE_SCHEMA,...DIARY_SCHEMA])await db.prepare(sql).run();}
 export const orderPublic=(r:any)=>({id:r.id,quote_id:r.quote_id,amount_cents:r.amount_cents,scope:r.scope,delivery:r.delivery,terms:r.terms,mode:r.mode,start_at:r.start_at,end_at:r.end_at,status:r.status,confirmed_at:r.confirmed_at,paid_at:r.paid_at,legacy_checkout:!!r.checkout_started_at,invoice_reference:r.invoice_reference??null,payment_due_at:r.payment_due_at??null,invoice_verified_at:r.invoice_verified_at??null,invoice_overdue:r.status==="confirmed"&&!!r.payment_due_at&&r.payment_due_at<=nowIso()});
 export async function listOrders(db:D1Database,channel:Channel,id:string){await ensureOrderSchema(db);const {results}=await db.prepare("SELECT o.*,i.reference invoice_reference,i.due_at payment_due_at,i.verified_at invoice_verified_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id WHERE o.channel=? AND o.request_id=? ORDER BY o.created_at DESC LIMIT 100").bind(channel,id).all<any>();return (results||[]).map(orderPublic);}
 export async function getOrder(db:D1Database,channel:Channel,id:string,oid:string){await ensureOrderSchema(db);return db.prepare("SELECT * FROM support_service_orders WHERE channel=? AND request_id=? AND id=?").bind(channel,id,oid).first<any>();}
@@ -20,6 +25,8 @@ export async function createServiceOrder(db:D1Database,channel:Channel,id:string
  await ensureOrderSchema(db);
  const qid=typeof b.quote_id==="string"?b.quote_id:"",mode=b.mode,terms=typeof b.terms==="string"?b.terms.trim():"";
  if(!qid||!["live","written"].includes(String(mode))||terms.length<20||terms.length>2000||b.confirmed!==true)return {error:"Choose the service, confirm arrangements, and enter the service and cancellation terms (20–2000 characters)."};
+ const prep=b.prep_minutes??0,wrap=b.wrap_minutes??0,label=typeof b.learner_label==="string"?b.learner_label.trim():"";
+ if(typeof prep!=="number"||!Number.isInteger(prep)||prep<0||prep>120||typeof wrap!=="number"||!Number.isInteger(wrap)||wrap<0||wrap>120||label.length>80)return {error:"Use a learner nickname or initials and buffers of 0–120 minutes."};
  let start:string|null=null,end:string|null=null;
  if(mode==="live"){
   if(typeof b.start_at!=="string"||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(b.start_at)||!Number.isFinite(Date.parse(b.start_at))||Date.parse(b.start_at)<=now.getTime()||typeof b.minutes!=="number"||!Number.isInteger(b.minutes)||b.minutes<15||b.minutes>180)return {error:"Choose a future start time and a duration of 15–180 minutes."};
@@ -28,9 +35,11 @@ export async function createServiceOrder(db:D1Database,channel:Channel,id:string
  const qtable=channel==="guest"?"support_guest_quotes":"learning_support_quotes",key=channel==="guest"?"request_id":"feedback_id",rtable=channel==="guest"?"support_guest_requests":"parent_feedback",tag=channel==="member"?" AND r.page_hint='learning-support'":"";
  const oid=crypto.randomUUID(),when=now.toISOString();
  // Atomic availability check across both channels; no second live booking overlaps even under concurrent requests.
- const sql="INSERT OR IGNORE INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,?,r.id,q.id,q.amount_cents,q.scope,q.delivery,?,?,?,?,?,? FROM "+qtable+" q JOIN "+rtable+" r ON r.id=q."+key+" WHERE r.id=? AND q.id=? AND q.status='interested' AND q.expires_at>? AND r.status NOT IN ('closed','resolved')"+tag+" AND (? IS NULL OR NOT EXISTS(SELECT 1 FROM support_service_orders o WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND o.start_at<? AND o.end_at>?))";
- const changed=await db.prepare(sql).bind(oid,channel,terms,mode,start,end,when,when,id,qid,when,start,end,start).run();
- if(!changed.meta?.changes)return {error:"Proposal expired, already has an order, or the appointment overlaps an existing reservation."};
+ const occupiedStart=start?new Date(Date.parse(start)-prep*60000).toISOString():null,occupiedEnd=end?new Date(Date.parse(end)+wrap*60000).toISOString():null;
+ const sql="INSERT OR IGNORE INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,?,r.id,q.id,q.amount_cents,q.scope,q.delivery,?,?,?,?,?,? FROM "+qtable+" q JOIN "+rtable+" r ON r.id=q."+key+" WHERE r.id=? AND q.id=? AND q.status='interested' AND q.expires_at>? AND r.status NOT IN ('closed','resolved')"+tag+" AND (? IS NULL OR (NOT EXISTS(SELECT 1 FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?)) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks z WHERE z.start_at<? AND z.end_at>?)))";
+ const results=await db.batch([db.prepare(sql).bind(oid,channel,terms,mode,start,end,when,when,id,qid,when,start,occupiedEnd,occupiedStart,occupiedEnd,occupiedStart),db.prepare("INSERT INTO support_tutor_diary(order_id,learner_label,prep_minutes,wrap_minutes,updated_at) SELECT id,?,?,?,? FROM support_service_orders WHERE id=?").bind(label,mode==="live"?prep:0,mode==="live"?wrap:0,when,oid)]);
+ const changed=results[0];
+ if(!changed.meta?.changes)return {error:"Proposal expired, already has an order, or the appointment including preparation and wrap-up overlaps a reservation or blocked time."};
  return {id:oid};
 }
 export async function confirmServiceOrder(db:D1Database,channel:Channel,id:string,oid:string,now=new Date()){
