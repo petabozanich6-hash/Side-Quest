@@ -44,6 +44,7 @@ import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
 import {readAvailability,saveAvailability} from "./supportPublicAvailability";
+import {pendingCancellations,dismissCancellation,cancelPaidAppointment} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
@@ -721,7 +722,7 @@ export function createAdminRoutes() {
     const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,d.learner_label,d.prep_minutes,d.wrap_minutes,d.ready,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
     const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_installment_terms t ON t.order_id=o.id WHERE o.status='confirmed' AND COALESCE(t.due_at,i.due_at)<=? AND i.cancelled_at IS NULL ORDER BY COALESCE(t.due_at,i.due_at) LIMIT 100").bind(nowIso()).all<any>()).results||[];
     const blocks=(await c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all()).results||[];
-    return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
+    return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,cancellation_requests:await pendingCancellations(c.env.DB),classroom_enabled:classroomEnabled(c.env)});
   });
   admin.get("/support-public-availability",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
@@ -856,6 +857,16 @@ export function createAdminRoutes() {
           return await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: reservation cancelled",text:"An unpaid reservation has been cancelled and the time released. Please review your arrangements in your private portal. Any separately paid lessons are unaffected. Contact Side-Quest if you believe payment was already made. "+url,html:layout({preheader:"An unpaid reservation has been released.",kicker:"Learning Support",heading:"Reservation cancelled",body:p("An unpaid reservation has been released. Review your arrangements in your private portal. Separately paid lessons are unaffected. Contact Side-Quest if you believe you have already paid.")+button("View arrangements",url),reason:"This is a service notification."})});
         }catch{return false;}
       };
+      if(action==="dismiss-cancellation"){
+        if(b.parent_notified!==true||!await dismissCancellation(c.env.DB,channel,id,oid))return c.json({detail:"Discuss the outcome with the parent first. Request unavailable."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.cancellation_request_resolved",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:true});
+      }
+      if(action==="cancel-paid"){
+        if(!await cancelPaidAppointment(c.env.DB,channel,id,oid,b))return c.json({detail:"Review the agreed cancellation and any refund in Square first. Appointment unavailable or package requires review."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.paid_appointment_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel,financial_resolution_checked:true,parent_notified:true}});
+        return c.json({ok:true});
+      }
       if(action==="cancel-invoice"){
         if(!await cancelManualInvoiceOrder(c.env.DB,channel,id,oid,b))return c.json({detail:"Only a confirmed unpaid order with a cancelled Square invoice can be released."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true,cancellation_email_sent:await cancellationNotice()});
