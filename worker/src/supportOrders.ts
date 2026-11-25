@@ -2,7 +2,7 @@ import {bookingPolicyGuard} from "./supportPublicAvailability";
 import {permitsSupportStart,PREPARATION_NOTICE} from "./supportLeadTime";
 import type {Env} from "./types";
 import {nowIso} from "./types";
-import {readQuotePlan} from "./supportQuotePlans";
+import {readQuoteSchedule} from "./supportQuotePlans";
 export type Channel="member"|"guest";
 export const ORDER_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_service_orders (id TEXT PRIMARY KEY, channel TEXT NOT NULL CHECK(channel IN ('member','guest')), request_id TEXT NOT NULL, quote_id TEXT NOT NULL, amount_cents INTEGER NOT NULL CHECK(amount_cents BETWEEN 0 AND 1000000), scope TEXT NOT NULL, delivery TEXT NOT NULL, terms TEXT NOT NULL, mode TEXT NOT NULL CHECK(mode IN ('live','written')), start_at TEXT, end_at TEXT, status TEXT NOT NULL DEFAULT 'awaiting_confirmation' CHECK(status IN ('awaiting_confirmation','confirmed','paid','review','cancelled','completed')), confirmed_at TEXT, square_order_id TEXT UNIQUE, square_link_id TEXT UNIQUE, checkout_url TEXT, square_payment_id TEXT UNIQUE, checkout_started_at TEXT, paid_at TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)",
@@ -30,7 +30,9 @@ export async function createServiceOrder(db:D1Database,channel:Channel,id:string
  await ensureOrderSchema(db);
  const qid=typeof b.quote_id==="string"?b.quote_id:"",mode=b.mode,terms=typeof b.terms==="string"?b.terms.trim():"";
  if(!qid||!["live","written"].includes(String(mode))||terms.length<20||terms.length>2000||b.confirmed!==true)return {error:"Choose the service, confirm arrangements, and enter the service and cancellation terms (20–2000 characters)."};
- if(mode==="live"&&(await readQuotePlan(db,channel,id,qid))?.lessons?.length>1)return {error:"This quote has multiple lessons. Reserve the whole package instead."};
+ const schedule=await readQuoteSchedule(db,channel,id,qid);
+ if(schedule&&schedule.length>1)return {error:"This quote has multiple lessons. Reserve the whole package instead."};
+ if(schedule&&(mode!=="live"||b.minutes!==schedule[0]))return {error:"The delivery mode and duration must match the quoted live session."};
  const prep=b.prep_minutes??0,wrap=b.wrap_minutes??0,label=typeof b.learner_label==="string"?b.learner_label.trim():"";
  if(typeof prep!=="number"||!Number.isInteger(prep)||prep<0||prep>120||typeof wrap!=="number"||!Number.isInteger(wrap)||wrap<0||wrap>120||label.length>80)return {error:"Use a learner nickname or initials and buffers of 0–120 minutes."};
  let start:string|null=null,end:string|null=null;
