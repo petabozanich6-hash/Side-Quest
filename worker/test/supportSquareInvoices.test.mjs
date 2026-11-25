@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {invoicePilotConfig,prepareSandboxInvoice,publishSandboxInvoice,invoicePayload,sandboxInvoiceUrl} from "../src/supportSquareInvoices.ts";
+import {invoicePilotConfig,prepareSandboxInvoice,publishSandboxInvoice,invoicePayload,sandboxInvoiceUrl,inspectSandboxInvoice} from "../src/supportSquareInvoices.ts";
 const env={SUPPORT_SQUARE_INVOICES_TEST:"true",STAGING_KEY:"synthetic",STAGING_PRIVATE:"true",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-sq0idb-test",SQUARE_LOCATION_ID:"TEST123456",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
 const v={orderId:"booking-1",customerId:"parent-1",amountCents:3500,dueDate:"2026-12-01",locationId:env.SQUARE_LOCATION_ID,email:"parent@example.test"};
 const draft={id:"inv:sample",version:0,location_id:v.locationId,order_id:"square-order",primary_recipient:{customer_id:v.customerId,email_address:v.email},delivery_method:"SHARE_MANUALLY",payment_requests:[{request_type:"BALANCE",due_date:v.dueDate,automatic_payment_source:"NONE",computed_amount_money:{amount:3500,currency:"AUD"}}],status:"DRAFT"};
@@ -49,4 +49,28 @@ test("amount mismatch, wrong recipient and unexpected link fail closed",async()=
 });
 test("invalid amount and invalid due date cannot build invoice",()=>{
  for(const patch of [{amountCents:0},{amountCents:1.5},{dueDate:"2026-02-31"}])assert.throws(()=>invoicePayload({...v,...patch},"sq-order","key"));
+});
+
+test("read-only invoice reconciliation verifies underlying completed payments, not invoice status alone",async()=>{
+ const ids={invoiceId:draft.id,squareOrderId:draft.order_id},deadline="2026-12-01T01:00:00.000Z";
+ const full={currency:"AUD",amount:3500},zero={currency:"AUD",amount:0};
+ function provider(status,completed,tenders,payment,orderExtra={}){
+  const calls=[];
+  return {calls,fetch:async(url,init)=>{
+   assert.equal(init.method,"GET");const path=new URL(url).pathname;calls.push(path);
+   const data=path.includes("/invoices/")?{invoice:{...published,status,payment_requests:[{...draft.payment_requests[0],total_completed_amount_money:completed}]}}:path.includes("/orders/")?{order:{id:ids.squareOrderId,location_id:v.locationId,total_money:full,tenders,...orderExtra}}:{payment};
+   return new Response(JSON.stringify(data));
+  }};
+ }
+ const payment={id:"pay1",order_id:ids.squareOrderId,location_id:v.locationId,status:"COMPLETED",amount_money:full,total_money:full,refunded_money:zero,updated_at:"2026-11-30T00:00:00Z"};
+ const check=async p=>inspectSandboxInvoice(env,v,ids,deadline,p.fetch);
+ assert.equal((await check(provider("UNPAID",zero,[],null))).state,"unpaid");
+ assert.equal((await check(provider("CANCELED",zero,[],null))).state,"cancelled_unpaid");
+ assert.equal((await check(provider("PAID",full,[],null))).state,"review");
+ assert.equal((await check(provider("PARTIALLY_PAID",{currency:"AUD",amount:1000},[{payment_id:"pay1"}],payment))).state,"review");
+ assert.equal((await check(provider("PAID",full,[{payment_id:"pay1"}],payment))).state,"paid_verified");
+ for(const patch of [{status:"APPROVED"},{order_id:"other"},{refunded_money:{currency:"AUD",amount:500}},{refund_ids:["refund1"]},{updated_at:"2026-12-02T00:00:00Z"},{amount_money:{currency:"AUD",amount:3499}}])assert.equal((await check(provider("PAID",full,[{payment_id:"pay1"}],{...payment,...patch}))).state,"review");
+ assert.equal((await check(provider("PAID",full,[{payment_id:"pay1"}],payment,{refunds:[{}]}))).state,"review");
+ assert.equal((await check(provider("PAID",full,[{payment_id:"pay1"},{payment_id:"pay1"}],payment))).state,"review");
+ await assert.rejects(check(provider("PAID",full,[{payment_id:"pay1"}],payment,{total_money:{currency:"AUD",amount:1}})),/Underlying order/);
 });
