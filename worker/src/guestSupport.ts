@@ -5,6 +5,7 @@ import {parseLearningSupport} from "./learningSupport";
 import {SITE_URL,sendEmail,layout,p,button} from "./email";
 import {loadPlatformSettings} from "./platformSettings";
 import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
+import {requestAppointmentCancellation} from "./supportPaymentSafety";
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
@@ -152,6 +153,14 @@ export function registerGuestSupport(app:App){
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
   const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
   return c.json({orders:await listOrders(c.env.DB,"guest",id),classroom_enabled:classroomEnabled(c.env)});
+ });
+ app.post(root+"/requests/:id/orders/:oid/request-cancellation",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",oid=c.req.param("oid")??"",b=await c.req.json().catch(()=>null);
+  if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  if(b?.confirmed!==true||!await requestAppointmentCancellation(c.env.DB,"guest",id,oid))return c.json({detail:"Cancellation request unavailable. Please contact Side-Quest."},409);
+  await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
+  return c.json({ok:true,pending:true});
  });
  app.post(root+"/requests/:id/orders/:oid/confirm",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
