@@ -10,6 +10,7 @@ import {termsReview,confirmReviewedTerms,acceptanceReceipt} from "./supportTerms
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
+import {buildStationeryPdf,stationeryBase64,serviceTermsAttachment,termsDeliveryApproved} from "./supportStationery";
 import {readSlots,selectSlot} from "./supportSlots";
 import {grantedResources,downloadResource,readPresentedImage} from "./supportFiles";
 export const GUEST_SCHEMA=[
@@ -221,6 +222,24 @@ export function registerGuestSupport(app:App){
   const r=await selectSlot(c.env.DB,"guest",id,c.req.param("qid")??"",await c.req.json().catch(()=>null));if("error" in r)return c.json({detail:r.error},409);
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   try{if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);}catch{}return c.json(r,201);
+ });
+ // The issued quote is already owner-approved for the parent. Generate a private
+ // printable copy from its immutable public fields, never from owner notes.
+ app.get(root+"/requests/:id/quotes/:qid/document",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",qid=c.req.param("qid")??"";
+  const q=await c.env.DB.prepare("SELECT q.scope,q.delivery,q.amount_cents,q.created_at,q.expires_at FROM support_guest_quotes q JOIN support_guest_requests r ON r.id=q.request_id WHERE q.id=? AND r.id=? AND r.email=?").bind(qid,id,who.email).first<{scope:string;delivery:string;amount_cents:number;created_at:string;expires_at:string}>();
+  if(!q)return c.json({detail:"Proposal not found."},404);
+  if(!(await hitRateLimit(c.env.DB,"guest-quote-document:"+await digest(who.email),30,3600)).ok)return c.json({detail:"Try again shortly."},429);
+  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"});
+  try{
+   const plan=await readQuotePlan(c.env.DB,"guest",id,qid);
+   const overview=plan?[plan.title,plan.subject+" | "+plan.year_level,plan.goal].join("\n"):q.scope;
+   const support=plan?plan.lessons.map((l:any,i:number)=>["Lesson "+(i+1)+": "+l.title+" ("+l.minutes+" min)",l.objective,l.activities,"Progress check: "+l.check].join("\n")).join("\n\n"):q.scope;
+   const doc=buildStationeryPdf({kind:"proposal",sections:[overview,support,q.delivery+"\nTotal: AUD "+(q.amount_cents/100).toFixed(2)+"\nValid until "+date.format(new Date(q.expires_at)),"Expressing interest does not create a booking or charge. Review current proposal status, appointment arrangements and the service agreement in your private portal before committing."]},date.format(new Date(q.created_at)));
+   const terms=serviceTermsAttachment();
+   return c.json({filename:doc.filename,mime:"application/pdf",base64:stationeryBase64(doc.pdf),terms:termsDeliveryApproved(c.env,terms.version)?{filename:terms.filename,mime:"application/pdf",base64:stationeryBase64(terms.pdf),version:terms.version}:null});
+  }catch{return c.json({detail:"The PDF could not be generated. Your proposal remains available in the portal."},409);}
  });
  app.get(root+"/requests/:id/quotes/:qid/plan",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
