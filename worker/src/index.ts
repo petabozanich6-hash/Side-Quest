@@ -17,6 +17,7 @@ import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity
 import {registerUnifiedLegacy} from "./unifiedPortalLegacy";
 import {registerPortalLearners} from "./unifiedPortalLearners";
 import {registerPortalIntake} from "./unifiedPortalIntake";
+import {registerFamilyOverview} from "./unifiedPortalOverview";
 import {authEmailOrigin} from "./authEmailOrigin";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
@@ -394,6 +395,7 @@ registerGuestSupport(app);
 registerUnifiedLegacy(app,guards);
 registerPortalLearners(app,guards);
 registerPortalIntake(app,guards);
+registerFamilyOverview(app,guards);
 registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
