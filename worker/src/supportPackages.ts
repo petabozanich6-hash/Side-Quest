@@ -1,3 +1,4 @@
+import {permitsSupportStart,PREPARATION_NOTICE} from "./supportLeadTime";
 import {ensureOrderSchema,type Channel} from "./supportOrders";
 import {readQuotePlan} from "./supportQuotePlans";
 const iso=(s:unknown):s is string=>typeof s==="string"&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(s)&&Number.isFinite(Date.parse(s));
@@ -16,6 +17,7 @@ export async function createPackage(db:D1Database,channel:Channel,id:string,b:an
   if(i&&sessions[i-1].after>before)return {error:"Lessons must be in chronological order without overlapping preparation or wrap-up."};
   sessions.push({id:crypto.randomUUID(),start,end,before,after,title:l.title});
  }
+ if(!await permitsSupportStart(db,channel,id,sessions.map(s=>s.start)))return {error:PREPARATION_NOTICE};
  const root=sessions[0],when=now.toISOString(),qt=channel==="guest"?"support_guest_quotes":"learning_support_quotes",rt=channel==="guest"?"support_guest_requests":"parent_feedback",key=channel==="guest"?"request_id":"feedback_id",tag=channel==="member"?" AND r.page_hint='learning-support'":"";
  const installments=b.payment_mode==="installments",lead=b.deadline_hours??24;
  if(b.payment_mode!==undefined&&!["upfront","installments"].includes(b.payment_mode))return {error:"Choose upfront or per-lesson payment."};

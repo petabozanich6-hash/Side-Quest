@@ -31,11 +31,13 @@ import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
 import { registerGuestSupport } from "./guestSupport";
+import { registerPublicAvailability } from "./supportPublicAvailability";
 import {cleanupVideo} from "./supportVideo";
 import {runDailyBriefing} from "./supportBriefing";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
+import {processSupportInvoiceNotices} from "./supportPaymentSafety";
 import { runNextBackgroundBatch } from "./lessonBatches";
 import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 import { createAdminRoutes } from "./adminRoutes";
@@ -337,6 +339,7 @@ registerViewAs(app, guards);
 registerHandsOnVault(app, guards);
 registerFeedback(app, guards);
 registerGuestSupport(app);
+registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
 
@@ -369,6 +372,7 @@ export default {
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
     // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
+    try { await processSupportInvoiceNotices(env); } catch { console.error("Learning Support payment notices need review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
     try { await runDailyBriefing(env); } catch { console.error("daily owner briefing needs review"); }
     // Disabled until a separate staging trial. Recheck the platform cap before every scheduled attempt.
