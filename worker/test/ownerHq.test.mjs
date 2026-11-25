@@ -848,4 +848,5 @@ test("learning support intake validates consent, is private and filterable in Ow
  r=await h.req("/admin/feedback?kind=learning-support",{token:owner.token});assert.equal(r.status,200);assert.deepEqual(r.json.items.map(x=>x.id),[created.json.id]);
  h.db.raw.prepare("UPDATE families SET plan='FREE_EXPIRED' WHERE id=?").run(alice.familyId);
  r=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.reports.length,1);
+ const afterExpiry=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{...input,detail:"A new learning need after membership expiry."}});assert.equal(afterExpiry.status,201,JSON.stringify(afterExpiry.json));
 });
