@@ -43,7 +43,7 @@ import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
-import {prepareStationery,stationeryBase64,stationeryFingerprint,stationeryRecipient,stationeryEmailEnabled} from "./supportStationery";
+import {prepareStationery,stationeryBase64,stationeryFingerprint,stationeryRecipient,stationeryEmailEnabled,termsDeliveryApproved,serviceTermsAttachment} from "./supportStationery";
 import {listStationery,saveStationery,downloadStationery,deliverSavedStationery} from "./supportStationeryHistory";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
@@ -734,7 +734,7 @@ export function createAdminRoutes() {
       if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const recipient=await stationeryRecipient(c.env.DB,channel,id);
       c.header("Cache-Control","private, no-store");
-      return c.json({documents:await listStationery(c.env.DB,channel,id),recipient:recipient?.email??null,email_enabled:stationeryEmailEnabled(c.env)});
+      return c.json({documents:await listStationery(c.env.DB,channel,id),recipient:recipient?.email??null,email_enabled:stationeryEmailEnabled(c.env),terms_approved:termsDeliveryApproved(c.env,serviceTermsAttachment().version)});
     });
     admin.get(stationeryPath+"/:did/download",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"";
@@ -760,7 +760,7 @@ export function createAdminRoutes() {
       const oid=typeof b.order_id==="string"&&b.order_id?b.order_id:null;
       const doc=await prepareStationery(c.env,channel,id,oid,b);
       if("error" in doc)return c.json({detail:doc.error},400);
-      if(action==="preview")return c.json({filename:doc.filename,mime:"application/pdf",base64:stationeryBase64(doc.pdf),pages:doc.pages,recipient:doc.recipient,fingerprint:await stationeryFingerprint(doc)});
+      if(action==="preview")return c.json({filename:doc.filename,mime:"application/pdf",base64:stationeryBase64(doc.pdf),pages:doc.pages,recipient:doc.recipient,fingerprint:await stationeryFingerprint(doc),terms:doc.terms?{filename:doc.terms.filename,mime:"application/pdf",base64:stationeryBase64(doc.terms.pdf),version:doc.terms.version,pages:doc.terms.pages}:null});
       const saved=await saveStationery(c.env.DB,channel,id,oid,doc,b);
       if(!saved)return c.json({detail:"Document changed, was not reviewed, or history limit reached. Prepare the PDF again or contact support."},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.stationery_saved",targetType:"support",targetId:id,detail:{channel,document_id:saved.id}});
