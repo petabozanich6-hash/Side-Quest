@@ -125,3 +125,27 @@ test("end-of-day queue distinguishes observed and unobserved lessons and saved r
  await saveStationery(db,"guest","queue","observed",doc,{reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)});
  q=await lessonReportQueue(db,now);assert.equal(q.items.find(x=>x.id==="observed").report_status,"saved");
 });
+
+test("uploaded Square invoice and manually copied payment link travel together only to the reviewed parent",async t=>{
+ const {uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,saveCorrespondencePaymentLink,squarePaymentLink}=await import("../src/supportCorrespondenceAttachments.ts");
+ const db=makeDb();t.after(()=>db.raw.close());const at="2026-11-25T00:00:00.000Z";
+ for(const id of ["invoice-a","invoice-b"])db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(id,id+"@example.test","Parent","Support","Enquiry",at,at);
+ const blobs=new Map(),sent=[],BUCKET={put:async(k,v)=>blobs.set(k,new Uint8Array(v)),get:async k=>{const v=blobs.get(k);return v?{size:v.length,arrayBuffer:async()=>v.buffer}:null;},delete:async k=>blobs.delete(k)};
+ const env={DB:db,BUCKET,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async msg=>{sent.push(msg);return {messageId:"test"};}}};
+ const doc=await prepareStationery(env,"guest","invoice-a",null,{kind:"letter",sections:["Your payment arrangements."]});
+ const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
+ const saved=await saveStationery(db,"guest","invoice-a",null,doc,review);
+ const invoice=buildStationeryPdf({kind:"letter",sections:["Synthetic invoice only"]},at.slice(0,10)).pdf;
+ const base64=btoa(String.fromCharCode(...invoice));
+ assert.ok("error" in await uploadCorrespondenceAttachment(env,"guest","invoice-b",saved.id,{reviewed:true,filename:"invoice.pdf",base64}));
+ const upload=await uploadCorrespondenceAttachment(env,"guest","invoice-a",saved.id,{reviewed:true,filename:"invoice.pdf",base64});assert.ok(upload.ok,upload.error);
+ const aid=upload.attachments[0].id,link="https://squareup.com/pay-invoice/example";
+ assert.equal(await downloadCorrespondenceAttachment(env,"guest","invoice-b",saved.id,aid),null);
+ for(const bad of ["https://squareup.com.evil.test/pay-invoice/example","javascript:alert(1)","https://squareup.com@evil.test/pay-invoice/example"])assert.equal(squarePaymentLink(bad),null);
+ assert.equal(await saveCorrespondencePaymentLink(db,"guest","invoice-a",saved.id,{reviewed:true,url:link}),true);
+ assert.ok("error" in await deliverSavedStationery(env,"guest","invoice-a",saved.id,review));
+ assert.equal(sent.length,0);
+ const delivery=await deliverSavedStationery(env,"guest","invoice-a",saved.id,{...review,attachment_ids:[aid],payment_link:link});
+ assert.equal(delivery.email_notification_sent,true);assert.equal(sent[0].to,doc.recipient);assert.equal(sent[0].attachments.length,2);assert.equal(sent[0].attachments[1].filename,"invoice.pdf");assert.deepEqual(sent[0].attachments[1].content,invoice);assert.ok(sent[0].text.includes(link));
+ assert.equal(await saveCorrespondencePaymentLink(db,"guest","invoice-a",saved.id,{reviewed:true,url:"https://square.link/u/other"}),false);
+});
