@@ -133,7 +133,7 @@ export function registerGuestSupport(app:App){
   const b=await c.req.json().catch(()=>null);if(!b||typeof b!=="object"||Array.isArray(b))return c.json({detail:"Enter your enquiry."},400);
   const club=b.service===ENGLISH_CLUB_SERVICE;
   const parsed=parseLearningSupport(club?{...b,subject:"English",service:"Live online support"}:b),name=typeof b.parent_name==="string"?b.parent_name.trim():"";
-  if(club&&(b.subject!=="English"||!/^Year (?:[3-9]|10|11)$/.test(String(b.year))))return c.json({detail:"Choose an appropriate year level (Years 3–11) for English Club, or enquire about individual support."},400);
+  if(club&&b.subject!=="English")return c.json({detail:"Choose English as the learning area for English Club."},400);
   if("error" in parsed)return c.json({detail:parsed.error},400);
   if(name.length<2||name.length>80)return c.json({detail:"Enter your name (2–80 characters)."},400);
   if(!(await loadPlatformSettings(c.env.DB)).features.registrationsOpen)return c.json({detail:"New enquiries are temporarily paused."},503);
