@@ -1,8 +1,9 @@
 import type {Env} from "./types";
 import {getOrder,type Channel} from "./supportOrders";
-import {invoicePilotConfig,prepareSandboxInvoice,publishSandboxInvoice} from "./supportSquareInvoices";
+import {invoicePilotConfig,prepareSandboxInvoice,publishSandboxInvoice,inspectSandboxInvoice} from "./supportSquareInvoices";
 import {stationeryRecipient} from "./supportStationery";
 import type {Fetch} from "./square";
+import {layout,p,esc,button,SUPPORT_EMAIL} from "./email";
 const day=(d:Date)=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Sydney",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(d).map(x=>[x.type,x.value]));return p.year+"-"+p.month+"-"+p.day;};
 const view=(r:any)=>r?{state:r.state,invoice_id:r.invoice_id,due_at:r.due_at,amount_cents:r.amount_cents,payment_url:r.payment_url}:null;
 export async function readInvoiceAttempt(e:Env,channel:Channel,id:string,oid:string){
@@ -38,4 +39,26 @@ export async function publishInvoiceAttempt(e:Env,channel:Channel,id:string,oid:
   await e.DB.prepare("UPDATE support_square_invoice_attempts SET state='published',payment_url=?,updated_at=? WHERE order_id=? AND state='publishing'").bind(result.url,new Date().toISOString(),oid).run();
   return {ok:true,...await readInvoiceAttempt(e,channel,id,oid)};
  }catch{await e.DB.prepare("UPDATE support_square_invoice_attempts SET state='review',updated_at=? WHERE order_id=? AND state='publishing'").bind(new Date().toISOString(),oid).run();return {error:"Publication outcome requires review in Square; do not retry."};}
+}
+
+export async function checkInvoiceAttempt(e:Env,channel:Channel,id:string,oid:string,fetchImpl?:Fetch){
+ const cfg=invoicePilotConfig(e);
+ if(!cfg)return {error:"Private Square sandbox required."};
+ const row=await e.DB.prepare("SELECT * FROM support_square_invoice_attempts WHERE order_id=? AND channel=? AND request_id=?").bind(oid,channel,id).first<any>();
+ const r=await stationeryRecipient(e.DB,channel,id),o=await getOrder(e.DB,channel,id,oid);
+ if(!row||row.state!=="published"||!o||o.amount_cents!==row.amount_cents||row.recipient!==r?.email||row.location_id!==cfg.locationId)return {error:"Published invoice or matching recipient unavailable."};
+ try{return {ok:true,inspection:await inspectSandboxInvoice(e,{orderId:oid,customerId:row.customer_id,amountCents:row.amount_cents,dueDate:row.due_date,locationId:row.location_id,email:row.recipient},{invoiceId:row.invoice_id,squareOrderId:row.square_order_id},row.due_at,fetchImpl)};}
+ catch{return {error:"Provider verification failed. Keep the reservation held and review in Square."};}
+}
+export async function previewInvoiceEmail(e:Env,channel:Channel,id:string,oid:string,fetchImpl?:Fetch){
+ const checked=await checkInvoiceAttempt(e,channel,id,oid,fetchImpl);
+ if("error" in checked)return checked;
+ if(checked.inspection.state!=="unpaid"||!checked.inspection.url)return {error:"Only a verified unpaid invoice may be prepared for email."};
+ const row=await e.DB.prepare("SELECT * FROM support_square_invoice_attempts WHERE order_id=? AND channel=? AND request_id=?").bind(oid,channel,id).first<any>();
+ if(!row||row.state!=="published")return {error:"Invoice changed."};
+ const amount=new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(row.amount_cents/100);
+ const due=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"full",timeStyle:"short"}).format(new Date(row.due_at));
+ const subject="Side-Quest Learning Support: your invoice";
+ const description="Your agreed Learning Support invoice is ready. Amount: "+amount+" AUD. Payment deadline: "+due+" (Sydney time). The appointment is provisional until payment is verified. If you have already paid, please contact us rather than pay again.";
+ return {subject,recipient:row.recipient,text:description+"\n\nSecure Square payment link: "+checked.inspection.url+"\n\nQuestions: "+SUPPORT_EMAIL,html:layout({preheader:"Your agreed learning support invoice.",kicker:"Learning Support",heading:"Your learning support invoice",body:p(esc(description))+button("View and pay Square invoice",checked.inspection.url)+p("Questions? Reply to this email."),reason:"This is a service notification about agreed learning support."}),test_only:true};
 }
