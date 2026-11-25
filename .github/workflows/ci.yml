@@ -53,6 +53,8 @@ jobs:
         run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPublicAvailability.test.mjs
       - name: Learning Support payment and cancellation safety tests
         run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPaymentSafety.test.mjs
+      - name: Service agreement acceptance guards
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportTermsAcceptance.test.mjs
       - name: Trust and Support copy regression
         id: support_copy
         continue-on-error: true
