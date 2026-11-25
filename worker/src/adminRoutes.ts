@@ -1,3 +1,4 @@
+import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
 /**
  * Owner HQ: owner-only administration API (/api/admin/*).
  *
@@ -771,6 +772,20 @@ export function createAdminRoutes() {
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
       return c.json(result,201);
+    });
+    admin.get(path+"/:oid/lesson-progress",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const progress=await lessonProgress(c.env.DB,channel,id,oid);
+      c.header("Cache-Control","private, no-store");
+      return progress?c.json(progress):c.json({detail:"Confirmed live lesson required."},404);
+    });
+    admin.post(path+"/:oid/lesson-progress",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const r=await saveLessonCheckpoint(c.env.DB,channel,id,oid,await readJson(c));
+      c.header("Cache-Control","private, no-store");
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
