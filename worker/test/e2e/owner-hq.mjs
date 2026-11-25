@@ -182,6 +182,40 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 });
 
 
+
+await step("Learning Support month planner navigates future months, preserves private labels and fits a phone",async()=>{
+ const publicPage=await browser.newPage();
+ try{await publicPage.goto(BASE);await publicPage.getByTestId("homepage-learning-support-offering").click();await publicPage.getByRole("heading",{name:"Learning, with a little more adventure."}).waitFor();ok((await publicPage.locator("main").innerText()).includes("Peta Bozanich"),"author-led service missing");ok((await publicPage.locator("main").innerText()).includes("AU$25"),"entry price missing");}finally{await publicPage.close();}
+ const denied=await api("GET","/admin/support-calendar?from=2027-01-01T00:00:00.000Z&to=2027-02-01T00:00:00.000Z",user.token);
+ ok(denied.status===404,"ordinary parent can read private tutor calendar");
+ await page.goto(BASE+"/parent/command-centre/learning-support");
+ const calendar=page.locator('[aria-label="Monthly private tutor calendar"]');
+ await calendar.waitFor({timeout:15000});
+ const month=page.locator('input[type="month"]');
+ const future=new Date();future.setUTCMonth(future.getUTCMonth()+3,1);
+ const target=future.toISOString().slice(0,7);
+ await month.fill(target);
+ await page.locator('button[aria-label^="'+target+'-15,"]').click();
+ const date=target+"-15",end=target+"-17";
+ const section=page.locator('details').filter({hasText:"Plan around commitments / block time"});
+ await section.locator('input[type="date"]').nth(1).fill(end);
+ await section.getByRole("textbox",{name:"Private label"}).fill("Synthetic private commitment");
+ await section.getByRole("button",{name:"Reserve unavailable time"}).click();
+ await calendar.locator('button[aria-label^="'+date+',"]').filter({hasText:"Blocked"}).waitFor({timeout:15000});
+ await calendar.locator('button[aria-label^="'+end+',"]').filter({hasText:"Blocked"}).waitFor();
+ await page.setViewportSize({width:375,height:812});
+ ok(await calendar.evaluate(el=>el.scrollWidth<=el.clientWidth+1),"month grid overflows on phone");
+ await shot("learning-support-month-phone");
+ await page.setViewportSize({width:1280,height:900});
+ await page.getByRole("button",{name:"Next month",exact:true}).click();
+ await page.getByRole("button",{name:"Previous month",exact:true}).click();
+ await calendar.locator('button[aria-label^="'+date+',"]').filter({hasText:"Blocked"}).click();
+ await page.getByText("Synthetic private commitment · Unavailable",{exact:true}).waitFor();
+ page.once("dialog",d=>d.accept());
+ await page.getByRole("button",{name:"Remove block",exact:true}).click();
+ await calendar.locator('button[aria-label^="'+date+', 0 appointments, 0 blocks"]').waitFor({timeout:15000});
+});
+
 await step("gifting preview days from a customer's page reaches the parent", async () => {
   const before = await api("GET", "/account/plan", user.token);
   ok(before.status === 200 && before.json.trial_ends_at, "preview deadline missing");

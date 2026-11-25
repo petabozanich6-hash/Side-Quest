@@ -4,7 +4,9 @@ import {hitRateLimit} from "./adminAudit";
 import {parseLearningSupport} from "./learningSupport";
 import {SITE_URL,sendEmail,layout,p,button} from "./email";
 import {loadPlatformSettings} from "./platformSettings";
-import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
+import {listOrders,getOrder} from "./supportOrders";
+import {requestAppointmentCancellation} from "./supportPaymentSafety";
+import {termsReview,confirmReviewedTerms,acceptanceReceipt} from "./supportTermsAcceptance";
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
@@ -153,13 +155,29 @@ export function registerGuestSupport(app:App){
   const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
   return c.json({orders:await listOrders(c.env.DB,"guest",id),classroom_enabled:classroomEnabled(c.env)});
  });
+ app.post(root+"/requests/:id/orders/:oid/request-cancellation",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",oid=c.req.param("oid")??"",b=await c.req.json().catch(()=>null);
+  if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  if(b?.confirmed!==true||!await requestAppointmentCancellation(c.env.DB,"guest",id,oid))return c.json({detail:"Cancellation request unavailable. Please contact Side-Quest."},409);
+  await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
+  return c.json({ok:true,pending:true});
+ });
+ app.get(root+"/requests/:id/orders/:oid/service-terms",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+  if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  c.header("Cache-Control","private, no-store");
+  if(!await getOrder(c.env.DB,"guest",id,oid))return c.json({detail:"Order not found"},404);
+  return c.json({required:c.env.SUPPORT_TERMS_REQUIRED==="true",agreement:await termsReview(c.env,"guest",id,oid),receipt:await acceptanceReceipt(c.env.DB,"guest",id,oid)});
+ });
  app.post(root+"/requests/:id/orders/:oid/confirm",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
   const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),b=await c.req.json().catch(()=>null);
   const row=await c.env.DB.prepare("SELECT status FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first<{status:string}>();
   if(!row)return c.json({detail:"Request not found"},404);
   if(["closed","resolved"].includes(row.status)||b?.confirmed!==true)return c.json({detail:"Confirm the service terms and arrangements."},400);
-  if(!await getOrder(c.env.DB,"guest",id,oid)||!await confirmServiceOrder(c.env.DB,"guest",id,oid))return c.json({detail:"Order unavailable."},409);
+  if(!await getOrder(c.env.DB,"guest",id,oid)||!await confirmReviewedTerms(c.env,"guest",id,oid,who.email,b))return c.json({detail:"Order unavailable."},409);
   await c.env.DB.prepare("UPDATE support_guest_requests SET seen_at=NULL,updated_at=? WHERE id=? AND email=?").bind(nowIso(),id,who.email).run();
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
   return c.json({ok:true});

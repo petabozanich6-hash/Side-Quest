@@ -18,6 +18,10 @@ const SECRET = "ZZ-PRIVATE-CONTENT-ZZ";
 
 function harness() {
   const db = makeDb();
+  // Legacy HQ regression fixtures schedule arbitrary synthetic times; dedicated policy tests use the actual seed.
+  db.raw.prepare("DELETE FROM support_public_availability WHERE id=1").run();
+  // Synthetic appointments must not collide with the owner's real initial blackout.
+  db.raw.prepare("DELETE FROM support_busy_blocks WHERE id=?").run("initial-availability-block-2026-11-30");
   const env = { DB: db, JWT_SECRET: "test-only-secret" };
   clearSettingsCache();
   clearUsageCache();

@@ -42,6 +42,9 @@ export type Env = {
   SUPPORT_CLASSROOM_ENABLED?: string;
   /** Opt-in owner AI slide drafting, subject to existing cost limits. */
   SUPPORT_RESOURCE_AI?: string;
+  SUPPORT_STATIONERY_EMAIL?: string;
+  SUPPORT_TERMS_APPROVED_VERSION?: string;
+  SUPPORT_TERMS_REQUIRED?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;
@@ -51,6 +54,8 @@ export type Env = {
   SUPPORT_VIDEO_FAMILY_PRESET?: string;
   /** Test-only checkout; production Square credentials are never accepted. */
   SUPPORT_CHECKOUT_TEST?: string;
+  /** Opt-in verified tutoring invoice reminders, separate from membership billing. */
+  SUPPORT_PAYMENT_NOTICES?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */

@@ -1,3 +1,5 @@
+import {bookingPolicyGuard} from "./supportPublicAvailability";
+import {permitsSupportStart,PREPARATION_NOTICE} from "./supportLeadTime";
 import {ensureOrderSchema,type Channel} from "./supportOrders";
 import {readQuotePlan} from "./supportQuotePlans";
 const iso=(s:unknown):s is string=>typeof s==="string"&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(s)&&Number.isFinite(Date.parse(s));
@@ -16,6 +18,7 @@ export async function createPackage(db:D1Database,channel:Channel,id:string,b:an
   if(i&&sessions[i-1].after>before)return {error:"Lessons must be in chronological order without overlapping preparation or wrap-up."};
   sessions.push({id:crypto.randomUUID(),start,end,before,after,title:l.title});
  }
+ if(!await permitsSupportStart(db,channel,id,sessions.map(s=>s.start)))return {error:PREPARATION_NOTICE};
  const root=sessions[0],when=now.toISOString(),qt=channel==="guest"?"support_guest_quotes":"learning_support_quotes",rt=channel==="guest"?"support_guest_requests":"parent_feedback",key=channel==="guest"?"request_id":"feedback_id",tag=channel==="member"?" AND r.page_hint='learning-support'":"";
  const installments=b.payment_mode==="installments",lead=b.deadline_hours??24;
  if(b.payment_mode!==undefined&&!["upfront","installments"].includes(b.payment_mode))return {error:"Choose upfront or per-lesson payment."};
@@ -26,7 +29,8 @@ export async function createPackage(db:D1Database,channel:Channel,id:string,b:an
  const charge=(i:number)=>installments?base+(i<remainder?1:0):i===0?q.amount_cents:0;
  // One root insert checks every requested interval. All child sessions, diary records and mappings are inserted in the same transaction.
  const sql="INSERT OR IGNORE INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,?,r.id,q.id,?,q.scope,q.delivery,?,'live',?,?,?,? FROM "+qt+" q JOIN "+rt+" r ON r.id=q."+key+" WHERE r.id=? AND q.id=? AND q.status='interested' AND q.expires_at>? AND q.amount_cents=? AND r.status NOT IN ('closed','resolved')"+tag+" AND NOT EXISTS(SELECT 1 FROM json_each(?) j WHERE EXISTS(SELECT 1 FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(json_extract(j.value,'$.after')) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(json_extract(j.value,'$.before'))) OR EXISTS(SELECT 1 FROM support_busy_blocks z WHERE z.start_at<json_extract(j.value,'$.after') AND z.end_at>json_extract(j.value,'$.before')))";
- const stmts=[db.prepare(sql).bind(root.id,channel,charge(0),terms,root.start,root.end,when,when,id,qid,when,q.amount_cents,JSON.stringify(sessions))];
+ const capacity=await bookingPolicyGuard(db,sessions);if(!capacity)return {error:"One or more lessons are outside configured hours or booking capacity."};
+ const stmts=[db.prepare(sql+capacity.sql).bind(root.id,channel,charge(0),terms,root.start,root.end,when,when,id,qid,when,q.amount_cents,JSON.stringify(sessions),...capacity.args)];
  for(const [i,s] of sessions.entries()){
   if(i>0)stmts.push(db.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,channel,request_id,?,?,?,delivery,terms,'live',?,?,?,? FROM support_service_orders WHERE id=?").bind(s.id,"package-session:"+s.id,charge(i),s.title,s.start,s.end,when,when,root.id));
   stmts.push(db.prepare("INSERT INTO support_package_sessions(order_id,root_id,quote_id,sequence,total) SELECT id,?,?,?,? FROM support_service_orders WHERE id=?").bind(root.id,qid,i+1,sessions.length,s.id));
