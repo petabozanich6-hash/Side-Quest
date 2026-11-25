@@ -34,8 +34,14 @@ export async function prepareSupportInvoiceIntent(
  .bind(p.fingerprint,p.location_id,p.customer_id,p.amount_cents,p.due_at,p.updated_at,payload,
  crypto.randomUUID(),crypto.randomUUID(),crypto.randomUUID(),ownerId,stamp,stamp,
  orderId,channel,requestId,p.updated_at,p.amount_cents).run();
- const row=await env.DB.prepare("SELECT fingerprint,state FROM support_square_invoice_intents WHERE order_id=?")
- .bind(orderId).first<{fingerprint:string;state:string}>();
+ const row=await env.DB.prepare(`SELECT i.fingerprint,i.state FROM support_square_invoice_intents i
+ JOIN support_service_orders s ON s.id=i.order_id
+ WHERE i.order_id=? AND s.channel=? AND s.request_id=? AND s.updated_at=i.order_updated_at
+ AND s.amount_cents=i.amount_cents AND s.status='confirmed' AND s.checkout_started_at IS NULL
+ AND s.square_order_id IS NULL
+ AND NOT EXISTS(SELECT 1 FROM support_manual_invoices m WHERE m.order_id=s.id)
+ AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=s.id AND c.status='pending')`)
+ .bind(orderId,channel,requestId).first<{fingerprint:string;state:string}>();
  if(!row||row.fingerprint!==p.fingerprint||row.state!=="prepared")
   return {error:"A changed or existing invoice intent requires owner review; nothing was issued."};
  return {prepared:true,order_id:orderId,fingerprint:p.fingerprint,state:row.state,provider_created:false};
