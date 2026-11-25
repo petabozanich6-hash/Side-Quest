@@ -116,11 +116,12 @@ export function publicWindows(windows:Window[],busy:Busy[],now=new Date(),days=1
  }
  return result;
 }
-export async function readPublicAvailability(db:D1Database,now=new Date(),ownerPreview=false){
+export async function readPublicAvailability(db:D1Database,now=new Date(),ownerPreview=false,ownerDays=28){
+ const days=ownerPreview?Math.max(28,Math.min(56,ownerDays)):28;
  const settings=await readAvailability(db);
  if(!settings.enabled&&!ownerPreview)return {published:false,days:[],timezone:zone};
- const from=now.toISOString(),to=new Date(now.getTime()+29*86400000).toISOString();
- const first=monday(dayKey(now.getTime())),last=shift(monday(shift(dayKey(now.getTime()),27)),7);
+ const from=now.toISOString(),to=new Date(now.getTime()+(days+1)*86400000).toISOString();
+ const first=monday(dayKey(now.getTime())),last=shift(monday(shift(dayKey(now.getTime()),days-1)),7);
  // No names, reasons, IDs, offers, prices or private diary content leave this function.
  const [orders,blocks,reserved]=await Promise.all([
   db.prepare("SELECT o.start_at,o.end_at,COALESCE(d.prep_minutes,0) prep_minutes,COALESCE(d.wrap_minutes,0) wrap_minutes FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) LIMIT 1001").bind(to,from).all<Busy>(),
@@ -128,12 +129,12 @@ export async function readPublicAvailability(db:D1Database,now=new Date(),ownerP
   db.prepare("SELECT start_at FROM support_service_orders WHERE mode='live' AND status<>'cancelled' AND start_at>=? AND start_at<? LIMIT 1001").bind(boundary(first),boundary(last)).all<{start_at:string}>(),
  ]);
  const all=[...(orders.results||[]),...(blocks.results||[])];if(all.length>1000||(reserved.results||[]).length>1000)throw Error("Diary range too large.");
- return {published:true,days:publicWindows(settings.windows,all,now,28,settings,reserved.results||[]),timezone:zone};
+ return {published:true,days:publicWindows(settings.windows,all,now,days,settings,reserved.results||[]),timezone:zone};
 }
 /** Private owner suggestions only. A suggestion does not reserve an appointment. */
 export async function suggestSupportStarts(db:D1Database,minutes:number,prep:number,wrap:number,now=new Date()){
  if(![minutes,prep,wrap].every(Number.isInteger)||minutes<15||minutes>180||prep<0||prep>120||wrap<0||wrap>120)return null;
- const availability=await readPublicAvailability(db,now,true);
+ const availability=await readPublicAvailability(db,now,true,56);
  const starts:string[]=[];
  // At most one suggestion per morning/afternoon window, spread across dates.
  for(const day of availability.days){
@@ -145,7 +146,7 @@ export async function suggestSupportStarts(db:D1Database,minutes:number,prep:num
    // The availability snapshot already excludes diary conflicts and full daily/weekly/evening capacity.
    // These suggestions are non-binding; the atomic reservation still checks the current policy.
    starts.push(start);
-   if(starts.length>=12)return starts;
+   if(starts.length>=24)return starts;
   }
  }
  return starts;
