@@ -61,3 +61,38 @@ export async function publishSandboxInvoice(e:Partial<Env>,v:InvoiceInput,ids:{i
  if(invoice?.id!==ids.invoiceId||!invoiceMatches(invoice,v,ids.squareOrderId)||invoice.status!=="UNPAID"||!url)throw Error("Invoice publication requires reconciliation.");
  return {invoiceId:invoice.id,status:invoice.status,url};
 }
+
+/** Read-only sandbox reconciliation. A provider status by itself is never proof of settlement. */
+export async function inspectSandboxInvoice(e:Partial<Env>,v:InvoiceInput,ids:{invoiceId:string;squareOrderId:string},deadline:string,fetchImpl?:Fetch){
+ const cfg=invoicePilotConfig(e);
+ if(!cfg||v.locationId!==cfg.locationId||!v.email.toLowerCase().endsWith("@example.test"))throw Error("Isolated Square sandbox required.");
+ validateInvoiceInput(v);
+ if(!validId(ids.invoiceId)||!validId(ids.squareOrderId)||!Number.isFinite(Date.parse(deadline)))throw Error("Invalid reconciliation inputs.");
+ const invoice=(await squareCall(cfg,"GET","invoices/"+encodeURIComponent(ids.invoiceId),undefined,fetchImpl))?.invoice;
+ if(invoice?.id!==ids.invoiceId||!invoiceMatches(invoice,v,ids.squareOrderId))throw Error("Invoice details differ from the agreed record.");
+ const order=(await squareCall(cfg,"GET","orders/"+encodeURIComponent(ids.squareOrderId),undefined,fetchImpl))?.order;
+ if(order?.id!==ids.squareOrderId||order.location_id!==v.locationId||!validMoney(order.total_money,v.amountCents))throw Error("Underlying order differs from the agreed record.");
+ const review={state:"review" as const,reason:"Payment, cancellation or refund requires review."};
+ if((order.refunds?.length||0)>0||(order.returns?.length||0)>0)return review;
+ const tenders=order.tenders??[];
+ if(!Array.isArray(tenders)||tenders.length>10)return review;
+ const completed=invoice.payment_requests[0].total_completed_amount_money;
+ if(invoice.status==="UNPAID"&&validMoney(completed,0)&&!tenders.length){
+  const url=sandboxInvoiceUrl(invoice.public_url);
+  return url?{state:"unpaid" as const,reason:"No completed payments recorded; do not cancel without a fresh provider check.",url}:review;
+ }
+ if(invoice.status==="CANCELED"&&validMoney(completed,0)&&!tenders.length)return {state:"cancelled_unpaid" as const,reason:"Provider reports cancelled with no recorded payments. Review before releasing."};
+ if(invoice.status!=="PAID"||!validMoney(completed,v.amountCents)||!tenders.length)return review;
+ const seen=new Set<string>();let total=0;let late=false;
+ for(const t of tenders){
+  const pid=t.payment_id;
+  if(!validId(pid)||seen.has(pid))return review;
+  seen.add(pid);
+  const p=(await squareCall(cfg,"GET","payments/"+encodeURIComponent(pid),undefined,fetchImpl))?.payment;
+  if(p?.id!==pid||p.order_id!==ids.squareOrderId||p.location_id!==v.locationId||p.status!=="COMPLETED"||p.amount_money?.currency!=="AUD"||!Number.isSafeInteger(p.amount_money.amount)||p.amount_money.amount<=0||!validMoney(p.total_money,p.amount_money.amount)||!validMoney(p.refunded_money??{currency:"AUD",amount:0},0)||(p.refund_ids?.length||0)>0||!Number.isFinite(Date.parse(p.updated_at)))return review;
+  total+=p.amount_money.amount;
+  if(Date.parse(p.updated_at)>Date.parse(deadline))late=true;
+ }
+ if(total!==v.amountCents||late)return {state:"review" as const,reason:late?"Payment timestamp is after the agreed deadline; review with the parent.":"Completed payment total does not match the service."};
+ return {state:"paid_verified" as const,reason:"Full matching completed payments verified in sandbox. No booking status changed."};
+}
