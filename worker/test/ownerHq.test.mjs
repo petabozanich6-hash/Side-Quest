@@ -1049,3 +1049,19 @@ test("guided tutoring enquiry preserves interests, strengths and goals and valid
  assert.ok(parseLearningSupport({...b,preferences:[]}).error);
  assert.ok(parseLearningSupport({...b,detail:"x".repeat(1801)}).error);
 });
+
+test("external tutoring resource validation and private grant separation",async()=>{
+ const {h}=await ownerSetup(),{decodeResource,grantResource,grantedResources,downloadResource}=await import("../src/supportFiles.ts");
+ const b={filename:"lesson.pdf",title:"Fractions",subject:"Maths",year_level:"Year 5",audience:"learner",reviewed:true,base64:btoa("%PDF-1.7 test")};
+ assert.equal(decodeResource(b).mime,"application/pdf");assert.equal(decodeResource({...b,filename:"lesson.html"}),null);assert.equal(decodeResource({...b,reviewed:false}),null);
+ const now=new Date().toISOString();
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)").run("file-order","guest","file-request","file-quote",0,"Maths","Written","Terms","written","paid",now,now);
+ for(const [id,audience] of [["private","tutor"],["public","learner"]])h.db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)").run(id,"Fractions","Maths","Year 5","lesson.pdf","application/pdf",12,"support-private/"+id,audience,now);
+ assert.equal(await grantResource(h.db,"guest","file-request","file-order","private"),false);
+ assert.equal(await grantResource(h.db,"guest","file-request","file-order","public"),true);
+ assert.equal((await grantedResources(h.db,"guest","other","file-order")).length,0);
+ assert.equal((await grantedResources(h.db,"guest","file-request","file-order")).length,1);
+ const env={...h.env,BUCKET:{get:async()=>({size:12,arrayBuffer:async()=>new TextEncoder().encode("%PDF-1.7 test").buffer})}};
+ assert.equal(await downloadResource(env,"private","file-order"),null);
+ assert.ok((await downloadResource(env,"public","file-order")).base64);
+});

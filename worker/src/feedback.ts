@@ -11,6 +11,7 @@ import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
+import {grantedResources,downloadResource} from "./supportFiles";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -184,6 +185,17 @@ export function registerFeedback(app: App, guards: Guards) {
     const b=await c.req.json().catch(()=>null);if(!b||typeof b!=="object")return c.json({detail:"Invalid action"},400);
     if(!(await hitRateLimit(c.env.DB,"support-board:"+u.id,100,60)).ok)return c.json({detail:"Board is busy. Try again shortly."},429);
     const s=await editClassroom(c.env.DB,"member",id,c.req.param("oid"),false,b);return "error" in s?c.json({detail:s.error},409):c.json(s);
+  });
+  app.get("/api/learning-support/:id/orders/:oid/files",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    c.header("Cache-Control","no-store");return c.json({files:await grantedResources(c.env.DB,"member",id,oid)});
+  });
+  app.get("/api/learning-support/:id/orders/:oid/files/:fid/download",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id)||!await getOrder(c.env.DB,"member",id,oid))return c.json({detail:"Request not found"},404);
+    if(!(await hitRateLimit(c.env.DB,"support-file:"+u.id,30,60)).ok)return c.json({detail:"Try again shortly."},429);
+    const r=await downloadResource(c.env,fid,oid);c.header("Cache-Control","no-store");return r?c.json(r):c.json({detail:"Resource unavailable"},404);
   });
   app.get("/api/learning-support/:id/orders",guards.auth,guards.parent,async c=>{
     const u=c.get("user"),id=c.req.param("id");

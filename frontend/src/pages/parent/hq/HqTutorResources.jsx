@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
+import HqExternalResources from "./HqExternalResources";
 const field="block w-full border rounded-lg p-2 bg-white";
 const btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50";
 const blank=()=>({heading:"",body:"",notes:"",kind:"concept"});
@@ -13,7 +14,7 @@ export default function HqTutorResources(){
  const slide=(i,k,v)=>change("slides",deck.slides.map((s,j)=>j===i?{...s,[k]:v}:s));
  function edit(d){setDeck(d);setReview(false);}
  return <section className="paper-card p-4 space-y-3"><div className="flex justify-between items-center gap-2"><h3 className="font-display text-xl font-bold">Tutor resource studio</h3><button className={btn} onClick={()=>setOpen(!open)}>{open?"Close":"Open library"}</button></div><p className="text-sm">Private reusable presentations, worked examples and teaching notes for any subject. Review before use with learners.</p>
- {open&&<>{error&&<p role="alert" className="text-rose-800 text-sm">{error}</p>}{notice&&<p role="status" className="text-sm">{notice}</p>}
+ {open&&<><HqExternalResources/>{error&&<p role="alert" className="text-rose-800 text-sm">{error}</p>}{notice&&<p role="status" className="text-sm">{notice}</p>}
  <form className="flex gap-2" onSubmit={e=>{e.preventDefault();run(load);}}><input aria-label="Search resources by topic, subject or year" className={field} value={q} onChange={e=>setQ(e.target.value)} placeholder="Search topic, subject or year"/><button className={btn}>Search</button></form>
  <div className="flex flex-wrap gap-2"><button className={btn} onClick={()=>edit(initial())}>New presentation</button><button className={btn} onClick={()=>edit({...initial(),slides:["concept","example","practice","recap"].map(kind=>({...blank(),kind,heading:{concept:"Introduce the concept",example:"Worked example",practice:"Your turn",recap:"Check understanding"}[kind]}))})}>Teaching template</button></div>
  {items.map(d=><button className="block w-full text-left border rounded-lg p-2" key={d.id} onClick={()=>run(async()=>edit((await adminApi.get("/support-decks/"+d.id)).deck))}><strong>{d.title}</strong><p className="text-sm">{d.subject} · {d.year_level} · {d.status}</p></button>)}

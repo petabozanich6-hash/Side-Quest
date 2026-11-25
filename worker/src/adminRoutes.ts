@@ -43,6 +43,7 @@ import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
+import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -652,6 +653,20 @@ export function createAdminRoutes() {
     return c.json({ok:true});
   });
 
+  admin.get("/support-files",requirePermission("customers.read"),async c=>c.json({files:await listResources(c.env.DB,c.req.query("q")||"",c.req.query("learner")==="1"),storage_available:!!c.env.BUCKET}));
+  admin.post("/support-files",requirePermission("customers.read"),async c=>{
+    if(Number(c.req.header("Content-Length")||0)>7500000)return c.json({detail:"File too large."},413);
+    if(!(await hitRateLimit(c.env.DB,"support-upload:"+c.get("user").id,30,3600)).ok)return c.json({detail:"Upload limit reached."},429);
+    const r=await uploadResource(c.env,await readJson(c));if("error" in r)return c.json({detail:r.error},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.file.upload",targetType:"support_file",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.get("/support-files/:fid/download",requirePermission("customers.read"),async c=>{
+    const r=await downloadResource(c.env,c.req.param("fid")??"");return r?c.json(r):c.json({detail:"Resource unavailable"},404);
+  });
+  admin.post("/support-files/:fid/archive",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
+  });
   admin.get("/support-decks",requirePermission("customers.read"),async c=>c.json({decks:await findDecks(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI}));
   admin.post("/support-decks/draft",requirePermission("customers.read"),async c=>{
     const r=await draftDeck(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);
@@ -693,6 +708,17 @@ export function createAdminRoutes() {
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
       return c.json(result,201);
+    });
+    admin.get(path+"/:oid/files",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      return c.json({files:await grantedResources(c.env.DB,channel,id,oid)});
+    });
+    admin.post(path+"/:oid/files/:fid/:fileAction",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"",action=c.req.param("fileAction"),b=await readJson(c);
+      if(b.confirmed!==true||!await exists(c,id))return c.json({detail:"Confirm customer and resource."},400);
+      const ok=action==="share"?await grantResource(c.env.DB,channel,id,oid,fid):action==="revoke"?await revokeResource(c.env.DB,channel,id,oid,fid):false;
+      if(!ok)return c.json({detail:"Resource or confirmed service unavailable."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.file."+action,targetType:"support",targetId:oid,detail:{file_id:fid,channel}});return c.json({ok:true});
     });
     admin.post(path+"/:oid/video-prepare",requirePermission("customers.read"),async c=>{
       const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm video setup."},400);

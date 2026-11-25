@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from "react";
 import {apiErrorMessage} from "../../lib/api";
 import SupportClassroom from "./SupportClassroom";
+import SupportSharedFiles from "./SupportSharedFiles";
 const fmt=c=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(c/100);
 export default function SupportOrders({id,client,basePath,closed}){
  const path=basePath+encodeURIComponent(id)+"/orders";
@@ -14,6 +15,7 @@ export default function SupportOrders({id,client,basePath,closed}){
  {o.status==="awaiting_confirmation"&&!closed&&<><label className="flex gap-2 text-sm"><input type="checkbox" checked={!!checked[o.id]} onChange={e=>setChecked(v=>({...v,[o.id]:e.target.checked}))}/> I agree to these service arrangements and terms.</label><button disabled={busy||!checked[o.id]} onClick={()=>confirm(o)} className="rounded-full bg-emerald-950 text-white px-4 py-2 disabled:opacity-50">Confirm arrangements</button></>}
  {o.status==="confirmed"&&<p className="text-sm">{o.invoice_reference?<>Square invoice {o.invoice_reference} has been sent separately by email. Payment due {new Date(o.payment_due_at).toLocaleString("en-AU")}. Your booking is provisional until Side-Quest checks payment.</>:o.legacy_checkout?"Contact Side-Quest to reconcile the previous checkout. Do not pay twice.":"Your arrangements are provisional. Side-Quest will send a Square invoice separately."}</p>}
  {o.status==="paid"&&<p className="text-sm">Booking confirmed. Payment has been checked (or no charge applies).</p>}{o.status==="review"&&<p className="text-sm">Payment needs review. Please contact Side-Quest before making another payment.</p>}
+ {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<SupportSharedFiles path={path+"/"+o.id} client={client}/>}
  {classroomEnabled&&o.mode==="live"&&o.status==="paid"&&<button type="button" className="rounded-full bg-emerald-950 text-white px-4 py-2" onClick={()=>setRoom(o.id)}>Open teaching workspace</button>}
  {room===o.id&&<SupportClassroom path={path+"/"+o.id} client={client} onExit={()=>setRoom(null)}/>}
  </section>)}</div>;

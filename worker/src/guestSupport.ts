@@ -8,6 +8,7 @@ import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
+import {grantedResources,downloadResource} from "./supportFiles";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_links_expiry ON support_guest_links(expires_at)",
@@ -125,6 +126,19 @@ export function registerGuestSupport(app:App){
   const b=await c.req.json().catch(()=>null);if(!b||typeof b!=="object")return c.json({detail:"Invalid action"},400);
   if(!(await hitRateLimit(c.env.DB,"support-board-guest:"+await digest(who.email),100,60)).ok)return c.json({detail:"Board is busy. Try again shortly."},429);
   const s=await editClassroom(c.env.DB,"guest",id,(c.req.param("oid")??""),false,b);return "error" in s?c.json({detail:s.error},409):c.json(s);
+ });
+ app.get(root+"/requests/:id/orders/:oid/files",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+  if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  return c.json({files:await grantedResources(c.env.DB,"guest",id,oid)});
+ });
+ app.get(root+"/requests/:id/orders/:oid/files/:fid/download",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
+  if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first()||!await getOrder(c.env.DB,"guest",id,oid))return c.json({detail:"Request not found"},404);
+  if(!(await hitRateLimit(c.env.DB,"support-file-guest:"+await digest(who.email),30,60)).ok)return c.json({detail:"Try again shortly."},429);
+  const r=await downloadResource(c.env,fid,oid);return r?c.json(r):c.json({detail:"Resource unavailable"},404);
  });
  app.get(root+"/requests/:id/orders",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
