@@ -79,12 +79,12 @@ test("failed delivery is retained for manual review, not retried",async t=>{
  assert.ok("error" in await deliverSavedStationery(env,"guest","g",saved.id,review));assert.equal(attempts,1);
 });
 
-test("proposal automatically carries exact versioned terms, cannot deliver an unapproved draft",async t=>{
+test("proposal automatically carries exact versioned terms, cannot deliver without explicit environment approval",async t=>{
  const db=makeDb();t.after(()=>db.raw.close());const now="2026-11-25T00:00:00Z";
  db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("terms-g","parent@example.test","Parent","Support","Request",now,now);
  const env={DB:db,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async()=>{throw Error("must not send draft");}}};
  const doc=await prepareStationery(env,"guest","terms-g",null,{kind:"proposal",sections:["Needs","Support","Fee","Reply"]});
- assert.ok(doc.terms);assert.match(doc.terms.version,/draft/);
+ assert.ok(doc.terms);assert.equal(doc.terms.version,"2026-11-25-v1");
  const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
  const saved=await saveStationery(db,"guest","terms-g",null,doc,review);
  const copy=await downloadStationery(db,"guest","terms-g",saved.id);

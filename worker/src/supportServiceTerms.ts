@@ -1,7 +1,7 @@
-// Versioned draft, not approved for customer delivery until explicitly enabled.
+// Owner approved the unchanged text of draft-2 on 25 November 2026. Delivery still requires explicit environment activation.
 // Do not edit a published version. Create a new version and preserve earlier copies.
-export const SERVICE_TERMS_VERSION="2026-11-25-draft-2";
-export const SERVICE_TERMS_DATE="Version 2026-11-25 | Draft for owner review";
+export const SERVICE_TERMS_VERSION="2026-11-25-v1";
+export const SERVICE_TERMS_DATE="Version 1 | 25 November 2026";
 export const SERVICE_TERMS_FIELDS=[
  "1. Service and scope",
  "2. Enquiries and preparation",
