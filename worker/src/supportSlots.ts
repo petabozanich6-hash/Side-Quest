@@ -1,4 +1,4 @@
-import {permittedByBookingPolicy} from "./supportPublicAvailability";
+import {permittedByBookingPolicy,suggestSupportStarts} from "./supportPublicAvailability";
 import {permitsSupportStart,PREPARATION_NOTICE,earliestSupportStart} from "./supportLeadTime";
 import {ensureOrderSchema,createServiceOrder,type Channel} from "./supportOrders";
 import {readQuoteSchedule} from "./supportQuotePlans";
@@ -39,4 +39,15 @@ export async function selectSlot(db:D1Database,channel:Channel,id:string,qid:str
 }
 export async function removeSlots(db:D1Database,channel:Channel,id:string,qid:string){
  await ensureOrderSchema(db);return !!(await db.prepare("DELETE FROM support_slot_offers WHERE channel=? AND request_id=? AND quote_id=?").bind(channel,id,qid).run()).meta?.changes;
+}
+
+// Called only by an authorised owner proposal action, with explicit approval of
+// the standard terms and calendar-derived choices. No time or payment is reserved.
+export async function offerStandardQuoteTimes(db:D1Database,channel:Channel,id:string,qid:string,minutes:number,label:string,now=new Date()):Promise<"ready"|"no_times"|"unavailable">{
+ try{
+  const starts=(await suggestSupportStarts(db,minutes,10,10,now))?.slice(0,12)||[];
+  if(!starts.length)return "no_times";
+  const r=await offerSlots(db,channel,id,qid,{starts,minutes,prep_minutes:10,wrap_minutes:10,learner_label:label,terms:"Payment is due by the agreed invoice deadline. Booking is confirmed after verified payment. Changes and cancellations are handled under the Learning Support Service Agreement.",confirmed:true},now);
+  return "id" in r?"ready":"unavailable";
+ }catch{return "unavailable";}
 }
