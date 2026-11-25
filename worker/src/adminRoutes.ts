@@ -42,6 +42,7 @@ import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "
 import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
+import {buildContinuity,emailContinuity} from "./supportContinuity";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -722,6 +723,14 @@ export function createAdminRoutes() {
       const id=c.req.param("id"),oid=c.req.param("oid"),action=c.req.param("action"),b=await readJson(c);
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(action==="backup-preview"||action==="backup-email"){
+        const pack=await buildContinuity(c.env,channel,id,oid,b);
+        if("error" in pack)return c.json({detail:pack.error},409);
+        if(action==="backup-preview")return c.json(pack);
+        const sent=await emailContinuity(c.env,pack);
+        if(sent)await writeAudit(c.env.DB,{...actor(c),action:"support.backup_email",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:sent,email_notification_sent:sent});
+      }
       if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
       if(action==="invoice"){
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);

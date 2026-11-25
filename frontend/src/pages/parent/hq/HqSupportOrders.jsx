@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
+import HqSupportBackup from "./HqSupportBackup";
 export default function HqSupportOrders({id,guest,quotes,closed}){
  const path=(guest?"/support-guests/":"/feedback/")+encodeURIComponent(id)+"/orders";
  const [orders,setOrders]=useState([]),[notice,setNotice]=useState(""),[quote,setQuote]=useState(""),[mode,setMode]=useState("written"),[start,setStart]=useState(""),[minutes,setMinutes]=useState("30"),[terms,setTerms]=useState(""),[agree,setAgree]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState("");
@@ -12,6 +13,7 @@ export default function HqSupportOrders({id,guest,quotes,closed}){
  {orders.map(o=><div key={o.id} className="border rounded-lg p-3 space-y-2"><strong>AUD ${(o.amount_cents/100).toFixed(2)} · {o.status.replaceAll("_"," ")}</strong><p className="text-sm">{o.start_at?new Date(o.start_at).toLocaleString("en-AU")+" to "+new Date(o.end_at).toLocaleString("en-AU"):o.delivery}</p>
  {o.status==="confirmed"&&!o.legacy_checkout&&<ManualInvoice key={o.id} order={o} busy={busy} action={(action,body)=>run(()=>adminApi.post(path+"/"+o.id+"/"+action,{...body,confirmed:true}))}/>}{o.legacy_checkout&&o.status==="confirmed"&&<p className="text-sm text-amber-900">Previous test checkout requires reconciliation. Do not send a duplicate invoice.</p>}
  {["awaiting_confirmation","confirmed"].includes(o.status)&&!o.invoice_reference&&!o.legacy_checkout&&<button type="button" className="underline text-sm text-rose-800 ml-2" disabled={busy} onClick={()=>{if(window.confirm("Cancel only if checkout has not started?"))run(()=>adminApi.post(path+"/"+o.id+"/cancel",{confirmed:true}));}}>Cancel unstarted order</button>}
+ {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqSupportBackup path={path+"/"+o.id} live={o.mode==="live"}/>}
  {o.status==="paid"&&<button type="button" className="underline text-sm" disabled={busy} onClick={()=>{if(window.confirm("Mark service delivered?"))run(()=>adminApi.post(path+"/"+o.id+"/complete",{confirmed:true}));}}>Mark completed</button>}</div>)}
  {available.length>0&&!closed&&<form className="space-y-2" onSubmit={e=>{e.preventDefault();run(()=>adminApi.post(path,{quote_id:quote,mode,start_at:mode==="live"?new Date(start).toISOString():null,minutes:Number(minutes),terms,confirmed:agree}));}}>
  <label className="text-sm block">Interested proposal<select required className={field} value={quote} onChange={e=>setQuote(e.target.value)}><option value="">Choose</option>{available.map(q=><option key={q.id} value={q.id}>AUD ${(q.amount_cents/100).toFixed(2)} · {q.scope.slice(0,60)}</option>)}</select></label>

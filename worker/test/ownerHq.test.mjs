@@ -1032,3 +1032,11 @@ test("quote plan snapshot separates public lesson sequence from private teaching
  assert.equal((await h.req(path,{admin:false,token:bob.token})).status,404);
  const own=await h.req(ap+"/"+q.json.id+"/plan",{token:owner.token});assert.equal(own.json.plan.tutor_guides[0].answers,"Private answer: 3/6 = 1/2.");
 });
+
+test("outage backup only permits restricted Meet URLs and does not expose private answers in parent copy",async()=>{
+ const {validBackupMeeting,planText}=await import("../src/supportContinuity.ts");
+ assert.equal(validBackupMeeting("https://meet.google.com/abc-defg-hij"),"https://meet.google.com/abc-defg-hij");
+ for(const bad of ["https://meet.google.com.evil.test/abc-defg-hij","https://meet.google.com/abc-defg-hij?x=1","javascript:alert(1)"])assert.equal(validBackupMeeting(bad),null);
+ const p={title:"Fractions",subject:"Maths",year_level:"Year 5",goal:"Compare fractions",lessons:[{title:"Practice",minutes:30,objective:"Compare",activities:"Draw",check:"Explain",home_practice:"Try 1/2"}],tutor_guides:[{guide:"Private guide",answers:"Private answer"}]};
+ assert.ok(!planText(p).includes("Private answer"));assert.ok(planText(p,true).includes("Private answer"));
+});
