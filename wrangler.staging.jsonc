@@ -5,7 +5,16 @@
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
   "workers_dev": true,
-  "vars": { "STAGING_PRIVATE": "true", "SUPPORT_CLASSROOM_ENABLED": "true" },
+  // Preserve dashboard-only variables; explicitly manage the staging mail binding.
+  "keep_vars": true,
+  "vars": {
+    "STAGING_PRIVATE": "true",
+    "SUPPORT_CLASSROOM_ENABLED": "true",
+    "SUPPORT_GUEST_ENABLED": "true",
+    "SUPPORT_GUEST_ORIGIN": "https://side-quest-staging.petabozanich6.workers.dev",
+    "ADMIN_ORIGINS": "https://side-quest-staging.petabozanich6.workers.dev"
+  },
+  "send_email": [{ "name": "EMAIL" }],
   "assets": {
     "directory": "./frontend/build",
     "not_found_handling": "single-page-application",
