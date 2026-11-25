@@ -1,9 +1,11 @@
 import type {Env} from "./types";
+import {SERVICE_TERMS_VERSION,SERVICE_TERMS_DATE,SERVICE_TERMS_FIELDS,SERVICE_TERMS_SECTIONS} from "./supportServiceTerms";
 import {getOrder,type Channel} from "./supportOrders";
 import {sendEmail,layout,p,esc,SUPPORT_EMAIL,SITE_URL} from "./email";
 
 // Parent-facing content is entered separately; never import the private tutor diary.
 export const STATIONERY={
+ terms:{title:"Learning Support Service Agreement",fields:SERVICE_TERMS_FIELDS},
  letter:{title:"Parent correspondence",fields:["Message"]},
  proposal:{title:"Learning support proposal",fields:["What we understand","Suggested support","Proposed arrangements and fees","Next steps"]},
  progress:{title:"Learning progress report",fields:["Learning focus","Progress and strengths","Areas to practise","Recommended next steps"]},
@@ -91,18 +93,25 @@ export function buildStationeryPdf(raw:any,date:string){
  return {pdf:encoder.encode(pdf),pages:pages.length,filename:"sidequest-"+d.kind+".pdf",title:template.title,kind:d.kind};
 }
 export function stationeryEmailEnabled(e:Env){return e.SUPPORT_STATIONERY_EMAIL==="true"&&!!e.EMAIL&&!e.STAGING_KEY&&e.STAGING_PRIVATE!=="true";}
-export type PreparedStationery=ReturnType<typeof buildStationeryPdf>&{recipient:string;email_enabled:boolean};
+export type TermsAttachment={filename:string;pdf:Uint8Array;version:string;pages:number};
+export function serviceTermsAttachment():TermsAttachment{const doc=buildStationeryPdf({kind:"terms",sections:[...SERVICE_TERMS_SECTIONS]},SERVICE_TERMS_DATE);return {filename:"sidequest-learning-support-service-terms.pdf",pdf:doc.pdf,version:SERVICE_TERMS_VERSION,pages:doc.pages};}
+export function needsServiceTerms(kind:string){return kind==="proposal"||kind==="plan";}
+export type PreparedStationery=ReturnType<typeof buildStationeryPdf>&{recipient:string;email_enabled:boolean;terms?:TermsAttachment};
+export function termsDeliveryApproved(e:Env,version:string){return !version.includes("draft")&&version===SERVICE_TERMS_VERSION&&e.SUPPORT_TERMS_APPROVED_VERSION===version;}
 export async function prepareStationery(e:Env,channel:Channel,id:string,oid:string|null,b:any):Promise<PreparedStationery|{error:string}>{
  if(oid){const order=await getOrder(e.DB,channel,id,oid);
  if(!order||order.status==="cancelled"||order.status==="review"||order.checkout_started_at)return {error:"An active, non-legacy service order is required."};}
  const recipient=channel==="guest"?await e.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await e.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
  if(!recipient?.email)return {error:"Parent email not found."} as const;
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",dateStyle:"long"}).format(new Date());
- try{return {...buildStationeryPdf(b,date),recipient:recipient.email,email_enabled:stationeryEmailEnabled(e)};}catch(err){return {error:err instanceof Error?err.message:"Invalid document."} as const;}
+ try{if(b?.kind==="terms")return {error:"Use the versioned agreement, not editable terms."};const doc=buildStationeryPdf(b,date);return {...doc,recipient:recipient.email,email_enabled:stationeryEmailEnabled(e),...(needsServiceTerms(doc.kind)?{terms:serviceTermsAttachment()}: {})};}catch(err){return {error:err instanceof Error?err.message:"Invalid document."} as const;}
 }
 export async function sendStationery(e:Env,doc:PreparedStationery,b:any){
  if(!stationeryEmailEnabled(e)||!doc.email_enabled||b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return false;
- return sendEmail(e,{to:doc.recipient,subject:"Side-Quest Learning Support: "+doc.title,text:"Your personalised learning support document is attached. Please keep it private. Reply to "+SUPPORT_EMAIL+" if you have questions.",html:layout({preheader:"Your personal learning support document.",kicker:"Learning Support",heading:doc.title,body:p("Your personalised document is attached as a PDF. Please keep it private and contact us if you have questions.")+p(esc(SITE_URL)),reason:"This is correspondence about your learning support service."}),attachments:[{filename:doc.filename,type:"application/pdf",content:doc.pdf,disposition:"attachment"}]});
+ if(needsServiceTerms(doc.kind)&&(!doc.terms||!termsDeliveryApproved(e,doc.terms.version)))return false;
+ const attachments=[{filename:doc.filename,type:"application/pdf",content:doc.pdf,disposition:"attachment" as const},...(doc.terms?[{filename:doc.terms.filename,type:"application/pdf",content:doc.terms.pdf,disposition:"attachment" as const}]:[])];
+ const extra=doc.terms?" The separate service agreement is also attached; review it before accepting the arrangements.":"";
+ return sendEmail(e,{to:doc.recipient,subject:"Side-Quest Learning Support: "+doc.title,text:"Your personalised learning support document is attached."+extra+" Please keep it private. Reply to "+SUPPORT_EMAIL+" if you have questions.",html:layout({preheader:"Your personal learning support document.",kicker:"Learning Support",heading:doc.title,body:p("Your personalised document is attached as a PDF."+extra+" Please keep it private and contact us if you have questions.")+p(esc(SITE_URL)),reason:"This is correspondence about your learning support service."}),attachments});
 }
 
 export async function stationeryRecipient(db:D1Database,channel:Channel,id:string){
@@ -112,7 +121,7 @@ export function stationeryBase64(pdf:Uint8Array){
  let raw="";for(let i=0;i<pdf.length;i+=8192)raw+=String.fromCharCode(...pdf.subarray(i,i+8192));return btoa(raw);
 }
 export async function stationeryFingerprint(doc:PreparedStationery){
- const bytes=new TextEncoder().encode(JSON.stringify([doc.recipient,doc.filename,stationeryBase64(doc.pdf)]));
+ const bytes=new TextEncoder().encode(JSON.stringify([doc.recipient,doc.filename,stationeryBase64(doc.pdf),doc.terms?.version??null,doc.terms?stationeryBase64(doc.terms.pdf):null]));
  const hash=await crypto.subtle.digest("SHA-256",bytes);
  return Array.from(new Uint8Array(hash),x=>x.toString(16).padStart(2,"0")).join("");
 }
