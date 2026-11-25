@@ -132,7 +132,7 @@ await step("Document Studio remains owner-only after the old shop is removed", a
   ok(denied.status === 404, "ordinary parent can access owner PDF products");
   await page.goto(BASE + "/parent/command-centre/document-studio");
   await page.waitForSelector("[data-testid=hq-document-studio]");
-  await page.selectOption("[data-testid=hq-document-studio] select", "NSW");
+  await page.getByTestId("hq-document-studio").getByLabel("State or territory",{exact:true}).selectOption("NSW");
   await page.waitForSelector("[data-testid=hq-existing-education-publisher]");
   const res = await api("GET", "/admin/document-studio/square-production?year=ALL", ownerBrowserToken);
   ok(res.status === 200 && res.json?.offers?.length === 48, "the 48 Square-ready document templates are unavailable");
@@ -189,6 +189,7 @@ await step("Learning Support month planner navigates future months, preserves pr
  const denied=await api("GET","/admin/support-calendar?from=2027-01-01T00:00:00.000Z&to=2027-02-01T00:00:00.000Z",user.token);
  ok(denied.status===404,"ordinary parent can read private tutor calendar");
  await page.goto(BASE+"/parent/command-centre/learning-support");
+ await page.getByRole("navigation",{name:"Learning Support sections"}).getByRole("button",{name:"Calendar",exact:true}).click();
  const calendar=page.locator('[aria-label="Monthly private tutor calendar"]');
  await calendar.waitFor({timeout:15000});
  const month=page.locator('input[type="month"]');
