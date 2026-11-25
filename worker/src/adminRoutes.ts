@@ -49,7 +49,7 @@ import {buildContinuity,emailContinuity} from "./supportContinuity";
 import {prepareStationery,stationeryBase64,stationeryFingerprint,stationeryRecipient,stationeryEmailEnabled,termsDeliveryApproved,serviceTermsAttachment} from "./supportStationery";
 import {listStationery,saveStationery,downloadStationery,deliverSavedStationery,lessonReportQueue} from "./supportStationeryHistory";
 import {readAvailability,saveAvailability} from "./supportPublicAvailability";
-import {pendingCancellations,dismissCancellation,cancelPaidAppointment} from "./supportPaymentSafety";
+import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
@@ -925,12 +925,18 @@ export function createAdminRoutes() {
       }
       if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
       // Never release or manually invoice a reservation with an unresolved provider attempt.
-      if(["invoice","verify-payment","cancel","cancel-invoice","cancel-paid"].includes(action)&&await c.env.DB.prepare("SELECT order_id FROM support_square_invoice_attempts WHERE order_id=?").bind(oid).first())return c.json({detail:"A Square invoice pilot record exists. Reconcile it before any manual billing or cancellation."},409);
+      if(["invoice","verify-payment","payment-warning","cancel","cancel-invoice","cancel-paid"].includes(action)&&await c.env.DB.prepare("SELECT order_id FROM support_square_invoice_attempts WHERE order_id=?").bind(oid).first())return c.json({detail:"A Square invoice pilot record exists. Reconcile it before any manual billing or cancellation."},409);
       if(action==="invoice"){
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
         if("error" in r)return c.json({detail:r.error},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_recorded",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
         return c.json({ok:true},201);
+      }
+      if(action==="payment-warning"){
+        const r=await sendFinalPaymentWarning(c.env,channel,id,oid,b);
+        if("error" in r)return c.json({detail:r.error},409);
+        await writeAudit(c.env.DB,{...actor(c),action:r.warning_email_sent?"support.payment_warning_sent":"support.payment_warning_unconfirmed",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json(r);
       }
       if(action==="verify-payment"){
         if(!await verifyManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id))return c.json({detail:"Payment could not be recorded. Check the invoice reference, full amount, order status and appointment time."},409);
