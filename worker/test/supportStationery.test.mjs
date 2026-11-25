@@ -92,3 +92,22 @@ test("proposal automatically carries exact versioned terms, cannot deliver an un
  assert.ok("error" in await deliverSavedStationery(env,"guest","terms-g",saved.id,review));
  assert.equal((await listStationery(db,"guest","terms-g"))[0].status,"saved");
 });
+
+test("session report uses only explicit parent-facing fields, never private diary or another family",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const at="2026-01-01T00:00:00.000Z",end="2026-01-01T01:00:00.000Z";
+ for(const id of ["report-a","report-b"])db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(id,id+"@example.test","Parent","Learning","Enquiry",at,at);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run("report-order","guest","report-a","report-quote",3000,"PRIVATE_SCOPE","Online","Terms","live",at,end,"completed",at,at);
+ const details={report_covered:"Equivalent fractions",report_strengths:"Explained the numerator",report_practice:"Compare denominators",report_home_activity:"Fold a piece of paper into equal parts",reflection:"PRIVATE_REFLECTION",agenda:"PRIVATE_TUTOR_GUIDE"};
+ db.raw.prepare("INSERT INTO support_tutor_diary(order_id,learner_label,details_json,updated_at) VALUES(?,?,?,?)").run("report-order","Learner",JSON.stringify(details),at);
+ const env={DB:db};
+ const doc=await prepareStationery(env,"guest","report-a","report-order",{from_session_diary:true});
+ assert.ok(!("error" in doc));assert.equal(doc.kind,"session_report");assert.equal(doc.recipient,"report-a@example.test");
+ const pdf=new TextDecoder().decode(doc.pdf);
+ for(const k of ["Equivalent fractions","Explained the numerator","Compare denominators","Fold a piece of paper"])assert.ok(pdf.includes(k));
+ assert.ok(!pdf.includes("PRIVATE_"));
+ assert.ok("error" in await prepareStationery(env,"guest","report-b","report-order",{from_session_diary:true}));
+ delete details.report_home_activity;
+ db.raw.prepare("UPDATE support_tutor_diary SET details_json=? WHERE order_id=?").run(JSON.stringify(details),"report-order");
+ assert.ok("error" in await prepareStationery(env,"guest","report-a","report-order",{from_session_diary:true}));
+});
