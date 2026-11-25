@@ -24,7 +24,7 @@ export async function claimLegacyFamily(db:D1Database,actor:AuthUser,guestToken:
  JOIN support_guest_families g ON g.email=gs.email
  LEFT JOIN family_admin_state s ON s.family_id=f.id
  WHERE u.id=? AND u.family_id=? AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND COALESCE(s.status,'active')='active'
- AND EXISTS(SELECT 1 FROM support_guest_requests r WHERE r.email=g.email)
+ AND EXISTS(SELECT 1 FROM support_guest_requests r WHERE r.email=g.email AND NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins o WHERE o.request_id=r.id))
  AND (SELECT COUNT(*) FROM users ux WHERE lower(ux.email)=lower(u.email))=1
  AND (SELECT COUNT(*) FROM support_guest_families gx WHERE lower(gx.email)=lower(g.email))=1`).bind(now,tokenHash,now,actor.id,actor.family_id).run();
  if(result.meta?.changes)return true;
@@ -35,12 +35,12 @@ export async function claimLegacyFamily(db:D1Database,actor:AuthUser,guestToken:
 }
 export async function linkedLegacyRequests(db:D1Database,actor:AuthUser){
  const claim=await readFamilyClaim(db,actor);if(!claim)return [];
- const rows=await db.prepare("SELECT id,subject,status,created_at,updated_at FROM support_guest_requests WHERE email=? ORDER BY created_at DESC,id DESC LIMIT 50").bind(claim.email).all<any>();
+ const rows=await db.prepare("SELECT id,subject,status,created_at,updated_at FROM support_guest_requests WHERE email=? AND NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins o WHERE o.request_id=support_guest_requests.id) ORDER BY created_at DESC,id DESC LIMIT 50").bind(claim.email).all<any>();
  return rows.results||[];
 }
 export async function linkedLegacyRequest(db:D1Database,actor:AuthUser,id:string){
  const claim=await readFamilyClaim(db,actor);if(!claim)return null;
- const row=await db.prepare("SELECT id,subject,message,status,created_at,updated_at FROM support_guest_requests WHERE id=? AND email=?").bind(id,claim.email).first<any>();
+ const row=await db.prepare("SELECT id,subject,message,status,created_at,updated_at FROM support_guest_requests WHERE id=? AND email=? AND NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins o WHERE o.request_id=support_guest_requests.id)").bind(id,claim.email).first<any>();
  if(!row)return null;
  const [quotes,messages]=await Promise.all([guestQuotes(db,id),guestMessages(db,id)]);
  // Do not return tutor notes, internal plans, other learners, credentials or storage keys.
