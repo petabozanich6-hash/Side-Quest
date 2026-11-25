@@ -1,3 +1,4 @@
+import {permitsSupportStart,PREPARATION_NOTICE} from "./supportLeadTime";
 import type {Env} from "./types";
 import {nowIso} from "./types";
 import {readQuotePlan} from "./supportQuotePlans";
@@ -35,6 +36,7 @@ export async function createServiceOrder(db:D1Database,channel:Channel,id:string
  if(mode==="live"){
   if(typeof b.start_at!=="string"||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(b.start_at)||!Number.isFinite(Date.parse(b.start_at))||Date.parse(b.start_at)<=now.getTime()||typeof b.minutes!=="number"||!Number.isInteger(b.minutes)||b.minutes<15||b.minutes>180)return {error:"Choose a future start time and a duration of 15–180 minutes."};
   start=new Date(b.start_at).toISOString();end=new Date(Date.parse(start)+b.minutes*60000).toISOString();
+  if(!await permitsSupportStart(db,channel,id,[start]))return {error:PREPARATION_NOTICE};
  }
  const qtable=channel==="guest"?"support_guest_quotes":"learning_support_quotes",key=channel==="guest"?"request_id":"feedback_id",rtable=channel==="guest"?"support_guest_requests":"parent_feedback",tag=channel==="member"?" AND r.page_hint='learning-support'":"";
  const oid=crypto.randomUUID(),when=now.toISOString();
