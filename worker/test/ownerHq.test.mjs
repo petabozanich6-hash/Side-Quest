@@ -971,3 +971,26 @@ test("classroom board gates access on paid appointment, owner opening, time wind
  assert.equal((await classroomState(h.db,"member",id,oid,false,now)).board.strokes.length,0);
  assert.equal((await classroomState(h.db,"member",id,oid,true,new Date(end.getTime()+11*60000))).in_window,false);
 });
+
+test("RealtimeKit staging-only room setup, token windows and cleanup with mocked provider",async()=>{
+ const {h}=await ownerSetup();
+ const {prepareVideo,videoToken,closeVideo}=await import("../src/supportVideo.ts");
+ const {setClassroomOpen}=await import("../src/supportClassrooms.ts");
+ const now=new Date(),oid="video-order",id="video-request";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest",id,"video-quote",0,"Science support","Online","Agreed terms","live",now.toISOString(),new Date(now.getTime()+30*60000).toISOString(),"paid",now.toISOString(),now.toISOString());
+ await setClassroomOpen(h.db,"guest",id,oid,true,now);
+ const env={...h.env,SUPPORT_CLASSROOM_ENABLED:"true",SUPPORT_VIDEO_TEST:"true",SUPPORT_VIDEO_ACCOUNT:"test-account",SUPPORT_VIDEO_APP:"test-app",SUPPORT_VIDEO_TOKEN:"test-secret",SUPPORT_VIDEO_TUTOR_PRESET:"tutor",SUPPORT_VIDEO_FAMILY_PRESET:"family",STAGING_KEY:"test"};
+ const calls=[];
+ const fake=async(url,init)=>{const b=init.body?JSON.parse(init.body):{};calls.push({url,method:init.method,b});return new Response(JSON.stringify({success:true,data:url.endsWith("/meetings")?{id:"meeting-one"}:url.endsWith("/participants")?{id:"participant-one",token:"test-token"}:{token:"refreshed-token"}}));};
+ assert.ok((await prepareVideo({...env,STAGING_KEY:undefined},"guest",id,oid,fake,now)).error);
+ assert.equal(calls.length,0);
+ assert.equal((await prepareVideo(env,"guest",id,oid,fake,now)).ok,true);
+ assert.equal((await prepareVideo(env,"guest",id,oid,fake,now)).ok,true);
+ assert.equal(calls.length,1);assert.equal(calls[0].b.record_on_start,false);
+ assert.equal((await videoToken(env,"guest",id,oid,false,fake,now)).token,"test-token");
+ assert.equal(calls[1].b.preset_name,"family");assert.equal(calls[1].b.token.expires_on,new Date(now.getTime()+40*60000).toISOString());
+ assert.equal((await videoToken(env,"guest",id,oid,false,fake,now)).token,"refreshed-token");
+ assert.equal(await closeVideo(env,oid,fake),true);
+ assert.equal(calls.at(-2).b.status,"INACTIVE");assert.ok(calls.at(-1).url.endsWith("/kick-all"));
+ assert.ok((await videoToken(env,"guest",id,oid,false,fake,now)).error);
+});

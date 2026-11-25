@@ -6,6 +6,7 @@ import {SITE_URL,sendEmail,layout,p,button} from "./email";
 import {loadPlatformSettings} from "./platformSettings";
 import {listOrders,getOrder,confirmServiceOrder} from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
+import {videoToken} from "./supportVideo";
 export const GUEST_SCHEMA=[
   "CREATE TABLE IF NOT EXISTS support_guest_links (token_hash TEXT PRIMARY KEY,email TEXT NOT NULL,expires_at TEXT NOT NULL,used_at TEXT)",
   "CREATE INDEX IF NOT EXISTS idx_support_guest_links_expiry ON support_guest_links(expires_at)",
@@ -102,6 +103,13 @@ export function registerGuestSupport(app:App){
   await c.env.DB.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").bind(id,who.email,name,parsed.subject,parsed.message,now,now).run();
   if(c.env.OWNER_NOTIFICATION_EMAIL)await guestNotify(c.env,c.env.OWNER_NOTIFICATION_EMAIL,true);
   return c.json({id,status:"new"},201);
+ });
+ app.post(root+"/requests/:id/orders/:oid/video-token",async c=>{
+  const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
+  const id=c.req.param("id");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
+  if(!(await hitRateLimit(c.env.DB,"support-video-guest:"+await digest(who.email),8,60)).ok)return c.json({detail:"Try again shortly."},429);
+  const r=await videoToken(c.env,"guest",id,c.req.param("oid"),false);
+  return "error" in r?c.json({detail:r.error},409):c.json(r);
  });
  app.get(root+"/requests/:id/orders/:oid/classroom",async c=>{
   if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);

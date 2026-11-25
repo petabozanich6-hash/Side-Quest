@@ -39,6 +39,7 @@ import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify, guestOrigin
 import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,recordManualInvoice,verifyManualInvoice,cancelManualInvoiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "./supportClassrooms";
+import {prepareVideo,videoToken,closeVideo} from "./supportVideo";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -665,6 +666,15 @@ export function createAdminRoutes() {
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
       return c.json(result,201);
     });
+    admin.post(path+"/:oid/video-prepare",requirePermission("customers.read"),async c=>{
+      const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm video setup."},400);
+      const r=await prepareVideo(c.env,channel,c.req.param("id"),c.req.param("oid"));
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.post(path+"/:oid/video-token",requirePermission("customers.read"),async c=>{
+      const r=await videoToken(c.env,channel,c.req.param("id"),c.req.param("oid"),true);
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
     admin.get(path+"/:oid/classroom",requirePermission("customers.read"),async c=>{
       if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
       const s=await classroomState(c.env.DB,channel,c.req.param("id"),c.req.param("oid"),true);
@@ -676,6 +686,7 @@ export function createAdminRoutes() {
       if(b.action==="open"||b.action==="close"){
         if(b.confirmed!==true||!await setClassroomOpen(c.env.DB,channel,id,oid,b.action==="open"))return c.json({detail:"Cannot change this classroom now."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.classroom."+b.action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        if(b.action==="close"&&c.env.SUPPORT_VIDEO_TOKEN&&!await closeVideo(c.env,oid))return c.json({ok:true,video_cleanup_pending:true});
         return c.json({ok:true});
       }
       const r=await editClassroom(c.env.DB,channel,id,oid,true,b);return "error" in r?c.json({detail:r.error},409):c.json(r);

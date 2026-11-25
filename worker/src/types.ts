@@ -40,6 +40,13 @@ export type Env = {
   SUPPORT_GUEST_ORIGIN?: string;
   /** Teaching board pilot, disabled until staging verifies access and safety. */
   SUPPORT_CLASSROOM_ENABLED?: string;
+  /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
+  SUPPORT_VIDEO_TEST?: string;
+  SUPPORT_VIDEO_ACCOUNT?: string;
+  SUPPORT_VIDEO_APP?: string;
+  SUPPORT_VIDEO_TOKEN?: string;
+  SUPPORT_VIDEO_TUTOR_PRESET?: string;
+  SUPPORT_VIDEO_FAMILY_PRESET?: string;
   /** Test-only checkout; production Square credentials are never accepted. */
   SUPPORT_CHECKOUT_TEST?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */

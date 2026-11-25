@@ -31,6 +31,7 @@ import { registerHandsOnVault } from "./handsOnVault";
 import { registerMembershipAccess } from "./membershipAccess";
 import { registerFeedback } from "./feedback";
 import { registerGuestSupport } from "./guestSupport";
+import {cleanupVideo} from "./supportVideo";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
@@ -366,6 +367,7 @@ export default {
     try { await reconcileSubscriptions(env.DB, env); } catch (e) { console.error("billing reconcile cron failed", e); }
     // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
+    try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
     // Disabled until a separate staging trial. Recheck the platform cap before every scheduled attempt.
     if(env.AI_BACKGROUND_BATCHES === "true" && env.AI) {
       try {

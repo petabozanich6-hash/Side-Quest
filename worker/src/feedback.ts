@@ -9,6 +9,7 @@ import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
 import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
 import {classroomEnabled,classroomState,editClassroom} from "./supportClassrooms";
+import {videoToken} from "./supportVideo";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -160,6 +161,14 @@ export function registerFeedback(app: App, guards: Guards) {
     return c.json({ok:true});
   });
 
+  app.post("/api/learning-support/:id/orders/:oid/video-token",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id");
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id))return c.json({detail:"Request not found"},404);
+    if(!(await hitRateLimit(c.env.DB,"support-video:"+u.id,8,60)).ok)return c.json({detail:"Try again shortly."},429);
+    c.header("Cache-Control","no-store");
+    const r=await videoToken(c.env,"member",id,c.req.param("oid"),false);
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
   app.get("/api/learning-support/:id/orders/:oid/classroom",guards.auth,guards.parent,async c=>{
     if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
     const u=c.get("user"),id=c.req.param("id");
