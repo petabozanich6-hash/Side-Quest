@@ -68,7 +68,13 @@ export async function confirmServiceOrder(db:D1Database,channel:Channel,id:strin
  const result=await db.prepare("UPDATE support_service_orders SET status=CASE WHEN amount_cents=0 THEN 'paid' ELSE 'confirmed' END,confirmed_at=?,paid_at=CASE WHEN amount_cents=0 THEN ? ELSE NULL END,updated_at=? WHERE channel=? AND request_id=? AND id=? AND status='awaiting_confirmation' AND NOT EXISTS(SELECT 1 FROM support_package_sessions p WHERE p.order_id=support_service_orders.id AND p.root_id<>p.order_id) AND (start_at IS NULL OR start_at>?)").bind(when,when,when,channel,id,oid,when).run();
  return !!result.meta?.changes;
 }
+// Optional schema: older deployments without the additive invoice migration retain their existing behavior.
+export async function hasSquareInvoiceIntent(db:D1Database,oid:string){
+ if(!await db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='support_square_invoice_intents'").first())return false;
+ return !!await db.prepare("SELECT 1 FROM support_square_invoice_intents WHERE order_id=?").bind(oid).first();
+}
 export async function cancelUnstartedOrder(db:D1Database,channel:Channel,id:string,oid:string,checkedSquare=false){
+ if(await hasSquareInvoiceIntent(db,oid))return false;
  const r=await db.prepare("UPDATE support_service_orders SET status='cancelled',updated_at=? WHERE channel=? AND request_id=? AND id=? AND status IN ('awaiting_confirmation','confirmed') AND (NOT EXISTS(SELECT 1 FROM support_package_sessions p WHERE p.order_id=support_service_orders.id AND p.root_id<>p.order_id) OR (status='confirmed' AND EXISTS(SELECT 1 FROM support_installment_terms t WHERE t.order_id=support_service_orders.id))) AND checkout_started_at IS NULL AND square_order_id IS NULL AND NOT EXISTS (SELECT 1 FROM support_manual_invoices i WHERE i.order_id=support_service_orders.id) AND (?=1 OR status='awaiting_confirmation' OR NOT EXISTS(SELECT 1 FROM support_installment_terms t WHERE t.order_id=support_service_orders.id))").bind(nowIso(),channel,id,oid,checkedSquare?1:0).run();return !!r.meta?.changes;
 }
 export async function completeOrder(db:D1Database,channel:Channel,id:string,oid:string){
@@ -101,6 +107,7 @@ export async function flagSupportRefund(db:D1Database,refund:any,locationId:stri
 /** The owner sends the invoice in Square; Side-Quest records the reference only. */
 export async function recordManualInvoice(db:D1Database,channel:Channel,id:string,oid:string,b:Record<string,unknown>,actorId:string,now=new Date()){
  await ensureOrderSchema(db);
+ if(await hasSquareInvoiceIntent(db,oid))return {error:"A prepared Square invoice requires owner reconciliation before recording a manual invoice."};
  const ref=typeof b.reference==="string"?b.reference.trim():"",due=typeof b.due_at==="string"?b.due_at:"",when=now.toISOString();
  if((b.issued_in_square!==true&&b.sent_in_square!==true)||!(/^[A-Za-z0-9][A-Za-z0-9._ /-]{1,79}$/).test(ref)||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(due)||!Number.isFinite(Date.parse(due))||due<=when||Date.parse(due)>now.getTime()+90*86400000)return {error:"Enter the actual Square invoice reference and a future payment deadline within 90 days."};
  const requested=b.invoice_payment_url,link=requested===undefined||requested===""?null:invoicePortalUrl(requested);
