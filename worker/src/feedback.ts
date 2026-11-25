@@ -7,8 +7,9 @@ import { newId, nowIso } from "./types";
 import { hitRateLimit } from "./adminAudit";
 import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { ensureQuoteSchema, supportThread, listSupportQuotes } from "./learningSupportQuotes";
-import { listOrders,getOrder,confirmServiceOrder } from "./supportOrders";
+import { listOrders,getOrder } from "./supportOrders";
 import {requestAppointmentCancellation} from "./supportPaymentSafety";
+import {termsReview,confirmReviewedTerms,acceptanceReceipt} from "./supportTermsAcceptance";
 import {classroomEnabled,classroomState,editClassroom,canReadClassroomImage} from "./supportClassrooms";
 import {videoToken,videoEnabled} from "./supportVideo";
 import {readQuotePlan} from "./supportQuotePlans";
@@ -217,12 +218,18 @@ export function registerFeedback(app: App, guards: Guards) {
     await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
     return c.json({ok:true,pending:true});
   });
+  app.get("/api/learning-support/:id/orders/:oid/service-terms",guards.auth,guards.parent,async c=>{
+    const u=c.get("user"),id=c.req.param("id"),oid=c.req.param("oid");
+    if(!await supportThread(c.env.DB,id,u.family_id,u.id)||!await getOrder(c.env.DB,"member",id,oid))return c.json({detail:"Request not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return c.json({required:c.env.SUPPORT_TERMS_REQUIRED==="true",agreement:await termsReview(c.env,"member",id,oid),receipt:await acceptanceReceipt(c.env.DB,"member",id,oid)});
+  });
   app.post("/api/learning-support/:id/orders/:oid/confirm",guards.auth,guards.parent,async c=>{
     const u=c.get("user"),id=c.req.param("id"),oid=c.req.param("oid"),b=await c.req.json().catch(()=>null);
     const thread=await supportThread(c.env.DB,id,u.family_id,u.id);
     if(!thread)return c.json({detail:"Request not found"},404);
     if(["closed","resolved"].includes(thread.status)||b?.confirmed!==true)return c.json({detail:"Confirm the service terms and arrangements."},400);
-    if(!await getOrder(c.env.DB,"member",id,oid)||!await confirmServiceOrder(c.env.DB,"member",id,oid))return c.json({detail:"Order unavailable."},409);
+    if(!await getOrder(c.env.DB,"member",id,oid)||!await confirmReviewedTerms(c.env,"member",id,oid,u.id,b))return c.json({detail:"Order unavailable."},409);
     await c.env.DB.prepare("UPDATE parent_feedback SET seen_at=NULL,updated_at=? WHERE id=? AND family_id=? AND user_id=?").bind(nowIso(),id,u.family_id,u.id).run();
     try{await ownerAlert(c.env,id,"learning support order confirmation");}catch{}
     return c.json({ok:true});
