@@ -1001,6 +1001,25 @@ test("guest family directory groups verified email enquiries, preserves existing
  assert.equal((await h.req("/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/respond",{method:"POST",admin:false,headers,body:{response:"interested",confirmed:true}})).status,200);
  const after=await h.req(slotPath,{admin:false,headers});assert.equal(after.json.offer.can_select,true);
  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(second).n,0,"proposal or acceptance alone cannot reserve a time");
+ const pkg=await h.req("/admin/support-guests/"+other+"/quotes",{method:"POST",token:owner.token,body:{scope:"Four online mathematics sessions",delivery:"Four 30 minute sessions",amount_cents:10000,valid_days:7,confirmed:true,session_minutes:[30,30,30,30],auto_offer_times:true,learner_label:"Private nickname",payment_mode:"installments",deadline_hours:24}});
+ assert.equal(pkg.status,201,JSON.stringify(pkg.json));assert.equal(pkg.json.appointment_offer,"ready");
+ const pkgPath="/support-guest/requests/"+other+"/quotes/"+pkg.json.id+"/slots";
+ const preview=await h.req(pkgPath,{admin:false,headers:otherHeaders});assert.equal(preview.status,200,JSON.stringify(preview.json));assert.deepEqual(preview.json.offer.package_minutes,[30,30,30,30]);assert.equal(preview.json.offer.can_select,false);assert.ok(!JSON.stringify(preview.json).includes("Private nickname"));
+ assert.equal((await h.req(pkgPath,{admin:false,headers})).status,404);
+ const selected=preview.json.offer.starts.slice(0,4);
+ const payload={offer_id:preview.json.offer.id,starts:selected,confirmed:true};
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload})).status,409);
+ assert.equal((await h.req("/support-guest/requests/"+other+"/quotes/"+pkg.json.id+"/respond",{method:"POST",admin:false,headers:otherHeaders,body:{response:"interested",confirmed:true}})).status,200);
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers,body:payload})).status,404);
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:{...payload,starts:[selected[0],selected[0],selected[2],selected[3]]}})).status,409);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(other).n,0);
+ const booked=await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload});
+ assert.equal(booked.status,201,JSON.stringify(booked.json));assert.equal(booked.json.count,4);
+ const orders=await h.req("/support-guest/requests/"+other+"/orders",{admin:false,headers:otherHeaders});
+ assert.equal(orders.status,200,JSON.stringify(orders.json));assert.equal(orders.json.orders.length,4);
+ assert.ok(orders.json.orders.every(o=>o.status==="awaiting_confirmation"&&o.amount_cents===2500&&o.installment&&o.installment_due_at&&!o.invoice_reference));
+ assert.equal((await h.req(pkgPath+"/select",{method:"POST",admin:false,headers:otherHeaders,body:payload})).status,409);
+
 });
 
 test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{
