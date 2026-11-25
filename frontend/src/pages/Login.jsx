@@ -17,6 +17,8 @@ export default function Login() {
   const [params] = useSearchParams();
   const supportSignup = params.get("service") === "learning-support";
   const familyPortal=params.get("service")==="family-portal";
+  const request=params.get("request")||"";
+  const portalDestination=familyPortal&&/^[A-Za-z0-9_-]{1,100}$/.test(request)?"/family-portal?page=requests&source=portal&request="+encodeURIComponent(request):"/family-portal";
   const supportSuffix = familyPortal?"?service=family-portal":supportSignup ? "?service=learning-support" : "";
 
   const submit = async (e) => {
@@ -24,7 +26,7 @@ export default function Login() {
     try {
       const { data } = await api.post("/auth/login", { email, password });
       setSession(data.token, { ...data.user, role: "parent" });
-      toast.success("Welcome back"); nav(familyPortal||data.user.family_portal_default?"/family-portal":supportSignup ? "/parent/learning-support" : "/parent",{replace:true});
+      toast.success("Welcome back"); nav(familyPortal||data.user.family_portal_default?portalDestination:supportSignup ? "/parent/learning-support" : "/parent",{replace:true});
     } catch (err) {
       if (err.response?.data?.code === "EMAIL_VERIFICATION_REQUIRED") setVerificationPending(true);
       toast.error(err.response?.data?.detail || "Login failed");
