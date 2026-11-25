@@ -3,6 +3,7 @@ import {adminApi,errorText} from "../../../lib/adminApi";
 import {saveSupportFile} from "../../../lib/supportFileDownload";
 const templates={
  letter:["Parent correspondence",["Message"]],
+ proposal:["Learning support proposal",["What we understand","Suggested support","Proposed arrangements and fees","Next steps"]],
  progress:["Learning progress report",["Learning focus","Progress and strengths","Areas to practise","Recommended next steps"]],
  summary:["Session summary",["What we worked on","What went well","Follow-up activities"]],
  plan:["Personalised learning plan",["Learning goals","Learning approach","Activities and resources","Review and next steps"]],
