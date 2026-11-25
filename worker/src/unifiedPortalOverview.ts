@@ -22,7 +22,7 @@ const scope=`WITH own_requests AS (
 const binds=(a:AuthUser)=>[a.family_id,a.id,a.family_id,a.id,a.family_id,a.id];
 export async function familyOverview(db:D1Database,a:AuthUser){
  if(!await verifiedPortalIdentity(db,a))return null;
- const [orderRows,clubRows,threadRows]=await db.batch([
+ const [orderRows,clubRows,threadRows]=await Promise.all([
  db.prepare(scope+` SELECT o.*,r.source,r.subject,r.status request_status,r.learner_id,
  p.root_id package_root_id,p.sequence package_sequence,p.total package_total,p.quote_id original_quote_id,
  t.due_at installment_due_at,i.reference invoice_reference,i.due_at payment_due_at,i.verified_at invoice_verified_at,i.cancelled_at invoice_cancelled_at,
@@ -31,15 +31,15 @@ export async function familyOverview(db:D1Database,a:AuthUser){
  LEFT JOIN support_package_sessions p ON p.order_id=o.id
  LEFT JOIN support_installment_terms t ON t.order_id=o.id
  LEFT JOIN support_manual_invoices i ON i.order_id=CASE WHEN t.order_id IS NOT NULL THEN o.id ELSE COALESCE(p.root_id,o.id) END
- ORDER BY CASE WHEN o.status NOT IN ('cancelled','completed') AND (o.start_at IS NULL OR o.end_at>=?) THEN 0 ELSE 1 END,COALESCE(o.start_at,o.created_at) DESC,o.id LIMIT 201`).bind(...binds(a),new Date().toISOString()),
+ ORDER BY CASE WHEN o.status NOT IN ('cancelled','completed') AND (o.start_at IS NULL OR o.end_at>=?) THEN 0 ELSE 1 END,COALESCE(o.start_at,o.created_at) DESC,o.id LIMIT 201`).bind(...binds(a),new Date().toISOString()).all(),
  db.prepare(scope+` SELECT e.id,c.id class_id,e.request_id,r.source,r.subject,r.status request_status,r.learner_id,c.topic,c.start_at,c.end_at,e.status,e.payment_due_at,e.invoice_reference,e.attendance
  FROM own_requests r JOIN support_english_enrolments e ON e.request_id=r.id AND r.channel='guest'
  JOIN support_english_classes c ON c.id=e.class_id
- ORDER BY CASE WHEN e.status<>'cancelled' AND c.end_at>=? THEN 0 ELSE 1 END,c.start_at DESC,e.id LIMIT 201`).bind(...binds(a),new Date().toISOString()),
+ ORDER BY CASE WHEN e.status<>'cancelled' AND c.end_at>=? THEN 0 ELSE 1 END,c.start_at DESC,e.id LIMIT 201`).bind(...binds(a),new Date().toISOString()).all(),
  db.prepare(scope+` SELECT r.id,r.source,r.subject,r.status,r.updated_at,r.learner_id,
  CASE WHEN r.channel='guest' THEN (SELECT COUNT(*) FROM support_guest_messages m WHERE m.request_id=r.id) ELSE (SELECT COUNT(*) FROM parent_feedback_replies m WHERE m.feedback_id=r.id) END message_count,
  CASE WHEN r.channel='member' THEN (SELECT COUNT(*) FROM parent_feedback_replies m WHERE m.feedback_id=r.id AND m.parent_read_at IS NULL) ELSE NULL END unread_count
- FROM own_requests r ORDER BY r.updated_at DESC,r.id LIMIT 201`).bind(...binds(a))
+ FROM own_requests r ORDER BY r.updated_at DESC,r.id LIMIT 201`).bind(...binds(a)).all()
  ]);
  const orders=(orderRows.results||[]) as any[],clubs=(clubRows.results||[]) as any[],threads=(threadRows.results||[]) as any[];
  // Strict projection: no private tutor notes, provider IDs, email addresses or payment links in overview.
