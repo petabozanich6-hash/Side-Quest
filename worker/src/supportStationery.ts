@@ -19,7 +19,9 @@ export function validateStationery(raw:any):Draft{
  const learner=typeof raw.learner==="string"?raw.learner.trim():"";
  if(learner.length>80||/[\r\n\x00-\x1f]/.test(learner))throw Error("Use a short agreed learner name or nickname.");
  if(!Array.isArray(raw.sections)||raw.sections.length!==fields.length||raw.sections.some((v:any)=>typeof v!=="string"||v.length>4000||/[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(v))||raw.sections.join("").length>10000||!raw.sections.some((s:string)=>s.trim()))throw Error("Enter parent-facing content (up to 10,000 characters total).");
- return {kind,learner,sections:raw.sections.map((s:string)=>s.trim())};
+ const sections=raw.sections.map((s:string)=>s.trim());
+ if(sections.reduce((n:number,s:string)=>n+s.split(/\r\n?|\n/).length,0)>300)throw Error("Use up to 300 lines per document.");
+ return {kind,learner,sections};
 }
 const encoder=new TextEncoder();
 const normalize=(v:string)=>v.replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"').replace(/[\u2013\u2014]/g,"-").replace(/\u2022/g,"-").replace(/\u00a0/g," ");
@@ -98,6 +100,6 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
  try{return {...buildStationeryPdf(b,date),recipient:recipient.email,email_enabled:stationeryEmailEnabled(e)};}catch(err){return {error:err instanceof Error?err.message:"Invalid document."} as const;}
 }
 export async function sendStationery(e:Env,doc:PreparedStationery,b:any){
- if(!doc.email_enabled||b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return false;
+ if(!stationeryEmailEnabled(e)||!doc.email_enabled||b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return false;
  return sendEmail(e,{to:doc.recipient,subject:"Side-Quest Learning Support: "+doc.title,text:"Your personalised learning support document is attached. Please keep it private. Reply to "+SUPPORT_EMAIL+" if you have questions.",html:layout({preheader:"Your personal learning support document.",kicker:"Learning Support",heading:doc.title,body:p("Your personalised document is attached as a PDF. Please keep it private and contact us if you have questions.")+p(esc(SITE_URL)),reason:"This is correspondence about your learning support service."}),attachments:[{filename:doc.filename,type:"application/pdf",content:doc.pdf,disposition:"attachment"}]});
 }
