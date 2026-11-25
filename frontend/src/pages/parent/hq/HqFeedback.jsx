@@ -4,6 +4,7 @@ import { ArrowUpRight, Bell, CheckCircle, RefreshCw, Search, ShieldCheck, Send, 
 import { adminApi, errorText } from "../../../lib/adminApi";
 import { Alert, Button, GREEN } from "./ui";
 import HqSupportQuotes from "./HqSupportQuotes";
+import HqSupportStationery from "./HqSupportStationery";
 
 const STATUS = [
   ["new","New"],["reviewing","Under review"],["in_progress","In progress"],["resolved","Resolved"],["closed","Closed"],
@@ -154,6 +155,7 @@ export default function HqFeedback() {
               <h4 className="text-xs font-bold text-stone-600 mb-2">Parent's message</h4>
               <p className="text-sm leading-relaxed whitespace-pre-wrap break-words text-stone-900">{selected.message}</p>
             </div>
+            {selected.page_hint==="learning-support"&&<HqSupportStationery key={"stationery-"+selected.id} path={"/feedback/"+encodeURIComponent(selected.id)}/>}
             {selected.page_hint==="learning-support"&&<HqSupportQuotes key={selected.id} id={selected.id} closed={["closed","resolved"].includes(selected.status)}/>}
             <div className="border-t border-stone-200 pt-4 space-y-3">
               <h4 className="font-bold text-sm flex items-center gap-2 text-emerald-950"><MessageSquare size={16}/> Replies to the parent</h4>
