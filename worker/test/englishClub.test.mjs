@@ -1,0 +1,35 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {makeDb} from "./fakeD1.mjs";
+import {createEnglishClass,enrolEnglishLearner,updateEnglishEnrolment,parentEnglishClasses,listEnglishClub,ensureEnglishClub} from "../src/englishClub.ts";
+import {createBusyBlock} from "../src/supportDiary.ts";
+const now=new Date("2026-12-07T00:00:00.000Z");
+test("weekly English Club blocks tutor diary, limits eight places and preserves manual Square payment checks",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ await ensureEnglishClub(db);await ensureEnglishClub(db);
+ const start="2026-12-09T07:00:00.000Z";
+ const created=await createEnglishClass(db,{start_at:start,topic:"Mystery detectives",preparation:"Private differentiated tasks",confirmed:true},now);
+ assert.ok(created.id,JSON.stringify(created));
+ assert.ok((await createEnglishClass(db,{start_at:"2026-12-10T00:00:00.000Z",topic:"Duplicate week",confirmed:true},now)).error);
+ assert.ok((await createBusyBlock(db,{label:"Conflict",start_at:start,end_at:"2026-12-09T08:00:00.000Z"},now)).error);
+ for(let i=0;i<9;i++)db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("club-"+i,"parent"+i+"@example.com","Parent "+i,"English Club: Year 5","Interest in a weekly class",now.toISOString(),now.toISOString());
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("regular","regular@example.com","Parent","Learning support: English / Year 5","Individual lesson",now.toISOString(),now.toISOString());
+ assert.ok((await enrolEnglishLearner(db,created.id,{request_id:"regular",learner_label:"R",confirmed:true},now)).error);
+ const ids=[];
+ for(let i=0;i<8;i++){const r=await enrolEnglishLearner(db,created.id,{request_id:"club-"+i,learner_label:"Learner "+i,confirmed:true},now);assert.ok(r.id,JSON.stringify(r));ids.push(r.id);}
+ assert.ok((await enrolEnglishLearner(db,created.id,{request_id:"club-8",learner_label:"Ninth",confirmed:true},now)).error);
+ assert.ok((await enrolEnglishLearner(db,created.id,{request_id:"club-0",learner_label:"Duplicate",confirmed:true},now)).error);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"paid",amount_cents:1200,paid_in_square:true,paid_by_deadline:true,confirmed:true},now),false);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"invoice",invoice_reference:"SQ-1",issued_in_square:true,confirmed:true},now),true);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"paid",amount_cents:1100,paid_in_square:true,paid_by_deadline:true,confirmed:true},now),false);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"paid",amount_cents:1200,paid_in_square:true,paid_by_deadline:true,confirmed:true},now),true);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"cancel",checked_square:true,confirmed:true},now),false);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[1],{action:"cancel",checked_square:true,confirmed:true},now),true);
+ assert.ok((await enrolEnglishLearner(db,created.id,{request_id:"club-8",learner_label:"Ninth",confirmed:true},now)).id);
+ assert.deepEqual(await parentEnglishClasses(db,"club-0","parent1@example.com"),[]);
+ const privateView=await parentEnglishClasses(db,"club-0","parent0@example.com");
+ assert.equal(privateView.length,1);assert.equal(privateView[0].status,"paid");assert.equal(privateView[0].invoice_reference,"SQ-1");assert.ok(!JSON.stringify(privateView).includes("Private differentiated tasks"));assert.ok(!JSON.stringify(privateView).includes("Learner 1"));
+ const roster=await listEnglishClub(db);assert.equal(roster.roster.filter(r=>r.status!=="cancelled").length,8);assert.equal(roster.enquiries.length,9);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"attendance",attendance:"present",confirmed:true},now),false);
+ assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"attendance",attendance:"present",confirmed:true},new Date(start)),true);
+});
