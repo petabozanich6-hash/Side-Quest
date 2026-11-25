@@ -3,7 +3,7 @@ import type {Env} from "./types";
 import {SERVICE_TERMS_VERSION,SERVICE_TERMS_DATE,SERVICE_TERMS_FIELDS,SERVICE_TERMS_SECTIONS} from "./supportServiceTerms";
 import {getOrder,type Channel} from "./supportOrders";
 import {readQuotePlan} from "./supportQuotePlans";
-import {sendEmail,layout,p,esc,SUPPORT_EMAIL,SITE_URL} from "./email";
+import {sendEmail,layout,p,esc,button,SUPPORT_EMAIL,SITE_URL} from "./email";
 
 // Parent-facing content is entered separately; never import the private tutor diary.
 export const STATIONERY={
@@ -126,12 +126,14 @@ export async function prepareStationery(e:Env,channel:Channel,id:string,oid:stri
  b={kind:"proposal",sections};
  }if(b?.kind==="terms")return {error:"Use the versioned agreement, not editable terms."};const doc=buildStationeryPdf(b,date);return {...doc,recipient:recipient.email,email_enabled:stationeryEmailEnabled(e),...(needsServiceTerms(doc.kind)?{terms:serviceTermsAttachment()}: {})};}catch(err){return {error:err instanceof Error?err.message:"Invalid document."} as const;}
 }
-export async function sendStationery(e:Env,doc:PreparedStationery,b:any){
+export async function sendStationery(e:Env,doc:PreparedStationery,b:any,extras:{files?:Array<{filename:string;type:string;content:Uint8Array;disposition:"attachment"}>;paymentLink?:string|null}={}){
  if(!stationeryEmailEnabled(e)||!doc.email_enabled||b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return false;
  if(needsServiceTerms(doc.kind)&&(!doc.terms||!termsDeliveryApproved(e,doc.terms.version)))return false;
  const attachments=[{filename:doc.filename,type:"application/pdf",content:doc.pdf,disposition:"attachment" as const},...(doc.terms?[{filename:doc.terms.filename,type:"application/pdf",content:doc.terms.pdf,disposition:"attachment" as const}]:[])];
+ attachments.push(...(extras.files||[]));
+ const payment=extras.paymentLink?"\n\nPay securely through Square: "+extras.paymentLink:"";
  const extra=doc.terms?" The separate service agreement is also attached; review it before accepting the arrangements.":"";
- return sendEmail(e,{to:doc.recipient,subject:"Side-Quest Learning Support: "+doc.title,text:"Your personalised learning support document is attached."+extra+" Please keep it private. Reply to "+SUPPORT_EMAIL+" if you have questions.",html:layout({preheader:"Your personal learning support document.",kicker:"Learning Support",heading:doc.title,body:p("Your personalised document is attached as a PDF."+extra+" Please keep it private and contact us if you have questions.")+p(esc(SITE_URL)),reason:"This is correspondence about your learning support service."}),attachments});
+ return sendEmail(e,{to:doc.recipient,subject:"Side-Quest Learning Support: "+doc.title,text:"Your personalised learning support document is attached."+extra+" Please keep it private. Reply to "+SUPPORT_EMAIL+" if you have questions."+payment,html:layout({preheader:"Your personal learning support document.",kicker:"Learning Support",heading:doc.title,body:p("Your personalised document is attached as a PDF."+extra+" Please keep it private and contact us if you have questions.")+(extras.paymentLink?button("View and pay securely through Square",extras.paymentLink):"")+p(esc(SITE_URL)),reason:"This is correspondence about your learning support service."}),attachments});
 }
 
 export async function stationeryRecipient(db:D1Database,channel:Channel,id:string){
