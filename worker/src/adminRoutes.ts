@@ -636,8 +636,50 @@ export function createAdminRoutes() {
     if(!family)return c.json({detail:"Family not found"},404);
     const contact=await db.prepare("SELECT parent_name FROM support_guest_requests WHERE email=? ORDER BY updated_at DESC,id DESC LIMIT 1").bind(family.email).first<{parent_name:string}>();
     if(!contact)return c.json({detail:"Family not found"},404);
-    const rows=(await db.prepare("SELECT id,subject,status,seen_at,created_at,updated_at FROM support_guest_requests WHERE email=? ORDER BY CASE WHEN seen_at IS NULL THEN 0 ELSE 1 END,updated_at DESC,id LIMIT 51 OFFSET ?").bind(family.email,(page-1)*50).all<any>()).results||[];
-    return c.json({family:{...family,parent_name:contact.parent_name},items:rows.slice(0,50),has_more:rows.length>50});
+    const rows=(await db.prepare("SELECT r.id,r.subject,r.status,r.seen_at,r.created_at,r.updated_at,l.learner_id FROM support_guest_requests r LEFT JOIN support_guest_learner_enquiries l ON l.request_id=r.id WHERE r.email=? ORDER BY CASE WHEN r.seen_at IS NULL THEN 0 ELSE 1 END,r.updated_at DESC,r.id LIMIT 51 OFFSET ?").bind(family.email,(page-1)*50).all<any>()).results||[];
+    const learners=(await db.prepare("SELECT id,label,year_level,goals,interests,approach,private_notes,created_at,updated_at FROM support_guest_learners WHERE family_id=? ORDER BY created_at,id LIMIT 50").bind(id).all<any>()).results||[];
+    return c.json({family:{...family,parent_name:contact.parent_name},learners,items:rows.slice(0,50),has_more:rows.length>50});
+  });
+  // Learner details are owner-only; never expose these notes through guest portal responses.
+  const learnerFields=(b:any)=>{
+    const limits={label:80,year_level:40,goals:1000,interests:1000,approach:1000,private_notes:2000};
+    const out:Record<string,string>={};
+    for(const [key,max] of Object.entries(limits)){
+      const v=b?.[key]??"";if(typeof v!=="string"||v.trim().length>max)return null;out[key]=v.trim();
+    }
+    if(!out.label)return null;return out;
+  };
+  admin.post("/support-families/:id/learners",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const family=c.req.param("id")??"",fields=learnerFields(await readJson(c)),id=crypto.randomUUID(),now=nowIso();
+    if(!fields)return c.json({detail:"Enter a learner nickname and valid profile fields."},400);
+    const result=await db.prepare("INSERT INTO support_guest_learners(id,family_id,label,year_level,goals,interests,approach,private_notes,created_at,updated_at) SELECT ?,id,?,?,?,?,?,?,?,? FROM support_guest_families WHERE id=? AND (SELECT COUNT(*) FROM support_guest_learners WHERE family_id=?)<50").bind(id,fields.label,fields.year_level,fields.goals,fields.interests,fields.approach,fields.private_notes,now,now,family,family).run();
+    if(!result.meta?.changes)return c.json({detail:"Family not found or learner limit reached."},409);
+    await writeAudit(db,{...actor(c),action:"guest_family.learner_created",targetType:"support_guest_learner",targetId:id,detail:{}});
+    return c.json({id},201);
+  });
+  admin.put("/support-families/:id/learners/:learner",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const family=c.req.param("id")??"",id=c.req.param("learner")??"",fields=learnerFields(await readJson(c));
+    if(!fields)return c.json({detail:"Enter a learner nickname and valid profile fields."},400);
+    const result=await db.prepare("UPDATE support_guest_learners SET label=?,year_level=?,goals=?,interests=?,approach=?,private_notes=?,updated_at=? WHERE id=? AND family_id=?").bind(fields.label,fields.year_level,fields.goals,fields.interests,fields.approach,fields.private_notes,nowIso(),id,family).run();
+    if(!result.meta?.changes)return c.json({detail:"Learner not found."},404);
+    await writeAudit(db,{...actor(c),action:"guest_family.learner_updated",targetType:"support_guest_learner",targetId:id,detail:{}});
+    return c.json({ok:true});
+  });
+  admin.put("/support-families/:id/enquiries/:request/learner",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const family=c.req.param("id")??"",request=c.req.param("request")??"",b=await readJson(c),learner=b?.learner_id;
+    if(learner!==null&&typeof learner!=="string")return c.json({detail:"Choose a learner or unassign the enquiry."},400);
+    if(!await db.prepare("SELECT r.id FROM support_guest_requests r JOIN support_guest_families f ON f.email=r.email WHERE r.id=? AND f.id=?").bind(request,family).first())return c.json({detail:"Enquiry not found."},404);
+    if(learner===null){
+      await db.prepare("DELETE FROM support_guest_learner_enquiries WHERE request_id=?").bind(request).run();
+    }else{
+      const result=await db.prepare("INSERT INTO support_guest_learner_enquiries(request_id,learner_id) SELECT r.id,l.id FROM support_guest_requests r JOIN support_guest_families f ON f.email=r.email JOIN support_guest_learners l ON l.family_id=f.id WHERE r.id=? AND f.id=? AND l.id=? ON CONFLICT(request_id) DO UPDATE SET learner_id=excluded.learner_id").bind(request,family,learner).run();
+      if(!result.meta?.changes)return c.json({detail:"Learner not found in this family."},404);
+    }
+    await writeAudit(db,{...actor(c),action:"guest_family.enquiry_learner",targetType:"support_guest",targetId:request,detail:{learner_id:learner}});
+    return c.json({ok:true});
   });
   admin.get("/support-guests",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);
