@@ -43,12 +43,24 @@ export function rehearse(db,migrations) {
   const pending=migrations.filter(m=>!applied.has(m.name));
   const tested=[],reconciled=[];
   for(const m of pending){
+    const before=counts(db);
+    const seedCheck=m.name==='0091_support_public_availability.sql'&&Object.hasOwn(before,'support_busy_blocks');
+    const blockRows=seedCheck?db.prepare('SELECT * FROM support_busy_blocks ORDER BY id').all():[];
     db.exec('BEGIN');
     try {
       const plan=reconcileKnownAdds(db,m);
       db.exec(plan.sql);
       const now=counts(db);
-      const changed=Object.keys(initial).filter(n=>now[n]!==initial[n]);
+      // Only the explicitly requested, immutable initial blackout may add a row to an existing table.
+      if(seedCheck){
+        const seed='initial-availability-block-2026-11-30';
+        const existed=blockRows.some(r=>r.id===seed);
+        const after=db.prepare('SELECT * FROM support_busy_blocks ORDER BY id').all();
+        const inserted=after.find(r=>r.id===seed);
+        const originals=existed?after:after.filter(r=>r.id!==seed);
+        if(JSON.stringify(originals)!==JSON.stringify(blockRows)||(!existed&&(!inserted||inserted.label!=='Unavailable'||inserted.start_at!=='2026-11-29T13:00:00.000Z'||inserted.end_at!=='2026-12-06T13:00:00.000Z')))throw Error('Initial blackout differs from reviewed migration');
+      }
+      const changed=Object.keys(before).filter(n=>now[n]!==before[n]&&!(seedCheck&&n==='support_busy_blocks'&&!blockRows.some(r=>r.id==='initial-availability-block-2026-11-30')&&now[n]===before[n]+1));
       if(changed.length){db.exec('ROLLBACK');return {ok:false,failed:m.name,reason:'Existing table row counts changed',changed,tested};}
       db.exec('COMMIT');
       tested.push(m.name);

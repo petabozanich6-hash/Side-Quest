@@ -35,3 +35,16 @@ test('all four prior learning columns may be reconciled on the offline copy',t=>
  const result=rehearse(db,[baseline,{name:'0071_outcome_prior_learning.sql',sql:fields.map(n=>'ALTER TABLE outcome_progress ADD COLUMN '+n+' TEXT;').join('\n')}]);
  assert.equal(result.ok,true);assert.equal(result.reconciled.length,4);
 });
+
+test('initial blackout seed is allowed without changing existing private blocks',t=>{
+ const db=fixture(t);db.exec("CREATE TABLE support_busy_blocks(id TEXT PRIMARY KEY,label TEXT,start_at TEXT,end_at TEXT,created_at TEXT); INSERT INTO support_busy_blocks VALUES('existing','Private','2027-01-01','2027-01-02','2026-11-01');");
+ const migration={name:'0091_support_public_availability.sql',sql:"INSERT INTO support_busy_blocks VALUES('initial-availability-block-2026-11-30','Unavailable','2026-11-29T13:00:00.000Z','2026-12-06T13:00:00.000Z','2026-11-25');"};
+ assert.equal(rehearse(db,[baseline,migration]).ok,true);
+ assert.equal(db.prepare('SELECT count(*) n FROM support_busy_blocks').get().n,2);
+});
+test('rehearsal rejects a modified private block even with the expected seed',t=>{
+ const db=fixture(t);db.exec("CREATE TABLE support_busy_blocks(id TEXT PRIMARY KEY,label TEXT,start_at TEXT,end_at TEXT,created_at TEXT); INSERT INTO support_busy_blocks VALUES('existing','Private','2027-01-01','2027-01-02','2026-11-01');");
+ const migration={name:'0091_support_public_availability.sql',sql:"UPDATE support_busy_blocks SET label='Changed'; INSERT INTO support_busy_blocks VALUES('initial-availability-block-2026-11-30','Unavailable','2026-11-29T13:00:00.000Z','2026-12-06T13:00:00.000Z','2026-11-25');"};
+ assert.equal(rehearse(db,[baseline,migration]).ok,false);
+ assert.equal(db.prepare("SELECT label FROM support_busy_blocks WHERE id='existing'").get().label,'Private');
+});
