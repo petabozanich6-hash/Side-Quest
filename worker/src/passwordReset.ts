@@ -1,10 +1,11 @@
-import type { App } from "./types";
+import type { App, Env } from "./types";
 import { newId, nowIso } from "./types";
 import { hashSecret } from "./auth";
 import { bumpAuthVersion } from "./session";
 import { clearLoginFailures } from "./loginThrottle";
-import { SITE_URL, sendEmail } from "./email";
-import { passwordChangedEmail, passwordResetEmail } from "./authEmails";
+import { sendEmail } from "./email";
+import {authEmailOrigin} from "./authEmailOrigin";
+import { passwordChangedEmail, passwordResetEmail, supportAccountSetupEmail } from "./authEmails";
 
 const TOKEN_TTL_MS = 60 * 60 * 1000;
 const MAX_REQUESTS_PER_HOUR = 3;
@@ -27,6 +28,20 @@ function newToken() {
   return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+/** Same one-use reset infrastructure for initial support account setup and recovery. */
+export async function sendPasswordSetup(env:Env,user:{id:string;name:string;email:string},initial=false){
+ const origin=authEmailOrigin(env);if(!origin||!env.EMAIL)return false;
+ const since=new Date(Date.now()-TOKEN_TTL_MS).toISOString();
+ const recent=await env.DB.prepare("SELECT COUNT(*) AS n FROM password_resets WHERE user_id = ? AND created_at > ?").bind(user.id,since).first<{n:number}>();
+ if((recent?.n??0)>=MAX_REQUESTS_PER_HOUR)return false;
+ const token=newToken(),ts=nowIso();
+ await env.DB.batch([
+  env.DB.prepare("UPDATE password_resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL").bind(ts,user.id),
+  env.DB.prepare("INSERT INTO password_resets (id, user_id, token_hash, expires_at, created_at) VALUES (?, ?, ?, ?, ?)").bind(newId(),user.id,await sha256(token),new Date(Date.now()+TOKEN_TTL_MS).toISOString(),ts),
+ ]);
+ const link=origin+"/reset-password?token="+token;
+ return sendEmail(env,initial?supportAccountSetupEmail(user.email,user.name,link):passwordResetEmail(user.email,user.name,link));
+}
 export function registerPasswordReset(app: App) {
   /** Step 1: email a reset link. Always answers the same way so it can't be used to find out who has an account. */
   app.post("/api/auth/forgot-password", async (c) => {
@@ -38,21 +53,7 @@ export function registerPasswordReset(app: App) {
       .bind(email).first<{ id: string; name: string; email: string }>();
     if (!user) return c.json(SAME_REPLY);
 
-    const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const recent = await c.env.DB.prepare("SELECT COUNT(*) AS n FROM password_resets WHERE user_id = ? AND created_at > ?")
-      .bind(user.id, since).first<{ n: number }>();
-    if ((recent?.n ?? 0) >= MAX_REQUESTS_PER_HOUR) return c.json(SAME_REPLY);
-
-    const token = newToken();
-    const ts = nowIso();
-    await c.env.DB.batch([
-      c.env.DB.prepare("UPDATE password_resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL").bind(ts, user.id),
-      c.env.DB.prepare("INSERT INTO password_resets (id, user_id, token_hash, expires_at, created_at) VALUES (?, ?, ?, ?, ?)")
-        .bind(newId(), user.id, await sha256(token), new Date(Date.now() + TOKEN_TTL_MS).toISOString(), ts),
-    ]);
-
-    const sending = sendEmail(c.env, passwordResetEmail(user.email, user.name, `${SITE_URL}/reset-password?token=${token}`));
-    try { c.executionCtx.waitUntil(sending); } catch { /* no execution context (tests) */ }
+    await sendPasswordSetup(c.env,user,false);
     return c.json(SAME_REPLY);
   });
 
@@ -92,8 +93,9 @@ export function registerPasswordReset(app: App) {
 
     const user = await c.env.DB.prepare("SELECT name, email FROM users WHERE id = ?")
       .bind(row.user_id).first<{ name: string; email: string }>();
-    if (user) {
-      const sending = sendEmail(c.env, passwordChangedEmail(user.email, user.name));
+    const origin=authEmailOrigin(c.env);
+    if (user&&origin) {
+      const sending = sendEmail(c.env, passwordChangedEmail(user.email, user.name,origin));
       try { c.executionCtx.waitUntil(sending); } catch { /* no execution context (tests) */ }
     }
     return c.json({ ok: true });
