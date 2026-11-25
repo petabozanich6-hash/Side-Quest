@@ -985,18 +985,22 @@ test("manual invoice: owner verifies full payment and overdue slot stays held",a
  const oid=order.json.id,adminPath=ap+"/orders/"+oid,parentPath=pp+"/orders/"+oid;
  assert.equal((await h.req(parentPath+"/confirm",{method:"POST",admin:false,token:alice.token,body:{confirmed:true}})).status,200);
  assert.equal((await h.req(adminPath+"/checkout",{method:"POST",token:owner.token,body:{confirmed:true}})).status,410);
- const inv={reference:"INV-TEST-123",due_at:due,sent_in_square:true,confirmed:true};
+ const inv={reference:"INV-TEST-123",due_at:due,sent_in_square:true,confirmed:true,invoice_payment_url:"https://squareup.com/pay-invoice/synthetic-test",link_reviewed:true};
  assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:alice.token,body:inv})).status,404);
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:{...inv,link_reviewed:false}})).status,409);
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:{...inv,invoice_payment_url:"https://squareup.com.example.net/pay-invoice/fake"}})).status,409);
  assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:inv})).status,201);
+ const payable=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(payable.json.orders[0].invoice_payment_url,inv.invoice_payment_url);assert.equal(payable.json.orders[0].status,"confirmed");
+ const other=await h.register("unrelated-invoice@example.com");assert.equal((await h.req(pp+"/orders",{admin:false,token:other.token})).status,404);
  assert.equal((await h.req(adminPath+"/cancel",{method:"POST",token:owner.token,body:{confirmed:true}})).status,409);
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:{reference:inv.reference,amount_cents:2499,paid_in_square:true,confirmed:true}})).status,409);
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:alice.token,body:{reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true}})).status,404);
  h.db.raw.prepare("UPDATE support_manual_invoices SET due_at='2020-01-01T00:00:00.000Z' WHERE order_id=?").run(oid);
- const list=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(list.json.orders[0].invoice_overdue,true);assert.equal(list.json.orders[0].status,"confirmed");
+ const list=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(list.json.orders[0].invoice_overdue,true);assert.equal(list.json.orders[0].status,"confirmed");assert.equal(list.json.orders[0].invoice_payment_url,null);
  const payment={reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true};
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,200);
  assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,409);
- assert.equal((await h.req(pp+"/orders",{admin:false,token:alice.token})).json.orders[0].status,"paid");
+ const paid=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(paid.json.orders[0].status,"paid");assert.equal(paid.json.orders[0].invoice_payment_url,null);
  assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"FREE_PREVIEW");
 });
 
