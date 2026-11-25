@@ -100,6 +100,8 @@ test("session report uses only explicit parent-facing fields, never private diar
  db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run("report-order","guest","report-a","report-quote",3000,"PRIVATE_SCOPE","Online","Terms","live",at,end,"completed",at,at);
  const details={report_covered:"Equivalent fractions",report_strengths:"Explained the numerator",report_practice:"Compare denominators",report_home_activity:"Fold a piece of paper into equal parts",reflection:"PRIVATE_REFLECTION",agenda:"PRIVATE_TUTOR_GUIDE"};
  db.raw.prepare("INSERT INTO support_tutor_diary(order_id,learner_label,details_json,updated_at) VALUES(?,?,?,?)").run("report-order","Learner",JSON.stringify(details),at);
+ const points=[{id:"a",label:"Equivalent fractions",home:"Fold a piece of paper into equal parts",status:"covered",observed_at:at},{id:"b",label:"Explained the numerator",home:"",status:"independent",observed_at:at},{id:"c",label:"Compare denominators",home:"",status:"practise",observed_at:at},{id:"d",label:"UNATTEMPTED",home:"",status:"not_started",observed_at:null}];
+ db.raw.prepare("INSERT INTO support_lesson_progress(order_id,checkpoints_json,updated_at) VALUES(?,?,?)").run("report-order",JSON.stringify(points),at);
  const env={DB:db};
  const doc=await prepareStationery(env,"guest","report-a","report-order",{from_session_diary:true});
  assert.ok(!("error" in doc));assert.equal(doc.kind,"session_report");assert.equal(doc.recipient,"report-a@example.test");
@@ -107,7 +109,7 @@ test("session report uses only explicit parent-facing fields, never private diar
  for(const k of ["Equivalent fractions","Explained the numerator","Compare denominators","Fold a piece of paper"])assert.ok(pdf.includes(k));
  assert.ok(!pdf.includes("PRIVATE_"));
  assert.ok("error" in await prepareStationery(env,"guest","report-b","report-order",{from_session_diary:true}));
- delete details.report_home_activity;
- db.raw.prepare("UPDATE support_tutor_diary SET details_json=? WHERE order_id=?").run(JSON.stringify(details),"report-order");
+ assert.ok(!pdf.includes("UNATTEMPTED"));
+ db.raw.prepare("UPDATE support_lesson_progress SET checkpoints_json=? WHERE order_id=?").run(JSON.stringify(points.map(p=>({...p,status:"not_started"}))),"report-order");
  assert.ok("error" in await prepareStationery(env,"guest","report-a","report-order",{from_session_diary:true}));
 });
