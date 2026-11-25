@@ -1,8 +1,8 @@
 import React,{useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 const field="block w-full border rounded-lg p-2 bg-white text-sm",btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50";
-export default function HqSlotOffers({path,quotes,onSaved}){
- const [qid,setQid]=useState(""),[starts,setStarts]=useState([""]),[minutes,setMinutes]=useState(30),[prep,setPrep]=useState(10),[wrap,setWrap]=useState(10),[label,setLabel]=useState(""),[terms,setTerms]=useState(""),[confirm,setConfirm]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState(""),[offer,setOffer]=useState(null);
+export default function HqSlotOffers({path,quotes,onSaved,learnerLabel=""}){
+ const [qid,setQid]=useState(""),[starts,setStarts]=useState([""]),[minutes,setMinutes]=useState(30),[prep,setPrep]=useState(10),[wrap,setWrap]=useState(10),[label,setLabel]=useState(learnerLabel),[terms,setTerms]=useState("Payment is due by the agreed invoice deadline. Booking is confirmed after verified payment. Changes and cancellations are handled under the Learning Support Service Agreement."),[confirm,setConfirm]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState(""),[offer,setOffer]=useState(null);
  const url=path.replace(/\/orders$/,"/quotes/")+encodeURIComponent(qid)+"/slots";
  async function run(fn){if(busy)return;setBusy(true);setError("");setNotice("");try{await fn();}catch(e){setError(errorText(e));}finally{setBusy(false);}}
  return <details className="border rounded-lg p-3"><summary className="font-bold">Send appointment choices</summary><form className="space-y-2 pt-2" onSubmit={e=>{e.preventDefault();run(async()=>{const r=await adminApi.post(url,{starts:starts.map(s=>new Date(s).toISOString()),minutes,prep_minutes:prep,wrap_minutes:wrap,learner_label:label,terms,confirmed:confirm});setOffer(r.offer);setNotice(r.email_notification_sent?"Invitation saved and emailed.":"Invitation saved; email not confirmed. Notify parent separately.");onSaved?.();});}}>
