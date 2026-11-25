@@ -46,12 +46,12 @@ export function guestOrigin(env:Env):string|null {
 }
 const enabled=(env:Env)=>env.SUPPORT_GUEST_ENABLED==="true"&&!!guestOrigin(env);
 const expires=(ms:number)=>new Date(Date.now()+ms).toISOString();
-export async function guestNotify(env:Env,email:string,owner=false,reference?:string,event:"proposal"|"message"|"update"="update"){
+export async function guestNotify(env:Env,email:string,owner=false,reference?:string,event:"proposal"|"message"|"appointment"|"arrangements"|"update"="update"){
  if(!emailOk(email))return false;
  const origin=guestOrigin(env);if(!origin)return false;
  let url=origin+(owner?"/parent/command-centre/learning-support":"/learning-support/portal"),tokenHash="";
- const subject=owner?(reference?"Side-Quest Learning Support: new enquiry":"Side-Quest Learning Support: new activity"):event==="proposal"?"Your Side-Quest Learning Support proposal is ready":event==="message"?"You have a reply from Side-Quest Learning Support":"Side-Quest Learning Support: an update is available";
- const heading=owner?"New Learning Support activity":event==="proposal"?"Your proposal is ready":event==="message"?"You have a new reply":"You have an update";
+ const subject=owner?(reference?"Side-Quest Learning Support: new enquiry":"Side-Quest Learning Support: new activity"):event==="proposal"?"Your Side-Quest Learning Support proposal is ready":event==="message"?"You have a reply from Side-Quest Learning Support":event==="appointment"?"Choose your Side-Quest appointment":event==="arrangements"?"Review your Side-Quest service arrangements":"Side-Quest Learning Support: an update is available";
+ const heading=owner?"New Learning Support activity":event==="proposal"?"Your proposal is ready":event==="message"?"You have a new reply":event==="appointment"?"Choose your appointment":event==="arrangements"?"Review your arrangements":"You have an update";
  try{
   if(owner&&reference){
    const f=await env.DB.prepare("SELECT f.id FROM support_guest_families f JOIN support_guest_requests r ON r.email=f.email WHERE r.id=?").bind(reference).first<{id:string}>();
@@ -65,7 +65,7 @@ export async function guestNotify(env:Env,email:string,owner=false,reference?:st
    await env.DB.prepare("INSERT INTO support_guest_links(token_hash,email,expires_at) VALUES (?,?,?)").bind(tokenHash,email,expires(24*3600000)).run();
    url+="#token="+token;
   }
-  const guidance=owner?"Review the activity in Owner HQ.":event==="proposal"?"Review your proposal and respond in your private portal.":event==="message"?"Read your reply in your private portal.":"Review the update in your private portal.";
+  const guidance=owner?"Review the activity in Owner HQ.":event==="proposal"?"Review your proposal and respond in your private portal.":event==="message"?"Read your reply in your private portal.":event==="appointment"?"Choose a suitable appointment in your private portal. No payment has been taken.":event==="arrangements"?"Review and confirm your service arrangements in your private portal. Payment is not yet confirmed.":"Review the update in your private portal.";
   const access=owner?"":" This single-use access link expires in 24 hours. If it expires, request a new link using your verified email.";
   const sent=await sendEmail(env,{to:email,subject,text:guidance+access+"\n"+url,html:layout({preheader:guidance,kicker:"Learning Support",heading,body:p(guidance+access)+button(owner?"Open Owner HQ":"Review in private portal",url),reason:"This is a service notification about a Learning Support request."})});
   if(!sent&&tokenHash)await env.DB.prepare("DELETE FROM support_guest_links WHERE token_hash=?").bind(tokenHash).run();
