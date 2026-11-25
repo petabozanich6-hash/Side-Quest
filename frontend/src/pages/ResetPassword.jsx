@@ -8,6 +8,7 @@ import { Flower } from "../components/shared/Botanical";
 export default function ResetPassword() {
   const [params] = useSearchParams();
   const token = params.get("token") || "";
+  const suffix=params.get("service")==="family-portal"?"?service=family-portal":"";
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function ResetPassword() {
     try {
       await api.post("/auth/reset-password", { token, password });
       toast.success("Password changed. Please sign in.");
-      nav("/login");
+      nav("/login"+suffix,{replace:true});
     } catch (err) { setError(err.response?.data?.detail || "Something went wrong. Please try again."); }
     finally { setLoading(false); }
   };
@@ -36,7 +37,7 @@ export default function ResetPassword() {
           <div data-testid="reset-missing">
             <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Link not found</h1>
             <p className="text-sm text-stone-600 mt-3 leading-relaxed">This reset link looks incomplete. Please request a new one.</p>
-            <Link to="/forgot-password" className="mt-6 inline-block text-xs font-bold hover:underline" style={{color:"#4A5D3A"}}>Request a new link</Link>
+            <Link to={"/forgot-password"+suffix} className="mt-6 inline-block text-xs font-bold hover:underline" style={{color:"#4A5D3A"}}>Request a new link</Link>
           </div>
         ) : (
           <form onSubmit={submit} data-testid="reset-form">
@@ -53,10 +54,10 @@ export default function ResetPassword() {
               </div>
             </div>
             {error && (
-              <p className="mt-4 text-sm" style={{color:"#B04A3A"}} data-testid="reset-error">{error} {error.includes("expired") && <Link to="/forgot-password" className="font-bold underline">Request a new link</Link>}</p>
+              <p className="mt-4 text-sm" style={{color:"#B04A3A"}} data-testid="reset-error">{error} {error.includes("expired") && <Link to={"/forgot-password"+suffix} className="font-bold underline">Request a new link</Link>}</p>
             )}
             <button disabled={loading} className="mt-6 w-full rounded-full py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="reset-submit">{loading ? "Saving…" : "Change password"}</button>
-            <div className="mt-5 text-xs"><Link to="/login" className="font-bold hover:underline" style={{color:"#4A5D3A"}}>Back to sign in</Link></div>
+            <div className="mt-5 text-xs"><Link to={"/login"+suffix} className="font-bold hover:underline" style={{color:"#4A5D3A"}}>Back to sign in</Link></div>
           </form>
         )}
         <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}}>Side-Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
