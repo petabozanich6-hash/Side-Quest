@@ -3,7 +3,8 @@
   "name": "side-quest",
   "main": "./worker/src/index.ts",
   "compatibility_date": "2025-10-01",
-  "observability": { "enabled": true },
+  // Keep diagnostic logging; sample 10% of requests instead of 100%.
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
   // Send announcements, trial reminders, reconcile subscriptions and payment notices every five minutes.
   "triggers": { "crons": ["*/5 * * * *"] },
   "keep_vars": true,

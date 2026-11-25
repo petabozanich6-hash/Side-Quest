@@ -38,6 +38,7 @@ import { isPlatformOwner } from "./access";
 import { ensureOwnerSchema } from "./ownerSchema";
 import { applyPlatformSettings, loadPlatformSettings, publicNotices } from "./platformSettings";
 import { meterWorkersAi } from "./aiCost";
+import { normaliseRetiredTextOverrides } from "./aiModelCompatibility";
 import { authenticateToken, bumpAuthVersion, familyState, issueFileToken, issueToken, SUSPENDED_MESSAGE } from "./session";
 import { sendEmail, welcomeEmail } from "./email";
 import { sendParentVerification, redeemParentVerification, resendParentVerification } from "./emailVerification";
@@ -347,11 +348,13 @@ app.notFound((c) => c.json({ detail: "Not found" }, 404));
 export default {
   // Feature switches and the platform AI limit are applied to the bindings before any route runs (platformSettings.ts).
   fetch: async (req: Request, env: Env, ctx: ExecutionContext) => {
+    env = normaliseRetiredTextOverrides(env);
     if (!new URL(req.url).pathname.startsWith("/api/") || !env.DB) return app.fetch(req, env, ctx);
     try { await ensureOwnerSchema(env.DB); } catch { return app.fetch(req, env, ctx); }
     return app.fetch(req, meterWorkersAi(await applyPlatformSettings(env), ctx), ctx);
   },
   scheduled: async (event: ScheduledEvent, env: Env, _ctx: ExecutionContext) => {
+    env = normaliseRetiredTextOverrides(env);
     if (event.cron !== "*/5 * * * *") return;
     // Preserve the five-minute cadence of every existing maintenance task.
     try { await processAnnouncementBatch(env); } catch (e) { console.error("announcement cron failed", e); }
