@@ -1,4 +1,4 @@
-import React,{useState,useRef} from "react";
+import React,{useState,useRef,useEffect} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 import {saveSupportFile} from "../../../lib/supportFileDownload";
 const templates={
@@ -12,9 +12,9 @@ const templates={
 };
 const btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50",field="block w-full border rounded-lg p-2 text-sm bg-white";
 const stateLabel={saved:"Saved, not emailed",sending:"Delivery in progress / check",sent:"Accepted for delivery",review:"Delivery uncertain — check before resending"};
-export default function HqSupportStationery({path,orderId}){
+export default function HqSupportStationery({path,orderId,initialOpen=false}){
  const [fromDiary,setFromDiary]=useState(false);
- const [open,setOpen]=useState(false),[kind,setKind]=useState("letter"),[learner,setLearner]=useState(""),[sections,setSections]=useState([""]),[doc,setDoc]=useState(null),[reviewed,setReviewed]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState(""),[history,setHistory]=useState(null);
+ const [open,setOpen]=useState(initialOpen),[kind,setKind]=useState("letter"),[learner,setLearner]=useState(""),[sections,setSections]=useState([""]),[doc,setDoc]=useState(null),[reviewed,setReviewed]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState(""),[history,setHistory]=useState(null);
  const locked=useRef(false),base=path+"/stationery";
  const reset=()=>{setDoc(null);setReviewed(false);setNotice("");};
  const draft={kind,learner,sections,confirmed:true,order_id:orderId||null,from_session_diary:fromDiary};
@@ -23,6 +23,7 @@ export default function HqSupportStationery({path,orderId}){
   if(locked.current)return;locked.current=true;setBusy(true);setError("");setNotice("");
   try{await fn();}catch(e){setError(errorText(e));}finally{locked.current=false;setBusy(false);}
  }
+ useEffect(()=>{if(initialOpen)run(load);},[path]);
  async function send(d){
   if(!history?.email_enabled||!history.recipient)return;
   if(!window.confirm("I opened and reviewed this exact saved PDF. I checked that it is intended for this parent and verified "+history.recipient+" against established correspondence. Send now?"))return;
