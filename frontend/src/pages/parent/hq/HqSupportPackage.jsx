@@ -11,7 +11,7 @@ export default function HqSupportPackage({path,quotes,onSaved,learnerLabel="",in
   try{
    const minutes=Math.max(...plan.lessons.map(l=>l.minutes));
    const result=await adminApi.get("/support-calendar/suggestions",{minutes,prep,wrap});
-   const dateKey=t=>new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Sydney",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(t));
+   const dateKey=t=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Sydney",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date(t)).map(x=>[x.type,x.value]));return p.year+"-"+p.month+"-"+p.day;};
    const dayNumber=t=>Date.parse(dateKey(t)+"T12:00:00Z");
    const eligible=(result.starts||[]).filter(t=>Date.parse(t)>Date.now()+(paymentMode==="installments"?lead*3600000:0));
    const chosen=[];
