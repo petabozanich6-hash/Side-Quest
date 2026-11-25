@@ -1,3 +1,4 @@
+import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
 import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
@@ -817,6 +818,20 @@ export function createAdminRoutes() {
   admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
     const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.get("/english-club/classes/:cid/video",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??""));
+  });
+  admin.post("/english-club/classes/:cid/video-prepare",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm group supervision before opening."},400);
+    const r=await prepareEnglishVideo(c.env,c.req.param("cid")??"");return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/classes/:cid/video-token",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");const r=await englishVideoToken(c.env,c.req.param("cid")??"");return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/classes/:cid/video-close",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm ending the group room."},400);
+    return await closeEnglishVideo(c.env,c.req.param("cid")??"")?c.json({ok:true}):c.json({detail:"Closure not verified. Check the provider dashboard; token access is blocked for closing rooms."},409);
   });
   admin.post("/english-club/classes/:cid/remove",requirePermission("customers.read"),async c=>{
     const id=c.req.param("cid")??"",b=await readJson(c);
