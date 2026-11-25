@@ -921,6 +921,53 @@ test("standalone support verifies email, isolates guest sessions, and never crea
  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
 });
 
+test("guest family directory groups verified email enquiries, preserves existing records and isolates learner profiles",async()=>{
+ const {h,owner}=await ownerSetup();
+ const ordinary=await h.register("family-directory-ordinary@example.com");
+ h.env.SUPPORT_GUEST_ENABLED="true";
+ const mail=[];h.env.EMAIL={send:async m=>{mail.push(m);return {messageId:"test"};}};
+ const initialCount=h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n;
+ async function access(email){
+   const link=await h.req("/support-guest/link",{method:"POST",admin:false,body:{email}});
+   assert.equal(link.status,200,JSON.stringify(link.json));
+   const token=mail.at(-1).text.match(/#token=([a-f0-9]{64})/)[1];
+   const r=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token}});
+   assert.equal(r.status,200,JSON.stringify(r.json));return {"X-SideQuest-Guest":r.json.token};
+ }
+ const headers=await access("family-a@example.com");
+ const otherHeaders=await access("family-b@example.com");
+ const input={parent_name:"Example Parent",subject:"Science",year:"Year 5",service:"Worked explanation",detail:"Help understanding the phases of the moon.",consent:true};
+ const send=async(headers,body)=>{const r=await h.req("/support-guest/requests",{method:"POST",admin:false,headers,body});assert.equal(r.status,201,JSON.stringify(r.json));return r.json.id;};
+ const first=await send(headers,input),second=await send(headers,{...input,subject:"Mathematics"}),other=await send(otherHeaders,{...input,parent_name:"Other Parent"});
+ // Simulate an existing enquiry that predates family indexing.
+ const stamp=new Date().toISOString();
+ h.db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("legacy-request","legacy@example.com","Legacy Parent","English","Existing enquiry",stamp,stamp);
+ h.db.raw.prepare("DELETE FROM support_guest_families WHERE email=?").run("legacy@example.com");
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,initialCount);
+ assert.equal((await h.req("/admin/support-families",{token:ordinary.token})).status,404);
+ await stepUp(h,owner);
+ const list=await h.req("/admin/support-families",{token:owner.token});assert.equal(list.status,200,JSON.stringify(list.json));
+ const a=list.json.items.find(x=>x.email==="family-a@example.com"),b=list.json.items.find(x=>x.email==="family-b@example.com");
+ assert.equal(a.enquiry_count,2);assert.equal(b.enquiry_count,1);assert.ok(list.json.items.some(x=>x.email==="legacy@example.com"));
+ const search=await h.req("/admin/support-families?search=family-a",{token:owner.token});assert.equal(search.json.items.length,1);assert.equal(search.json.items[0].id,a.id);
+ const root="/admin/support-families/"+a.id,otherRoot="/admin/support-families/"+b.id;
+ const detail=await h.req(root,{token:owner.token});assert.deepEqual(new Set(detail.json.items.map(x=>x.id)),new Set([first,second]));
+ const learner=await h.req(root+"/learners",{method:"POST",token:owner.token,body:{label:"Learner A",year_level:"Year 5",private_notes:"OWNER ONLY TEST MARKER"}});assert.equal(learner.status,201,JSON.stringify(learner.json));
+ const learner_id=learner.json.id;
+ const assign=(base,id,learner_id)=>h.req(base+"/enquiries/"+id+"/learner",{method:"PUT",token:owner.token,body:{learner_id}});
+ assert.equal((await assign(root,first,learner_id)).status,200);
+ assert.equal((await assign(otherRoot,other,learner_id)).status,404);
+ assert.equal((await assign(root,other,learner_id)).status,404);
+ assert.equal((await h.req(otherRoot+"/learners/"+learner_id,{method:"PUT",token:owner.token,body:{label:"Wrong family"}})).status,404);
+ const updated=await h.req(root,{token:owner.token});assert.equal(updated.json.learners[0].label,"Learner A");assert.equal(updated.json.items.find(x=>x.id===first).learner_id,learner_id);
+ const guest=await h.req("/support-guest/requests",{admin:false,headers});assert.ok(!JSON.stringify(guest.json).includes("OWNER ONLY TEST MARKER"));assert.ok(!JSON.stringify(guest.json).includes(learner_id));
+ assert.equal((await h.req("/admin/support-families/"+a.id,{headers})).status,404);
+ const quote=await h.req("/admin/support-guests/"+first+"/quotes",{method:"POST",token:owner.token,body:{scope:"Worked explanation and practice questions",delivery:"Written response",amount_cents:1500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
+ const latest=mail.at(-1);assert.match(latest.text,/Review your proposal/);const accessToken=latest.text.match(/#token=([a-f0-9]{64})/)[1];
+ const signed=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}});assert.equal(signed.status,200);assert.equal(signed.json.email,"family-a@example.com");
+ assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}})).status,400);
+});
+
 test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{
  const {h,owner}=await ownerSetup();
  const alice=await h.register("manual-alice@example.com","Alice");
