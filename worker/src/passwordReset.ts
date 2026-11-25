@@ -39,7 +39,7 @@ export async function sendPasswordSetup(env:Env,user:{id:string;name:string;emai
   env.DB.prepare("UPDATE password_resets SET used_at = ? WHERE user_id = ? AND used_at IS NULL").bind(ts,user.id),
   env.DB.prepare("INSERT INTO password_resets (id, user_id, token_hash, expires_at, created_at) VALUES (?, ?, ?, ?, ?)").bind(newId(),user.id,await sha256(token),new Date(Date.now()+TOKEN_TTL_MS).toISOString(),ts),
  ]);
- const link=origin+"/reset-password?token="+token;
+ const link=origin+"/reset-password?token="+token+(initial?"&service=family-portal":"");
  return sendEmail(env,initial?supportAccountSetupEmail(user.email,user.name,link):passwordResetEmail(user.email,user.name,link));
 }
 export function registerPasswordReset(app: App) {
