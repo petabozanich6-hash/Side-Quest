@@ -916,3 +916,31 @@ test("standalone support verifies email, isolates guest sessions, and never crea
  assert.equal((await h.req("/support-guest/requests",{admin:false,headers})).status,401);
  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM families").get().n,before);
 });
+
+test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{
+ const {h,owner}=await ownerSetup();
+ const alice=await h.register("manual-alice@example.com","Alice");
+ const made=await h.req("/feedback",{method:"POST",admin:false,token:alice.token,body:{kind:"learning-support",subject:"Science",year:"Year 5",service:"Live online support",detail:"Understanding phases of the moon.",consent:true}});assert.equal(made.status,201);
+ const id=made.json.id,ap="/admin/feedback/"+id,pp="/learning-support/"+id;
+ await stepUp(h,owner);
+ const quote=await h.req(ap+"/quotes",{method:"POST",token:owner.token,body:{scope:"A guided science lesson",delivery:"Online appointment",amount_cents:2500,valid_days:7,confirmed:true}});assert.equal(quote.status,201,JSON.stringify(quote.json));
+ assert.equal((await h.req(pp+"/quotes/"+quote.json.id+"/respond",{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:true}})).status,200);
+ const start=new Date(Date.now()+48*3600000).toISOString(),due=new Date(Date.now()+24*3600000).toISOString();
+ const order=await h.req(ap+"/orders",{method:"POST",token:owner.token,body:{quote_id:quote.json.id,mode:"live",start_at:start,minutes:30,terms:"Agreed appointment and cancellation terms.",confirmed:true}});assert.equal(order.status,201,JSON.stringify(order.json));
+ const oid=order.json.id,adminPath=ap+"/orders/"+oid,parentPath=pp+"/orders/"+oid;
+ assert.equal((await h.req(parentPath+"/confirm",{method:"POST",admin:false,token:alice.token,body:{confirmed:true}})).status,200);
+ assert.equal((await h.req(adminPath+"/checkout",{method:"POST",token:owner.token,body:{confirmed:true}})).status,410);
+ const inv={reference:"INV-TEST-123",due_at:due,sent_in_square:true,confirmed:true};
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:alice.token,body:inv})).status,404);
+ assert.equal((await h.req(adminPath+"/invoice",{method:"POST",token:owner.token,body:inv})).status,201);
+ assert.equal((await h.req(adminPath+"/cancel",{method:"POST",token:owner.token,body:{confirmed:true}})).status,409);
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:{reference:inv.reference,amount_cents:2499,paid_in_square:true,confirmed:true}})).status,409);
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:alice.token,body:{reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true}})).status,404);
+ h.db.raw.prepare("UPDATE support_manual_invoices SET due_at='2020-01-01T00:00:00.000Z' WHERE order_id=?").run(oid);
+ const list=await h.req(pp+"/orders",{admin:false,token:alice.token});assert.equal(list.json.orders[0].invoice_overdue,true);assert.equal(list.json.orders[0].status,"confirmed");
+ const payment={reference:inv.reference,amount_cents:2500,paid_in_square:true,confirmed:true};
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,200);
+ assert.equal((await h.req(adminPath+"/verify-payment",{method:"POST",token:owner.token,body:payment})).status,409);
+ assert.equal((await h.req(pp+"/orders",{admin:false,token:alice.token})).json.orders[0].status,"paid");
+ assert.equal(h.db.raw.prepare("SELECT plan FROM families WHERE id=?").get(alice.familyId).plan,"FREE_PREVIEW");
+});

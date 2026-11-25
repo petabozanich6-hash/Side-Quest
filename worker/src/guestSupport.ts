@@ -25,7 +25,7 @@ const digest=async(s:string)=>Array.from(new Uint8Array(await crypto.subtle.dige
 const valid=(s:unknown):s is string=>typeof s==="string"&&/^[a-f0-9]{64}$/.test(s);
 const emailOk=(s:string)=>s.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 // Never use a caller-supplied Host header to construct a sign-in link.
-function guestOrigin(env:Env):string|null {
+export function guestOrigin(env:Env):string|null {
  if(!env.STAGING_KEY)return SITE_URL;
  const value=env.SUPPORT_GUEST_ORIGIN||"";
  try{const u=new URL(value);return u.protocol==="https:"&&/^side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(u.hostname)&&u.origin===value?u.origin:null;}catch{return null;}

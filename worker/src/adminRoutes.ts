@@ -35,9 +35,8 @@ import { giftPreviewDays } from "./previewGifts";
 import { registerDocumentStudio } from "./documentStudioRoutes";
 import { ensureFeedbackSchema, FEEDBACK_CATEGORIES, FEEDBACK_STATUSES } from "./feedback";
 import { ensureQuoteSchema, supportThread, listSupportQuotes, validateQuote } from "./learningSupportQuotes";
-import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify } from "./guestSupport";
-import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,supportPaymentsEnabled } from "./supportOrders";
-import { prepareSupportCheckout } from "./supportCheckout";
+import { ensureGuestSchema, guestQuotes, guestMessages, guestNotify, guestOrigin } from "./guestSupport";
+import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,completeOrder,recordManualInvoice,verifyManualInvoice,cancelManualInvoiceOrder } from "./supportOrders";
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -647,7 +646,7 @@ export function createAdminRoutes() {
     const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
     admin.get(path,requirePermission("customers.read"),async c=>{
       const id=c.req.param("id");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
-      return c.json({orders:await listOrders(c.env.DB,channel,id),sandbox_checkout:supportPaymentsEnabled(c.env)});
+      return c.json({orders:await listOrders(c.env.DB,channel,id)});
     });
     admin.post(path,requirePermission("customers.read"),async c=>{
       const id=c.req.param("id");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
@@ -660,9 +659,24 @@ export function createAdminRoutes() {
       const id=c.req.param("id"),oid=c.req.param("oid"),action=c.req.param("action"),b=await readJson(c);
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
-      if(action==="checkout"){
-        try{const r=await prepareSupportCheckout(c.env,channel,id,oid);if("error" in r)return c.json({detail:r.error},409);return c.json({ok:true});}
-        catch{return c.json({detail:"Square checkout could not be confirmed. Retry the same order; do not make a new charge."},502);}
+      if(action==="checkout")return c.json({detail:"Create and send invoices directly in Square instead."},410);
+      if(action==="invoice"){
+        const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
+        if("error" in r)return c.json({detail:r.error},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_recorded",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:true},201);
+      }
+      if(action==="verify-payment"){
+        if(!await verifyManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id))return c.json({detail:"Payment could not be recorded. Check the invoice reference, full amount, order status and appointment time."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.payment_verified_manually",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+        const origin=guestOrigin(c.env),url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
+        const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. Classroom access is not yet available.")+button("View arrangements",url),reason:"This is a service notification."})});
+        return c.json({ok:true,email_notification_sent:sent});
+      }
+      if(action==="cancel-invoice"){
+        if(!await cancelManualInvoiceOrder(c.env.DB,channel,id,oid,b))return c.json({detail:"Only a confirmed unpaid order with a cancelled Square invoice can be released."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true});
       }
       const ok=action==="cancel"?await cancelUnstartedOrder(c.env.DB,channel,id,oid):action==="complete"?await completeOrder(c.env.DB,channel,id,oid):false;
       if(!ok)return c.json({detail:"Action unavailable. Orders with an initiated Square checkout require reconciliation before cancellation."},409);

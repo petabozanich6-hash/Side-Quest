@@ -7,9 +7,13 @@ export const ORDER_SCHEMA=[
   "CREATE INDEX IF NOT EXISTS idx_support_order_slot ON support_service_orders(start_at,end_at,status)",
   "CREATE INDEX IF NOT EXISTS idx_support_order_request ON support_service_orders(channel,request_id,created_at DESC)"
 ] as const;
-export async function ensureOrderSchema(db:D1Database){for(const sql of ORDER_SCHEMA)await db.prepare(sql).run();}
-export const orderPublic=(r:any)=>({id:r.id,quote_id:r.quote_id,amount_cents:r.amount_cents,scope:r.scope,delivery:r.delivery,terms:r.terms,mode:r.mode,start_at:r.start_at,end_at:r.end_at,status:r.status,confirmed_at:r.confirmed_at,paid_at:r.paid_at,checkout_url:r.status==="confirmed"?r.checkout_url:null});
-export async function listOrders(db:D1Database,channel:Channel,id:string){await ensureOrderSchema(db);const {results}=await db.prepare("SELECT * FROM support_service_orders WHERE channel=? AND request_id=? ORDER BY created_at DESC LIMIT 100").bind(channel,id).all<any>();return (results||[]).map(orderPublic);}
+export const INVOICE_SCHEMA=[
+  "CREATE TABLE IF NOT EXISTS support_manual_invoices (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, reference TEXT NOT NULL COLLATE NOCASE UNIQUE, due_at TEXT NOT NULL, issued_at TEXT NOT NULL, issued_by TEXT NOT NULL, verified_at TEXT, verified_by TEXT, cancelled_at TEXT)",
+  "CREATE INDEX IF NOT EXISTS idx_support_invoice_due ON support_manual_invoices(due_at)"
+] as const;
+export async function ensureOrderSchema(db:D1Database){for(const sql of [...ORDER_SCHEMA,...INVOICE_SCHEMA])await db.prepare(sql).run();}
+export const orderPublic=(r:any)=>({id:r.id,quote_id:r.quote_id,amount_cents:r.amount_cents,scope:r.scope,delivery:r.delivery,terms:r.terms,mode:r.mode,start_at:r.start_at,end_at:r.end_at,status:r.status,confirmed_at:r.confirmed_at,paid_at:r.paid_at,legacy_checkout:!!r.checkout_started_at,invoice_reference:r.invoice_reference??null,payment_due_at:r.payment_due_at??null,invoice_verified_at:r.invoice_verified_at??null,invoice_overdue:r.status==="confirmed"&&!!r.payment_due_at&&r.payment_due_at<=nowIso()});
+export async function listOrders(db:D1Database,channel:Channel,id:string){await ensureOrderSchema(db);const {results}=await db.prepare("SELECT o.*,i.reference invoice_reference,i.due_at payment_due_at,i.verified_at invoice_verified_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id WHERE o.channel=? AND o.request_id=? ORDER BY o.created_at DESC LIMIT 100").bind(channel,id).all<any>();return (results||[]).map(orderPublic);}
 export async function getOrder(db:D1Database,channel:Channel,id:string,oid:string){await ensureOrderSchema(db);return db.prepare("SELECT * FROM support_service_orders WHERE channel=? AND request_id=? AND id=?").bind(channel,id,oid).first<any>();}
 export async function hasOrder(db:D1Database,channel:Channel,qid:string){await ensureOrderSchema(db);return !!await db.prepare("SELECT id FROM support_service_orders WHERE channel=? AND quote_id=? AND status<>'cancelled'").bind(channel,qid).first();}
 export async function createServiceOrder(db:D1Database,channel:Channel,id:string,b:Record<string,unknown>,now=new Date()){
@@ -35,7 +39,7 @@ export async function confirmServiceOrder(db:D1Database,channel:Channel,id:strin
  return !!result.meta?.changes;
 }
 export async function cancelUnstartedOrder(db:D1Database,channel:Channel,id:string,oid:string){
- const r=await db.prepare("UPDATE support_service_orders SET status='cancelled',updated_at=? WHERE channel=? AND request_id=? AND id=? AND status IN ('awaiting_confirmation','confirmed') AND checkout_started_at IS NULL AND square_order_id IS NULL").bind(nowIso(),channel,id,oid).run();return !!r.meta?.changes;
+ const r=await db.prepare("UPDATE support_service_orders SET status='cancelled',updated_at=? WHERE channel=? AND request_id=? AND id=? AND status IN ('awaiting_confirmation','confirmed') AND checkout_started_at IS NULL AND square_order_id IS NULL AND NOT EXISTS (SELECT 1 FROM support_manual_invoices i WHERE i.order_id=support_service_orders.id)").bind(nowIso(),channel,id,oid).run();return !!r.meta?.changes;
 }
 export async function completeOrder(db:D1Database,channel:Channel,id:string,oid:string){
  const now=nowIso();const r=await db.prepare("UPDATE support_service_orders SET status='completed',updated_at=? WHERE channel=? AND request_id=? AND id=? AND status='paid' AND (end_at IS NULL OR end_at<=?)").bind(now,channel,id,oid,now).run();return !!r.meta?.changes;
@@ -62,4 +66,34 @@ export async function flagSupportRefund(db:D1Database,refund:any,locationId:stri
  await ensureOrderSchema(db);
  const r=await db.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE square_payment_id=? AND status IN ('paid','completed','review')").bind(now.toISOString(),refund.payment_id).run();
  return r.meta?.changes?"support refund requires review":null;
+}
+
+/** The owner sends the invoice in Square; Side-Quest records the reference only. */
+export async function recordManualInvoice(db:D1Database,channel:Channel,id:string,oid:string,b:Record<string,unknown>,actorId:string,now=new Date()){
+ await ensureOrderSchema(db);
+ const ref=typeof b.reference==="string"?b.reference.trim():"",due=typeof b.due_at==="string"?b.due_at:"",when=now.toISOString();
+ if(b.sent_in_square!==true||!(/^[A-Za-z0-9][A-Za-z0-9._ /-]{1,79}$/).test(ref)||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(due)||!Number.isFinite(Date.parse(due))||due<=when||Date.parse(due)>now.getTime()+90*86400000)return {error:"Enter the actual Square invoice reference and a future payment deadline within 90 days."};
+ const r=await db.prepare("INSERT OR IGNORE INTO support_manual_invoices(order_id,reference,due_at,issued_at,issued_by) SELECT id,?,?,?,? FROM support_service_orders WHERE id=? AND channel=? AND request_id=? AND status='confirmed' AND amount_cents>0 AND checkout_started_at IS NULL AND square_order_id IS NULL AND (start_at IS NULL OR start_at>?)").bind(ref,due,when,actorId,oid,channel,id,due).run();
+ return r.meta?.changes?{ok:true}:{error:"Invoice already recorded, reference already used, checkout previously started, or deadline is after the appointment."};
+}
+export async function verifyManualInvoice(db:D1Database,channel:Channel,id:string,oid:string,b:Record<string,unknown>,actorId:string,now=new Date()){
+ await ensureOrderSchema(db);
+ const ref=typeof b.reference==="string"?b.reference.trim():"",amount=b.amount_cents,when=now.toISOString();
+ if(b.paid_in_square!==true||!ref||typeof amount!=="number"||!Number.isInteger(amount)||amount<=0)return false;
+ const result=await db.batch([
+ db.prepare("UPDATE support_service_orders SET status='paid',paid_at=?,updated_at=? WHERE id=? AND channel=? AND request_id=? AND status='confirmed' AND amount_cents=? AND checkout_started_at IS NULL AND square_order_id IS NULL AND (start_at IS NULL OR start_at>?) AND EXISTS(SELECT 1 FROM support_manual_invoices i WHERE i.order_id=support_service_orders.id AND i.reference=? AND i.cancelled_at IS NULL AND i.verified_at IS NULL)").bind(when,when,oid,channel,id,amount,when,ref),
+ db.prepare("UPDATE support_manual_invoices SET verified_at=?,verified_by=? WHERE order_id=? AND reference=? AND verified_at IS NULL AND cancelled_at IS NULL AND EXISTS(SELECT 1 FROM support_service_orders o WHERE o.id=support_manual_invoices.order_id AND o.channel=? AND o.request_id=? AND o.status='paid' AND o.paid_at=? AND o.amount_cents=?)").bind(when,actorId,oid,ref,channel,id,when,amount)
+ ]);
+ return !!result[0]?.meta?.changes;
+}
+/** Never automatically free an invoiced slot: an overdue invoice may have been paid outside Side-Quest. */
+export async function cancelManualInvoiceOrder(db:D1Database,channel:Channel,id:string,oid:string,b:Record<string,unknown>,now=new Date()){
+ await ensureOrderSchema(db);
+ if(b.cancelled_unpaid_in_square!==true)return false;
+ const when=now.toISOString();
+ const result=await db.batch([
+ db.prepare("UPDATE support_service_orders SET status='cancelled',updated_at=? WHERE id=? AND channel=? AND request_id=? AND status='confirmed' AND checkout_started_at IS NULL AND square_order_id IS NULL AND EXISTS(SELECT 1 FROM support_manual_invoices i WHERE i.order_id=support_service_orders.id AND i.verified_at IS NULL AND i.cancelled_at IS NULL)").bind(when,oid,channel,id),
+ db.prepare("UPDATE support_manual_invoices SET cancelled_at=? WHERE order_id=? AND verified_at IS NULL AND cancelled_at IS NULL AND EXISTS(SELECT 1 FROM support_service_orders o WHERE o.id=support_manual_invoices.order_id AND o.channel=? AND o.request_id=? AND o.status='cancelled' AND o.updated_at=?)").bind(when,oid,channel,id,when)
+ ]);
+ return !!result[0]?.meta?.changes;
 }
