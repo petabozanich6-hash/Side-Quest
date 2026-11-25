@@ -149,3 +149,29 @@ test("uploaded Square invoice and manually copied payment link travel together o
  assert.equal(delivery.email_notification_sent,true);assert.equal(sent[0].to,doc.recipient);assert.equal(sent[0].attachments.length,2);assert.equal(sent[0].attachments[1].filename,"invoice.pdf");assert.deepEqual(sent[0].attachments[1].content,invoice);assert.ok(sent[0].text.includes(link));
  assert.equal(await saveCorrespondencePaymentLink(db,"guest","invoice-a",saved.id,{reviewed:true,url:"https://square.link/u/other"}),false);
 });
+
+test("provisional appointment payment request becomes a dated confirmation only after full verified payment",async t=>{
+ const {sendBookingConfirmation,bookingNotificationStatus}=await import("../src/supportBookingNotifications.ts");
+ const {recordManualInvoice,verifyManualInvoice}=await import("../src/supportOrders.ts");
+ const db=makeDb();t.after(()=>db.raw.close());
+ const at="2026-11-25T00:00:00.000Z",now=new Date(at),start="2026-12-08T00:00:00.000Z",end="2026-12-08T00:30:00.000Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("book","parent@example.test","Parent","Support","Request",at,at);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run("book-order","guest","book","book-q",3500,"Learning","Online","Agreed terms","live",start,end,"confirmed",at,at);
+ const sent=[],env={DB:db,SUPPORT_STATIONERY_EMAIL:"true",EMAIL:{send:async msg=>{sent.push(msg);return {messageId:"test"};}}};
+ const portal="https://sidequestlearning.app/learning-support/portal";
+ assert.equal(await sendBookingConfirmation(env,"guest","book","book-order",portal,now),false);
+ assert.ok((await recordManualInvoice(db,"guest","book","book-order",{reference:"INV-BOOK-1",due_at:"2026-12-07T00:00:00.000Z",issued_in_square:true},"owner",now)).ok);
+ const doc=await prepareStationery(env,"guest","book","book-order",{from_booking:true});
+ assert.ok(!("error" in doc),doc.error);assert.equal(doc.kind,"booking_payment");
+ const text=new TextDecoder().decode(doc.pdf);assert.match(text,/INV-BOOK-1/);assert.match(text,/35\.00/);assert.match(text,/provisionally reserved/);
+ const review={reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)};
+ const saved=await saveStationery(db,"guest","book","book-order",doc,review);
+ assert.equal(await verifyManualInvoice(db,"guest","book","book-order",{reference:"INV-BOOK-1",amount_cents:3499,paid_in_square:true},"owner",now),false);
+ assert.equal(await verifyManualInvoice(db,"guest","book","book-order",{reference:"INV-BOOK-1",amount_cents:3500,paid_in_square:true},"owner",now),true);
+ assert.ok("error" in await deliverSavedStationery(env,"guest","book",saved.id,review));
+ assert.equal(await sendBookingConfirmation(env,"guest","other","book-order",portal,now),false);
+ assert.equal(await sendBookingConfirmation(env,"guest","book","book-order",portal,now),true);
+ assert.equal(await sendBookingConfirmation(env,"guest","book","book-order",portal,now),false);
+ assert.equal(sent.length,1);assert.equal(sent[0].to,"parent@example.test");assert.match(sent[0].text,/8 December 2026/);assert.match(sent[0].text,/35\.00/);assert.match(sent[0].text,/INV-BOOK-1/);
+ assert.equal((await bookingNotificationStatus(db,"guest","book","book-order")).status,"sent");
+});
