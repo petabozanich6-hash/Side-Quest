@@ -11,7 +11,7 @@ import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
  *  2. CSRF: changes need an allow-listed Origin that matches this site, a same-origin fetch, and the
  *     X-SideQuest-Admin header (which a cross-site form cannot send).
  *  3. Rate limits per user (D1, shared by every Worker instance).
- *  4. Passkey step-up (15 minutes, this sign-in only) for everything except the step-up itself.
+ *  4. Passkey step-up (120 minutes, this sign-in only) for everything except the step-up itself.
  *  5. Per-route permission checks, input validation and an audit record for every change.
  *
  * There is deliberately no endpoint that grants or changes roles.
