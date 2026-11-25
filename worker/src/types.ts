@@ -78,6 +78,7 @@ export type Env = {
   OWNER_PASSWORD?: string;
   /** Private staging only: when set, every /api call needs the access cookie granted by /api/staging-access?key=... */
   STAGING_KEY?: string;
+  STAGING_PRIVATE?: string;
   /** Stripe secret (sk_test_... / rk_test_... for sandbox). Cloudflare secret, never in code or chat. */
   STRIPE_SECRET_KEY?: string;
   /** Signing secret (whsec_...) of the Stripe webhook endpoint for this Worker. Cloudflare secret. */

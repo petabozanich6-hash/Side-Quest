@@ -69,7 +69,7 @@ const sameText = (a: string, b: string) => {
 };
 app.use("/api/*", async (c, next) => {
   const key = c.env.STAGING_KEY;
-  if (!key) return next();
+  if (!key) return c.env.STAGING_PRIVATE === "true" ? c.json({ detail: "Private staging is not configured" }, 503) : next();
   // Payment providers cannot hold a staging cookie; their webhooks authenticate by signature.
   if (c.req.path === "/api/billing/webhook") return next();
   // Only a Square SANDBOX callback for our isolated staging Worker can bypass the cookie.
@@ -91,7 +91,8 @@ app.use("/api/*", async (c, next) => {
     return c.json({ detail: "Not found" }, 404);
   }
   const cookie = (c.req.header("cookie") || "").split(";").map((x) => x.trim()).find((x) => x.startsWith("sq_staging="));
-  if (!cookie || !sameText(decodeURIComponent(cookie.slice(11)), key)) return c.json({ detail: "Private staging site" }, 403);
+  let supplied = "";try { if(cookie) supplied=decodeURIComponent(cookie.slice(11)); } catch { /* malformed cookie remains unauthorized */ }
+  if (!cookie || !sameText(supplied, key)) return c.json({ detail: "Private staging site" }, 403);
   return next();
 });
 

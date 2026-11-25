@@ -704,7 +704,7 @@ export function createAdminRoutes() {
   admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env),housekeeping_checks:await housekeepingChecks(c.env.DB)}));
   admin.post("/support-briefing/housekeeping-check",requirePermission("customers.read"),async c=>{
     const b=await readJson(c);if(!await recordHousekeepingCheck(c.env.DB,b))return c.json({detail:"Confirm a completed independent check."},400);
-    await writeAudit(c.env.DB,{...actor(c),action:"support.housekeeping.check",targetType:"support_briefing",targetId:b.kind,detail:{}});return c.json({ok:true});
+    await writeAudit(c.env.DB,{...actor(c),action:"support.housekeeping.check",targetType:"support_briefing",targetId:String(b.kind),detail:{}});return c.json({ok:true});
   });
   admin.get("/support-briefing/preview",requirePermission("customers.read"),async c=>{
     const d=await buildBriefing(c.env);c.header("Cache-Control","no-store");return c.json({subject:d.subject,text:d.text});

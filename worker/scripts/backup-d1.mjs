@@ -4,12 +4,13 @@
 //  3. Restores the export into an empty in-memory SQLite database and checks every table's row count against live.
 // Exits non-zero if any step fails, so a release script can stop.  Output dir: SIDEQUEST_BACKUP_DIR or ../backups.
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readFileSync, writeFileSync, chmodSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, chmodSync, realpathSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { resolve, relative, isAbsolute } from "node:path";
+import { resolve, relative, isAbsolute, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import { DatabaseSync } from "node:sqlite";
 
-const ROOT = resolve(new URL("../../", import.meta.url).pathname);
+const ROOT = realpathSync(fileURLToPath(new URL("../../", import.meta.url)));
 const DIR = resolve(process.env.SIDEQUEST_BACKUP_DIR || resolve(ROOT, "../backups"));
 const wr = (args) => {
   const r = spawnSync("npx", ["wrangler", ...args], { cwd: ROOT, encoding: "utf8", maxBuffer: 1 << 28 });
@@ -21,17 +22,24 @@ const dbId = config.match(/"database_id":\s*"([^"]+)"/)[1];
 const dbName = config.match(/"database_name":\s*"([^"]+)"/)[1];
 
 // Exports contain private family records; never create them inside this public checkout.
-const rel = relative(ROOT, DIR);
-if (rel === "" || (!rel.startsWith(".." + "/") && rel !== ".." && !isAbsolute(rel))) {
-  console.error("Backup directory must be outside the repository."); process.exit(1);
-}
+const outside = (dir) => {
+  const rel = relative(ROOT, dir);
+  return rel === ".." || rel.startsWith(".." + sep) || isAbsolute(rel);
+};
+if (!outside(DIR)) { console.error("Backup directory must be outside the repository."); process.exit(1); }
+let ancestor=DIR;
+while(!existsSync(ancestor)){const parent=resolve(ancestor,"..");if(parent===ancestor)break;ancestor=parent;}
+const actualTarget=resolve(realpathSync(ancestor),relative(ancestor,DIR));
+if(!outside(actualTarget)){console.error("Backup directory resolves inside the repository.");process.exit(1);}
 process.umask(0o077);
 mkdirSync(DIR, { recursive: true });
+if(!outside(realpathSync(DIR))){console.error("Resolved backup directory is inside the repository.");process.exit(1);}
 chmodSync(DIR, 0o700);
 const bookmark = (wr(["d1", "time-travel", "info", "DB"]).match(/bookmark is '([^']+)'/) || [])[1];
 if (!bookmark) { console.error("Could not read the Time Travel bookmark"); process.exit(1); }
 const ts = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+Z$/, "Z");
-const file = resolve(DIR, `${dbName}-${dbId.slice(0, 8)}-${ts}.sql`);
+const file = resolve(realpathSync(DIR), `${dbName}-${dbId.slice(0, 8)}-${ts}.sql`);
+if(existsSync(file)||existsSync(file.replace(/\.sql$/, ".json"))){console.error("Backup filename already exists; refusing overwrite.");process.exit(1);}
 wr(["d1", "export", "DB", "--remote", "--output", file]);
 chmodSync(file, 0o600);
 const sql = readFileSync(file, "utf8");
