@@ -51,6 +51,8 @@ export type Env = {
   SUPPORT_VIDEO_FAMILY_PRESET?: string;
   /** Test-only checkout; production Square credentials are never accepted. */
   SUPPORT_CHECKOUT_TEST?: string;
+  /** Isolated synthetic Square invoice pilot; never enables live invoices. */
+  SUPPORT_SQUARE_INVOICES_TEST?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */
