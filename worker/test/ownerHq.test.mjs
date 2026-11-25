@@ -990,6 +990,17 @@ test("guest family directory groups verified email enquiries, preserves existing
  const latest=mail.at(-1);assert.match(latest.text,/Review your proposal/);assert.ok(latest.text.includes("?enquiry="+first+"#token="));const accessToken=latest.text.match(/#token=([a-f0-9]{64})/)[1];
  const signed=await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}});assert.equal(signed.status,200);assert.equal(signed.json.email,"family-a@example.com");
  assert.equal((await h.req("/support-guest/redeem",{method:"POST",admin:false,body:{token:accessToken}})).status,400);
+ // A single owner-approved proposal carries time options without an additional owner invitation.
+ const {saveAvailability}=await import("../src/supportPublicAvailability.ts");
+ assert.equal(await saveAvailability(h.db,{enabled:false,revision:0,windows:[0,1,2,3,4,5,6].map(day=>({day,start:"09:00",end:"13:00"})),confirmed:true}),true);
+ const auto=await h.req("/admin/support-guests/"+second+"/quotes",{method:"POST",token:owner.token,body:{scope:"One online mathematics session",delivery:"Online 30 minutes",amount_cents:2500,valid_days:7,confirmed:true,session_minutes:[30],auto_offer_times:true,learner_label:"Learner A"}});
+ assert.equal(auto.status,201,JSON.stringify(auto.json));assert.equal(auto.json.appointment_offer,"ready");
+ const slotPath="/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/slots";
+ const before=await h.req(slotPath,{admin:false,headers});assert.equal(before.status,200,JSON.stringify(before.json));assert.ok(before.json.offer.starts.length);assert.equal(before.json.offer.can_select,false);
+ assert.equal((await h.req(slotPath,{admin:false,headers:otherHeaders})).status,404);
+ assert.equal((await h.req("/support-guest/requests/"+second+"/quotes/"+auto.json.id+"/respond",{method:"POST",admin:false,headers,body:{response:"interested",confirmed:true}})).status,200);
+ const after=await h.req(slotPath,{admin:false,headers});assert.equal(after.json.offer.can_select,true);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_service_orders WHERE request_id=?").get(second).n,0,"proposal or acceptance alone cannot reserve a time");
 });
 
 test("manual invoice: owner verifies full payment and overdue slot stays held",async()=>{
