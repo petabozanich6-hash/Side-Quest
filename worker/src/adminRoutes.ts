@@ -1,3 +1,4 @@
+import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
 /**
@@ -856,6 +857,11 @@ export function createAdminRoutes() {
       c.header("Cache-Control","private, no-store");
       return "error" in r?c.json({detail:r.error},409):c.json(r);
     });
+    admin.get(path+"/:oid/booking-notification",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
+      c.header("Cache-Control","private, no-store");return c.json({notification:await bookingNotificationStatus(c.env.DB,channel,id,oid)});
+    });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json(d):c.json({detail:"Order not found"},404);
@@ -929,9 +935,8 @@ export function createAdminRoutes() {
       if(action==="verify-payment"){
         if(!await verifyManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id))return c.json({detail:"Payment could not be recorded. Check the invoice reference, full amount, order status and appointment time."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.payment_verified_manually",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
-        const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
-        const origin=guestOrigin(c.env),url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
-        const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. If classroom access is enabled, open your live appointment in the portal during the session window.")+button("View arrangements",url),reason:"This is a service notification."})});
+        const origin=guestOrigin(c.env),url=origin?origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support"):null;
+        let sent=false;try{sent=await sendBookingConfirmation(c.env,channel,id,oid,url);}catch{}
         return c.json({ok:true,email_notification_sent:sent});
       }
       const cancellationNotice=async()=>{
