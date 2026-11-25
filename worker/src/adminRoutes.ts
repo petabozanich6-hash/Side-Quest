@@ -1,3 +1,4 @@
+import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
 import {readInvoiceAttempt,createInvoiceAttempt,publishInvoiceAttempt,checkInvoiceAttempt,previewInvoiceEmail} from "./supportInvoiceAttempts";
 /**
@@ -759,6 +760,31 @@ export function createAdminRoutes() {
       const doc=await downloadStationery(c.env.DB,channel,id,c.req.param("did")??"");
       c.header("Cache-Control","private, no-store");
       return doc?c.json(doc):c.json({detail:"Document not found"},404);
+    });
+    admin.get(stationeryPath+"/:did/attachments",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",did=c.req.param("did")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      c.header("Cache-Control","private, no-store");
+      return c.json({attachments:await correspondenceAttachments(c.env.DB,channel,id,did),payment_link:await correspondencePaymentLink(c.env.DB,channel,id,did)});
+    });
+    admin.get(stationeryPath+"/:did/attachments/:aid",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const file=await downloadCorrespondenceAttachment(c.env,channel,id,c.req.param("did")??"",c.req.param("aid")??"");
+      return file?c.json(file):c.json({detail:"Attachment not found"},404);
+    });
+    admin.post(stationeryPath+"/:did/attachments/:action",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",did=c.req.param("did")??"",action=c.req.param("action")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      if(!(await hitRateLimit(c.env.DB,"support-attachments:"+c.get("user").id,30,3600)).ok)return c.json({detail:"Attachment action limit reached."},429);
+      const b=await readJson(c);
+      c.header("Cache-Control","private, no-store");
+      if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(action==="upload"){const r=await uploadCorrespondenceAttachment(c.env,channel,id,did,b);return "error" in r?c.json({detail:r.error},409):c.json(r);}
+      if(action==="remove"){return await removeCorrespondenceAttachment(c.env,channel,id,did,b.attachment_id)?c.json({ok:true}):c.json({detail:"Attachment unavailable."},409);}
+      if(action==="payment-link"){return await saveCorrespondencePaymentLink(c.env.DB,channel,id,did,b)?c.json({ok:true}):c.json({detail:"Use a valid Square invoice or payment link on an unsent document."},409);}
+      return c.json({detail:"Unknown action"},404);
     });
     admin.post(stationeryPath+"/:action",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",action=c.req.param("action")??"",b=await readJson(c);
