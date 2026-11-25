@@ -1,3 +1,4 @@
+import {correspondenceAttachments,correspondencePaymentLink,loadCorrespondenceFiles} from "./supportCorrespondenceAttachments";
 import type {Env} from "./types";
 import type {Channel} from "./supportOrders";
 import {stationeryRecipient,stationeryBase64,stationeryFingerprint,stationeryEmailEnabled,sendStationery,needsServiceTerms,termsDeliveryApproved,type PreparedStationery} from "./supportStationery";
@@ -26,8 +27,12 @@ export async function deliverSavedStationery(e:Env,channel:Channel,id:string,did
  const now=new Date().toISOString();
  const claim=await e.DB.prepare("UPDATE support_stationery_documents SET status='sending',attempted_at=? WHERE channel=? AND request_id=? AND id=? AND status='saved'").bind(now,channel,id,did).run();
  if(!claim.meta?.changes)return {error:"Delivery already attempted."};
+ const ids=Array.isArray(b.attachment_ids)?b.attachment_ids:[];
+ const link=await correspondencePaymentLink(e.DB,channel,id,did);
+ const files=await loadCorrespondenceFiles(e,channel,id,did,ids);
+ if(!files||link!==(b.payment_link??null)){await e.DB.prepare("UPDATE support_stationery_documents SET status='saved',attempted_at=NULL WHERE id=? AND channel=? AND request_id=? AND status='sending'").bind(did,channel,id).run();return {error:"Attachments or payment link changed. Review the exact saved package again."};}
  // An uncertain provider response is never automatically retried.
- const sent=await sendStationery(e,{pdf:Uint8Array.from(atob(d.pdf_base64),c=>c.charCodeAt(0)),pages:d.pages,filename:d.filename,title:d.title,kind:d.kind,recipient:d.recipient,email_enabled:true,terms:d.terms_pdf_base64?{filename:"sidequest-learning-support-service-terms.pdf",pdf:Uint8Array.from(atob(d.terms_pdf_base64),c=>c.charCodeAt(0)),version:d.terms_version,pages:d.terms_pages}:undefined},b);
+ const sent=await sendStationery(e,{pdf:Uint8Array.from(atob(d.pdf_base64),c=>c.charCodeAt(0)),pages:d.pages,filename:d.filename,title:d.title,kind:d.kind,recipient:d.recipient,email_enabled:true,terms:d.terms_pdf_base64?{filename:"sidequest-learning-support-service-terms.pdf",pdf:Uint8Array.from(atob(d.terms_pdf_base64),c=>c.charCodeAt(0)),version:d.terms_version,pages:d.terms_pages}:undefined},b,{files,paymentLink:link});
  await e.DB.prepare("UPDATE support_stationery_documents SET status=?,sent_at=? WHERE channel=? AND request_id=? AND id=? AND status='sending'").bind(sent?"sent":"review",sent?new Date().toISOString():null,channel,id,did).run();
  return {ok:sent,email_notification_sent:sent};
 }
