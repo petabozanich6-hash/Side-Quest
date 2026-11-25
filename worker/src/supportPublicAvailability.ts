@@ -116,9 +116,9 @@ export function publicWindows(windows:Window[],busy:Busy[],now=new Date(),days=1
  }
  return result;
 }
-export async function readPublicAvailability(db:D1Database,now=new Date()){
+export async function readPublicAvailability(db:D1Database,now=new Date(),ownerPreview=false){
  const settings=await readAvailability(db);
- if(!settings.enabled)return {published:false,days:[],timezone:zone};
+ if(!settings.enabled&&!ownerPreview)return {published:false,days:[],timezone:zone};
  const from=now.toISOString(),to=new Date(now.getTime()+29*86400000).toISOString();
  const first=monday(dayKey(now.getTime())),last=shift(monday(shift(dayKey(now.getTime()),27)),7);
  // No names, reasons, IDs, offers, prices or private diary content leave this function.
@@ -129,6 +129,24 @@ export async function readPublicAvailability(db:D1Database,now=new Date()){
  ]);
  const all=[...(orders.results||[]),...(blocks.results||[])];if(all.length>1000||(reserved.results||[]).length>1000)throw Error("Diary range too large.");
  return {published:true,days:publicWindows(settings.windows,all,now,28,settings,reserved.results||[]),timezone:zone};
+}
+/** Private owner suggestions only. A suggestion does not reserve an appointment. */
+export async function suggestSupportStarts(db:D1Database,minutes:number,prep:number,wrap:number,now=new Date()){
+ if(![minutes,prep,wrap].every(Number.isInteger)||minutes<15||minutes>180||prep<0||prep>120||wrap<0||wrap>120)return null;
+ const availability=await readPublicAvailability(db,now,true);
+ const starts:string[]=[];
+ // At most one suggestion per morning/afternoon window, spread across dates.
+ for(const day of availability.days){
+  for(const w of day.windows){
+   const from=Date.parse(w.start),to=Date.parse(w.end);
+   const first=Math.ceil((from+prep*minute)/(15*minute))*15*minute;
+   if(first+(minutes+wrap)*minute>to||first-prep*minute<=now.getTime())continue;
+   const start=new Date(first).toISOString();
+   if(await permittedByBookingPolicy(db,{start,before:new Date(first-prep*minute).toISOString(),after:new Date(first+(minutes+wrap)*minute).toISOString()}))starts.push(start);
+   if(starts.length>=12)return starts;
+  }
+ }
+ return starts;
 }
 export function registerPublicAvailability(app:App){
  app.get("/api/support-availability",async c=>{
