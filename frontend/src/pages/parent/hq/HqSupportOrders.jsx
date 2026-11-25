@@ -6,10 +6,10 @@ import HqTutorDiary from "./HqTutorDiary";
 import HqSupportStationery from "./HqSupportStationery";
 import HqSlotOffers from "./HqSlotOffers";
 import HqSupportPackage from "./HqSupportPackage";
-export default function HqSupportOrders({id,guest,quotes,closed}){
+export default function HqSupportOrders({id,guest,quotes,closed,learnerLabel=""}){
  const path=(guest?"/support-guests/":"/feedback/")+encodeURIComponent(id)+"/orders";
- const [learner,setLearner]=useState(""),[prep,setPrep]=useState(10),[wrap,setWrap]=useState(10);
- const [orders,setOrders]=useState([]),[notice,setNotice]=useState(""),[quote,setQuote]=useState(""),[mode,setMode]=useState("written"),[start,setStart]=useState(""),[minutes,setMinutes]=useState("30"),[terms,setTerms]=useState(""),[agree,setAgree]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState("");
+ const [learner,setLearner]=useState(learnerLabel),[prep,setPrep]=useState(10),[wrap,setWrap]=useState(10);
+ const [orders,setOrders]=useState([]),[notice,setNotice]=useState(""),[quote,setQuote]=useState(""),[mode,setMode]=useState("written"),[start,setStart]=useState(""),[minutes,setMinutes]=useState("30"),[terms,setTerms]=useState("Payment is due by the agreed invoice deadline. Booking is confirmed after verified payment. Changes and cancellations are handled under the Learning Support Service Agreement."),[agree,setAgree]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState("");
  async function load(){try{const r=await adminApi.get(path);setOrders(r.orders);setError("");}catch(e){setError(errorText(e));}}
  useEffect(()=>{load();},[path]);
  async function run(fn){if(busy)return;setBusy(true);setError("");try{setNotice("");const r=await fn();if(r?.arrangements_email_sent!==undefined)setNotice(r.arrangements_email_sent?"Arrangements saved; the parent has been invited to confirm in their portal.":"Arrangements saved; email delivery not confirmed. Notify the parent separately.");if(r?.warning_email_sent!==undefined)setNotice(r.warning_email_sent?"Friendly payment warning sent. The time remains reserved.":"Warning delivery could not be confirmed; check correspondence before retrying.");if(r?.email_notification_sent!==undefined)setNotice(r.email_notification_sent?"Booking confirmed and notification emailed.":"Booking confirmed in the portal; email could not be sent. Notify the parent separately.");if(r?.cancellation_email_sent!==undefined)setNotice(r.cancellation_email_sent?"Reservation cancelled and parent notified.":"Reservation cancelled; email could not be confirmed. Notify the parent separately.");await load();}catch(e){setError(errorText(e));}finally{setBusy(false);}}
@@ -24,8 +24,8 @@ export default function HqSupportOrders({id,guest,quotes,closed}){
  {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqExternalResources orderPath={path+"/"+o.id}/>}
  {["paid","completed"].includes(o.status)&&!o.legacy_checkout&&<HqSupportBackup path={path+"/"+o.id} live={o.mode==="live"}/>}
  {o.status==="paid"&&<button type="button" className="underline text-sm" disabled={busy} onClick={()=>{if(window.confirm("Mark service delivered?"))run(()=>adminApi.post(path+"/"+o.id+"/complete",{confirmed:true}));}}>Mark completed</button>}</div>)}
- {!closed&&quotes.some(q=>["offered","interested"].includes(q.status))&&<HqSlotOffers path={path} quotes={quotes} onSaved={load}/>}
- {available.length>0&&!closed&&<HqSupportPackage path={path} quotes={available} onSaved={load}/>}
+ {!closed&&quotes.some(q=>["offered","interested"].includes(q.status))&&<HqSlotOffers path={path} quotes={quotes} onSaved={load} learnerLabel={learnerLabel}/>}
+ {available.length>0&&!closed&&<HqSupportPackage path={path} quotes={available} onSaved={load} learnerLabel={learnerLabel}/>}
  {available.length>0&&!closed&&<form className="space-y-2" onSubmit={e=>{e.preventDefault();run(()=>adminApi.post(path,{quote_id:quote,mode,start_at:mode==="live"?new Date(start).toISOString():null,minutes:Number(minutes),learner_label:learner,prep_minutes:mode==="live"?prep:0,wrap_minutes:mode==="live"?wrap:0,terms,confirmed:agree}));}}>
  <label className="text-sm block">Interested proposal<select required className={field} value={quote} onChange={e=>setQuote(e.target.value)}><option value="">Choose</option>{available.map(q=><option key={q.id} value={q.id}>AUD ${(q.amount_cents/100).toFixed(2)} · {q.scope.slice(0,60)}</option>)}</select></label>
  <label className="text-sm block">Learner nickname / initials (private)<input required maxLength={80} className={field} value={learner} onChange={e=>setLearner(e.target.value)}/></label>
