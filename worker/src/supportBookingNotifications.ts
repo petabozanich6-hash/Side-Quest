@@ -1,6 +1,5 @@
 import type {Env} from "./types";
 import {getOrder,type Channel} from "./supportOrders";
-import {stationeryRecipient} from "./supportStationery";
 import {sendEmail,layout,p,esc,button} from "./email";
 const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:"long",day:"numeric",month:"long",year:"numeric",hour:"numeric",minute:"2-digit"});
 const clock=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",hour:"numeric",minute:"2-digit"});
@@ -15,11 +14,11 @@ export async function bookingDetails(db:D1Database,channel:Channel,id:string,oid
  return {order,appointments,invoice,lines};
 }
 export async function sendBookingConfirmation(e:Env,channel:Channel,id:string,oid:string,portal:string|null,now=new Date()){
- const details=await bookingDetails(e.DB,channel,id,oid),recipient=await stationeryRecipient(e.DB,channel,id);
+ const details=await bookingDetails(e.DB,channel,id,oid),recipient=await e.DB.prepare(channel==="guest"?"SELECT email FROM support_guest_requests WHERE id=?":"SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
  if(!details||!recipient?.email||!portal||details.order.status!=="paid"||!details.invoice?.verified_at||details.order.package_sequence>1&&!details.order.installment_due_at||details.appointments.some(a=>a.status!=="paid"))return false;
  const subject="Side-Quest Learning Support: booking confirmed";
  const lines=details.lines.length?details.lines:["Your agreed written learning support is confirmed."];
- const body="Thank you. Your payment has been verified and your booking is confirmed.\n\n"+lines.join("\n")+"\n\nInvoice: "+details.invoice.reference+"\nAmount verified: "+money(details.order.amount_cents)+" AUD\n\nReview your arrangements in your private portal: "+portal+"\nIf you need to change an appointment, please contact Side-Quest.";
+ const body="Thank you. Your payment has been verified and your booking is confirmed.\n\n"+lines.join("\n")+"\n\nInvoice: "+details.invoice.reference+"\nAmount verified: "+money(details.order.amount_cents/100)+" AUD\n\nReview your arrangements in your private portal: "+portal+"\nIf you need to change an appointment, please contact Side-Quest.";
  const at=now.toISOString();
  const claim=await e.DB.prepare("INSERT OR IGNORE INTO support_booking_notifications(order_id,channel,request_id,recipient,subject,body_text,status,attempted_at) SELECT id,channel,request_id,?,?,?,'sending',? FROM support_service_orders WHERE id=? AND channel=? AND request_id=? AND status='paid' AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=support_service_orders.id AND c.status='pending')").bind(recipient.email,subject,body,at,oid,channel,id).run();
  if(!claim.meta?.changes)return false;
