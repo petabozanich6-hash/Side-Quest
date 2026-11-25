@@ -40,7 +40,7 @@ test("legacy claims require two matching identities and explicit consent, preser
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_guest_requests").get().n,3);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_guest_sessions").get().n,3,"legacy sessions remain valid during reversible read-only pilot");
 });
-test("expired proof, ambiguous addresses, changed email and suspended family fail closed",async t=>{
+test("expired proof, changed email and suspended family fail closed",async t=>{
  const {db,actors:[one,two]}=await fixture(t);
  const a="1".repeat(64),b="2".repeat(64);
  db.raw.prepare("UPDATE support_guest_sessions SET expires_at=? WHERE email=?").run("2000-01-01T00:00:00.000Z","parent1@example.com");
@@ -53,4 +53,13 @@ test("expired proof, ambiguous addresses, changed email and suspended family fai
  db.raw.prepare("INSERT INTO family_admin_state(family_id,status,auth_version,updated_at) VALUES(?,'suspended',1,?)").run("f2",now);
  assert.equal(await readFamilyClaim(db,two),null);
  assert.equal(await linkedLegacyRequest(db,two,"r2"),null);
+});
+
+test("a second parent in the same canonical family does not inherit the original claimant's records",async t=>{
+ const {db,actors:[one]}=await fixture(t);
+ const a="1".repeat(64);assert.equal(await claimLegacyFamily(db,one,a,true),true);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES(?,?,?,?,0,?,?)").run("u4","f1","second-parent@example.com","Other parent",now,now);
+ const other={id:"u4",family_id:"f1",role:"parent",name:"Other parent"};
+ assert.equal(await readFamilyClaim(db,other),null);assert.deepEqual(await linkedLegacyRequests(db,other),[]);assert.equal(await linkedLegacyRequest(db,other,"r1"),null);
+ assert.equal(await claimLegacyFamily(db,other,a,true),false);
 });
