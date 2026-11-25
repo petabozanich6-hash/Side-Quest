@@ -40,6 +40,7 @@ import { listOrders,getOrder,hasOrder,createServiceOrder,cancelUnstartedOrder,co
 import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { classroomEnabled,classroomState,setClassroomOpen,editClassroom } from "./supportClassrooms";
 import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
+import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import { ensureOrderSchema } from "./supportOrders";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
@@ -644,6 +645,25 @@ export function createAdminRoutes() {
     return c.json({ok:true});
   });
 
+  admin.get("/support-decks",requirePermission("customers.read"),async c=>c.json({decks:await findDecks(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI}));
+  admin.post("/support-decks/draft",requirePermission("customers.read"),async c=>{
+    const r=await draftDeck(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.get("/support-decks/:deckId",requirePermission("customers.read"),async c=>{
+    const d=await getDeck(c.env.DB,c.req.param("deckId"));return d&&d.status!=="archived"?c.json({deck:d}):c.json({detail:"Resource not found"},404);
+  });
+  admin.post("/support-decks",requirePermission("customers.read"),async c=>{
+    const r=await saveDeck(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.deck.create",targetType:"support_deck",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.put("/support-decks/:deckId",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("deckId"),r=await saveDeck(c.env.DB,await readJson(c),id);if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.deck.update",targetType:"support_deck",targetId:id,detail:{}});return c.json(r);
+  });
+  admin.post("/support-decks/:deckId/archive",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("deckId"),b=await readJson(c);if(b.confirmed!==true||!await archiveDeck(c.env.DB,id,b.revision))return c.json({detail:"Resource changed; refresh before archiving."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.deck.archive",targetType:"support_deck",targetId:id,detail:{}});return c.json({ok:true});
+  });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
     const from=c.req.query("from")||"",to=c.req.query("to")||"";

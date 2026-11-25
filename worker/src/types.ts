@@ -40,6 +40,8 @@ export type Env = {
   SUPPORT_GUEST_ORIGIN?: string;
   /** Teaching board pilot, disabled until staging verifies access and safety. */
   SUPPORT_CLASSROOM_ENABLED?: string;
+  /** Opt-in owner AI slide drafting, subject to existing cost limits. */
+  SUPPORT_RESOURCE_AI?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;

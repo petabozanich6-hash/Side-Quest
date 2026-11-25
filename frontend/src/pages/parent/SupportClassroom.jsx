@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useRef,useCallback} from "react";
 import SupportVideoPanel from "./SupportVideoPanel";
+import SupportPresentation,{SlideDisplay} from "./SupportPresentation";
 const colors=["#163b2c","#2563eb","#b91c1c","#111827"];
 const button="rounded-lg border border-stone-300 px-3 py-2 text-sm font-semibold disabled:opacity-50";
 const line=p=>p.map(([x,y])=>(x*800)+","+(y*450)).join(" ");
@@ -20,7 +21,7 @@ export default function SupportClassroom({path,client,owner=false,onExit}){
  {room&&<p role="status" className="text-sm font-semibold">{room.open?"Classroom open":room.in_window?"Waiting for the tutor to open the classroom":"Classroom available ten minutes before the appointment"}</p>}
  {owner&&room?.in_window&&<button type="button" className={button} disabled={busy} onClick={()=>send({action:room.open?"close":"open",confirmed:true})}>{room.open?"Close classroom":"Open classroom"}</button>}
  {room?.open&&room.video_enabled&&<SupportVideoPanel key={path} path={path} client={client} owner={owner} open={room.open}/>}
- {room?.open&&<><div className="whitespace-pre-wrap break-words bg-stone-100 rounded-lg p-3 text-sm">{room.board.text||"Tutor notes will appear here."}</div>
+ {room?.open&&<><SlideDisplay slide={room.board.slide}/>{owner&&<SupportPresentation send={send} busy={busy}/>}<div className="whitespace-pre-wrap break-words bg-stone-100 rounded-lg p-3 text-sm">{room.board.text||"Tutor notes will appear here."}</div>
  {owner&&<form className="space-y-2" onSubmit={e=>{e.preventDefault();send({action:"text",text});}}><label className="block text-sm">Teaching notes<textarea value={text} maxLength={2000} onChange={e=>setText(e.target.value)} className="block w-full border rounded-lg p-2"/></label><button type="submit" className={button} disabled={busy}>Share notes</button><button type="button" className={button+" ml-2"} onClick={()=>setText(room.board.text)}>Load current notes</button></form>}
  <div className="flex gap-2 flex-wrap">{colors.map(c=><button type="button" key={c} aria-label={"Pen "+c} aria-pressed={color===c} style={{background:c}} className={"w-10 h-10 rounded-full "+(color===c?"ring-2 ring-offset-2 ring-stone-900":"")} onClick={()=>setColor(c)}/>)}{owner&&<button type="button" className={button} disabled={busy} onClick={()=>{if(window.confirm("Clear the shared board and notes?"))send({action:"clear",confirmed:true});}}>Clear board</button>}</div>
  <svg viewBox="0 0 800 450" className="w-full border border-stone-300 rounded-lg bg-white touch-none" role="img" aria-label="Shared drawing board" onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={()=>{pointer.current=null;setDraft([]);}}>

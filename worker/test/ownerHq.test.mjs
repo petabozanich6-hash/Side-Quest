@@ -994,3 +994,26 @@ test("RealtimeKit staging-only room setup, token windows and cleanup with mocked
  assert.equal(calls.at(-2).b.status,"INACTIVE");assert.ok(calls.at(-1).url.endsWith("/kick-all"));
  assert.ok((await videoToken(env,"guest",id,oid,false,fake,now)).error);
 });
+
+test("reusable tutor decks: review required, version conflict, private notes never shared",async()=>{
+ const {h,owner}=await ownerSetup(),alice=await h.register("deck-alice@example.com","Alice");
+ const {saveDeck,getDeck}=await import("../src/supportDecks.ts");
+ const {setClassroomOpen,editClassroom,classroomState}=await import("../src/supportClassrooms.ts");
+ const deck={title:"Fractions",subject:"Mathematics",year_level:"Year 5",slides:[{kind:"practice",heading:"Try it",body:"What is half of 8?",notes:"Private answer: 4."}]};
+ assert.equal((await h.req("/admin/support-decks",{token:alice.token})).status,404);
+ await stepUp(h,owner);
+ const d=await h.req("/admin/support-decks",{method:"POST",token:owner.token,body:deck});assert.equal(d.status,201,JSON.stringify(d.json));
+ const id=d.json.id,now=new Date(),oid="deck-order";
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest","deck-request","deck-quote",0,"Maths support","Online","Agreed terms","live",now.toISOString(),new Date(now.getTime()+30*60000).toISOString(),"paid",now.toISOString(),now.toISOString());
+ await setClassroomOpen(h.db,"guest","deck-request",oid,true,now);
+ const present={action:"present",deck_id:id,deck_revision:1,index:0,revision:0};
+ assert.ok((await editClassroom(h.db,"guest","deck-request",oid,true,present,now)).error);
+ assert.ok((await saveDeck(h.db,{...deck,reviewed:true,revision:1},id)).id);
+ assert.ok((await saveDeck(h.db,{...deck,reviewed:true,revision:1},id)).error);
+ assert.ok((await editClassroom(h.db,"guest","deck-request",oid,false,{...present,deck_revision:2},now)).error);
+ assert.equal((await editClassroom(h.db,"guest","deck-request",oid,true,{...present,deck_revision:2},now)).ok,true);
+ const state=await classroomState(h.db,"guest","deck-request",oid,false,now);
+ assert.equal(state.board.slide.body,"What is half of 8?");
+ assert.equal(JSON.stringify(state).includes("Private answer"),false);
+ assert.equal((await getDeck(h.db,id)).slides[0].notes,"Private answer: 4.");
+});

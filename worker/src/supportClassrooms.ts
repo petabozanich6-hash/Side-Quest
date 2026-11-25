@@ -1,9 +1,10 @@
 import type {Env} from "./types";
 import {getOrder,type Channel} from "./supportOrders";
+import {getDeck} from "./supportDecks";
 const SQL="CREATE TABLE IF NOT EXISTS support_classrooms (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, is_open INTEGER NOT NULL DEFAULT 0 CHECK(is_open IN (0,1)), revision INTEGER NOT NULL DEFAULT 0, board_json TEXT NOT NULL DEFAULT '{\"text\":\"\",\"strokes\":[]}', updated_at TEXT NOT NULL)";
 export const classroomEnabled=(env:Env)=>env.SUPPORT_CLASSROOM_ENABLED==="true";
 export async function ensureClassrooms(db:D1Database){await db.prepare(SQL).run();}
-const empty=()=>({text:"",strokes:[] as any[]});
+const empty=()=>({text:"",strokes:[] as any[],slide:null as any});
 export async function classroomState(db:D1Database,channel:Channel,id:string,oid:string,owner:boolean,now=new Date()){
  const order=await getOrder(db,channel,id,oid);
  if(!order||order.mode!=="live"||order.status!=="paid"||order.legacy_checkout||order.checkout_started_at||!order.start_at||!order.end_at)return null;
@@ -35,6 +36,13 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   board.strokes.push({points:points.map(p=>p.map(n=>Math.round(n*10000)/10000)),color});
  }else if(b.action==="text"&&owner&&typeof b.text==="string"&&b.text.length<=2000)board.text=b.text;
  else if(b.action==="clear"&&owner&&b.confirmed===true){board.strokes=[];board.text="";}
+ else if(b.action==="hide-slide"&&owner)board.slide=null;
+ else if(b.action==="present"&&owner&&typeof b.deck_id==="string"&&typeof b.index==="number"&&Number.isInteger(b.index)){
+  const deck=await getDeck(db,b.deck_id);
+  if(!deck||deck.status!=="reviewed"||deck.revision!==b.deck_revision||b.index<0||b.index>=deck.slides.length)return {error:"Only current, reviewed resources can be presented."};
+  const s=deck.slides[b.index];
+  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length};
+ }
  else return {error:"This board action is not available."};
  const json=JSON.stringify(board);if(json.length>220000)return {error:"Board is full."};
  const r=await db.prepare("UPDATE support_classrooms SET board_json=?,revision=revision+1,updated_at=? WHERE order_id=? AND revision=? AND is_open=1 AND EXISTS(SELECT 1 FROM support_service_orders o WHERE o.id=support_classrooms.order_id AND o.channel=? AND o.request_id=? AND o.status='paid' AND o.checkout_started_at IS NULL)").bind(json,now.toISOString(),oid,state.revision,channel,id).run();
