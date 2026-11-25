@@ -2,6 +2,7 @@ import type {Env} from "./types";
 import type {Channel} from "./supportOrders";
 import type {Fetch} from "./square";
 import {previewSupportInvoice} from "./supportSquareInvoicePreview";
+import {supportInvoiceLookupAvailable} from "./supportSquareInvoiceLookup";
 
 // Local preparation only. Do not add provider writes until all competing payment
 // paths are guarded and uncertain provider responses can be reconciled safely.
@@ -45,4 +46,36 @@ export async function prepareSupportInvoiceIntent(
  if(!row||row.fingerprint!==p.fingerprint||row.state!=="prepared")
   return {error:"A changed or existing invoice intent requires owner review; nothing was issued."};
  return {prepared:true,order_id:orderId,fingerprint:p.fingerprint,state:row.state,provider_created:false};
+}
+
+// Only a never-submitted local preparation may be discarded. A future provider
+// operation MUST claim order_pending atomically before any network write.
+// This helper is not exposed to a route until the owner workflow is reviewed.
+export async function releasePreparedSupportInvoiceIntent(
+ env:Env,channel:Channel,requestId:string,orderId:string,ownerId:string,
+ body:unknown,now=new Date()
+){
+ const b=body as Record<string,unknown>|null;
+ if(!supportInvoiceLookupAvailable(env)||!ownerId||!b||b.confirmed!==true||
+    typeof b.fingerprint!=="string"||!(/^[a-f0-9]{64}$/).test(b.fingerprint))
+  return {error:"Explicitly approve the release of the exact local sandbox preparation."};
+ const auditId=crypto.randomUUID(),stamp=now.toISOString();
+ const result=await env.DB.batch([
+  env.DB.prepare(`INSERT INTO support_square_invoice_intent_releases(id,order_id,fingerprint,released_by,released_at)
+   SELECT ?,i.order_id,i.fingerprint,?,? FROM support_square_invoice_intents i
+   JOIN support_service_orders s ON s.id=i.order_id
+   WHERE i.order_id=? AND i.fingerprint=? AND s.channel=? AND s.request_id=?
+   AND i.state='prepared' AND i.provider_order_id IS NULL AND i.provider_invoice_id IS NULL
+   AND i.provider_invoice_version IS NULL AND s.checkout_started_at IS NULL AND s.square_order_id IS NULL
+   AND NOT EXISTS(SELECT 1 FROM support_manual_invoices m WHERE m.order_id=s.id)`)
+   .bind(auditId,ownerId,stamp,orderId,b.fingerprint,channel,requestId),
+  env.DB.prepare(`DELETE FROM support_square_invoice_intents
+   WHERE order_id=? AND fingerprint=? AND state='prepared'
+   AND provider_order_id IS NULL AND provider_invoice_id IS NULL AND provider_invoice_version IS NULL
+   AND EXISTS(SELECT 1 FROM support_square_invoice_intent_releases WHERE id=? AND order_id=? AND fingerprint=?)`)
+   .bind(orderId,b.fingerprint,auditId,orderId,b.fingerprint)
+ ]);
+ return result[0]?.meta?.changes===1&&result[1]?.meta?.changes===1
+  ?{released:true,provider_changed:false}
+  :{error:"This invoice intent cannot be discarded locally. Review and reconcile it first."};
 }
