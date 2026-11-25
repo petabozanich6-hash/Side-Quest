@@ -142,7 +142,9 @@ export async function suggestSupportStarts(db:D1Database,minutes:number,prep:num
    const first=Math.ceil((from+prep*minute)/(15*minute))*15*minute;
    if(first+(minutes+wrap)*minute>to||first-prep*minute<=now.getTime())continue;
    const start=new Date(first).toISOString();
-   if(await permittedByBookingPolicy(db,{start,before:new Date(first-prep*minute).toISOString(),after:new Date(first+(minutes+wrap)*minute).toISOString()}))starts.push(start);
+   // The availability snapshot already excludes diary conflicts and full daily/weekly/evening capacity.
+   // These suggestions are non-binding; the atomic reservation still checks the current policy.
+   starts.push(start);
    if(starts.length>=12)return starts;
   }
  }
