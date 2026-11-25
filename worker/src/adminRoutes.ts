@@ -822,13 +822,22 @@ export function createAdminRoutes() {
         const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. If classroom access is enabled, open your live appointment in the portal during the session window.")+button("View arrangements",url),reason:"This is a service notification."})});
         return c.json({ok:true,email_notification_sent:sent});
       }
+      const cancellationNotice=async()=>{
+        // A cancellation is already durable. Email failure must not undo it or misreport the reservation.
+        try{
+          const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
+          const origin=guestOrigin(c.env);if(!origin||!recipient?.email)return false;
+          const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
+          return await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: reservation cancelled",text:"An unpaid reservation has been cancelled and the time released. Please review your arrangements in your private portal. Any separately paid lessons are unaffected. Contact Side-Quest if you believe payment was already made. "+url,html:layout({preheader:"An unpaid reservation has been released.",kicker:"Learning Support",heading:"Reservation cancelled",body:p("An unpaid reservation has been released. Review your arrangements in your private portal. Separately paid lessons are unaffected. Contact Side-Quest if you believe you have already paid.")+button("View arrangements",url),reason:"This is a service notification."})});
+        }catch{return false;}
+      };
       if(action==="cancel-invoice"){
         if(!await cancelManualInvoiceOrder(c.env.DB,channel,id,oid,b))return c.json({detail:"Only a confirmed unpaid order with a cancelled Square invoice can be released."},409);
-        await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true});
+        await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true,cancellation_email_sent:await cancellationNotice()});
       }
       const ok=action==="cancel"?await cancelUnstartedOrder(c.env.DB,channel,id,oid,b.checked_square===true):action==="complete"?await completeOrder(c.env.DB,channel,id,oid):false;
       if(!ok)return c.json({detail:"Action unavailable. Orders with an initiated Square checkout require reconciliation before cancellation."},409);
-      await writeAudit(c.env.DB,{...actor(c),action:"support."+action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true});
+      await writeAudit(c.env.DB,{...actor(c),action:"support."+action,targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json(action==="cancel"?{ok:true,cancellation_email_sent:await cancellationNotice()}:{ok:true});
     });
   }
   registerDocumentStudio(admin, requirePermission);
