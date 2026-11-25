@@ -19,3 +19,5 @@ AI phase: opt-in scheduled lesson-set writer, existing five-minute cron, no new 
 
 
 Learning Support proposals: additive migration 0075 (also idempotently ensured on quote routes). Owner proposes scope, delivery details, AUD total and validity; only submitting parent can express interest or decline, including expired preview accounts. Single open immutable proposal, explicit withdrawal before replacement. No contract acceptance, payment, booking or membership change. Owner inbox is marked unread on parent response; parent receives in-app notification on issue. Email delivery of new proposals is not yet implemented. Paid services remain subject to confirmed policies and staging. Backup and apply migration explicitly before production (no destructive SQL).
+
+Quote history is batched into the private Learning Support list response; individual refresh remains available. Migration 0075 supersedes earlier zero-migration release notes.

@@ -863,6 +863,7 @@ test("learning support quote lifecycle: owner-only, private, expiry, non-member 
  assert.ok([401,403,404].includes((await h.req(pp,{admin:false,token:child.token})).status));
  h.db.raw.prepare("UPDATE families SET plan='PREVIEW_EXPIRED' WHERE id=?").run(alice.familyId);
  let r=await h.req(pp,{admin:false,token:alice.token});assert.equal(r.status,200);assert.equal(r.json.quotes[0].amount_cents,1500);
+ const history=await h.req("/feedback?kind=learning-support",{admin:false,token:alice.token});assert.equal(history.json.reports.find(x=>x.id===id).quotes[0].amount_cents,1500);
  const response=pp+"/"+made.json.id+"/respond";
  assert.equal((await h.req(response,{method:"POST",admin:false,token:bob.token,body:{response:"interested",confirmed:true}})).status,404);
  assert.equal((await h.req(response,{method:"POST",admin:false,token:alice.token,body:{response:"interested",confirmed:false}})).status,400);

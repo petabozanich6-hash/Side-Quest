@@ -105,6 +105,20 @@ export function registerFeedback(app: App, guards: Guards) {
       }
     }
     c.header("Cache-Control", "no-store");
+    if(supportOnly){
+      // One scoped lookup for the entire request history, rather than one request per card.
+      const quoteMap:Record<string,any[]>={};
+      try{
+        await ensureQuoteSchema(c.env.DB);
+        const ids=reports.map(r=>r.id);
+        if(ids.length){
+          const {results}=await c.env.DB.prepare("SELECT q.id,q.feedback_id,q.scope,q.delivery,q.amount_cents,q.currency,q.status,q.created_at,q.expires_at,q.responded_at,q.withdrawn_at FROM learning_support_quotes q JOIN parent_feedback p ON p.id=q.feedback_id WHERE p.family_id=? AND p.user_id=? AND p.page_hint='learning-support' AND q.feedback_id IN ("+ids.map(()=>"?").join(",")+") ORDER BY q.created_at DESC,q.id DESC LIMIT 5000").bind(c.get("user").family_id,c.get("user").id,...ids).all<any>();
+          const now=nowIso();
+          for(const row of results||[]){const {feedback_id,...q}=row;(quoteMap[feedback_id] ||= []).push({...q,status:q.status==="offered"&&q.expires_at<=now?"expired":q.status});}
+        }
+        return c.json({reports:reports.map(r=>({...r,quotes:quoteMap[r.id]||[]}))});
+      }catch{return c.json({reports,quotes_unavailable:true});}
+    }
     return c.json({ reports });
   });
 
