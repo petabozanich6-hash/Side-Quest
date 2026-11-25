@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {listStationery,saveStationery,downloadStationery,deliverSavedStationery} from "../src/supportStationeryHistory.ts";
+import {listStationery,saveStationery,downloadStationery,deliverSavedStationery,lessonReportQueue} from "../src/supportStationeryHistory.ts";
 import {buildStationeryPdf,validateStationery,stationeryEmailEnabled,sendStationery,prepareStationery,stationeryFingerprint} from "../src/supportStationery.ts";
 const date="25 November 2026";
 test("branded A4 stationery has stable parent-facing content and a valid cross-reference table",()=>{
@@ -112,4 +112,16 @@ test("session report uses only explicit parent-facing fields, never private diar
  assert.ok(!pdf.includes("UNATTEMPTED"));
  db.raw.prepare("UPDATE support_lesson_progress SET checkpoints_json=? WHERE order_id=?").run(JSON.stringify(points.map(p=>({...p,status:"not_started"}))),"report-order");
  assert.ok("error" in await prepareStationery(env,"guest","report-a","report-order",{from_session_diary:true}));
+});
+
+test("end-of-day queue distinguishes observed and unobserved lessons and saved reports",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const at="2026-01-01T00:00:00.000Z",end="2026-01-01T01:00:00.000Z";
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("queue","parent@example.test","Parent","Support","Request",at,at);
+ for(const id of ["observed","unobserved","future"])db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(id,"guest","queue",id+"-quote",3000,"Learning","Online","Terms","live",at,id==="future"?"2027-01-01T00:00:00.000Z":end,"paid",at,at);
+ const now=new Date("2026-11-25T00:00:00Z");
+ for(const id of ["observed","unobserved"])db.raw.prepare("INSERT INTO support_lesson_progress(order_id,checkpoints_json,updated_at) VALUES(?,?,?)").run(id,JSON.stringify([{id:"a",label:"Compare fractions",home:"Fold paper",status:id==="observed"?"supported":"not_started",observed_at:at}]),at);
+ let q=await lessonReportQueue(db,now);assert.equal(q.items.length,2);assert.equal(q.items.find(x=>x.id==="observed").report_status,"needs_review");assert.equal(q.items.find(x=>x.id==="unobserved").report_status,"no_progress");assert.ok(!JSON.stringify(q).includes("Compare fractions"));
+ const doc=await prepareStationery({DB:db},"guest","queue","observed",{from_session_diary:true});assert.ok(!("error" in doc),doc.error);
+ await saveStationery(db,"guest","queue","observed",doc,{reviewed:true,recipient_confirmed:doc.recipient,fingerprint:await stationeryFingerprint(doc)});
+ q=await lessonReportQueue(db,now);assert.equal(q.items.find(x=>x.id==="observed").report_status,"saved");
 });
