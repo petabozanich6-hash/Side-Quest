@@ -5,6 +5,7 @@ import {sendEmail,layout,p,esc,SUPPORT_EMAIL,SITE_URL} from "./email";
 // Parent-facing content is entered separately; never import the private tutor diary.
 export const STATIONERY={
  letter:{title:"Parent correspondence",fields:["Message"]},
+ proposal:{title:"Learning support proposal",fields:["What we understand","Suggested support","Proposed arrangements and fees","Next steps"]},
  progress:{title:"Learning progress report",fields:["Learning focus","Progress and strengths","Areas to practise","Recommended next steps"]},
  summary:{title:"Session summary",fields:["What we worked on","What went well","Follow-up activities"]},
  plan:{title:"Personalised learning plan",fields:["Learning goals","Learning approach","Activities and resources","Review and next steps"]},
