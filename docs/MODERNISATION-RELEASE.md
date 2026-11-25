@@ -11,3 +11,5 @@ Release gate:
 Limitations: Learning Support is enquiry intake/manual quotations, not paid checkout/automatic bookings. WWCC/safeguarding/insurance and service terms must be confirmed before live tutoring. Future work: background AI generation, query plans/indexes, accessibility and further measured performance improvements.
 
 Student UX: distinguish API failure from genuinely empty work, provide retry and reconnect refresh, flag unavailable calendar dates, accessible week navigation and correct waiting-for-help states. No offline storage, entitlement or lesson format changes. Added retry regression test.
+
+Student dashboard batches legacy lesson reads with a family/shared scope and preserves snapshots and child-safe filtering. Added open legacy assignment privacy regression. No changes to assignment limits or offline cache formats.

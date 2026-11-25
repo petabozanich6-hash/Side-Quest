@@ -120,10 +120,28 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
     if (u.role !== "child") return c.json({ detail: "Child access required" }, 403);
     const db = c.env.DB;
     const { results: pending } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision','needs_more_practice') ORDER BY CASE WHEN status IN ('needs_revision','needs_more_practice','in_progress','awaiting_help','opened') THEN 0 ELSE 1 END, created_at DESC LIMIT 200"
-    ).bind(u.id).all<any>();
+      "SELECT * FROM assignments WHERE student_id = ? AND family_id = ? AND status IN ('not_started','opened','in_progress','awaiting_help','needs_revision','needs_more_practice') ORDER BY CASE WHEN status IN ('needs_revision','needs_more_practice','in_progress','awaiting_help','opened') THEN 0 ELSE 1 END, created_at DESC LIMIT 200"
+    ).bind(u.id,u.family_id).all<any>();
+    const { results: fb } = await db.prepare(
+      "SELECT * FROM submissions WHERE student_id = ? AND family_id = ? AND parent_feedback IS NOT NULL ORDER BY reviewed_at DESC LIMIT 5"
+    ).bind(u.id,u.family_id).all<any>();
+    const { results: doneRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND family_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id,u.family_id).all<any>();
+    const { results: waitRows } = await db.prepare(
+      "SELECT * FROM assignments WHERE student_id = ? AND family_id = ? AND status = 'submitted' ORDER BY updated_at DESC LIMIT 20"
+    ).bind(u.id,u.family_id).all<any>();
+    // Fetch only the family or shared lessons needed by these assignments. Bounded
+    // batches stay below D1's bound-parameter limit and avoid a query per legacy row.
+    const lessonIds: string[] = [...new Set<string>([...pending,...doneRows,...waitRows].filter(a=>!a.lesson_snapshot).map(a=>String(a.lesson_id||"")).concat(fb.map(f=>String(f.lesson_id||""))).filter(Boolean))];
+    const liveLessons = new Map<string, any>();
+    for (let i=0;i<lessonIds.length;i+=80) {
+      const ids=lessonIds.slice(i,i+80);
+      const {results}=await db.prepare("SELECT * FROM lessons WHERE (family_id=? OR family_id IS NULL) AND id IN ("+ids.map(()=>"?").join(",")+")").bind(u.family_id,...ids).all<any>();
+      for(const row of results||[])liveLessons.set(row.id,row);
+    }
     for (const a of pending) {
-      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const live = a.lesson_snapshot ? null : (liveLessons.get(a.lesson_id) || null);
       a.lesson = lb.childSafeLesson(lb.assignmentLesson(a, live));
       // Give the dashboard the *last visited step*, never the child's answers.
       // This is a position indicator, not a claim that all earlier work is completed.
@@ -141,13 +159,10 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       }
       delete a.lesson_snapshot;
     }
-    const { results: fb } = await db.prepare(
-      "SELECT * FROM submissions WHERE student_id = ? AND parent_feedback IS NOT NULL ORDER BY reviewed_at DESC LIMIT 5"
-    ).bind(u.id).all<any>();
     const feedback = [];
     for (const f of fb) {
       const o: any = subOut(f);
-      o.lesson = lb.childSafeLesson(lessonSummary(await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(f.lesson_id).first()));
+      o.lesson = lb.childSafeLesson(lessonSummary(liveLessons.get(f.lesson_id) || null));
       feedback.push(o);
     }
     const { results: ch } = await db.prepare(
@@ -157,21 +172,15 @@ export function registerCore(app: App, auth: MiddlewareHandler, parent: Middlewa
       // No "notes": those are the parent's private notes about the child (child-login strips them too).
       "SELECT id, family_id, name, username, birth_year, stage, year_level, theme, interests, created_at, extra FROM students WHERE id = ?"
     ).bind(u.id).first<any>();
-    const { results: doneRows } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status IN ('accepted','demonstrated','completed') ORDER BY updated_at DESC LIMIT 20"
-    ).bind(u.id).all<any>();
     const completed = [];
     for (const a of doneRows) {
-      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const live = a.lesson_snapshot ? null : (liveLessons.get(a.lesson_id) || null);
       const l: any = lb.childSafeLesson(lb.assignmentLesson(a, live)) || {};
       completed.push({ id: a.id, status: a.status, updated_at: a.updated_at, lesson: { title: l.title, learning_area: l.learning_area } });
     }
-    const { results: waitRows } = await db.prepare(
-      "SELECT * FROM assignments WHERE student_id = ? AND status = 'submitted' ORDER BY updated_at DESC LIMIT 20"
-    ).bind(u.id).all<any>();
     const waiting = [];
     for (const a of waitRows) {
-      const live = a.lesson_snapshot ? null : await db.prepare("SELECT * FROM lessons WHERE id = ?").bind(a.lesson_id).first();
+      const live = a.lesson_snapshot ? null : (liveLessons.get(a.lesson_id) || null);
       const l: any = lb.assignmentLesson(a, live) || {};
       waiting.push({ id: a.id, lesson: { title: l.title, learning_area: l.learning_area } });
     }

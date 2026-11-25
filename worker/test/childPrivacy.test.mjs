@@ -59,9 +59,11 @@ test("child routes never expose parent notes, answer keys or quiz answers", asyn
     }
   };
 
+  h.db.raw.prepare("INSERT INTO assignments (id, family_id, student_id, lesson_id, status, created_at) VALUES ('A2', ?, ?, 'L1', 'in_progress', ?)").run(fid,sid,now);
   const dash = await h.req("/dashboard/child", { token: child });
   assert.equal(dash.status, 200, JSON.stringify(dash.json));
   leaks("dashboard", dash.json);
+  assert.equal(dash.json.all_pending.find(a=>a.id==="A2")?.lesson?.title,"Adding");
 
   const me = await h.req(`/students/${sid}`, { token: child });
   assert.equal(me.status, 200, JSON.stringify(me.json));
