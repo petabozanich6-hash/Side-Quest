@@ -1,4 +1,5 @@
 import {readEnglishMaterials,downloadEnglishFile} from "./englishClubMaterials";
+import {portalEnquiryOwner,portalEnquirySchemaExists,portalRequestIdentity} from "./unifiedPortalRequestAccess";
 import {englishVideoState,englishVideoToken} from "./englishClubVideo";
 import {ENGLISH_CLUB_SERVICE,ENGLISH_CLUB_PREFIX,parentEnglishClasses} from "./englishClub";
 import type {App,Env} from "./types";
@@ -63,7 +64,12 @@ export async function guestNotify(env:Env,email:string,owner=false,reference?:st
    const f=await env.DB.prepare("SELECT f.id FROM support_guest_families f JOIN support_guest_requests r ON r.email=f.email WHERE r.id=?").bind(reference).first<{id:string}>();
    if(f)url+="?family="+encodeURIComponent(f.id)+"&enquiry="+encodeURIComponent(reference);
   }
-  if(!owner){
+  const canonical=!owner&&reference?await portalEnquiryOwner(env.DB,reference):null;
+  if(canonical){
+   const recipient=await env.DB.prepare("SELECT u.email FROM support_portal_enquiries a JOIN users u ON u.id=a.parent_user_id AND u.family_id=a.family_id WHERE a.request_id=? AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>\u0027\u0027").bind(reference).first<{email:string}>();
+   if(!recipient||recipient.email!==email)return false;
+   url=origin+"/family-portal?page=requests&source=portal&request="+encodeURIComponent(reference!);
+  }else if(!owner){
    // Recipient is the stored verified parent address supplied by an authorised service action.
    // A one-use notification link avoids asking the parent to request a second email.
    const token=random();tokenHash=await digest(token);
@@ -73,7 +79,7 @@ export async function guestNotify(env:Env,email:string,owner=false,reference?:st
    url+="#token="+token;
   }
   const guidance=owner?"Review the activity in Owner HQ.":event==="proposal"?"Review your proposal and respond in your private portal.":event==="message"?"Read your reply in your private portal.":event==="appointment"?"Choose a suitable appointment in your private portal. No payment has been taken.":event==="arrangements"?"Review and confirm your service arrangements in your private portal. Payment is not yet confirmed.":event==="payment"?"Review the invoice and pay securely in Square from your private portal. If you already paid, do not pay again.":"Review the update in your private portal.";
-  const access=owner?"":" This single-use access link expires in 24 hours. If it expires, request a new link using your verified email.";
+  const access=owner?"":canonical?" Sign in with your family account.":" This single-use access link expires in 24 hours. If it expires, request a new link using your verified email.";
   const sent=await sendEmail(env,{to:email,subject,text:guidance+access+"\n"+url,html:layout({preheader:guidance,kicker:"Learning Support",heading,body:p(guidance+access)+button(owner?"Open Owner HQ":"Review in private portal",url),reason:"This is a service notification about a Learning Support request."})});
   if(!sent&&tokenHash)await env.DB.prepare("DELETE FROM support_guest_links WHERE token_hash=?").bind(tokenHash).run();
   return sent;
@@ -115,13 +121,16 @@ export function registerGuestSupport(app:App){
  });
  // This credential is never interpreted as a Side-Quest parent/child JWT.
  const identity=async(c:any)=>{
+  const id=c.req.param("id");
+  if(id&&await portalEnquiryOwner(c.env.DB,id))return portalRequestIdentity(c.env,id,c.req.header("Authorization")||"");
   const token=c.req.header("X-SideQuest-Guest");if(!valid(token))return null;
   return c.env.DB.prepare("SELECT email FROM support_guest_sessions WHERE token_hash=? AND expires_at>?").bind(await digest(token),nowIso()).first() as Promise<{email:string}|null>;
  };
  app.post(root+"/logout",async c=>{const token=c.req.header("X-SideQuest-Guest");if(valid(token))await c.env.DB.prepare("DELETE FROM support_guest_sessions WHERE token_hash=?").bind(await digest(token)).run();return c.json({ok:true});});
  app.get(root+"/requests",async c=>{
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
-  const rows=(await c.env.DB.prepare("SELECT id,parent_name,subject,message,status,created_at,updated_at FROM support_guest_requests WHERE email=? ORDER BY created_at DESC LIMIT 50").bind(who.email).all<any>()).results||[];
+  const canonicalFilter=await portalEnquirySchemaExists(c.env.DB)?" AND NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins p WHERE p.request_id=support_guest_requests.id)":"";
+  const rows=(await c.env.DB.prepare("SELECT id,parent_name,subject,message,status,created_at,updated_at FROM support_guest_requests WHERE email=?"+canonicalFilter+" ORDER BY created_at DESC LIMIT 50").bind(who.email).all<any>()).results||[];
   const ids=rows.map(r=>r.id);const byQuote=new Map<string,any[]>(),byMessage=new Map<string,any[]>(),now=nowIso();
   if(ids.length){const placeholders=ids.map(()=>"?").join(",");
    const [qs,ms]=await Promise.all([c.env.DB.prepare("SELECT q.* FROM support_guest_quotes q JOIN support_guest_requests r ON r.id=q.request_id WHERE r.email=? AND q.request_id IN ("+placeholders+") ORDER BY q.created_at DESC LIMIT 5000").bind(who.email,...ids).all<any>(),c.env.DB.prepare("SELECT m.* FROM support_guest_messages m JOIN support_guest_requests r ON r.id=m.request_id WHERE r.email=? AND m.request_id IN ("+placeholders+") ORDER BY m.created_at ASC LIMIT 5000").bind(who.email,...ids).all<any>()]);
