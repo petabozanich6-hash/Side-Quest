@@ -8,41 +8,20 @@ const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:
 const day=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:"long",day:"numeric",month:"long",year:"numeric"});
 const path=o=>(o.channel==="guest"?"/support-guests/":"/feedback/")+encodeURIComponent(o.request_id)+"/orders/"+o.id;
 const btn="rounded-lg border px-3 py-2 text-sm";
-const zone="Australia/Sydney";
-const partsFmt=new Intl.DateTimeFormat("en-CA",{timeZone:zone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
-const parts=t=>Object.fromEntries(partsFmt.formatToParts(new Date(t)).map(p=>[p.type,p.value]));
-const key=t=>{const p=parts(t);return p.year+"-"+p.month+"-"+p.day;};
-const shift=(s,n)=>new Date(Date.parse(s+"T12:00:00Z")+n*86400000).toISOString().slice(0,10);
-const monthShift=(s,n)=>new Date(Date.UTC(+s.slice(0,4),+s.slice(5,7)-1+n,1,12)).toISOString().slice(0,7);
-const monthTitle=new Intl.DateTimeFormat("en-AU",{timeZone:"UTC",month:"long",year:"numeric"});
-const time=new Intl.DateTimeFormat("en-AU",{timeZone:zone,hour:"numeric",minute:"2-digit"});
-function syd(s,clock="00:00"){
- const nominal=Date.parse(s+"T"+clock+":00Z");
- const matches=[10,11].map(h=>nominal-h*3600000).filter(t=>{const p=parts(t);return key(t)===s&&p.hour+":"+p.minute===clock;});
- if(matches.length!==1)throw Error("Choose a valid, unambiguous Sydney time.");
- return new Date(matches[0]);
-}
-function gridDates(month){
- const first=month+"-01",dow=(new Date(first+"T12:00:00Z").getUTCDay()+6)%7;
- const last=shift(monthShift(month,1)+"-01",-1);
- const n=Math.ceil((dow+Number(last.slice(-2)))/7)*7;
- return Array.from({length:n},(_,i)=>shift(first,i-dow));
-}
-const reserved=o=>[Date.parse(o.start_at)-(o.kind==="appointment"?(o.prep_minutes||0)*60000:0),Date.parse(o.end_at)+(o.kind==="appointment"?(o.wrap_minutes||0)*60000:0)];
-const intersects=(o,s)=>{const [a,b]=reserved(o);return a<syd(shift(s,1)).getTime()&&b>syd(s).getTime();};
+import {key,shift,monthShift,monthTitle,time,syd,gridDates,intersects} from "../../../lib/supportCalendarDates";
 export default function HqSupportCalendar(){
  const today=key(Date.now());
  const [month,setMonth]=useState(today.slice(0,7)),[selected,setSelected]=useState(today),[data,setData]=useState(null),[error,setError]=useState(""),[room,setRoom]=useState(null),[block,setBlock]=useState({label:"Unavailable",start:today,end:today,allDay:true,startTime:"09:00",endTime:"13:00"}),[busy,setBusy]=useState(false),[loading,setLoading]=useState(false);
- const request=React.useRef(0);
+ const request=React.useRef(0),loadedMonth=React.useRef(null);
  const dates=gridDates(month);
- const load=useCallback(async()=>{const seq=++request.current;setLoading(true);setData(null);try{
+ const load=useCallback(async()=>{const seq=++request.current;setLoading(true);if(loadedMonth.current!==month)setData(null);try{
  const days=gridDates(month),from=syd(days[0]),to=syd(shift(days.at(-1),1));
  const result=await adminApi.get("/support-calendar",{from:from.toISOString(),to:to.toISOString()});
- if(seq===request.current){setData(result);setError("");}
+ if(seq===request.current){loadedMonth.current=month;setData(result);setError("");}
  }catch(e){if(seq===request.current){setData(null);setError(errorText(e));}}finally{if(seq===request.current)setLoading(false);}},[month]);
  useEffect(()=>{load();return()=>{request.current++;};},[load]);
- function choose(s){setRoom(null);setSelected(s);setBlock(b=>({...b,start:s,end:s}));if(s.slice(0,7)!==month)setMonth(s.slice(0,7));}
- function navigate(m){if(!/^\d{4}-\d{2}$/.test(m))return;choose(m+"-01");}
+ function choose(s){setRoom(null);setSelected(s);setBlock(b=>({...b,start:s,end:s}));if(s.slice(0,7)!==month){setData(null);setMonth(s.slice(0,7));}}
+ function navigate(m){if(!/^\d{4}-(?:0[1-9]|1[0-2])$/.test(m))return;choose(m+"-01");}
  async function run(fn){if(busy)return;setBusy(true);try{await fn();await load();}catch(e){setError(errorText(e));}finally{setBusy(false);}}
  const entries=data?[...data.appointments.map(o=>({...o,kind:"appointment"})),...(data.blocks||[]).map(o=>({...o,kind:"block"}))].sort((a,b)=>a.start_at.localeCompare(b.start_at)):[];
  return <section className="paper-card p-4 space-y-3"><h3 className="font-display text-xl font-bold">Tutor diary & appointment calendar</h3><p className="text-sm">All learners and both customer types, in Sydney time. Preparation, wrap-up and unavailable time reserve your diary without extending billed lessons.</p>
