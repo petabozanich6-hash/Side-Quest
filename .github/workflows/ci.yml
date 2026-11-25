@@ -41,6 +41,8 @@ jobs:
         run: |
           set -o pipefail
           npm run test:db-audit 2>&1 | tee ci-logs/db-audit.log
+      - name: Offline D1 backup rehearsal guard tests (synthetic only)
+        run: node --test worker/test/d1BackupRehearsal.test.mjs
       - name: Trust and Support copy regression
         id: support_copy
         continue-on-error: true
