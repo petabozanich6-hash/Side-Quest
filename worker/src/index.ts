@@ -172,6 +172,10 @@ app.post("/api/auth/support-register",async c=>{
   await sendPasswordSetup(c.env,{id:userId,name,email},true);
   return c.json(reply);
 });
+app.get("/api/family-portal/status",c=>{
+  c.header("Cache-Control","no-store");
+  return c.json({available:unifiedPortalPilot(c.env),registration_available:unifiedPortalPilot(c.env)&&!!c.env.EMAIL&&!!authEmailOrigin(c.env)&&!!String(c.env.SUPPORT_UNIFIED_TEST_EMAIL||"").trim()});
+});
 app.get("/api/family-portal/identity",requireAuth,requireParent,async c=>{
   c.header("Cache-Control","no-store");
   if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
@@ -272,7 +276,8 @@ app.post("/api/auth/login", async (c) => {
   // /auth/me already exposes this navigation hint; a fresh sign-in must too,
   // otherwise Owner HQ stays hidden until the page is manually refreshed.
   const owner = await isPlatformOwner(c.env.DB, user.id);
-  return c.json({ token, user: { ...safe, role: "parent", jurisdiction, ...(owner ? { is_platform_owner: true } : {}) } });
+  const identity=unifiedPortalPilot(c.env)?await verifiedPortalIdentity(c.env.DB,{id:user.id,family_id:user.family_id,role:"parent",name:user.name}):null;
+  return c.json({ token, user: { ...safe, role: "parent", jurisdiction, ...(identity?.registration_intent==="support_only"?{family_portal_default:true}:{}), ...(owner ? { is_platform_owner: true } : {}) } });
 });
 
 // Proof comes from a one-time token sent only to the address, not the browser.
