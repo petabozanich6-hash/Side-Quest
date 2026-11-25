@@ -1,7 +1,7 @@
 import {correspondenceAttachments,correspondencePaymentLink,loadCorrespondenceFiles} from "./supportCorrespondenceAttachments";
 import type {Env} from "./types";
 import type {Channel} from "./supportOrders";
-import {stationeryRecipient,stationeryBase64,stationeryFingerprint,stationeryEmailEnabled,sendStationery,needsServiceTerms,termsDeliveryApproved,type PreparedStationery} from "./supportStationery";
+import {prepareStationery,stationeryRecipient,stationeryBase64,stationeryFingerprint,stationeryEmailEnabled,sendStationery,needsServiceTerms,termsDeliveryApproved,type PreparedStationery} from "./supportStationery";
 const columns="id,order_id,kind,title,filename,pages,created_at,status,attempted_at,sent_at,terms_version,terms_pages";
 export async function listStationery(db:D1Database,channel:Channel,id:string){
  return (await db.prepare("SELECT "+columns+" FROM support_stationery_documents WHERE channel=? AND request_id=? ORDER BY created_at DESC,id DESC LIMIT 100").bind(channel,id).all()).results||[];
@@ -24,6 +24,10 @@ export async function deliverSavedStationery(e:Env,channel:Channel,id:string,did
  const d=await record(e.DB,channel,id,did),recipient=await stationeryRecipient(e.DB,channel,id);
  if(!d||d.status!=="saved"||!recipient?.email||recipient.email!==d.recipient||b.recipient_confirmed!==recipient.email)return {error:"Document, delivery state or parent address changed. Review before sending."};
  if(needsServiceTerms(d.kind)&&(!d.terms_pdf_base64||!termsDeliveryApproved(e,d.terms_version)))return {error:"The companion service agreement must be approved before sending this document."};
+ if(d.kind==="booking_payment"){
+  const current=await prepareStationery(e,channel,id,d.order_id,{from_booking:true});
+  if("error" in current||await stationeryFingerprint(current)!==d.fingerprint)return {error:"The appointment, invoice, payment state or document date changed. Prepare a fresh payment request before sending."};
+ }
  const now=new Date().toISOString();
  const claim=await e.DB.prepare("UPDATE support_stationery_documents SET status='sending',attempted_at=? WHERE channel=? AND request_id=? AND id=? AND status='saved'").bind(now,channel,id,did).run();
  if(!claim.meta?.changes)return {error:"Delivery already attempted."};
