@@ -56,7 +56,7 @@ import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
 import {offerSlots,readSlots,removeSlots,offerStandardQuoteTimes} from "./supportSlots";
-import {createPackage} from "./supportPackages";
+import {createPackage,offerPackageTimes} from "./supportPackages";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -465,7 +465,8 @@ export function createAdminRoutes() {
     const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
     const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
     const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
-    if(auto&&(!schedule.schedule||schedule.schedule.length!==1||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require one standard live session and a learner nickname."},400);
+    const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80||!["installments","upfront"].includes(paymentMode)||!Number.isInteger(lead)||lead<1||lead>168))return c.json({detail:"Automatic appointment choices require standard live sessions, a learner nickname and valid payment arrangements."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id);
     const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when,schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
@@ -474,7 +475,7 @@ export function createAdminRoutes() {
       await c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)").bind(crypto.randomUUID(),id,c.get("user").id,"A learning support proposal is ready. Open Learning Support in your Parent Hub to review the scope, total price and delivery details.",when).run();
       await writeAudit(c.env.DB,{...actor(c),action:"learning_support.quote",targetType:"feedback",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
     }catch{console.warn("learning support quote notification or audit unavailable");}
-    const appointment_offer=auto?await offerStandardQuoteTimes(c.env.DB,"member",id,qid,schedule.schedule![0],autoLabel,now):null;
+    const appointment_offer=auto?(schedule.schedule!.length>1?await offerPackageTimes(c.env.DB,"member",id,qid,schedule.schedule!,autoLabel,paymentMode,lead,now):await offerStandardQuoteTimes(c.env.DB,"member",id,qid,schedule.schedule![0],autoLabel,now)):null;
     return c.json({ok:true,id:qid,appointment_offer},201);
   });
   admin.post("/feedback/:id/quotes/:quoteId/withdraw",requirePermission("customers.read"),async c=>{
@@ -725,12 +726,13 @@ export function createAdminRoutes() {
     const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
     const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
     const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
-    if(auto&&(!schedule.schedule||schedule.schedule.length!==1||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require one standard live session and a learner nickname."},400);
+    const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80||!["installments","upfront"].includes(paymentMode)||!Number.isInteger(lead)||lead<1||lead>168))return c.json({detail:"Automatic appointment choices require standard live sessions, a learner nickname and valid payment arrangements."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id);
     const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString(),schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.quote",targetType:"support_guest",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
-    const appointment_offer=auto?await offerStandardQuoteTimes(c.env.DB,"guest",id,qid,schedule.schedule![0],autoLabel,now):null;
+    const appointment_offer=auto?(schedule.schedule!.length>1?await offerPackageTimes(c.env.DB,"guest",id,qid,schedule.schedule!,autoLabel,paymentMode,lead,now):await offerStandardQuoteTimes(c.env.DB,"guest",id,qid,schedule.schedule![0],autoLabel,now)):null;
     return c.json({id:qid,appointment_offer,email_notification_sent:await guestNotify(c.env,row.email,false,id,"proposal")},201);
   });
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
