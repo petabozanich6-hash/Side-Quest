@@ -1,3 +1,5 @@
+import {unifiedOwnerDirectory} from "./unifiedOwnerDirectory";
+import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
 import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
@@ -271,6 +273,13 @@ export function createAdminRoutes() {
   });
 
   // --------------------------------------------------------------- customers
+  admin.get("/unified-directory", requirePermission("customers.read"), async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const search=(c.req.query("q")||"").trim().toLowerCase(),page=Number(c.req.query("page")||1),filter=c.req.query("filter")||"all";
+    if(search.length>254||!Number.isInteger(page)||page<1||page>10000||!["all","support","legacy","unread"].includes(filter))return c.json({detail:"Invalid search or page"},400);
+    c.header("Cache-Control","private, no-store");
+    return c.json(await unifiedOwnerDirectory(c.env.DB,search,page,filter));
+  });
   admin.get("/customers", requirePermission("customers.read"), async (c) => {
     const q = (c.req.query("q") ?? "").trim();
     if (q.length > 254) return c.json({ detail: "Search is too long" }, 400);
