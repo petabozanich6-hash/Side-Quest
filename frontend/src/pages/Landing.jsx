@@ -134,6 +134,15 @@ export default function Landing() {
         </div>
       </section>
 
+      <section className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 pb-8" aria-labelledby="personal-learning-support-heading">
+        <div className="rounded-2xl bg-[#1F3B2D] text-[#F5EFE0] p-6 sm:p-9 flex flex-col md:flex-row md:items-center gap-5">
+          <div className="flex-1"><p className="text-xs font-bold uppercase tracking-wider">Personalised learning support</p>
+            <h2 id="personal-learning-support-heading" className="font-display text-2xl sm:text-3xl font-bold mt-2">A little extra help from an author who loves learning.</h2>
+            <p className="mt-3 text-sm sm:text-base">Work with Peta Bozanich, author, home-educating parent and Side-Quest Learning founder. Personalised online sessions from $25, with flexible daytime and limited evening availability for homeschoolers and school students. No membership required.</p>
+          </div>
+          <Link to="/learning-support" className="rounded-full bg-[#F5EFE0] text-[#1F3B2D] px-5 py-3 font-bold text-center shrink-0" data-testid="homepage-learning-support-offering">Explore learning support</Link>
+        </div>
+      </section>
       <section className="relative z-10 mx-auto max-w-7xl px-6 py-14">
         <div className="text-center mb-10">
           <div className="font-script text-3xl mb-1" style={{color:"#C77B5B"}}>A little less juggling, a lot more learning</div>

@@ -184,6 +184,8 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 
 
 await step("Learning Support month planner navigates future months, preserves private labels and fits a phone",async()=>{
+ const publicPage=await browser.newPage();
+ try{await publicPage.goto(BASE);await publicPage.getByTestId("homepage-learning-support-offering").click();await publicPage.getByRole("heading",{name:"Learning, with a little more adventure."}).waitFor();ok((await publicPage.locator("main").innerText()).includes("Peta Bozanich"),"author-led service missing");ok((await publicPage.locator("main").innerText()).includes("AU$25"),"entry price missing");}finally{await publicPage.close();}
  const denied=await api("GET","/admin/support-calendar?from=2027-01-01T00:00:00.000Z&to=2027-02-01T00:00:00.000Z",user.token);
  ok(denied.status===404,"ordinary parent can read private tutor calendar");
  await page.goto(BASE+"/parent/command-centre/learning-support");
