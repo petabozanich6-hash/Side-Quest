@@ -66,6 +66,7 @@ export function registerUnifiedLegacy(app:App,g:Guards){
  });
  app.get(root+"/requests/:id",g.auth,g.parent,async c=>{
   const actor=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,actor))return c.json({detail:"Verified parent access required."},403);
-  const row=await linkedLegacyRequest(c.env.DB,actor,c.req.param("id"));return row?c.json(row):c.json({detail:"Request not found"},404);
+  const id=c.req.param("id");if(!id)return c.json({detail:"Request not found"},404);
+  const row=await linkedLegacyRequest(c.env.DB,actor,id);return row?c.json(row):c.json({detail:"Request not found"},404);
  });
 }
