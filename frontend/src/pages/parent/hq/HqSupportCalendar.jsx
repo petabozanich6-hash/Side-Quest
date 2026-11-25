@@ -3,6 +3,7 @@ import {adminApi,errorText} from "../../../lib/adminApi";
 import SupportClassroom from "../SupportClassroom";
 import HqTutorDiary from "./HqTutorDiary";
 import HqPublicAvailability from "./HqPublicAvailability";
+import HqReportQueue from "./HqReportQueue";
 const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
 const day=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",weekday:"long",day:"numeric",month:"long",year:"numeric"});
 const path=o=>(o.channel==="guest"?"/support-guests/":"/feedback/")+encodeURIComponent(o.request_id)+"/orders/"+o.id;
@@ -20,6 +21,7 @@ export default function HqSupportCalendar(){
  async function run(fn){if(busy)return;setBusy(true);try{await fn();await load();}catch(e){setError(errorText(e));}finally{setBusy(false);}}
  const entries=data?[...data.appointments.map(o=>({...o,kind:"appointment"})),...(data.blocks||[]).map(o=>({...o,kind:"block"}))].sort((a,b)=>a.start_at.localeCompare(b.start_at)):[];
  return <section className="paper-card p-4 space-y-3"><h3 className="font-display text-xl font-bold">Tutor diary & appointment calendar</h3><p className="text-sm">All learners and both customer types, in Sydney time. Preparation, wrap-up and unavailable time reserve your diary without extending billed lessons.</p>
+ <HqReportQueue/>
  <HqPublicAvailability/>
  <div className="flex flex-wrap items-center gap-2"><button className={btn} onClick={()=>{setRoom(null);setSpan(1);setOffset(0);}}>Today</button><button className={btn} onClick={()=>{setRoom(null);setSpan(7);setOffset(0);}}>Next 7 days</button><button className={btn} onClick={()=>{setRoom(null);setOffset(n=>n-span);}}>Previous</button><button className={btn} onClick={()=>{setRoom(null);setOffset(n=>n+span);}}>Next</button><button className={btn} onClick={load}>Refresh</button></div>
  {error&&<p role="alert" className="text-rose-800">{error}</p>}{!data&&!error&&<p role="status">Loading appointments…</p>}
