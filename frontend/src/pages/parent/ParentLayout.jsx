@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useViewAs, ViewAsPicker, ViewAsBanner } from "../../components/parent/OwnerViewAs";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -13,6 +13,8 @@ import ParentLabel from "../../components/parent/ParentLabel";
 import InstallApp from "../../components/shared/InstallApp";
 import JurisdictionGate from "../../components/parent/JurisdictionPicker";
 import ParentGuidedTour from "../../components/parent/ParentGuidedTour";
+import RouteRecovery from "../../components/shared/RouteRecovery";
+import { groupParentNav } from "../../lib/parentNavigation";
 
 const nav = [
   { to: "/parent", icon: LayoutDashboard, label: "Dashboard", end: true, testid: "nav-dashboard" },
@@ -33,7 +35,7 @@ const nav = [
   { to: "/parent/handwriting-book", icon: Scissors, label: "Handwriting Book", testid: "nav-handwriting-book" },
   { to: "/parent/hands-on-vault", icon: Beaker, label: "Hands-On Quest Vault", testid: "nav-hands-on-vault" },
   { to: "/parent/calendar", icon: Calendar, label: "Calendar", testid: "nav-calendar" },
-  { to: "/parent/plan", icon: Sparkles, label: "Plan", testid: "nav-plan" },
+  { to: "/parent/plan", icon: Sparkles, label: "Membership", testid: "nav-plan" },
   { to: "/parent/trust", icon: LifeBuoy, label: "Trust & Support", testid: "nav-trust" },
   { to: "/parent/feedback", icon: MessageSquare, label: "Ideas & Feedback", testid: "nav-feedback" },
 ];
@@ -67,28 +69,41 @@ export default function ParentLayout() {
     route.startsWith("/parent/lessons/drafts") ? "Creating AI lesson sets and requesting AI refinements needs Family Membership. Your seven-day preview includes one complete AI-generated single lesson per family from Make a lesson." : "";
   const doLogout = async () => { await logout(); navigate("/"); };
   // The plan is read once at sign-in (for the missed-payment banner) and again on pages with a membership notice.
-  const planRead = useRef("");
+  const planRead = useRef({id:null,at:0});
   useEffect(() => {
-    if (!user?.id || (!paidNotice && planRead.current === user.id)) return;
-    planRead.current = user.id;
-    let alive = true;
-    api.get("/account/plan").then(r => { if (alive) setPlanState(r.data); }).catch(() => { if (alive) setPlanState(null); });
-    return () => { alive = false; };
-  }, [user?.id, location.pathname, paidNotice]);
+    if (!user?.id) return;
+    let alive = true, pending = false;
+    const refresh = (force=false) => {
+      if (pending || (!force && planRead.current.id === user.id && Date.now()-planRead.current.at < 30000)) return;
+      pending = true;
+      api.get("/account/plan").then(r => { if (alive) { setPlanState(r.data); planRead.current={id:user.id,at:Date.now()}; } }).catch(() => {}).finally(()=>{pending=false;});
+    };
+    refresh();
+    const onFocus=()=>refresh(true);
+    window.addEventListener("focus",onFocus);
+    return () => { alive=false; window.removeEventListener("focus",onFocus); };
+  }, [user?.id, location.pathname]);
   useEffect(() => {
     if (!user?.id) { setUnreadReplies(0); setLatestUnreadReply(null); return undefined; }
     let alive = true;
-    const refresh = () => api.get("/feedback/unread-count").then(r => {
+    let pending=false;
+    const refresh = () => {
+      if (pending || document.visibilityState === "hidden") return;
+      pending=true;
+      return api.get("/feedback/unread-count").then(r => {
       if (!alive) return;
       const unread = Number(r.data?.unread || 0);
       setUnreadReplies(unread);
       setLatestUnreadReply(unread > 0 ? r.data?.latest || null : null);
-    }).catch(()=>{});
+    }).catch(()=>{}).finally(()=>{pending=false;});
+    };
     refresh();
     const timer = setInterval(refresh,60000);
+    window.addEventListener("focus",refresh);
+    document.addEventListener("visibilitychange",refresh);
     window.addEventListener("sidequest-feedback-replies-updated",refresh);
-    return () => {alive=false;clearInterval(timer);window.removeEventListener("sidequest-feedback-replies-updated",refresh);};
-  },[user?.id,location.pathname]);
+    return () => {alive=false;clearInterval(timer);window.removeEventListener("focus",refresh);document.removeEventListener("visibilitychange",refresh);window.removeEventListener("sidequest-feedback-replies-updated",refresh);};
+  },[user?.id]);
   useEffect(() => {
     const shortcut = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -110,14 +125,14 @@ export default function ParentLayout() {
             <div className="text-[10px] uppercase tracking-widest font-bold text-stone-500">Parent Hub</div>
           </div>
         </div>
-        <nav className="flex-1 overflow-y-auto p-3 space-y-0.5 relative z-10">
-          {(isOwner ? [...menu, { to: "/parent/command-centre", icon: Crown, label: "Owner HQ", testid: "nav-command-centre" }] : menu).map(n => (
+        <nav aria-label="Parent Hub" className="flex-1 overflow-y-auto p-3 space-y-3 relative z-10">
+          {groupParentNav(isOwner ? [...menu, { to: "/parent/command-centre", icon: Crown, label: "Owner HQ", testid: "nav-command-centre" }] : menu).map(group => <section key={group.label} aria-label={group.label} className="space-y-0.5"><h2 className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-wider font-bold text-stone-500">{group.label}</h2>{group.items.map(n => (
             <NavLink key={n.to} to={n.to} end={n.end} data-testid={n.testid} onClick={() => setMenuOpen(false)}
               className={({isActive}) => `flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "" : "text-stone-700 hover:bg-white/80"}`}
               style={({isActive}) => isActive ? {backgroundColor:"#1F3B2D", color:"#F5EFE0"} : {}}>
               <n.icon size={16} /> <span className="flex-1">{n.label}</span>{n.to==="/parent/feedback"&&unreadReplies>0&&<span className="rounded-full bg-amber-100 text-amber-950 text-xs font-bold px-2 py-0.5" data-testid="parent-feedback-nav-unread" aria-label={unreadReplies+" unread messages"}>{unreadReplies}</span>}
             </NavLink>
-          ))}
+          ))}</section>)}
           <a href={SHOP_URL} target="_blank" rel="noopener noreferrer" data-testid="nav-shop" onClick={() => setMenuOpen(false)}
             className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold transition text-stone-700 hover:bg-white/80">
             <ShoppingBag size={16} /> <span className="flex-1">Shop</span>
@@ -162,7 +177,7 @@ export default function ParentLayout() {
             className="shrink-0 rounded-full bg-rose-700 px-4 py-1.5 font-bold text-white" data-testid="past-due-update-card">Update card</button>
         </div>}
         {paidNotice && planState && !hasMembership && <div className="mx-4 sm:mx-8 mt-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 flex flex-wrap items-start gap-3 text-sm text-amber-950" data-testid="membership-feature-notice"><Lock size={18} className="shrink-0 mt-0.5"/><p className="flex-1 min-w-[180px]"><strong>Family Membership feature.</strong> {paidNotice} {planState.effective_plan === "FREE_PREVIEW" ? "Your seven-day preview continues for basic lesson tools." : "Your saved work remains viewable."}</p><Link to="/parent/plan" className="shrink-0 underline font-bold">See membership details →</Link></div>}
-        <Outlet context={{ unreadFeedbackReplies: unreadReplies, latestUnreadFeedbackReply: latestUnreadReply }} />
+        <RouteRecovery key={location.pathname}><Suspense fallback={<p role="status" className="p-6 text-stone-600">Opening your learning tools…</p>}><Outlet context={{ unreadFeedbackReplies: unreadReplies, latestUnreadFeedbackReply: latestUnreadReply, planState }} /></Suspense></RouteRecovery>
       </main>
       {showDelete && <DeleteAccountDialog onClose={() => setShowDelete(false)} />}
       <HelpPopup />

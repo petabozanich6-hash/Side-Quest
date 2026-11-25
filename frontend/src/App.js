@@ -1,5 +1,5 @@
-import LessonDetail from "./pages/LessonDetail";
-import React from "react";
+import React, { lazy, Suspense } from "react";
+import RouteRecovery from "./components/shared/RouteRecovery";
 import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
@@ -16,47 +16,47 @@ import KidsOnly from "./pages/KidsOnly";
 import { isKidsHost } from "./lib/pwa";
 import AuthCallback from "./pages/AuthCallback";
 import ParentLayout from "./pages/parent/ParentLayout";
-import ParentDashboard from "./pages/parent/Dashboard";
-import HqShell from "./pages/parent/hq/HqShell";
-import HqOverview from "./pages/parent/hq/HqOverview";
-import HqCustomers from "./pages/parent/hq/HqCustomers";
-import HqCustomer from "./pages/parent/hq/HqCustomer";
-import HqSettings from "./pages/parent/hq/HqSettings";
-import HqAudit from "./pages/parent/hq/HqAudit";
-import HqSecurity from "./pages/parent/hq/HqSecurity";
+
+
+
+
+
+
+
+
 import PlatformNotices from "./components/shared/PlatformNotices";
-import ChildrenPage from "./pages/parent/Children";
-import CurriculumPage from "./pages/parent/Curriculum";
-import LessonsPage from "./pages/parent/Lessons";
-import LessonBuilder from "./pages/parent/LessonBuilder";
-import MakeLesson from "./pages/parent/MakeLesson";
-import LessonReview from "./pages/parent/LessonReview";
-import LessonDrafts from "./pages/parent/LessonDrafts";
-import LessonPrint from "./pages/parent/LessonPrint";
-import UpgradePage from "./pages/parent/Upgrade";
-import AssignmentsPage from "./pages/parent/Assignments";
-import ResourcesPage from "./pages/parent/Resources";
-import HandwritingBook from "./pages/parent/HandwritingBook";
-import HandsOnVault from "./pages/parent/HandsOnVault";
-import HomeschoolCompass from "./pages/parent/HomeschoolCompass";
-import EvidencePage from "./pages/parent/Evidence";
-import CalendarPage from "./pages/parent/CalendarPage";
-import AuditPage from "./pages/parent/Audit";
-import SideQuestPage from "./pages/parent/SideQuest";
-import LifeLearningPage from "./pages/parent/LifeLearning";
-import LearningPlansPage from "./pages/parent/LearningPlans";
-import ReadingLogPage from "./pages/parent/ReadingLog";
-import ChildOverviewPage from "./pages/parent/ChildOverview";
-import OutcomeTrackerPage from "./pages/parent/OutcomeTracker";
-import OutcomeDetailPage from "./pages/parent/OutcomeDetail";
-import ParentWordHoard from "./pages/parent/WordHoard";
-import TrustSupport from "./pages/parent/TrustSupport";
-import ParentFeedback from "./pages/parent/ParentFeedback";
-import AnnouncementPreferences from "./pages/parent/AnnouncementPreferences";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import SiteSearch from "./pages/shared/SiteSearch";
-import HqFeedback from "./pages/parent/hq/HqFeedback";
-import HqAnnouncements from "./pages/parent/hq/HqAnnouncements";
-import HqDocumentStudio from "./pages/parent/hq/HqDocumentStudio";
+
+
+
 import LegalPage from "./pages/legal/LegalPage";
 import ChildLayout from "./pages/child/ChildLayout";
 import ChildHome from "./pages/child/ChildHome";
@@ -71,6 +71,48 @@ import PetRoom from "./pages/child/PetRoom";
 import ChildReading from "./pages/child/ChildReading";
 import DragonLibrary from "./pages/shared/DragonLibrary";
 import { SHOP_URL } from "./lib/shop";
+
+// Keep the student/offline and sign-in modules eager; defer parent-only tools.
+const LessonDetail = lazy(() => import("./pages/LessonDetail"));
+const ParentDashboard = lazy(() => import("./pages/parent/Dashboard"));
+const HqShell = lazy(() => import("./pages/parent/hq/HqShell"));
+const HqOverview = lazy(() => import("./pages/parent/hq/HqOverview"));
+const HqCustomers = lazy(() => import("./pages/parent/hq/HqCustomers"));
+const HqCustomer = lazy(() => import("./pages/parent/hq/HqCustomer"));
+const HqSettings = lazy(() => import("./pages/parent/hq/HqSettings"));
+const HqAudit = lazy(() => import("./pages/parent/hq/HqAudit"));
+const HqSecurity = lazy(() => import("./pages/parent/hq/HqSecurity"));
+const ChildrenPage = lazy(() => import("./pages/parent/Children"));
+const CurriculumPage = lazy(() => import("./pages/parent/Curriculum"));
+const LessonsPage = lazy(() => import("./pages/parent/Lessons"));
+const LessonBuilder = lazy(() => import("./pages/parent/LessonBuilder"));
+const MakeLesson = lazy(() => import("./pages/parent/MakeLesson"));
+const LessonReview = lazy(() => import("./pages/parent/LessonReview"));
+const LessonDrafts = lazy(() => import("./pages/parent/LessonDrafts"));
+const LessonPrint = lazy(() => import("./pages/parent/LessonPrint"));
+const UpgradePage = lazy(() => import("./pages/parent/Upgrade"));
+const AssignmentsPage = lazy(() => import("./pages/parent/Assignments"));
+const ResourcesPage = lazy(() => import("./pages/parent/Resources"));
+const HandwritingBook = lazy(() => import("./pages/parent/HandwritingBook"));
+const HandsOnVault = lazy(() => import("./pages/parent/HandsOnVault"));
+const HomeschoolCompass = lazy(() => import("./pages/parent/HomeschoolCompass"));
+const EvidencePage = lazy(() => import("./pages/parent/Evidence"));
+const CalendarPage = lazy(() => import("./pages/parent/CalendarPage"));
+const AuditPage = lazy(() => import("./pages/parent/Audit"));
+const SideQuestPage = lazy(() => import("./pages/parent/SideQuest"));
+const LifeLearningPage = lazy(() => import("./pages/parent/LifeLearning"));
+const LearningPlansPage = lazy(() => import("./pages/parent/LearningPlans"));
+const ReadingLogPage = lazy(() => import("./pages/parent/ReadingLog"));
+const ChildOverviewPage = lazy(() => import("./pages/parent/ChildOverview"));
+const OutcomeTrackerPage = lazy(() => import("./pages/parent/OutcomeTracker"));
+const OutcomeDetailPage = lazy(() => import("./pages/parent/OutcomeDetail"));
+const ParentWordHoard = lazy(() => import("./pages/parent/WordHoard"));
+const TrustSupport = lazy(() => import("./pages/parent/TrustSupport"));
+const ParentFeedback = lazy(() => import("./pages/parent/ParentFeedback"));
+const AnnouncementPreferences = lazy(() => import("./pages/parent/AnnouncementPreferences"));
+const HqFeedback = lazy(() => import("./pages/parent/hq/HqFeedback"));
+const HqAnnouncements = lazy(() => import("./pages/parent/hq/HqAnnouncements"));
+const HqDocumentStudio = lazy(() => import("./pages/parent/hq/HqDocumentStudio"));
 
 /** Sends visitors from an old in-app shop link to the Square shop. */
 function GoToShop() {
@@ -179,7 +221,7 @@ function App() {
       <BrowserRouter>
         <Toaster richColors position="top-right" />
         <PlatformNotices />
-        <Router />
+        <RouteRecovery><Suspense fallback={<div role="status" className="p-8 text-stone-600">Opening Side-Quest…</div>}><Router /></Suspense></RouteRecovery>
       </BrowserRouter>
     </AuthProvider>
   );
