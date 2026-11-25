@@ -12,7 +12,9 @@ import { registerLearning } from "./learning";
 import { registerPets } from "./pets";
 import { registerWords } from "./words";
 import { registerAccount } from "./account";
-import { registerPasswordReset } from "./passwordReset";
+import { registerPasswordReset,sendPasswordSetup } from "./passwordReset";
+import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity";
+import {authEmailOrigin} from "./authEmailOrigin";
 import { registerStudentCredentials } from "./studentCredentials";
 import { registerHelpRequests } from "./helpRequests";
 import { registerBilling, reconcileSubscriptions } from "./billing";
@@ -135,6 +137,47 @@ app.get("/api/health", (c) => c.json({ status: "alive" }));
 app.get("/api/platform/notices", async (c) => {
   c.header("Cache-Control", "no-store");
   try { return c.json(await publicNotices(c.env.DB)); } catch { return c.json({ announcement: null, maintenance: null, registrations_open: true }); }
+});
+
+// Private pilot only. Account credentials and family IDs are shared with homeschool sign-in.
+app.post("/api/auth/support-register",async c=>{
+  if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+  const b=await c.req.json().catch(()=>({}));
+  const email=typeof b.email==="string"?b.email.trim().toLowerCase():"",name=typeof b.name==="string"?b.name.trim():"";
+  const jurisdiction=normJurisdiction(b.jurisdiction);
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)||email.length>254||!name||name.length>100||!jurisdiction)return c.json({detail:"Enter your name, valid email and state or territory."},400);
+  // One expressly configured synthetic mailbox only; no arbitrary recipient email from this pilot.
+  const allowed=String(c.env.SUPPORT_UNIFIED_TEST_EMAIL||"").trim().toLowerCase();
+  if(!allowed||!c.env.EMAIL||!authEmailOrigin(c.env))return c.json({detail:"Account setup is not configured in staging."},503);
+  if(email!==allowed)return c.json({detail:"Only the authorised test mailbox can register during the private pilot."},403);
+  if(await registrationsClosed(c.env.DB))return c.json({detail:"New sign-ups are paused."},503);
+  const key="support-register:"+email,ip="support-register-ip:"+(c.req.header("CF-Connecting-IP")||"local");
+  if(await loginBlocked(c.env.DB,"parent",key,"")||await loginBlocked(c.env.DB,"parent",ip,""))return c.json({detail:"Too many requests. Try again later."},429);
+  await recordLoginFailure(c.env.DB,"parent",key,"");await recordLoginFailure(c.env.DB,"parent",ip,"");
+  const reply={ok:true,message:"If this address is new, check your email to set your password. If you already have a Side-Quest account, sign in or use Forgot password."};
+  if(await c.env.DB.prepare("SELECT id FROM users WHERE lower(email)=?").bind(email).first())return c.json(reply);
+  const familyId=newId(),userId=newId(),ts=nowIso();
+  try{
+    await c.env.DB.batch([
+      c.env.DB.prepare("INSERT INTO families(id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at) VALUES(?,?,?,?,'PREVIEW_EXPIRED',NULL,NULL)").bind(familyId,name+"'s Family",userId,ts),
+      c.env.DB.prepare("INSERT INTO users(id,family_id,email,password_hash,name,is_owner,created_at,email_verification_required_at) VALUES(?,?,?,NULL,?,1,?,?)").bind(userId,familyId,email,name,ts,ts),
+      c.env.DB.prepare("INSERT INTO support_account_intents(family_id,registration_intent,created_at) VALUES(?,'support_only',?)").bind(familyId,ts),
+    ]);
+  }catch(e){
+    if(await c.env.DB.prepare("SELECT id FROM users WHERE lower(email)=?").bind(email).first())return c.json(reply);
+    throw e;
+  }
+  await setFamilyJurisdiction(c.env.DB,familyId,jurisdiction);
+  // No credential or session exists until the inbox owner redeems the existing password reset flow.
+  await sendPasswordSetup(c.env,{id:userId,name,email},true);
+  return c.json(reply);
+});
+app.get("/api/family-portal/identity",requireAuth,requireParent,async c=>{
+  c.header("Cache-Control","no-store");
+  if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+  const identity=await verifiedPortalIdentity(c.env.DB,c.get("user"));
+  if(!identity)return c.json({detail:"Verify your email using account recovery before accessing the family portal.",code:"PORTAL_VERIFICATION_REQUIRED"},403);
+  return c.json(identity);
 });
 
 app.post("/api/auth/register", async (c) => {
