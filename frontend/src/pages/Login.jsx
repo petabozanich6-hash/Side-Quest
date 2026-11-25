@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
@@ -14,13 +14,16 @@ export default function Login() {
   const [resendingVerification, setResendingVerification] = useState(false);
   const { setSession } = useAuth();
   const nav = useNavigate();
+  const [params] = useSearchParams();
+  const supportSignup = params.get("service") === "learning-support";
+  const supportSuffix = supportSignup ? "?service=learning-support" : "";
 
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
       const { data } = await api.post("/auth/login", { email, password });
       setSession(data.token, { ...data.user, role: "parent" });
-      toast.success("Welcome back"); nav("/parent");
+      toast.success("Welcome back"); nav(supportSignup ? "/parent/learning-support" : "/parent");
     } catch (err) {
       if (err.response?.data?.code === "EMAIL_VERIFICATION_REQUIRED") setVerificationPending(true);
       toast.error(err.response?.data?.detail || "Login failed");
@@ -87,7 +90,7 @@ export default function Login() {
             </div>
           )}
           <div className="mt-5 flex items-center justify-between text-xs">
-            <Link to="/register" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
+            <Link to={"/register"+supportSuffix} className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
             <Link to="/child-login" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-child">Student sign in</Link>
           </div>
           <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side-Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>

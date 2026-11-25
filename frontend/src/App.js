@@ -73,6 +73,7 @@ import DragonLibrary from "./pages/shared/DragonLibrary";
 import { SHOP_URL } from "./lib/shop";
 
 // Keep the student/offline and sign-in modules eager; defer parent-only tools.
+const LearningSupport = lazy(() => import("./pages/parent/LearningSupport"));
 const LessonDetail = lazy(() => import("./pages/LessonDetail"));
 const ParentDashboard = lazy(() => import("./pages/parent/Dashboard"));
 const HqShell = lazy(() => import("./pages/parent/hq/HqShell"));
@@ -132,10 +133,11 @@ function Router() {
   const loc = useLocation();
   if (loc.hash?.includes("session_id=")) return <AuthCallback />;
   // SQ Kids (the kids' address) has no parent pages at all: grown-ups are pointed to the main site.
-  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
+  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|learning-support|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/learning-support" element={<LearningSupport publicView />} />
       {/* The shop moved to Square: old shop links (and anything under /shop) go there. */}
       <Route path="/shop/*" element={<GoToShop />} />
       <Route path="/login" element={<Login />} />
@@ -193,6 +195,7 @@ function Router() {
         <Route path="reading-log" element={<ReadingLogPage />} />
         <Route path="word-hoard" element={<ParentWordHoard />} />
         <Route path="trust" element={<TrustSupport />} />
+        <Route path="learning-support" element={<LearningSupport />} />
         <Route path="feedback" element={<ParentFeedback />} />
         <Route path="trust/:slug" element={<LegalPage />} />
       </Route>

@@ -5,6 +5,7 @@
 import type { App, Guards, Env } from "./types";
 import { newId, nowIso } from "./types";
 import { hitRateLimit } from "./adminAudit";
+import { parseLearningSupport, LEARNING_SUPPORT_HINT } from "./learningSupport";
 import { sendEmail, SITE_URL, layout, p, button, esc } from "./email";
 
 export const FEEDBACK_CATEGORIES = ["problem", "idea", "feedback", "other"] as const;
@@ -62,21 +63,22 @@ export function registerFeedback(app: App, guards: Guards) {
   app.get("/api/feedback", guards.auth, guards.parent, async (c) => {
     // Compatibility fallback: never prevent parents from seeing or sending feedback
     // just because the newly deployed reply table is not yet available.
+    const supportOnly = c.req.query("kind") === "learning-support";
     let results: any[] = [];
     try {
       await ensureFeedbackSchema(c.env.DB);
       const r = await c.env.DB.prepare(
-        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50"
-      ).bind(c.get("user").family_id,c.get("user").id).all<any>();
+        "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? AND (? = 0 OR page_hint = 'learning-support') ORDER BY CASE WHEN EXISTS (SELECT 1 FROM parent_feedback_replies r WHERE r.feedback_id=parent_feedback.id AND r.parent_read_at IS NULL) THEN 0 ELSE 1 END, created_at DESC LIMIT 50"
+      ).bind(c.get("user").family_id,c.get("user").id,supportOnly ? 1 : 0).all<any>();
       results = r.results ?? [];
     } catch {
-      const sql = "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? ORDER BY created_at DESC LIMIT 50";
+      const sql = "SELECT id, category, subject, message, page_hint, status, created_at, updated_at FROM parent_feedback WHERE family_id = ? AND user_id = ? AND (? = 0 OR page_hint = 'learning-support') ORDER BY created_at DESC LIMIT 50";
       try {
-        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id).all<any>()).results??[];
+        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id,supportOnly ? 1 : 0).all<any>()).results??[];
       } catch (err) {
         if(!/no such table.*parent_feedback/i.test(String(err))) throw err;
         await ensureFeedbackBaseSchema(c.env.DB);
-        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id).all<any>()).results??[];
+        results=(await c.env.DB.prepare(sql).bind(c.get("user").family_id,c.get("user").id,supportOnly ? 1 : 0).all<any>()).results??[];
       }
     }
     // One batched, family-and-parent-scoped query. Internal notes and other users' replies never leave the server.
@@ -144,7 +146,14 @@ export function registerFeedback(app: App, guards: Guards) {
   app.post("/api/feedback", guards.auth, guards.parent, async (c) => {
     const input: unknown = await c.req.json().catch(() => null);
     if (!input || typeof input !== "object" || Array.isArray(input)) return c.json({ detail: "Enter a report." }, 400);
-    const b = input as Record<string, unknown>;
+    let b = input as Record<string, unknown>;
+    if (b.kind === LEARNING_SUPPORT_HINT) {
+      const parsed = parseLearningSupport(b);
+      if ("error" in parsed) return c.json({ detail: parsed.error }, 400);
+      b = parsed;
+    } else if (typeof b.page_hint === "string" && b.page_hint.trim() === LEARNING_SUPPORT_HINT) {
+      return c.json({ detail: "Use the learning support request form." }, 400);
+    }
     if (!isCategory(b.category)) return c.json({ detail: "Choose a report category." }, 400);
     if (typeof b.subject !== "string" || b.subject.trim().length < 4 || b.subject.trim().length > 120)
       return c.json({ detail: "Give your report a title (4 to 120 characters)." }, 400);
@@ -171,7 +180,7 @@ export function registerFeedback(app: App, guards: Guards) {
       await save();
     }
     // A failed or unconfigured email never undoes the durable, private HQ submission.
-    try { await ownerAlert(c.env, id, b.category); } catch { /* optional */ }
+    try { await ownerAlert(c.env, id, hint === LEARNING_SUPPORT_HINT ? "learning support" : b.category); } catch { /* optional */ }
     return c.json({ id, status: "new", created_at: now }, 201);
   });
 }
