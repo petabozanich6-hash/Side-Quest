@@ -43,6 +43,8 @@ jobs:
           npm run test:db-audit 2>&1 | tee ci-logs/db-audit.log
       - name: Public availability privacy and diary blackout tests
         run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPublicAvailability.test.mjs
+      - name: Learning Support payment and cancellation safety tests
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPaymentSafety.test.mjs
       - name: Trust and Support copy regression
         id: support_copy
         continue-on-error: true
