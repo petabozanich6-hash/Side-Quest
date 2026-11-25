@@ -56,3 +56,24 @@ export async function loadCorrespondenceFiles(e:Env,channel:Channel,id:string,di
  for(const r of rows){const bytes=await attachmentBytes(e,r);if(!bytes)return null;files.push({filename:r.filename,type:"application/pdf",content:bytes,disposition:"attachment" as const});}
  return files;
 }
+
+export function squarePaymentLink(value:unknown):string|null{
+ if(typeof value!=="string"||value.length>2048)return null;
+ try{const u=new URL(value.trim());if(u.protocol!=="https:"||u.username||u.password||u.port||u.hash)return null;
+ if((u.hostname==="squareup.com"||u.hostname==="app.squareup.com")&&u.pathname.startsWith("/pay-invoice/")&&u.pathname.length>13)return u.href;
+ if(u.hostname==="square.link"&&/^\/u\/[A-Za-z0-9_-]+\/?$/.test(u.pathname))return u.href;
+ return null;}catch{return null;}
+}
+export async function correspondencePaymentLink(db:D1Database,channel:Channel,id:string,did:string){
+ const r=await db.prepare("SELECT l.url FROM support_correspondence_payment_links l JOIN support_stationery_documents d ON d.id=l.document_id WHERE d.channel=? AND d.request_id=? AND d.id=?").bind(channel,id,did).first<{url:string}>();
+ return r?.url??null;
+}
+export async function saveCorrespondencePaymentLink(db:D1Database,channel:Channel,id:string,did:string,b:any){
+ if(b?.reviewed!==true)return false;
+ if(b.url===""){
+ const r=await db.prepare("DELETE FROM support_correspondence_payment_links WHERE document_id=? AND EXISTS(SELECT 1 FROM support_stationery_documents d WHERE d.id=? AND d.channel=? AND d.request_id=? AND d.status='saved')").bind(did,did,channel,id).run();return !!r.meta?.changes;
+ }
+ const url=squarePaymentLink(b.url);if(!url)return false;
+ const r=await db.prepare("INSERT INTO support_correspondence_payment_links(document_id,url,updated_at) SELECT id,?,? FROM support_stationery_documents WHERE id=? AND channel=? AND request_id=? AND status='saved' ON CONFLICT(document_id) DO UPDATE SET url=excluded.url,updated_at=excluded.updated_at").bind(url,new Date().toISOString(),did,channel,id).run();
+ return !!r.meta?.changes;
+}
