@@ -43,6 +43,7 @@ import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
 import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
+import {prepareStationery,sendStationery} from "./supportStationery";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
@@ -813,6 +814,21 @@ export function createAdminRoutes() {
       const id=(c.req.param("id")??""),oid=(c.req.param("oid")??""),action=(c.req.param("action")??""),b=await readJson(c);
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(action==="stationery-preview"||action==="stationery-email"){
+        if(!(await hitRateLimit(c.env.DB,"support-stationery:"+c.get("user").id,40,3600)).ok)return c.json({detail:"Document action limit reached."},429);
+        const doc=await prepareStationery(c.env,channel,id,oid,b);
+        if("error" in doc)return c.json({detail:doc.error},400);
+        if(action==="stationery-preview"){
+          let raw="";for(let i=0;i<doc.pdf.length;i+=8192)raw+=String.fromCharCode(...doc.pdf.subarray(i,i+8192));
+          c.header("Cache-Control","private, no-store");
+          return c.json({filename:doc.filename,mime:"application/pdf",base64:btoa(raw),pages:doc.pages,recipient:doc.recipient,email_enabled:doc.email_enabled});
+        }
+        if(!doc.email_enabled)return c.json({detail:"Email delivery is disabled until verified. Download and send through existing parent correspondence."},409);
+        if(b.reviewed!==true||b.recipient_confirmed!==doc.recipient)return c.json({detail:"Review the PDF and confirm the parent email again."},400);
+        const sent=await sendStationery(c.env,doc,b);
+        await writeAudit(c.env.DB,{...actor(c),action:sent?"support.stationery_email_sent":"support.stationery_email_unconfirmed",targetType:"support",targetId:id,detail:{order_id:oid,channel,kind:doc.kind}});
+        return c.json({ok:sent,email_notification_sent:sent});
+      }
       if(action==="backup-preview"||action==="backup-email"){
         const pack=await buildContinuity(c.env,channel,id,oid,b);
         if("error" in pack)return c.json({detail:pack.error},409);
