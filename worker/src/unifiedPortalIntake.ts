@@ -50,7 +50,7 @@ export function registerPortalIntake(app:App,g:Guards){
   return c.json({requests:rows.results||[]});
  });
  app.get(root+"/detail/:id",g.auth,g.parent,async c=>{
-  const a=c.get("user"),id=c.req.param("id");if(!await ownsPortalEnquiry(c.env.DB,a,id))return c.json({detail:"Enquiry not found"},404);
+  const a=c.get("user"),id=c.req.param("id");if(!id||!await ownsPortalEnquiry(c.env.DB,a,id))return c.json({detail:"Enquiry not found"},404);
   const row=await c.env.DB.prepare("SELECT r.id,r.subject,r.message,r.status,r.created_at,r.updated_at,p.learner_id,p.service FROM support_portal_enquiries p JOIN support_guest_requests r ON r.id=p.request_id WHERE r.id=? AND p.family_id=? AND p.parent_user_id=?").bind(id,a.family_id,a.id).first();
   if(!row)return c.json({detail:"Enquiry not found"},404);
   return c.json({...row,quotes:await guestQuotes(c.env.DB,id),messages:await guestMessages(c.env.DB,id)});
