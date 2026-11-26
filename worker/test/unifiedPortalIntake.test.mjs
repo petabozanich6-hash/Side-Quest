@@ -257,6 +257,25 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.deepEqual((await readLiveActivity(DB,b,live)).shared_entries,[]);
  assert.equal(await endLiveActivity(DB,owner,{activity_id:collab.id,state:"closed",confirmed:true},live),true);
  assert.equal(await moderateCollaboration(DB,owner,{...share,entry_id:"late-entry"},live),false);
+ const {readActivityEvidence,saveActivityEvidence,removeActivityEvidence}=await import("../src/supportActivityEvidence.ts");
+ const seatA=DB.raw.prepare("SELECT id FROM support_english_enrolments WHERE class_id=? AND request_id=?").get(cid,b1.id).id;
+ const seatB=DB.raw.prepare("SELECT id FROM support_english_enrolments WHERE class_id=? AND request_id=?").get(cid,b2.id).id;
+ const work=await readActivityEvidence(DB,"club",cid,seatA,live);
+ const item=work.activities.find(v=>v.activity_id===collab.id);
+ assert.equal(item.response,"The raccoon finds a map.");
+ const mark={activity_id:collab.id,response_updated_at:item.response_updated_at,revision:0,observation:"Developed a relevant story idea with guidance.",achievement:"supported",confirmed:true,response:"forged"};
+ assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,{...mark,confirmed:false},live),false);
+ assert.equal(await saveActivityEvidence(DB,"club","wrong-session",seatA,mark,live),false);
+ assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,mark,live),true);
+ assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,mark,live),false);
+ const stored=DB.raw.prepare("SELECT response,achievement,revision FROM support_activity_evidence WHERE activity_id=? AND seat_id=?").get(collab.id,seatA);
+ assert.deepEqual(stored,{response:"The raccoon finds a map.",achievement:"supported",revision:1});
+ assert.equal((await readActivityEvidence(DB,"club",cid,seatB,live)).activities.find(v=>v.activity_id===collab.id).revision,null);
+ assert.equal(await removeActivityEvidence(DB,"club",cid,seatB,{activity_id:collab.id,revision:1,confirmed:true},live),false);
+ assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,{...mark,revision:1,achievement:"independent"},live),true);
+ assert.equal(await removeActivityEvidence(DB,"club",cid,seatA,{activity_id:collab.id,revision:1,confirmed:true},live),false);
+ assert.equal(await removeActivityEvidence(DB,"club",cid,seatA,{activity_id:collab.id,revision:2,confirmed:true},live),true);
+
  assert.equal((await readLiveActivity(DB,b,live)).activity,null);
 
  const tut=await submitPortalEnquiry(DB,one.actor,form(one.learner,"interactive-tutor"));assert.ok(tut.id);
@@ -270,6 +289,13 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await signalLiveActivity(DB,ta,{activity_id:q.id,signal:"confused"},live),true);
  assert.equal((await readLiveActivity(DB,to,live)).signals[0].signal,"confused");
  assert.equal(await readLiveActivity(DB,{...ta,actor:two.actor},live),null);
+ const tutoringWork=await readActivityEvidence(DB,"tutoring","interactive-order","interactive-order",live);
+ assert.equal(tutoringWork.activities.length,0);
+ assert.equal(await endLiveActivity(DB,to,{activity_id:q.id,state:"revealed",confirmed:true},live),true);
+ const tutItem=(await readActivityEvidence(DB,"tutoring","interactive-order","interactive-order",live)).activities.find(v=>v.activity_id===q.id);
+ assert.equal(await saveActivityEvidence(DB,"tutoring","interactive-order","interactive-order",{activity_id:q.id,response_updated_at:tutItem.response_updated_at,revision:0,observation:"Explained grouping.",achievement:"independent",confirmed:true},live),true);
+ assert.equal((await readActivityEvidence(DB,"tutoring","interactive-order","interactive-order",live)).activities[0].revision,1);
+
  DB.raw.prepare("UPDATE support_classrooms SET is_open=0 WHERE order_id='interactive-order'").run();
  assert.equal(await respondLiveActivity(DB,ta,{activity_id:q.id,response:"Another answer"},live),false);
  assert.equal(await readLiveActivity(DB,ta,live),null);
