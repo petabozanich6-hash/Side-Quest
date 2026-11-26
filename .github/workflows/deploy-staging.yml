@@ -52,8 +52,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -e
-          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${GITHUB_SHA}&status=success&per_page=100" --jq '.workflow_runs[] | select(.head_sha == env.GITHUB_SHA and .conclusion == "success") | .id' > /tmp/staging-verified-ci.txt
-          test -s /tmp/staging-verified-ci.txt || { echo "Selected commit does not have a successful CI run. Refusing staging deployment."; exit 1; }
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${GITHUB_SHA}&status=success&per_page=100" --jq '.workflow_runs[] | select(.conclusion == "success") | .head_sha' > /tmp/staging-verified-ci.txt
+          grep -Fxq "$GITHUB_SHA" /tmp/staging-verified-ci.txt || { echo "Selected commit does not have a successful CI run. Refusing staging deployment."; exit 1; }
       - name: Check required secrets
         run: |
           [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ] || { echo "Missing CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID secret"; exit 1; }
