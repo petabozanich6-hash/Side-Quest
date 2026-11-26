@@ -1,0 +1,4 @@
+-- Weekly group workshops and private per-learner enrolments.
+CREATE TABLE IF NOT EXISTS support_english_classes (id TEXT PRIMARY KEY, week_of TEXT NOT NULL UNIQUE, start_at TEXT NOT NULL, end_at TEXT NOT NULL, topic TEXT NOT NULL, preparation TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS support_english_enrolments (id TEXT PRIMARY KEY, class_id TEXT NOT NULL REFERENCES support_english_classes(id), request_id TEXT NOT NULL REFERENCES support_guest_requests(id) ON DELETE CASCADE, learner_label TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'reserved' CHECK(status IN ('reserved','invoiced','paid','cancelled')), invoice_reference TEXT, payment_due_at TEXT NOT NULL, attendance TEXT CHECK(attendance IN ('present','absent')), created_at TEXT NOT NULL, UNIQUE(class_id,request_id));
+CREATE INDEX IF NOT EXISTS idx_support_english_class_roster ON support_english_enrolments(class_id,status);

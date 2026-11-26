@@ -24,13 +24,32 @@ export function planSnapshot(b:any){
  const {lessons,...header}=p;
  return {plan:{public:JSON.stringify({...header,lessons:lessons.map(({guide,answers,...l})=>l)}),private:JSON.stringify(lessons.map(({guide,answers})=>({guide,answers})))}};
 }
-/** Issue the quote and snapshot together. A failed quote insert cannot attach a plan. */
-export async function issueQuoteWithPlan(db:D1Database,channel:Channel,id:string,qid:string,statement:D1PreparedStatement,plan:{public:string;private:string}|null,when:string){
- if(!plan)return statement.run();
- await ensureQuotePlans(db);
+// Appointment count and length are commercial commitments; detailed teaching plans can be prepared later.
+const SCHEDULE_SQL="CREATE TABLE IF NOT EXISTS support_quote_schedules (channel TEXT NOT NULL CHECK(channel IN ('member','guest')),quote_id TEXT NOT NULL,request_id TEXT NOT NULL,minutes_json TEXT NOT NULL,PRIMARY KEY(channel,quote_id))";
+async function ensureQuoteSchedules(db:D1Database){await db.prepare(SCHEDULE_SQL).run();}
+export function scheduleSnapshot(b:any){
+ if(b?.session_minutes==null)return {schedule:null};
+ const minutes=b.session_minutes;
+ if(!Array.isArray(minutes)||minutes.length<1||minutes.length>4||minutes.some(m=>!Number.isInteger(m)||![30,45,60].includes(m)))return {error:"Choose 1–4 standard session durations of 30, 45 or 60 minutes."};
+ if(b.plan&&(!Array.isArray(b.plan.lessons)||b.plan.lessons.length!==minutes.length||b.plan.lessons.some((l:any,i:number)=>l.minutes!==minutes[i])))return {error:"The reviewed learning plan must match the quoted session schedule."};
+ return {schedule:minutes as number[]};
+}
+/** Issue the quote and immutable teaching/booking snapshots together. */
+export async function issueQuoteWithPlan(db:D1Database,channel:Channel,id:string,qid:string,statement:D1PreparedStatement,plan:{public:string;private:string}|null,when:string,schedule:number[]|null=null){
+ if(!plan&&!schedule)return statement.run();
  const table=channel==="guest"?"support_guest_quotes":"learning_support_quotes",key=channel==="guest"?"request_id":"feedback_id";
- const results=await db.batch([statement,db.prepare("INSERT INTO support_quote_plans(channel,quote_id,request_id,public_json,private_json,created_at) SELECT ?,id,?,?,?,? FROM "+table+" WHERE id=? AND "+key+"=?").bind(channel,id,plan.public,plan.private,when,qid,id)]);
- return results[0];
+ const stmts=[statement];
+ if(plan){await ensureQuotePlans(db);stmts.push(db.prepare("INSERT INTO support_quote_plans(channel,quote_id,request_id,public_json,private_json,created_at) SELECT ?,id,?,?,?,? FROM "+table+" WHERE id=? AND "+key+"=?").bind(channel,id,plan.public,plan.private,when,qid,id));}
+ if(schedule){await ensureQuoteSchedules(db);stmts.push(db.prepare("INSERT INTO support_quote_schedules(channel,quote_id,request_id,minutes_json) SELECT ?,id,?,? FROM "+table+" WHERE id=? AND "+key+"=?").bind(channel,id,JSON.stringify(schedule),qid,id));}
+ return (await db.batch(stmts))[0];
+}
+export async function readQuoteSchedule(db:D1Database,channel:Channel,id:string,qid:string):Promise<number[]|null>{
+ await ensureQuoteSchedules(db);
+ const table=channel==="guest"?"support_guest_quotes":"learning_support_quotes",key=channel==="guest"?"request_id":"feedback_id";
+ const row=await db.prepare("SELECT s.minutes_json FROM support_quote_schedules s JOIN "+table+" q ON q.id=s.quote_id AND q."+key+"=s.request_id WHERE s.channel=? AND s.request_id=? AND s.quote_id=?").bind(channel,id,qid).first<{minutes_json:string}>();
+ if(row)return JSON.parse(row.minutes_json);
+ const plan=await readQuotePlan(db,channel,id,qid);
+ return plan?plan.lessons.map((l:any)=>l.minutes):null;
 }
 export async function readQuotePlan(db:D1Database,channel:Channel,id:string,qid:string,owner=false){
  await ensureQuotePlans(db);

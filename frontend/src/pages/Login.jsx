@@ -16,14 +16,17 @@ export default function Login() {
   const nav = useNavigate();
   const [params] = useSearchParams();
   const supportSignup = params.get("service") === "learning-support";
-  const supportSuffix = supportSignup ? "?service=learning-support" : "";
+  const familyPortal=params.get("service")==="family-portal";
+  const request=params.get("request")||"";
+  const portalDestination=familyPortal&&/^[A-Za-z0-9_-]{1,100}$/.test(request)?"/family-portal?page=requests&source=portal&request="+encodeURIComponent(request):"/family-portal";
+  const supportSuffix = familyPortal?"?service=family-portal":supportSignup ? "?service=learning-support" : "";
 
   const submit = async (e) => {
     e.preventDefault(); setLoading(true);
     try {
       const { data } = await api.post("/auth/login", { email, password });
       setSession(data.token, { ...data.user, role: "parent" });
-      toast.success("Welcome back"); nav(supportSignup ? "/parent/learning-support" : "/parent");
+      toast.success("Welcome back"); nav(familyPortal||data.user.family_portal_default?portalDestination:supportSignup ? "/parent/learning-support" : "/parent",{replace:true});
     } catch (err) {
       if (err.response?.data?.code === "EMAIL_VERIFICATION_REQUIRED") setVerificationPending(true);
       toast.error(err.response?.data?.detail || "Login failed");
@@ -64,8 +67,8 @@ export default function Login() {
       <div className="flex items-center justify-center p-6 relative">
         <Flower className="absolute top-8 right-10" size={34} color="#D4857A"/>
         <form onSubmit={submit} className="w-full max-w-md paper-card p-8" data-testid="login-form">
-          <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>Parent sign in</h1>
-          <p className="text-sm text-stone-500 mt-1">Children sign in separately with username + PIN.</p>
+          <h1 className="font-display text-3xl font-bold" style={{color:"#1F3B2D"}}>{familyPortal?"Family portal sign in":"Parent sign in"}</h1>
+          <p className="text-sm text-stone-500 mt-1">{familyPortal?"Use your existing Side-Quest account or your free learning support account.":"Children sign in separately with username + PIN."}</p>
 
           <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-stone-400"><div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/>email<div className="h-px flex-1" style={{backgroundColor:"#D4C8A8"}}/></div>
 
@@ -77,7 +80,7 @@ export default function Login() {
             <div>
               <label className="text-xs font-bold uppercase tracking-widest text-stone-500">Password</label>
               <input value={password} onChange={e=>setPassword(e.target.value)} type="password" required className="mt-1 w-full rounded-xl border border-stone-300 px-3.5 py-2.5 text-sm bg-white focus:border-moss" data-testid="login-password"/>
-              <div className="mt-2 text-right"><Link to="/forgot-password" className="text-xs font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-forgot">Forgot password?</Link></div>
+              <div className="mt-2 text-right"><Link to={"/forgot-password"+(familyPortal?supportSuffix:"")} className="text-xs font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-forgot">Forgot password?</Link></div>
             </div>
           </div>
           <button disabled={loading} className="mt-6 w-full rounded-full py-3 text-sm font-bold hover:translate-y-[-1px] transition disabled:opacity-50" style={{backgroundColor:"#1F3B2D", color:"#F5EFE0"}} data-testid="login-submit">{loading ? "Signing in…" : "Sign in"}</button>
@@ -90,8 +93,8 @@ export default function Login() {
             </div>
           )}
           <div className="mt-5 flex items-center justify-between text-xs">
-            <Link to={"/register"+supportSuffix} className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
-            <Link to="/child-login" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-child">Student sign in</Link>
+            <Link to={familyPortal?"/family-portal/register":"/register"+supportSuffix} className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-register">Create account</Link>
+            {!familyPortal&&<Link to="/child-login" className="font-bold hover:underline" style={{color:"#4A5D3A"}} data-testid="login-to-child">Student sign in</Link>}
           </div>
           <p className="mt-6 pt-4 border-t text-center text-[11px] leading-relaxed text-stone-500" style={{borderColor:"#E4DAC0"}} data-testid="acknowledgement-of-country">Side-Quest acknowledges the Traditional Custodians of Country throughout Australia and pays respect to Elders past and present.</p>
         </form>

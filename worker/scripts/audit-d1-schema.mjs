@@ -63,7 +63,10 @@ function remoteSelect(query) {
 
 function main() {
   const objects = remoteSelect("SELECT name, type FROM sqlite_master WHERE type IN ('table','index') AND name NOT LIKE 'sqlite_%'");
-  const columns = remoteSelect("SELECT m.name AS table_name, p.name AS name FROM sqlite_master m JOIN pragma_table_info(m.name) p WHERE m.type='table'");
+  // D1 authorizes direct PRAGMA table_info, not necessarily its table-valued form.
+  const tables = new Set(objects.filter(x => x.type === "table").map(x => x.name));
+  const columns = Object.keys(REQUIRED).filter(t=>tables.has(t)).flatMap(table_name =>
+    remoteSelect('PRAGMA table_info("' + table_name + '")').map(r=>({table_name,name:r.name})));
   const recorded = remoteSelect("SELECT name FROM d1_migrations");
   const migrationFiles = readdirSync(resolve(root, "worker/migrations")).filter(x => x.endsWith(".sql")).sort();
   const report = compareSchema({ objects, columns, recorded, migrationFiles });

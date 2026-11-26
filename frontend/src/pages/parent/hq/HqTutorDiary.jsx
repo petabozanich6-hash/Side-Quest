@@ -1,6 +1,9 @@
 import React,{useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 import {downloadSupportText} from "../../../lib/downloadSupportText";
+import HqActivityEvidence from "./HqActivityEvidence";
+import HqActivityPlan from "./HqActivityPlan";
+import SupportLessonProgress from "../SupportLessonProgress";
 const fields=[["subject","Subject / topic",80],["year_level","Year or learning level",40],["objective","What are we aiming to achieve?",600],["interests","Interests, strengths and useful learning adjustments",600],["approach","How will I teach it?",1000],["agenda","Timed lesson sequence / activities",2500],["materials","Materials, presentation titles and worksheets",1500],["preparation","Before the lesson checklist",1000],["follow_up","Parent follow-up / next steps",1500],["reflection","After the lesson: progress and what to revisit",1500]];
 const btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50",field="block w-full rounded-lg border p-2 text-sm bg-white";
 export default function HqTutorDiary({path,onSaved}){
@@ -18,5 +21,5 @@ export default function HqTutorDiary({path,onSaved}){
  {fields.map(([key,label,max])=><label key={key} className="block text-sm">{label}<textarea className={field} maxLength={max} rows={key==="agenda"?6:2} value={draft.details[key]||""} onChange={e=>change(key,e.target.value)}/></label>)}
  <label className="flex gap-2 text-sm"><input type="checkbox" checked={draft.ready} onChange={e=>setDraft(d=>({...d,ready:e.target.checked}))}/> Lesson ready: goals, sequence and materials checked.</label>
  <button className="rounded-lg bg-emerald-950 text-white px-4 py-2" disabled={busy}>Save private diary</button><button type="button" className={btn+" ml-2"} onClick={()=>downloadSupportText("private-tutor-diary.txt",["PRIVATE — tutor only",draft.learner_label,data.order.scope,data.order.start_at?new Date(data.order.start_at).toLocaleString("en-AU",{timeZone:"Australia/Sydney"})+" (Sydney time)":data.order.mode,...fields.map(([key,label])=>label+": "+(draft.details[key]||""))].join("\n\n"))}>Download private prep sheet</button>
- </form>}</section>;
+ </form>}{draft&&data?.order.mode==="live"&&<HqActivityPlan key={path} kind="tutoring" sessionId={path.split("/").filter(Boolean).pop()}/>}{data?.order.mode==="live"&&["paid","completed"].includes(data.order.status)&&<><SupportLessonProgress key={path} path={path} client={adminApi}/><HqActivityEvidence key={"evidence:"+path} kind="tutoring" sessionId={path.split("/").filter(Boolean).pop()} seatId={path.split("/").filter(Boolean).pop()}/></>}</section>;
 }

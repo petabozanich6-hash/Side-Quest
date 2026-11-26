@@ -26,7 +26,7 @@ export async function enrolPasskey({ password, label }) {
   return adminApi.post("/security/passkeys/register/verify", { response, label });
 }
 
-/** Confirms it's the Owner with a passkey; opens Owner HQ for this sign-in for 15 minutes. */
+/** Confirms it's the Owner with a passkey; opens Owner HQ for this sign-in for 120 minutes. */
 export async function stepUpWithPasskey() {
   const { options } = await adminApi.post("/security/step-up/options");
   const response = await startAuthentication({ optionsJSON: options });

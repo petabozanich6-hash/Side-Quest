@@ -1,11 +1,12 @@
 import type {Env} from "./types";
 import {squareConfig,squareCall,type Fetch} from "./square";
-import {getOrder,supportPaymentsEnabled,type Channel} from "./supportOrders";
+import {getOrder,hasSquareInvoiceIntent,supportPaymentsEnabled,type Channel} from "./supportOrders";
 export async function prepareSupportCheckout(env:Env,channel:Channel,id:string,oid:string,fetchImpl?:Fetch){
  if(!supportPaymentsEnabled(env))return {error:"Tutoring checkout is disabled until isolated Square sandbox testing is complete."};
  const cfg=squareConfig(env);if(!cfg.ok||cfg.production)return {error:"Square sandbox is not configured."};
  const row=await getOrder(env.DB,channel,id,oid);
  if(!row||row.status!=="confirmed"||row.amount_cents<=0)return {error:"Confirm the service before preparing checkout."};
+ if(await hasSquareInvoiceIntent(env.DB,oid))return {error:"A prepared Square invoice requires owner reconciliation before starting checkout."};
  if(row.checkout_url)return {url:row.checkout_url};
  if(row.start_at&&row.start_at<=new Date().toISOString())return {error:"Appointment time has passed; review the order."};
  // Stable Square idempotency key, including recovery if a network response is lost.
