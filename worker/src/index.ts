@@ -1,4 +1,5 @@
 import {recheckIssuedSupportInvoices} from "./supportSquareInvoiceResolution";
+import {registerFamilyClubInvoices} from "./clubSquareInvoicePublication";
 import {registerFamilySquareInvoices} from "./unifiedPortalSquareInvoices";
 import { Hono } from "hono";
 import { normJurisdiction, setFamilyJurisdiction, getFamilyJurisdiction } from "./data/jurisdictions";
@@ -407,6 +408,7 @@ registerLiveActivityRoutes(app,guards);
 registerFamilyProgressReports(app,guards);
 registerFamilyOverview(app,guards);
 registerFamilySquareInvoices(app,guards);
+registerFamilyClubInvoices(app,guards);
 registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
