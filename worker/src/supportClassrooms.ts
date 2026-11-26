@@ -1,3 +1,4 @@
+import {initialSlideInteraction,changeSlideInteraction,validateSlideVisual} from "./supportSlideVisuals";
 import type {Env} from "./types";
 import {getOrder,type Channel} from "./supportOrders";
 import {getDeck} from "./supportDecks";
@@ -49,12 +50,18 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   const image=await presentationImage(db,b.file_id);if(!image)return {error:"Choose an active learner-facing PNG or JPEG."};
   board.image={id:image.id,title:image.title};board.slide=null;
  }
+ else if(b.action==="slide-interact"){
+  const next=changeSlideInteraction(board.slide?.visual,board.slide?.interaction,b,owner);
+  if(!next)return {error:"This visual action is not available for the current slide."};
+  board.slide.interaction=next;
+ }
  else if(b.action==="present"&&owner&&typeof b.deck_id==="string"&&typeof b.index==="number"&&Number.isInteger(b.index)){
   const deck=await getDeck(db,b.deck_id);
   if(!deck||deck.status!=="reviewed"||deck.revision!==b.deck_revision||b.index<0||b.index>=deck.slides.length)return {error:"Only current, reviewed resources can be presented."};
   const s=deck.slides[b.index];
   board.image=null;
-  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length,...(s.visual?{visual:s.visual}:{})};
+  const visual=validateSlideVisual(s.visual);
+  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length,...(visual?{visual,interaction:initialSlideInteraction(visual)}:{})};
  }
  else return {error:"This board action is not available."};
  const json=JSON.stringify(board);if(json.length>220000)return {error:"Board is full."};
