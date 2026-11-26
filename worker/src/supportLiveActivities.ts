@@ -60,13 +60,13 @@ export function registerLiveActivityRoutes(app:App,g:Guards){
  app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","private, no-store");if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);await next();});
  app.get(root+"/:kind/:session/:request",g.auth,g.parent,async c=>{
   const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
-  const a={kind,sessionId:c.req.param("session")??"",requestId:c.req.param("request")??"",owner:false as const,actor:c.get("user")};
+  const a:Access={kind,sessionId:c.req.param("session")??"",requestId:c.req.param("request")??"",owner:false as const,actor:c.get("user")};
   if(!(await hitRateLimit(c.env.DB,"live-activity-read:"+a.actor.id,120,300)).ok)return c.json({detail:"Try again shortly."},429);
   const result=await readLiveActivity(c.env.DB,a);return result?c.json(result):c.json({detail:"An open, paid classroom and verified parent are required."},404);
  });
  app.post(root+"/:kind/:session/:request",g.auth,g.parent,async c=>{
   const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
-  const a={kind,sessionId:c.req.param("session")??"",requestId:c.req.param("request")??"",owner:false as const,actor:c.get("user")};
+  const a:Access={kind,sessionId:c.req.param("session")??"",requestId:c.req.param("request")??"",owner:false as const,actor:c.get("user")};
   if(!(await hitRateLimit(c.env.DB,"live-activity-write:"+a.actor.id,30,300)).ok)return c.json({detail:"Try again shortly."},429);
   const b=await c.req.json().catch(()=>null);
   return await respondLiveActivity(c.env.DB,a,b)?c.json({ok:true}):c.json({detail:"This response could not be accepted. Refresh the activity."},409);
