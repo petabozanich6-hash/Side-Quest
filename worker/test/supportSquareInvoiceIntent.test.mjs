@@ -8,6 +8,8 @@ import {createPreparedSupportSquareDraft} from "../src/supportSquareInvoiceDraft
 import {inspectPreparedSupportSquareInvoice,recoverPreparedSupportSquareRecord} from "../src/supportSquareInvoiceReconcile.ts";
 import {publishPreparedSupportSquareInvoice} from "../src/supportSquareInvoicePublish.ts";
 import {verifyIssuedSupportSquarePayment,flagIssuedSupportInvoiceRefund,reconcileSupportInvoiceEvent} from "../src/supportSquareInvoiceSettlement.ts";
+import {releaseVerifiedUnpaidSquareInvoice,recordInvoiceReview} from "../src/supportSquareInvoiceReview.ts";
+import {ownerToday} from "../src/unifiedOwnerToday.ts";
 import {prepareSupportCheckout} from "../src/supportCheckout.ts";
 import {cancelUnstartedOrder,recordManualInvoice} from "../src/supportOrders.ts";
 test("approved invoice intent is durable, duplicate-safe and never issues a provider invoice",async t=>{
@@ -289,4 +291,41 @@ test("issued invoice settlement requires a single captured card payment by the d
  assert.equal((await run()).verified,true);assert.equal(proofs().length,1);
  assert.equal(await flagIssuedSupportInvoiceRefund(env,{payment_id:"PAY1",location_id:"LOCATION123",status:"PENDING"},checkTime),"support invoice refund requires review");
  assert.equal(orderStatus(),"review");assert.ok(proofs()[0].review_at);assert.equal((await run()).verified,false);
+});
+
+test("overdue invoice release requires explicit approval and verified cancelled order with zero payment",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+
+ const b={reviewed:true,customer_id:"CUST1",due_at:"2026-11-27T01:00:00.000Z"};
+ const later=new Date("2026-11-28T00:00:00.000Z"),row=()=>db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+ let status="UNPAID",orderState="OPEN",completed=0,tenders=[];
+ const provider=async(url,init)=>{
+  assert.equal(init.method,"GET");
+  if(url.endsWith("/customers/CUST1"))return new Response(JSON.stringify({customer:{id:"CUST1",email_address:"test@example.com"}}));
+  if(url.endsWith("/orders/REMOTE1"))return new Response(JSON.stringify({order:{id:"REMOTE1",reference_id:row().create_order_key,location_id:"LOCATION123",customer_id:"CUST1",state:orderState,total_money:{currency:"AUD",amount:2500},tenders}}));
+  assert.ok(url.endsWith("/invoices/INV1"));
+  return new Response(JSON.stringify({invoice:{id:"INV1",version:2,location_id:"LOCATION123",order_id:"REMOTE1",status,delivery_method:"EMAIL",primary_recipient:{customer_id:"CUST1",email_address:"test@example.com"},accepted_payment_methods:JSON.parse(row().payload_json).invoice.accepted_payment_methods,payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",automatic_payment_source:"NONE",computed_amount_money:{currency:"AUD",amount:2500},total_completed_amount_money:{currency:"AUD",amount:completed}}]}}));
+ };
+ const p=await previewSupportInvoice(env,"member","r","o",b,provider,now),approved={...b,confirmed:true,fingerprint:p.fingerprint};
+ assert.equal((await prepareSupportInvoiceIntent(env,"member","r","o","owner",approved,provider,now)).prepared,true);
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='issued',provider_order_id='REMOTE1',provider_invoice_id='INV1',provider_invoice_version=1,publish_approved_version=0,publish_attempted_at=?,provider_issued_at=?,provider_public_url='https://squareupsandbox.com/pay-invoice/INV1' WHERE order_id='o'").run(stamp,stamp);
+ const body={...approved,cancelled_in_square:true,parent_notified:true};
+ const run=(x=body,at=later)=>releaseVerifiedUnpaidSquareInvoice(env,"member","r","o","owner",x,provider,at);
+ const state=()=>db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status;
+ assert.ok("error" in await run({...body,parent_notified:false}));assert.ok("error" in await run(body,now));
+ assert.ok("error" in await run());assert.equal(state(),"confirmed");
+ const overdue=await ownerToday(db,later);assert.ok(overdue.groups.find(g=>g.category==="attention").items.some(x=>x.id==="o"&&x.action==="square_overdue"));
+ await recordInvoiceReview(db,"o","payment_uncertain",later);
+ const review=await ownerToday(db,later);assert.ok(review.groups.find(g=>g.category==="attention").items.some(x=>x.id==="o"&&x.action==="square_review"));
+ status="CANCELED";completed=1000;orderState="COMPLETED";assert.ok("error" in await run());
+ completed=0;orderState="CANCELED";tenders=[{payment_id:"PAY1"}];assert.ok("error" in await run());
+ tenders=[];assert.throws(()=>db.raw.prepare("UPDATE support_service_orders SET status='cancelled' WHERE id='o'").run(),/requires reconciliation/);
+ assert.equal((await run()).released,true);assert.equal(state(),"cancelled");
+ assert.equal((await run()).released,true);assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_cancellations").get().n,1);
+ assert.ok(db.raw.prepare("SELECT resolved_at FROM support_square_invoice_reviews WHERE order_id='o'").get().resolved_at);
 });
