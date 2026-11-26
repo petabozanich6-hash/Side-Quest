@@ -13,6 +13,7 @@ import {ownerToday} from "./unifiedOwnerToday";
 import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
+import {publishClubClass} from "./englishClubSelfService";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
 import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
@@ -964,6 +965,13 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",b=await readJson(c);
     if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.post("/english-club/classes/:cid/publication",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return notFound(c);
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(!await publishClubClass(c.env.DB,id,c.get("user").id,b))return c.json({detail:"Unable to change class publication. Check the session and deadline."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.publication",targetType:"english_club",targetId:id,detail:{enabled:b.enabled}});
+    return c.json({ok:true});
   });
   admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
     const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
