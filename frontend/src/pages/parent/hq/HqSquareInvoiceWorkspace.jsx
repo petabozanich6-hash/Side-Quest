@@ -24,6 +24,7 @@ export default function HqSquareInvoiceWorkspace(){
 function InvoicePage({channel,requestId,orderId,apiPath,from}){
  const [data,setData]=useState(null),[customer,setCustomer]=useState(""),[due,setDue]=useState(""),[review,setReview]=useState(false),[preview,setPreview]=useState(null);
  const [approved,setApproved]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState(""),[loadError,setLoadError]=useState("");
+ const [checked,setChecked]=useState(null),[candidateOrder,setCandidateOrder]=useState(""),[candidateInvoice,setCandidateInvoice]=useState("");
  const lock=useRef(false),live=useRef(false);
  const load=useCallback(async()=>{try{const result=await adminApi.get(apiPath);if(live.current){setData(result);setLoadError("");}return result;}catch(e){if(live.current){setData(null);setLoadError(errorText(e,"Could not load invoice workspace."));}return null;}},[apiPath]);
  useEffect(()=>{live.current=true;load();return()=>{live.current=false;};},[load]);
@@ -38,8 +39,14 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
   catch(e){if(live.current)setError(errorText(e,"Could not prepare invoice preview."));}
   finally{lock.current=false;if(live.current)setBusy(false);}
  }
+ async function inspect(e){
+  e.preventDefault();if(lock.current||!data?.intent)return;lock.current=true;setBusy(true);setError("");setChecked(null);
+  try{const r=await adminApi.post("/support-invoice-workspace/inspect",{...context,confirmed:true,fingerprint:data.intent.fingerprint,...(!data.intent.provider_order_id&&candidateOrder.trim()?{provider_order_id:candidateOrder.trim()}:{}),...(!data.intent.provider_invoice_id&&candidateInvoice.trim()?{provider_invoice_id:candidateInvoice.trim()}:{})});if(live.current)setChecked(r);}
+  catch(e){if(live.current)setError(errorText(e,"Could not verify the Square record."));}
+  finally{lock.current=false;if(live.current)setBusy(false);}
+ }
  async function action(name,details){
-  if(lock.current)return;lock.current=true;setBusy(true);setError("");setApproved(false);
+  if(lock.current)return;lock.current=true;setBusy(true);setError("");setApproved(false);setChecked(null);
   try{await adminApi.post("/support-invoice-workspace/"+name,{...context,...details,confirmed:true});if(live.current){setPreview(null);setReview(false);}}
   catch(e){if(live.current)setError(errorText(e,"Invoice action could not be confirmed. Check the saved status before retrying."));}
   finally{await load();lock.current=false;if(live.current)setBusy(false);}
@@ -80,7 +87,22 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
    {data.eligible&&stage[1]&&<><label className="flex gap-2 text-sm"><input type="checkbox" checked={approved} disabled={busy} onChange={e=>setApproved(e.target.checked)}/>I approve this sandbox operation for the saved details above.</label>
    <button className={button} disabled={busy||!approved} onClick={()=>action(stage[1],{fingerprint:i.fingerprint})}>{busy?"Working…":stage[2]}</button></>}
    {i.state==="prepared"&&!i.order_attempted_at&&!i.invoice_attempted_at&&<button className="block underline text-sm text-rose-800" disabled={busy} onClick={()=>{if(window.confirm("Discard this local preparation? Nothing has been submitted to Square."))action("release",{fingerprint:i.fingerprint});}}>Discard local preparation</button>}
-   <button className="block underline text-sm" disabled={busy} onClick={()=>{setApproved(false);load();}}>Reload saved status</button>
+   {["order_pending","order_created","invoice_pending","draft_created","review","publish_pending","issued"].includes(i.state)&&<div className="border-t pt-3 space-y-2">
+    <h4 className="font-semibold">Check saved record in Square</h4>
+    <p className="text-sm">Read-only provider check. A failed or missing lookup does not mean it is safe to create another invoice.</p>
+    <form className="space-y-2" onSubmit={inspect}>
+     {!i.provider_order_id&&<label className="block text-sm">Candidate Square order ID<input className={field} required maxLength={150} value={candidateOrder} disabled={busy} onChange={e=>{setCandidateOrder(e.target.value);setChecked(null);}}/></label>}
+     {!i.provider_invoice_id&&["invoice_pending","review"].includes(i.state)&&<label className="block text-sm">Candidate Square invoice ID (if found)<input className={field} maxLength={150} value={candidateInvoice} disabled={busy} onChange={e=>{setCandidateInvoice(e.target.value);setChecked(null);}}/></label>}
+     <button className="rounded-lg border px-3 py-2 text-sm" disabled={busy}>{busy?"Checking…":"Check Square record"}</button>
+    </form>
+    {checked&&<div role="status" className="rounded-lg border p-3 space-y-2 text-sm">
+     <p>Order matched · {checked.order_open?"Open":"Not open"}</p>
+     {checked.invoice_checked&&<><p>Invoice status: {checked.status} · version {checked.version}</p><p>Amount: {money(checked.amount_cents)} · Completed: {money(checked.completed_cents)}</p><p>{checked.draft_matches?"Draft matches saved settings.":"Draft or payment settings require review."}</p></>}
+     {checked.requires_review&&<p>Review is required; no booking or payment status has changed.</p>}
+     {(checked.can_recover_order||checked.can_recover_draft)&&<button className={button} disabled={busy} onClick={()=>{if(window.confirm("Link this freshly matched sandbox record to the existing preparation? This will not issue an invoice."))action("recover",{fingerprint:i.fingerprint,recovery_confirmed:true,provider_order_id:checked.provider_order_id,...(checked.invoice_checked?{provider_invoice_id:checked.provider_invoice_id}:{})});}}>Recover matched record</button>}
+    </div>}
+   </div>}
+   <button className="block underline text-sm" disabled={busy} onClick={()=>{setApproved(false);setChecked(null);load();}}>Reload saved status</button>
   </div>}
  </section>;
 }
