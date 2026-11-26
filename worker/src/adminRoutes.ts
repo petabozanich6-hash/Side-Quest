@@ -508,13 +508,15 @@ export function createAdminRoutes() {
     const status = c.req.query("status") || "";
     const category = c.req.query("category") || "";
     const supportOnly = c.req.query("kind") === "learning-support";
+    const exactRequest=c.req.query("request")||"",exactFamily=c.req.query("family")||"";
+    if((!!exactRequest!==!!exactFamily)||exactRequest.length>100||exactFamily.length>100||exactRequest&&!supportOnly)return c.json({detail:"Invalid support enquiry reference"},400);
     if (status && !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
     if (category && !(FEEDBACK_CATEGORIES as readonly string[]).includes(category)) return c.json({ detail: "Invalid category" }, 400);
     const page = Number(c.req.query("page") || "1");
     if (!Number.isInteger(page) || page < 1 || page > 10000) return c.json({ detail: "Invalid page" }, 400);
     const { results } = await c.env.DB.prepare(
-      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) AND (? = 0 OR p.page_hint = 'learning-support') ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
-    ).bind(status,status,category,category,supportOnly ? 1 : 0,(page - 1)*50).all();
+      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) AND (? = 0 OR p.page_hint = 'learning-support') AND (? = '' OR (p.id = ? AND p.family_id = ?)) ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
+    ).bind(status,status,category,category,supportOnly ? 1 : 0,exactRequest,exactRequest,exactFamily,(page - 1)*50).all();
     const rows=results || [];
     return c.json({ items: rows.slice(0,50), has_more: rows.length > 50, page });
   });
