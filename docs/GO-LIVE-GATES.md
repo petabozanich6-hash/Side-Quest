@@ -4,7 +4,7 @@
 
 Release branch: `release/unified-learning-support-2026-11-26`. This incorporates the entire stacked development chain through #426, including revised six-week author-led curriculum, automated activity and resource preparation, subscriber and claimed guest classroom access, explicit learner continuity, Square sandbox automation, briefing and certificate workflows. Previous component and release PRs are historical review points; do not merge them independently. No live activation is authorised.
 
-At consolidation, main was `11d67fea229f769c060b787031d4f415efd53818`; the development head `11b9d4297824acf867306514b0453ce01e2142c3` was 908 commits ahead and zero behind. Rehearse every pending migration identified by actual database audit through 0147, not merely the ranges in historical notes. Exact candidate CI, private staging, independent backup/restore, payment, privacy and safeguarding checks remain mandatory.
+At consolidation, main was `11d67fea229f769c060b787031d4f415efd53818`; the development head `11b9d4297824acf867306514b0453ce01e2142c3` was 908 commits ahead and zero behind. Rehearse every pending migration identified by actual database audit through 0148, not merely the ranges in historical notes. Exact candidate CI, private staging, independent backup/restore, payment, privacy and safeguarding checks remain mandatory.
 
 ### Acceptance sequence (all require evidence)
 - [ ] Exact consolidated head: all mandatory CI steps successful; review logs for actual outcomes.
@@ -57,3 +57,8 @@ Only after these gates pass: apply pending migrations from the verified release 
 - If staging R2 is needed for optional PDF/image resources, configure only sidequest-staging-files; test a learner-reviewed shared file against an unapproved, unpaid or unrelated account. Test actual email and daily briefing separately. Production activation remains blocked until external checks, group terms, backup and restore rehearsal, and live staging verification are complete.
 
 No production deployment, billing transaction, migration, backup attestation or live email is performed merely by creating this file.
+
+## 26 November staging feedback corrections
+- Previous candidate 7c2e7f6 passed exact CI (45765452020) and private deployment (45767054397); 29 staging migrations and private access smoke passed. User verified learner creation, three provisional standard bookings, diary buffers and owner appointment access. Staging email, payment and R2 were disabled. Do not claim actual payments or delivery verified.
+- New release changes: private learner-context prefill and optional manual diary editing; guided tutor concept explanations, slide notes, worksheets, private answer keys and two interactive activities; explicit metered resource AI opt-in on isolated staging. Approved packs require a reviewed generic topic, independent accuracy/privacy review and active appointment. Migration 0148; only owner endpoint reads full pack, learner sees explicitly presented slide content. Calendar day, availability, review and reports use separate pages. Standard booking checks availability before form and explicit price acceptance directly opens time selection, retaining personalised proposal path. Learner save has direct service link.
+- New exact CI and browser acceptance pending; do not redeploy until successful. Actual performance measurements and provider/payment/email verification remain open.
