@@ -613,7 +613,8 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.ok((await createClubSquareOrder(env,"round",w[0].obligation_id,{fingerprint:bad.fingerprint,confirmed:true},badProvider,now)).error);
  assert.equal((await clubInvoiceWorkspace(env,"round",w[0].obligation_id)).state,"review");
 
- assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status<>'reserved'").get().n,0);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,0);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='invoiced'").get().n,1);
  const other=w[1];const before=await previewClubInvoice(env,"round",other.obligation_id,args,mock,now);assert.ok(before.fingerprint);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id IN (SELECT seat_id FROM support_club_obligation_seats WHERE kind='round' AND obligation_id=?)").run(other.obligation_id);
  assert.ok((await prepareClubInvoice(env,"round",other.obligation_id,one.actor.id,{...args,fingerprint:before.fingerprint,confirmed:true},mock,now)).error);
