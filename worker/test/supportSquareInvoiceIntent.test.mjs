@@ -5,6 +5,7 @@ import {previewSupportInvoice} from "../src/supportSquareInvoicePreview.ts";
 import {prepareSupportInvoiceIntent,releasePreparedSupportInvoiceIntent} from "../src/supportSquareInvoiceIntent.ts";
 import {createPreparedSupportSquareOrder} from "../src/supportSquareInvoiceOrder.ts";
 import {createPreparedSupportSquareDraft} from "../src/supportSquareInvoiceDraft.ts";
+import {inspectPreparedSupportSquareInvoice,recoverPreparedSupportSquareRecord} from "../src/supportSquareInvoiceReconcile.ts";
 import {prepareSupportCheckout} from "../src/supportCheckout.ts";
 import {cancelUnstartedOrder,recordManualInvoice} from "../src/supportOrders.ts";
 test("approved invoice intent is durable, duplicate-safe and never issues a provider invoice",async t=>{
@@ -150,4 +151,52 @@ test("sandbox draft creation rechecks the remote order, recovers with the same k
  badOrder=false;badInvoice=true;db.raw.prepare("UPDATE support_square_invoice_intents SET state='invoice_pending' WHERE order_id='o'").run();
  assert.ok("error" in await run());assert.equal(db.raw.prepare("SELECT state FROM support_square_invoice_intents WHERE order_id='o'").get().state,"review");
  assert.equal(posts.length,3);
+});
+
+test("read-only reconciliation validates candidate records and safely links a lost response without publishing",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+
+ const b={reviewed:true,customer_id:"CUST1",due_at:"2026-11-27T01:00:00.000Z"};
+ let wrongOrder=false,wrongInvoice=false,version=0,scheduled=false;const calls=[];
+ const provider=async(url,init)=>{
+  assert.equal(init.method,"GET");calls.push(url);
+  if(url.endsWith("/customers/CUST1"))return new Response(JSON.stringify({customer:{id:"CUST1",email_address:"test@example.com"}}));
+  const row=db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+  if(url.endsWith("/orders/REMOTE1"))return new Response(JSON.stringify({order:{id:"REMOTE1",reference_id:wrongOrder?"OTHER":row.create_order_key,location_id:"LOCATION123",customer_id:"CUST1",state:"OPEN",total_money:{currency:"AUD",amount:2500}}}));
+  if(url.endsWith("/invoices/INV1"))return new Response(JSON.stringify({invoice:{id:"INV1",version,location_id:"LOCATION123",order_id:wrongInvoice?"OTHER":"REMOTE1",status:"DRAFT",delivery_method:"EMAIL",scheduled_at:scheduled?"2026-11-27T00:00:00Z":undefined,primary_recipient:{customer_id:"CUST1",email_address:"test@example.com"},accepted_payment_methods:JSON.parse(row.payload_json).invoice.accepted_payment_methods,payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",automatic_payment_source:"NONE",computed_amount_money:{currency:"AUD",amount:2500},total_completed_amount_money:{currency:"AUD",amount:0}}]}}));
+  return new Response("{}",{status:404});
+ };
+ const p=await previewSupportInvoice(env,"member","r","o",b,provider,now),approved={...b,confirmed:true,fingerprint:p.fingerprint};
+ assert.equal((await prepareSupportInvoiceIntent(env,"member","r","o","owner",approved,provider,now)).prepared,true);
+ const inspect=(x=approved,e=env,request="r")=>inspectPreparedSupportSquareInvoice(e,"member",request,"o",x,provider,now);
+ const recover=(x=approved)=>recoverPreparedSupportSquareRecord(env,"member","r","o",x,provider,now);
+ const row=()=>db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+ assert.ok("error" in await inspect());assert.equal(row().state,"prepared");
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='order_pending',order_attempted_at=? WHERE order_id='o'").run(stamp);
+ const orderBody={...approved,provider_order_id:"REMOTE1"};
+ wrongOrder=true;assert.ok("error" in await inspect(orderBody));wrongOrder=false;
+ assert.ok("error" in await inspect(orderBody,env,"other"));
+ const before=row();assert.equal((await inspect(orderBody)).can_recover_order,true);assert.deepEqual(row(),before);
+ assert.ok("error" in await recover(orderBody));assert.equal((await recover({...orderBody,recovery_confirmed:true})).state,"order_created");
+ assert.equal(row().provider_order_id,"REMOTE1");
+ assert.ok("error" in await inspect({...orderBody,provider_order_id:"OTHER"}));
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='invoice_pending',invoice_attempted_at=? WHERE order_id='o'").run(stamp);
+ const invoiceBody={...approved,provider_invoice_id:"INV1"};
+ wrongInvoice=true;assert.ok("error" in await inspect(invoiceBody));wrongInvoice=false;
+ version=1;assert.equal((await inspect(invoiceBody)).can_recover_draft,false);version=0;
+ scheduled=true;assert.equal((await inspect(invoiceBody)).draft_matches,false);scheduled=false;
+ assert.equal((await inspect(invoiceBody)).can_recover_draft,true);
+ assert.equal((await recover({...invoiceBody,recovery_confirmed:true})).state,"draft_created");
+ assert.equal(row().provider_invoice_id,"INV1");assert.equal(row().provider_invoice_version,0);
+ assert.equal((await inspect()).draft_matches,true);
+ version=1;assert.equal((await inspect()).draft_matches,false);
+ assert.ok("error" in await inspect(approved,{...env,SQUARE_APPLICATION_ID:"sq0idp-live"}));
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
+ assert.ok(calls.length>0);
 });
