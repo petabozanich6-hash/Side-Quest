@@ -1,3 +1,4 @@
+import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import type {Env} from "./types";
 import {loadPlatformSettings,aiRequestsLast24h} from "./platformSettings";
 import {aiCostSummary} from "./aiCost";
@@ -39,6 +40,9 @@ export async function housekeepingSections(e:Env,now=new Date()){
   const cost=await aiCostSummary(db,now);
   aiLines=["AI lesson requests in last 24 hours: "+usage+" / "+settings.costSafeguards.aiDailyPlatformCap+" configured cap (resource drafts have separate limits).",cost.tracking_started_at?"Recorded AI inference estimate, last 24 hours: US$"+cost.estimated_gross_24h_usd.toFixed(4)+" before allowances; not the Cloudflare invoice.":"No AI inference tracking records yet.", "Unpriced tracked calls in last 30 days: "+cost.unpriced_calls_30d, "Maintenance notice: "+(settings.maintenance.enabled?"ON":"off")];
  }catch{}
+ const cleanup=await temporaryHousekeepingStatus(e);
+ const last=cleanup.last as {local_date:string;status:string;links_removed:number;sessions_removed:number}|null;
+ const cleanupLines=[cleanup.enabled?"Expired credential cleanup: private staging test enabled.":"Expired credential cleanup: automatic pilot disabled.",!cleanup.available?"Cleanup history unavailable — check migrations.":last?"Last recorded cleanup: "+last.local_date+" · "+last.status+" · "+last.links_removed+" expired links and "+last.sessions_removed+" expired sessions removed.":"No cleanup runs recorded."];
  const manualLines=checks.map(kind=>{
   const r=manual?.find(x=>x.kind===kind);if(!r)return names[kind]+": no owner-verified check recorded";
   const age=Math.max(0,Math.floor((now.getTime()-Date.parse(r.checked_at))/86400000));
@@ -46,7 +50,7 @@ export async function housekeepingSections(e:Env,now=new Date()){
  });
  return [
   {heading:"Platform health and running costs",lines:[metric(errors,"Recorded server errors in last 24 hours"),metric(failed,"Open lesson draft items failed"),metric(stuck,"Open draft items generating over 20 minutes"),metric(rooms,"Video rooms needing cleanup/review"),metric(missed,"Earlier briefing deliveries needing review (last 7 days)"),...aiLines,"Review errors and failed jobs in Owner HQ before retrying. Cloudflare-wide outages and actual invoices are not monitored by this email."]},
-  {heading:"Housekeeping and storage",lines:[metric(expiredLinks,"Expired guest access links retained"),metric(expiredSessions,"Expired guest sessions retained"),metric(expiredQuotes,"Expired open-status quotes retained"),metric(expiredOffers,"Expired appointment invitations retained"),metric(oldClosed,"Closed/resolved support enquiries older than 7 days (review only)"),metric(archived,"Archived teaching files retained"),bytes===null?"Teaching file size unavailable": "Recorded teaching file size (active and archived): "+(bytes/1048576).toFixed(2)+" MiB; not total R2 usage.","These are review counts, not deletion instructions. Keep educational, financial and customer records according to retention requirements."]},
+  {heading:"Housekeeping and storage",lines:[...cleanupLines,metric(expiredLinks,"Expired guest access links retained"),metric(expiredSessions,"Expired guest sessions retained"),metric(expiredQuotes,"Expired open-status quotes retained"),metric(expiredOffers,"Expired appointment invitations retained"),metric(oldClosed,"Closed/resolved support enquiries older than 7 days (review only)"),metric(archived,"Archived teaching files retained"),bytes===null?"Teaching file size unavailable": "Recorded teaching file size (active and archived): "+(bytes/1048576).toFixed(2)+" MiB; not total R2 usage.","These are review counts, not deletion instructions. Keep educational, financial and customer records according to retention requirements."]},
   {heading:"Backups and external checks",lines:[...manualLines,"Only mark a backup checked after an independent copy has passed a restore test. Check actual Cloudflare storage, billing and service health in its dashboard."]}
  ];
 }

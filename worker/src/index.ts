@@ -55,6 +55,7 @@ import { registerPublicAvailability } from "./supportPublicAvailability";
 import {cleanupVideo} from "./supportVideo";
 import {cleanupEnglishVideo} from "./englishClubVideo";
 import {runDailyBriefing} from "./supportBriefing";
+import {runTemporaryHousekeeping} from "./supportTemporaryHousekeeping";
 import { registerAnnouncementPreferences, processAnnouncementBatch } from "./announcements";
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
@@ -464,6 +465,7 @@ export default {
     try { await cancelNextOverdueClubSandboxInvoice(env); } catch { console.error("Club sandbox cancellation needs review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
     try { await cleanupEnglishVideo(env); } catch { console.error("English Club video cleanup needs review"); }
+    try { await runTemporaryHousekeeping(env); } catch { console.error("temporary housekeeping needs review"); }
     try { await runDailyBriefing(env); } catch { console.error("daily owner briefing needs review"); }
     // Disabled until a separate staging trial. Recheck the platform cap before every scheduled attempt.
     if(env.AI_BACKGROUND_BATCHES === "true" && env.AI) {

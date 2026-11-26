@@ -1,3 +1,4 @@
+import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
 import {previewClubCertificate} from "./clubCertificatePreview";
 import {listPostalCertificates,ownerPostalCertificate,advancePostalCertificate} from "./clubCertificatePostal";
@@ -923,7 +924,7 @@ export function createAdminRoutes() {
     if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
     await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
   });
-  admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env),housekeeping_checks:await housekeepingChecks(c.env.DB)}));
+  admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env),housekeeping_checks:await housekeepingChecks(c.env.DB),temporary_cleanup:await temporaryHousekeepingStatus(c.env)}));
   admin.post("/support-briefing/housekeeping-check",requirePermission("customers.read"),async c=>{
     const b=await readJson(c);if(!await recordHousekeepingCheck(c.env.DB,b))return c.json({detail:"Confirm a completed independent check."},400);
     await writeAudit(c.env.DB,{...actor(c),action:"support.housekeeping.check",targetType:"support_briefing",targetId:String(b.kind),detail:{}});return c.json({ok:true});
