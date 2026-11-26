@@ -658,3 +658,64 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.ok((await prepareClubInvoice(env,"round",other.obligation_id,one.actor.id,{...args,fingerprint:before.fingerprint,confirmed:true},mock,now)).error);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_intents").get().n,3);
 });
+
+test("standard Club invoice automation requires separate owner approval, respects weekly windows, and does not repeat uncertain attempts",async t=>{
+ const {DB,one,two}=await fixture(t);
+ const {createEnglishRound,setEnglishRoundPublished,listEnglishRounds}=await import("../src/englishClubRounds.ts");
+ const {reserveEnglishRound,reserveEnglishSingle,CLUB_BOOKING_VERSION,CLUB_SINGLE_VERSION}=await import("../src/englishClubSelfService.ts");
+ const {clubInvoiceAutomationEnabled,clubInvoiceIssuanceWindow,issueNextClubSandboxInvoice}=await import("../src/clubStandardInvoiceAutomation.ts");
+ const now=new Date("2026-12-07T00:00:00.000Z");
+ const env={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:one.email,SQUARE_ACCESS_TOKEN:"synthetic",SQUARE_LOCATION_ID:"TEST123456",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_WEBHOOK_SIGNATURE_KEY:"test",SUPPORT_CLUB_INVOICE_AUTO_TEST:"true",SUPPORT_CLUB_INVOICE_CUSTOMER_ID:"customer-test",SUPPORT_CLUB_INVOICE_APPROVED_BY:two.actor.id,SUPPORT_CLUB_INVOICE_APPROVED_ROUND_VERSION:CLUB_BOOKING_VERSION,SUPPORT_CLUB_INVOICE_APPROVED_SINGLE_VERSION:CLUB_SINGLE_VERSION};
+ assert.equal(clubInvoiceAutomationEnabled(env),true);
+ assert.equal(clubInvoiceAutomationEnabled({...env,SUPPORT_CLUB_INVOICE_AUTO_TEST:"false"}),false);
+ assert.equal(clubInvoiceAutomationEnabled({...env,SUPPORT_CLUB_INVOICE_APPROVED_SINGLE_VERSION:"old"}),false);
+ assert.equal(clubInvoiceAutomationEnabled({...env,SQUARE_APPLICATION_ID:"sq0idp-production"}),false);
+ assert.equal(clubInvoiceIssuanceWindow("weekly","2026-12-14T00:00:00.000Z",now),true);
+ assert.equal(clubInvoiceIssuanceWindow("weekly","2026-12-14T00:00:01.000Z",now),false);
+ assert.equal(clubInvoiceIssuanceWindow("upfront","2026-12-28T00:00:00.000Z",now),true);
+ assert.equal(clubInvoiceIssuanceWindow("single",now.toISOString(),now),false);
+ const unexpected=()=>{throw Error("Unexpected provider request");};
+ assert.deepEqual(await issueNextClubSandboxInvoice(env,now,unexpected),{status:"disabled"});
+ DB.raw.prepare("INSERT INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','synthetic-test','synthetic automation test')").run("auto-test-owner",two.actor.id);
+ const round=await createEnglishRound(DB,two.actor.id,{title:"Automation test",first_local:"2026-12-09T18:00",session_count:6,themes:Array.from({length:6},(_,i)=>"Workshop "+i),confirmed:true},now);
+ assert.ok(round.id);assert.equal(await setEnglishRoundPublished(DB,round.id,{published:true,confirmed:true},now),true);
+ const [r]=await listEnglishRounds(DB,true,now);
+ const single={class_id:r.classes[0].id,learner_id:one.learner,request_key:"auto-single",expected_total_cents:1500,certificate_delivery:"pdf",terms_version:CLUB_SINGLE_VERSION,confirmed:true};
+ const s=await reserveEnglishSingle(DB,one.actor,single,now);assert.ok(s.booking_id);
+ const foreign=await reserveEnglishSingle(DB,two.actor,{...single,learner_id:two.learner,request_key:"other-family"},now);assert.ok(foreign.booking_id);
+ let writes=0,order,invoice,loseOrder=false;
+ const provider=async(url,init)=>{
+  assert.ok(String(url).startsWith("https://connect.squareupsandbox.com/v2/"));
+  const path=new URL(url).pathname,body=init.body?JSON.parse(init.body):null,reply=v=>new Response(JSON.stringify(v),{status:200});
+  if(path.endsWith("/customers/customer-test")&&init.method==="GET")return reply({customer:{id:"customer-test",email_address:one.email}});
+  if(path.endsWith("/orders")&&init.method==="POST"){
+   writes++;if(loseOrder)throw Error("synthetic lost response");
+   order={...body.order,id:"automation-order",total_money:{amount:1500,currency:"AUD"}};return reply({order});
+  }
+  if(path.endsWith("/orders/automation-order")&&init.method==="GET")return reply({order});
+  if(path.endsWith("/invoices")&&init.method==="POST"){
+   writes++;invoice={...body.invoice,id:"automation-invoice",version:0,status:"DRAFT",primary_recipient:{...body.invoice.primary_recipient,email_address:one.email},payment_requests:body.invoice.payment_requests.map(v=>({...v,computed_amount_money:{amount:1500,currency:"AUD"},total_completed_amount_money:{amount:0,currency:"AUD"}}))};return reply({invoice});
+  }
+  if(path.endsWith("/invoices/automation-invoice")&&init.method==="GET")return reply({invoice});
+  if(path.endsWith("/invoices/automation-invoice/publish")&&init.method==="POST"){
+   writes++;invoice={...invoice,status:"UNPAID",version:1,public_url:"https://squareupsandbox.com/pay-invoice/automation-test"};return reply({invoice});
+  }
+  throw Error("Unexpected synthetic request: "+path);
+ };
+ assert.equal((await issueNextClubSandboxInvoice(env,now,provider)).status,"issued");
+ assert.equal(writes,3);
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"issued");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(foreign.booking_id).status,"awaiting_invoice");
+ assert.equal((await issueNextClubSandboxInvoice(env,now,provider)).status,"idle");
+ const weeklyLearner=await addPortalLearner(DB,one.actor,{label:"Weekly",year_level:"Year 5",request_key:"auto-weekly"});
+ const weekly=await reserveEnglishRound(DB,one.actor,{round_id:round.id,learner_id:weeklyLearner.id,request_key:"auto-weekly",expected_total_cents:9000,payment_mode:"weekly",certificate_delivery:"pdf",terms_version:CLUB_BOOKING_VERSION,confirmed:true},now);
+ assert.ok(weekly.id);
+ loseOrder=true;
+ assert.equal((await issueNextClubSandboxInvoice(env,now,provider)).status,"review");
+ assert.equal(writes,4);
+ assert.equal((await issueNextClubSandboxInvoice(env,now,provider)).status,"idle");
+ assert.equal(writes,4);
+ const attempts=DB.raw.prepare("SELECT status FROM support_club_invoice_auto_attempts ORDER BY status").all().map(x=>x.status);
+ assert.deepEqual(attempts,["issued","review"]);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,0);
+});
