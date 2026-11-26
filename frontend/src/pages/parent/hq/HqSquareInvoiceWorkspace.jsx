@@ -11,7 +11,9 @@ const stages={
  order_pending:["Square order response uncertain","create-order","Recover Square order","Retry the same operation only; the server refuses retries outside its recovery window."],
  order_created:["Square order created","create-draft","Create unpublished draft","The draft will not be sent or published."],
  invoice_pending:["Draft response uncertain","create-draft","Recover invoice draft","Retry the same draft operation only within the server recovery window."],
- draft_created:["Unpublished Square draft",null,null,"Ready for a later issue approval. Publication is not enabled."],
+ draft_created:["Unpublished Square draft",null,null,"Check the saved draft in Square before approving issue."],
+ publish_pending:["Publication response uncertain",null,null,"Check the same invoice before recovering or retrying publication."],
+ issued:["Issued in Square sandbox",null,null,"Invoice issued and verified. Booking remains unpaid until payment is independently verified."],
  review:["Reconciliation required",null,null,"Check Square before taking any further payment or cancellation action."]
 };
 
@@ -40,7 +42,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
   finally{lock.current=false;if(live.current)setBusy(false);}
  }
  async function inspect(e){
-  e.preventDefault();if(lock.current||!data?.intent)return;lock.current=true;setBusy(true);setError("");setChecked(null);
+  e.preventDefault();if(lock.current||!data?.intent)return;lock.current=true;setBusy(true);setError("");setChecked(null);setApproved(false);
   try{const r=await adminApi.post("/support-invoice-workspace/inspect",{...context,confirmed:true,fingerprint:data.intent.fingerprint,...(!data.intent.provider_order_id&&candidateOrder.trim()?{provider_order_id:candidateOrder.trim()}:{}),...(!data.intent.provider_invoice_id&&candidateInvoice.trim()?{provider_invoice_id:candidateInvoice.trim()}:{})});if(live.current)setChecked(r);}
   catch(e){if(live.current)setError(errorText(e,"Could not verify the Square record."));}
   finally{lock.current=false;if(live.current)setBusy(false);}
@@ -54,7 +56,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
  const i=data?.intent,o=data?.order,stage=i?(stages[i.state]||["Reconciliation required",null,null,"No further action is enabled."]):null;
  return <section className="max-w-2xl space-y-4 min-w-0">
   <Link to={back} className="underline text-sm font-semibold">← Return to service booking</Link>
-  <header><h2 className="font-display text-2xl font-bold">Invoice review</h2><p className="text-sm text-stone-600">Private Square sandbox · No live payments, automatic charges or invoice publication.</p></header>
+  <header><h2 className="font-display text-2xl font-bold">Invoice review</h2><p className="text-sm text-stone-600">Private Square sandbox · No live payments or automatic charges. Issuing an invoice requires separate approval.</p></header>
   {loadError&&<div role="alert" className="paper-card p-4 space-y-2"><p>{loadError}</p><button className="underline" onClick={load}>Reload saved status</button></div>}
   {!data&&!loadError&&<p role="status">Loading invoice details…</p>}
   {error&&<p role="alert" className="rounded-lg border p-3 text-rose-800">{error}</p>}
@@ -97,8 +99,12 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
     </form>
     {checked&&<div role="status" className="rounded-lg border p-3 space-y-2 text-sm">
      <p>Order matched · {checked.order_open?"Open":"Not open"}</p>
-     {checked.invoice_checked&&<><p>Invoice status: {checked.status} · version {checked.version}</p><p>Amount: {money(checked.amount_cents)} · Completed: {money(checked.completed_cents)}</p><p>{checked.draft_matches?"Draft matches saved settings.":"Draft or payment settings require review."}</p></>}
+     {checked.invoice_checked&&<><p>Invoice status: {checked.status} · version {checked.version}</p><p>Amount: {money(checked.amount_cents)} · Completed: {money(checked.completed_cents)}</p><p>{checked.issued_matches?"Issued invoice matches the approved settings.":checked.draft_matches?"Draft matches saved settings.":"Draft or payment settings require review."}</p></>}
      {checked.requires_review&&<p>Review is required; no booking or payment status has changed.</p>}
+     {data.eligible&&((i.state==="draft_created"&&checked.draft_matches&&checked.version===i.provider_invoice_version)||(i.state==="publish_pending"&&(checked.issued_matches||checked.draft_matches)))&&<div className="border-t pt-2 space-y-2">
+     <label className="flex gap-2"><input type="checkbox" checked={approved} disabled={busy} onChange={e=>setApproved(e.target.checked)}/>I approve issuing or recovering this exact Square sandbox invoice for the verified test recipient.</label>
+     <button className={button} disabled={busy||!approved} onClick={()=>action("publish",{fingerprint:i.fingerprint,provider_invoice_id:checked.provider_invoice_id,version:i.state==="publish_pending"?i.publish_approved_version:checked.version,issue_confirmed:true})}>{i.state==="draft_created"?"Approve and issue sandbox invoice":checked.issued_matches?"Record verified issue":"Retry same issue operation"}</button>
+    </div>}
      {(checked.can_recover_order||checked.can_recover_draft)&&<button className={button} disabled={busy} onClick={()=>{if(window.confirm("Link this freshly matched sandbox record to the existing preparation? This will not issue an invoice."))action("recover",{fingerprint:i.fingerprint,recovery_confirmed:true,provider_order_id:checked.provider_order_id,...(checked.invoice_checked?{provider_invoice_id:checked.provider_invoice_id}:{})});}}>Recover matched record</button>}
     </div>}
    </div>}
