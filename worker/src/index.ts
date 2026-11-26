@@ -48,6 +48,7 @@ import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
 import {processSupportInvoiceNotices} from "./supportPaymentSafety";
 import {processSquareInvoiceNotices} from "./supportSquareInvoiceNotices";
+import {issueNextStandardSandboxInvoice} from "./supportStandardInvoiceAutomation";
 import { runNextBackgroundBatch } from "./lessonBatches";
 import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 import { createAdminRoutes } from "./adminRoutes";
@@ -434,6 +435,7 @@ export default {
     // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
     try { await processSupportInvoiceNotices(env); } catch { console.error("Learning Support payment notices need review"); }
+    try { await issueNextStandardSandboxInvoice(env); } catch { console.error("Standard sandbox invoice automation needs review"); }
     try { await recheckIssuedSupportInvoices(env); } catch { console.error("Square invoice sandbox reconciliation needs review"); }
     try { await processSquareInvoiceNotices(env); } catch { console.error("Square invoice sandbox notices need review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
