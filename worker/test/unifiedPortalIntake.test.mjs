@@ -843,6 +843,12 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  assert.equal(candidates.length,2);assert.ok(candidates.every(x=>x.eligible===1&&x.completed_count===6));
  const items=candidates.map(x=>({booking_id:x.booking_id,learner_name:x.learner_label,title:x.title,expected_count:x.expected_count,delivery:x.certificate_delivery,completed_at:x.last_end_at}));
  const batch={confirmed:true,round_id:round.id,items};
+ const jpeg=new Uint8Array(110);jpeg.set([255,216,255,192,0,17,8,4,0,6,0,3]);jpeg.set([255,217],108);
+ const digest=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",jpeg)),v=>v.toString(16).padStart(2,"0")).join("");
+ const template="synthetic-batch-template",key="private/club-certificate-templates/"+template+".jpg";
+ DB.raw.prepare("INSERT INTO support_club_certificate_templates(id,object_key,sha256,created_by,created_at) VALUES(?,?,?,?,?)").run(template,key,digest,two.actor.id,now.toISOString());
+ DB.raw.prepare("INSERT INTO support_club_certificate_template_active(singleton,template_id) VALUES(1,?)").run(template);
+
  assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,confirmed:false},end)).error);
  assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,round_id:"other-round"},end)).error);
  assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,items:[items[0],items[0]]},end)).error);
@@ -857,4 +863,20 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  const retry=await approveClubCertificateBatch(env,two.actor.id,batch,end);
  assert.equal(retry.approved,2);assert.equal(retry.items[0].id,result.items[0].id);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,2);
+ const {processClubCertificateEmails}=await import("../src/clubCertificateEmail.ts");
+ const mailEnv={...env,SUPPORT_CLUB_CERTIFICATE_EMAIL_TEST:"true",EMAIL:{},BUCKET:{get:async k=>k===key?{size:jpeg.length,arrayBuffer:async()=>jpeg.buffer}:null}};
+ const messages=[],sender=async(e,msg)=>{messages.push(msg);return true;};
+ assert.deepEqual(await processClubCertificateEmails({...mailEnv,SUPPORT_CLUB_CERTIFICATE_EMAIL_TEST:"false"},end,sender),{sent:0,review:0,suppressed:0});
+ assert.deepEqual(await processClubCertificateEmails({...mailEnv,SUPPORT_UNIFIED_TEST_EMAIL:two.email},end,sender),{sent:0,review:0,suppressed:0});
+ assert.equal(messages.length,0);
+ assert.deepEqual(await processClubCertificateEmails(mailEnv,end,sender),{sent:1,review:0,suppressed:0});
+ assert.equal(messages.length,1);assert.equal(messages[0].to,one.email);
+ assert.ok(messages[0].subject.startsWith("[Sandbox test]"));
+ assert.equal(messages[0].attachments.length,1);assert.equal(messages[0].attachments[0].type,"application/pdf");
+ assert.ok(Buffer.from(messages[0].attachments[0].content).toString("latin1").includes("/DCTDecode"));
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificate_email WHERE status='sent'").get().n,1);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificate_email d JOIN support_club_certificates c ON c.id=d.certificate_id WHERE c.delivery='post'").get().n,0);
+ assert.deepEqual(await processClubCertificateEmails(mailEnv,end,sender),{sent:0,review:0,suppressed:0});
+ assert.equal(messages.length,1);
+
 });

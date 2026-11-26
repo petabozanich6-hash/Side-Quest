@@ -1,3 +1,4 @@
+import {processClubCertificateEmails} from "./clubCertificateEmail";
 import {registerFamilyClubCertificates} from "./clubCertificateDelivery";
 import {cancelNextOverdueClubSandboxInvoice} from "./clubAutomaticCancellation";
 import {processClubNotices} from "./clubPaymentSessionNotices";
@@ -455,6 +456,7 @@ export default {
     try { await recheckClubInvoices(env); } catch { console.error("Club invoice sandbox reconciliation needs review"); }
     try { await processSquareInvoiceNotices(env); } catch { console.error("Square invoice sandbox notices need review"); }
     try { await processClubNotices(env); } catch { console.error("Club sandbox notices need review"); }
+    try { await processClubCertificateEmails(env); } catch { console.error("Club certificate sandbox email needs review"); }
     try { await cancelNextOverdueClubSandboxInvoice(env); } catch { console.error("Club sandbox cancellation needs review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
     try { await cleanupEnglishVideo(env); } catch { console.error("English Club video cleanup needs review"); }
