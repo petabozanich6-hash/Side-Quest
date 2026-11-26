@@ -1,6 +1,6 @@
 import type {Env} from "./types";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
-import {sydneyDay} from "./supportBriefing";
+const localDate=(now:Date)=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Sydney",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now).map(v=>[v.type,v.value]));return p.year+"-"+p.month+"-"+p.day;};
 export const TEMPORARY_CLEANUP_LIMIT=500;
 export function temporaryHousekeepingEnabled(e:Env){
  return unifiedPortalPilot(e)&&e.SUPPORT_TEMPORARY_HOUSEKEEPING_TEST==="true";
@@ -10,7 +10,7 @@ export function temporaryHousekeepingEnabled(e:Env){
  * daily claim, bounded deletes and aggregate counts commit together or not at all. */
 export async function runTemporaryHousekeeping(e:Env,now=new Date()){
  if(!temporaryHousekeepingEnabled(e))return "disabled";
- const db=e.DB,at=now.toISOString(),day=sydneyDay(now).date,id=crypto.randomUUID();
+ const db=e.DB,at=now.toISOString(),day=localDate(now),id=crypto.randomUUID();
  if(!await db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='support_temporary_housekeeping_runs'").first())return "migration_required";
  const guard="EXISTS(SELECT 1 FROM support_temporary_housekeeping_runs WHERE local_date=? AND run_id=? AND status='running')";
  try{
