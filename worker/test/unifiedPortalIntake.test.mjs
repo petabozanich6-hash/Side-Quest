@@ -806,3 +806,50 @@ test("standard Club invoice automation requires separate owner approval, respect
  assert.equal(cancels,1);
 
 });
+
+test("round certificate batch revalidates each exact reviewed learner and rejects mixed rounds",async t=>{
+ const {DB,one,two}=await fixture(t);
+ const {createEnglishRound,setEnglishRoundPublished}=await import("../src/englishClubRounds.ts");
+ const {reserveEnglishRound,CLUB_BOOKING_VERSION}=await import("../src/englishClubSelfService.ts");
+ const {previewClubInvoice,prepareClubInvoice}=await import("../src/clubSquareInvoicePreparation.ts");
+ const {listClubCertificateCandidates,approveClubCertificateBatch}=await import("../src/clubCertificates.ts");
+ const now=new Date("2026-12-07T00:00:00.000Z");
+ const end=new Date("2027-01-14T00:00:00.000Z");
+ const env={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:one.email,SQUARE_ACCESS_TOKEN:"synthetic",SQUARE_LOCATION_ID:"TEST123456",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_WEBHOOK_SIGNATURE_KEY:"test"};
+ const round=await createEnglishRound(DB,one.actor.id,{title:"Batch test",first_local:"2026-12-09T18:00",session_count:6,themes:Array.from({length:6},(_,i)=>"Workshop "+i),confirmed:true},now);
+ assert.ok(round.id);assert.equal(await setEnglishRoundPublished(DB,round.id,{published:true,confirmed:true},now),true);
+ const learner=await addPortalLearner(DB,one.actor,{label:"Second learner",year_level:"Year 5",request_key:"certificate-batch-learner"});
+ const bookings=[];
+ for(const [i,learner_id] of [one.learner,learner.id].entries()){
+  const b=await reserveEnglishRound(DB,one.actor,{round_id:round.id,learner_id,request_key:"certificate-batch-"+i,expected_total_cents:9000,payment_mode:"upfront",certificate_delivery:i?"post":"pdf",terms_version:CLUB_BOOKING_VERSION,confirmed:true},now);
+  assert.ok(b.enrolment_id);bookings.push(b);
+  const payment=DB.raw.prepare("SELECT id FROM support_english_round_payments WHERE round_enrolment_id=?").get(b.enrolment_id);
+  const mock=async()=>new Response(JSON.stringify({customer:{id:"customer-test",email_address:one.email}}),{status:200});
+  const p=await previewClubInvoice(env,"round",payment.id,{customer_id:"customer-test",reviewed:true},mock,now);
+  assert.ok(p.fingerprint);
+  assert.equal((await prepareClubInvoice(env,"round",payment.id,one.actor.id,{customer_id:"customer-test",reviewed:true,confirmed:true,fingerprint:p.fingerprint},mock,now)).prepared,true);
+  // Synthetic provider proof fixture: exercise the real atomic issuance and settlement triggers.
+  DB.raw.prepare("UPDATE support_club_square_intents SET state='publish_pending',provider_order_id=?,provider_invoice_id=?,provider_invoice_version=0,publish_approved_version=0,publish_attempted_at=? WHERE kind='round' AND obligation_id=?").run("batch-order-"+i,"batch-invoice-"+i,now.toISOString(),payment.id);
+  DB.raw.prepare("UPDATE support_club_square_intents SET state='issued',provider_invoice_version=1,provider_issued_at=?,provider_public_url=? WHERE kind='round' AND obligation_id=?").run(now.toISOString(),"https://squareupsandbox.com/pay-invoice/batch-"+i,payment.id);
+  DB.raw.prepare("INSERT INTO support_club_square_settlements(kind,obligation_id,payment_id,invoice_id,amount_cents,captured_at,verified_at) VALUES('round',?,?,?,?,?,?)").run(payment.id,"batch-payment-"+i,"batch-invoice-"+i,9000,now.toISOString(),now.toISOString());
+  DB.raw.prepare("UPDATE support_english_enrolments SET attendance='present' WHERE request_id=?").run(b.id);
+ }
+ const candidates=(await listClubCertificateCandidates(env,end)).items.filter(x=>x.round_id===round.id);
+ assert.equal(candidates.length,2);assert.ok(candidates.every(x=>x.eligible===1&&x.completed_count===6));
+ const items=candidates.map(x=>({booking_id:x.booking_id,learner_name:x.learner_label,title:x.title,expected_count:x.expected_count,delivery:x.certificate_delivery,completed_at:x.last_end_at}));
+ const batch={confirmed:true,round_id:round.id,items};
+ assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,confirmed:false},end)).error);
+ assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,round_id:"other-round"},end)).error);
+ assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,items:[items[0],items[0]]},end)).error);
+ assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,items:[items[0],{...items[1],booking_id:"wrong-booking"}]},end)).error);
+ // Attendance changed since review: only the still-eligible selected learner is approved.
+ const changed=bookings.find(x=>x.enrolment_id===items[1].booking_id);
+ DB.raw.prepare("UPDATE support_english_enrolments SET attendance='absent' WHERE request_id=?").run(changed.id);
+ const result=await approveClubCertificateBatch(env,two.actor.id,batch,end);
+ assert.equal(result.approved,1);assert.equal(result.review,1);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,1);
+ DB.raw.prepare("UPDATE support_english_enrolments SET attendance='present' WHERE request_id=?").run(changed.id);
+ const retry=await approveClubCertificateBatch(env,two.actor.id,batch,end);
+ assert.equal(retry.approved,2);assert.equal(retry.items[0].id,result.items[0].id);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,2);
+});

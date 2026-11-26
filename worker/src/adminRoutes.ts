@@ -1,5 +1,5 @@
 import {ownerClubCertificatePdf} from "./clubCertificateDelivery";
-import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate} from "./clubCertificates";
+import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate,approveClubCertificateBatch} from "./clubCertificates";
 import {releaseOverdueClubPlace} from "./clubSquareOverdue";
 import {verifyClubSquarePayment} from "./clubSquareInvoiceSettlement";
 import {publishClubSquareInvoice} from "./clubSquareInvoicePublication";
@@ -1079,6 +1079,13 @@ export function createAdminRoutes() {
     c.header("Cache-Control","private, no-store");
     const r=await ownerClubCertificatePdf(c.env,c.req.param("id")??"");
     return !r?c.json({detail:"Certificate unavailable"},404):"error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/certificates/batch",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);
+    const r=await approveClubCertificateBatch(c.env,c.get("user").id,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.batch_approve",targetType:"english_club_round",targetId:String(b.round_id),detail:{approved:r.approved,review:r.review}});
+    return c.json(r);
   });
   admin.get("/english-club/certificates",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
