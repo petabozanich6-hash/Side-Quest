@@ -1,3 +1,4 @@
+import {issueNextClubSandboxInvoice} from "./clubStandardInvoiceAutomation";
 import {recheckClubInvoices} from "./clubSquareOverdue";
 import {recheckIssuedSupportInvoices} from "./supportSquareInvoiceResolution";
 import {registerFamilyClubInvoices} from "./clubSquareInvoicePublication";
@@ -445,6 +446,7 @@ export default {
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
     try { await processSupportInvoiceNotices(env); } catch { console.error("Learning Support payment notices need review"); }
     try { await issueNextStandardSandboxInvoice(env); } catch { console.error("Standard sandbox invoice automation needs review"); }
+    try { await issueNextClubSandboxInvoice(env); } catch { console.error("Club sandbox invoice automation needs review"); }
     try { await recheckIssuedSupportInvoices(env); } catch { console.error("Square invoice sandbox reconciliation needs review"); }
     try { await recheckClubInvoices(env); } catch { console.error("Club invoice sandbox reconciliation needs review"); }
     try { await processSquareInvoiceNotices(env); } catch { console.error("Square invoice sandbox notices need review"); }
