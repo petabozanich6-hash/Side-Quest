@@ -5,7 +5,7 @@ const eligible="c.seat_count=c.expected_count AND c.completed_count=c.expected_c
 export async function listClubCertificateCandidates(e:Env,now=new Date()){
  if(!unifiedPortalPilot(e))return null;
  const at=now.toISOString();
- const rows=(await e.DB.prepare(`SELECT c.kind,c.booking_id,c.learner_label,c.title,c.certificate_delivery,c.expected_count,c.seat_count,c.completed_count,c.last_end_at,
+ const rows=(await e.DB.prepare(`SELECT c.kind,c.booking_id,c.learner_label,c.title,c.certificate_delivery,c.expected_count,c.seat_count,c.completed_count,c.last_end_at,(SELECT r.round_id FROM support_english_round_enrolments r WHERE c.kind='round' AND r.id=c.booking_id) round_id,
  x.id certificate_id,x.status certificate_status,x.approved_at,
  CASE WHEN ${eligible} THEN 1 ELSE 0 END eligible
  FROM support_club_certificate_candidates c LEFT JOIN support_club_certificates x ON x.kind=c.kind AND x.booking_id=c.booking_id
@@ -26,4 +26,23 @@ export async function withdrawClubCertificate(e:Env,kind:string,id:string,b:any,
  if(!unifiedPortalPilot(e)||!["single","round"].includes(kind)||!idOk(id)||!idOk(b?.certificate_id)||b.confirmed!==true)return false;
  const r=await e.DB.prepare("UPDATE support_club_certificates SET status='withdrawn',withdrawn_at=? WHERE kind=? AND booking_id=? AND id=? AND status='approved'").bind(now.toISOString(),kind,id,b.certificate_id).run();
  return !!r.meta?.changes;
+}
+
+/** A reviewed batch is restricted to one actual round, never just a matching title.
+ * Each exact snapshot is independently revalidated at approval; a changed learner
+ * is reported, not silently replaced or approved. No emails or files are issued here. */
+export async function approveClubCertificateBatch(e:Env,owner:string,b:any,now=new Date()){
+ if(!unifiedPortalPilot(e)||!idOk(owner)||b?.confirmed!==true||!idOk(b.round_id)||!Array.isArray(b.items)||b.items.length<1||b.items.length>8)return {error:"Review a selection of up to eight learners from one English Club round."};
+ const ids=b.items.map((x:any)=>x?.booking_id);
+ if(ids.some((id:unknown)=>!idOk(id))||new Set(ids).size!==ids.length)return {error:"Invalid or duplicate round enrolments."};
+ const membership=await e.DB.prepare("SELECT id FROM support_english_round_enrolments WHERE round_id=? AND id IN ("+ids.map(()=>"?").join(",")+")").bind(b.round_id,...ids).all<{id:string}>();
+ if((membership.results||[]).length!==ids.length)return {error:"One or more selected bookings do not belong to the reviewed round."};
+ const items=[];
+ for(const item of b.items){
+  try{
+   const r=await approveClubCertificate(e,"round",item.booking_id,owner,{...item,confirmed:true},now);
+   items.push("error" in r?{booking_id:item.booking_id,approved:false,detail:r.error}:{booking_id:item.booking_id,approved:true,id:r.id});
+  }catch{items.push({booking_id:item.booking_id,approved:false,detail:"Approval requires review."});}
+ }
+ return {items,approved:items.filter(x=>x.approved).length,review:items.filter(x=>!x.approved).length};
 }
