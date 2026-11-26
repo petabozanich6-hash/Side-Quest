@@ -68,13 +68,16 @@ test("weekly English Club blocks tutor diary, limits eight places and preserves 
 });
 
 
-test("Story Quests preset saves six private lesson plans and only public descriptions in booking catalogue",async t=>{
+test("Author-led workshop preset saves six private lesson plans and only public descriptions in booking catalogue",async t=>{
  const db=makeDb();t.after(()=>db.raw.close());
  const {STORY_QUEST,storyQuestPreparation}=await import("../src/englishClubCurriculum.ts");
  const {createEnglishRound,listEnglishRounds,setEnglishRoundPublished}=await import("../src/englishClubRounds.ts");
  const {listEnglishSingleClasses}=await import("../src/englishClubSelfService.ts");
  const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
  assert.equal(STORY_QUEST.sessions.length,6);
+ assert.equal(STORY_QUEST.id,"english-author-workshop-v2");
+ assert.deepEqual(STORY_QUEST.sessions.map(s=>s.title),["The Power of Words","Between the Lines","The Human Condition","The Art of Storytelling","Words That Challenge the World","From Idea to Impact"]);
+ for(const s of STORY_QUEST.sessions){assert.equal(s.agenda.length,7);assert.equal(s.activities.length,2);assert.ok(s.support.includes("extension:"));}
  for(const s of STORY_QUEST.sessions)for(const a of s.activities)assert.ok(validateActivityTemplate({...a,subject:"English",year_level:"Mixed levels"}));
  const body={curriculum_id:STORY_QUEST.id,title:STORY_QUEST.title,description:STORY_QUEST.description,first_local:"2026-12-09T18:00",session_count:6,themes:STORY_QUEST.sessions.map(s=>s.title),confirmed:true};
  assert.ok((await createEnglishRound(db,"owner",{...body,themes:body.themes.map((v,i)=>i===0?"Changed":v)},now)).error);
