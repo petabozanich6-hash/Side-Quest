@@ -27,6 +27,7 @@ export default function EnglishClubClassroom({classId,requestId,seatId,client,ow
   <EnglishClubVideo key={path} path={path} client={client} owner={owner}/>
   <LiveActivity key={"activity:"+path} kind="club" sessionId={classId} requestId={requestId} client={client} owner={owner}/>
   {!owner&&<EnglishClubMaterials key={"resources:"+path} path={path} client={client}/>}
+  {owner&&<EnglishClubMaterials key={"teaching:"+path} path={path} client={client} owner teachingOnly/>}
   {owner&&<p className="text-xs">Prepare shared resources and the backup meeting link on the session preparation page. Group video remains an isolated pilot.</p>}
  </section>;
 }
