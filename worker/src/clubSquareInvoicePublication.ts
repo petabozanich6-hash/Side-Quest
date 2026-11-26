@@ -89,13 +89,13 @@ export async function familyClubInvoice(e:Env,a:AuthUser,kind:string,id:string,f
  const hold=(status:string)=>({...summary,status,payment_url:null});
  if(r.obligation_status==="cancelled")return hold("cancelled");
  if(r.obligation_status==="paid"){const proof=await e.DB.prepare("SELECT 1 FROM support_club_square_settlements WHERE kind=? AND obligation_id=?").bind(kind,id).first();return hold(proof&&r.state==="paid"?"verified":"payment_review");}
- if(r.state!=="issued"||r.obligation_status!=="issued"||!await clubInvoiceSeatMatch(e,r))return hold("review");
+ if(r.state!=="issued"||r.obligation_status!=="issued"||!await clubInvoiceSeatMatch(e,r)||await e.DB.prepare("SELECT 1 FROM support_club_square_reviews WHERE kind=? AND obligation_id=?").bind(kind,id).first())return hold("review");
  if(!Number.isFinite(Date.parse(r.due_at))||Date.parse(r.due_at)<=now.getTime())return hold("deadline_passed");
  const check=await inspectClubSquareInvoice(e,r,fetchImpl);
  if(check?.status==="PAID")return hold("payment_review");
  if(!check?.issued||check.version!==r.provider_invoice_version||check.link!==r.provider_public_url)return hold("review");
  const current=await get();
- if(!await parentIdentity(e,a)||!current||current.state!=="issued"||current.obligation_status!=="issued"||current.fingerprint!==r.fingerprint||current.provider_public_url!==r.provider_public_url||current.provider_invoice_version!==r.provider_invoice_version||!await clubInvoiceSeatMatch(e,current))return hold("review");
+ if(!await parentIdentity(e,a)||!current||current.state!=="issued"||current.obligation_status!=="issued"||current.fingerprint!==r.fingerprint||current.provider_public_url!==r.provider_public_url||current.provider_invoice_version!==r.provider_invoice_version||!await clubInvoiceSeatMatch(e,current)||await e.DB.prepare("SELECT 1 FROM support_club_square_reviews WHERE kind=? AND obligation_id=?").bind(kind,id).first())return hold("review");
  return {...summary,status:"unpaid",payment_url:check.link};
 }
 export function registerFamilyClubInvoices(app:App,g:Guards){
