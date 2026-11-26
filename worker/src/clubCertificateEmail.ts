@@ -1,3 +1,4 @@
+import {isPlatformOwner} from "./access";
 import type {Env} from "./types";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {approvedClubCertificate} from "./clubCertificateDelivery";
@@ -52,4 +53,34 @@ export async function processClubCertificateEmails(e:Env,now=new Date(),sender:t
   if(status==="sent")sent++;else if(status==="suppressed")suppressed++;else review++;
  }
  return {sent,review,suppressed};
+}
+
+/** Explicit owner-authorized replacement of an already sent digital certificate.
+ * Never creates a second certificate, changes its artwork, or repeats uncertain delivery. */
+export async function reissueClubCertificateEmail(e:Env,owner:string,id:string,b:any,now=new Date(),sender:typeof sendEmail=sendEmail){
+ if(!clubCertificateEmailEnabled(e)||!await isPlatformOwner(e.DB,owner)||b?.confirmed!==true||typeof b.template_id!=="string")return {error:"Private test mailbox and explicit owner review required."};
+ const row=await approvedClubCertificate(e,id,now);
+ if(!row||row.template_id!==b.template_id||!["pdf","both"].includes(row.delivery))return {error:"Approved certificate changed or digital delivery is unavailable."};
+ const recipient=await currentRecipient(e,row);
+ if(!recipient)return {error:"Verified test recipient unavailable."};
+ const at=now.toISOString();
+ const claim=await e.DB.prepare("INSERT OR IGNORE INTO support_club_certificate_reissues(certificate_id,template_id,approved_by,attempted_at,status) SELECT x.id,x.template_id,?,?,'sending' FROM support_club_certificates x JOIN support_club_certificate_email d ON d.certificate_id=x.id AND d.template_id=x.template_id AND d.status='sent' WHERE x.id=? AND x.template_id=? AND x.status='approved' AND x.delivery IN ('pdf','both')").bind(owner,at,id,row.template_id).run();
+ if(!claim.meta?.changes)return {error:"Replacement already attempted, or original delivery not confirmed. Use the private portal download instead."};
+ let status="review";
+ try{
+  const art=await loadSignedTemplate(e,row.template_id);
+  if(art){
+   const doc=buildSignedClubCertificate(row,art);
+   const current=await approvedClubCertificate(e,id,now);
+   if(!same(row,current)||await currentRecipient(e,row)!==recipient||!clubCertificateEmailEnabled(e))status="suppressed";
+   else{
+    const subject="Your English Club certificate — replacement copy";
+    const text="Here is another copy of your original signed English Club certificate. Keep exploring! Happy questing, Peta.";
+    const ok=await sender(e,{to:recipient,subject:"[Sandbox test] "+subject,text:"Private sandbox test. "+text,html:layout({preheader:"Replacement certificate",kicker:"English Club",heading:subject,body:p(esc("Private sandbox test. "+text)),reason:"Owner-reviewed replacement of your original certificate."}),attachments:[{filename:doc.filename,type:"application/pdf",content:doc.pdf,disposition:"attachment"}]});
+    status=ok?"sent":"review";
+   }
+  }
+ }catch{}
+ await e.DB.prepare("UPDATE support_club_certificate_reissues SET status=?,sent_at=? WHERE certificate_id=? AND status='sending' AND attempted_at=?").bind(status,status==="sent"?at:null,id,at).run();
+ return {status};
 }
