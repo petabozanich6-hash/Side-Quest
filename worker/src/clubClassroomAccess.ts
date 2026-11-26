@@ -1,14 +1,14 @@
 import type {App,AuthUser,Env,Guards} from "./types";
 import {verifiedPortalIdentity,unifiedPortalPilot} from "./unifiedPortalIdentity";
+import {claimedGuestRequestGuard} from "./unifiedPortalRequestAccess";
 import {hitRateLimit} from "./adminAudit";
 export async function familyClubClassroomAccess(e:Env,a:AuthUser,requestId:string,classId:string,now=new Date()){
  if(!unifiedPortalPilot(e)||e.SUPPORT_CLASSROOM_ENABLED!=="true"||!await verifiedPortalIdentity(e.DB,a)||!requestId||!classId||requestId.length>100||classId.length>100)return null;
  const r=await e.DB.prepare(`SELECT s.id seat_id,c.start_at,c.end_at FROM support_english_enrolments s
  JOIN support_english_classes c ON c.id=s.class_id
- JOIN support_portal_enquiries p ON p.request_id=s.request_id
- JOIN support_guest_requests r ON r.id=p.request_id
- WHERE s.request_id=? AND s.class_id=? AND p.parent_user_id=? AND p.family_id=? AND p.service='english-club'
- AND s.status='paid' AND r.status NOT IN ('closed','resolved')`).bind(requestId,classId,a.id,a.family_id).first<{seat_id:string;start_at:string;end_at:string}>();
+ JOIN support_guest_requests r ON r.id=s.request_id
+ WHERE s.request_id=? AND s.class_id=? AND (EXISTS(SELECT 1 FROM support_portal_enquiries p WHERE p.request_id=r.id AND p.family_id=? AND p.parent_user_id=? AND p.service='english-club') OR (${claimedGuestRequestGuard}))
+ AND s.status='paid' AND r.status NOT IN ('closed','resolved')`).bind(requestId,classId,a.family_id,a.id,a.family_id,a.id).first<{seat_id:string;start_at:string;end_at:string}>();
  if(!r)return null;
  const start=Date.parse(r.start_at),end=Date.parse(r.end_at),t=now.getTime();
  if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start)return null;
