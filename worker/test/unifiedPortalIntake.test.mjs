@@ -666,11 +666,16 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.equal(await familyClubCertificatePdf(env,two.actor,certificate.id,finished),null);
  const ownPdf=await ownerClubCertificatePdf(env,certificate.id,finished);
  const familyPdf=await familyClubCertificatePdf(env,one.actor,certificate.id,finished);
- assert.equal(ownPdf.base64,familyPdf.base64);
- assert.equal(ownPdf.template,"english-club-certificate-v1");
- const rawPdf=Buffer.from(ownPdf.base64,"base64").toString("ascii");
- assert.ok(rawPdf.startsWith("%PDF-1.4"));assert.ok(rawPdf.includes("/MediaBox [0 0 842 595]"));
- assert.ok(rawPdf.includes("Certificate of Completion"));assert.ok(rawPdf.includes(certificate.id));
+ assert.equal(ownPdf,null);assert.equal(familyPdf,null);
+ assert.equal((await listFamilyClubCertificates(env,one.actor,finished)).items[0].pdf_available,false);
+ const {validCertificateJpeg,buildSignedClubCertificate}=await import("../src/clubSignedCertificate.ts");
+ // Header-only synthetic fixture for byte-level PDF construction; real JPEG render is a staging acceptance gate.
+ const jpeg=new Uint8Array(110);jpeg.set([255,216,255,192,0,17,8,4,0,6,0,3]);jpeg.set([255,217],108);
+ assert.equal(validCertificateJpeg(jpeg),true);
+ assert.equal(validCertificateJpeg(new Uint8Array(110)),false);
+ const pdf=buildSignedClubCertificate({id:"test",learner_name:"Example Learner",title:"Story Quest",kind:"round",session_count:6,completed_at:finished.toISOString()},jpeg);
+ const rawPdf=Buffer.from(pdf.pdf).toString("latin1");
+ assert.equal(pdf.template,"english-club-ignis-v2");assert.ok(rawPdf.includes("/DCTDecode"));assert.ok(rawPdf.includes("Example Learner"));assert.ok(rawPdf.includes("Story Quest"));
  assert.equal(rawPdf.slice(Number(rawPdf.match(/startxref\n(\d+)/)[1]),Number(rawPdf.match(/startxref\n(\d+)/)[1])+4),"xref");
  assert.throws(()=>buildClubCertificatePdf({id:"test",learner_name:"Test\nName",title:"Story",kind:"single",session_count:1,completed_at:finished.toISOString()}));
  DB.raw.prepare("UPDATE support_english_enrolments SET attendance='absent' WHERE request_id=?").run(s.id);
