@@ -9,8 +9,8 @@ export function supportInvoiceLookupAvailable(env:Env){
  return unifiedPortalPilot(env)&&env.SUPPORT_SQUARE_INVOICE_TEST==="true"&&cfg.ok&&!cfg.production&&!!String(env.SUPPORT_UNIFIED_TEST_EMAIL||"").trim();
 }
 export async function supportInvoiceRecipient(db:D1Database,channel:Channel,id:string){
- if(channel==="member")return db.prepare("SELECT u.email FROM parent_feedback r JOIN users u ON u.id=r.user_id AND u.family_id=r.family_id WHERE r.id=? AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved') AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND NOT EXISTS(SELECT 1 FROM family_admin_state a WHERE a.family_id=u.family_id AND a.status='suspended')").bind(id).first<{email:string}>();
- if(await portalEnquiryOwner(db,id))return db.prepare("SELECT u.email FROM support_portal_enquiries p JOIN users u ON u.id=p.parent_user_id AND u.family_id=p.family_id JOIN support_guest_requests r ON r.id=p.request_id AND r.email=u.email WHERE p.request_id=? AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>''").bind(id).first<{email:string}>();
+ if(channel==="member")return db.prepare("SELECT u.email FROM parent_feedback r JOIN users u ON u.id=r.user_id AND u.family_id=r.family_id WHERE r.id=? AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved') AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND NOT EXISTS(SELECT 1 FROM family_admin_state a WHERE a.family_id=u.family_id AND a.status<>'active')").bind(id).first<{email:string}>();
+ if(await portalEnquiryOwner(db,id))return db.prepare("SELECT u.email FROM support_portal_enquiries p JOIN users u ON u.id=p.parent_user_id AND u.family_id=p.family_id JOIN support_guest_requests r ON r.id=p.request_id AND r.email=u.email WHERE p.request_id=? AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND r.status NOT IN ('closed','resolved') AND NOT EXISTS(SELECT 1 FROM family_admin_state a WHERE a.family_id=u.family_id AND a.status<>'active')").bind(id).first<{email:string}>();
  // Do not infer ownership of historical invoices from a matching email. Legacy linking is a separate migration.
  return null;
 }
