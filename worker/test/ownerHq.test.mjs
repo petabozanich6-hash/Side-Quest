@@ -1348,3 +1348,38 @@ test("housekeeping briefing distinguishes unavailable metrics and owner-verified
  await stepUp(h,owner);
  assert.equal((await h.req("/admin/support-briefing/housekeeping-check",{method:"POST",token:owner.token,body:{kind:"r2_restore",confirmed:true}})).status,200);
 });
+
+test("sandbox invoice workspace is owner and passkey protected, scoped and auditable; publication is unavailable",async()=>{
+ const {h,owner}=await ownerSetup();
+ const parent=await h.register("invoice-pilot@example.com");
+ const otherSession=(await h.login(owner.email)).json.token;
+ await stepUp(h,owner);
+ const path="/admin/support-invoice-workspace",detail=path+"/member/invoice-request/invoice-order";
+ assert.equal((await h.req(detail,{token:owner.token})).status,404);
+ const now=new Date(),stamp=now.toISOString(),due=new Date(now.getTime()+86400000).toISOString();
+ h.db.raw.prepare("UPDATE users SET email_verified_at=? WHERE id=?").run(stamp,parent.id);
+ h.db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('invoice-request',?,?,'other','English','Help','learning-support',?,?)").run(parent.familyId,parent.id,stamp,stamp);
+ h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('invoice-order','member','invoice-request','invoice-quote',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ Object.assign(h.env,{STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:parent.email,SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"});
+ const headers={cookie:"sq_staging=private"};
+ const request=(p=detail,opts={})=>h.req(p,{token:owner.token,headers,...opts});
+ assert.equal((await h.req(detail,{token:owner.token})).status,403);
+ assert.equal((await request(detail,{token:parent.token})).status,404);
+ assert.equal((await request(detail,{token:otherSession})).status,401);
+ let r=await request();assert.equal(r.status,200,JSON.stringify(r.json));assert.equal(r.json.eligible,true);assert.equal(r.json.intent,null);
+ assert.equal((await request(path+"/guest/invoice-request/invoice-order")).status,404);
+ assert.equal((await request(path+"/member/another-request/invoice-order")).status,404);
+ const fingerprint="a".repeat(64);
+ h.db.raw.prepare("INSERT INTO support_square_invoice_intents(order_id,fingerprint,location_id,customer_id,amount_cents,due_at,order_updated_at,payload_json,create_order_key,create_invoice_key,publish_invoice_key,created_by,created_at,updated_at) VALUES('invoice-order',?,'LOCATION123','CUST1',2500,?,?,'{}','ORDER_SECRET_KEY','INVOICE_SECRET_KEY','PUBLISH_SECRET_KEY',?,?,?)").run(fingerprint,due,stamp,owner.id,stamp,stamp);
+ r=await request();assert.equal(r.status,200);assert.equal(r.json.intent.state,"prepared");
+ assert.equal(JSON.stringify(r.json).includes("SECRET_KEY"),false);assert.equal(JSON.stringify(r.json).includes("PRIVATE LEARNER"),false);
+ const body={channel:"member",request_id:"invoice-request",order_id:"invoice-order",fingerprint,confirmed:true};
+ assert.equal((await request(path+"/publish",{method:"POST",body})).status,400);
+ assert.equal((await request(path+"/release",{method:"POST",body,origin:"https://bad.example"})).status,403);
+ assert.equal((await request(path+"/release",{method:"POST",body:{...body,confirmed:false}})).status,400);
+ assert.equal((await request(path+"/release",{method:"POST",body})).status,200);
+ assert.equal((await request()).json.intent,null);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM admin_audit_log WHERE action='support.square_invoice_success.release'").get().n,1);
+ assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_intent_releases WHERE order_id='invoice-order'").get().n,1);
+ h.db.raw.close();
+});
