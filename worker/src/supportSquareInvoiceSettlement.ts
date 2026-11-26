@@ -22,7 +22,7 @@ export async function verifyIssuedSupportSquarePayment(env:Env,channel:Channel,r
  const checked=await inspectPreparedSupportSquareInvoice(env,channel,requestId,orderId,{confirmed:true,fingerprint:i.fingerprint},fetchImpl,now);
  if("error" in checked||!checked.invoice_checked)return review();
  if(checked.status==="UNPAID"&&checked.completed_cents===0)return {status:"unpaid",verified:false};
- if(checked.status!=="PAID"||checked.completed_cents!==i.amount_cents||checked.provider_invoice_id!==i.provider_invoice_id)return review();
+ if(checked.status!=="PAID"||!checked.settlement_settings_match||checked.completed_cents!==i.amount_cents||checked.provider_invoice_id!==i.provider_invoice_id)return review();
  let order:any,payment:any;
  try{
   order=(await squareCall(cfg,"GET","orders/"+encodeURIComponent(i.provider_order_id),undefined,fetchImpl)).order;
