@@ -11,13 +11,17 @@ export function configureStagingInvoicePilot(config,e){
  const vars={...config.vars,SUPPORT_UNIFIED_PORTAL_TEST:"false",SUPPORT_SQUARE_INVOICE_TEST:"false",SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"false"};
  for(const key of ["SQUARE_APPLICATION_ID","SQUARE_LOCATION_ID","SQUARE_WEBHOOK_URL","SUPPORT_GUEST_ORIGIN"])delete vars[key];
  const invoice=e.ENABLE_INVOICE_PILOT==="true",portal=invoice||e.ENABLE_FAMILY_PORTAL==="true";
- const origin=e.STAGING_SUPPORT_ORIGIN||"";
+ const origin=(e.STAGING_ORIGIN_INPUT||e.STAGING_SUPPORT_ORIGIN||"").trim().replace(/\/$/,"");
+ // Explicit exact origin only. Preserve the existing admin same-origin, role,
+ // passkey and staging-cookie guards; do not allow arbitrary workers.dev hosts.
+ delete vars.ADMIN_ORIGINS;
+ if(origin){
+  if(!/^https:\/\/side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(origin))throw Error("Invalid private staging origin.");
+  vars.ADMIN_ORIGINS=origin;
+ }
  if(portal){
   vars.SUPPORT_UNIFIED_PORTAL_TEST="true";
-  if(origin){
-   if(!/^https:\/\/side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(origin))throw Error("Invalid private staging origin.");
-   vars.SUPPORT_GUEST_ORIGIN=origin;
-  }
+  if(origin)vars.SUPPORT_GUEST_ORIGIN=origin;
  }
  if(invoice){
   if(!origin)throw Error("Missing private staging origin.");
