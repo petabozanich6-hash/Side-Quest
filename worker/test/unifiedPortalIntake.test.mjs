@@ -1035,3 +1035,26 @@ test("temporary housekeeping only removes expired guest credentials in bounded o
  assert.equal((await temporaryHousekeepingStatus(env)).last.links_removed,1);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_links").get().n,1);
 });
+
+test("existing subscriber member appointment uses the same authenticated classroom and private activity without re-registration",async t=>{
+ const {DB,one,two,call}=await fixture(t,{SUPPORT_CLASSROOM_ENABLED:"true"});
+ const {launchLiveActivity}=await import("../src/supportLiveActivities.ts");
+ const now=new Date(),start=new Date(now.getTime()-60000).toISOString(),end=new Date(now.getTime()+3600000).toISOString();
+ const id="member-classroom-request",order="member-classroom-order";
+ DB.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,status,owner_note,created_at,updated_at) VALUES(?,?,?,?,?,?,?,'new','',?,?)").run(id,one.actor.family_id,one.actor.id,"other","English tutoring","Existing member request","learning-support",start,start);
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,'member',?,'test-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(order,id,start,end,start,start);
+ DB.raw.prepare("INSERT INTO support_classrooms(order_id,is_open,updated_at) VALUES(?,1,?)").run(order,start);
+ assert.equal(await launchLiveActivity(DB,{kind:"tutoring",sessionId:order,owner:true},{type:"poll",question:"Choose a reading",options:["A","B"],confirmed:true},now),true);
+ const room="/learning-support/"+id+"/orders/"+order+"/classroom",activity="/family-portal/activities/tutoring/"+order+"/"+id;
+ assert.equal((await call(room,undefined,one.token)).status,200);
+ assert.equal((await call(activity,undefined,one.token)).status,200);
+ assert.equal((await call(room,undefined,two.token)).status,404);
+ assert.equal((await call(activity,undefined,two.token)).status,404);
+ const a=await call(activity,undefined,one.token);
+ assert.equal("responses" in a.data,false);
+ assert.equal((await call(activity,{activity_id:a.data.activity.id,response:"A"},one.token)).status,200);
+ assert.equal((await call(activity,undefined,one.token)).data.response,"A");
+ DB.raw.prepare("UPDATE parent_feedback SET status='closed' WHERE id=?").run(id);
+ assert.equal((await call(room,undefined,one.token)).status,404);
+ assert.equal((await call(activity,undefined,one.token)).status,404);
+});
