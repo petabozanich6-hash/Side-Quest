@@ -4,8 +4,8 @@ import type {Fetch} from "./square";
 import {previewSupportInvoice} from "./supportSquareInvoicePreview";
 import {supportInvoiceLookupAvailable} from "./supportSquareInvoiceLookup";
 
-// Local preparation only. Do not add provider writes until all competing payment
-// paths are guarded and uncertain provider responses can be reconciled safely.
+// Local preparation only. The separate remote-order helper must claim a durable
+// attempt before making any provider write; publication remains disabled.
 export async function prepareSupportInvoiceIntent(
  env:Env,channel:Channel,requestId:string,orderId:string,ownerId:string,
  body:unknown,fetchImpl?:Fetch,now=new Date()
@@ -65,12 +65,12 @@ export async function releasePreparedSupportInvoiceIntent(
    SELECT ?,i.order_id,i.fingerprint,?,? FROM support_square_invoice_intents i
    JOIN support_service_orders s ON s.id=i.order_id
    WHERE i.order_id=? AND i.fingerprint=? AND s.channel=? AND s.request_id=?
-   AND i.state='prepared' AND i.provider_order_id IS NULL AND i.provider_invoice_id IS NULL
+   AND i.state='prepared' AND i.order_attempted_at IS NULL AND i.provider_order_id IS NULL AND i.provider_invoice_id IS NULL
    AND i.provider_invoice_version IS NULL AND s.checkout_started_at IS NULL AND s.square_order_id IS NULL
    AND NOT EXISTS(SELECT 1 FROM support_manual_invoices m WHERE m.order_id=s.id)`)
    .bind(auditId,ownerId,stamp,orderId,b.fingerprint,channel,requestId),
   env.DB.prepare(`DELETE FROM support_square_invoice_intents
-   WHERE order_id=? AND fingerprint=? AND state='prepared'
+   WHERE order_id=? AND fingerprint=? AND state='prepared' AND order_attempted_at IS NULL
    AND provider_order_id IS NULL AND provider_invoice_id IS NULL AND provider_invoice_version IS NULL
    AND EXISTS(SELECT 1 FROM support_square_invoice_intent_releases WHERE id=? AND order_id=? AND fingerprint=?)`)
    .bind(orderId,b.fingerprint,auditId,orderId,b.fingerprint)
