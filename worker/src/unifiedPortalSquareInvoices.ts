@@ -39,11 +39,16 @@ export async function familyIssuedSquareInvoice(env:Env,a:AuthUser,orderId:strin
  if(!r)return null;
  const summary={amount_cents:r.invoice_amount,due_at:r.due_at,issued_at:r.provider_issued_at};
  const hold=(status:string)=>({...summary,status,payment_url:null});
+ if(["paid","completed"].includes(r.status)){
+  const proof=await env.DB.prepare("SELECT review_at FROM support_square_invoice_settlements WHERE order_id=?").bind(orderId).first<{review_at:string|null}>();
+  return hold(proof&&!proof.review_at?"verified":"review");
+ }
  if(r.status!=="confirmed"||r.cancellation_pending||r.updated_at!==r.order_updated_at||r.amount_cents!==r.invoice_amount)
   return hold("review");
  if(!Number.isFinite(Date.parse(r.due_at))||Date.parse(r.due_at)<=now.getTime())return hold("deadline_passed");
  const checked=await inspectPreparedSupportSquareInvoice(env,r.channel,r.request_id,r.id,{confirmed:true,fingerprint:r.fingerprint},fetchImpl,now);
  if("error" in checked||!checked.invoice_checked)return hold("review");
+ if(checked.status==="PAID")return hold("payment_review");
  // Never expose a payment link if already paid, partially paid, externally changed, refunded, or uncertain.
  const link=sandboxInvoicePaymentUrl(checked.public_url);
  if(!checked.issued_matches||checked.requires_review||checked.status!=="UNPAID"||checked.completed_cents!==0||
