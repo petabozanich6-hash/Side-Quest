@@ -336,6 +336,15 @@ test("parent activity route requires pilot, authenticated owner of paid booking,
  assert.notEqual((await call(path)).status,200);
  assert.equal((await call(path,undefined,two.token)).status,404);
  const own=await call(path,undefined,one.token);assert.equal(own.status,200,JSON.stringify(own.data));
+ const room="/support-guest/requests/"+r.id+"/orders/live-route-order/classroom";
+ assert.equal((await call(room,undefined,one.token)).status,200);
+ assert.notEqual((await call(room,undefined,two.token)).status,200);
+ const prior=DB.raw.prepare("SELECT status FROM support_guest_requests WHERE id=?").get(r.id).status;
+ DB.raw.prepare("UPDATE support_guest_requests SET status='closed' WHERE id=?").run(r.id);
+ assert.notEqual((await call(room,undefined,one.token)).status,200);
+ assert.equal((await call(path,undefined,one.token)).status,404);
+ DB.raw.prepare("UPDATE support_guest_requests SET status=? WHERE id=?").run(prior,r.id);
+
  assert.equal("responses" in own.data,false);
  const body={activity_id:own.data.activity.id,response:"Forest",owner:true,seat_id:"forged"};
  assert.equal((await call(path,body,two.token)).status,409);
