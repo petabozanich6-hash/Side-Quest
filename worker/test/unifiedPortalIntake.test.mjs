@@ -203,7 +203,30 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await launchLiveActivity(DB,owner,prompt,live),false);
  const activity=(await readLiveActivity(DB,owner,live)).activity;
  assert.equal(await readLiveActivity(DB,a,live),null);
+
+ const {familyClubClassroomAccess}=await import("../src/clubClassroomAccess.ts");
+ const {parentEnglishClasses}=await import("../src/englishClub.ts");
+ const classroomEnv={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_CLASSROOM_ENABLED:"true"};
+ assert.equal(await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,live),null);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='paid' WHERE request_id IN (?,?)").run(b1.id,b2.id);
+ const access=await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,live);
+ assert.equal(access.in_window,true);
+ assert.equal(access.seat_id,DB.raw.prepare("SELECT id FROM support_english_enrolments WHERE request_id=?").get(b1.id).id);
+ assert.equal((await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,before)).in_window,false);
+ assert.equal((await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,new Date("2026-12-09T08:00:00Z"))).in_window,false);
+ assert.equal(await familyClubClassroomAccess(classroomEnv,two.actor,b1.id,cid,live),null);
+ assert.equal(await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,r.classes[1].id,live),null);
+ assert.equal(await familyClubClassroomAccess({...classroomEnv,SUPPORT_CLASSROOM_ENABLED:"false"},one.actor,b1.id,cid,live),null);
+ const classes=await parentEnglishClasses(DB,b1.id,one.email);
+ assert.equal(classes[0].price_cents,1500);assert.equal(classes[0].seat_id,access.seat_id);
+ DB.raw.prepare("UPDATE support_english_enrolments SET status='invoiced' WHERE request_id=?").run(b1.id);
+ assert.equal(await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,live),null);
+ DB.raw.prepare("UPDATE support_english_enrolments SET status='paid' WHERE request_id=?").run(b1.id);
+ const requestStatus=DB.raw.prepare("SELECT status FROM support_guest_requests WHERE id=?").get(b1.id).status;
+ DB.raw.prepare("UPDATE support_guest_requests SET status='closed' WHERE id=?").run(b1.id);
+ assert.equal(await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,live),null);
+ DB.raw.prepare("UPDATE support_guest_requests SET status=? WHERE id=?").run(requestStatus,b1.id);
+
  assert.equal((await readLiveActivity(DB,a,live)).activity.answer_key,null);
  assert.equal(await readLiveActivity(DB,{...a,requestId:b2.id},live),null);
  assert.equal(await respondLiveActivity(DB,a,{activity_id:activity.id,response:"not an option"},live),false);

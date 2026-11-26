@@ -53,7 +53,7 @@ export async function updateEnglishEnrolment(db:D1Database,classId:string,id:str
 }
 export async function parentEnglishClasses(db:D1Database,requestId:string,email:string){
  await ensureEnglishClub(db);
- return (await db.prepare("SELECT c.id,c.topic,c.start_at,c.end_at,e.status,e.payment_due_at,e.invoice_reference,e.attendance FROM support_english_enrolments e JOIN support_english_classes c ON c.id=e.class_id JOIN support_guest_requests r ON r.id=e.request_id WHERE r.id=? AND r.email=? ORDER BY c.start_at DESC LIMIT 100").bind(requestId,email).all()).results||[];
+ return (await db.prepare("SELECT c.id,c.topic,c.start_at,c.end_at,e.id seat_id,e.status,e.payment_due_at,e.invoice_reference,e.attendance,COALESCE(rr.price_per_session_cents,1200) price_cents,x.round_id FROM support_english_enrolments e JOIN support_english_classes c ON c.id=e.class_id JOIN support_guest_requests r ON r.id=e.request_id LEFT JOIN support_english_round_classes x ON x.class_id=c.id LEFT JOIN support_english_rounds rr ON rr.id=x.round_id WHERE r.id=? AND r.email=? ORDER BY c.start_at DESC LIMIT 100").bind(requestId,email).all()).results||[];
 }
 
 export async function removeEmptyEnglishClass(db:D1Database,id:string,now=new Date()){
