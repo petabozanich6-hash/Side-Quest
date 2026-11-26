@@ -1,7 +1,6 @@
 import type {App,AuthUser,Env,Guards} from "./types";
 import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity";
-import {buildClubCertificatePdf} from "./clubCertificatePdf";
-import {stationeryBase64} from "./supportStationery";
+import {signedCertificateExport} from "./clubSignedCertificate";
 const validId=(v:unknown):v is string=>typeof v==="string"&&/^[a-zA-Z0-9_-]{1,150}$/.test(v);
 // Revalidate the immutable approved snapshot against current completion and identity before every export.
 const scope=`SELECT x.* FROM support_club_certificates x JOIN support_club_certificate_candidates c
@@ -15,19 +14,19 @@ export async function approvedClubCertificate(e:Env,id:string,now=new Date()){
 }
 export async function ownerClubCertificatePdf(e:Env,id:string,now=new Date()){
  const row=await approvedClubCertificate(e,id,now);if(!row)return null;
- try{const doc=buildClubCertificatePdf(row);return {filename:doc.filename,mime:"application/pdf",base64:stationeryBase64(doc.pdf),template:doc.template};}
+ try{return await signedCertificateExport(e,row);}
  catch{return {error:"Certificate name or workshop title requires review before PDF export."};}
 }
 export async function listFamilyClubCertificates(e:Env,a:AuthUser,now=new Date()){
  if(!unifiedPortalPilot(e)||!await verifiedPortalIdentity(e.DB,a))return null;
  const rows=(await e.DB.prepare(scope+" AND x.family_id=? AND x.parent_user_id=? ORDER BY x.completed_at DESC,x.id LIMIT 101").bind(now.toISOString(),a.family_id,a.id).all<any>()).results||[];
- return {items:rows.slice(0,100).map(r=>({id:r.id,learner_name:r.learner_name,title:r.title,session_count:r.session_count,completed_at:r.completed_at,delivery:r.delivery,pdf_available:r.delivery!=="post"})),limited:rows.length>100};
+ return {items:rows.slice(0,100).map(r=>({id:r.id,learner_name:r.learner_name,title:r.title,session_count:r.session_count,completed_at:r.completed_at,delivery:r.delivery,pdf_available:!!r.template_id&&r.delivery!=="post",template_ready:!!r.template_id})),limited:rows.length>100};
 }
 export async function familyClubCertificatePdf(e:Env,a:AuthUser,id:string,now=new Date()){
  if(!unifiedPortalPilot(e)||!validId(id)||!await verifiedPortalIdentity(e.DB,a))return null;
  const row=await e.DB.prepare(scope+" AND x.id=? AND x.family_id=? AND x.parent_user_id=? AND x.delivery IN ('pdf','both')").bind(now.toISOString(),id,a.family_id,a.id).first<any>();
  if(!row)return null;
- try{const doc=buildClubCertificatePdf(row);return {filename:doc.filename,mime:"application/pdf",base64:stationeryBase64(doc.pdf),template:doc.template};}
+ try{return await signedCertificateExport(e,row);}
  catch{return {error:"This certificate needs review before PDF export."};}
 }
 export function registerFamilyClubCertificates(app:App,g:Guards){

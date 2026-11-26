@@ -1,3 +1,4 @@
+import {signedTemplateStatus,saveSignedTemplate} from "./clubSignedCertificate";
 import {ownerClubCertificatePdf} from "./clubCertificateDelivery";
 import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate,approveClubCertificateBatch} from "./clubCertificates";
 import {releaseOverdueClubPlace} from "./clubSquareOverdue";
@@ -1074,6 +1075,16 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",b=await readJson(c);
     if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/english-club/certificate-template",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await signedTemplateStatus(c.env);return r?c.json(r):c.json({detail:"Not found"},404);
+  });
+  admin.post("/english-club/certificate-template",requirePermission("customers.read"),async c=>{
+    const r=await saveSignedTemplate(c.env,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.template",targetType:"club_certificate_template",targetId:r.id,detail:{}});
+    return c.json(r);
   });
   admin.get("/english-club/certificates/:id/pdf",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
