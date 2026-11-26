@@ -1,5 +1,6 @@
 import type {App,AuthUser,Env,Guards} from "./types";
 import {hitRateLimit} from "./adminAudit";
+import {validateActivityQuestion} from "./supportActivityLibrary";
 import {verifiedPortalIdentity,unifiedPortalPilot} from "./unifiedPortalIdentity";
 export const liveActivitiesEnabled=(env:Env)=>unifiedPortalPilot(env)&&env.SUPPORT_CLASSROOM_ENABLED==="true";
 type Kind="tutoring"|"club";
@@ -32,13 +33,18 @@ export async function readLiveActivity(db:D1Database,a:Access,now=new Date()){
 }
 export async function launchLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
  if(!a.owner||b?.confirmed!==true)return false;
- const s=await scope(db,a,now),question=safe(b.question,500),type=b.type;
- if(!s||!question||!["choice","poll","short"].includes(type))return false;
- const options:string[]=type==="short"?[]:Array.isArray(b.options)?b.options.map((v:unknown)=>safe(v,160)):[];
- if(type!=="short"&&(options.length<2||options.length>6||options.some(v=>!v)||new Set(options).size!==options.length))return false;
- const answer=type==="choice"?safe(b.answer_key,160):null;
- if(type==="choice"&&(!answer||!options.includes(answer)))return false;
- try{const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at) SELECT ?,?,?,?,?,?,?,? WHERE EXISTS("+s.sql+")").bind(crypto.randomUUID(),a.kind,a.sessionId,question,type,JSON.stringify(options),answer,now.toISOString(),...s.args).run();return !!r.meta?.changes;}catch{return false;}
+ const s=await scope(db,a,now);if(!s)return false;
+ const id=crypto.randomUUID(),at=now.toISOString();
+ try{
+  if(b.template_id!==undefined){
+   const template=safe(b.template_id,100);
+   if(!template||!Number.isInteger(b.template_revision))return false;
+   const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at) SELECT ?,?,?,question,activity_type,options_json,answer_key,? FROM support_activity_templates WHERE id=? AND revision=? AND status='reviewed' AND EXISTS("+s.sql+")").bind(id,a.kind,a.sessionId,at,template,b.template_revision,...s.args).run();
+   return !!r.meta?.changes;
+  }
+  const v=validateActivityQuestion(b);if(!v)return false;
+  const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at) SELECT ?,?,?,?,?,?,?,? WHERE EXISTS("+s.sql+")").bind(id,a.kind,a.sessionId,v.question,v.type,JSON.stringify(v.options),v.answer_key,at,...s.args).run();return !!r.meta?.changes;
+ }catch{return false;}
 }
 export async function respondLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
  if(a.owner||!safe(b?.activity_id,100))return false;

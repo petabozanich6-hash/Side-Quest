@@ -255,3 +255,36 @@ test("parent activity route requires pilot, authenticated owner of paid booking,
  assert.equal((await call(path,undefined,one.token)).status,404);
  assert.equal((await call(path,body,one.token)).status,409);
 });
+
+test("reusable activities require reviewed current revisions and launch a private immutable snapshot",async t=>{
+ const {DB,one}=await fixture(t);
+ const {saveActivityTemplate,getActivityTemplate,listActivityTemplates,archiveActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const {launchLiveActivity,readLiveActivity,endLiveActivity}=await import("../src/supportLiveActivities.ts");
+ const input={title:"Adverb detective",subject:"English",year_level:"Year 5",question:"Which is an adverb?",type:"choice",options:["quickly","dragon"],answer_key:"quickly"};
+ assert.ok((await saveActivityTemplate(DB,{...input,answer_key:"unknown"})).error);
+ const saved=await saveActivityTemplate(DB,input);assert.ok(saved.id);
+ const draft=await getActivityTemplate(DB,saved.id);assert.equal(draft.status,"draft");
+ assert.equal((await listActivityTemplates(DB,"English",true)).length,0);
+ const enquiry=await submitPortalEnquiry(DB,one.actor,form(one.learner,"library-tutor"));assert.ok(enquiry.id);
+ const now=new Date(),start=new Date(now.getTime()-60000).toISOString(),end=new Date(now.getTime()+3600000).toISOString();
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('library-order','guest',?,'library-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(enquiry.id,start,end,start,start);
+ DB.raw.prepare("INSERT INTO support_classrooms(order_id,is_open,updated_at) VALUES('library-order',1,?)").run(start);
+ const host={kind:"tutoring",sessionId:"library-order",owner:true},learner={...host,owner:false,actor:one.actor,requestId:enquiry.id};
+ const launch=revision=>launchLiveActivity(DB,host,{template_id:saved.id,template_revision:revision,confirmed:true,question:"Forged question"},now);
+ assert.equal(await launch(draft.revision),false);
+ assert.equal((await saveActivityTemplate(DB,{...input,reviewed:true,revision:draft.revision},saved.id)).id,saved.id);
+ const reviewed=await getActivityTemplate(DB,saved.id);
+ assert.equal(reviewed.status,"reviewed");assert.equal((await listActivityTemplates(DB,"English",true)).length,1);
+ assert.equal(await launch(draft.revision),false);
+ assert.equal(await launch(reviewed.revision),true);
+ const live=await readLiveActivity(DB,learner,now);assert.equal(live.activity.question,input.question);assert.equal(live.activity.answer_key,null);
+ assert.ok((await saveActivityTemplate(DB,{...input,revision:draft.revision},saved.id)).error);
+ assert.equal((await saveActivityTemplate(DB,{...input,question:"New question",revision:reviewed.revision},saved.id)).id,saved.id);
+ const changed=await getActivityTemplate(DB,saved.id);assert.equal(changed.status,"draft");
+ assert.equal((await readLiveActivity(DB,learner,now)).activity.question,input.question);
+ assert.equal(await endLiveActivity(DB,host,{activity_id:live.activity.id,state:"closed",confirmed:true},now),true);
+ assert.equal(await launch(reviewed.revision),false);
+ assert.equal(await archiveActivityTemplate(DB,saved.id,changed.revision),true);
+ assert.equal(await getActivityTemplate(DB,saved.id),null);
+ assert.equal((await listActivityTemplates(DB,"",false)).length,0);
+});
