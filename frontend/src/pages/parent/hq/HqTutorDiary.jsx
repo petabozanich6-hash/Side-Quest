@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {adminApi,errorText} from "../../../lib/adminApi";
 import {prefillPreparation,draftPreparation,preparationContext} from "../../../lib/tutorPreparation";
 import {downloadSupportText} from "../../../lib/downloadSupportText";
+import AppointmentLessonPack from "../AppointmentLessonPack";
 import HqActivityEvidence from "./HqActivityEvidence";
 import HqActivityPlan from "./HqActivityPlan";
 import SupportLessonProgress from "../SupportLessonProgress";
@@ -31,7 +32,7 @@ export default function HqTutorDiary({path,onSaved,focused=false}){
  {fields.map(([key,label,max])=><label key={key} className="block text-sm">{label}<textarea className={field} maxLength={max} rows={key==="agenda"?6:2} value={draft.details[key]||""} onChange={e=>change(key,e.target.value)}/></label>)}</div>}
  <label className="flex gap-2 text-sm"><input type="checkbox" checked={draft.ready} onChange={e=>setDraft(d=>({...d,ready:e.target.checked}))}/> I have checked the learning goals, actual teaching examples, sequence and materials. Ready to teach.</label>
  <button className="rounded-lg bg-emerald-950 text-white px-4 py-2" disabled={busy}>Save private diary</button><button type="button" className={btn+" ml-2"} onClick={()=>downloadSupportText("private-tutor-diary.txt",["PRIVATE — tutor only",draft.learner_label,data.order.scope,data.order.start_at?new Date(data.order.start_at).toLocaleString("en-AU",{timeZone:"Australia/Sydney"})+" (Sydney time)":data.order.mode,...fields.map(([key,label])=>label+": "+(draft.details[key]||""))].join("\n\n"))}>Download private prep sheet</button>
- </form>}{draft&&data?.order.mode==="live"&&<><button type="button" className={btn} onClick={()=>setActivities(v=>!v)}>{activities?"Hide interactive activities":"Choose reviewed interactive activities"}</button>{activities&&<HqActivityPlan key={path} kind="tutoring" sessionId={path.split("/").filter(Boolean).pop()}/>}</>}{!focused&&data?.order.mode==="live"&&["paid","completed"].includes(data.order.status)&&<><SupportLessonProgress key={path} path={path} client={adminApi}/><HqActivityEvidence key={"evidence:"+path} kind="tutoring" sessionId={path.split("/").filter(Boolean).pop()} seatId={path.split("/").filter(Boolean).pop()}/></>}</section>;
+ </form>}{draft&&data?.order.mode==="live"&&data?.learner_context&&<AppointmentLessonPack key={path} path={path} details={draft.details}/>}{draft&&data?.order.mode==="live"&&<><button type="button" className={btn} onClick={()=>setActivities(v=>!v)}>{activities?"Hide interactive activities":"Choose reviewed interactive activities"}</button>{activities&&<HqActivityPlan key={path} kind="tutoring" sessionId={path.split("/").filter(Boolean).pop()}/>}</>}{!focused&&data?.order.mode==="live"&&["paid","completed"].includes(data.order.status)&&<><SupportLessonProgress key={path} path={path} client={adminApi}/><HqActivityEvidence key={"evidence:"+path} kind="tutoring" sessionId={path.split("/").filter(Boolean).pop()} seatId={path.split("/").filter(Boolean).pop()}/></>}</section>;
 }
 
 function LearnerContext({context,copy}){
