@@ -1,12 +1,21 @@
-import React,{useEffect,useState,useRef} from "react";
-import {adminApi,errorText} from "../../../lib/adminApi";
-const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(n/100);
-export default function HqSquareInvoicePreview({order,requestId,guest}){
- const [enabled,setEnabled]=useState(false),[customer,setCustomer]=useState(""),[due,setDue]=useState(""),[review,setReview]=useState(false),[result,setResult]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState("");
- const lock=useRef(false);
- useEffect(()=>{let live=true;adminApi.get("/support-invoice-lookup/status").then(r=>{if(live)setEnabled(r.available===true);}).catch(()=>{});return()=>{live=false;};},[]);
- if(!enabled)return null;
- function changed(){setResult(null);setReview(false);setError("");}
- async function preview(e){e.preventDefault();if(lock.current||!review)return;lock.current=true;setBusy(true);setError("");setResult(null);try{const deadline=order.installment_due_at||new Date(due).toISOString();setResult(await adminApi.post("/support-invoice-preview",{channel:guest?"guest":"member",request_id:requestId,order_id:order.id,customer_id:customer.trim(),due_at:deadline,reviewed:true}));}catch(e){setError(errorText(e,"Could not prepare preview"));}finally{lock.current=false;setBusy(false);}}
- return <section className="rounded-xl border p-3 space-y-2"><h5 className="font-bold">Prepare invoice preview (sandbox)</h5><p className="text-sm">Check the existing Square customer and use the agreed amount. This preview does not create, publish or send a Square invoice.</p><form className="space-y-2" onSubmit={preview}><label className="block text-sm">Existing sandbox Square customer ID<input className="block w-full border rounded-lg p-2" required maxLength={150} value={customer} disabled={busy} onChange={e=>{setCustomer(e.target.value);changed();}}/></label>{order.installment_due_at?<p className="text-sm">Agreed instalment deadline: {new Date(order.installment_due_at).toLocaleString("en-AU",{timeZone:"Australia/Sydney"})} Sydney time.</p>:<label className="block text-sm">Deadline (device time zone: {Intl.DateTimeFormat().resolvedOptions().timeZone})<input className="block w-full border rounded-lg p-2" type="datetime-local" required value={due} disabled={busy} onChange={e=>{setDue(e.target.value);changed();}}/></label>}<label className="flex gap-2 text-sm"><input type="checkbox" checked={review} onChange={e=>{setReview(e.target.checked);setResult(null);}} disabled={busy}/>I selected the correct existing sandbox customer and reviewed the payment deadline.</label><button className="rounded-lg border px-3 py-2 text-sm" disabled={busy||!review||!customer.trim()}>{busy?"Preparing…":"Review invoice preview"}</button></form>{error&&<p role="alert" className="text-sm text-rose-800">{error}</p>}{result&&<div role="status" className="border-t pt-3 space-y-1 text-sm"><strong>Invoice preview — not created in Square</strong><p>{result.description}</p><p className="break-all">Recipient: {result.recipient}</p><p>Amount: {money(result.amount_cents)} AUD</p><p>Square due date: {result.due_date}. Side-Quest deadline: {new Date(result.due_at).toLocaleString("en-AU",{timeZone:"Australia/Sydney"})} Sydney time.</p><p>Automatic card charging disabled in proposed payment settings.</p><p>No invoice has been sent. Continue the existing manual issue process until sandbox draft creation and reconciliation are enabled.</p></div>}</section>;
+import React,{useEffect,useState} from "react";
+import {Link,useLocation} from "react-router-dom";
+import {adminApi} from "../../../lib/adminApi";
+
+// A link, not an embedded invoice form. The focused route owns the entire workflow.
+export default function HqSquareInvoicePreview({order,requestId,guest,children}){
+ const [state,setState]=useState(null),location=useLocation();
+ const key=[guest?"guest":"member",requestId,order.id].map(encodeURIComponent).join("/");
+ useEffect(()=>{let live=true;setState(null);adminApi.get("/support-invoice-lookup/status").then(async r=>{
+  if(!r.available){if(live)setState({available:false});return;}
+  try{const workspace=await adminApi.get("/support-invoice-workspace/"+key);if(live)setState({available:true,workspace});}
+  catch{if(live)setState({available:true,error:true});}
+ }).catch(()=>{if(live)setState({available:false});});return()=>{live=false;};},[key]);
+ if(!state)return <p className="text-sm" role="status">Checking invoice options…</p>;
+ if(!state.available)return children||null;
+ if(state.error)return <p role="alert" className="text-sm">Invoice workspace unavailable. Check its saved status before using manual payment options.</p>;
+ const {workspace}=state;
+ if(!workspace.intent&&!workspace.eligible)return children||null;
+ return <div className="space-y-2"><Link to={"/parent/command-centre/learning-support/invoice/"+key} state={{from:location.pathname+location.search}} className="inline-block rounded-xl bg-emerald-950 text-white px-4 py-2 text-sm font-semibold">{workspace.intent?"Continue invoice review":"Open invoice review"} →</Link>
+ {workspace.intent?<p className="text-xs">A saved Square preparation exists. Use invoice review rather than starting another payment method.</p>:<details className="border rounded-lg p-2"><summary className="cursor-pointer text-sm">Manual invoice alternative</summary>{children}</details>}</div>;
 }

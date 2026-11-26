@@ -78,6 +78,7 @@ const GuestSupportPortal=lazy(()=>import("./pages/parent/GuestSupportPortal"));
 const FamilyPortal=lazy(()=>import("./pages/parent/FamilyPortal"));
 const FamilyPortalRegister=lazy(()=>import("./pages/parent/FamilyPortal").then(m=>({default:m.FamilyPortalRegister})));
 const HqGuestSupport=lazy(()=>import("./pages/parent/hq/HqGuestSupport"));
+const HqSquareInvoiceWorkspace=lazy(()=>import("./pages/parent/hq/HqSquareInvoiceWorkspace"));
 const LessonDetail = lazy(() => import("./pages/LessonDetail"));
 const ParentDashboard = lazy(() => import("./pages/parent/Dashboard"));
 const HqShell = lazy(() => import("./pages/parent/hq/HqShell"));
@@ -178,6 +179,7 @@ function Router() {
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
           <Route path="learning-support" element={<HqGuestSupport />} />
+          <Route path="learning-support/invoice/:channel/:requestId/:orderId" element={<HqSquareInvoiceWorkspace />} />
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="document-studio" element={<HqDocumentStudio />} />
         </Route>
