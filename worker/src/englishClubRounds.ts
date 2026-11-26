@@ -1,3 +1,4 @@
+import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
 import {sydneyWeek} from "./englishClub";
 export const ROUND_PRICE_CENTS=1500;
 const text=(v:unknown,max:number)=>typeof v==="string"&&v.trim().length<=max?v.trim():"";
@@ -17,13 +18,15 @@ export function weeklyRoundStarts(first:unknown,count:number):string[]|null{
 export async function createEnglishRound(db:D1Database,owner:string,b:any,now=new Date()){
  const title=text(b?.title,120),description=text(b?.description,1000),starts=weeklyRoundStarts(b?.first_local,b?.session_count);
  if(b?.confirmed!==true||!title||!starts||!Array.isArray(b.themes)||b.themes.length!==starts.length||b.themes.some((x:unknown)=>!text(x,120))||Date.parse(starts[0])-86400000<=now.getTime()||Date.parse(starts[starts.length-1])>now.getTime()+180*86400000)return {error:"Choose 2–12 weekly sessions in Sydney time, within six months, each with a theme and more than 24 hours' notice."};
+ const preset=b.curriculum_id===STORY_QUEST.id;
+ if(b.curriculum_id!==undefined&&(!preset||starts.length!==6||title!==STORY_QUEST.title||description!==STORY_QUEST.description||b.themes.some((v:unknown,i:number)=>v!==STORY_QUEST.sessions[i]?.title)))return {error:"The selected curriculum no longer matches the reviewed six workshops. Reload the preset or create a custom round."};
  const id=crypto.randomUUID(),at=now.toISOString();
- const statements=[db.prepare("INSERT INTO support_english_rounds(id,title,description,session_count,created_by,created_at) VALUES(?,?,?,?,?,?)").bind(id,title,description,starts.length,owner,at)];
+ const statements=[db.prepare("INSERT INTO support_english_rounds(id,title,description,session_count,created_by,created_at,curriculum_id) VALUES(?,?,?,?,?,?,?)").bind(id,title,description,starts.length,owner,at,preset?STORY_QUEST.id:null)];
  for(const [i,start] of starts.entries()){
  const cid="english-club-"+crypto.randomUUID(),end=new Date(Date.parse(start)+3600000).toISOString(),before=new Date(Date.parse(start)-15*60000).toISOString(),after=new Date(Date.parse(end)+10*60000).toISOString(),week=sydneyWeek(start);
  statements.push(db.prepare("INSERT INTO support_busy_blocks(id,label,start_at,end_at,created_at) VALUES((SELECT ? WHERE NOT EXISTS(SELECT 1 FROM support_english_classes WHERE week_of=?) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks WHERE start_at<? AND end_at>?) AND NOT EXISTS(SELECT 1 FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?))),'English Club (including preparation)',?,?,?)").bind(cid,week,after,before,after,before,before,after,at));
  // Explicit non-null round mapping also fails if a calendar block was not inserted.
- statements.push(db.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,created_at) SELECT id,?,?,?,?,? FROM support_busy_blocks WHERE id=?").bind(week,start,end,text(b.themes[i],120),at,cid));
+ statements.push(db.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,created_at,preparation,public_description) SELECT id,?,?,?,?,?,?,? FROM support_busy_blocks WHERE id=?").bind(week,start,end,text(b.themes[i],120),at,preset?storyQuestPreparation(i):"",preset?STORY_QUEST.sessions[i].description:"",cid));
  statements.push(db.prepare("INSERT INTO support_english_round_classes(round_id,class_id,sequence) VALUES(?,(SELECT id FROM support_english_classes WHERE id=?),?)").bind(id,cid,i+1));
  }
  try{await db.batch(statements);return {id};}catch{return {error:"A week conflicts with an existing class, booking or blocked time. No round or calendar blocks were created."};}
@@ -34,8 +37,8 @@ export async function setEnglishRoundPublished(db:D1Database,id:string,b:any,now
  return !!r.meta?.changes;
 }
 export async function listEnglishRounds(db:D1Database,publicOnly=false,now=new Date()){
- const rows=(await db.prepare(`SELECT r.id,r.title,r.description,r.session_count,r.price_per_session_cents,r.published,x.sequence,c.id class_id,c.topic,c.start_at,c.end_at,8-(SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled') remaining FROM support_english_rounds r JOIN support_english_round_classes x ON x.round_id=r.id JOIN support_english_classes c ON c.id=x.class_id ${publicOnly?"WHERE r.published=1 AND NOT EXISTS(SELECT 1 FROM support_english_round_classes y JOIN support_english_classes d ON d.id=y.class_id WHERE y.round_id=r.id AND julianday(d.start_at)<=julianday(?)+1)":""} ORDER BY r.created_at DESC,x.sequence`).bind(...(publicOnly?[now.toISOString()]:[])).all<any>()).results||[];
+ const rows=(await db.prepare(`SELECT r.id,r.title,r.description,r.session_count,r.price_per_session_cents,r.published,x.sequence,c.id class_id,c.topic,c.public_description,c.start_at,c.end_at,8-(SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled') remaining FROM support_english_rounds r JOIN support_english_round_classes x ON x.round_id=r.id JOIN support_english_classes c ON c.id=x.class_id ${publicOnly?"WHERE r.published=1 AND NOT EXISTS(SELECT 1 FROM support_english_round_classes y JOIN support_english_classes d ON d.id=y.class_id WHERE y.round_id=r.id AND julianday(d.start_at)<=julianday(?)+1)":""} ORDER BY r.created_at DESC,x.sequence`).bind(...(publicOnly?[now.toISOString()]:[])).all<any>()).results||[];
  const grouped=new Map<string,any>();
- for(const r of rows){if(!grouped.has(r.id))grouped.set(r.id,{id:r.id,title:r.title,description:r.description,session_count:r.session_count,published:!!r.published,remaining:8,price_per_session_cents:r.price_per_session_cents,price_cents:r.session_count*r.price_per_session_cents,classes:[]});const g=grouped.get(r.id);g.remaining=Math.min(g.remaining,r.remaining);g.classes.push({id:r.class_id,sequence:r.sequence,topic:r.topic,start_at:r.start_at,end_at:r.end_at});}
+ for(const r of rows){if(!grouped.has(r.id))grouped.set(r.id,{id:r.id,title:r.title,description:r.description,session_count:r.session_count,published:!!r.published,remaining:8,price_per_session_cents:r.price_per_session_cents,price_cents:r.session_count*r.price_per_session_cents,classes:[]});const g=grouped.get(r.id);g.remaining=Math.min(g.remaining,r.remaining);g.classes.push({id:r.class_id,sequence:r.sequence,topic:r.topic,description:r.public_description,start_at:r.start_at,end_at:r.end_at});}
  return [...grouped.values()].filter(r=>!publicOnly||(r.remaining>0&&r.classes.length===r.session_count)).sort((a,b)=>a.classes[0].start_at.localeCompare(b.classes[0].start_at));
 }
