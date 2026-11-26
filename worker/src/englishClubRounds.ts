@@ -1,4 +1,5 @@
 import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
+import {workshopResource} from "./englishClubWorkshopResources";
 import {validateActivityTemplate} from "./supportActivityLibrary";
 import {sydneyWeek} from "./englishClub";
 export const ROUND_PRICE_CENTS=1500;
@@ -30,6 +31,9 @@ export async function createEnglishRound(db:D1Database,owner:string,b:any,now=ne
  statements.push(db.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,created_at,preparation,public_description) SELECT id,?,?,?,?,?,?,? FROM support_busy_blocks WHERE id=?").bind(week,start,end,text(b.themes[i],120),at,preset?storyQuestPreparation(i):"",preset?STORY_QUEST.sessions[i].description:"",cid));
  statements.push(db.prepare("INSERT INTO support_english_round_classes(round_id,class_id,sequence) VALUES(?,(SELECT id FROM support_english_classes WHERE id=?),?)").bind(id,cid,i+1));
  if(preset){
+  const resource=workshopResource(i);
+  if(!resource)return {error:"Workshop resources unavailable. No round was created."};
+  statements.push(db.prepare("INSERT INTO support_english_workshop_resources(class_id,resource_json) VALUES(?,?)").bind(cid,JSON.stringify(resource)));
   // Owner confirmation covers these exact versioned prompts. New copies are private,
   // editable reviewed templates; no existing template or plan is overwritten.
   const items:{template_id:string;revision:number}[]=[];
