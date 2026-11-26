@@ -3,7 +3,7 @@ import {getOrder,type Channel} from "./supportOrders";
 import {DEFAULT_MODEL,extractJson,subjectGuide} from "./aiDraft";
 import {loadPlatformSettings} from "./platformSettings";
 import {hitRateLimit} from "./adminAudit";
-import {validateDeck} from "./supportDecks";
+import {ensureDecks,validateDeck} from "./supportDecks";
 import {validateActivityTemplate} from "./supportActivityLibrary";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 
@@ -60,6 +60,7 @@ export async function approveLessonPack(db:D1Database,channel:Channel,id:string,
  if(!pack||!validOrder(order)||b?.confirmed!==true)return {error:"Review the complete resource pack and confirm the active appointment."};
  if(await db.prepare("SELECT 1 FROM support_appointment_lesson_packs WHERE order_id=?").bind(oid).first())return {error:"A pack has already been approved for this appointment."};
  if(await db.prepare("SELECT 1 FROM support_session_activity_plans WHERE kind='tutoring' AND session_id=?").bind(oid).first())return {error:"An activity plan already exists. Keep it; do not overwrite it with a generated pack."};
+ await ensureDecks(db);
  const at=new Date().toISOString(),deck=crypto.randomUUID(),refs=pack.activities.map(()=>({template_id:crypto.randomUUID(),revision:1}));
  // A single atomic batch; unique appointment and activity-plan keys prevent duplicate
  // approval and preserve a concurrent manual plan. Generated resources are generic, reviewed
