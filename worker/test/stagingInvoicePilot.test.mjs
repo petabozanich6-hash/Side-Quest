@@ -56,3 +56,12 @@ test("staging admin allowlist uses only the explicit validated origin, even when
  assert.throws(()=>configureStagingInvoicePilot(config,{STAGING_ORIGIN_INPUT:"https://other.test.workers.dev"}));
  assert.equal(configureStagingInvoicePilot(configured,{}).vars.ADMIN_ORIGINS,undefined);
 });
+
+test("metered resource AI is opt-in, isolated, and removed when disabled",()=>{
+ const e={ENABLE_RESOURCE_AI:"true",ENABLE_FAMILY_PORTAL:"true",STAGING_SUPPORT_ORIGIN:env.STAGING_SUPPORT_ORIGIN};
+ const on=configureStagingInvoicePilot(config,e);
+ assert.equal(on.vars.SUPPORT_RESOURCE_AI,"true");assert.deepEqual(on.ai,{binding:"AI"});
+ const off=configureStagingInvoicePilot(on,{});assert.equal(off.vars.SUPPORT_RESOURCE_AI,"false");assert.equal(off.ai,undefined);
+ assert.throws(()=>configureStagingInvoicePilot(config,{ENABLE_RESOURCE_AI:"true"}));
+ assert.throws(()=>configureStagingInvoicePilot(config,{...e,STAGING_SUPPORT_ORIGIN:"https://sidequestlearning.app"}));
+});
