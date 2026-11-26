@@ -1,3 +1,4 @@
+import {recheckClubInvoices} from "./clubSquareOverdue";
 import {recheckIssuedSupportInvoices} from "./supportSquareInvoiceResolution";
 import {registerFamilyClubInvoices} from "./clubSquareInvoicePublication";
 import {registerFamilySquareInvoices} from "./unifiedPortalSquareInvoices";
@@ -445,6 +446,7 @@ export default {
     try { await processSupportInvoiceNotices(env); } catch { console.error("Learning Support payment notices need review"); }
     try { await issueNextStandardSandboxInvoice(env); } catch { console.error("Standard sandbox invoice automation needs review"); }
     try { await recheckIssuedSupportInvoices(env); } catch { console.error("Square invoice sandbox reconciliation needs review"); }
+    try { await recheckClubInvoices(env); } catch { console.error("Club invoice sandbox reconciliation needs review"); }
     try { await processSquareInvoiceNotices(env); } catch { console.error("Square invoice sandbox notices need review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
     try { await cleanupEnglishVideo(env); } catch { console.error("English Club video cleanup needs review"); }
