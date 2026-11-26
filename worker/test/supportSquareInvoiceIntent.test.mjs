@@ -293,11 +293,11 @@ test("issued invoice settlement requires a single captured card payment by the d
  assert.equal(orderStatus(),"confirmed");assert.equal(proofs().length,0);
  assert.equal(await reconcileSupportInvoiceEvent(env,"INV1",null,provider,checkTime),"support invoice payment verified");
  assert.equal(orderStatus(),"paid");assert.equal(proofs().length,1);assert.equal(proofs()[0].captured_at,capture);
- const paidWorkspace=await ownerSquareInvoiceWorkspace(env,"member","r","o");assert.ok(paidWorkspace.confirmation_preview.body.includes("payment has been verified"));assert.equal(paidWorkspace.financial_review,null);
+ const paidWorkspace=await ownerSquareInvoiceWorkspace(env,"member","r","o");assert.ok(paidWorkspace.confirmation_preview.body.includes("payment has been verified"));assert.equal(paidWorkspace.financial_review,null);assert.equal(paidWorkspace.payment_status,"verified");
  assert.equal((await run()).verified,true);assert.equal(proofs().length,1);
  assert.equal(await flagIssuedSupportInvoiceRefund(env,{payment_id:"PAY1",location_id:"LOCATION123",status:"PENDING"},checkTime),"support invoice refund requires review");
  assert.equal(orderStatus(),"review");assert.ok(proofs()[0].review_at);assert.equal((await run()).verified,false);
- const heldWorkspace=await ownerSquareInvoiceWorkspace(env,"member","r","o");assert.equal(heldWorkspace.confirmation_preview,null);assert.equal(heldWorkspace.financial_review.reason,"refund");
+ const heldWorkspace=await ownerSquareInvoiceWorkspace(env,"member","r","o");assert.equal(heldWorkspace.confirmation_preview,null);assert.equal(heldWorkspace.financial_review.reason,"refund");assert.equal(heldWorkspace.payment_status,"review");
 });
 
 test("overdue invoice release requires explicit approval and verified cancelled order with zero payment",async t=>{
@@ -458,6 +458,7 @@ test("scheduled recheck recovers delayed payment and full-refund release require
  status="REFUNDED";refunds=["REF1"];refunded=1000;assert.ok("error" in await close());
  refunded=2500;assert.ok("error" in await close());assert.equal(orderStatus(),"review");
  refundStatus="COMPLETED";assert.equal((await close()).released,true);assert.equal(orderStatus(),"cancelled");
+ assert.equal((await ownerSquareInvoiceWorkspace(env,"member","r","o")).payment_status,"cancelled");assert.equal((await verifyIssuedSupportSquarePayment(env,"member","r","o",provider,checkTime)).status,"cancelled");
  assert.equal((await close()).released,true);assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_refund_resolutions").get().n,1);
  assert.ok(db.raw.prepare("SELECT resolved_at FROM support_square_invoice_reviews WHERE order_id='o'").get().resolved_at);
  assert.equal(proofs().length,1);
