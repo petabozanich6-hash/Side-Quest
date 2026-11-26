@@ -288,3 +288,20 @@ test("reusable activities require reviewed current revisions and launch a privat
  assert.equal(await getActivityTemplate(DB,saved.id),null);
  assert.equal((await listActivityTemplates(DB,"",false)).length,0);
 });
+
+test("AI activity drafting returns validated unsaved drafts",async t=>{
+ const {DB,one}=await fixture(t);
+ const {draftActivities}=await import("../src/supportActivityDrafts.ts");
+ const input={topic:"Adverbs",subject:"English",year_level:"Year 5",goal:"Identify adverbs",type:"choice",count:1,confirmed:true};
+ let calls=0;
+ const env={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_CLASSROOM_ENABLED:"true",SUPPORT_RESOURCE_AI:"true",AI:{run:async()=>{calls++;return {response:JSON.stringify({activities:[{title:"Adverb practice",question:"Which is an adverb?",type:"choice",options:["quickly","dragon"],answer_key:"quickly"}]})};}}};
+ assert.ok((await draftActivities(env,one.actor,{...input,confirmed:false})).error);
+ assert.ok((await draftActivities({...env,SUPPORT_RESOURCE_AI:"false"},one.actor,input)).error);
+ assert.equal(calls,0);
+ const result=await draftActivities(env,one.actor,input);
+ assert.equal(result.drafts?.length,1,JSON.stringify(result));
+ assert.equal(result.drafts[0].status,"draft");
+ assert.equal(calls,1);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,0);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE kind='support_activity_draft'").get().n,1);
+});
