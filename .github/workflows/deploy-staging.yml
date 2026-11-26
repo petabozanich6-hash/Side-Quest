@@ -4,6 +4,10 @@ name: Deploy staging (private)
 on:
   workflow_dispatch:
     inputs:
+      staging_origin:
+        description: "Exact staging website origin (https://side-quest-staging.<subdomain>.workers.dev); no key or path"
+        type: string
+        required: false
       enable_family_portal:
         description: "Enable private unified family portal (existing verified staging parents)"
         type: boolean
@@ -29,6 +33,7 @@ jobs:
       STAGING_KEY: ${{ secrets.STAGING_KEY }}
       ENABLE_FAMILY_PORTAL: ${{ inputs.enable_family_portal }}
       ENABLE_INVOICE_PILOT: ${{ inputs.enable_invoice_pilot }}
+      STAGING_ORIGIN_INPUT: ${{ inputs.staging_origin }}
       STAGING_SUPPORT_ORIGIN: ${{ vars.STAGING_SUPPORT_ORIGIN }}
       STAGING_SUPPORT_TEST_EMAIL: ${{ secrets.STAGING_SUPPORT_TEST_EMAIL }}
       STAGING_SQUARE_APPLICATION_ID: ${{ vars.STAGING_SQUARE_APPLICATION_ID }}
