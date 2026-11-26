@@ -1,3 +1,4 @@
+import {STORY_QUEST} from "./englishClubCurriculum";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
 import {previewClubCertificate} from "./clubCertificatePreview";
@@ -1211,6 +1212,11 @@ export function createAdminRoutes() {
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.prepare",targetType:"english_club_payment",targetId:id,detail:{kind}});
     return c.json(r);
+  });
+  admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    return c.json(STORY_QUEST);
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
