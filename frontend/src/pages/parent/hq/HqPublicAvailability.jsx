@@ -1,22 +1,23 @@
-import React,{useState,useRef} from "react";
+import React,{useState,useRef,useEffect} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
 const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 const btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50",field="rounded-lg border p-2 text-sm bg-white";
 const times=Array.from({length:48},(_,i)=>String(Math.floor(i/2)).padStart(2,"0")+":"+(i%2?"30":"00"));
-export default function HqPublicAvailability({onSaved}={}){
- const [open,setOpen]=useState(false),[draft,setDraft]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
+export default function HqPublicAvailability({onSaved,focused=false}={}){
+ const [open,setOpen]=useState(focused),[draft,setDraft]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
  const lock=useRef(false);
  const [overrideDate,setOverrideDate]=useState(""),[weekDate,setWeekDate]=useState("");
  const policyUpdate=patch=>setDraft(d=>({...d,policy:{...d.policy,...patch}}));
  const updateDate=(i,patch)=>setDraft(d=>({...d,policy:{...d.policy,date_overrides:d.policy.date_overrides.map((v,j)=>i===j?{...v,...patch}:v)}}));
  async function run(fn){if(lock.current)return;lock.current=true;setBusy(true);setNotice("");setError("");try{await fn();}catch(e){setError(errorText(e));}finally{lock.current=false;setBusy(false);}}
  async function load(){setDraft(await adminApi.get("/support-public-availability"));}
+ useEffect(()=>{if(focused)run(load);},[focused]);
  function update(index,key,value){setDraft(d=>({...d,windows:d.windows.map((w,i)=>i===index?{...w,[key]:value}:w)}));}
  function add(day){setDraft(d=>({...d,windows:[...d.windows,{day,start:"09:00",end:"12:00"}]}));}
  function remove(index){setDraft(d=>({...d,windows:d.windows.filter((w,i)=>i!==index)}));}
  return <section className="border rounded-xl p-3 space-y-3">
- <div className="flex flex-wrap justify-between gap-2 items-center"><h4 className="font-bold">Public availability settings</h4><button className={btn} type="button" disabled={busy} onClick={()=>{if(open&&draft&&!window.confirm("Close and discard unsaved changes?"))return;setOpen(!open);if(!open)run(load);else setDraft(null);}}>{open?"Close settings":"Manage public hours"}</button></div>
- <p className="text-sm">Publish indicative tutoring hours without allowing direct bookings. Confirmed and provisional appointments, prep and wrap-up buffers and private blocked times are excluded automatically.</p>
+ <div className="flex flex-wrap justify-between gap-2 items-center"><h4 className="font-bold">Public availability settings</h4>{!focused&&<button className={btn} type="button" disabled={busy} onClick={()=>{if(open&&draft&&!window.confirm("Close and discard unsaved changes?"))return;setOpen(!open);if(!open)run(load);else setDraft(null);}}>{open?"Close settings":"Manage public hours"}</button>}</div>
+ <p className="text-sm">Manage available tutoring hours and booking capacity. Confirmed and provisional appointments, prep and wrap-up buffers and private blocked times are excluded automatically.</p>
  {open&&<>{error&&<p role="alert" className="text-sm text-rose-800">{error}</p>}{notice&&<p role="status" className="text-sm">{notice}</p>}
  {!draft?<button type="button" className={btn} disabled={busy} onClick={()=>run(load)}>Load settings</button>:<form className="space-y-3" onSubmit={e=>{e.preventDefault();run(async()=>{setDraft(await adminApi.put("/support-public-availability",{...draft,confirmed:true}));setNotice("Public availability settings saved.");onSaved?.();});}}>
  <label className="flex items-center gap-2 text-sm font-bold"><input type="checkbox" disabled={busy} checked={draft.enabled} onChange={e=>setDraft(d=>({...d,enabled:e.target.checked}))}/> Publish indicative availability on Learning Support</label>
