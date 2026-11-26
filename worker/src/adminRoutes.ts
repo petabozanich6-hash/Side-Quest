@@ -1,3 +1,4 @@
+import {readProgressReport,changeProgressReport} from "./supportFamilyProgressReports";
 import {readActivityEvidence,saveActivityEvidence,removeActivityEvidence} from "./supportActivityEvidence";
 import {readActivityPlan,saveActivityPlan} from "./supportActivityPlans";
 import {activityAiEnabled,draftActivities} from "./supportActivityDrafts";
@@ -1016,6 +1017,21 @@ export function createAdminRoutes() {
     if(!ok)return c.json({detail:"Evidence changed or is unavailable. Reload and check before saving."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.activity_evidence."+b.action,targetType:"support_session",targetId:session,detail:{kind}});
     return c.json(await readActivityEvidence(c.env.DB,kind,session,seat));
+  });
+  admin.get("/activity-reports/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const r=await readProgressReport(c.env.DB,kind,c.req.param("session")??"",c.req.param("seat")??"");
+    return r?c.json(r):c.json({detail:"A finished session linked to a family learner is required."},404);
+  });
+  admin.post("/activity-reports/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const session=c.req.param("session")??"",seat=c.req.param("seat")??"",b=await readJson(c);
+    if(!await changeProgressReport(c.env.DB,kind,session,seat,b))return c.json({detail:"Report or booking changed. Reload before continuing."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.family_report."+b.action,targetType:"support_session",targetId:session,detail:{kind}});
+    return c.json(await readProgressReport(c.env.DB,kind,session,seat));
   });
   // Inherits Owner HQ authentication, permission, passkey step-up, origin and rate limits.
   admin.get("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
