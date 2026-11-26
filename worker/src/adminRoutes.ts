@@ -13,7 +13,7 @@ import {ownerToday} from "./unifiedOwnerToday";
 import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
-import {publishClubClass} from "./englishClubSelfService";
+import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
 import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
@@ -966,11 +966,22 @@ export function createAdminRoutes() {
     if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
   });
-  admin.post("/english-club/classes/:cid/publication",requirePermission("customers.read"),async c=>{
-    if(!unifiedPortalPilot(c.env))return notFound(c);
-    const id=c.req.param("cid")??"",b=await readJson(c);
-    if(!await publishClubClass(c.env.DB,id,c.get("user").id,b))return c.json({detail:"Unable to change class publication. Check the session and deadline."},409);
-    await writeAudit(c.env.DB,{...actor(c),action:"english_club.publication",targetType:"english_club",targetId:id,detail:{enabled:b.enabled}});
+  admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    return c.json({rounds:await listEnglishRounds(c.env.DB)});
+  });
+  admin.post("/english-club/rounds",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const r=await createEnglishRound(c.env.DB,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
+    return c.json(r,201);
+  });
+  admin.post("/english-club/rounds/:rid/publication",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("rid")??"",b=await readJson(c);
+    if(!await setEnglishRoundPublished(c.env.DB,id,b))return c.json({detail:"Unable to change round publication."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_publication",targetType:"english_club",targetId:id,detail:{published:b.published}});
     return c.json({ok:true});
   });
   admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
