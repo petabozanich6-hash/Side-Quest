@@ -8,9 +8,9 @@ import {portalEnquiryOwner,ownsPortalEnquiry} from "../src/unifiedPortalRequestA
 import {linkedLegacyRequests,linkedLegacyRequest} from "../src/unifiedPortalLegacy.ts";
 const stamp="2026-11-26T00:00:00.000Z",origin="https://side-quest-staging.test.workers.dev";
 const digest=async(s)=>Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s))),b=>b.toString(16).padStart(2,"0")).join("");
-async function fixture(t){
+async function fixture(t,extraEnv={}){
  const DB=makeDb();t.after(()=>DB.raw.close());
- const env={DB,JWT_SECRET:"test-only",STAGING_KEY:"test-gate",STAGING_PRIVATE:"true",SUPPORT_GUEST_ORIGIN:origin,SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_GUEST_ENABLED:"true"};
+ const env={DB,JWT_SECRET:"test-only",STAGING_KEY:"test-gate",STAGING_PRIVATE:"true",SUPPORT_GUEST_ORIGIN:origin,SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_GUEST_ENABLED:"true",...extraEnv};
  const ctx={waitUntil(){},passThroughOnException(){}};
  const call=async(path,body,token,guest)=>{const r=await worker.fetch(new Request(origin+"/api"+path,{method:body===undefined?"GET":"POST",headers:{cookie:"sq_staging=test-gate","content-type":"application/json",...(token?{authorization:"Bearer "+token}:{}),...(guest?{"X-SideQuest-Guest":guest}:{})},...(body===undefined?{}:{body:JSON.stringify(body)})}),env,ctx);return {status:r.status,data:await r.json()};};
  const accounts=[];
@@ -231,4 +231,27 @@ test("live activity engine isolates club learner responses and answer keys; supp
  DB.raw.prepare("UPDATE support_classrooms SET is_open=0 WHERE order_id='interactive-order'").run();
  assert.equal(await respondLiveActivity(DB,ta,{activity_id:q.id,response:"Another answer"},live),false);
  assert.equal(await readLiveActivity(DB,ta,live),null);
+});
+
+test("parent activity route requires pilot, authenticated owner of paid booking, and open activity",async t=>{
+ const {DB,one,two,call}=await fixture(t,{SUPPORT_CLASSROOM_ENABLED:"true"});
+ const {launchLiveActivity}=await import("../src/supportLiveActivities.ts");
+ const r=await submitPortalEnquiry(DB,one.actor,form(one.learner,"live-route"));assert.ok(r.id);
+ const now=new Date(),start=new Date(now.getTime()-60000).toISOString(),end=new Date(now.getTime()+3600000).toISOString();
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('live-route-order','guest',?,'test-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(r.id,start,end,start,start);
+ DB.raw.prepare("INSERT INTO support_classrooms(order_id,is_open,updated_at) VALUES('live-route-order',1,?)").run(start);
+ const a={kind:"tutoring",sessionId:"live-route-order",owner:true};
+ assert.equal(await launchLiveActivity(DB,a,{type:"poll",question:"Choose a story",options:["Forest","Ocean"],confirmed:true},now),true);
+ const path="/family-portal/activities/tutoring/live-route-order/"+r.id;
+ assert.notEqual((await call(path)).status,200);
+ assert.equal((await call(path,undefined,two.token)).status,404);
+ const own=await call(path,undefined,one.token);assert.equal(own.status,200,JSON.stringify(own.data));
+ assert.equal("responses" in own.data,false);
+ const body={activity_id:own.data.activity.id,response:"Forest",owner:true,seat_id:"forged"};
+ assert.equal((await call(path,body,two.token)).status,409);
+ assert.equal((await call(path,body,one.token)).status,200);
+ assert.equal((await call(path,undefined,one.token)).data.response,"Forest");
+ DB.raw.prepare("UPDATE support_classrooms SET is_open=0 WHERE order_id='live-route-order'").run();
+ assert.equal((await call(path,undefined,one.token)).status,404);
+ assert.equal((await call(path,body,one.token)).status,409);
 });
