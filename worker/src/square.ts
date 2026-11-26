@@ -1,3 +1,4 @@
+import {reconcileSupportInvoiceEvent,flagIssuedSupportInvoiceRefund} from "./supportSquareInvoiceSettlement";
 // Square payments: hosted checkout (Payment Links) and signed webhooks.
 //
 // Security model (same as Stripe's):
@@ -108,6 +109,10 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   }
   if (type === "invoice.payment_made") {
     const id = String(obj.invoice?.subscription_id || "");
+    if(!id&&shop?.env&&!cfg.production){
+      const outcome=await reconcileSupportInvoiceEvent(shop.env,String(obj.invoice?.id||"")||null,null,fetchImpl,now);
+      if(outcome!==null)return outcome;
+    }
     if (!id) return "invoice without subscription";
     // Never use a subscription's active status as evidence of payment.
     // Only the verified, signed Square paid-invoice notification counts.
@@ -122,6 +127,10 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
     const id=String(obj.refund?.id||event?.data?.id||"");
     if(!id)return "refund without id";
     const refund=(await squareCall(cfg,"GET","refunds/"+encodeURIComponent(id),undefined,fetchImpl))?.refund;
+    if(shop?.env&&!cfg.production){
+      const outcome=await flagIssuedSupportInvoiceRefund(shop.env,refund,now);
+      if(outcome!==null)return outcome;
+    }
     return (await flagSupportRefund(db,refund,cfg.locationId,now))??"ignored non-support refund";
   }
   if (type !== "payment.created" && type !== "payment.updated") return `ignored ${type}`;
@@ -132,6 +141,10 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   // Re-read the payment from Square rather than trusting the event body alone.
   const fresh = (await squareCall(cfg, "GET", `payments/${encodeURIComponent(payment.id)}`, undefined, fetchImpl))?.payment;
   if (!fresh || fresh.status !== "COMPLETED") return "payment not completed";
+  if(shop?.env&&!cfg.production){
+    const outcome=await reconcileSupportInvoiceEvent(shop.env,null,String(fresh.order_id||"")||null,fetchImpl,now);
+    if(outcome!==null)return outcome;
+  }
   const support=await applySupportPayment(db,fresh,cfg.locationId,now);
   if(support!==null)return support;
   // Only a first payment for a membership checkout the app remembers by order id is acted on.
