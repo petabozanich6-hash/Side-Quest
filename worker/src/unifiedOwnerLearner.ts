@@ -8,19 +8,30 @@ const identitySql=`SELECT p.id,p.family_id,COALESCE(s.name,p.label) label,COALES
  COALESCE(n.revision,0) revision,n.updated_at
  FROM support_portal_learners p LEFT JOIN students s ON s.id=p.student_id AND s.family_id=p.family_id
  LEFT JOIN support_portal_learner_notes n ON n.learner_id=p.id WHERE p.family_id=? AND p.id=?`;
+// Only an explicit learner link and a still-valid verified family claim qualify.
+const legacyJoins=`JOIN support_guest_learner_enquiries a ON a.request_id=r.id
+ JOIN support_guest_learners gl ON gl.id=a.learner_id
+ JOIN support_guest_families gf ON gf.id=gl.family_id AND gf.email=r.email
+ JOIN support_family_claims c ON c.guest_family_id=gf.id
+ JOIN support_portal_legacy_learners m ON m.legacy_learner_id=gl.id AND m.parent_user_id=c.parent_user_id
+ JOIN support_portal_learners lp ON lp.id=m.learner_id AND lp.family_id=c.family_id
+ JOIN users u ON u.id=c.parent_user_id AND u.family_id=c.family_id AND u.email=gf.email
+ LEFT JOIN family_admin_state fs ON fs.family_id=c.family_id`;
+const legacyGuard=`u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND COALESCE(fs.status,'active')='active'
+ AND (lp.parent_user_id=c.parent_user_id OR EXISTS(SELECT 1 FROM students st WHERE st.id=lp.student_id AND st.family_id=lp.family_id))
+ AND NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins o WHERE o.request_id=r.id)
+ AND NOT EXISTS(SELECT 1 FROM support_portal_enquiries p WHERE p.request_id=r.id)`;
+async function linkedLegacyIdentity(db:D1Database,requestId:string){
+ return db.prepare(`SELECT lp.family_id,lp.id learner_id FROM support_guest_requests r ${legacyJoins} WHERE r.id=? AND ${legacyGuard}`).bind(requestId).first<{family_id:string;learner_id:string}>();
+}
 const historyScope=`WITH learner_requests AS (
  SELECT r.id,r.subject,r.status,r.updated_at,g.id guest_id FROM support_portal_enquiries p
  JOIN support_guest_requests r ON r.id=p.request_id LEFT JOIN support_guest_families g ON g.email=r.email
  WHERE p.family_id=? AND p.learner_id=?
  UNION ALL
- SELECT r.id,r.subject,r.status,r.updated_at,g.id FROM support_portal_legacy_learners m
- JOIN support_portal_learners p ON p.id=m.learner_id
- JOIN support_guest_learners l ON l.id=m.legacy_learner_id
- JOIN support_family_claims c ON c.guest_family_id=l.family_id AND c.family_id=p.family_id AND c.parent_user_id=m.parent_user_id
- JOIN support_guest_learner_enquiries a ON a.learner_id=l.id
- JOIN support_guest_requests r ON r.id=a.request_id
- JOIN support_guest_families g ON g.id=l.family_id AND g.email=r.email
- WHERE p.family_id=? AND p.id=? AND NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins o WHERE o.request_id=r.id)
+ SELECT r.id,r.subject,r.status,r.updated_at,gf.id FROM support_guest_requests r
+ ${legacyJoins}
+ WHERE lp.family_id=? AND lp.id=? AND ${legacyGuard}
 )`;
 export async function ownerLearner(db:D1Database,family:string,id:string,page=1){
  const learner=await db.prepare(identitySql).bind(family,id).first<any>();if(!learner)return null;
@@ -68,12 +79,12 @@ export async function ownerLearnerReports(db:D1Database,family:string,id:string,
 /** Resolve identity from the booked request, never from the tutor-entered label or a client learner ID. */
 export async function appointmentLearnerContext(db:D1Database,channel:string,requestId:string,orderId:string,now=new Date()){
  if(channel!=="guest")return null;
- const o=await db.prepare(`SELECT o.start_at,p.family_id,p.learner_id,r.message FROM support_service_orders o
- JOIN support_portal_enquiries p ON p.request_id=o.request_id
- JOIN support_guest_requests r ON r.id=p.request_id
- JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id
- WHERE o.channel='guest' AND o.request_id=? AND o.id=? AND p.service='tutoring' AND o.mode='live'`).bind(requestId,orderId).first<{start_at:string;family_id:string;learner_id:string;message:string}>();
- if(!o||!Number.isFinite(Date.parse(o.start_at)))return null;
+ const booked=await db.prepare(`SELECT o.start_at,r.message FROM support_service_orders o JOIN support_guest_requests r ON r.id=o.request_id
+ WHERE o.channel='guest' AND o.request_id=? AND o.id=? AND o.mode='live'`).bind(requestId,orderId).first<{start_at:string;message:string}>();
+ if(!booked||!Number.isFinite(Date.parse(booked.start_at)))return null;
+ const identity=await db.prepare(`SELECT p.family_id,p.learner_id FROM support_portal_enquiries p JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id WHERE p.request_id=? AND p.service='tutoring'`).bind(requestId).first<{family_id:string;learner_id:string}>()||await linkedLegacyIdentity(db,requestId);
+ if(!identity)return null;
+ const o={...booked,...identity};
  const l=await db.prepare(identitySql).bind(o.family_id,o.learner_id).first<any>();if(!l)return null;
  const cutoff=new Date(Math.min(Date.parse(o.start_at),now.getTime()));
  const [reports,prior]=await Promise.all([
@@ -101,7 +112,8 @@ export async function clubPreparationContext(db:D1Database,classId:string,now=ne
  const cutoff=new Date(Math.min(Date.parse(session.start_at),now.getTime()));
  const learners=[];
  for(const seat of rows.slice(0,8)){
-  const l=seat.family_id&&seat.learner_id?await db.prepare(identitySql).bind(seat.family_id,seat.learner_id).first<any>():null;
+  const identity=seat.family_id&&seat.learner_id?seat:await linkedLegacyIdentity(db,seat.request_id);
+  const l=identity?await db.prepare(identitySql).bind(identity.family_id,identity.learner_id).first<any>():null;
   learners.push({seat_id:seat.seat_id,booked_label:seat.learner_label,learner:l,current_enquiry:l?seat.message:null,reports:l?await ownerLearnerReports(db,l.family_id,l.id,cutoff):[]});
  }
  return {session,learners,limited:rows.length>8};
