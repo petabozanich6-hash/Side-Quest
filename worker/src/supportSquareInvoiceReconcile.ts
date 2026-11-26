@@ -7,6 +7,11 @@ import {ownerSquareInvoiceWorkspace} from "./supportSquareInvoiceWorkspace";
 const validId=(v:unknown):v is string=>typeof v==="string"&&/^[A-Za-z0-9:_-]{1,150}$/.test(v);
 const money=(v:any,n:number)=>v?.currency==="AUD"&&Number.isSafeInteger(v.amount)&&v.amount===n;
 const norm=(v:unknown)=>typeof v==="string"?v.trim().toLowerCase():"";
+// Only Square's documented sandbox payment page, never a production or arbitrary URL.
+export function sandboxInvoicePaymentUrl(value:unknown):string|null{
+ if(typeof value!=="string"||value.length>2048)return null;
+ try{const u=new URL(value);return u.protocol==="https:"&&u.hostname==="squareupsandbox.com"&&!u.port&&!u.username&&!u.password&&!u.hash&&!u.search&&/^\/pay-invoice\/[A-Za-z0-9:_-]+$/.test(u.pathname)?u.href:null;}catch{return null;}
+}
 const statuses=["DRAFT","UNPAID","PARTIALLY_PAID","PAID","CANCELED","REFUNDED","PARTIALLY_REFUNDED","PAYMENT_PENDING","FAILED","SCHEDULED"];
 
 // Provider read-only. Candidate identifiers are untrusted until linked to the
@@ -68,14 +73,20 @@ export async function inspectPreparedSupportSquareInvoice(
  const expected=saved?.invoice?.accepted_payment_methods;
  const actual=remoteInvoice.accepted_payment_methods;
  const methodsMatch=!!expected&&!!actual&&Object.keys(expected).every(k=>actual[k]===expected[k]);
- const draftSafe=status==="DRAFT"&&orderOpen&&completed===0&&remoteInvoice.delivery_method==="EMAIL"&&!remoteInvoice.public_url&&
+ const safeSettings=orderOpen&&completed===0&&remoteInvoice.delivery_method==="EMAIL"&&
  !remoteInvoice.scheduled_at&&!remoteInvoice.store_payment_method_enabled&&!remoteInvoice.custom_fields?.length&&!remoteInvoice.attachments?.length&&
  p[0].automatic_payment_source==="NONE"&&!p[0].card_id&&!p[0].bank_account_id&&!p[0].tipping_enabled&&!p[0].reminders?.length&&methodsMatch;
+ const draftSafe=status==="DRAFT"&&!remoteInvoice.public_url&&safeSettings;
  const versionMatches=i.provider_invoice_version===null||remoteInvoice.version===i.provider_invoice_version;
+ const url=sandboxInvoicePaymentUrl(remoteInvoice.public_url);
+ const approvedVersion=i.publish_approved_version;
+ const issuedMatches=status==="UNPAID"&&safeSettings&&!!url&&Number.isSafeInteger(approvedVersion)&&
+  (remoteInvoice.version===approvedVersion||remoteInvoice.version===approvedVersion+1)&&
+  !!i.publish_attempted_at&&["publish_pending","issued"].includes(i.state);
  return {matched:true,provider_order_id:order,order_open:orderOpen,invoice_checked:true,provider_invoice_id:invoice,
   version:remoteInvoice.version,status,amount_cents:i.amount_cents,completed_cents:completed,due_at:i.due_at,
-  draft_matches:draftSafe&&versionMatches,can_recover_draft:workspace.eligible&&i.state==="invoice_pending"&&i.provider_order_id===order&&!i.provider_invoice_id&&draftSafe&&remoteInvoice.version===0,
-  requires_review:!draftSafe||!versionMatches||!workspace.eligible,checked_at:now.toISOString()};
+  draft_matches:draftSafe&&versionMatches,issued_matches:issuedMatches,public_url:issuedMatches?url:null,can_recover_draft:workspace.eligible&&i.state==="invoice_pending"&&i.provider_order_id===order&&!i.provider_invoice_id&&draftSafe&&remoteInvoice.version===0,
+  requires_review:(!draftSafe||!versionMatches)&&!issuedMatches||!workspace.eligible,checked_at:now.toISOString()};
 }
 
 // Recover a lost response by linking only a freshly verified candidate.
