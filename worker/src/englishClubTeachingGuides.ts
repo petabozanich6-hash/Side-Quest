@@ -1,0 +1,68 @@
+// Private facilitator guidance. Never include in learner-facing workshopResource or public catalogue.
+export const ENGLISH_TEACHING_GUIDES=[
+ {
+  title:"The Power of Words",
+  concept:"Diction means word choice. Connotation is the feeling or association carried by a word beyond its literal meaning. Framing directs attention to selected parts of an event. A description may be accurate but incomplete. Rhythm is the pattern of sounds, stresses and pauses: a short sentence can make a point emphatic; longer phrases can slow attention.",
+  model:"Read the tree passage aloud. Say: ‘Development sounds like progress. The last patch of shade makes us notice a resource people will lose. Both descriptions can refer to the same event. Notice how the notice says improved but never says who benefits.’ Underline development, last, improved, and nobody. Compare ‘Council plans new public space’ with ‘Council plans to remove remaining shade trees’. Each selects a different emphasis; neither should invent facts. Revise ‘The trees were removed. It was sad’ to ‘By noon, the last tree was gone.’ Explain that the short sentence and last convey loss without naming an emotion.",
+  guided:"Give everyone the invented event: a school closes one gate for repairs. Together draft a factual notice and a headline highlighting inconvenience. Start with ‘Gate closed for repairs’; invite alternatives, then check each against the same facts. Ask which words carry judgement and whether the text unfairly implies facts we do not know.",
+  independent:"Learners write two descriptions of the tree event for different audiences, identify a word or rhythm choice, and revise one. Accept spoken, dictated or typed responses. Do not demand sharing.",
+  support:"For younger learners offer word pairs change/improvement, cut/remove, empty/clear. Ask them to say which feels more positive and why. Older learners can distinguish denotation, connotation, euphemism and omission and discuss whose perspective is missing.",
+  feedback:"A strong answer connects the quoted word to its effect and an audience. ‘Development is positive’ is a start; ask what it makes the audience expect. The passage does not prove the council lied. Acknowledge different interpretations when supported. Exit check: explain how two accurate accounts of one event may create different impressions."
+ },
+ {
+  title:"Between the Lines",
+  concept:"Observation is something the text actually states; inference is an interpretation supported by clues. Subtext is the meaning suggested beneath spoken words or actions. An interpretation is plausible rather than automatically true. A symbol is a repeated or emphasised detail that may carry an additional meaning in context.",
+  model:"Read Lee's exchange. Say: ‘We know she says you can stay, and puts the photograph face down in a drawer. We do not know why. Hiding a private memory and concealing a conflict are possible inferences, not facts.’ Make two columns, observable detail and possible meaning. Model the sentence ‘Although Lee welcomes the guest, putting the photograph away suggests she may want privacy.’ The words although, suggests and may connect the clue without overstating certainty. Show how ‘Welcome,’ she said, checking the clock, suggests something unstated; the action need not have exactly one explanation.",
+  guided:"Together try a new line: ‘Take your time,’ Ben said, tapping his foot. Separate what we see and what we infer. Invite two possible readings, then ask what further clue would distinguish them. Model a rewrite that implies impatience without saying ‘Ben was impatient’.",
+  independent:"Learners compose two lines of dialogue and a contrasting action, then describe their intended subtext privately. Revise a clue that explains too much or is too vague.",
+  support:"Use a says/does chart and choices like worried, excited, impatient; distinguish words from guesses. Older learners test alternative readings, discuss narrative reliability and whether the photograph is a symbol or simply an object.",
+  feedback:"A defensible inference cites an observable clue. If someone says Lee hates the guest, ask which words support that strength of claim and what other explanation fits. Do not require disclosure of personal experiences. Exit check: give an observation, a plausible inference, and one reason an inference is not certain."
+ },
+ {
+  title:"The Human Condition",
+  concept:"Motivation is the reason behind an action. Values are principles a person cares about; constraints are limits imposed by circumstance. A moral dilemma occurs when legitimate priorities conflict. Explaining a character's choice is not the same as endorsing it. Viewpoint shapes what readers notice and what they can know.",
+  model:"Read Ari and Sam's competition dilemma. Say: ‘Ari followed the rule and invested weeks of work. Sam helped someone and arrived late. The text gives both pressures; it does not tell us which outcome is correct.’ Map Ari: fairness, effort, risk of unequal treatment. Map Sam: compassion, missed opportunity. Model two internal thoughts: ‘If the deadline changes now, what were all those weeks for?’ and ‘I couldn't just leave someone stranded.’ Show how both imply a value without labelling one person good and the other bad. Mark these thoughts as our invented possibilities, not quotations from the passage.",
+  guided:"Invent a shared studio with one remaining seat. One character booked it; another needs access for an urgent task. Map wants, fears, rules and information. Ask learners to propose an outcome and then explain the strongest competing view. Demonstrate how the same decision sounds from each perspective.",
+  independent:"Write the competition decision from two viewpoints with distinct vocabulary and plausible motives. Revise a line so that a character's action reveals a contradiction. The outcome is open; no personal disclosure.",
+  support:"Offer want/because/but sentence frames and simple thought bubbles. Older learners explore conflicting loyalties, unintended consequences, limited viewpoint and the difference between justification and explanation.",
+  feedback:"Assess whether each perspective contains its own plausible motivation and constraint. If both sound identical, ask what each character notices first. Exit check: explain a decision you might disagree with using evidence from the fictional scenario."
+ },
+ {
+  title:"The Art of Storytelling",
+  concept:"Chronology is the order events happen. Narrative order is how the reader receives them. Cause and effect links events, whereas a time jump alone does not create causality. Pacing is how much narrative space an event receives. Foreshadowing plants a detail that becomes meaningful later.",
+  model:"Read Rowan's train passage. Say: ‘The earlier encounter occurs before the discovery of the note, but we read the note first. That creates a question: who wrote it and why?’ Make event cards: stranger offers seat → train moves → Rowan finds note → empty platform. The note does not establish who wrote it. Compare an opening with the encounter against an opening with the warning. Model slow pacing: ‘Rowan unfolded the note. One word had been underlined twice: Don't.’ Model compression: ‘Twenty minutes passed before the next stop.’ Explain how the first draws attention to a detail and the second moves time forward. Both are invented rewrites.",
+  guided:"Use a four-event fictional sequence: key lost, door locked, footsteps heard, spare key discovered. Choose a chronological order, then start with the locked door. Ask what the reader knows, what question they have, and which earlier detail makes the later solution feel earned. Do not confuse deliberate mystery with missing essential information.",
+  independent:"Draft a short opening with a purposeful reveal or pace change. Mark what the reader knows versus what remains hidden. Revise an event connection or planted clue.",
+  support:"Offer numbered cards and a beginning/because/therefore frame. Older learners experiment with nonlinear structure, narrative viewpoint, tension through dramatic irony, and time compression.",
+  feedback:"Check coherence and whether the chosen order creates a specific effect. If the story is confusing, ask what fact the reader needs earlier. Exit check: name one change to narrative order and explain what it changes for the reader."
+ },
+ {
+  title:"Words That Challenge the World",
+  concept:"A claim states a position; a reason explains why; evidence is information that supports it. Rhetoric is the deliberate use of language to influence an audience. Ethos appeals to credibility, pathos to emotion, and logos to reasoning. A counterargument gives a reasonable opposing position rather than a distorted version.",
+  model:"Read the library proposal. Say: ‘One speaker claims students benefit from collaboration; another says quiet readers may lose their only suitable space. These are claims and reasons, not measured evidence.’ Model ‘The library should retain some quiet seating because some readers need a low-noise environment. We would need usage counts and consultation to judge how much space.’ Add a counterargument: ‘Collaborative spaces are valuable too; a mixed layout could be explored if the building allows it.’ Compare ‘Everyone wants collaboration’ with a more precise claim. Do not invent statistics or claim a compromise is automatically feasible.",
+  guided:"Together argue whether a fictional community garden should have extended opening hours. Label claim, reason, evidence needed and objection. Offer different positions without ranking participants' beliefs. Replace an unsupported sweeping claim with a precise, qualified statement.",
+  independent:"Write a short argument about the library for a chosen audience, include one fair objection and respond using a reason. Mark hypothetical examples as hypothetical. Revise one rhetorical choice.",
+  support:"Use ‘I think... because... we could find out... someone else might say...’ frames. Older learners examine source quality, false dilemmas, emotional language, and whether a conclusion follows from evidence.",
+  feedback:"Assess reasoning, not agreement. Ask what evidence would change a learner's mind. If an objection is mocked, restate it fairly first. Exit check: identify a claim and a piece of evidence that would actually help assess it."
+ },
+ {
+  title:"From Idea to Impact",
+  concept:"Revision improves meaning, structure, emphasis or effect. Copyediting improves clarity, grammar and mechanics. Proofreading catches remaining errors. Purpose and audience guide all three. Strong editing preserves intentional voice, rather than making every writer sound alike.",
+  model:"Read the Jules draft and revision. Say: ‘The first tells us Jules felt upset. The revision creates a concrete image and raises a question about the past. It is not better just because it is longer; it serves a different purpose.’ On the board label the changes: recognition before opening (sequence and anticipation), three months too late (specific time and stakes), direct letter quotation (voice and implication). Model a second version for an urgent news report: ‘Jules received the letter three months after it was due.’ Explain why a factual report may need clarity rather than suspense. Show a separate copyedit: ‘the letters was late’ becomes ‘the letters were late.’",
+  guided:"Use ‘The door opened. She was scared.’ Agree on a purpose, such as suspense. Together revise to ‘The handle turned before she touched it.’ Discuss what this does and does not establish. Offer a different revision for comedy. Check tense and punctuation after choosing the intended effect.",
+  independent:"Learners draft or select original work, make one meaning/structure revision and one language revision, then explain their decisions. Sharing is optional; allow private practice and voluntary excerpts.",
+  support:"Offer oral rehearsal, before/after boxes, and a single focused revision goal. Older learners discuss voice, coherence, pacing, rhythm and an edit they deliberately reject.",
+  feedback:"Ask whether the change improves the stated purpose rather than merely adding adjectives. Respect a learner's intended style. Exit check: distinguish a structural revision from a copyedit and explain the effect of one change. Completion certificates are handled separately through verified attendance."
+ }
+] as const;
+export function englishTeachingGuide(index:number){
+ const g=ENGLISH_TEACHING_GUIDES[index];if(!g)return "";
+ return [
+ "5–13 min | I teach — explicit concept: "+g.concept,
+ "13–23 min | I demonstrate — worked analysis or writing: "+g.model,
+ "23–35 min | We practise together: "+g.guided,
+ "35–49 min | You try independently: "+g.independent,
+ "49–57 min | Adapt and give feedback: "+g.support+" "+g.feedback,
+ "57–60 min | Exit check: revisit the final question above and note evidence privately."
+ ].join("\n\n");
+}
