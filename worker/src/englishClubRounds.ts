@@ -1,4 +1,5 @@
 import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
+import {validateActivityTemplate} from "./supportActivityLibrary";
 import {sydneyWeek} from "./englishClub";
 export const ROUND_PRICE_CENTS=1500;
 const text=(v:unknown,max:number)=>typeof v==="string"&&v.trim().length<=max?v.trim():"";
@@ -19,7 +20,7 @@ export async function createEnglishRound(db:D1Database,owner:string,b:any,now=ne
  const title=text(b?.title,120),description=text(b?.description,1000),starts=weeklyRoundStarts(b?.first_local,b?.session_count);
  if(b?.confirmed!==true||!title||!starts||!Array.isArray(b.themes)||b.themes.length!==starts.length||b.themes.some((x:unknown)=>!text(x,120))||Date.parse(starts[0])-86400000<=now.getTime()||Date.parse(starts[starts.length-1])>now.getTime()+180*86400000)return {error:"Choose 2–12 weekly sessions in Sydney time, within six months, each with a theme and more than 24 hours' notice."};
  const preset=b.curriculum_id===STORY_QUEST.id;
- if(b.curriculum_id!==undefined&&(!preset||starts.length!==6||title!==STORY_QUEST.title||description!==STORY_QUEST.description||b.themes.some((v:unknown,i:number)=>v!==STORY_QUEST.sessions[i]?.title)))return {error:"The selected curriculum no longer matches the reviewed six workshops. Reload the preset or create a custom round."};
+ if(b.curriculum_id!==undefined&&(!preset||b.reviewed_activities!==true||starts.length!==6||title!==STORY_QUEST.title||description!==STORY_QUEST.description||b.themes.some((v:unknown,i:number)=>v!==STORY_QUEST.sessions[i]?.title)))return {error:"The selected curriculum no longer matches the reviewed six workshops. Reload and review the preset activities or create a custom round."};
  const id=crypto.randomUUID(),at=now.toISOString();
  const statements=[db.prepare("INSERT INTO support_english_rounds(id,title,description,session_count,created_by,created_at,curriculum_id) VALUES(?,?,?,?,?,?,?)").bind(id,title,description,starts.length,owner,at,preset?STORY_QUEST.id:null)];
  for(const [i,start] of starts.entries()){
@@ -28,6 +29,19 @@ export async function createEnglishRound(db:D1Database,owner:string,b:any,now=ne
  // Explicit non-null round mapping also fails if a calendar block was not inserted.
  statements.push(db.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,created_at,preparation,public_description) SELECT id,?,?,?,?,?,?,? FROM support_busy_blocks WHERE id=?").bind(week,start,end,text(b.themes[i],120),at,preset?storyQuestPreparation(i):"",preset?STORY_QUEST.sessions[i].description:"",cid));
  statements.push(db.prepare("INSERT INTO support_english_round_classes(round_id,class_id,sequence) VALUES(?,(SELECT id FROM support_english_classes WHERE id=?),?)").bind(id,cid,i+1));
+ if(preset){
+  // Owner confirmation covers these exact versioned prompts. New copies are private,
+  // editable reviewed templates; no existing template or plan is overwritten.
+  const items:{template_id:string;revision:number}[]=[];
+  for(const a of STORY_QUEST.sessions[i].activities){
+   const v=validateActivityTemplate({...a,subject:"English",year_level:"Mixed levels"});
+   if(!v)return {error:"A preset activity is invalid. No round was created."};
+   const key=crypto.randomUUID();
+   statements.push(db.prepare("INSERT INTO support_activity_templates(id,title,subject,year_level,question,activity_type,options_json,answer_key,status,game_json,collaborative,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)").bind(key,v.title,v.subject,v.year_level,v.question,v.type,JSON.stringify(v.options),v.answer_key,"reviewed",v.game?JSON.stringify(v.game):null,v.collaborative,at,at));
+   items.push({template_id:key,revision:1});
+  }
+  statements.push(db.prepare("INSERT INTO support_session_activity_plans(kind,session_id,items_json,updated_at) VALUES(?,?,?,?)").bind("club",cid,JSON.stringify(items),at));
+ }
  }
  try{await db.batch(statements);return {id};}catch{return {error:"A week conflicts with an existing class, booking or blocked time. No round or calendar blocks were created."};}
 }
