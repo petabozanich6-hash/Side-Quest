@@ -74,6 +74,7 @@ test("standard tutoring self-service uses fixed prices and own learner, atomical
  const settings=await readAvailability(DB);
  assert.equal(await saveAvailability(DB,{...settings,enabled:true,confirmed:true,windows:Array.from({length:7},(_,day)=>({day,start:"09:00",end:"13:00"})),policy:{enforced:true,weekly_limit:5,daily_limit:2,evening_limit:1,date_overrides:[],week_overrides:[]}}),true);
  const endpoint="/family-portal/enquiries/submit";
+ assert.equal((await call("/family-portal/enquiries/standard-status",undefined,one.token)).data.available,true);
  const body={...form(one.learner,"standard-single"),detail:"",standard_service:"live30",session_count:1,payment_mode:"upfront",expected_total_cents:2500};
  assert.equal((await call(endpoint,{...body,expected_total_cents:1},one.token)).status,400);
  assert.equal((await call(endpoint,{...body,learner_id:two.learner},one.token)).status,400);
@@ -90,14 +91,18 @@ test("standard tutoring self-service uses fixed prices and own learner, atomical
  const live=await readAvailability(DB);
  assert.equal(await saveAvailability(DB,{...live,enabled:false,confirmed:true}),true);
  assert.equal(await readSlots(DB,"guest",id,qid),null);
+ assert.equal((await call("/family-portal/enquiries/standard-status",undefined,one.token)).data.available,false);
  assert.ok("error" in await selectSlot(DB,"guest",id,qid,{offer_id:offer.id,start_at:offer.starts[0],confirmed:true}));
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_service_orders").get().n,0);
  assert.equal((await call(endpoint,{...body,request_key:"paused-new"},one.token)).status,400);
  const paused=await readAvailability(DB);assert.equal(await saveAvailability(DB,{...paused,enabled:true,confirmed:true}),true);
- const multi=await call(endpoint,{...body,request_key:"standard-package",session_count:4,payment_mode:"installments",expected_total_cents:10000},one.token);
+ const multi=await call(endpoint,{...body,request_key:"standard-package",standard_accept:true,session_count:4,payment_mode:"installments",expected_total_cents:10000},one.token);
  assert.equal(multi.status,201,JSON.stringify(multi.data));
  const p=await readSlots(DB,"guest",multi.data.id,"standard-"+multi.data.id);
  assert.deepEqual(p.session_amounts_cents,[2500,2500,2500,2500]);assert.equal(p.deadline_hours,24);
+ assert.equal(p.can_select,true);
+ assert.equal(DB.raw.prepare("SELECT status FROM support_guest_quotes WHERE id=?").get("standard-"+multi.data.id).status,"interested");
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_service_orders").get().n,0);
 });
 
 test("English Club six-session round reserves all places atomically at $15, protects ownership and legacy billing",async t=>{
