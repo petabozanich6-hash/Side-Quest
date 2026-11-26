@@ -42,6 +42,9 @@ export type Env = {
   SUPPORT_UNIFIED_TEST_EMAIL?: string;
   SUPPORT_SQUARE_INVOICE_TEST?: string;
   SUPPORT_SQUARE_INVOICE_NOTICE_TEST?: string;
+  SUPPORT_STANDARD_INVOICE_AUTO_TEST?: string;
+  SUPPORT_STANDARD_INVOICE_CUSTOMER_ID?: string;
+  SUPPORT_STANDARD_INVOICE_APPROVED_BY?: string;
   /** Exact isolated staging Worker origin; never taken from a request header. */
   SUPPORT_GUEST_ORIGIN?: string;
   /** Teaching board pilot, disabled until staging verifies access and safety. */
