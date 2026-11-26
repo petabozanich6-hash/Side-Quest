@@ -1,3 +1,4 @@
+import {reconcileClubInvoiceEvent,flagClubPaymentHold,flagClubInvoiceDispute} from "./clubSquareInvoiceSettlement";
 import {reconcileSupportInvoiceEvent,flagIssuedSupportInvoiceRefund,flagIssuedSupportInvoiceDispute} from "./supportSquareInvoiceSettlement";
 // Square payments: hosted checkout (Payment Links) and signed webhooks.
 //
@@ -110,6 +111,8 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   if (type === "invoice.payment_made") {
     const id = String(obj.invoice?.subscription_id || "");
     if(!id&&shop?.env&&!cfg.production){
+      const club=await reconcileClubInvoiceEvent(shop.env,String(obj.invoice?.id||"")||null,null,fetchImpl,now);
+      if(club!==null)return club;
       const outcome=await reconcileSupportInvoiceEvent(shop.env,String(obj.invoice?.id||"")||null,null,fetchImpl,now);
       if(outcome!==null)return outcome;
     }
@@ -125,6 +128,8 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   }
   if(type==="dispute.created"||type==="dispute.state.updated"){
     if(!shop?.env||cfg.production)return "ignored dispute outside support sandbox";
+    const club=await flagClubInvoiceDispute(shop.env,obj.dispute?.id||event?.data?.id,fetchImpl,now);
+    if(club!==null)return club;
     return (await flagIssuedSupportInvoiceDispute(shop.env,obj.dispute?.id||event?.data?.id,fetchImpl,now))??"ignored non-support dispute";
   }
   if(type==="refund.created"||type==="refund.updated"){
@@ -132,6 +137,8 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
     if(!id)return "refund without id";
     const refund=(await squareCall(cfg,"GET","refunds/"+encodeURIComponent(id),undefined,fetchImpl))?.refund;
     if(shop?.env&&!cfg.production){
+      const club=refund?.location_id===cfg.locationId?await flagClubPaymentHold(shop.env,refund.payment_id,"refund",fetchImpl,now):null;
+      if(club!==null)return club;
       const outcome=await flagIssuedSupportInvoiceRefund(shop.env,refund,now,fetchImpl);
       if(outcome!==null)return outcome;
     }
@@ -146,6 +153,8 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
   const fresh = (await squareCall(cfg, "GET", `payments/${encodeURIComponent(payment.id)}`, undefined, fetchImpl))?.payment;
   if (!fresh || fresh.status !== "COMPLETED") return "payment not completed";
   if(shop?.env&&!cfg.production){
+    const club=await reconcileClubInvoiceEvent(shop.env,null,String(fresh.order_id||"")||null,fetchImpl,now);
+    if(club!==null)return club;
     const outcome=await reconcileSupportInvoiceEvent(shop.env,null,String(fresh.order_id||"")||null,fetchImpl,now);
     if(outcome!==null)return outcome;
   }
