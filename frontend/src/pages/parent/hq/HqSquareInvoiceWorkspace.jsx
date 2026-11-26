@@ -13,7 +13,7 @@ const stages={
  invoice_pending:["Draft response uncertain","create-draft","Recover invoice draft","Retry the same draft operation only within the server recovery window."],
  draft_created:["Unpublished Square draft",null,null,"Check the saved draft in Square before approving issue."],
  publish_pending:["Publication response uncertain",null,null,"Check the same invoice before recovering or retrying publication."],
- issued:["Issued in Square sandbox",null,null,"Invoice issued and verified. Booking remains unpaid until payment is independently verified."],
+ issued:["Issued in Square sandbox",null,null,"The invoice has been issued. See the booking payment status below."],
  review:["Reconciliation required",null,null,"Check Square before taking any further payment or cancellation action."]
 };
 
@@ -53,7 +53,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
   catch(e){if(live.current)setError(errorText(e,"Invoice action could not be confirmed. Check the saved status before retrying."));}
   finally{await load();lock.current=false;if(live.current)setBusy(false);}
  }
- const i=data?.intent,o=data?.order,stage=i?(stages[i.state]||["Reconciliation required",null,null,"No further action is enabled."]):null;
+ const i=data?.intent,o=data?.order,payment=data?.payment_status,stage=i?(stages[i.state]||["Reconciliation required",null,null,"No further action is enabled."]):null;
  return <section className="max-w-2xl space-y-4 min-w-0">
   <Link to={back} className="underline text-sm font-semibold">← Return to service booking</Link>
   <header><h2 className="font-display text-2xl font-bold">Invoice review</h2><p className="text-sm text-stone-600">Private Square sandbox · No live payments or automatic charges. Issuing an invoice requires separate approval.</p></header>
@@ -65,8 +65,9 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
    <p className="text-sm break-words">Recipient: {data.recipient||"Not verified"}</p>
    {o.start_at&&<p className="text-sm">Appointment: {date(o.start_at)} Sydney time</p>}
    <p className="text-2xl font-bold">{money(o.amount_cents)} AUD</p>
-   <p className="text-sm">Booking status: {o.status.replaceAll("_"," ")}</p>
-   {!data.eligible&&<p role="alert" className="text-sm text-amber-900">This arrangement is not currently eligible. Review the recipient, booking or existing payment before continuing.</p>}
+   <p className="text-sm">Booking status: {({confirmed:"Provisional — agreement accepted",paid:"Paid — booking confirmed",completed:"Completed",cancelled:"Cancelled",review:"Financial review required",awaiting_confirmation:"Agreement awaiting confirmation"})[o.status]||o.status.replaceAll("_"," ")}</p>
+   {i&&<p className="font-semibold text-sm" data-testid="invoice-payment-status">{({verified:"Payment verified",cancelled:"Cancelled — no further payment action",review:"Payment requires review — do not charge again",awaiting_payment:"Awaiting verified payment",not_issued:"Invoice not yet issued"})[payment]||"Check payment status"}</p>}
+   {!data.eligible&&!["verified","cancelled","review"].includes(payment)&&<p role="alert" className="text-sm text-amber-900">This arrangement is not currently eligible. Review the recipient, booking or existing payment before continuing.</p>}
   </div>}
   {o&&data.eligible&&!i&&!preview&&<form className="paper-card p-4 space-y-3" onSubmit={getPreview}>
    <h3 className="font-bold">Prepare invoice</h3>
@@ -114,7 +115,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
    {i.state==="issued"&&<section className="border-t pt-3 space-y-2"><h4 className="font-semibold">Booking correspondence</h4><p className="text-sm">{data.notices_enabled?"Automatic test emails enabled for the verified sandbox recipient only.":"Automatic sandbox email delivery is disabled."}</p>{(data.notices||[]).length?(data.notices||[]).map(n=><p key={n.kind} className="text-sm">{({confirmation:"Booking confirmation",reminder:"Payment reminder",overdue:"Overdue follow-up"})[n.kind]||n.kind}: {({sent:"Sent",sending:"Delivery uncertain — review",review:"Delivery needs review",suppressed:"Suppressed after state change"})[n.status]||n.status}{n.sent_at?" · "+date(n.sent_at)+" Sydney time":""}</p>):<p className="text-sm text-stone-600">No automatic correspondence attempted.</p>}</section>}
    {data.confirmation_preview&&<details className="border rounded-lg p-3"><summary className="cursor-pointer font-semibold">Booking confirmation email preview</summary><p className="text-xs mt-2">Prepared from verified payment. Check the delivery history above for actual email status.</p><p className="font-semibold mt-2">{data.confirmation_preview.subject}</p><p className="whitespace-pre-wrap text-sm mt-2">{data.confirmation_preview.body}</p></details>}
    {i.state==="issued"&&o.status==="confirmed"&&<p className="text-sm">If an overdue or parent-requested cancellation is agreed, cancel the unpaid invoice in Square first, notify the parent, then check the saved record here. Do not release a partial or uncertain payment.</p>}
-   {i.state==="issued"&&<button className={button} disabled={busy} onClick={()=>action("verify-payment",{fingerprint:i.fingerprint})}>Check and verify payment</button>}
+   {i.state==="issued"&&o.status==="confirmed"&&<button className={button} disabled={busy} onClick={()=>action("verify-payment",{fingerprint:i.fingerprint})}>Check and verify payment</button>}
    <button className="block underline text-sm" disabled={busy} onClick={()=>{setApproved(false);setChecked(null);load();}}>Reload saved status</button>
   </div>}
  </section>;
