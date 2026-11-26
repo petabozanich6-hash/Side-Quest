@@ -8,6 +8,7 @@ on:
         description: "Exact staging website origin (https://side-quest-staging.<subdomain>.workers.dev); no key or path"
         type: string
         required: false
+        default: "https://side-quest-staging.petabozanich6.workers.dev"
       enable_family_portal:
         description: "Enable private unified family portal (existing verified staging parents)"
         type: boolean
