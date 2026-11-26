@@ -1,3 +1,4 @@
+import {registerFamilyClubCertificates} from "./clubCertificateDelivery";
 import {cancelNextOverdueClubSandboxInvoice} from "./clubAutomaticCancellation";
 import {processClubNotices} from "./clubPaymentSessionNotices";
 import {issueNextClubSandboxInvoice} from "./clubStandardInvoiceAutomation";
@@ -413,6 +414,7 @@ registerFamilyProgressReports(app,guards);
 registerFamilyOverview(app,guards);
 registerFamilySquareInvoices(app,guards);
 registerFamilyClubInvoices(app,guards);
+registerFamilyClubCertificates(app,guards);
 registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
