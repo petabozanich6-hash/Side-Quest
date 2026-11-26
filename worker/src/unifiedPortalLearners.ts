@@ -12,7 +12,8 @@ export async function portalLearners(db:D1Database,a:AuthUser){
  const students=(await db.prepare("SELECT s.id,s.name label,COALESCE(s.year_level,'') year_level FROM students s WHERE s.family_id=? AND NOT EXISTS(SELECT 1 FROM support_portal_learners p WHERE p.student_id=s.id) ORDER BY s.name,s.id LIMIT 100").bind(a.family_id).all<any>()).results||[];
  const claim=await readFamilyClaim(db,a);
  const legacy=claim?(await db.prepare("SELECT g.id,g.label,g.year_level,l.learner_id FROM support_guest_learners g LEFT JOIN support_portal_legacy_learners l ON l.legacy_learner_id=g.id AND l.parent_user_id=? WHERE g.family_id=? ORDER BY g.label,g.id LIMIT 100").bind(a.id,claim.guest_family_id).all<any>()).results||[]:[];
- return {learners,students,legacy};
+ const member=(await db.prepare("SELECT r.id,r.subject,r.created_at,m.learner_id FROM parent_feedback r LEFT JOIN support_portal_member_learners m ON m.request_id=r.id AND m.parent_user_id=r.user_id WHERE r.family_id=? AND r.user_id=? AND r.page_hint='learning-support' ORDER BY r.created_at DESC,r.id LIMIT 100").bind(a.family_id,a.id).all<any>()).results||[];
+ return {learners,students,legacy,member};
 }
 export async function addPortalLearner(db:D1Database,a:AuthUser,b:any){
  if(!await verifiedPortalIdentity(db,a)||!b||!validId(b.request_key))return null;
@@ -45,10 +46,20 @@ export async function linkPortalLegacyLearner(db:D1Database,a:AuthUser,b:any){
  if(result.meta?.changes)return true;
  return !!await db.prepare("SELECT 1 FROM support_portal_legacy_learners WHERE legacy_learner_id=? AND learner_id=? AND parent_user_id=?").bind(b.legacy_id,b.learner_id,a.id).first();
 }
+export async function linkMemberLearner(db:D1Database,a:AuthUser,b:any){
+ if(!await verifiedPortalIdentity(db,a)||b?.confirmed!==true||!validId(b.request_id)||!validId(b.learner_id))return false;
+ const result=await db.prepare(`INSERT OR IGNORE INTO support_portal_member_learners(request_id,learner_id,parent_user_id,linked_at)
+ SELECT r.id,p.id,r.user_id,? FROM parent_feedback r JOIN support_portal_learners p ON p.id=? AND p.family_id=r.family_id
+ JOIN users u ON u.id=r.user_id AND u.family_id=r.family_id LEFT JOIN family_admin_state fs ON fs.family_id=r.family_id
+ WHERE r.id=? AND r.user_id=? AND r.page_hint='learning-support' AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND COALESCE(fs.status,'active')='active' AND `+ownedSql).bind(nowIso(),b.learner_id,b.request_id,a.id,a.family_id,a.id).run();
+ if(result.meta?.changes)return true;
+ return !!await db.prepare("SELECT 1 FROM support_portal_member_learners m JOIN parent_feedback r ON r.id=m.request_id JOIN support_portal_learners p ON p.id=m.learner_id AND p.family_id=r.family_id WHERE m.request_id=? AND m.learner_id=? AND m.parent_user_id=? AND r.user_id=? AND r.page_hint='learning-support' AND "+ownedSql).bind(b.request_id,b.learner_id,a.id,a.id,a.family_id,a.id).first();
+}
 export function registerPortalLearners(app:App,g:Guards){
  const root="/api/family-portal/learners";
  app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","no-store");if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);await next();});
  app.get(root+"/list",g.auth,g.parent,async c=>{const r=await portalLearners(c.env.DB,c.get("user"));return r?c.json(r):c.json({detail:"Verified parent access required."},403);});
  app.post(root+"/add",g.auth,g.parent,async c=>{const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified parent access required."},403);if(!(await hitRateLimit(c.env.DB,"portal-learner:"+a.id,30,3600)).ok)return c.json({detail:"Try again later."},429);const r=await addPortalLearner(c.env.DB,a,await c.req.json().catch(()=>null));return r?c.json(r):c.json({detail:"Unable to add that learner. Check your details or select an existing learner."},409);});
+ app.post(root+"/link-member",g.auth,g.parent,async c=>{const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified parent access required."},403);if(!(await hitRateLimit(c.env.DB,"portal-member-link:"+a.id,20,3600)).ok)return c.json({detail:"Try again later."},429);return await linkMemberLearner(c.env.DB,a,await c.req.json().catch(()=>null))?c.json({linked:true}):c.json({detail:"Unable to link that enquiry safely. Contact Side-Quest if a previous link needs correction."},409);});
  app.post(root+"/link",g.auth,g.parent,async c=>{const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified parent access required."},403);if(!(await hitRateLimit(c.env.DB,"portal-learner-link:"+a.id,20,3600)).ok)return c.json({detail:"Try again later."},429);return await linkPortalLegacyLearner(c.env.DB,a,await c.req.json().catch(()=>null))?c.json({linked:true}):c.json({detail:"Unable to link those learners safely. Contact Side-Quest if a previous link needs correction."},409);});
 }
