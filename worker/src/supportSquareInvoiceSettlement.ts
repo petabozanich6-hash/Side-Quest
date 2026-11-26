@@ -16,6 +16,7 @@ export async function verifyIssuedSupportSquarePayment(env:Env,channel:Channel,r
  const i=await env.DB.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id=?").bind(orderId).first<any>();
  if(!o||!i||i.state!=="issued"||!idOk(i.provider_order_id)||!idOk(i.provider_invoice_id)||i.location_id!==cfg.locationId)
   return {error:"No matching issued invoice."};
+ if(o.status==="cancelled")return {status:"cancelled",verified:false};
  const proof=await env.DB.prepare("SELECT * FROM support_square_invoice_settlements WHERE order_id=?").bind(orderId).first<any>();
  if(proof)return {status:proof.review_at||!["paid","completed"].includes(o.status)?"review":"verified",verified:!proof.review_at&&["paid","completed"].includes(o.status)};
  const review=async()=>{await recordInvoiceReview(env.DB,orderId,"payment_uncertain",now);return {status:"review",verified:false};};
