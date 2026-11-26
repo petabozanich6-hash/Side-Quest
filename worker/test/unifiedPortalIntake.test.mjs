@@ -735,4 +735,34 @@ test("standard Club invoice automation requires separate owner approval, respect
  const attempts=DB.raw.prepare("SELECT status FROM support_club_invoice_auto_attempts ORDER BY status").all().map(x=>x.status);
  assert.deepEqual(attempts,["issued","review"]);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,0);
+ const {cancelNextOverdueClubSandboxInvoice,clubAutomaticCancellationEnabled}=await import("../src/clubAutomaticCancellation.ts");
+ const ce={...env,EMAIL:{},SUPPORT_CLUB_NOTICE_TEST:"true",SUPPORT_CLUB_CANCEL_AUTO_TEST:"true",SUPPORT_CLUB_CANCEL_APPROVED_BY:two.actor.id};
+ const overdue=new Date("2026-12-08T08:05:00.000Z");
+ assert.equal(clubAutomaticCancellationEnabled(ce),true);
+ assert.equal((await cancelNextOverdueClubSandboxInvoice({...ce,SUPPORT_CLUB_CANCEL_AUTO_TEST:"false"},overdue,unexpected)).status,"disabled");
+ assert.equal((await cancelNextOverdueClubSandboxInvoice(ce,overdue,unexpected)).status,"idle");
+ DB.raw.prepare("INSERT INTO support_club_notices(kind,obligation_id,notice_type,seat_key,status,attempted_at,sent_at) VALUES('single',?,'overdue','','sent',?,?)").run(s.booking_id,"2026-12-08T07:05:00.000Z","2026-12-08T07:05:00.000Z");
+ assert.equal((await cancelNextOverdueClubSandboxInvoice(ce,new Date("2026-12-08T07:30:00.000Z"),unexpected)).status,"idle");
+ let cancels=0;
+ const cancellationProvider=async(url,init)=>{
+  if(new URL(url).pathname.endsWith("/invoices/automation-invoice/cancel")&&init.method==="POST"){
+   cancels++;assert.equal(JSON.parse(init.body).version,1);
+   invoice={...invoice,status:"CANCELED",version:2,public_url:null};order={...order,state:"CANCELED",tenders:[]};
+   throw Error("synthetic lost cancellation response");
+  }
+  return provider(url,init);
+ };
+ const originalInvoice=invoice;
+ invoice={...invoice,status:"PARTIALLY_PAID",payment_requests:invoice.payment_requests.map(p=>({...p,total_completed_amount_money:{amount:500,currency:"AUD"}}))};
+ assert.equal((await cancelNextOverdueClubSandboxInvoice(ce,overdue,cancellationProvider)).status,"review");
+ assert.equal(cancels,0);
+ invoice=originalInvoice;
+ assert.equal((await cancelNextOverdueClubSandboxInvoice(ce,overdue,cancellationProvider)).status,"released");
+ assert.equal(cancels,1);
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"cancelled");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"cancelled");
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE request_id=? AND status='reserved'").get(weekly.id).n,6);
+ assert.equal((await cancelNextOverdueClubSandboxInvoice(ce,overdue,cancellationProvider)).status,"idle");
+ assert.equal(cancels,1);
+
 });
