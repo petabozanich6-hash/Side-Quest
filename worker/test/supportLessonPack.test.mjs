@@ -70,3 +70,48 @@ test("requires actual instruction, modelling, guided and independent practice an
  assert.equal(validateLessonPack({...pack,sequence:pack.sequence.map((s,i)=>i===0?{...s,minutes:1}:i===1||i===2?{...s,minutes:1}:i===3?{...s,minutes:18}:s)},30),null);
  assert.equal(validateLessonPack({...pack,sequence:pack.sequence.map((s,i)=>i===0?{...s,phase:"model"}:s)},30),null);
 });
+
+test("shared visual controls respect roles, classroom scope, bounds and current slide",async t=>{
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const result=await approveLessonPack(db,"guest","pack-request","pack-one",{pack,confirmed:true});
+ assert.ok(result.saved);
+ assert.equal(await setClassroomOpen(db,"guest","pack-request","pack-one",true,now),true);
+ const read=(owner=false)=>classroomState(db,"guest","pack-request","pack-one",owner,now);
+ const edit=async(owner,body)=>editClassroom(db,"guest","pack-request","pack-one",owner,{...body,revision:(await read(owner)).revision},now);
+ const present=index=>edit(true,{action:"present",deck_id:result.saved.deck_id,deck_revision:1,index});
+ assert.ok((await present(0)).ok);
+ const first=(await read()).board.slide.interaction;
+ assert.equal(first.reveal,1);
+ const action=(operation,extra={})=>({action:"slide-interact",visual_id:first.id,operation,...extra});
+ assert.ok((await edit(false,action("reveal"))).error);
+ assert.ok((await edit(true,action("reveal"))).ok);
+ assert.equal((await read()).board.slide.interaction.reveal,2);
+ assert.ok((await edit(true,action("reveal"))).error);
+ assert.ok((await present(3)).ok);
+ assert.ok((await edit(true,action("reveal"))).error);
+ const id=(await read()).board.slide.interaction.id;
+ const choose=(index)=>({action:"slide-interact",visual_id:id,operation:"toggle",index});
+ assert.ok((await edit(true,choose(0))).error);
+ assert.ok((await edit(false,choose(6))).error);
+ assert.ok((await edit(false,choose(0))).ok);
+ assert.ok((await edit(false,choose(2))).ok);
+ assert.deepEqual((await read(true)).board.slide.interaction.selected,[0,2]);
+ assert.ok((await edit(false,choose(0))).ok);
+ assert.deepEqual((await read(true)).board.slide.interaction.selected,[2]);
+ assert.ok((await edit(true,{action:"slide-interact",visual_id:id,operation:"reset"})).ok);
+ assert.deepEqual((await read()).board.slide.interaction.selected,[]);
+ assert.ok((await present(4)).ok);
+ const selectId=(await read()).board.slide.interaction.id;
+ assert.ok((await edit(false,{action:"slide-interact",visual_id:selectId,operation:"toggle",index:1})).ok);
+ assert.deepEqual((await read(true)).board.slide.interaction.selected,[1]);
+ assert.equal(JSON.stringify(await read()).includes("PRIVATE-SOLUTION"),false);
+ assert.ok((await editClassroom(db,"guest","wrong","pack-one",false,{action:"slide-interact",visual_id:selectId,operation:"toggle",index:2,revision:0},now)).error);
+ assert.equal(await setClassroomOpen(db,"guest","pack-request","pack-one",false,now),true);
+ assert.ok((await edit(false,{action:"slide-interact",visual_id:selectId,operation:"toggle",index:2})).error);
+});
+test("interactive quality gate rejects passive practice and malformed models",()=>{
+ assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===3?{...s,visual:{type:"steps",items:[{label:"A",body:"A"},{label:"B",body:"B"}]}}:s)},30),null);
+ assert.equal(validateSlideVisual({type:"fraction-split",total:7,shaded:2,factor:3}),null);
+ assert.deepEqual(validateSlideVisual({type:"select",items:["A","B"],answer:[0]}),{type:"select",items:["A","B"]});
+ assert.deepEqual(validateSlideVisual({type:"order",items:["B","C","A"],answer:[2,0,1]}),{type:"order",items:["B","C","A"]});
+});
