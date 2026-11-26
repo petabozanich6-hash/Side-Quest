@@ -172,7 +172,11 @@ jobs:
       - name: Fail if any step failed
         if: always()
         run: |
-          grep -q "failure" ci-logs/summary.txt && exit 1 || exit 0
+          set -e
+          test -s ci-logs/summary.txt
+          for key in install test db_audit support_copy typecheck print_tests build e2e e2e_timetable e2e_owner_hq e2e_install_app e2e_offline_lessons; do
+            grep -Fxq "$key=success" ci-logs/summary.txt || { echo "Mandatory check did not succeed: $key"; exit 1; }
+          done
 
   # Runs no project code: it only pushes the collected logs to the ci-results branch.
   publish:
