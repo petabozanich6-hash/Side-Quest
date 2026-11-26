@@ -33,3 +33,11 @@ test("directory groups explicitly associated records only and preserves unclaime
  assert.equal((await unifiedOwnerFamily(db,"account","f2","club",1)).items.length,0);
  assert.deepEqual((await unifiedOwnerFamily(db,"legacy",old.id,"club",1)).items.map(r=>r.id),["seat2"]);
 });
+
+test("package preview and booking charges share exact cent allocation",async()=>{
+ const {packageCharges}=await import("../src/supportPackages.ts");
+ assert.deepEqual(packageCharges(10000,[30,30,30,30],true),[2500,2500,2500,2500]);
+ assert.deepEqual(packageCharges(10500,[30,45,60],true),[2500,3500,4500]);
+ assert.deepEqual(packageCharges(10001,[30,30,30,30],true),[2501,2500,2500,2500]);
+ assert.deepEqual(packageCharges(10000,[30,30,30,30],false),[10000,0,0,0]);
+});
