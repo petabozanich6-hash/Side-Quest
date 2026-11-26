@@ -46,6 +46,7 @@ import { registerAnnouncementPreferences, processAnnouncementBatch } from "./ann
 import { processTrialReminders } from "./trialReminders";
 import { processPaymentNotices } from "./paymentNotices";
 import {processSupportInvoiceNotices} from "./supportPaymentSafety";
+import {processSquareInvoiceNotices} from "./supportSquareInvoiceNotices";
 import { runNextBackgroundBatch } from "./lessonBatches";
 import { fastLessonPipelineEnabled, splitLessonStagesEnabled } from "./aiPipeline";
 import { createAdminRoutes } from "./adminRoutes";
@@ -432,6 +433,7 @@ export default {
     // After reconciling, so notices use each family's latest plan.
     try { await processPaymentNotices(env); } catch (e) { console.error("payment notice cron failed", e); }
     try { await processSupportInvoiceNotices(env); } catch { console.error("Learning Support payment notices need review"); }
+    try { await processSquareInvoiceNotices(env); } catch { console.error("Square invoice sandbox notices need review"); }
     try { await cleanupVideo(env); } catch { console.error("video cleanup needs review"); }
     try { await cleanupEnglishVideo(env); } catch { console.error("English Club video cleanup needs review"); }
     try { await runDailyBriefing(env); } catch { console.error("daily owner briefing needs review"); }
