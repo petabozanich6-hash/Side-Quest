@@ -1,3 +1,4 @@
+import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity} from "./supportLiveActivities";
 import {resolveFullyRefundedSupportInvoice} from "./supportSquareInvoiceResolution";
 import {releaseVerifiedUnpaidSquareInvoice} from "./supportSquareInvoiceReview";
 import {verifyIssuedSupportSquarePayment} from "./supportSquareInvoiceSettlement";
@@ -946,6 +947,22 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",fid=c.req.param("fid")??"",b=await readJson(c);
     if(b.confirmed!==true||typeof b.grant!=="boolean"||!await changeEnglishFile(c.env.DB,id,fid,b.grant))return c.json({detail:"Choose an active reviewed learner resource that has not already been shared."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.resource.change",targetType:"english_club",targetId:id,detail:{file_id:fid,grant:b.grant}});return c.json({ok:true});
+  });
+  // Inherits Owner HQ authentication, permission, passkey step-up, origin and rate limits.
+  admin.get("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const result=await readLiveActivity(c.env.DB,{kind,sessionId:c.req.param("session")??"",owner:true});
+    return result?c.json(result):c.json({detail:"Classroom is unavailable."},404);
+  });
+  admin.post("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const sessionId=c.req.param("session")??"", access={kind:kind as "club"|"tutoring",sessionId,owner:true as const},b=await readJson(c);
+    const ok=b.action==="launch"?await launchLiveActivity(c.env.DB,access,b):b.action==="end"?await endLiveActivity(c.env.DB,access,b):false;
+    if(!ok)return c.json({detail:"The activity or classroom changed. Refresh and check your activity."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity."+b.action,targetType:"support_session",targetId:sessionId,detail:{kind}});
+    return c.json({ok:true});
   });
   admin.get("/english-club/classes/:cid/video",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??""));
