@@ -1,10 +1,21 @@
 # Side-Quest modernisation go-live gates
 
-## Current candidate — supersedes earlier release references
+## Current consolidated candidate — supersedes earlier release references
 
-The current draft release branch is `release/learning-support-interactive-candidate`. It incorporates the unified family portal and stacked English Club/interactive classroom development through #396, plus direct family round/single booking and Owner HQ round planning. Previous release references below are historical checkpoints, not activation authorisation. Do not merge component PRs separately. Rehearse **all** pending migrations through 0130, compare existing rows and constraints, and test rollback in an isolated copy of an independently verified private backup. Exact final head CI and actual staging acceptance are required. Standard tutoring invoice automation is sandbox-only and restricted to an explicitly approved synthetic customer; new English Club obligations still lack dedicated provider-confirmed invoice and cancellation lifecycle. Round registrations, interactive activity data, group publication, parent reports and certificate delivery must remain pilot-only until safeguarding, privacy/retention, payment and actual device acceptance are complete. No live charge or publication, production migration or deployment is authorised by this document.
+Release branch: `release/unified-learning-support-2026-11-26`. This incorporates the entire stacked development chain through #426, including revised six-week author-led curriculum, automated activity and resource preparation, subscriber and claimed guest classroom access, explicit learner continuity, Square sandbox automation, briefing and certificate workflows. Previous component and release PRs are historical review points; do not merge them independently. No live activation is authorised.
 
-Release branch: release/learning-support-consolidated; consolidated PR #372 (supersedes draft component PRs #368–371). Do not merge previous component PRs separately.
+At consolidation, main was `11d67fea229f769c060b787031d4f415efd53818`; the development head `11b9d4297824acf867306514b0453ce01e2142c3` was 908 commits ahead and zero behind. Rehearse every pending migration identified by actual database audit through 0147, not merely the ranges in historical notes. Exact candidate CI, private staging, independent backup/restore, payment, privacy and safeguarding checks remain mandatory.
+
+### Acceptance sequence (all require evidence)
+- [ ] Exact consolidated head: all mandatory CI steps successful; review logs for actual outcomes.
+- [ ] Private staging deploy of that exact head; separate D1 and optional R2; no production data.
+- [ ] Existing subscriber, support-only, linked historical and unrelated-family browser journeys; mixed learners and services, agreements, booking conflicts, cancellation, resource access and reports.
+- [ ] Actual Square sandbox issuance, payment/reconciliation, duplicate/late/partial/refund tests; no real charges. Historical invoices retain existing payment arrangements.
+- [ ] Real devices and group video presets, actual notification/briefing delivery, worksheet print/layout and certificate template/signature review. Current staging workflow disables email and has no scheduled cron; do not infer actual delivery or unattended execution from a deployment.
+- [ ] Production account health, DB/R2 independent backup and restore rehearsal, migration audit, terms/safeguarding/privacy review, rollout and rollback evidence.
+- [ ] Explicit release approval and controlled activation after the above; maintain old guest access until safe cutover. Do not silently enable new production payment, video or messaging capabilities.
+
+The code includes private-pilot capabilities, not an attestation that they are live or provider-tested. The candidate is a draft for review; no production merge or migration has taken place.
 
 ## Verified vs external
 GitHub CI must be green on the exact final head, including all browser suites. The Cloudflare production-worker preview guard deliberately rejects non-main previews; keep it, and disable preview builds in the dashboard. A passed local D1/Chromium test does not establish production readiness.
