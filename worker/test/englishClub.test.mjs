@@ -66,3 +66,26 @@ test("weekly English Club blocks tutor diary, limits eight places and preserves 
  assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"attendance",attendance:"present",confirmed:true},now),false);
  assert.equal(await updateEnglishEnrolment(db,created.id,ids[0],{action:"attendance",attendance:"present",confirmed:true},new Date(start)),true);
 });
+
+
+test("Story Quests preset saves six private lesson plans and only public descriptions in booking catalogue",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const {STORY_QUEST,storyQuestPreparation}=await import("../src/englishClubCurriculum.ts");
+ const {createEnglishRound,listEnglishRounds,setEnglishRoundPublished}=await import("../src/englishClubRounds.ts");
+ const {listEnglishSingleClasses}=await import("../src/englishClubSelfService.ts");
+ const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ assert.equal(STORY_QUEST.sessions.length,6);
+ for(const s of STORY_QUEST.sessions)for(const a of s.activities)assert.ok(validateActivityTemplate({...a,subject:"English",year_level:"Mixed levels"}));
+ const body={curriculum_id:STORY_QUEST.id,title:STORY_QUEST.title,description:STORY_QUEST.description,first_local:"2026-12-09T18:00",session_count:6,themes:STORY_QUEST.sessions.map(s=>s.title),confirmed:true};
+ assert.ok((await createEnglishRound(db,"owner",{...body,themes:body.themes.map((v,i)=>i===0?"Changed":v)},now)).error);
+ const result=await createEnglishRound(db,"owner",body,now);assert.ok(result.id,JSON.stringify(result));
+ const rows=db.raw.prepare("SELECT c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
+ assert.equal(rows.length,6);
+ rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
+ assert.equal((await listEnglishRounds(db,true,now)).length,0);
+ assert.equal(await setEnglishRoundPublished(db,result.id,{published:true,confirmed:true},now),true);
+ const rounds=await listEnglishRounds(db,true,now),singles=await listEnglishSingleClasses(db,now);
+ assert.equal(rounds[0].classes.length,6);assert.equal(singles.length,6);
+ for(const [i,s] of singles.entries())assert.equal(s.description,STORY_QUEST.sessions[i].description);
+ for(const result of [rounds,singles]){assert.ok(!JSON.stringify(result).includes("60-minute facilitator plan"));assert.ok(!JSON.stringify(result).includes("Original reading:"));}
+});
