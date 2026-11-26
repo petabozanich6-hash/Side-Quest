@@ -1,3 +1,4 @@
+import {supportInvoiceRecipient} from "../src/supportSquareInvoiceLookup.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
@@ -89,4 +90,15 @@ test("issued sandbox invoice link is scoped to the exact verified parent and rec
  assert.equal(await run(one,now,{...env,SQUARE_APPLICATION_ID:"sq0idp-live"}),null);
  db.raw.prepare("UPDATE users SET email_verified_at=NULL WHERE id=?").run(one.id);assert.equal(await run(),null);
  assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o1'").get().status,"confirmed");
+});
+
+test("canonical Square recipient lookup refuses closed requests and unverified parent identities",async t=>{
+ const {db,one}=await fixture(t);
+ const r=db.raw.prepare("SELECT request_id FROM support_service_orders WHERE id='o1'").get();
+ assert.equal((await supportInvoiceRecipient(db,"guest",r.request_id)).email,"parent1@example.com");
+ db.raw.prepare("UPDATE support_guest_requests SET status='closed' WHERE id=?").run(r.request_id);
+ assert.equal(await supportInvoiceRecipient(db,"guest",r.request_id),null);
+ db.raw.prepare("UPDATE support_guest_requests SET status='new' WHERE id=?").run(r.request_id);
+ db.raw.prepare("UPDATE users SET email_verified_at=NULL WHERE id=?").run(one.id);
+ assert.equal(await supportInvoiceRecipient(db,"guest",r.request_id),null);
 });
