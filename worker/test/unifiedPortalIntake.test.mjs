@@ -386,3 +386,36 @@ test("structured activity games validate solutions, save reviewed templates and 
  assert.equal((await readLiveActivity(DB,learner,now)).activity.answer_key,"[2,0,1]");
  assert.equal(await respondLiveActivity(DB,learner,{activity_id:live.id,response:"[0,1,2]"},now),false);
 });
+
+test("maths models validate bounded integer steps and fractional parts without exposing solutions",async t=>{
+ const {DB,one}=await fixture(t);
+ const {validateGame,validateGameResponse}=await import("../src/supportActivityGames.ts");
+ const {saveActivityTemplate,getActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const {launchLiveActivity,readLiveActivity,respondLiveActivity,endLiveActivity}=await import("../src/supportLiveActivities.ts");
+ const number={title:"Number line",subject:"Mathematics",year_level:"Year 4",question:"Select negative four",type:"number_line",game:{min:-10,max:10,intervals:10},answer_key:[3],reviewed:true};
+ const fraction={...number,title:"Fraction bar",question:"Shade three quarters",type:"fraction_model",game:{parts:4},answer_key:[3]};
+ assert.ok(validateGame(number));assert.ok(validateGame(fraction));
+ assert.equal(validateGame({...number,game:{min:0,max:10,intervals:3}}),null);
+ assert.equal(validateGame({...number,answer_key:[11]}),null);
+ assert.equal(validateGame({...fraction,game:{parts:13}}),null);
+ assert.equal(validateGameResponse({type:"fraction_model",parts:4},[2.5]),null);
+ assert.deepEqual(validateGameResponse({type:"fraction_model",parts:4},[0]),[0]);
+ const req=await submitPortalEnquiry(DB,one.actor,form(one.learner,"math-models"));assert.ok(req.id);
+ const now=new Date(),start=new Date(now.getTime()-60000).toISOString(),end=new Date(now.getTime()+3600000).toISOString();
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('math-order','guest',?,'math-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(req.id,start,end,start,start);
+ DB.raw.prepare("INSERT INTO support_classrooms(order_id,is_open,updated_at) VALUES('math-order',1,?)").run(start);
+ const host={kind:"tutoring",sessionId:"math-order",owner:true},learner={...host,owner:false,actor:one.actor,requestId:req.id};
+ for(const model of [number,fraction]){
+  const saved=await saveActivityTemplate(DB,model);assert.ok(saved.id);
+  const template=await getActivityTemplate(DB,saved.id);
+  assert.equal(template.type,model.type);
+  assert.equal(await launchLiveActivity(DB,host,{template_id:saved.id,template_revision:template.revision,confirmed:true},now),true);
+  const live=(await readLiveActivity(DB,learner,now)).activity;
+  assert.equal(live.type,model.type);assert.equal(live.answer_key,null);
+  assert.equal(await respondLiveActivity(DB,learner,{activity_id:live.id,response:"[99]"},now),false);
+  assert.equal(await respondLiveActivity(DB,learner,{activity_id:live.id,response:"[3]"},now),true);
+  assert.equal(await endLiveActivity(DB,host,{activity_id:live.id,state:"revealed",confirmed:true},now),true);
+  assert.equal((await readLiveActivity(DB,learner,now)).activity.answer_key,"[3]");
+  assert.equal(await endLiveActivity(DB,host,{activity_id:live.id,state:"closed",confirmed:true},now),true);
+ }
+});
