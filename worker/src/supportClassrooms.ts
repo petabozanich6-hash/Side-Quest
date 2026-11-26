@@ -5,9 +5,9 @@ import {presentationImage} from "./supportFiles";
 const SQL="CREATE TABLE IF NOT EXISTS support_classrooms (order_id TEXT PRIMARY KEY REFERENCES support_service_orders(id) ON DELETE CASCADE, is_open INTEGER NOT NULL DEFAULT 0 CHECK(is_open IN (0,1)), revision INTEGER NOT NULL DEFAULT 0, board_json TEXT NOT NULL DEFAULT '{\"text\":\"\",\"strokes\":[]}', updated_at TEXT NOT NULL)";
 export const classroomEnabled=(env:Env)=>env.SUPPORT_CLASSROOM_ENABLED==="true";
 export async function ensureClassrooms(db:D1Database){await db.prepare(SQL).run();}
-// For canonical guest bookings, pending cancellation or a closed request blocks learner access.
-// Keep the owner able to close the room, and preserve existing legacy/member behaviour.
-const parentBookingGuard="(o.channel<>\'guest\' OR NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins p WHERE p.request_id=o.request_id) OR (EXISTS(SELECT 1 FROM support_guest_requests r WHERE r.id=o.request_id AND r.status NOT IN (\'closed\',\'resolved\')) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status=\'pending\')))";
+// A closed request or pending cancellation blocks learner access, including historical bookings.
+// Owners retain access to close the room.
+const parentBookingGuard="EXISTS(SELECT 1 FROM support_guest_requests r WHERE r.id=o.request_id AND r.status NOT IN ('closed','resolved')) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status='pending')";
 const memberBookingGuard="EXISTS(SELECT 1 FROM parent_feedback r WHERE r.id=o.request_id AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved')) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status='pending')";
 const empty=()=>({text:"",strokes:[] as any[],slide:null as any,image:null as any});
 export async function classroomState(db:D1Database,channel:Channel,id:string,oid:string,owner:boolean,now=new Date()){
