@@ -38,8 +38,8 @@ export async function changeProgressReport(db:D1Database,kind:Kind,session:strin
 }
 export async function familyProgressReports(db:D1Database,a:AuthUser){
  if(!await verifiedPortalIdentity(db,a))return null;
- const rows=(await db.prepare("SELECT r.id,r.kind,r.learner_id,r.published_sections_json,r.published_at FROM support_family_progress_reports r JOIN support_portal_enquiries p ON p.request_id=r.request_id AND p.family_id=r.family_id AND p.parent_user_id=r.parent_user_id AND p.learner_id=r.learner_id WHERE r.family_id=? AND r.parent_user_id=? AND r.published_at IS NOT NULL AND r.published_sections_json IS NOT NULL ORDER BY r.published_at DESC,r.id LIMIT 101").bind(a.family_id,a.id).all<any>()).results||[];
- return {reports:rows.slice(0,100).map(r=>({id:r.id,kind:r.kind,learner_id:r.learner_id,sections:JSON.parse(r.published_sections_json),published_at:r.published_at})),limited:rows.length>100};
+ const rows=(await db.prepare("SELECT r.id,r.kind,r.learner_id,l.label learner_label,r.published_sections_json,r.published_at FROM support_family_progress_reports r JOIN support_portal_enquiries p ON p.request_id=r.request_id AND p.family_id=r.family_id AND p.parent_user_id=r.parent_user_id AND p.learner_id=r.learner_id JOIN support_portal_learners l ON l.id=r.learner_id AND l.family_id=r.family_id WHERE r.family_id=? AND r.parent_user_id=? AND r.published_at IS NOT NULL AND r.published_sections_json IS NOT NULL ORDER BY r.published_at DESC,r.id LIMIT 101").bind(a.family_id,a.id).all<any>()).results||[];
+ return {reports:rows.slice(0,100).map(r=>({id:r.id,kind:r.kind,learner_id:r.learner_id,learner_label:r.learner_label,sections:JSON.parse(r.published_sections_json),published_at:r.published_at})),limited:rows.length>100};
 }
 export function registerFamilyProgressReports(app:App,g:Guards){
  app.get("/api/family-portal/progress-reports",g.auth,g.parent,async c=>{
