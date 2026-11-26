@@ -73,9 +73,10 @@ export async function inspectPreparedSupportSquareInvoice(
  const expected=saved?.invoice?.accepted_payment_methods;
  const actual=remoteInvoice.accepted_payment_methods;
  const methodsMatch=!!expected&&!!actual&&Object.keys(expected).every(k=>actual[k]===expected[k]);
- const safeSettings=orderOpen&&completed===0&&remoteInvoice.delivery_method==="EMAIL"&&
+ const expectedSettings=remoteInvoice.delivery_method==="EMAIL"&&
  !remoteInvoice.scheduled_at&&!remoteInvoice.store_payment_method_enabled&&!remoteInvoice.custom_fields?.length&&!remoteInvoice.attachments?.length&&
  p[0].automatic_payment_source==="NONE"&&!p[0].card_id&&!p[0].bank_account_id&&!p[0].tipping_enabled&&!p[0].reminders?.length&&methodsMatch;
+ const safeSettings=orderOpen&&completed===0&&expectedSettings;
  const draftSafe=status==="DRAFT"&&!remoteInvoice.public_url&&safeSettings;
  const versionMatches=i.provider_invoice_version===null||remoteInvoice.version===i.provider_invoice_version;
  const url=sandboxInvoicePaymentUrl(remoteInvoice.public_url);
@@ -85,7 +86,7 @@ export async function inspectPreparedSupportSquareInvoice(
   !!i.publish_attempted_at&&["publish_pending","issued"].includes(i.state);
  return {matched:true,provider_order_id:order,order_open:orderOpen,invoice_checked:true,provider_invoice_id:invoice,
   version:remoteInvoice.version,status,amount_cents:i.amount_cents,completed_cents:completed,due_at:i.due_at,
-  draft_matches:draftSafe&&versionMatches,issued_matches:issuedMatches,public_url:issuedMatches?url:null,can_recover_draft:workspace.eligible&&i.state==="invoice_pending"&&i.provider_order_id===order&&!i.provider_invoice_id&&draftSafe&&remoteInvoice.version===0,
+  draft_matches:draftSafe&&versionMatches,issued_matches:issuedMatches,settlement_settings_match:expectedSettings,public_url:issuedMatches?url:null,can_recover_draft:workspace.eligible&&i.state==="invoice_pending"&&i.provider_order_id===order&&!i.provider_invoice_id&&draftSafe&&remoteInvoice.version===0,
   requires_review:(!draftSafe||!versionMatches)&&!issuedMatches||!workspace.eligible,checked_at:now.toISOString()};
 }
 
