@@ -25,7 +25,7 @@ export async function createEnglishClass(db:D1Database,b:any,now=new Date()){
 export async function listEnglishClub(db:D1Database){
  await ensureEnglishClub(db);
  const [classes,enquiries,roster]=await Promise.all([
- db.prepare("SELECT * FROM support_english_classes ORDER BY start_at DESC LIMIT 100").all<any>(),
+ db.prepare("SELECT c.*,COALESCE(p.enabled,0) self_service_published FROM support_english_classes c LEFT JOIN support_english_publications p ON p.class_id=c.id ORDER BY c.start_at DESC LIMIT 100").all<any>(),
  db.prepare("SELECT r.id,r.parent_name,r.email,r.subject,r.message,f.id family_id,l.label learner_label FROM support_guest_requests r JOIN support_guest_families f ON f.email=r.email LEFT JOIN support_guest_learner_enquiries a ON a.request_id=r.id LEFT JOIN support_guest_learners l ON l.id=a.learner_id WHERE r.subject LIKE 'English Club: %' AND r.status NOT IN ('closed','resolved') ORDER BY r.updated_at DESC LIMIT 200").all<any>(),
  db.prepare("SELECT e.*,r.parent_name,r.email FROM support_english_enrolments e JOIN support_guest_requests r ON r.id=e.request_id WHERE e.class_id IN (SELECT id FROM support_english_classes ORDER BY start_at DESC LIMIT 100) ORDER BY e.created_at").all<any>()
  ]);
@@ -36,7 +36,7 @@ export async function enrolEnglishLearner(db:D1Database,classId:string,b:any,now
  const request=text(b?.request_id,100),label=text(b?.learner_label,80),when=now.toISOString();
  if(b?.confirmed!==true||!request||!label)return {error:"Confirm parent agreement and suitability for this group class, and enter the learner nickname."};
  const id=crypto.randomUUID();
- const r=await db.prepare("INSERT INTO support_english_enrolments(id,class_id,request_id,learner_label,payment_due_at,created_at) SELECT ?,c.id,r.id,?,strftime('%Y-%m-%dT%H:%M:%fZ',julianday(c.start_at)-1),? FROM support_english_classes c JOIN support_guest_requests r ON r.id=? WHERE c.id=? AND r.subject LIKE 'English Club: %' AND r.status NOT IN ('closed','resolved') AND julianday(c.start_at)-1>julianday(?) AND (SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled')<8 ON CONFLICT(class_id,request_id) DO NOTHING").bind(id,label,when,request,classId,when).run();
+ let r;try{r=await db.prepare("INSERT INTO support_english_enrolments(id,class_id,request_id,learner_label,payment_due_at,created_at) SELECT ?,c.id,r.id,?,strftime('%Y-%m-%dT%H:%M:%fZ',julianday(c.start_at)-1),? FROM support_english_classes c JOIN support_guest_requests r ON r.id=? WHERE c.id=? AND r.subject LIKE 'English Club: %' AND r.status NOT IN ('closed','resolved') AND julianday(c.start_at)-1>julianday(?) AND (SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled')<8 ON CONFLICT(class_id,request_id) DO NOTHING").bind(id,label,when,request,classId,when).run();}catch{return {error:"Class unavailable or this learner already has a place."};}
  return r.meta?.changes?{id}:{error:"Class full, already enrolled, enquiry unavailable or payment deadline passed."};
 }
 export async function updateEnglishEnrolment(db:D1Database,classId:string,id:string,b:any,now=new Date()){
