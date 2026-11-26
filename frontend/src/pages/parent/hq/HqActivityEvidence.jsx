@@ -1,5 +1,6 @@
 import React,{useEffect,useRef,useState} from "react";
 import {adminApi,errorText} from "../../../lib/adminApi";
+import HqFamilyProgressReport from "./HqFamilyProgressReport";
 import {GameResult} from "../ActivityGame";
 const btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50",field="block w-full border rounded-lg p-2 bg-white";
 const choices=[["covered","Covered"],["independent","Demonstrated independently"],["supported","Demonstrated with guidance"],["practise","Needs further practice"]];
@@ -24,7 +25,7 @@ export default function HqActivityEvidence({kind,sessionId,seatId}){
   if(lock.current)return;lock.current=true;setBusy(true);setError("");setNotice("");const g=++generation.current;
   try{const result=body?await adminApi.post(path,body):await adminApi.get(path);if(g!==generation.current)return;setData(result);if(body)setNotice(body.action==="remove"?"Selected evidence removed.":"Evidence saved privately.");}catch(e){if(g===generation.current)setError(errorText(e));}finally{lock.current=false;if(g===generation.current)setBusy(false);}
  }
- return <section className="rounded-lg border p-3 space-y-3"><h4 className="font-bold">Interactive learning evidence</h4><p className="text-sm">Review submitted work from finished activities and keep only meaningful examples. These records are private; nothing is automatically shared with parents.</p><button type="button" className={btn} disabled={busy} onClick={()=>{if(open){setOpen(false);setData(null);}else{setOpen(true);run();}}}>{open?"Close evidence review":"Review completed activities"}</button>
+ return <><section className="rounded-lg border p-3 space-y-3"><h4 className="font-bold">Interactive learning evidence</h4><p className="text-sm">Review submitted work from finished activities and keep only meaningful examples. These records are private; nothing is automatically shared with parents.</p><button type="button" className={btn} disabled={busy} onClick={()=>{if(open){setOpen(false);setData(null);}else{setOpen(true);run();}}}>{open?"Close evidence review":"Review completed activities"}</button>
  {open&&<>{error&&<p role="alert" className="text-sm text-rose-800">{error}</p>}{notice&&<p role="status" className="text-sm">{notice}</p>}<button type="button" className={btn} disabled={busy} onClick={()=>run()}>Refresh submissions</button>{data&&<><p className="text-xs">{data.activities.filter(v=>v.revision).length} selected evidence records</p>{data.activities.length?data.activities.map(v=><Review key={v.activity_id+":"+(v.revision||0)+":"+v.response_updated_at} item={v} busy={busy} onSave={run} onRemove={run}/>):<p className="text-sm">No submitted work from finished activities yet.</p>}</>}</>}
- </section>;
+ </section><HqFamilyProgressReport key={path} kind={kind} sessionId={sessionId} seatId={seatId}/></>;
 }
