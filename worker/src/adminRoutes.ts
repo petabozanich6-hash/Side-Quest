@@ -1,3 +1,4 @@
+import {readActivityEvidence,saveActivityEvidence,removeActivityEvidence} from "./supportActivityEvidence";
 import {readActivityPlan,saveActivityPlan} from "./supportActivityPlans";
 import {activityAiEnabled,draftActivities} from "./supportActivityDrafts";
 import {listActivityTemplates,getActivityTemplate,saveActivityTemplate,archiveActivityTemplate} from "./supportActivityLibrary";
@@ -999,6 +1000,22 @@ export function createAdminRoutes() {
     if(!await saveActivityPlan(c.env.DB,kind,id,await readJson(c)))return c.json({detail:"The plan or reviewed activities changed, or the session is unavailable. Reload and check the plan."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.activity_plan.save",targetType:"support_session",targetId:id,detail:{kind}});
     return c.json(await readActivityPlan(c.env.DB,kind,id));
+  });
+  admin.get("/activity-evidence/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const r=await readActivityEvidence(c.env.DB,kind,c.req.param("session")??"",c.req.param("seat")??"");
+    return r?c.json(r):c.json({detail:"Session or learner unavailable."},404);
+  });
+  admin.post("/activity-evidence/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const session=c.req.param("session")??"",seat=c.req.param("seat")??"",b=await readJson(c);
+    const ok=b.action==="save"?await saveActivityEvidence(c.env.DB,kind,session,seat,b):b.action==="remove"?await removeActivityEvidence(c.env.DB,kind,session,seat,b):false;
+    if(!ok)return c.json({detail:"Evidence changed or is unavailable. Reload and check before saving."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_evidence."+b.action,targetType:"support_session",targetId:session,detail:{kind}});
+    return c.json(await readActivityEvidence(c.env.DB,kind,session,seat));
   });
   // Inherits Owner HQ authentication, permission, passkey step-up, origin and rate limits.
   admin.get("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
