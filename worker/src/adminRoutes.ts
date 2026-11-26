@@ -1,3 +1,4 @@
+import {activityAiEnabled,draftActivities} from "./supportActivityDrafts";
 import {listActivityTemplates,getActivityTemplate,saveActivityTemplate,archiveActivityTemplate} from "./supportActivityLibrary";
 import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity} from "./supportLiveActivities";
 import {resolveFullyRefundedSupportInvoice} from "./supportSquareInvoiceResolution";
@@ -951,7 +952,12 @@ export function createAdminRoutes() {
   });
   admin.get("/activity-library",requirePermission("customers.read"),async c=>{
     if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
-    return c.json({activities:await listActivityTemplates(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1")});
+    return c.json({activities:await listActivityTemplates(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:activityAiEnabled(c.env)});
+  });
+  admin.post("/activity-library/draft",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const r=await draftActivities(c.env,c.get("user"),await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
   });
   admin.get("/activity-library/:id",requirePermission("customers.read"),async c=>{
     if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
