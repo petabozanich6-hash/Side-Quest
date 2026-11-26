@@ -1,4 +1,5 @@
 import {sydneyWeek} from "./englishClub";
+export const ROUND_PRICE_CENTS=1500;
 const text=(v:unknown,max:number)=>typeof v==="string"&&v.trim().length<=max?v.trim():"";
 const clock=new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Sydney",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
 function local(t:number){const p=Object.fromEntries(clock.formatToParts(new Date(t)).map(x=>[x.type,x.value]));return p.year+"-"+p.month+"-"+p.day+"T"+p.hour+":"+p.minute;}
@@ -33,8 +34,8 @@ export async function setEnglishRoundPublished(db:D1Database,id:string,b:any,now
  return !!r.meta?.changes;
 }
 export async function listEnglishRounds(db:D1Database,publicOnly=false,now=new Date()){
- const rows=(await db.prepare(`SELECT r.id,r.title,r.description,r.session_count,r.published,x.sequence,c.id class_id,c.topic,c.start_at,c.end_at,8-(SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled') remaining FROM support_english_rounds r JOIN support_english_round_classes x ON x.round_id=r.id JOIN support_english_classes c ON c.id=x.class_id ${publicOnly?"WHERE r.published=1 AND NOT EXISTS(SELECT 1 FROM support_english_round_classes y JOIN support_english_classes d ON d.id=y.class_id WHERE y.round_id=r.id AND julianday(d.start_at)<=julianday(?)+1)":""} ORDER BY r.created_at DESC,x.sequence`).bind(...(publicOnly?[now.toISOString()]:[])).all<any>()).results||[];
+ const rows=(await db.prepare(`SELECT r.id,r.title,r.description,r.session_count,r.price_per_session_cents,r.published,x.sequence,c.id class_id,c.topic,c.start_at,c.end_at,8-(SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled') remaining FROM support_english_rounds r JOIN support_english_round_classes x ON x.round_id=r.id JOIN support_english_classes c ON c.id=x.class_id ${publicOnly?"WHERE r.published=1 AND NOT EXISTS(SELECT 1 FROM support_english_round_classes y JOIN support_english_classes d ON d.id=y.class_id WHERE y.round_id=r.id AND julianday(d.start_at)<=julianday(?)+1)":""} ORDER BY r.created_at DESC,x.sequence`).bind(...(publicOnly?[now.toISOString()]:[])).all<any>()).results||[];
  const grouped=new Map<string,any>();
- for(const r of rows){if(!grouped.has(r.id))grouped.set(r.id,{id:r.id,title:r.title,description:r.description,session_count:r.session_count,published:!!r.published,remaining:8,price_cents:r.session_count*1200,classes:[]});const g=grouped.get(r.id);g.remaining=Math.min(g.remaining,r.remaining);g.classes.push({id:r.class_id,sequence:r.sequence,topic:r.topic,start_at:r.start_at,end_at:r.end_at});}
+ for(const r of rows){if(!grouped.has(r.id))grouped.set(r.id,{id:r.id,title:r.title,description:r.description,session_count:r.session_count,published:!!r.published,remaining:8,price_per_session_cents:r.price_per_session_cents,price_cents:r.session_count*r.price_per_session_cents,classes:[]});const g=grouped.get(r.id);g.remaining=Math.min(g.remaining,r.remaining);g.classes.push({id:r.class_id,sequence:r.sequence,topic:r.topic,start_at:r.start_at,end_at:r.end_at});}
  return [...grouped.values()].filter(r=>!publicOnly||(r.remaining>0&&r.classes.length===r.session_count)).sort((a,b)=>a.classes[0].start_at.localeCompare(b.classes[0].start_at));
 }
