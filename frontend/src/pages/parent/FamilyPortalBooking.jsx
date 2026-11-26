@@ -21,8 +21,9 @@ export default function FamilyPortalBooking({request}){
  const [proposalOffer,setProposalOffer]=useState(null);
  const [materialClass,setMaterialClass]=useState("");
  useEffect(()=>{let live=true;setProposalOffer(null);if(club||stage!=="proposal"||!quoteId)return;api.get(path+"/quotes/"+encodeURIComponent(quoteId)+"/slots").then(r=>{if(live)setProposalOffer({quote:quoteId,offer:r.data.offer});}).catch(()=>{});return()=>{live=false;};},[path,club,stage,quoteId,reload]);
- const url=(s,extra={})=>"/family-portal?"+new URLSearchParams({page:"requests",source:"portal",request:request.id,...(s!=="overview"?{stage:s}:{}),...extra}).toString();
- const go=(s,extra={})=>setParams({page:"requests",source:"portal",request:request.id,...(s!=="overview"?{stage:s}:{}),...extra});
+ const source=request.source==="legacy"?"legacy":"portal";
+ const url=(s,extra={})=>"/family-portal?"+new URLSearchParams({page:"requests",source,request:request.id,...(s!=="overview"?{stage:s}:{}),...extra}).toString();
+ const go=(s,extra={})=>setParams({page:"requests",source,request:request.id,...(s!=="overview"?{stage:s}:{}),...extra});
  useEffect(()=>{let current=true;setError("");setConfirmed(false);setData(null);const read=club?api.get(path+"/english-club").then(r=>({classes:r.data.classes||[]})):Promise.all([api.get(path+"/quotes"),api.get(path+"/orders")]).then(([q,o])=>({quotes:q.data.quotes||[],orders:o.data.orders||[]}));read.then(d=>{if(current)setData(d);}).catch(e=>{if(current)setError(apiErrorMessage(e,"Could not load your arrangements"));});return()=>{current=false;};},[path,club,stage,quoteId,orderId,reload]);
  async function run(fn){if(operation.current)return;operation.current=true;setBusy(true);setError("");try{await fn();}catch(e){setError(apiErrorMessage(e,e.message||"Could not complete this action"));}finally{operation.current=false;setBusy(false);}}
  if(!data)return <section className="paper-card p-5 space-y-3">{error?<><p role="alert">{error}</p><button className="underline" onClick={()=>setReload(n=>n+1)}>Try again</button></>:<p role="status">Checking your service arrangements…</p>}</section>;

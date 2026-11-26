@@ -31,12 +31,14 @@ test("canonical classroom entry is limited to paid live sessions within their jo
  const now=Date.parse("2026-12-09T07:00:00Z");
  expect(canJoinFamilySession(row,now)).toBe(true);
  expect(canJoinFamilySession({...row,source:"member"},now)).toBe(true);
+ expect(canJoinFamilySession({...row,source:"legacy"},now)).toBe(true);
+ expect(canJoinFamilySession({...row,source:"legacy",kind:"club",class_id:"class"},now)).toBe(true);
  expect(canJoinFamilySession({...row,source:"member",kind:"club",class_id:"class"},now)).toBe(false);
  expect(canJoinFamilySession({...row,source:"member",cancellation_pending:true},now)).toBe(false);
  expect(canJoinFamilySession(row,now-600000)).toBe(true);
  expect(canJoinFamilySession(row,now-600001)).toBe(false);
  expect(canJoinFamilySession(row,now+3600000)).toBe(false);
- for(const change of [{status:"confirmed"},{status:"review"},{source:"legacy"},{cancellation_pending:true},{legacy_checkout:true},{request_status:"closed"},{mode:"written"},{start_at:"invalid"},{request_id:null}])expect(canJoinFamilySession({...row,...change},now)).toBe(false);
+ for(const change of [{status:"confirmed"},{status:"review"},{source:"unknown"},{cancellation_pending:true},{legacy_checkout:true},{request_status:"closed"},{mode:"written"},{start_at:"invalid"},{request_id:null}])expect(canJoinFamilySession({...row,...change},now)).toBe(false);
  expect(canJoinFamilySession({...row,kind:"club",class_id:"class"},now)).toBe(true);
  expect(canJoinFamilySession({...row,kind:"club"},now)).toBe(false);
 });

@@ -2,6 +2,7 @@ import type {App,AuthUser,Env,Guards} from "./types";
 import {hitRateLimit} from "./adminAudit";
 import {validateActivityQuestion} from "./supportActivityLibrary";
 import {validateGameResponse} from "./supportActivityGames";
+import {claimedGuestRequestGuard} from "./unifiedPortalRequestAccess";
 import {verifiedPortalIdentity,unifiedPortalPilot} from "./unifiedPortalIdentity";
 export const liveActivitiesEnabled=(env:Env)=>unifiedPortalPilot(env)&&env.SUPPORT_CLASSROOM_ENABLED==="true";
 type Kind="tutoring"|"club";
@@ -17,11 +18,11 @@ async function scope(db:D1Database,a:Access,now:Date):Promise<Query|null>{
  if(a.kind==="tutoring"){
   const base="SELECT o.id seat_id FROM support_service_orders o JOIN support_classrooms c ON c.order_id=o.id WHERE o.id=? AND o.mode='live' AND o.status='paid' AND o.checkout_started_at IS NULL AND c.is_open=1 AND julianday(o.start_at)-10.0/1440<=julianday(?) AND julianday(o.end_at)+10.0/1440>=julianday(?)";
   if(a.owner)return {sql:base,args:[a.sessionId,at,at]};
-  return {sql:base+" AND o.request_id=? AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status='pending') AND ((o.channel='guest' AND EXISTS(SELECT 1 FROM support_portal_enquiries p JOIN support_guest_requests r ON r.id=p.request_id WHERE p.request_id=o.request_id AND p.family_id=? AND p.parent_user_id=? AND r.status NOT IN ('closed','resolved'))) OR (o.channel='member' AND EXISTS(SELECT 1 FROM parent_feedback r WHERE r.id=o.request_id AND r.family_id=? AND r.user_id=? AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved'))))",args:[a.sessionId,at,at,a.requestId,a.actor.family_id,a.actor.id,a.actor.family_id,a.actor.id]};
+  return {sql:base+" AND o.request_id=? AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status='pending') AND ((o.channel='guest' AND EXISTS(SELECT 1 FROM support_guest_requests r WHERE r.id=o.request_id AND r.status NOT IN ('closed','resolved') AND (EXISTS(SELECT 1 FROM support_portal_enquiries p WHERE p.request_id=r.id AND p.family_id=? AND p.parent_user_id=?) OR ("+claimedGuestRequestGuard+")))) OR (o.channel='member' AND EXISTS(SELECT 1 FROM parent_feedback r WHERE r.id=o.request_id AND r.family_id=? AND r.user_id=? AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved'))))",args:[a.sessionId,at,at,a.requestId,a.actor.family_id,a.actor.id,a.actor.family_id,a.actor.id,a.actor.family_id,a.actor.id]};
  }
  const base="SELECT c.id seat_id FROM support_english_classes c WHERE c.id=? AND julianday(c.start_at)-10.0/1440<=julianday(?) AND julianday(c.end_at)>julianday(?)";
  if(a.owner)return {sql:base,args:[a.sessionId,at,at]};
- return {sql:"SELECT e.id seat_id FROM support_english_enrolments e JOIN support_guest_requests r ON r.id=e.request_id JOIN support_portal_enquiries p ON p.request_id=e.request_id WHERE e.class_id IN (SELECT seat_id FROM ("+base+")) AND e.request_id=? AND e.status='paid' AND r.status NOT IN ('closed','resolved') AND p.family_id=? AND p.parent_user_id=?",args:[a.sessionId,at,at,a.requestId,a.actor.family_id,a.actor.id]};
+ return {sql:"SELECT e.id seat_id FROM support_english_enrolments e JOIN support_guest_requests r ON r.id=e.request_id WHERE e.class_id IN (SELECT seat_id FROM ("+base+")) AND e.request_id=? AND e.status='paid' AND r.status NOT IN ('closed','resolved') AND (EXISTS(SELECT 1 FROM support_portal_enquiries p WHERE p.request_id=r.id AND p.family_id=? AND p.parent_user_id=?) OR ("+claimedGuestRequestGuard+"))",args:[a.sessionId,at,at,a.requestId,a.actor.family_id,a.actor.id,a.actor.family_id,a.actor.id]};
 }
 export async function readLiveActivity(db:D1Database,a:Access,now=new Date()){
  const s=await scope(db,a,now);if(!s)return null;
