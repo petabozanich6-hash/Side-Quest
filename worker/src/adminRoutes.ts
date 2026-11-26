@@ -1,3 +1,4 @@
+import {previewClubCertificate} from "./clubCertificatePreview";
 import {listPostalCertificates,ownerPostalCertificate,advancePostalCertificate} from "./clubCertificatePostal";
 import {signedTemplateStatus,saveSignedTemplate} from "./clubSignedCertificate";
 import {ownerClubCertificatePdf} from "./clubCertificateDelivery";
@@ -1114,6 +1115,11 @@ export function createAdminRoutes() {
     if(!await advancePostalCertificate(c.env,c.get("user").id,id,b))return c.json({detail:"Certificate or confirmed address changed. Refresh before continuing."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.postal_"+String(b.action),targetType:"club_certificate",targetId:id,detail:{}});
     return c.json({saved:true});
+  });
+  admin.get("/english-club/certificates/:kind/:id/preview",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await previewClubCertificate(c.env,c.get("user").id,c.req.param("kind")??"",c.req.param("id")??"");
+    return r?c.json(r):c.json({detail:"The learner, attendance or signed artwork requires review."},409);
   });
   admin.get("/english-club/certificates",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
