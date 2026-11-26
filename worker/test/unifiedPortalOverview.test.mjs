@@ -62,12 +62,14 @@ test("issued sandbox invoice link is scoped to the exact verified parent and rec
  db.raw.prepare("DELETE FROM support_manual_invoices WHERE order_id='o1'").run();
  const order=db.raw.prepare("SELECT request_id FROM support_service_orders WHERE id='o1'").get();
  let remoteStatus="UNPAID",completed=0,version=1,remoteLink=link,calls=0;
+ let holdDuringLookup=false;const addHold=()=>db.raw.prepare("INSERT INTO support_square_invoice_reviews(order_id,reason,first_at,last_at) VALUES('o1','payment_uncertain',?,?)").run(stamp,stamp);const clearHold=()=>db.raw.prepare("DELETE FROM support_square_invoice_reviews WHERE order_id='o1'").run();
  const row=()=>db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o1'").get();
  const provider=async(url,init)=>{
   calls++;assert.equal(init.method,"GET");
   if(url.endsWith("/customers/CUST1"))return new Response(JSON.stringify({customer:{id:"CUST1",email_address:"parent1@example.com"}}));
   if(url.endsWith("/orders/REMOTE1"))return new Response(JSON.stringify({order:{id:"REMOTE1",reference_id:row().create_order_key,location_id:"LOCATION123",customer_id:"CUST1",state:"OPEN",total_money:{currency:"AUD",amount:2500}}}));
   assert.ok(url.endsWith("/invoices/INV1"));
+  if(holdDuringLookup)addHold();
   return new Response(JSON.stringify({invoice:{id:"INV1",version,location_id:"LOCATION123",order_id:"REMOTE1",status:remoteStatus,delivery_method:"EMAIL",public_url:remoteLink,primary_recipient:{customer_id:"CUST1",email_address:"parent1@example.com"},accepted_payment_methods:JSON.parse(row().payload_json).invoice.accepted_payment_methods,payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",automatic_payment_source:"NONE",computed_amount_money:{currency:"AUD",amount:2500},total_completed_amount_money:{currency:"AUD",amount:completed}}]}}));
  };
  const b={reviewed:true,customer_id:"CUST1",due_at:due};
@@ -82,6 +84,9 @@ test("issued sandbox invoice link is scoped to the exact verified parent and rec
  const run=(actor=one,at=now,e=env)=>familyIssuedSquareInvoice(e,actor,"o1",provider,at);
  const before=calls;assert.equal(await run(two),null);assert.equal(await run({...one,role:"child"}),null);assert.equal(await run({...one,family_id:two.family_id}),null);assert.equal(calls,before);
  const opened=await run();assert.equal(opened.payment_url,link);assert.equal(opened.status,"unpaid");assert.equal(JSON.stringify(opened).includes("INV1"),true);assert.equal("provider_invoice_id" in opened,false);
+ addHold();const heldCalls=calls;assert.equal((await run()).status,"review");assert.equal((await run()).payment_url,null);assert.equal(calls,heldCalls);clearHold();
+ holdDuringLookup=true;const raced=await run();assert.equal(raced.status,"review");assert.equal(raced.payment_url,null);holdDuringLookup=false;clearHold();
+ assert.equal((await run()).payment_url,link);
  remoteStatus="PAID";completed=2500;assert.equal((await run()).payment_url,null);assert.equal((await run()).status,"payment_review");
  remoteStatus="PARTIALLY_PAID";completed=1000;assert.equal((await run()).payment_url,null);
  remoteStatus="UNPAID";completed=0;version=2;assert.equal((await run()).payment_url,null);version=1;
