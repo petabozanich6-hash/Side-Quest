@@ -1086,6 +1086,7 @@ test("RealtimeKit staging-only room setup, token windows and cleanup with mocked
  const {prepareVideo,videoToken,closeVideo}=await import("../src/supportVideo.ts");
  const {setClassroomOpen}=await import("../src/supportClassrooms.ts");
  const now=new Date(),oid="video-order",id="video-request";
+ h.db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(id,"video-fixture@example.com","Test parent","Science","Test enquiry",now.toISOString(),now.toISOString());
  h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest",id,"video-quote",0,"Science support","Online","Agreed terms","live",now.toISOString(),new Date(now.getTime()+30*60000).toISOString(),"paid",now.toISOString(),now.toISOString());
  await setClassroomOpen(h.db,"guest",id,oid,true,now);
  const env={...h.env,SUPPORT_CLASSROOM_ENABLED:"true",SUPPORT_VIDEO_TEST:"true",SUPPORT_VIDEO_ACCOUNT:"test-account",SUPPORT_VIDEO_APP:"test-app",SUPPORT_VIDEO_TOKEN:"test-secret",SUPPORT_VIDEO_TUTOR_PRESET:"tutor",SUPPORT_VIDEO_FAMILY_PRESET:"family",STAGING_KEY:"test"};
@@ -1113,6 +1114,7 @@ test("reusable tutor decks: review required, version conflict, private notes nev
  await stepUp(h,owner);
  const d=await h.req("/admin/support-decks",{method:"POST",token:owner.token,body:deck});assert.equal(d.status,201,JSON.stringify(d.json));
  const id=d.json.id,now=new Date(),oid="deck-order";
+ h.db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("deck-request","deck-fixture@example.com","Test parent","Mathematics","Test enquiry",now.toISOString(),now.toISOString());
  h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest","deck-request","deck-quote",0,"Maths support","Online","Agreed terms","live",now.toISOString(),new Date(now.getTime()+30*60000).toISOString(),"paid",now.toISOString(),now.toISOString());
  await setClassroomOpen(h.db,"guest","deck-request",oid,true,now);
  const present={action:"present",deck_id:id,deck_revision:1,index:0,revision:0};
@@ -1179,6 +1181,7 @@ test("classroom images require active learner material and only the currently pr
  const {h}=await ownerSetup();
  const {setClassroomOpen,editClassroom,canReadClassroomImage}=await import("../src/supportClassrooms.ts");
  const now=new Date(),when=now.toISOString(),oid="img-order",rid="img-request";
+ h.db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(rid,"image-fixture@example.com","Test parent","Mathematics","Test enquiry",when,when);
  h.db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run(oid,"guest",rid,"img-quote",0,"Maths","Online","Terms","live",when,new Date(now.getTime()+30*60000).toISOString(),"paid",when,when);
  for(const [id,audience,mime] of [["diagram","learner","image/png"],["answers","tutor","image/png"],["pdf","learner","application/pdf"]])h.db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)").run(id,id,"Maths","Year 5",id+".png",mime,12,"support-private/"+id,audience,when);
  await setClassroomOpen(h.db,"guest",rid,oid,true,now);
@@ -1187,6 +1190,10 @@ test("classroom images require active learner material and only the currently pr
  assert.ok((await editClassroom(h.db,"guest",rid,oid,false,{action:"present-image",file_id:"diagram",revision:0},now)).error);
  assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"present-image",file_id:"diagram",revision:0},now)).ok,true);
  assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),true);
+ h.db.raw.prepare("UPDATE support_guest_requests SET status='closed' WHERE id=?").run(rid);
+ assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"diagram",false,now),false);
+ assert.equal((await editClassroom(h.db,"guest",rid,oid,false,{action:"stroke",points:[[0,0],[1,1]],color:"#163b2c",revision:1},now)).error,"The classroom is not open.");
+ h.db.raw.prepare("UPDATE support_guest_requests SET status='new' WHERE id=?").run(rid);
  assert.equal(await canReadClassroomImage(h.db,"guest","wrong",oid,"diagram",false,now),false);
  assert.equal(await canReadClassroomImage(h.db,"guest",rid,oid,"answers",false,now),false);
  assert.equal((await editClassroom(h.db,"guest",rid,oid,true,{action:"hide-image",revision:1},now)).ok,true);
