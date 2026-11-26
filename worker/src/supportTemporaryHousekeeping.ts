@@ -12,6 +12,7 @@ export async function runTemporaryHousekeeping(e:Env,now=new Date()){
  if(!temporaryHousekeepingEnabled(e))return "disabled";
  const db=e.DB,at=now.toISOString(),day=localDate(now),id=crypto.randomUUID();
  if(!await db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='support_temporary_housekeeping_runs'").first())return "migration_required";
+ if(await db.prepare("SELECT 1 FROM support_temporary_housekeeping_runs WHERE local_date=?").bind(day).first())return "duplicate";
  const guard="EXISTS(SELECT 1 FROM support_temporary_housekeeping_runs WHERE local_date=? AND run_id=? AND status='running')";
  try{
   const result=await db.batch([
