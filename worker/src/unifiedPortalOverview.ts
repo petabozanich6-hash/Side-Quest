@@ -1,3 +1,4 @@
+import {familyClubInvoiceSummaries} from "./clubSquareInvoicePublication";
 import {familyIssuedSquareInvoiceSummaries} from "./unifiedPortalSquareInvoices";
 import type {App,AuthUser,Guards} from "./types";
 import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity";
@@ -33,7 +34,7 @@ export async function familyOverview(db:D1Database,a:AuthUser){
  LEFT JOIN support_installment_terms t ON t.order_id=o.id
  LEFT JOIN support_manual_invoices i ON i.order_id=CASE WHEN t.order_id IS NOT NULL THEN o.id ELSE COALESCE(p.root_id,o.id) END
  ORDER BY CASE WHEN o.status NOT IN ('cancelled','completed') AND (o.start_at IS NULL OR o.end_at>=?) THEN 0 ELSE 1 END,COALESCE(o.start_at,o.created_at) DESC,o.id LIMIT 201`).bind(...binds(a),new Date().toISOString()).all(),
- db.prepare(scope+` SELECT e.id,c.id class_id,e.request_id,r.source,r.subject,r.status request_status,r.learner_id,c.topic,c.start_at,c.end_at,e.status,e.payment_due_at,e.invoice_reference,e.attendance
+ db.prepare(scope+` SELECT e.id,c.id class_id,e.request_id,r.source,r.subject,r.status request_status,r.learner_id,c.topic,c.start_at,c.end_at,e.status,e.payment_due_at,e.invoice_reference,e.attendance,EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=c.id) round_managed
  FROM own_requests r JOIN support_english_enrolments e ON e.request_id=r.id AND r.channel='guest'
  JOIN support_english_classes c ON c.id=e.class_id
  ORDER BY CASE WHEN e.status<>'cancelled' AND c.end_at>=? THEN 0 ELSE 1 END,c.start_at DESC,e.id LIMIT 201`).bind(...binds(a),new Date().toISOString()).all(),
@@ -54,6 +55,7 @@ export function registerFamilyOverview(app:App,g:Guards){
   const r=await familyOverview(c.env.DB,c.get("user"));if(!r)return c.json({detail:"Verified parent access required."},403);
   const issued=await familyIssuedSquareInvoiceSummaries(c.env,c.get("user"));
   const byOrder=new Map(issued.map(i=>[i.id,i]));
-  return c.json({...r,limited:r.limited||issued.length>200,orders:r.orders.map(o=>({...o,square_invoice:byOrder.get(o.id)||null}))});
+  const clubInvoices=await familyClubInvoiceSummaries(c.env,c.get("user"));
+  return c.json({...r,club_invoices:clubInvoices.slice(0,200),limited:r.limited||issued.length>200||clubInvoices.length>200,orders:r.orders.map(o=>({...o,square_invoice:byOrder.get(o.id)||null}))});
  });
 }
