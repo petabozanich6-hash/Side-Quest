@@ -1,5 +1,9 @@
 # Side-Quest modernisation go-live gates
 
+## Current candidate — supersedes earlier release references
+
+The current draft release branch is `release/learning-support-interactive-candidate`. It incorporates the unified family portal and stacked English Club/interactive classroom development through #396, plus direct family round/single booking and Owner HQ round planning. Previous release references below are historical checkpoints, not activation authorisation. Do not merge component PRs separately. Rehearse **all** pending migrations through 0130, compare existing rows and constraints, and test rollback in an isolated copy of an independently verified private backup. Exact final head CI and actual staging acceptance are required. Standard tutoring invoice automation is sandbox-only and restricted to an explicitly approved synthetic customer; new English Club obligations still lack dedicated provider-confirmed invoice and cancellation lifecycle. Round registrations, interactive activity data, group publication, parent reports and certificate delivery must remain pilot-only until safeguarding, privacy/retention, payment and actual device acceptance are complete. No live charge or publication, production migration or deployment is authorised by this document.
+
 Release branch: release/learning-support-consolidated; consolidated PR #372 (supersedes draft component PRs #368–371). Do not merge previous component PRs separately.
 
 ## Verified vs external
