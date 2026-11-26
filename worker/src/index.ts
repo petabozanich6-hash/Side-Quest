@@ -19,6 +19,7 @@ import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity
 import {registerUnifiedLegacy} from "./unifiedPortalLegacy";
 import {registerPortalLearners} from "./unifiedPortalLearners";
 import {registerPortalIntake} from "./unifiedPortalIntake";
+import {registerFamilyProgressReports} from "./supportFamilyProgressReports";
 import {registerLiveActivityRoutes} from "./supportLiveActivities";
 import {registerEnglishClubSelfService} from "./englishClubSelfService";
 import {registerFamilyOverview} from "./unifiedPortalOverview";
@@ -403,6 +404,7 @@ registerPortalLearners(app,guards);
 registerPortalIntake(app,guards);
 registerEnglishClubSelfService(app,guards);
 registerLiveActivityRoutes(app,guards);
+registerFamilyProgressReports(app,guards);
 registerFamilyOverview(app,guards);
 registerFamilySquareInvoices(app,guards);
 registerPublicAvailability(app);

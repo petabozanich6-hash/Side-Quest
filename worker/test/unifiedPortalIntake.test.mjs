@@ -295,6 +295,27 @@ test("live activity engine isolates club learner responses and answer keys; supp
  const tutItem=(await readActivityEvidence(DB,"tutoring","interactive-order","interactive-order",live)).activities.find(v=>v.activity_id===q.id);
  assert.equal(await saveActivityEvidence(DB,"tutoring","interactive-order","interactive-order",{activity_id:q.id,response_updated_at:tutItem.response_updated_at,revision:0,observation:"Explained grouping.",achievement:"independent",confirmed:true},live),true);
  assert.equal((await readActivityEvidence(DB,"tutoring","interactive-order","interactive-order",live)).activities[0].revision,1);
+ const {readProgressReport,changeProgressReport,familyProgressReports}=await import("../src/supportFamilyProgressReports.ts");
+ const after=new Date("2026-12-09T09:00:00Z");
+ assert.equal(await readProgressReport(DB,"tutoring","interactive-order","interactive-order",live),null);
+ const rp=await readProgressReport(DB,"tutoring","interactive-order","interactive-order",after);
+ assert.equal(rp.evidence_count,1);assert.equal(rp.revision,0);
+ assert.ok(rp.suggested[1].includes("demonstrated independently"));
+ assert.ok(!JSON.stringify(rp).includes("Explained grouping."));
+ const sections=["Grouping numbers","Explained a strategy independently","Practise another example","Try grouping counters at home"];
+ const save={action:"save",revision:0,sections};
+ assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",save,after),true);
+ assert.deepEqual((await familyProgressReports(DB,one.actor)).reports,[]);
+ assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"publish",revision:1,confirmed:false},after),false);
+ assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"publish",revision:1,confirmed:true},after),true);
+ assert.deepEqual((await familyProgressReports(DB,one.actor)).reports[0].sections,sections);
+ assert.deepEqual((await familyProgressReports(DB,two.actor)).reports,[]);
+ assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"save",revision:2,sections:["Updated draft","","",""]},after),true);
+ assert.deepEqual((await familyProgressReports(DB,one.actor)).reports[0].sections,sections);
+ assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"publish",revision:2,confirmed:true},after),false);
+ assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"withdraw",revision:3,confirmed:true},after),true);
+ assert.deepEqual((await familyProgressReports(DB,one.actor)).reports,[]);
+
 
  DB.raw.prepare("UPDATE support_classrooms SET is_open=0 WHERE order_id='interactive-order'").run();
  assert.equal(await respondLiveActivity(DB,ta,{activity_id:q.id,response:"Another answer"},live),false);
