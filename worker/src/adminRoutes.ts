@@ -39,7 +39,7 @@ import type { AuthenticationResponseJSON, RegistrationResponseJSON } from "@simp
 import { activeRoles, permissionsFor, type Permission, type Role } from "./access";
 import { hitRateLimit, recordSecurityEvent, writeAudit } from "./adminAudit";
 import { customerDetail, customerSummary, familyHasAdmin, FAMILY_ID, overview, searchCustomers } from "./adminData";
-import { verifySecret } from "./auth";
+import { verifySecret,hashSecret } from "./auth";
 import type { Plan } from "./entitlements";
 import {
   authenticationOptions, elevatedUntil, endStepUp, listCredentials, registrationOptions, STEP_UP_MINUTES,
@@ -337,6 +337,22 @@ export function createAdminRoutes() {
   admin.get("/today",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");return c.json(await ownerToday(c.env.DB));
+  });
+  // Synthetic, non-deliverable identities for isolated browser acceptance only.
+  // Never modify or certify an existing email address. No real mailbox ownership is asserted.
+  admin.post("/staging-family-fixture",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env)||c.env.EMAIL||c.env.SUPPORT_SQUARE_INVOICE_TEST==="true"||!/^https:\/\/side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(c.env.ADMIN_ORIGINS||"")||c.req.header("Origin")!==c.env.ADMIN_ORIGINS)return notFound(c);
+    const b=await readJson(c);
+    if(b.confirmed!==true||typeof b.password!=="string"||b.password.length<12||b.password.length>128)return c.json({detail:"Choose a new test-only password of 12–128 characters and confirm synthetic account creation."},400);
+    const family=crypto.randomUUID(),user=crypto.randomUUID(),now=nowIso(),email="test-"+user+"@example.invalid";
+    const hash=await hashSecret(b.password);
+    await c.env.DB.batch([
+      c.env.DB.prepare("INSERT INTO families(id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at,jurisdiction) VALUES(?,?,?,?,'PREVIEW_EXPIRED',NULL,NULL,'NSW')").bind(family,"Synthetic staging family",user,now),
+      c.env.DB.prepare("INSERT INTO users(id,family_id,email,password_hash,name,is_owner,created_at,email_verified_at,email_verification_required_at) VALUES(?,?,?,?,?,1,?,?,?)").bind(user,family,email,hash,"Synthetic test parent",now,now,now),
+      c.env.DB.prepare("INSERT INTO support_account_intents(family_id,registration_intent,created_at) VALUES(?,'support_only',?)").bind(family,now),
+      c.env.DB.prepare("INSERT INTO admin_audit_log(id,actor_user_id,actor_label,action,target_type,target_id,detail_json,created_at) VALUES(?,?,?,'staging.synthetic_family_created','family',?,'{}',?)").bind(crypto.randomUUID(),c.get("user").id,"owner:"+c.get("user").id,family,now)
+    ]);
+    return c.json({email,family_id:family},201);
   });
   admin.get("/unified-directory", requirePermission("customers.read"), async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
