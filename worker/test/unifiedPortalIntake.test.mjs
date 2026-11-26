@@ -635,6 +635,23 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"review");
  assert.equal((await verifyClubSquarePayment(env,"single",s.booking_id,settlementProvider,paidAt)).verified,false);
  assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,settlementProvider,paidAt)).payment_url,null);
+ const {releaseOverdueClubPlace,recheckClubInvoices}=await import("../src/clubSquareOverdue.ts");
+ const overdue=new Date("2026-12-08T07:01:00.000Z");
+ const approveRelease={confirmed:true,parent_notified:true};
+ assert.ok((await releaseOverdueClubPlace(env,"single",s.booking_id,one.actor.id,{...approveRelease,cancelled_in_square:true,fingerprint:approved.fingerprint},settlementProvider,overdue)).error);
+ assert.ok((await releaseOverdueClubPlace(env,"round",u.obligation_id,one.actor.id,{...approveRelease,parent_notified:false},mock,overdue)).error);
+ assert.ok((await releaseOverdueClubPlace(env,"round",u.obligation_id,one.actor.id,approveRelease,mock,now)).error);
+ const providerReads=calls;
+ assert.equal((await releaseOverdueClubPlace(env,"round",u.obligation_id,one.actor.id,approveRelease,mock,overdue)).released,true);
+ assert.equal(calls,providerReads);
+ assert.equal((await releaseOverdueClubPlace(env,"round",u.obligation_id,one.actor.id,approveRelease,mock,overdue)).released,true);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE request_id=? AND status='cancelled'").get(upfront.id).n,6);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE request_id=? AND status='reserved'").get(weekly.id).n,6);
+ assert.ok((await releaseOverdueClubPlace(env,"round",w[0].obligation_id,one.actor.id,approveRelease,mock,overdue)).error);
+ assert.ok((await releaseOverdueClubPlace(env,"single",foreign.booking_id,one.actor.id,approveRelease,mock,overdue)).error);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_releases").get().n,1);
+ assert.equal((await recheckClubInvoices({...env,SQUARE_APPLICATION_ID:"sq0idp-production"},mock,overdue)).checked,0);
+
 
  const other=w[1];const before=await previewClubInvoice(env,"round",other.obligation_id,args,mock,now);assert.ok(before.fingerprint);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id IN (SELECT seat_id FROM support_club_obligation_seats WHERE kind='round' AND obligation_id=?)").run(other.obligation_id);
