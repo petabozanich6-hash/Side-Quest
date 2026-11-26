@@ -279,6 +279,8 @@ export default function Landing() {
           Created by{" "}
           <a href="https://www.facebook.com/profile.php?id=61596584274920" target="_blank" rel="noopener" className="underline">Peta Bozanich</a>, Australian author
           {" · "}
+          <a href="https://www.linkedin.com/in/peta-bozanich" target="_blank" rel="noopener noreferrer" className="underline">Founder on LinkedIn</a>
+          {" · "}
           <a href="https://www.facebook.com/profile.php?id=61595084713830" target="_blank" rel="noopener" className="underline">Side-Quest on Facebook</a>
         </p>
       </footer>
