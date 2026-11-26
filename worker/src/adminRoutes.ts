@@ -295,6 +295,7 @@ export function createAdminRoutes() {
     if(!supportInvoiceLookupAvailable(c.env)||!c.get("roles").includes("owner"))return c.json({detail:"Not found"},404);
     const action=c.req.param("action"),b=await readJson(c);
     if((b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||!b.request_id||!b.order_id||b.request_id.length>100||b.order_id.length>100||b.confirmed!==true||typeof b.fingerprint!=="string"||!/^[a-f0-9]{64}$/.test(b.fingerprint)||!["prepare","create-order","create-draft","release","inspect","recover","publish"].includes(action||""))return c.json({detail:"Review and explicitly approve this invoice action."},400);
+    if(action==="publish"&&(b.issue_confirmed!==true||typeof b.version!=="number"||!Number.isSafeInteger(b.version)||b.version<0||typeof b.provider_invoice_id!=="string"||!/^[A-Za-z0-9:_-]{1,150}$/.test(b.provider_invoice_id)))return c.json({detail:"Explicitly approve the exact invoice version before issuing."},400);
     const workspace=await ownerSquareInvoiceWorkspace(c.env,b.channel,b.request_id,b.order_id);
     if(!workspace)return c.json({detail:"Arrangement not found"},404);
     if(action!=="release"&&action!=="inspect"&&!workspace.eligible)return c.json({detail:"Arrangement needs reconciliation."},409);
