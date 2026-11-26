@@ -1,3 +1,4 @@
+import {releaseOverdueClubPlace} from "./clubSquareOverdue";
 import {verifyClubSquarePayment} from "./clubSquareInvoiceSettlement";
 import {publishClubSquareInvoice} from "./clubSquareInvoicePublication";
 import {clubInvoiceWorkspace,createClubSquareOrder,createClubSquareDraft} from "./clubSquareInvoiceDraft";
@@ -1094,6 +1095,13 @@ export function createAdminRoutes() {
     const r=await createClubSquareDraft(c.env,kind,id,await readJson(c));
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.draft",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/release-overdue",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await releaseOverdueClubPlace(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.release_overdue",targetType:"english_club_payment",targetId:id,detail:{kind}});
     return c.json(r);
   });
   admin.post("/english-club/payments/:kind/:id/verify-payment",requirePermission("customers.read"),async c=>{
