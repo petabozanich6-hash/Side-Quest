@@ -28,8 +28,12 @@ export async function readLiveActivity(db:D1Database,a:Access,now=new Date()){
  const row=await db.prepare("SELECT id,question,activity_type,options_json,answer_key,state FROM support_live_activities WHERE kind=? AND session_id=? AND state<>'closed' AND EXISTS("+s.sql+")").bind(a.kind,a.sessionId,...s.args).first<any>();
  if(!row)return {activity:null};
  const responses=a.owner?(await db.prepare("SELECT seat_id,response,updated_at FROM support_live_activity_responses WHERE activity_id=? AND EXISTS("+s.sql+") ORDER BY updated_at,seat_id LIMIT 8").bind(row.id,...s.args).all()).results||[]:undefined;
+ const since=new Date(now.getTime()-10*60000).toISOString();
+ const eligible=a.kind==="club"?" AND EXISTS(SELECT 1 FROM support_english_enrolments e JOIN support_guest_requests r ON r.id=e.request_id WHERE e.id=v.seat_id AND e.class_id=? AND e.status='paid' AND r.status NOT IN ('closed','resolved'))":" AND v.seat_id=?";
+ const signals=a.owner?(await db.prepare("SELECT v.seat_id,v.signal,v.updated_at,"+(a.kind==="club"?"(SELECT e.learner_label FROM support_english_enrolments e WHERE e.id=v.seat_id)":"(SELECT d.learner_label FROM support_tutor_diary d WHERE d.order_id=v.seat_id)")+" learner_label FROM support_live_activity_signals v WHERE v.activity_id=? AND v.signal<>'clear' AND v.updated_at>=? AND EXISTS("+s.sql+")"+eligible+" ORDER BY v.updated_at DESC LIMIT 8").bind(row.id,since,...s.args,a.sessionId).all()).results||[]:undefined;
+ const ownSignal=a.owner?null:await db.prepare("SELECT signal FROM support_live_activity_signals WHERE activity_id=? AND seat_id=? AND signal<>'clear' AND updated_at>=? AND EXISTS("+s.sql+")").bind(row.id,seat.seat_id,since,...s.args).first<{signal:string}>();
  const own=a.owner?null:await db.prepare("SELECT response FROM support_live_activity_responses WHERE activity_id=? AND seat_id=? AND EXISTS("+s.sql+")").bind(row.id,seat.seat_id,...s.args).first<{response:string}>();
- return {activity:{id:row.id,question:row.question,type:row.activity_type,options:JSON.parse(row.options_json),state:row.state,answer_key:a.owner||row.state==="revealed"?row.answer_key:null},...(a.owner?{responses}:{response:own?.response??null})};
+ return {activity:{id:row.id,question:row.question,type:row.activity_type,options:JSON.parse(row.options_json),state:row.state,answer_key:a.owner||row.state==="revealed"?row.answer_key:null},...(a.owner?{responses,signals}:{response:own?.response??null,signal:ownSignal?.signal??null})};
 }
 export async function launchLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
  if(!a.owner||b?.confirmed!==true)return false;
@@ -54,6 +58,12 @@ export async function respondLiveActivity(db:D1Database,a:Access,b:any,now=new D
  const r=await db.prepare("INSERT INTO support_live_activity_responses(activity_id,seat_id,response,updated_at) SELECT ?,seat_id,?,? FROM ("+s.sql+") WHERE EXISTS(SELECT 1 FROM support_live_activities WHERE id=? AND kind=? AND session_id=? AND state='open') ON CONFLICT(activity_id,seat_id) DO UPDATE SET response=excluded.response,updated_at=excluded.updated_at").bind(row.id,response,now.toISOString(),...s.args,row.id,a.kind,a.sessionId).run();
  return !!r.meta?.changes;
 }
+export async function signalLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
+ if(a.owner||!safe(b?.activity_id,100)||!["question","hint","time","confused","ready","clear"].includes(b.signal))return false;
+ const s=await scope(db,a,now);if(!s)return false;
+ const r=await db.prepare("INSERT INTO support_live_activity_signals(activity_id,seat_id,signal,updated_at) SELECT ?,seat_id,?,? FROM ("+s.sql+") WHERE EXISTS(SELECT 1 FROM support_live_activities WHERE id=? AND kind=? AND session_id=? AND state<>'closed') ON CONFLICT(activity_id,seat_id) DO UPDATE SET signal=excluded.signal,updated_at=excluded.updated_at").bind(b.activity_id,b.signal,now.toISOString(),...s.args,b.activity_id,a.kind,a.sessionId).run();
+ return !!r.meta?.changes;
+}
 export async function endLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
  if(!a.owner||b?.confirmed!==true||!safe(b.activity_id,100)||!["revealed","closed"].includes(b.state))return false;
  const s=await scope(db,a,now);if(!s)return false;
@@ -75,6 +85,6 @@ export function registerLiveActivityRoutes(app:App,g:Guards){
   const a:Access={kind,sessionId:c.req.param("session")??"",requestId:c.req.param("request")??"",owner:false as const,actor:c.get("user")};
   if(!(await hitRateLimit(c.env.DB,"live-activity-write:"+a.actor.id,30,300)).ok)return c.json({detail:"Try again shortly."},429);
   const b=await c.req.json().catch(()=>null);
-  return await respondLiveActivity(c.env.DB,a,b)?c.json({ok:true}):c.json({detail:"This response could not be accepted. Refresh the activity."},409);
+  return await (b?.action==="signal"?signalLiveActivity(c.env.DB,a,b):respondLiveActivity(c.env.DB,a,b))?c.json({ok:true}):c.json({detail:"This response could not be accepted. Refresh the activity."},409);
  });
 }
