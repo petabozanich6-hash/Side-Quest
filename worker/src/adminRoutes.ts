@@ -27,7 +27,7 @@ import {createPreparedSupportSquareDraft} from "./supportSquareInvoiceDraft";
 import {previewSupportInvoice} from "./supportSquareInvoicePreview";
 import {supportInvoiceLookupAvailable,inspectSupportInvoice} from "./supportSquareInvoiceLookup";
 import {ownerToday} from "./unifiedOwnerToday";
-import {ownerLearner,saveOwnerLearnerNotes} from "./unifiedOwnerLearner";
+import {ownerLearner,saveOwnerLearnerNotes,appointmentLearnerContext,ownerLearnerReports} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
@@ -391,7 +391,7 @@ export function createAdminRoutes() {
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     const family=c.req.param("id")||"",learner=c.req.param("learner")||"",page=Number(c.req.query("page")||1);
     if(!family||!learner||family.length>100||learner.length>100||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid learner or page"},400);
-    const r=await ownerLearner(c.env.DB,family,learner,page);return r?c.json(r):c.json({detail:"Learner not found"},404);
+    const r=await ownerLearner(c.env.DB,family,learner,page);return r?c.json({...r,reports:await ownerLearnerReports(c.env.DB,family,learner)}):c.json({detail:"Learner not found"},404);
   });
   admin.put("/unified-directory/account/:id/learners/:learner",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
@@ -1377,7 +1377,8 @@ export function createAdminRoutes() {
     });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
-      const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json(d):c.json({detail:"Order not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json({...d,learner_context:unifiedPortalPilot(c.env)?await appointmentLearnerContext(c.env.DB,channel,id,oid):null}):c.json({detail:"Order not found"},404);
     });
     admin.put(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id)||!await saveDiary(c.env.DB,channel,id,oid,await readJson(c)))return c.json({detail:"Check the diary fields and reload if another edit was saved. Ready lessons need objectives, an agenda and materials."},409);
