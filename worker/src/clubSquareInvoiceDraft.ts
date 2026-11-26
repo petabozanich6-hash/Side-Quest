@@ -10,7 +10,7 @@ const read=(e:Env,kind:string,id:string)=>e.DB.prepare("SELECT * FROM support_cl
 export async function clubInvoiceWorkspace(e:Env,kind:string,id:string){
  if(!supportInvoiceLookupAvailable(e)||!["single","round"].includes(kind)||!idOk(id))return null;
  const i=await read(e,kind,id);if(!i)return null;
- return {state:i.state,fingerprint:i.fingerprint,amount_cents:i.amount_cents,due_at:i.due_at,provider_order_id:i.provider_order_id,provider_invoice_id:i.provider_invoice_id,provider_invoice_version:i.provider_invoice_version};
+ return {state:i.state,fingerprint:i.fingerprint,amount_cents:i.amount_cents,due_at:i.due_at,provider_order_id:i.provider_order_id,provider_invoice_id:i.provider_invoice_id,provider_invoice_version:i.provider_invoice_version,publish_approved_version:i.publish_approved_version,provider_issued_at:i.provider_issued_at};
 }
 async function fresh(e:Env,i:any,fetchImpl:Fetch|undefined,now:Date){
  const p=await previewClubInvoice(e,i.kind,i.obligation_id,{reviewed:true,customer_id:i.customer_id},fetchImpl,now);
