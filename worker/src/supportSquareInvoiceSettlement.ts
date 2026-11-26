@@ -1,3 +1,4 @@
+import {recordInvoiceReview,clearInvoiceReview} from "./supportSquareInvoiceReview";
 import type {Env} from "./types";
 import {squareConfig,squareCall,type Fetch} from "./square";
 import {supportInvoiceLookupAvailable} from "./supportSquareInvoiceLookup";
@@ -17,7 +18,7 @@ export async function verifyIssuedSupportSquarePayment(env:Env,channel:Channel,r
   return {error:"No matching issued invoice."};
  const proof=await env.DB.prepare("SELECT * FROM support_square_invoice_settlements WHERE order_id=?").bind(orderId).first<any>();
  if(proof)return {status:proof.review_at||!["paid","completed"].includes(o.status)?"review":"verified",verified:!proof.review_at&&["paid","completed"].includes(o.status)};
- const review=()=>({status:"review",verified:false});
+ const review=async()=>{await recordInvoiceReview(env.DB,orderId,"payment_uncertain",now);return {status:"review",verified:false};};
  if(o.status!=="confirmed"||o.updated_at!==i.order_updated_at||o.amount_cents!==i.amount_cents||o.checkout_started_at||o.square_order_id)return review();
  const checked=await inspectPreparedSupportSquareInvoice(env,channel,requestId,orderId,{confirmed:true,fingerprint:i.fingerprint},fetchImpl,now);
  if("error" in checked||!checked.invoice_checked)return review();
@@ -30,7 +31,7 @@ export async function verifyIssuedSupportSquarePayment(env:Env,channel:Channel,r
    !["OPEN","COMPLETED"].includes(order.state)||!money(order.total_money,i.amount_cents)||!Array.isArray(order.tenders)||order.tenders.length!==1||
    !money(order.tenders[0].amount_money,i.amount_cents)||!idOk(order.tenders[0].payment_id))return review();
   payment=(await squareCall(cfg,"GET","payments/"+encodeURIComponent(order.tenders[0].payment_id),undefined,fetchImpl)).payment;
- }catch{return {status:"retry",verified:false};}
+ }catch{await recordInvoiceReview(env.DB,orderId,"payment_retry",now);return {status:"retry",verified:false};}
  const capture=payment?.card_details?.card_payment_timeline?.captured_at;
  const captured=typeof capture==="string"?Date.parse(capture):NaN;
  const deadline=Date.parse(i.due_at),attempt=Date.parse(i.publish_attempted_at);
@@ -62,7 +63,7 @@ export async function verifyIssuedSupportSquarePayment(env:Env,channel:Channel,r
    AND EXISTS(SELECT 1 FROM support_square_invoice_settlements p WHERE p.order_id=support_service_orders.id AND p.payment_id=? AND p.review_at IS NULL)`)
    .bind(paidAt,stamp,orderId,channel,requestId,payment.id)
  ]);
- if(res[0]?.meta?.changes===1&&res[1]?.meta?.changes===1)return {status:"verified",verified:true};
+ if(res[0]?.meta?.changes===1&&res[1]?.meta?.changes===1){await clearInvoiceReview(env.DB,orderId,now);return {status:"verified",verified:true};}
  }catch{return review();}
  const saved=await env.DB.prepare("SELECT p.payment_id,p.review_at,s.status FROM support_square_invoice_settlements p JOIN support_service_orders s ON s.id=p.order_id WHERE p.order_id=?").bind(orderId).first<any>();
  return saved?.payment_id===payment.id&&!saved.review_at&&["paid","completed"].includes(saved.status)?{status:"verified",verified:true}:review();
@@ -94,5 +95,6 @@ export async function flagIssuedSupportInvoiceRefund(env:Env,refund:any,now=new 
   env.DB.prepare("UPDATE support_square_invoice_settlements SET review_at=COALESCE(review_at,?) WHERE order_id=?").bind(stamp,row.order_id),
   env.DB.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE id=? AND status IN ('paid','completed','confirmed')").bind(stamp,row.order_id)
  ]);
+ await recordInvoiceReview(env.DB,row.order_id,"refund",now);
  return "support invoice refund requires review";
 }
