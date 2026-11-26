@@ -333,8 +333,20 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"publish",revision:1,confirmed:true},after),true);
  assert.deepEqual((await familyProgressReports(DB,one.actor)).reports[0].sections,sections);
  assert.deepEqual((await familyProgressReports(DB,two.actor)).reports,[]);
+ const {appointmentLearnerContext,ownerLearnerReports}=await import("../src/unifiedOwnerLearner.ts");
+ const nextRequest=await submitPortalEnquiry(DB,one.actor,form(one.learner,"continuity-next"));assert.ok(nextRequest.id);
+ const nextStart="2026-12-10T07:00:00.000Z",nextEnd="2026-12-10T08:00:00.000Z";
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('continuity-next-order','guest',?,'next-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(nextRequest.id,nextStart,nextEnd,after.toISOString(),after.toISOString());
+ const ctx=await appointmentLearnerContext(DB,"guest",nextRequest.id,"continuity-next-order",after);
+ assert.equal(ctx.learner.id,one.learner);assert.match(ctx.current_enquiry,/division/);
+ assert.equal(ctx.previous_appointments[0].id,"interactive-order");
+ assert.deepEqual(ctx.reports[0].sections,sections);
+ assert.equal(await appointmentLearnerContext(DB,"guest",tut.id,"continuity-next-order",after),null);
+ assert.deepEqual(await ownerLearnerReports(DB,two.actor.family_id,one.learner,after),[]);
+
  assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"save",revision:2,sections:["Updated draft","","",""]},after),true);
  assert.deepEqual((await familyProgressReports(DB,one.actor)).reports[0].sections,sections);
+ assert.deepEqual((await appointmentLearnerContext(DB,"guest",nextRequest.id,"continuity-next-order",after)).reports[0].sections,sections);
  assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"publish",revision:2,confirmed:true},after),false);
  assert.equal(await changeProgressReport(DB,"tutoring","interactive-order","interactive-order",{action:"withdraw",revision:3,confirmed:true},after),true);
  assert.deepEqual((await familyProgressReports(DB,one.actor)).reports,[]);
