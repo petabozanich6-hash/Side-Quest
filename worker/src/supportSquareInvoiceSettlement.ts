@@ -105,7 +105,7 @@ async function flagInvoicePaymentHold(env:Env,paymentId:string,reason:"refund"|"
  if(!row)return null;
  const at=now.toISOString();
  await env.DB.batch([
-  env.DB.prepare("INSERT INTO support_square_invoice_reviews(order_id,reason,first_at,last_at) VALUES(?,?,?,?) ON CONFLICT(order_id) DO UPDATE SET reason=excluded.reason,last_at=excluded.last_at,resolved_at=NULL").bind(row.order_id,reason,at,at),
+  env.DB.prepare("INSERT INTO support_square_invoice_reviews(order_id,reason,first_at,last_at) VALUES(?,?,?,?) ON CONFLICT(order_id) DO UPDATE SET reason=CASE WHEN support_square_invoice_reviews.reason='dispute' AND support_square_invoice_reviews.resolved_at IS NULL THEN 'dispute' ELSE excluded.reason END,last_at=excluded.last_at,resolved_at=NULL").bind(row.order_id,reason,at,at),
   env.DB.prepare("UPDATE support_square_invoice_settlements SET review_at=COALESCE(review_at,?) WHERE order_id=?").bind(at,row.order_id),
   env.DB.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE id=? AND status IN ('paid','completed','confirmed')").bind(at,row.order_id)
  ]);
