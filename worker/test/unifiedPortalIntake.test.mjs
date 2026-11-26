@@ -146,3 +146,41 @@ test("English Club six-session round reserves all places atomically at $15, prot
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_requests").get().n,8);
  assert.deepEqual(weeklyRoundStarts("2027-03-31T18:00",2),["2027-03-31T07:00:00.000Z","2027-04-07T08:00:00.000Z"]);
 });
+
+test("individual workshop reservations share round capacity without duplicate learner places",async t=>{
+ const {DB,one,two}=await fixture(t);
+ const {createEnglishRound,setEnglishRoundPublished,listEnglishRounds}=await import("../src/englishClubRounds.ts");
+ const {reserveEnglishRound,reserveEnglishSingle,listEnglishSingleClasses,CLUB_BOOKING_VERSION,CLUB_SINGLE_VERSION}=await import("../src/englishClubSelfService.ts");
+ const now=new Date("2026-12-07T00:00:00.000Z");
+ const round=await createEnglishRound(DB,one.actor.id,{title:"Six workshops",first_local:"2026-12-09T18:00",session_count:6,themes:Array.from({length:6},(_,i)=>"Workshop "+(i+1)),confirmed:true},now);
+ assert.ok(round.id,JSON.stringify(round));assert.equal((await listEnglishSingleClasses(DB,now)).length,0);
+ assert.equal(await setEnglishRoundPublished(DB,round.id,{published:true,confirmed:true},now),true);
+ const classes=await listEnglishSingleClasses(DB,now);assert.equal(classes.length,6);
+ const body={class_id:classes[0].id,learner_id:one.learner,request_key:"single-first",expected_total_cents:1500,certificate_delivery:"pdf",terms_version:CLUB_SINGLE_VERSION,confirmed:true};
+ assert.ok((await reserveEnglishSingle(DB,one.actor,{...body,learner_id:two.learner},now)).error);
+ assert.ok((await reserveEnglishSingle(DB,one.actor,{...body,expected_total_cents:1200},now)).error);
+ assert.ok((await reserveEnglishSingle(DB,one.actor,{...body,terms_version:CLUB_BOOKING_VERSION},now)).error);
+ const first=await reserveEnglishSingle(DB,one.actor,body,now);assert.ok(first.id,JSON.stringify(first));
+ assert.equal((await reserveEnglishSingle(DB,one.actor,body,now)).id,first.id);
+ assert.ok((await reserveEnglishSingle(DB,one.actor,{...body,request_key:"duplicate"},now)).error);
+ const whole={round_id:round.id,learner_id:one.learner,request_key:"whole",expected_total_cents:9000,payment_mode:"weekly",certificate_delivery:"pdf",terms_version:CLUB_BOOKING_VERSION,confirmed:true};
+ assert.ok((await reserveEnglishRound(DB,one.actor,whole,now)).error);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_requests").get().n,1);
+ assert.ok((await reserveEnglishSingle(DB,one.actor,{...body,class_id:classes[1].id,request_key:"second-class"},now)).id);
+ assert.ok((await reserveEnglishRound(DB,two.actor,{...whole,learner_id:two.learner},now)).id);
+ assert.ok((await reserveEnglishSingle(DB,two.actor,{...body,learner_id:two.learner,request_key:"duplicate-round-seat"},now)).error);
+ for(let i=0;i<6;i++){
+  const learner=await addPortalLearner(DB,one.actor,{label:"Extra "+i,year_level:"Year 5",request_key:"individual-extra-"+i});
+  assert.ok(learner?.id);
+  assert.ok((await reserveEnglishSingle(DB,one.actor,{...body,learner_id:learner.id,request_key:"extra-single-"+i},now)).id);
+ }
+ assert.equal((await listEnglishRounds(DB,true,now)).length,0);
+ assert.equal((await listEnglishSingleClasses(DB,now)).length,5);
+ const late=await listEnglishSingleClasses(DB,new Date("2026-12-10T00:00:00Z"));assert.equal(late.length,5);
+ const booking=DB.raw.prepare("SELECT amount_cents,status,due_at FROM support_english_single_bookings WHERE id=?").get(first.booking_id);
+ assert.equal(booking.amount_cents,1500);assert.equal(booking.status,"awaiting_invoice");assert.equal(booking.due_at,"2026-12-08T07:00:00.000Z");
+ assert.equal(await setEnglishRoundPublished(DB,round.id,{published:false,confirmed:true},now),true);
+ assert.equal((await listEnglishSingleClasses(DB,now)).length,0);
+ assert.equal((await reserveEnglishSingle(DB,one.actor,body,now)).id,first.id);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_single_bookings").get().n,8);
+});
