@@ -6,6 +6,7 @@ import {prepareSupportInvoiceIntent,releasePreparedSupportInvoiceIntent} from ".
 import {createPreparedSupportSquareOrder} from "../src/supportSquareInvoiceOrder.ts";
 import {createPreparedSupportSquareDraft} from "../src/supportSquareInvoiceDraft.ts";
 import {inspectPreparedSupportSquareInvoice,recoverPreparedSupportSquareRecord} from "../src/supportSquareInvoiceReconcile.ts";
+import {publishPreparedSupportSquareInvoice} from "../src/supportSquareInvoicePublish.ts";
 import {prepareSupportCheckout} from "../src/supportCheckout.ts";
 import {cancelUnstartedOrder,recordManualInvoice} from "../src/supportOrders.ts";
 test("approved invoice intent is durable, duplicate-safe and never issues a provider invoice",async t=>{
@@ -199,4 +200,52 @@ test("read-only reconciliation validates candidate records and safely links a lo
  assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
  assert.ok(calls.length>0);
+});
+
+test("sandbox issue approval is version-bound, survives a lost response, and never marks payment complete",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+
+ const b={reviewed:true,customer_id:"CUST1",due_at:"2026-11-27T01:00:00.000Z"};
+ let remoteStatus="DRAFT",version=0,lose=true,wrongUrl=false;const posts=[];
+ const row=()=>db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+ const invoice=()=>({id:"INV1",version,location_id:"LOCATION123",order_id:"REMOTE1",status:remoteStatus,delivery_method:"EMAIL",
+  public_url:remoteStatus==="UNPAID"?(wrongUrl?"https://evil.example/pay-invoice/INV1":"https://squareupsandbox.com/pay-invoice/invtmp:INV1"):undefined,
+  primary_recipient:{customer_id:"CUST1",email_address:"test@example.com"},
+  accepted_payment_methods:JSON.parse(row().payload_json).invoice.accepted_payment_methods,
+  payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",automatic_payment_source:"NONE",computed_amount_money:{currency:"AUD",amount:2500},total_completed_amount_money:{currency:"AUD",amount:0}}]});
+ const provider=async(url,init)=>{
+  if(init.method==="GET"&&url.endsWith("/customers/CUST1"))return new Response(JSON.stringify({customer:{id:"CUST1",email_address:"test@example.com"}}));
+  if(init.method==="GET"&&url.endsWith("/orders/REMOTE1"))return new Response(JSON.stringify({order:{id:"REMOTE1",reference_id:row().create_order_key,location_id:"LOCATION123",customer_id:"CUST1",state:"OPEN",total_money:{currency:"AUD",amount:2500}}}));
+  if(init.method==="GET"&&url.endsWith("/invoices/INV1"))return new Response(JSON.stringify({invoice:invoice()}));
+  assert.equal(init.method,"POST");assert.equal(url,"https://connect.squareupsandbox.com/v2/invoices/INV1/publish");
+  const payload=JSON.parse(init.body);posts.push(payload);
+  assert.equal(row().state,"publish_pending");assert.equal(row().publish_approved_version,0);assert.equal(row().publish_approved_by,"owner");
+  assert.equal(payload.idempotency_key,row().publish_invoice_key);assert.equal(payload.version,0);
+  remoteStatus="UNPAID";version=1;if(lose){lose=false;throw Error("Lost publish response");}
+  return new Response(JSON.stringify({invoice:invoice()}));
+ };
+ const p=await previewSupportInvoice(env,"member","r","o",b,provider,now),approved={...b,confirmed:true,fingerprint:p.fingerprint};
+ assert.equal((await prepareSupportInvoiceIntent(env,"member","r","o","owner",approved,provider,now)).prepared,true);
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='draft_created',provider_order_id='REMOTE1',provider_invoice_id='INV1',provider_invoice_version=0,order_attempted_at=?,invoice_attempted_at=? WHERE order_id='o'").run(stamp,stamp);
+ const issue={...approved,issue_confirmed:true,provider_invoice_id:"INV1",version:0};
+ const run=(body=issue,e=env,at=now)=>publishPreparedSupportSquareInvoice(e,"member","r","o","owner",body,provider,at);
+ assert.ok("error" in await run({...issue,issue_confirmed:false}));assert.equal(posts.length,0);
+ assert.ok("error" in await run({...issue,version:1}));assert.equal(posts.length,0);
+ assert.ok("error" in await run(issue,{...env,SQUARE_APPLICATION_ID:"sq0idp-live"}));assert.equal(posts.length,0);
+ version=1;assert.ok("error" in await run());assert.equal(posts.length,0);version=0;
+ assert.equal((await run()).pending,true);assert.equal(row().state,"publish_pending");assert.equal(posts.length,1);
+ wrongUrl=true;assert.ok("error" in await run());assert.equal(posts.length,1);assert.equal(row().state,"publish_pending");
+ wrongUrl=false;
+ const recovered=await run(issue,env,new Date(now.getTime()+16*60000));
+ assert.equal(recovered.issued,true);assert.equal(recovered.paid,false);assert.equal(posts.length,1);
+ assert.equal(row().state,"issued");assert.equal(row().provider_invoice_version,1);
+ assert.equal(row().provider_public_url,"https://squareupsandbox.com/pay-invoice/invtmp:INV1");
+ assert.equal((await run()).issued,true);assert.equal(posts.length,1);
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
 });
