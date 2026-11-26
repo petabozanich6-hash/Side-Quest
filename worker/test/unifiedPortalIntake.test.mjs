@@ -661,7 +661,7 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.equal(certificate.approved,true);
  assert.equal((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).id,certificate.id);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,1);
- assert.equal((await listClubCertificateCandidates(env,finished)).items.find(v=>v.booking_id===u.obligation_id)?.eligible??0,0);
+ assert.equal((await listClubCertificateCandidates(env,finished)).items.find(v=>v.kind==="round"&&v.booking_id===upfront.enrolment_id).eligible,0);
  assert.equal(await withdrawClubCertificate(env,"single",s.booking_id,{confirmed:false,certificate_id:certificate.id},finished),false);
  assert.equal(await withdrawClubCertificate(env,"single",s.booking_id,{confirmed:true,certificate_id:certificate.id},finished),true);
  assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).error);
