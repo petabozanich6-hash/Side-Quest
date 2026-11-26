@@ -1383,3 +1383,38 @@ test("sandbox invoice workspace is owner and passkey protected, scoped and audit
  assert.equal(h.db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_intent_releases WHERE order_id='invoice-order'").get().n,1);
  h.db.raw.close();
 });
+
+test("synthetic parent fixture is staging-only, step-up guarded and never modifies an existing user",async()=>{
+ const {h,owner}=await ownerSetup();
+ const other=await h.register("ordinary@example.com");
+ await stepUp(h,owner);
+ const endpoint="/admin/staging-family-fixture",password="Test-only-long-password";
+ assert.equal((await h.req(endpoint,{method:"POST",token:owner.token,body:{confirmed:true,password}})).status,404);
+ const origin="https://side-quest-staging.test.workers.dev";
+ Object.assign(h.env,{STAGING_KEY:"private-fixture",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",ADMIN_ORIGINS:origin});
+ const ctx={waitUntil(){},passThroughOnException(){}};
+ async function call(path,{method="GET",token,body,cookie=true}={}){
+  const headers={"content-type":"application/json","x-sidequest-admin":"1",origin,"sec-fetch-site":"same-origin",...(token?{authorization:"Bearer "+token}:{}),...(cookie?{cookie:"sq_staging=private-fixture"}:{})};
+  const r=await worker.fetch(new Request(origin+"/api"+path,{method,headers,body:body?JSON.stringify(body):undefined}),h.env,ctx);
+  return {status:r.status,json:await r.json()};
+ }
+ const body={confirmed:true,password,email:other.email};
+ assert.equal((await call(endpoint,{method:"POST",token:owner.token,body,cookie:false})).status,403);
+ assert.equal((await call(endpoint,{method:"POST",token:other.token,body})).status,404);
+ h.env.SUPPORT_SQUARE_INVOICE_TEST="true";
+ assert.equal((await call(endpoint,{method:"POST",token:owner.token,body})).status,404);
+ h.env.SUPPORT_SQUARE_INVOICE_TEST="false";
+ const created=await call(endpoint,{method:"POST",token:owner.token,body});
+ assert.equal(created.status,201,JSON.stringify(created.json));
+ assert.match(created.json.email,/^test-[a-f0-9-]+@example\.invalid$/);
+ assert.equal(JSON.stringify(created.json).includes(password),false);
+ assert.equal(h.db.raw.prepare("SELECT email_verified_at FROM users WHERE id=?").get(other.id).email_verified_at,null);
+ const login=await call("/auth/login",{method:"POST",body:{email:created.json.email,password}});
+ assert.equal(login.status,200,JSON.stringify(login.json));
+ const identity=await call("/family-portal/identity",{token:login.json.token});
+ assert.equal(identity.status,200,JSON.stringify(identity.json));
+ assert.equal(identity.json.family_id,created.json.family_id);
+ assert.equal(identity.json.registration_intent,"support_only");
+ assert.equal(identity.json.homeschool.limits.canCreate,false);
+ assert.equal((await call(endpoint,{method:"POST",token:login.json.token,body})).status,404);
+});
