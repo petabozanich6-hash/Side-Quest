@@ -1,0 +1,20 @@
+import React,{useEffect,useState,useRef} from "react";
+import {adminApi,errorText} from "../../../lib/adminApi";
+const btn="rounded-lg border px-3 py-2 text-sm font-semibold disabled:opacity-50",field="block w-full border rounded-lg p-2 bg-white";
+export default function HqActivityPlan({kind,sessionId}){
+ const path="/activity-plans/"+kind+"/"+encodeURIComponent(sessionId);
+ const [plan,setPlan]=useState(null),[library,setLibrary]=useState([]),[selection,setSelection]=useState(""),[error,setError]=useState(""),[notice,setNotice]=useState(""),[busy,setBusy]=useState(false),[dirty,setDirty]=useState(false);
+ const generation=useRef(0);
+ async function load(){const n=++generation.current;setBusy(true);setError("");try{const [p,r]=await Promise.all([adminApi.get(path),adminApi.get("/activity-library",{reviewed:"1"})]);if(n!==generation.current)return;setPlan(p);setLibrary(r.activities||[]);setDirty(false);setSelection("");}catch(e){if(n===generation.current)setError(errorText(e));}finally{if(n===generation.current)setBusy(false);}}
+ useEffect(()=>{setPlan(null);setLibrary([]);setDirty(false);setNotice("");load();return()=>{generation.current++;};},[path]);
+ function change(items){setPlan(p=>({...p,items}));setDirty(true);setNotice("");}
+ async function save(){if(!dirty||busy||plan.items.some(v=>!v.ready))return;setBusy(true);setError("");setNotice("");try{const p=await adminApi.put(path,{revision:plan.revision,items:plan.items.map(v=>({template_id:v.template_id,revision:v.revision})),confirmed:true});setPlan(p);setDirty(false);setNotice("Activity sequence saved.");}catch(e){setError(errorText(e));}finally{setBusy(false);}}
+ return <section className="rounded-lg border p-3 space-y-3"><h4 className="font-bold">Planned interactive activities</h4><p className="text-sm">Choose reviewed activities and arrange them in lesson order. They remain private until you launch them during the classroom session.</p>{error&&<p role="alert" className="text-sm text-rose-800">{error}</p>}{notice&&<p role="status" className="text-sm">{notice}</p>}
+ {!plan?<button type="button" className={btn} disabled={busy} onClick={load}>Load activity plan</button>:<>
+ {plan.items.map((v,i)=><div className="rounded-lg border p-3 space-y-2" key={v.template_id}><strong>{i+1}. {v.title}</strong><p className="text-sm">{v.subject} · {v.year_level}</p>{!v.ready&&<p className="text-sm text-amber-900">Activity changed or was archived. Remove it and choose the current reviewed version.</p>}<div className="flex flex-wrap gap-2">{[-1,1].map(step=><button type="button" className={btn} key={step} disabled={busy||i+step<0||i+step>=plan.items.length} onClick={()=>{const a=[...plan.items];[a[i],a[i+step]]=[a[i+step],a[i]];change(a);}}>{step===-1?"Move up":"Move down"}</button>)}<button type="button" className={btn} disabled={busy} onClick={()=>change(plan.items.filter((_,j)=>i!==j))}>Remove</button></div></div>)}
+ {!plan.items.length&&<p className="text-sm">No activities planned yet.</p>}
+ <label className="block text-sm">Add from reviewed library<select className={field} value={selection} onChange={e=>setSelection(e.target.value)}><option value="">Choose an activity</option>{library.filter(v=>!plan.items.some(i=>i.template_id===v.id)).map(v=><option key={v.id} value={v.id}>{v.title} · {v.subject} · {v.year_level}</option>)}</select></label><button type="button" className={btn} disabled={busy||!selection||plan.items.length>=20} onClick={()=>{const v=library.find(x=>x.id===selection);if(v){change([...plan.items,{template_id:v.id,revision:v.revision,title:v.title,subject:v.subject,year_level:v.year_level,ready:true}]);setSelection("");}}}>Add activity</button>
+ <div className="flex flex-wrap gap-2"><button type="button" className={btn+" bg-emerald-950 text-white"} disabled={busy||!dirty||plan.items.some(v=>!v.ready)} onClick={save}>Save activity sequence</button><button type="button" className={btn} disabled={busy} onClick={()=>{if(!dirty||window.confirm("Discard unsaved sequence changes?"))load();}}>Reload plan</button></div>
+ </>}
+ </section>;
+}
