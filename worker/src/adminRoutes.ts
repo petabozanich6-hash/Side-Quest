@@ -90,6 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
@@ -1387,6 +1388,28 @@ export function createAdminRoutes() {
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       c.header("Cache-Control","private, no-store");return c.json({notification:await bookingNotificationStatus(c.env.DB,channel,id,oid)});
+    });
+    admin.get(path+"/:oid/lesson-pack",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const pack=await readLessonPack(c.env.DB,channel,id,oid);
+      return pack?c.json({...pack,ai_enabled:lessonPackAiEnabled(c.env)}):c.json({detail:"Order not found"},404);
+    });
+    admin.post(path+"/:oid/lesson-pack/draft",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const r=await generateLessonPack(c.env,c.get("user"),channel,id,oid,await readJson(c));
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.post(path+"/:oid/lesson-pack/approve",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const r=await approveLessonPack(c.env.DB,channel,id,oid,await readJson(c));
+      if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_pack.approve",targetType:"support",targetId:oid,detail:{channel}});return c.json(r,201);
     });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
