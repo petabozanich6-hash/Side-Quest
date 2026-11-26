@@ -189,7 +189,7 @@ test("live activity engine isolates club learner responses and answer keys; supp
  const {DB,one,two}=await fixture(t);
  const {createEnglishRound,setEnglishRoundPublished,listEnglishRounds}=await import("../src/englishClubRounds.ts");
  const {reserveEnglishSingle,CLUB_SINGLE_VERSION}=await import("../src/englishClubSelfService.ts");
- const {launchLiveActivity,readLiveActivity,respondLiveActivity,endLiveActivity}=await import("../src/supportLiveActivities.ts");
+ const {launchLiveActivity,readLiveActivity,respondLiveActivity,endLiveActivity,signalLiveActivity}=await import("../src/supportLiveActivities.ts");
  const before=new Date("2026-12-07T00:00:00.000Z"),live=new Date("2026-12-09T07:05:00.000Z");
  const round=await createEnglishRound(DB,one.actor.id,{title:"Activity test",first_local:"2026-12-09T18:00",session_count:6,themes:Array.from({length:6},(_,i)=>"Workshop "+i),confirmed:true},before);
  assert.ok(round.id,JSON.stringify(round));assert.equal(await setEnglishRoundPublished(DB,round.id,{confirmed:true,published:true},before),true);
@@ -211,6 +211,21 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await respondLiveActivity(DB,b,{activity_id:activity.id,response:"dragon"},live),true);
  const av=await readLiveActivity(DB,a,live);assert.equal(av.response,"quickly");assert.equal("responses" in av,false);
  assert.equal((await readLiveActivity(DB,b,live)).response,"dragon");
+ assert.equal(await signalLiveActivity(DB,a,{activity_id:activity.id,signal:"hint"},live),true);
+ assert.equal(await signalLiveActivity(DB,b,{activity_id:activity.id,signal:"time"},live),true);
+ assert.equal(await signalLiveActivity(DB,{...a,requestId:b2.id},{activity_id:activity.id,signal:"ready"},live),false);
+ assert.equal(await signalLiveActivity(DB,a,{activity_id:activity.id,signal:"invalid"},live),false);
+ assert.equal((await readLiveActivity(DB,a,live)).signal,"hint");
+ assert.equal("signals" in await readLiveActivity(DB,a,live),false);
+ assert.equal((await readLiveActivity(DB,b,live)).signal,"time");
+ const signals=(await readLiveActivity(DB,owner,live)).signals;
+ assert.equal(signals.length,2);
+ assert.ok(signals.some(s=>s.signal==="hint"&&s.learner_label));
+ assert.equal(await signalLiveActivity(DB,a,{activity_id:activity.id,signal:"clear"},live),true);
+ assert.equal((await readLiveActivity(DB,a,live)).signal,null);
+ assert.equal((await readLiveActivity(DB,owner,live)).signals.length,1);
+ assert.equal((await readLiveActivity(DB,owner,new Date(live.getTime()+11*60000))).signals.length,0);
+ 
  assert.equal((await readLiveActivity(DB,owner,live)).responses.length,2);
  assert.equal(await endLiveActivity(DB,a,{activity_id:activity.id,state:"revealed",confirmed:true},live),false);
  assert.equal(await endLiveActivity(DB,owner,{activity_id:activity.id,state:"revealed",confirmed:true},live),true);
@@ -218,6 +233,7 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await respondLiveActivity(DB,b,{activity_id:activity.id,response:"quickly"},live),false);
  assert.equal(await endLiveActivity(DB,owner,{activity_id:activity.id,state:"closed",confirmed:true},live),true);
  assert.equal((await readLiveActivity(DB,a,live)).activity,null);
+ assert.equal(await signalLiveActivity(DB,a,{activity_id:activity.id,signal:"ready"},live),false);
  assert.equal(await readLiveActivity(DB,a,new Date("2026-12-09T09:00:00Z")),null);
  const tut=await submitPortalEnquiry(DB,one.actor,form(one.learner,"interactive-tutor"));assert.ok(tut.id);
  DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('interactive-order','guest',?,'test-quote',2500,'test','live','test','live','2026-12-09T07:00:00.000Z','2026-12-09T08:00:00.000Z','paid',?,?)").run(tut.id,live.toISOString(),live.toISOString());
@@ -227,10 +243,13 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await launchLiveActivity(DB,to,{question:"Explain your answer",type:"short",confirmed:true},live),true);
  const q=(await readLiveActivity(DB,ta,live)).activity;
  assert.equal(await respondLiveActivity(DB,ta,{activity_id:q.id,response:"I grouped the numbers."},live),true);
+ assert.equal(await signalLiveActivity(DB,ta,{activity_id:q.id,signal:"confused"},live),true);
+ assert.equal((await readLiveActivity(DB,to,live)).signals[0].signal,"confused");
  assert.equal(await readLiveActivity(DB,{...ta,actor:two.actor},live),null);
  DB.raw.prepare("UPDATE support_classrooms SET is_open=0 WHERE order_id='interactive-order'").run();
  assert.equal(await respondLiveActivity(DB,ta,{activity_id:q.id,response:"Another answer"},live),false);
  assert.equal(await readLiveActivity(DB,ta,live),null);
+ assert.equal(await signalLiveActivity(DB,ta,{activity_id:q.id,signal:"ready"},live),false);
 });
 
 test("parent activity route requires pilot, authenticated owner of paid booking, and open activity",async t=>{
