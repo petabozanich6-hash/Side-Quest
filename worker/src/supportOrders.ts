@@ -58,7 +58,8 @@ export async function createServiceOrder(db:D1Database,channel:Channel,id:string
  if(!capacity)return {error:"This appointment is outside configured hours or booking capacity."};
  const guard=slotOfferId?" AND EXISTS(SELECT 1 FROM support_slot_offers s JOIN json_each(s.starts_json) j WHERE s.id=? AND s.channel=? AND s.request_id=? AND s.quote_id=? AND s.expires_at>? AND j.value=? AND s.minutes=? AND s.prep_minutes=? AND s.wrap_minutes=? AND s.terms=? AND s.learner_label=?)":"";
  const args=slotOfferId?[slotOfferId,channel,id,qid,when,start,b.minutes,prep,wrap,terms,label]:[];
- const results=await db.batch([db.prepare(sql+guard+capacity.sql).bind(oid,channel,terms,mode,start,end,when,when,id,qid,when,start,occupiedEnd,occupiedStart,occupiedEnd,occupiedStart,...args,...capacity.args),db.prepare("INSERT INTO support_tutor_diary(order_id,learner_label,prep_minutes,wrap_minutes,updated_at) SELECT id,?,?,?,? FROM support_service_orders WHERE id=?").bind(label,mode==="live"?prep:0,mode==="live"?wrap:0,when,oid)]);
+ const standardGuard=qid.startsWith("standard-")?" AND EXISTS(SELECT 1 FROM support_public_availability WHERE id=1 AND enabled=1 AND json_extract(policy_json,'$.enforced')=1)":"";
+ const results=await db.batch([db.prepare(sql+guard+capacity.sql+standardGuard).bind(oid,channel,terms,mode,start,end,when,when,id,qid,when,start,occupiedEnd,occupiedStart,occupiedEnd,occupiedStart,...args,...capacity.args),db.prepare("INSERT INTO support_tutor_diary(order_id,learner_label,prep_minutes,wrap_minutes,updated_at) SELECT id,?,?,?,? FROM support_service_orders WHERE id=?").bind(label,mode==="live"?prep:0,mode==="live"?wrap:0,when,oid)]);
  const changed=results[0];
  if(!changed.meta?.changes)return {error:"Proposal expired, already has an order, or the appointment including preparation and wrap-up overlaps a reservation, blocked time or booking capacity."};
  return {id:oid};
