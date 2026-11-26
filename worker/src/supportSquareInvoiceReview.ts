@@ -7,7 +7,7 @@ import {getOrder} from "./supportOrders";
 
 export async function recordInvoiceReview(db:D1Database,orderId:string,reason:"payment_uncertain"|"payment_retry"|"refund"|"provider_cancellation"|"dispute",now=new Date()){
  const at=now.toISOString();
- await db.prepare("INSERT INTO support_square_invoice_reviews(order_id,reason,first_at,last_at) VALUES(?,?,?,?) ON CONFLICT(order_id) DO UPDATE SET reason=excluded.reason,last_at=excluded.last_at,resolved_at=NULL").bind(orderId,reason,at,at).run();
+ await db.prepare("INSERT INTO support_square_invoice_reviews(order_id,reason,first_at,last_at) VALUES(?,?,?,?) ON CONFLICT(order_id) DO UPDATE SET reason=CASE WHEN support_square_invoice_reviews.resolved_at IS NULL AND support_square_invoice_reviews.reason IN ('refund','dispute','provider_cancellation') THEN support_square_invoice_reviews.reason ELSE excluded.reason END,last_at=excluded.last_at,resolved_at=NULL").bind(orderId,reason,at,at).run();
 }
 export async function clearInvoiceReview(db:D1Database,orderId:string,now=new Date()){
  await db.prepare("UPDATE support_square_invoice_reviews SET resolved_at=? WHERE order_id=? AND resolved_at IS NULL AND reason IN ('payment_uncertain','payment_retry')").bind(now.toISOString(),orderId).run();
@@ -40,6 +40,7 @@ export async function releaseVerifiedUnpaidSquareInvoice(env:Env,channel:Channel
  AND s.status='confirmed' AND s.updated_at=i.order_updated_at AND s.amount_cents=i.amount_cents AND s.checkout_started_at IS NULL AND s.square_order_id IS NULL
  AND (i.due_at<=? OR EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=s.id AND c.status='pending'))
  AND NOT EXISTS(SELECT 1 FROM support_square_invoice_settlements p WHERE p.order_id=s.id)
+ AND NOT EXISTS(SELECT 1 FROM support_square_invoice_reviews v WHERE v.order_id=s.id AND v.resolved_at IS NULL AND v.reason IN ('refund','dispute'))
  AND NOT EXISTS(SELECT 1 FROM support_manual_invoices m WHERE m.order_id=s.id)
  AND NOT EXISTS(SELECT 1 FROM support_package_sessions p JOIN support_service_orders x ON x.id=p.order_id WHERE p.root_id=s.id AND x.id<>s.id AND NOT EXISTS(SELECT 1 FROM support_installment_terms t WHERE t.order_id=s.id) AND x.status<>'confirmed')
  ON CONFLICT DO NOTHING`).bind(checked.version,stamp,ownerId,orderId,channel,requestId,i.fingerprint,i.provider_invoice_id,stamp),
