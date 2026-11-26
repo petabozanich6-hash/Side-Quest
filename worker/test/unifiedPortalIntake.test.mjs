@@ -876,6 +876,34 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  assert.ok(Buffer.from(messages[0].attachments[0].content).toString("latin1").includes("/DCTDecode"));
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificate_email WHERE status='sent'").get().n,1);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificate_email d JOIN support_club_certificates c ON c.id=d.certificate_id WHERE c.delivery='post'").get().n,0);
+ const {familyPostalCertificate,saveFamilyPostalAddress,listPostalCertificates,ownerPostalCertificate,advancePostalCertificate}=await import("../src/clubCertificatePostal.ts");
+ DB.raw.prepare("INSERT OR IGNORE INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','synthetic-test','postal test')").run("postal-owner",two.actor.id);
+ const postal=DB.raw.prepare("SELECT id FROM support_club_certificates WHERE delivery='post'").get().id;
+ const digital=DB.raw.prepare("SELECT id FROM support_club_certificates WHERE delivery='pdf'").get().id;
+ const address={recipient:"Synthetic Parent",line1:"PO Box 123",line2:"",suburb:"Tamworth",state:"NSW",postcode:"2340",country:"Australia"};
+ assert.equal(await familyPostalCertificate(mailEnv,two.actor,postal,end),null);
+ assert.equal(await familyPostalCertificate(mailEnv,one.actor,digital,end),null);
+ assert.equal(await listPostalCertificates(mailEnv,one.actor.id,end),null);
+ assert.equal((await listPostalCertificates(mailEnv,two.actor.id,end)).items.length,1);
+ assert.equal((await familyPostalCertificate(mailEnv,one.actor,postal,end)).status,"address_required");
+ const confirm={confirmed:true,revision:0,address};
+ assert.equal(await saveFamilyPostalAddress(mailEnv,two.actor,postal,confirm,end),false);
+ assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,{...confirm,address:{...address,postcode:"bad"}},end),false);
+ assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,{...confirm,confirmed:false},end),false);
+ assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,confirm,end),true);
+ assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,confirm,end),false);
+ assert.deepEqual((await ownerPostalCertificate(mailEnv,two.actor.id,postal,end)).address,address);
+ assert.equal(await advancePostalCertificate(mailEnv,two.actor.id,postal,{confirmed:true,revision:1,action:"posted"},end),false);
+ assert.equal(await advancePostalCertificate(mailEnv,two.actor.id,postal,{confirmed:true,revision:1,action:"printed"},end),true);
+ assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,{confirmed:true,revision:2,address:{...address,line1:"PO Box 456"}},end),true);
+ assert.equal(await advancePostalCertificate(mailEnv,two.actor.id,postal,{confirmed:true,revision:2,action:"posted"},end),false);
+ assert.equal(await advancePostalCertificate(mailEnv,two.actor.id,postal,{confirmed:true,revision:3,action:"printed"},end),true);
+ assert.equal(await advancePostalCertificate(mailEnv,two.actor.id,postal,{confirmed:true,revision:4,action:"posted"},end),true);
+ const done=await familyPostalCertificate(mailEnv,one.actor,postal,end);
+ assert.equal(done.status,"posted");assert.equal(done.address,null);
+ assert.equal(DB.raw.prepare("SELECT address_json FROM support_club_certificate_postal WHERE certificate_id=?").get(postal).address_json,null);
+ assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,{confirmed:true,revision:5,address},end),false);
+
  assert.deepEqual(await processClubCertificateEmails(mailEnv,end,sender),{sent:0,review:0,suppressed:0});
  assert.equal(messages.length,1);
 
