@@ -1,3 +1,4 @@
+import {ownerSquareInvoiceWorkspace} from "../src/supportSquareInvoiceWorkspace.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
@@ -288,9 +289,11 @@ test("issued invoice settlement requires a single captured card payment by the d
  assert.equal(orderStatus(),"confirmed");assert.equal(proofs().length,0);
  assert.equal(await reconcileSupportInvoiceEvent(env,"INV1",null,provider,checkTime),"support invoice payment verified");
  assert.equal(orderStatus(),"paid");assert.equal(proofs().length,1);assert.equal(proofs()[0].captured_at,capture);
+ const paidWorkspace=await ownerSquareInvoiceWorkspace(env,"member","r","o");assert.ok(paidWorkspace.confirmation_preview.body.includes("payment has been verified"));assert.equal(paidWorkspace.financial_review,null);
  assert.equal((await run()).verified,true);assert.equal(proofs().length,1);
  assert.equal(await flagIssuedSupportInvoiceRefund(env,{payment_id:"PAY1",location_id:"LOCATION123",status:"PENDING"},checkTime),"support invoice refund requires review");
  assert.equal(orderStatus(),"review");assert.ok(proofs()[0].review_at);assert.equal((await run()).verified,false);
+ const heldWorkspace=await ownerSquareInvoiceWorkspace(env,"member","r","o");assert.equal(heldWorkspace.confirmation_preview,null);assert.equal(heldWorkspace.financial_review.reason,"refund");
 });
 
 test("overdue invoice release requires explicit approval and verified cancelled order with zero payment",async t=>{
