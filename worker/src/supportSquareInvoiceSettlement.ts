@@ -52,6 +52,7 @@ export async function verifyIssuedSupportSquarePayment(env:Env,channel:Channel,r
    AND s.status='confirmed' AND s.updated_at=i.order_updated_at AND s.amount_cents=i.amount_cents
    AND s.checkout_started_at IS NULL AND s.square_order_id IS NULL AND (s.start_at IS NULL OR s.start_at>?)
    AND NOT EXISTS(SELECT 1 FROM support_manual_invoices m WHERE m.order_id=s.id)
+   AND NOT EXISTS(SELECT 1 FROM support_square_invoice_reviews v WHERE v.order_id=s.id AND v.resolved_at IS NULL AND v.reason IN ('refund','dispute','provider_cancellation'))
    AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=s.id AND c.status='pending')
    AND NOT EXISTS(SELECT 1 FROM support_package_sessions p JOIN support_service_orders x ON x.id=p.order_id
     WHERE p.root_id=s.id AND x.id<>s.id AND NOT EXISTS(SELECT 1 FROM support_installment_terms t WHERE t.order_id=s.id)
@@ -83,18 +84,39 @@ export async function reconcileSupportInvoiceEvent(env:Env,invoiceId:string|null
 
 // Refund events are already retrieved from Square by the signed webhook handler.
 // A refund never releases a lesson automatically; it flags the proof and booking for review.
-export async function flagIssuedSupportInvoiceRefund(env:Env,refund:any,now=new Date()):Promise<string|null>{
+export async function flagIssuedSupportInvoiceRefund(env:Env,refund:any,now=new Date(),fetchImpl?:Fetch):Promise<string|null>{
  if(!supportInvoiceLookupAvailable(env)||!idOk(refund?.payment_id))return null;
  const cfg=squareConfig(env);if(!cfg.ok||cfg.production||refund.location_id!==cfg.locationId)return null;
- if(!await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='support_square_invoice_settlements'").first())return null;
- const row=await env.DB.prepare("SELECT p.order_id FROM support_square_invoice_settlements p JOIN support_square_invoice_intents i ON i.order_id=p.order_id WHERE p.payment_id=? AND i.location_id=?").bind(refund.payment_id,cfg.locationId).first<any>();
+ return flagInvoicePaymentHold(env,refund.payment_id,"refund",fetchImpl,now);
+}
+
+// Financial holds are monotonic until explicit resolution. A later paid event must
+// not clear a refund/dispute, including one delivered before settlement.
+async function flagInvoicePaymentHold(env:Env,paymentId:string,reason:"refund"|"dispute",fetchImpl?:Fetch,now=new Date()):Promise<string|null>{
+ if(!supportInvoiceLookupAvailable(env)||!idOk(paymentId))return null;
+ const cfg=squareConfig(env);if(!cfg.ok||cfg.production)return null;
+ if(!await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='support_square_invoice_reviews'").first())return null;
+ let row=await env.DB.prepare("SELECT p.order_id FROM support_square_invoice_settlements p JOIN support_square_invoice_intents i ON i.order_id=p.order_id WHERE p.payment_id=? AND i.location_id=?").bind(paymentId,cfg.locationId).first<{order_id:string}>();
+ if(!row){
+  const payment=(await squareCall(cfg,"GET","payments/"+encodeURIComponent(paymentId),undefined,fetchImpl))?.payment;
+  if(payment?.id!==paymentId||payment.location_id!==cfg.locationId||!idOk(payment.order_id))return null;
+  row=await env.DB.prepare("SELECT order_id FROM support_square_invoice_intents WHERE provider_order_id=? AND location_id=?").bind(payment.order_id,cfg.locationId).first<{order_id:string}>();
+ }
  if(!row)return null;
- if(!["PENDING","COMPLETED","REJECTED","FAILED"].includes(refund.status))return "support invoice refund requires review";
- const stamp=now.toISOString();
+ const at=now.toISOString();
  await env.DB.batch([
-  env.DB.prepare("UPDATE support_square_invoice_settlements SET review_at=COALESCE(review_at,?) WHERE order_id=?").bind(stamp,row.order_id),
-  env.DB.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE id=? AND status IN ('paid','completed','confirmed')").bind(stamp,row.order_id)
+  env.DB.prepare("INSERT INTO support_square_invoice_reviews(order_id,reason,first_at,last_at) VALUES(?,?,?,?) ON CONFLICT(order_id) DO UPDATE SET reason=excluded.reason,last_at=excluded.last_at,resolved_at=NULL").bind(row.order_id,reason,at,at),
+  env.DB.prepare("UPDATE support_square_invoice_settlements SET review_at=COALESCE(review_at,?) WHERE order_id=?").bind(at,row.order_id),
+  env.DB.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE id=? AND status IN ('paid','completed','confirmed')").bind(at,row.order_id)
  ]);
- await recordInvoiceReview(env.DB,row.order_id,"refund",now);
- return "support invoice refund requires review";
+ return "support invoice "+reason+" requires review";
+}
+
+export async function flagIssuedSupportInvoiceDispute(env:Env,disputeId:unknown,fetchImpl?:Fetch,now=new Date()):Promise<string|null>{
+ if(!supportInvoiceLookupAvailable(env)||!idOk(disputeId))return null;
+ const cfg=squareConfig(env);if(!cfg.ok||cfg.production)return null;
+ const dispute=(await squareCall(cfg,"GET","disputes/"+encodeURIComponent(disputeId),undefined,fetchImpl))?.dispute;
+ if(dispute?.id!==disputeId||dispute.location_id!==cfg.locationId||!idOk(dispute.disputed_payment?.payment_id))return null;
+ // Even a won dispute requires owner review of the final financial outcome.
+ return flagInvoicePaymentHold(env,dispute.disputed_payment.payment_id,"dispute",fetchImpl,now);
 }
