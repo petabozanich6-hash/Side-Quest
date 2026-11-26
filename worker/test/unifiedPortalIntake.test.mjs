@@ -993,4 +993,17 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  assert.deepEqual(await processClubCertificateEmails(mailEnv,end,sender),{sent:0,review:0,suppressed:0});
  assert.equal(messages.length,2);
 
+ const {unifiedBriefingSections}=await import("../src/unifiedBriefingSections.ts");
+ const {sydneyDay}=await import("../src/supportBriefing.ts");
+ const summary=await unifiedBriefingSections(mailEnv,sydneyDay(end),end);
+ const lines=summary.flatMap(x=>x.lines);
+ assert.ok(lines.includes("Eligible certificates awaiting approval: 0"));
+ assert.ok(lines.includes("Digital certificates awaiting first email attempt: 0"));
+ assert.ok(lines.includes("Printed certificates awaiting dispatch: 0"));
+ assert.ok(lines.includes("Certificate emails accepted since midnight: 1"));
+ assert.ok(lines.includes("Certificates recorded as posted since midnight: 1"));
+ assert.ok(!JSON.stringify(summary).includes("Synthetic Parent"));
+ assert.ok(!JSON.stringify(summary).includes(one.email));
+ assert.ok(!JSON.stringify(summary).includes("PO Box"));
+
 });
