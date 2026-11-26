@@ -47,3 +47,41 @@ export async function saveOwnerLearnerNotes(db:D1Database,family:string,id:strin
  const results=await db.batch([write,db.prepare("INSERT INTO admin_audit_log(id,actor_user_id,actor_label,action,target_type,target_id,detail_json,created_at) SELECT ?,?,?,'support.learner_notes_saved','support_portal_learner',?,?,? WHERE changes()=1").bind(newId(),actor.actorUserId,actor.actorLabel,id,JSON.stringify({revision}),now)]);
  return results[0].meta?.changes?{revision,updated_at:now}:{error:"These notes have changed. Reload before editing."};
 }
+
+/** Reviewed reports only, scoped to their exact canonical learner, family and request.
+ * A report draft or another learner's record must never enter the continuity summary. */
+export async function ownerLearnerReports(db:D1Database,family:string,id:string,before=new Date(),excludeOrder=""){
+ const rows=(await db.prepare(`SELECT r.id,r.kind,r.session_id,r.seat_id,r.published_sections_json,r.published_at,q.subject,
+ CASE WHEN r.kind='tutoring' THEN o.end_at ELSE c.end_at END end_at
+ FROM support_family_progress_reports r
+ JOIN support_portal_enquiries p ON p.request_id=r.request_id AND p.family_id=r.family_id AND p.parent_user_id=r.parent_user_id AND p.learner_id=r.learner_id
+ JOIN support_guest_requests q ON q.id=p.request_id
+ LEFT JOIN support_service_orders o ON r.kind='tutoring' AND o.id=r.session_id AND o.id=r.seat_id AND o.channel='guest' AND o.request_id=p.request_id
+ LEFT JOIN support_english_enrolments e ON r.kind='club' AND e.id=r.seat_id AND e.class_id=r.session_id AND e.request_id=p.request_id
+ LEFT JOIN support_english_classes c ON c.id=e.class_id
+ WHERE r.family_id=? AND r.learner_id=? AND r.published_at IS NOT NULL AND r.published_sections_json IS NOT NULL
+ AND ((r.kind='tutoring' AND o.mode='live' AND o.status IN ('paid','completed') AND o.checkout_started_at IS NULL AND o.id<>? AND julianday(o.end_at)<=julianday(?))
+ OR (r.kind='club' AND e.status='paid' AND julianday(c.end_at)<=julianday(?)))
+ ORDER BY end_at DESC,r.id LIMIT 6`).bind(family,id,excludeOrder,before.toISOString(),before.toISOString()).all<any>()).results||[];
+ return rows.slice(0,5).map(({published_sections_json,...r})=>({...r,sections:JSON.parse(published_sections_json)}));
+}
+/** Resolve identity from the booked request, never from the tutor-entered label or a client learner ID. */
+export async function appointmentLearnerContext(db:D1Database,channel:string,requestId:string,orderId:string,now=new Date()){
+ if(channel!=="guest")return null;
+ const o=await db.prepare(`SELECT o.start_at,p.family_id,p.learner_id,r.message FROM support_service_orders o
+ JOIN support_portal_enquiries p ON p.request_id=o.request_id
+ JOIN support_guest_requests r ON r.id=p.request_id
+ JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id
+ WHERE o.channel='guest' AND o.request_id=? AND o.id=? AND p.service='tutoring' AND o.mode='live'`).bind(requestId,orderId).first<{start_at:string;family_id:string;learner_id:string;message:string}>();
+ if(!o||!Number.isFinite(Date.parse(o.start_at)))return null;
+ const l=await db.prepare(identitySql).bind(o.family_id,o.learner_id).first<any>();if(!l)return null;
+ const cutoff=new Date(Math.min(Date.parse(o.start_at),now.getTime()));
+ const [reports,prior]=await Promise.all([
+  ownerLearnerReports(db,o.family_id,o.learner_id,cutoff,orderId),
+  db.prepare(historyScope+` SELECT o.id,r.subject,o.end_at,o.status
+  FROM learner_requests r JOIN support_service_orders o ON o.request_id=r.id AND o.channel='guest'
+  WHERE o.id<>? AND o.mode='live' AND o.status IN ('paid','completed') AND o.checkout_started_at IS NULL AND julianday(o.end_at)<=julianday(?)
+  ORDER BY o.end_at DESC,o.id LIMIT 5`).bind(o.family_id,o.learner_id,o.family_id,o.learner_id,orderId,cutoff.toISOString()).all()
+ ]);
+ return {learner:l,current_enquiry:o.message,reports,previous_appointments:prior.results||[]};
+}
