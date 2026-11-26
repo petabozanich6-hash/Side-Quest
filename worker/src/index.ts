@@ -1,3 +1,4 @@
+import {registerFamilySquareInvoices} from "./unifiedPortalSquareInvoices";
 import { Hono } from "hono";
 import { normJurisdiction, setFamilyJurisdiction, getFamilyJurisdiction } from "./data/jurisdictions";
 import { cors } from "hono/cors";
@@ -396,6 +397,7 @@ registerUnifiedLegacy(app,guards);
 registerPortalLearners(app,guards);
 registerPortalIntake(app,guards);
 registerFamilyOverview(app,guards);
+registerFamilySquareInvoices(app,guards);
 registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
 app.route("/api/admin", createAdminRoutes());
