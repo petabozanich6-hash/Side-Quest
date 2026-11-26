@@ -1,3 +1,4 @@
+import {clubInvoiceWorkspace,createClubSquareOrder,createClubSquareDraft} from "./clubSquareInvoiceDraft";
 import {listClubObligations,previewClubInvoice,prepareClubInvoice} from "./clubSquareInvoicePreparation";
 import {readProgressReport,changeProgressReport} from "./supportFamilyProgressReports";
 import {readActivityEvidence,saveActivityEvidence,removeActivityEvidence} from "./supportActivityEvidence";
@@ -1073,6 +1074,25 @@ export function createAdminRoutes() {
     c.header("Cache-Control","private, no-store");
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     return c.json(await listClubObligations(c.env.DB));
+  });
+  admin.get("/english-club/payments/:kind/:id/workspace",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await clubInvoiceWorkspace(c.env,c.req.param("kind")??"",c.req.param("id")??"");
+    return r?c.json(r):c.json({detail:"No eligible sandbox preparation."},404);
+  });
+  admin.post("/english-club/payments/:kind/:id/create-order",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await createClubSquareOrder(c.env,kind,id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.order",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/create-draft",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await createClubSquareDraft(c.env,kind,id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.draft",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
   });
   admin.post("/english-club/payments/:kind/:id/preview",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);

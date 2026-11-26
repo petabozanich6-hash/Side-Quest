@@ -251,7 +251,7 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await moderateCollaboration(DB,owner,share,live),true);
  assert.equal(await moderateCollaboration(DB,owner,share,live),false);
  const group=await readLiveActivity(DB,b,live);
- assert.equal(group.shared_entries.length,1);assert.deepEqual(group.shared_entries[0],{id:"reviewed-story-one",position:1,body:"A mysterious map appears."});
+ assert.equal(group.shared_entries.length,1);assert.deepEqual({...group.shared_entries[0]},{id:"reviewed-story-one",position:1,body:"A mysterious map appears."});
  assert.equal("responses" in group,false);assert.ok(!JSON.stringify(group).includes("The raccoon finds a map."));
  assert.equal(await moderateCollaboration(DB,owner,{...share,action:"retract"},live),true);
  assert.deepEqual((await readLiveActivity(DB,b,live)).shared_entries,[]);
@@ -269,7 +269,7 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,mark,live),true);
  assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,mark,live),false);
  const stored=DB.raw.prepare("SELECT response,achievement,revision FROM support_activity_evidence WHERE activity_id=? AND seat_id=?").get(collab.id,seatA);
- assert.deepEqual(stored,{response:"The raccoon finds a map.",achievement:"supported",revision:1});
+ assert.deepEqual({...stored},{response:"The raccoon finds a map.",achievement:"supported",revision:1});
  assert.equal((await readActivityEvidence(DB,"club",cid,seatB,live)).activities.find(v=>v.activity_id===collab.id).revision,null);
  assert.equal(await removeActivityEvidence(DB,"club",cid,seatB,{activity_id:collab.id,revision:1,confirmed:true},live),false);
  assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,{...mark,revision:1,achievement:"independent"},live),true);
@@ -529,6 +529,54 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  }
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_intents").get().n,3);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_intents WHERE provider_order_id IS NOT NULL OR provider_invoice_id IS NOT NULL").get().n,0);
+ const {createClubSquareOrder,createClubSquareDraft,clubInvoiceWorkspace}=await import("../src/clubSquareInvoiceDraft.ts");
+ const workspace=await clubInvoiceWorkspace(env,"single",s.booking_id);
+ const approved={fingerprint:workspace.fingerprint,confirmed:true};
+ let providerOrder,providerDraft,failOrder=true,failDraft=true,keys=[];
+ const provider=async(url,init)=>{
+  const path=new URL(url).pathname;
+  if(path.includes("/customers/"))return mock(url,init);
+  const body=init.body?JSON.parse(init.body):null;
+  const reply=v=>new Response(JSON.stringify(v),{status:200});
+  if(path.endsWith("/orders")&&init.method==="POST"){
+   keys.push(body.idempotency_key);
+   providerOrder={...body.order,id:"club-test-order",total_money:{amount:1500,currency:"AUD"}};
+   if(failOrder){failOrder=false;throw Error("synthetic lost order response");}
+   return reply({order:providerOrder});
+  }
+  if(path.endsWith("/orders/club-test-order")&&init.method==="GET")return reply({order:providerOrder});
+  if(path.endsWith("/invoices")&&init.method==="POST"){
+   keys.push(body.idempotency_key);
+   providerDraft={...body.invoice,id:"club-test-invoice",version:0,status:"DRAFT",primary_recipient:{...body.invoice.primary_recipient,email_address:one.email},payment_requests:body.invoice.payment_requests.map(v=>({...v,computed_amount_money:{amount:1500,currency:"AUD"},total_completed_amount_money:{amount:0,currency:"AUD"}}))};
+   if(failDraft){failDraft=false;throw Error("synthetic lost draft response");}
+   return reply({invoice:providerDraft});
+  }
+  throw Error("Unexpected provider request "+path);
+ };
+ assert.ok((await createClubSquareOrder(env,"single",s.booking_id,{...approved,confirmed:false},provider,now)).error);
+ assert.equal(keys.length,0);
+ assert.equal((await createClubSquareOrder(env,"single",s.booking_id,approved,provider,now)).pending,true);
+ assert.equal((await clubInvoiceWorkspace(env,"single",s.booking_id)).state,"order_pending");
+ assert.ok((await createClubSquareOrder(env,"single",s.booking_id,approved,provider,new Date(now.getTime()+16*60000))).error);
+ assert.equal(keys.length,1);
+ assert.equal((await createClubSquareOrder(env,"single",s.booking_id,approved,provider,new Date(now.getTime()+60000))).order_created,true);
+ assert.equal(keys[0],keys[1]);
+ assert.equal((await createClubSquareDraft(env,"single",s.booking_id,approved,provider,now)).pending,true);
+ assert.equal((await createClubSquareDraft(env,"single",s.booking_id,approved,provider,new Date(now.getTime()+60000))).draft_created,true);
+ assert.equal(keys[2],keys[3]);assert.notEqual(keys[0],keys[2]);
+ assert.equal((await createClubSquareDraft(env,"single",s.booking_id,approved,provider,now)).published,false);
+ assert.equal(keys.length,4);
+ assert.equal((await clubInvoiceWorkspace(env,"single",s.booking_id)).state,"draft_created");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"awaiting_invoice");
+ const bad=await clubInvoiceWorkspace(env,"round",w[0].obligation_id);
+ const badProvider=async(url,init)=>{
+  if(init.method==="GET")return mock(url,init);
+  const body=JSON.parse(init.body);
+  return new Response(JSON.stringify({order:{...body.order,id:"incorrect-order",total_money:{amount:1200,currency:"AUD"}}}),{status:200});
+ };
+ assert.ok((await createClubSquareOrder(env,"round",w[0].obligation_id,{fingerprint:bad.fingerprint,confirmed:true},badProvider,now)).error);
+ assert.equal((await clubInvoiceWorkspace(env,"round",w[0].obligation_id)).state,"review");
+
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status<>'reserved'").get().n,0);
  const other=w[1];const before=await previewClubInvoice(env,"round",other.obligation_id,args,mock,now);assert.ok(before.fingerprint);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id IN (SELECT seat_id FROM support_club_obligation_seats WHERE kind='round' AND obligation_id=?)").run(other.obligation_id);
