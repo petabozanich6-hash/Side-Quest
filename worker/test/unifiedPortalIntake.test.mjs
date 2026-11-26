@@ -848,6 +848,19 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  const template="synthetic-batch-template",key="private/club-certificate-templates/"+template+".jpg";
  DB.raw.prepare("INSERT INTO support_club_certificate_templates(id,object_key,sha256,created_by,created_at) VALUES(?,?,?,?,?)").run(template,key,digest,two.actor.id,now.toISOString());
  DB.raw.prepare("INSERT INTO support_club_certificate_template_active(singleton,template_id) VALUES(1,?)").run(template);
+ for(const item of items)item.template_id=template;
+ DB.raw.prepare("INSERT OR IGNORE INTO user_roles(id,user_id,role,granted_by,reason) VALUES(?,?,'owner','synthetic-test','preview test')").run("preview-owner",two.actor.id);
+ const {previewClubCertificate}=await import("../src/clubCertificatePreview.ts");
+ const previewEnv={...env,BUCKET:{get:async k=>k===key?{size:jpeg.length,arrayBuffer:async()=>jpeg.buffer}:null}};
+ assert.equal(await previewClubCertificate(previewEnv,one.actor.id,"round",items[0].booking_id,end),null);
+ const preview=await previewClubCertificate(previewEnv,two.actor.id,"round",items[0].booking_id,end);
+ assert.equal(preview.template_id,template);
+ assert.equal(preview.learner_name,items[0].learner_name);
+ assert.ok(Buffer.from(preview.base64,"base64").toString("latin1").includes("PREVIEW - NOT ISSUED"));
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,0);
+ const stale=await approveClubCertificateBatch(env,two.actor.id,{...batch,items:[{...items[0],template_id:"old-template"}]},end);
+ assert.equal(stale.approved,0);assert.equal(stale.review,1);
+
 
  assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,confirmed:false},end)).error);
  assert.ok((await approveClubCertificateBatch(env,two.actor.id,{...batch,round_id:"other-round"},end)).error);
@@ -903,6 +916,18 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  assert.equal(done.status,"posted");assert.equal(done.address,null);
  assert.equal(DB.raw.prepare("SELECT address_json FROM support_club_certificate_postal WHERE certificate_id=?").get(postal).address_json,null);
  assert.equal(await saveFamilyPostalAddress(mailEnv,one.actor,postal,{confirmed:true,revision:5,address},end),false);
+ const {reissueClubCertificateEmail}=await import("../src/clubCertificateEmail.ts");
+ assert.equal(await previewClubCertificate(previewEnv,two.actor.id,"round",items[0].booking_id,end),null);
+ assert.ok((await reissueClubCertificateEmail(mailEnv,one.actor.id,digital,{confirmed:true,template_id:template},end,sender)).error);
+ assert.ok((await reissueClubCertificateEmail(mailEnv,two.actor.id,postal,{confirmed:true,template_id:template},end,sender)).error);
+ assert.ok((await reissueClubCertificateEmail(mailEnv,two.actor.id,digital,{confirmed:true,template_id:"old"},end,sender)).error);
+ assert.equal((await reissueClubCertificateEmail(mailEnv,two.actor.id,digital,{confirmed:true,template_id:template},end,sender)).status,"sent");
+ assert.equal(messages.length,2);
+ assert.deepEqual(messages[0].attachments[0].content,messages[1].attachments[0].content);
+ assert.ok((await reissueClubCertificateEmail(mailEnv,two.actor.id,digital,{confirmed:true,template_id:template},end,sender)).error);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,2);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificate_reissues WHERE status='sent'").get().n,1);
+
 
  assert.deepEqual(await processClubCertificateEmails(mailEnv,end,sender),{sent:0,review:0,suppressed:0});
  assert.equal(messages.length,1);
