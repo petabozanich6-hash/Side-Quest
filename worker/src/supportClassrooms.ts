@@ -8,11 +8,13 @@ export async function ensureClassrooms(db:D1Database){await db.prepare(SQL).run(
 // For canonical guest bookings, pending cancellation or a closed request blocks learner access.
 // Keep the owner able to close the room, and preserve existing legacy/member behaviour.
 const parentBookingGuard="(o.channel<>\'guest\' OR NOT EXISTS(SELECT 1 FROM support_portal_enquiry_origins p WHERE p.request_id=o.request_id) OR (EXISTS(SELECT 1 FROM support_guest_requests r WHERE r.id=o.request_id AND r.status NOT IN (\'closed\',\'resolved\')) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status=\'pending\')))";
+const memberBookingGuard="EXISTS(SELECT 1 FROM parent_feedback r WHERE r.id=o.request_id AND r.page_hint='learning-support' AND r.status NOT IN ('closed','resolved')) AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=o.id AND c.status='pending')";
 const empty=()=>({text:"",strokes:[] as any[],slide:null as any,image:null as any});
 export async function classroomState(db:D1Database,channel:Channel,id:string,oid:string,owner:boolean,now=new Date()){
  const order=await getOrder(db,channel,id,oid);
  if(!order||order.mode!=="live"||order.status!=="paid"||order.legacy_checkout||order.checkout_started_at||!order.start_at||!order.end_at)return null;
  if(!owner&&channel==="guest"&&await db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='support_portal_enquiry_origins'").first()&&!await db.prepare("SELECT 1 FROM support_service_orders o WHERE o.id=? AND "+parentBookingGuard).bind(oid).first())return null;
+ if(!owner&&channel==="member"&&!await db.prepare("SELECT 1 FROM support_service_orders o WHERE o.id=? AND "+memberBookingGuard).bind(oid).first())return null;
  const t=now.getTime(),start=Date.parse(order.start_at),end=Date.parse(order.end_at);
  if(!Number.isFinite(start)||!Number.isFinite(end))return null;
  // Owner may inspect preparation status, but neither party can edit outside the session window.
@@ -56,7 +58,7 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
  }
  else return {error:"This board action is not available."};
  const json=JSON.stringify(board);if(json.length>220000)return {error:"Board is full."};
- const guard=!owner&&channel==="guest"&&await db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='support_portal_enquiry_origins'").first()?" AND "+parentBookingGuard:"";
+ const guard=!owner&&channel==="member"?" AND "+memberBookingGuard:!owner&&channel==="guest"&&await db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='support_portal_enquiry_origins'").first()?" AND "+parentBookingGuard:"";
  const r=await db.prepare("UPDATE support_classrooms SET board_json=?,revision=revision+1,updated_at=? WHERE order_id=? AND revision=? AND is_open=1 AND EXISTS(SELECT 1 FROM support_service_orders o WHERE o.id=support_classrooms.order_id AND o.channel=? AND o.request_id=? AND o.status='paid' AND o.checkout_started_at IS NULL"+guard+")").bind(json,now.toISOString(),oid,state.revision,channel,id).run();
  if(!r.meta?.changes)return {error:"The board changed or the room closed. Refresh and try again."};
  return {ok:true};
