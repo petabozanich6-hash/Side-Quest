@@ -59,3 +59,14 @@ test("reject screenshot-like short vague notes, long primary paragraphs and text
  assert.equal(validateSlideVisual({type:"fraction-bars",rows:[{total:4,shaded:5}]}),null);
  assert.deepEqual(validateSlideVisual({type:"fraction-build",total:6,answer:4,notes:"private"}),{type:"fraction-build",total:6});
 });
+
+test("requires actual instruction, modelling, guided and independent practice and assessment in order",()=>{
+ const valid=validateLessonPack(pack,30);
+ assert.ok(valid);
+ assert.equal(valid.sequence.reduce((n,s)=>n+s.minutes,0),30);
+ assert.equal(validateLessonPack(pack,45),null);
+ assert.equal(validateLessonPack({...pack,sequence:undefined}),null);
+ assert.equal(validateLessonPack({...pack,sequence:pack.sequence.map((s,i)=>i===4?{...s,phase:"guided"}:s)},30),null);
+ assert.equal(validateLessonPack({...pack,sequence:pack.sequence.map((s,i)=>i===0?{...s,minutes:1}:i===1||i===2?{...s,minutes:1}:i===3?{...s,minutes:18}:s)},30),null);
+ assert.equal(validateLessonPack({...pack,sequence:pack.sequence.map((s,i)=>i===0?{...s,phase:"model"}:s)},30),null);
+});
