@@ -85,3 +85,24 @@ export async function appointmentLearnerContext(db:D1Database,channel:string,req
  ]);
  return {learner:l,current_enquiry:o.message,reports,previous_appointments:prior.results||[]};
 }
+
+/** Owner-only group preparation: derive each learner from the exact paid seat.
+ * Unlinked historical seats remain visible by their booked label, never matched by name.
+ * No private notes are copied to shared class materials or activity prompts. */
+export async function clubPreparationContext(db:D1Database,classId:string,now=new Date()){
+ if(!classId||classId.length>100)return null;
+ const session=await db.prepare("SELECT id,topic,start_at,end_at FROM support_english_classes WHERE id=?").bind(classId).first<{id:string;topic:string;start_at:string;end_at:string}>();
+ if(!session||!Number.isFinite(Date.parse(session.start_at)))return null;
+ const rows=(await db.prepare(`SELECT e.id seat_id,e.learner_label,e.request_id,p.family_id,p.learner_id,r.message
+ FROM support_english_enrolments e JOIN support_guest_requests r ON r.id=e.request_id
+ LEFT JOIN support_portal_enquiries p ON p.request_id=e.request_id AND p.service='english-club'
+ WHERE e.class_id=? AND e.status='paid' AND r.status NOT IN ('closed','resolved')
+ ORDER BY e.created_at,e.id LIMIT 9`).bind(classId).all<any>()).results||[];
+ const cutoff=new Date(Math.min(Date.parse(session.start_at),now.getTime()));
+ const learners=[];
+ for(const seat of rows.slice(0,8)){
+  const l=seat.family_id&&seat.learner_id?await db.prepare(identitySql).bind(seat.family_id,seat.learner_id).first<any>():null;
+  learners.push({seat_id:seat.seat_id,booked_label:seat.learner_label,learner:l,current_enquiry:l?seat.message:null,reports:l?await ownerLearnerReports(db,l.family_id,l.id,cutoff):[]});
+ }
+ return {session,learners,limited:rows.length>8};
+}
