@@ -12,6 +12,16 @@ export function validateSlideVisual(v:any){
   }
   return {type:"fraction-bars",rows} as const;
  }
+ if(v.type==="fraction-split"){
+  if(!integer(v.total,2,8)||!integer(v.shaded,1,v.total-1)||!integer(v.factor,2,4)||v.total*v.factor>16)return null;
+  return {type:"fraction-split",total:v.total,shaded:v.shaded,factor:v.factor} as const;
+ }
+ if(v.type==="select"||v.type==="order"){
+  if(!Array.isArray(v.items)||v.items.length<(v.type==="order"?3:2)||v.items.length>8)return null;
+  const items=[];
+  for(const item of v.items){const t=text(item,120);if(!t||items.includes(t))return null;items.push(t);}
+  return {type:v.type as "select"|"order",items};
+ }
  if(v.type==="fraction-build"){
   if(!integer(v.total,2,16))return null;
   // No expected answer in the public visual. Learner selection is local exploration.
@@ -28,4 +38,36 @@ export function validateSlideVisual(v:any){
   return {type:v.type as "steps"|"compare"|"sequence",items};
  }
  return null;
+}
+
+// Shared visual state contains only bounded indices, not learner names, prose or answers.
+export function initialSlideInteraction(visual:unknown){
+ const v=validateSlideVisual(visual);
+ if(!v)return null;
+ return {id:crypto.randomUUID(),reveal:1,selected:[] as number[],order:v.type==="order"?v.items.map((_,i)=>i):[] as number[]};
+}
+export function changeSlideInteraction(visual:unknown,current:any,b:Record<string,unknown>,owner:boolean){
+ const v=validateSlideVisual(visual);
+ if(!v||!current||typeof current.id!=="string"||b.visual_id!==current.id)return null;
+ const next={id:current.id,reveal:current.reveal,selected:[...current.selected],order:[...current.order]};
+ const demo=v.type==="fraction-split"||v.type==="fraction-bars"||v.type==="steps"||v.type==="compare"||v.type==="sequence";
+ if(b.operation==="reset"){
+  if(demo&&!owner)return null;
+  next.reveal=1;next.selected=[];next.order=v.type==="order"?v.items.map((_,i)=>i):[];
+ }else if(b.operation==="reveal"&&owner&&demo){
+  const max=v.type==="fraction-split"?2:v.type==="fraction-bars"?v.rows.length:"items" in v?v.items.length:1;
+  if(next.reveal>=max)return null;
+  next.reveal++;
+ }else if(b.operation==="toggle"&&!owner&&(v.type==="fraction-build"||v.type==="select")){
+  const max=v.type==="fraction-build"?v.total:v.items.length;
+  if(!integer(b.index,0,max-1))return null;
+  const i=b.index;
+  next.selected=next.selected.includes(i)?next.selected.filter(x=>x!==i):[...next.selected,i].sort((a,b)=>a-b);
+ }else if(b.operation==="move"&&!owner&&v.type==="order"){
+  if(!integer(b.index,0,v.items.length-1)||(b.direction!==-1&&b.direction!==1))return null;
+  const to=b.index+b.direction;
+  if(to<0||to>=v.items.length)return null;
+  [next.order[b.index],next.order[to]]=[next.order[to],next.order[b.index]];
+ }else return null;
+ return next;
 }
