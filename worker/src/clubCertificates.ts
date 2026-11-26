@@ -6,9 +6,9 @@ export async function listClubCertificateCandidates(e:Env,now=new Date()){
  if(!unifiedPortalPilot(e))return null;
  const at=now.toISOString();
  const rows=(await e.DB.prepare(`SELECT c.kind,c.booking_id,c.learner_label,c.title,c.certificate_delivery,c.expected_count,c.seat_count,c.completed_count,c.last_end_at,(SELECT r.round_id FROM support_english_round_enrolments r WHERE c.kind='round' AND r.id=c.booking_id) round_id,
- x.id certificate_id,x.status certificate_status,x.approved_at,x.template_id,
+ x.id certificate_id,x.status certificate_status,x.approved_at,x.template_id,d.status email_status,d.sent_at email_sent_at,
  CASE WHEN ${eligible} THEN 1 ELSE 0 END eligible
- FROM support_club_certificate_candidates c LEFT JOIN support_club_certificates x ON x.kind=c.kind AND x.booking_id=c.booking_id
+ FROM support_club_certificate_candidates c LEFT JOIN support_club_certificates x ON x.kind=c.kind AND x.booking_id=c.booking_id LEFT JOIN support_club_certificate_email d ON d.certificate_id=x.id
  ORDER BY CASE WHEN x.id IS NULL AND c.seat_count=c.expected_count AND c.completed_count=c.expected_count AND julianday(c.last_end_at)<=julianday(?) THEN 0 ELSE 1 END,c.last_end_at DESC,c.booking_id LIMIT 201`).bind(at,at).all<any>()).results||[];
  return {items:rows.slice(0,200).map(r=>({...r,eligibility:r.eligible?"eligible":!r.last_end_at||Date.parse(r.last_end_at)>now.getTime()?"awaiting_completion":"attendance_or_payment_review"})),limited:rows.length>200};
 }
