@@ -8,7 +8,7 @@ export function configureStagingInvoicePilot(config,e){
  config.d1_databases[0].binding!=="DB"||config.d1_databases[0].database_name!=="sidequest-staging"||
  config.routes?.length||config.route||config.env||config.r2_buckets?.some(b=>b.bucket_name!=="sidequest-staging-files"))
  throw Error("Refusing to configure a non-isolated staging Worker.");
- const vars={...config.vars,SUPPORT_UNIFIED_PORTAL_TEST:"false",SUPPORT_GUEST_ENABLED:"false",SUPPORT_SQUARE_INVOICE_TEST:"false",SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"false"};
+ const vars={...config.vars,SUPPORT_UNIFIED_PORTAL_TEST:"false",SUPPORT_GUEST_ENABLED:"false",SUPPORT_RESOURCE_AI:"false",SUPPORT_SQUARE_INVOICE_TEST:"false",SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"false"};
  for(const key of ["SQUARE_APPLICATION_ID","SQUARE_LOCATION_ID","SQUARE_WEBHOOK_URL","SUPPORT_GUEST_ORIGIN"])delete vars[key];
  const invoice=e.ENABLE_INVOICE_PILOT==="true",portal=invoice||e.ENABLE_FAMILY_PORTAL==="true";
  const origin=(e.STAGING_ORIGIN_INPUT||e.STAGING_SUPPORT_ORIGIN||"").trim().replace(/\/$/,"");
@@ -32,7 +32,13 @@ export function configureStagingInvoicePilot(config,e){
   Object.assign(vars,{SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_GUEST_ORIGIN:origin,
    SQUARE_APPLICATION_ID:e.STAGING_SQUARE_APPLICATION_ID,SQUARE_LOCATION_ID:e.STAGING_SQUARE_LOCATION_ID,SQUARE_WEBHOOK_URL:origin+"/api/billing/square-webhook"});
  }
- return {...config,vars};
+ const result={...config,vars};
+ delete result.ai;
+ if(e.ENABLE_RESOURCE_AI==="true"){
+  if(!portal||!origin)throw Error("Resource AI requires the isolated family portal and a validated origin.");
+  vars.SUPPORT_RESOURCE_AI="true";result.ai={binding:"AI"};
+ }
+ return result;
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const path=process.argv[2];if(path!=="wrangler.staging.jsonc")throw Error("Only the dedicated staging config is supported.");
