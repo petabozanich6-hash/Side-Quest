@@ -49,7 +49,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
  }
  async function action(name,details){
   if(lock.current)return;lock.current=true;setBusy(true);setError("");setApproved(false);setChecked(null);
-  try{await adminApi.post("/support-invoice-workspace/"+name,{...context,...details,confirmed:true});if(live.current){setPreview(null);setReview(false);}}
+  try{const result=await adminApi.post("/support-invoice-workspace/"+name,{...context,...details,confirmed:true});if(live.current){setPreview(null);setReview(false);if(name==="verify-payment")setError(result.verified?"Payment verified. Booking confirmed.":result.status==="unpaid"?"Payment is still outstanding.":"Payment needs review; booking not newly confirmed.");}}
   catch(e){if(live.current)setError(errorText(e,"Invoice action could not be confirmed. Check the saved status before retrying."));}
   finally{await load();lock.current=false;if(live.current)setBusy(false);}
  }
@@ -108,6 +108,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
      {(checked.can_recover_order||checked.can_recover_draft)&&<button className={button} disabled={busy} onClick={()=>{if(window.confirm("Link this freshly matched sandbox record to the existing preparation? This will not issue an invoice."))action("recover",{fingerprint:i.fingerprint,recovery_confirmed:true,provider_order_id:checked.provider_order_id,...(checked.invoice_checked?{provider_invoice_id:checked.provider_invoice_id}:{})});}}>Recover matched record</button>}
     </div>}
    </div>}
+   {i.state==="issued"&&<button className={button} disabled={busy} onClick={()=>action("verify-payment",{fingerprint:i.fingerprint})}>Check and verify payment</button>}
    <button className="block underline text-sm" disabled={busy} onClick={()=>{setApproved(false);setChecked(null);load();}}>Reload saved status</button>
   </div>}
  </section>;
