@@ -659,11 +659,31 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,{...certificateArgs,learner_name:"Wrong name"},finished)).error);
  const certificate=await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished);
  assert.equal(certificate.approved,true);
+ const {ownerClubCertificatePdf,familyClubCertificatePdf,listFamilyClubCertificates}=await import("../src/clubCertificateDelivery.ts");
+ const {buildClubCertificatePdf}=await import("../src/clubCertificatePdf.ts");
+ assert.equal((await listFamilyClubCertificates(env,one.actor,finished)).items.length,1);
+ assert.equal((await listFamilyClubCertificates(env,two.actor,finished)).items.length,0);
+ assert.equal(await familyClubCertificatePdf(env,two.actor,certificate.id,finished),null);
+ const ownPdf=await ownerClubCertificatePdf(env,certificate.id,finished);
+ const familyPdf=await familyClubCertificatePdf(env,one.actor,certificate.id,finished);
+ assert.equal(ownPdf.base64,familyPdf.base64);
+ assert.equal(ownPdf.template,"english-club-certificate-v1");
+ const rawPdf=Buffer.from(ownPdf.base64,"base64").toString("ascii");
+ assert.ok(rawPdf.startsWith("%PDF-1.4"));assert.ok(rawPdf.includes("/MediaBox [0 0 842 595]"));
+ assert.ok(rawPdf.includes("Certificate of Completion"));assert.ok(rawPdf.includes(certificate.id));
+ assert.equal(rawPdf.slice(Number(rawPdf.match(/startxref\n(\d+)/)[1]),Number(rawPdf.match(/startxref\n(\d+)/)[1])+4),"xref");
+ assert.throws(()=>buildClubCertificatePdf({id:"test",learner_name:"Test\nName",title:"Story",kind:"single",session_count:1,completed_at:finished.toISOString()}));
+ DB.raw.prepare("UPDATE support_english_enrolments SET attendance='absent' WHERE request_id=?").run(s.id);
+ assert.equal(await familyClubCertificatePdf(env,one.actor,certificate.id,finished),null);
+ assert.equal(await ownerClubCertificatePdf(env,certificate.id,finished),null);
+ DB.raw.prepare("UPDATE support_english_enrolments SET attendance='present' WHERE request_id=?").run(s.id);
+
  assert.equal((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).id,certificate.id);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,1);
  assert.equal((await listClubCertificateCandidates(env,finished)).items.find(v=>v.kind==="round"&&v.booking_id===upfront.enrolment_id).eligible,0);
  assert.equal(await withdrawClubCertificate(env,"single",s.booking_id,{confirmed:false,certificate_id:certificate.id},finished),false);
  assert.equal(await withdrawClubCertificate(env,"single",s.booking_id,{confirmed:true,certificate_id:certificate.id},finished),true);
+ assert.equal(await familyClubCertificatePdf(env,one.actor,certificate.id,finished),null);
  assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).error);
 
 
