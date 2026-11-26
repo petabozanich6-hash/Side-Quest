@@ -162,6 +162,7 @@ export function registerGuestSupport(app:App){
   return "error" in r?c.json({detail:r.error},409):c.json(r);
  });
  app.get(root+"/requests/:id/orders/:oid/classroom-image/:fid",async c=>{
+  c.header("Cache-Control","private, no-store");
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
   const id=c.req.param("id")??"",oid=c.req.param("oid")??"",fid=c.req.param("fid")??"";
   if(!classroomEnabled(c.env)||!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first()||!await canReadClassroomImage(c.env.DB,"guest",id,oid,fid,false))return c.json({detail:"Image unavailable"},404);
@@ -169,6 +170,7 @@ export function registerGuestSupport(app:App){
   const r=await readPresentedImage(c.env,fid);return r?c.json(r):c.json({detail:"Image unavailable"},404);
  });
  app.get(root+"/requests/:id/orders/:oid/classroom",async c=>{
+  c.header("Cache-Control","private, no-store");
   if(!classroomEnabled(c.env))return c.json({detail:"Classroom pilot is not enabled."},503);
   const who=await identity(c);if(!who)return c.json({detail:"Request a new email access link."},401);
   const id=(c.req.param("id")??"");if(!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=? AND email=?").bind(id,who.email).first())return c.json({detail:"Request not found"},404);
