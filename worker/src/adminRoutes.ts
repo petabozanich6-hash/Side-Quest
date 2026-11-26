@@ -1,3 +1,4 @@
+import {listActivityTemplates,getActivityTemplate,saveActivityTemplate,archiveActivityTemplate} from "./supportActivityLibrary";
 import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity} from "./supportLiveActivities";
 import {resolveFullyRefundedSupportInvoice} from "./supportSquareInvoiceResolution";
 import {releaseVerifiedUnpaidSquareInvoice} from "./supportSquareInvoiceReview";
@@ -947,6 +948,36 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",fid=c.req.param("fid")??"",b=await readJson(c);
     if(b.confirmed!==true||typeof b.grant!=="boolean"||!await changeEnglishFile(c.env.DB,id,fid,b.grant))return c.json({detail:"Choose an active reviewed learner resource that has not already been shared."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.resource.change",targetType:"english_club",targetId:id,detail:{file_id:fid,grant:b.grant}});return c.json({ok:true});
+  });
+  admin.get("/activity-library",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    return c.json({activities:await listActivityTemplates(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1")});
+  });
+  admin.get("/activity-library/:id",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const activity=await getActivityTemplate(c.env.DB,c.req.param("id")??"");
+    return activity?c.json({activity}):c.json({detail:"Activity not found"},404);
+  });
+  admin.post("/activity-library",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const r=await saveActivityTemplate(c.env.DB,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.create",targetType:"support_activity_template",targetId:r.id,detail:{}});
+    return c.json(r,201);
+  });
+  admin.put("/activity-library/:id",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("id")??"",r=await saveActivityTemplate(c.env.DB,await readJson(c),id);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.update",targetType:"support_activity_template",targetId:id,detail:{}});
+    return c.json(r);
+  });
+  admin.post("/activity-library/:id/archive",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("id")??"",b=await readJson(c);
+    if(b.confirmed!==true||!await archiveActivityTemplate(c.env.DB,id,b.revision))return c.json({detail:"Reload and confirm archival."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.archive",targetType:"support_activity_template",targetId:id,detail:{}});
+    return c.json({ok:true});
   });
   // Inherits Owner HQ authentication, permission, passkey step-up, origin and rate limits.
   admin.get("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
