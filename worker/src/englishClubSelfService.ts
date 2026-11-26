@@ -35,7 +35,7 @@ export async function reserveEnglishRound(db:D1Database,a:AuthUser,b:any,now=new
 }
 export const CLUB_SINGLE_VERSION="club-single-staging-v1";
 export const CLUB_SINGLE_TERMS=CLUB_ROUND_TERMS.replace("the round dates and selected payment arrangement","the selected workshop date and AU$15 single-session price");
-const singleListSql=`SELECT c.id,c.topic,c.start_at,c.end_at,r.id round_id,r.title round_title,x.sequence,r.price_per_session_cents amount_cents,
+const singleListSql=`SELECT c.id,c.topic,c.public_description description,c.start_at,c.end_at,r.id round_id,r.title round_title,x.sequence,r.price_per_session_cents amount_cents,
  8-(SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled') remaining
  FROM support_english_round_classes x JOIN support_english_rounds r ON r.id=x.round_id JOIN support_english_classes c ON c.id=x.class_id
  WHERE r.published=1 AND r.price_per_session_cents=1500 AND julianday(c.start_at)>julianday(?)+1
