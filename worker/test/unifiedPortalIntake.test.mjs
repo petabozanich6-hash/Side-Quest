@@ -1007,3 +1007,31 @@ test("round certificate batch revalidates each exact reviewed learner and reject
  assert.ok(!JSON.stringify(summary).includes("PO Box"));
 
 });
+
+
+test("temporary housekeeping only removes expired guest credentials in bounded once-daily atomic runs",async t=>{
+ const {DB,one}=await fixture(t);
+ const {runTemporaryHousekeeping,temporaryHousekeepingStatus}=await import("../src/supportTemporaryHousekeeping.ts");
+ const env={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_TEMPORARY_HOUSEKEEPING_TEST:"true"};
+ const now=new Date("2026-12-07T00:00:00.000Z"),past="2026-12-06T23:59:59.000Z",future="2026-12-08T00:00:00.000Z";
+ const request=await submitPortalEnquiry(DB,one.actor,form(one.learner,"housekeeping-preserve"));assert.ok(request.id);
+ for(let i=0;i<501;i++)DB.raw.prepare("INSERT INTO support_guest_links(token_hash,email,expires_at) VALUES(?,?,?)").run("expired-link-"+i,one.email,past);
+ DB.raw.prepare("INSERT INTO support_guest_links(token_hash,email,expires_at) VALUES(?,?,?)").run("active-link",one.email,future);
+ DB.raw.prepare("INSERT INTO support_guest_sessions(token_hash,email,expires_at) VALUES(?,?,?)").run("expired-session",one.email,now.toISOString());
+ DB.raw.prepare("INSERT INTO support_guest_sessions(token_hash,email,expires_at) VALUES(?,?,?)").run("active-session",one.email,future);
+ assert.equal(await runTemporaryHousekeeping({...env,STAGING_KEY:undefined},now),"disabled");
+ assert.equal(await runTemporaryHousekeeping({...env,SUPPORT_TEMPORARY_HOUSEKEEPING_TEST:"false"},now),"disabled");
+ assert.equal(await runTemporaryHousekeeping(env,now),"complete");
+ const last=(await temporaryHousekeepingStatus(env)).last;
+ assert.equal(last.links_removed,500);assert.equal(last.sessions_removed,1);assert.equal(last.status,"complete");
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_links").get().n,2);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_sessions").get().n,1);
+ assert.equal(await runTemporaryHousekeeping(env,now),"duplicate");
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_links").get().n,2);
+ assert.equal(DB.raw.prepare("SELECT id FROM support_guest_requests WHERE id=?").get(request.id).id,request.id);
+ assert.ok(DB.raw.prepare("SELECT token_hash FROM support_guest_links WHERE token_hash='active-link'").get());
+ assert.ok(DB.raw.prepare("SELECT token_hash FROM support_guest_sessions WHERE token_hash='active-session'").get());
+ assert.equal(await runTemporaryHousekeeping(env,new Date("2026-12-07T13:00:00.000Z")),"complete");
+ assert.equal((await temporaryHousekeepingStatus(env)).last.links_removed,1);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_guest_links").get().n,1);
+});
