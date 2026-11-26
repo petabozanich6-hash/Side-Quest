@@ -36,7 +36,7 @@ export async function enrolEnglishLearner(db:D1Database,classId:string,b:any,now
  const request=text(b?.request_id,100),label=text(b?.learner_label,80),when=now.toISOString();
  if(b?.confirmed!==true||!request||!label)return {error:"Confirm parent agreement and suitability for this group class, and enter the learner nickname."};
  const id=crypto.randomUUID();
- let r;try{r=await db.prepare("INSERT INTO support_english_enrolments(id,class_id,request_id,learner_label,payment_due_at,created_at) SELECT ?,c.id,r.id,?,strftime('%Y-%m-%dT%H:%M:%fZ',julianday(c.start_at)-1),? FROM support_english_classes c JOIN support_guest_requests r ON r.id=? WHERE c.id=? AND r.subject LIKE 'English Club: %' AND r.status NOT IN ('closed','resolved') AND julianday(c.start_at)-1>julianday(?) AND (SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled')<8 ON CONFLICT(class_id,request_id) DO NOTHING").bind(id,label,when,request,classId,when).run();}catch{return {error:"Class unavailable or this learner already has a place."};}
+ let r;try{r=await db.prepare("INSERT INTO support_english_enrolments(id,class_id,request_id,learner_label,payment_due_at,created_at) SELECT ?,c.id,r.id,?,strftime('%Y-%m-%dT%H:%M:%fZ',julianday(c.start_at)-1),? FROM support_english_classes c JOIN support_guest_requests r ON r.id=? WHERE c.id=? AND NOT EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=c.id) AND r.subject LIKE 'English Club: %' AND r.status NOT IN ('closed','resolved') AND julianday(c.start_at)-1>julianday(?) AND (SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled')<8 ON CONFLICT(class_id,request_id) DO NOTHING").bind(id,label,when,request,classId,when).run();}catch{return {error:"Class unavailable or this learner already has a place."};}
  return r.meta?.changes?{id}:{error:"Class full, already enrolled, enquiry unavailable or payment deadline passed."};
 }
 export async function updateEnglishEnrolment(db:D1Database,classId:string,id:string,b:any,now=new Date()){
@@ -44,10 +44,10 @@ export async function updateEnglishEnrolment(db:D1Database,classId:string,id:str
  const when=now.toISOString();
  if(b.action==="invoice"){
  const ref=text(b.invoice_reference,80);if(!ref||b.issued_in_square!==true)return false;
- return !!(await db.prepare("UPDATE support_english_enrolments SET status='invoiced',invoice_reference=? WHERE id=? AND class_id=? AND status='reserved' AND payment_due_at>? AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE invoice_reference=?)").bind(ref,id,classId,when,ref).run()).meta?.changes;
+ return !!(await db.prepare("UPDATE support_english_enrolments SET status='invoiced',invoice_reference=? WHERE id=? AND class_id=? AND status='reserved' AND payment_due_at>? AND NOT EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=support_english_enrolments.class_id) AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE invoice_reference=?)").bind(ref,id,classId,when,ref).run()).meta?.changes;
  }
- if(b.action==="paid"&&b.paid_in_square===true&&b.amount_cents===1200&&b.paid_by_deadline===true)return !!(await db.prepare("UPDATE support_english_enrolments SET status='paid' WHERE id=? AND class_id=? AND status='invoiced'").bind(id,classId).run()).meta?.changes;
- if(b.action==="cancel"&&b.checked_square===true)return !!(await db.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id=? AND class_id=? AND status IN ('reserved','invoiced')").bind(id,classId).run()).meta?.changes;
+ if(b.action==="paid"&&b.paid_in_square===true&&b.amount_cents===1200&&b.paid_by_deadline===true)return !!(await db.prepare("UPDATE support_english_enrolments SET status='paid' WHERE id=? AND class_id=? AND status='invoiced' AND NOT EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=support_english_enrolments.class_id)").bind(id,classId).run()).meta?.changes;
+ if(b.action==="cancel"&&b.checked_square===true)return !!(await db.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id=? AND class_id=? AND status IN ('reserved','invoiced') AND NOT EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=support_english_enrolments.class_id)").bind(id,classId).run()).meta?.changes;
  if(b.action==="attendance"&&["present","absent"].includes(b.attendance))return !!(await db.prepare("UPDATE support_english_enrolments SET attendance=? WHERE id=? AND class_id=? AND status='paid' AND EXISTS(SELECT 1 FROM support_english_classes WHERE id=? AND start_at<=?)").bind(b.attendance,id,classId,classId,when).run()).meta?.changes;
  return false;
 }
@@ -59,8 +59,8 @@ export async function parentEnglishClasses(db:D1Database,requestId:string,email:
 export async function removeEmptyEnglishClass(db:D1Database,id:string,now=new Date()){
  await ensureEnglishClub(db);
  const results=await db.batch([
- db.prepare("DELETE FROM support_busy_blocks WHERE id=? AND EXISTS(SELECT 1 FROM support_english_classes c WHERE c.id=? AND c.start_at>?) AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE class_id=?)").bind(id,id,now.toISOString(),id),
- db.prepare("DELETE FROM support_english_classes WHERE id=? AND start_at>? AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE class_id=?) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks WHERE id=?)").bind(id,now.toISOString(),id,id)
+ db.prepare("DELETE FROM support_busy_blocks WHERE id=? AND EXISTS(SELECT 1 FROM support_english_classes c WHERE c.id=? AND c.start_at>?) AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE class_id=?) AND NOT EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=support_busy_blocks.id)").bind(id,id,now.toISOString(),id),
+ db.prepare("DELETE FROM support_english_classes WHERE id=? AND start_at>? AND NOT EXISTS(SELECT 1 FROM support_english_enrolments WHERE class_id=?) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks WHERE id=?) AND NOT EXISTS(SELECT 1 FROM support_english_round_classes x WHERE x.class_id=support_english_classes.id)").bind(id,now.toISOString(),id,id)
  ]);
  return !!results[1]?.meta?.changes;
 }
