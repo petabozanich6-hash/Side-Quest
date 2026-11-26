@@ -4,6 +4,7 @@ import {makeDb} from "./fakeD1.mjs";
 import {previewSupportInvoice} from "../src/supportSquareInvoicePreview.ts";
 import {prepareSupportInvoiceIntent,releasePreparedSupportInvoiceIntent} from "../src/supportSquareInvoiceIntent.ts";
 import {createPreparedSupportSquareOrder} from "../src/supportSquareInvoiceOrder.ts";
+import {createPreparedSupportSquareDraft} from "../src/supportSquareInvoiceDraft.ts";
 import {prepareSupportCheckout} from "../src/supportCheckout.ts";
 import {cancelUnstartedOrder,recordManualInvoice} from "../src/supportOrders.ts";
 test("approved invoice intent is durable, duplicate-safe and never issues a provider invoice",async t=>{
@@ -100,4 +101,53 @@ test("sandbox order creation preserves the operation key across a lost response 
  db.raw.prepare("UPDATE support_square_invoice_intents SET state='order_pending',provider_order_id=NULL WHERE order_id='o'").run();
  mismatch=true;assert.ok("error" in await run());assert.equal(db.raw.prepare("SELECT state FROM support_square_invoice_intents WHERE order_id='o'").get().state,"review");
  const count=posts.length;assert.ok("error" in await run());assert.equal(posts.length,count);
+});
+
+test("sandbox draft creation rechecks the remote order, recovers with the same key and never publishes",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+
+ const b={reviewed:true,customer_id:"CUST1",due_at:"2026-11-27T01:00:00.000Z"};
+ const posts=[];let lose=true,badOrder=false,badInvoice=false;
+ const remoteOrder=()=>({id:"REMOTE1",reference_id:db.raw.prepare("SELECT create_order_key FROM support_square_invoice_intents WHERE order_id='o'").get().create_order_key,location_id:"LOCATION123",customer_id:"CUST1",state:"OPEN",total_money:{currency:"AUD",amount:badOrder?1:2500}});
+ const provider=async(url,init)=>{
+  if(init.method==="GET"&&url.endsWith("/customers/CUST1"))return new Response(JSON.stringify({customer:{id:"CUST1",email_address:"test@example.com"}}));
+  if(init.method==="GET"&&url.endsWith("/orders/REMOTE1"))return new Response(JSON.stringify({order:remoteOrder()}));
+  assert.equal(init.method,"POST");
+  if(url.endsWith("/v2/orders"))return new Response(JSON.stringify({order:remoteOrder()}));
+  assert.equal(url,"https://connect.squareupsandbox.com/v2/invoices");
+  const payload=JSON.parse(init.body);posts.push(payload);
+  const row=db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+  assert.equal(row.state,"invoice_pending");assert.equal(payload.idempotency_key,row.create_invoice_key);assert.equal(payload.invoice.order_id,"REMOTE1");
+  assert.equal(payload.invoice.payment_requests[0].automatic_payment_source,"NONE");
+  assert.equal(JSON.stringify(payload).includes("PRIVATE LEARNER"),false);
+  if(lose){lose=false;throw Error("Synthetic lost response");}
+  return new Response(JSON.stringify({invoice:{id:"inv:REMOTE2",version:0,location_id:"LOCATION123",order_id:"REMOTE1",status:"DRAFT",delivery_method:"EMAIL",primary_recipient:{customer_id:"CUST1",email_address:"test@example.com"},payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",automatic_payment_source:"NONE",computed_amount_money:{amount:badInvoice?1:2500,currency:"AUD"},total_completed_amount_money:{amount:0,currency:"AUD"}}]}}));
+ };
+ const p=await previewSupportInvoice(env,"member","r","o",b,provider,now);
+ const approved={...b,confirmed:true,fingerprint:p.fingerprint};
+ assert.equal((await prepareSupportInvoiceIntent(env,"member","r","o","owner",approved,provider,now)).prepared,true);
+ const run=(body=approved,e=env,at=now)=>createPreparedSupportSquareDraft(e,"member","r","o",body,provider,at);
+ assert.ok("error" in await run());assert.equal(posts.length,0);
+ assert.equal((await createPreparedSupportSquareOrder(env,"member","r","o",approved,provider,now)).order_created,true);
+ assert.ok("error" in await run({...approved,confirmed:false}));
+ assert.ok("error" in await run(approved,{...env,SQUARE_APPLICATION_ID:"sq0idp-live"}));assert.equal(posts.length,0);
+ assert.equal((await run()).pending,true);assert.equal(posts.length,1);
+ assert.ok("error" in await run(approved,env,new Date(now.getTime()+16*60000)));assert.equal(posts.length,1);
+ const result=await run(approved,env,new Date(now.getTime()+60000));assert.equal(result.draft_created,true);assert.equal(result.published,false);assert.equal(result.version,0);
+ assert.deepEqual(posts[0],posts[1]);assert.equal((await run()).draft_created,true);assert.equal(posts.length,2);
+ const row=db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+ assert.equal(row.state,"draft_created");assert.equal(row.provider_invoice_id,"inv:REMOTE2");assert.equal(row.invoice_attempted_at,stamp);
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
+ // Synthetic reset only: exercise independent mismatch guards.
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='invoice_pending',provider_invoice_id=NULL,provider_invoice_version=NULL WHERE order_id='o'").run();
+ badOrder=true;assert.ok("error" in await run());assert.equal(posts.length,2);assert.equal(db.raw.prepare("SELECT state FROM support_square_invoice_intents WHERE order_id='o'").get().state,"review");
+ badOrder=false;badInvoice=true;db.raw.prepare("UPDATE support_square_invoice_intents SET state='invoice_pending' WHERE order_id='o'").run();
+ assert.ok("error" in await run());assert.equal(db.raw.prepare("SELECT state FROM support_square_invoice_intents WHERE order_id='o'").get().state,"review");
+ assert.equal(posts.length,3);
 });
