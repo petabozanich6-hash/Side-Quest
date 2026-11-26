@@ -1058,3 +1058,41 @@ test("existing subscriber member appointment uses the same authenticated classro
  assert.equal((await call(room,undefined,one.token)).status,404);
  assert.equal((await call(activity,undefined,one.token)).status,404);
 });
+
+test("historical learner preparation requires an exact learner link and a currently verified family claim",async t=>{
+ const {DB,one,two}=await fixture(t);
+ const {appointmentLearnerContext,ownerLearner,clubPreparationContext}=await import("../src/unifiedOwnerLearner.ts");
+ const {linkPortalLegacyLearner}=await import("../src/unifiedPortalLearners.ts");
+ const {createEnglishClass}=await import("../src/englishClub.ts");
+ const id="historical-prep-request",oid="historical-prep-order",legacy="historical-prep-learner";
+ DB.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run(id,one.email,"Parent 1","English","Historical learning goals",stamp,stamp);
+ const g=DB.raw.prepare("SELECT id FROM support_guest_families WHERE email=?").get(one.email).id;
+ DB.raw.prepare("INSERT INTO support_guest_learners(id,family_id,label,created_at,updated_at) VALUES(?,?,?,?,?)").run(legacy,g,"Learner 1",stamp,stamp);
+ DB.raw.prepare("INSERT INTO support_guest_learner_enquiries(request_id,learner_id) VALUES(?,?)").run(id,legacy);
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,'guest',?,'test-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(oid,id,"2026-12-09T07:00:00Z","2026-12-09T08:00:00Z",stamp,stamp);
+ const now=new Date("2026-12-07T00:00:00Z");
+ assert.equal(await appointmentLearnerContext(DB,"guest",id,oid,now),null);
+ DB.raw.prepare("INSERT INTO support_family_claims(guest_family_id,family_id,parent_user_id,claimed_at) VALUES(?,?,?,?)").run(g,one.actor.family_id,one.actor.id,stamp);
+ assert.equal(await appointmentLearnerContext(DB,"guest",id,oid,now),null);
+ assert.equal(await linkPortalLegacyLearner(DB,one.actor,{legacy_id:legacy,learner_id:two.learner,confirmed:true}),false);
+ assert.equal(await linkPortalLegacyLearner(DB,one.actor,{legacy_id:legacy,learner_id:one.learner,confirmed:true}),true);
+ const ctx=await appointmentLearnerContext(DB,"guest",id,oid,now);
+ assert.equal(ctx.learner.id,one.learner);assert.equal(ctx.current_enquiry,"Historical learning goals");
+ assert.ok((await ownerLearner(DB,one.actor.family_id,one.learner)).appointments.some(o=>o.id===oid));
+ assert.equal((await ownerLearner(DB,two.actor.family_id,two.learner)).appointments.some(o=>o.id===oid),false);
+ // Exact historical seat is independently resolved; no automatic matching by its display label.
+ const cls=await createEnglishClass(DB,{start_at:"2026-12-10T07:00:00.000Z",topic:"Historical club",confirmed:true},now);
+ // The tutoring appointment is not a calendar conflict for the following day.
+ assert.ok(cls.id,JSON.stringify(cls));
+ const {enrolEnglishLearner,updateEnglishEnrolment}=await import("../src/englishClub.ts");
+ DB.raw.prepare("UPDATE support_guest_requests SET subject='English Club: Year 3' WHERE id=?").run(id);
+ const seat=await enrolEnglishLearner(DB,cls.id,{request_id:id,learner_label:"Different booked label",confirmed:true},now);
+ assert.ok(seat.id,JSON.stringify(seat));
+ assert.equal(await updateEnglishEnrolment(DB,cls.id,seat.id,{action:"invoice",invoice_reference:"SQ-legacy",issued_in_square:true,confirmed:true},now),true);
+ assert.equal(await updateEnglishEnrolment(DB,cls.id,seat.id,{action:"paid",amount_cents:1200,paid_in_square:true,paid_by_deadline:true,confirmed:true},now),true);
+ assert.equal((await clubPreparationContext(DB,cls.id,now)).learners[0].learner.id,one.learner);
+ DB.raw.prepare("UPDATE users SET email_verified_at=NULL WHERE id=?").run(one.actor.id);
+ assert.equal(await appointmentLearnerContext(DB,"guest",id,oid,now),null);
+ assert.equal((await clubPreparationContext(DB,cls.id,now)).learners[0].learner,null);
+ assert.equal((await ownerLearner(DB,one.actor.family_id,one.learner)).appointments.some(o=>o.id===oid),false);
+});
