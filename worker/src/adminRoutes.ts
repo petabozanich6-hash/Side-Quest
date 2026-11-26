@@ -1,3 +1,4 @@
+import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate} from "./clubCertificates";
 import {releaseOverdueClubPlace} from "./clubSquareOverdue";
 import {verifyClubSquarePayment} from "./clubSquareInvoiceSettlement";
 import {publishClubSquareInvoice} from "./clubSquareInvoicePublication";
@@ -1072,6 +1073,24 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",b=await readJson(c);
     if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/english-club/certificates",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await listClubCertificateCandidates(c.env);
+    return r?c.json(r):c.json({detail:"Not found"},404);
+  });
+  admin.post("/english-club/certificates/:kind/:id/approve",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"",kind=c.req.param("kind")??"";
+    const r=await approveClubCertificate(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.approve",targetType:"english_club_booking",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/certificates/:kind/:id/withdraw",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"",kind=c.req.param("kind")??"";
+    if(!await withdrawClubCertificate(c.env,kind,id,await readJson(c)))return c.json({detail:"Certificate unavailable or already withdrawn."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.withdraw",targetType:"english_club_booking",targetId:id,detail:{kind}});
+    return c.json({withdrawn:true});
   });
   admin.get("/english-club/payments",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
