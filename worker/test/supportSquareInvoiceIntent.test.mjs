@@ -1,3 +1,4 @@
+import {processSquareInvoiceNotices} from "../src/supportSquareInvoiceNotices.ts";
 import {ownerSquareInvoiceWorkspace} from "../src/supportSquareInvoiceWorkspace.ts";
 import test from "node:test";
 import assert from "node:assert/strict";
@@ -369,4 +370,47 @@ test("dispute before settlement blocks payment confirmation and preserves the fi
  assert.equal(orderStatus(),"review");
  assert.equal(await flagIssuedSupportInvoiceRefund(env,{payment_id:"PAY1",location_id:"LOCATION123",status:"PENDING"},checkTime,provider),"support invoice refund requires review");
  assert.equal(orderStatus(),"review");assert.equal(proofs().length,0);
+});
+
+test("sandbox notices require opt-in and verified recipient, deduplicate reminders and confirmation, suppress holds",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+
+ const due="2026-11-27T01:00:00.000Z",capture="2026-11-26T01:00:00.000Z",checkTime=new Date("2026-11-26T02:00:00.000Z");
+ const b={reviewed:true,customer_id:"CUST1",due_at:due};
+ const row=()=>db.raw.prepare("SELECT * FROM support_square_invoice_intents WHERE order_id='o'").get();
+ const orderStatus=()=>db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status;
+ const proofs=()=>db.raw.prepare("SELECT * FROM support_square_invoice_settlements").all();
+ let status="UNPAID",completed=0,capturedAt=capture,refunds=[],amount=2500,tenderCount=1;
+ const provider=async(url,init)=>{
+  assert.equal(init.method,"GET");
+  if(url.endsWith("/customers/CUST1"))return new Response(JSON.stringify({customer:{id:"CUST1",email_address:"test@example.com"}}));
+  if(url.endsWith("/orders/REMOTE1"))return new Response(JSON.stringify({order:{id:"REMOTE1",reference_id:row().create_order_key,location_id:"LOCATION123",customer_id:"CUST1",state:status==="UNPAID"?"OPEN":"COMPLETED",total_money:{currency:"AUD",amount:2500},tenders:Array.from({length:tenderCount},()=>({payment_id:"PAY1",amount_money:{currency:"AUD",amount:2500}}))}}));
+  if(url.endsWith("/invoices/INV1"))return new Response(JSON.stringify({invoice:{id:"INV1",version:status==="UNPAID"?1:2,location_id:"LOCATION123",order_id:"REMOTE1",status,delivery_method:"EMAIL",public_url:"https://squareupsandbox.com/pay-invoice/INV1",primary_recipient:{customer_id:"CUST1",email_address:"test@example.com"},accepted_payment_methods:JSON.parse(row().payload_json).invoice.accepted_payment_methods,payment_requests:[{request_type:"BALANCE",due_date:"2026-11-27",automatic_payment_source:"NONE",computed_amount_money:{currency:"AUD",amount:2500},total_completed_amount_money:{currency:"AUD",amount:completed}}]}}));
+  assert.ok(url.endsWith("/payments/PAY1"));
+  return new Response(JSON.stringify({payment:{id:"PAY1",order_id:"REMOTE1",location_id:"LOCATION123",customer_id:"CUST1",status:"COMPLETED",source_type:"CARD",amount_money:{currency:"AUD",amount},total_money:{currency:"AUD",amount},card_details:{status:"CAPTURED",card_payment_timeline:{captured_at:capturedAt}},refund_ids:refunds}}));
+ };
+ const p=await previewSupportInvoice(env,"member","r","o",b,provider,now);
+ assert.equal((await prepareSupportInvoiceIntent(env,"member","r","o","owner",{...b,confirmed:true,fingerprint:p.fingerprint},provider,now)).prepared,true);
+ db.raw.prepare("UPDATE support_square_invoice_intents SET state='issued',provider_order_id='REMOTE1',provider_invoice_id='INV1',provider_invoice_version=1,publish_approved_version=0,publish_attempted_at=?,provider_issued_at=?,provider_public_url='https://squareupsandbox.com/pay-invoice/INV1' WHERE order_id='o'").run(stamp,stamp);
+
+ const messages=[];
+ const sender=async(e,m)=>{messages.push(m);return true;};
+ const enabled={...env,EMAIL:{},SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"true"};
+ assert.equal((await processSquareInvoiceNotices({...enabled,SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"false"},checkTime,sender,provider)).sent,0);
+ assert.equal((await processSquareInvoiceNotices({...enabled,SUPPORT_UNIFIED_TEST_EMAIL:"other@example.com"},checkTime,sender,provider)).sent,0);
+ assert.equal((await processSquareInvoiceNotices(enabled,checkTime,sender,provider)).sent,1);
+ assert.equal(messages[0].to,"test@example.com");assert.match(messages[0].subject,/Sandbox test.*payment reminder/);
+ assert.equal((await processSquareInvoiceNotices(enabled,checkTime,sender,provider)).sent,0);
+ status="PAID";completed=2500;
+ assert.equal((await verifyIssuedSupportSquarePayment(enabled,"member","r","o",provider,checkTime)).verified,true);
+ assert.equal((await processSquareInvoiceNotices(enabled,checkTime,sender,provider)).sent,1);
+ assert.match(messages[1].subject,/booking confirmed/);assert.equal((await processSquareInvoiceNotices(enabled,checkTime,sender,provider)).sent,0);
+ assert.equal(messages.length,2);assert.ok(messages.every(m=>!m.text.includes("PRIVATE LEARNER DETAILS")));
+ assert.equal(await flagIssuedSupportInvoiceRefund(enabled,{payment_id:"PAY1",location_id:"LOCATION123",status:"PENDING"},checkTime),"support invoice refund requires review");
+ assert.equal((await processSquareInvoiceNotices(enabled,new Date("2026-11-28T00:00:00Z"),sender,provider)).sent,0);
 });
