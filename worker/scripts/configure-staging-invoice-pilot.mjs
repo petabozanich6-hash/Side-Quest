@@ -8,7 +8,7 @@ export function configureStagingInvoicePilot(config,e){
  config.d1_databases[0].binding!=="DB"||config.d1_databases[0].database_name!=="sidequest-staging"||
  config.routes?.length||config.route||config.env||config.r2_buckets?.some(b=>b.bucket_name!=="sidequest-staging-files"))
  throw Error("Refusing to configure a non-isolated staging Worker.");
- const vars={...config.vars,SUPPORT_UNIFIED_PORTAL_TEST:"false",SUPPORT_SQUARE_INVOICE_TEST:"false",SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"false"};
+ const vars={...config.vars,SUPPORT_UNIFIED_PORTAL_TEST:"false",SUPPORT_GUEST_ENABLED:"false",SUPPORT_SQUARE_INVOICE_TEST:"false",SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"false"};
  for(const key of ["SQUARE_APPLICATION_ID","SQUARE_LOCATION_ID","SQUARE_WEBHOOK_URL","SUPPORT_GUEST_ORIGIN"])delete vars[key];
  const invoice=e.ENABLE_INVOICE_PILOT==="true",portal=invoice||e.ENABLE_FAMILY_PORTAL==="true";
  const origin=(e.STAGING_ORIGIN_INPUT||e.STAGING_SUPPORT_ORIGIN||"").trim().replace(/\/$/,"");
@@ -21,7 +21,7 @@ export function configureStagingInvoicePilot(config,e){
  }
  if(portal){
   vars.SUPPORT_UNIFIED_PORTAL_TEST="true";
-  if(origin)vars.SUPPORT_GUEST_ORIGIN=origin;
+  if(origin){vars.SUPPORT_GUEST_ORIGIN=origin;vars.SUPPORT_GUEST_ENABLED="true";}
  }
  if(invoice){
   if(!origin)throw Error("Missing private staging origin.");
