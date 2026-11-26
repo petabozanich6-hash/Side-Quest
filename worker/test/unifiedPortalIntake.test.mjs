@@ -251,7 +251,7 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await moderateCollaboration(DB,owner,share,live),true);
  assert.equal(await moderateCollaboration(DB,owner,share,live),false);
  const group=await readLiveActivity(DB,b,live);
- assert.equal(group.shared_entries.length,1);assert.deepEqual(group.shared_entries[0],{id:"reviewed-story-one",position:1,body:"A mysterious map appears."});
+ assert.equal(group.shared_entries.length,1);assert.deepEqual({...group.shared_entries[0]},{id:"reviewed-story-one",position:1,body:"A mysterious map appears."});
  assert.equal("responses" in group,false);assert.ok(!JSON.stringify(group).includes("The raccoon finds a map."));
  assert.equal(await moderateCollaboration(DB,owner,{...share,action:"retract"},live),true);
  assert.deepEqual((await readLiveActivity(DB,b,live)).shared_entries,[]);
@@ -269,7 +269,7 @@ test("live activity engine isolates club learner responses and answer keys; supp
  assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,mark,live),true);
  assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,mark,live),false);
  const stored=DB.raw.prepare("SELECT response,achievement,revision FROM support_activity_evidence WHERE activity_id=? AND seat_id=?").get(collab.id,seatA);
- assert.deepEqual(stored,{response:"The raccoon finds a map.",achievement:"supported",revision:1});
+ assert.deepEqual({...stored},{response:"The raccoon finds a map.",achievement:"supported",revision:1});
  assert.equal((await readActivityEvidence(DB,"club",cid,seatB,live)).activities.find(v=>v.activity_id===collab.id).revision,null);
  assert.equal(await removeActivityEvidence(DB,"club",cid,seatB,{activity_id:collab.id,revision:1,confirmed:true},live),false);
  assert.equal(await saveActivityEvidence(DB,"club",cid,seatA,{...mark,revision:1,achievement:"independent"},live),true);
