@@ -630,6 +630,23 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,1);
  assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"paid");
  assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,settlementProvider,paidAt)).status,"verified");
+ const {processClubNotices}=await import("../src/clubPaymentSessionNotices.ts");
+ const noticeEnv={...env,SUPPORT_CLUB_NOTICE_TEST:"true",EMAIL:{}};
+ const messages=[];
+ const mail=async(e,msg)=>{messages.push(msg);return true;};
+ assert.deepEqual(await processClubNotices({...noticeEnv,SUPPORT_CLUB_NOTICE_TEST:"false"},paidAt,mail,settlementProvider),{sent:0,review:0,suppressed:0});
+ assert.equal((await processClubNotices(noticeEnv,paidAt,mail,settlementProvider)).sent,1);
+ assert.equal(messages.length,1);assert.equal(messages[0].to,one.email);
+ assert.ok(messages[0].subject.includes("confirmed"));assert.ok(messages[0].subject.startsWith("[Sandbox test]"));
+ assert.equal((await processClubNotices(noticeEnv,paidAt,mail,settlementProvider)).sent,0);
+ const upcoming=new Date("2026-12-08T07:01:00.000Z");
+ assert.equal((await processClubNotices(noticeEnv,upcoming,async(e,msg)=>{messages.push(msg);return false;},settlementProvider)).review,1);
+ assert.ok(messages[1].subject.includes("coming up"));
+ assert.equal((await processClubNotices(noticeEnv,upcoming,mail,settlementProvider)).sent,0);
+ assert.equal(messages.length,2);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_notices WHERE status='sent'").get().n,1);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_notices WHERE status='review'").get().n,1);
+
  assert.equal(await flagClubPaymentHold(env,"club-captured-payment","refund",settlementProvider,paidAt),"club invoice refund requires review");
  assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"invoiced");
  assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"review");
