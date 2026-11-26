@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import SupportSlideVisual from "./SupportSlideVisual";
 import {adminApi,errorText} from "../../lib/adminApi";
 const btn="rounded-lg border px-3 py-2 text-sm disabled:opacity-50";
-export function SlideDisplay({slide}){if(!slide)return null;return <article className="rounded-xl bg-emerald-950 text-white p-5 sm:p-8 space-y-3" aria-label="Presented slide"><p className="text-xs uppercase tracking-wider">{slide.title} · {slide.number}/{slide.total}</p><h4 className="text-xl sm:text-3xl font-bold">{slide.heading}</h4><div className="text-base sm:text-xl whitespace-pre-wrap break-words">{slide.body}</div><SupportSlideVisual key={slide.title+":"+slide.number} visual={slide.visual}/></article>;}
+export function SlideDisplay({slide,send,owner,busy}){if(!slide)return null;return <article className="rounded-xl bg-emerald-950 text-white p-5 sm:p-8 space-y-3" aria-label="Presented slide"><p className="text-xs uppercase tracking-wider">{slide.title} · {slide.number}/{slide.total}</p><h4 className="text-xl sm:text-3xl font-bold">{slide.heading}</h4><div className="text-base sm:text-xl whitespace-pre-wrap break-words">{slide.body}</div><SupportSlideVisual key={slide.interaction?.id||slide.title+":"+slide.number} visual={slide.visual} interaction={slide.interaction} send={send} owner={owner} busy={busy} live/></article>;}
 export default function SupportPresentation({send,busy}){
  const [items,setItems]=useState(null),[q,setQ]=useState(""),[deck,setDeck]=useState(null),[i,setI]=useState(0),[error,setError]=useState("");
  async function run(fn){try{await fn();setError("");}catch(e){setError(errorText(e));}}
