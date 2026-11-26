@@ -6,6 +6,15 @@ const iso=(s:unknown):s is string=>typeof s==="string"&&/^\d{4}-\d{2}-\d{2}T\d{2
 const bounded=(n:unknown):n is number=>typeof n==="number"&&Number.isInteger(n)&&n>=0&&n<=120;
 export const PACKAGE_OFFER_SCHEMA="CREATE TABLE IF NOT EXISTS support_package_offers (id TEXT PRIMARY KEY, channel TEXT NOT NULL CHECK(channel IN ('member','guest')), request_id TEXT NOT NULL, quote_id TEXT NOT NULL, learner_label TEXT NOT NULL, terms TEXT NOT NULL, payment_mode TEXT NOT NULL CHECK(payment_mode IN ('installments','upfront')), deadline_hours INTEGER NOT NULL CHECK(deadline_hours BETWEEN 1 AND 168), expires_at TEXT NOT NULL, UNIQUE(channel,quote_id))";
 async function ensurePackageOffers(db:D1Database){await db.prepare(PACKAGE_OFFER_SCHEMA).run();}
+// One calculation for parent preview and committed booking charges.
+export function packageCharges(total:number,minutes:number[],installments:boolean):number[]{
+ if(!installments)return minutes.map((_,i)=>i===0?total:0);
+ const rates:Record<number,number>={30:2500,45:3500,60:4500};
+ const standard=minutes.map(m=>rates[m]||0);
+ if(standard.every(n=>n>0)&&standard.reduce((a,b)=>a+b,0)===total)return standard;
+ const base=Math.floor(total/minutes.length),remainder=total%minutes.length;
+ return minutes.map((_,i)=>base+(i<remainder?1:0));
+}
 export async function createPackage(db:D1Database,channel:Channel,id:string,b:any,now=new Date(),offerId?:string){
  await ensureOrderSchema(db);
  const qid=typeof b?.quote_id==="string"?b.quote_id:"",label=typeof b?.learner_label==="string"?b.learner_label.trim():"",terms=typeof b?.terms==="string"?b.terms.trim():"",prep=b?.prep_minutes,wrap=b?.wrap_minutes;
@@ -29,10 +38,8 @@ export async function createPackage(db:D1Database,channel:Channel,id:string,b:an
  const q=await db.prepare("SELECT amount_cents FROM "+qt+" WHERE id=? AND "+key+"=?").bind(qid,id).first<{amount_cents:number}>();
  if(!q)return {error:"Quote unavailable."};
  if(installments&&(!Number.isInteger(lead)||lead<1||lead>168||q.amount_cents<sessions.length||sessions.some(s=>Date.parse(s.start)-lead*3600000<=now.getTime()||Date.parse(s.start)-lead*3600000>Date.parse(s.before))))return {error:"Choose a payment deadline 1–168 hours before each lesson, before preparation and in the future. Each lesson must have a positive price."};
- const base=Math.floor(q.amount_cents/sessions.length),remainder=q.amount_cents%sessions.length;
- const rates:Record<number,number>={30:2500,45:3500,60:4500};
- const standard=minutes.map(m=>rates[m]||0),matchesStandard=standard.every(n=>n>0)&&standard.reduce((a,b)=>a+b,0)===q.amount_cents;
- const charge=(i:number)=>installments?(matchesStandard?standard[i]:base+(i<remainder?1:0)):i===0?q.amount_cents:0;
+ const charges=packageCharges(q.amount_cents,minutes,installments);
+ const charge=(i:number)=>charges[i];
  // One root insert checks every requested interval. All child sessions, diary records and mappings are inserted in the same transaction.
  const sql="INSERT OR IGNORE INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,?,r.id,q.id,?,q.scope,q.delivery,?,'live',?,?,?,? FROM "+qt+" q JOIN "+rt+" r ON r.id=q."+key+" WHERE r.id=? AND q.id=? AND q.status='interested' AND q.expires_at>? AND q.amount_cents=? AND r.status NOT IN ('closed','resolved')"+tag+" AND NOT EXISTS(SELECT 1 FROM json_each(?) j WHERE EXISTS(SELECT 1 FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(json_extract(j.value,'$.after')) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(json_extract(j.value,'$.before'))) OR EXISTS(SELECT 1 FROM support_busy_blocks z WHERE z.start_at<json_extract(j.value,'$.after') AND z.end_at>json_extract(j.value,'$.before')))";
  const capacity=await bookingPolicyGuard(db,sessions);if(!capacity)return {error:"One or more lessons are outside configured hours or booking capacity."};
@@ -76,7 +83,7 @@ export async function offerPackageTimes(db:D1Database,channel:Channel,id:string,
 export async function readPackageOffer(db:D1Database,channel:Channel,id:string,qid:string,now=new Date()){
  const a=await activePackageOffer(db,channel,id,qid,now);if(!a)return null;
  const minutes=await readQuoteSchedule(db,channel,id,qid);if(!minutes||minutes.length<2||minutes.length>4)return null;
- return {id:a.id,starts:await packageStarts(db,minutes,a.payment_mode,a.deadline_hours,now),minutes:Math.max(...minutes),package_minutes:minutes,payment_mode:a.payment_mode,deadline_hours:a.deadline_hours,terms:a.terms,expires_at:a.expires_at,amount_cents:a.amount_cents,can_select:a.quote_status==="interested"};
+ return {id:a.id,starts:await packageStarts(db,minutes,a.payment_mode,a.deadline_hours,now),minutes:Math.max(...minutes),package_minutes:minutes,session_amounts_cents:packageCharges(a.amount_cents,minutes,a.payment_mode==="installments"),payment_mode:a.payment_mode,deadline_hours:a.deadline_hours,terms:a.terms,expires_at:a.expires_at,amount_cents:a.amount_cents,can_select:a.quote_status==="interested"};
 }
 export async function selectPackageOffer(db:D1Database,channel:Channel,id:string,qid:string,b:any,now=new Date()){
  const a=await activePackageOffer(db,channel,id,qid,now);
