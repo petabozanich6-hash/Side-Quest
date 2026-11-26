@@ -1,5 +1,5 @@
 import {readEnglishMaterials,downloadEnglishFile} from "./englishClubMaterials";
-import {portalEnquiryOwner,portalEnquirySchemaExists,portalRequestIdentity} from "./unifiedPortalRequestAccess";
+import {portalEnquiryOwner,portalEnquirySchemaExists,portalRequestIdentity,claimedRequestIdentity} from "./unifiedPortalRequestAccess";
 import {englishVideoState,englishVideoToken} from "./englishClubVideo";
 import {ENGLISH_CLUB_SERVICE,ENGLISH_CLUB_PREFIX,parentEnglishClasses} from "./englishClub";
 import type {App,Env} from "./types";
@@ -123,6 +123,7 @@ export function registerGuestSupport(app:App){
  const identity=async(c:any)=>{
   const id=c.req.param("id");
   if(id&&await portalEnquiryOwner(c.env.DB,id))return portalRequestIdentity(c.env,id,c.req.header("Authorization")||"");
+  if(id&&c.req.header("Authorization"))return claimedRequestIdentity(c.env,id,c.req.header("Authorization")||"");
   const token=c.req.header("X-SideQuest-Guest");if(!valid(token))return null;
   return c.env.DB.prepare("SELECT email FROM support_guest_sessions WHERE token_hash=? AND expires_at>?").bind(await digest(token),nowIso()).first() as Promise<{email:string}|null>;
  };
