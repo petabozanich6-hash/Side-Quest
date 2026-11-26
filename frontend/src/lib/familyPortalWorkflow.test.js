@@ -30,6 +30,9 @@ test("canonical classroom entry is limited to paid live sessions within their jo
  const row={id:"order",request_id:"request",kind:"tutoring",source:"portal",mode:"live",status:"paid",request_status:"reviewing",start_at:"2026-12-09T07:00:00Z",end_at:"2026-12-09T08:00:00Z"};
  const now=Date.parse("2026-12-09T07:00:00Z");
  expect(canJoinFamilySession(row,now)).toBe(true);
+ expect(canJoinFamilySession({...row,source:"member"},now)).toBe(true);
+ expect(canJoinFamilySession({...row,source:"member",kind:"club",class_id:"class"},now)).toBe(false);
+ expect(canJoinFamilySession({...row,source:"member",cancellation_pending:true},now)).toBe(false);
  expect(canJoinFamilySession(row,now-600000)).toBe(true);
  expect(canJoinFamilySession(row,now-600001)).toBe(false);
  expect(canJoinFamilySession(row,now+3600000)).toBe(false);
