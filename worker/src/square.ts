@@ -1,4 +1,4 @@
-import {reconcileSupportInvoiceEvent,flagIssuedSupportInvoiceRefund} from "./supportSquareInvoiceSettlement";
+import {reconcileSupportInvoiceEvent,flagIssuedSupportInvoiceRefund,flagIssuedSupportInvoiceDispute} from "./supportSquareInvoiceSettlement";
 // Square payments: hosted checkout (Payment Links) and signed webhooks.
 //
 // Security model (same as Stripe's):
@@ -123,12 +123,16 @@ export async function handleSquareEvent(db: DB, cfg: Extract<SquareConfig, { ok:
     if (!id) return "invoice without subscription";
     return markPastDue(db, id, now);
   }
+  if(type==="dispute.created"||type==="dispute.state.updated"){
+    if(!shop?.env||cfg.production)return "ignored dispute outside support sandbox";
+    return (await flagIssuedSupportInvoiceDispute(shop.env,obj.dispute?.id||event?.data?.id,fetchImpl,now))??"ignored non-support dispute";
+  }
   if(type==="refund.created"||type==="refund.updated"){
     const id=String(obj.refund?.id||event?.data?.id||"");
     if(!id)return "refund without id";
     const refund=(await squareCall(cfg,"GET","refunds/"+encodeURIComponent(id),undefined,fetchImpl))?.refund;
     if(shop?.env&&!cfg.production){
-      const outcome=await flagIssuedSupportInvoiceRefund(shop.env,refund,now);
+      const outcome=await flagIssuedSupportInvoiceRefund(shop.env,refund,now,fetchImpl);
       if(outcome!==null)return outcome;
     }
     return (await flagSupportRefund(db,refund,cfg.locationId,now))??"ignored non-support refund";
