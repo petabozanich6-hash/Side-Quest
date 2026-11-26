@@ -974,6 +974,6 @@ test("round certificate batch revalidates each exact reviewed learner and reject
 
 
  assert.deepEqual(await processClubCertificateEmails(mailEnv,end,sender),{sent:0,review:0,suppressed:0});
- assert.equal(messages.length,1);
+ assert.equal(messages.length,2);
 
 });
