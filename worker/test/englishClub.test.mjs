@@ -79,12 +79,27 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  assert.deepEqual(STORY_QUEST.sessions.map(s=>s.title),["The Power of Words","Between the Lines","The Human Condition","The Art of Storytelling","Words That Challenge the World","From Idea to Impact"]);
  for(const s of STORY_QUEST.sessions){assert.equal(s.agenda.length,7);assert.equal(s.activities.length,2);assert.ok(s.support.includes("extension:"));}
  for(const s of STORY_QUEST.sessions)for(const a of s.activities)assert.ok(validateActivityTemplate({...a,subject:"English",year_level:"Mixed levels"}));
- const body={curriculum_id:STORY_QUEST.id,title:STORY_QUEST.title,description:STORY_QUEST.description,first_local:"2026-12-09T18:00",session_count:6,themes:STORY_QUEST.sessions.map(s=>s.title),confirmed:true};
+ const body={curriculum_id:STORY_QUEST.id,reviewed_activities:true,title:STORY_QUEST.title,description:STORY_QUEST.description,first_local:"2026-12-09T18:00",session_count:6,themes:STORY_QUEST.sessions.map(s=>s.title),confirmed:true};
  assert.ok((await createEnglishRound(db,"owner",{...body,themes:body.themes.map((v,i)=>i===0?"Changed":v)},now)).error);
+ assert.ok((await createEnglishRound(db,"owner",{...body,reviewed_activities:false},now)).error);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,0);
  const result=await createEnglishRound(db,"owner",body,now);assert.ok(result.id,JSON.stringify(result));
- const rows=db.raw.prepare("SELECT c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
+ const rows=db.raw.prepare("SELECT c.id,c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
  assert.equal(rows.length,6);
  rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
+ const {readActivityPlan}=await import("../src/supportActivityPlans.ts");
+ const {getActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ for(const [i,r] of rows.entries()){
+  const p=await readActivityPlan(db,"club",r.id);assert.equal(p.items.length,2);
+  for(const [j,item] of p.items.entries()){
+   assert.equal(item.ready,true);assert.equal(item.revision,1);
+   const a=await getActivityTemplate(db,item.template_id),expected=STORY_QUEST.sessions[i].activities[j];
+   assert.equal(a.question,expected.question);assert.equal(a.type,expected.type);assert.equal(a.status,"reviewed");
+  }
+ }
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,12);
+ assert.ok((await createEnglishRound(db,"owner",body,now)).error);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,12);
  assert.equal((await listEnglishRounds(db,true,now)).length,0);
  assert.equal(await setEnglishRoundPublished(db,result.id,{published:true,confirmed:true},now),true);
  const rounds=await listEnglishRounds(db,true,now),singles=await listEnglishSingleClasses(db,now);
