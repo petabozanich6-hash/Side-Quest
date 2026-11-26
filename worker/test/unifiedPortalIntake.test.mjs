@@ -646,6 +646,26 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.equal(messages.length,2);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_notices WHERE status='sent'").get().n,1);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_notices WHERE status='review'").get().n,1);
+ const {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate}=await import("../src/clubCertificates.ts");
+ const finished=new Date("2026-12-09T08:01:00.000Z");
+ const selectCertificate=async at=>(await listClubCertificateCandidates(env,at)).items.find(v=>v.booking_id===s.booking_id);
+ const pendingCert=await selectCertificate(paidAt);
+ assert.equal(pendingCert.eligible,0);assert.equal(pendingCert.eligibility,"awaiting_completion");
+ const certificateArgs={confirmed:true,learner_name:pendingCert.learner_label,title:pendingCert.title,expected_count:1,delivery:pendingCert.certificate_delivery,completed_at:pendingCert.last_end_at};
+ assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,paidAt)).error);
+ assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).error);
+ DB.raw.prepare("UPDATE support_english_enrolments SET attendance='present' WHERE request_id=?").run(s.id);
+ assert.equal((await selectCertificate(finished)).eligible,1);
+ assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,{...certificateArgs,learner_name:"Wrong name"},finished)).error);
+ const certificate=await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished);
+ assert.equal(certificate.approved,true);
+ assert.equal((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).id,certificate.id);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_certificates").get().n,1);
+ assert.equal((await listClubCertificateCandidates(env,finished)).items.find(v=>v.booking_id===u.obligation_id)?.eligible??0,0);
+ assert.equal(await withdrawClubCertificate(env,"single",s.booking_id,{confirmed:false,certificate_id:certificate.id},finished),false);
+ assert.equal(await withdrawClubCertificate(env,"single",s.booking_id,{confirmed:true,certificate_id:certificate.id},finished),true);
+ assert.ok((await approveClubCertificate(env,"single",s.booking_id,one.actor.id,certificateArgs,finished)).error);
+
 
  assert.equal(await flagClubPaymentHold(env,"club-captured-payment","refund",settlementProvider,paidAt),"club invoice refund requires review");
  assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"invoiced");
