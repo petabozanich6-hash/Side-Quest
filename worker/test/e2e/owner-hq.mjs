@@ -226,10 +226,14 @@ await step("Learning Support month planner navigates future months, preserves pr
  await month.fill(target);
  await page.locator('button[aria-label^="'+target+'-15,"]').click();
  const date=target+"-15",end=target+"-17";
+ await page.waitForURL(u=>u.searchParams.get("calendar_page")==="day");
+ ok(await calendar.count()===0,"month grid remains mounted on selected day");
  const section=page.locator('details').filter({hasText:"Plan around commitments / block time"});
  await section.locator('input[type="date"]').nth(1).fill(end);
  await section.getByRole("textbox",{name:"Private label"}).fill("Synthetic private commitment");
  await section.getByRole("button",{name:"Reserve unavailable time"}).click();
+ await page.getByText("Synthetic private commitment · Unavailable",{exact:true}).waitFor();
+ await page.getByRole("link",{name:"← Monthly calendar"}).click();
  await calendar.locator('button[aria-label^="'+date+',"]').filter({hasText:"Blocked"}).waitFor({timeout:15000});
  await calendar.locator('button[aria-label^="'+end+',"]').filter({hasText:"Blocked"}).waitFor();
  await page.setViewportSize({width:375,height:812});
@@ -242,6 +246,8 @@ await step("Learning Support month planner navigates future months, preserves pr
  await page.getByText("Synthetic private commitment · Unavailable",{exact:true}).waitFor();
  page.once("dialog",d=>d.accept());
  await page.getByRole("button",{name:"Remove block",exact:true}).click();
+ await page.getByText("No appointments or blocked times recorded for this day.",{exact:true}).waitFor();
+ await page.getByRole("link",{name:"← Monthly calendar"}).click();
  await calendar.locator('button[aria-label^="'+date+', 0 appointments, 0 blocks"]').waitFor({timeout:15000});
 });
 
