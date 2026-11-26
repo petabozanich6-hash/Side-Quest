@@ -20,7 +20,7 @@ export function validCertificateJpeg(b:Uint8Array){
  }
  return false;
 }
-async function hash(b:Uint8Array){return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",b)),v=>v.toString(16).padStart(2,"0")).join("");}
+async function hash(b:Uint8Array){return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",new Uint8Array(b).buffer)),v=>v.toString(16).padStart(2,"0")).join("");}
 export async function signedTemplateStatus(e:Env){
  if(!unifiedPortalPilot(e))return null;
  const row=await e.DB.prepare("SELECT t.id,t.created_at FROM support_club_certificate_template_active a JOIN support_club_certificate_templates t ON t.id=a.template_id WHERE a.singleton=1").first();
@@ -62,7 +62,7 @@ export function buildSignedClubCertificate(row:{id:string;learner_name:string;ti
   return "0.10 0.21 0.12 rg BT /"+font+" "+safe.toFixed(2)+" Tf "+x.toFixed(2)+" "+y(cy).toFixed(2)+" Td ("+pdfText(s)+") Tj ET";
  };
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",day:"numeric",month:"long",year:"numeric"}).format(new Date(row.completed_at));
- const stream=["q "+W+" 0 0 "+(1024*scale).toFixed(3)+" 0 "+offset.toFixed(3)+" cm /Artwork Do Q",center(row.learner_name,790,440,650,33,"B"),center(row.title,790,626,500,23,"B"),center(date,647,892,235,12,"R"),center("Certificate "+row.id,768,1014,450,6,"R")].join("\n");
+ const stream=["q "+W+" 0 0 "+(1024*scale).toFixed(3)+" 0 "+offset.toFixed(3)+" cm /Artwork Do Q",center(row.learner_name,790,440,650,33,"B"),center(row.title,790,626,500,23,"B"),center(date,647,892,235,12,"R"),"0.12 0.23 0.18 rg BT /R 6 Tf 280 5 Td ("+pdfText("Certificate "+row.id)+") Tj ET"].join("\n");
  const objects=[enc("<< /Type /Catalog /Pages 2 0 R >>"),enc("<< /Type /Pages /Kids [5 0 R] /Count 1 >>"),enc("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"),enc("<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>"),enc("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /Font << /R 3 0 R /B 4 0 R >> /XObject << /Artwork 7 0 R >> >> /Contents 6 0 R >>"),enc("<< /Length "+enc(stream).length+" >>\nstream\n"+stream+"\nendstream"),join([enc("<< /Type /XObject /Subtype /Image /Width 1536 /Height 1024 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+image.length+" >>\nstream\n"),image,enc("\nendstream")])];
  const parts=[enc("%PDF-1.4\n")],offsets=[0];let at=parts[0].length;
  objects.forEach((o,i)=>{offsets.push(at);const block=join([enc((i+1)+" 0 obj\n"),o,enc("\nendobj\n")]);parts.push(block);at+=block.length;});
