@@ -1,3 +1,4 @@
+import {registerFamilyClubClassroomAccess} from "./clubClassroomAccess";
 import {registerFamilyClubPostal} from "./clubCertificatePostal";
 import {processClubCertificateEmails} from "./clubCertificateEmail";
 import {registerFamilyClubCertificates} from "./clubCertificateDelivery";
@@ -417,6 +418,7 @@ registerFamilyOverview(app,guards);
 registerFamilySquareInvoices(app,guards);
 registerFamilyClubInvoices(app,guards);
 registerFamilyClubCertificates(app,guards);
+registerFamilyClubClassroomAccess(app,guards);
 registerFamilyClubPostal(app,guards);
 registerPublicAvailability(app);
 registerAnnouncementPreferences(app, guards);
