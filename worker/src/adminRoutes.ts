@@ -1,7 +1,7 @@
 import {readActivityPlan,saveActivityPlan} from "./supportActivityPlans";
 import {activityAiEnabled,draftActivities} from "./supportActivityDrafts";
 import {listActivityTemplates,getActivityTemplate,saveActivityTemplate,archiveActivityTemplate} from "./supportActivityLibrary";
-import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity} from "./supportLiveActivities";
+import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity,moderateCollaboration} from "./supportLiveActivities";
 import {resolveFullyRefundedSupportInvoice} from "./supportSquareInvoiceResolution";
 import {releaseVerifiedUnpaidSquareInvoice} from "./supportSquareInvoiceReview";
 import {verifyIssuedSupportSquarePayment} from "./supportSquareInvoiceSettlement";
@@ -1011,7 +1011,7 @@ export function createAdminRoutes() {
     if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
     const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
     const sessionId=c.req.param("session")??"", access={kind:kind as "club"|"tutoring",sessionId,owner:true as const},b=await readJson(c);
-    const ok=b.action==="launch"?await launchLiveActivity(c.env.DB,access,b):b.action==="end"?await endLiveActivity(c.env.DB,access,b):false;
+    const ok=b.action==="launch"?await launchLiveActivity(c.env.DB,access,b):b.action==="end"?await endLiveActivity(c.env.DB,access,b):b.action==="share"||b.action==="retract"?await moderateCollaboration(c.env.DB,access,b):false;
     if(!ok)return c.json({detail:"The activity or classroom changed. Refresh and check your activity."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.activity."+b.action,targetType:"support_session",targetId:sessionId,detail:{kind}});
     return c.json({ok:true});
