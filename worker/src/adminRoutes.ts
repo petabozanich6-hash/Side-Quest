@@ -1,3 +1,4 @@
+import {listPostalCertificates,ownerPostalCertificate,advancePostalCertificate} from "./clubCertificatePostal";
 import {signedTemplateStatus,saveSignedTemplate} from "./clubSignedCertificate";
 import {ownerClubCertificatePdf} from "./clubCertificateDelivery";
 import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate,approveClubCertificateBatch} from "./clubCertificates";
@@ -1097,6 +1098,22 @@ export function createAdminRoutes() {
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.batch_approve",targetType:"english_club_round",targetId:String(b.round_id),detail:{approved:r.approved,review:r.review}});
     return c.json(r);
+  });
+  admin.get("/english-club/certificate-postal",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await listPostalCertificates(c.env,c.get("user").id);
+    return r?c.json(r):c.json({detail:"Not found"},404);
+  });
+  admin.get("/english-club/certificate-postal/:id",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await ownerPostalCertificate(c.env,c.get("user").id,c.req.param("id")??"");
+    return r?c.json(r):c.json({detail:"Postal certificate unavailable"},404);
+  });
+  admin.post("/english-club/certificate-postal/:id",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"",b=await readJson(c);
+    if(!await advancePostalCertificate(c.env,c.get("user").id,id,b))return c.json({detail:"Certificate or confirmed address changed. Refresh before continuing."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.postal_"+String(b.action),targetType:"club_certificate",targetId:id,detail:{}});
+    return c.json({saved:true});
   });
   admin.get("/english-club/certificates",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
