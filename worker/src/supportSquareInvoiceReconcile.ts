@@ -74,6 +74,35 @@ export async function inspectPreparedSupportSquareInvoice(
  const versionMatches=i.provider_invoice_version===null||remoteInvoice.version===i.provider_invoice_version;
  return {matched:true,provider_order_id:order,order_open:orderOpen,invoice_checked:true,provider_invoice_id:invoice,
   version:remoteInvoice.version,status,amount_cents:i.amount_cents,completed_cents:completed,due_at:i.due_at,
-  draft_matches:draftSafe&&versionMatches,can_recover_draft:workspace.eligible&&i.state==="invoice_pending"&&i.provider_order_id===order&&!i.provider_invoice_id&&draftSafe,
+  draft_matches:draftSafe&&versionMatches,can_recover_draft:workspace.eligible&&i.state==="invoice_pending"&&i.provider_order_id===order&&!i.provider_invoice_id&&draftSafe&&remoteInvoice.version===0,
   requires_review:!draftSafe||!versionMatches||!workspace.eligible,checked_at:now.toISOString()};
+}
+
+// Recover a lost response by linking only a freshly verified candidate.
+// This writes local metadata only; it does not create, publish or settle anything.
+export async function recoverPreparedSupportSquareRecord(
+ env:Env,channel:Channel,requestId:string,orderId:string,body:unknown,fetchImpl?:Fetch,now=new Date()
+){
+ const b=body as Record<string,unknown>|null;
+ if(!b||b.recovery_confirmed!==true)return {error:"Explicitly approve linking the verified remote record."};
+ const result=await inspectPreparedSupportSquareInvoice(env,channel,requestId,orderId,b,fetchImpl,now);
+ if("error" in result)return {error:result.error};
+ const orderRecovery=result.can_recover_order===true,draftRecovery=result.can_recover_draft===true;
+ if(!orderRecovery&&!draftRecovery)return {error:"The remote record is not safe to recover automatically."};
+ const state=orderRecovery?"order_pending":"invoice_pending",next=orderRecovery?"order_created":"draft_created";
+ // Do not change a record once another action has changed the booking or ledger.
+ const r=await env.DB.prepare(`UPDATE support_square_invoice_intents SET state=?,provider_order_id=?,
+ provider_invoice_id=?,provider_invoice_version=?,updated_at=?
+ WHERE order_id=? AND fingerprint=? AND state=? AND provider_invoice_id IS NULL
+ AND provider_invoice_version IS NULL AND (
+  (?='order_pending' AND provider_order_id IS NULL AND order_attempted_at IS NOT NULL)
+  OR (?='invoice_pending' AND provider_order_id=? AND invoice_attempted_at IS NOT NULL))
+ AND EXISTS(SELECT 1 FROM support_service_orders s WHERE s.id=support_square_invoice_intents.order_id
+  AND s.channel=? AND s.request_id=? AND s.status='confirmed' AND s.updated_at=support_square_invoice_intents.order_updated_at
+  AND s.amount_cents=support_square_invoice_intents.amount_cents AND s.checkout_started_at IS NULL AND s.square_order_id IS NULL)
+ AND NOT EXISTS(SELECT 1 FROM support_manual_invoices m WHERE m.order_id=support_square_invoice_intents.order_id)
+ AND NOT EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=support_square_invoice_intents.order_id AND c.status='pending')`)
+ .bind(next,result.provider_order_id,draftRecovery?result.provider_invoice_id:null,draftRecovery?result.version:null,now.toISOString(),
+ orderId,b.fingerprint,state,state,state,result.provider_order_id,channel,requestId).run();
+ return r.meta?.changes===1?{recovered:true,state:next,published:false}:{error:"The saved arrangement changed. Reload and reconcile before continuing."};
 }
