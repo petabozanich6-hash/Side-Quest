@@ -49,7 +49,7 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
  }
  async function action(name,details){
   if(lock.current)return;lock.current=true;setBusy(true);setError("");setApproved(false);setChecked(null);
-  try{const result=await adminApi.post("/support-invoice-workspace/"+name,{...context,...details,confirmed:true});if(live.current){setPreview(null);setReview(false);if(name==="verify-payment")setError(result.verified?"Payment verified. Booking confirmed.":result.status==="unpaid"?"Payment is still outstanding.":"Payment needs review; booking not newly confirmed.");}}
+  try{const result=await adminApi.post("/support-invoice-workspace/"+name,{...context,...details,confirmed:true});if(live.current){setPreview(null);setReview(false);if(name==="release-unpaid")setError("Cancellation verified; reservation released.");if(name==="verify-payment")setError(result.verified?"Payment verified. Booking confirmed.":result.status==="unpaid"?"Payment is still outstanding.":"Payment needs review; booking not newly confirmed.");}}
   catch(e){if(live.current)setError(errorText(e,"Invoice action could not be confirmed. Check the saved status before retrying."));}
   finally{await load();lock.current=false;if(live.current)setBusy(false);}
  }
@@ -105,9 +105,11 @@ function InvoicePage({channel,requestId,orderId,apiPath,from}){
      <label className="flex gap-2"><input type="checkbox" checked={approved} disabled={busy} onChange={e=>setApproved(e.target.checked)}/>I approve issuing or recovering this exact Square sandbox invoice for the verified test recipient.</label>
      <button className={button} disabled={busy||!approved} onClick={()=>action("publish",{fingerprint:i.fingerprint,provider_invoice_id:checked.provider_invoice_id,version:i.state==="publish_pending"?i.publish_approved_version:checked.version,issue_confirmed:true})}>{i.state==="draft_created"?"Approve and issue sandbox invoice":checked.issued_matches?"Record verified issue":"Retry same issue operation"}</button>
     </div>}
+     {i.state==="issued"&&o.status==="confirmed"&&checked.status==="CANCELED"&&checked.completed_cents===0&&<div className="border-t pt-2 space-y-2"><p>Square reports the invoice cancelled with no completed payment. The server will check the associated order again before releasing an overdue reservation or an agreed cancellation.</p><button className="rounded-lg border border-rose-800 text-rose-800 px-3 py-2" disabled={busy} onClick={()=>{if(window.confirm("Confirm this unpaid invoice was cancelled in Square, the parent has been notified, and you want to release the reserved time?"))action("release-unpaid",{fingerprint:i.fingerprint,cancelled_in_square:true,parent_notified:true});}}>Verify cancellation and release reservation</button></div>}
      {(checked.can_recover_order||checked.can_recover_draft)&&<button className={button} disabled={busy} onClick={()=>{if(window.confirm("Link this freshly matched sandbox record to the existing preparation? This will not issue an invoice."))action("recover",{fingerprint:i.fingerprint,recovery_confirmed:true,provider_order_id:checked.provider_order_id,...(checked.invoice_checked?{provider_invoice_id:checked.provider_invoice_id}:{})});}}>Recover matched record</button>}
     </div>}
    </div>}
+   {i.state==="issued"&&o.status==="confirmed"&&<p className="text-sm">If an overdue or parent-requested cancellation is agreed, cancel the unpaid invoice in Square first, notify the parent, then check the saved record here. Do not release a partial or uncertain payment.</p>}
    {i.state==="issued"&&<button className={button} disabled={busy} onClick={()=>action("verify-payment",{fingerprint:i.fingerprint})}>Check and verify payment</button>}
    <button className="block underline text-sm" disabled={busy} onClick={()=>{setApproved(false);setChecked(null);load();}}>Reload saved status</button>
   </div>}
