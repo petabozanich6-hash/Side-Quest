@@ -17,9 +17,11 @@ export async function readEnglishMaterials(e:Env,cid:string,parent?:Parent,now=n
  if(!c||parent&&!await paid(e.DB,cid,parent))return null;
  const a=await e.DB.prepare("SELECT prompts,fallback_url,fallback_open FROM support_english_materials WHERE class_id=?").bind(cid).first<{prompts:string;fallback_url:string;fallback_open:number}>();
  const files=(await e.DB.prepare("SELECT f.id,f.title,f.filename,f.mime,f.size_bytes FROM support_english_file_grants g JOIN support_files f ON f.id=g.file_id WHERE g.class_id=? AND f.status='active' AND f.audience='learner' ORDER BY f.title LIMIT 30").bind(cid).all()).results||[];
+ const resource=await e.DB.prepare("SELECT resource_json FROM support_english_workshop_resources WHERE class_id=?").bind(cid).first<{resource_json:string}>();
+ const workshop=resource?JSON.parse(resource.resource_json):null;
  const inWindow=now.getTime()>=Date.parse(c.start_at)-10*60000&&now.getTime()<Date.parse(c.end_at);
  const fallback=fallbackEnabled(e)&&inWindow&&a?.fallback_open===1?safeClubFallback(a.fallback_url):null;
- return {prompts:a?.prompts||"",files,...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
+ return {prompts:a?.prompts||"",files,workshop,...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
 }
 export async function saveEnglishMaterials(e:Env,cid:string,b:any,now=new Date()){
  await ensure(e.DB);if(b?.confirmed!==true||typeof b.prompts!=="string"||b.prompts.length>6000||typeof b.fallback_url!=="string"||typeof b.fallback_open!=="boolean")return false;

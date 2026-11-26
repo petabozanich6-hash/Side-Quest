@@ -87,6 +87,14 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  const rows=db.raw.prepare("SELECT c.id,c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
  assert.equal(rows.length,6);
  rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
+ const {workshopResource}=await import("../src/englishClubWorkshopResources.ts");
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_workshop_resources").get().n,6);
+ for(const [i,r] of rows.entries()){
+  const v=await readEnglishMaterials({DB:db},r.id,undefined,now);
+  assert.deepEqual(v.workshop,workshopResource(i));assert.equal(v.workshop.slides.length,8);assert.equal(v.workshop.tasks.length,3);
+  assert.equal(await readEnglishMaterials({DB:db},r.id,{requestId:"unknown",email:"unknown@example.com"},now),null);
+  assert.ok(!JSON.stringify(v.workshop).includes("60-minute facilitator plan"));
+ }
  const {readActivityPlan}=await import("../src/supportActivityPlans.ts");
  const {getActivityTemplate}=await import("../src/supportActivityLibrary.ts");
  for(const [i,r] of rows.entries()){
@@ -100,6 +108,7 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,12);
  assert.ok((await createEnglishRound(db,"owner",body,now)).error);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,12);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_workshop_resources").get().n,6);
  assert.equal((await listEnglishRounds(db,true,now)).length,0);
  assert.equal(await setEnglishRoundPublished(db,result.id,{published:true,confirmed:true},now),true);
  const rounds=await listEnglishRounds(db,true,now),singles=await listEnglishSingleClasses(db,now);
