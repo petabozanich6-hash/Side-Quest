@@ -54,7 +54,7 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   if(!deck||deck.status!=="reviewed"||deck.revision!==b.deck_revision||b.index<0||b.index>=deck.slides.length)return {error:"Only current, reviewed resources can be presented."};
   const s=deck.slides[b.index];
   board.image=null;
-  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length};
+  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length,...(s.visual?{visual:s.visual}:{})};
  }
  else return {error:"This board action is not available."};
  const json=JSON.stringify(board);if(json.length>220000)return {error:"Board is full."};
