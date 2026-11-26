@@ -79,3 +79,20 @@ export async function reconcileSupportInvoiceEvent(env:Env,invoiceId:string|null
  if(result.status==="retry")throw Error("Invoice payment verification temporarily unavailable");
  return result.verified?"support invoice payment verified":"support invoice payment requires review";
 }
+
+// Refund events are already retrieved from Square by the signed webhook handler.
+// A refund never releases a lesson automatically; it flags the proof and booking for review.
+export async function flagIssuedSupportInvoiceRefund(env:Env,refund:any,now=new Date()):Promise<string|null>{
+ if(!supportInvoiceLookupAvailable(env)||!idOk(refund?.payment_id))return null;
+ const cfg=squareConfig(env);if(!cfg.ok||cfg.production||refund.location_id!==cfg.locationId)return null;
+ if(!await env.DB.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='support_square_invoice_settlements'").first())return null;
+ const row=await env.DB.prepare("SELECT p.order_id FROM support_square_invoice_settlements p JOIN support_square_invoice_intents i ON i.order_id=p.order_id WHERE p.payment_id=? AND i.location_id=?").bind(refund.payment_id,cfg.locationId).first<any>();
+ if(!row)return null;
+ if(!["PENDING","COMPLETED","REJECTED","FAILED"].includes(refund.status))return "support invoice refund requires review";
+ const stamp=now.toISOString();
+ await env.DB.batch([
+  env.DB.prepare("UPDATE support_square_invoice_settlements SET review_at=COALESCE(review_at,?) WHERE order_id=?").bind(stamp,row.order_id),
+  env.DB.prepare("UPDATE support_service_orders SET status='review',updated_at=? WHERE id=? AND status IN ('paid','completed','confirmed')").bind(stamp,row.order_id)
+ ]);
+ return "support invoice refund requires review";
+}
