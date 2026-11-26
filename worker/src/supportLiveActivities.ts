@@ -26,7 +26,7 @@ async function scope(db:D1Database,a:Access,now:Date):Promise<Query|null>{
 export async function readLiveActivity(db:D1Database,a:Access,now=new Date()){
  const s=await scope(db,a,now);if(!s)return null;
  const seat=await db.prepare(s.sql).bind(...s.args).first<{seat_id:string}>();if(!seat)return null;
- const row=await db.prepare("SELECT id,question,activity_type,options_json,answer_key,state,game_json FROM support_live_activities WHERE kind=? AND session_id=? AND state<>'closed' AND EXISTS("+s.sql+")").bind(a.kind,a.sessionId,...s.args).first<any>();
+ const row=await db.prepare("SELECT id,question,activity_type,options_json,answer_key,state,game_json,collaborative FROM support_live_activities WHERE kind=? AND session_id=? AND state<>'closed' AND EXISTS("+s.sql+")").bind(a.kind,a.sessionId,...s.args).first<any>();
  if(!row)return {activity:null};
  const responses=a.owner?(await db.prepare("SELECT seat_id,response,updated_at FROM support_live_activity_responses WHERE activity_id=? AND EXISTS("+s.sql+") ORDER BY updated_at,seat_id LIMIT 8").bind(row.id,...s.args).all()).results||[]:undefined;
  const since=new Date(now.getTime()-10*60000).toISOString();
@@ -35,7 +35,8 @@ export async function readLiveActivity(db:D1Database,a:Access,now=new Date()){
  const ownSignal=a.owner?null:await db.prepare("SELECT signal FROM support_live_activity_signals WHERE activity_id=? AND seat_id=? AND signal<>'clear' AND updated_at>=? AND EXISTS("+s.sql+")").bind(row.id,seat.seat_id,since,...s.args).first<{signal:string}>();
  const own=a.owner?null:await db.prepare("SELECT response FROM support_live_activity_responses WHERE activity_id=? AND seat_id=? AND EXISTS("+s.sql+")").bind(row.id,seat.seat_id,...s.args).first<{response:string}>();
  const game=row.game_json?JSON.parse(row.game_json):null;
- return {activity:{id:row.id,question:row.question,type:game?.type||row.activity_type,game,options:JSON.parse(row.options_json),state:row.state,answer_key:a.owner||row.state==="revealed"?row.answer_key:null},...(a.owner?{responses,signals}:{response:own?.response??null,signal:ownSignal?.signal??null})};
+ const shared=row.collaborative===1?(await db.prepare("SELECT id,position,body FROM support_live_collaboration_entries WHERE activity_id=? AND EXISTS(SELECT 1 FROM support_live_activities WHERE id=? AND state<>'closed') AND EXISTS("+s.sql+") ORDER BY position LIMIT 20").bind(row.id,row.id,...s.args).all()).results||[]:undefined;
+ return {activity:{id:row.id,question:row.question,type:row.collaborative===1?"collaboration":game?.type||row.activity_type,game,options:JSON.parse(row.options_json),state:row.state,answer_key:a.owner||row.state==="revealed"?row.answer_key:null},...(row.collaborative===1?{shared_entries:shared}:{}),...(a.owner?{responses,signals}:{response:own?.response??null,signal:ownSignal?.signal??null})};
 }
 export async function launchLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
  if(!a.owner||b?.confirmed!==true)return false;
@@ -45,11 +46,11 @@ export async function launchLiveActivity(db:D1Database,a:Access,b:any,now=new Da
   if(b.template_id!==undefined){
    const template=safe(b.template_id,100);
    if(!template||!Number.isInteger(b.template_revision))return false;
-   const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at,game_json) SELECT ?,?,?,question,activity_type,options_json,answer_key,?,game_json FROM support_activity_templates WHERE id=? AND revision=? AND status='reviewed' AND EXISTS("+s.sql+")").bind(id,a.kind,a.sessionId,at,template,b.template_revision,...s.args).run();
+   const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at,game_json,collaborative) SELECT ?,?,?,question,activity_type,options_json,answer_key,?,game_json,collaborative FROM support_activity_templates WHERE id=? AND revision=? AND status='reviewed' AND EXISTS("+s.sql+")").bind(id,a.kind,a.sessionId,at,template,b.template_revision,...s.args).run();
    return !!r.meta?.changes;
   }
   const v=validateActivityQuestion(b);if(!v)return false;
-  const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at,game_json) SELECT ?,?,?,?,?,?,?,?,? WHERE EXISTS("+s.sql+")").bind(id,a.kind,a.sessionId,v.question,v.type,JSON.stringify(v.options),v.answer_key,at,v.game?JSON.stringify(v.game):null,...s.args).run();return !!r.meta?.changes;
+  const r=await db.prepare("INSERT INTO support_live_activities(id,kind,session_id,question,activity_type,options_json,answer_key,created_at,game_json,collaborative) SELECT ?,?,?,?,?,?,?,?,?,? WHERE EXISTS("+s.sql+")").bind(id,a.kind,a.sessionId,v.question,v.type,JSON.stringify(v.options),v.answer_key,at,v.game?JSON.stringify(v.game):null,v.collaborative,...s.args).run();return !!r.meta?.changes;
  }catch{return false;}
 }
 export async function respondLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
@@ -69,6 +70,24 @@ export async function signalLiveActivity(db:D1Database,a:Access,b:any,now=new Da
  const s=await scope(db,a,now);if(!s)return false;
  const r=await db.prepare("INSERT INTO support_live_activity_signals(activity_id,seat_id,signal,updated_at) SELECT ?,seat_id,?,? FROM ("+s.sql+") WHERE EXISTS(SELECT 1 FROM support_live_activities WHERE id=? AND kind=? AND session_id=? AND state<>'closed') ON CONFLICT(activity_id,seat_id) DO UPDATE SET signal=excluded.signal,updated_at=excluded.updated_at").bind(b.activity_id,b.signal,now.toISOString(),...s.args,b.activity_id,a.kind,a.sessionId).run();
  return !!r.meta?.changes;
+}
+// Only a tutor may explicitly publish edited, de-identified text; private learner responses never become public automatically.
+export async function moderateCollaboration(db:D1Database,a:Access,b:any,now=new Date()){
+ if(!a.owner||b?.confirmed!==true||!safe(b.activity_id,100))return false;
+ const s=await scope(db,a,now);if(!s)return false;
+ const guard="EXISTS(SELECT 1 FROM support_live_activities WHERE id=? AND kind=? AND session_id=? AND collaborative=1 AND state<>'closed') AND EXISTS("+s.sql+")";
+ const args=[b.activity_id,a.kind,a.sessionId,...s.args];
+ if(b.action==="share"){
+  const body=safe(b.body,500),id=safe(b.entry_id,100);if(!body||!id)return false;
+  // Entry ID is generated once per publication attempt; retry cannot append a duplicate.
+  const r=await db.prepare("INSERT OR IGNORE INTO support_live_collaboration_entries(id,activity_id,position,body,created_at) SELECT ?,?,COALESCE((SELECT MAX(position) FROM support_live_collaboration_entries WHERE activity_id=?),0)+1,?,? WHERE "+guard+" AND COALESCE((SELECT MAX(position) FROM support_live_collaboration_entries WHERE activity_id=?),0)<20").bind(id,b.activity_id,b.activity_id,body,now.toISOString(),...args,b.activity_id).run();
+  return !!r.meta?.changes;
+ }
+ if(b.action==="retract"&&safe(b.entry_id,100)){
+  const r=await db.prepare("DELETE FROM support_live_collaboration_entries WHERE id=? AND activity_id=? AND "+guard).bind(b.entry_id,b.activity_id,...args).run();
+  return !!r.meta?.changes;
+ }
+ return false;
 }
 export async function endLiveActivity(db:D1Database,a:Access,b:any,now=new Date()){
  if(!a.owner||b?.confirmed!==true||!safe(b.activity_id,100)||!["revealed","closed"].includes(b.state))return false;
