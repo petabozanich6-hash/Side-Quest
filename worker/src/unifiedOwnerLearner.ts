@@ -24,22 +24,31 @@ const legacyGuard=`u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' A
 async function linkedLegacyIdentity(db:D1Database,requestId:string){
  return db.prepare(`SELECT lp.family_id,lp.id learner_id FROM support_guest_requests r ${legacyJoins} WHERE r.id=? AND ${legacyGuard}`).bind(requestId).first<{family_id:string;learner_id:string}>();
 }
+const memberJoins=`JOIN support_portal_member_learners m ON m.request_id=r.id AND m.parent_user_id=r.user_id
+ JOIN support_portal_learners lp ON lp.id=m.learner_id AND lp.family_id=r.family_id
+ JOIN users u ON u.id=r.user_id AND u.family_id=r.family_id
+ LEFT JOIN family_admin_state fs ON fs.family_id=r.family_id`;
+const memberGuard=`r.page_hint='learning-support' AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND COALESCE(fs.status,'active')='active'
+ AND (lp.parent_user_id=r.user_id OR EXISTS(SELECT 1 FROM students st WHERE st.id=lp.student_id AND st.family_id=lp.family_id))`;
 const historyScope=`WITH learner_requests AS (
- SELECT r.id,r.subject,r.status,r.updated_at,g.id guest_id FROM support_portal_enquiries p
+ SELECT r.id,r.subject,r.status,r.updated_at,g.id guest_id,'guest' channel FROM support_portal_enquiries p
  JOIN support_guest_requests r ON r.id=p.request_id LEFT JOIN support_guest_families g ON g.email=r.email
  WHERE p.family_id=? AND p.learner_id=?
  UNION ALL
- SELECT r.id,r.subject,r.status,r.updated_at,gf.id FROM support_guest_requests r
+ SELECT r.id,r.subject,r.status,r.updated_at,gf.id,'guest' FROM support_guest_requests r
  ${legacyJoins}
  WHERE lp.family_id=? AND lp.id=? AND ${legacyGuard}
+ UNION ALL
+ SELECT r.id,r.subject,r.status,r.updated_at,NULL,'member' FROM parent_feedback r ${memberJoins}
+ WHERE lp.family_id=? AND lp.id=? AND ${memberGuard}
 )`;
 export async function ownerLearner(db:D1Database,family:string,id:string,page=1){
  const learner=await db.prepare(identitySql).bind(family,id).first<any>();if(!learner)return null;
- const args=[family,id,family,id];
+ const args=[family,id,family,id,family,id];
  const [requests,orders,club]=await Promise.all([
- db.prepare(historyScope+" SELECT id,subject,status,updated_at,guest_id FROM learner_requests ORDER BY updated_at DESC,id LIMIT 51 OFFSET ?").bind(...args,(page-1)*50).all<any>(),
- db.prepare(historyScope+` SELECT o.id,r.id request_id,r.guest_id,r.subject,o.start_at,o.end_at,o.status,o.mode FROM learner_requests r JOIN support_service_orders o ON o.channel='guest' AND o.request_id=r.id ORDER BY COALESCE(o.start_at,o.created_at) DESC,o.id LIMIT 51 OFFSET ?`).bind(...args,(page-1)*50).all<any>(),
- db.prepare(historyScope+` SELECT e.id,r.id request_id,r.guest_id,c.id class_id,c.topic,c.start_at,c.end_at,e.status,e.attendance FROM learner_requests r JOIN support_english_enrolments e ON e.request_id=r.id JOIN support_english_classes c ON c.id=e.class_id ORDER BY c.start_at DESC,e.id LIMIT 51 OFFSET ?`).bind(...args,(page-1)*50).all<any>()
+ db.prepare(historyScope+" SELECT id,subject,status,updated_at,guest_id,channel FROM learner_requests ORDER BY updated_at DESC,id LIMIT 51 OFFSET ?").bind(...args,(page-1)*50).all<any>(),
+ db.prepare(historyScope+` SELECT o.id,r.id request_id,r.guest_id,r.channel,r.subject,o.start_at,o.end_at,o.status,o.mode FROM learner_requests r JOIN support_service_orders o ON o.channel=r.channel AND o.request_id=r.id ORDER BY COALESCE(o.start_at,o.created_at) DESC,o.id LIMIT 51 OFFSET ?`).bind(...args,(page-1)*50).all<any>(),
+ db.prepare(historyScope+` SELECT e.id,r.id request_id,r.guest_id,c.id class_id,c.topic,c.start_at,c.end_at,e.status,e.attendance FROM learner_requests r JOIN support_english_enrolments e ON e.request_id=r.id AND r.channel='guest' JOIN support_english_classes c ON c.id=e.class_id ORDER BY c.start_at DESC,e.id LIMIT 51 OFFSET ?`).bind(...args,(page-1)*50).all<any>()
  ]);
  const groups=[requests.results||[],orders.results||[],club.results||[]];
  return {learner,page,enquiries:groups[0].slice(0,50),appointments:groups[1].slice(0,50),club:groups[2].slice(0,50),has_more:groups.some(x=>x.length>50)};
@@ -78,11 +87,12 @@ export async function ownerLearnerReports(db:D1Database,family:string,id:string,
 }
 /** Resolve identity from the booked request, never from the tutor-entered label or a client learner ID. */
 export async function appointmentLearnerContext(db:D1Database,channel:string,requestId:string,orderId:string,now=new Date()){
- if(channel!=="guest")return null;
- const booked=await db.prepare(`SELECT o.start_at,r.message FROM support_service_orders o JOIN support_guest_requests r ON r.id=o.request_id
- WHERE o.channel='guest' AND o.request_id=? AND o.id=? AND o.mode='live'`).bind(requestId,orderId).first<{start_at:string;message:string}>();
+ if(channel!=="guest"&&channel!=="member")return null;
+ const table=channel==="member"?"parent_feedback":"support_guest_requests";
+ const booked=await db.prepare(`SELECT o.start_at,r.message FROM support_service_orders o JOIN ${table} r ON r.id=o.request_id
+ WHERE o.channel=? AND o.request_id=? AND o.id=? AND o.mode='live'`).bind(channel,requestId,orderId).first<{start_at:string;message:string}>();
  if(!booked||!Number.isFinite(Date.parse(booked.start_at)))return null;
- const identity=await db.prepare(`SELECT p.family_id,p.learner_id FROM support_portal_enquiries p JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id WHERE p.request_id=? AND p.service='tutoring'`).bind(requestId).first<{family_id:string;learner_id:string}>()||await linkedLegacyIdentity(db,requestId);
+ const identity=channel==="member"?await db.prepare(`SELECT lp.family_id,lp.id learner_id FROM parent_feedback r ${memberJoins} WHERE r.id=? AND ${memberGuard}`).bind(requestId).first<{family_id:string;learner_id:string}>():await db.prepare(`SELECT p.family_id,p.learner_id FROM support_portal_enquiries p JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id WHERE p.request_id=? AND p.service='tutoring'`).bind(requestId).first<{family_id:string;learner_id:string}>()||await linkedLegacyIdentity(db,requestId);
  if(!identity)return null;
  const o={...booked,...identity};
  const l=await db.prepare(identitySql).bind(o.family_id,o.learner_id).first<any>();if(!l)return null;
@@ -90,9 +100,9 @@ export async function appointmentLearnerContext(db:D1Database,channel:string,req
  const [reports,prior]=await Promise.all([
   ownerLearnerReports(db,o.family_id,o.learner_id,cutoff,orderId),
   db.prepare(historyScope+` SELECT o.id,r.subject,o.end_at,o.status
-  FROM learner_requests r JOIN support_service_orders o ON o.request_id=r.id AND o.channel='guest'
+  FROM learner_requests r JOIN support_service_orders o ON o.request_id=r.id AND o.channel=r.channel
   WHERE o.id<>? AND o.mode='live' AND o.status IN ('paid','completed') AND o.checkout_started_at IS NULL AND julianday(o.end_at)<=julianday(?)
-  ORDER BY o.end_at DESC,o.id LIMIT 5`).bind(o.family_id,o.learner_id,o.family_id,o.learner_id,orderId,cutoff.toISOString()).all()
+  ORDER BY o.end_at DESC,o.id LIMIT 5`).bind(o.family_id,o.learner_id,o.family_id,o.learner_id,o.family_id,o.learner_id,orderId,cutoff.toISOString()).all()
  ]);
  return {learner:l,current_enquiry:o.message,reports,previous_appointments:prior.results||[]};
 }
