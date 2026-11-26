@@ -568,6 +568,42 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.equal(keys.length,4);
  assert.equal((await clubInvoiceWorkspace(env,"single",s.booking_id)).state,"draft_created");
  assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"awaiting_invoice");
+ const {publishClubSquareInvoice,familyClubInvoice,familyClubInvoiceSummaries}=await import("../src/clubSquareInvoicePublication.ts");
+ let publishCalls=0,losePublication=true;
+ const paymentLink="https://squareupsandbox.com/pay-invoice/club-test";
+ const publicationProvider=async(url,init)=>{
+  const path=new URL(url).pathname,reply=v=>new Response(JSON.stringify(v),{status:200});
+  if(path.endsWith("/invoices/club-test-invoice")&&init.method==="GET")return reply({invoice:providerDraft});
+  if(path.endsWith("/invoices/club-test-invoice/publish")&&init.method==="POST"){
+   publishCalls++;const body=JSON.parse(init.body);assert.equal(body.version,0);
+   assert.equal(body.idempotency_key,DB.raw.prepare("SELECT publish_key FROM support_club_square_intents WHERE kind='single' AND obligation_id=?").get(s.booking_id).publish_key);
+   providerDraft={...providerDraft,status:"UNPAID",version:1,public_url:paymentLink};
+   if(losePublication){losePublication=false;throw Error("synthetic lost publication response");}
+   return reply({invoice:providerDraft});
+  }
+  return provider(url,init);
+ };
+ const issue={...approved,issue_confirmed:true,provider_invoice_id:"club-test-invoice",version:0};
+ assert.ok((await publishClubSquareInvoice(env,"single",s.booking_id,one.actor.id,{...issue,issue_confirmed:false},publicationProvider,now)).error);
+ assert.ok((await publishClubSquareInvoice(env,"single",s.booking_id,one.actor.id,{...issue,version:9},publicationProvider,now)).error);
+ assert.equal(publishCalls,0);
+ assert.equal((await publishClubSquareInvoice(env,"single",s.booking_id,one.actor.id,issue,publicationProvider,now)).pending,true);
+ assert.equal((await familyClubInvoiceSummaries(env,one.actor)).length,0);
+ assert.equal((await publishClubSquareInvoice(env,"single",s.booking_id,one.actor.id,issue,publicationProvider,new Date(now.getTime()+60000))).issued,true);
+ assert.equal(publishCalls,1);
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"issued");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"invoiced");
+ assert.equal((await familyClubInvoiceSummaries(env,one.actor)).length,1);
+ assert.equal((await familyClubInvoiceSummaries(env,two.actor)).length,0);
+ assert.equal(await familyClubInvoice(env,two.actor,"single",s.booking_id,publicationProvider,now),null);
+ assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,publicationProvider,now)).payment_url,paymentLink);
+ assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,publicationProvider,new Date("2026-12-08T08:00:00Z"))).payment_url,null);
+ providerDraft={...providerDraft,status:"PARTIALLY_PAID",payment_requests:providerDraft.payment_requests.map(p=>({...p,total_completed_amount_money:{amount:500,currency:"AUD"}}))};
+ assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,publicationProvider,now)).payment_url,null);
+ providerDraft={...providerDraft,status:"PAID",payment_requests:providerDraft.payment_requests.map(p=>({...p,total_completed_amount_money:{amount:1500,currency:"AUD"}}))};
+ assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,publicationProvider,now)).status,"payment_review");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"invoiced");
+
  const bad=await clubInvoiceWorkspace(env,"round",w[0].obligation_id);
  const badProvider=async(url,init)=>{
   if(init.method==="GET")return mock(url,init);
@@ -577,7 +613,8 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
  assert.ok((await createClubSquareOrder(env,"round",w[0].obligation_id,{fingerprint:bad.fingerprint,confirmed:true},badProvider,now)).error);
  assert.equal((await clubInvoiceWorkspace(env,"round",w[0].obligation_id)).state,"review");
 
- assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status<>'reserved'").get().n,0);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,0);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='invoiced'").get().n,1);
  const other=w[1];const before=await previewClubInvoice(env,"round",other.obligation_id,args,mock,now);assert.ok(before.fingerprint);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id IN (SELECT seat_id FROM support_club_obligation_seats WHERE kind='round' AND obligation_id=?)").run(other.obligation_id);
  assert.ok((await prepareClubInvoice(env,"round",other.obligation_id,one.actor.id,{...args,fingerprint:before.fingerprint,confirmed:true},mock,now)).error);
