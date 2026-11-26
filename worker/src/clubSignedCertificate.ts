@@ -51,7 +51,7 @@ function pdfText(s:string){
  return Array.from(v,c=>c.charCodeAt(0)>126?"\\"+c.charCodeAt(0).toString(8).padStart(3,"0"):"\\()".includes(c)?"\\"+c:c).join("");
 }
 function join(parts:Uint8Array[]){const out=new Uint8Array(parts.reduce((n,p)=>n+p.length,0));let offset=0;for(const p of parts){out.set(p,offset);offset+=p.length;}return out;}
-export function buildSignedClubCertificate(row:{id:string;learner_name:string;title:string;session_count:number;completed_at:string;kind:string},image:Uint8Array){
+export function buildSignedClubCertificate(row:{id:string;learner_name:string;title:string;session_count:number;completed_at:string;kind:string},image:Uint8Array,preview=false){
  if(!validCertificateJpeg(image)||!row.learner_name?.trim()||row.learner_name.length>80||!row.title?.trim()||row.title.length>120||!Number.isFinite(Date.parse(row.completed_at))||!Number.isInteger(row.session_count)||row.session_count<1||row.session_count>12||!["single","round"].includes(row.kind)||row.kind==="single"&&row.session_count!==1||!/^[A-Za-z0-9_-]{1,80}$/.test(row.id))throw Error("Invalid certificate snapshot.");
  const W=842,H=595,scale=W/1536,offset=(H-1024*scale)/2;
  const y=(px:number)=>H-offset-px*scale;
@@ -62,7 +62,7 @@ export function buildSignedClubCertificate(row:{id:string;learner_name:string;ti
   return "0.10 0.21 0.12 rg BT /"+font+" "+safe.toFixed(2)+" Tf "+x.toFixed(2)+" "+y(cy).toFixed(2)+" Td ("+pdfText(s)+") Tj ET";
  };
  const date=new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Sydney",day:"numeric",month:"long",year:"numeric"}).format(new Date(row.completed_at));
- const stream=["q "+W+" 0 0 "+(1024*scale).toFixed(3)+" 0 "+offset.toFixed(3)+" cm /Artwork Do Q",center(row.learner_name,790,440,650,33,"B"),center(row.title,790,626,500,23,"B"),center(date,647,892,235,12,"R"),"0.12 0.23 0.18 rg BT /R 6 Tf 280 5 Td ("+pdfText("Certificate "+row.id)+") Tj ET"].join("\n");
+ const stream=["q "+W+" 0 0 "+(1024*scale).toFixed(3)+" 0 "+offset.toFixed(3)+" cm /Artwork Do Q",center(row.learner_name,790,440,650,33,"B"),center(row.title,790,626,500,23,"B"),center(date,647,892,235,12,"R"),"0.12 0.23 0.18 rg BT /R 6 Tf 280 5 Td ("+pdfText(preview?"PREVIEW ONLY - NOT ISSUED":"Certificate "+row.id)+") Tj ET",...(preview?["0.45 0.12 0.12 rg BT /B 18 Tf 315 565 Td (PREVIEW - NOT ISSUED) Tj ET"]:[])].join("\n");
  const objects=[enc("<< /Type /Catalog /Pages 2 0 R >>"),enc("<< /Type /Pages /Kids [5 0 R] /Count 1 >>"),enc("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"),enc("<< /Type /Font /Subtype /Type1 /BaseFont /Times-Bold /Encoding /WinAnsiEncoding >>"),enc("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Resources << /Font << /R 3 0 R /B 4 0 R >> /XObject << /Artwork 7 0 R >> >> /Contents 6 0 R >>"),enc("<< /Length "+enc(stream).length+" >>\nstream\n"+stream+"\nendstream"),join([enc("<< /Type /XObject /Subtype /Image /Width 1536 /Height 1024 /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+image.length+" >>\nstream\n"),image,enc("\nendstream")])];
  const parts=[enc("%PDF-1.4\n")],offsets=[0];let at=parts[0].length;
  objects.forEach((o,i)=>{offsets.push(at);const block=join([enc((i+1)+" 0 obj\n"),o,enc("\nendobj\n")]);parts.push(block);at+=block.length;});
