@@ -45,7 +45,8 @@ export async function createPackage(db:D1Database,channel:Channel,id:string,b:an
  const capacity=await bookingPolicyGuard(db,sessions);if(!capacity)return {error:"One or more lessons are outside configured hours or booking capacity."};
  const offerGuard=offerId?" AND EXISTS(SELECT 1 FROM support_package_offers a WHERE a.id=? AND a.channel=? AND a.request_id=? AND a.quote_id=? AND a.expires_at>? AND a.learner_label=? AND a.terms=? AND a.payment_mode=? AND a.deadline_hours=?)":"";
  const offerArgs=offerId?[offerId,channel,id,qid,when,label,terms,installments?"installments":"upfront",lead]:[];
- const stmts=[db.prepare(sql+capacity.sql+offerGuard).bind(root.id,channel,charge(0),terms,root.start,root.end,when,when,id,qid,when,q.amount_cents,JSON.stringify(sessions),...capacity.args,...offerArgs)];
+ const standardGuard=qid.startsWith("standard-")?" AND EXISTS(SELECT 1 FROM support_public_availability WHERE id=1 AND enabled=1 AND json_extract(policy_json,'$.enforced')=1)":"";
+ const stmts=[db.prepare(sql+capacity.sql+offerGuard+standardGuard).bind(root.id,channel,charge(0),terms,root.start,root.end,when,when,id,qid,when,q.amount_cents,JSON.stringify(sessions),...capacity.args,...offerArgs)];
  for(const [i,s] of sessions.entries()){
   if(i>0)stmts.push(db.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,created_at,updated_at) SELECT ?,channel,request_id,?,?,?,delivery,terms,'live',?,?,?,? FROM support_service_orders WHERE id=?").bind(s.id,"package-session:"+s.id,charge(i),s.title,s.start,s.end,when,when,root.id));
   stmts.push(db.prepare("INSERT INTO support_package_sessions(order_id,root_id,quote_id,sequence,total) SELECT id,?,?,?,? FROM support_service_orders WHERE id=?").bind(root.id,qid,i+1,sessions.length,s.id));
@@ -82,6 +83,7 @@ export async function offerPackageTimes(db:D1Database,channel:Channel,id:string,
 }
 export async function readPackageOffer(db:D1Database,channel:Channel,id:string,qid:string,now=new Date()){
  const a=await activePackageOffer(db,channel,id,qid,now);if(!a)return null;
+ if(qid.startsWith("standard-")&&!await db.prepare("SELECT 1 WHERE EXISTS(SELECT 1 FROM support_public_availability WHERE id=1 AND enabled=1 AND json_extract(policy_json,'$.enforced')=1)").first())return null;
  const minutes=await readQuoteSchedule(db,channel,id,qid);if(!minutes||minutes.length<2||minutes.length>4)return null;
  return {id:a.id,starts:await packageStarts(db,minutes,a.payment_mode,a.deadline_hours,now),minutes:Math.max(...minutes),package_minutes:minutes,session_amounts_cents:packageCharges(a.amount_cents,minutes,a.payment_mode==="installments"),payment_mode:a.payment_mode,deadline_hours:a.deadline_hours,terms:a.terms,expires_at:a.expires_at,amount_cents:a.amount_cents,can_select:a.quote_status==="interested"};
 }
