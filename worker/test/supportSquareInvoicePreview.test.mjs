@@ -1,0 +1,21 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {makeDb} from "./fakeD1.mjs";
+import {previewSupportInvoice} from "../src/supportSquareInvoicePreview.ts";
+test("sandbox draft preview derives amount and recipient from accepted order, never writes to Square",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z";
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+ let calls=0,email="test@example.com";const provider=async(url,init)=>{calls++;assert.equal(init.method,"GET");assert.equal(url,"https://connect.squareupsandbox.com/v2/customers/CUST1");return new Response(JSON.stringify({customer:{id:"CUST1",email_address:email}}));};
+ const b={reviewed:true,customer_id:"CUST1",due_at:"2026-11-27T01:00:00.000Z",amount_cents:1};
+ const run=(e=env,body=b)=>previewSupportInvoice(e,"member","r","o",body,provider,new Date(stamp));
+ assert.ok("error" in await run({...env,SQUARE_APPLICATION_ID:"sq0idp-live"}));assert.equal(calls,0);
+ const r=await run();assert.equal(r.created,false);assert.equal(r.amount_cents,2500);assert.equal(r.provider_invoice.payment_requests[0].automatic_payment_source,"NONE");assert.equal(r.due_date,"2026-11-27");assert.equal(JSON.stringify(r).includes("PRIVATE LEARNER"),false);assert.equal(calls,1);
+ assert.equal((await run()).fingerprint,r.fingerprint);
+ email="wrong@example.com";assert.ok("error" in await run());
+ db.raw.prepare("UPDATE support_service_orders SET status='awaiting_confirmation' WHERE id='o'").run();assert.ok("error" in await run());
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
+});

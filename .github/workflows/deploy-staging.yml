@@ -3,6 +3,22 @@ name: Deploy staging (private)
 # Never touches production (sidequest-db1 / the "side-quest" Worker / sidequestlearning.app).
 on:
   workflow_dispatch:
+    inputs:
+      staging_origin:
+        description: "Exact staging website origin (https://side-quest-staging.<subdomain>.workers.dev); no key or path"
+        type: string
+        required: false
+        default: "https://side-quest-staging.petabozanich6.workers.dev"
+      enable_family_portal:
+        description: "Enable private unified family portal (existing verified staging parents)"
+        type: boolean
+        default: true
+        required: true
+      enable_invoice_pilot:
+        description: "Enable private Square sandbox invoice pilot (synthetic parent only)"
+        type: boolean
+        default: false
+        required: true
 
 permissions:
   contents: read
@@ -16,6 +32,15 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       STAGING_JWT_SECRET: ${{ secrets.STAGING_JWT_SECRET }}
       STAGING_KEY: ${{ secrets.STAGING_KEY }}
+      ENABLE_FAMILY_PORTAL: ${{ inputs.enable_family_portal }}
+      ENABLE_INVOICE_PILOT: ${{ inputs.enable_invoice_pilot }}
+      STAGING_ORIGIN_INPUT: ${{ inputs.staging_origin }}
+      STAGING_SUPPORT_ORIGIN: ${{ vars.STAGING_SUPPORT_ORIGIN }}
+      STAGING_SUPPORT_TEST_EMAIL: ${{ secrets.STAGING_SUPPORT_TEST_EMAIL }}
+      STAGING_SQUARE_APPLICATION_ID: ${{ vars.STAGING_SQUARE_APPLICATION_ID }}
+      STAGING_SQUARE_LOCATION_ID: ${{ vars.STAGING_SQUARE_LOCATION_ID }}
+      STAGING_SQUARE_ACCESS_TOKEN: ${{ secrets.STAGING_SQUARE_ACCESS_TOKEN }}
+      STAGING_SQUARE_WEBHOOK_SIGNATURE_KEY: ${{ secrets.STAGING_SQUARE_WEBHOOK_SIGNATURE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -55,6 +80,10 @@ jobs:
             c.r2_buckets=[{binding:"BUCKET",bucket_name:"sidequest-staging-files"}];
             fs.writeFileSync("wrangler.staging.jsonc",JSON.stringify(c,null,2));
           '
+      - name: Validate and configure private pilot (no production credentials)
+        run: |
+          node --test worker/test/stagingInvoicePilot.test.mjs
+          node worker/scripts/configure-staging-invoice-pilot.mjs wrangler.staging.jsonc
       - name: Apply migrations to the staging database
         run: npx wrangler d1 migrations apply DB --remote --config wrangler.staging.jsonc
       - name: Deploy staging Worker
@@ -65,7 +94,7 @@ jobs:
           umask 077
           file=$(mktemp)
           trap 'rm -f "$file"' EXIT
-          node -e 'process.stdout.write(JSON.stringify({JWT_SECRET:process.env.STAGING_JWT_SECRET,STAGING_KEY:process.env.STAGING_KEY}))' > "$file"
+          node -e 'const e=process.env; const s={JWT_SECRET:e.STAGING_JWT_SECRET,STAGING_KEY:e.STAGING_KEY}; if(e.ENABLE_INVOICE_PILOT==="true"){s.SUPPORT_UNIFIED_TEST_EMAIL=e.STAGING_SUPPORT_TEST_EMAIL;s.SQUARE_ACCESS_TOKEN=e.STAGING_SQUARE_ACCESS_TOKEN;s.SQUARE_WEBHOOK_SIGNATURE_KEY=e.STAGING_SQUARE_WEBHOOK_SIGNATURE_KEY;}process.stdout.write(JSON.stringify(s))' > "$file"
           npx wrangler secret bulk "$file" --config wrangler.staging.jsonc
       - name: Done
         run: |

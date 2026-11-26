@@ -36,14 +36,30 @@ export type Env = {
   AI_BACKGROUND_BATCHES?: string;
   /** Standalone guest portal rollout; off until email and staging tests pass. */
   SUPPORT_GUEST_ENABLED?: string;
+  /** Private staging pilot for canonical family portal; no production activation. */
+  SUPPORT_UNIFIED_PORTAL_TEST?: string;
+  /** Authorised synthetic recipient for private portal signup testing only. */
+  SUPPORT_UNIFIED_TEST_EMAIL?: string;
+  SUPPORT_SQUARE_INVOICE_TEST?: string;
+  SUPPORT_SQUARE_INVOICE_NOTICE_TEST?: string;
+  SUPPORT_STANDARD_INVOICE_AUTO_TEST?: string;
+  SUPPORT_STANDARD_INVOICE_CUSTOMER_ID?: string;
+  SUPPORT_STANDARD_INVOICE_APPROVED_BY?: string;
   /** Exact isolated staging Worker origin; never taken from a request header. */
   SUPPORT_GUEST_ORIGIN?: string;
   /** Teaching board pilot, disabled until staging verifies access and safety. */
   SUPPORT_CLASSROOM_ENABLED?: string;
   /** Opt-in owner AI slide drafting, subject to existing cost limits. */
   SUPPORT_RESOURCE_AI?: string;
+  SUPPORT_STATIONERY_EMAIL?: string;
+  SUPPORT_TERMS_APPROVED_VERSION?: string;
+  SUPPORT_TERMS_REQUIRED?: string;
   /** RealtimeKit staging-only pilot. Never put the API token in frontend or config files. */
   SUPPORT_VIDEO_TEST?: string;
+  SUPPORT_ENGLISH_VIDEO_TEST?: string;
+  SUPPORT_ENGLISH_FALLBACK_TEST?: string;
+  SUPPORT_ENGLISH_VIDEO_HOST_PRESET?: string;
+  SUPPORT_ENGLISH_VIDEO_LEARNER_PRESET?: string;
   SUPPORT_VIDEO_ACCOUNT?: string;
   SUPPORT_VIDEO_APP?: string;
   SUPPORT_VIDEO_TOKEN?: string;
@@ -51,6 +67,8 @@ export type Env = {
   SUPPORT_VIDEO_FAMILY_PRESET?: string;
   /** Test-only checkout; production Square credentials are never accepted. */
   SUPPORT_CHECKOUT_TEST?: string;
+  /** Opt-in verified tutoring invoice reminders, separate from membership billing. */
+  SUPPORT_PAYMENT_NOTICES?: string;
   /** Optional separate model for short child-help responses; leave unset to retain the main model. */
   AI_HELP_MODEL?: string;
   /** Experimental, opt-in grouped generation; must pass QA before production activation. */

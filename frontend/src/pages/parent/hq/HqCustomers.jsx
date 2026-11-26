@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Alert, Button, fmtDay, GREEN, PLAN_LABELS } from "./ui";
 import { useAdmin } from "./useAdmin";
+import HqUnifiedDirectory from "./HqUnifiedDirectory";
+import {api} from "../../../lib/api";
 
-export default function HqCustomers() {
+export default function HqCustomers(){
+ const [params]=useSearchParams(),[available,setAvailable]=useState(false);
+ useEffect(()=>{let live=true;api.get("/family-portal/status").then(r=>{if(live)setAvailable(r.data.available===true);}).catch(()=>{});return()=>{live=false;};},[]);
+ if(available&&params.get("directory")==="unified")return <HqUnifiedDirectory/>;
+ return <><div>{available&&<Link className="block paper-card p-4 font-semibold underline" to="?directory=unified">Open unified family directory →</Link>}</div><ExistingCustomers/></>;
+}
+function ExistingCustomers() {
   const [params, setParams] = useSearchParams();
   const q = params.get("q") || "";
   const status = params.get("status") || "";

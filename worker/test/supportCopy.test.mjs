@@ -14,3 +14,12 @@ test("branded email footer points signed-in families to the private feedback too
   assert.match(email,/SITE_URL}\/parent\/feedback/);
   assert.match(email,/If you cannot access it, reply or email/);
 });
+
+ test("public pricing and HQ quote builder share the same catalogue",async()=>{
+ const src=readFileSync(new URL("../../frontend/src/lib/supportPricing.js",import.meta.url),"utf8");
+ const {SUPPORT_RATES,packageRate}=await import("data:text/javascript;base64,"+Buffer.from(src).toString("base64"));
+ assert.deepEqual(SUPPORT_RATES.map(r=>r.cents),[2500,3500,4500,3000,1500]);
+ assert.equal(packageRate([{minutes:30},{minutes:45},{minutes:60}]),10500);
+ assert.equal(packageRate([{minutes:90}]),null);
+ for(const p of ["../../frontend/src/pages/parent/LearningSupport.jsx","../../frontend/src/pages/parent/hq/HqSupportQuotes.jsx","../../frontend/src/pages/parent/hq/HqSupportPriceGuide.jsx"]){assert.match(readFileSync(new URL(p,import.meta.url),"utf8"),/supportPricing/);}
+ });

@@ -4,6 +4,9 @@ on:
     branches: [main, dev/sidequest-execution]
   pull_request:
   workflow_dispatch:
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 # Install scripts and tests run with a read-only token; only the separate publish job can write.
 permissions:
@@ -41,6 +44,20 @@ jobs:
         run: |
           set -o pipefail
           npm run test:db-audit 2>&1 | tee ci-logs/db-audit.log
+      - name: Private staging invoice configuration safety tests
+        run: node --test worker/test/stagingInvoicePilot.test.mjs
+      - name: Offline D1 backup rehearsal guard tests (synthetic only)
+        run: node --test worker/test/d1BackupRehearsal.test.mjs
+      - name: Branded stationery PDF and delivery guards (synthetic only)
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportStationery.test.mjs
+      - name: Live lesson progress and evidence isolation
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportLessonProgress.test.mjs
+      - name: Public availability privacy and diary blackout tests
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPublicAvailability.test.mjs
+      - name: Learning Support payment and cancellation safety tests
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportPaymentSafety.test.mjs
+      - name: Service agreement acceptance guards
+        run: node --no-warnings --import ./worker/test/register.mjs --test worker/test/supportTermsAcceptance.test.mjs
       - name: Trust and Support copy regression
         id: support_copy
         continue-on-error: true

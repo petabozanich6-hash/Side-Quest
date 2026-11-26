@@ -1,0 +1,26 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {makeDb} from "./fakeD1.mjs";
+import {termsReview,confirmReviewedTerms,acceptanceReceipt} from "../src/supportTermsAcceptance.ts";
+test("unactivated or stale agreement cannot be accepted; activated exact version and fingerprint persist once for the scoped order",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const now=new Date("2026-11-25T00:00:00.000Z"),at=now.toISOString();
+ db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES(?,?,?,?,?,?,?)").run("g","parent@example.test","Parent","Support","Request",at,at);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)").run("o","guest","g","q",3000,"Lesson","Online","Agreed arrangements","live","2026-12-08T00:00:00.000Z","2026-12-08T01:00:00.000Z","awaiting_confirmation",at,at);
+ const env={DB:db,SUPPORT_TERMS_REQUIRED:"true"};
+ assert.equal(await termsReview(env,"guest","other","o"),null);
+ const inactive=await termsReview(env,"guest","g","o");assert.equal(inactive.approved,false);
+ const input={confirmed:true,terms_accepted:true,terms_version:inactive.version,terms_fingerprint:inactive.fingerprint};
+ assert.equal(await confirmReviewedTerms(env,"guest","g","o","parent@example.test",input,now),false);
+ assert.equal(await confirmReviewedTerms({...env,SUPPORT_TERMS_APPROVED_VERSION:"2026-11-25-draft-2"},"guest","g","o","parent@example.test",input,now),false);
+ assert.equal(await acceptanceReceipt(db,"guest","g","o"),null);
+ const enabled={...env,SUPPORT_TERMS_APPROVED_VERSION:inactive.version},approved=await termsReview(enabled,"guest","g","o");
+ assert.equal(approved.approved,true);
+ assert.equal(await confirmReviewedTerms(enabled,"guest","g","o","parent@example.test",{...input,terms_fingerprint:"stale"},now),false);
+ assert.equal(await confirmReviewedTerms(enabled,"guest","g","o","parent@example.test",{...input,terms_accepted:false},now),false);
+ assert.equal(await confirmReviewedTerms(enabled,"guest","other","o","parent@example.test",input,now),false);
+ assert.equal(await confirmReviewedTerms(enabled,"guest","g","o","parent@example.test",input,now),true);
+ assert.equal(await confirmReviewedTerms(enabled,"guest","g","o","parent@example.test",input,now),false);
+ const receipt=await acceptanceReceipt(db,"guest","g","o");assert.equal(receipt.agreement_version,approved.version);assert.equal(receipt.fingerprint,approved.fingerprint);assert.equal(receipt.base64,approved.base64);assert.equal(receipt.accepted_at,at);
+ assert.equal(await acceptanceReceipt(db,"guest","other","o"),null);
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
+});
