@@ -23,7 +23,7 @@ export async function releaseOverdueClubPlace(e:Env,kind:string,id:string,owner:
   reason="provider_cancelled";invoice=o.provider_invoice_id;version=check.version;
  }
  const at=now.toISOString();
- try{await e.DB.prepare("INSERT INTO support_club_square_releases(kind,obligation_id,reason,provider_invoice_id,provider_version,released_by,notified_at,released_at) VALUES(?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING").bind(kind,id,reason,invoice,version,owner,at,at).run();}
+ try{await e.DB.prepare("INSERT INTO support_club_square_releases(kind,obligation_id,reason,provider_invoice_id,provider_version,released_by,notified_at,released_at) SELECT ?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM support_club_payment_obligations o JOIN support_portal_enquiries p ON p.request_id=o.request_id AND p.learner_id=o.learner_id JOIN users u ON u.id=p.parent_user_id AND u.family_id=p.family_id JOIN support_guest_requests r ON r.id=p.request_id AND r.email=u.email WHERE o.kind=? AND o.obligation_id=? AND u.email_verified_at IS NOT NULL AND u.email_verified_at<>'' AND lower(trim(u.email))=? AND r.status NOT IN ('closed','resolved') AND NOT EXISTS(SELECT 1 FROM family_admin_state a WHERE a.family_id=u.family_id AND a.status<>'active')) ON CONFLICT DO NOTHING").bind(kind,id,reason,invoice,version,owner,at,at,kind,id,norm(e.SUPPORT_UNIFIED_TEST_EMAIL)).run();}
  catch{return {error:"The obligation, payment or seats changed. Keep the reservation for review."};}
  const saved=await read(e,kind,id);return saved?.status==="cancelled"&&await e.DB.prepare("SELECT 1 FROM support_club_square_releases WHERE kind=? AND obligation_id=?").bind(kind,id).first()?{released:true}:{error:"Release could not be verified."};
 }
