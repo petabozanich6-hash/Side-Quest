@@ -22,3 +22,18 @@ test("pilot defaults off; only isolated sandbox config can enable it; no secret 
  assert.equal(config.vars.SUPPORT_SQUARE_INVOICE_TEST,undefined);
  assert.equal(configureStagingInvoicePilot(on,{}).vars.SQUARE_WEBHOOK_URL,undefined);
 });
+
+test("private unified family portal can be enabled without payment or mail configuration",()=>{
+ const portal=configureStagingInvoicePilot(config,{ENABLE_FAMILY_PORTAL:"true",ENABLE_INVOICE_PILOT:"false"});
+ assert.equal(portal.vars.SUPPORT_UNIFIED_PORTAL_TEST,"true");
+ assert.equal(portal.vars.SUPPORT_SQUARE_INVOICE_TEST,"false");
+ assert.equal(portal.vars.SUPPORT_SQUARE_INVOICE_NOTICE_TEST,"false");
+ assert.equal(portal.vars.SQUARE_WEBHOOK_URL,undefined);
+ assert.equal(portal.vars.SQUARE_APPLICATION_ID,undefined);
+ assert.equal(portal.vars.SUPPORT_GUEST_ORIGIN,undefined);
+ const withOrigin=configureStagingInvoicePilot(config,{ENABLE_FAMILY_PORTAL:"true",STAGING_SUPPORT_ORIGIN:env.STAGING_SUPPORT_ORIGIN});
+ assert.equal(withOrigin.vars.SUPPORT_GUEST_ORIGIN,env.STAGING_SUPPORT_ORIGIN);
+ assert.throws(()=>configureStagingInvoicePilot(config,{ENABLE_FAMILY_PORTAL:"true",STAGING_SUPPORT_ORIGIN:"https://sidequestlearning.app"}));
+ const disabled=configureStagingInvoicePilot(portal,{ENABLE_FAMILY_PORTAL:"false"});
+ assert.equal(disabled.vars.SUPPORT_UNIFIED_PORTAL_TEST,"false");
+});
