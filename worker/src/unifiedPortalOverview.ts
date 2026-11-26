@@ -1,3 +1,4 @@
+import {familyIssuedSquareInvoiceSummaries} from "./unifiedPortalSquareInvoices";
 import type {App,AuthUser,Guards} from "./types";
 import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity";
 import {orderPublic} from "./supportOrders";
@@ -50,6 +51,9 @@ export function registerFamilyOverview(app:App,g:Guards){
  app.get("/api/family-portal/overview",g.auth,g.parent,async c=>{
   c.header("Cache-Control","private, no-store");
   if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-  const r=await familyOverview(c.env.DB,c.get("user"));return r?c.json(r):c.json({detail:"Verified parent access required."},403);
+  const r=await familyOverview(c.env.DB,c.get("user"));if(!r)return c.json({detail:"Verified parent access required."},403);
+  const issued=await familyIssuedSquareInvoiceSummaries(c.env,c.get("user"));
+  const byOrder=new Map(issued.map(i=>[i.id,i]));
+  return c.json({...r,limited:r.limited||issued.length>200,orders:r.orders.map(o=>({...o,square_invoice:byOrder.get(o.id)||null}))});
  });
 }
