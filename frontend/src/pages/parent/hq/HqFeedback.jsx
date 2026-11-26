@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowUpRight, Bell, CheckCircle, RefreshCw, Search, ShieldCheck, Send, MessageSquare } from "lucide-react";
 import { adminApi, errorText } from "../../../lib/adminApi";
 import { Alert, Button, GREEN } from "./ui";
@@ -13,6 +13,12 @@ const LABEL = { problem:"Problem",idea:"Idea",feedback:"Feedback",other:"Other" 
 const F = ({ label, children }) => <label className="text-xs font-semibold text-stone-700 block">{label}<div className="mt-1">{children}</div></label>;
 
 export default function HqFeedback() {
+ const [params]=useSearchParams();
+ const request=params.get("request")||"",family=params.get("family")||"";
+ return <FeedbackWorkspace key={family+":"+request} request={request} family={family}/>;
+}
+function FeedbackWorkspace({request,family}) {
+ const focused=!!(request&&family);
   const [items,setItems] = useState([]);
   const [status,setStatus] = useState("");
   const [category,setCategory] = useState("");
@@ -35,7 +41,7 @@ export default function HqFeedback() {
     setLoading(true);setError("");
     try {
       const [results,counts]=await Promise.all([
-        adminApi.get("/feedback",{status:status||undefined,category:category||undefined,kind:supportOnly?"learning-support":undefined,page}),
+        adminApi.get("/feedback",{status:status||undefined,category:category||undefined,kind:focused||supportOnly?"learning-support":undefined,page,...(focused?{request,family}:{})}),
         adminApi.get("/feedback/unread-count"),
       ]);
       setItems(results.items||[]);setMore(results.has_more===true);setUnread(counts.unread||0);
@@ -100,7 +106,7 @@ export default function HqFeedback() {
   return <div className="space-y-4" data-testid="hq-feedback">
     <header className="flex flex-wrap justify-between gap-3 items-center">
       <div>
-        <h2 className="font-display text-2xl font-bold" style={{color:GREEN}}>Feedback inbox</h2>
+        {focused&&<Link className="underline text-sm" to={"/parent/command-centre/customers?"+new URLSearchParams({directory:"unified",kind:"account",family,section:"enquiries"})}>← Family enquiries</Link>}<h2 className="font-display text-2xl font-bold" style={{color:GREEN}}>{focused?"Family learning support enquiry":"Feedback inbox"}</h2>
         <p className="text-sm text-stone-600 mt-1">Parent problems, ideas, suggestions and other feedback. Account details come from signed-in records.</p>
       </div>
       <div className="flex items-center gap-2">
@@ -108,7 +114,7 @@ export default function HqFeedback() {
         <Button tone="plain" onClick={load} disabled={loading}><RefreshCw size={14} className="inline mr-1"/>Refresh</Button>
       </div>
     </header>
-    <div className="flex flex-wrap gap-3 bg-white rounded-xl border border-stone-200 p-4">
+    {!focused&&<div className="flex flex-wrap gap-3 bg-white rounded-xl border border-stone-200 p-4">
       <label className="flex gap-2 items-center text-sm"><input type="checkbox" checked={supportOnly} onChange={e=>{setSupportOnly(e.target.checked);setPage(1);}}/> Learning support only</label>
       <F label="Status"><select value={status} onChange={e=>{setStatus(e.target.value);setPage(1);}} className="rounded-lg border border-stone-300 p-2 bg-white text-sm" data-testid="hq-feedback-status-filter">
         <option value="">All statuses</option>{STATUS.map(([id,label])=><option key={id} value={id}>{label}</option>)}
@@ -116,7 +122,7 @@ export default function HqFeedback() {
       <F label="Category"><select value={category} onChange={e=>{setCategory(e.target.value);setPage(1);}} className="rounded-lg border border-stone-300 p-2 bg-white text-sm" data-testid="hq-feedback-category-filter">
         <option value="">All categories</option>{Object.entries(LABEL).map(([id,label])=><option key={id} value={id}>{label}</option>)}
       </select></F>
-    </div>
+    </div>}
     {error&&<Alert>{error}</Alert>}
     <div className="grid lg:grid-cols-[minmax(280px,1fr)_minmax(0,1.35fr)] gap-4 items-start">
       <section className="paper-card p-3 sm:p-4 space-y-2" aria-label="Feedback submissions">
