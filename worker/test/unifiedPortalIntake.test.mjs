@@ -490,3 +490,48 @@ test("maths models validate bounded integer steps and fractional parts without e
   assert.equal(await endLiveActivity(DB,host,{activity_id:live.id,state:"closed",confirmed:true},now),true);
  }
 });
+
+test("club invoice preparation uses exact separate single, weekly and upfront obligations and never sends provider writes",async t=>{
+ const {DB,one,two}=await fixture(t);
+ const {createEnglishRound,setEnglishRoundPublished,listEnglishRounds}=await import("../src/englishClubRounds.ts");
+ const {reserveEnglishRound,reserveEnglishSingle,CLUB_BOOKING_VERSION,CLUB_SINGLE_VERSION}=await import("../src/englishClubSelfService.ts");
+ const {previewClubInvoice,prepareClubInvoice,listClubObligations}=await import("../src/clubSquareInvoicePreparation.ts");
+ const now=new Date("2026-12-07T00:00:00.000Z");
+ const round=await createEnglishRound(DB,one.actor.id,{title:"Invoice test",first_local:"2026-12-09T18:00",session_count:6,themes:Array.from({length:6},(_,i)=>"Workshop "+i),confirmed:true},now);
+ assert.ok(round.id);assert.equal(await setEnglishRoundPublished(DB,round.id,{published:true,confirmed:true},now),true);
+ const [published]=await listEnglishRounds(DB,true,now);
+ const single={class_id:published.classes[0].id,learner_id:one.learner,request_key:"invoice-single",expected_total_cents:1500,certificate_delivery:"pdf",terms_version:CLUB_SINGLE_VERSION,confirmed:true};
+ const s=await reserveEnglishSingle(DB,one.actor,single,now);assert.ok(s.booking_id);
+ const weeklyLearner=await addPortalLearner(DB,one.actor,{label:"Weekly",year_level:"Year 5",request_key:"weekly-invoice"});
+ const upfrontLearner=await addPortalLearner(DB,one.actor,{label:"Upfront",year_level:"Year 5",request_key:"upfront-invoice"});
+ const common={round_id:round.id,expected_total_cents:9000,certificate_delivery:"pdf",terms_version:CLUB_BOOKING_VERSION,confirmed:true};
+ const weekly=await reserveEnglishRound(DB,one.actor,{...common,learner_id:weeklyLearner.id,request_key:"weekly-invoice",payment_mode:"weekly"},now);
+ const upfront=await reserveEnglishRound(DB,one.actor,{...common,learner_id:upfrontLearner.id,request_key:"upfront-invoice",payment_mode:"upfront"},now);
+ assert.ok(weekly.id&&upfront.id);
+ const foreign=await reserveEnglishSingle(DB,two.actor,{...single,learner_id:two.learner,request_key:"foreign"},now);assert.ok(foreign.booking_id);
+ const env={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:one.email,SQUARE_ACCESS_TOKEN:"synthetic",SQUARE_LOCATION_ID:"TEST123456",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_WEBHOOK_SIGNATURE_KEY:"test"};
+ let calls=0;
+ const mock=async(url,init)=>{calls++;assert.equal(init.method,"GET");assert.ok(String(url).startsWith("https://connect.squareupsandbox.com/v2/customers/"));return new Response(JSON.stringify({customer:{id:"customer-test",email_address:one.email}}),{status:200});};
+ const args={customer_id:"customer-test",reviewed:true};
+ const list=(await listClubObligations(DB)).items;
+ assert.equal(list.length,9);
+ const w=list.filter(r=>r.request_id===weekly.id);assert.equal(w.length,6);assert.ok(w.every(r=>r.amount_cents===1500&&r.expected_seats===1));
+ const u=list.find(r=>r.request_id===upfront.id);assert.equal(u.amount_cents,9000);assert.equal(u.expected_seats,6);
+ assert.ok((await previewClubInvoice({...env,SQUARE_APPLICATION_ID:"sq0idp-production"},"single",s.booking_id,args,mock,now)).error);assert.equal(calls,0);
+ assert.ok((await previewClubInvoice(env,"single",foreign.booking_id,args,mock,now)).error);assert.equal(calls,0);
+ for(const [kind,id,amount,n] of [["single",s.booking_id,1500,1],["round",w[0].obligation_id,1500,1],["round",u.obligation_id,9000,6]]){
+  const p=await previewClubInvoice(env,kind,id,args,mock,now);assert.ok(p.fingerprint,JSON.stringify(p));assert.equal(p.snapshot.amount_cents,amount);assert.equal(p.seat_count,n);assert.equal(p.provider_order.line_items[0].base_price_money.amount,amount);
+  assert.ok(!JSON.stringify(p.provider_order).includes("Learner"));assert.ok(!JSON.stringify(p.provider_invoice).includes(one.email));
+  assert.ok((await prepareClubInvoice(env,kind,id,one.actor.id,{...args,fingerprint:p.fingerprint,confirmed:false},mock,now)).error);
+  assert.ok((await prepareClubInvoice(env,kind,id,one.actor.id,{...args,fingerprint:"0".repeat(64),confirmed:true},mock,now)).error);
+  const a=await prepareClubInvoice(env,kind,id,one.actor.id,{...args,fingerprint:p.fingerprint,confirmed:true},mock,now);assert.equal(a.prepared,true,JSON.stringify(a));
+  const b=await prepareClubInvoice(env,kind,id,one.actor.id,{...args,fingerprint:p.fingerprint,confirmed:true},mock,now);assert.equal(b.prepared,true);
+ }
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_intents").get().n,3);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_intents WHERE provider_order_id IS NOT NULL OR provider_invoice_id IS NOT NULL").get().n,0);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status<>'reserved'").get().n,0);
+ const other=w[1];const before=await previewClubInvoice(env,"round",other.obligation_id,args,mock,now);assert.ok(before.fingerprint);
+ DB.raw.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id IN (SELECT seat_id FROM support_club_obligation_seats WHERE kind='round' AND obligation_id=?)").run(other.obligation_id);
+ assert.ok((await prepareClubInvoice(env,"round",other.obligation_id,one.actor.id,{...args,fingerprint:before.fingerprint,confirmed:true},mock,now)).error);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_intents").get().n,3);
+});

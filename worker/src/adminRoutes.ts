@@ -1,3 +1,4 @@
+import {listClubObligations,previewClubInvoice,prepareClubInvoice} from "./clubSquareInvoicePreparation";
 import {readProgressReport,changeProgressReport} from "./supportFamilyProgressReports";
 import {readActivityEvidence,saveActivityEvidence,removeActivityEvidence} from "./supportActivityEvidence";
 import {readActivityPlan,saveActivityPlan} from "./supportActivityPlans";
@@ -1067,6 +1068,24 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",b=await readJson(c);
     if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/english-club/payments",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    return c.json(await listClubObligations(c.env.DB));
+  });
+  admin.post("/english-club/payments/:kind/:id/preview",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const r=await previewClubInvoice(c.env,c.req.param("kind")??"",c.req.param("id")??"",await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/prepare",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("id")??"",kind=c.req.param("kind")??"";
+    const r=await prepareClubInvoice(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.prepare",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
