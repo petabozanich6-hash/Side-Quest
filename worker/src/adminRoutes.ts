@@ -1,3 +1,4 @@
+import {ownerClubCertificatePdf} from "./clubCertificateDelivery";
 import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate} from "./clubCertificates";
 import {releaseOverdueClubPlace} from "./clubSquareOverdue";
 import {verifyClubSquarePayment} from "./clubSquareInvoiceSettlement";
@@ -1073,6 +1074,11 @@ export function createAdminRoutes() {
     const id=c.req.param("cid")??"",b=await readJson(c);
     if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/english-club/certificates/:id/pdf",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await ownerClubCertificatePdf(c.env,c.req.param("id")??"");
+    return !r?c.json({detail:"Certificate unavailable"},404):"error" in r?c.json({detail:r.error},409):c.json(r);
   });
   admin.get("/english-club/certificates",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
