@@ -1,4 +1,4 @@
-import {nextBookingAction,orderStatus,payableOrder} from "./familyPortalWorkflow";
+import {nextBookingAction,orderStatus,payableOrder,canJoinFamilySession} from "./familyPortalWorkflow";
 const enquiry={status:"reviewing"};
 const quote={id:"q",status:"offered"};
 const interested={...quote,status:"interested"};
@@ -24,4 +24,16 @@ test("closed requests, review and cancellation never advertise a payable confirm
  expect(orderStatus({...order,status:"confirmed",invoice_overdue:true})).toMatch(/deadline passed/);
  expect(orderStatus({...order,status:"review"})).toMatch(/do not pay again/);
  expect(orderStatus({...order,status:"paid",cancellation_pending:true})).toMatch(/Cancellation requested/);
+});
+
+test("canonical classroom entry is limited to paid live sessions within their join window",()=>{
+ const row={id:"order",request_id:"request",kind:"tutoring",source:"portal",mode:"live",status:"paid",request_status:"reviewing",start_at:"2026-12-09T07:00:00Z",end_at:"2026-12-09T08:00:00Z"};
+ const now=Date.parse("2026-12-09T07:00:00Z");
+ expect(canJoinFamilySession(row,now)).toBe(true);
+ expect(canJoinFamilySession(row,now-600000)).toBe(true);
+ expect(canJoinFamilySession(row,now-600001)).toBe(false);
+ expect(canJoinFamilySession(row,now+3600000)).toBe(false);
+ for(const change of [{status:"confirmed"},{status:"review"},{source:"legacy"},{cancellation_pending:true},{legacy_checkout:true},{request_status:"closed"},{mode:"written"},{start_at:"invalid"},{request_id:null}])expect(canJoinFamilySession({...row,...change},now)).toBe(false);
+ expect(canJoinFamilySession({...row,kind:"club",class_id:"class"},now)).toBe(true);
+ expect(canJoinFamilySession({...row,kind:"club"},now)).toBe(false);
 });

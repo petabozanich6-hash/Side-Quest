@@ -56,6 +56,6 @@ export function registerFamilyOverview(app:App,g:Guards){
   const issued=await familyIssuedSquareInvoiceSummaries(c.env,c.get("user"));
   const byOrder=new Map(issued.map(i=>[i.id,i]));
   const clubInvoices=await familyClubInvoiceSummaries(c.env,c.get("user"));
-  return c.json({...r,club_invoices:clubInvoices.slice(0,200),limited:r.limited||issued.length>200||clubInvoices.length>200,orders:r.orders.map(o=>({...o,square_invoice:byOrder.get(o.id)||null}))});
+  return c.json({...r,classroom_enabled:c.env.SUPPORT_CLASSROOM_ENABLED==="true",club_invoices:clubInvoices.slice(0,200),limited:r.limited||issued.length>200||clubInvoices.length>200,orders:r.orders.map(o=>({...o,square_invoice:byOrder.get(o.id)||null}))});
  });
 }

@@ -27,3 +27,11 @@ export function orderStatus(o){
  if(o.status==="cancelled")return "Cancelled";
  return String(o.status||"").replaceAll("_"," ");
 }
+
+// Display only: the classroom endpoints still enforce current identity, payment and window.
+export function canJoinFamilySession(row,now=Date.now()){
+ if(!row||row.source!=="portal"||row.status!=="paid"||row.cancellation_pending||row.legacy_checkout||["closed","resolved"].includes(row.request_status)||!row.request_id||!row.id||!["tutoring","club"].includes(row.kind))return false;
+ if(row.kind==="tutoring"&&row.mode!=="live"||row.kind==="club"&&!row.class_id)return false;
+ const start=Date.parse(row.start_at),end=Date.parse(row.end_at);
+ return Number.isFinite(start)&&Number.isFinite(end)&&end>start&&now>=start-600000&&now<end;
+}
