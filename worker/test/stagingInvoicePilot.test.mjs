@@ -37,3 +37,17 @@ test("private unified family portal can be enabled without payment or mail confi
  const disabled=configureStagingInvoicePilot(portal,{ENABLE_FAMILY_PORTAL:"false"});
  assert.equal(disabled.vars.SUPPORT_UNIFIED_PORTAL_TEST,"false");
 });
+
+test("staging admin allowlist uses only the explicit validated origin, even when Square is disabled",()=>{
+ const origin="https://side-quest-staging.test.workers.dev";
+ const configured=configureStagingInvoicePilot(config,{ENABLE_FAMILY_PORTAL:"true",STAGING_ORIGIN_INPUT:origin+"/"});
+ assert.equal(configured.vars.ADMIN_ORIGINS,origin);
+ assert.equal(configured.vars.SUPPORT_GUEST_ORIGIN,origin);
+ assert.equal(configured.vars.SUPPORT_SQUARE_INVOICE_TEST,"false");
+ assert.equal(configureStagingInvoicePilot(config,{STAGING_SUPPORT_ORIGIN:origin}).vars.ADMIN_ORIGINS,origin);
+ assert.throws(()=>configureStagingInvoicePilot(config,{STAGING_ORIGIN_INPUT:"https://sidequestlearning.app"}));
+ assert.throws(()=>configureStagingInvoicePilot(config,{STAGING_ORIGIN_INPUT:origin+"/api/staging-access"}));
+ assert.throws(()=>configureStagingInvoicePilot(config,{STAGING_ORIGIN_INPUT:origin+"?key=private"}));
+ assert.throws(()=>configureStagingInvoicePilot(config,{STAGING_ORIGIN_INPUT:"https://other.test.workers.dev"}));
+ assert.equal(configureStagingInvoicePilot(configured,{}).vars.ADMIN_ORIGINS,undefined);
+});
