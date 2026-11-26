@@ -354,3 +354,35 @@ test("session activity plans preserve order, reject stale reviewed resources and
  DB.raw.prepare("UPDATE support_service_orders SET status='cancelled' WHERE id='plan-order'").run();
  assert.equal(await saveActivityPlan(DB,"tutoring","plan-order",{revision:1,items:[],confirmed:true},now),false);
 });
+
+test("structured activity games validate solutions, save reviewed templates and withhold answer keys",async t=>{
+ const {DB,one}=await fixture(t);
+ const {validateGame,validateGameResponse}=await import("../src/supportActivityGames.ts");
+ const {saveActivityTemplate,getActivityTemplate,listActivityTemplates}=await import("../src/supportActivityLibrary.ts");
+ const {launchLiveActivity,readLiveActivity,respondLiveActivity,endLiveActivity}=await import("../src/supportLiveActivities.ts");
+ const base={title:"Match clues",subject:"English",year_level:"Year 4",question:"Match each word to its meaning",type:"matching",game:{items:["swift","tiny","quiet"],targets:["small","silent","fast"]},answer_key:[2,0,1],reviewed:true};
+ assert.ok(validateGame(base));
+ assert.equal(validateGame({...base,answer_key:[1,1,0]}),null);
+ assert.equal(validateGameResponse({...base.game,type:"matching"},[1,1,0]),null);
+ assert.ok(validateGame({...base,type:"sorting",answer_key:[0,0,1]}));
+ assert.ok(validateGame({...base,type:"sequence",answer_key:[2,0,1]}));
+ assert.equal(validateGame({...base,type:"sequence",answer_key:[0,0,1]}),null);
+ const saved=await saveActivityTemplate(DB,base);assert.ok(saved.id);
+ const template=await getActivityTemplate(DB,saved.id);
+ assert.equal(template.type,"matching");assert.equal(template.game.type,"matching");assert.equal(template.answer_key,"[2,0,1]");
+ assert.equal((await listActivityTemplates(DB,"Match",true))[0].type,"matching");
+ const req=await submitPortalEnquiry(DB,one.actor,form(one.learner,"game-tutor"));assert.ok(req.id);
+ const now=new Date(),start=new Date(now.getTime()-60000).toISOString(),end=new Date(now.getTime()+3600000).toISOString();
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('game-order','guest',?,'game-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(req.id,start,end,start,start);
+ DB.raw.prepare("INSERT INTO support_classrooms(order_id,is_open,updated_at) VALUES('game-order',1,?)").run(start);
+ const host={kind:"tutoring",sessionId:"game-order",owner:true},learner={...host,owner:false,actor:one.actor,requestId:req.id};
+ assert.equal(await launchLiveActivity(DB,host,{template_id:saved.id,template_revision:template.revision,confirmed:true},now),true);
+ const live=(await readLiveActivity(DB,learner,now)).activity;
+ assert.equal(live.type,"matching");assert.equal(live.answer_key,null);assert.deepEqual(live.game.items,base.game.items);
+ assert.equal(await respondLiveActivity(DB,learner,{activity_id:live.id,response:"[0,0,1]"},now),false);
+ assert.equal(await respondLiveActivity(DB,learner,{activity_id:live.id,response:"[2,0,1]"},now),true);
+ assert.equal((await readLiveActivity(DB,learner,now)).response,"[2,0,1]");
+ assert.equal(await endLiveActivity(DB,host,{activity_id:live.id,state:"revealed",confirmed:true},now),true);
+ assert.equal((await readLiveActivity(DB,learner,now)).activity.answer_key,"[2,0,1]");
+ assert.equal(await respondLiveActivity(DB,learner,{activity_id:live.id,response:"[0,1,2]"},now),false);
+});
