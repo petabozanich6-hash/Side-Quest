@@ -14,6 +14,11 @@ on:
         type: boolean
         default: true
         required: true
+      enable_resource_ai:
+        description: "Enable metered teaching-resource AI in private staging (synthetic non-identifying topics only)"
+        type: boolean
+        default: false
+        required: true
       enable_invoice_pilot:
         description: "Enable private Square sandbox invoice pilot (synthetic parent only)"
         type: boolean
@@ -34,6 +39,7 @@ jobs:
       STAGING_JWT_SECRET: ${{ secrets.STAGING_JWT_SECRET }}
       STAGING_KEY: ${{ secrets.STAGING_KEY }}
       ENABLE_FAMILY_PORTAL: ${{ inputs.enable_family_portal }}
+      ENABLE_RESOURCE_AI: ${{ inputs.enable_resource_ai }}
       ENABLE_INVOICE_PILOT: ${{ inputs.enable_invoice_pilot }}
       STAGING_ORIGIN_INPUT: ${{ inputs.staging_origin }}
       STAGING_SUPPORT_ORIGIN: ${{ vars.STAGING_SUPPORT_ORIGIN }}
