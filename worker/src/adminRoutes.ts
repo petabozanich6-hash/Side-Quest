@@ -27,7 +27,7 @@ import {createPreparedSupportSquareDraft} from "./supportSquareInvoiceDraft";
 import {previewSupportInvoice} from "./supportSquareInvoicePreview";
 import {supportInvoiceLookupAvailable,inspectSupportInvoice} from "./supportSquareInvoiceLookup";
 import {ownerToday} from "./unifiedOwnerToday";
-import {ownerLearner,saveOwnerLearnerNotes,appointmentLearnerContext,ownerLearnerReports} from "./unifiedOwnerLearner";
+import {ownerLearner,saveOwnerLearnerNotes,appointmentLearnerContext,ownerLearnerReports,clubPreparationContext} from "./unifiedOwnerLearner";
 import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
@@ -943,6 +943,12 @@ export function createAdminRoutes() {
     const starts=await suggestSupportStarts(c.env.DB,minutes,prep,wrap);
     if(!starts)return c.json({detail:"Invalid session length or preparation buffers."},400);
     c.header("Cache-Control","private, no-store");return c.json({starts,timezone:"Australia/Sydney"});
+  });
+  admin.get("/english-club/classes/:cid/preparation-context",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const r=await clubPreparationContext(c.env.DB,c.req.param("cid")||"");
+    return r?c.json(r):c.json({detail:"Workshop unavailable"},404);
   });
   admin.get("/english-club",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);c.header("Cache-Control","private, no-store");return c.json(await listEnglishClub(c.env.DB));
