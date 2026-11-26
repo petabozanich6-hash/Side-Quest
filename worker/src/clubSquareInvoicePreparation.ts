@@ -30,8 +30,8 @@ async function eligible(e:Env,kind:string,id:string,now:Date){
  }catch{return null;}
 }
 export async function listClubObligations(db:D1Database){
- const rows=(await db.prepare(`SELECT o.kind,o.obligation_id,o.request_id,o.amount_cents,o.due_at,o.status,o.payment_mode,o.expected_seats,l.label learner_label,r.parent_name,(SELECT MIN(s.start_at) FROM support_club_obligation_seats s WHERE s.kind=o.kind AND s.obligation_id=o.obligation_id) first_start_at,i.state invoice_state
- FROM support_club_payment_obligations o JOIN support_portal_enquiries p ON p.request_id=o.request_id AND p.learner_id=o.learner_id JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id JOIN support_guest_requests r ON r.id=p.request_id LEFT JOIN support_club_square_intents i ON i.kind=o.kind AND i.obligation_id=o.obligation_id
+ const rows=(await db.prepare(`SELECT o.kind,o.obligation_id,o.request_id,o.amount_cents,o.due_at,o.status,o.payment_mode,o.expected_seats,l.label learner_label,r.parent_name,(SELECT MIN(s.start_at) FROM support_club_obligation_seats s WHERE s.kind=o.kind AND s.obligation_id=o.obligation_id) first_start_at,i.state invoice_state,a.status automation_status
+ FROM support_club_payment_obligations o JOIN support_portal_enquiries p ON p.request_id=o.request_id AND p.learner_id=o.learner_id JOIN support_portal_learners l ON l.id=p.learner_id AND l.family_id=p.family_id JOIN support_guest_requests r ON r.id=p.request_id LEFT JOIN support_club_square_intents i ON i.kind=o.kind AND i.obligation_id=o.obligation_id LEFT JOIN support_club_invoice_auto_attempts a ON a.kind=o.kind AND a.obligation_id=o.obligation_id
  ORDER BY o.due_at,o.obligation_id LIMIT 201`).all<any>()).results||[];
  return {items:rows.slice(0,200),limited:rows.length>200};
 }
