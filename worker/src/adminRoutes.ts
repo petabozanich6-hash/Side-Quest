@@ -1,3 +1,4 @@
+import {publishPreparedSupportSquareInvoice} from "./supportSquareInvoicePublish";
 import {inspectPreparedSupportSquareInvoice,recoverPreparedSupportSquareRecord} from "./supportSquareInvoiceReconcile";
 import {ownerSquareInvoiceWorkspace} from "./supportSquareInvoiceWorkspace";
 import {prepareSupportInvoiceIntent,releasePreparedSupportInvoiceIntent} from "./supportSquareInvoiceIntent";
@@ -293,7 +294,7 @@ export function createAdminRoutes() {
   admin.post("/support-invoice-workspace/:action",requirePermission("customers.read"),async c=>{
     if(!supportInvoiceLookupAvailable(c.env)||!c.get("roles").includes("owner"))return c.json({detail:"Not found"},404);
     const action=c.req.param("action"),b=await readJson(c);
-    if((b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||!b.request_id||!b.order_id||b.request_id.length>100||b.order_id.length>100||b.confirmed!==true||typeof b.fingerprint!=="string"||!/^[a-f0-9]{64}$/.test(b.fingerprint)||!["prepare","create-order","create-draft","release","inspect","recover"].includes(action||""))return c.json({detail:"Review and explicitly approve this invoice action."},400);
+    if((b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||!b.request_id||!b.order_id||b.request_id.length>100||b.order_id.length>100||b.confirmed!==true||typeof b.fingerprint!=="string"||!/^[a-f0-9]{64}$/.test(b.fingerprint)||!["prepare","create-order","create-draft","release","inspect","recover","publish"].includes(action||""))return c.json({detail:"Review and explicitly approve this invoice action."},400);
     const workspace=await ownerSquareInvoiceWorkspace(c.env,b.channel,b.request_id,b.order_id);
     if(!workspace)return c.json({detail:"Arrangement not found"},404);
     if(action!=="release"&&action!=="inspect"&&!workspace.eligible)return c.json({detail:"Arrangement needs reconciliation."},409);
@@ -302,6 +303,7 @@ export function createAdminRoutes() {
       action==="release"?await releasePreparedSupportInvoiceIntent(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
       action==="inspect"?await inspectPreparedSupportSquareInvoice(c.env,b.channel,b.request_id,b.order_id,b):
       action==="recover"?await recoverPreparedSupportSquareRecord(c.env,b.channel,b.request_id,b.order_id,b):
+      action==="publish"?await publishPreparedSupportSquareInvoice(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
       action==="create-order"?await createPreparedSupportSquareOrder(c.env,b.channel,b.request_id,b.order_id,b):
       await createPreparedSupportSquareDraft(c.env,b.channel,b.request_id,b.order_id,b);
     if("error" in r)return c.json({detail:r.error},409);
