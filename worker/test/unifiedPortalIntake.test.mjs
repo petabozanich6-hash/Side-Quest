@@ -305,3 +305,33 @@ test("AI activity drafting returns validated unsaved drafts",async t=>{
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,0);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM ai_usage WHERE kind='support_activity_draft'").get().n,1);
 });
+
+test("session activity plans preserve order, reject stale reviewed resources and isolate sessions",async t=>{
+ const {DB,one}=await fixture(t);
+ const {saveActivityTemplate,getActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const {readActivityPlan,saveActivityPlan}=await import("../src/supportActivityPlans.ts");
+ const {createEnglishRound,listEnglishRounds}=await import("../src/englishClubRounds.ts");
+ const now=new Date("2026-12-07T00:00:00Z");
+ const round=await createEnglishRound(DB,one.actor.id,{title:"Plan test",first_local:"2026-12-09T18:00",session_count:6,themes:Array.from({length:6},(_,i)=>"Session "+i),confirmed:true},now);assert.ok(round.id);
+ const rounds=await listEnglishRounds(DB),[first,second]=rounds.find(r=>r.id===round.id).classes;
+ const base={title:"Starter",subject:"English",year_level:"Year 5",question:"What could happen next?",type:"short",reviewed:true};
+ const a=await saveActivityTemplate(DB,base),b=await saveActivityTemplate(DB,{...base,title:"Finish"});
+ const items=[{template_id:b.id,revision:1},{template_id:a.id,revision:1}];
+ assert.equal(await saveActivityPlan(DB,"club",first.id,{revision:0,items,confirmed:true},now),true);
+ assert.equal(await saveActivityPlan(DB,"club",first.id,{revision:0,items,confirmed:true},now),false);
+ const plan=await readActivityPlan(DB,"club",first.id);assert.equal(plan.revision,1);assert.deepEqual(plan.items.map(v=>v.title),["Finish","Starter"]);assert.ok(plan.items.every(v=>v.ready));
+ assert.deepEqual((await readActivityPlan(DB,"club",second.id)).items,[]);
+ assert.equal(await readActivityPlan(DB,"tutoring",first.id),null);
+ assert.equal(await saveActivityPlan(DB,"club",second.id,{revision:0,items:[items[0],items[0]],confirmed:true},now),false);
+ await saveActivityTemplate(DB,{...base,revision:1,reviewed:false},a.id);
+ assert.equal((await readActivityPlan(DB,"club",first.id)).items[1].ready,false);
+ assert.equal(await saveActivityPlan(DB,"club",first.id,{revision:1,items,confirmed:true},now),false);
+ assert.equal(await saveActivityPlan(DB,"club",first.id,{revision:1,items:[items[0]],confirmed:true},now),true);
+ assert.equal((await readActivityPlan(DB,"club",first.id)).revision,2);
+ const request=await submitPortalEnquiry(DB,one.actor,form(one.learner,"plan-tutor"));assert.ok(request.id);
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES('plan-order','guest',?,'plan-quote',2500,'test','live','test','live','2026-12-09T07:00:00.000Z','2026-12-09T08:00:00.000Z','confirmed',?,?)").run(request.id,now.toISOString(),now.toISOString());
+ assert.equal(await saveActivityPlan(DB,"tutoring","plan-order",{revision:0,items:[items[0]],confirmed:true},now),true);
+ assert.equal((await readActivityPlan(DB,"tutoring","plan-order")).items[0].title,"Finish");
+ DB.raw.prepare("UPDATE support_service_orders SET status='cancelled' WHERE id='plan-order'").run();
+ assert.equal(await saveActivityPlan(DB,"tutoring","plan-order",{revision:1,items:[],confirmed:true},now),false);
+});

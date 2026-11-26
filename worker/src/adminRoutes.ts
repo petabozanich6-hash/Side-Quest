@@ -1,3 +1,4 @@
+import {readActivityPlan,saveActivityPlan} from "./supportActivityPlans";
 import {activityAiEnabled,draftActivities} from "./supportActivityDrafts";
 import {listActivityTemplates,getActivityTemplate,saveActivityTemplate,archiveActivityTemplate} from "./supportActivityLibrary";
 import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity} from "./supportLiveActivities";
@@ -984,6 +985,20 @@ export function createAdminRoutes() {
     if(b.confirmed!==true||!await archiveActivityTemplate(c.env.DB,id,b.revision))return c.json({detail:"Reload and confirm archival."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.archive",targetType:"support_activity_template",targetId:id,detail:{}});
     return c.json({ok:true});
+  });
+  admin.get("/activity-plans/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const plan=await readActivityPlan(c.env.DB,kind,c.req.param("session")??"");
+    return plan?c.json(plan):c.json({detail:"Scheduled session not found."},404);
+  });
+  admin.put("/activity-plans/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const id=c.req.param("session")??"";
+    if(!await saveActivityPlan(c.env.DB,kind,id,await readJson(c)))return c.json({detail:"The plan or reviewed activities changed, or the session is unavailable. Reload and check the plan."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_plan.save",targetType:"support_session",targetId:id,detail:{kind}});
+    return c.json(await readActivityPlan(c.env.DB,kind,id));
   });
   // Inherits Owner HQ authentication, permission, passkey step-up, origin and rate limits.
   admin.get("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
