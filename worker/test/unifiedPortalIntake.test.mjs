@@ -209,6 +209,23 @@ test("live activity engine isolates club learner responses and answer keys; supp
  const classroomEnv={DB,STAGING_KEY:"test",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_CLASSROOM_ENABLED:"true"};
  assert.equal(await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,live),null);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='paid' WHERE request_id IN (?,?)").run(b1.id,b2.id);
+
+ const {clubPreparationContext,saveOwnerLearnerNotes}=await import("../src/unifiedOwnerLearner.ts");
+ const notes={goals:"Story structure",interests:"Dragons",approach:"Short instructions",private_notes:"Private learner note",revision:0,confirmed:true};
+ assert.equal((await saveOwnerLearnerNotes(DB,one.actor.family_id,one.learner,notes,{actorUserId:one.actor.id,actorLabel:"Synthetic owner"})).revision,1);
+ const groupContext=await clubPreparationContext(DB,cid,live);
+ assert.equal(groupContext.learners.length,2);
+ const firstContext=groupContext.learners.find(x=>x.learner?.id===one.learner);
+ const secondContext=groupContext.learners.find(x=>x.learner?.id===two.learner);
+ assert.equal(firstContext.learner.interests,"Dragons");
+ assert.equal(firstContext.learner.private_notes,"Private learner note");
+ assert.equal(secondContext.learner.private_notes,"");
+ assert.deepEqual(firstContext.reports,[]);
+ assert.equal(await clubPreparationContext(DB,"nonexistent",live),null);
+ assert.deepEqual((await clubPreparationContext(DB,r.classes[1].id,live)).learners,[]);
+ DB.raw.prepare("UPDATE support_english_enrolments SET status='invoiced' WHERE request_id=?").run(b2.id);
+ assert.equal((await clubPreparationContext(DB,cid,live)).learners.length,1);
+ DB.raw.prepare("UPDATE support_english_enrolments SET status='paid' WHERE request_id=?").run(b2.id);
  const access=await familyClubClassroomAccess(classroomEnv,one.actor,b1.id,cid,live);
  assert.equal(access.in_window,true);
  assert.equal(access.seat_id,DB.raw.prepare("SELECT id FROM support_english_enrolments WHERE request_id=?").get(b1.id).id);
