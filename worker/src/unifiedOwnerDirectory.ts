@@ -42,7 +42,7 @@ export async function unifiedOwnerDirectory(db:D1Database,search:string,page:num
  return {items:rows.slice(0,50).map(r=>({kind:r.kind,id:r.id,parent_name:r.parent_name,email:r.email,verified:r.kind==="account"?!!r.verified_at:null,plan:r.kind==="account"?effectivePlan(r):null,status:r.status,registration_intent:r.registration_intent,enquiries:r.enquiries,open_count:r.open_count,unread_count:r.unread_count,club_count:r.club_count,updated_at:r.updated_at})),has_more:rows.length>50};
 }
 
-export const OWNER_FAMILY_SECTIONS=["home","learners","enquiries","appointments","invoices","messages"] as const;
+export const OWNER_FAMILY_SECTIONS=["home","learners","enquiries","appointments","invoices","messages","club"] as const;
 export type OwnerFamilySection=typeof OWNER_FAMILY_SECTIONS[number];
 /** Scoped operational metadata only. No unrelated homeschool child records, lesson content or private notes. */
 export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,section:OwnerFamilySection,page:number){
@@ -77,6 +77,10 @@ export async function unifiedOwnerFamily(db:D1Database,kind:string,id:string,sec
  UNION ALL SELECT e.id,r.id,r.channel,r.guest_id,c.topic,c.start_at,c.end_at,e.status,'club',c.id
  FROM selected_requests r JOIN support_english_enrolments e ON r.channel='guest' AND e.request_id=r.id JOIN support_english_classes c ON c.id=e.class_id
  ORDER BY 6 DESC,1 LIMIT 51 OFFSET ?`;break;
+ case "club":
+  sql=scope+` SELECT e.id,r.id request_id,r.channel,r.guest_id,c.topic subject,c.start_at,c.end_at,e.status,'club' service,c.id class_id,e.attendance,e.invoice_reference,e.payment_due_at
+ FROM selected_requests r JOIN support_english_enrolments e ON r.channel='guest' AND e.request_id=r.id JOIN support_english_classes c ON c.id=e.class_id
+ ORDER BY c.start_at DESC,e.id LIMIT 51 OFFSET ?`;break;
  case "invoices":
   sql=scope+` SELECT o.id,r.id request_id,r.channel,r.guest_id,r.subject,o.amount_cents,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at,'tutoring' service,NULL class_id
  FROM selected_requests r JOIN support_service_orders o ON o.request_id=r.id AND o.channel=r.channel
