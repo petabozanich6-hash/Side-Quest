@@ -9,7 +9,8 @@ import type {Fetch} from "./square";
 const owned=`SELECT s.id,s.channel,s.request_id,s.status,s.amount_cents,s.updated_at,
  i.fingerprint,i.state,i.due_at,i.provider_public_url,i.provider_issued_at,i.order_updated_at,
  i.amount_cents invoice_amount,i.provider_invoice_id,i.provider_invoice_version,
- CASE WHEN EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=s.id AND c.status='pending') THEN 1 ELSE 0 END cancellation_pending
+ CASE WHEN EXISTS(SELECT 1 FROM support_cancellation_requests c WHERE c.order_id=s.id AND c.status='pending') THEN 1 ELSE 0 END cancellation_pending,
+ CASE WHEN EXISTS(SELECT 1 FROM support_square_invoice_reviews v WHERE v.order_id=s.id AND v.resolved_at IS NULL) THEN 1 ELSE 0 END financial_hold
  FROM support_square_invoice_intents i JOIN support_service_orders s ON s.id=i.order_id
  WHERE i.state='issued' AND i.provider_issued_at IS NOT NULL AND i.provider_invoice_id IS NOT NULL
  AND i.provider_public_url IS NOT NULL
@@ -39,6 +40,8 @@ export async function familyIssuedSquareInvoice(env:Env,a:AuthUser,orderId:strin
  if(!r)return null;
  const summary={amount_cents:r.invoice_amount,due_at:r.due_at,issued_at:r.provider_issued_at};
  const hold=(status:string)=>({...summary,status,payment_url:null});
+ if(r.financial_hold||r.cancellation_pending)return hold("review");
+ if(r.status==="cancelled")return hold("cancelled");
  if(["paid","completed"].includes(r.status)){
   const proof=await env.DB.prepare("SELECT review_at FROM support_square_invoice_settlements WHERE order_id=?").bind(orderId).first<{review_at:string|null}>();
   return hold(proof&&!proof.review_at?"verified":"review");
@@ -58,7 +61,7 @@ export async function familyIssuedSquareInvoice(env:Env,a:AuthUser,orderId:strin
  const fresh=await identity(env,a);
  if(!fresh)return null;
  const current=await env.DB.prepare(owned+" AND s.id=?").bind(...bindings(a,fresh.email),orderId).first<any>();
- if(!current||current.status!=="confirmed"||current.cancellation_pending||current.updated_at!==r.updated_at||
+ if(!current||current.status!=="confirmed"||current.cancellation_pending||current.financial_hold||current.updated_at!==r.updated_at||
  current.fingerprint!==r.fingerprint||current.provider_public_url!==link||current.provider_invoice_version!==r.provider_invoice_version||current.due_at!==r.due_at)
   return hold("review");
  return {...summary,status:"unpaid",payment_url:link};
