@@ -1,3 +1,5 @@
+import {handleSquareEvent,squareConfig,verifySquareSignature} from "../src/square.ts";
+import {familyIssuedSquareInvoice} from "../src/unifiedPortalSquareInvoices.ts";
 import {resolveFullyRefundedSupportInvoice,recheckIssuedSupportInvoices} from "../src/supportSquareInvoiceResolution.ts";
 import {processSquareInvoiceNotices} from "../src/supportSquareInvoiceNotices.ts";
 import {ownerSquareInvoiceWorkspace} from "../src/supportSquareInvoiceWorkspace.ts";
@@ -459,4 +461,75 @@ test("scheduled recheck recovers delayed payment and full-refund release require
  assert.equal((await close()).released,true);assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_refund_resolutions").get().n,1);
  assert.ok(db.raw.prepare("SELECT resolved_at FROM support_square_invoice_reviews WHERE order_id='o'").get().resolved_at);
  assert.equal(proofs().length,1);
+});
+
+test("integrated synthetic lifecycle: owner preparation to family payment, webhook and correspondence without legacy settlement",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());const stamp="2026-11-26T00:00:00.000Z",now=new Date(stamp);
+ db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES('f','Family','u',?,'PREVIEW_EXPIRED')").run(stamp);
+ db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES('u','f','test@example.com','Parent',1,?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,created_at,updated_at) VALUES('r','f','u','other','English','Help','learning-support',?,?)").run(stamp,stamp);
+ db.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,status,created_at,updated_at) VALUES('o','member','r','q',2500,'PRIVATE LEARNER DETAILS','Written','Terms','written','confirmed',?,?)").run(stamp,stamp);
+ const env={DB:db,STAGING_KEY:"private",STAGING_PRIVATE:"true",SUPPORT_UNIFIED_PORTAL_TEST:"true",SUPPORT_SQUARE_INVOICE_TEST:"true",SUPPORT_UNIFIED_TEST_EMAIL:"test@example.com",SQUARE_ACCESS_TOKEN:"fake",SQUARE_APPLICATION_ID:"sandbox-test",SQUARE_LOCATION_ID:"LOCATION123",SQUARE_WEBHOOK_SIGNATURE_KEY:"fake"};
+
+ const parent={id:"u",family_id:"f",role:"parent",name:"Parent"},due="2026-11-27T01:00:00.000Z";
+ const payAt="2026-11-26T01:00:00.000Z",checkAt=new Date("2026-11-26T02:00:00.000Z");
+ const link="https://squareupsandbox.com/pay-invoice/INV1",writes=[];
+ let order=null,invoice=null,payment=null;
+ const provider=async(url,init)=>{
+  assert.ok(url.startsWith("https://connect.squareupsandbox.com/v2/"));
+  const path=url.split("/v2/")[1],body=init.body?JSON.parse(init.body):null;
+  if(init.method==="POST")writes.push({path,body});
+  if(path==="customers/CUST1"&&init.method==="GET")return Response.json({customer:{id:"CUST1",email_address:"test@example.com"}});
+  if(path==="orders"&&init.method==="POST"){
+   assert.equal(order,null);order={...body.order,id:"REMOTE1",total_money:{currency:"AUD",amount:2500}};return Response.json({order});
+  }
+  if(path==="orders/REMOTE1"&&init.method==="GET")return Response.json({order});
+  if(path==="invoices"&&init.method==="POST"){
+   assert.equal(invoice,null);invoice={...body.invoice,id:"INV1",version:0,status:"DRAFT",primary_recipient:{customer_id:"CUST1",email_address:"test@example.com"},payment_requests:body.invoice.payment_requests.map(p=>({...p,computed_amount_money:{currency:"AUD",amount:2500},total_completed_amount_money:{currency:"AUD",amount:0}}))};
+   return Response.json({invoice});
+  }
+  if(path==="invoices/INV1/publish"&&init.method==="POST"){
+   assert.equal(invoice.status,"DRAFT");assert.equal(body.version,0);invoice={...invoice,version:1,status:"UNPAID",public_url:link};return Response.json({invoice});
+  }
+  if(path==="invoices/INV1"&&init.method==="GET")return Response.json({invoice});
+  if(path==="payments/PAY1"&&init.method==="GET")return Response.json({payment});
+  throw Error("Unexpected provider request "+path);
+ };
+ const b={reviewed:true,customer_id:"CUST1",due_at:due},p=await previewSupportInvoice(env,"member","r","o",b,provider,now);
+ assert.ok(p.fingerprint);const a={...b,confirmed:true,fingerprint:p.fingerprint};
+ assert.equal((await prepareSupportInvoiceIntent(env,"member","r","o","owner",a,provider,now)).prepared,true);
+ assert.equal(await familyIssuedSquareInvoice(env,parent,"o",provider,now),null);
+ assert.equal((await createPreparedSupportSquareOrder(env,"member","r","o",a,provider,now)).order_created,true);
+ assert.equal((await createPreparedSupportSquareDraft(env,"member","r","o",a,provider,now)).draft_created,true);
+ assert.equal(await familyIssuedSquareInvoice(env,parent,"o",provider,now),null);
+ assert.equal((await publishPreparedSupportSquareInvoice(env,"member","r","o","owner",{...a,issue_confirmed:true,provider_invoice_id:"INV1",version:0},provider,now)).issued,true);
+ assert.deepEqual(writes.map(w=>w.path),["orders","invoices","invoices/INV1/publish"]);
+ assert.equal((await familyIssuedSquareInvoice(env,parent,"o",provider,now)).payment_url,link);
+ assert.equal(await familyIssuedSquareInvoice(env,{...parent,role:"child"},"o",provider,now),null);
+ assert.equal(await familyIssuedSquareInvoice(env,{...parent,id:"not-owner"},"o",provider,now),null);
+ const cfg=squareConfig(env),event={event_id:"synthetic-event",type:"invoice.payment_made",data:{object:{invoice:{id:"INV1"}}}};
+ const raw=JSON.stringify(event),hookUrl="https://side-quest-staging.example.workers.dev/api/billing/square-webhook";
+ const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(env.SQUARE_WEBHOOK_SIGNATURE_KEY),{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+ const mac=new Uint8Array(await crypto.subtle.sign("HMAC",key,new TextEncoder().encode(hookUrl+raw)));
+ const signature=btoa(String.fromCharCode(...mac));
+ assert.equal(await verifySquareSignature(raw,signature,env.SQUARE_WEBHOOK_SIGNATURE_KEY,hookUrl),true);
+ assert.equal(await verifySquareSignature(raw+" ",signature,env.SQUARE_WEBHOOK_SIGNATURE_KEY,hookUrl),false);
+ // Provider state, not the event alone, is authoritative.
+ await handleSquareEvent(db,cfg,event,provider,checkAt,undefined,{env});
+ assert.equal(db.raw.prepare("SELECT status FROM support_service_orders WHERE id='o'").get().status,"confirmed");
+ order={...order,state:"COMPLETED",tenders:[{payment_id:"PAY1",amount_money:{currency:"AUD",amount:2500}}]};
+ invoice={...invoice,status:"PAID",version:2,payment_requests:invoice.payment_requests.map(p=>({...p,total_completed_amount_money:{currency:"AUD",amount:2500}}))};
+ payment={id:"PAY1",order_id:"REMOTE1",location_id:"LOCATION123",customer_id:"CUST1",status:"COMPLETED",source_type:"CARD",amount_money:{currency:"AUD",amount:2500},total_money:{currency:"AUD",amount:2500},card_details:{status:"CAPTURED",card_payment_timeline:{captured_at:payAt}}};
+ assert.equal(await handleSquareEvent(db,cfg,event,provider,checkAt,undefined,{env}),"support invoice payment verified");
+ assert.equal(await handleSquareEvent(db,cfg,event,provider,checkAt,undefined,{env}),"support invoice payment verified");
+ assert.equal((await familyIssuedSquareInvoice(env,parent,"o",provider,checkAt)).status,"verified");
+ const mail=[],enabled={...env,EMAIL:{},SUPPORT_SQUARE_INVOICE_NOTICE_TEST:"true"};
+ const sender=async(e,m)=>{mail.push(m);return true;};
+ assert.equal((await processSquareInvoiceNotices(enabled,checkAt,sender,provider)).sent,1);
+ assert.equal((await processSquareInvoiceNotices(enabled,checkAt,sender,provider)).sent,0);
+ assert.equal(mail.length,1);assert.equal(mail[0].to,"test@example.com");assert.match(mail[0].subject,/booking confirmed/);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_square_invoice_settlements").get().n,1);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_manual_invoices").get().n,0);
+ assert.equal(db.raw.prepare("SELECT plan FROM families WHERE id='f'").get().plan,"PREVIEW_EXPIRED");
+ assert.equal(writes.length,3);
 });
