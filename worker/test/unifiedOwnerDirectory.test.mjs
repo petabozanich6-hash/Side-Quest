@@ -23,6 +23,13 @@ test("directory groups explicitly associated records only and preserves unclaime
  const b=await unifiedOwnerFamily(db,"account","f2","enquiries",1);assert.equal(b.items.length,0);
  const old=result.items.find(r=>r.kind==="legacy");assert.deepEqual((await unifiedOwnerFamily(db,"legacy",old.id,"enquiries",1)).items.map(r=>r.id),["r2"]);
  assert.equal(await unifiedOwnerFamily(db,"account","missing","home",1),null);
- for(const section of ["learners","appointments","invoices","messages"]){const p=await unifiedOwnerFamily(db,"account","f1",section,1);assert.ok(p);assert.equal(JSON.stringify(p).includes("PRIVATE"),false);}
+ for(const section of ["learners","appointments","invoices","messages","club"]){const p=await unifiedOwnerFamily(db,"account","f1",section,1);assert.ok(p);assert.equal(JSON.stringify(p).includes("PRIVATE"),false);}
 
+ db.raw.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,preparation,created_at) VALUES(?,?,?,?,?,?,?)").run("club","2026-11-23",now,"2026-11-26T01:00:00.000Z","Storytelling","PRIVATE",now);
+ for(const n of [1,2])db.raw.prepare("INSERT INTO support_english_enrolments(id,class_id,request_id,learner_label,status,invoice_reference,payment_due_at,attendance,created_at) VALUES(?,?,?,?,?,?,?,?,?)").run("seat"+n,"club","r"+n,"Learner "+n,"paid","REF"+n,now,n===1?"present":"absent",now);
+ const clubs=await unifiedOwnerFamily(db,"account","f1","club",1);
+ assert.deepEqual(clubs.items.map(r=>[r.id,r.attendance,r.invoice_reference]),[["seat1","present","REF1"]]);
+ assert.equal(JSON.stringify(clubs).includes("PRIVATE"),false);
+ assert.equal((await unifiedOwnerFamily(db,"account","f2","club",1)).items.length,0);
+ assert.deepEqual((await unifiedOwnerFamily(db,"legacy",old.id,"club",1)).items.map(r=>r.id),["seat2"]);
 });
