@@ -615,6 +615,27 @@ test("club invoice preparation uses exact separate single, weekly and upfront ob
 
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,0);
  assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='invoiced'").get().n,1);
+ const {verifyClubSquarePayment,reconcileClubInvoiceEvent,flagClubPaymentHold}=await import("../src/clubSquareInvoiceSettlement.ts");
+ const paidAt=new Date(now.getTime()+120000),captured=new Date(now.getTime()+90000).toISOString();
+ providerOrder={...providerOrder,state:"COMPLETED",tenders:[{payment_id:"club-captured-payment",amount_money:{currency:"AUD",amount:1500}}]};
+ let capturedPayment={id:"club-captured-payment",order_id:providerOrder.id,location_id:"TEST123456",customer_id:"customer-test",status:"COMPLETED",source_type:"CARD",card_details:{status:"CAPTURED",card_payment_timeline:{captured_at:captured}},amount_money:{currency:"AUD",amount:1500},total_money:{currency:"AUD",amount:1500}};
+ const settlementProvider=async(url,init)=>new URL(url).pathname.endsWith("/payments/club-captured-payment")?new Response(JSON.stringify({payment:capturedPayment}),{status:200}):publicationProvider(url,init);
+ capturedPayment={...capturedPayment,total_money:{currency:"AUD",amount:1200}};
+ assert.equal((await verifyClubSquarePayment(env,"single",s.booking_id,settlementProvider,paidAt)).verified,false);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,0);
+ capturedPayment={...capturedPayment,total_money:{currency:"AUD",amount:1500}};
+ assert.equal(await reconcileClubInvoiceEvent(env,"club-test-invoice",null,settlementProvider,paidAt),"club invoice payment verified");
+ assert.equal(await reconcileClubInvoiceEvent(env,null,providerOrder.id,settlementProvider,paidAt),"club invoice payment verified");
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_club_square_settlements").get().n,1);
+ assert.equal(DB.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments WHERE status='paid'").get().n,1);
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"paid");
+ assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,settlementProvider,paidAt)).status,"verified");
+ assert.equal(await flagClubPaymentHold(env,"club-captured-payment","refund",settlementProvider,paidAt),"club invoice refund requires review");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_enrolments WHERE request_id=?").get(s.id).status,"invoiced");
+ assert.equal(DB.raw.prepare("SELECT status FROM support_english_single_bookings WHERE id=?").get(s.booking_id).status,"review");
+ assert.equal((await verifyClubSquarePayment(env,"single",s.booking_id,settlementProvider,paidAt)).verified,false);
+ assert.equal((await familyClubInvoice(env,one.actor,"single",s.booking_id,settlementProvider,paidAt)).payment_url,null);
+
  const other=w[1];const before=await previewClubInvoice(env,"round",other.obligation_id,args,mock,now);assert.ok(before.fingerprint);
  DB.raw.prepare("UPDATE support_english_enrolments SET status='cancelled' WHERE id IN (SELECT seat_id FROM support_club_obligation_seats WHERE kind='round' AND obligation_id=?)").run(other.obligation_id);
  assert.ok((await prepareClubInvoice(env,"round",other.obligation_id,one.actor.id,{...args,fingerprint:before.fingerprint,confirmed:true},mock,now)).error);
