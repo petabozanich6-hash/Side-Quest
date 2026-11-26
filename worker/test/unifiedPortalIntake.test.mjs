@@ -1096,3 +1096,28 @@ test("historical learner preparation requires an exact learner link and a curren
  assert.equal((await clubPreparationContext(DB,cls.id,now)).learners[0].learner,null);
  assert.equal((await ownerLearner(DB,one.actor.family_id,one.learner)).appointments.some(o=>o.id===oid),false);
 });
+
+test("historical member enquiries link only to an explicitly confirmed owned learner",async t=>{
+ const {DB,one,two,call}=await fixture(t);
+ const {appointmentLearnerContext,ownerLearner}=await import("../src/unifiedOwnerLearner.ts");
+ const id="member-link-request",oid="member-link-order";
+ DB.raw.prepare("INSERT INTO parent_feedback(id,family_id,user_id,category,subject,message,page_hint,status,owner_note,created_at,updated_at) VALUES(?,?,?,?,?,?,?,'new','',?,?)").run(id,one.actor.family_id,one.actor.id,"other","Historical English tutoring","Reading confidence","learning-support",stamp,stamp);
+ DB.raw.prepare("INSERT INTO support_service_orders(id,channel,request_id,quote_id,amount_cents,scope,delivery,terms,mode,start_at,end_at,status,created_at,updated_at) VALUES(?,'member',?,'test-quote',2500,'test','live','test','live',?,?,'paid',?,?)").run(oid,id,"2026-12-09T07:00:00Z","2026-12-09T08:00:00Z",stamp,stamp);
+ const path="/family-portal/learners/link-member",now=new Date("2026-12-07T00:00:00Z");
+ const body={request_id:id,learner_id:one.learner,confirmed:true};
+ assert.equal(await appointmentLearnerContext(DB,"member",id,oid,now),null);
+ assert.equal((await call(path,{...body,confirmed:false},one.token)).status,409);
+ assert.equal((await call(path,{...body,learner_id:two.learner},one.token)).status,409);
+ assert.equal((await call(path,{...body,learner_id:two.learner},two.token)).status,409);
+ assert.equal((await call(path,body,one.token)).status,200);
+ assert.equal((await call(path,body,one.token)).status,200);
+ const list=await call("/family-portal/learners/list",undefined,one.token);
+ assert.equal(list.data.member.find(r=>r.id===id).learner_id,one.learner);
+ assert.ok(!(await call("/family-portal/learners/list",undefined,two.token)).data.member.some(r=>r.id===id));
+ assert.equal((await appointmentLearnerContext(DB,"member",id,oid,now)).learner.id,one.learner);
+ assert.ok((await ownerLearner(DB,one.actor.family_id,one.learner)).appointments.some(o=>o.id===oid&&o.channel==="member"));
+ assert.equal((await ownerLearner(DB,two.actor.family_id,two.learner)).appointments.some(o=>o.id===oid),false);
+ DB.raw.prepare("UPDATE users SET email_verified_at=NULL WHERE id=?").run(one.actor.id);
+ assert.equal(await appointmentLearnerContext(DB,"member",id,oid,now),null);
+ assert.equal((await ownerLearner(DB,one.actor.family_id,one.learner)).appointments.some(o=>o.id===oid),false);
+});
