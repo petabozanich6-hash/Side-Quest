@@ -1,12 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL,lessonTheme,icebreakerMinutes} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
-import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
+import {classroomState,setClassroomOpen,editClassroom,canReadClassroomImage} from "../src/supportClassrooms.ts";
+import {presentationImage,archiveResource} from "../src/supportFiles.ts";
 const pack=fractionPack("Equivalent fractions","Mathematics","Year 4","Understand and identify equivalent fractions using visual models.",30);
 pack.slides[0].notes+=" PRIVATE-SOLUTION";
+pack.icebreaker.script+=" PRIVATE-ICEBREAKER";
 pack.worksheet[0].answer+=" PRIVATE-WORKSHEET-1";
 function setup(){
  const db=makeDb(),now=new Date(),at=now.toISOString(),end=new Date(now.getTime()+30*60000).toISOString();
@@ -16,7 +18,7 @@ function setup(){
 }
 test("validate complete resource pack and reject invalid answers and repeated prompts",()=>{
  assert.ok(validateLessonPack(pack));
- assert.equal(validateLessonPack({...pack,worksheet:[]}),null);
+ assert.deepEqual(validateLessonPack({...pack,worksheet:[]}).worksheet,[]);
  assert.equal(validateLessonPack({...pack,activities:[{...pack.activities[0],answer_key:"wrong"},pack.activities[1]]}),null);
  assert.equal(validateLessonPack({...pack,activities:[pack.activities[0],pack.activities[0]]}),null);
 });
@@ -40,6 +42,7 @@ test("approval is scoped, atomic, preserves an existing plan, and only learner s
  assert.equal(state.board.slide.body,pack.slides[0].body);
  assert.deepEqual(state.board.slide.visual,pack.slides[0].visual);
  assert.equal(JSON.stringify(state).includes("PRIVATE-SOLUTION"),false);
+ assert.equal(JSON.stringify(state).includes("PRIVATE-ICEBREAKER"),false);
  assert.equal(JSON.stringify(state).includes("PRIVATE-WORKSHEET"),false);
 });
 test("AI pack generation fails closed when the isolated pilot is disabled",async()=>{
@@ -289,7 +292,7 @@ test("validation reports safe specific failures without weakening the complete l
  assert.equal(check({...englishPack,slides:[]}),null);assert.match(reason,/slide structure/);
  assert.equal(check({...englishPack,slides:englishPack.slides.map((s,i)=>i===0?{...s,notes:"PRIVATE SENTINEL"}:s)}),null);
  assert.match(reason,/private teaching guidance/);assert.ok(!reason.includes("PRIVATE SENTINEL"));
- assert.equal(check({...englishPack,worksheet:[]}),null);assert.match(reason,/worksheet/);
+ assert.ok(check({...englishPack,worksheet:[]}));assert.equal(check({...englishPack,worksheet:[{prompt:"",answer:""}]}),null);
  assert.equal(check({...englishPack,activities:[]}),null);assert.match(reason,/two distinct activities/);
 });
 
@@ -302,7 +305,7 @@ test("structured model guidance is converted without changing instructional cont
  }
  structured.sequence=structured.sequence.map(s=>({...s,minutes:2}));
  const normal=normaliseGeneratedLessonPack(structured,30);
- assert.deepEqual(normal.sequence.map(s=>s.minutes),[6,6,7,7,4]);
+ assert.deepEqual(normal.sequence.map(s=>s.minutes),[8,7,6,5,4]);
  assert.deepEqual(normal.slides.map(s=>s.notes),englishPack.slides.map(s=>s.notes));
  assert.ok(validateLessonPack(normal,30));
  const short=structuredClone(structured);short.slides[0].notes.check="Too short";
@@ -312,4 +315,144 @@ test("structured model guidance is converted without changing instructional cont
  const wrong=structuredClone(structured);wrong.sequence[0].phase="model";
  assert.equal(validateLessonPack(normaliseGeneratedLessonPack(wrong,30),30),null);
  assert.equal(normaliseGeneratedLessonPack(structured,45).sequence[0].minutes,2);
+});
+
+
+test("timed opening is retained privately and cannot consume required teaching time",()=>{
+ const valid=validateLessonPack(pack,30);
+ assert.deepEqual(valid.icebreaker,pack.icebreaker);
+ assert.equal(valid.sequence.reduce((n,s)=>n+s.minutes,0),30);
+ assert.equal(validateLessonPack({...pack,icebreaker:{...pack.icebreaker,minutes:5}},30),null);
+ assert.equal(validateLessonPack({...pack,icebreaker:{...pack.icebreaker,script:"Say hello."}},30),null);
+ assert.equal(validateLessonPack({...pack,icebreaker:null},30),null);
+ assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:3},{phase:"model",minutes:4},{phase:"model",minutes:4},{phase:"guided",minutes:10},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);
+ assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:4},{phase:"model",minutes:3},{phase:"model",minutes:3},{phase:"guided",minutes:11},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);
+ const legacy={...pack};delete legacy.icebreaker;
+ assert.ok(validateLessonPack(legacy,30));
+});
+test("interest selector accepts only known non-identifying themes",()=>{
+ assert.equal(lessonTheme(undefined),"none");
+ assert.equal(lessonTheme("cats"),"cats");
+ assert.equal(lessonTheme("dragons"),"dragons");
+ assert.equal(lessonTheme("private learner details"),null);
+ assert.equal(lessonTheme({theme:"cats"}),null);
+ assert.equal(lessonTheme(null),null);
+ assert.deepEqual([15,30,45,60,90,180].map(icebreakerMinutes),[2,3,3,5,5,5]);
+});
+
+
+import {illustrationAllowance,validateIllustrationPlan,draftLessonIllustration} from "../src/supportIllustrations.ts";
+test("illustration storyboard scales with lesson length and keeps only bounded private planning fields",()=>{
+ assert.deepEqual([15,30,45,60,90,180].map(illustrationAllowance),[2,4,5,6,8,8]);
+ const scene={slide_index:0,title:"Pizza shop scene",brief:"A whimsical dragon at a pizza shop with a colourful apron and empty serving plates.",purpose:"Establish a familiar setting before the exact fraction model.",answer:"PRIVATE_SENTINEL"};
+ const expected={slide_index:0,title:scene.title,brief:scene.brief,purpose:scene.purpose};
+ assert.deepEqual(validateIllustrationPlan([scene],30,6),[expected]);
+ assert.equal(validateIllustrationPlan([scene,scene],30,6),null);
+ assert.equal(validateIllustrationPlan([{...scene,slide_index:6}],30,6),null);
+ assert.equal(validateIllustrationPlan([{...scene,brief:"short"}],30,6),null);
+ assert.equal(validateIllustrationPlan(Array.from({length:5},(_,i)=>({...scene,slide_index:i,brief:scene.brief+i})),30,6),null);
+ assert.deepEqual(validateLessonPack({...pack,illustrations:[scene]},30).illustrations,[expected]);
+ assert.ok(validateLessonPack(pack,30));
+});
+test("illustrations fail closed without the separate staging opt-in",async()=>{
+ let called=false;
+ const e={AI:{run:async()=>{called=true;return {};}}};
+ assert.ok((await draftLessonIllustration(e,{},{})).error);
+ assert.equal(called,false);
+});
+
+
+test("reviewed illustration follows its slide without exposing private storyboard or answers",async t=>{
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const fid="11111111-2222-4333-8444-555555555555",tutorId="22222222-3333-4444-8555-666666666666";
+ await presentationImage(db,fid); // ensure resource schema
+ const insert=db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)");
+ insert.run(fid,"Reviewed scene","Mathematics","Year 4","scene.jpg","image/jpeg",10,"support-private/"+fid,"learner",now.toISOString());
+ insert.run(tutorId,"Private scene","Mathematics","Year 4","private.jpg","image/jpeg",10,"support-private/"+tutorId,"tutor",now.toISOString());
+ const withImage=id=>({...pack,illustrations:[{...pack.illustrations[0],file_id:id,brief:pack.illustrations[0].brief+" PRIVATE_BRIEF"}]});
+ assert.ok((await saveReusableLessonPack(db,{pack:withImage(tutorId),minutes:30,confirmed:true})).error);
+ assert.ok((await approveLessonPack(db,"guest","pack-request","pack-one",{pack:withImage(tutorId),confirmed:true})).error);
+ assert.equal(validateLessonPack(withImage("https://example.com/image.jpg"),30),null);
+ assert.equal(normaliseGeneratedLessonPack(withImage(fid),30).illustrations[0].file_id,undefined);
+ const saved=await saveReusableLessonPack(db,{pack:withImage(fid),minutes:30,confirmed:true});
+ assert.equal(saved.saved.pack.illustrations[0].file_id,fid);
+ const result=await useReusableLessonPack(db,"guest","pack-request","pack-one",{library_id:saved.saved.id,confirmed:true});
+ assert.ok(result.saved,JSON.stringify(result));
+ assert.equal(await setClassroomOpen(db,"guest","pack-request","pack-one",true,now),true);
+ const present=async index=>{
+  const s=await classroomState(db,"guest","pack-request","pack-one",true,now);
+  return editClassroom(db,"guest","pack-request","pack-one",true,{action:"present",deck_id:result.saved.deck_id,deck_revision:1,index,revision:s.revision},now);
+ };
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),false);
+ assert.equal((await present(0)).ok,true);
+ const state=await classroomState(db,"guest","pack-request","pack-one",false,now);
+ assert.deepEqual(state.board.image,{id:fid,title:"Reviewed scene"});
+ assert.deepEqual(state.board.slide.visual,pack.slides[0].visual);
+ assert.ok(state.board.slide.interaction);
+ assert.ok(!JSON.stringify(state).includes("PRIVATE_BRIEF"));
+ assert.ok(!JSON.stringify(state).includes("PRIVATE-SOLUTION"));
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),true);
+ assert.equal(await canReadClassroomImage(db,"guest","wrong","pack-one",fid,false,now),false);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-two",fid,false,now),false);
+ assert.equal((await present(1)).ok,true);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),false);
+ assert.equal((await present(0)).ok,true);
+ const shown=await classroomState(db,"guest","pack-request","pack-one",true,now);
+ assert.equal((await editClassroom(db,"guest","pack-request","pack-one",true,{action:"hide-slide",revision:shown.revision},now)).ok,true);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),false);
+ assert.equal(await archiveResource(db,fid),true);
+ assert.equal((await present(0)).ok,true);
+ const fallback=await classroomState(db,"guest","pack-request","pack-one",false,now);
+ assert.equal(fallback.board.image,null);
+ assert.ok(fallback.board.slide.interaction);
+ assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-two",{library_id:saved.saved.id,confirmed:true})).error);
+});
+
+
+test("deterministic experiment schemas and shared learner controls are bounded",()=>{
+ const v=validateSlideVisual({type:"experiment",model:"rectangle",prompt:"Compare area and perimeter.",answer:"PRIVATE",code:"invalid"});
+ assert.deepEqual(v,{type:"experiment",model:"rectangle",prompt:"Compare area and perimeter."});
+ assert.equal(validateSlideVisual({type:"experiment",model:"arbitrary-code",prompt:"Run"}),null);
+ let state=initialSlideInteraction(v);
+ assert.deepEqual(state.placements,[3,4]);
+ const act=(operation,index,direction,owner=false)=>changeSlideInteraction(v,state,{visual_id:state.id,operation,index,direction},owner);
+ assert.equal(act("adjust",0,11),null);
+ assert.equal(act("adjust",0,1.5),null);
+ assert.equal(act("adjust",2,5),null);
+ assert.equal(act("adjust",0,5,true),null);
+ state=act("adjust",0,5);assert.deepEqual(state.placements,[5,4]);
+ assert.deepEqual(act("reset",undefined,undefined,true).placements,[3,4]);
+ for(const model of ["series-circuit","parallel-circuit"]){
+  const circuit=validateSlideVisual({type:"experiment",model,prompt:"Predict the result."});
+  let s=initialSlideInteraction(circuit);
+  const toggle=(index,owner=false)=>changeSlideInteraction(circuit,s,{visual_id:s.id,operation:"toggle",index},owner);
+  assert.equal(toggle(2),null);assert.equal(toggle(0,true),null);
+  s=toggle(0);assert.deepEqual(s.selected,[0]);s=toggle(1);assert.deepEqual(s.selected,[0,1]);s=toggle(0);assert.deepEqual(s.selected,[1]);
+  assert.equal(changeSlideInteraction(circuit,s,{visual_id:"stale",operation:"toggle",index:0},false),null);
+ }
+});
+
+ test("digital-first packs need no printable tasks but still enforce teaching quality",()=>{const {worksheet,...digital}=pack;assert.deepEqual(validateLessonPack(digital).worksheet,[]);assert.equal(validateLessonPack({...digital,activities:[]}),null);assert.equal(validateLessonPack({...digital,worksheet:"invalid"}),null);});
+
+ test("coordinate and binary models use bounded learner-controlled indices",()=>{
+ const coordinates={type:"experiment",model:"coordinates",prompt:"Explore ordered pairs."};let s=initialSlideInteraction(coordinates);assert.deepEqual(s.placements,[0,0]);
+ const adjust=(index,direction,owner=false)=>changeSlideInteraction(coordinates,s,{visual_id:s.id,operation:"adjust",index,direction},owner);
+ assert.equal(adjust(0,-6),null);assert.equal(adjust(1,6),null);assert.equal(adjust(0,-3,true),null);s=adjust(0,-3);s=adjust(1,5);assert.deepEqual(s.placements,[-3,5]);assert.equal(changeSlideInteraction(coordinates,s,{visual_id:s.id,operation:"toggle",index:0},false),null);
+ const binary={type:"experiment",model:"binary",prompt:"Build decimal thirteen."};let b=initialSlideInteraction(binary);const toggle=index=>changeSlideInteraction(binary,b,{visual_id:b.id,operation:"toggle",index},false);assert.equal(toggle(4),null);b=toggle(0);b=toggle(1);b=toggle(3);assert.deepEqual(b.selected,[0,1,3]);assert.equal(changeSlideInteraction(binary,b,{visual_id:b.id,operation:"adjust",index:0,direction:1},false),null);
+ });
+
+ test("explicit teaching requires separate instruction and modelling and 40 percent teaching time",()=>{assert.ok(validateLessonPack(pack,30));assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===0?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===1||i===2?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:6},{phase:"model",minutes:4},{phase:"model",minutes:4},{phase:"guided",minutes:7},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);const v=validateSlideVisual(pack.slides[0].visual);assert.equal(v.type,"concept-lesson");let s=initialSlideInteraction(v);assert.equal(s.reveal,1);assert.equal(changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},false),null);for(let i=2;i<=4;i++){s=changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},true);assert.equal(s.reveal,i);}assert.equal(changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},true),null);assert.equal(validateSlideVisual({...v,why:""}),null);});
+
+test("response plans validate exact step counts and stay out of the shared board",async t=>{
+ const validated=validateLessonPack(pack,30);assert.equal(validated.response_plan.length,pack.slides.length);
+ assert.equal(validateLessonPack({...pack,response_plan:[]},30),null);
+ assert.equal(validateLessonPack({...pack,response_plan:pack.response_plan.map((r,i)=>i===0?{...r,hint:""}:r)},30),null);
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const privatePack={...pack,response_plan:pack.response_plan.map((r,i)=>i===0?{...r,expected:"PRIVATE_RESPONSE_REASONING"}:r)};
+ const result=await approveLessonPack(db,"guest","pack-request","pack-one",{pack:privatePack,confirmed:true});assert.ok(result.saved,JSON.stringify(result));
+ assert.equal(result.saved.pack.response_plan[0].expected,"PRIVATE_RESPONSE_REASONING");
+ assert.equal(await setClassroomOpen(db,"guest","pack-request","pack-one",true,now),true);
+ const before=await classroomState(db,"guest","pack-request","pack-one",true,now);
+ assert.ok((await editClassroom(db,"guest","pack-request","pack-one",true,{action:"present",deck_id:result.saved.deck_id,deck_revision:1,index:0,revision:before.revision},now)).ok);
+ const after=await classroomState(db,"guest","pack-request","pack-one",false,now);assert.ok(after.board.slide);assert.ok(!JSON.stringify(after).includes("PRIVATE_RESPONSE_REASONING"));assert.ok(!JSON.stringify(after).includes("response_plan"));
 });

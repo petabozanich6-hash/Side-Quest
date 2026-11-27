@@ -1,4 +1,5 @@
-import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
+import {campActivities} from "./englishClubCampGames";
+import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
 import {previewClubCertificate} from "./clubCertificatePreview";
@@ -35,10 +36,10 @@ import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
-import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
+import {listEnglishClub,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
-import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
+import {lessonProgress,saveLessonCheckpoint,lessonContinuity} from "./supportLessonProgress";
 /**
  * Owner HQ: owner-only administration API (/api/admin/*).
  *
@@ -90,6 +91,8 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {attachClubIllustration} from "./englishClubIllustrations";
+import {illustrationEnabled,draftLessonIllustration} from "./supportIllustrations";
 import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
@@ -896,6 +899,17 @@ export function createAdminRoutes() {
     const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
   });
+  admin.get("/support-illustrations/status",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return c.json({enabled:illustrationEnabled(c.env),storage_available:!!c.env.BUCKET});
+  });
+  admin.post("/support-illustrations/draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const r=await draftLessonIllustration(c.env,c.get("user"),await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
   admin.get("/support-lesson-library",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");
@@ -999,12 +1013,15 @@ export function createAdminRoutes() {
   admin.get("/english-club",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);c.header("Cache-Control","private, no-store");return c.json(await listEnglishClub(c.env.DB));
   });
-  admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
-    const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
-    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
-  });
+
   admin.get("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");const r=await readEnglishMaterials(c.env,c.req.param("cid")??"");return r?c.json(r):c.json({detail:"Club session unavailable"},404);
+  });
+  admin.post("/english-club/classes/:cid/illustrations",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(!await attachClubIllustration(c.env.DB,id,b))return c.json({detail:"Choose a reviewed learner image and valid workshop slide. Reload if the workshop changed."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.illustration.attach",targetType:"english_club",targetId:id,detail:{slide_index:b.slide_index}});return c.json({ok:true});
   });
   admin.post("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
     const id=c.req.param("cid")??"",b=await readJson(c);
@@ -1260,15 +1277,17 @@ export function createAdminRoutes() {
   admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    return c.json({...STORY_QUEST,sessions:STORY_QUEST.sessions.map((s,i)=>({...s,private_preparation:storyQuestPreparation(i)}))});
+    const p=creativeCamp(c.req.query("camp"));if(!p)return c.json({detail:"Choose Junior Story Adventurers or Teen Storymakers."},404);
+    return c.json({...p,sessions:p.sessions.map((s,i)=>({...s,activities:campActivities(s),private_preparation:campPreparation(p.id,i)}))});
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    return c.json({rounds:await listEnglishRounds(c.env.DB)});
+    return c.json({rounds:(await listEnglishRounds(c.env.DB)).filter(r=>r.age_group)});
   });
   admin.post("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    const r=await createEnglishRound(c.env.DB,c.get("user").id,await readJson(c));
+    const b=await readJson(c);if(!creativeCamp(b?.curriculum_id))return c.json({detail:"Choose one of the two creative camp programmes."},400);
+    const r=await createEnglishRound(c.env.DB,c.get("user").id,b);
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
     return c.json(r,201);
@@ -1276,14 +1295,12 @@ export function createAdminRoutes() {
   admin.post("/english-club/rounds/:rid/publication",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     const id=c.req.param("rid")??"",b=await readJson(c);
+    if(b?.published===true){const row=await c.env.DB.prepare("SELECT curriculum_id FROM support_english_rounds WHERE id=?").bind(id).first<{curriculum_id:string}>();if(!creativeCamp(row?.curriculum_id))return c.json({detail:"Only the two creative camp programmes can be published."},409);}
     if(!await setEnglishRoundPublished(c.env.DB,id,b))return c.json({detail:"Unable to change round publication."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_publication",targetType:"english_club",targetId:id,detail:{published:b.published}});
     return c.json({ok:true});
   });
-  admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
-    const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
-    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.create",targetType:"english_club",targetId:r.id,detail:{class_id:cid}});return c.json(r,201);
-  });
+
   admin.post("/english-club/classes/:cid/enrolments/:eid",requirePermission("customers.read"),async c=>{
     const cid=c.req.param("cid")??"",eid=c.req.param("eid")??"",b=await readJson(c);
     if(!await updateEnglishEnrolment(c.env.DB,cid,eid,b))return c.json({detail:"Check the current enrolment status and Square confirmation."},409);
@@ -1435,6 +1452,13 @@ export function createAdminRoutes() {
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       c.header("Cache-Control","private, no-store");return c.json({notification:await bookingNotificationStatus(c.env.DB,channel,id,oid)});
+    });
+    admin.get(path+"/:oid/lesson-continuity",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const history=await lessonContinuity(c.env.DB,channel,id,oid);
+      return history?c.json(history):c.json({detail:"Live tutoring appointment required."},404);
     });
     admin.get(path+"/:oid/lesson-pack",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";

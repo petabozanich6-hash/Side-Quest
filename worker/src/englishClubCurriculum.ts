@@ -11,7 +11,7 @@ export const STORY_QUEST = {
       "objective": "Compare diction, rhythm and framing; justify choices for an audience.",
       "reading": "The council called it a development. Mara called it the last patch of shade. The notice promised an improved public space. Nobody had asked the people who sat beneath the trees.",
       "agenda": [
-        "0–5: Welcome, standalone context and choice of participation method.",
+        "0–5: Topic-linked icebreaker, standalone context and choice of participation method.",
         "5–13: Explicit teaching of key concepts and vocabulary.",
         "13–23: Facilitator models analysis or writing, explaining each choice.",
         "23–35: Guided collaborative practice, including discussion or poll.",
@@ -46,7 +46,7 @@ export const STORY_QUEST = {
       "objective": "Distinguish observation from inference and create intentional subtext.",
       "reading": "'Of course you can stay,' Lee said. She moved her brother's photograph from the mantelpiece and placed it face down inside a drawer. 'Make yourself at home.'",
       "agenda": [
-        "0–5: Welcome, standalone context and choice of participation method.",
+        "0–5: Topic-linked icebreaker, standalone context and choice of participation method.",
         "5–13: Explicit teaching of key concepts and vocabulary.",
         "13–23: Facilitator models analysis or writing, explaining each choice.",
         "23–35: Guided collaborative practice, including discussion or poll.",
@@ -82,7 +82,7 @@ export const STORY_QUEST = {
       "objective": "Represent competing motivations without reducing characters to heroes and villains.",
       "reading": "The competition rules were clear: no late entries. Ari had arrived on time, and Sam had spent the morning helping a stranded neighbour. When the organiser asked Ari whether an exception should be made, Ari remembered the weeks spent getting everything ready.",
       "agenda": [
-        "0–5: Welcome, standalone context and choice of participation method.",
+        "0–5: Topic-linked icebreaker, standalone context and choice of participation method.",
         "5–13: Explicit teaching of key concepts and vocabulary.",
         "13–23: Facilitator models analysis or writing, explaining each choice.",
         "23–35: Guided collaborative practice, including discussion or poll.",
@@ -118,7 +118,7 @@ export const STORY_QUEST = {
       "objective": "Design causal sequences and manipulate when information is revealed.",
       "reading": "The train was already moving when Rowan found the note: Don't get off at the next station. Twenty minutes earlier, a stranger had offered Rowan a seat. At the next station, nobody was waiting on the platform.",
       "agenda": [
-        "0–5: Welcome, standalone context and choice of participation method.",
+        "0–5: Topic-linked icebreaker, standalone context and choice of participation method.",
         "5–13: Explicit teaching of key concepts and vocabulary.",
         "13–23: Facilitator models analysis or writing, explaining each choice.",
         "23–35: Guided collaborative practice, including discussion or poll.",
@@ -154,7 +154,7 @@ export const STORY_QUEST = {
       "objective": "Build a supported argument and fairly address counterarguments.",
       "reading": "The library proposed replacing its quiet reading room with a collaborative study space. One speaker argued that more students could work together; another warned that people who needed quiet would have nowhere else to go. Both claimed to speak for the community.",
       "agenda": [
-        "0–5: Welcome, standalone context and choice of participation method.",
+        "0–5: Topic-linked icebreaker, standalone context and choice of participation method.",
         "5–13: Explicit teaching of key concepts and vocabulary.",
         "13–23: Facilitator models analysis or writing, explaining each choice.",
         "23–35: Guided collaborative practice, including discussion or poll.",
@@ -190,7 +190,7 @@ export const STORY_QUEST = {
       "objective": "Create and revise a piece for a chosen audience; explain craft decisions.",
       "reading": "Draft: The letter arrived late. Jules read it and felt upset. Revision: Jules recognised the handwriting before opening the envelope. Three months too late, the letter began, I should have told you.",
       "agenda": [
-        "0–5: Welcome, standalone context and choice of participation method.",
+        "0–5: Topic-linked icebreaker, standalone context and choice of participation method.",
         "5–13: Explicit teaching of key concepts and vocabulary.",
         "13–23: Facilitator models analysis or writing, explaining each choice.",
         "23–35: Guided collaborative practice, including discussion or poll.",

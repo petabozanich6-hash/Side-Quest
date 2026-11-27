@@ -25,17 +25,44 @@ test("Live guide keeps one shared stage visible and only presents on explicit tu
  await click("Present selected step to learner");
  expect(present).toHaveBeenCalledWith(1);
  expect(container.querySelectorAll('[data-testid="shared-stage"]')).toHaveLength(1);
- await click("View worksheet and activity answers");
+ await click("View private activity answers and extra practice");
  expect(container.textContent).toContain("PRIVATE_WORKSHEET");
  expect(container.textContent).toContain("PRIVATE_ACTIVITY");
  expect(container.querySelector('[data-testid="shared-stage"]').textContent).not.toContain("PRIVATE");
 });
 test("Private rehearsal does not require a live classroom",async()=>{
  await act(async()=>root.render(<GuidedTutorView pack={pack}/>));
- expect(container.textContent).toContain("Interactive learner-facing preview");
+ expect(container.textContent).toContain("Learner-facing preview");
  expect(container.textContent).toContain("First learner prompt");
  expect(container.textContent).not.toContain("Present selected step to learner");
  await click("Next");
  expect(container.textContent).toContain("Second learner prompt");
  expect(container.textContent).toContain("Second private script");
+});
+
+test("Timed icebreaker appears privately before teaching and never presents a slide automatically",async()=>{
+ const present=jest.fn(),opening={title:"Cat detective",minutes:2,script:"PRIVATE_OPENING_SCRIPT"};
+ await act(async()=>root.render(<GuidedTutorView pack={{...pack,icebreaker:opening}} onPresent={present} liveStage={<div data-testid="shared-stage">Learner stage</div>}/>));
+ expect(container.textContent).toContain("Opening icebreaker · 2 min · Cat detective");
+ expect(container.textContent).toContain("PRIVATE_OPENING_SCRIPT");
+ expect(container.querySelector('[data-testid="shared-stage"]').textContent).not.toContain("PRIVATE_OPENING_SCRIPT");
+ await click("Continue to teaching");
+ expect(container.textContent).not.toContain("PRIVATE_OPENING_SCRIPT");
+ expect(present).not.toHaveBeenCalled();
+ await click("Present selected step to learner");
+ expect(present).toHaveBeenCalledWith(0);
+ await click("Next");
+ expect(container.textContent).not.toContain("Cat detective");
+});
+
+test("responsive checkpoints provide private differentiated guidance without presenting or advancing",async()=>{
+ const present=jest.fn(),response={prompt:"Explain the reason.",expected:"PRIVATE_EXPECTED",hint:"PRIVATE_HINT",extension:"PRIVATE_EXTENSION",extension_answer:"PRIVATE_EXTENSION_ANSWER"};
+ await act(async()=>root.render(<GuidedTutorView pack={{...pack,response_plan:[response,response]}} onPresent={present} liveStage={<div data-testid="shared-stage">Shared learner stage</div>}/>));
+ await click("Needs reteaching");expect(container.textContent).toContain("First hint");
+ await click("Needs a hint");expect(container.textContent).toContain("PRIVATE_HINT");
+ await click("Ready for a challenge");expect(container.textContent).toContain("PRIVATE_EXTENSION");expect(container.textContent).not.toContain("PRIVATE_EXTENSION_ANSWER");
+ await click("View extension solution");expect(container.textContent).toContain("PRIVATE_EXTENSION_ANSWER");
+ expect(container.querySelector('[data-testid="shared-stage"]').textContent).not.toContain("PRIVATE");expect(present).not.toHaveBeenCalled();
+ await click("Next");expect(container.textContent).toContain("Second private script");expect(container.textContent).not.toContain("PRIVATE_EXTENSION_ANSWER");
+ await click("Previous");expect(container.textContent).toContain("PRIVATE_EXTENSION");expect(container.textContent).not.toContain("PRIVATE_EXTENSION_ANSWER");expect(present).not.toHaveBeenCalled();
 });

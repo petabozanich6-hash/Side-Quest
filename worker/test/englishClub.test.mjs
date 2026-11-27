@@ -4,6 +4,9 @@ import {makeDb} from "./fakeD1.mjs";
 import {createEnglishClass,enrolEnglishLearner,updateEnglishEnrolment,parentEnglishClasses,listEnglishClub,ensureEnglishClub} from "../src/englishClub.ts";
 import {createBusyBlock} from "../src/supportDiary.ts";
 import {readEnglishMaterials,saveEnglishMaterials,safeClubFallback,changeEnglishFile} from "../src/englishClubMaterials.ts";
+import {attachClubIllustration,clubIllustrationPlan} from "../src/englishClubIllustrations.ts";
+import {workshopResource as originalWorkshop} from "../src/englishClubWorkshopResources.ts";
+import {presentationImage} from "../src/supportFiles.ts";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "../src/englishClubVideo.ts";
 const now=new Date("2026-12-07T00:00:00.000Z");
 test("weekly English Club blocks tutor diary, limits eight places and preserves manual Square payment checks",async t=>{
@@ -49,6 +52,25 @@ test("weekly English Club blocks tutor diary, limits eight places and preserves 
  assert.equal((await readEnglishMaterials(env,created.id,paidParent,new Date(Date.parse(start)+3600000))).fallback_url,null);
  assert.equal((await readEnglishMaterials({...env,STAGING_KEY:undefined},created.id,paidParent,live)).fallback_url,null);
  assert.equal(await changeEnglishFile(db,created.id,"nonexistent",true),false);
+ const fid="11111111-2222-4333-8444-555555555555",privateId="22222222-3333-4444-8555-666666666666";
+ db.raw.prepare("INSERT INTO support_english_workshop_resources(class_id,resource_json) VALUES(?,?)").run(created.id,JSON.stringify(originalWorkshop(0)));
+ await presentationImage(db,fid);
+ const insert=db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)");
+ insert.run(fid,"Reviewed artwork","English","Mixed ages","scene.jpg","image/jpeg",10,"support-private/"+fid,"learner",now.toISOString());
+ insert.run(privateId,"Private artwork","English","Mixed ages","private.jpg","image/jpeg",10,"support-private/"+privateId,"tutor",now.toISOString());
+ assert.equal(await attachClubIllustration(db,created.id,{slide_index:0,file_id:privateId,confirmed:true}),false);
+ assert.equal(await attachClubIllustration(db,created.id,{slide_index:8,file_id:fid,confirmed:true}),false);
+ assert.equal(await attachClubIllustration(db,created.id,{slide_index:0,file_id:fid,confirmed:false}),false);
+ assert.equal(await attachClubIllustration(db,created.id,{slide_index:0,file_id:fid,confirmed:true}),true);
+ const prepared=await readEnglishMaterials(env,created.id,undefined,now);
+ assert.equal(prepared.illustrations[0].file_id,fid);
+ const learner=await readEnglishMaterials(env,created.id,paidParent,now);
+ assert.equal(learner.illustrations,undefined);
+ assert.deepEqual(learner.workshop,originalWorkshop(0));
+ assert.ok(!JSON.stringify(learner).includes(fid));
+ assert.equal(learner.files.length,0);
+ assert.equal(await attachClubIllustration(db,created.id,{slide_index:0,file_id:null,confirmed:true}),true);
+ assert.equal((await readEnglishMaterials(env,created.id,undefined,now)).illustrations[0].file_id,undefined);
  const video={...env,SUPPORT_CLASSROOM_ENABLED:"true",SUPPORT_ENGLISH_VIDEO_TEST:"true",SUPPORT_VIDEO_ACCOUNT:"account",SUPPORT_VIDEO_APP:"app",SUPPORT_VIDEO_TOKEN:"test",SUPPORT_ENGLISH_VIDEO_HOST_PRESET:"host",SUPPORT_ENGLISH_VIDEO_LEARNER_PRESET:"learner"};
  const calls=[];
  const fake=async(url,options)=>{calls.push({url,method:options.method,body:JSON.parse(options.body)});return new Response(JSON.stringify({success:true,data:{id:"meeting",token:"test-token"}}),{headers:{"Content-Type":"application/json"}});};
@@ -86,12 +108,12 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  const result=await createEnglishRound(db,"owner",body,now);assert.ok(result.id,JSON.stringify(result));
  const rows=db.raw.prepare("SELECT c.id,c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
  assert.equal(rows.length,6);
- rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));for(const phase of ["I teach","I demonstrate","We practise together","You try independently","Adapt and give feedback","Exit check"])assert.ok(r.preparation.includes(phase));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
+ rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));for(const phase of ["Icebreaker","I teach","I demonstrate","We practise together","You try independently","Adapt and give feedback","Exit check"])assert.ok(r.preparation.includes(phase));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
  const {workshopResource}=await import("../src/englishClubWorkshopResources.ts");
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_workshop_resources").get().n,6);
  for(const [i,r] of rows.entries()){
   const v=await readEnglishMaterials({DB:db},r.id,undefined,now);
-  assert.deepEqual(v.workshop,workshopResource(i));assert.equal(v.workshop.slides.length,9);assert.equal(v.workshop.slides[3].cards.length,2);assert.equal(v.workshop.tasks.length,3);
+  assert.deepEqual(v.workshop,workshopResource(i));assert.equal(v.illustrations.length,3);assert.deepEqual(v.illustrations.map(p=>p.slide_index),[0,2,4]);assert.deepEqual(v.illustrations,clubIllustrationPlan(v.workshop));assert.equal(v.workshop.slides.length,9);assert.equal(v.workshop.slides[3].cards.length,2);assert.equal(v.workshop.tasks.length,3);
   assert.equal(await readEnglishMaterials({DB:db},r.id,{requestId:"unknown",email:"unknown@example.com"},now),null);
   assert.ok(!JSON.stringify(v.workshop).includes("60-minute facilitator plan"));assert.ok(!JSON.stringify(v.workshop).includes("I teach — explicit concept"));assert.ok(!JSON.stringify(v.workshop).includes("We practise together:"));
  }
@@ -115,4 +137,98 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  assert.equal(rounds[0].classes.length,6);assert.equal(singles.length,6);
  for(const [i,s] of singles.entries())assert.equal(s.description,STORY_QUEST.sessions[i].description);
  for(const result of [rounds,singles]){assert.ok(!JSON.stringify(result).includes("60-minute facilitator plan"));assert.ok(!JSON.stringify(result).includes("Original reading:"));}
+});
+
+
+test("all six English Club icebreakers are distinct five-minute opening steps with participation choices",async()=>{
+ const {englishTeachingGuide}=await import("../src/englishClubTeachingGuides.ts");
+ const titles=new Set();
+ for(let i=0;i<6;i++){
+  const steps=englishTeachingGuide(i).split("\n\n");
+  assert.equal(steps.length,7);
+  const opening=steps[0];
+  assert.match(opening,/^0–5 min \| Icebreaker — [^:]+: /);
+  assert.match(opening,/permission to pass/);
+  assert.match(opening,/Transition:/);
+  titles.add(opening.split(": ")[0]);
+  assert.match(steps[1],/^5–13 min \| I teach/);
+  assert.match(steps[6],/^57–60 min \| Exit check/);
+ }
+ assert.equal(titles.size,6);
+ assert.equal(englishTeachingGuide(-1),"");
+ assert.equal(englishTeachingGuide(6),"");
+});
+
+
+test("junior and teen creative camps can run in the same week without overlapping or replacing legacy rounds",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const {CREATIVE_CAMPS,campPreparation,campResource}=await import("../src/englishClubCreativeCamps.ts");
+ const {createEnglishRound,listEnglishRounds}=await import("../src/englishClubRounds.ts");
+ const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const [junior,teen]=CREATIVE_CAMPS;
+ assert.deepEqual(CREATIVE_CAMPS.map(c=>c.age),["8–11","12–16"]);
+ const spec=(c,first_local)=>({curriculum_id:c.id,title:c.title,description:c.description,first_local,session_count:6,themes:c.sessions.map(s=>s.title),reviewed_activities:true,confirmed:true});
+ const j=await createEnglishRound(db,"owner",spec(junior,"2026-12-09T16:00"),now);assert.ok(j.id,JSON.stringify(j));
+ assert.ok((await createEnglishRound(db,"owner",spec(teen,"2026-12-09T16:00"),now)).error);
+ const s=await createEnglishRound(db,"owner",spec(teen,"2026-12-09T18:00"),now);assert.ok(s.id,JSON.stringify(s));
+ assert.ok((await createEnglishRound(db,"owner",spec(junior,"2026-12-10T16:00"),now)).error);
+ const rounds=await listEnglishRounds(db);assert.equal(rounds.length,2);
+ assert.deepEqual(rounds.map(r=>r.age_group),["8–11","12–16"]);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_classes").get().n,12);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,48);
+ assert.equal((await listEnglishRounds(db,true,now)).length,0);
+ for(const c of CREATIVE_CAMPS)for(const [i,session] of c.sessions.entries()){
+  const prep=campPreparation(c.id,i),resource=campResource(c.id,i);
+  for(const p of ["Icebreaker","Book chat","Author demonstration","Creative game together","Make your own","Celebrate","Book discovery"])assert.ok(prep.includes(p));
+  assert.equal(resource.slides.length,9);
+  assert.ok(clubIllustrationPlan(resource).length);
+  for(const a of session.activities)assert.ok(validateActivityTemplate({...a,subject:"English",year_level:"Ages "+c.age}));
+ }
+});
+
+
+test("creative camp sessions teach distinct writing craft through private scripts and public worked examples",async()=>{
+ const {CREATIVE_CAMPS,campPreparation,campResource}=await import("../src/englishClubCreativeCamps.ts");
+ const {CAMP_CRAFT}=await import("../src/englishClubCampCraft.ts");
+ assert.equal(Object.keys(CAMP_CRAFT).length,12);
+ const skills=new Set();
+ for(const c of CREATIVE_CAMPS)for(const [i,s] of c.sessions.entries()){
+  const craft=CAMP_CRAFT[s.title],guide=campPreparation(c.id,i),resource=campResource(c.id,i);
+  assert.ok(craft);
+  skills.add(craft.skill);
+  for(const field of ["concept","script","group","create","support","feedback","reading"])assert.ok(guide.includes(craft[field]),s.title+" missing "+field);
+  assert.match(guide,/Private craft objective:/);
+  assert.equal(resource.slides[3].body,craft.example);
+  assert.equal(resource.slides[3].cards[0].body,craft.prompt);
+  assert.equal(resource.slides[6].body,craft.create);
+  assert.equal(resource.tasks[0],craft.prompt);
+  assert.ok(!JSON.stringify(resource).includes(craft.script));
+  assert.ok(!JSON.stringify(resource).includes(craft.feedback));
+  assert.ok(!JSON.stringify(resource).includes("Private craft objective"));
+ }
+ assert.equal(skills.size,12);
+});
+
+
+test("all twelve camp story builders are ungraded, bounded, and paired with moderated collaboration",async()=>{
+ const {CREATIVE_CAMPS}=await import("../src/englishClubCreativeCamps.ts");
+ const {campActivities}=await import("../src/englishClubCampGames.ts");
+ const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const {validateGameResponse}=await import("../src/supportActivityGames.ts");
+ for(const c of CREATIVE_CAMPS)for(const session of c.sessions){
+  const activities=campActivities(session);
+  assert.deepEqual(activities.map(a=>a.type),["poll","story_builder","collaboration","short"]);
+  const checked=activities.map(a=>validateActivityTemplate({...a,subject:"English",year_level:"Ages "+c.age}));
+  assert.ok(checked.every(Boolean));
+  const builder=checked[1];
+  assert.equal(builder.answer_key,null);
+  assert.equal(builder.game.type,"story_builder");
+  assert.equal(checked[2].collaborative,1);
+  assert.deepEqual(validateGameResponse(builder.game,"[0,0,0]"),[0,0,0]);
+  assert.deepEqual(validateGameResponse(builder.game,"[1,1,1]"),[1,1,1]);
+  assert.equal(validateGameResponse(builder.game,"[99,0,0]"),null);
+  assert.equal(validateGameResponse(builder.game,"[0,0]"),null);
+  assert.equal(validateGameResponse(builder.game,"[0,0,\"private text\"]"),null);
+  assert.equal(validateActivityTemplate({...activities[1],subject:"English",year_level:"Ages "+c.age,game:{fields:[{label:"One",options:["x","x"]},{label:"Two",options:["x","y"]}]}}),null);
+ }
 });

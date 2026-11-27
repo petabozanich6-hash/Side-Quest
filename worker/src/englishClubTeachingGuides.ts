@@ -55,9 +55,36 @@ export const ENGLISH_TEACHING_GUIDES=[
   feedback:"Ask whether the change improves the stated purpose rather than merely adding adjectives. Respect a learner's intended style. Exit check: distinguish a structural revision from a copyedit and explain the effect of one change. Completion certificates are handled separately through verified attendance."
  }
 ] as const;
+const SESSION_OPENERS = [
+  [
+    "Headline hijack",
+    "Say: ‘A dragon has eaten the school bell. You have 30 seconds to make that sound like either brilliant news or a complete disaster.’ Offer ‘Unexpected day of peace’ and ‘School bell mysteriously destroyed’ if needed. Invite a typed, spoken or private headline, then compare how the words change the impression without changing the event. Transition: ‘That is exactly what word choice and framing can do.’"
+  ],
+  [
+    "The suspicious sentence",
+    "Say: ‘The cat knocked over a vase, then sat beside it looking extremely innocent. What do we actually know, and what are we guessing?’ Offer ‘the vase fell’ and ‘the cat planned it’ as contrasting statements. Let learners vote, type or quietly decide; invite an alternative interpretation. Transition: ‘Today we will use clues rather than guesses to read between the lines.’"
+  ],
+  [
+    "The impossible choice",
+    "Say: ‘Your fictional adventuring team has one last lantern. One explorer needs it to map the cave and another needs it to find a lost creature. Who gets it, and why?’ Let learners choose either or propose a third option; accept private answers or passing. Ask what each explorer values rather than declaring a winner. Transition: ‘Characters become interesting when their priorities collide.’"
+  ],
+  [
+    "Story scramble",
+    "Say: ‘Here are three moments: the dragon sneezed, the alarm rang, and the cake disappeared. Put them in an order that makes a funny story.’ Learners can type numbers, speak, or arrange the events privately. Ask what happens if we reveal the missing cake first. Transition: ‘The order we tell events changes what our readers wonder about.’"
+  ],
+  [
+    "Ridiculous rules",
+    "Say: ‘A fictional town wants to make hats compulsory for pigeons. Give me one reason for or against the rule, then tell me what we would need to find out before deciding.’ Accept silly but reasoned suggestions, spoken, typed or private. Separate a claim from a reason and evidence; no vote on a person’s beliefs. Transition: ‘Today we turn opinions into arguments that can actually persuade.’"
+  ],
+  [
+    "Sentence makeover",
+    "Say: ‘The dragon walked into the room. Make that sentence sound like the start of a mystery, a comedy, or an adventure using one small change.’ Invite learners to choose a mood or pass; offer ‘The dragon tiptoed into the room’ as a starting point. Compare effect rather than ranking answers. Transition: ‘Revision is about making our words do what we intend.’"
+  ]
+] as const;
 export function englishTeachingGuide(index:number){
- const g=ENGLISH_TEACHING_GUIDES[index];if(!g)return "";
+ const g=ENGLISH_TEACHING_GUIDES[index], opener=SESSION_OPENERS[index];if(!g||!opener)return "";
  return [
+ "0–5 min | Icebreaker — "+opener[0]+": Welcome learners, offer spoken, typed or private participation and permission to pass. "+opener[1],
  "5–13 min | I teach — explicit concept: "+g.concept,
  "13–23 min | I demonstrate — worked analysis or writing: "+g.model,
  "23–35 min | We practise together: "+g.guided,
