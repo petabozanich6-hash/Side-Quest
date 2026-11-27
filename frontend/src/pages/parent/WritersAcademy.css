@@ -1,0 +1,25 @@
+/* Academy identity is intentionally scoped; the homeschool hub keeps its established theme. */
+.academy-surface{--academy-ink:#25334c;--academy-paper:#f4ede2;--academy-gold:#d8b57c;color:var(--academy-ink);background:#f7f2e9;padding:clamp(12px,2.5vw,24px);border-radius:20px}
+.academy-track-junior{--academy-ink:#244e77;--academy-paper:#eaf2fa;--academy-gold:#f0b95f}
+.academy-track-teen{--academy-ink:#5c365e;--academy-paper:#f2e8f3;--academy-gold:#e7bd86}
+.academy-track-adult,.academy-track-academy{--academy-ink:#25334c;--academy-paper:#f4ede2;--academy-gold:#d8b57c}
+.academy-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);align-items:center;gap:16px;background:var(--academy-ink);color:#fffdf6;border-radius:18px;padding:clamp(20px,4vw,36px);overflow:hidden}
+.academy-hero-copy{min-width:0;display:grid;gap:8px}
+.academy-wordmark{font-size:12px;font-weight:700;letter-spacing:.17em;color:var(--academy-gold)}
+.academy-endorsement{font-size:11px;color:#fffdf6;opacity:.85;margin-top:-5px}
+.academy-hero h2,.academy-programme h3{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.13;overflow-wrap:anywhere}
+.academy-hero h2{font-size:clamp(26px,4.5vw,42px);margin:8px 0 0}
+.academy-kicker{font-size:12px;font-weight:700;letter-spacing:.065em}
+.academy-hero .academy-kicker{color:var(--academy-gold)}
+.academy-art{display:block;width:100%;height:auto;max-width:300px;margin:auto}
+.academy-programme{border:1px solid #d4c8b6;background:var(--academy-paper);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:minmax(100px,130px) minmax(0,1fr);align-items:center;gap:16px;padding:14px;color:var(--academy-ink)}
+.academy-programme h3{font-size:22px;margin:4px 0}
+.academy-tagline{font-size:13px;margin-bottom:8px}
+.academy-surface .paper-card{background:#fffdf8;border-color:#d4c8b6}
+.academy-surface input[type=checkbox]{accent-color:#25334c}
+.academy-button{display:inline-block;background:#25334c;color:white;border:1px solid #25334c;border-radius:10px;padding:12px 18px;font-weight:600;min-height:44px}
+.academy-button:hover:not(:disabled){background:#374966}
+.academy-button:disabled{opacity:.5;cursor:not-allowed}
+.academy-surface :is(button,a,input,select,textarea):focus-visible{outline:3px solid #986c29;outline-offset:3px}
+.academy-surface .academy-round{border-left:5px solid var(--academy-ink)}
+@media(max-width:520px){.academy-hero{grid-template-columns:1fr}.academy-hero .academy-art{max-width:220px}.academy-programme{grid-template-columns:92px minmax(0,1fr);gap:10px;padding:10px}.academy-programme h3{font-size:19px}}
