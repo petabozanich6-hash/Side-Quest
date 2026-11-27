@@ -526,7 +526,7 @@ export function campPreparation(id:unknown,index:number){
 }
 export function campResource(id:unknown,index:number){
  const c=creativeCamp(id),s=c?.sessions[index];if(!s)return null;
- return {title:s.title,objective:s.objective,reading:s.reading,tasks:["Imagine a possibility inspired by the reading.",s.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
+ return {creative_camp:true,title:s.title,objective:s.objective,reading:s.reading,tasks:["Imagine a possibility inspired by the reading.",s.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
  {title:s.title,body:s.description},{title:"Book chat",body:"What stories, worlds, characters or genres do you love? Comics and audiobooks count. You can pass."},{title:"Story spark",body:s.reading},{title:"The author’s imagination",body:s.activities[0].question,cards:s.activities[0].options?.map(o=>({label:o,body:"What might happen?"}))},{title:"Create together",body:s.group},{title:"Choose a possibility",body:s.activities[0].question+"\n"+s.activities[0].options?.join("\n")},{title:"Your creative studio",body:s.create},{title:"Optional extra",body:"Give your creation a title, cover idea or next adventure."},{title:"Celebrate and discover",body:"Share if you want to. What kind of book or story would you like to discover next?"}
  ]};
 }
