@@ -194,6 +194,29 @@ await step("feedback regression: parent sends, Owner replies, dashboard alerts a
 
 
 
+await step("Learning Support gives lesson preparation, teaching and payments separate direct routes",async()=>{
+ const root=BASE+"/parent/command-centre/learning-support";
+ await page.goto(root);
+ await page.getByRole("link",{name:/^Lesson studio/}).click();
+ await page.getByRole("heading",{name:"Create a complete lesson",exact:true}).waitFor();
+ ok(await page.locator('[aria-label="Monthly private tutor calendar"]').count()===0,"calendar mounted inside lesson studio");
+ const nav=page.getByRole("navigation",{name:"Learning Support workspace"});
+ await nav.getByRole("link",{name:"Teaching room",exact:true}).click();
+ await page.getByRole("heading",{name:"Teaching sessions",exact:true}).waitFor();
+ ok(await page.locator('[aria-label="Monthly private tutor calendar"]').count()===0,"calendar mounted inside teaching list");
+ await nav.getByRole("link",{name:"Payments",exact:true}).click();
+ await page.getByRole("heading",{name:"Payment and cancellation review",exact:true}).waitFor();
+ await nav.getByRole("link",{name:"Lesson studio",exact:true}).click();
+ await page.getByRole("heading",{name:"Create a complete lesson",exact:true}).waitFor();
+ await page.reload();
+ await page.getByRole("heading",{name:"Create a complete lesson",exact:true}).waitFor();
+ await page.setViewportSize({width:375,height:812});
+ ok(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),"lesson studio overflows on phone");
+ await page.setViewportSize({width:1280,height:900});
+ const denied=await api("GET","/admin/support-lesson-library",user.token);
+ ok(denied.status===404,"ordinary parent can read private lesson library");
+});
+
 await step("English Club uses separate navigable pages without mounting unrelated forms",async()=>{
  await page.goto(BASE+"/parent/command-centre/learning-support");
  await page.getByRole("link",{name:/^English Club/}).click();
