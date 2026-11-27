@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
@@ -256,4 +256,15 @@ test("studio drafts survive reopening, remain isolated and cannot be overwritten
  assert.ok((await checkpointPrivateLessonDraft(db,owner,{pack,minutes:30,draft_id,revision})).error);
  assert.equal(await discardPrivateLessonDraft(db,owner,{draft_id,revision,confirmed:true}),false);
  for(const table of ["support_service_orders","support_teaching_decks","support_session_activity_plans"])assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM "+table).get().n,0);
+});
+
+test("reasoning trial reads only final model output and keeps the complete teaching gate",()=>{
+ assert.equal(REASONING_LESSON_MODEL,"@cf/openai/gpt-oss-120b");
+ const response={status:"completed",output:[{type:"reasoning",summary:[{type:"summary_text",text:"{ invalid hidden reasoning }"}]},{type:"message",role:"assistant",content:[{type:"output_text",text:JSON.stringify(englishPack)}]}]};
+ assert.ok(validateLessonPack(extractLessonPackResponse(response),30));
+ assert.ok(validateLessonPack(extractLessonPackResponse({response:JSON.stringify(sciencePack)}),30));
+ assert.ok(validateLessonPack(extractLessonPackResponse({output_text:JSON.stringify(englishPack)}),30));
+ assert.equal(extractLessonPackResponse({...response,status:"incomplete"}),null);
+ assert.equal(extractLessonPackResponse({output:[{type:"reasoning",summary:[{type:"summary_text",text:JSON.stringify(englishPack)}]}]}),null);
+ assert.equal(validateLessonPack(extractLessonPackResponse({output_text:'{"title":"Incomplete"}'}),30),null);
 });
