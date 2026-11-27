@@ -1,0 +1,147 @@
+// Private instructional scaffolds; only example and prompt are projected onto learner slides.
+export const CAMP_CRAFT:Record<string,{skill:string;concept:string;script:string;group:string;create:string;support:string;feedback:string;reading:string;example:string;prompt:string}>={
+  "The Book Portal": {
+    "skill": "Hook and specific detail",
+    "concept": "An opening gives a reader a reason to turn the page. One unexpected detail can do more than a long explanation.",
+    "script": "Say: ‘A girl opened a book. That could be almost any story. Now listen: A leaf fell out of Nia’s book, and a tiny voice said, “Are you coming?” What do you want to find out?’ Pause. Accept several questions. ‘That is a hook. The surprising detail makes us curious.’",
+    "group": "Put ‘I opened a book’ on the board. Invite one unexpected thing to emerge; wait for suggestions. Write a new opening using one idea, then ask what question it creates. Try a different suggestion too.",
+    "create": "Make a portal picture and dictate a sentence, or write two opening sentences: ordinary moment, unexpected detail.",
+    "support": "If they say ‘something magical’, ask what it looks, sounds or smells like. Offer a choice of two details without writing their story for them. Extension: create two hooks with different moods.",
+    "feedback": "‘I wanted to turn the page because of your ___.’ Ask which detail they chose to make a reader curious.",
+    "reading": "Seek portal fantasies, humorous adventures, picture books or comics with surprising beginnings.",
+    "example": "A child opens a book. → A tiny boot tumbles out of the book and runs under the sofa.",
+    "prompt": "What unexpected thing makes you want to read on?"
+  },
+  "Character Chaos": {
+    "skill": "Character wants, quirks and obstacles",
+    "concept": "A character becomes interesting through what they want, what they do and what gets in their way. A list of adjectives is not yet a story.",
+    "script": "Say: ‘Dot is a dragon. Fine, but what makes Dot different? Dot collects buttons instead of gold. Now Dot wants a shiny button, but a magpie has it. Suddenly Dot has something to do!’ Ask what Dot might say to the magpie. Wait for ideas and try one aloud.",
+    "group": "Build a three-part character on the board: wants / unusual habit / obstacle. Ask the group to pick each part and invent a line of dialogue. Show how a different want changes the action.",
+    "create": "Draw a character and add their wish, obstacle and one thing they might say; or write a tiny scene.",
+    "support": "If a learner lists appearance only, ask ‘What would they do on the worst day ever?’ Offer a speech bubble. Extension: give them a surprising second wish.",
+    "feedback": "Notice a choice that makes the character distinct; ask how the obstacle affects their next action.",
+    "reading": "Look for books with funny, unusual, brave or imperfect characters and see what they want.",
+    "example": "A dragon was nice. → Dot hid a button in his pocket and whispered, ‘One more for my collection.’",
+    "prompt": "What does your character want? What gets in the way?"
+  },
+  "Mystery in the Library": {
+    "skill": "Clues, inference and satisfying reveals",
+    "concept": "A clue is something readers can notice. An inference is a possible explanation. A satisfying reveal connects earlier clues rather than introducing an unrelated answer.",
+    "script": "Say: ‘A silver bookmark is a clue. Does it PROVE a wizard did it? No! Maybe someone dropped it. Maybe it opens a secret shelf.’ Wait for other possibilities. ‘If I reveal the bookmark fits a tiny lock, that gives the earlier clue a job.’",
+    "group": "Invent a mystery about a missing book. Offer a wet pawprint and a trail of paper scraps; let learners suggest two explanations. Ask which new clue would help the reader decide. Keep different solutions possible until a clue supports one.",
+    "create": "Invent two clues and a reveal that explains at least one of them; draw, tell or write the mystery.",
+    "support": "If they struggle, use ‘I noticed… so maybe…’. If the ending is random, ask what clue they could plant earlier. Extension: add a believable misleading clue.",
+    "feedback": "Praise a particular clue; ask how it connects to the ending, without demanding a single interpretation.",
+    "reading": "Discover age-suitable detective stories, puzzle books and mystery comics.",
+    "example": "Wet pawprint → maybe an animal came inside. A wet dog returns with the missing book.",
+    "prompt": "What did the reader notice? How does your ending explain it?"
+  },
+  "Worlds of Wonder": {
+    "skill": "Setting, sensory description and rules",
+    "concept": "Setting includes place, atmosphere and the rules of an invented world. Sensory details let readers imagine it; a rule gives events a believable reason.",
+    "script": "Say: ‘The town was nice. Could you draw it from that? Now: The cloud bakery smelled of cinnamon, and its doorbell sounded like thunder.’ Ask which details helped them picture it. ‘In this town everything floats unless it is tied down. What trouble might that cause?’",
+    "group": "Draw three places on a shared imaginary map. Let learners pick a sound or smell for one and invent a world rule. Ask what might happen if a character forgets the rule.",
+    "create": "Make a map with two places and a sensory detail, or describe arriving in the world and use its rule in an event.",
+    "support": "Offer sight/sound/smell choices or drawing first. Do not require all five senses. Extension: show how a rule affects daily life.",
+    "feedback": "Highlight a detail that made the world feel real; invite one consequence of the invented rule.",
+    "reading": "Look for adventures in imaginary settings, maps in books and stories set in unusual real places.",
+    "example": "The bakery was nice. → Cinnamon drifted from the cloud bakery, and its bell rumbled like thunder.",
+    "prompt": "What can a visitor sense? What rule might surprise them?"
+  },
+  "Choose Your Own Adventure": {
+    "skill": "Cause and effect, branching plot",
+    "concept": "A plot is connected events, not just a list. A character choice changes what happens next. Both branches should follow from the choice.",
+    "script": "Say: ‘Tilly opens the tiny door, so she shrinks. If she climbs the stairs instead, she meets a talking cloud. What could happen next on each path?’ Draw a fork. ‘Each path has a choice AND a consequence.’",
+    "group": "Draw a fork from one shared starting event. Ask for two choices. Take turns adding one consequence to each branch. Read back the branches and ask whether each event follows from the choice.",
+    "create": "Draw a two-branch adventure or write a starting scene and two possible outcomes.",
+    "support": "Use a simple arrow: choose → because of that → what happens. Offer oral choices for emerging writers. Extension: make branches reconnect plausibly.",
+    "feedback": "Point out a meaningful consequence and ask how the choice changed the ending.",
+    "reading": "Try interactive fiction, choose-your-own-adventure books and stories where characters face big decisions.",
+    "example": "Door → shrink → rescue a beetle. Stairs → meet a cloud → find a floating town.",
+    "prompt": "How does choosing a different path change the story?"
+  },
+  "Little Author Celebration": {
+    "skill": "Revision, title, blurb and audience",
+    "concept": "Revision means improving an idea or effect. A title or blurb invites readers into a story without telling them everything. Editing is part of authorship, not a punishment.",
+    "script": "Say: ‘Dot found a button. That is my first draft. Dot found a button that whispered his name. I changed one detail to make you wonder.’ Ask which version they would read. ‘Authors change their ideas all the time. A blurb gives a taste, not the whole ending.’ Model: ‘A button-loving dragon finds a button that talks. Can Dot discover its secret?’",
+    "group": "Invite ideas for a title and blurb for the talking button story. Compare two versions. Ask what each promises the reader, and select or combine ideas without ranking children.",
+    "create": "Choose a previous or new idea. Change one detail for effect, then create a cover, title or tiny blurb.",
+    "support": "Let learners dictate or draw covers and explain the change. Offer a new story spark to anyone who missed earlier sessions. Extension: revise an opening for a different audience.",
+    "feedback": "Celebrate one deliberate revision; ask what readers might now wonder about. Sharing remains optional.",
+    "reading": "Encourage visits to the library or browsing book covers and blurbs to discover the next read.",
+    "example": "Dot found a button. → Dot found a button that whispered his name.",
+    "prompt": "What did you change, and what might a reader feel now?"
+  },
+  "Beyond the Cover": {
+    "skill": "Genre, hooks and reader expectations",
+    "concept": "Genre gives readers a set of expectations, not a rigid formula. A hook establishes curiosity, stakes or voice; a pitch communicates the promise of a story.",
+    "script": "Say: ‘A map of a town that does not exist could begin a mystery, fantasy or science-fiction story. Listen: Every map of this city ends at a door that opens tomorrow. Now a detective version: The missing person's address was on a map of a town that never existed.’ Ask which promise each opening makes. Give think time. ‘A good hook raises a question the story can develop.’",
+    "group": "Invite a one-line premise from the group, then write two genre versions together. Discuss the promise, tone and question each creates. Invite spoiler-free recommendations or invented alternatives.",
+    "create": "Draft two possible hooks for one premise; choose a genre and write a short back-cover pitch.",
+    "support": "Offer a starting premise or oral pitch. Extension: blend genres intentionally and discuss how the opening signals both.",
+    "feedback": "Ask what readers expect and which precise word or detail creates that expectation; respond to intention, not literary taste.",
+    "reading": "Discover unfamiliar genres through library blurbs, samples, graphic novels or audiobooks.",
+    "example": "Fantasy: Every map ends at a door that opens tomorrow. Mystery: A missing person’s address is on a map of a town that never existed.",
+    "prompt": "What promise does the opening make to its reader?"
+  },
+  "Characters We Can't Forget": {
+    "skill": "Motivation, internal conflict and dialogue",
+    "concept": "Motivation is the reason behind action. Internal conflict involves competing desires or values. Dialogue can reveal conflict without a character explaining every feeling.",
+    "script": "Say: ‘Mira wants to stay away, but she owes someone a debt. If I write “Mira felt conflicted,” I have told you. If I write “She burned the letter, then spent the night packing,” what can you infer?’ Wait. ‘Actions can show competing priorities. Readers may interpret them differently.’",
+    "group": "Create two fictional characters who want the same object for different reasons. Write a dialogue exchange in which neither states their full motive. Ask what action would hint at it.",
+    "create": "Create a character goal, deeper motivation and obstacle; draft a brief exchange where a choice or action suggests conflict.",
+    "support": "Offer a want/because/but frame or voice note. Extension: give both characters defensible motivations and use contradictory dialogue or action.",
+    "feedback": "Name an effective action or line, and ask what motive readers infer. Do not infer real-life experiences from fictional work.",
+    "reading": "Explore books with complex friendships, unlikely heroes or memorable antagonists.",
+    "example": "Mira felt conflicted. → She burned the letter, then spent the night packing.",
+    "prompt": "What does the character want, and what makes that difficult?"
+  },
+  "Build a World Worth Getting Lost In": {
+    "skill": "Worldbuilding, atmosphere and internal consistency",
+    "concept": "Worldbuilding establishes an environment and rules that affect characters. Show consequences through concrete details rather than delivering all the background at once.",
+    "script": "Say: ‘Rain is bottled and sold. If a shop sells rain, what does a poor character do on a dry day?’ Invite ideas. ‘Instead of explaining the entire economy, I can show a child counting coins beside one precious bottle.’ Discuss how that detail reveals both world and stakes.",
+    "group": "Choose an impossible rule as a group. Brainstorm how it affects transport, work or ordinary routines. Write a two-sentence scene that demonstrates one consequence without explaining the whole system.",
+    "create": "Create one world rule and two plausible consequences; sketch a map with annotations or write a scene showing one consequence.",
+    "support": "Use a rule → everyday effect → story problem frame. Extension: explore who benefits and who is disadvantaged, or create a coherent exception.",
+    "feedback": "Ask whether the detail follows from the world rule and what feeling it creates. Welcome imaginative alternatives.",
+    "reading": "Discover speculative fiction, fantasy, dystopia or historical stories with immersive settings.",
+    "example": "Rain was expensive. → A child counted three coins, then put the smallest bottle back.",
+    "prompt": "How does your world rule change an ordinary day?"
+  },
+  "Plot Twists and Page Turners": {
+    "skill": "Suspense, foreshadowing and pacing",
+    "concept": "Suspense arises from an unresolved question and stakes. Foreshadowing plants a detail that gains meaning later. A twist should surprise while remaining consistent with the story.",
+    "script": "Say: ‘The empty train arrives. The manuscript on its seat is Rowan’s. We need a payoff for that strange detail.’ Model an original twist: Rowan later finds a line describing a decision they have not made yet. ‘If I show that line early, the reader can rethink it after the reveal.’ Compare a quick reveal with a pause before opening the book.",
+    "group": "Build a mystery together: question, stakes, clue, possible reveal. Let learners propose twists; test whether the clue can support each. Try reading one version with a short sentence before the reveal.",
+    "create": "Plan an opening, a planted clue and a later reveal. Write or narrate a short suspenseful moment using pacing intentionally.",
+    "support": "Offer a three-card storyboard. Extension: add a fair red herring or test a nonlinear opening. Avoid frightening content that a learner does not want.",
+    "feedback": "Ask whether the reveal makes the earlier clue meaningful and how pacing affects curiosity.",
+    "reading": "Try age-suitable mysteries, adventure stories or suspenseful speculative fiction; avoid spoilers.",
+    "example": "The manuscript lay open. Rowan read one line, and shut the book. It described tomorrow.",
+    "prompt": "Which clue will mean something new after the twist?"
+  },
+  "The Story Lab": {
+    "skill": "Perspective, tropes and purposeful originality",
+    "concept": "Perspective determines what a narrator notices and knows. A trope is a familiar story pattern; changing viewpoint, genre or a convention can create a fresh effect.",
+    "script": "Say: ‘The hero saved the kingdom. The villain sent a thank-you note. What if the so-called villain needed the hero to remove a corrupt ruler?’ Wait for alternatives. Model two original lines: hero: ‘At last, the gates opened’; gatekeeper: ‘The crowd cheered, but my job had vanished.’ Explain how the same event changes meaning through viewpoint.",
+    "group": "Choose an original premise. Ask for two viewpoints or genre switches; write a short version of each. Discuss what changed and what remained true in the story.",
+    "create": "Rewrite an original scene from a different viewpoint or remix a familiar trope using original characters. Explain the effect or pitch it aloud.",
+    "support": "Offer a narrator choice and one scene. Extension: experiment with limited knowledge or unreliable narration without treating one view as automatically correct.",
+    "feedback": "Identify a changed detail that reflects viewpoint and ask what the reader learns or questions as a result.",
+    "reading": "Find retellings, genre mashups, multiple-viewpoint books or imaginative comics.",
+    "example": "Hero: At last, the gates opened. Gatekeeper: The crowd cheered, but my job had vanished.",
+    "prompt": "How does the new narrator or genre change the story?"
+  },
+  "The Author's Studio": {
+    "skill": "Voice, revision, editing and publishing",
+    "concept": "Revision changes meaning, structure or effect; copyediting addresses clarity and mechanics. Voice is the distinctive way a story is told. Publishing involves preparing and sharing a work with an audience, not a guarantee of publication.",
+    "script": "Say: ‘First draft: The room was scary and I walked in. Revision: The room held its breath. So did I.’ Ask what changes: rhythm, atmosphere, narrative voice. ‘Copyediting would fix a spelling error; revision changes the experience. Authors do both, and choose what to keep.’ Share one truthful example of your own process if comfortable; no need to disclose private drafts.",
+    "group": "Model a supportive feedback exchange: ask the writer’s intended effect, name a detail that works, offer one optional suggestion. Invite a group revision of the sample in two different voices.",
+    "create": "Choose a new or previous piece, make one intentional revision, and create a pitch, cover concept or next-project plan. Sharing is optional.",
+    "support": "Accept a short excerpt or oral pitch. Extension: justify keeping one original line and rejecting a suggested change. No expectation of finished publication.",
+    "feedback": "Ask what revision served the intended reader and celebrate creative ownership; invite a future reading or writing goal.",
+    "reading": "Browse authors’ notes, acknowledgements or behind-the-scenes writing books and choose a future read.",
+    "example": "Draft: The room was scary and I walked in. Revision: The room held its breath. So did I.",
+    "prompt": "What changed for the reader, and why did you choose it?"
+  }
+};
