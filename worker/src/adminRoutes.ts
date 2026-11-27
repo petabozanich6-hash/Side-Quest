@@ -90,7 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
-import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack} from "./supportLessonPack";
+import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
@@ -896,6 +896,31 @@ export function createAdminRoutes() {
     const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
   });
+  admin.get("/support-lesson-library",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return c.json({items:await listReusableLessonPacks(c.env.DB),ai_enabled:lessonPackAiEnabled(c.env)});
+  });
+  admin.post("/support-lesson-library/draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const b=await readJson(c),r=await generateReusableLessonPack(c.env,c.get("user"),b,b.minutes);
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/support-lesson-library",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const r=await saveReusableLessonPack(c.env.DB,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_library.create",targetType:"support",targetId:r.saved.id,detail:{}});
+    return c.json(r,201);
+  });
+  admin.get("/support-lesson-library/:lessonId",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const saved=await getReusableLessonPack(c.env.DB,c.req.param("lessonId")??"");
+    return saved?c.json({saved}):c.json({detail:"Not found"},404);
+  });
   admin.get("/support-decks",requirePermission("customers.read"),async c=>c.json({decks:await findDecks(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI}));
   admin.post("/support-decks/draft",requirePermission("customers.read"),async c=>{
     const r=await draftDeck(c.env,c.get("user").id,await readJson(c));return "error" in r?c.json({detail:r.error},409):c.json(r);
@@ -1414,6 +1439,15 @@ export function createAdminRoutes() {
       const r=await approveLessonPack(c.env.DB,channel,id,oid,await readJson(c));
       if("error" in r)return c.json({detail:r.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_pack.approve",targetType:"support",targetId:oid,detail:{channel}});return c.json(r,201);
+    });
+    admin.post(path+"/:oid/lesson-pack/use-library",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const r=await useReusableLessonPack(c.env.DB,channel,id,oid,await readJson(c));
+      if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_pack.library_copy",targetType:"support",targetId:oid,detail:{channel}});
+      return c.json(r,201);
     });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
