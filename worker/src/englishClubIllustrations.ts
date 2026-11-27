@@ -1,3 +1,4 @@
+import {adultStudioIllustrationStory,ADULT_STUDIO} from "./writersAcademy";
 import {campIllustrationStory} from "./englishClubCreativeCamps";
 import {STORY_QUEST} from "./englishClubCurriculum";
 import {validateIllustrationPlan} from "./supportIllustrations";
@@ -16,11 +17,11 @@ const scenes=[
 export function clubIllustrationPlan(workshop:any){
  const index=STORY_QUEST.sessions.findIndex(s=>s.title===workshop?.title);
  if(!Array.isArray(workshop?.slides)||workshop.slides.length!==9)return [];
- const camp=campIllustrationStory(workshop);
+ const adult=adultStudioIllustrationStory(workshop),camp=adult||campIllustrationStory(workshop);
  if(index<0&&!camp)return [];
  const plan=camp||scenes[index].map(([title,brief,purpose],i)=>({slide_index:[0,2,4][i],title,brief,purpose}));
  const attached=workshop.illustration_files;
- return validateIllustrationPlan(plan.map(p=>({...p,...(typeof attached?.[p.slide_index]==="string"?{file_id:attached[p.slide_index]}:{})})),60,9)||[];
+ return validateIllustrationPlan(plan.map(p=>({...p,...(typeof attached?.[p.slide_index]==="string"?{file_id:attached[p.slide_index]}:{})})),adult?ADULT_STUDIO.minutes:60,9)||[];
 }
 export async function attachClubIllustration(db:D1Database,cid:string,b:any){
  if(b?.confirmed!==true||!Number.isInteger(b.slide_index)||!(b.file_id===null||typeof b.file_id==="string"))return false;
