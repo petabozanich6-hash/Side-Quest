@@ -61,7 +61,8 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   const s=deck.slides[b.index];
   board.image=null;
   const visual=validateSlideVisual(s.visual);
-  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length,...(visual?{visual,interaction:initialSlideInteraction(visual)}:{})};
+  const illustration=s.illustration_id?await presentationImage(db,s.illustration_id):null;
+  board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length,...(illustration?{illustration}:{}),...(visual?{visual,interaction:initialSlideInteraction(visual)}:{})};
  }
  else return {error:"This board action is not available."};
  const json=JSON.stringify(board);if(json.length>220000)return {error:"Board is full."};
@@ -73,5 +74,5 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
 
 export async function canReadClassroomImage(db:D1Database,channel:Channel,id:string,oid:string,fid:string,owner:boolean,now=new Date()){
  const s=await classroomState(db,channel,id,oid,owner,now);
- return !!s?.open&&s.board.image?.id===fid&&!!await presentationImage(db,fid);
+ return !!s?.open&&(s.board.image?.id===fid||s.board.slide?.illustration?.id===fid)&&!!await presentationImage(db,fid);
 }
