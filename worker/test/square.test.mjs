@@ -272,7 +272,7 @@ test("support orders are separate from subscriptions; Square sandbox checkout is
  db.raw.prepare("INSERT INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES('q','r','A science explanation','Live',2500,'interested',?,'2099-01-01T00:00:00.000Z')").run(now.toISOString());
  db.raw.prepare("INSERT INTO support_guest_requests(id,email,parent_name,subject,message,created_at,updated_at) VALUES('r2','other@example.com','Parent','Science','Learning support',?,?)").run(now.toISOString(),now.toISOString());
  db.raw.prepare("INSERT INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,status,created_at,expires_at) VALUES('q2','r2','A science explanation','Live',2500,'interested',?,'2099-01-01T00:00:00.000Z')").run(now.toISOString());
- const data={quote_id:"q",mode:"live",start_at:"2098-12-01T01:00:00.000Z",minutes:30,terms:"Agreed service terms for this test.",confirmed:true};
+ const data={quote_id:"q",mode:"live",start_at:"2098-12-02T00:00:00.000Z",minutes:30,terms:"Agreed service terms for this test.",confirmed:true};
  const made=await createServiceOrder(db,"guest","r",data,now);assert.ok(made.id,JSON.stringify(made));
  assert.ok((await createServiceOrder(db,"guest","r2",{...data,quote_id:"q2"},now)).error);
  assert.ok(await confirmServiceOrder(db,"guest","r",made.id,now));

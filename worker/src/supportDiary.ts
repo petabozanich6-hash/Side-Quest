@@ -1,7 +1,7 @@
 import {ensureOrderSchema,getOrder,type Channel} from "./supportOrders";
 import {readQuotePlan} from "./supportQuotePlans";
 import {nowIso} from "./types";
-const FIELDS={subject:80,year_level:40,objective:600,interests:600,approach:1000,agenda:2500,materials:1500,preparation:1000,follow_up:1500,reflection:1500} as const;
+const FIELDS={subject:80,year_level:40,objective:600,interests:600,approach:1000,agenda:2500,materials:1500,preparation:1000,follow_up:1500,reflection:1500,report_covered:1000,report_strengths:1000,report_practice:1000,report_home_activity:1500} as const;
 export async function readDiary(db:D1Database,channel:Channel,id:string,oid:string){
  const order=await getOrder(db,channel,id,oid);if(!order)return null;
  const d=await db.prepare("SELECT * FROM support_tutor_diary WHERE order_id=?").bind(oid).first<any>();

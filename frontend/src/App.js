@@ -75,7 +75,10 @@ import { SHOP_URL } from "./lib/shop";
 // Keep the student/offline and sign-in modules eager; defer parent-only tools.
 const LearningSupport = lazy(() => import("./pages/parent/LearningSupport"));
 const GuestSupportPortal=lazy(()=>import("./pages/parent/GuestSupportPortal"));
+const FamilyPortal=lazy(()=>import("./pages/parent/FamilyPortal"));
+const FamilyPortalRegister=lazy(()=>import("./pages/parent/FamilyPortal").then(m=>({default:m.FamilyPortalRegister})));
 const HqGuestSupport=lazy(()=>import("./pages/parent/hq/HqGuestSupport"));
+const HqSquareInvoiceWorkspace=lazy(()=>import("./pages/parent/hq/HqSquareInvoiceWorkspace"));
 const LessonDetail = lazy(() => import("./pages/LessonDetail"));
 const ParentDashboard = lazy(() => import("./pages/parent/Dashboard"));
 const HqShell = lazy(() => import("./pages/parent/hq/HqShell"));
@@ -135,12 +138,14 @@ function Router() {
   const loc = useLocation();
   if (loc.hash?.includes("session_id=")) return <AuthCallback />;
   // SQ Kids (the kids' address) has no parent pages at all: grown-ups are pointed to the main site.
-  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|learning-support|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
+  if (isKidsHost() && /^\/(login|register|verify-email|forgot-password|reset-password|learning-support|family-portal|parent|print|auth)(\/|$)/.test(loc.pathname)) return <KidsOnly />;
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/learning-support" element={<LearningSupport publicView />} />
       <Route path="/learning-support/portal" element={<GuestSupportPortal />} />
+      <Route path="/family-portal" element={<FamilyPortal />} />
+      <Route path="/family-portal/register" element={<FamilyPortalRegister />} />
       {/* The shop moved to Square: old shop links (and anything under /shop) go there. */}
       <Route path="/shop/*" element={<GoToShop />} />
       <Route path="/login" element={<Login />} />
@@ -174,6 +179,7 @@ function Router() {
           <Route path="security" element={<HqSecurity />} />
           <Route path="feedback" element={<HqFeedback />} />
           <Route path="learning-support" element={<HqGuestSupport />} />
+          <Route path="learning-support/invoice/:channel/:requestId/:orderId" element={<HqSquareInvoiceWorkspace />} />
           <Route path="announcements" element={<HqAnnouncements />} />
           <Route path="document-studio" element={<HqDocumentStudio />} />
         </Route>

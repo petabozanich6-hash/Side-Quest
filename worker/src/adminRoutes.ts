@@ -1,3 +1,44 @@
+import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
+import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
+import {reissueClubCertificateEmail} from "./clubCertificateEmail";
+import {previewClubCertificate} from "./clubCertificatePreview";
+import {listPostalCertificates,ownerPostalCertificate,advancePostalCertificate} from "./clubCertificatePostal";
+import {signedTemplateStatus,saveSignedTemplate} from "./clubSignedCertificate";
+import {ownerClubCertificatePdf} from "./clubCertificateDelivery";
+import {listClubCertificateCandidates,approveClubCertificate,withdrawClubCertificate,approveClubCertificateBatch} from "./clubCertificates";
+import {releaseOverdueClubPlace} from "./clubSquareOverdue";
+import {verifyClubSquarePayment} from "./clubSquareInvoiceSettlement";
+import {publishClubSquareInvoice} from "./clubSquareInvoicePublication";
+import {clubInvoiceWorkspace,createClubSquareOrder,createClubSquareDraft} from "./clubSquareInvoiceDraft";
+import {listClubObligations,previewClubInvoice,prepareClubInvoice} from "./clubSquareInvoicePreparation";
+import {readProgressReport,changeProgressReport} from "./supportFamilyProgressReports";
+import {readActivityEvidence,saveActivityEvidence,removeActivityEvidence} from "./supportActivityEvidence";
+import {readActivityPlan,saveActivityPlan} from "./supportActivityPlans";
+import {activityAiEnabled,draftActivities} from "./supportActivityDrafts";
+import {listActivityTemplates,getActivityTemplate,saveActivityTemplate,archiveActivityTemplate} from "./supportActivityLibrary";
+import {liveActivitiesEnabled,readLiveActivity,launchLiveActivity,endLiveActivity,moderateCollaboration} from "./supportLiveActivities";
+import {resolveFullyRefundedSupportInvoice} from "./supportSquareInvoiceResolution";
+import {releaseVerifiedUnpaidSquareInvoice} from "./supportSquareInvoiceReview";
+import {verifyIssuedSupportSquarePayment} from "./supportSquareInvoiceSettlement";
+import {publishPreparedSupportSquareInvoice} from "./supportSquareInvoicePublish";
+import {inspectPreparedSupportSquareInvoice,recoverPreparedSupportSquareRecord} from "./supportSquareInvoiceReconcile";
+import {ownerSquareInvoiceWorkspace} from "./supportSquareInvoiceWorkspace";
+import {prepareSupportInvoiceIntent,releasePreparedSupportInvoiceIntent} from "./supportSquareInvoiceIntent";
+import {createPreparedSupportSquareOrder} from "./supportSquareInvoiceOrder";
+import {createPreparedSupportSquareDraft} from "./supportSquareInvoiceDraft";
+import {previewSupportInvoice} from "./supportSquareInvoicePreview";
+import {supportInvoiceLookupAvailable,inspectSupportInvoice} from "./supportSquareInvoiceLookup";
+import {ownerToday} from "./unifiedOwnerToday";
+import {ownerLearner,saveOwnerLearnerNotes,appointmentLearnerContext,ownerLearnerReports,clubPreparationContext} from "./unifiedOwnerLearner";
+import {unifiedOwnerDirectory,unifiedOwnerFamily,OWNER_FAMILY_SECTIONS,type OwnerFamilySection} from "./unifiedOwnerDirectory";
+import {unifiedPortalPilot} from "./unifiedPortalIdentity";
+import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
+import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
+import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
+import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
+import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
+import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
+import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
 /**
  * Owner HQ: owner-only administration API (/api/admin/*).
  *
@@ -8,7 +49,7 @@
  *  2. CSRF: changes need an allow-listed Origin that matches this site, a same-origin fetch, and the
  *     X-SideQuest-Admin header (which a cross-site form cannot send).
  *  3. Rate limits per user (D1, shared by every Worker instance).
- *  4. Passkey step-up (15 minutes, this sign-in only) for everything except the step-up itself.
+ *  4. Passkey step-up (120 minutes, this sign-in only) for everything except the step-up itself.
  *  5. Per-route permission checks, input validation and an audit record for every change.
  *
  * There is deliberately no endpoint that grants or changes roles.
@@ -18,7 +59,7 @@ import type { AuthenticationResponseJSON, RegistrationResponseJSON } from "@simp
 import { activeRoles, permissionsFor, type Permission, type Role } from "./access";
 import { hitRateLimit, recordSecurityEvent, writeAudit } from "./adminAudit";
 import { customerDetail, customerSummary, familyHasAdmin, FAMILY_ID, overview, searchCustomers } from "./adminData";
-import { verifySecret } from "./auth";
+import { verifySecret,hashSecret } from "./auth";
 import type { Plan } from "./entitlements";
 import {
   authenticationOptions, elevatedUntil, endStepUp, listCredentials, registrationOptions, STEP_UP_MINUTES,
@@ -41,15 +82,20 @@ import { sendEmail, SITE_URL, layout, p, button } from "./email";
 import { classroomEnabled,classroomState,setClassroomOpen,editClassroom,canReadClassroomImage } from "./supportClassrooms";
 import {prepareVideo,videoToken,closeVideo,videoEnabled} from "./supportVideo";
 import {findDecks,getDeck,saveDeck,archiveDeck,draftDeck} from "./supportDecks";
-import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan} from "./supportQuotePlans";
+import {planSnapshot,issueQuoteWithPlan,readQuotePlan,draftQuotePlan,scheduleSnapshot,readQuoteSchedule} from "./supportQuotePlans";
 import {buildContinuity,emailContinuity} from "./supportContinuity";
+import {prepareStationery,stationeryBase64,stationeryFingerprint,stationeryRecipient,stationeryEmailEnabled,termsDeliveryApproved,serviceTermsAttachment} from "./supportStationery";
+import {listStationery,saveStationery,downloadStationery,deliverSavedStationery,lessonReportQueue} from "./supportStationeryHistory";
+import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportPublicAvailability";
+import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
-import {offerSlots,readSlots,removeSlots} from "./supportSlots";
-import {createPackage} from "./supportPackages";
+import {offerSlots,readSlots,removeSlots,offerStandardQuoteTimes} from "./supportSlots";
+import {createPackage,offerPackageTimes} from "./supportPackages";
 import { ensureAnnouncementSchema, audienceCount, validateAnnouncement, queueAnnouncement, listAnnouncements, cancelAnnouncement } from "./announcements";
 
 type AdminVars = { user: AuthUser; sessionId: string | null; roles: Role[] };
@@ -261,6 +307,102 @@ export function createAdminRoutes() {
   });
 
   // --------------------------------------------------------------- customers
+  admin.get("/support-invoice-lookup/status",requirePermission("customers.read"),c=>c.json({available:supportInvoiceLookupAvailable(c.env)}));
+  admin.get("/support-invoice-workspace/:channel/:request/:order",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
+    const channel=c.req.param("channel"),id=c.req.param("request")||"",oid=c.req.param("order")||"";
+    if((channel!=="guest"&&channel!=="member")||!id||!oid||id.length>100||oid.length>100)return c.json({detail:"Invalid arrangement"},400);
+    const r=await ownerSquareInvoiceWorkspace(c.env,channel,id,oid);
+    return r?c.json(r):c.json({detail:"Arrangement not found"},404);
+  });
+  admin.post("/support-invoice-workspace/:action",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env)||!c.get("roles").includes("owner"))return c.json({detail:"Not found"},404);
+    const action=c.req.param("action"),b=await readJson(c);
+    if((b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||!b.request_id||!b.order_id||b.request_id.length>100||b.order_id.length>100||b.confirmed!==true||typeof b.fingerprint!=="string"||!/^[a-f0-9]{64}$/.test(b.fingerprint)||!["prepare","create-order","create-draft","release","inspect","recover","publish","verify-payment","release-unpaid","resolve-refund"].includes(action||""))return c.json({detail:"Review and explicitly approve this invoice action."},400);
+    if(action==="publish"&&(b.issue_confirmed!==true||typeof b.version!=="number"||!Number.isSafeInteger(b.version)||b.version<0||typeof b.provider_invoice_id!=="string"||!/^[A-Za-z0-9:_-]{1,150}$/.test(b.provider_invoice_id)))return c.json({detail:"Explicitly approve the exact invoice version before issuing."},400);
+    const workspace=await ownerSquareInvoiceWorkspace(c.env,b.channel,b.request_id,b.order_id);
+    if(!workspace)return c.json({detail:"Arrangement not found"},404);
+    if(action!=="release"&&action!=="inspect"&&action!=="verify-payment"&&action!=="release-unpaid"&&action!=="resolve-refund"&&!workspace.eligible)return c.json({detail:"Arrangement needs reconciliation."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.square_invoice_attempt."+action,targetType:"support",targetId:b.request_id,detail:{channel:b.channel,order_id:b.order_id}});
+    const r=action==="prepare"?await prepareSupportInvoiceIntent(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
+      action==="release"?await releasePreparedSupportInvoiceIntent(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
+      action==="inspect"?await inspectPreparedSupportSquareInvoice(c.env,b.channel,b.request_id,b.order_id,b):
+      action==="recover"?await recoverPreparedSupportSquareRecord(c.env,b.channel,b.request_id,b.order_id,b):
+      action==="publish"?await publishPreparedSupportSquareInvoice(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
+      action==="verify-payment"?workspace.intent?.fingerprint===b.fingerprint?await verifyIssuedSupportSquarePayment(c.env,b.channel,b.request_id,b.order_id):{error:"Invoice preparation changed."}:
+      action==="release-unpaid"?await releaseVerifiedUnpaidSquareInvoice(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
+      action==="resolve-refund"?await resolveFullyRefundedSupportInvoice(c.env,b.channel,b.request_id,b.order_id,c.get("user").id,b):
+      action==="create-order"?await createPreparedSupportSquareOrder(c.env,b.channel,b.request_id,b.order_id,b):
+      await createPreparedSupportSquareDraft(c.env,b.channel,b.request_id,b.order_id,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.square_invoice_success."+action,targetType:"support",targetId:b.request_id,detail:{channel:b.channel,order_id:b.order_id}});
+    return c.json(r);
+  });
+  admin.post("/support-invoice-preview",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
+    const b=await readJson(c);
+    if((b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Invalid arrangement"},400);
+    const r=await previewSupportInvoice(c.env,b.channel,b.request_id,b.order_id,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    c.header("Cache-Control","private, no-store");return c.json(r);
+  });
+  admin.post("/support-invoice-lookup",requirePermission("customers.read"),async c=>{
+    if(!supportInvoiceLookupAvailable(c.env))return c.json({detail:"Not found"},404);
+    const b=await readJson(c);
+    if(b?.confirmed!==true||(b.channel!=="guest"&&b.channel!=="member")||typeof b.request_id!=="string"||typeof b.order_id!=="string"||b.request_id.length>100||b.order_id.length>100)return c.json({detail:"Review the invoice lookup details."},400);
+    const r=await inspectSupportInvoice(c.env,b.channel,b.request_id,b.order_id,b.invoice_id);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.square_invoice_checked",targetType:"support",targetId:b.request_id,detail:{channel:b.channel,order_id:b.order_id,status:r.status}});
+    return c.json(r);
+  });
+  admin.get("/today",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");return c.json(await ownerToday(c.env.DB));
+  });
+  // Synthetic, non-deliverable identities for isolated browser acceptance only.
+  // Never modify or certify an existing email address. No real mailbox ownership is asserted.
+  admin.post("/staging-family-fixture",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env)||c.env.EMAIL||c.env.SUPPORT_SQUARE_INVOICE_TEST==="true"||!/^https:\/\/side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(c.env.ADMIN_ORIGINS||"")||c.req.header("Origin")!==c.env.ADMIN_ORIGINS)return notFound(c);
+    const b=await readJson(c);
+    if(b.confirmed!==true||typeof b.password!=="string"||b.password.length<12||b.password.length>128)return c.json({detail:"Choose a new test-only password of 12–128 characters and confirm synthetic account creation."},400);
+    const family=crypto.randomUUID(),user=crypto.randomUUID(),now=nowIso(),email="test-"+user+"@example.invalid";
+    const hash=await hashSecret(b.password);
+    await c.env.DB.batch([
+      c.env.DB.prepare("INSERT INTO families(id,name,owner_id,created_at,plan,trial_started_at,trial_ends_at,jurisdiction) VALUES(?,?,?,?,'PREVIEW_EXPIRED',NULL,NULL,'NSW')").bind(family,"Synthetic staging family",user,now),
+      c.env.DB.prepare("INSERT INTO users(id,family_id,email,password_hash,name,is_owner,created_at,email_verified_at,email_verification_required_at) VALUES(?,?,?,?,?,1,?,?,?)").bind(user,family,email,hash,"Synthetic test parent",now,now,now),
+      c.env.DB.prepare("INSERT INTO support_account_intents(family_id,registration_intent,created_at) VALUES(?,'support_only',?)").bind(family,now),
+      c.env.DB.prepare("INSERT INTO admin_audit_log(id,actor_user_id,actor_label,action,target_type,target_id,detail_json,created_at) VALUES(?,?,?,'staging.synthetic_family_created','family',?,'{}',?)").bind(crypto.randomUUID(),c.get("user").id,"owner:"+c.get("user").id,family,now)
+    ]);
+    return c.json({email,family_id:family},201);
+  });
+  admin.get("/unified-directory", requirePermission("customers.read"), async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const search=(c.req.query("q")||"").trim().toLowerCase(),page=Number(c.req.query("page")||1),filter=c.req.query("filter")||"all";
+    if(search.length>254||!Number.isInteger(page)||page<1||page>10000||!["all","support","legacy","unread"].includes(filter))return c.json({detail:"Invalid search or page"},400);
+    c.header("Cache-Control","private, no-store");
+    return c.json(await unifiedOwnerDirectory(c.env.DB,search,page,filter));
+  });
+  admin.get("/unified-directory/:kind/:id",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind")||"",id=c.req.param("id")||"",section=c.req.query("section")||"home",page=Number(c.req.query("page")||1);
+    if(!["account","legacy"].includes(kind)||!id||id.length>100||!OWNER_FAMILY_SECTIONS.includes(section as OwnerFamilySection)||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid family or page"},400);
+    c.header("Cache-Control","private, no-store");
+    const result=await unifiedOwnerFamily(c.env.DB,kind,id,section as OwnerFamilySection,page);
+    return result?c.json(result):c.json({detail:"Family not found"},404);
+  });
+  admin.get("/unified-directory/account/:id/learners/:learner",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const family=c.req.param("id")||"",learner=c.req.param("learner")||"",page=Number(c.req.query("page")||1);
+    if(!family||!learner||family.length>100||learner.length>100||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid learner or page"},400);
+    const r=await ownerLearner(c.env.DB,family,learner,page);return r?c.json({...r,reports:await ownerLearnerReports(c.env.DB,family,learner)}):c.json({detail:"Learner not found"},404);
+  });
+  admin.put("/unified-directory/account/:id/learners/:learner",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const family=c.req.param("id")||"",learner=c.req.param("learner")||"";
+    if(!family||!learner||family.length>100||learner.length>100)return c.json({detail:"Invalid learner"},400);
+    const r=await saveOwnerLearnerNotes(c.env.DB,family,learner,await readJson(c),actor(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
   admin.get("/customers", requirePermission("customers.read"), async (c) => {
     const q = (c.req.query("q") ?? "").trim();
     if (q.length > 254) return c.json({ detail: "Search is too long" }, 400);
@@ -403,13 +545,15 @@ export function createAdminRoutes() {
     const status = c.req.query("status") || "";
     const category = c.req.query("category") || "";
     const supportOnly = c.req.query("kind") === "learning-support";
+    const exactRequest=c.req.query("request")||"",exactFamily=c.req.query("family")||"";
+    if((!!exactRequest!==!!exactFamily)||exactRequest.length>100||exactFamily.length>100||exactRequest&&!supportOnly)return c.json({detail:"Invalid support enquiry reference"},400);
     if (status && !(FEEDBACK_STATUSES as readonly string[]).includes(status)) return c.json({ detail: "Invalid status" }, 400);
     if (category && !(FEEDBACK_CATEGORIES as readonly string[]).includes(category)) return c.json({ detail: "Invalid category" }, 400);
     const page = Number(c.req.query("page") || "1");
     if (!Number.isInteger(page) || page < 1 || page > 10000) return c.json({ detail: "Invalid page" }, 400);
     const { results } = await c.env.DB.prepare(
-      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) AND (? = 0 OR p.page_hint = 'learning-support') ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
-    ).bind(status,status,category,category,supportOnly ? 1 : 0,(page - 1)*50).all();
+      "SELECT p.id,p.family_id,p.user_id,p.category,p.subject,p.message,p.page_hint,p.status,p.owner_note,p.seen_at,p.created_at,p.updated_at, u.email AS parent_email,u.name AS parent_name, f.jurisdiction AS family_jurisdiction FROM parent_feedback p JOIN users u ON u.id=p.user_id AND u.family_id=p.family_id JOIN families f ON f.id=p.family_id WHERE (? = '' OR p.status = ?) AND (? = '' OR p.category = ?) AND (? = 0 OR p.page_hint = 'learning-support') AND (? = '' OR (p.id = ? AND p.family_id = ?)) ORDER BY CASE WHEN p.seen_at IS NULL THEN 0 ELSE 1 END, p.created_at DESC LIMIT 51 OFFSET ?",
+    ).bind(status,status,category,category,supportOnly ? 1 : 0,exactRequest,exactRequest,exactFamily,(page - 1)*50).all();
     const rows=results || [];
     return c.json({ items: rows.slice(0,50), has_more: rows.length > 50, page });
   });
@@ -456,15 +600,21 @@ export function createAdminRoutes() {
     const qid=crypto.randomUUID(),now=new Date(),when=now.toISOString(),expires=new Date(now.getTime()+v.days*86400000).toISOString();
     // Expired offers remain immutable in history. Explicitly withdraw them before making another proposal.
     const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
+    const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
+    const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
+    const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
+    if((paymentMode!=="installments"&&paymentMode!=="upfront")||typeof lead!=="number"||!Number.isInteger(lead)||lead<1||lead>168)return c.json({detail:"Choose a valid payment arrangement and deadline."},400);
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require standard live sessions and a learner nickname."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO learning_support_quotes (id,feedback_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,p.id,?,?,?,'AUD','offered',?,? FROM parent_feedback p WHERE p.id=? AND p.page_hint='learning-support' AND p.status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,when,expires,id);
-    const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when);
+    const r=await issueQuoteWithPlan(c.env.DB,"member",id,qid,stmt,snap.plan,when,schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"An open proposal already exists or this enquiry was closed. Withdraw the old proposal first."},409);
     // Durable proposal is authoritative. A notification failure does not undo it.
     try{
       await c.env.DB.prepare("INSERT INTO parent_feedback_replies (id,feedback_id,author_user_id,body,parent_read_at,created_at) VALUES (?,?,?,?,NULL,?)").bind(crypto.randomUUID(),id,c.get("user").id,"A learning support proposal is ready. Open Learning Support in your Parent Hub to review the scope, total price and delivery details.",when).run();
       await writeAudit(c.env.DB,{...actor(c),action:"learning_support.quote",targetType:"feedback",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
     }catch{console.warn("learning support quote notification or audit unavailable");}
-    return c.json({ok:true,id:qid},201);
+    const appointment_offer=auto?(schedule.schedule!.length>1?await offerPackageTimes(c.env.DB,"member",id,qid,schedule.schedule!,autoLabel,paymentMode,lead,now):await offerStandardQuoteTimes(c.env.DB,"member",id,qid,schedule.schedule![0],autoLabel,now)):null;
+    return c.json({ok:true,id:qid,appointment_offer},201);
   });
   admin.post("/feedback/:id/quotes/:quoteId/withdraw",requirePermission("customers.read"),async c=>{
     await ensureFeedbackSchema(c.env.DB);
@@ -606,6 +756,74 @@ export function createAdminRoutes() {
 
 
   // Standalone guests are separate from homeschool customers and remain behind Owner HQ step-up.
+  // Family identities are derived only from the verified guest email, never a child's name.
+  admin.get("/support-families",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    await db.prepare("INSERT OR IGNORE INTO support_guest_families(id,email,created_at) SELECT lower(hex(randomblob(16))),email,MIN(created_at) FROM support_guest_requests GROUP BY email").run();
+    const page=Number(c.req.query("page")||1),search=(c.req.query("search")||"").trim().toLowerCase();
+    if(!Number.isInteger(page)||page<1||page>10000||search.length>254)return c.json({detail:"Invalid search or page"},400);
+    const rows=(await db.prepare(`SELECT f.id,f.email,f.created_at,MAX(r.updated_at) AS updated_at,
+      (SELECT parent_name FROM support_guest_requests WHERE email=f.email ORDER BY updated_at DESC,id DESC LIMIT 1) AS parent_name,
+      COUNT(*) AS enquiry_count,SUM(CASE WHEN r.seen_at IS NULL AND r.status NOT IN ('closed','resolved') THEN 1 ELSE 0 END) AS unread_count,
+      SUM(CASE WHEN r.status NOT IN ('closed','resolved') THEN 1 ELSE 0 END) AS active_count
+      FROM support_guest_families f JOIN support_guest_requests r ON r.email=f.email
+      WHERE (?='' OR instr(lower(f.email),?)>0 OR EXISTS(SELECT 1 FROM support_guest_requests x WHERE x.email=f.email AND instr(lower(x.parent_name),?)>0))
+      GROUP BY f.id,f.email,f.created_at ORDER BY unread_count DESC,updated_at DESC,f.id LIMIT 51 OFFSET ?`).bind(search,search,search,(page-1)*50).all<any>()).results||[];
+    return c.json({items:rows.slice(0,50),has_more:rows.length>50});
+  });
+  admin.get("/support-families/:id",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const id=c.req.param("id")??"",page=Number(c.req.query("page")||1);
+    if(!/^[a-f0-9]{32}$/.test(id)||!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid family or page"},400);
+    const family=await db.prepare("SELECT id,email,created_at FROM support_guest_families WHERE id=?").bind(id).first<{id:string,email:string,created_at:string}>();
+    if(!family)return c.json({detail:"Family not found"},404);
+    const contact=await db.prepare("SELECT parent_name FROM support_guest_requests WHERE email=? ORDER BY updated_at DESC,id DESC LIMIT 1").bind(family.email).first<{parent_name:string}>();
+    if(!contact)return c.json({detail:"Family not found"},404);
+    const rows=(await db.prepare("SELECT r.id,r.subject,r.status,r.seen_at,r.created_at,r.updated_at,l.learner_id FROM support_guest_requests r LEFT JOIN support_guest_learner_enquiries l ON l.request_id=r.id WHERE r.email=? ORDER BY CASE WHEN r.seen_at IS NULL THEN 0 ELSE 1 END,r.updated_at DESC,r.id LIMIT 51 OFFSET ?").bind(family.email,(page-1)*50).all<any>()).results||[];
+    const learners=(await db.prepare("SELECT id,label,year_level,goals,interests,approach,private_notes,created_at,updated_at FROM support_guest_learners WHERE family_id=? ORDER BY created_at,id LIMIT 50").bind(id).all<any>()).results||[];
+    return c.json({family:{...family,parent_name:contact.parent_name},learners,items:rows.slice(0,50),has_more:rows.length>50});
+  });
+  // Learner details are owner-only; never expose these notes through guest portal responses.
+  const learnerFields=(b:any)=>{
+    const limits={label:80,year_level:40,goals:1000,interests:1000,approach:1000,private_notes:2000};
+    const out:Record<string,string>={};
+    for(const [key,max] of Object.entries(limits)){
+      const v=b?.[key]??"";if(typeof v!=="string"||v.trim().length>max)return null;out[key]=v.trim();
+    }
+    if(!out.label)return null;return out;
+  };
+  admin.post("/support-families/:id/learners",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const family=c.req.param("id")??"",fields=learnerFields(await readJson(c)),id=crypto.randomUUID(),now=nowIso();
+    if(!fields)return c.json({detail:"Enter a learner nickname and valid profile fields."},400);
+    const result=await db.prepare("INSERT INTO support_guest_learners(id,family_id,label,year_level,goals,interests,approach,private_notes,created_at,updated_at) SELECT ?,id,?,?,?,?,?,?,?,? FROM support_guest_families WHERE id=? AND (SELECT COUNT(*) FROM support_guest_learners WHERE family_id=?)<50").bind(id,fields.label,fields.year_level,fields.goals,fields.interests,fields.approach,fields.private_notes,now,now,family,family).run();
+    if(!result.meta?.changes)return c.json({detail:"Family not found or learner limit reached."},409);
+    await writeAudit(db,{...actor(c),action:"guest_family.learner_created",targetType:"support_guest_learner",targetId:id,detail:{}});
+    return c.json({id},201);
+  });
+  admin.put("/support-families/:id/learners/:learner",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const family=c.req.param("id")??"",id=c.req.param("learner")??"",fields=learnerFields(await readJson(c));
+    if(!fields)return c.json({detail:"Enter a learner nickname and valid profile fields."},400);
+    const result=await db.prepare("UPDATE support_guest_learners SET label=?,year_level=?,goals=?,interests=?,approach=?,private_notes=?,updated_at=? WHERE id=? AND family_id=?").bind(fields.label,fields.year_level,fields.goals,fields.interests,fields.approach,fields.private_notes,nowIso(),id,family).run();
+    if(!result.meta?.changes)return c.json({detail:"Learner not found."},404);
+    await writeAudit(db,{...actor(c),action:"guest_family.learner_updated",targetType:"support_guest_learner",targetId:id,detail:{}});
+    return c.json({ok:true});
+  });
+  admin.put("/support-families/:id/enquiries/:request/learner",requirePermission("customers.read"),async c=>{
+    const db=c.env.DB;await ensureGuestSchema(db);
+    const family=c.req.param("id")??"",request=c.req.param("request")??"",b=await readJson(c),learner=b?.learner_id;
+    if(learner!==null&&typeof learner!=="string")return c.json({detail:"Choose a learner or unassign the enquiry."},400);
+    if(!await db.prepare("SELECT r.id FROM support_guest_requests r JOIN support_guest_families f ON f.email=r.email WHERE r.id=? AND f.id=?").bind(request,family).first())return c.json({detail:"Enquiry not found."},404);
+    if(learner===null){
+      await db.prepare("DELETE FROM support_guest_learner_enquiries WHERE request_id=?").bind(request).run();
+    }else{
+      const result=await db.prepare("INSERT INTO support_guest_learner_enquiries(request_id,learner_id) SELECT r.id,l.id FROM support_guest_requests r JOIN support_guest_families f ON f.email=r.email JOIN support_guest_learners l ON l.family_id=f.id WHERE r.id=? AND f.id=? AND l.id=? ON CONFLICT(request_id) DO UPDATE SET learner_id=excluded.learner_id").bind(request,family,learner).run();
+      if(!result.meta?.changes)return c.json({detail:"Learner not found in this family."},404);
+    }
+    await writeAudit(db,{...actor(c),action:"guest_family.enquiry_learner",targetType:"support_guest",targetId:request,detail:{learner_id:learner}});
+    return c.json({ok:true});
+  });
   admin.get("/support-guests",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);
     const page=Number(c.req.query("page")||1);if(!Number.isInteger(page)||page<1||page>10000)return c.json({detail:"Invalid page"},400);
@@ -631,7 +849,7 @@ export function createAdminRoutes() {
     const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
     const r=await c.env.DB.prepare("INSERT INTO support_guest_messages(id,request_id,sender,body,created_at) SELECT ?,id,'owner',?,? FROM support_guest_requests WHERE id=? AND (SELECT COUNT(*) FROM support_guest_messages WHERE request_id=?)<100").bind(crypto.randomUUID(),message,when,id,id).run();if(!r.meta?.changes)return c.json({detail:"Thread full"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.reply",targetType:"support_guest",targetId:id,detail:{}});
-    return c.json({ok:true,email_notification_sent:await guestNotify(c.env,row.email)},201);
+    return c.json({ok:true,email_notification_sent:await guestNotify(c.env,row.email,false,id,"message")},201);
   });
   admin.get("/support-guests/:id/quotes",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??"");
@@ -644,11 +862,17 @@ export function createAdminRoutes() {
     const row=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(!row)return c.json({detail:"Request not found"},404);
     const qid=crypto.randomUUID(),now=new Date();
     const snap=planSnapshot(b);if("error" in snap)return c.json({detail:snap.error},400);
+    const schedule=scheduleSnapshot(b);if("error" in schedule)return c.json({detail:schedule.error},400);
+    const auto=b.auto_offer_times===true,autoLabel=typeof b.learner_label==="string"?b.learner_label.trim():"";
+    const paymentMode=b.payment_mode??"installments",lead=b.deadline_hours??24;
+    if((paymentMode!=="installments"&&paymentMode!=="upfront")||typeof lead!=="number"||!Number.isInteger(lead)||lead<1||lead>168)return c.json({detail:"Choose a valid payment arrangement and deadline."},400);
+    if(auto&&(!schedule.schedule||!autoLabel||autoLabel.length>80))return c.json({detail:"Automatic appointment choices require standard live sessions and a learner nickname."},400);
     const stmt=c.env.DB.prepare("INSERT OR IGNORE INTO support_guest_quotes(id,request_id,scope,delivery,amount_cents,currency,status,created_at,expires_at) SELECT ?,id,?,?,?,'AUD','offered',?,? FROM support_guest_requests WHERE id=? AND status NOT IN ('closed','resolved')").bind(qid,v.scope,v.delivery,v.cents,now.toISOString(),new Date(now.getTime()+v.days*86400000).toISOString(),id);
-    const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString());
+    const r=await issueQuoteWithPlan(c.env.DB,"guest",id,qid,stmt,snap.plan,now.toISOString(),schedule.schedule);
     if(!r.meta?.changes)return c.json({detail:"Withdraw any open proposal or reopen this request first."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"guest_support.quote",targetType:"support_guest",targetId:id,detail:{quote_id:qid,amount_cents:v.cents}});
-    return c.json({id:qid,email_notification_sent:await guestNotify(c.env,row.email)},201);
+    const appointment_offer=auto?(schedule.schedule!.length>1?await offerPackageTimes(c.env.DB,"guest",id,qid,schedule.schedule!,autoLabel,paymentMode,lead,now):await offerStandardQuoteTimes(c.env.DB,"guest",id,qid,schedule.schedule![0],autoLabel,now)):null;
+    return c.json({id:qid,appointment_offer,email_notification_sent:await guestNotify(c.env,row.email,false,id,"proposal")},201);
   });
   admin.post("/support-guests/:id/quotes/:qid/withdraw",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);const id=(c.req.param("id")??""),b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm withdrawal."},400);
@@ -671,6 +895,49 @@ export function createAdminRoutes() {
   admin.post("/support-files/:fid/archive",requirePermission("customers.read"),async c=>{
     const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/support-lesson-library",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return c.json({items:await listReusableLessonPacks(c.env.DB),draft:await readPrivateLessonDraft(c.env.DB,c.get("user").id),ai_enabled:lessonPackAiEnabled(c.env)});
+  });
+  admin.post("/support-lesson-library/draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const b=await readJson(c),owner=c.get("user");
+    if(await readPrivateLessonDraft(c.env.DB,owner.id))return c.json({detail:"Resume or discard your existing private draft first."},409);
+    if(typeof b.minutes!=="number"||!Number.isInteger(b.minutes)||b.minutes<15||b.minutes>180)return c.json({detail:"Choose a lesson duration between 15 and 180 minutes."},400);
+    const r=await generateReusableLessonPack(c.env,owner,b,b.minutes);
+    if("error" in r)return c.json({detail:r.error},409);
+    const checkpoint=await checkpointPrivateLessonDraft(c.env.DB,owner.id,{pack:r.pack,minutes:b.minutes,revision:0});
+    if("error" in checkpoint)return c.json({detail:checkpoint.error},409);
+    return c.json({...r,draft:checkpoint.draft});
+  });
+  admin.post("/support-lesson-library/checkpoint",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const r=await checkpointPrivateLessonDraft(c.env.DB,c.get("user").id,await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/support-lesson-library/discard-draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return await discardPrivateLessonDraft(c.env.DB,c.get("user").id,await readJson(c))?c.json({ok:true}):c.json({detail:"Draft changed; reopen the studio."},409);
+  });
+  admin.post("/support-lesson-library",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const b=await readJson(c),r=await saveReusableLessonPack(c.env.DB,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_library.create",targetType:"support",targetId:r.saved.id,detail:{}});
+    const cleared=b.draft_revision?await discardPrivateLessonDraft(c.env.DB,c.get("user").id,{draft_id:b.draft_id,revision:b.draft_revision,confirmed:true}):false;
+    return c.json({...r,draft_cleared:cleared},201);
+  });
+  admin.get("/support-lesson-library/:lessonId",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const saved=await getReusableLessonPack(c.env.DB,c.req.param("lessonId")??"");
+    return saved?c.json({saved}):c.json({detail:"Not found"},404);
   });
   admin.get("/support-decks",requirePermission("customers.read"),async c=>c.json({decks:await findDecks(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:c.env.SUPPORT_RESOURCE_AI==="true"&&!!c.env.AI}));
   admin.post("/support-decks/draft",requirePermission("customers.read"),async c=>{
@@ -697,11 +964,12 @@ export function createAdminRoutes() {
   });
   admin.post("/support-calendar/blocks/:bid/remove",requirePermission("customers.read"),async c=>{
     const b=await readJson(c),id=c.req.param("bid")??"";if(b.confirmed!==true)return c.json({detail:"Confirm removal."},400);
+    if(id.startsWith("english-club-"))return c.json({detail:"This block belongs to English Club. Manage the class in its dedicated workspace."},409);
     await ensureOrderSchema(c.env.DB);const r=await c.env.DB.prepare("DELETE FROM support_busy_blocks WHERE id=?").bind(id).run();
     if(!r.meta?.changes)return c.json({detail:"Block not found"},404);
     await writeAudit(c.env.DB,{...actor(c),action:"support.calendar.unblock",targetType:"support_block",targetId:id,detail:{}});return c.json({ok:true});
   });
-  admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env),housekeeping_checks:await housekeepingChecks(c.env.DB)}));
+  admin.get("/support-briefing",requirePermission("customers.read"),async c=>c.json({...await briefingSettings(c.env.DB),configured:briefingConfigured(c.env),housekeeping_checks:await housekeepingChecks(c.env.DB),temporary_cleanup:await temporaryHousekeepingStatus(c.env)}));
   admin.post("/support-briefing/housekeeping-check",requirePermission("customers.read"),async c=>{
     const b=await readJson(c);if(!await recordHousekeepingCheck(c.env.DB,b))return c.json({detail:"Confirm a completed independent check."},400);
     await writeAudit(c.env.DB,{...actor(c),action:"support.housekeeping.check",targetType:"support_briefing",targetId:String(b.kind),detail:{}});return c.json({ok:true});
@@ -713,19 +981,405 @@ export function createAdminRoutes() {
     const b=await readJson(c);if(!await saveBriefingSettings(c.env,b))return c.json({detail:"Choose a Sydney-time delivery hour and confirm. Email must be configured in production before enabling."},400);
     await writeAudit(c.env.DB,{...actor(c),action:"support.briefing.settings",targetType:"support_briefing",targetId:"daily",detail:{enabled:b.enabled,hour:b.hour}});return c.json({ok:true});
   });
+  admin.get("/support-report-queue",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");return c.json(await lessonReportQueue(c.env.DB));
+  });
+  admin.get("/support-calendar/suggestions",requirePermission("customers.read"),async c=>{
+    const minutes=Number(c.req.query("minutes")),prep=Number(c.req.query("prep")??10),wrap=Number(c.req.query("wrap")??10);
+    const starts=await suggestSupportStarts(c.env.DB,minutes,prep,wrap);
+    if(!starts)return c.json({detail:"Invalid session length or preparation buffers."},400);
+    c.header("Cache-Control","private, no-store");return c.json({starts,timezone:"Australia/Sydney"});
+  });
+  admin.get("/english-club/classes/:cid/preparation-context",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const r=await clubPreparationContext(c.env.DB,c.req.param("cid")||"");
+    return r?c.json(r):c.json({detail:"Workshop unavailable"},404);
+  });
+  admin.get("/english-club",requirePermission("customers.read"),async c=>{
+    await ensureGuestSchema(c.env.DB);c.header("Cache-Control","private, no-store");return c.json(await listEnglishClub(c.env.DB));
+  });
+  admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
+    const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
+  });
+  admin.get("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");const r=await readEnglishMaterials(c.env,c.req.param("cid")??"");return r?c.json(r):c.json({detail:"Club session unavailable"},404);
+  });
+  admin.post("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(!await saveEnglishMaterials(c.env,id,b))return c.json({detail:"Check the prompts, approved meeting URL, session time and fallback safeguards."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.materials.save",targetType:"english_club",targetId:id,detail:{fallback_open:b.fallback_open}});return c.json({ok:true});
+  });
+  admin.post("/english-club/classes/:cid/materials/:fid",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",fid=c.req.param("fid")??"",b=await readJson(c);
+    if(b.confirmed!==true||typeof b.grant!=="boolean"||!await changeEnglishFile(c.env.DB,id,fid,b.grant))return c.json({detail:"Choose an active reviewed learner resource that has not already been shared."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.resource.change",targetType:"english_club",targetId:id,detail:{file_id:fid,grant:b.grant}});return c.json({ok:true});
+  });
+  admin.get("/activity-library",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    return c.json({activities:await listActivityTemplates(c.env.DB,c.req.query("q")||"",c.req.query("reviewed")==="1"),ai_enabled:activityAiEnabled(c.env)});
+  });
+  admin.post("/activity-library/draft",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const r=await draftActivities(c.env,c.get("user"),await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.get("/activity-library/:id",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const activity=await getActivityTemplate(c.env.DB,c.req.param("id")??"");
+    return activity?c.json({activity}):c.json({detail:"Activity not found"},404);
+  });
+  admin.post("/activity-library",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const r=await saveActivityTemplate(c.env.DB,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.create",targetType:"support_activity_template",targetId:r.id,detail:{}});
+    return c.json(r,201);
+  });
+  admin.put("/activity-library/:id",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("id")??"",r=await saveActivityTemplate(c.env.DB,await readJson(c),id);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.update",targetType:"support_activity_template",targetId:id,detail:{}});
+    return c.json(r);
+  });
+  admin.post("/activity-library/:id/archive",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("id")??"",b=await readJson(c);
+    if(b.confirmed!==true||!await archiveActivityTemplate(c.env.DB,id,b.revision))return c.json({detail:"Reload and confirm archival."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_template.archive",targetType:"support_activity_template",targetId:id,detail:{}});
+    return c.json({ok:true});
+  });
+  admin.get("/activity-plans/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const plan=await readActivityPlan(c.env.DB,kind,c.req.param("session")??"");
+    return plan?c.json(plan):c.json({detail:"Scheduled session not found."},404);
+  });
+  admin.put("/activity-plans/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const id=c.req.param("session")??"";
+    if(!await saveActivityPlan(c.env.DB,kind,id,await readJson(c)))return c.json({detail:"The plan or reviewed activities changed, or the session is unavailable. Reload and check the plan."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_plan.save",targetType:"support_session",targetId:id,detail:{kind}});
+    return c.json(await readActivityPlan(c.env.DB,kind,id));
+  });
+  admin.get("/activity-evidence/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const r=await readActivityEvidence(c.env.DB,kind,c.req.param("session")??"",c.req.param("seat")??"");
+    return r?c.json(r):c.json({detail:"Session or learner unavailable."},404);
+  });
+  admin.post("/activity-evidence/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const session=c.req.param("session")??"",seat=c.req.param("seat")??"",b=await readJson(c);
+    const ok=b.action==="save"?await saveActivityEvidence(c.env.DB,kind,session,seat,b):b.action==="remove"?await removeActivityEvidence(c.env.DB,kind,session,seat,b):false;
+    if(!ok)return c.json({detail:"Evidence changed or is unavailable. Reload and check before saving."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity_evidence."+b.action,targetType:"support_session",targetId:session,detail:{kind}});
+    return c.json(await readActivityEvidence(c.env.DB,kind,session,seat));
+  });
+  admin.get("/activity-reports/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const r=await readProgressReport(c.env.DB,kind,c.req.param("session")??"",c.req.param("seat")??"");
+    return r?c.json(r):c.json({detail:"A finished session linked to a family learner is required."},404);
+  });
+  admin.post("/activity-reports/:kind/:session/:seat",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const session=c.req.param("session")??"",seat=c.req.param("seat")??"",b=await readJson(c);
+    if(!await changeProgressReport(c.env.DB,kind,session,seat,b))return c.json({detail:"Report or booking changed. Reload before continuing."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.family_report."+b.action,targetType:"support_session",targetId:session,detail:{kind}});
+    return c.json(await readProgressReport(c.env.DB,kind,session,seat));
+  });
+  // Inherits Owner HQ authentication, permission, passkey step-up, origin and rate limits.
+  admin.get("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const result=await readLiveActivity(c.env.DB,{kind,sessionId:c.req.param("session")??"",owner:true});
+    return result?c.json(result):c.json({detail:"Classroom is unavailable."},404);
+  });
+  admin.post("/live-activities/:kind/:session",requirePermission("customers.read"),async c=>{
+    if(!liveActivitiesEnabled(c.env))return c.json({detail:"Not found"},404);
+    const kind=c.req.param("kind");if(kind!=="club"&&kind!=="tutoring")return c.json({detail:"Not found"},404);
+    const sessionId=c.req.param("session")??"", access={kind:kind as "club"|"tutoring",sessionId,owner:true as const},b=await readJson(c);
+    const ok=b.action==="launch"?await launchLiveActivity(c.env.DB,access,b):b.action==="end"?await endLiveActivity(c.env.DB,access,b):b.action==="share"||b.action==="retract"?await moderateCollaboration(c.env.DB,access,b):false;
+    if(!ok)return c.json({detail:"The activity or classroom changed. Refresh and check your activity."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.activity."+b.action,targetType:"support_session",targetId:sessionId,detail:{kind}});
+    return c.json({ok:true});
+  });
+  admin.get("/english-club/classes/:cid/video",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");return c.json(await englishVideoState(c.env,c.req.param("cid")??""));
+  });
+  admin.post("/english-club/classes/:cid/video-prepare",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm group supervision before opening."},400);
+    const r=await prepareEnglishVideo(c.env,c.req.param("cid")??"");return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/classes/:cid/video-token",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");const r=await englishVideoToken(c.env,c.req.param("cid")??"");return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/classes/:cid/video-close",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);if(b.confirmed!==true)return c.json({detail:"Confirm ending the group room."},400);
+    return await closeEnglishVideo(c.env,c.req.param("cid")??"")?c.json({ok:true}):c.json({detail:"Closure not verified. Check the provider dashboard; token access is blocked for closing rooms."},409);
+  });
+  admin.post("/english-club/classes/:cid/remove",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(b.confirmed!==true||!await removeEmptyEnglishClass(c.env.DB,id))return c.json({detail:"Only a future class with no enrolment history can be removed."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.remove",targetType:"english_club",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/english-club/certificate-template",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await signedTemplateStatus(c.env);return r?c.json(r):c.json({detail:"Not found"},404);
+  });
+  admin.post("/english-club/certificate-template",requirePermission("customers.read"),async c=>{
+    const r=await saveSignedTemplate(c.env,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.template",targetType:"club_certificate_template",targetId:r.id,detail:{}});
+    return c.json(r);
+  });
+  admin.get("/english-club/certificates/:id/pdf",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await ownerClubCertificatePdf(c.env,c.req.param("id")??"");
+    return !r?c.json({detail:"Certificate unavailable"},404):"error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/certificates/batch",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);
+    const r=await approveClubCertificateBatch(c.env,c.get("user").id,b);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.batch_approve",targetType:"english_club_round",targetId:String(b.round_id),detail:{approved:r.approved,review:r.review}});
+    return c.json(r);
+  });
+  admin.get("/english-club/certificate-postal",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await listPostalCertificates(c.env,c.get("user").id);
+    return r?c.json(r):c.json({detail:"Not found"},404);
+  });
+  admin.get("/english-club/certificate-postal/:id",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await ownerPostalCertificate(c.env,c.get("user").id,c.req.param("id")??"");
+    return r?c.json(r):c.json({detail:"Postal certificate unavailable"},404);
+  });
+  admin.post("/english-club/certificate-postal/:id",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"",b=await readJson(c);
+    if(!await advancePostalCertificate(c.env,c.get("user").id,id,b))return c.json({detail:"Certificate or confirmed address changed. Refresh before continuing."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.postal_"+String(b.action),targetType:"club_certificate",targetId:id,detail:{}});
+    return c.json({saved:true});
+  });
+  admin.get("/english-club/certificates/:kind/:id/preview",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await previewClubCertificate(c.env,c.get("user").id,c.req.param("kind")??"",c.req.param("id")??"");
+    return r?c.json(r):c.json({detail:"The learner, attendance or signed artwork requires review."},409);
+  });
+  admin.post("/english-club/certificates/:id/reissue",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"";
+    const r=await reissueClubCertificateEmail(c.env,c.get("user").id,id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.reissue",targetType:"club_certificate",targetId:id,detail:{status:r.status}});
+    return c.json(r);
+  });
+  admin.get("/english-club/certificates",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await listClubCertificateCandidates(c.env);
+    return r?c.json(r):c.json({detail:"Not found"},404);
+  });
+  admin.post("/english-club/certificates/:kind/:id/approve",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"",kind=c.req.param("kind")??"";
+    const r=await approveClubCertificate(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.approve",targetType:"english_club_booking",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/certificates/:kind/:id/withdraw",requirePermission("customers.read"),async c=>{
+    const id=c.req.param("id")??"",kind=c.req.param("kind")??"";
+    if(!await withdrawClubCertificate(c.env,kind,id,await readJson(c)))return c.json({detail:"Certificate unavailable or already withdrawn."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.certificate.withdraw",targetType:"english_club_booking",targetId:id,detail:{kind}});
+    return c.json({withdrawn:true});
+  });
+  admin.get("/english-club/payments",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    return c.json(await listClubObligations(c.env.DB));
+  });
+  admin.get("/english-club/payments/:kind/:id/workspace",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    const r=await clubInvoiceWorkspace(c.env,c.req.param("kind")??"",c.req.param("id")??"");
+    return r?c.json(r):c.json({detail:"No eligible sandbox preparation."},404);
+  });
+  admin.post("/english-club/payments/:kind/:id/create-order",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await createClubSquareOrder(c.env,kind,id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.order",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/create-draft",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await createClubSquareDraft(c.env,kind,id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.draft",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/release-overdue",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await releaseOverdueClubPlace(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.release_overdue",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/verify-payment",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await verifyClubSquarePayment(c.env,kind,id);
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.verify",targetType:"english_club_payment",targetId:id,detail:{kind,status:r.status}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/publish",requirePermission("customers.read"),async c=>{
+    const kind=c.req.param("kind")??"",id=c.req.param("id")??"";
+    const r=await publishClubSquareInvoice(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.publish",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/preview",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const r=await previewClubInvoice(c.env,c.req.param("kind")??"",c.req.param("id")??"",await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/english-club/payments/:kind/:id/prepare",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("id")??"",kind=c.req.param("kind")??"";
+    const r=await prepareClubInvoice(c.env,kind,id,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.invoice.prepare",targetType:"english_club_payment",targetId:id,detail:{kind}});
+    return c.json(r);
+  });
+  admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    return c.json({...STORY_QUEST,sessions:STORY_QUEST.sessions.map((s,i)=>({...s,private_preparation:storyQuestPreparation(i)}))});
+  });
+  admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    return c.json({rounds:await listEnglishRounds(c.env.DB)});
+  });
+  admin.post("/english-club/rounds",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const r=await createEnglishRound(c.env.DB,c.get("user").id,await readJson(c));
+    if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
+    return c.json(r,201);
+  });
+  admin.post("/english-club/rounds/:rid/publication",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("rid")??"",b=await readJson(c);
+    if(!await setEnglishRoundPublished(c.env.DB,id,b))return c.json({detail:"Unable to change round publication."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_publication",targetType:"english_club",targetId:id,detail:{published:b.published}});
+    return c.json({ok:true});
+  });
+  admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
+    const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.create",targetType:"english_club",targetId:r.id,detail:{class_id:cid}});return c.json(r,201);
+  });
+  admin.post("/english-club/classes/:cid/enrolments/:eid",requirePermission("customers.read"),async c=>{
+    const cid=c.req.param("cid")??"",eid=c.req.param("eid")??"",b=await readJson(c);
+    if(!await updateEnglishEnrolment(c.env.DB,cid,eid,b))return c.json({detail:"Check the current enrolment status and Square confirmation."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.update",targetType:"english_club",targetId:eid,detail:{class_id:cid,action:b.action}});return c.json({ok:true});
+  });
   admin.get("/support-calendar",requirePermission("customers.read"),async c=>{
     await ensureOrderSchema(c.env.DB);await ensureGuestSchema(c.env.DB);await ensureFeedbackSchema(c.env.DB);
     const from=c.req.query("from")||"",to=c.req.query("to")||"";
     if(!Number.isFinite(Date.parse(from))||!Number.isFinite(Date.parse(to))||Date.parse(to)<=Date.parse(from)||Date.parse(to)-Date.parse(from)>62*86400000)return c.json({detail:"Choose a date range of up to 62 days."},400);
-    const {results}=await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,i.due_at,i.reference,d.learner_label,d.prep_minutes,d.wrap_minutes,d.ready,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>();
-    const overdue=(await c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_installment_terms t ON t.order_id=o.id WHERE o.status='confirmed' AND COALESCE(t.due_at,i.due_at)<=? AND i.cancelled_at IS NULL ORDER BY COALESCE(t.due_at,i.due_at) LIMIT 100").bind(nowIso()).all<any>()).results||[];
-    const blocks=(await c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all()).results||[];
-    return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,classroom_enabled:classroomEnabled(c.env)});
+    const [appointmentRows,overdueRows,blockRows,cancellations,availability]=await Promise.all([
+      c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.end_at,o.status,o.amount_cents,CASE WHEN o.checkout_started_at IS NOT NULL THEN 1 ELSE 0 END legacy_checkout,EXISTS(SELECT 1 FROM support_cancellation_requests cr WHERE cr.order_id=o.id AND cr.status='pending') cancellation_pending,i.due_at,i.reference,d.learner_label,d.prep_minutes,d.wrap_minutes,d.ready,CASE WHEN o.channel='guest' THEN g.parent_name ELSE u.name END parent_name FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_tutor_diary d ON d.order_id=o.id LEFT JOIN support_guest_requests g ON o.channel='guest' AND g.id=o.request_id LEFT JOIN parent_feedback f ON o.channel='member' AND f.id=o.request_id LEFT JOIN users u ON u.id=f.user_id WHERE o.mode='live' AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?) AND o.status<>'cancelled' ORDER BY o.start_at LIMIT 501").bind(new Date(to).toISOString(),new Date(from).toISOString()).all<any>(),
+      c.env.DB.prepare("SELECT o.id,o.channel,o.request_id,o.scope,o.start_at,o.status,i.reference,COALESCE(t.due_at,i.due_at) due_at FROM support_service_orders o LEFT JOIN support_manual_invoices i ON i.order_id=o.id LEFT JOIN support_installment_terms t ON t.order_id=o.id WHERE o.status='confirmed' AND COALESCE(t.due_at,i.due_at)<=? AND i.cancelled_at IS NULL ORDER BY COALESCE(t.due_at,i.due_at) LIMIT 100").bind(nowIso()).all<any>(),
+      c.env.DB.prepare("SELECT id,label,start_at,end_at FROM support_busy_blocks WHERE start_at<? AND end_at>? ORDER BY start_at LIMIT 500").bind(new Date(to).toISOString(),new Date(from).toISOString()).all(),
+      pendingCancellations(c.env.DB),readAvailability(c.env.DB)
+    ]);
+    const results=appointmentRows.results||[],overdue=overdueRows.results||[],blocks=blockRows.results||[];
+    c.header("Cache-Control","private, no-store");
+    return c.json({blocks,appointments:(results||[]).slice(0,500),truncated:(results||[]).length>500,overdue,cancellation_requests:cancellations,classroom_enabled:classroomEnabled(c.env),availability});
+  });
+  admin.get("/support-public-availability",requirePermission("customers.read"),async c=>{
+    c.header("Cache-Control","private, no-store");
+    return c.json(await readAvailability(c.env.DB));
+  });
+  admin.put("/support-public-availability",requirePermission("customers.read"),async c=>{
+    const b=await readJson(c);
+    if(!await saveAvailability(c.env.DB,b))return c.json({detail:"Check the weekly hours, confirm the change and refresh if another edit was saved."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.public_availability.settings",targetType:"support",targetId:"availability",detail:{enabled:b.enabled}});
+    return c.json(await readAvailability(c.env.DB));
   });
   for(const channel of ["member","guest"] as const){
-    admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true)}));
+    admin.get((channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/plan",requirePermission("customers.read"),async c=>c.json({plan:await readQuotePlan(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""),true),session_minutes:await readQuoteSchedule(c.env.DB,channel,(c.req.param("id")??""),(c.req.param("qid")??""))}));
     const path=(channel==="guest"?"/support-guests/":"/feedback/")+":id/orders";
     const exists=async(c:AdminContext,id:string)=>channel==="guest"?!!await c.env.DB.prepare("SELECT id FROM support_guest_requests WHERE id=?").bind(id).first():!!await supportThread(c.env.DB,id);
+    const stationeryPath=(channel==="guest"?"/support-guests/":"/feedback/")+":id/stationery";
+    admin.get(stationeryPath,requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const recipient=await stationeryRecipient(c.env.DB,channel,id);
+      c.header("Cache-Control","private, no-store");
+      return c.json({documents:await listStationery(c.env.DB,channel,id),recipient:recipient?.email??null,email_enabled:stationeryEmailEnabled(c.env),terms_approved:termsDeliveryApproved(c.env,serviceTermsAttachment().version)});
+    });
+    admin.get(stationeryPath+"/:did/download",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const doc=await downloadStationery(c.env.DB,channel,id,c.req.param("did")??"");
+      c.header("Cache-Control","private, no-store");
+      return doc?c.json(doc):c.json({detail:"Document not found"},404);
+    });
+    admin.get(stationeryPath+"/:did/attachments",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",did=c.req.param("did")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      c.header("Cache-Control","private, no-store");
+      return c.json({attachments:await correspondenceAttachments(c.env.DB,channel,id,did),payment_link:await correspondencePaymentLink(c.env.DB,channel,id,did)});
+    });
+    admin.get(stationeryPath+"/:did/attachments/:aid",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const file=await downloadCorrespondenceAttachment(c.env,channel,id,c.req.param("did")??"",c.req.param("aid")??"");
+      return file?c.json(file):c.json({detail:"Attachment not found"},404);
+    });
+    admin.post(stationeryPath+"/:did/attachments/:action",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",did=c.req.param("did")??"",action=c.req.param("action")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      if(!(await hitRateLimit(c.env.DB,"support-attachments:"+c.get("user").id,30,3600)).ok)return c.json({detail:"Attachment action limit reached."},429);
+      const b=await readJson(c);
+      c.header("Cache-Control","private, no-store");
+      if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(action==="upload"){const r=await uploadCorrespondenceAttachment(c.env,channel,id,did,b);return "error" in r?c.json({detail:r.error},409):c.json(r);}
+      if(action==="remove"){if(typeof b.attachment_id!=="string")return c.json({detail:"Choose an attachment."},400);return await removeCorrespondenceAttachment(c.env,channel,id,did,b.attachment_id)?c.json({ok:true}):c.json({detail:"Attachment unavailable."},409);}
+      if(action==="payment-link"){return await saveCorrespondencePaymentLink(c.env.DB,channel,id,did,b)?c.json({ok:true}):c.json({detail:"Use a valid Square invoice or payment link on an unsent document."},409);}
+      return c.json({detail:"Unknown action"},404);
+    });
+    admin.post(stationeryPath+"/:action",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",action=c.req.param("action")??"",b=await readJson(c);
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      if(b.confirmed!==true)return c.json({detail:"Confirm this action."},400);
+      if(!(await hitRateLimit(c.env.DB,"support-stationery:"+c.get("user").id,40,3600)).ok)return c.json({detail:"Document action limit reached."},429);
+      c.header("Cache-Control","private, no-store");
+      if(action==="email"){
+        if(typeof b.document_id!=="string")return c.json({detail:"Choose a saved document."},400);
+        const r=await deliverSavedStationery(c.env,channel,id,b.document_id,b);
+        if("error" in r)return c.json({detail:r.error},409);
+        await writeAudit(c.env.DB,{...actor(c),action:r.email_notification_sent?"support.stationery_email_sent":"support.stationery_email_unconfirmed",targetType:"support",targetId:id,detail:{channel,document_id:b.document_id}});
+        return c.json(r);
+      }
+      if(action!=="preview"&&action!=="save")return c.json({detail:"Unknown action"},404);
+      const oid=typeof b.order_id==="string"&&b.order_id?b.order_id:null;
+      const doc=await prepareStationery(c.env,channel,id,oid,b);
+      if("error" in doc)return c.json({detail:doc.error},400);
+      if(action==="preview")return c.json({filename:doc.filename,mime:"application/pdf",base64:stationeryBase64(doc.pdf),pages:doc.pages,recipient:doc.recipient,fingerprint:await stationeryFingerprint(doc),terms:doc.terms?{filename:doc.terms.filename,mime:"application/pdf",base64:stationeryBase64(doc.terms.pdf),version:doc.terms.version,pages:doc.terms.pages}:null});
+      const saved=await saveStationery(c.env.DB,channel,id,oid,doc,b);
+      if(!saved)return c.json({detail:"Document changed, was not reviewed, or history limit reached. Prepare the PDF again or contact support."},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.stationery_saved",targetType:"support",targetId:id,detail:{channel,document_id:saved.id}});
+      return c.json({document:saved},201);
+    });
     const slotsPath=(channel==="guest"?"/support-guests/":"/feedback/")+":id/quotes/:qid/slots";
     admin.get(slotsPath,requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",qid=c.req.param("qid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
@@ -736,7 +1390,7 @@ export function createAdminRoutes() {
       const r=await offerSlots(c.env.DB,channel,id,qid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.slots.offer",targetType:"support",targetId:id,detail:{channel,quote_id:qid}});
       const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
-      let sent=false;try{if(recipient?.email){const origin=guestOrigin(c.env);if(origin){const url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");sent=await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: choose your appointment",text:"Appointment options are available in your private portal: "+url,html:layout({preheader:"Choose a suitable appointment time.",kicker:"Learning Support",heading:"Choose an appointment time",body:p("Review the available times in your private portal. No payment has been taken.")+button("View appointment options",url),reason:"This is a service notification."})});}}}catch{}
+      let sent=false;try{if(recipient?.email){if(channel==="guest"){sent=await guestNotify(c.env,recipient.email,false,id,"appointment");}else{const origin=guestOrigin(c.env);if(origin){const url=origin+"/parent/learning-support";sent=await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: choose your appointment",text:"Appointment options are available in your private portal: "+url,html:layout({preheader:"Choose a suitable appointment time.",kicker:"Learning Support",heading:"Choose an appointment time",body:p("Review the available times in your private portal. No payment has been taken.")+button("View appointment options",url),reason:"This is a service notification."})});}}}}catch{}
       return c.json({ok:true,email_notification_sent:sent,offer:await readSlots(c.env.DB,channel,id,qid)},201);
     });
     admin.post(slotsPath+"/withdraw",requirePermission("customers.read"),async c=>{
@@ -751,18 +1405,72 @@ export function createAdminRoutes() {
     admin.post(path+"/package",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const r=await createPackage(c.env.DB,channel,id,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
-      await writeAudit(c.env.DB,{...actor(c),action:"support.package.reserve",targetType:"support",targetId:id,detail:{order_id:r.id,session_count:r.count,channel}});return c.json(r,201);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.package.reserve",targetType:"support",targetId:id,detail:{order_id:r.id,session_count:r.count,channel}});
+      let sent=false;if(channel==="guest"){try{const recipient=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(recipient?.email)sent=await guestNotify(c.env,recipient.email,false,id,"arrangements");}catch{}}
+      return c.json({...r,...(channel==="guest"?{arrangements_email_sent:sent}:{})},201);
     });
     admin.post(path,requirePermission("customers.read"),async c=>{
       const id=(c.req.param("id")??"");if(!await exists(c,id))return c.json({detail:"Request not found"},404);
       const result=await createServiceOrder(c.env.DB,channel,id,await readJson(c));
       if("error" in result)return c.json({detail:result.error},409);
       await writeAudit(c.env.DB,{...actor(c),action:"support.order",targetType:"support",targetId:id,detail:{order_id:result.id,channel}});
-      return c.json(result,201);
+      let sent=false;if(channel==="guest"){try{const recipient=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(recipient?.email)sent=await guestNotify(c.env,recipient.email,false,id,"arrangements");}catch{}}
+      return c.json({...result,...(channel==="guest"?{arrangements_email_sent:sent}:{})},201);
+    });
+    admin.get(path+"/:oid/lesson-progress",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const progress=await lessonProgress(c.env.DB,channel,id,oid);
+      c.header("Cache-Control","private, no-store");
+      return progress?c.json(progress):c.json({detail:"Confirmed live lesson required."},404);
+    });
+    admin.post(path+"/:oid/lesson-progress",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id))return c.json({detail:"Request not found"},404);
+      const r=await saveLessonCheckpoint(c.env.DB,channel,id,oid,await readJson(c));
+      c.header("Cache-Control","private, no-store");
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.get(path+"/:oid/booking-notification",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
+      c.header("Cache-Control","private, no-store");return c.json({notification:await bookingNotificationStatus(c.env.DB,channel,id,oid)});
+    });
+    admin.get(path+"/:oid/lesson-pack",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const pack=await readLessonPack(c.env.DB,channel,id,oid);
+      return pack?c.json({...pack,ai_enabled:lessonPackAiEnabled(c.env)}):c.json({detail:"Order not found"},404);
+    });
+    admin.post(path+"/:oid/lesson-pack/draft",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const r=await generateLessonPack(c.env,c.get("user"),channel,id,oid,await readJson(c));
+      return "error" in r?c.json({detail:r.error},409):c.json(r);
+    });
+    admin.post(path+"/:oid/lesson-pack/approve",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const r=await approveLessonPack(c.env.DB,channel,id,oid,await readJson(c));
+      if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_pack.approve",targetType:"support",targetId:oid,detail:{channel}});return c.json(r,201);
+    });
+    admin.post(path+"/:oid/lesson-pack/use-library",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const r=await useReusableLessonPack(c.env.DB,channel,id,oid,await readJson(c));
+      if("error" in r)return c.json({detail:r.error},409);
+      await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_pack.library_copy",targetType:"support",targetId:oid,detail:{channel}});
+      return c.json(r,201);
     });
     admin.get(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id))return c.json({detail:"Request not found"},404);
-      const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json(d):c.json({detail:"Order not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const d=await readDiary(c.env.DB,channel,id,oid);return d?c.json({...d,learner_context:unifiedPortalPilot(c.env)?await appointmentLearnerContext(c.env.DB,channel,id,oid):null}):c.json({detail:"Order not found"},404);
     });
     admin.put(path+"/:oid/diary",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";if(!await exists(c,id)||!await saveDiary(c.env.DB,channel,id,oid,await readJson(c)))return c.json({detail:"Check the diary fields and reload if another edit was saved. Ready lessons need objectives, an agenda and materials."},409);
@@ -826,14 +1534,22 @@ export function createAdminRoutes() {
         const r=await recordManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id);
         if("error" in r)return c.json({detail:r.error},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_recorded",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
-        return c.json({ok:true},201);
+        const published=typeof b.invoice_payment_url==="string"&&!!b.invoice_payment_url.trim();
+        let sent=false;
+        if(published&&channel==="guest"){try{const recipient=await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>();if(recipient?.email)sent=await guestNotify(c.env,recipient.email,false,id,"payment");}catch{}}
+        return c.json({ok:true,...(published?{invoice_portal_published:true,invoice_email_sent:sent}:{})},201);
+      }
+      if(action==="payment-warning"){
+        const r=await sendFinalPaymentWarning(c.env,channel,id,oid,b);
+        if("error" in r)return c.json({detail:r.error},409);
+        await writeAudit(c.env.DB,{...actor(c),action:r.warning_email_sent?"support.payment_warning_sent":"support.payment_warning_unconfirmed",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json(r);
       }
       if(action==="verify-payment"){
         if(!await verifyManualInvoice(c.env.DB,channel,id,oid,b,c.get("user").id))return c.json({detail:"Payment could not be recorded. Check the invoice reference, full amount, order status and appointment time."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.payment_verified_manually",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
-        const recipient=channel==="guest"?await c.env.DB.prepare("SELECT email FROM support_guest_requests WHERE id=?").bind(id).first<{email:string}>():await c.env.DB.prepare("SELECT u.email FROM parent_feedback p JOIN users u ON u.id=p.user_id WHERE p.id=? AND p.page_hint='learning-support'").bind(id).first<{email:string}>();
-        const origin=guestOrigin(c.env),url=origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support");
-        const sent=!!(recipient?.email&&origin)&&await sendEmail(c.env,{to:recipient!.email,subject:"Side-Quest Learning Support: booking confirmed",text:"Your service is confirmed. Open your private portal for appointment or delivery details: "+url,html:layout({preheader:"Your Learning Support booking is confirmed.",kicker:"Learning Support",heading:"Your booking is confirmed",body:p("Payment has been checked and your arrangements are confirmed. Open your private portal to review the details. If classroom access is enabled, open your live appointment in the portal during the session window.")+button("View arrangements",url),reason:"This is a service notification."})});
+        const origin=guestOrigin(c.env),url=origin?origin+(channel==="guest"?"/learning-support/portal":"/parent/learning-support"):null;
+        let sent=false;try{sent=await sendBookingConfirmation(c.env,channel,id,oid,url);}catch{}
         return c.json({ok:true,email_notification_sent:sent});
       }
       const cancellationNotice=async()=>{
@@ -845,6 +1561,16 @@ export function createAdminRoutes() {
           return await sendEmail(c.env,{to:recipient.email,subject:"Side-Quest Learning Support: reservation cancelled",text:"An unpaid reservation has been cancelled and the time released. Please review your arrangements in your private portal. Any separately paid lessons are unaffected. Contact Side-Quest if you believe payment was already made. "+url,html:layout({preheader:"An unpaid reservation has been released.",kicker:"Learning Support",heading:"Reservation cancelled",body:p("An unpaid reservation has been released. Review your arrangements in your private portal. Separately paid lessons are unaffected. Contact Side-Quest if you believe you have already paid.")+button("View arrangements",url),reason:"This is a service notification."})});
         }catch{return false;}
       };
+      if(action==="dismiss-cancellation"){
+        if(b.parent_notified!==true||!await dismissCancellation(c.env.DB,channel,id,oid))return c.json({detail:"Discuss the outcome with the parent first. Request unavailable."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.cancellation_request_resolved",targetType:"support",targetId:id,detail:{order_id:oid,channel}});
+        return c.json({ok:true});
+      }
+      if(action==="cancel-paid"){
+        if(!await cancelPaidAppointment(c.env.DB,channel,id,oid,b))return c.json({detail:"Review the agreed cancellation and any refund in Square first. Appointment unavailable or package requires review."},409);
+        await writeAudit(c.env.DB,{...actor(c),action:"support.paid_appointment_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel,financial_resolution_checked:true,parent_notified:true}});
+        return c.json({ok:true});
+      }
       if(action==="cancel-invoice"){
         if(!await cancelManualInvoiceOrder(c.env.DB,channel,id,oid,b))return c.json({detail:"Only a confirmed unpaid order with a cancelled Square invoice can be released."},409);
         await writeAudit(c.env.DB,{...actor(c),action:"support.invoice_cancelled",targetType:"support",targetId:id,detail:{order_id:oid,channel}});return c.json({ok:true,cancellation_email_sent:await cancellationNotice()});

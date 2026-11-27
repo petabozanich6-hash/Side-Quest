@@ -1,5 +1,6 @@
 import type { Env } from "./types";
-import { SITE_URL, sendEmail } from "./email";
+import { sendEmail } from "./email";
+import {authEmailOrigin} from "./authEmailOrigin";
 import { parentVerificationEmail } from "./authEmails";
 import { newId, nowIso } from "./types";
 import { trialEndFrom } from "./entitlements";
@@ -14,7 +15,8 @@ const createToken = () => btoa(String.fromCharCode(...crypto.getRandomValues(new
 
 /** Mail links hold the single-use token in a URL fragment, not in access logs. */
 export async function sendParentVerification(env: Env, userId: string, email: string, name: string) {
-  if (!env.EMAIL) return false;
+  const origin=authEmailOrigin(env);
+  if (!env.EMAIL||!origin) return false;
   const token = createToken();
   const now = nowIso();
   await env.DB.batch([
@@ -23,7 +25,7 @@ export async function sendParentVerification(env: Env, userId: string, email: st
     env.DB.prepare("INSERT INTO email_verification_tokens (id,user_id,token_hash,expires_at,created_at) VALUES (?,?,?,?,?)")
       .bind(newId(), userId, await hash(token), new Date(Date.now() + HOURS_48).toISOString(), now),
   ]);
-  return sendEmail(env, parentVerificationEmail(email, name, `${SITE_URL}/verify-email#token=${token}`));
+  return sendEmail(env, parentVerificationEmail(email, name, `${origin}/verify-email#token=${token}`));
 }
 
 export async function redeemParentVerification(env: Env, token: string) {

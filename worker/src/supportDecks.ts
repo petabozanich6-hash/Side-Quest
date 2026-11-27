@@ -1,3 +1,4 @@
+import {validateSlideVisual} from "./supportSlideVisuals";
 import type {Env} from "./types";
 import {nowIso} from "./types";
 import {DEFAULT_MODEL,extractJson,subjectGuide} from "./aiDraft";
@@ -17,7 +18,8 @@ export function validateDeck(raw:any){
  for(const s of raw.slides){
   const heading=str(s?.heading,100),body=str(s?.body,1600),notes=str(s?.notes,2000),kind=s?.kind;
   if(!heading||!body||!notes||!KINDS.includes(kind))return null;
-  slides.push({heading,body,notes,kind});
+  const visual=s.visual==null?null:validateSlideVisual(s.visual);if(s.visual!=null&&!visual)return null;
+  slides.push({heading,body,notes,kind,...(visual?{visual}:{})});
  }
  return {title,subject,year_level,slides};
 }

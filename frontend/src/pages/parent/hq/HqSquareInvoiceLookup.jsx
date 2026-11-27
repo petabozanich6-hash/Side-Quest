@@ -1,0 +1,11 @@
+import React,{useEffect,useState,useRef} from "react";
+import {adminApi,errorText} from "../../../lib/adminApi";
+export default function HqSquareInvoiceLookup({order,requestId,guest}){
+ const [enabled,setEnabled]=useState(false),[invoiceId,setInvoiceId]=useState(""),[result,setResult]=useState(null),[error,setError]=useState(""),[busy,setBusy]=useState(false);
+ const running=useRef(false);
+ useEffect(()=>{let live=true;adminApi.get("/support-invoice-lookup/status").then(r=>{if(live)setEnabled(r.available===true);}).catch(()=>{});return()=>{live=false;};},[]);
+ async function check(){if(running.current||!invoiceId.trim())return;running.current=true;setBusy(true);setResult(null);setError("");try{setResult(await adminApi.post("/support-invoice-lookup",{channel:guest?"guest":"member",request_id:requestId,order_id:order.id,invoice_id:invoiceId.trim(),confirmed:true}));}catch(e){setError(errorText(e,"Invoice check failed."));}finally{setBusy(false);running.current=false;}}
+ if(!enabled)return null;
+ const money=n=>new Intl.NumberFormat("en-AU",{style:"currency",currency:"AUD"}).format(n/100);
+ return <section className="rounded-xl border p-3 space-y-2"><h5 className="font-bold">Check recorded invoice in Square (sandbox)</h5><p className="text-sm">Read-only match to the agreed invoice. No payment, invoice or booking is changed.</p><label className="block text-sm">Square invoice ID<input className="block w-full rounded-lg border p-2" value={invoiceId} maxLength={150} onChange={e=>{setInvoiceId(e.target.value);setResult(null);setError("");}} disabled={busy}/></label><button type="button" className="rounded-lg border px-3 py-2 text-sm" disabled={busy||!invoiceId.trim()} onClick={check}>{busy?"Checking…":"Check invoice in sandbox"}</button>{error&&<p role="alert" className="text-sm text-rose-800">{error}</p>}{result&&<div role="status" className="space-y-1 text-sm"><strong>Matched recipient, reference, location, amount and Sydney due date.</strong><p>Square status: {result.status} · Completed amount: {money(result.completed_cents)} of {money(result.amount_cents)}</p><p>Still review actual payment timing, pending payments and refunds in Square before recording payment or cancellation. The booking has not changed.</p></div>}</section>;
+}

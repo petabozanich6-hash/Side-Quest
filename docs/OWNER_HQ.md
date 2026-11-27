@@ -21,7 +21,7 @@ It replaces the first "Command Centre" page, which treated any family on the `IN
 2. **Invisible to everyone else.** Every `/api/admin/*` request is checked on the server; anyone who isn't the Owner
    (signed out, children, ordinary parents) gets "Not found", as if it did not exist.
 3. **Passkey step-up.** After signing in normally, HQ unlocks only with a passkey (Face ID, Touch ID, Windows Hello or
-   a security key) for 15 minutes, on that sign-in only. Adding the first passkey asks for your password again.
+   a security key) for two hours, on that sign-in only. Adding the first passkey asks for your password again.
 4. **CSRF protection.** Changes must come from the Side-Quest site itself (allow-listed origin + a custom header).
 5. **Rate limits** per account, and **an audit record** for every change.
 

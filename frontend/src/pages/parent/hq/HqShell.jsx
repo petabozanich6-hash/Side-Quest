@@ -5,10 +5,10 @@ import { adminApi, enrolPasskey, errorCode, errorText, stepUpWithPasskey } from 
 import { Alert, Button, GREEN } from "./ui";
 
 const TABS = [
-  { to: "/parent/command-centre", label: "Overview", end: true, testid: "hq-tab-overview" },
+  { to: "/parent/command-centre", label: "Today", end: true, testid: "hq-tab-overview" },
   { to: "/parent/command-centre/customers", label: "Customers", testid: "hq-tab-customers" },
   { to: "/parent/command-centre/learning-support", label: "Learning Support", testid: "hq-tab-learning-support" },
-  { to: "/parent/command-centre/feedback", label: "Feedback inbox", testid: "hq-tab-feedback" },
+  { to: "/parent/command-centre/feedback", label: "Inbox", testid: "hq-tab-feedback" },
   { to: "/parent/command-centre/document-studio", label: "Document Studio", testid: "hq-tab-document-studio" },
   { to: "/parent/command-centre/announcements", label: "Special emails", testid: "hq-tab-announcements" },
   { to: "/parent/command-centre/settings", label: "Settings", testid: "hq-tab-settings" },
@@ -28,6 +28,7 @@ export default function HqShell() {
   const [label, setLabel] = useState("This device");
   const [unreadFeedback, setUnreadFeedback] = useState(0);
   const location = useLocation();
+  const toolsPage=location.pathname==="/parent/command-centre"&&new URLSearchParams(location.search).get("page")==="tools";
 
   const check = useCallback(async () => {
     setError("");
@@ -52,7 +53,7 @@ export default function HqShell() {
     return () => { current = false; clearInterval(timer); };
   }, [state.phase, location.pathname]);
 
-  // Re-check when the 15-minute step-up runs out.
+  // Re-check when the bounded step-up runs out.
   useEffect(() => {
     if (state.phase !== "open" || !state.status?.elevated_until) return undefined;
     const ms = new Date(state.status.elevated_until).getTime() - Date.now();
@@ -108,7 +109,7 @@ export default function HqShell() {
         {state.phase === "locked" && (
           <div className="paper-card p-5 space-y-3" data-testid="hq-locked">
             <h2 className="font-display text-lg font-bold flex items-center gap-2" style={{ color: GREEN }}><Lock size={18} /> Confirm it's you</h2>
-            <p className="text-sm text-stone-700">Use your passkey to unlock Owner HQ for {state.status?.step_up_minutes ?? 15} minutes on this sign-in.</p>
+            <p className="text-sm text-stone-700">Use your passkey to unlock Owner HQ for {state.status?.step_up_minutes ?? 120} minutes on this sign-in.</p>
             <Button onClick={() => run(stepUpWithPasskey)} disabled={busy} data-testid="hq-step-up">{busy ? "Waiting for your passkey…" : "Unlock with passkey"}</Button>
           </div>
         )}
@@ -118,19 +119,20 @@ export default function HqShell() {
   }
 
   return (
-    <div className="p-4 sm:p-8 lg:p-10 max-w-6xl space-y-5 min-w-0" data-testid="owner-command-centre">
+    <div className="p-4 sm:p-8 lg:p-10 max-w-7xl space-y-5 min-w-0" data-testid="owner-command-centre">
       {header}
-      <nav className="flex gap-1 overflow-x-auto pb-1 -mx-1 px-1" aria-label="Owner HQ sections">
-        {TABS.map((t) => (
+      <nav className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-3" aria-label="Owner HQ sections">
+        {TABS.slice(0,4).map((t) => (
           <NavLink key={t.to} to={t.to} end={t.end} data-testid={t.testid}
-            className={({ isActive }) => `whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold ${isActive ? "text-white" : "text-stone-700 bg-white/70"}`}
-            style={({ isActive }) => (isActive ? { backgroundColor: GREEN } : { border: "1px solid #D4C8A8" })}>
+            className={({ isActive }) => `whitespace-nowrap rounded-xl px-3 py-2 text-sm font-semibold ${isActive&&!toolsPage ? "text-white" : "text-stone-700 bg-white/70"}`}
+            style={({ isActive }) => (isActive&&!toolsPage ? { backgroundColor: GREEN } : { border: "1px solid #D4C8A8" })}>
             {t.label}{t.testid === "hq-tab-feedback" && unreadFeedback > 0 && <span aria-label={`${unreadFeedback} unread feedback submissions`} className="inline-flex items-center gap-1 ml-2 bg-amber-100 text-amber-950 rounded-full px-2 py-0.5 text-xs font-bold"><Bell size={11}/>{unreadFeedback}</span>}
           </NavLink>
         ))}
+        <NavLink to="/parent/command-centre?page=tools" end data-testid="hq-more-tools" className={"rounded-xl px-3 py-2 text-sm font-semibold "+(toolsPage||TABS.slice(4).some(t=>location.pathname===t.to)?"bg-emerald-950 text-white":"border border-stone-300 bg-white text-stone-700")}>Tools</NavLink>
       </nav>
       {error && <Alert>{error}</Alert>}
-      <Outlet context={{ relock: check }} />
+      {toolsPage?<section className="space-y-4"><header><h2 className="font-display text-2xl font-bold">Business tools</h2><p className="text-sm text-stone-600">Occasional administration, documents and account controls.</p></header><div className="divide-y border rounded-xl bg-white"><NavLink to="/parent/command-centre?page=metrics" className="block p-4"><strong>Platform metrics and health →</strong><p className="text-sm text-stone-600">Memberships, AI costs, storage and technical checks</p></NavLink>{TABS.slice(4).map((t,i)=><NavLink key={t.to} to={t.to} data-testid={t.testid} className="block p-4"><div className="flex justify-between"><strong>{t.label}</strong><span>→</span></div><p className="text-sm text-stone-600">{["Create and manage documents","Prepare messages and announcements","Manage business and platform preferences","Review administrative activity","Manage passkeys and access"][i]}</p></NavLink>)}</div></section>:<Outlet context={{ relock: check }} />}
     </div>
   );
 }

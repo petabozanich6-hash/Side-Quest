@@ -3,9 +3,31 @@ name: Deploy staging (private)
 # Never touches production (sidequest-db1 / the "side-quest" Worker / sidequestlearning.app).
 on:
   workflow_dispatch:
+    inputs:
+      staging_origin:
+        description: "Exact staging website origin (https://side-quest-staging.<subdomain>.workers.dev); no key or path"
+        type: string
+        required: false
+        default: "https://side-quest-staging.petabozanich6.workers.dev"
+      enable_family_portal:
+        description: "Enable private unified family portal (existing verified staging parents)"
+        type: boolean
+        default: true
+        required: true
+      enable_resource_ai:
+        description: "Enable metered teaching-resource AI in private staging (synthetic non-identifying topics only)"
+        type: boolean
+        default: false
+        required: true
+      enable_invoice_pilot:
+        description: "Enable private Square sandbox invoice pilot (synthetic parent only)"
+        type: boolean
+        default: false
+        required: true
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   deploy:
@@ -16,11 +38,28 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       STAGING_JWT_SECRET: ${{ secrets.STAGING_JWT_SECRET }}
       STAGING_KEY: ${{ secrets.STAGING_KEY }}
+      ENABLE_FAMILY_PORTAL: ${{ inputs.enable_family_portal }}
+      ENABLE_RESOURCE_AI: ${{ inputs.enable_resource_ai }}
+      ENABLE_INVOICE_PILOT: ${{ inputs.enable_invoice_pilot }}
+      STAGING_ORIGIN_INPUT: ${{ inputs.staging_origin }}
+      STAGING_SUPPORT_ORIGIN: ${{ vars.STAGING_SUPPORT_ORIGIN }}
+      STAGING_SUPPORT_TEST_EMAIL: ${{ secrets.STAGING_SUPPORT_TEST_EMAIL }}
+      STAGING_SQUARE_APPLICATION_ID: ${{ vars.STAGING_SQUARE_APPLICATION_ID }}
+      STAGING_SQUARE_LOCATION_ID: ${{ vars.STAGING_SQUARE_LOCATION_ID }}
+      STAGING_SQUARE_ACCESS_TOKEN: ${{ secrets.STAGING_SQUARE_ACCESS_TOKEN }}
+      STAGING_SQUARE_WEBHOOK_SIGNATURE_KEY: ${{ secrets.STAGING_SQUARE_WEBHOOK_SIGNATURE_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Require successful CI for exact selected revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${GITHUB_SHA}&status=success&per_page=100" --jq '.workflow_runs[] | select(.conclusion == "success") | .head_sha' > /tmp/staging-verified-ci.txt
+          grep -Fxq "$GITHUB_SHA" /tmp/staging-verified-ci.txt || { echo "Selected commit does not have a successful CI run. Refusing staging deployment."; exit 1; }
       - name: Check required secrets
         run: |
           [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ] || { echo "Missing CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID secret"; exit 1; }
@@ -55,6 +94,10 @@ jobs:
             c.r2_buckets=[{binding:"BUCKET",bucket_name:"sidequest-staging-files"}];
             fs.writeFileSync("wrangler.staging.jsonc",JSON.stringify(c,null,2));
           '
+      - name: Validate and configure private pilot (no production credentials)
+        run: |
+          node --test worker/test/stagingInvoicePilot.test.mjs
+          node worker/scripts/configure-staging-invoice-pilot.mjs wrangler.staging.jsonc
       - name: Apply migrations to the staging database
         run: npx wrangler d1 migrations apply DB --remote --config wrangler.staging.jsonc
       - name: Deploy staging Worker
@@ -65,8 +108,30 @@ jobs:
           umask 077
           file=$(mktemp)
           trap 'rm -f "$file"' EXIT
-          node -e 'process.stdout.write(JSON.stringify({JWT_SECRET:process.env.STAGING_JWT_SECRET,STAGING_KEY:process.env.STAGING_KEY}))' > "$file"
+          node -e 'const e=process.env; const s={JWT_SECRET:e.STAGING_JWT_SECRET,STAGING_KEY:e.STAGING_KEY}; if(e.ENABLE_INVOICE_PILOT==="true"){s.SUPPORT_UNIFIED_TEST_EMAIL=e.STAGING_SUPPORT_TEST_EMAIL;s.SQUARE_ACCESS_TOKEN=e.STAGING_SQUARE_ACCESS_TOKEN;s.SQUARE_WEBHOOK_SIGNATURE_KEY=e.STAGING_SQUARE_WEBHOOK_SIGNATURE_KEY;}process.stdout.write(JSON.stringify(s))' > "$file"
           npx wrangler secret bulk "$file" --config wrangler.staging.jsonc
+      - name: Verify deployed private pilot and request guards
+        run: |
+          node --input-type=module <<'JS'
+          const e=process.env;
+          const origin=(e.STAGING_ORIGIN_INPUT||e.STAGING_SUPPORT_ORIGIN||"").trim().replace(/\/$/,"");
+          if(!/^https:\/\/side-quest-staging\.[a-z0-9-]+\.workers\.dev$/.test(origin))throw Error("Invalid staging verification origin");
+          const portal=e.ENABLE_FAMILY_PORTAL==="true"||e.ENABLE_INVOICE_PILOT==="true";
+          const get=(path,authorised=false)=>fetch(origin+path,{redirect:"manual",cache:"no-store",headers:authorised?{Cookie:"sq_staging="+encodeURIComponent(e.STAGING_KEY)}:{},signal:AbortSignal.timeout(15000)});
+          let passed=false;
+          for(let attempt=0;attempt<6;attempt++){
+            try{
+              const denied=await get("/api/family-portal/status");
+              const status=await get("/api/family-portal/status",true);
+              const data=await status.json();
+              const booking=await get("/api/support-guest/requests",true);
+              if(denied.status===403&&status.status===200&&data.available===portal&&data.registration_available===false&&booking.status===(portal?401:503)){passed=true;break;}
+            }catch{/* Retry propagation without logging secrets or remote bodies. */}
+            await new Promise(r=>setTimeout(r,5000));
+          }
+          if(!passed)throw Error("Private staging verification failed: access gate, portal, registration or booking route status unexpected");
+          console.log("Private staging access gate and booking-route authentication verified; email registration remains disabled.");
+          JS
       - name: Done
         run: |
           echo "Staging deployed. Open https://side-quest-staging.<your-workers-subdomain>.workers.dev/api/staging-access?key=<STAGING_KEY> once, then use the site." 

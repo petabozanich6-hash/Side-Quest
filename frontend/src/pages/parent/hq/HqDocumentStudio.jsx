@@ -25,7 +25,7 @@ export default function HqDocumentStudio() {
       {error && <p role="alert" className="text-red-800">{error}</p>}
       {!data && !error && <p role="status" className="text-sm">Loading document templates…</p>}
       {data && <label className="block max-w-md text-sm font-semibold">State or territory
-        <select className={input + " mt-1"} value={state} onChange={e => setState(e.target.value)}>
+        <select data-testid="hq-document-studio-jurisdiction" aria-label="State or territory" className={input + " mt-1"} value={state} onChange={e => setState(e.target.value)}>
           <option value="">Select a state or territory</option>
           {data.jurisdictions.map(j => <option key={j.code} value={j.code}>{j.name}</option>)}
         </select>

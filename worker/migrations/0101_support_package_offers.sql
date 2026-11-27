@@ -1,0 +1,2 @@
+-- Private owner-approved package invitations, independent of existing bookings.
+CREATE TABLE IF NOT EXISTS support_package_offers (id TEXT PRIMARY KEY, channel TEXT NOT NULL CHECK(channel IN ('member','guest')), request_id TEXT NOT NULL, quote_id TEXT NOT NULL, learner_label TEXT NOT NULL, terms TEXT NOT NULL, payment_mode TEXT NOT NULL CHECK(payment_mode IN ('installments','upfront')), deadline_hours INTEGER NOT NULL CHECK(deadline_hours BETWEEN 1 AND 168), expires_at TEXT NOT NULL, UNIQUE(channel,quote_id));
