@@ -265,6 +265,9 @@ test("reasoning trial reads only final model output and keeps the complete teach
  assert.ok(validateLessonPack(extractLessonPackResponse({response:JSON.stringify(sciencePack)}),30));
  assert.ok(validateLessonPack(extractLessonPackResponse({output_text:JSON.stringify(englishPack)}),30));
  assert.equal(extractLessonPackResponse({...response,status:"incomplete"}),null);
+ assert.ok(validateLessonPack(extractLessonPackResponse({choices:[{finish_reason:"stop",message:{content:JSON.stringify(englishPack),reasoning_content:"Private reasoning"}}]}),30));
+ assert.equal(extractLessonPackResponse({choices:[{finish_reason:"length",message:{content:JSON.stringify(englishPack)}}]}),null);
+ assert.equal(extractLessonPackResponse({choices:[{finish_reason:"content_filter",message:{content:JSON.stringify(englishPack)}}]}),null);
  assert.equal(extractLessonPackResponse({output:[{type:"reasoning",summary:[{type:"summary_text",text:JSON.stringify(englishPack)}]}]}),null);
  assert.equal(validateLessonPack(extractLessonPackResponse({output_text:'{"title":"Incomplete"}'}),30),null);
 });
