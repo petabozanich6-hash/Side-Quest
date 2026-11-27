@@ -251,9 +251,9 @@ export const CREATIVE_CAMPS=[
   },
   {
     "id": "english-creative-camp-senior-v1",
-    "age": "12–16",
-    "title": "English Club: Teen Storymakers (ages 12–16)",
-    "description": "Six online creative camp sessions with a published author. Discover books worth getting lost in, share genres and recommendations, build worlds and characters, explore plot twists and make original stories. Recommended ages 12–16. No school-style assessments or required reading list. Join a single session or the whole camp.",
+    "age": "12–17",
+    "title": "English Club: Teen Storymakers (ages 12–17)",
+    "description": "Six online creative camp sessions with a published author. Discover books worth getting lost in, share genres and recommendations, build worlds and characters, explore plot twists and make original stories. Recommended ages 12–17. No school-style assessments or required reading list. Join a single session or the whole camp.",
     "sessions": [
       {
         "title": "Beyond the Cover",
@@ -515,11 +515,22 @@ export function campPreparation(id:unknown,index:number){
 }
 export function campResource(id:unknown,index:number){
  const c=creativeCamp(id),s=c?.sessions[index],craft=s&&CAMP_CRAFT[s.title];if(!s||!craft)return null;
- return {creative_camp:true,title:s.title,objective:s.objective,reading:s.reading,tasks:[craft.prompt,craft.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
+ return {creative_camp:true,programme_id:c.id,title:s.title,objective:s.objective,reading:s.reading,tasks:[craft.prompt,craft.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
  {title:s.title,body:s.description},{title:"Book chat",body:"What stories, worlds, characters or genres do you love? Comics and audiobooks count. You can pass."},{title:"Story spark",body:s.reading},{title:"An author’s trick",body:craft.example,cards:[{label:"Imagine",body:craft.prompt},{label:"Try it",body:"Make your own version. There is more than one possibility."}]},{title:"Create together",body:s.group},{title:"Choose a possibility",body:s.activities[0].question+"\n"+s.activities[0].options?.join("\n")},{title:"Your creative studio",body:craft.create},{title:"Optional extra",body:"Give your creation a title, cover idea or next adventure."},{title:"Celebrate and discover",body:"Share if you want to. What kind of book or story would you like to discover next?"}
  ]};
 }
 export function campIllustrationStory(workshop:any){
- for(const c of CREATIVE_CAMPS){const s=c.sessions.find(s=>s.title===workshop?.title);if(s)return [{slide_index:2,title:s.title,brief:s.art,purpose:"Invite imagination and discussion around the original story spark."}];}
+ for(const c of CREATIVE_CAMPS){
+  if(workshop?.programme_id&&workshop.programme_id!==c.id)continue;
+  const s=c.sessions.find(s=>s.title===workshop?.title),craft=s&&CAMP_CRAFT[s.title];if(!s||!craft)continue;
+  const style=c.id==="english-creative-camp-junior-v1"?"Original imaginative storybook illustration, midnight blue and golden accents, welcoming expressive shapes. ":"Original literary editorial illustration, mulberry, copper and muted lavender, sophisticated composition for teenage readers. ";
+  return [
+   {slide_index:0,title:"Welcome to "+s.title,brief:style+"A book opening into an imaginative scene inspired by this session: "+s.art+" Compose as a welcoming chapter opening, no words.",purpose:"Establish the creative theme."},
+   {slide_index:2,title:s.title,brief:style+s.art+" Focus on the original fictional story moment, no lettering.",purpose:"Invite imagination and discussion around the original story spark."},
+   {slide_index:3,title:"A writer’s craft",brief:style+"Illustrate a contrast or a creative choice through two distinct visual possibilities inspired by this fictional example: "+craft.example.slice(0,370)+" Avoid labels and do not imply a correct answer.",purpose:"Support discussion of the worked writing example."},
+   {slide_index:4,title:"Create together",brief:style+"Show a playful collection of fictional objects, settings or characters as prompts for this shared idea: "+s.group.slice(0,330)+" Keep the scene open-ended, no words or identifiable people.",purpose:"Spark multiple contributions to the collaborative activity."},
+   {slide_index:6,title:"Creative studio",brief:style+"An inviting writing and sketching workspace with open blank notebook and visual motifs inspired by "+s.art+" Leave room for the imagination, no lettering.",purpose:"Encourage independent creative work without revealing a solution."}
+  ];
+ }
  return null;
 }
