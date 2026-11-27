@@ -61,6 +61,8 @@ export type Env = {
   SUPPORT_CLASSROOM_ENABLED?: string;
   /** Opt-in owner AI slide drafting, subject to existing cost limits. */
   SUPPORT_RESOURCE_AI?: string;
+  /** Private staging only, separate opt-in for paid illustration previews. */
+  SUPPORT_ILLUSTRATION_AI?: string;
   SUPPORT_STATIONERY_EMAIL?: string;
   SUPPORT_TERMS_APPROVED_VERSION?: string;
   SUPPORT_TERMS_REQUIRED?: string;
