@@ -12,6 +12,12 @@ export function validateSlideVisual(v:any){
   }
   return {type:"fraction-bars",rows} as const;
  }
+ if(v.type==="fraction-quest"){
+  if(!integer(v.total,2,8)||!integer(v.shaded,1,v.total-1)||!integer(v.target_total,2,16)||v.total===v.target_total||v.shaded*v.target_total%v.total!==0)return null;
+  const context=v.context;
+  if(context!=="pizza"&&context!=="garden"&&context!=="tiles")return null;
+  return {type:"fraction-quest",total:v.total,shaded:v.shaded,target_total:v.target_total,context} as const;
+ }
  if(v.type==="fraction-split"){
   if(!integer(v.total,2,8)||!integer(v.shaded,1,v.total-1)||!integer(v.factor,2,4)||v.total*v.factor>16)return null;
   return {type:"fraction-split",total:v.total,shaded:v.shaded,factor:v.factor} as const;
@@ -58,8 +64,8 @@ export function changeSlideInteraction(visual:unknown,current:any,b:Record<strin
   const max=v.type==="fraction-split"?2:v.type==="fraction-bars"?v.rows.length:"items" in v?v.items.length:1;
   if(next.reveal>=max)return null;
   next.reveal++;
- }else if(b.operation==="toggle"&&!owner&&(v.type==="fraction-build"||v.type==="select")){
-  const max=v.type==="fraction-build"?v.total:v.items.length;
+ }else if(b.operation==="toggle"&&!owner&&(v.type==="fraction-build"||v.type==="fraction-quest"||v.type==="select")){
+  const max=v.type==="fraction-build"?v.total:v.type==="fraction-quest"?v.target_total:v.items.length;
   if(!integer(b.index,0,max-1))return null;
   const i=b.index;
   next.selected=next.selected.includes(i)?next.selected.filter(x=>x!==i):[...next.selected,i].sort((a,b)=>a-b);
