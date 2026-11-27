@@ -1,3 +1,4 @@
+import {englishTeachingGuide} from "./englishClubTeachingGuides";
 // Stable export names retained for existing integrations. Owner reviews before creating a private round.
 export const STORY_QUEST = {
   "id": "english-author-workshop-v2",
@@ -11,11 +12,11 @@ export const STORY_QUEST = {
       "reading": "The council called it a development. Mara called it the last patch of shade. The notice promised an improved public space. Nobody had asked the people who sat beneath the trees.",
       "agenda": [
         "0–5: Welcome, standalone context and choice of participation method.",
-        "5–15: Annotate contrasting frames.",
-        "15–25: Vote on competing headlines and defend choices.",
-        "25–40: Rewrite an event for two audiences; compare diction and omission.",
-        "40–50: Compare voluntary anonymous examples and discuss effects.",
-        "50–57: Revise one description.",
+        "5–13: Explicit teaching of key concepts and vocabulary.",
+        "13–23: Facilitator models analysis or writing, explaining each choice.",
+        "23–35: Guided collaborative practice, including discussion or poll.",
+        "35–49: Independent writing studio and optional extension.",
+        "49–57: Differentiated feedback, revision and optional sharing.",
         "57–60: Private exit reflection and evidence check."
       ],
       "worksheet": "Write two descriptions of the same event. Identify three deliberate language choices and their effects.",
@@ -46,11 +47,11 @@ export const STORY_QUEST = {
       "reading": "'Of course you can stay,' Lee said. She moved her brother's photograph from the mantelpiece and placed it face down inside a drawer. 'Make yourself at home.'",
       "agenda": [
         "0–5: Welcome, standalone context and choice of participation method.",
-        "5–15: Annotate contradictions and omissions.",
-        "15–25: Discuss possible interpretations and textual evidence.",
-        "25–40: Write a conversation in which words and intentions differ.",
-        "40–50: Compare voluntary readings and alternative interpretations.",
-        "50–57: Revise a clue without explaining the secret.",
+        "5–13: Explicit teaching of key concepts and vocabulary.",
+        "13–23: Facilitator models analysis or writing, explaining each choice.",
+        "23–35: Guided collaborative practice, including discussion or poll.",
+        "35–49: Independent writing studio and optional extension.",
+        "49–57: Differentiated feedback, revision and optional sharing.",
         "57–60: Private exit reflection and evidence check."
       ],
       "worksheet": "List two observations and two defensible inferences. Write a scene in which action contradicts dialogue.",
@@ -82,11 +83,11 @@ export const STORY_QUEST = {
       "reading": "The competition rules were clear: no late entries. Ari had arrived on time, and Sam had spent the morning helping a stranded neighbour. When the organiser asked Ari whether an exception should be made, Ari remembered the weeks spent getting everything ready.",
       "agenda": [
         "0–5: Welcome, standalone context and choice of participation method.",
-        "5–15: Map what each character knows, wants and risks.",
-        "15–25: Poll on the dilemma; defend a competing view.",
-        "25–40: Draft the moment from two perspectives.",
-        "40–50: Compare motives; distinguish explanation from justification.",
-        "50–57: Revise a line to reveal contradiction.",
+        "5–13: Explicit teaching of key concepts and vocabulary.",
+        "13–23: Facilitator models analysis or writing, explaining each choice.",
+        "23–35: Guided collaborative practice, including discussion or poll.",
+        "35–49: Independent writing studio and optional extension.",
+        "49–57: Differentiated feedback, revision and optional sharing.",
         "57–60: Private exit reflection and evidence check."
       ],
       "worksheet": "Map wants, fears, values and constraints. Write two accounts of one decision and explain why both are understandable.",
@@ -118,11 +119,11 @@ export const STORY_QUEST = {
       "reading": "The train was already moving when Rowan found the note: Don't get off at the next station. Twenty minutes earlier, a stranger had offered Rowan a seat. At the next station, nobody was waiting on the platform.",
       "agenda": [
         "0–5: Welcome, standalone context and choice of participation method.",
-        "5–15: Map chronological events versus narrative order.",
-        "15–25: Discuss competing openings and their effects.",
-        "25–40: Build a causal sequence on the shared board and rearrange a reveal.",
-        "40–50: Draft a scene with deliberate pacing or atmosphere.",
-        "50–57: Test whether the reveal is earned and revise.",
+        "5–13: Explicit teaching of key concepts and vocabulary.",
+        "13–23: Facilitator models analysis or writing, explaining each choice.",
+        "23–35: Guided collaborative practice, including discussion or poll.",
+        "35–49: Independent writing studio and optional extension.",
+        "49–57: Differentiated feedback, revision and optional sharing.",
         "57–60: Private exit reflection and evidence check."
       ],
       "worksheet": "Map four events with causes and consequences. Choose an opening and explain one withheld or revealed detail.",
@@ -154,11 +155,11 @@ export const STORY_QUEST = {
       "reading": "The library proposed replacing its quiet reading room with a collaborative study space. One speaker argued that more students could work together; another warned that people who needed quiet would have nowhere else to go. Both claimed to speak for the community.",
       "agenda": [
         "0–5: Welcome, standalone context and choice of participation method.",
-        "5–15: Identify claims, assumptions and missing evidence.",
-        "15–25: Poll on positions; compare rhetoric and evidence.",
-        "25–40: Draft an argument for a chosen audience.",
-        "40–50: Present a fair version of a competing view and discuss compromise.",
-        "50–57: Revise a claim to be precise and fair.",
+        "5–13: Explicit teaching of key concepts and vocabulary.",
+        "13–23: Facilitator models analysis or writing, explaining each choice.",
+        "23–35: Guided collaborative practice, including discussion or poll.",
+        "35–49: Independent writing studio and optional extension.",
+        "49–57: Differentiated feedback, revision and optional sharing.",
         "57–60: Private exit reflection and evidence check."
       ],
       "worksheet": "Identify a claim, reason, evidence needed and counterargument. Draft a persuasive paragraph or speech and revise it.",
@@ -190,12 +191,12 @@ export const STORY_QUEST = {
       "reading": "Draft: The letter arrived late. Jules read it and felt upset. Revision: Jules recognised the handwriting before opening the envelope. Three months too late, the letter began, I should have told you.",
       "agenda": [
         "0–5: Welcome, standalone context and choice of participation method.",
-        "5–15: Compare draft and revision; discuss editorial decisions.",
-        "15–25: Plan a fresh piece or select earlier work; identify purpose.",
-        "25–40: Draft independently with optional private feedback.",
-        "40–50: Revise meaning and structure, then clarity and mechanics.",
-        "50–57: Offer optional reading, private submission or craft discussion.",
-        "57–60: Reflect privately and explain verified round completion and certificate approval."
+        "5–13: Explicit teaching of key concepts and vocabulary.",
+        "13–23: Facilitator models analysis or writing, explaining each choice.",
+        "23–35: Guided collaborative practice, including discussion or poll.",
+        "35–49: Independent writing studio and optional extension.",
+        "49–57: Differentiated feedback, revision and optional sharing.",
+        "57–60: Private exit reflection, evidence check and explanation of verified round completion."
       ],
       "worksheet": "Identify audience and purpose. Draft a piece or excerpt, mark one structural revision and one language revision, and explain their effects.",
       "activities": [
@@ -221,4 +222,4 @@ export const STORY_QUEST = {
     }
   ]
 } as const;
-export function storyQuestPreparation(index:number){const s=STORY_QUEST.sessions[index];if(!s)return '';return ['Objective: '+s.objective,'Original reading: '+s.reading,'60-minute facilitator plan:',...s.agenda,'Learner worksheet (copy to paper or approved shared resource): '+s.worksheet,'Interactive prompts: '+s.activities.map(a=>a.title+' — '+a.question+('options' in a?' — '+a.options.join(' / '):'')).join('\n'),'Adaptations: '+s.support,'Evidence check: '+s.check].join('\n\n');}
+export function storyQuestPreparation(index:number){const s=STORY_QUEST.sessions[index];if(!s)return '';return ['Objective: '+s.objective,'Original reading: '+s.reading,'60-minute facilitator plan:',s.agenda[0],englishTeachingGuide(index),'Learner worksheet (copy to paper or approved shared resource): '+s.worksheet,'Interactive prompts: '+s.activities.map(a=>a.title+' — '+a.question+('options' in a?' — '+a.options.join(' / '):'')).join('\n'),'Adaptations: '+s.support,'Evidence check: '+s.check].join('\n\n');}

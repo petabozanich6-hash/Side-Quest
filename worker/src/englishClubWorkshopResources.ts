@@ -8,12 +8,22 @@ const teaching = [
  {concept:"A claim is a position, a reason explains it, and evidence supports it. Persuasive language is not itself evidence. A counterargument should represent the competing view fairly.",example:"'Everyone needs this change' makes an unsupported generalisation. What evidence would justify a more precise claim?",tasks:["Identify the two competing claims and one piece of missing evidence in the library proposal.","Write a position for a chosen audience with a reason and evidence or a clearly hypothetical example.","State a fair objection, then revise your argument to address it without attacking the person."],stretch:"Identify an appeal to credibility, emotion or logic. Explain its strength and a possible limitation."},
  {concept:"Revision improves meaning, structure and effect; copyediting improves clarity and mechanics. Effective editing preserves the writer's intended voice.",example:"Compare the original and revised letter passage. The revision replaces a general emotion with concrete information and an implied history.",tasks:["Choose fiction, reflective or persuasive writing. Identify your audience and intended effect.","Draft a short passage or select a previous piece. Make one structural and one language revision.","Explain why each change matters. Choose whether to share a line, submit privately or keep the piece to yourself."],stretch:"Write a short editorial rationale explaining a change you rejected and why it would weaken your intended effect."}
 ] as const;
+// Explicit learner-facing demonstrations, separate from private facilitator guidance.
+const demonstrations=[
+ {heading:"One event, two frames",body:"Council plans new public space.\nCouncil plans to remove remaining shade trees.\nSame event. The first emphasises a proposed benefit; the second emphasises a loss.",cards:[{label:"Diction",body:"Development suggests progress."},{label:"Framing",body:"Last patch of shade draws attention to what may disappear."}]},
+ {heading:"Evidence → inference",body:"Lee moves the photograph into a drawer. This is an observation. She may want privacy. This is an inference, not a fact.",cards:[{label:"Observation",body:"The photograph is placed face down."},{label:"Plausible inference",body:"Lee may wish to conceal a private memory."}]},
+ {heading:"Two understandable motives",body:"Ari may prioritise consistent rules. Sam may prioritise helping others. A decision can have competing values without either person being a villain.",cards:[{label:"Ari",body:"If the deadline changes, what were all those weeks for?"},{label:"Sam",body:"I couldn't just leave someone stranded."}]},
+ {heading:"Change the order, change the effect",body:"Chronology: encounter → train moves → note discovered → empty platform.\nNarrative opening: note discovered → earlier encounter.\nBeginning with the warning creates a question.",cards:[{label:"Chronology",body:"What actually happened first?"},{label:"Narrative order",body:"What information does the reader receive first?"}]},
+ {heading:"Build a supported claim",body:"Claim: Keep some quiet seating.\nReason: Some readers need a low-noise environment.\nEvidence needed: Usage counts and consultation.\nObjection: Collaborative space is also valuable.",cards:[{label:"Reason",body:"Explains why a position matters."},{label:"Evidence",body:"Information that could support or challenge it."}]},
+ {heading:"Revise for purpose",body:"Draft: Jules read the letter and felt upset.\nRevision: Jules recognised the handwriting before opening the envelope.\nA concrete detail builds anticipation; it does not merely add words.",cards:[{label:"Revision",body:"Improve meaning, sequence or effect."},{label:"Copyediting",body:"Correct clarity, grammar or mechanics."}]}
+] as const;
 export function workshopResource(index:number){
- const s=STORY_QUEST.sessions[index],t=teaching[index];if(!s||!t)return null;
+ const s=STORY_QUEST.sessions[index],t=teaching[index],m=demonstrations[index];if(!s||!t||!m)return null;
  return {title:s.title,objective:s.objective,reading:s.reading,tasks:[...t.tasks],stretch:t.stretch,slides:[
   {title:s.title,body:s.objective},
   {title:"The central idea",body:t.concept},
   {title:"Read closely",body:s.reading},
+  {title:m.heading,body:m.body,cards:[...m.cards]},
   {title:"Try it together",body:t.example},
   {title:"Discuss",body:s.activities[0].question+"\n"+s.activities[0].options.join("\n")},
   {title:"Writing studio",body:t.tasks.join("\n\n")},

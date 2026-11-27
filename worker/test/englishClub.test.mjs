@@ -86,14 +86,14 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  const result=await createEnglishRound(db,"owner",body,now);assert.ok(result.id,JSON.stringify(result));
  const rows=db.raw.prepare("SELECT c.id,c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
  assert.equal(rows.length,6);
- rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
+ rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));for(const phase of ["I teach","I demonstrate","We practise together","You try independently","Adapt and give feedback","Exit check"])assert.ok(r.preparation.includes(phase));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
  const {workshopResource}=await import("../src/englishClubWorkshopResources.ts");
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_workshop_resources").get().n,6);
  for(const [i,r] of rows.entries()){
   const v=await readEnglishMaterials({DB:db},r.id,undefined,now);
-  assert.deepEqual(v.workshop,workshopResource(i));assert.equal(v.workshop.slides.length,8);assert.equal(v.workshop.tasks.length,3);
+  assert.deepEqual(v.workshop,workshopResource(i));assert.equal(v.workshop.slides.length,9);assert.equal(v.workshop.slides[3].cards.length,2);assert.equal(v.workshop.tasks.length,3);
   assert.equal(await readEnglishMaterials({DB:db},r.id,{requestId:"unknown",email:"unknown@example.com"},now),null);
-  assert.ok(!JSON.stringify(v.workshop).includes("60-minute facilitator plan"));
+  assert.ok(!JSON.stringify(v.workshop).includes("60-minute facilitator plan"));assert.ok(!JSON.stringify(v.workshop).includes("I teach — explicit concept"));assert.ok(!JSON.stringify(v.workshop).includes("We practise together:"));
  }
  const {readActivityPlan}=await import("../src/supportActivityPlans.ts");
  const {getActivityTemplate}=await import("../src/supportActivityLibrary.ts");
