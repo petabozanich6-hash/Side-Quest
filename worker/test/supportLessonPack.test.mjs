@@ -18,7 +18,7 @@ function setup(){
 }
 test("validate complete resource pack and reject invalid answers and repeated prompts",()=>{
  assert.ok(validateLessonPack(pack));
- assert.equal(validateLessonPack({...pack,worksheet:[]}),null);
+ assert.deepEqual(validateLessonPack({...pack,worksheet:[]}).worksheet,[]);
  assert.equal(validateLessonPack({...pack,activities:[{...pack.activities[0],answer_key:"wrong"},pack.activities[1]]}),null);
  assert.equal(validateLessonPack({...pack,activities:[pack.activities[0],pack.activities[0]]}),null);
 });
@@ -292,7 +292,7 @@ test("validation reports safe specific failures without weakening the complete l
  assert.equal(check({...englishPack,slides:[]}),null);assert.match(reason,/slide structure/);
  assert.equal(check({...englishPack,slides:englishPack.slides.map((s,i)=>i===0?{...s,notes:"PRIVATE SENTINEL"}:s)}),null);
  assert.match(reason,/private teaching guidance/);assert.ok(!reason.includes("PRIVATE SENTINEL"));
- assert.equal(check({...englishPack,worksheet:[]}),null);assert.match(reason,/worksheet/);
+ assert.ok(check({...englishPack,worksheet:[]}));assert.equal(check({...englishPack,worksheet:[{prompt:"",answer:""}]}),null);
  assert.equal(check({...englishPack,activities:[]}),null);assert.match(reason,/two distinct activities/);
 });
 
@@ -431,3 +431,5 @@ test("deterministic experiment schemas and shared learner controls are bounded",
   assert.equal(changeSlideInteraction(circuit,s,{visual_id:"stale",operation:"toggle",index:0},false),null);
  }
 });
+
+ test("digital-first packs need no printable tasks but still enforce teaching quality",()=>{const {worksheet,...digital}=pack;assert.deepEqual(validateLessonPack(digital).worksheet,[]);assert.equal(validateLessonPack({...digital,activities:[]}),null);assert.equal(validateLessonPack({...digital,worksheet:"invalid"}),null);});
