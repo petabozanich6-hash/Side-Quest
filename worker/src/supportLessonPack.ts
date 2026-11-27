@@ -13,7 +13,7 @@ const validOrder=(o:any)=>o?.mode==="live"&&["awaiting_confirmation","confirmed"
 export const REASONING_LESSON_MODEL="@cf/openai/gpt-oss-120b";
 export function extractLessonPackResponse(raw:any){
  // The reasoning model can return the Responses API envelope. Only read final assistant text, never reasoning traces.
- if(raw?.status==="incomplete"||raw?.status==="failed")return null;
+ if(raw?.status==="incomplete"||raw?.status==="failed"||raw?.choices?.[0]?.finish_reason==="length"||raw?.choices?.[0]?.finish_reason==="content_filter")return null;
  if(typeof raw?.output_text==="string")return extractJson(raw.output_text);
  if(Array.isArray(raw?.output)){
   const content=raw.output.filter((v:any)=>v?.type==="message"&&v?.role==="assistant").flatMap((v:any)=>Array.isArray(v.content)?v.content:[]).filter((v:any)=>v?.type==="output_text"&&typeof v.text==="string").map((v:any)=>v.text).join("");
