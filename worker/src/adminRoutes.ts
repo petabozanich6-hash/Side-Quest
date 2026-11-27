@@ -90,7 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
-import {lessonArtEnabled,generateLessonArt} from "./supportLessonArt";
+import {lessonArtEnabled,generateLessonArt,lessonIllustrationAllowance} from "./supportLessonArt";
 import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
@@ -920,7 +920,7 @@ export function createAdminRoutes() {
     if("error" in r)return c.json({detail:r.error},409);
     const checkpoint=await checkpointPrivateLessonDraft(c.env.DB,owner.id,{pack:r.pack,minutes:b.minutes,revision:0});
     if("error" in checkpoint)return c.json({detail:checkpoint.error},409);
-    return c.json({...r,draft:checkpoint.draft});
+    return c.json({...r,draft:checkpoint.draft,artwork_allowance:lessonIllustrationAllowance(b.minutes)});
   });
   admin.post("/support-lesson-library/checkpoint",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
