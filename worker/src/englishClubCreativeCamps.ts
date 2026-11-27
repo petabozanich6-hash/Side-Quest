@@ -1,3 +1,4 @@
+import {CAMP_CRAFT} from "./englishClubCampCraft";
 // Distinct creative camps: reading enjoyment and original creation, not remedial tuition.
 export const CREATIVE_CAMPS=[
   {
@@ -511,23 +512,23 @@ export const CREATIVE_CAMPS=[
 ] as const;
 export function creativeCamp(id:unknown){return CREATIVE_CAMPS.find(c=>c.id===id);}
 export function campPreparation(id:unknown,index:number){
- const c=creativeCamp(id),s=c?.sessions[index];if(!s)return "";
+ const c=creativeCamp(id),s=c?.sessions[index],craft=s&&CAMP_CRAFT[s.title];if(!s||!craft)return "";
  return [
- "Objective: "+s.objective,
+ "Private craft objective: "+craft.skill+". "+craft.concept+" Creative outcome: "+s.objective,
  "Original reading: "+s.reading,
  "0–5 min | Icebreaker: "+s.ice+" Invite a spoken, typed, drawn or private answer, or permission to pass.",
  "5–15 min | Book chat: Ask what stories, formats or fictional worlds learners enjoy. No favourite book is required. Share a brief genuine example from your author experience. Invite curiosity, not a reading test.",
- "15–25 min | Author demonstration: "+s.model,
- "25–37 min | Creative game together: "+s.group+" Allow thinking time, invite contributions, and model an idea if nobody starts.",
- "37–52 min | Make your own: "+s.create+" Offer drawing, dictation, typing or writing. Let learners make choices and circulate with encouragement.",
- "52–57 min | Celebrate: Ask if anyone wants to share. Respond to a specific imaginative choice; suggest one optional next possibility. Passing is welcome.",
- "57–60 min | Book discovery: Ask which kind of book, comic, audiobook or story they would like to explore next. Invite a library search or a future creative session; no homework."
+ "15–25 min | Author demonstration: Read the original story spark aloud or offer it silently. "+craft.script+" Allow learners to respond before explaining further.",
+ "25–37 min | Creative game together: "+craft.group+" Allow thinking time, invite contributions, and model an idea if nobody starts.",
+ "37–52 min | Make your own: "+craft.create+" Offer drawing, dictation, typing or writing. "+craft.support+" Let learners make choices and circulate with encouragement.",
+ "52–57 min | Celebrate: Ask if anyone wants to share. "+craft.feedback+" Passing is welcome.",
+ "57–60 min | Book discovery: "+craft.reading+" Ask what they would like to explore next; no homework."
  ].join("\n\n");
 }
 export function campResource(id:unknown,index:number){
- const c=creativeCamp(id),s=c?.sessions[index];if(!s)return null;
- return {creative_camp:true,title:s.title,objective:s.objective,reading:s.reading,tasks:["Imagine a possibility inspired by the reading.",s.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
- {title:s.title,body:s.description},{title:"Book chat",body:"What stories, worlds, characters or genres do you love? Comics and audiobooks count. You can pass."},{title:"Story spark",body:s.reading},{title:"The author’s imagination",body:s.activities[0].question,cards:s.activities[0].options?.map(o=>({label:o,body:"What might happen?"}))},{title:"Create together",body:s.group},{title:"Choose a possibility",body:s.activities[0].question+"\n"+s.activities[0].options?.join("\n")},{title:"Your creative studio",body:s.create},{title:"Optional extra",body:"Give your creation a title, cover idea or next adventure."},{title:"Celebrate and discover",body:"Share if you want to. What kind of book or story would you like to discover next?"}
+ const c=creativeCamp(id),s=c?.sessions[index],craft=s&&CAMP_CRAFT[s.title];if(!s||!craft)return null;
+ return {creative_camp:true,title:s.title,objective:s.objective,reading:s.reading,tasks:[craft.prompt,craft.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
+ {title:s.title,body:s.description},{title:"Book chat",body:"What stories, worlds, characters or genres do you love? Comics and audiobooks count. You can pass."},{title:"Story spark",body:s.reading},{title:"An author’s trick",body:craft.example,cards:[{label:"Imagine",body:craft.prompt},{label:"Try it",body:"Make your own version. There is more than one possibility."}]},{title:"Create together",body:s.group},{title:"Choose a possibility",body:s.activities[0].question+"\n"+s.activities[0].options?.join("\n")},{title:"Your creative studio",body:craft.create},{title:"Optional extra",body:"Give your creation a title, cover idea or next adventure."},{title:"Celebrate and discover",body:"Share if you want to. What kind of book or story would you like to discover next?"}
  ]};
 }
 export function campIllustrationStory(workshop:any){
