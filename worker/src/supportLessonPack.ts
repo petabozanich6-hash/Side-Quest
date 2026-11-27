@@ -139,21 +139,22 @@ export async function useReusableLessonPack(db:D1Database,channel:Channel,id:str
 }
 
 export async function readPrivateLessonDraft(db:D1Database,ownerId:string){
- const row=await db.prepare("SELECT revision,minutes,pack_json,updated_at FROM support_private_lesson_drafts WHERE owner_id=?").bind(ownerId).first<{revision:number;minutes:number;pack_json:string;updated_at:string}>();
- return row?{revision:row.revision,minutes:row.minutes,pack:JSON.parse(row.pack_json),updated_at:row.updated_at}:null;
+ const row=await db.prepare("SELECT draft_id,revision,minutes,pack_json,updated_at FROM support_private_lesson_drafts WHERE owner_id=?").bind(ownerId).first<{draft_id:string;revision:number;minutes:number;pack_json:string;updated_at:string}>();
+ return row?{draft_id:row.draft_id,revision:row.revision,minutes:row.minutes,pack:JSON.parse(row.pack_json),updated_at:row.updated_at}:null;
 }
 export async function checkpointPrivateLessonDraft(db:D1Database,ownerId:string,b:any){
  const minutes=b?.minutes,revision=b?.revision;
  if(!Number.isInteger(minutes)||minutes<15||minutes>180||!Number.isInteger(revision)||revision<0)return {error:"Reload the private draft before saving."};
  const pack=validateLessonPack(b?.pack,minutes);
  if(!pack)return {error:"Draft not saved: correct the lesson content and activity structure first. Your last saved draft is unchanged."};
- const at=new Date().toISOString(),json=JSON.stringify(pack);
- const r=revision===0?await db.prepare("INSERT OR IGNORE INTO support_private_lesson_drafts(owner_id,revision,minutes,pack_json,updated_at) VALUES(?,1,?,?,?)").bind(ownerId,minutes,json,at).run():await db.prepare("UPDATE support_private_lesson_drafts SET revision=revision+1,minutes=?,pack_json=?,updated_at=? WHERE owner_id=? AND revision=?").bind(minutes,json,at,ownerId,revision).run();
+ const at=new Date().toISOString(),json=JSON.stringify(pack),draft_id=revision===0?crypto.randomUUID():b.draft_id;
+ if(typeof draft_id!=="string"||!draft_id)return {error:"Reload the private draft before saving."};
+ const r=revision===0?await db.prepare("INSERT OR IGNORE INTO support_private_lesson_drafts(owner_id,draft_id,revision,minutes,pack_json,updated_at) VALUES(?,?,1,?,?,?)").bind(ownerId,draft_id,minutes,json,at).run():await db.prepare("UPDATE support_private_lesson_drafts SET revision=revision+1,minutes=?,pack_json=?,updated_at=? WHERE owner_id=? AND draft_id=? AND revision=?").bind(minutes,json,at,ownerId,draft_id,revision).run();
  if(!r.meta?.changes)return {error:"A private draft already exists or changed in another window. Reopen the studio before replacing it."};
- return {draft:{revision:revision+1,minutes,pack,updated_at:at}};
+ return {draft:{draft_id,revision:revision+1,minutes,pack,updated_at:at}};
 }
 export async function discardPrivateLessonDraft(db:D1Database,ownerId:string,b:any){
- if(b?.confirmed!==true||!Number.isInteger(b?.revision)||b.revision<1)return false;
- const r=await db.prepare("DELETE FROM support_private_lesson_drafts WHERE owner_id=? AND revision=?").bind(ownerId,b.revision).run();
+ if(b?.confirmed!==true||typeof b.draft_id!=="string"||!Number.isInteger(b?.revision)||b.revision<1)return false;
+ const r=await db.prepare("DELETE FROM support_private_lesson_drafts WHERE owner_id=? AND draft_id=? AND revision=?").bind(ownerId,b.draft_id,b.revision).run();
  return !!r.meta?.changes;
 }
