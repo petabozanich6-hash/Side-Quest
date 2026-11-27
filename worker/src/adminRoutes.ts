@@ -1283,7 +1283,8 @@ export function createAdminRoutes() {
   admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    const p=creativeCamp(c.req.query("camp"));if(!p)return c.json({detail:"Choose Junior Story Adventurers or Teen Storymakers."},404);
+    if(c.req.query("camp")===ADULT_STUDIO.id)return c.json({...ADULT_STUDIO,sessions:ADULT_STUDIO.sessions.map((s,i)=>({...s,description:s.objective,reading:s.spark,agenda:["0–10 Welcome and warm-up","10–25 Author demonstration","25–40 Guided workshop","40–45 Break","45–70 Writing studio","70–83 Optional feedback","83–90 Reflection"],support:"Offer a fictional sample or private writing time; sharing is optional.",check:"Invite a reflection and one achievable next action.",private_preparation:adultStudioGuide(i)}))});
+    const p=creativeCamp(c.req.query("camp"));if(!p)return c.json({detail:"Choose a Writers’ Academy programme."},404);
     return c.json({...p,sessions:p.sessions.map((s,i)=>({...s,activities:campActivities(s),private_preparation:campPreparation(p.id,i)}))});
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
@@ -1292,7 +1293,7 @@ export function createAdminRoutes() {
   });
   admin.post("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    const b=await readJson(c);if(!creativeCamp(b?.curriculum_id))return c.json({detail:"Choose one of the two creative camp programmes."},400);
+    const b=await readJson(c);if(!creativeCamp(b?.curriculum_id)&&b?.curriculum_id!==ADULT_STUDIO.id)return c.json({detail:"Choose a Writers’ Academy programme."},400);
     const r=await createEnglishRound(c.env.DB,c.get("user").id,b);
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
