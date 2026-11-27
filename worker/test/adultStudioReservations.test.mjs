@@ -1,0 +1,44 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {makeDb} from "./fakeD1.mjs";
+import {registerAdultParticipant,ADULT_ATTESTATION_VERSION} from "../src/adultAcademy.ts";
+import {createEnglishRound,setEnglishRoundPublished} from "../src/englishClubRounds.ts";
+import {ADULT_STUDIO} from "../src/writersAcademy.ts";
+import {adultPilotRounds,setAdultPilotRound,reserveAdultStudio,adultReservations,ADULT_TERMS_VERSION} from "../src/adultStudioReservations.ts";
+test("adult pilot reserves exact separate seats and obligations, refuses duplicates and child channel",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const at="2026-12-07T00:00:00.000Z",now=new Date(at);
+ const actors=[];
+ for(let i=0;i<10;i++){
+  const a={id:"adult-"+i,family_id:"family-"+i,role:"parent"};actors.push(a);
+  db.raw.prepare("INSERT INTO families(id,name,owner_id,created_at,plan) VALUES(?,?,?,?,?)").run(a.family_id,"Test family",a.id,at,"PREVIEW_EXPIRED");
+  db.raw.prepare("INSERT INTO users(id,family_id,email,name,is_owner,created_at,email_verified_at) VALUES(?,?,?,?,1,?,?)").run(a.id,a.family_id,a.id+"@example.test","Test writer",at,at);
+  assert.ok((await registerAdultParticipant(db,a,{display_name:"Writer "+i,confirmed:true,attestation_version:ADULT_ATTESTATION_VERSION},now)).participant);
+ }
+ const r=await createEnglishRound(db,actors[0].id,{curriculum_id:ADULT_STUDIO.id,title:ADULT_STUDIO.title,description:ADULT_STUDIO.description,first_local:"2026-12-09T19:00",session_count:6,themes:ADULT_STUDIO.sessions.map(s=>s.title),reviewed_activities:true,confirmed:true},now);
+ assert.ok(r.id,JSON.stringify(r));assert.equal(await setEnglishRoundPublished(db,r.id,{confirmed:true,published:true},now),false);
+ assert.equal((await adultPilotRounds(db,now)).length,0);
+ const b={round_id:r.id,payment_mode:"upfront",expected_total_cents:24000,request_key:"upfront",certificate_delivery:"pdf",terms_version:ADULT_TERMS_VERSION,confirmed:true};
+ assert.ok((await reserveAdultStudio(db,actors[0],b,now)).error);
+ assert.ok(await setAdultPilotRound(db,actors[0].id,r.id,{enabled:true,confirmed:true},now));
+ const round=(await adultPilotRounds(db,now))[0];assert.equal(round.classes.length,6);
+ assert.ok(round.classes.every(c=>Date.parse(c.end_at)-Date.parse(c.start_at)===90*60000));
+ assert.ok((await reserveAdultStudio(db,actors[0],{...b,expected_total_cents:27000},now)).error);
+ assert.ok((await reserveAdultStudio(db,{...actors[0],role:"child"},b,now)).error);
+ const booking=await reserveAdultStudio(db,actors[0],b,now);assert.ok(booking.id,JSON.stringify(booking));
+ assert.deepEqual(await reserveAdultStudio(db,actors[0],b,now),{id:booking.id,created:false});
+ assert.equal((await adultReservations(db,actors[1])).length,0);
+ assert.equal((await adultReservations(db,actors[0]))[0].total_cents,24000);
+ const single={...b,payment_mode:"single",expected_total_cents:4500,class_id:round.classes[0].id,request_key:"single"};
+ assert.ok((await reserveAdultStudio(db,actors[0],single,now)).error);
+ for(let i=1;i<8;i++)assert.ok((await reserveAdultStudio(db,actors[i],single,now)).id);
+ assert.ok((await reserveAdultStudio(db,actors[8],single,now)).error);
+ assert.ok((await reserveAdultStudio(db,actors[8],{...b,payment_mode:"weekly",expected_total_cents:27000,request_key:"weekly"},now)).error);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_academy_adult_seats").get().n,13);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_academy_adult_bookings").get().n,8);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments").get().n,0);
+ assert.equal(db.raw.prepare("SELECT amount_cents FROM support_academy_adult_obligations WHERE booking_id=?").get(booking.id).amount_cents,24000);
+ assert.ok(await setAdultPilotRound(db,actors[0].id,r.id,{enabled:false,confirmed:true},now));
+ assert.equal((await adultPilotRounds(db,now)).length,0);
+ assert.equal((await adultReservations(db,actors[0]))[0].provisional_places,6);
+});
