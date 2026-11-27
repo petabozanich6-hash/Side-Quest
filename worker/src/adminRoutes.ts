@@ -90,6 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {illustrationEnabled,draftLessonIllustration} from "./supportIllustrations";
 import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
@@ -895,6 +896,17 @@ export function createAdminRoutes() {
   admin.post("/support-files/:fid/archive",requirePermission("customers.read"),async c=>{
     const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
+  });
+  admin.get("/support-illustrations/status",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return c.json({enabled:illustrationEnabled(c.env),storage_available:!!c.env.BUCKET});
+  });
+  admin.post("/support-illustrations/draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const r=await draftLessonIllustration(c.env,c.get("user"),await readJson(c));
+    return "error" in r?c.json({detail:r.error},409):c.json(r);
   });
   admin.get("/support-lesson-library",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
