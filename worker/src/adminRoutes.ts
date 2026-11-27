@@ -60,7 +60,7 @@ import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
  */
 import { Hono, type Context, type Next } from "hono";
 import type { AuthenticationResponseJSON, RegistrationResponseJSON } from "@simplewebauthn/server";
-import { activeRoles, permissionsFor, type Permission, type Role } from "./access";
+import { isPlatformOwner, activeRoles, permissionsFor, type Permission, type Role } from "./access";
 import { hitRateLimit, recordSecurityEvent, writeAudit } from "./adminAudit";
 import { customerDetail, customerSummary, familyHasAdmin, FAMILY_ID, overview, searchCustomers } from "./adminData";
 import { verifySecret,hashSecret } from "./auth";
