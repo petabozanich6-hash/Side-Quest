@@ -305,7 +305,7 @@ test("structured model guidance is converted without changing instructional cont
  }
  structured.sequence=structured.sequence.map(s=>({...s,minutes:2}));
  const normal=normaliseGeneratedLessonPack(structured,30);
- assert.deepEqual(normal.sequence.map(s=>s.minutes),[6,6,7,7,4]);
+ assert.deepEqual(normal.sequence.map(s=>s.minutes),[8,7,6,5,4]);
  assert.deepEqual(normal.slides.map(s=>s.notes),englishPack.slides.map(s=>s.notes));
  assert.ok(validateLessonPack(normal,30));
  const short=structuredClone(structured);short.slides[0].notes.check="Too short";
@@ -440,3 +440,5 @@ test("deterministic experiment schemas and shared learner controls are bounded",
  assert.equal(adjust(0,-6),null);assert.equal(adjust(1,6),null);assert.equal(adjust(0,-3,true),null);s=adjust(0,-3);s=adjust(1,5);assert.deepEqual(s.placements,[-3,5]);assert.equal(changeSlideInteraction(coordinates,s,{visual_id:s.id,operation:"toggle",index:0},false),null);
  const binary={type:"experiment",model:"binary",prompt:"Build decimal thirteen."};let b=initialSlideInteraction(binary);const toggle=index=>changeSlideInteraction(binary,b,{visual_id:b.id,operation:"toggle",index},false);assert.equal(toggle(4),null);b=toggle(0);b=toggle(1);b=toggle(3);assert.deepEqual(b.selected,[0,1,3]);assert.equal(changeSlideInteraction(binary,b,{visual_id:b.id,operation:"adjust",index:0,direction:1},false),null);
  });
+
+ test("explicit teaching requires separate instruction and modelling and 40 percent teaching time",()=>{assert.ok(validateLessonPack(pack,30));assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===0?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===1||i===2?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:6},{phase:"model",minutes:4},{phase:"model",minutes:4},{phase:"guided",minutes:7},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);const v=validateSlideVisual(pack.slides[0].visual);assert.equal(v.type,"concept-lesson");let s=initialSlideInteraction(v);assert.equal(s.reveal,1);assert.equal(changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},false),null);for(let i=2;i<=4;i++){s=changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},true);assert.equal(s.reveal,i);}assert.equal(changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},true),null);assert.equal(validateSlideVisual({...v,why:""}),null);});
