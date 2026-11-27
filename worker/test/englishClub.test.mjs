@@ -185,3 +185,26 @@ test("junior and teen creative camps can run in the same week without overlappin
   for(const a of session.activities)assert.ok(validateActivityTemplate({...a,subject:"English",year_level:"Ages "+c.age}));
  }
 });
+
+
+test("creative camp sessions teach distinct writing craft through private scripts and public worked examples",async()=>{
+ const {CREATIVE_CAMPS,campPreparation,campResource}=await import("../src/englishClubCreativeCamps.ts");
+ const {CAMP_CRAFT}=await import("../src/englishClubCampCraft.ts");
+ assert.equal(Object.keys(CAMP_CRAFT).length,12);
+ const skills=new Set();
+ for(const c of CREATIVE_CAMPS)for(const [i,s] of c.sessions.entries()){
+  const craft=CAMP_CRAFT[s.title],guide=campPreparation(c.id,i),resource=campResource(c.id,i);
+  assert.ok(craft);
+  skills.add(craft.skill);
+  for(const field of ["concept","script","group","create","support","feedback","reading"])assert.ok(guide.includes(craft[field]),s.title+" missing "+field);
+  assert.match(guide,/Private craft objective:/);
+  assert.equal(resource.slides[3].body,craft.example);
+  assert.equal(resource.slides[3].cards[0].body,craft.prompt);
+  assert.equal(resource.slides[6].body,craft.create);
+  assert.equal(resource.tasks[0],craft.prompt);
+  assert.ok(!JSON.stringify(resource).includes(craft.script));
+  assert.ok(!JSON.stringify(resource).includes(craft.feedback));
+  assert.ok(!JSON.stringify(resource).includes("Private craft objective"));
+ }
+ assert.equal(skills.size,12);
+});
