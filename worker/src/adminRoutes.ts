@@ -39,7 +39,7 @@ import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVide
 import {listEnglishClub,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
-import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
+import {lessonProgress,saveLessonCheckpoint,lessonContinuity} from "./supportLessonProgress";
 /**
  * Owner HQ: owner-only administration API (/api/admin/*).
  *
@@ -1452,6 +1452,13 @@ export function createAdminRoutes() {
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
       if(!await exists(c,id)||!await getOrder(c.env.DB,channel,id,oid))return c.json({detail:"Order not found"},404);
       c.header("Cache-Control","private, no-store");return c.json({notification:await bookingNotificationStatus(c.env.DB,channel,id,oid)});
+    });
+    admin.get(path+"/:oid/lesson-continuity",requirePermission("customers.read"),async c=>{
+      const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
+      if(!unifiedPortalPilot(c.env)||!await exists(c,id))return c.json({detail:"Not found"},404);
+      c.header("Cache-Control","private, no-store");
+      const history=await lessonContinuity(c.env.DB,channel,id,oid);
+      return history?c.json(history):c.json({detail:"Live tutoring appointment required."},404);
     });
     admin.get(path+"/:oid/lesson-pack",requirePermission("customers.read"),async c=>{
       const id=c.req.param("id")??"",oid=c.req.param("oid")??"";
