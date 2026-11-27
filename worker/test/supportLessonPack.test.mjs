@@ -173,3 +173,34 @@ test("cross-subject inquiry modules validate bounded content and keep solutions 
  assert.equal(validateSlideVisual({...data,rows:[{label:"A",value:2},{label:"B",value:-1},{label:"C",value:3}]}),null);
  assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===3||i===5?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);
 });
+
+import {englishPack,sciencePack} from "./fixtures/supportInquiryPacks.mjs";
+test("complete English and Science lessons meet the same explicit teaching and inquiry gates as Mathematics",()=>{
+ for(const p of [englishPack,sciencePack]){
+  const valid=validateLessonPack(p,30);
+  assert.ok(valid,p.subject+" acceptance pack must be valid");
+  assert.equal(valid.sequence.length,5);
+  assert.ok(valid.slides.slice(2).every(s=>["evidence-quest","sort-quest","data-quest"].includes(s.visual.type)));
+  assert.equal(validateLessonPack({...p,slides:p.slides.map((s,i)=>i>=2?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);
+ }
+});
+test("reviewed English and Science modules present learner content without tutor solutions",async()=>{
+ const {db,now}=setup();
+ try{
+ for(const [p,oid] of [[englishPack,"pack-one"],[sciencePack,"pack-two"]]){
+  const saved=await approveLessonPack(db,"guest","pack-request",oid,{pack:p,confirmed:true});
+  assert.ok(saved.saved,JSON.stringify(saved));
+  assert.ok(await setClassroomOpen(db,"guest","pack-request",oid,true,now));
+  const read=()=>classroomState(db,"guest","pack-request",oid,false,now);
+  for(let i=2;i<5;i++){
+   const r=await editClassroom(db,"guest","pack-request",oid,true,{action:"present",deck_id:saved.saved.deck_id,deck_revision:1,index:i,revision:(await read()).revision},now);
+   assert.ok(r.ok,JSON.stringify(r));
+   const current=(await read()).board.slide;
+   assert.deepEqual(current.visual,p.slides[i].visual);
+   assert.equal("notes" in current,false);
+   assert.equal("answer" in current.visual,false);
+   assert.equal(JSON.stringify(current).includes(p.slides[i].notes),false);
+  }
+ }
+ }finally{db.raw.close();}
+});
