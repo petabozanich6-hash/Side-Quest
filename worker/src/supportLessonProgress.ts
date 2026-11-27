@@ -40,3 +40,30 @@ export function reportFromCheckpoints(points:Checkpoint[]){
  const home=[...new Set(observed.map(p=>p.home).filter(Boolean))];
  return [observed.map(p=>p.label).join("\n"),strengths.join("\n")||"No independent or supported achievement was recorded for these checkpoints.",practice.map(p=>p.label).join("\n")||"No specific difficulty was recorded; continue practising the covered skills.",home.join("\n")||"No home activity was recorded; ask the tutor for an appropriate independent practice activity."];
 }
+
+
+// Continuity is owner-only. Cross-enquiry history requires an exact portal learner,
+// family and parent identity; a shared nickname or email is never sufficient.
+export async function lessonContinuity(db:D1Database,channel:Channel,id:string,oid:string,now=new Date()){
+ const current=await getOrder(db,channel,id,oid);
+ if(!current||current.mode!=="live"||!["awaiting_confirmation","confirmed","paid","completed"].includes(current.status)||!current.start_at)return null;
+ const cutoff=new Date(Math.min(Date.parse(current.start_at),now.getTime())).toISOString();
+ const identity=channel==="guest"?await db.prepare("SELECT learner_id,family_id,parent_user_id FROM support_portal_enquiries WHERE request_id=?").bind(id).first<{learner_id:string;family_id:string;parent_user_id:string}>():null;
+ // For unlinked enquiries, only a shared explicitly reserved package identifies a sequence.
+ const linked=!!(identity?.learner_id&&identity.family_id&&identity.parent_user_id);
+ const scope=linked?"o.channel='guest' AND EXISTS(SELECT 1 FROM support_portal_enquiries p WHERE p.request_id=o.request_id AND p.learner_id=? AND p.family_id=? AND p.parent_user_id=?)":current.package_root_id?"o.channel=? AND o.request_id=? AND EXISTS(SELECT 1 FROM support_package_sessions p WHERE p.order_id=o.id AND p.root_id=?)":"0";
+ const params=linked?[identity!.learner_id,identity!.family_id,identity!.parent_user_id]:current.package_root_id?[channel,id,current.package_root_id]:[];
+ const rows=(await db.prepare("SELECT o.id,o.start_at,o.end_at,g.checkpoints_json,k.pack_json FROM support_service_orders o JOIN support_lesson_progress g ON g.order_id=o.id LEFT JOIN support_appointment_lesson_packs k ON k.order_id=o.id WHERE o.id<>? AND o.mode='live' AND o.status IN ('paid','completed') AND o.checkout_started_at IS NULL AND julianday(o.end_at)<=julianday(?) AND ("+scope+") ORDER BY o.end_at DESC,o.id LIMIT 6").bind(oid,cutoff,...params).all<{id:string;start_at:string;end_at:string;checkpoints_json:string;pack_json:string|null}>()).results||[];
+ const lessons=rows.flatMap(row=>{
+  try{
+   const points=JSON.parse(row.checkpoints_json);
+   if(!Array.isArray(points))return [];
+   const observed=points.filter(p=>["covered","independent","supported","practise"].includes(p?.status)&&typeof p.label==="string"&&typeof p.observed_at==="string").slice(0,12).map(p=>({label:p.label.slice(0,900),status:p.status,observed_at:p.observed_at}));
+   if(!observed.length)return [];
+   let subject="",objective="",title="";
+   if(row.pack_json){const pack=JSON.parse(row.pack_json);subject=typeof pack.subject==="string"?pack.subject.slice(0,80):"";objective=typeof pack.objective==="string"?pack.objective.slice(0,600):"";title=typeof pack.title==="string"?pack.title.slice(0,120):"";}
+   return [{start_at:row.start_at,end_at:row.end_at,title,subject,objective,observations:observed}];
+  }catch{return [];}
+ });
+ return {scope:linked?"verified_learner":current.package_root_id?"same_package":"unlinked",lessons};
+}
