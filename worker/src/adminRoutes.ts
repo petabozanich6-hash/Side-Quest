@@ -4,6 +4,8 @@ import {academyPrice} from "./writersAcademyPricing";
 import {setAdultPilotRound} from "./adultStudioReservations";
 import {listAdultInvoiceObligations,previewAdultInvoice,prepareAdultInvoice} from "./adultSquareInvoicePreparation";
 import {adultInvoiceWorkspace,createAdultSquareOrder,createAdultSquareDraft} from "./adultSquareInvoiceDraft";
+import {publishAdultSquareInvoice} from "./adultSquareInvoicePublication";
+import {verifyAdultSquarePayment} from "./adultSquareInvoiceSettlement";
 import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
@@ -1316,7 +1318,7 @@ export function createAdminRoutes() {
     if(!unifiedPortalPilot(c.env)||!await isPlatformOwner(c.env.DB,c.get("user").id))return c.json({detail:"Owner-only private pilot required."},403);
     c.header("Cache-Control","private, no-store");
     const id=c.req.param("id")||"",action=c.req.param("action"),b=await readJson(c);
-    const r=action==="preview"?await previewAdultInvoice(c.env,id,b):action==="prepare"?await prepareAdultInvoice(c.env,id,c.get("user").id,b):action==="order"?await createAdultSquareOrder(c.env,id,b):action==="draft"?await createAdultSquareDraft(c.env,id,b):{error:"Unknown adult invoice action."};
+    const r=action==="preview"?await previewAdultInvoice(c.env,id,b):action==="prepare"?await prepareAdultInvoice(c.env,id,c.get("user").id,b):action==="order"?await createAdultSquareOrder(c.env,id,b):action==="draft"?await createAdultSquareDraft(c.env,id,b):action==="publish"?await publishAdultSquareInvoice(c.env,id,c.get("user").id,b):action==="verify"?await verifyAdultSquarePayment(c.env,id):{error:"Unknown adult invoice action."};
     if("error" in r)return c.json({detail:r.error},409);
     if(action!=="preview")await writeAudit(c.env.DB,{...actor(c),action:"academy.adult_invoice_"+action,targetType:"english_club",targetId:id});
     return c.json(r);
