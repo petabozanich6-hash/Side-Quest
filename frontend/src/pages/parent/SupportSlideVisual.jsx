@@ -11,7 +11,7 @@ export default function SupportSlideVisual({visual,interaction,send,owner=false,
  if(!visual)return null;
  const state=live?(interaction||{reveal:99,selected:[],order:visual.type==="order"?visual.items.map((_,i)=>i):[]}):local;
  const {reveal,selected,order}=state;
- const demo=["fraction-split","fraction-bars","steps","compare","sequence"].includes(visual.type);
+ const demo=["concept-lesson","fraction-split","fraction-bars","steps","compare","sequence"].includes(visual.type);
  const canDemo=!live||owner&&!!interaction,canAnswer=!live||!owner&&!!interaction;
  const disabled=busy||live&&!interaction;
  function act(operation,index,direction){
@@ -27,9 +27,10 @@ export default function SupportSlideVisual({visual,interaction,send,owner=false,
    return s;
   });
  }
- const max=visual.type==="fraction-split"?2:visual.type==="fraction-bars"?visual.rows.length:visual.items?.length||1;
+ const max=visual.type==="concept-lesson"?4:visual.type==="fraction-split"?2:visual.type==="fraction-bars"?visual.rows.length:visual.items?.length||1;
  const controls=demo&&canDemo?<div className="flex flex-wrap gap-2">{reveal<max&&<button type="button" className={button} disabled={disabled} onClick={()=>act("reveal")}>{visual.type==="fraction-split"?"Split every part into "+visual.factor:"Reveal next step"}</button>}{reveal>1&&<button type="button" className={button} disabled={disabled} onClick={()=>act("reset")}>Restart demonstration</button>}</div>:null;
  return <div className="rounded-xl bg-white text-emerald-950 p-4 space-y-4" aria-label="Interactive teaching model">
+ {visual.type==="concept-lesson"&&<section className="space-y-3"><h5 className="font-display text-2xl font-bold">{visual.term}</h5>{[["What it means",visual.definition],["An example",visual.example],["Compare: a non-example or contrasting case",visual.contrast],["Why it matters",visual.why]].slice(0,reveal).map(([label,body],i)=><div key={label} className={"rounded-xl border p-4 "+(i===0?"bg-emerald-50 border-emerald-200":"bg-white border-stone-200")}><p className="text-sm font-bold text-emerald-800">{label}</p><p className="mt-1 text-lg whitespace-pre-wrap break-words">{body}</p></div>)}</section>}
  {visual.type==="fraction-split"&&<><Bar total={visual.total*(reveal>1?visual.factor:1)} shaded={visual.shaded*(reveal>1?visual.factor:1)}/>{reveal>1?<p className="text-sm font-semibold" role="status">{visual.shaded}/{visual.total} = {visual.shaded*visual.factor}/{visual.total*visual.factor}. Same shaded length; more, smaller equal parts.</p>:<p className="text-sm">What happens if we split every piece into {visual.factor} equal parts?</p>}</>}
  {visual.type==="fraction-bars"&&visual.rows.slice(0,reveal).map((r,i)=><Bar key={i} total={r.total} shaded={r.shaded}/>)}
  {["steps","compare","sequence"].includes(visual.type)&&<div className={"grid gap-2 "+(visual.type==="compare"?"sm:grid-cols-2":"")}>{visual.items.slice(0,reveal).map((item,i)=><div key={i} className="rounded-lg border border-emerald-200 p-4"><p className="text-sm font-semibold text-emerald-800">{visual.type==="compare"?item.label:(i+1)+". "+item.label}</p><p className="text-lg font-medium whitespace-pre-wrap break-words mt-1">{item.body}</p></div>)}</div>}
