@@ -929,7 +929,7 @@ export function createAdminRoutes() {
     const b=await readJson(c),r=await saveReusableLessonPack(c.env.DB,b);
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_library.create",targetType:"support",targetId:r.saved.id,detail:{}});
-    const cleared=b.draft_revision?await discardPrivateLessonDraft(c.env.DB,c.get("user").id,{revision:b.draft_revision,confirmed:true}):false;
+    const cleared=b.draft_revision?await discardPrivateLessonDraft(c.env.DB,c.get("user").id,{draft_id:b.draft_id,revision:b.draft_revision,confirmed:true}):false;
     return c.json({...r,draft_cleared:cleared},201);
   });
   admin.get("/support-lesson-library/:lessonId",requirePermission("customers.read"),async c=>{
