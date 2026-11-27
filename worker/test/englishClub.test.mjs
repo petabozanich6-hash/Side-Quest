@@ -86,7 +86,7 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  const result=await createEnglishRound(db,"owner",body,now);assert.ok(result.id,JSON.stringify(result));
  const rows=db.raw.prepare("SELECT c.id,c.preparation,c.public_description FROM support_english_classes c JOIN support_english_round_classes x ON x.class_id=c.id WHERE x.round_id=? ORDER BY x.sequence").all(result.id);
  assert.equal(rows.length,6);
- rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));for(const phase of ["I teach","I demonstrate","We practise together","You try independently","Adapt and give feedback","Exit check"])assert.ok(r.preparation.includes(phase));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
+ rows.forEach((r,i)=>{assert.equal(r.preparation,storyQuestPreparation(i));for(const phase of ["Icebreaker","I teach","I demonstrate","We practise together","You try independently","Adapt and give feedback","Exit check"])assert.ok(r.preparation.includes(phase));assert.equal(r.public_description,STORY_QUEST.sessions[i].description);});
  const {workshopResource}=await import("../src/englishClubWorkshopResources.ts");
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_workshop_resources").get().n,6);
  for(const [i,r] of rows.entries()){
@@ -115,4 +115,24 @@ test("Author-led workshop preset saves six private lesson plans and only public 
  assert.equal(rounds[0].classes.length,6);assert.equal(singles.length,6);
  for(const [i,s] of singles.entries())assert.equal(s.description,STORY_QUEST.sessions[i].description);
  for(const result of [rounds,singles]){assert.ok(!JSON.stringify(result).includes("60-minute facilitator plan"));assert.ok(!JSON.stringify(result).includes("Original reading:"));}
+});
+
+
+test("all six English Club icebreakers are distinct five-minute opening steps with participation choices",async()=>{
+ const {englishTeachingGuide}=await import("../src/englishClubTeachingGuides.ts");
+ const titles=new Set();
+ for(let i=0;i<6;i++){
+  const steps=englishTeachingGuide(i).split("\n\n");
+  assert.equal(steps.length,7);
+  const opening=steps[0];
+  assert.match(opening,/^0–5 min \| Icebreaker — [^:]+: /);
+  assert.match(opening,/permission to pass/);
+  assert.match(opening,/Transition:/);
+  titles.add(opening.split(": ")[0]);
+  assert.match(steps[1],/^5–13 min \| I teach/);
+  assert.match(steps[6],/^57–60 min \| Exit check/);
+ }
+ assert.equal(titles.size,6);
+ assert.equal(englishTeachingGuide(-1),"");
+ assert.equal(englishTeachingGuide(6),"");
 });
