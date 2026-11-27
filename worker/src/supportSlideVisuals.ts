@@ -50,24 +50,28 @@ export function validateSlideVisual(v:any){
 export function initialSlideInteraction(visual:unknown){
  const v=validateSlideVisual(visual);
  if(!v)return null;
- return {id:crypto.randomUUID(),reveal:1,selected:[] as number[],order:v.type==="order"?v.items.map((_,i)=>i):[] as number[]};
+ return {id:crypto.randomUUID(),reveal:1,checked:false,selected:[] as number[],order:v.type==="order"?v.items.map((_,i)=>i):[] as number[]};
 }
 export function changeSlideInteraction(visual:unknown,current:any,b:Record<string,unknown>,owner:boolean){
  const v=validateSlideVisual(visual);
  if(!v||!current||typeof current.id!=="string"||b.visual_id!==current.id)return null;
- const next={id:current.id,reveal:current.reveal,selected:[...current.selected],order:[...current.order]};
+ const next={id:current.id,reveal:current.reveal,checked:current.checked===true,selected:[...current.selected],order:[...current.order]};
  const demo=v.type==="fraction-split"||v.type==="fraction-bars"||v.type==="steps"||v.type==="compare"||v.type==="sequence";
  if(b.operation==="reset"){
   if(demo&&!owner)return null;
-  next.reveal=1;next.selected=[];next.order=v.type==="order"?v.items.map((_,i)=>i):[];
+  next.reveal=1;next.checked=false;next.selected=[];next.order=v.type==="order"?v.items.map((_,i)=>i):[];
  }else if(b.operation==="reveal"&&owner&&demo){
   const max=v.type==="fraction-split"?2:v.type==="fraction-bars"?v.rows.length:"items" in v?v.items.length:1;
   if(next.reveal>=max)return null;
   next.reveal++;
+ }else if(b.operation==="check"&&!owner&&v.type==="fraction-quest"){
+  if(next.selected.length===0)return null;
+  next.checked=true;
  }else if(b.operation==="toggle"&&!owner&&(v.type==="fraction-build"||v.type==="fraction-quest"||v.type==="select")){
   const max=v.type==="fraction-build"?v.total:v.type==="fraction-quest"?v.target_total:v.items.length;
   if(!integer(b.index,0,max-1))return null;
   const i=b.index;
+  next.checked=false;
   next.selected=next.selected.includes(i)?next.selected.filter(x=>x!==i):[...next.selected,i].sort((a,b)=>a-b);
  }else if(b.operation==="move"&&!owner&&v.type==="order"){
   if(!integer(b.index,0,v.items.length-1)||(b.direction!==-1&&b.direction!==1))return null;
