@@ -1,10 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,validateGeneratedTutorDialogue,lessonStageGuide,lessonInterest,prepareFractionSample,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
-import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
+import {lessonArtInput,decodeLessonArt,generateLessonArt,lessonIllustrationAllowance} from "../src/supportLessonArt.ts";
+import {classroomState,setClassroomOpen,editClassroom,canReadClassroomImage} from "../src/supportClassrooms.ts";
 const pack=fractionPack("Equivalent fractions","Mathematics","Year 4","Understand and identify equivalent fractions using visual models.",30);
 pack.slides[0].notes+=" PRIVATE-SOLUTION";
 pack.worksheet[0].answer+=" PRIVATE-WORKSHEET-1";
@@ -312,4 +313,113 @@ test("structured model guidance is converted without changing instructional cont
  const wrong=structuredClone(structured);wrong.sequence[0].phase="model";
  assert.equal(validateLessonPack(normaliseGeneratedLessonPack(wrong,30),30),null);
  assert.equal(normaliseGeneratedLessonPack(structured,45).sequence[0].minutes,2);
+});
+
+test("stage guidance distinguishes early primary from secondary, even with stage labels",()=>{
+ assert.match(lessonStageGuide("Foundation"),/concrete objects/);
+ assert.match(lessonStageGuide("Year 3"),/Stage 2/);
+ assert.match(lessonStageGuide("Year 7"),/interpretation and evidence/);
+ assert.equal(lessonStageGuide("Stage 4"),lessonStageGuide("Year 8"));
+ assert.match(lessonStageGuide("Year 12"),/Senior secondary/);
+ assert.match(lessonStageGuide("Other"),/do not invent/);
+});
+test("AI teaching dialogue must include a meaningful spoken script, question and learner attempt",()=>{
+ assert.ok(validateGeneratedTutorDialogue(validateLessonPack(englishPack,30)));
+ const copy=structuredClone(englishPack);
+ const script="[SAY] Today we're going to explore how a writer creates an image using carefully chosen language. Read the example aloud with me and notice the words that help you picture the setting. [SHOW] Point to the first line and explain how the comparison changes its meaning. [ASK] What detail makes the comparison effective, and why? [PAUSE] Give the learner time to reread the example and explain their answer. [RESPOND] Ask them to name the shared quality and support it with a specific word.";
+ for(const slide of copy.slides)slide.notes=slide.notes.replace(/SAY AND SHOW:[\s\S]+?\nIF THEY GET STUCK:/,"SAY AND SHOW: "+script+"\nIF THEY GET STUCK:");
+ const valid=validateLessonPack(copy,30);
+ assert.ok(valid);assert.equal(validateGeneratedTutorDialogue(valid),null);
+ const noPause=structuredClone(valid);noPause.slides[0].notes=noPause.slides[0].notes.replace("[PAUSE]","");
+ assert.match(validateGeneratedTutorDialogue(noPause),/Slide 1/);
+ const noShow=structuredClone(valid);const model=noShow.sequence.findIndex(x=>x.phase==="model");noShow.slides[model].notes=noShow.slides[model].notes.replace("[SHOW]","");
+ assert.match(validateGeneratedTutorDialogue(noShow),/worked demonstration/);
+});
+
+test("creation quest shares readiness without scratchpad text or private answers",()=>{
+ const raw={type:"create-quest",title:"The last clue",context:"A deserted station at dusk.",prompt:"Write two sentences that suggest suspense and explain your language choices.",criteria:["Use a deliberate metaphor","Explain the intended effect"],answer:"PRIVATE ANSWER"};
+ const visual=validateSlideVisual(raw);assert.ok(visual);assert.equal(visual.answer,undefined);
+ assert.equal(validateSlideVisual({...raw,criteria:["Only one"]}),null);
+ const state=initialSlideInteraction(visual);
+ assert.equal(changeSlideInteraction(visual,state,{visual_id:state.id,operation:"check"},true),null);
+ const ready=changeSlideInteraction(visual,state,{visual_id:state.id,operation:"check",text:"PRIVATE SCRATCHPAD"},false);
+ assert.equal(ready.checked,true);assert.ok(!JSON.stringify(ready).includes("PRIVATE SCRATCHPAD"));
+ assert.equal(changeSlideInteraction(visual,ready,{visual_id:state.id,operation:"reset"},false).checked,false);
+ const copy=structuredClone(englishPack);
+ copy.slides[copy.sequence.findIndex(s=>s.phase==="independent")].visual=visual;
+ assert.ok(validateLessonPack(copy,30));
+});
+
+test("illustration draft validates metadata, format and staging storage before provider usage",async()=>{
+ const input={title:"The hidden clue",subject:"English",year_level:"Year 7",brief:"A deserted railway station at dusk",confirmed:true};
+ const prepared=lessonArtInput(input);assert.ok(prepared);assert.match(prepared.prompt,/No text/);
+ assert.equal(lessonArtInput({...input,confirmed:false}),null);
+ assert.equal(lessonArtInput({...input,brief:"x".repeat(801)}),null);
+ const png=btoa(String.fromCharCode(137,80,78,71,13,10,26,10));
+ assert.equal(decodeLessonArt({image:png},input).mime,"image/png");
+ assert.equal(decodeLessonArt({image:btoa("not an image")},input),null);
+ let called=false;
+ const result=await generateLessonArt({AI:{run:async()=>{called=true;}}},{},input);
+ assert.ok(result.error);assert.equal(called,false);
+});
+test("reviewed illustration is visible only on the presented slide of the correct open paid classroom",async t=>{
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const id="12345678-1234-1234-1234-123456789abc",copy=structuredClone(pack);
+ copy.slides[0].art_brief="PRIVATE ART BRIEF";copy.slides[0].illustration_id=id;
+ assert.ok((await approveLessonPack(db,"guest","pack-request","pack-one",{pack:copy,confirmed:true})).error);
+ const insert=db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+ insert.run(id,"Learning illustration","Mathematics","Year 4","image.jpg","image/jpeg",100,"support-private/"+id,"tutor","active",now.toISOString());
+ assert.ok((await approveLessonPack(db,"guest","pack-request","pack-one",{pack:copy,confirmed:true})).error);
+ db.raw.prepare("UPDATE support_files SET audience='learner' WHERE id=?").run(id);
+ const result=await approveLessonPack(db,"guest","pack-request","pack-one",{pack:copy,confirmed:true});
+ assert.ok(result.saved,JSON.stringify(result));assert.equal(result.saved.pack.slides[0].art_brief,"PRIVATE ART BRIEF");
+ await setClassroomOpen(db,"guest","pack-request","pack-one",true,now);
+ const present=async index=>editClassroom(db,"guest","pack-request","pack-one",true,{action:"present",deck_id:result.saved.deck_id,deck_revision:1,index,revision:(await classroomState(db,"guest","pack-request","pack-one",true,now)).revision},now);
+ assert.ok((await present(0)).ok);
+ const state=await classroomState(db,"guest","pack-request","pack-one",false,now);
+ assert.equal(state.board.slide.illustration.id,id);assert.ok(!JSON.stringify(state).includes("PRIVATE ART BRIEF"));
+ assert.ok(await canReadClassroomImage(db,"guest","pack-request","pack-one",id,false,now));
+ assert.equal(await canReadClassroomImage(db,"guest","wrong","pack-one",id,false,now),false);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-two",id,false,now),false);
+ assert.ok((await present(1)).ok);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",id,false,now),false);
+});
+
+test("contextual illustration allowances scale with the length of the lesson and stay bounded",()=>{
+ for(const [minutes,allowance] of [[15,3],[30,6],[45,9],[60,12],[90,18],[120,18],[180,18]])assert.equal(lessonIllustrationAllowance(minutes),allowance);
+});
+test("a longer lesson can include more than nine distinct teaching slides",()=>{
+ const phases=englishPack.sequence.map(s=>s.phase);
+ const extended=structuredClone(englishPack);
+ extended.slides=[];extended.sequence=[];
+ for(const [i,slide] of englishPack.slides.entries()){
+  for(let j=0;j<2;j++){
+   extended.slides.push({...slide,heading:slide.heading+" "+(j+1)});
+   extended.sequence.push({phase:phases[i],minutes:englishPack.sequence[i].minutes});
+  }
+ }
+ assert.ok(extended.slides.length>9);
+ assert.ok(validateLessonPack(extended,60));
+});
+
+test("new sample begins with a playful welcome and keeps its booked duration",()=>{
+ const fresh=prepareFractionSample(pack);
+ assert.equal(fresh.sequence[0].phase,"welcome");
+ assert.equal(fresh.sequence[0].minutes,3);
+ assert.equal(fresh.sequence.reduce((n,x)=>n+x.minutes,0),30);
+ assert.ok(validateLessonPack(fresh,30));
+ assert.match(fresh.slides[0].notes,/no correct choice/i);
+ assert.match(fresh.slides.at(-1).notes,/do not claim mastery/);
+ assert.equal(pack.sequence[0].phase,"teach");
+ const invalid=structuredClone(fresh);
+ invalid.sequence[0].minutes=6;
+ invalid.sequence[1].minutes=1;
+ assert.equal(validateLessonPack(invalid,30),null);
+});
+test("generic interests are optional and bounded",()=>{
+ assert.equal(lessonInterest(undefined),"");
+ assert.equal(lessonInterest(" cats "),"cats");
+ assert.equal(lessonInterest("x".repeat(161)),null);
+ assert.equal(lessonInterest("cats\nprivate"),null);
+ assert.equal(lessonInterest({name:"cat"}),null);
 });

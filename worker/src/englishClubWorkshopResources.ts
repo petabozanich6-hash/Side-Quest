@@ -1,3 +1,4 @@
+import {ENGLISH_CLUB_ICEBREAKERS} from "./englishClubTeachingGuides";
 import {STORY_QUEST} from "./englishClubCurriculum";
 // Only learner-facing material belongs in this snapshot. Never copy private facilitator notes.
 const teaching = [
@@ -20,7 +21,7 @@ const demonstrations=[
 export function workshopResource(index:number){
  const s=STORY_QUEST.sessions[index],t=teaching[index],m=demonstrations[index];if(!s||!t||!m)return null;
  return {title:s.title,objective:s.objective,reading:s.reading,tasks:[...t.tasks],stretch:t.stretch,slides:[
-  {title:s.title,body:s.objective},
+  {title:s.title+" · "+ENGLISH_CLUB_ICEBREAKERS[index].title,body:ENGLISH_CLUB_ICEBREAKERS[index].prompt+"\nJoin in, listen or pass. There is no right answer."},
   {title:"The central idea",body:t.concept},
   {title:"Read closely",body:s.reading},
   {title:m.heading,body:m.body,cards:[...m.cards]},
@@ -28,6 +29,6 @@ export function workshopResource(index:number){
   {title:"Discuss",body:s.activities[0].question+"\n"+s.activities[0].options.join("\n")},
   {title:"Writing studio",body:t.tasks.join("\n\n")},
   {title:"Extend your thinking",body:t.stretch},
-  {title:"Reflect and revise",body:"What deliberate choice did you make? Explain its effect. You may respond privately or keep your writing to yourself."}
+  {title:"Your adventure takeaway",body:"What deliberate choice did you make? Explain its effect. Choose one idea to take away. You may share, write privately or simply think. Optional next challenge: notice an interesting language choice in the world around you. Thank you for exploring with us!"}
  ]};
 }

@@ -78,3 +78,19 @@ test("fraction kitchen gives specific mathematical feedback and supports revisio
  expect(tutor.textContent).toContain("Quest solved!");
  expect(button(tutor,"Piece 2").disabled).toBe(true);
 });
+
+test("creation workspace shares readiness but not the learner's private text",async()=>{
+ const visual={type:"create-quest",title:"Write the clue",context:"An empty station",prompt:"Create a metaphor",criteria:["Use a vivid comparison","Explain its effect"]};
+ const {learnerSend}=setup(visual);
+ expect(learner.querySelector("textarea")).not.toBeNull();
+ expect(tutor.querySelector("textarea")).toBeNull();
+ const area=learner.querySelector("textarea");
+ await act(async()=>{Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,"value").set.call(area,"My private attempt");area.dispatchEvent(new Event("input",{bubbles:true}));});
+ await click(learner,"Ready to discuss my creation");
+ expect(learnerSend).toHaveBeenCalledWith(expect.objectContaining({operation:"check"}));
+ expect(JSON.stringify(learnerSend.mock.calls)).not.toContain("My private attempt");
+ expect(tutor.textContent).toContain("Learner is ready");
+ expect(tutor.textContent).not.toContain("My private attempt");
+ await click(learner,"Try again");
+ expect(tutor.textContent).not.toContain("Learner is ready");
+});

@@ -3,6 +3,13 @@ const text=(v:unknown,n:number)=>typeof v==="string"&&v.trim().length>0&&v.trim(
 const integer=(v:unknown,min:number,max:number):v is number=>typeof v==="number"&&Number.isInteger(v)&&v>=min&&v<=max;
 export function validateSlideVisual(v:any){
  if(!v||typeof v!=="object")return null;
+ if(v.type==="create-quest"){
+  const title=text(v.title,100),prompt=text(v.prompt,350),context=text(v.context,500);
+  if(!title||!prompt||!context||!Array.isArray(v.criteria)||v.criteria.length<2||v.criteria.length>4)return null;
+  const criteria:string[]=[];
+  for(const item of v.criteria){const t=text(item,140);if(!t||criteria.includes(t))return null;criteria.push(t);}
+  return {type:"create-quest",title,prompt,context,criteria} as const;
+ }
  if(v.type==="evidence-quest"){
   const passage_title=text(v.passage_title,100),prompt=text(v.prompt,180),context=v.context;
   if(!passage_title||!prompt||!["reading","source","investigation","language"].includes(context)||!Array.isArray(v.items)||v.items.length<3||v.items.length>10)return null;
@@ -88,6 +95,9 @@ export function changeSlideInteraction(visual:unknown,current:any,b:Record<strin
   const max=v.type==="fraction-split"?2:v.type==="fraction-bars"?v.rows.length:"items" in v?v.items.length:1;
   if(next.reveal>=max)return null;
   next.reveal++;
+ }else if(b.operation==="check"&&!owner&&v.type==="create-quest"){
+  // Only share readiness, never the child's scratchpad text.
+  next.checked=true;
  }else if(b.operation==="check"&&!owner&&(v.type==="fraction-quest"||v.type==="evidence-quest"||v.type==="data-quest"||v.type==="sort-quest")){
   if(v.type==="sort-quest"?next.placements.length!==v.items.length||next.placements.some(i=>!integer(i,0,v.groups.length-1)):next.selected.length===0)return null;
   next.checked=true;
