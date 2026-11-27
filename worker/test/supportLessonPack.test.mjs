@@ -407,3 +407,27 @@ test("reviewed illustration follows its slide without exposing private storyboar
  assert.ok(fallback.board.slide.interaction);
  assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-two",{library_id:saved.saved.id,confirmed:true})).error);
 });
+
+
+test("deterministic experiment schemas and shared learner controls are bounded",()=>{
+ const v=validateSlideVisual({type:"experiment",model:"rectangle",prompt:"Compare area and perimeter.",answer:"PRIVATE",code:"invalid"});
+ assert.deepEqual(v,{type:"experiment",model:"rectangle",prompt:"Compare area and perimeter."});
+ assert.equal(validateSlideVisual({type:"experiment",model:"arbitrary-code",prompt:"Run"}),null);
+ let state=initialSlideInteraction(v);
+ assert.deepEqual(state.placements,[3,4]);
+ const act=(operation,index,direction,owner=false)=>changeSlideInteraction(v,state,{visual_id:state.id,operation,index,direction},owner);
+ assert.equal(act("adjust",0,11),null);
+ assert.equal(act("adjust",0,1.5),null);
+ assert.equal(act("adjust",2,5),null);
+ assert.equal(act("adjust",0,5,true),null);
+ state=act("adjust",0,5);assert.deepEqual(state.placements,[5,4]);
+ assert.deepEqual(act("reset",undefined,undefined,true).placements,[3,4]);
+ for(const model of ["series-circuit","parallel-circuit"]){
+  const circuit=validateSlideVisual({type:"experiment",model,prompt:"Predict the result."});
+  let s=initialSlideInteraction(circuit);
+  const toggle=(index,owner=false)=>changeSlideInteraction(circuit,s,{visual_id:s.id,operation:"toggle",index},owner);
+  assert.equal(toggle(2),null);assert.equal(toggle(0,true),null);
+  s=toggle(0);assert.deepEqual(s.selected,[0]);s=toggle(1);assert.deepEqual(s.selected,[0,1]);s=toggle(0);assert.deepEqual(s.selected,[1]);
+  assert.equal(changeSlideInteraction(circuit,s,{visual_id:"stale",operation:"toggle",index:0},false),null);
+ }
+});
