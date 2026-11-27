@@ -906,6 +906,7 @@ export function createAdminRoutes() {
     c.header("Cache-Control","private, no-store");
     const b=await readJson(c),owner=c.get("user");
     if(await readPrivateLessonDraft(c.env.DB,owner.id))return c.json({detail:"Resume or discard your existing private draft first."},409);
+    if(typeof b.minutes!=="number"||!Number.isInteger(b.minutes)||b.minutes<15||b.minutes>180)return c.json({detail:"Choose a lesson duration between 15 and 180 minutes."},400);
     const r=await generateReusableLessonPack(c.env,owner,b,b.minutes);
     if("error" in r)return c.json({detail:r.error},409);
     const checkpoint=await checkpointPrivateLessonDraft(c.env.DB,owner.id,{pack:r.pack,minutes:b.minutes,revision:0});
