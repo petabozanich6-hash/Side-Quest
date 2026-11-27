@@ -90,6 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {lessonArtEnabled,generateLessonArt} from "./supportLessonArt";
 import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
@@ -896,10 +897,18 @@ export function createAdminRoutes() {
     const id=c.req.param("fid")??"",b=await readJson(c);if(b.confirmed!==true||!await archiveResource(c.env.DB,id))return c.json({detail:"Resource unavailable"},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.file.archive",targetType:"support_file",targetId:id,detail:{}});return c.json({ok:true});
   });
+  admin.post("/support-lesson-art/draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const r=await generateLessonArt(c.env,c.get("user"),await readJson(c));
+    if("error" in r)return c.json({detail:r.error},400);
+    await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_art.draft",targetType:"support",targetId:"illustration",detail:{}});
+    return c.json(r);
+  });
   admin.get("/support-lesson-library",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");
-    return c.json({items:await listReusableLessonPacks(c.env.DB),draft:await readPrivateLessonDraft(c.env.DB,c.get("user").id),ai_enabled:lessonPackAiEnabled(c.env)});
+    return c.json({items:await listReusableLessonPacks(c.env.DB),draft:await readPrivateLessonDraft(c.env.DB,c.get("user").id),ai_enabled:lessonPackAiEnabled(c.env),art_enabled:lessonArtEnabled(c.env)});
   });
   admin.post("/support-lesson-library/draft",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
