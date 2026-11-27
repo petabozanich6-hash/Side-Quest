@@ -1,3 +1,4 @@
+import {presentationImage} from "./supportFiles";
 import {validateSlideVisual} from "./supportSlideVisuals";
 import type {Env} from "./types";
 import {nowIso} from "./types";
@@ -19,7 +20,9 @@ export function validateDeck(raw:any){
   const heading=str(s?.heading,100),body=str(s?.body,1600),notes=str(s?.notes,2000),kind=s?.kind;
   if(!heading||!body||!notes||!KINDS.includes(kind))return null;
   const visual=s.visual==null?null:validateSlideVisual(s.visual);if(s.visual!=null&&!visual)return null;
-  slides.push({heading,body,notes,kind,...(visual?{visual}:{})});
+  const art_brief=typeof s.art_brief==="string"&&s.art_brief.trim().length<=800?s.art_brief.trim():"";
+  const illustration_id=typeof s.illustration_id==="string"&&/^[a-f0-9-]{36}$/i.test(s.illustration_id)?s.illustration_id:null;
+  slides.push({heading,body,notes,kind,...(visual?{visual}:{}),...(art_brief?{art_brief}:{}),...(illustration_id?{illustration_id}:{})});
  }
  return {title,subject,year_level,slides};
 }
@@ -35,6 +38,7 @@ export async function findDecks(db:D1Database,q:string,reviewed=false){
 }
 export async function saveDeck(db:D1Database,b:any,id?:string){
  const d=validateDeck(b);if(!d)return {error:"Enter a title, subject, year level and 1–20 slides, each with learner content and tutor notes."};
+ if(b.reviewed===true)for(const slide of d.slides)if(slide.illustration_id&&!await presentationImage(db,slide.illustration_id))return {error:"A selected illustration is not an active reviewed learner image."};
  await ensureDecks(db);
  const status=b.reviewed===true?"reviewed":"draft",when=nowIso();
  if(id){
