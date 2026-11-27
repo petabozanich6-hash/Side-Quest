@@ -1,3 +1,4 @@
+import {ENGLISH_CLUB_ICEBREAKERS} from "./englishClubTeachingGuides";
 import {STORY_QUEST} from "./englishClubCurriculum";
 // Only learner-facing material belongs in this snapshot. Never copy private facilitator notes.
 const teaching = [
@@ -20,7 +21,7 @@ const demonstrations=[
 export function workshopResource(index:number){
  const s=STORY_QUEST.sessions[index],t=teaching[index],m=demonstrations[index];if(!s||!t||!m)return null;
  return {title:s.title,objective:s.objective,reading:s.reading,tasks:[...t.tasks],stretch:t.stretch,slides:[
-  {title:s.title,body:s.objective},
+  {title:s.title+" · "+ENGLISH_CLUB_ICEBREAKERS[index].title,body:ENGLISH_CLUB_ICEBREAKERS[index].prompt+"\nJoin in, listen or pass. There is no right answer."},
   {title:"The central idea",body:t.concept},
   {title:"Read closely",body:s.reading},
   {title:m.heading,body:m.body,cards:[...m.cards]},
