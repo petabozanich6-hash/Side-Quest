@@ -2,6 +2,8 @@ import {campActivities} from "./englishClubCampGames";
 import {WRITERS_ACADEMY,ADULT_STUDIO,adultStudioGuide} from "./writersAcademy";
 import {academyPrice} from "./writersAcademyPricing";
 import {setAdultPilotRound} from "./adultStudioReservations";
+import {listAdultInvoiceObligations,previewAdultInvoice,prepareAdultInvoice} from "./adultSquareInvoicePreparation";
+import {adultInvoiceWorkspace,createAdultSquareOrder,createAdultSquareDraft} from "./adultSquareInvoiceDraft";
 import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
@@ -1299,6 +1301,25 @@ export function createAdminRoutes() {
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
     return c.json(r,201);
+  });
+  admin.get("/english-club/adult-invoices",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env)||!await isPlatformOwner(c.env.DB,c.get("user").id))return c.json({detail:"Owner-only private pilot required."},403);
+    c.header("Cache-Control","private, no-store");
+    return c.json({items:await listAdultInvoiceObligations(c.env.DB)});
+  });
+  admin.get("/english-club/adult-invoices/:id",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env)||!await isPlatformOwner(c.env.DB,c.get("user").id))return c.json({detail:"Owner-only private pilot required."},403);
+    c.header("Cache-Control","private, no-store");
+    return c.json({workspace:await adultInvoiceWorkspace(c.env,c.req.param("id")||"")});
+  });
+  admin.post("/english-club/adult-invoices/:id/:action",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env)||!await isPlatformOwner(c.env.DB,c.get("user").id))return c.json({detail:"Owner-only private pilot required."},403);
+    c.header("Cache-Control","private, no-store");
+    const id=c.req.param("id")||"",action=c.req.param("action"),b=await readJson(c);
+    const r=action==="preview"?await previewAdultInvoice(c.env,id,b):action==="prepare"?await prepareAdultInvoice(c.env,id,c.get("user").id,b):action==="order"?await createAdultSquareOrder(c.env,id,b):action==="draft"?await createAdultSquareDraft(c.env,id,b):{error:"Unknown adult invoice action."};
+    if("error" in r)return c.json({detail:r.error},409);
+    if(action!=="preview")await writeAudit(c.env.DB,{...actor(c),action:"academy.adult_invoice_"+action,targetType:"english_club",targetId:id});
+    return c.json(r);
   });
   admin.post("/english-club/rounds/:rid/adult-pilot",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env)||!c.env.SUPPORT_UNIFIED_TEST_EMAIL||!await isPlatformOwner(c.env.DB,c.get("user").id))return c.json({detail:"Owner-only private synthetic pilot required."},403);
