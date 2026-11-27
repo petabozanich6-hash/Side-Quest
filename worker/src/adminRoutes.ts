@@ -1,3 +1,4 @@
+import {campActivities} from "./englishClubCampGames";
 import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
 import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
@@ -1281,7 +1282,7 @@ export function createAdminRoutes() {
     c.header("Cache-Control","private, no-store");
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     const requested=c.req.query("camp");
-    if(requested){const p=creativeCamp(requested);if(!p)return c.json({detail:"Unknown camp"},404);return c.json({...p,sessions:p.sessions.map((s,i)=>({...s,private_preparation:campPreparation(p.id,i)}))});}
+    if(requested){const p=creativeCamp(requested);if(!p)return c.json({detail:"Unknown camp"},404);return c.json({...p,sessions:p.sessions.map((s,i)=>({...s,activities:campActivities(s),private_preparation:campPreparation(p.id,i)}))});}
     return c.json({...STORY_QUEST,sessions:STORY_QUEST.sessions.map((s,i)=>({...s,private_preparation:storyQuestPreparation(i)}))});
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
