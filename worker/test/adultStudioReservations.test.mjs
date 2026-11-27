@@ -4,6 +4,8 @@ import {makeDb} from "./fakeD1.mjs";
 import {registerAdultParticipant,ADULT_ATTESTATION_VERSION} from "../src/adultAcademy.ts";
 import {createEnglishRound,setEnglishRoundPublished} from "../src/englishClubRounds.ts";
 import {ADULT_STUDIO} from "../src/writersAcademy.ts";
+import {listAcademyJournal,saveAcademyJournal} from "../src/academyJournal.ts";
+import {listAcademyShowcases,saveAcademyShowcase,deleteAcademyShowcase} from "../src/academyShowcase.ts";
 import {adultPilotRounds,setAdultPilotRound,reserveAdultStudio,adultReservations,ADULT_TERMS_VERSION} from "../src/adultStudioReservations.ts";
 test("adult pilot reserves exact separate seats and obligations, refuses duplicates and child channel",async t=>{
  const db=makeDb();t.after(()=>db.raw.close());
@@ -38,6 +40,28 @@ test("adult pilot reserves exact separate seats and obligations, refuses duplica
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_academy_adult_bookings").get().n,8);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_enrolments").get().n,0);
  assert.equal(db.raw.prepare("SELECT amount_cents FROM support_academy_adult_obligations WHERE booking_id=?").get(booking.id).amount_cents,24000);
+ // Synthetic proof fixture exercises actual database entitlement guards, not a live Square payment.
+ const project={audience:"adult",participant_id:actors[0].id,round_id:r.id,revision:0,title:"A new world",byline:"Pen name",blurb:"A fictional adventure",body:"A mysterious letter arrived.",reflection:"Revise the opening.",cover:"manuscript"};
+ assert.deepEqual(await listAcademyJournal(db,actors[0],true),[]);
+ assert.ok((await saveAcademyShowcase(db,actors[0],project,true,now)).error);
+ const obligation=db.raw.prepare("SELECT * FROM support_academy_adult_obligations WHERE booking_id=?").get(booking.id);
+ const seats=db.raw.prepare("SELECT s.id seat_id,s.class_id,s.due_at,c.start_at,c.end_at FROM support_academy_adult_seats s JOIN support_english_classes c ON c.id=s.class_id WHERE s.booking_id=?").all(booking.id);
+ const fingerprint="a".repeat(64),snapshot=JSON.stringify({snapshot:{seats_json:JSON.stringify(seats)}});
+ db.raw.prepare("INSERT INTO support_academy_adult_invoice_intents(obligation_id,fingerprint,snapshot_json,customer_id,location_id,amount_cents,due_at,order_key,invoice_key,approved_by,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)").run(obligation.id,fingerprint,snapshot,"customer","TESTLOC1",24000,obligation.due_at,"order-key","invoice-key",actors[0].id,at,at);
+ db.raw.prepare("UPDATE support_academy_adult_invoice_intents SET state='draft_created',provider_order_id='order-test',provider_invoice_id='invoice-test',provider_invoice_version=0 WHERE obligation_id=?").run(obligation.id);
+ db.raw.prepare("INSERT INTO support_academy_adult_publications(obligation_id,fingerprint,invoice_id,approved_version,publish_key,approved_by,attempted_at,issued_at,issued_version,public_url) VALUES(?,?,?,?,?,?,?,?,?,?)").run(obligation.id,fingerprint,"invoice-test",0,"publish-key",actors[0].id,at,at,1,"https://sandbox.example.test");
+ db.raw.prepare("INSERT INTO support_academy_adult_settlements(obligation_id,payment_id,invoice_id,amount_cents,captured_at,verified_at) VALUES(?,?,?,?,?,?)").run(obligation.id,"payment-test","invoice-test",24000,at,at);
+ const pages=await listAcademyJournal(db,actors[0],true);assert.equal(pages.length,6);
+ assert.ok((await saveAcademyJournal(db,actors[0],{audience:"adult",participant_id:actors[0].id,class_id:pages[0].class_id,revision:0,title:"Opening",body:"A letter.",reflection:"Explore the hook."},true,now)).saved);
+ assert.ok((await saveAcademyShowcase(db,actors[0],project,true,now)).saved);
+ assert.ok((await saveAcademyShowcase(db,actors[0],project,true,now)).error);
+ assert.ok((await saveAcademyShowcase(db,actors[1],{...project,revision:1},true,now)).error);
+ assert.deepEqual(await listAcademyShowcases(db,actors[1],true),[]);
+ assert.deepEqual(await listAcademyShowcases(db,actors[0],false),[]);
+ assert.equal((await listAcademyShowcases(db,actors[0],true))[0].body,project.body);
+ assert.equal(await deleteAcademyShowcase(db,actors[1],{...project,revision:1,confirmed:true}),false);
+ assert.ok(await deleteAcademyShowcase(db,actors[0],{...project,revision:1,confirmed:true}));
+ assert.equal((await listAcademyJournal(db,actors[0],true))[0].body,"A letter.");
  assert.ok(await setAdultPilotRound(db,actors[0].id,r.id,{enabled:false,confirmed:true},now));
  assert.equal((await adultPilotRounds(db,now)).length,0);
  assert.equal((await adultReservations(db,actors[0]))[0].provisional_places,6);
