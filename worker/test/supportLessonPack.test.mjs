@@ -442,3 +442,17 @@ test("deterministic experiment schemas and shared learner controls are bounded",
  });
 
  test("explicit teaching requires separate instruction and modelling and 40 percent teaching time",()=>{assert.ok(validateLessonPack(pack,30));assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===0?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===1||i===2?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:6},{phase:"model",minutes:4},{phase:"model",minutes:4},{phase:"guided",minutes:7},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);const v=validateSlideVisual(pack.slides[0].visual);assert.equal(v.type,"concept-lesson");let s=initialSlideInteraction(v);assert.equal(s.reveal,1);assert.equal(changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},false),null);for(let i=2;i<=4;i++){s=changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},true);assert.equal(s.reveal,i);}assert.equal(changeSlideInteraction(v,s,{visual_id:s.id,operation:"reveal"},true),null);assert.equal(validateSlideVisual({...v,why:""}),null);});
+
+test("response plans validate exact step counts and stay out of the shared board",async t=>{
+ const validated=validateLessonPack(pack,30);assert.equal(validated.response_plan.length,pack.slides.length);
+ assert.equal(validateLessonPack({...pack,response_plan:[]},30),null);
+ assert.equal(validateLessonPack({...pack,response_plan:pack.response_plan.map((r,i)=>i===0?{...r,hint:""}:r)},30),null);
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const privatePack={...pack,response_plan:pack.response_plan.map((r,i)=>i===0?{...r,expected:"PRIVATE_RESPONSE_REASONING"}:r)};
+ const result=await approveLessonPack(db,"guest","pack-request","pack-one",{pack:privatePack,confirmed:true});assert.ok(result.saved,JSON.stringify(result));
+ assert.equal(result.saved.pack.response_plan[0].expected,"PRIVATE_RESPONSE_REASONING");
+ assert.equal(await setClassroomOpen(db,"guest","pack-request","pack-one",true,now),true);
+ const before=await classroomState(db,"guest","pack-request","pack-one",true,now);
+ assert.ok((await editClassroom(db,"guest","pack-request","pack-one",true,{action:"present",deck_id:result.saved.deck_id,deck_revision:1,index:0,revision:before.revision},now)).ok);
+ const after=await classroomState(db,"guest","pack-request","pack-one",false,now);assert.ok(after.board.slide);assert.ok(!JSON.stringify(after).includes("PRIVATE_RESPONSE_REASONING"));assert.ok(!JSON.stringify(after).includes("response_plan"));
+});
