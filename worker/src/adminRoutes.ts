@@ -36,7 +36,7 @@ import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
-import {listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
+import {listEnglishClub,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
@@ -1282,7 +1282,7 @@ export function createAdminRoutes() {
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    return c.json({rounds:await listEnglishRounds(c.env.DB)});
+    return c.json({rounds:(await listEnglishRounds(c.env.DB)).filter(r=>r.age_group)});
   });
   admin.post("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
@@ -1295,14 +1295,12 @@ export function createAdminRoutes() {
   admin.post("/english-club/rounds/:rid/publication",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     const id=c.req.param("rid")??"",b=await readJson(c);
+    if(b?.published===true){const row=await c.env.DB.prepare("SELECT curriculum_id FROM support_english_rounds WHERE id=?").bind(id).first<{curriculum_id:string}>();if(!creativeCamp(row?.curriculum_id))return c.json({detail:"Only the two creative camp programmes can be published."},409);}
     if(!await setEnglishRoundPublished(c.env.DB,id,b))return c.json({detail:"Unable to change round publication."},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_publication",targetType:"english_club",targetId:id,detail:{published:b.published}});
     return c.json({ok:true});
   });
-  admin.post("/english-club/classes/:cid/enrolments",requirePermission("customers.read"),async c=>{
-    const cid=c.req.param("cid")??"",r=await enrolEnglishLearner(c.env.DB,cid,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
-    await writeAudit(c.env.DB,{...actor(c),action:"english_club.enrolment.create",targetType:"english_club",targetId:r.id,detail:{class_id:cid}});return c.json(r,201);
-  });
+
   admin.post("/english-club/classes/:cid/enrolments/:eid",requirePermission("customers.read"),async c=>{
     const cid=c.req.param("cid")??"",eid=c.req.param("eid")??"",b=await readJson(c);
     if(!await updateEnglishEnrolment(c.env.DB,cid,eid,b))return c.json({detail:"Check the current enrolment status and Square confirmation."},409);
