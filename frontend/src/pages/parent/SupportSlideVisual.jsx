@@ -7,7 +7,7 @@ function Bar({total,shaded}){
  return <div className="grid grid-cols-[1fr_auto] items-center gap-3"><svg viewBox="0 0 320 40" className="w-full" role="img" aria-label={shaded+" of "+total+" equal parts shaded"}><rect x="1" y="1" width="318" height="38" rx="3" fill="#fff"/><rect x="1" y="1" width={318*shaded/total} height="38" fill="#059669"/>{Array.from({length:total-1},(_,i)=><line key={i} x1={1+318*(i+1)/total} x2={1+318*(i+1)/total} y1="1" y2="39" stroke="#064e3b" strokeWidth="1"/>) }<rect x="1" y="1" width="318" height="38" rx="3" fill="none" stroke="#064e3b" strokeWidth="2"/></svg><span className="font-bold text-lg tabular-nums">{shaded}/{total}</span></div>;
 }
 export default function SupportSlideVisual({visual,interaction,send,owner=false,busy=false,live=false}){
- const [local,setLocal]=useState(()=>({reveal:1,checked:false,selected:[],placements:visual?.type==="sort-quest"?visual.items.map(()=>-1):visual?.type==="experiment"&&visual.model==="rectangle"?[3,4]:[],order:visual?.type==="order"?visual.items.map((_,i)=>i):[]}));
+ const [local,setLocal]=useState(()=>({reveal:1,checked:false,selected:[],placements:visual?.type==="sort-quest"?visual.items.map(()=>-1):visual?.type==="experiment"&&visual.model==="rectangle"?[3,4]:visual?.type==="experiment"&&visual.model==="coordinates"?[0,0]:[],order:visual?.type==="order"?visual.items.map((_,i)=>i):[]}));
  if(!visual)return null;
  const state=live?(interaction||{reveal:99,selected:[],order:visual.type==="order"?visual.items.map((_,i)=>i):[]}):local;
  const {reveal,selected,order}=state;
@@ -17,7 +17,7 @@ export default function SupportSlideVisual({visual,interaction,send,owner=false,
  function act(operation,index,direction){
   if(live){if(interaction&&send)send({action:"slide-interact",visual_id:interaction.id,operation,index,direction});return;}
   setLocal(s=>{
-   if(operation==="reset")return {reveal:1,checked:false,selected:[],placements:visual.type==="sort-quest"?visual.items.map(()=>-1):visual.type==="experiment"&&visual.model==="rectangle"?[3,4]:[],order:visual.type==="order"?visual.items.map((_,i)=>i):[]};
+   if(operation==="reset")return {reveal:1,checked:false,selected:[],placements:visual.type==="sort-quest"?visual.items.map(()=>-1):visual.type==="experiment"&&visual.model==="rectangle"?[3,4]:visual.type==="experiment"&&visual.model==="coordinates"?[0,0]:[],order:visual.type==="order"?visual.items.map((_,i)=>i):[]};
    if(operation==="reveal")return {...s,reveal:s.reveal+1};
    if(operation==="check")return {...s,checked:true};
    if(operation==="adjust")return {...s,placements:s.placements.map((p,i)=>i===index?direction:p)};
