@@ -2,6 +2,7 @@ import type {App,AuthUser,Guards} from "./types";
 import {unifiedPortalPilot,verifiedPortalIdentity} from "./unifiedPortalIdentity";
 import {loadPlatformSettings} from "./platformSettings";
 import {hitRateLimit} from "./adminAudit";
+import {creativeCamp} from "./englishClubCreativeCamps";
 import {listEnglishRounds,ROUND_PRICE_CENTS} from "./englishClubRounds";
 
 export const CLUB_BOOKING_VERSION="club-round-staging-v1";
@@ -35,7 +36,7 @@ export async function reserveEnglishRound(db:D1Database,a:AuthUser,b:any,now=new
 }
 export const CLUB_SINGLE_VERSION="club-single-staging-v1";
 export const CLUB_SINGLE_TERMS=CLUB_ROUND_TERMS.replace("the round dates and selected payment arrangement","the selected workshop date and AU$15 single-session price");
-const singleListSql=`SELECT c.id,c.topic,c.public_description description,c.start_at,c.end_at,r.id round_id,r.title round_title,x.sequence,r.price_per_session_cents amount_cents,
+const singleListSql=`SELECT c.id,c.topic,c.public_description description,c.start_at,c.end_at,r.id round_id,r.title round_title,r.curriculum_id,x.sequence,r.price_per_session_cents amount_cents,
  8-(SELECT COUNT(*) FROM support_english_enrolments e WHERE e.class_id=c.id AND e.status<>'cancelled') remaining
  FROM support_english_round_classes x JOIN support_english_rounds r ON r.id=x.round_id JOIN support_english_classes c ON c.id=x.class_id
  WHERE r.published=1 AND r.price_per_session_cents=1500 AND julianday(c.start_at)>julianday(?)+1
@@ -69,19 +70,21 @@ export async function reserveEnglishSingle(db:D1Database,a:AuthUser,b:any,now=ne
 export function registerEnglishClubSelfService(app:App,g:Guards){
  const root="/api/family-portal/club";
  app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","no-store");if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);await next();});
- app.get(root+"/rounds",g.auth,g.parent,async c=>{if(!await verifiedPortalIdentity(c.env.DB,c.get("user")))return c.json({detail:"Verified parent required."},403);return c.json({rounds:await listEnglishRounds(c.env.DB,true),terms_version:CLUB_BOOKING_VERSION,terms:CLUB_ROUND_TERMS});});
+ app.get(root+"/rounds",g.auth,g.parent,async c=>{if(!await verifiedPortalIdentity(c.env.DB,c.get("user")))return c.json({detail:"Verified parent required."},403);return c.json({rounds:(await listEnglishRounds(c.env.DB,true)).filter(r=>r.age_group),terms_version:CLUB_BOOKING_VERSION,terms:CLUB_ROUND_TERMS});});
  app.post(root+"/reserve-round",g.auth,g.parent,async c=>{
  const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified parent required."},403);
  if(!(await loadPlatformSettings(c.env.DB)).features.registrationsOpen)return c.json({detail:"New bookings are paused."},503);
  if(!(await hitRateLimit(c.env.DB,"club-self:"+a.id,10,3600)).ok)return c.json({detail:"Try again later."},429);
- const r=await reserveEnglishRound(c.env.DB,a,await c.req.json().catch(()=>null));return "error" in r?c.json({detail:r.error},409):c.json(r,r.created?201:200);
+ const b=await c.req.json().catch(()=>null);const selected=typeof b?.round_id==="string"?await c.env.DB.prepare("SELECT curriculum_id FROM support_english_rounds WHERE id=?").bind(b.round_id).first<{curriculum_id:string}>():null;if(!creativeCamp(selected?.curriculum_id))return c.json({detail:"Choose an available creative camp."},409);
+ const r=await reserveEnglishRound(c.env.DB,a,b);return "error" in r?c.json({detail:r.error},409):c.json(r,r.created?201:200);
  });
- app.get(root+"/classes",g.auth,g.parent,async c=>{if(!await verifiedPortalIdentity(c.env.DB,c.get("user")))return c.json({detail:"Verified parent required."},403);return c.json({classes:await listEnglishSingleClasses(c.env.DB),terms_version:CLUB_SINGLE_VERSION,terms:CLUB_SINGLE_TERMS});});
+ app.get(root+"/classes",g.auth,g.parent,async c=>{if(!await verifiedPortalIdentity(c.env.DB,c.get("user")))return c.json({detail:"Verified parent required."},403);return c.json({classes:(await listEnglishSingleClasses(c.env.DB)).filter(r=>creativeCamp(r.curriculum_id)),terms_version:CLUB_SINGLE_VERSION,terms:CLUB_SINGLE_TERMS});});
  app.post(root+"/reserve-class",g.auth,g.parent,async c=>{
  const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified parent required."},403);
  if(!(await loadPlatformSettings(c.env.DB)).features.registrationsOpen)return c.json({detail:"New bookings are paused."},503);
  if(!(await hitRateLimit(c.env.DB,"club-self:"+a.id,10,3600)).ok)return c.json({detail:"Try again later."},429);
- const r=await reserveEnglishSingle(c.env.DB,a,await c.req.json().catch(()=>null));return "error" in r?c.json({detail:r.error},409):c.json(r,r.created?201:200);
+ const b=await c.req.json().catch(()=>null);const selected=typeof b?.class_id==="string"?await c.env.DB.prepare("SELECT r.curriculum_id FROM support_english_round_classes x JOIN support_english_rounds r ON r.id=x.round_id WHERE x.class_id=?").bind(b.class_id).first<{curriculum_id:string}>():null;if(!creativeCamp(selected?.curriculum_id))return c.json({detail:"Choose an available creative camp session."},409);
+ const r=await reserveEnglishSingle(c.env.DB,a,b);return "error" in r?c.json({detail:r.error},409):c.json(r,r.created?201:200);
  });
 
 }
