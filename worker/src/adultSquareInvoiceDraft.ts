@@ -10,7 +10,10 @@ const read=(e:Env,id:string)=>e.DB.prepare("SELECT * FROM support_academy_adult_
 export async function adultInvoiceWorkspace(e:Env,id:string){
  if(!supportInvoiceLookupAvailable(e)||!idOk(id))return null;
  const i=await read(e,id);if(!i)return null;
- return {state:i.state,fingerprint:i.fingerprint,amount_cents:i.amount_cents,due_at:i.due_at,provider_order_id:i.provider_order_id,provider_invoice_id:i.provider_invoice_id,provider_invoice_version:i.provider_invoice_version,publish_approved_version:i.publish_approved_version,provider_issued_at:i.provider_issued_at};
+ const p=await e.DB.prepare("SELECT approved_version,attempted_at,issued_at,issued_version FROM support_academy_adult_publications WHERE obligation_id=?").bind(id).first<any>();
+ const h=await e.DB.prepare("SELECT reason FROM support_academy_adult_financial_holds WHERE obligation_id=?").bind(id).first<any>();
+ const proof=await e.DB.prepare("SELECT verified_at FROM support_academy_adult_settlements WHERE obligation_id=?").bind(id).first<any>();
+ return {state:h?"review":proof?"verified":p?.issued_at?"issued":p?"publish_pending":i.state,fingerprint:i.fingerprint,amount_cents:i.amount_cents,due_at:i.due_at,provider_order_id:i.provider_order_id,provider_invoice_id:i.provider_invoice_id,provider_invoice_version:i.provider_invoice_version,approved_version:p?.approved_version,issued_at:p?.issued_at,verified_at:proof?.verified_at};
 }
 async function fresh(e:Env,i:any,fetchImpl:Fetch|undefined,now:Date){
  const p=await previewAdultInvoice(e,i.obligation_id,{reviewed:true,customer_id:i.customer_id},fetchImpl,now);
