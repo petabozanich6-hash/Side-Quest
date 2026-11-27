@@ -338,3 +338,24 @@ test("interest selector accepts only known non-identifying themes",()=>{
  assert.equal(lessonTheme(null),null);
  assert.deepEqual([15,30,45,60,90,180].map(icebreakerMinutes),[2,3,3,5,5,5]);
 });
+
+
+import {illustrationAllowance,validateIllustrationPlan,draftLessonIllustration} from "../src/supportIllustrations.ts";
+test("illustration storyboard scales with lesson length and keeps only bounded private planning fields",()=>{
+ assert.deepEqual([15,30,45,60,90,180].map(illustrationAllowance),[2,4,5,6,8,8]);
+ const scene={slide_index:0,title:"Pizza shop scene",brief:"A whimsical dragon at a pizza shop with a colourful apron and empty serving plates.",purpose:"Establish a familiar setting before the exact fraction model.",answer:"PRIVATE_SENTINEL"};
+ const expected={slide_index:0,title:scene.title,brief:scene.brief,purpose:scene.purpose};
+ assert.deepEqual(validateIllustrationPlan([scene],30,6),[expected]);
+ assert.equal(validateIllustrationPlan([scene,scene],30,6),null);
+ assert.equal(validateIllustrationPlan([{...scene,slide_index:6}],30,6),null);
+ assert.equal(validateIllustrationPlan([{...scene,brief:"short"}],30,6),null);
+ assert.equal(validateIllustrationPlan(Array.from({length:5},(_,i)=>({...scene,slide_index:i,brief:scene.brief+i})),30,6),null);
+ assert.deepEqual(validateLessonPack({...pack,illustrations:[scene]},30).illustrations,[expected]);
+ assert.ok(validateLessonPack(pack,30));
+});
+test("illustrations fail closed without the separate staging opt-in",async()=>{
+ let called=false;
+ const e={AI:{run:async()=>{called=true;return {};}}};
+ assert.ok((await draftLessonIllustration(e,{},{})).error);
+ assert.equal(called,false);
+});
