@@ -90,6 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
+import {attachClubIllustration} from "./englishClubIllustrations";
 import {illustrationEnabled,draftLessonIllustration} from "./supportIllustrations";
 import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
@@ -1017,6 +1018,12 @@ export function createAdminRoutes() {
   });
   admin.get("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");const r=await readEnglishMaterials(c.env,c.req.param("cid")??"");return r?c.json(r):c.json({detail:"Club session unavailable"},404);
+  });
+  admin.post("/english-club/classes/:cid/illustrations",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    const id=c.req.param("cid")??"",b=await readJson(c);
+    if(!await attachClubIllustration(c.env.DB,id,b))return c.json({detail:"Choose a reviewed learner image and valid workshop slide. Reload if the workshop changed."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"english_club.illustration.attach",targetType:"english_club",targetId:id,detail:{slide_index:b.slide_index}});return c.json({ok:true});
   });
   admin.post("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
     const id=c.req.param("cid")??"",b=await readJson(c);
