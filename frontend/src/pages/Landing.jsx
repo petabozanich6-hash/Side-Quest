@@ -47,7 +47,7 @@ export default function Landing() {
             </div>
           </div>
           <nav className="flex w-full sm:w-auto flex-wrap items-center gap-2 sm:gap-4" aria-label="Main navigation">
-            <Link to="/learning-support" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-public-learning-support">Learning support</Link>
+            <Link to="/learning-support" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-public-learning-support">Learning support</Link><Link to="/writers-academy" className="text-sm font-semibold text-stone-700 hover:text-moss">Writers’ Academy</Link>
             <a href="#help-faq" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-public-help">Help &amp; FAQ</a>
             <Link to="/child-login" className="rounded-full px-3 sm:px-5 py-2.5 text-sm font-bold hover:translate-y-[-1px] transition shadow-sm" data-testid="nav-child-login" style={{backgroundColor:"#C77B5B", color:"#FFF9EE"}}>Student sign in</Link>
             <Link to="/login" className="text-sm font-semibold text-stone-700 hover:text-moss" data-testid="nav-login" style={{color:"#52473A"}}>Parent sign in</Link>
@@ -135,13 +135,14 @@ export default function Landing() {
       </section>
 
       <section className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 pb-8" aria-labelledby="personal-learning-support-heading">
-        <div className="rounded-2xl bg-[#1F3B2D] text-[#F5EFE0] p-6 sm:p-9 flex flex-col md:flex-row md:items-center gap-5">
-          <div className="flex-1"><p className="text-xs font-bold uppercase tracking-wider">Personalised learning support</p>
-            <h2 id="personal-learning-support-heading" className="font-display text-2xl sm:text-3xl font-bold mt-2">Curiosity, confidence and a little extra help.</h2>
-            <p className="mt-3 text-sm sm:text-base">Meet Peta Bozanich, author, educational resource creator and home-educating parent with a qualified background in community services and academic study in health and social care. Discover personalised learning support that connects a learner’s interests to the things they need to understand. Online sessions from $25, daytime and limited evenings. No membership required.</p>
+        <div className="rounded-2xl bg-[#25334c] text-[#f4ede2] p-6 sm:p-9 flex flex-col md:flex-row md:items-center gap-5">
+          <div className="flex-1"><p className="text-xs font-bold uppercase tracking-wider text-[#d8b57c]">Introducing Writers’ Academy</p>
+            <h2 id="personal-learning-support-heading" className="font-serif text-2xl sm:text-3xl font-bold mt-2">Every great story starts somewhere.</h2>
+            <p className="mt-3 text-sm sm:text-base">Explore three live online creative writing programmes with published author Peta Bozanich, for junior writers, teens and adults. Coming soon. No homeschool subscription required.</p>
           </div>
-          <Link to="/learning-support" className="rounded-full bg-[#F5EFE0] text-[#1F3B2D] px-5 py-3 font-bold text-center shrink-0" data-testid="homepage-learning-support-offering">Explore learning support</Link>
+          <Link to="/writers-academy" className="rounded-xl bg-[#d8b57c] text-[#25334c] px-5 py-3 font-bold text-center shrink-0">Explore Writers’ Academy</Link>
         </div>
+        <p className="mt-3 text-sm"><Link to="/learning-support" className="underline" data-testid="homepage-learning-support-offering">Existing learning support information and accounts</Link> · New tutoring is not the current launch priority.</p>
       </section>
       <section className="relative z-10 mx-auto max-w-7xl px-6 py-14">
         <div className="text-center mb-10">
