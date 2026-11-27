@@ -1,4 +1,4 @@
-import {illustrationAllowance,validateIllustrationPlan} from "./supportIllustrations";
+import {illustrationAllowance,validateIllustrationPlan,reviewedIllustrationsAvailable} from "./supportIllustrations";
 import {fractionPack} from "./supportFractionPack";
 import type {Env,AuthUser} from "./types";
 import {getOrder,type Channel} from "./supportOrders";
@@ -45,7 +45,7 @@ export function normaliseGeneratedLessonPack(raw:any,minutes:number){
  // if the model has supplied the correct ordered teaching phases and slide kinds.
  const phases=["teach","model","guided","independent","check"],kinds=["concept","example","practice","practice","recap"];
  const sequence=minutes===30&&slides.length===5&&Array.isArray(raw.sequence)&&raw.sequence.length===5&&slides.every((slide:any,i:number)=>slide?.kind===kinds[i]&&raw.sequence[i]?.phase===phases[i])?phases.map((phase,i)=>({phase,minutes:[6,6,7,7,4][i]})):raw.sequence;
- return {...raw,slides,sequence};
+ return {...raw,slides,sequence,...(Array.isArray(raw.illustrations)?{illustrations:raw.illustrations.map((p:any)=>p&&typeof p==="object"?{slide_index:p.slide_index,title:p.title,brief:p.brief,purpose:p.purpose}:p)}:{})};
 }
 // Generic, non-identifying themes only; never forward free-form learner details.
 export const LESSON_THEMES=["none","cats","dogs","dragons","space","sports","nature","games","art","music","ocean","mysteries"] as const;
@@ -156,6 +156,7 @@ export async function approveLessonPack(db:D1Database,channel:Channel,id:string,
  const minutes=Math.round((Date.parse(order?.end_at||"")-Date.parse(order?.start_at||""))/60000);
  const pack=validateLessonPack(b?.pack,minutes);
  if(!pack||!validOrder(order)||b?.confirmed!==true)return {error:"Review the complete resource pack and confirm the active appointment."};
+ if(!await reviewedIllustrationsAvailable(db,pack.illustrations))return {error:"An attached illustration is unavailable or not a reviewed learner image. Remove or replace it first."};
  if(await db.prepare("SELECT 1 FROM support_appointment_lesson_packs WHERE order_id=?").bind(oid).first())return {error:"A pack has already been approved for this appointment."};
  if(await db.prepare("SELECT 1 FROM support_session_activity_plans WHERE kind='tutoring' AND session_id=?").bind(oid).first())return {error:"An activity plan already exists. Keep it; do not overwrite it with a generated pack."};
  await ensureDecks(db);
@@ -163,8 +164,9 @@ export async function approveLessonPack(db:D1Database,channel:Channel,id:string,
  // A single atomic batch; unique appointment and activity-plan keys prevent duplicate
  // approval and preserve a concurrent manual plan. Generated resources are generic, reviewed
  // library items; the private worksheet answers remain in the owner-only snapshot.
+ const slides=pack.slides.map((slide,index)=>{const file_id=pack.illustrations?.find(p=>p.slide_index===index)?.file_id;return file_id?{...slide,illustration_file_id:file_id}:slide;});
  const queries=[
-  db.prepare("INSERT INTO support_teaching_decks(id,title,subject,year_level,slides_json,status,created_at,updated_at) VALUES(?,?,?,?,?,'reviewed',?,?)").bind(deck,pack.title,pack.subject,pack.year_level,JSON.stringify(pack.slides),at,at),
+  db.prepare("INSERT INTO support_teaching_decks(id,title,subject,year_level,slides_json,status,created_at,updated_at) VALUES(?,?,?,?,?,'reviewed',?,?)").bind(deck,pack.title,pack.subject,pack.year_level,JSON.stringify(slides),at,at),
   ...pack.activities.map((a,i)=>db.prepare("INSERT INTO support_activity_templates(id,title,subject,year_level,question,activity_type,options_json,answer_key,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,'reviewed',?,?)").bind(refs[i].template_id,a.title,a.subject,a.year_level,a.question,a.type,JSON.stringify(a.options),a.answer_key,at,at)),
   db.prepare("INSERT INTO support_session_activity_plans(kind,session_id,items_json,updated_at) VALUES('tutoring',?,?,?)").bind(oid,JSON.stringify(refs),at),
   db.prepare("INSERT INTO support_appointment_lesson_packs(order_id,pack_json,deck_id,created_at) VALUES((SELECT id FROM support_service_orders WHERE id=? AND channel=? AND request_id=? AND mode='live' AND status IN ('awaiting_confirmation','confirmed','paid') AND checkout_started_at IS NULL),?,?,?)").bind(oid,channel,id,JSON.stringify(pack),deck,at)
@@ -185,6 +187,7 @@ export async function saveReusableLessonPack(db:D1Database,b:any){
  if(!Number.isInteger(minutes)||minutes<15||minutes>180||b?.confirmed!==true)return {error:"Choose a duration and confirm independent review."};
  const pack=validateLessonPack(b.pack,minutes);
  if(!pack)return {error:"The lesson does not meet the teaching-quality checks."};
+ if(!await reviewedIllustrationsAvailable(db,pack.illustrations))return {error:"An attached illustration is unavailable or not a reviewed learner image. Remove or replace it first."};
  const id=crypto.randomUUID(),created_at=new Date().toISOString();
  await db.prepare("INSERT INTO support_reusable_lesson_packs(id,title,subject,year_level,minutes,pack_json,created_at) VALUES(?,?,?,?,?,?,?)").bind(id,pack.title,pack.subject,pack.year_level,minutes,JSON.stringify(pack),created_at).run();
  return {saved:{id,pack,minutes,created_at}};
@@ -205,6 +208,7 @@ export async function checkpointPrivateLessonDraft(db:D1Database,ownerId:string,
  if(!Number.isInteger(minutes)||minutes<15||minutes>180||!Number.isInteger(revision)||revision<0)return {error:"Reload the private draft before saving."};
  const pack=validateLessonPack(b?.pack,minutes);
  if(!pack)return {error:"Draft not saved: correct the lesson content and activity structure first. Your last saved draft is unchanged."};
+ if(!await reviewedIllustrationsAvailable(db,pack.illustrations))return {error:"Draft not saved: remove or replace the unavailable illustration."};
  const at=new Date().toISOString(),json=JSON.stringify(pack),draft_id=revision===0?crypto.randomUUID():b.draft_id;
  if(typeof draft_id!=="string"||!draft_id)return {error:"Reload the private draft before saving."};
  const r=revision===0?await db.prepare("INSERT OR IGNORE INTO support_private_lesson_drafts(owner_id,draft_id,revision,minutes,pack_json,updated_at) VALUES(?,?,1,?,?,?)").bind(ownerId,draft_id,minutes,json,at).run():await db.prepare("UPDATE support_private_lesson_drafts SET revision=revision+1,minutes=?,pack_json=?,updated_at=? WHERE owner_id=? AND draft_id=? AND revision=?").bind(minutes,json,at,ownerId,draft_id,revision).run();
