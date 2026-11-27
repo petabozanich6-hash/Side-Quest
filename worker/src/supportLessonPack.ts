@@ -1,7 +1,7 @@
 import {fractionPack} from "./supportFractionPack";
 import type {Env,AuthUser} from "./types";
 import {getOrder,type Channel} from "./supportOrders";
-import {DEFAULT_MODEL,extractJson,subjectGuide} from "./aiDraft";
+import {DEFAULT_MODEL,subjectGuide} from "./aiDraft";
 import {loadPlatformSettings} from "./platformSettings";
 import {hitRateLimit} from "./adminAudit";
 import {ensureDecks,validateDeck} from "./supportDecks";
@@ -12,14 +12,21 @@ const str=(v:unknown,max:number)=>typeof v==="string"&&v.trim().length>0&&v.trim
 const validOrder=(o:any)=>o?.mode==="live"&&["awaiting_confirmation","confirmed","paid"].includes(o.status)&&!o.checkout_started_at;
 export const REASONING_LESSON_MODEL="@cf/openai/gpt-oss-120b";
 export function extractLessonPackResponse(raw:any){
- // The reasoning model can return the Responses API envelope. Only read final assistant text, never reasoning traces.
+ // Only parse complete final output. Never salvage truncated JSON or inspect reasoning traces.
  if(raw?.status==="incomplete"||raw?.status==="failed"||raw?.choices?.[0]?.finish_reason==="length"||raw?.choices?.[0]?.finish_reason==="content_filter")return null;
- if(typeof raw?.output_text==="string")return extractJson(raw.output_text);
+ const parse=(v:any)=>{
+  if(typeof v==="string"){
+   const t=v.trim().replace(/^\x60\x60\x60(?:json)?\s*/i,"").replace(/\s*\x60\x60\x60$/,"");
+   try{v=JSON.parse(t);}catch{return null;}
+  }
+  return v&&typeof v==="object"&&!Array.isArray(v)&&Array.isArray(v.slides)?v:null;
+ };
+ if(typeof raw?.output_text==="string")return parse(raw.output_text);
  if(Array.isArray(raw?.output)){
   const content=raw.output.filter((v:any)=>v?.type==="message"&&v?.role==="assistant").flatMap((v:any)=>Array.isArray(v.content)?v.content:[]).filter((v:any)=>v?.type==="output_text"&&typeof v.text==="string").map((v:any)=>v.text).join("");
-  return content?extractJson(content):null;
+  return content?parse(content):null;
  }
- return extractJson(raw);
+ return parse(raw?.choices?.[0]?.message?.content??raw?.response??raw);
 }
 export const lessonPackAiEnabled=(e:Env)=>unifiedPortalPilot(e)&&e.SUPPORT_RESOURCE_AI==="true"&&!!e.AI;
 export function validateLessonPack(b:any,expectedMinutes?:number,onFailure?:(reason:string)=>void){
