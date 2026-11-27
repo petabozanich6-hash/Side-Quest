@@ -1,3 +1,4 @@
+import {campIllustrationStory} from "./englishClubCreativeCamps";
 import {STORY_QUEST} from "./englishClubCurriculum";
 import {validateIllustrationPlan} from "./supportIllustrations";
 import {presentationImage} from "./supportFiles";
@@ -14,8 +15,10 @@ const scenes=[
 ] as const;
 export function clubIllustrationPlan(workshop:any){
  const index=STORY_QUEST.sessions.findIndex(s=>s.title===workshop?.title);
- if(index<0||!Array.isArray(workshop?.slides)||workshop.slides.length!==9)return [];
- const plan=scenes[index].map(([title,brief,purpose],i)=>({slide_index:[0,2,4][i],title,brief,purpose}));
+ if(!Array.isArray(workshop?.slides)||workshop.slides.length!==9)return [];
+ const camp=campIllustrationStory(workshop);
+ if(index<0&&!camp)return [];
+ const plan=camp||scenes[index].map(([title,brief,purpose],i)=>({slide_index:[0,2,4][i],title,brief,purpose}));
  const attached=workshop.illustration_files;
  return validateIllustrationPlan(plan.map(p=>({...p,...(typeof attached?.[p.slide_index]==="string"?{file_id:attached[p.slide_index]}:{})})),60,9)||[];
 }
