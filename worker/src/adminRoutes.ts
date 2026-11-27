@@ -1,4 +1,4 @@
-import {STORY_QUEST} from "./englishClubCurriculum";
+import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
 import {previewClubCertificate} from "./clubCertificatePreview";
@@ -1217,7 +1217,7 @@ export function createAdminRoutes() {
   admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    return c.json(STORY_QUEST);
+    return c.json({...STORY_QUEST,sessions:STORY_QUEST.sessions.map((s,i)=>({...s,private_preparation:storyQuestPreparation(i)}))});
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
