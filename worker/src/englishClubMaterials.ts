@@ -1,5 +1,6 @@
 import type {Env} from "./types";
 import {ensureEnglishClub} from "./englishClub";
+import {clubIllustrationPlan} from "./englishClubIllustrations";
 import {listResources,downloadResource} from "./supportFiles";
 export const ENGLISH_MATERIALS_SCHEMA=["CREATE TABLE IF NOT EXISTS support_english_materials (class_id TEXT PRIMARY KEY REFERENCES support_english_classes(id) ON DELETE CASCADE, prompts TEXT NOT NULL DEFAULT '', fallback_url TEXT NOT NULL DEFAULT '', fallback_open INTEGER NOT NULL DEFAULT 0 CHECK(fallback_open IN (0,1)))","CREATE TABLE IF NOT EXISTS support_english_file_grants (class_id TEXT NOT NULL REFERENCES support_english_classes(id) ON DELETE CASCADE,file_id TEXT NOT NULL REFERENCES support_files(id),PRIMARY KEY(class_id,file_id))"] as const;
 async function ensure(db:D1Database){await ensureEnglishClub(db);await listResources(db,"",true);await db.batch(ENGLISH_MATERIALS_SCHEMA.map(sql=>db.prepare(sql)));}
@@ -18,10 +19,13 @@ export async function readEnglishMaterials(e:Env,cid:string,parent?:Parent,now=n
  const a=await e.DB.prepare("SELECT prompts,fallback_url,fallback_open FROM support_english_materials WHERE class_id=?").bind(cid).first<{prompts:string;fallback_url:string;fallback_open:number}>();
  const files=(await e.DB.prepare("SELECT f.id,f.title,f.filename,f.mime,f.size_bytes FROM support_english_file_grants g JOIN support_files f ON f.id=g.file_id WHERE g.class_id=? AND f.status='active' AND f.audience='learner' ORDER BY f.title LIMIT 30").bind(cid).all()).results||[];
  const resource=await e.DB.prepare("SELECT resource_json FROM support_english_workshop_resources WHERE class_id=?").bind(cid).first<{resource_json:string}>();
- const workshop=resource?JSON.parse(resource.resource_json):null;
+ const snapshot=resource?JSON.parse(resource.resource_json):null;
+ const illustrations=!parent&&snapshot?clubIllustrationPlan(snapshot):[];
+ // Explicitly project learner fields; never expose image planning briefs or private attachment refs.
+ const workshop=snapshot?{title:snapshot.title,objective:snapshot.objective,reading:snapshot.reading,tasks:snapshot.tasks,stretch:snapshot.stretch,slides:snapshot.slides}:null;
  const inWindow=now.getTime()>=Date.parse(c.start_at)-10*60000&&now.getTime()<Date.parse(c.end_at);
  const fallback=fallbackEnabled(e)&&inWindow&&a?.fallback_open===1?safeClubFallback(a.fallback_url):null;
- return {prompts:a?.prompts||"",files,workshop,...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
+ return {prompts:a?.prompts||"",files,workshop,...(!parent?{illustrations}:{}),...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
 }
 export async function saveEnglishMaterials(e:Env,cid:string,b:any,now=new Date()){
  await ensure(e.DB);if(b?.confirmed!==true||typeof b.prompts!=="string"||b.prompts.length>6000||typeof b.fallback_url!=="string"||typeof b.fallback_open!=="boolean")return false;
