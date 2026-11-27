@@ -1,3 +1,4 @@
+import {academyExperience} from "./academyExperiences";
 import type {Env} from "./types";
 import {ensureEnglishClub} from "./englishClub";
 import {clubIllustrationPlan} from "./englishClubIllustrations";
@@ -22,7 +23,7 @@ export async function readEnglishMaterials(e:Env,cid:string,parent?:Parent,now=n
  const snapshot=resource?JSON.parse(resource.resource_json):null;
  const illustrations=!parent&&snapshot?clubIllustrationPlan(snapshot):[];
  // Explicitly project learner fields; never expose image planning briefs or private attachment refs.
- const workshop=snapshot?{...(snapshot.creative_camp===true?{creative_camp:true}:{}),...(["english-creative-camp-junior-v1","english-creative-camp-senior-v1","english-author-studio-adult-v1"].includes(c.curriculum_id||"")?{programme_id:c.curriculum_id}:{}),title:snapshot.title,objective:snapshot.objective,reading:snapshot.reading,tasks:snapshot.tasks,stretch:snapshot.stretch,slides:snapshot.slides}:null;
+ const workshop=snapshot?{...(snapshot.creative_camp===true?{creative_camp:true}:{}),...(["english-creative-camp-junior-v1","english-creative-camp-senior-v1","english-author-studio-adult-v1"].includes(c.curriculum_id||"")?{programme_id:c.curriculum_id}:{}),...(academyExperience(c.curriculum_id,snapshot.title)?{experience:academyExperience(c.curriculum_id,snapshot.title)}:{}),title:snapshot.title,objective:snapshot.objective,reading:snapshot.reading,tasks:snapshot.tasks,stretch:snapshot.stretch,slides:snapshot.slides}:null;
  const inWindow=now.getTime()>=Date.parse(c.start_at)-10*60000&&now.getTime()<Date.parse(c.end_at);
  const fallback=fallbackEnabled(e)&&inWindow&&a?.fallback_open===1?safeClubFallback(a.fallback_url):null;
  return {prompts:a?.prompts||"",files,workshop,...(!parent?{illustrations}:{}),...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
