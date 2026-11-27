@@ -581,3 +581,31 @@ export const WRITERS_ACADEMY=[
  {id:ADULT_STUDIO.id,title:ADULT_STUDIO.title,age:ADULT_STUDIO.age,minutes:ADULT_STUDIO.minutes,session_cents:ADULT_STUDIO.session_cents,upfront_cents:ADULT_STUDIO.upfront_cents,weekly_cents:4500,audience:"adult",sessions:6}
 ] as const;
 export function academyProgramme(id:unknown){return WRITERS_ACADEMY.find(p=>p.id===id);}
+
+export function adultStudioResource(index:number){
+ const s=ADULT_STUDIO.sessions[index];if(!s)return null;
+ return {creative_camp:true,programme_id:ADULT_STUDIO.id,title:s.title,objective:s.objective,reading:s.spark,tasks:[s.exercise,"Make one intentional craft choice and explain its intended effect.","Optional: share a short excerpt or reflect privately."],stretch:"Continue your own project if you wish. Identify one achievable next step.",slides:[
+ {title:s.title,body:s.objective},
+ {title:"Writing warm-up",body:s.spark},
+ {title:"The craft",body:s.concept},
+ {title:"Worked example",body:s.demo},
+ {title:"Explore your options",body:"Consider these choices in the guided activity. Choose an approach or invent your own.",cards:s.options.map(([label,options])=>({label,body:options.join(" · ")}))},
+ {title:"A short break",body:"Five minutes to stretch, refill your drink or think about your idea."},
+ {title:"Your writing studio",body:s.exercise},
+ {title:"Reflect and refine",body:"If you wish, share a short excerpt. Ask what the writer intended before offering feedback. A strength, a question and an optional suggestion are enough."},
+ {title:"Your next chapter",body:"What did you discover? Choose one achievable next action for your writing project."}
+ ]};
+}
+export function adultStudioIllustrationStory(workshop:any){
+ if(workshop?.programme_id!==ADULT_STUDIO.id)return null;
+ const s=ADULT_STUDIO.sessions.find(s=>s.title===workshop.title);if(!s)return null;
+ const style="Original sophisticated literary editorial art, midnight ink, warm parchment and antique gold, no lettering or identifiable people. ";
+ return [
+ {slide_index:0,title:"Workshop opening",brief:style+"An editorial still life reflecting "+s.title+". An open notebook, pen and a purposeful object that evokes the theme.",purpose:"Introduce the workshop theme."},
+ {slide_index:1,title:"Story spark",brief:style+s.spark,purpose:"Invite a discussion of the opening."},
+ {slide_index:2,title:"Writing craft",brief:style+"Create a symbolic editorial composition reflecting this writing principle: "+s.concept,purpose:"Make the craft idea memorable."},
+ {slide_index:3,title:"Worked example",brief:style+s.demo,purpose:"Support discussion of the author demonstration."},
+ {slide_index:4,title:"Creative choices",brief:style+"A collection of three evocative objects or scenes representing different creative possibilities around "+s.title+".",purpose:"Inspire choices without suggesting a correct answer."},
+ {slide_index:6,title:"Writing studio",brief:style+"A quiet writer’s desk with blank manuscript pages, warm lamplight and subtle motifs from "+s.title+".",purpose:"Set the atmosphere for sustained writing time."}
+ ];
+}
