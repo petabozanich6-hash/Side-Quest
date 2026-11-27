@@ -78,7 +78,7 @@ export async function reserveEnglishSingle(db:D1Database,a:AuthUser,b:any,now=ne
 export function registerEnglishClubSelfService(app:App,g:Guards){
  const root="/api/family-portal/club";
  app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","no-store");if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);await next();});
- app.get(root+"/rounds",g.auth,g.parent,async c=>{if(!await verifiedPortalIdentity(c.env.DB,c.get("user")))return c.json({detail:"Verified parent required."},403);return c.json({rounds:(await listEnglishRounds(c.env.DB,true)).filter(r=>r.age_group),terms_version:CLUB_BOOKING_VERSION,terms:CLUB_ROUND_TERMS,academy_terms_version:ACADEMY_ROUND_VERSION,academy_terms:ACADEMY_ROUND_TERMS});});
+ app.get(root+"/rounds",g.auth,g.parent,async c=>{if(!await verifiedPortalIdentity(c.env.DB,c.get("user")))return c.json({detail:"Verified parent required."},403);return c.json({rounds:(await listEnglishRounds(c.env.DB,true)).filter(r=>r.audience==="minor"&&creativeCamp(r.programme_id)),terms_version:CLUB_BOOKING_VERSION,terms:CLUB_ROUND_TERMS,academy_terms_version:ACADEMY_ROUND_VERSION,academy_terms:ACADEMY_ROUND_TERMS});});
  app.post(root+"/reserve-round",g.auth,g.parent,async c=>{
  const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified parent required."},403);
  if(!(await loadPlatformSettings(c.env.DB)).features.registrationsOpen)return c.json({detail:"New bookings are paused."},503);
