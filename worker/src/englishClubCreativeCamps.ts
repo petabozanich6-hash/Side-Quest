@@ -21,7 +21,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Draw or describe your portal, give it a title and make a cover or teaser.",
         "activities": [
           {
             "title": "Choose your adventure: The Book Portal",
@@ -62,7 +61,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Create a character card, drawing or short first adventure.",
         "activities": [
           {
             "title": "Choose your adventure: Character Chaos",
@@ -103,7 +101,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Invent two clues and a surprising ending; draw or dictate if you prefer.",
         "activities": [
           {
             "title": "Choose your adventure: Mystery in the Library",
@@ -144,7 +141,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Make a map or description of a fictional world with a place to explore.",
         "activities": [
           {
             "title": "Choose your adventure: Worlds of Wonder",
@@ -185,7 +181,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Create a branching mini adventure with two choices and possible endings.",
         "activities": [
           {
             "title": "Choose your adventure: Choose Your Own Adventure",
@@ -226,7 +221,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Make a mini book, cover, blurb or story. Celebrate everyone’s creativity without requiring public sharing.",
         "activities": [
           {
             "title": "Choose your adventure: Little Author Celebration",
@@ -275,7 +269,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Invent a title, genre and back-cover pitch. Make a reading wish-list.",
         "activities": [
           {
             "title": "Choose your adventure: Beyond the Cover",
@@ -316,7 +309,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Create a character profile and write or dictate an opening exchange.",
         "activities": [
           {
             "title": "Choose your adventure: Characters We Can't Forget",
@@ -357,7 +349,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Sketch a map, invent a cultural detail or write a scene introducing your world.",
         "activities": [
           {
             "title": "Choose your adventure: Build a World Worth Getting Lost In",
@@ -398,7 +389,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Write an opening and plan a twist with one earlier clue, or outline the idea verbally.",
         "activities": [
           {
             "title": "Choose your adventure: Plot Twists and Page Turners",
@@ -439,7 +429,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Create a short scene, comic outline or alternate ending with an intentional creative choice.",
         "activities": [
           {
             "title": "Choose your adventure: The Story Lab",
@@ -480,7 +469,6 @@ export const CREATIVE_CAMPS=[
           "52–57: Optional sharing and encouragement",
           "57–60: Book discovery and closing"
         ],
-        "worksheet": "Polish a piece, create a cover or pitch, or plan a future project. Make a reading wish-list.",
         "activities": [
           {
             "title": "Choose your adventure: The Author's Studio",
