@@ -1,3 +1,4 @@
+import {academyExperience,academyExperienceGuide} from "./academyExperiences";
 import {CAMP_CRAFT} from "./englishClubCampCraft";
 // Distinct creative camps: reading enjoyment and original creation, not remedial tuition.
 export const CREATIVE_CAMPS=[
@@ -511,11 +512,12 @@ export function campPreparation(id:unknown,index:number){
  "37–52 min | Make your own: "+craft.create+" Offer drawing, dictation, typing or writing. "+craft.support+" Let learners make choices and circulate with encouragement.",
  "52–57 min | Celebrate: Ask if anyone wants to share. "+craft.feedback+" Passing is welcome.",
  "57–60 min | Book discovery: "+craft.reading+" Ask what they would like to explore next; no homework."
- ].join("\n\n");
+ ,academyExperienceGuide(c.id,s.title)
+ ].filter(Boolean).join("\n\n");
 }
 export function campResource(id:unknown,index:number){
  const c=creativeCamp(id),s=c?.sessions[index],craft=s&&CAMP_CRAFT[s.title];if(!s||!craft)return null;
- return {creative_camp:true,programme_id:c.id,title:s.title,objective:s.objective,reading:s.reading,tasks:[craft.prompt,craft.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
+ return {creative_camp:true,programme_id:c.id,experience:academyExperience(c.id,s.title),title:s.title,objective:s.objective,reading:s.reading,tasks:[craft.prompt,craft.create,"Optional: give your creation a title or share one detail."],stretch:"If you feel inspired, keep creating or find a book with a similar theme.",slides:[
  {title:s.title,body:s.description},{title:"Book chat",body:"What stories, worlds, characters or genres do you love? Comics and audiobooks count. You can pass."},{title:"Story spark",body:s.reading},{title:"An author’s trick",body:craft.example,cards:[{label:"Imagine",body:craft.prompt},{label:"Try it",body:"Make your own version. There is more than one possibility."}]},{title:"Create together",body:s.group},{title:"Choose a possibility",body:s.activities[0].question+"\n"+s.activities[0].options?.join("\n")},{title:"Your creative studio",body:craft.create},{title:"Optional extra",body:"Give your creation a title, cover idea or next adventure."},{title:"Celebrate and discover",body:"Share if you want to. What kind of book or story would you like to discover next?"}
  ]};
 }
