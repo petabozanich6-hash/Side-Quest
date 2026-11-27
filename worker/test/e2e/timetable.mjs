@@ -99,7 +99,15 @@ await step("paying parent: plan one week; it is saved as free timetable slots", 
   await page.click("[data-testid=plan-week-open]");
   await page.click("[data-testid=plan-adjust-times]");
   await page.waitForSelector("[data-testid=tt-generate]:not([disabled])");
-  weekStart = await page.inputValue("[data-testid=tt-week]");
+  // Always generate a full FUTURE school week, including on Friday or a weekend.
+  // Assignments intentionally ignore elapsed slots; the old default current week
+  // sometimes had only one Mathematics slot remaining and cascaded into failures.
+  weekStart = await page.evaluate(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + (7 - (d.getDay() + 6) % 7));
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
+  await page.fill("[data-testid=tt-week]", weekStart);
   await page.click("[data-testid=tt-generate]");
   await page.waitForSelector("[data-testid=tt-count]");
   await shot("01-week-preview");
@@ -108,7 +116,9 @@ await step("paying parent: plan one week; it is saved as free timetable slots", 
   const s = await slots();
   ok(s.length >= 8, "too few slots: " + s.length);
   ok(s.every((x) => x.date >= weekStart && !x.linked_assignment_id), "slots outside the week or already filled");
-  ok(s.some((x) => x.title === "Mathematics") && s.some((x) => x.title === "English"), "subjects missing: " + [...new Set(s.map((x) => x.title))].join(", "));
+  ok(s.filter(x => x.title === "Mathematics").length >= 2 && s.some(x => x.title === "English"), "test needs at least two Mathematics slots and one English slot in the future week");
+  const today = await browserToday();
+  ok(s.every(x => x.date > today), "fixture contains current or past slots");
 });
 
 await step("Plan My Week finds the child's existing timetable without assigning anything before approval", async () => {
@@ -187,11 +197,14 @@ await step("the next maths lesson takes the next maths slot; an English lesson t
 });
 
 await step("the calendar shows each lesson inside its slot and free slots as free", async () => {
-  const [y, mo] = weekStart.split("-").map(Number);
+  const filled = (await slots()).find(x => x.linked_lesson_id === maths1);
+  ok(filled, "first Mathematics assignment is missing");
+  const [y, mo] = filled.date.split("-").map(Number);
   await page.goto(BASE + "/parent/calendar");
   await page.click("[data-testid=calendar-month-mode]");
   const now = new Date();
-  if (now.getFullYear() * 12 + now.getMonth() < y * 12 + mo - 1) await page.click("[data-testid=next-month]");
+  const monthDelta = y * 12 + mo - 1 - (now.getFullYear() * 12 + now.getMonth());
+  for (let i = 0; i < monthDelta; i++) await page.click("[data-testid=next-month]");
   await page.waitForSelector("[data-slot=filled]", { timeout: 10000 });
   const text = await page.textContent("[data-testid=calendar-page]");
   ok(/Mathematics · Place value/.test(text), "filled slot label missing");
