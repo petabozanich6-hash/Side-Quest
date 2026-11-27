@@ -2,7 +2,7 @@ import type {Env,AuthUser} from "./types";
 import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {loadPlatformSettings} from "./platformSettings";
 import {hitRateLimit} from "./adminAudit";
-import {decodeResource} from "./supportFiles";
+import {decodeResource,presentationImage} from "./supportFiles";
 
 const text=(v:unknown,n:number)=>typeof v==="string"&&v.trim().length>0&&v.trim().length<=n?v.trim():null;
 export const ILLUSTRATION_MODEL="@cf/black-forest-labs/flux-1-schnell";
@@ -10,13 +10,20 @@ export const ILLUSTRATION_MODEL="@cf/black-forest-labs/flux-1-schnell";
 export function illustrationAllowance(minutes:number){return minutes<30?2:minutes<45?4:minutes<60?5:minutes<90?6:8;}
 export function validateIllustrationPlan(raw:any,minutes:number,slideCount:number){
  if(!Array.isArray(raw)||raw.length>Math.min(illustrationAllowance(minutes),slideCount))return null;
- const plan:{slide_index:number;title:string;brief:string;purpose:string}[]=[];
+ const plan:{slide_index:number;title:string;brief:string;purpose:string;file_id?:string}[]=[];
  for(const item of raw){
   const slide_index=item?.slide_index,title=text(item?.title,100),brief=text(item?.brief,900),purpose=text(item?.purpose,300);
   if(!Number.isInteger(slide_index)||slide_index<0||slide_index>=slideCount||!title||!brief||brief.length<40||!purpose||plan.some(p=>p.slide_index===slide_index||p.brief===brief))return null;
-  plan.push({slide_index,title,brief,purpose});
+  const file_id=item.file_id;
+  if(file_id!==undefined&&(typeof file_id!=="string"||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(file_id)))return null;
+  plan.push({slide_index,title,brief,purpose,...(file_id?{file_id}:{})});
  }
  return plan.sort((a,b)=>a.slide_index-b.slide_index);
+}
+// Only explicitly reviewed, active learner images may enter an approved lesson.
+export async function reviewedIllustrationsAvailable(db:D1Database,plan?:{file_id?:string}[]){
+ for(const item of plan||[])if(item.file_id&&!await presentationImage(db,item.file_id))return false;
+ return true;
 }
 export const illustrationEnabled=(e:Env)=>unifiedPortalPilot(e)&&e.SUPPORT_RESOURCE_AI==="true"&&e.SUPPORT_ILLUSTRATION_AI==="true"&&!!e.AI;
 export async function draftLessonIllustration(e:Env,actor:AuthUser,b:any){
