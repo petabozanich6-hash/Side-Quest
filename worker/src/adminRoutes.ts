@@ -1,6 +1,5 @@
 import {campActivities} from "./englishClubCampGames";
 import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
-import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
 import {previewClubCertificate} from "./clubCertificatePreview";
@@ -37,7 +36,7 @@ import {unifiedPortalPilot} from "./unifiedPortalIdentity";
 import {createEnglishRound,listEnglishRounds,setEnglishRoundPublished} from "./englishClubRounds";
 import {readEnglishMaterials,saveEnglishMaterials,changeEnglishFile} from "./englishClubMaterials";
 import {englishVideoState,prepareEnglishVideo,englishVideoToken,closeEnglishVideo} from "./englishClubVideo";
-import {createEnglishClass,listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
+import {listEnglishClub,enrolEnglishLearner,updateEnglishEnrolment,removeEmptyEnglishClass} from "./englishClub";
 import {sendBookingConfirmation,bookingNotificationStatus} from "./supportBookingNotifications";
 import {correspondenceAttachments,correspondencePaymentLink,uploadCorrespondenceAttachment,downloadCorrespondenceAttachment,removeCorrespondenceAttachment,saveCorrespondencePaymentLink} from "./supportCorrespondenceAttachments";
 import {lessonProgress,saveLessonCheckpoint} from "./supportLessonProgress";
@@ -1014,10 +1013,7 @@ export function createAdminRoutes() {
   admin.get("/english-club",requirePermission("customers.read"),async c=>{
     await ensureGuestSchema(c.env.DB);c.header("Cache-Control","private, no-store");return c.json(await listEnglishClub(c.env.DB));
   });
-  admin.post("/english-club/classes",requirePermission("customers.read"),async c=>{
-    const r=await createEnglishClass(c.env.DB,await readJson(c));if("error" in r)return c.json({detail:r.error},409);
-    await writeAudit(c.env.DB,{...actor(c),action:"english_club.class.create",targetType:"english_club",targetId:r.id,detail:{}});return c.json(r,201);
-  });
+
   admin.get("/english-club/classes/:cid/materials",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");const r=await readEnglishMaterials(c.env,c.req.param("cid")??"");return r?c.json(r):c.json({detail:"Club session unavailable"},404);
   });
@@ -1281,9 +1277,8 @@ export function createAdminRoutes() {
   admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    const requested=c.req.query("camp");
-    if(requested){const p=creativeCamp(requested);if(!p)return c.json({detail:"Unknown camp"},404);return c.json({...p,sessions:p.sessions.map((s,i)=>({...s,activities:campActivities(s),private_preparation:campPreparation(p.id,i)}))});}
-    return c.json({...STORY_QUEST,sessions:STORY_QUEST.sessions.map((s,i)=>({...s,private_preparation:storyQuestPreparation(i)}))});
+    const p=creativeCamp(c.req.query("camp"));if(!p)return c.json({detail:"Choose Junior Story Adventurers or Teen Storymakers."},404);
+    return c.json({...p,sessions:p.sessions.map((s,i)=>({...s,activities:campActivities(s),private_preparation:campPreparation(p.id,i)}))});
   });
   admin.get("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
@@ -1291,7 +1286,8 @@ export function createAdminRoutes() {
   });
   admin.post("/english-club/rounds",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
-    const r=await createEnglishRound(c.env.DB,c.get("user").id,await readJson(c));
+    const b=await readJson(c);if(!creativeCamp(b?.curriculum_id))return c.json({detail:"Choose one of the two creative camp programmes."},400);
+    const r=await createEnglishRound(c.env.DB,c.get("user").id,b);
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
     return c.json(r,201);
