@@ -39,3 +39,13 @@ test("Private rehearsal does not require a live classroom",async()=>{
  expect(container.textContent).toContain("Second learner prompt");
  expect(container.textContent).toContain("Second private script");
 });
+
+test("spoken dialogue and learner pauses are explicit and stay outside the shared stage",async()=>{
+ const next=structuredClone(pack);next.slides[0].notes="UNDERSTAND: Private concept\nSAY AND SHOW: [SAY] Today we will investigate. [ASK] What do you notice? [PAUSE] Wait for their own attempt. [RESPOND] Discuss their reasoning.\nIF THEY GET STUCK: Private help\nCHECK: PRIVATE ANSWER";
+ await act(async()=>root.render(<GuidedTutorView pack={next} onPresent={jest.fn()} liveStage={<div data-testid="shared-stage">Shared learner stage</div>}/>));
+ expect(container.textContent).toContain("Say to the learner");
+ expect(container.textContent).toContain("Give the learner time to try");
+ expect(container.textContent).toContain("Wait for their own attempt.");
+ expect(container.querySelector('[data-testid="shared-stage"]').textContent).not.toContain("Today we will investigate");
+ expect(container.querySelector('[data-testid="shared-stage"]').textContent).not.toContain("PRIVATE ANSWER");
+});
