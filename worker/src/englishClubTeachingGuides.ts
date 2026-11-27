@@ -55,9 +55,19 @@ export const ENGLISH_TEACHING_GUIDES=[
   feedback:"Ask whether the change improves the stated purpose rather than merely adding adjectives. Respect a learner's intended style. Exit check: distinguish a structural revision from a copyedit and explain the effect of one change. Completion certificates are handled separately through verified attendance."
  }
 ] as const;
+// A separate, no-mark icebreaker for each standalone workshop.
+export const ENGLISH_CLUB_ICEBREAKERS=[
+ {title:"Sell the unsellable",prompt:"A sock with a hole, a bent spoon or a very ordinary pebble: invent a ridiculously irresistible product name.",script:"Say: ‘Welcome to English Club! I’m selling a luxury pebble called the Pocket Mountain. What would you call one of these wonderfully useless objects?’ Invite a word, a typed name or a pass. Enjoy the ideas rather than judging them. Say: ‘We just changed how an object sounds without changing the object. Today we’ll explore that power of language.’"},
+ {title:"The suspicious suitcase",prompt:"A suitcase contains a rubber duck, a tiny umbrella and a mysterious key. Invent a wonderfully unlikely explanation.",script:"Say: ‘My theory is that a duck has booked a holiday. What’s yours?’ Let learners offer a theory, choose an object, type, listen or pass. Welcome contrasting possibilities. Say: ‘Different explanations can fit the same clues. Today we’re going to explore how readers infer meaning.’"},
+ {title:"The impossible pet",prompt:"A character is offered a dragon that sneezes glitter or a cat that announces every secret. Which would they choose, and why?",script:"Say: ‘I’m choosing the glitter dragon, although I suspect my vacuum cleaner will resign.’ Invite preferences and imaginary motives without asking about home life. Let participants pass. Say: ‘The same choice might reveal very different motivations. Today we’ll explore what drives characters.’"},
+ {title:"The story blender",prompt:"A penguin, a broken lift and a mysterious invitation. Combine them into the first line of a story.",script:"Say: ‘The penguin knew the lift was broken, but the invitation said not to take the stairs.’ Invite one optional line, word or typed suggestion from each participant. Build on ideas without correcting them. Say: ‘Notice how our opening creates questions. Today we’ll explore narrative order and tension.’"},
+ {title:"Ridiculous inventions",prompt:"Persuade us to buy a self-folding hat, a silent alarm clock or a teaspoon with wheels.",script:"Say: ‘My teaspoon has wheels because breakfast should have a getaway vehicle.’ Invite a silly sales pitch or a favourite invention, with the option to listen. No winner or score. Say: ‘Making something sound convincing is different from proving it works. Today we’ll explore persuasive reasoning.’"},
+ {title:"The sentence makeover",prompt:"Make ‘The door opened’ sound ridiculous, mysterious or exciting. Choose any style.",script:"Say: ‘The door opened with the confidence of a penguin wearing sunglasses.’ Invite alternative versions, orally or in chat, or let learners pass. Celebrate differences without correcting grammar. Say: ‘Each change creates a different effect. Today we’ll explore purposeful revision.’"}
+] as const;
 export function englishTeachingGuide(index:number){
  const g=ENGLISH_TEACHING_GUIDES[index];if(!g)return "";
  return [
+ "0–5 min | Welcome — playful icebreaker: "+ENGLISH_CLUB_ICEBREAKERS[index].script,
  "5–13 min | I teach — explicit concept: "+g.concept,
  "13–23 min | I demonstrate — worked analysis or writing: "+g.model,
  "23–35 min | We practise together: "+g.guided,
