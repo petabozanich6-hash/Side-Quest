@@ -90,7 +90,7 @@ import {readAvailability,saveAvailability,suggestSupportStarts} from "./supportP
 import {pendingCancellations,dismissCancellation,cancelPaidAppointment,sendFinalPaymentWarning} from "./supportPaymentSafety";
 import {uploadResource,listResources,archiveResource,downloadResource,grantResource,revokeResource,grantedResources,readPresentedImage} from "./supportFiles";
 import { ensureOrderSchema } from "./supportOrders";
-import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack} from "./supportLessonPack";
+import {lessonPackAiEnabled,generateLessonPack,readLessonPack,approveLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "./supportLessonPack";
 import {readDiary,saveDiary,createBusyBlock} from "./supportDiary";
 import {briefingConfigured,briefingSettings,saveBriefingSettings,buildBriefing} from "./supportBriefing";
 import {recordHousekeepingCheck,housekeepingChecks} from "./ownerHousekeeping";
@@ -899,21 +899,38 @@ export function createAdminRoutes() {
   admin.get("/support-lesson-library",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");
-    return c.json({items:await listReusableLessonPacks(c.env.DB),ai_enabled:lessonPackAiEnabled(c.env)});
+    return c.json({items:await listReusableLessonPacks(c.env.DB),draft:await readPrivateLessonDraft(c.env.DB,c.get("user").id),ai_enabled:lessonPackAiEnabled(c.env)});
   });
   admin.post("/support-lesson-library/draft",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");
-    const b=await readJson(c),r=await generateReusableLessonPack(c.env,c.get("user"),b,b.minutes);
+    const b=await readJson(c),owner=c.get("user");
+    if(await readPrivateLessonDraft(c.env.DB,owner.id))return c.json({detail:"Resume or discard your existing private draft first."},409);
+    const r=await generateReusableLessonPack(c.env,owner,b,b.minutes);
+    if("error" in r)return c.json({detail:r.error},409);
+    const checkpoint=await checkpointPrivateLessonDraft(c.env.DB,owner.id,{pack:r.pack,minutes:b.minutes,revision:0});
+    if("error" in checkpoint)return c.json({detail:checkpoint.error},409);
+    return c.json({...r,draft:checkpoint.draft});
+  });
+  admin.post("/support-lesson-library/checkpoint",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    const r=await checkpointPrivateLessonDraft(c.env.DB,c.get("user").id,await readJson(c));
     return "error" in r?c.json({detail:r.error},409):c.json(r);
+  });
+  admin.post("/support-lesson-library/discard-draft",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
+    c.header("Cache-Control","private, no-store");
+    return await discardPrivateLessonDraft(c.env.DB,c.get("user").id,await readJson(c))?c.json({ok:true}):c.json({detail:"Draft changed; reopen the studio."},409);
   });
   admin.post("/support-lesson-library",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
     c.header("Cache-Control","private, no-store");
-    const r=await saveReusableLessonPack(c.env.DB,await readJson(c));
+    const b=await readJson(c),r=await saveReusableLessonPack(c.env.DB,b);
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"support.lesson_library.create",targetType:"support",targetId:r.saved.id,detail:{}});
-    return c.json(r,201);
+    const cleared=b.draft_revision?await discardPrivateLessonDraft(c.env.DB,c.get("user").id,{revision:b.draft_revision,confirmed:true}):false;
+    return c.json({...r,draft_cleared:cleared},201);
   });
   admin.get("/support-lesson-library/:lessonId",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
