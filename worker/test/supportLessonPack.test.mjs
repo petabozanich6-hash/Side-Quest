@@ -334,3 +334,17 @@ test("AI teaching dialogue must include a meaningful spoken script, question and
  const noShow=structuredClone(valid);const model=noShow.sequence.findIndex(x=>x.phase==="model");noShow.slides[model].notes=noShow.slides[model].notes.replace("[SHOW]","");
  assert.match(validateGeneratedTutorDialogue(noShow),/worked demonstration/);
 });
+
+test("creation quest shares readiness without scratchpad text or private answers",()=>{
+ const raw={type:"create-quest",title:"The last clue",context:"A deserted station at dusk.",prompt:"Write two sentences that suggest suspense and explain your language choices.",criteria:["Use a deliberate metaphor","Explain the intended effect"],answer:"PRIVATE ANSWER"};
+ const visual=validateSlideVisual(raw);assert.ok(visual);assert.equal(visual.answer,undefined);
+ assert.equal(validateSlideVisual({...raw,criteria:["Only one"]}),null);
+ const state=initialSlideInteraction(visual);
+ assert.equal(changeSlideInteraction(visual,state,{visual_id:state.id,operation:"check"},true),null);
+ const ready=changeSlideInteraction(visual,state,{visual_id:state.id,operation:"check",text:"PRIVATE SCRATCHPAD"},false);
+ assert.equal(ready.checked,true);assert.ok(!JSON.stringify(ready).includes("PRIVATE SCRATCHPAD"));
+ assert.equal(changeSlideInteraction(visual,ready,{visual_id:state.id,operation:"reset"},false).checked,false);
+ const copy=structuredClone(englishPack);
+ copy.slides[copy.sequence.findIndex(s=>s.phase==="independent")].visual=visual;
+ assert.ok(validateLessonPack(copy,30));
+});
