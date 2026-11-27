@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
@@ -203,4 +203,33 @@ test("reviewed English and Science modules present learner content without tutor
   }
  }
  }finally{db.raw.close();}
+});
+
+test("standalone reviewed lesson library creates no booking, learner, deck or activity plan until explicitly reused",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ assert.equal((await listReusableLessonPacks(db)).length,0);
+ assert.ok((await saveReusableLessonPack(db,{pack,minutes:30,confirmed:false})).error);
+ assert.ok((await saveReusableLessonPack(db,{pack,minutes:45,confirmed:true})).error);
+ const result=await saveReusableLessonPack(db,{pack,minutes:30,confirmed:true});
+ assert.ok(result.saved);
+ assert.equal((await listReusableLessonPacks(db))[0].id,result.saved.id);
+ assert.equal("pack_json" in (await listReusableLessonPacks(db))[0],false);
+ assert.equal((await getReusableLessonPack(db,result.saved.id)).pack.worksheet[0].answer,pack.worksheet[0].answer);
+ for(const table of ["support_service_orders","support_guest_requests","support_teaching_decks","support_activity_templates","support_session_activity_plans"])assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM "+table).get().n,0);
+ assert.ok((await useReusableLessonPack(db,"guest","wrong","absent",{library_id:result.saved.id,confirmed:true})).error);
+ assert.ok((await generateReusableLessonPack({DB:db}, {},{},30)).error);
+});
+test("reusing a library lesson copies a reviewed snapshot into the exact existing appointment",async t=>{
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const result=await saveReusableLessonPack(db,{pack,minutes:30,confirmed:true});
+ const id=result.saved.id;
+ assert.ok((await useReusableLessonPack(db,"guest","wrong","pack-one",{library_id:id,confirmed:true})).error);
+ assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-one",{library_id:id,confirmed:false})).error);
+ db.raw.prepare("UPDATE support_service_orders SET end_at=? WHERE id='pack-two'").run(new Date(now.getTime()+45*60000).toISOString());
+ assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-two",{library_id:id,confirmed:true})).error);
+ const reused=await useReusableLessonPack(db,"guest","pack-request","pack-one",{library_id:id,confirmed:true});
+ assert.ok(reused.saved);
+ assert.equal((await readLessonPack(db,"guest","pack-request","pack-one")).saved.pack.title,pack.title);
+ assert.equal((await listReusableLessonPacks(db)).length,1);
+ assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-one",{library_id:id,confirmed:true})).error);
 });
