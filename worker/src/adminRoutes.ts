@@ -1,5 +1,6 @@
 import {campActivities} from "./englishClubCampGames";
 import {WRITERS_ACADEMY,ADULT_STUDIO,adultStudioGuide} from "./writersAcademy";
+import {academyPrice} from "./writersAcademyPricing";
 import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
@@ -1277,7 +1278,7 @@ export function createAdminRoutes() {
   });
   admin.get("/english-club/academy-preview",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
-    return c.json({programmes:WRITERS_ACADEMY,adult:{...ADULT_STUDIO,sessions:ADULT_STUDIO.sessions.map((s,i)=>({...s,private_preparation:adultStudioGuide(i)}))},booking_ready:false});
+    return c.json({programmes:WRITERS_ACADEMY.map(p=>({...p,quotes:{single:academyPrice(p.id,"single"),weekly:academyPrice(p.id,"weekly"),upfront:academyPrice(p.id,"upfront")}})),adult:{...ADULT_STUDIO,sessions:ADULT_STUDIO.sessions.map((s,i)=>({...s,private_preparation:adultStudioGuide(i)}))},booking_ready:false});
   });
   admin.get("/english-club/curriculum/story-quest",requirePermission("customers.read"),async c=>{
     c.header("Cache-Control","private, no-store");
