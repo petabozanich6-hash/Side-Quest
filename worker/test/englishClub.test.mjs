@@ -208,3 +208,27 @@ test("creative camp sessions teach distinct writing craft through private script
  }
  assert.equal(skills.size,12);
 });
+
+
+test("all twelve camp story builders are ungraded, bounded, and paired with moderated collaboration",async()=>{
+ const {CREATIVE_CAMPS}=await import("../src/englishClubCreativeCamps.ts");
+ const {campActivities}=await import("../src/englishClubCampGames.ts");
+ const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const {validateGameResponse}=await import("../src/supportActivityGames.ts");
+ for(const c of CREATIVE_CAMPS)for(const session of c.sessions){
+  const activities=campActivities(session);
+  assert.deepEqual(activities.map(a=>a.type),["poll","story_builder","collaboration","short"]);
+  const checked=activities.map(a=>validateActivityTemplate({...a,subject:"English",year_level:"Ages "+c.age}));
+  assert.ok(checked.every(Boolean));
+  const builder=checked[1];
+  assert.equal(builder.answer_key,null);
+  assert.equal(builder.game.type,"story_builder");
+  assert.equal(checked[2].collaborative,1);
+  assert.deepEqual(validateGameResponse(builder.game,"[0,0,0]"),[0,0,0]);
+  assert.deepEqual(validateGameResponse(builder.game,"[1,1,1]"),[1,1,1]);
+  assert.equal(validateGameResponse(builder.game,"[99,0,0]"),null);
+  assert.equal(validateGameResponse(builder.game,"[0,0]"),null);
+  assert.equal(validateGameResponse(builder.game,"[0,0,\"private text\"]"),null);
+  assert.equal(validateActivityTemplate({...activities[1],subject:"English",year_level:"Ages "+c.age,game:{fields:[{label:"One",options:["x","x"]},{label:"Two",options:["x","y"]}]}}),null);
+ }
+});
