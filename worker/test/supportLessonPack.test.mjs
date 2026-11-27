@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
@@ -291,4 +291,25 @@ test("validation reports safe specific failures without weakening the complete l
  assert.match(reason,/private teaching guidance/);assert.ok(!reason.includes("PRIVATE SENTINEL"));
  assert.equal(check({...englishPack,worksheet:[]}),null);assert.match(reason,/worksheet/);
  assert.equal(check({...englishPack,activities:[]}),null);assert.match(reason,/two distinct activities/);
+});
+
+test("structured model guidance is converted without changing instructional content, and 30-minute timing is deterministic",()=>{
+ const structured=structuredClone(englishPack);
+ for(const slide of structured.slides){
+  const match=slide.notes.match(/^UNDERSTAND:\s*([\s\S]+?)\nSAY AND SHOW:\s*([\s\S]+?)\nIF THEY GET STUCK:\s*([\s\S]+?)\nCHECK:\s*([\s\S]+)$/);
+  assert.ok(match);
+  slide.notes={understand:match[1],say_and_show:match[2],if_they_get_stuck:match[3],check:match[4]};
+ }
+ structured.sequence=structured.sequence.map(s=>({...s,minutes:2}));
+ const normal=normaliseGeneratedLessonPack(structured,30);
+ assert.deepEqual(normal.sequence.map(s=>s.minutes),[6,6,7,7,4]);
+ assert.deepEqual(normal.slides.map(s=>s.notes),englishPack.slides.map(s=>s.notes));
+ assert.ok(validateLessonPack(normal,30));
+ const short=structuredClone(structured);short.slides[0].notes.check="Too short";
+ assert.equal(validateLessonPack(normaliseGeneratedLessonPack(short,30),30),null);
+ const missing=structuredClone(structured);delete missing.slides[0].notes.check;
+ assert.equal(validateLessonPack(normaliseGeneratedLessonPack(missing,30),30),null);
+ const wrong=structuredClone(structured);wrong.sequence[0].phase="model";
+ assert.equal(validateLessonPack(normaliseGeneratedLessonPack(wrong,30),30),null);
+ assert.equal(normaliseGeneratedLessonPack(structured,45).sequence[0].minutes,2);
 });
