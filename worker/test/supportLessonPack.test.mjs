@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
 import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
-import {validateSlideVisual} from "../src/supportSlideVisuals.ts";
+import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
 const pack=fractionPack("Equivalent fractions","Mathematics","Year 4","Understand and identify equivalent fractions using visual models.",30);
 pack.slides[0].notes+=" PRIVATE-SOLUTION";
@@ -114,4 +114,27 @@ test("interactive quality gate rejects passive practice and malformed models",()
  assert.equal(validateSlideVisual({type:"fraction-split",total:7,shaded:2,factor:3}),null);
  assert.deepEqual(validateSlideVisual({type:"select",items:["A","B"],answer:[0]}),{type:"select",items:["A","B"]});
  assert.deepEqual(validateSlideVisual({type:"order",items:["B","C","A"],answer:[2,0,1]}),{type:"order",items:["B","C","A"]});
+});
+
+test("contextual fraction quests only accept mathematically achievable equivalent shares",()=>{
+ const raw={type:"fraction-quest",total:3,shaded:2,target_total:6,context:"pizza",answer:4,notes:"private"};
+ assert.deepEqual(validateSlideVisual(raw),{type:"fraction-quest",total:3,shaded:2,target_total:6,context:"pizza"});
+ for(const bad of [{target_total:5},{target_total:3},{total:0},{shaded:3},{context:"unknown"},{target_total:17}])assert.equal(validateSlideVisual({...raw,...bad}),null);
+ const state=initialSlideInteraction(raw);
+ const act=(s,operation,extra={},owner=false)=>changeSlideInteraction(raw,s,{visual_id:state.id,operation,...extra},owner);
+ assert.equal(act(state,"check"),null);
+ assert.equal(act(state,"toggle",{index:6}),null);
+ assert.equal(act(state,"toggle",{index:0},true),null);
+ const picked=act(state,"toggle",{index:1});
+ assert.deepEqual(picked.selected,[1]);
+ assert.equal(act(picked,"check",{},true),null);
+ const checked=act(picked,"check");
+ assert.equal(checked.checked,true);
+ assert.deepEqual(checked.selected,[1]);
+ assert.equal(act(checked,"toggle",{index:2}).checked,false);
+ assert.equal(act(checked,"reset",{},true).checked,false);
+ assert.equal(JSON.stringify(checked).includes("private"),false);
+ assert.ok(validateLessonPack(pack,30));
+ assert.equal(pack.slides[3].visual.type,"fraction-quest");
+ assert.equal(pack.slides[5].visual.type,"fraction-quest");
 });
