@@ -271,3 +271,24 @@ test("reasoning trial reads only final model output and keeps the complete teach
  assert.equal(extractLessonPackResponse({output:[{type:"reasoning",summary:[{type:"summary_text",text:JSON.stringify(englishPack)}]}]}),null);
  assert.equal(validateLessonPack(extractLessonPackResponse({output_text:'{"title":"Incomplete"}'}),30),null);
 });
+
+test("complete structured model output is accepted but truncated or reasoning-only text is never salvaged",()=>{
+ assert.ok(validateLessonPack(extractLessonPackResponse(englishPack),30));
+ assert.ok(validateLessonPack(extractLessonPackResponse({response:englishPack}),30));
+ const json=JSON.stringify(englishPack);
+ assert.ok(validateLessonPack(extractLessonPackResponse({response:"\x60\x60\x60json\n"+json+"\n\x60\x60\x60"}),30));
+ assert.equal(extractLessonPackResponse({response:json.slice(0,-1)}),null);
+ assert.equal(extractLessonPackResponse({response:"Analysis before final output "+json}),null);
+ assert.equal(extractLessonPackResponse({reasoning_content:json}),null);
+});
+test("validation reports safe specific failures without weakening the complete lesson gate",()=>{
+ let reason="";
+ const check=(p,minutes=30)=>validateLessonPack(p,minutes,r=>{reason=r;});
+ assert.ok(check(englishPack));assert.equal(reason,"");
+ assert.equal(check(englishPack,45),null);assert.match(reason,/timing/);
+ assert.equal(check({...englishPack,slides:[]}),null);assert.match(reason,/slide structure/);
+ assert.equal(check({...englishPack,slides:englishPack.slides.map((s,i)=>i===0?{...s,notes:"PRIVATE SENTINEL"}:s)}),null);
+ assert.match(reason,/private teaching guidance/);assert.ok(!reason.includes("PRIVATE SENTINEL"));
+ assert.equal(check({...englishPack,worksheet:[]}),null);assert.match(reason,/worksheet/);
+ assert.equal(check({...englishPack,activities:[]}),null);assert.match(reason,/two distinct activities/);
+});
