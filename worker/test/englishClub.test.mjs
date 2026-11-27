@@ -158,3 +158,30 @@ test("all six English Club icebreakers are distinct five-minute opening steps wi
  assert.equal(englishTeachingGuide(-1),"");
  assert.equal(englishTeachingGuide(6),"");
 });
+
+
+test("junior and teen creative camps can run in the same week without overlapping or replacing legacy rounds",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const {CREATIVE_CAMPS,campPreparation,campResource}=await import("../src/englishClubCreativeCamps.ts");
+ const {createEnglishRound,listEnglishRounds}=await import("../src/englishClubRounds.ts");
+ const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
+ const [junior,teen]=CREATIVE_CAMPS;
+ assert.deepEqual(CREATIVE_CAMPS.map(c=>c.age),["8–11","12–16"]);
+ const spec=(c,first_local)=>({curriculum_id:c.id,title:c.title,description:c.description,first_local,session_count:6,themes:c.sessions.map(s=>s.title),reviewed_activities:true,confirmed:true});
+ const j=await createEnglishRound(db,"owner",spec(junior,"2026-12-09T16:00"),now);assert.ok(j.id,JSON.stringify(j));
+ assert.ok((await createEnglishRound(db,"owner",spec(teen,"2026-12-09T16:00"),now)).error);
+ const s=await createEnglishRound(db,"owner",spec(teen,"2026-12-09T18:00"),now);assert.ok(s.id,JSON.stringify(s));
+ assert.ok((await createEnglishRound(db,"owner",spec(junior,"2026-12-10T16:00"),now)).error);
+ const rounds=await listEnglishRounds(db);assert.equal(rounds.length,2);
+ assert.deepEqual(rounds.map(r=>r.age_group),["8–11","12–16"]);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_classes").get().n,12);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,24);
+ assert.equal((await listEnglishRounds(db,true,now)).length,0);
+ for(const c of CREATIVE_CAMPS)for(const [i,session] of c.sessions.entries()){
+  const prep=campPreparation(c.id,i),resource=campResource(c.id,i);
+  for(const p of ["Icebreaker","Book chat","Author demonstration","Creative game together","Make your own","Celebrate","Book discovery"])assert.ok(prep.includes(p));
+  assert.equal(resource.slides.length,9);
+  assert.ok(clubIllustrationPlan(resource).length);
+  for(const a of session.activities)assert.ok(validateActivityTemplate({...a,subject:"English",year_level:"Ages "+c.age}));
+ }
+});
