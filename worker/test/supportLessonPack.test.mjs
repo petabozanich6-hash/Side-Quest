@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
@@ -232,4 +232,28 @@ test("reusing a library lesson copies a reviewed snapshot into the exact existin
  assert.equal((await readLessonPack(db,"guest","pack-request","pack-one")).saved.pack.title,pack.title);
  assert.equal((await listReusableLessonPacks(db)).length,1);
  assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-one",{library_id:id,confirmed:true})).error);
+});
+
+test("studio drafts survive reopening, remain isolated and cannot be overwritten by stale windows",async t=>{
+ const db=makeDb();t.after(()=>db.raw.close());
+ const owner="synthetic-owner",other="other-owner";
+ const first=await checkpointPrivateLessonDraft(db,owner,{pack,minutes:30,revision:0});
+ assert.ok(first.draft);
+ const {draft_id,revision}=first.draft;
+ assert.equal((await readPrivateLessonDraft(db,owner)).draft_id,draft_id);
+ assert.equal(await readPrivateLessonDraft(db,other),null);
+ assert.equal((await listReusableLessonPacks(db)).length,0);
+ assert.ok((await checkpointPrivateLessonDraft(db,owner,{pack,minutes:30,revision:0})).error);
+ assert.ok((await checkpointPrivateLessonDraft(db,owner,{pack:{...pack,slides:[]},minutes:30,draft_id,revision})).error);
+ const next=await checkpointPrivateLessonDraft(db,owner,{pack:{...pack,title:"Updated practice"},minutes:30,draft_id,revision});
+ assert.ok(next.draft);
+ assert.equal((await readPrivateLessonDraft(db,owner)).pack.title,"Updated practice");
+ assert.equal(await discardPrivateLessonDraft(db,other,{draft_id,revision:next.draft.revision,confirmed:true}),false);
+ assert.equal(await discardPrivateLessonDraft(db,owner,{draft_id,revision,confirmed:true}),false);
+ assert.equal(await discardPrivateLessonDraft(db,owner,{draft_id,revision:next.draft.revision,confirmed:true}),true);
+ const replacement=await checkpointPrivateLessonDraft(db,owner,{pack,minutes:30,revision:0});
+ assert.notEqual(replacement.draft.draft_id,draft_id);
+ assert.ok((await checkpointPrivateLessonDraft(db,owner,{pack,minutes:30,draft_id,revision})).error);
+ assert.equal(await discardPrivateLessonDraft(db,owner,{draft_id,revision,confirmed:true}),false);
+ for(const table of ["support_service_orders","support_teaching_decks","support_session_activity_plans"])assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM "+table).get().n,0);
 });
