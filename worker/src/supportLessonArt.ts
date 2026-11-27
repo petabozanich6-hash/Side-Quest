@@ -4,6 +4,8 @@ import {loadPlatformSettings} from "./platformSettings";
 import {hitRateLimit} from "./adminAudit";
 import {decodeResource} from "./supportFiles";
 
+// Maximum planned contextual illustrations, not a requirement to use every slot.
+export const lessonIllustrationAllowance=(minutes:number)=>Math.max(3,Math.min(18,Math.ceil(minutes/5)));
 export const LESSON_ART_MODEL="@cf/black-forest-labs/flux-1-schnell";
 export const lessonArtEnabled=(e:Env)=>unifiedPortalPilot(e)&&e.SUPPORT_RESOURCE_AI==="true"&&!!e.AI&&!!e.BUCKET;
 const text=(x:unknown,max:number)=>typeof x==="string"&&x.trim().length>0&&x.trim().length<=max?x.trim():null;
@@ -27,7 +29,7 @@ export async function generateLessonArt(e:Env,actor:AuthUser,b:any){
  const input=lessonArtInput(b);if(!input)return {error:"Review a generic educational image brief without identifying details and confirm one image request."};
  const settings=await loadPlatformSettings(e.DB,{fresh:true});
  if(!settings.features.aiEnabled||settings.maintenance.enabled||settings.costSafeguards.aiDailyPlatformCap<=0)return {error:"AI is paused or unavailable."};
- if(!(await hitRateLimit(e.DB,"support-art-day:"+actor.id,8,86400)).ok||!(await hitRateLimit(e.DB,"support-art-hour:"+actor.id,4,3600)).ok)return {error:"Illustration drafting limit reached."};
+ if(!(await hitRateLimit(e.DB,"support-art-day:"+actor.id,36,86400)).ok||!(await hitRateLimit(e.DB,"support-art-hour:"+actor.id,18,3600)).ok)return {error:"Illustration drafting limit reached. Your text lesson and completed artwork remain available."};
  const now=new Date(),usage=crypto.randomUUID(),since=new Date(now.getTime()-86400000).toISOString();
  const claim=await e.DB.prepare("INSERT INTO ai_usage(id,family_id,user_id,kind,status,created_at) SELECT ?,?,?, 'support_lesson_art','pending',? WHERE (SELECT COUNT(*) FROM ai_usage WHERE created_at>=? AND status<>'failed')<?").bind(usage,actor.family_id,actor.id,now.toISOString(),since,settings.costSafeguards.aiDailyPlatformCap).run();
  if(!claim.meta?.changes)return {error:"Platform AI request limit reached."};
