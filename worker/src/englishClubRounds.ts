@@ -1,3 +1,4 @@
+import {campActivities} from "./englishClubCampGames";
 import {creativeCamp,campPreparation,campResource} from "./englishClubCreativeCamps";
 import {STORY_QUEST,storyQuestPreparation} from "./englishClubCurriculum";
 import {workshopResource} from "./englishClubWorkshopResources";
@@ -38,7 +39,7 @@ export async function createEnglishRound(db:D1Database,owner:string,b:any,now=ne
   // Owner confirmation covers these exact versioned prompts. New copies are private,
   // editable reviewed templates; no existing template or plan is overwritten.
   const items:{template_id:string;revision:number}[]=[];
-  for(const a of preset.sessions[i].activities){
+  for(const a of (camp?campActivities(preset.sessions[i]):preset.sessions[i].activities)){
    const v=validateActivityTemplate({...a,subject:"English",year_level:camp?"Ages "+camp.age:"Mixed levels"});
    if(!v)return {error:"A preset activity is invalid. No round was created."};
    const key=crypto.randomUUID();
