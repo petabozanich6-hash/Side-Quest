@@ -39,3 +39,18 @@ test("Private rehearsal does not require a live classroom",async()=>{
  expect(container.textContent).toContain("Second learner prompt");
  expect(container.textContent).toContain("Second private script");
 });
+
+test("Timed icebreaker appears privately before teaching and never presents a slide automatically",async()=>{
+ const present=jest.fn(),opening={title:"Cat detective",minutes:2,script:"PRIVATE_OPENING_SCRIPT"};
+ await act(async()=>root.render(<GuidedTutorView pack={{...pack,icebreaker:opening}} onPresent={present} liveStage={<div data-testid="shared-stage">Learner stage</div>}/>));
+ expect(container.textContent).toContain("Opening icebreaker · 2 min · Cat detective");
+ expect(container.textContent).toContain("PRIVATE_OPENING_SCRIPT");
+ expect(container.querySelector('[data-testid="shared-stage"]').textContent).not.toContain("PRIVATE_OPENING_SCRIPT");
+ await click("Continue to teaching");
+ expect(container.textContent).not.toContain("PRIVATE_OPENING_SCRIPT");
+ expect(present).not.toHaveBeenCalled();
+ await click("Present selected step to learner");
+ expect(present).toHaveBeenCalledWith(0);
+ await click("Next");
+ expect(container.textContent).not.toContain("Cat detective");
+});
