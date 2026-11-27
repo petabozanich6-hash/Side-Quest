@@ -2,7 +2,7 @@ import React,{useState} from "react";
 import SupportSlideVisual from "./SupportSlideVisual";
 import {adminApi,errorText} from "../../lib/adminApi";
 const btn="rounded-lg border px-3 py-2 text-sm disabled:opacity-50";
-const activityLabels={"steps":"Explore the idea","compare":"Compare and explain","sequence":"Follow the reasoning","fraction-split":"Watch the model change","fraction-bars":"Read the model","fraction-quest":"Solve the challenge","fraction-build":"Build your answer","evidence-quest":"Investigate the evidence","sort-quest":"Classify and justify","data-quest":"Investigate the data","select":"Choose and explain","order":"Put the ideas in order"};
+const activityLabels={"create-quest":"Create and explain","steps":"Explore the idea","compare":"Compare and explain","sequence":"Follow the reasoning","fraction-split":"Watch the model change","fraction-bars":"Read the model","fraction-quest":"Solve the challenge","fraction-build":"Build your answer","evidence-quest":"Investigate the evidence","sort-quest":"Classify and justify","data-quest":"Investigate the data","select":"Choose and explain","order":"Put the ideas in order"};
 export function SlideDisplay({slide,send,owner,busy,preview=false}){
  if(!slide)return null;
  return <article className="overflow-hidden rounded-2xl border border-emerald-900 bg-stone-50 shadow-sm" aria-label={preview?"Learner presentation preview":"Presented slide"}>
