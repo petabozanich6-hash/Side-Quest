@@ -2,7 +2,14 @@ import React,{useState} from "react";
 import SupportSlideVisual from "./SupportSlideVisual";
 import {adminApi,errorText} from "../../lib/adminApi";
 const btn="rounded-lg border px-3 py-2 text-sm disabled:opacity-50";
-export function SlideDisplay({slide,send,owner,busy}){if(!slide)return null;return <article className="rounded-xl bg-emerald-950 text-white p-5 sm:p-8 space-y-3" aria-label="Presented slide"><p className="text-xs uppercase tracking-wider">{slide.title} · {slide.number}/{slide.total}</p><h4 className="text-xl sm:text-3xl font-bold">{slide.heading}</h4><div className="text-base sm:text-xl whitespace-pre-wrap break-words">{slide.body}</div><SupportSlideVisual key={slide.interaction?.id||slide.title+":"+slide.number} visual={slide.visual} interaction={slide.interaction} send={send} owner={owner} busy={busy} live/></article>;}
+const activityLabels={"steps":"Explore the idea","compare":"Compare and explain","sequence":"Follow the reasoning","fraction-split":"Watch the model change","fraction-bars":"Read the model","fraction-quest":"Solve the challenge","fraction-build":"Build your answer","evidence-quest":"Investigate the evidence","sort-quest":"Classify and justify","data-quest":"Investigate the data","select":"Choose and explain","order":"Put the ideas in order"};
+export function SlideDisplay({slide,send,owner,busy,preview=false}){
+ if(!slide)return null;
+ return <article className="overflow-hidden rounded-2xl border border-emerald-900 bg-stone-50 shadow-sm" aria-label={preview?"Learner presentation preview":"Presented slide"}>
+ <header className="bg-emerald-950 text-white p-5 sm:p-7 space-y-3"><div className="flex flex-wrap justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-200"><span>Side-Quest · {activityLabels[slide.visual?.type]||"Explore and discover"}</span><span>{slide.number} / {slide.total}</span></div><div className="flex gap-1" aria-label={"Lesson step "+slide.number+" of "+slide.total}>{Array.from({length:Math.max(0,Math.min(20,slide.total||0))},(_,i)=><span key={i} className={"h-1.5 flex-1 rounded-full "+(i<slide.number?"bg-amber-300":"bg-emerald-800")}/>)}</div><p className="text-sm text-emerald-200 break-words">{slide.title}</p><h4 className="text-2xl sm:text-3xl font-bold leading-tight break-words">{slide.heading}</h4></header>
+ <div className="p-4 sm:p-6 space-y-4"><div className="text-base sm:text-lg leading-relaxed whitespace-pre-wrap break-words text-emerald-950">{slide.body}</div>{slide.visual&&<SupportSlideVisual key={slide.interaction?.id||slide.title+":"+slide.number} visual={slide.visual} interaction={slide.interaction} send={send} owner={owner} busy={busy} live={!preview}/>}</div>
+ </article>;
+}
 export default function SupportPresentation({send,busy}){
  const [items,setItems]=useState(null),[q,setQ]=useState(""),[deck,setDeck]=useState(null),[i,setI]=useState(0),[error,setError]=useState("");
  async function run(fn){try{await fn();setError("");}catch(e){setError(errorText(e));}}
