@@ -1,6 +1,7 @@
 import {campActivities} from "./englishClubCampGames";
 import {WRITERS_ACADEMY,ADULT_STUDIO,adultStudioGuide} from "./writersAcademy";
 import {academyPrice} from "./writersAcademyPricing";
+import {setAdultPilotRound} from "./adultStudioReservations";
 import {creativeCamp,campPreparation} from "./englishClubCreativeCamps";
 import {temporaryHousekeepingStatus} from "./supportTemporaryHousekeeping";
 import {reissueClubCertificateEmail} from "./clubCertificateEmail";
@@ -1298,6 +1299,13 @@ export function createAdminRoutes() {
     if("error" in r)return c.json({detail:r.error},409);
     await writeAudit(c.env.DB,{...actor(c),action:"english_club.round_create",targetType:"english_club",targetId:r.id});
     return c.json(r,201);
+  });
+  admin.post("/english-club/rounds/:rid/adult-pilot",requirePermission("customers.read"),async c=>{
+    if(!unifiedPortalPilot(c.env)||!c.env.SUPPORT_UNIFIED_TEST_EMAIL||!await isPlatformOwner(c.env.DB,c.get("user").id))return c.json({detail:"Owner-only private synthetic pilot required."},403);
+    const id=c.req.param("rid")??"",b=await readJson(c);
+    if(!await setAdultPilotRound(c.env.DB,c.get("user").id,id,b))return c.json({detail:"Review all six adult workshop dates."},409);
+    await writeAudit(c.env.DB,{...actor(c),action:"academy.adult_pilot_availability",targetType:"english_club",targetId:id,detail:{enabled:b.enabled}});
+    return c.json({ok:true});
   });
   admin.post("/english-club/rounds/:rid/publication",requirePermission("customers.read"),async c=>{
     if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);
