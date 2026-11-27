@@ -2,7 +2,7 @@ import React,{useEffect,useState} from "react";
 import LiveActivity from "./LiveActivity";
 import EnglishClubVideo from "./EnglishClubVideo";
 import EnglishClubMaterials from "./EnglishClubMaterials";
-export default function EnglishClubClassroom({classId,requestId,seatId,client,owner=false}){
+export default function EnglishClubClassroom({classId,requestId,seatId,client,owner=false,facilitatorGuide}){
  const [access,setAccess]=useState(null),[error,setError]=useState("");
  useEffect(()=>{
   if(owner)return;
@@ -25,9 +25,11 @@ export default function EnglishClubClassroom({classId,requestId,seatId,client,ow
  return <section className="space-y-4" aria-label="English Club teaching workspace">
   <p className="text-sm">One workshop, one classroom. A parent or guardian must supervise. Keep identifying information private.</p>
   <EnglishClubVideo key={path} path={path} client={client} owner={owner}/>
+  <div className={owner?"grid gap-4 xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] items-start":"space-y-4"}><div className="min-w-0 space-y-4">
+  {owner&&<EnglishClubMaterials key={"teaching:"+path} path={path} client={client} owner teachingOnly/>}
   <LiveActivity key={"activity:"+path} kind="club" sessionId={classId} requestId={requestId} client={client} owner={owner}/>
   {!owner&&<EnglishClubMaterials key={"resources:"+path} path={path} client={client}/>}
-  {owner&&<EnglishClubMaterials key={"teaching:"+path} path={path} client={client} owner teachingOnly/>}
+  </div>{owner&&facilitatorGuide&&<aside className="min-w-0">{facilitatorGuide}</aside>}</div>
   {owner&&<p className="text-xs">Prepare shared resources and the backup meeting link on the session preparation page. Group video remains an isolated pilot.</p>}
  </section>;
 }
