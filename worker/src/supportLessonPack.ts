@@ -61,9 +61,13 @@ export async function generateLessonPack(e:Env,actor:AuthUser,channel:Channel,id
  if(!lessonPackAiEnabled(e)||!e.AI)return {error:"Lesson pack AI is not enabled in private staging."};
  const order=await getOrder(e.DB,channel,id,oid);
  if(!validOrder(order))return {error:"Choose an active scheduled tutoring appointment."};
- const topic=str(b?.topic,160),subject=str(b?.subject,80),year_level=str(b?.year_level,40),goal=str(b?.goal,350);
  const minutes=Math.round((Date.parse(order!.end_at||"")-Date.parse(order!.start_at||""))/60000);
- if(!topic||!subject||!year_level||!goal||b.confirmed!==true||!Number.isFinite(minutes)||minutes<15||minutes>180)return {error:"Confirm a generic teaching topic, level and objective, without any personal information."};
+ return generateReusableLessonPack(e,actor,b,minutes);
+}
+export async function generateReusableLessonPack(e:Env,actor:AuthUser,b:any,minutes:number){
+ if(!lessonPackAiEnabled(e)||!e.AI)return {error:"Lesson pack AI is not enabled in private staging."};
+ const topic=str(b?.topic,160),subject=str(b?.subject,80),year_level=str(b?.year_level,40),goal=str(b?.goal,350);
+ if(!topic||!subject||!year_level||!goal||b.confirmed!==true||!Number.isInteger(minutes)||minutes<15||minutes>180)return {error:"Confirm a generic teaching topic, level and objective, without any personal information."};
  const example=fractionPack(topic,subject,year_level,goal,minutes);
  if(example){const pack=validateLessonPack(example,minutes);if(pack)return {pack,warning:"Built-in visual teaching example. Check the content and suitability before approving; no AI request was used."};return {error:"The built-in lesson did not pass structural checks."};}
  // Only the explicitly reviewed generic teaching fields are sent; no learner record, enquiry, report, name or notes.
@@ -108,4 +112,28 @@ export async function approveLessonPack(db:D1Database,channel:Channel,id:string,
   db.prepare("INSERT INTO support_appointment_lesson_packs(order_id,pack_json,deck_id,created_at) VALUES((SELECT id FROM support_service_orders WHERE id=? AND channel=? AND request_id=? AND mode='live' AND status IN ('awaiting_confirmation','confirmed','paid') AND checkout_started_at IS NULL),?,?,?)").bind(oid,channel,id,JSON.stringify(pack),deck,at)
  ];
  try{await db.batch(queries);return {saved:{pack,deck_id:deck,created_at:at}};}catch{return {error:"The appointment or resource plan changed. Reload before approving; no partial pack was saved."};}
+}
+
+export async function listReusableLessonPacks(db:D1Database){
+ const rows=await db.prepare("SELECT id,title,subject,year_level,minutes,created_at FROM support_reusable_lesson_packs ORDER BY created_at DESC LIMIT 100").all();
+ return rows.results||[];
+}
+export async function getReusableLessonPack(db:D1Database,id:string){
+ const row=await db.prepare("SELECT id,pack_json,minutes,created_at FROM support_reusable_lesson_packs WHERE id=?").bind(id).first<{id:string;pack_json:string;minutes:number;created_at:string}>();
+ return row?{id:row.id,pack:JSON.parse(row.pack_json),minutes:row.minutes,created_at:row.created_at}:null;
+}
+export async function saveReusableLessonPack(db:D1Database,b:any){
+ const minutes=b?.minutes;
+ if(!Number.isInteger(minutes)||minutes<15||minutes>180||b?.confirmed!==true)return {error:"Choose a duration and confirm independent review."};
+ const pack=validateLessonPack(b.pack,minutes);
+ if(!pack)return {error:"The lesson does not meet the teaching-quality checks."};
+ const id=crypto.randomUUID(),created_at=new Date().toISOString();
+ await db.prepare("INSERT INTO support_reusable_lesson_packs(id,title,subject,year_level,minutes,pack_json,created_at) VALUES(?,?,?,?,?,?,?)").bind(id,pack.title,pack.subject,pack.year_level,minutes,JSON.stringify(pack),created_at).run();
+ return {saved:{id,pack,minutes,created_at}};
+}
+export async function useReusableLessonPack(db:D1Database,channel:Channel,id:string,oid:string,b:any){
+ if(typeof b?.library_id!=="string"||b.confirmed!==true)return {error:"Confirm the reviewed library lesson."};
+ const saved=await getReusableLessonPack(db,b.library_id);
+ if(!saved)return {error:"Library lesson not found."};
+ return approveLessonPack(db,channel,id,oid,{pack:saved.pack,confirmed:true});
 }
