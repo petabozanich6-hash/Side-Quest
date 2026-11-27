@@ -3,6 +3,11 @@ const text=(v:unknown,n:number)=>typeof v==="string"&&v.trim().length>0&&v.trim(
 const integer=(v:unknown,min:number,max:number):v is number=>typeof v==="number"&&Number.isInteger(v)&&v>=min&&v<=max;
 export function validateSlideVisual(v:any){
  if(!v||typeof v!=="object")return null;
+ if(v.type==="concept-lesson"){
+  const term=text(v.term,80),definition=text(v.definition,260),example=text(v.example,260),contrast=text(v.contrast,260),why=text(v.why,260);
+  if(!term||!definition||!example||!contrast||!why||new Set([definition,example,contrast,why]).size!==4)return null;
+  return {type:"concept-lesson",term,definition,example,contrast,why} as const;
+ }
  if(v.type==="experiment"){
   const prompt=text(v.prompt,180),model=v.model;
   if(!prompt||!["rectangle","series-circuit","parallel-circuit","coordinates","binary"].includes(model))return null;
@@ -85,12 +90,12 @@ export function changeSlideInteraction(visual:unknown,current:any,b:Record<strin
  const v=validateSlideVisual(visual);
  if(!v||!current||typeof current.id!=="string"||b.visual_id!==current.id)return null;
  const next={id:current.id,reveal:current.reveal,checked:current.checked===true,placements:Array.isArray(current.placements)?[...current.placements]:[],selected:[...current.selected],order:[...current.order]};
- const demo=v.type==="fraction-split"||v.type==="fraction-bars"||v.type==="steps"||v.type==="compare"||v.type==="sequence";
+ const demo=v.type==="concept-lesson"||v.type==="fraction-split"||v.type==="fraction-bars"||v.type==="steps"||v.type==="compare"||v.type==="sequence";
  if(b.operation==="reset"){
   if(demo&&!owner)return null;
   next.reveal=1;next.checked=false;next.selected=[];next.placements=v.type==="sort-quest"?v.items.map(()=>-1):v.type==="experiment"&&v.model==="rectangle"?[3,4]:v.type==="experiment"&&v.model==="coordinates"?[0,0]:[];next.order=v.type==="order"?v.items.map((_,i)=>i):[];
  }else if(b.operation==="reveal"&&owner&&demo){
-  const max=v.type==="fraction-split"?2:v.type==="fraction-bars"?v.rows.length:"items" in v?v.items.length:1;
+  const max=v.type==="concept-lesson"?4:v.type==="fraction-split"?2:v.type==="fraction-bars"?v.rows.length:"items" in v?v.items.length:1;
   if(next.reveal>=max)return null;
   next.reveal++;
  }else if(b.operation==="check"&&!owner&&(v.type==="fraction-quest"||v.type==="evidence-quest"||v.type==="data-quest"||v.type==="sort-quest")){
