@@ -4,7 +4,8 @@ import {makeDb} from "./fakeD1.mjs";
 import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL,lessonTheme,icebreakerMinutes} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
-import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
+import {classroomState,setClassroomOpen,editClassroom,canReadClassroomImage} from "../src/supportClassrooms.ts";
+import {presentationImage,archiveResource} from "../src/supportFiles.ts";
 const pack=fractionPack("Equivalent fractions","Mathematics","Year 4","Understand and identify equivalent fractions using visual models.",30);
 pack.slides[0].notes+=" PRIVATE-SOLUTION";
 pack.icebreaker.script+=" PRIVATE-ICEBREAKER";
@@ -358,4 +359,51 @@ test("illustrations fail closed without the separate staging opt-in",async()=>{
  const e={AI:{run:async()=>{called=true;return {};}}};
  assert.ok((await draftLessonIllustration(e,{},{})).error);
  assert.equal(called,false);
+});
+
+
+test("reviewed illustration follows its slide without exposing private storyboard or answers",async t=>{
+ const {db,now}=setup();t.after(()=>db.raw.close());
+ const fid="11111111-2222-4333-8444-555555555555",tutorId="22222222-3333-4444-8555-666666666666";
+ await presentationImage(db,fid); // ensure resource schema
+ const insert=db.raw.prepare("INSERT INTO support_files(id,title,subject,year_level,filename,mime,size_bytes,storage_key,audience,status,created_at) VALUES(?,?,?,?,?,?,?,?,?,'active',?)");
+ insert.run(fid,"Reviewed scene","Mathematics","Year 4","scene.jpg","image/jpeg",10,"support-private/"+fid,"learner",now.toISOString());
+ insert.run(tutorId,"Private scene","Mathematics","Year 4","private.jpg","image/jpeg",10,"support-private/"+tutorId,"tutor",now.toISOString());
+ const withImage=id=>({...pack,illustrations:[{...pack.illustrations[0],file_id:id,brief:pack.illustrations[0].brief+" PRIVATE_BRIEF"}]});
+ assert.ok((await saveReusableLessonPack(db,{pack:withImage(tutorId),minutes:30,confirmed:true})).error);
+ assert.ok((await approveLessonPack(db,"guest","pack-request","pack-one",{pack:withImage(tutorId),confirmed:true})).error);
+ assert.equal(validateLessonPack(withImage("https://example.com/image.jpg"),30),null);
+ assert.equal(normaliseGeneratedLessonPack(withImage(fid),30).illustrations[0].file_id,undefined);
+ const saved=await saveReusableLessonPack(db,{pack:withImage(fid),minutes:30,confirmed:true});
+ assert.equal(saved.saved.pack.illustrations[0].file_id,fid);
+ const result=await useReusableLessonPack(db,"guest","pack-request","pack-one",{library_id:saved.saved.id,confirmed:true});
+ assert.ok(result.saved,JSON.stringify(result));
+ assert.equal(await setClassroomOpen(db,"guest","pack-request","pack-one",true,now),true);
+ const present=async index=>{
+  const s=await classroomState(db,"guest","pack-request","pack-one",true,now);
+  return editClassroom(db,"guest","pack-request","pack-one",true,{action:"present",deck_id:result.saved.deck_id,deck_revision:1,index,revision:s.revision},now);
+ };
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),false);
+ assert.equal((await present(0)).ok,true);
+ const state=await classroomState(db,"guest","pack-request","pack-one",false,now);
+ assert.deepEqual(state.board.image,{id:fid,title:"Reviewed scene"});
+ assert.deepEqual(state.board.slide.visual,pack.slides[0].visual);
+ assert.ok(state.board.slide.interaction);
+ assert.ok(!JSON.stringify(state).includes("PRIVATE_BRIEF"));
+ assert.ok(!JSON.stringify(state).includes("PRIVATE-SOLUTION"));
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),true);
+ assert.equal(await canReadClassroomImage(db,"guest","wrong","pack-one",fid,false,now),false);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-two",fid,false,now),false);
+ assert.equal((await present(1)).ok,true);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),false);
+ assert.equal((await present(0)).ok,true);
+ const shown=await classroomState(db,"guest","pack-request","pack-one",true,now);
+ assert.equal((await editClassroom(db,"guest","pack-request","pack-one",true,{action:"hide-slide",revision:shown.revision},now)).ok,true);
+ assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",fid,false,now),false);
+ assert.equal(await archiveResource(db,fid),true);
+ assert.equal((await present(0)).ok,true);
+ const fallback=await classroomState(db,"guest","pack-request","pack-one",false,now);
+ assert.equal(fallback.board.image,null);
+ assert.ok(fallback.board.slide.interaction);
+ assert.ok((await useReusableLessonPack(db,"guest","pack-request","pack-two",{library_id:saved.saved.id,confirmed:true})).error);
 });
