@@ -175,7 +175,7 @@ test("junior and teen creative camps can run in the same week without overlappin
  const rounds=await listEnglishRounds(db);assert.equal(rounds.length,2);
  assert.deepEqual(rounds.map(r=>r.age_group),["8–11","12–16"]);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_classes").get().n,12);
- assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,24);
+ assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,48);
  assert.equal((await listEnglishRounds(db,true,now)).length,0);
  for(const c of CREATIVE_CAMPS)for(const [i,session] of c.sessions.entries()){
   const prep=campPreparation(c.id,i),resource=campResource(c.id,i);
