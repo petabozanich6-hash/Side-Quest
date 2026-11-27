@@ -1,7 +1,8 @@
 import type {Env} from "./types";
 import {squareConfig,squareCall,type Fetch} from "./square";
 import {supportInvoiceLookupAvailable} from "./supportSquareInvoiceLookup";
-import {CLUB_BOOKING_VERSION,CLUB_SINGLE_VERSION,CLUB_ROUND_TERMS,CLUB_SINGLE_TERMS} from "./englishClubSelfService";
+import {validateAcademyPrice} from "./writersAcademyPricing";
+import {CLUB_BOOKING_VERSION,CLUB_SINGLE_VERSION,CLUB_ROUND_TERMS,CLUB_SINGLE_TERMS,ACADEMY_ROUND_VERSION,ACADEMY_SINGLE_VERSION,ACADEMY_ROUND_TERMS,ACADEMY_SINGLE_TERMS} from "./englishClubSelfService";
 const idOk=(v:unknown):v is string=>typeof v==="string"&&/^[A-Za-z0-9:_-]{1,150}$/.test(v);
 const kindOk=(v:unknown)=>v==="single"||v==="round";
 const normalize=(v:unknown)=>String(v??"").trim().toLowerCase();
@@ -18,14 +19,25 @@ const scope=`SELECT o.*,u.email recipient,
  AND NOT EXISTS(SELECT 1 FROM family_admin_state a WHERE a.family_id=p.family_id AND a.status<>'active')`;
 async function eligible(e:Env,kind:string,id:string,now:Date){
  const row=await e.DB.prepare(scope+" AND o.kind=? AND o.obligation_id=? AND o.status='awaiting_invoice' AND julianday(o.due_at)>julianday(?)").bind(kind,id,now.toISOString()).first<any>();
- if(!row||normalize(row.recipient)!==normalize(e.SUPPORT_UNIFIED_TEST_EMAIL)||!Number.isSafeInteger(row.amount_cents)||row.amount_cents!==1500*row.expected_seats||row.expected_seats<1||row.expected_seats>12)return null;
+ if(!row||normalize(row.recipient)!==normalize(e.SUPPORT_UNIFIED_TEST_EMAIL)||!Number.isSafeInteger(row.amount_cents)||row.expected_seats<1||row.expected_seats>12)return null;
  try{
   const seats=JSON.parse(row.seats_json),terms=JSON.parse(row.terms_snapshot);
   if(seats.length!==row.expected_seats||seats.some((s:any)=>s.status!=="reserved"||Date.parse(s.start_at)<=now.getTime()||Date.parse(s.payment_due_at)!==Date.parse(s.start_at)-86400000))return null;
   if(row.due_at!==seats[0].payment_due_at)return null;
-  if(kind==="single"){
-   if(row.terms_version!==CLUB_SINGLE_VERSION||terms.terms!==CLUB_SINGLE_TERMS||terms.amount_cents!==row.amount_cents||terms.class_id!==seats[0].class_id||terms.start_at!==seats[0].start_at||terms.end_at!==seats[0].end_at)return null;
-  }else if(row.terms_version!==CLUB_BOOKING_VERSION||terms.terms!==CLUB_ROUND_TERMS||terms.payment_mode!==row.payment_mode||terms.price_per_session_cents!==1500||!Array.isArray(terms.classes)||terms.total_cents!==terms.classes.length*1500||seats.some((s:any)=>!terms.classes.some((c:any)=>c.id===s.class_id&&c.start_at===s.start_at&&c.end_at===s.end_at))||(row.payment_mode==="upfront"&&terms.total_cents!==row.amount_cents))return null;
+  const academy=row.terms_version===ACADEMY_SINGLE_VERSION||row.terms_version===ACADEMY_ROUND_VERSION;
+  if(academy){
+   const q=validateAcademyPrice(terms.academy_price);
+   if(!q||q.audience!=="minor"||q.payment_mode!==row.payment_mode||!q.obligations.some(o=>o.amount_cents===row.amount_cents&&o.expected_seats===row.expected_seats))return null;
+   // The database view independently binds the amount to the reserved programme and payment sequence.
+   if(kind==="single"){
+    if(row.terms_version!==ACADEMY_SINGLE_VERSION||terms.terms!==ACADEMY_SINGLE_TERMS||terms.amount_cents!==row.amount_cents||terms.class_id!==seats[0].class_id||terms.start_at!==seats[0].start_at||terms.end_at!==seats[0].end_at)return null;
+   }else if(row.terms_version!==ACADEMY_ROUND_VERSION||terms.terms!==ACADEMY_ROUND_TERMS||terms.payment_mode!==q.payment_mode||terms.price_per_session_cents!==q.session_cents||terms.total_cents!==q.total_cents||!Array.isArray(terms.classes)||terms.classes.length!==q.session_count||seats.some((s:any)=>!terms.classes.some((c:any)=>c.id===s.class_id&&c.start_at===s.start_at&&c.end_at===s.end_at)))return null;
+  }else{
+   if(row.amount_cents!==1500*row.expected_seats)return null;
+   if(kind==="single"){
+    if(row.terms_version!==CLUB_SINGLE_VERSION||terms.terms!==CLUB_SINGLE_TERMS||terms.amount_cents!==row.amount_cents||terms.class_id!==seats[0].class_id||terms.start_at!==seats[0].start_at||terms.end_at!==seats[0].end_at)return null;
+   }else if(row.terms_version!==CLUB_BOOKING_VERSION||terms.terms!==CLUB_ROUND_TERMS||terms.payment_mode!==row.payment_mode||terms.price_per_session_cents!==1500||!Array.isArray(terms.classes)||terms.total_cents!==terms.classes.length*1500||seats.some((s:any)=>!terms.classes.some((c:any)=>c.id===s.class_id&&c.start_at===s.start_at&&c.end_at===s.end_at))||(row.payment_mode==="upfront"&&terms.total_cents!==row.amount_cents))return null;
+  }
   return {row,seats};
  }catch{return null;}
 }
