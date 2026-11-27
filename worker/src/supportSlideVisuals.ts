@@ -18,7 +18,7 @@ export function validateSlideVisual(v:any){
  }
  if(v.type==="select"||v.type==="order"){
   if(!Array.isArray(v.items)||v.items.length<(v.type==="order"?3:2)||v.items.length>8)return null;
-  const items=[];
+  const items:string[]=[];
   for(const item of v.items){const t=text(item,120);if(!t||items.includes(t))return null;items.push(t);}
   return {type:v.type as "select"|"order",items};
  }
