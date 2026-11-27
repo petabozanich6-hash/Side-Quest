@@ -73,6 +73,6 @@ export function englishTeachingGuide(index:number){
  "23–35 min | We practise together: "+g.guided,
  "35–49 min | You try independently: "+g.independent,
  "49–57 min | Adapt and give feedback: "+g.support+" "+g.feedback,
- "57–60 min | Exit check: revisit the final question above and note evidence privately."
+ "57–60 min | Exit check and celebrate: revisit the final question above and note evidence privately. Say: ‘Before we finish, choose one idea, word or writing choice you want to take away. You can share it, type it or keep it to yourself.’ Pause. Name a specific contribution or effort you actually observed, without comparing learners or claiming mastery. Say: ‘Thank you for being part of our writing adventure. Keep an eye out for interesting language in the world around you; it might become the spark for a future story.’ Offer an optional challenge to notice or invent one example; no compulsory homework. Do not promise a future booking."
  ].join("\n\n");
 }

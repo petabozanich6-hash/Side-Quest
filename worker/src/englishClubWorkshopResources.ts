@@ -29,6 +29,6 @@ export function workshopResource(index:number){
   {title:"Discuss",body:s.activities[0].question+"\n"+s.activities[0].options.join("\n")},
   {title:"Writing studio",body:t.tasks.join("\n\n")},
   {title:"Extend your thinking",body:t.stretch},
-  {title:"Reflect and revise",body:"What deliberate choice did you make? Explain its effect. You may respond privately or keep your writing to yourself."}
+  {title:"Your adventure takeaway",body:"What deliberate choice did you make? Explain its effect. Choose one idea to take away. You may share, write privately or simply think. Optional next challenge: notice an interesting language choice in the world around you. Thank you for exploring with us!"}
  ]};
 }

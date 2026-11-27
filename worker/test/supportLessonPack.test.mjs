@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,validateGeneratedTutorDialogue,lessonStageGuide,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,validateGeneratedTutorDialogue,lessonStageGuide,lessonInterest,prepareFractionSample,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {lessonArtInput,decodeLessonArt,generateLessonArt,lessonIllustrationAllowance} from "../src/supportLessonArt.ts";
@@ -400,4 +400,26 @@ test("a longer lesson can include more than nine distinct teaching slides",()=>{
  }
  assert.ok(extended.slides.length>9);
  assert.ok(validateLessonPack(extended,60));
+});
+
+test("new sample begins with a playful welcome and keeps its booked duration",()=>{
+ const fresh=prepareFractionSample(pack);
+ assert.equal(fresh.sequence[0].phase,"welcome");
+ assert.equal(fresh.sequence[0].minutes,3);
+ assert.equal(fresh.sequence.reduce((n,x)=>n+x.minutes,0),30);
+ assert.ok(validateLessonPack(fresh,30));
+ assert.match(fresh.slides[0].notes,/no correct choice/i);
+ assert.match(fresh.slides.at(-1).notes,/do not claim mastery/);
+ assert.equal(pack.sequence[0].phase,"teach");
+ const invalid=structuredClone(fresh);
+ invalid.sequence[0].minutes=6;
+ invalid.sequence[1].minutes=1;
+ assert.equal(validateLessonPack(invalid,30),null);
+});
+test("generic interests are optional and bounded",()=>{
+ assert.equal(lessonInterest(undefined),"");
+ assert.equal(lessonInterest(" cats "),"cats");
+ assert.equal(lessonInterest("x".repeat(161)),null);
+ assert.equal(lessonInterest("cats\nprivate"),null);
+ assert.equal(lessonInterest({name:"cat"}),null);
 });
