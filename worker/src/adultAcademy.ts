@@ -4,6 +4,7 @@ import {hitRateLimit} from "./adminAudit";
 import {loadPlatformSettings} from "./platformSettings";
 import {ADULT_STUDIO} from "./writersAcademy";
 import {academyPrice} from "./writersAcademyPricing";
+import {adultPilotActor,adultPilotRounds,adultReservations,reserveAdultStudio,ADULT_TERMS,ADULT_TERMS_VERSION} from "./adultStudioReservations";
 export const ADULT_ATTESTATION_VERSION="adult-self-v1";
 export const ADULT_ATTESTATION="I confirm that I am aged 18 or over and registering for myself. I will not use this profile to enrol a child. I understand this is a self-declaration, not an age verification service.";
 export async function adultParticipant(db:D1Database,a:AuthUser){
@@ -27,7 +28,18 @@ export function registerAdultAcademy(app:App,g:Guards){
  app.use(root+"/*",async(c,next)=>{c.header("Cache-Control","private, no-store");if(!unifiedPortalPilot(c.env))return c.json({detail:"Not found"},404);await next();});
  app.get(root+"/profile",g.auth,g.parent,async c=>{
   const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified account required."},403);
-  return c.json({participant:await adultParticipant(c.env.DB,a),attestation:ADULT_ATTESTATION,attestation_version:ADULT_ATTESTATION_VERSION,registration_available:(await loadPlatformSettings(c.env.DB)).features.registrationsOpen,booking_available:false,programme:{title:ADULT_STUDIO.title,description:ADULT_STUDIO.description,minutes:ADULT_STUDIO.minutes,sessions:ADULT_STUDIO.sessions.map(s=>({title:s.title,objective:s.objective})),quotes:{single:academyPrice(ADULT_STUDIO.id,"single"),weekly:academyPrice(ADULT_STUDIO.id,"weekly"),upfront:academyPrice(ADULT_STUDIO.id,"upfront")}}});
+  return c.json({participant:await adultParticipant(c.env.DB,a),attestation:ADULT_ATTESTATION,attestation_version:ADULT_ATTESTATION_VERSION,registration_available:(await loadPlatformSettings(c.env.DB)).features.registrationsOpen,booking_available:await adultPilotActor(c.env,a)&&(await loadPlatformSettings(c.env.DB)).features.registrationsOpen,programme:{title:ADULT_STUDIO.title,description:ADULT_STUDIO.description,minutes:ADULT_STUDIO.minutes,sessions:ADULT_STUDIO.sessions.map(s=>({title:s.title,objective:s.objective})),quotes:{single:academyPrice(ADULT_STUDIO.id,"single"),weekly:academyPrice(ADULT_STUDIO.id,"weekly"),upfront:academyPrice(ADULT_STUDIO.id,"upfront")}}});
+ });
+ app.get(root+"/reservations",g.auth,g.parent,async c=>{
+  const a=c.get("user");if(!await adultPilotActor(c.env,a)||!await adultParticipant(c.env.DB,a))return c.json({detail:"Verified adult test account required."},403);
+  return c.json({rounds:await adultPilotRounds(c.env.DB),reservations:await adultReservations(c.env.DB,a),terms:ADULT_TERMS,terms_version:ADULT_TERMS_VERSION});
+ });
+ app.post(root+"/reserve",g.auth,g.parent,async c=>{
+  const a=c.get("user");if(!await adultPilotActor(c.env,a))return c.json({detail:"Verified adult test account required."},403);
+  if(!(await loadPlatformSettings(c.env.DB)).features.registrationsOpen)return c.json({detail:"Reservations are paused."},503);
+  if(!(await hitRateLimit(c.env.DB,"adult-studio-reserve:"+a.id,10,3600)).ok)return c.json({detail:"Try again later."},429);
+  const r=await reserveAdultStudio(c.env.DB,a,await c.req.json().catch(()=>null));
+  return "error" in r?c.json({detail:r.error},409):c.json({...r,status:"provisional",payment_available:false},r.created?201:200);
  });
  app.post(root+"/register",g.auth,g.parent,async c=>{
   const a=c.get("user");if(!await verifiedPortalIdentity(c.env.DB,a))return c.json({detail:"Verified account required."},403);
