@@ -1,14 +1,15 @@
 import React from "react";
 const field="block w-full rounded-lg border border-stone-300 p-2 bg-white",btn="rounded-lg border border-stone-300 px-3 py-2 text-sm font-semibold disabled:opacity-50";
-export const gameTypes=["matching","sorting","sequence","number_line","fraction_model"];
+export const gameTypes=["matching","sorting","sequence","number_line","fraction_model","story_builder"];
 export const isGameType=t=>gameTypes.includes(t);
-export const emptyGame=type=>type==="number_line"?{type,min:0,max:10,intervals:10}:type==="fraction_model"?{type,parts:4}:({type,items:["",""],targets:type==="sequence"?[]:["",""]});
+export const emptyGame=type=>type==="story_builder"?{type,fields:[{label:"Character",options:["",""]},{label:"Challenge",options:["",""]}]}:type==="number_line"?{type,min:0,max:10,intervals:10}:type==="fraction_model"?{type,parts:4}:({type,items:["",""],targets:type==="sequence"?[]:["",""]});
 const isMath=t=>t==="number_line"||t==="fraction_model";
 const validMath=g=>g.type==="number_line"?Number.isInteger(g.min)&&Number.isInteger(g.max)&&g.min>=-10000&&g.max<=10000&&g.max>g.min&&Number.isInteger(g.intervals)&&g.intervals>=2&&g.intervals<=20&&(g.max-g.min)%g.intervals===0:Number.isInteger(g.parts)&&g.parts>=2&&g.parts<=12;
 export function parseGameAnswer(raw,n){
  try{const v=typeof raw==="string"?JSON.parse(raw):raw;return Array.isArray(v)&&v.length===n?v.map(x=>Number.isInteger(x)?x:-1):Array(n).fill(-1);}catch{return Array(n).fill(-1);}
 }
 export function completeGameAnswer(game,raw){
+ if(game?.type==="story_builder"){if(!Array.isArray(game.fields)||game.fields.length<2)return false;const a=parseGameAnswer(raw,game.fields.length);return a.every((v,i)=>v>=0&&v<game.fields[i].options.length);}
  if(game&&isMath(game.type)){if(!validMath(game))return false;const [n]=parseGameAnswer(raw,1);return n>=0&&n<=(game.type==="number_line"?game.intervals:game.parts);}
  if(!game?.items?.length)return false;
  const a=parseGameAnswer(raw,game.items.length),max=game.type==="sequence"?game.items.length:game.targets.length;
@@ -16,11 +17,13 @@ export function completeGameAnswer(game,raw){
 }
 export function validGame(game,answer){
  if(!game||!isGameType(game.type))return false;
+ if(game.type==="story_builder")return Array.isArray(game.fields)&&game.fields.length>=2&&game.fields.length<=5&&new Set(game.fields.map(f=>f.label.trim())).size===game.fields.length&&game.fields.every(f=>typeof f.label==="string"&&f.label.trim()&&f.label.trim().length<=80&&Array.isArray(f.options)&&f.options.length>=2&&f.options.length<=6&&f.options.every(o=>typeof o==="string"&&o.trim()&&o.trim().length<=120)&&new Set(f.options.map(o=>o.trim())).size===f.options.length);
  if(isMath(game.type))return completeGameAnswer(game,answer);
  const valid=a=>Array.isArray(a)&&a.length>=2&&a.length<=8&&a.every(v=>typeof v==="string"&&v.trim()&&v.trim().length<=120)&&new Set(a.map(v=>v.trim())).size===a.length;
  return valid(game.items)&&(game.type==="sequence"||valid(game.targets))&&(game.type!=="matching"||game.items.length===game.targets.length)&&completeGameAnswer(game,answer);
 }
 export function GameAnswer({game,value,onChange,disabled=false}){
+ if(game.type==="story_builder")return <StoryBuilder game={game} value={value} onChange={onChange} disabled={disabled}/>;
  if(isMath(game.type))return <MathAnswer game={game} value={value} onChange={onChange} disabled={disabled}/>;
  const a=parseGameAnswer(value,game.items.length),targets=game.type==="sequence"?game.items.map((_,i)=>"Position "+(i+1)):game.targets;
  return <fieldset disabled={disabled} className="space-y-2"><legend className="font-semibold text-sm">{game.type==="sequence"?"Place each item in the correct order":game.type==="matching"?"Match each item to its partner":"Choose a category for each item"}</legend>
@@ -28,6 +31,7 @@ export function GameAnswer({game,value,onChange,disabled=false}){
 }
 export function GameEditor({type,game,answer,onChange}){
  const g=game?.type===type?game:emptyGame(type);
+ if(type==="story_builder")return <StoryEditor game={g} onChange={onChange}/>;
  if(isMath(type))return <MathEditor game={g} answer={answer} onChange={onChange}/>;
  function change(key,index,value){onChange({...g,[key]:g[key].map((v,i)=>i===index?value:v)},answer);}
  function resize(key,delta){const next=delta>0?[...g[key],""]:g[key].slice(0,-1);let v={...g,[key]:next};if(type==="matching"){const other=key==="items"?"targets":"items";v={...v,[other]:delta>0?[...g[other],""]:g[other].slice(0,-1)};}onChange(v,"");}
@@ -36,6 +40,7 @@ export function GameEditor({type,game,answer,onChange}){
  <h4 className="font-semibold">Correct solution (tutor only)</h4><GameAnswer game={g} value={answer} onChange={v=>onChange(g,v)}/></div>;
 }
 export function GameResult({game,value}){
+ if(game.type==="story_builder")return completeGameAnswer(game,value)?<StoryBuilder game={game} value={value} disabled onChange={()=>{}}/>:<span>No creation submitted</span>;
  if(isMath(game.type))return <MathAnswer game={game} value={value} disabled onChange={()=>{}}/>;
  const a=parseGameAnswer(value,game.items.length);
  if(!completeGameAnswer(game,value))return <span>Not completed</span>;
@@ -58,4 +63,14 @@ function MathAnswer({game,value,onChange,disabled=false}){
 function MathEditor({game,answer,onChange}){
  const fields=game.type==="number_line"?[["min","First number",-10000,10000],["max","Last number",-10000,10000],["intervals","Equal intervals",2,20]]:[["parts","Equal parts",2,12]];
  return <div className="space-y-3">{fields.map(([key,label,min,max])=><label key={key} className="block text-sm">{label}<input type="number" className={field} min={min} max={max} step={1} value={game[key]??""} onChange={e=>onChange({...game,[key]:e.target.value===""?null:Number(e.target.value)},"")}/></label>)}<p className="text-xs">{game.type==="number_line"?"Use integer endpoints and equal whole-number intervals.":"Choose 2–12 equal parts."} Set the answer privately.</p><h4 className="font-semibold">Correct solution (tutor only)</h4><MathAnswer game={game} value={answer} onChange={a=>onChange(game,a)}/></div>;
+}
+
+function StoryBuilder({game,value,onChange,disabled}){
+ const a=parseGameAnswer(value,game.fields.length);
+ return <div className="space-y-3"><p className="text-sm">Build your own combination. There is no single correct story.</p><fieldset disabled={disabled} className="grid gap-3 sm:grid-cols-2"><legend className="sr-only">Choose story ingredients</legend>{game.fields.map((f,i)=><div key={i} className="rounded-xl border bg-stone-50 p-3 space-y-2"><h5 className="font-bold text-emerald-950">{f.label}</h5>{f.options.map((o,j)=><button key={j} type="button" aria-pressed={a[i]===j} className={"block w-full text-left rounded-lg border p-3 text-sm "+(a[i]===j?"bg-emerald-950 text-white":"bg-white")} onClick={()=>onChange(JSON.stringify(a.map((v,k)=>k===i?j:v)))}>{o}</button>)}</div>)}</fieldset><section className="rounded-xl border-2 border-emerald-800 p-4" aria-live="polite"><h5 className="font-bold">Your creation</h5>{game.fields.map((f,i)=><p className="text-sm mt-1" key={i}><strong>{f.label}:</strong> {f.options[a[i]]||"Choose an ingredient"}</p>)}</section></div>;
+}
+function StoryEditor({game,onChange}){
+ const fields=game.fields;
+ const change=(i,patch)=>onChange({...game,fields:fields.map((f,j)=>i===j?{...f,...patch}:f)},null);
+ return <section className="space-y-3"><p className="text-sm">Create 2–5 ingredient categories, each with 2–6 choices. All combinations are valid; no correct answer is needed.</p>{fields.map((f,i)=><fieldset key={i} className="border rounded-lg p-3 space-y-2"><legend className="text-sm font-bold">Ingredient {i+1}</legend><label className="block text-sm">Category<input className={field} maxLength={80} value={f.label} onChange={e=>change(i,{label:e.target.value})}/></label>{f.options.map((o,j)=><label key={j} className="block text-sm">Choice {j+1}<input className={field} maxLength={120} value={o} onChange={e=>change(i,{options:f.options.map((v,k)=>j===k?e.target.value:v)})}/></label>)}<button type="button" className={btn} disabled={f.options.length>=6} onClick={()=>change(i,{options:[...f.options,""]})}>Add choice</button> <button type="button" className={btn} disabled={f.options.length<=2} onClick={()=>change(i,{options:f.options.slice(0,-1)})}>Remove last choice</button></fieldset>)}<button type="button" className={btn} disabled={fields.length>=5} onClick={()=>onChange({...game,fields:[...fields,{label:"",options:["",""]}]},null)}>Add ingredient</button> <button type="button" className={btn} disabled={fields.length<=2} onClick={()=>onChange({...game,fields:fields.slice(0,-1)},null)}>Remove last ingredient</button></section>;
 }
