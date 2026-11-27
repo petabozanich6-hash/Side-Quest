@@ -24,7 +24,7 @@ export function weeklyRoundStarts(first:unknown,count:number):string[]|null{
 export async function createEnglishRound(db:D1Database,owner:string,b:any,now=new Date()){
  const title=text(b?.title,120),description=text(b?.description,1000),starts=weeklyRoundStarts(b?.first_local,b?.session_count);
  if(b?.confirmed!==true||!title||!starts||!Array.isArray(b.themes)||b.themes.length!==starts.length||b.themes.some((x:unknown)=>!text(x,120))||Date.parse(starts[0])-86400000<=now.getTime()||Date.parse(starts[starts.length-1])>now.getTime()+180*86400000)return {error:"Choose 2–12 weekly sessions in Sydney time, within six months, each with a theme and more than 24 hours' notice."};
- const camp=creativeCamp(b.curriculum_id),adult=b.curriculum_id===ADULT_STUDIO.id,preset=adult?ADULT_STUDIO:camp||(b.curriculum_id===STORY_QUEST.id?STORY_QUEST:null);
+ const camp=creativeCamp(b.curriculum_id),adult=b.curriculum_id===ADULT_STUDIO.id,legacy=b.curriculum_id===STORY_QUEST.id?STORY_QUEST:null,preset=adult?ADULT_STUDIO:camp||legacy;
  if(b.curriculum_id!==undefined&&(!preset||b.reviewed_activities!==true||starts.length!==6||title!==preset.title||description!==preset.description||b.themes.some((v:unknown,i:number)=>v!==preset.sessions[i]?.title)))return {error:"The selected curriculum no longer matches the reviewed six workshops. Reload and review the preset activities or create a custom round."};
  const id=crypto.randomUUID(),at=now.toISOString();
  const price=adult?academyPrice(ADULT_STUDIO.id,"upfront"):camp?academyPrice(camp.id,"upfront"):null;
@@ -33,7 +33,7 @@ export async function createEnglishRound(db:D1Database,owner:string,b:any,now=ne
  const cid="english-club-"+crypto.randomUUID(),end=new Date(Date.parse(start)+(adult?90:60)*60000).toISOString(),before=new Date(Date.parse(start)-15*60000).toISOString(),after=new Date(Date.parse(end)+10*60000).toISOString(),week=sydneyWeek(start)+(adult?"|adult":camp?.id==="english-creative-camp-junior-v1"?"|junior":"");
  statements.push(db.prepare("INSERT INTO support_busy_blocks(id,label,start_at,end_at,created_at) VALUES((SELECT ? WHERE NOT EXISTS(SELECT 1 FROM support_english_classes WHERE week_of=?) AND NOT EXISTS(SELECT 1 FROM support_busy_blocks WHERE start_at<? AND end_at>?) AND NOT EXISTS(SELECT 1 FROM support_service_orders o LEFT JOIN support_tutor_diary d ON d.order_id=o.id WHERE o.mode='live' AND o.status NOT IN ('cancelled','completed') AND julianday(o.start_at)-COALESCE(d.prep_minutes,0)/1440.0<julianday(?) AND julianday(o.end_at)+COALESCE(d.wrap_minutes,0)/1440.0>julianday(?))),?, ?,?,?)").bind(cid,week,after,before,after,before,adult?"Author’s Studio (including preparation)":"English Club (including preparation)",before,after,at));
  // Explicit non-null round mapping also fails if a calendar block was not inserted.
- statements.push(db.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,created_at,preparation,public_description) SELECT id,?,?,?,?,?,?,? FROM support_busy_blocks WHERE id=?").bind(week,start,end,text(b.themes[i],120),at,adult?adultStudioGuide(i):camp?campPreparation(camp.id,i):preset?storyQuestPreparation(i):"",adult?ADULT_STUDIO.sessions[i].objective:camp?camp.sessions[i].description:preset&&"description" in preset.sessions[i]?preset.sessions[i].description:"",cid));
+ statements.push(db.prepare("INSERT INTO support_english_classes(id,week_of,start_at,end_at,topic,created_at,preparation,public_description) SELECT id,?,?,?,?,?,?,? FROM support_busy_blocks WHERE id=?").bind(week,start,end,text(b.themes[i],120),at,adult?adultStudioGuide(i):camp?campPreparation(camp.id,i):preset?storyQuestPreparation(i):"",adult?ADULT_STUDIO.sessions[i].objective:camp?camp.sessions[i].description:legacy?legacy.sessions[i].description:"",cid));
  statements.push(db.prepare("INSERT INTO support_english_round_classes(round_id,class_id,sequence) VALUES(?,(SELECT id FROM support_english_classes WHERE id=?),?)").bind(id,cid,i+1));
  if(preset){
   const resource=adult?adultStudioResource(i):camp?campResource(camp.id,i):workshopResource(i);
@@ -42,7 +42,7 @@ export async function createEnglishRound(db:D1Database,owner:string,b:any,now=ne
   // Owner confirmation covers these exact versioned prompts. New copies are private,
   // editable reviewed templates; no existing template or plan is overwritten.
   const items:{template_id:string;revision:number}[]=[];
-  for(const a of (adult?ADULT_STUDIO.sessions[i].activities:camp?campActivities(camp.sessions[i]):preset.sessions[i].activities)){
+  for(const a of (adult?ADULT_STUDIO.sessions[i].activities:camp?campActivities(camp.sessions[i]):legacy?.sessions[i].activities||[])){
    const v=validateActivityTemplate({...a,subject:"English",year_level:adult?"Adults 18+":camp?"Ages "+camp.age:"Mixed levels"});
    if(!v)return {error:"A preset activity is invalid. No round was created."};
    const key=crypto.randomUUID();
