@@ -1,3 +1,4 @@
+import {academyExperience,academyExperienceGuide} from "./academyExperiences";
 // Programme design only. Adult reservations remain blocked until adult identity and access isolation are verified.
 export const ADULT_STUDIO={
   "id": "english-author-studio-adult-v1",
@@ -573,7 +574,8 @@ export function adultStudioGuide(index:number){
  "45–70 min | Writing studio: "+s.exercise+" Offer a supplied fictional example for anyone without a project.",
  "70–83 min | Optional feedback: "+s.feedback+" Do not share a participant's manuscript without permission.",
  "83–90 min | Reflection and next step: Invite a private reflection on what changed and one achievable next action. No promise of publication or sales."
- ].join("\n\n");
+ ,academyExperienceGuide(ADULT_STUDIO.id,s.title)
+ ].filter(Boolean).join("\n\n");
 }
 export const WRITERS_ACADEMY=[
  {id:"english-creative-camp-junior-v1",title:"Junior Story Adventurers",age:"8–11",minutes:60,session_cents:2500,upfront_cents:13500,weekly_cents:2500,audience:"minor",sessions:6},
@@ -584,7 +586,7 @@ export function academyProgramme(id:unknown){return WRITERS_ACADEMY.find(p=>p.id
 
 export function adultStudioResource(index:number){
  const s=ADULT_STUDIO.sessions[index];if(!s)return null;
- return {creative_camp:true,programme_id:ADULT_STUDIO.id,title:s.title,objective:s.objective,reading:s.spark,tasks:[s.exercise,"Make one intentional craft choice and explain its intended effect.","Optional: share a short excerpt or reflect privately."],stretch:"Continue your own project if you wish. Identify one achievable next step.",slides:[
+ return {creative_camp:true,programme_id:ADULT_STUDIO.id,experience:academyExperience(ADULT_STUDIO.id,s.title),title:s.title,objective:s.objective,reading:s.spark,tasks:[s.exercise,"Make one intentional craft choice and explain its intended effect.","Optional: share a short excerpt or reflect privately."],stretch:"Continue your own project if you wish. Identify one achievable next step.",slides:[
  {title:s.title,body:s.objective},
  {title:"Writing warm-up",body:s.spark},
  {title:"The craft",body:s.concept},
