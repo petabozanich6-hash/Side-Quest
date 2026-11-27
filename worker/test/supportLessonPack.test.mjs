@@ -138,3 +138,38 @@ test("contextual fraction quests only accept mathematically achievable equivalen
  assert.equal(pack.slides[3].visual.type,"fraction-quest");
  assert.equal(pack.slides[5].visual.type,"fraction-quest");
 });
+
+test("cross-subject inquiry modules validate bounded content and keep solutions private",()=>{
+ const reading={type:"evidence-quest",context:"reading",passage_title:"The unopened letter",prompt:"Highlight evidence that the character is reluctant to open the letter.",items:["She turned the envelope over.","Her hands trembled.","She put it back in the drawer.","Outside, a bird sang."],answer:[0,1,2]};
+ const science={type:"sort-quest",prompt:"Classify observations and inferences.",groups:["Observation","Inference"],items:["The leaf is yellow.","The plant may need water.","The soil feels dry.","The plant may have a nutrient deficiency."],answer:[0,1,0,1]};
+ const data={type:"data-quest",title:"Hypothetical plant growth after seven days",unit:"cm",prompt:"Select the two groups with the greatest growth.",rows:[{label:"A",value:1.25},{label:"B",value:3.4},{label:"C",value:4.1}],answer:[1,2]};
+ for(const v of [reading,science,data]){
+  const clean=validateSlideVisual(v);
+  assert.ok(clean);
+  assert.equal("answer" in clean,false);
+  const state=initialSlideInteraction(v);
+  const act=(s,operation,extra={},owner=false)=>changeSlideInteraction(v,s,{visual_id:state.id,operation,...extra},owner);
+  assert.equal(act(state,"check"),null);
+  if(v.type==="sort-quest"){
+   assert.equal(act(state,"place",{index:0,direction:2}),null);
+   assert.equal(act(state,"place",{index:0,direction:0},true),null);
+   let next=state;
+   for(let i=0;i<v.items.length;i++)next=act(next,"place",{index:i,direction:i%2});
+   assert.deepEqual(next.placements,[0,1,0,1]);
+   assert.equal(act(next,"check").checked,true);
+   assert.equal(act(act(next,"check"),"place",{index:0,direction:-1}).checked,false);
+   assert.deepEqual(act(next,"reset",{},true).placements,[-1,-1,-1,-1]);
+  }else{
+   assert.equal(act(state,"toggle",{index:99}),null);
+   assert.equal(act(state,"toggle",{index:0},true),null);
+   const picked=act(state,"toggle",{index:1});
+   assert.deepEqual(picked.selected,[1]);
+   assert.equal(act(picked,"check").checked,true);
+   assert.equal(act(picked,"check",{},true),null);
+  }
+ }
+ assert.equal(validateSlideVisual({...reading,context:"invalid"}),null);
+ assert.equal(validateSlideVisual({...science,groups:["Observation","Observation"]}),null);
+ assert.equal(validateSlideVisual({...data,rows:[{label:"A",value:2},{label:"B",value:-1},{label:"C",value:3}]}),null);
+ assert.equal(validateLessonPack({...pack,slides:pack.slides.map((s,i)=>i===3||i===5?{...s,visual:{type:"select",items:["A","B"]}}:s)},30),null);
+});
