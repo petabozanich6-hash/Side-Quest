@@ -1,13 +1,19 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import SupportSlideVisual from "./SupportSlideVisual";
+import {PresentedImage} from "./SupportImagePresentation";
 import {adminApi,errorText} from "../../lib/adminApi";
 const btn="rounded-lg border px-3 py-2 text-sm disabled:opacity-50";
 const activityLabels={"create-quest":"Create and explain","steps":"Explore the idea","compare":"Compare and explain","sequence":"Follow the reasoning","fraction-split":"Watch the model change","fraction-bars":"Read the model","fraction-quest":"Solve the challenge","fraction-build":"Build your answer","evidence-quest":"Investigate the evidence","sort-quest":"Classify and justify","data-quest":"Investigate the data","select":"Choose and explain","order":"Put the ideas in order"};
-export function SlideDisplay({slide,send,owner,busy,preview=false}){
+function PrivateIllustration({id}){
+ const [image,setImage]=useState(null),[error,setError]=useState(false);
+ useEffect(()=>{let active=true;setImage(null);setError(false);adminApi.get("/support-files/"+encodeURIComponent(id)+"/download").then(r=>{if(active&&["image/png","image/jpeg"].includes(r.mime))setImage(r);else if(active)setError(true);}).catch(()=>{if(active)setError(true);});return()=>{active=false;};},[id]);
+ return image?<img className="w-full max-h-80 object-contain rounded-xl" alt={image.filename||"Reviewed lesson illustration"} src={"data:"+image.mime+";base64,"+image.base64}/>:<p className="text-sm">{error?"Reviewed illustration unavailable.":"Loading illustration…"}</p>;
+}
+export function SlideDisplay({slide,send,owner,busy,preview=false,path,client}){
  if(!slide)return null;
  return <article className="overflow-hidden rounded-2xl border border-emerald-900 bg-stone-50 shadow-sm" aria-label={preview?"Learner presentation preview":"Presented slide"}>
  <header className="bg-emerald-950 text-white p-5 sm:p-7 space-y-3"><div className="flex flex-wrap justify-between gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-200"><span>Side-Quest · {activityLabels[slide.visual?.type]||"Explore and discover"}</span><span>{slide.number} / {slide.total}</span></div><div className="flex gap-1" aria-label={"Lesson step "+slide.number+" of "+slide.total}>{Array.from({length:Math.max(0,Math.min(20,slide.total||0))},(_,i)=><span key={i} className={"h-1.5 flex-1 rounded-full "+(i<slide.number?"bg-amber-300":"bg-emerald-800")}/>)}</div><p className="text-sm text-emerald-200 break-words">{slide.title}</p><h4 className="text-2xl sm:text-3xl font-bold leading-tight break-words">{slide.heading}</h4></header>
- <div className="p-4 sm:p-6 space-y-4"><div className="text-base sm:text-lg leading-relaxed whitespace-pre-wrap break-words text-emerald-950">{slide.body}</div>{slide.visual&&<SupportSlideVisual key={slide.interaction?.id||slide.title+":"+slide.number} visual={slide.visual} interaction={slide.interaction} send={send} owner={owner} busy={busy} live={!preview}/>}</div>
+ <div className="p-4 sm:p-6 space-y-4">{preview&&slide.illustration_id?<PrivateIllustration key={slide.illustration_id} id={slide.illustration_id}/>:!preview&&slide.illustration&&path&&client?<PresentedImage image={slide.illustration} path={path} client={client}/>:null}<div className="text-base sm:text-lg leading-relaxed whitespace-pre-wrap break-words text-emerald-950">{slide.body}</div>{slide.visual&&<SupportSlideVisual key={slide.interaction?.id||slide.title+":"+slide.number} visual={slide.visual} interaction={slide.interaction} send={send} owner={owner} busy={busy} live={!preview}/>}</div>
  </article>;
 }
 export default function SupportPresentation({send,busy}){
