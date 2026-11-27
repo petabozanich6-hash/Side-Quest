@@ -1,12 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL,lessonTheme,icebreakerMinutes} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
 const pack=fractionPack("Equivalent fractions","Mathematics","Year 4","Understand and identify equivalent fractions using visual models.",30);
 pack.slides[0].notes+=" PRIVATE-SOLUTION";
+pack.icebreaker.script+=" PRIVATE-ICEBREAKER";
 pack.worksheet[0].answer+=" PRIVATE-WORKSHEET-1";
 function setup(){
  const db=makeDb(),now=new Date(),at=now.toISOString(),end=new Date(now.getTime()+30*60000).toISOString();
@@ -40,6 +41,7 @@ test("approval is scoped, atomic, preserves an existing plan, and only learner s
  assert.equal(state.board.slide.body,pack.slides[0].body);
  assert.deepEqual(state.board.slide.visual,pack.slides[0].visual);
  assert.equal(JSON.stringify(state).includes("PRIVATE-SOLUTION"),false);
+ assert.equal(JSON.stringify(state).includes("PRIVATE-ICEBREAKER"),false);
  assert.equal(JSON.stringify(state).includes("PRIVATE-WORKSHEET"),false);
 });
 test("AI pack generation fails closed when the isolated pilot is disabled",async()=>{
@@ -312,4 +314,27 @@ test("structured model guidance is converted without changing instructional cont
  const wrong=structuredClone(structured);wrong.sequence[0].phase="model";
  assert.equal(validateLessonPack(normaliseGeneratedLessonPack(wrong,30),30),null);
  assert.equal(normaliseGeneratedLessonPack(structured,45).sequence[0].minutes,2);
+});
+
+
+test("timed opening is retained privately and cannot consume required teaching time",()=>{
+ const valid=validateLessonPack(pack,30);
+ assert.deepEqual(valid.icebreaker,pack.icebreaker);
+ assert.equal(valid.sequence.reduce((n,s)=>n+s.minutes,0),30);
+ assert.equal(validateLessonPack({...pack,icebreaker:{...pack.icebreaker,minutes:5}},30),null);
+ assert.equal(validateLessonPack({...pack,icebreaker:{...pack.icebreaker,script:"Say hello."}},30),null);
+ assert.equal(validateLessonPack({...pack,icebreaker:null},30),null);
+ assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:3},{phase:"model",minutes:4},{phase:"model",minutes:4},{phase:"guided",minutes:10},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);
+ assert.equal(validateLessonPack({...pack,sequence:[{phase:"teach",minutes:4},{phase:"model",minutes:3},{phase:"model",minutes:3},{phase:"guided",minutes:11},{phase:"independent",minutes:5},{phase:"check",minutes:4}]},30),null);
+ const legacy={...pack};delete legacy.icebreaker;
+ assert.ok(validateLessonPack(legacy,30));
+});
+test("interest selector accepts only known non-identifying themes",()=>{
+ assert.equal(lessonTheme(undefined),"none");
+ assert.equal(lessonTheme("cats"),"cats");
+ assert.equal(lessonTheme("dragons"),"dragons");
+ assert.equal(lessonTheme("private learner details"),null);
+ assert.equal(lessonTheme({theme:"cats"}),null);
+ assert.equal(lessonTheme(null),null);
+ assert.deepEqual([15,30,45,60,90,180].map(icebreakerMinutes),[2,3,3,5,5,5]);
 });
