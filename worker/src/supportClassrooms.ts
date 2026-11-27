@@ -44,7 +44,7 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   board.strokes.push({points:points.map(p=>p.map((n:number)=>Math.round(n*10000)/10000)),color});
  }else if(b.action==="text"&&owner&&typeof b.text==="string"&&b.text.length<=2000)board.text=b.text;
  else if(b.action==="clear"&&owner&&b.confirmed===true){board.strokes=[];board.text="";}
- else if(b.action==="hide-slide"&&owner){if(board.slide)board.image=null;board.slide=null;}
+ else if(b.action==="hide-slide"&&owner)board.slide=null;
  else if(b.action==="hide-image"&&owner)board.image=null;
  else if(b.action==="present-image"&&owner&&typeof b.file_id==="string"){
   const image=await presentationImage(db,b.file_id);if(!image)return {error:"Choose an active learner-facing PNG or JPEG."};
@@ -59,8 +59,7 @@ export async function editClassroom(db:D1Database,channel:Channel,id:string,oid:
   const deck=await getDeck(db,b.deck_id);
   if(!deck||deck.status!=="reviewed"||deck.revision!==b.deck_revision||b.index<0||b.index>=deck.slides.length)return {error:"Only current, reviewed resources can be presented."};
   const s=deck.slides[b.index];
-  const image=typeof s.illustration_file_id==="string"?await presentationImage(db,s.illustration_file_id):null;
-  board.image=image?{id:image.id,title:image.title}:null;
+  board.image=null;
   const visual=validateSlideVisual(s.visual);
   board.slide={title:deck.title,heading:s.heading,body:s.body,kind:s.kind,number:b.index+1,total:deck.slides.length,...(visual?{visual,interaction:initialSlideInteraction(visual)}:{})};
  }
