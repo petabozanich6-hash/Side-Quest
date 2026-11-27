@@ -166,14 +166,14 @@ test("junior and teen creative camps can run in the same week without overlappin
  const {createEnglishRound,listEnglishRounds}=await import("../src/englishClubRounds.ts");
  const {validateActivityTemplate}=await import("../src/supportActivityLibrary.ts");
  const [junior,teen]=CREATIVE_CAMPS;
- assert.deepEqual(CREATIVE_CAMPS.map(c=>c.age),["8–11","12–16"]);
+ assert.deepEqual(CREATIVE_CAMPS.map(c=>c.age),["8–11","12–17"]);
  const spec=(c,first_local)=>({curriculum_id:c.id,title:c.title,description:c.description,first_local,session_count:6,themes:c.sessions.map(s=>s.title),reviewed_activities:true,confirmed:true});
  const j=await createEnglishRound(db,"owner",spec(junior,"2026-12-09T16:00"),now);assert.ok(j.id,JSON.stringify(j));
  assert.ok((await createEnglishRound(db,"owner",spec(teen,"2026-12-09T16:00"),now)).error);
  const s=await createEnglishRound(db,"owner",spec(teen,"2026-12-09T18:00"),now);assert.ok(s.id,JSON.stringify(s));
  assert.ok((await createEnglishRound(db,"owner",spec(junior,"2026-12-10T16:00"),now)).error);
  const rounds=await listEnglishRounds(db);assert.equal(rounds.length,2);
- assert.deepEqual(rounds.map(r=>r.age_group),["8–11","12–16"]);
+ assert.deepEqual(rounds.map(r=>r.age_group),["8–11","12–17"]);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_english_classes").get().n,12);
  assert.equal(db.raw.prepare("SELECT COUNT(*) n FROM support_activity_templates").get().n,48);
  assert.equal((await listEnglishRounds(db,true,now)).length,0);
@@ -230,5 +230,13 @@ test("all twelve camp story builders are ungraded, bounded, and paired with mode
   assert.equal(validateGameResponse(builder.game,"[0,0]"),null);
   assert.equal(validateGameResponse(builder.game,"[0,0,\"private text\"]"),null);
   assert.equal(validateActivityTemplate({...activities[1],subject:"English",year_level:"Ages "+c.age,game:{fields:[{label:"One",options:["x","x"]},{label:"Two",options:["x","y"]}]}}),null);
+ }
+});
+
+test("creative camps provide five distinct age-appropriate illustration briefs and branded resources",async()=>{
+ const {CREATIVE_CAMPS,campResource}=await import("../src/englishClubCreativeCamps.ts");
+ for(const camp of CREATIVE_CAMPS)for(let i=0;i<camp.sessions.length;i++){
+  const resource=campResource(camp.id,i);assert.equal(resource.programme_id,camp.id);
+  const plan=clubIllustrationPlan(resource);assert.deepEqual(plan.map(p=>p.slide_index),[0,2,3,4,6]);assert.equal(new Set(plan.map(p=>p.brief)).size,5);assert.ok(plan.every(p=>p.brief.length<=900&&p.purpose));assert.ok(plan.every(p=>p.brief.includes(camp.age==="8–11"?"storybook":"editorial")));
  }
 });
