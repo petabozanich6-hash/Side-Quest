@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {makeDb} from "./fakeD1.mjs";
-import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
+import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,validateGeneratedTutorDialogue,lessonStageGuide,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
 import {classroomState,setClassroomOpen,editClassroom} from "../src/supportClassrooms.ts";
@@ -312,4 +312,25 @@ test("structured model guidance is converted without changing instructional cont
  const wrong=structuredClone(structured);wrong.sequence[0].phase="model";
  assert.equal(validateLessonPack(normaliseGeneratedLessonPack(wrong,30),30),null);
  assert.equal(normaliseGeneratedLessonPack(structured,45).sequence[0].minutes,2);
+});
+
+test("stage guidance distinguishes early primary from secondary, even with stage labels",()=>{
+ assert.match(lessonStageGuide("Foundation"),/concrete objects/);
+ assert.match(lessonStageGuide("Year 3"),/Stage 2/);
+ assert.match(lessonStageGuide("Year 7"),/interpretation and evidence/);
+ assert.equal(lessonStageGuide("Stage 4"),lessonStageGuide("Year 8"));
+ assert.match(lessonStageGuide("Year 12"),/Senior secondary/);
+ assert.match(lessonStageGuide("Other"),/do not invent/);
+});
+test("AI teaching dialogue must include a meaningful spoken script, question and learner attempt",()=>{
+ assert.ok(validateGeneratedTutorDialogue(validateLessonPack(englishPack,30)));
+ const copy=structuredClone(englishPack);
+ const script="[SAY] Today we're going to explore how a writer creates an image using carefully chosen language. Read the example aloud with me and notice the words that help you picture the setting. [SHOW] Point to the first line and explain how the comparison changes its meaning. [ASK] What detail makes the comparison effective, and why? [PAUSE] Give the learner time to reread the example and explain their answer. [RESPOND] Ask them to name the shared quality and support it with a specific word.";
+ for(const slide of copy.slides)slide.notes=slide.notes.replace(/SAY AND SHOW:[\s\S]+?\nIF THEY GET STUCK:/,"SAY AND SHOW: "+script+"\nIF THEY GET STUCK:");
+ const valid=validateLessonPack(copy,30);
+ assert.ok(valid);assert.equal(validateGeneratedTutorDialogue(valid),null);
+ const noPause=structuredClone(valid);noPause.slides[0].notes=noPause.slides[0].notes.replace("[PAUSE]","");
+ assert.match(validateGeneratedTutorDialogue(noPause),/Slide 1/);
+ const noShow=structuredClone(valid);const model=noShow.sequence.findIndex(x=>x.phase==="model");noShow.slides[model].notes=noShow.slides[model].notes.replace("[SHOW]","");
+ assert.match(validateGeneratedTutorDialogue(noShow),/worked demonstration/);
 });
