@@ -433,3 +433,10 @@ test("deterministic experiment schemas and shared learner controls are bounded",
 });
 
  test("digital-first packs need no printable tasks but still enforce teaching quality",()=>{const {worksheet,...digital}=pack;assert.deepEqual(validateLessonPack(digital).worksheet,[]);assert.equal(validateLessonPack({...digital,activities:[]}),null);assert.equal(validateLessonPack({...digital,worksheet:"invalid"}),null);});
+
+ test("coordinate and binary models use bounded learner-controlled indices",()=>{
+ const coordinates={type:"experiment",model:"coordinates",prompt:"Explore ordered pairs."};let s=initialSlideInteraction(coordinates);assert.deepEqual(s.placements,[0,0]);
+ const adjust=(index,direction,owner=false)=>changeSlideInteraction(coordinates,s,{visual_id:s.id,operation:"adjust",index,direction},owner);
+ assert.equal(adjust(0,-6),null);assert.equal(adjust(1,6),null);assert.equal(adjust(0,-3,true),null);s=adjust(0,-3);s=adjust(1,5);assert.deepEqual(s.placements,[-3,5]);assert.equal(changeSlideInteraction(coordinates,s,{visual_id:s.id,operation:"toggle",index:0},false),null);
+ const binary={type:"experiment",model:"binary",prompt:"Build decimal thirteen."};let b=initialSlideInteraction(binary);const toggle=index=>changeSlideInteraction(binary,b,{visual_id:b.id,operation:"toggle",index},false);assert.equal(toggle(4),null);b=toggle(0);b=toggle(1);b=toggle(3);assert.deepEqual(b.selected,[0,1,3]);assert.equal(changeSlideInteraction(binary,b,{visual_id:b.id,operation:"adjust",index:0,direction:1},false),null);
+ });
