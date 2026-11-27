@@ -4,7 +4,7 @@ import {makeDb} from "./fakeD1.mjs";
 import {validateLessonPack,approveLessonPack,readLessonPack,generateLessonPack,generateReusableLessonPack,listReusableLessonPacks,getReusableLessonPack,saveReusableLessonPack,useReusableLessonPack,readPrivateLessonDraft,checkpointPrivateLessonDraft,discardPrivateLessonDraft,extractLessonPackResponse,normaliseGeneratedLessonPack,validateGeneratedTutorDialogue,lessonStageGuide,REASONING_LESSON_MODEL} from "../src/supportLessonPack.ts";
 import {fractionPack} from "../src/supportFractionPack.ts";
 import {validateSlideVisual,initialSlideInteraction,changeSlideInteraction} from "../src/supportSlideVisuals.ts";
-import {lessonArtInput,decodeLessonArt,generateLessonArt} from "../src/supportLessonArt.ts";
+import {lessonArtInput,decodeLessonArt,generateLessonArt,lessonIllustrationAllowance} from "../src/supportLessonArt.ts";
 import {classroomState,setClassroomOpen,editClassroom,canReadClassroomImage} from "../src/supportClassrooms.ts";
 const pack=fractionPack("Equivalent fractions","Mathematics","Year 4","Understand and identify equivalent fractions using visual models.",30);
 pack.slides[0].notes+=" PRIVATE-SOLUTION";
@@ -383,4 +383,21 @@ test("reviewed illustration is visible only on the presented slide of the correc
  assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-two",id,false,now),false);
  assert.ok((await present(1)).ok);
  assert.equal(await canReadClassroomImage(db,"guest","pack-request","pack-one",id,false,now),false);
+});
+
+test("contextual illustration allowances scale with the length of the lesson and stay bounded",()=>{
+ for(const [minutes,allowance] of [[15,3],[30,6],[45,9],[60,12],[90,18],[120,18],[180,18]])assert.equal(lessonIllustrationAllowance(minutes),allowance);
+});
+test("a longer lesson can include more than nine distinct teaching slides",()=>{
+ const phases=englishPack.sequence.map(s=>s.phase);
+ const extended=structuredClone(englishPack);
+ extended.slides=[];extended.sequence=[];
+ for(const [i,slide] of englishPack.slides.entries()){
+  for(let j=0;j<2;j++){
+   extended.slides.push({...slide,heading:slide.heading+" "+(j+1)});
+   extended.sequence.push({phase:phases[i],minutes:englishPack.sequence[i].minutes});
+  }
+ }
+ assert.ok(extended.slides.length>9);
+ assert.ok(validateLessonPack(extended,60));
 });
