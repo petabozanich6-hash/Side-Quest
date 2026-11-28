@@ -222,9 +222,13 @@ await step("English Club uses separate navigable pages without mounting unrelate
  await page.getByRole("link",{name:/^English Club/}).click();
  await page.getByRole("heading",{name:"The Side-Quest English Club",exact:true}).waitFor();
  ok(await page.locator('input[type="datetime-local"]').count()===0,"planning form should not be on the session list");
- await page.getByRole("link",{name:"Plan a session",exact:true}).click();
- await page.getByRole("heading",{name:"Plan a club session",exact:true}).waitFor();
- ok(await page.locator('input[type="datetime-local"]').count()===1,"planning page missing its date input");
+ ok(await page.getByRole("link",{name:"Plan a session",exact:true}).count()===0,"obsolete standalone class creation is still exposed");
+ await page.getByRole("link",{name:"Manage six-session rounds",exact:true}).click();
+ await page.getByRole("heading",{name:"English Club rounds",exact:true}).waitFor();
+ await page.getByRole("button",{name:/Junior Story Adventurers/}).waitFor();
+ await page.getByRole("button",{name:/Teen Storymakers/}).waitFor();
+ ok(await page.getByRole("button",{name:"Plan a custom round",exact:true}).count()===0,"obsolete custom programme is still exposed");
+ ok(await page.locator('input[type="datetime-local"]').count()===0,"dates should appear only after a camp has been selected");
  ok(await page.locator('[aria-label="English Club video"]').count()===0,"video must not mount during planning");
  await page.goBack();
  await page.getByRole("heading",{name:"The Side-Quest English Club",exact:true}).waitFor();

@@ -1,4 +1,4 @@
-export const GAME_TYPES=["matching","sorting","sequence","number_line","fraction_model"] as const;
+export const GAME_TYPES=["matching","sorting","sequence","number_line","fraction_model","story_builder"] as const;
 const clean=(raw:any,min:number,max:number)=>{
  if(!Array.isArray(raw)||raw.length<min||raw.length>max||raw.some(v=>typeof v!=="string"||!v.trim()||v.trim().length>120))return null;
  const values=raw.map(v=>v.trim());
@@ -12,6 +12,10 @@ export function validateGameResponse(game:any,raw:unknown):number[]|null{
   const max=game.type==="number_line"?game.intervals:game.parts;
   return Number.isInteger(max)&&Array.isArray(value)&&value.length===1&&Number.isInteger(value[0])&&value[0]>=0&&value[0]<=max?value:null;
  }
+ if(game.type==="story_builder"){
+  if(!Array.isArray(game.fields)||!Array.isArray(value)||value.length!==game.fields.length)return null;
+  return value.every((v,i)=>Number.isInteger(v)&&v>=0&&v<game.fields[i].options.length)?value:null;
+ }
  if(!Array.isArray(game.items))return null;
  const n=game.items.length,max=game.type==="sequence"?n:game.targets?.length;
  if(!Number.isInteger(max)||!Array.isArray(value)||value.length!==n||value.some(v=>!Number.isInteger(v)||v<0||v>=max))return null;
@@ -21,6 +25,17 @@ export function validateGameResponse(game:any,raw:unknown):number[]|null{
 export function validateGame(b:any){
  const type=b?.type;
  if(!GAME_TYPES.includes(type))return null;
+ if(type==="story_builder"){
+  const raw=b?.game?.fields;if(!Array.isArray(raw)||raw.length<2||raw.length>5)return null;
+  const fields:{label:string;options:string[]}[]=[];
+  for(const field of raw){
+   const label=typeof field?.label==="string"?field.label.trim():"",options=clean(field?.options,2,6);
+   if(!label||label.length>80||!options||fields.some(f=>f.label===label))return null;
+   fields.push({label,options});
+  }
+  // Open-ended choices are deliberately not graded or revealed as a solution.
+  return {game:{type,fields},answer_key:null};
+ }
  if(type==="number_line"||type==="fraction_model"){
   const raw=b?.game;let game;
   if(type==="number_line"){

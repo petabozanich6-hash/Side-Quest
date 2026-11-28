@@ -1,5 +1,7 @@
+import {academyExperience} from "./academyExperiences";
 import type {Env} from "./types";
 import {ensureEnglishClub} from "./englishClub";
+import {clubIllustrationPlan} from "./englishClubIllustrations";
 import {listResources,downloadResource} from "./supportFiles";
 export const ENGLISH_MATERIALS_SCHEMA=["CREATE TABLE IF NOT EXISTS support_english_materials (class_id TEXT PRIMARY KEY REFERENCES support_english_classes(id) ON DELETE CASCADE, prompts TEXT NOT NULL DEFAULT '', fallback_url TEXT NOT NULL DEFAULT '', fallback_open INTEGER NOT NULL DEFAULT 0 CHECK(fallback_open IN (0,1)))","CREATE TABLE IF NOT EXISTS support_english_file_grants (class_id TEXT NOT NULL REFERENCES support_english_classes(id) ON DELETE CASCADE,file_id TEXT NOT NULL REFERENCES support_files(id),PRIMARY KEY(class_id,file_id))"] as const;
 async function ensure(db:D1Database){await ensureEnglishClub(db);await listResources(db,"",true);await db.batch(ENGLISH_MATERIALS_SCHEMA.map(sql=>db.prepare(sql)));}
@@ -13,21 +15,24 @@ export function safeClubFallback(v:unknown){
 const fallbackEnabled=(e:Env)=>!!e.STAGING_KEY&&e.SUPPORT_ENGLISH_FALLBACK_TEST==="true";
 export async function readEnglishMaterials(e:Env,cid:string,parent?:Parent,now=new Date()){
  await ensure(e.DB);
- const c=await e.DB.prepare("SELECT start_at,end_at FROM support_english_classes WHERE id=?").bind(cid).first<{start_at:string;end_at:string}>();
+ const c=await e.DB.prepare("SELECT c.start_at,c.end_at,r.curriculum_id FROM support_english_classes c LEFT JOIN support_english_round_classes x ON x.class_id=c.id LEFT JOIN support_english_rounds r ON r.id=x.round_id WHERE c.id=?").bind(cid).first<{start_at:string;end_at:string;curriculum_id?:string}>();
  if(!c||parent&&!await paid(e.DB,cid,parent))return null;
  const a=await e.DB.prepare("SELECT prompts,fallback_url,fallback_open FROM support_english_materials WHERE class_id=?").bind(cid).first<{prompts:string;fallback_url:string;fallback_open:number}>();
  const files=(await e.DB.prepare("SELECT f.id,f.title,f.filename,f.mime,f.size_bytes FROM support_english_file_grants g JOIN support_files f ON f.id=g.file_id WHERE g.class_id=? AND f.status='active' AND f.audience='learner' ORDER BY f.title LIMIT 30").bind(cid).all()).results||[];
  const resource=await e.DB.prepare("SELECT resource_json FROM support_english_workshop_resources WHERE class_id=?").bind(cid).first<{resource_json:string}>();
- const workshop=resource?JSON.parse(resource.resource_json):null;
+ const snapshot=resource?JSON.parse(resource.resource_json):null;
+ const illustrations=!parent&&snapshot?clubIllustrationPlan(snapshot):[];
+ // Explicitly project learner fields; never expose image planning briefs or private attachment refs.
+ const workshop=snapshot?{...(snapshot.creative_camp===true?{creative_camp:true}:{}),...(["english-creative-camp-junior-v1","english-creative-camp-senior-v1","english-author-studio-adult-v1"].includes(c.curriculum_id||"")?{programme_id:c.curriculum_id}:{}),...(academyExperience(c.curriculum_id,snapshot.title)?{experience:academyExperience(c.curriculum_id,snapshot.title)}:{}),title:snapshot.title,objective:snapshot.objective,reading:snapshot.reading,tasks:snapshot.tasks,stretch:snapshot.stretch,slides:snapshot.slides}:null;
  const inWindow=now.getTime()>=Date.parse(c.start_at)-10*60000&&now.getTime()<Date.parse(c.end_at);
  const fallback=fallbackEnabled(e)&&inWindow&&a?.fallback_open===1?safeClubFallback(a.fallback_url):null;
- return {prompts:a?.prompts||"",files,workshop,...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
+ return {prompts:a?.prompts||"",files,workshop,...(!parent?{illustrations}:{}),...(parent?{fallback_url:fallback}:{fallback_url:a?.fallback_url||"",fallback_open:!!a?.fallback_open,fallback_enabled:fallbackEnabled(e),can_open_fallback:fallbackEnabled(e)&&inWindow})};
 }
 export async function saveEnglishMaterials(e:Env,cid:string,b:any,now=new Date()){
  await ensure(e.DB);if(b?.confirmed!==true||typeof b.prompts!=="string"||b.prompts.length>6000||typeof b.fallback_url!=="string"||typeof b.fallback_open!=="boolean")return false;
  const url=b.fallback_url.trim()?safeClubFallback(b.fallback_url.trim()):"";
  if(url===null||b.fallback_open&&(!url||!fallbackEnabled(e)||b.safeguards_confirmed!==true))return false;
- const c=await e.DB.prepare("SELECT start_at,end_at FROM support_english_classes WHERE id=?").bind(cid).first<{start_at:string;end_at:string}>();if(!c)return false;
+ const c=await e.DB.prepare("SELECT start_at,end_at FROM support_english_classes WHERE id=?").bind(cid).first<{start_at:string;end_at:string;curriculum_id?:string}>();if(!c)return false;
  if(b.fallback_open&&(now.getTime()<Date.parse(c.start_at)-10*60000||now.getTime()>=Date.parse(c.end_at)))return false;
  return !!(await e.DB.prepare("INSERT INTO support_english_materials(class_id,prompts,fallback_url,fallback_open) VALUES(?,?,?,?) ON CONFLICT(class_id) DO UPDATE SET prompts=excluded.prompts,fallback_url=excluded.fallback_url,fallback_open=excluded.fallback_open").bind(cid,b.prompts.trim(),url,b.fallback_open?1:0).run()).meta?.changes;
 }

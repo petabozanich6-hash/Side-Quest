@@ -25,7 +25,7 @@ export async function createEnglishClass(db:D1Database,b:any,now=new Date()){
 export async function listEnglishClub(db:D1Database){
  await ensureEnglishClub(db);
  const [classes,enquiries,roster]=await Promise.all([
- db.prepare("SELECT c.*,COALESCE(p.enabled,0) self_service_published,x.round_id,COALESCE(rr.price_per_session_cents,1200) price_cents FROM support_english_classes c LEFT JOIN support_english_publications p ON p.class_id=c.id LEFT JOIN support_english_round_classes x ON x.class_id=c.id LEFT JOIN support_english_rounds rr ON rr.id=x.round_id ORDER BY c.start_at DESC LIMIT 100").all<any>(),
+ db.prepare("SELECT c.*,COALESCE(p.enabled,0) self_service_published,x.round_id,rr.curriculum_id programme_id,COALESCE(rr.price_per_session_cents,1200) price_cents FROM support_english_classes c LEFT JOIN support_english_publications p ON p.class_id=c.id LEFT JOIN support_english_round_classes x ON x.class_id=c.id LEFT JOIN support_english_rounds rr ON rr.id=x.round_id ORDER BY c.start_at DESC LIMIT 100").all<any>(),
  db.prepare("SELECT r.id,r.parent_name,r.email,r.subject,r.message,f.id family_id,l.label learner_label FROM support_guest_requests r JOIN support_guest_families f ON f.email=r.email LEFT JOIN support_guest_learner_enquiries a ON a.request_id=r.id LEFT JOIN support_guest_learners l ON l.id=a.learner_id WHERE r.subject LIKE 'English Club: %' AND r.status NOT IN ('closed','resolved') ORDER BY r.updated_at DESC LIMIT 200").all<any>(),
  db.prepare("SELECT e.*,r.parent_name,r.email FROM support_english_enrolments e JOIN support_guest_requests r ON r.id=e.request_id WHERE e.class_id IN (SELECT id FROM support_english_classes ORDER BY start_at DESC LIMIT 100) ORDER BY e.created_at").all<any>()
  ]);

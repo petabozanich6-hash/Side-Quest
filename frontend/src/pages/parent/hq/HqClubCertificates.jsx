@@ -1,4 +1,5 @@
 import HqClubCertificatePostal from "./HqClubCertificatePostal";
+import AcademyCertificateArtwork from "./AcademyCertificateArtwork";
 import React,{useEffect,useRef,useState} from "react";
 import {Link,useSearchParams} from "react-router-dom";
 import {downloadCertificate} from "../FamilyClubCertificates";
@@ -19,7 +20,7 @@ function SignedTemplateSetup({onReady}){
   const r=await adminApi.get("/english-club/certificate-template");setInfo(r);onReady(r.active?.id||"");setFile(null);setConfirmed(false);
  }catch(e){setError(errorText(e,e.message||"Private upload failed."));}finally{lock.current=false;setBusy(false);}
  }
- return <article className="paper-card p-5 space-y-3"><h4 className="font-bold">Signed Ignis certificate artwork</h4><p className="text-sm">{info?.active?"An approved private artwork version is active. Previously approved certificates retain their pinned version.":"Upload the prepared signed artwork once before approving certificates."}</p>{error&&<p role="alert">{error}</p>}{info&&!info.storage_available&&<p>Private storage is unavailable.</p>}<label className="block text-sm">Prepared signed JPEG<input type="file" accept="image/jpeg" disabled={busy||!info?.storage_available} className="block w-full" onChange={e=>{setFile(e.target.files?.[0]||null);setConfirmed(false);}}/></label>{preview&&<><img src={preview} alt="Private signed certificate artwork preview" className="w-full rounded border"/><label className="flex gap-2 text-sm"><input type="checkbox" checked={confirmed} disabled={busy} onChange={e=>setConfirmed(e.target.checked)}/> I approve this artwork and signature for English Club certificates.</label><button type="button" className={btn} disabled={busy||!confirmed} onClick={save}>Save approved private artwork</button></>}</article>;
+ return <article className="paper-card p-5 space-y-3"><h4 className="font-bold">Signed Writers’ Academy certificate artwork</h4><p className="text-sm">{info?.active?"An approved private artwork version is active. Previously approved certificates retain their pinned version.":"Upload the prepared signed artwork once before approving certificates."}</p>{error&&<p role="alert">{error}</p>}{info&&!info.storage_available&&<p>Private storage is unavailable.</p>}<AcademyCertificateArtwork disabled={busy||!info?.storage_available} onPrepared={art=>{setFile(art);setConfirmed(false);}}/><label className="block text-sm">Or upload an already prepared signed JPEG<input type="file" accept="image/jpeg" disabled={busy||!info?.storage_available} className="block w-full" onChange={e=>{setFile(e.target.files?.[0]||null);setConfirmed(false);}}/></label>{preview&&<><img src={preview} alt="Private signed certificate artwork preview" className="w-full rounded border"/><label className="flex gap-2 text-sm"><input type="checkbox" checked={confirmed} disabled={busy} onChange={e=>setConfirmed(e.target.checked)}/> I approve this artwork and signature for Writers’ Academy certificates.</label><button type="button" className={btn} disabled={busy||!confirmed} onClick={save}>Save approved private artwork</button></>}</article>;
 }
 export default function HqClubCertificates(){
  const [params]=useSearchParams(),chosen=params.get("certificate_booking")||"";
@@ -58,7 +59,7 @@ export default function HqClubCertificates(){
    if(action==="reissue"){const result=await adminApi.post("/english-club/certificates/"+encodeURIComponent(r.certificate_id)+"/reissue",{confirmed:true,template_id:r.template_id});await load();if(g===generation.current)setNotice(result.status==="sent"?"Replacement accepted by email provider.":"Replacement requires review; no automatic repeat.");return;}
    if(action==="approve")await adminApi.post(path+"/approve",{confirmed,template_id:templateReady,learner_name:r.learner_label,title:r.title,expected_count:r.expected_count,delivery:r.certificate_delivery,completed_at:r.last_end_at});
    else await adminApi.post(path+"/withdraw",{confirmed:true,certificate_id:r.certificate_id});
-   await load();if(g===generation.current){setConfirmed(false);setNotice(action==="approve"?"Certificate approved with the active signed Ignis artwork.":"Certificate approval withdrawn.");}
+   await load();if(g===generation.current){setConfirmed(false);setNotice(action==="approve"?"Certificate approved with the active signed artwork.":"Certificate approval withdrawn.");}
   }catch(e){if(g===generation.current)setError(errorText(e));}finally{lock.current=false;setBusy(false);}
  }
  if(params.get("postal")==="queue")return <HqClubCertificatePostal/>;
