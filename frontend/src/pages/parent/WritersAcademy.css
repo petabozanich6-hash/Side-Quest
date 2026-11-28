@@ -66,3 +66,18 @@
 .academy-public :is(a,summary,button):focus-visible{outline:3px solid #986c29;outline-offset:4px}
 @media(max-width:850px){.academy-public-grid{grid-template-columns:1fr}.academy-public-card{display:grid;grid-template-columns:minmax(120px, .55fr) minmax(0,1fr);align-items:center}.academy-public-hero{grid-template-columns:1fr}.academy-public-hero .academy-art{max-width:300px}.academy-author{grid-template-columns:1fr}}
 @media(max-width:520px){.academy-public-card{display:flex}.academy-public-card>.academy-art{max-width:100%}.academy-public-nav div{gap:12px}}
+
+/* Chapter journey is an orientation aid, never a claim of attendance or completion. */
+.academy-journey{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;text-align:center;padding:14px 4px;background:#fffdf8;border:1px solid #d4c8b6;border-radius:14px}
+.academy-journey>div{display:flex;align-items:center;flex-direction:column;gap:6px;color:var(--academy-ink)}
+.academy-journey span{display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--academy-ink);border-radius:50%;font-weight:700}
+.academy-journey .academy-journey-current span{background:var(--academy-ink);color:#fff;border:2px solid var(--academy-gold)}
+.academy-journey small{font-size:10px;font-weight:600}
+.academy-warmup{background:var(--academy-paper);color:var(--academy-ink);border:1px solid #d4c8b6;padding:clamp(16px,3vw,24px);border-radius:16px;display:grid;gap:12px}
+.academy-warmup h3{font:700 clamp(20px,3vw,28px)/1.25 Georgia,serif}
+.academy-warmup-choices,.academy-room-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:10px}
+.academy-warmup-choices button,.academy-room-nav :is(button,a){background:#fffdf8;color:var(--academy-ink);border:1px solid var(--academy-ink);border-radius:10px;padding:12px;min-height:48px;text-align:left}
+.academy-warmup-choices button[aria-pressed=true]{background:var(--academy-ink);color:#fffdf8;box-shadow:inset 0 0 0 2px var(--academy-gold)}
+.academy-room-nav :is(button,a){display:flex;flex-direction:column;justify-content:center;gap:4px;text-decoration:none}
+.academy-room-nav small{font-size:12px}
+@media(max-width:380px){.academy-journey span{width:28px;height:28px}.academy-journey small{font-size:9px}}
